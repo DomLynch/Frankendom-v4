@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "note": "STANDALONE finisher data (no duel_rules.json). Read by Finishers loader (FN1), the mesh cut and Assets/Editor/FinisherClipSetup.cs (clipImport). StreamingAssets copy must be identical. Offsets are stand-in metres; TUNE from renders.",
-  "enableFinishers": false,
+  "note": "STANDALONE finisher data (no duel_rules.json). Read by Finishers loader (FN1), the mesh cut and Assets/Editor/FinisherClipSetup.cs (clipImport). StreamingAssets copy must be identical. Offsets are stand-in metres; TUNE from renders. V61B: finishers ON, rotation.enabledIds = decapitation / split_crown / split_crown_pit, shots frame the victim body (frameBody), *_settle shot at the end. V62: rotation.perWeapon + enabledIds += river_light, hengdao_heavy; per-finisher slow-mo curves, *_settle rest shots, per-entry sheetFrames, pair probe fields. V61C: finisher length 4-6 s (clip start / speed / dieAt / slow-mo / hold), split_crown pairOffset forward 1.4, rt.look (camera keeps the gameplay look), auto.maxFinisherSeconds / lumaTolerance / clearance.",
+  "enableFinishers": true,
   "enableGore": true,
   "rotation": {
     "mode": "sequence",
@@ -11,7 +11,11 @@
     "weapons": {
       "Dracula": "sword",
       "Pitborn": "maul"
-    }
+    },
+    "enabledIds": [
+      "decapitation"
+    ],
+    "perWeapon": true
   },
   "entries": [
     {
@@ -19,17 +23,17 @@
       "enabled": true,
       "placeholder": false,
       "weight": 3,
-      "attackerSide": "any",
+      "attackerSide": "Dracula",
       "weapons": [],
       "directions": [],
       "moves": [],
       "locations": [],
       "attackerMove": "light_left",
       "attackerClip": "fin_beheading_k",
-      "contactAt": 1.1,
-      "duration": 4.7,
+      "contactAt": 0.6,
+      "duration": 3.1,
       "victimClip": "death",
-      "dieAt": 4.6,
+      "dieAt": 3.0,
       "distance": 1.1,
       "shotDefs": [
         {
@@ -55,7 +59,13 @@
           "lookAhead": 0.1,
           "fov": 28,
           "blend": 0.05,
-          "shake": 0.05
+          "shake": 0.05,
+          "frameBody": true,
+          "frameTop": 0.9,
+          "frameMargin": 1.1,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
         },
         {
           "id": "dc_fall",
@@ -67,7 +77,31 @@
           "lookHeight": 0.9,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0.9
+          "blend": 0.9,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.2,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
+        },
+        {
+          "id": "dc_settle",
+          "focus": "target",
+          "angleDeg": 115,
+          "side": 1,
+          "dist": 4.2,
+          "height": 1.6,
+          "lookHeight": 0.5,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0.8,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.25,
+          "frameMaxDist": 9,
+          "lookMin": 0.15,
+          "track": "body"
         }
       ],
       "shots": [
@@ -85,6 +119,12 @@
           "t": 0.5,
           "rel": "contact",
           "shot": "dc_fall"
+        },
+        {
+          "t": 2.85,
+          "rel": "start",
+          "shot": "dc_settle",
+          "blend": 0.8
         }
       ],
       "gore": [
@@ -98,22 +138,22 @@
       ],
       "slowmo": [
         {
-          "t": -0.12,
+          "t": -0.1,
           "rel": "contact",
-          "scale": 0.15,
-          "duration": 1.1,
+          "scale": 0.18,
+          "duration": 0.8,
           "easeIn": 0.08,
-          "easeOut": 0.5
+          "easeOut": 0.4
         }
       ],
-      "holdAfter": 1.8,
+      "holdAfter": 1.2,
       "note": "wind-up 0..0.95, downward slash peaks 34.7 m/s at 1.10 s (right hand), head-off effect at contact; victim plays its own death clip 0.3 s later (stagger 0..1.7 s of that clip, down 2.6-3.1 s)",
       "attackerClipSpeed": 1.0,
-      "attackerFade": 0.1,
-      "attackerClipStart": 0.0,
-      "victimClipSpeed": 1.0,
+      "attackerFade": 0.12,
+      "attackerClipStart": 0.5,
+      "victimClipSpeed": 1.5,
       "victimFade": 0.1,
-      "victimStart": 1.4,
+      "victimStart": 0.9,
       "holdLast": true,
       "victimYawDeg": 0.0,
       "pairOffset": [
@@ -137,10 +177,10 @@
       "attackerMove": "heavy_overhead",
       "attackerClip": "fin_chop1h_k",
       "contactAt": 0.48,
-      "duration": 4.0,
+      "duration": 3.0,
       "victimClip": "death",
-      "dieAt": 3.95,
-      "distance": 1.0,
+      "dieAt": 2.85,
+      "distance": 1.4,
       "shotDefs": [
         {
           "id": "sc_wide",
@@ -165,7 +205,13 @@
           "lookAhead": 0.1,
           "fov": 28,
           "blend": 0.05,
-          "shake": 0.07
+          "shake": 0.07,
+          "frameBody": true,
+          "frameTop": 0.9,
+          "frameMargin": 1.1,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
         },
         {
           "id": "sc_side",
@@ -177,7 +223,31 @@
           "lookHeight": 1.2,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 1.0
+          "blend": 1.0,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.2,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
+        },
+        {
+          "id": "sc_settle",
+          "focus": "target",
+          "angleDeg": 115,
+          "side": -1,
+          "dist": 4.2,
+          "height": 1.6,
+          "lookHeight": 0.5,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0.8,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.25,
+          "frameMaxDist": 9,
+          "lookMin": 0.15,
+          "track": "body"
         }
       ],
       "shots": [
@@ -195,6 +265,12 @@
           "t": 0.6,
           "rel": "contact",
           "shot": "sc_side"
+        },
+        {
+          "t": 2.7,
+          "rel": "start",
+          "shot": "sc_settle",
+          "blend": 0.8
         }
       ],
       "gore": [
@@ -210,18 +286,18 @@
         {
           "t": -0.1,
           "rel": "contact",
-          "scale": 0.15,
-          "duration": 1.0,
+          "scale": 0.18,
+          "duration": 0.7,
           "easeIn": 0.08,
-          "easeOut": 0.5
+          "easeOut": 0.4
         }
       ],
-      "holdAfter": 1.8,
+      "holdAfter": 1.2,
       "note": "one-hand overhead chop: hand peaks 1.6 m at 0.2 s, comes down 0.5 s; crown split effect at contact, body drops straight down (death)",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
-      "victimClipSpeed": 1.0,
+      "victimClipSpeed": 1.5,
       "victimFade": 0.1,
       "victimStart": 0.73,
       "holdLast": true,
@@ -229,7 +305,7 @@
       "pairOffset": [
         0.0,
         0.0,
-        1.0
+        1.4
       ],
       "killerYawDeg": 4.0,
       "distanceScaleByKiller": true
@@ -247,9 +323,9 @@
       "attackerMove": "heavy_overhead",
       "attackerClip": "fin_chop2h_k",
       "contactAt": 0.48,
-      "duration": 3.8,
+      "duration": 3.0,
       "victimClip": "death",
-      "dieAt": 3.65,
+      "dieAt": 2.85,
       "distance": 1.0,
       "shotDefs": [
         {
@@ -275,7 +351,13 @@
           "lookAhead": 0.1,
           "fov": 28,
           "blend": 0.05,
-          "shake": 0.07
+          "shake": 0.07,
+          "frameBody": true,
+          "frameTop": 0.9,
+          "frameMargin": 1.1,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
         },
         {
           "id": "sp_side",
@@ -287,7 +369,31 @@
           "lookHeight": 1.2,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 1.0
+          "blend": 1.0,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.2,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
+        },
+        {
+          "id": "sp_settle",
+          "focus": "target",
+          "angleDeg": 115,
+          "side": -1,
+          "dist": 4.2,
+          "height": 1.6,
+          "lookHeight": 0.5,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0.8,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.25,
+          "frameMaxDist": 9,
+          "lookMin": 0.15,
+          "track": "body"
         }
       ],
       "shots": [
@@ -305,6 +411,12 @@
           "t": 0.6,
           "rel": "contact",
           "shot": "sp_side"
+        },
+        {
+          "t": 2.7,
+          "rel": "start",
+          "shot": "sp_settle",
+          "blend": 0.8
         }
       ],
       "gore": [
@@ -320,18 +432,18 @@
         {
           "t": -0.1,
           "rel": "contact",
-          "scale": 0.15,
-          "duration": 1.0,
+          "scale": 0.18,
+          "duration": 0.7,
           "easeIn": 0.08,
-          "easeOut": 0.5
+          "easeOut": 0.4
         }
       ],
-      "holdAfter": 1.8,
+      "holdAfter": 1.2,
       "note": "two-hand overhead chop, same timing as the one-hand clip",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
-      "victimClipSpeed": 1.0,
+      "victimClipSpeed": 1.5,
       "victimFade": 0.1,
       "victimStart": 0.73,
       "holdLast": true,
@@ -385,7 +497,13 @@
           "lookAhead": 0.1,
           "fov": 28,
           "blend": 0.05,
-          "shake": 0.05
+          "shake": 0.05,
+          "frameBody": true,
+          "frameTop": 0.9,
+          "frameMargin": 1.1,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
         },
         {
           "id": "ri_fall",
@@ -397,7 +515,31 @@
           "lookHeight": 0.9,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0.9
+          "blend": 0.9,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.2,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
+        },
+        {
+          "id": "ri_settle",
+          "focus": "target",
+          "angleDeg": 115,
+          "side": 1,
+          "dist": 4.2,
+          "height": 1.6,
+          "lookHeight": 0.5,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0.8,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.25,
+          "frameMaxDist": 9,
+          "lookMin": 0.15,
+          "track": "body"
         }
       ],
       "shots": [
@@ -415,6 +557,12 @@
           "t": 0.5,
           "rel": "contact",
           "shot": "ri_fall"
+        },
+        {
+          "t": 1.6,
+          "rel": "start",
+          "shot": "ri_settle",
+          "blend": 0.8
         }
       ],
       "gore": [
@@ -440,10 +588,58 @@
           "scale": 0.25,
           "duration": 0.9,
           "easeIn": 0.06,
-          "easeOut": 0.4
+          "easeOut": 0.4,
+          "curve": [
+            {
+              "t": 0.0,
+              "scale": 1.0
+            },
+            {
+              "t": 0.1,
+              "scale": 0.25
+            },
+            {
+              "t": 0.7,
+              "scale": 0.25
+            },
+            {
+              "t": 1.1,
+              "scale": 0.6
+            },
+            {
+              "t": 1.5,
+              "scale": 1.0
+            }
+          ]
+        },
+        {
+          "t": 0.55,
+          "rel": "contact",
+          "scale": 0.3,
+          "duration": 0.4,
+          "easeIn": 0.05,
+          "easeOut": 0.3,
+          "curve": [
+            {
+              "t": 0.0,
+              "scale": 1.0
+            },
+            {
+              "t": 0.08,
+              "scale": 0.3
+            },
+            {
+              "t": 0.35,
+              "scale": 0.3
+            },
+            {
+              "t": 0.65,
+              "scale": 1.0
+            }
+          ]
         }
       ],
-      "holdAfter": 1.6,
+      "holdAfter": 1.2,
       "note": "lunging slash: first strike 0.70 s (hand 26.9 m/s, victim head 15.6 m/s), victim flung up ~0.8 s, down at 1.2, flourish slash 1.27 s, settled 1.73 s",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.1,
@@ -459,7 +655,57 @@
         1.15
       ],
       "killerYawDeg": -9.0,
-      "distanceScaleByKiller": true
+      "distanceScaleByKiller": true,
+      "bladeReach": 0.55,
+      "probeKillerBone": "RightHand",
+      "probeVictimBone": "Neck",
+      "sheetFrames": [
+        {
+          "rel": "start",
+          "t": 0.35,
+          "label": "start"
+        },
+        {
+          "rel": "contact",
+          "t": 0.03,
+          "label": "contact"
+        },
+        {
+          "rel": "contact",
+          "t": 0.6,
+          "label": "afterhit"
+        },
+        {
+          "rel": "contact",
+          "t": 1.2,
+          "label": "air"
+        },
+        {
+          "rel": "contact",
+          "t": 2.2,
+          "label": "fall"
+        },
+        {
+          "rel": "hold",
+          "t": 0.9,
+          "label": "rest"
+        },
+        {
+          "rel": "release",
+          "t": 0.8,
+          "label": "after_a"
+        },
+        {
+          "rel": "release",
+          "t": 2.5,
+          "label": "after_b"
+        },
+        {
+          "rel": "release",
+          "t": 4.0,
+          "label": "after_c"
+        }
+      ]
     },
     {
       "id": "hengdao_heavy",
@@ -473,8 +719,8 @@
       "locations": [],
       "attackerMove": "light_left",
       "attackerClip": "fin_hengdao_k",
-      "contactAt": 1.0,
-      "duration": 3.45,
+      "contactAt": 0.77,
+      "duration": 2.65,
       "victimClip": "fin_hengdao_v",
       "dieAt": -2,
       "distance": 1.2,
@@ -502,7 +748,13 @@
           "lookAhead": 0.1,
           "fov": 28,
           "blend": 0.05,
-          "shake": 0.05
+          "shake": 0.05,
+          "frameBody": true,
+          "frameTop": 0.9,
+          "frameMargin": 1.1,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
         },
         {
           "id": "he_fall",
@@ -514,7 +766,31 @@
           "lookHeight": 0.9,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0.9
+          "blend": 0.9,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.2,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
+        },
+        {
+          "id": "he_settle",
+          "focus": "target",
+          "angleDeg": 115,
+          "side": 1,
+          "dist": 4.2,
+          "height": 1.6,
+          "lookHeight": 0.5,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0.8,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.25,
+          "frameMaxDist": 9,
+          "lookMin": 0.15,
+          "track": "body"
         }
       ],
       "shots": [
@@ -532,6 +808,12 @@
           "t": 0.5,
           "rel": "contact",
           "shot": "he_fall"
+        },
+        {
+          "t": 2.0,
+          "rel": "start",
+          "shot": "he_settle",
+          "blend": 0.8
         }
       ],
       "gore": [
@@ -548,17 +830,43 @@
           "t": -0.1,
           "rel": "contact",
           "scale": 0.2,
-          "duration": 1.2,
+          "duration": 1.8,
           "easeIn": 0.06,
-          "easeOut": 0.5
+          "easeOut": 0.3,
+          "curve": [
+            {
+              "t": 0.0,
+              "scale": 1.0
+            },
+            {
+              "t": 0.1,
+              "scale": 0.2
+            },
+            {
+              "t": 0.6,
+              "scale": 0.2
+            },
+            {
+              "t": 1.0,
+              "scale": 0.5
+            },
+            {
+              "t": 1.4,
+              "scale": 0.5
+            },
+            {
+              "t": 1.8,
+              "scale": 1.0
+            }
+          ]
         }
       ],
-      "holdAfter": 1.8,
+      "holdAfter": 1.2,
       "note": "heavy blade cut peaks 40.9 m/s at 1.00 s; victim staggers 1.0-1.7, collapses 1.7-2.7, settled 2.7 s",
-      "attackerClipSpeed": 1.0,
+      "attackerClipSpeed": 1.3,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
-      "victimClipSpeed": 1.0,
+      "victimClipSpeed": 1.3,
       "victimFade": 0.1,
       "victimStart": 0.0,
       "holdLast": true,
@@ -569,7 +877,57 @@
         1.2
       ],
       "killerYawDeg": 19.0,
-      "distanceScaleByKiller": true
+      "distanceScaleByKiller": true,
+      "bladeReach": 0.7,
+      "probeKillerBone": "RightHand",
+      "probeVictimBone": "Spine1",
+      "sheetFrames": [
+        {
+          "rel": "start",
+          "t": 0.35,
+          "label": "start"
+        },
+        {
+          "rel": "contact",
+          "t": 0.03,
+          "label": "contact"
+        },
+        {
+          "rel": "contact",
+          "t": 0.8,
+          "label": "stagger"
+        },
+        {
+          "rel": "contact",
+          "t": 2.0,
+          "label": "collapse"
+        },
+        {
+          "rel": "contact",
+          "t": 3.2,
+          "label": "down"
+        },
+        {
+          "rel": "hold",
+          "t": 0.9,
+          "label": "rest"
+        },
+        {
+          "rel": "release",
+          "t": 0.8,
+          "label": "after_a"
+        },
+        {
+          "rel": "release",
+          "t": 2.5,
+          "label": "after_b"
+        },
+        {
+          "rel": "release",
+          "t": 4.0,
+          "label": "after_c"
+        }
+      ]
     },
     {
       "id": "counter_greatsword",
@@ -612,7 +970,13 @@
           "lookAhead": 0.1,
           "fov": 28,
           "blend": 0.05,
-          "shake": 0.05
+          "shake": 0.05,
+          "frameBody": true,
+          "frameTop": 0.9,
+          "frameMargin": 1.1,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
         },
         {
           "id": "co_fall",
@@ -624,7 +988,13 @@
           "lookHeight": 0.9,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0.9
+          "blend": 0.9,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.2,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
         }
       ],
       "shots": [
@@ -663,7 +1033,7 @@
           "easeOut": 0.5
         }
       ],
-      "holdAfter": 1.8,
+      "holdAfter": 1.2,
       "note": "FALLBACK for hengdao (enable if it reads badly): counter strike at 0.13 s, victim flung 0.4 m back and down by 0.4 s. Killer faces -51 deg at t0 (turns during the clip), TUNE",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.1,
@@ -755,7 +1125,7 @@
           "easeOut": 0.5
         }
       ],
-      "holdAfter": 1.8,
+      "holdAfter": 1.2,
       "note": "placeholder clips; real: paired Death_RunThrough 2.4 s + Fin_RunThrough, blade stays in, victim arches then kneels. top20 hq-rapier-thrust-torso if missing"
     },
     {
@@ -800,7 +1170,13 @@
           "lookHeight": 1.0,
           "lookAhead": 0,
           "fov": 32,
-          "blend": 0.6
+          "blend": 0.6,
+          "frameBody": true,
+          "frameTop": 0,
+          "frameMargin": 1.2,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
         }
       ],
       "shots": [
@@ -834,7 +1210,7 @@
           "easeOut": 0.4
         }
       ],
-      "holdAfter": 1.8,
+      "holdAfter": 1.2,
       "note": "placeholder swing; waist cut is lane B (MeshCut unit belly_open, falls back to torso_waist)"
     }
   ],
@@ -1313,7 +1689,75 @@
       "pressure": 1,
       "parry": 0,
       "dodge": 0,
-      "shotMode": "auto"
+      "shotMode": "auto",
+      "sheetCols": 3,
+      "sheetCellW": 640,
+      "sheetCombinedW": 960,
+      "sheetMaxSeconds": 30,
+      "sheetFrames": [
+        {
+          "rel": "start",
+          "t": 0.35,
+          "label": "start"
+        },
+        {
+          "rel": "contact",
+          "t": 0.03,
+          "label": "contact"
+        },
+        {
+          "rel": "contact",
+          "t": 0.5,
+          "label": "afterhit"
+        },
+        {
+          "rel": "contact",
+          "t": 1.2,
+          "label": "fall"
+        },
+        {
+          "rel": "kill",
+          "t": 0.3,
+          "label": "kill"
+        },
+        {
+          "rel": "hold",
+          "t": 0.85,
+          "label": "end"
+        },
+        {
+          "rel": "release",
+          "t": 0.8,
+          "label": "after_a"
+        },
+        {
+          "rel": "release",
+          "t": 2.5,
+          "label": "after_b"
+        },
+        {
+          "rel": "release",
+          "t": 4.0,
+          "label": "after_c"
+        }
+      ],
+      "pairProbe": true,
+      "maxFinisherSeconds": 7.0,
+      "lumaTolerance": 0.6,
+      "lumaFails": true,
+      "lumaRefFrames": 3,
+      "clearKillerBone": "Head",
+      "clearVictimBone": "Spine2",
+      "clearChestRadiusM": 0.3,
+      "minClearanceM": 0.1
+    },
+    "deathblowFinishes": true,
+    "offInBalanceAuto": true,
+    "look": {
+      "copyCameraData": true,
+      "freezeVolumeAnchor": true,
+      "enforceEachFrame": true,
+      "darkenEV": 0.0
     }
   }
 }

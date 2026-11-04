@@ -10,9 +10,11 @@ using UnityEngine;
 // (ScreenCapture.CaptureScreenshotAsTexture after 2 frames + end of frame, so the HUD is in frame; run the player at 1920x1080):
 //   (a) parry      : Pitborn swings, Dracula raises the guard just before contact (retries with other leads) -> shot at the Parried event
 //   (b) guard break: heavy into a guarding low-stamina Pitborn -> shot at the GuardBroken event
-//   (c) posture fill: 3 lights on the Pitborn (max overridden in memory to 30): after hit 1, hit 2, at POSTURE BREAK, +30 ticks (deathblow countdown),
-//       at the deathblow hit, and after the window closed.
-// Output (default <exe dir>\posture_proof\): proof_*.png, posture_proof_log.txt, posture_proof_summary.txt, posture_proof_contact.png (3x2 grid of the key frames).
+//   (c) posture fill: 3 lights on the Pitborn (ONLY here the Pitborn max is lowered in memory to 30; (a) and (b) run on the real posture.json values): after hit 1, hit 2,
+//       at POSTURE BREAK, +30 ticks (deathblow countdown), then the deathblow hit with the flash frames d_flash_before / d_flash_during (~0.05 s) / d_flash_after (~0.3 s)
+//       and a log of the Pitborn renderer colours (shared _BaseColor, property-block value, flash amount) plus the mean screen luma of its bounds, before / during / after,
+//       so a black tint or a black pose shows as numbers (V61A). Posture, window and stamina of both fighters are reset between the steps.
+// Output (default <exe dir>\posture_proof\): proof_*.png, posture_proof_log.txt, posture_proof_summary.txt, posture_proof_contact.png (3x3 grid of the key frames).
 // Exit codes: 0 finished (PASS or FAIL in the log/summary), 2 exception / setup failure, 3 timeout. PASS = a posture break and a deathblow actually occurred (DuelFighter stat counters).
 // Overrides are in memory only (PostureTable.Get() object); nothing on disk is changed. Time.captureFramerate = 60 so one frame = one sim tick.
 [DefaultExecutionOrder(-60)]
@@ -33,6 +35,8 @@ public class PostureProof : MonoBehaviour
 
     string dir, logPath; float t0, timeoutS = 90f; bool exiting; int exitCode; float exitAt;
     DuelFighter D, P;
+    PostureTable.FighterRow pRow; float realPitMax;
+    readonly Dictionary<string, float> lumas = new Dictionary<string, float>();
     readonly List<string> events = new List<string>();
     readonly List<Texture2D> keyFrames = new List<Texture2D>(); readonly List<string> keyNames = new List<string>();
     readonly Dictionary<string, bool> results = new Dictionary<string, bool>();
@@ -132,17 +136,77 @@ public class PostureProof : MonoBehaviour
         while (!cond() && Duel.TickCount < end && frames++ < maxTicks * 4 + 600) yield return null;
     }
 
-    IEnumerator Shot(string name)
+    IEnumerator Shot(string name, string alias = null, bool luma = false)
     {
         yield return null; yield return null;          // 2 frames, then the end of the frame (the HUD is drawn)
         yield return new WaitForEndOfFrame();
         Texture2D tex = null;
-        try { tex = ScreenCapture.CaptureScreenshotAsTexture(); } catch (Exception e) { Log("SHOT failed " + name + ": " + e.Message); }
+        CaptureUtil.HideConsole(); try { tex = ScreenCapture.CaptureScreenshotAsTexture(); } catch (Exception e) { Log("SHOT failed " + name + ": " + e.Message); }
         if (tex == null) yield break;
         try { File.WriteAllBytes(Path.Combine(dir, "proof_" + name + ".png"), tex.EncodeToPNG()); Log("SHOT proof_" + name + ".png " + tex.width + "x" + tex.height + (tex.width != 1920 || tex.height != 1080 ? " (NOT 1920x1080: run with -screen-width 1920 -screen-height 1080 -screen-fullscreen 0)" : "")); }
         catch (Exception e) { Log("SHOT write failed " + name + ": " + e.Message); }
+        if (!string.IsNullOrEmpty(alias)) { try { File.WriteAllBytes(Path.Combine(dir, "proof_" + alias + ".png"), tex.EncodeToPNG()); } catch { } }
+        if (luma) ScreenLuma(tex, name);
         keyFrames.Add(tex); keyNames.Add(name);
         LogState("after shot " + name);
+    }
+
+    // posture / window / stamina / guard / move input of BOTH fighters back to a clean slate (a pending break closes on the next tick: posture 0 ends it), then verified
+    IEnumerator ResetState(string why)
+    {
+        P.posture = 0f; D.posture = 0f; Rest();
+        yield return Ticks(3);
+        if (P.PostureBroken || P.DeathblowLeft > 0 || D.PostureBroken || D.DeathblowLeft > 0) { P.posture = 0f; D.posture = 0f; yield return Ticks(3); }
+        Log("reset (" + why + "): Pitborn posture " + P.posture.ToString("F1", IC) + "/" + P.PostureMax.ToString("F0", IC) + " broken " + P.PostureBroken + " window " + P.DeathblowLeft
+            + " | Dracula posture " + D.posture.ToString("F1", IC) + " broken " + D.PostureBroken + " window " + D.DeathblowLeft + (P.PostureBroken || P.DeathblowLeft > 0 || D.PostureBroken || D.DeathblowLeft > 0 ? "  RESET INCOMPLETE" : "  clean"));
+    }
+
+    // colour samples of the Pitborn (shared material _BaseColor / _Color, the renderer's property-block value, emissive) + flash amount: a black tint shows here as numbers.
+    // Reads sharedMaterials only (no material instances are created).
+    void SampleColors(string tag)
+    {
+        var mpb = new MaterialPropertyBlock(); int slots = 0, withBlock = 0; float sumShared = 0f, sumBlock = 0f; var sb = new StringBuilder();
+        foreach (var r in P.GetComponentsInChildren<Renderer>(false))
+        {
+            if (r is ParticleSystemRenderer || r is TrailRenderer || r is LineRenderer || !r.enabled) continue;
+            var mats = r.sharedMaterials;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                var m = mats[i]; if (m == null) continue;
+                string prop = m.HasProperty("_BaseColor") ? "_BaseColor" : m.HasProperty("_Color") ? "_Color" : null; if (prop == null) continue;
+                Color sh = m.GetColor(prop), cur = sh; bool blk = false;
+                r.GetPropertyBlock(mpb, i);
+                if (!mpb.isEmpty && mpb.HasColor(prop)) { cur = mpb.GetColor(prop); blk = true; withBlock++; }
+                Color em = m.HasProperty("_EmissiveColor") ? m.GetColor("_EmissiveColor") : Color.black;
+                if (!mpb.isEmpty && mpb.HasColor("_EmissiveColor")) em = mpb.GetColor("_EmissiveColor");
+                slots++; sumShared += sh.grayscale; sumBlock += cur.grayscale;
+                if (slots <= 6) sb.Append("\n      ").Append(r.name).Append("[").Append(i).Append("] ").Append(m.name).Append(" ").Append(prop).Append(" shared ").Append(Rgb(sh)).Append(" now ").Append(Rgb(cur)).Append(blk ? " (MPB)" : "").Append(" emissive ").Append(Rgb(em));
+            }
+        }
+        Log("COLORS " + tag + ": Pitborn slots " + slots + " with property block " + withBlock + " mean base luma shared " + (slots > 0 ? sumShared / slots : 0f).ToString("F3", IC) + " now " + (slots > 0 ? sumBlock / slots : 0f).ToString("F3", IC)
+            + " | flash active " + HitFlash.IsFlashing(P) + " amount " + HitFlash.Amount(P).ToString("F2", IC) + " (flashes " + HitFlash.FlashCount + " restores " + HitFlash.RestoreCount + ")" + sb);
+    }
+    static string Rgb(Color c) { return "(" + c.r.ToString("F2", IC) + "," + c.g.ToString("F2", IC) + "," + c.b.ToString("F2", IC) + ")"; }
+
+    // mean luma (0..1) of the screenshot inside the Pitborn's screen-space bounds (0 = black); a lighting/pose darkening shows here even when no material changed
+    float ScreenLuma(Texture2D tex, string tag)
+    {
+        var cam = Camera.main; if (cam == null || tex == null) return -1f;
+        Bounds b = new Bounds(P.transform.position + Vector3.up, Vector3.zero); bool any = false;
+        foreach (var r in P.GetComponentsInChildren<Renderer>(false)) { if (r is ParticleSystemRenderer || r is TrailRenderer || r is LineRenderer || !r.enabled) continue; if (!any) { b = r.bounds; any = true; } else b.Encapsulate(r.bounds); }
+        Vector3 mn = b.min, mx = b.max; float x0 = 1e9f, y0 = 1e9f, x1 = -1e9f, y1 = -1e9f;
+        for (int i = 0; i < 8; i++)
+        {
+            var c = new Vector3((i & 1) != 0 ? mx.x : mn.x, (i & 2) != 0 ? mx.y : mn.y, (i & 4) != 0 ? mx.z : mn.z); var sp = cam.WorldToScreenPoint(c); if (sp.z <= 0f) continue;
+            x0 = Mathf.Min(x0, sp.x); x1 = Mathf.Max(x1, sp.x); y0 = Mathf.Min(y0, sp.y); y1 = Mathf.Max(y1, sp.y);
+        }
+        int ix0 = Mathf.Clamp((int)x0, 0, tex.width - 1), ix1 = Mathf.Clamp((int)x1, ix0 + 1, tex.width), iy0 = Mathf.Clamp((int)y0, 0, tex.height - 1), iy1 = Mathf.Clamp((int)y1, iy0 + 1, tex.height);
+        int w = ix1 - ix0, h = iy1 - iy0; if (w < 4 || h < 4) return -1f;
+        var px = tex.GetPixels32(); double sum = 0; int n = 0;
+        for (int y = iy0; y < iy1; y += 3) for (int x = ix0; x < ix1; x += 3) { var c32 = px[y * tex.width + x]; sum += (0.2126 * c32.r + 0.7152 * c32.g + 0.0722 * c32.b) / 255.0; n++; }
+        float l = n > 0 ? (float)(sum / n) : -1f; lumas[tag] = l;
+        Log("LUMA " + tag + ": Pitborn screen box " + w + "x" + h + " px mean luma " + l.ToString("F3", IC));
+        return l;
     }
 
     void Rest() { D.stamina = D.maxStamina; P.stamina = P.maxStamina; D.guardHeld = false; P.guardHeld = false; D.moveDir = Vector3.zero; P.moveDir = Vector3.zero; }
@@ -162,14 +226,14 @@ public class PostureProof : MonoBehaviour
         D.opponent = P; P.opponent = D;
         Log("start res " + Screen.width + "x" + Screen.height + " unity " + Application.unityVersion);
 
-        // posture data overrides (memory only): enabled, Pitborn max 30 (3 lights), light 14, debug log on
+        // posture data: the REAL posture.json values are used for (a) and (b). Only the in-memory enable + debug log are forced; (c) alone lowers the Pitborn max (see below).
         var pd = PostureTable.Get();
-        pd.enabled = true; pd.debugLog = true; pd.hit.light = 14f;
-        PostureTable.FighterRow row = null;
-        if (pd.fighters != null) foreach (var r in pd.fighters) if (r != null && r.key == "Pitborn") row = r;
-        if (row == null) { var list = new List<PostureTable.FighterRow>(pd.fighters ?? new PostureTable.FighterRow[0]); row = new PostureTable.FighterRow { key = "Pitborn" }; list.Add(row); pd.fighters = list.ToArray(); }
-        row.max = 30f;
-        Log("overrides: posture enabled, Pitborn max " + P.PostureMax.ToString("F0", IC) + ", Dracula max " + D.PostureMax.ToString("F0", IC) + ", hit.light " + pd.hit.light.ToString("F0", IC) + ", window " + pd.posBreak.windowTicks + " ticks");
+        if (!pd.enabled) Log("NOTE posture.json had enabled=false: forced on in memory for the proof");
+        pd.enabled = true; pd.debugLog = true;
+        if (pd.fighters != null) foreach (var r in pd.fighters) if (r != null && r.key == "Pitborn") pRow = r;
+        if (pRow == null) { var list = new List<PostureTable.FighterRow>(pd.fighters ?? new PostureTable.FighterRow[0]); pRow = new PostureTable.FighterRow { key = "Pitborn" }; list.Add(pRow); pd.fighters = list.ToArray(); }
+        realPitMax = P.PostureMax;
+        Log("real values: Pitborn max " + P.PostureMax.ToString("F0", IC) + ", Dracula max " + D.PostureMax.ToString("F0", IC) + ", hit.light " + pd.hit.light.ToString("F0", IC) + ", parry.attacker " + pd.parry.attacker.ToString("F0", IC) + ", window " + pd.posBreak.windowTicks + " ticks");
         P.maxHealth = 1000f; P.health = 1000f; D.maxHealth = 1000f; D.health = 1000f;   // nobody dies during the proof (a lethal deathblow would end it)
         Rest(); Setup(2.0f);
         yield return Ticks(60);
@@ -178,7 +242,7 @@ public class PostureProof : MonoBehaviour
         int[] leads = { 5, 3, 7, 2, 9, 4 }; bool parried = false;
         for (int a = 0; a < leads.Length && !parried; a++)
         {
-            Rest(); P.posture = 0f; D.posture = 0f; Setup(1.7f); yield return Ticks(130);   // parry cooldown + recoveries
+            yield return ResetState("parry attempt " + (a + 1)); Setup(1.7f); yield return Ticks(130);   // parry cooldown + recoveries
             int pc = EventCount("Parried", "Pitborn") + EventCount("Parried", "Dracula"); int lead = leads[a];
             P.Press("light"); LogState("parry attempt " + (a + 1) + " Pitborn swings, guard lead " + lead);
             yield return WaitFor(() => P.state == FState.Windup, 30);
@@ -195,7 +259,7 @@ public class PostureProof : MonoBehaviour
         bool gbreak = false;
         for (int a = 0; a < 3 && !gbreak; a++)
         {
-            Rest(); P.posture = 0f; Setup(1.7f); yield return Ticks(130);
+            yield return ResetState("guard break attempt " + (a + 1)); Setup(1.7f); yield return Ticks(130);
             int gc = EventCount("GuardBroken", "Pitborn");
             P.guardHeld = true; yield return Ticks(25);   // past the parry window: a plain block
             P.stamina = 6f; D.stamina = D.maxStamina; D.Press("heavy"); LogState("guard break attempt " + (a + 1));
@@ -207,7 +271,9 @@ public class PostureProof : MonoBehaviour
         results["guardbreak"] = gbreak; LogState("guard break " + (gbreak ? "OK" : "NOT ACHIEVED"));
 
         // ---- (c) posture fill with lights, break, deathblow
-        Rest(); P.posture = 0f; D.posture = 0f; P.health = P.maxHealth; Setup(1.7f); yield return Ticks(200);
+        // only here the Pitborn max is lowered (3 lights = break); (a) and (b) ran on the real posture.json values
+        pRow.max = 30f; yield return ResetState("before (c)"); P.health = P.maxHealth; Setup(1.7f); yield return Ticks(200);
+        Log("(c) override: Pitborn max " + realPitMax.ToString("F0", IC) + " -> " + P.PostureMax.ToString("F0", IC) + " (this step only)");
         Log("posture fill begin: Pitborn posture " + P.posture.ToString("F1", IC) + "/" + P.PostureMax.ToString("F0", IC));
         int hits = 0; int b0 = P.statPostureBreaks;
         for (int h = 1; h <= 4 && P.statPostureBreaks == b0; h++)
@@ -231,16 +297,33 @@ public class PostureProof : MonoBehaviour
             yield return WaitFor(() => D.state == FState.Loco, 120);
             if (Vector3.Distance(D.transform.position, P.transform.position) > 2.0f) Setup(1.7f);
             Log("window left " + P.DeathblowLeft + "/" + P.DeathblowTotal + " before the deathblow swing; Pitborn state " + P.state);
+            SampleColors("d_flash_before (pre-shot)");
+            yield return Shot("d_flash_before", null, true);
+            SampleColors("d_flash_before (post-shot)");
             D.Press("light"); LogState("deathblow light pressed");
             yield return WaitFor(() => D.statDeathblows > d0 || !P.PostureBroken, 90);
-            if (D.statDeathblows > d0) yield return Shot("c_deathblow_hit");
-            yield return Ticks(20); yield return Shot("c_window_closed");
+            float tHit = Time.unscaledTime;
+            if (D.statDeathblows > d0)
+            {
+                SampleColors("d_flash_during (hit tick)");
+                yield return Shot("d_flash_during", "c_deathblow_hit", true);   // 2 frames + end of frame at 60 fps = ~0.05 s after the hit
+                SampleColors("d_flash_during (post-shot, +" + (Time.unscaledTime - tHit).ToString("F2", IC) + " s)");
+                int guard = 0; while (Time.unscaledTime - tHit < 0.28f && guard++ < 60) yield return null;   // ~0.3 s after the hit, counting the shot's own frames
+                SampleColors("d_flash_after (pre-shot)");
+                yield return Shot("d_flash_after", null, true);
+                SampleColors("d_flash_after (post-shot, +" + (Time.unscaledTime - tHit).ToString("F2", IC) + " s)");
+                Log("flash check: restored=" + !HitFlash.IsFlashing(P) + " luma before " + Lu("d_flash_before") + " during " + Lu("d_flash_during") + " after " + Lu("d_flash_after"));
+            }
+            yield return Ticks(20); yield return Shot("c_window_closed", null, true);
+            Log("window closed: Pitborn broken " + P.PostureBroken + " window " + P.DeathblowLeft + " (the HUD must show no DEATHBLOW label)");
         }
         else Log("NO posture break from the light sequence");
         LogState("end");
         bool ok = P.statPostureBreaks > 0 && D.statDeathblows > 0;
         Finish(0, ok ? "done" : "done, goals missed");
     }
+
+    string Lu(string k) { float v; return lumas.TryGetValue(k, out v) ? v.ToString("F3", IC) : "n/a"; }
 
     // ---------------------------------------------------------------- output
     void WriteSummary(int code, string why)
@@ -252,6 +335,7 @@ public class PostureProof : MonoBehaviour
         sb.AppendLine("posture break occurred: " + brk + "   deathblow occurred: " + db);
         foreach (var kv in results) sb.AppendLine("  step " + kv.Key + ": " + (kv.Value ? "ok" : "not achieved"));
         if (D != null && P != null) { sb.AppendLine("final " + Counters(D)); sb.AppendLine("final " + Counters(P)); }
+        sb.AppendLine("flash frames: Pitborn screen luma before " + Lu("d_flash_before") + " during " + Lu("d_flash_during") + " after " + Lu("d_flash_after") + "; flashes " + HitFlash.FlashCount + " restores " + HitFlash.RestoreCount + " still flashing " + (P != null && HitFlash.IsFlashing(P)));
         sb.AppendLine("screenshots: " + string.Join(", ", keyNames.ToArray()));
         sb.AppendLine("events: " + events.Count);
         try { File.AppendAllText(logPath, "\n=== SUMMARY ===\n" + sb); } catch { }
@@ -259,19 +343,19 @@ public class PostureProof : MonoBehaviour
         Debug.Log("[postureproof] " + sb);
     }
 
-    // 3x2 contact sheet of the key frames (the six wanted ones, else whatever exists)
+    // 3x3 contact sheet of the key frames (the nine wanted ones incl. the three flash frames, else whatever exists)
     void MakeContact()
     {
         if (keyFrames.Count == 0) return;
-        string[] want = { "a_parry_contact", "b_guard_break", "c_fill_after_hit2", "c_break", "c_countdown", "c_deathblow_hit" };
+        string[] want = { "a_parry_contact", "b_guard_break", "c_break", "c_countdown", "d_flash_before", "d_flash_during", "d_flash_after", "c_window_closed", "c_fill_after_hit2" };
         var pick = new List<int>();
         foreach (var w in want) { int i = keyNames.IndexOf(w); if (i >= 0) pick.Add(i); }
-        for (int i = 0; i < keyFrames.Count && pick.Count < 6; i++) if (!pick.Contains(i)) pick.Add(i);
-        int tw = 640, th = 360, cols = 3, rows = 2;
+        for (int i = 0; i < keyFrames.Count && pick.Count < 9; i++) if (!pick.Contains(i)) pick.Add(i);
+        int tw = 640, th = 360, cols = 3, rows = 3;
         var sheet = new Texture2D(tw * cols, th * rows, TextureFormat.RGBA32, false);
         var fill = new Color32[tw * cols * th * rows]; for (int i = 0; i < fill.Length; i++) fill[i] = new Color32(20, 20, 20, 255);
         sheet.SetPixels32(fill);
-        for (int k = 0; k < pick.Count && k < 6; k++)
+        for (int k = 0; k < pick.Count && k < 9; k++)
         {
             var src = keyFrames[pick[k]]; int ox = (k % cols) * tw, oy = (rows - 1 - k / cols) * th;
             var px = new Color[tw * th];

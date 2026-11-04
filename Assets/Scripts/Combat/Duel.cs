@@ -81,9 +81,10 @@ public class Duel : MonoBehaviour
         d.health -= dmg;
         if (db) d.ConsumeDeathblow(a); else d.AddPosture(PostureTable.HitGain(m) * (rear ? a.Rule("rear.posture", 1.5f) : 1f));
         d.SetKnock(away * m.knockback * a.scale * 0.9f);
+        if (db && d.health > 0f && RTFinisher.DeathblowFinishes && RTFinisher.TryBegin(a, d, m, true)) return true;   // V61B: a posture-break deathblow ALWAYS starts a finisher (finishers.json rt.deathblowFinishes), lethal or not; the scene's Die() is the kill
         if (d.health <= 0f)
         {
-            if (RTFinisher.TryBegin(a, d, m)) return true;   // FN1: killing-blow finisher scene (finishers.json enableFinishers, default false); the plain death below is the fallback
+            if (RTFinisher.TryBegin(a, d, m, db)) return true;   // FN1: killing-blow finisher scene (finishers.json enableFinishers, default false); the plain death below is the fallback
             d.Die(); Fire(a, d, "Hit", heavy, false); return true;
         }
         if (PostureTable.Get().enabled) { if (d.TryPostureBreak(a)) { Fire(a, d, "GuardBroken", true, false); return true; } }   // P6: posture break = long stagger + deathblow window (posture.json)

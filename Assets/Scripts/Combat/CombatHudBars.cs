@@ -26,6 +26,8 @@ public static class CombatHudBars
         float after = bar.yMax + 2f;
         var PD = PostureTable.Get(); var PH = PD.hud;
         string cue = null; Color cueCol = Color.white;
+        // V61A: the DEATHBLOW state is drawn only while THIS fighter's window is really open (window counter > 0, still broken, alive); anything else clears the label, countdown and frame at once
+        bool dbOpen = f.DeathblowOpen && f.DeathblowLeft > 0 && f.PostureBroken;
         if (PD.enabled && PH.enabled)
         {
             float pmax = Mathf.Max(1f, f.PostureMax), pf = Mathf.Clamp01(f.posture / pmax);
@@ -34,7 +36,7 @@ public static class CombatHudBars
                 var pr = new Rect(hp.x, bar.yMax + PH.gap, hp.width, PH.height);
                 Fill(pr, PostureTable.Col(PH.bgColor));
                 var inner = new Rect(pr.x + bp, pr.y + bp, pr.width - 2f * bp, pr.height - 2f * bp);
-                if (f.DeathblowOpen)
+                if (dbOpen)
                 {
                     // the window is open: the bar becomes a countdown (full -> empty), pulsing between the break colour and the deathblow colour
                     float k = f.DeathblowLeft / (float)Mathf.Max(1, f.DeathblowTotal);
@@ -48,7 +50,7 @@ public static class CombatHudBars
                     Color pc = pf >= PH.highFrom ? Color.Lerp(PostureTable.Col(PH.color, 1f), PostureTable.Col(PH.highColor, 1f), Mathf.InverseLerp(PH.highFrom, 1f, pf)) : PostureTable.Col(PH.color, 1f);
                     Fill(new Rect(inner.x, inner.y, inner.width * pf, inner.height), pc);
                 }
-                if (f.PostureBreakFlash > 0)
+                if (f.PostureBreakFlash > 0 && f.PostureBroken)   // V61A: the break flash belongs to an active break only
                 {
                     float a = f.PostureBreakFlash / (float)Mathf.Max(1, PD.posBreak.flashTicks);
                     Fill(new Rect(pr.x - 2f, pr.y - 2f, pr.width + 4f, pr.height + 4f), PostureTable.Col(PH.breakColor, 0.85f * a));
@@ -80,7 +82,7 @@ public static class CombatHudBars
             Fill(new Rect(bar.x - 1f, bar.y - 1f, bar.width + 2f, bar.height + 2f), StaminaTable.Col(H.parryColor, 0.7f * a));
             if (cue == null) { cue = H.parryText; cueCol = StaminaTable.Col(H.parryColor, a); }
         }
-        if (cue != null) Text(nameRow, cue, cueCol, f.DeathblowOpen ? Mathf.Max(PH.labelFontSize, H.labelFontSize) : H.labelFontSize);
+        if (cue != null) Text(nameRow, cue, cueCol, dbOpen ? Mathf.Max(PH.labelFontSize, H.labelFontSize) : H.labelFontSize);
     }
 
     static void Text(Rect r, string t, Color c, int size)

@@ -26,7 +26,10 @@ public static class RTFinisher
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     static void ResetStatics() { Busy = false; ForceEnable = false; ForceId = ""; LastRefusal = ""; Killer = Victim = null; Current = null; OnStart = null; OnStage = null; OnEnd = null; }
 
-    public static bool Enabled { get { return ForceEnable || (FinisherConfig.EnableFinishers && (!Cfg.onlyWhenSteer || STSteer.Active)); } }
+    public static bool Enabled { get { return ForceEnable || (FinisherConfig.EnableFinishers && !(Cfg.offInBalanceAuto && BalanceRun) && (!Cfg.onlyWhenSteer || STSteer.Active)); } }
+    static bool balanceChecked, balanceRun;
+    static bool BalanceRun { get { if (!balanceChecked) { balanceChecked = true; { var a = Environment.GetCommandLineArgs(); balanceRun = Array.IndexOf(a, "-balanceauto") >= 0 || Array.IndexOf(a, "-verifyGround") >= 0 || Array.IndexOf(a, "-postureproof") >= 0; } } return balanceRun; } }   // harness runs (balanceauto, verifyGround, postureproof) keep the plain death: the finisher teleports would break verifyGround's fight-Y band
+    public static bool DeathblowFinishes { get { return Enabled && Cfg.deathblowFinishes; } }   // V61B: Duel.Resolve asks before the lethal check
 
     internal static void Stage(string what, string detail) { if (OnStage != null) { try { OnStage(what, detail); } catch (Exception e) { Debug.LogWarning("[finisher] stage handler: " + e.Message); } } }
 
@@ -51,7 +54,9 @@ public static class RTFinisher
     }
 
     // Called by Duel.Resolve at the lethal blow. Never throws.
-    public static bool TryBegin(DuelFighter a, DuelFighter d, MoveDef m)
+    public static bool TryBegin(DuelFighter a, DuelFighter d, MoveDef m) { return TryBegin(a, d, m, false); }
+    // deathblow = a posture-break deathblow (V61B): the scene starts even when the hit did not take the HP to zero; the scene's own Die() is the kill
+    public static bool TryBegin(DuelFighter a, DuelFighter d, MoveDef m, bool deathblow)
     {
         try
         {
@@ -62,7 +67,7 @@ public static class RTFinisher
             var fc = FinisherConfig.Get();
             if (fc.entries == null || fc.entries.Length == 0) { LastRefusal = "no entries in finishers.json"; return false; }
             var mv = MoveOf(m); var loc = LocOf(m);
-            var ctx = new FinisherContext { killer = a, victim = d, killerSide = ks, victimSide = vs, move = mv, loc = loc };
+            var ctx = new FinisherContext { killer = a, victim = d, killerSide = ks, victimSide = vs, move = mv, loc = loc, deathblow = deathblow };
             string force = !string.IsNullOrEmpty(ForceId) ? ForceId : Cfg.forceId;
             FinisherEntry e = !string.IsNullOrEmpty(force) ? FinisherPlayer.ById(force) : FinisherPlayer.Pick(ctx);
             if (e == null) { LastRefusal = !string.IsNullOrEmpty(force) ? "forced id '" + force + "' not found" : "no eligible entry for " + (ks == 0 ? "Dracula" : "Pitborn") + " " + mv + "/" + loc; return false; }
@@ -204,6 +209,7 @@ public sealed class RTFinisherHost
 
     public void TimeTick() { FinisherTime.Tick(); }
     public void SlowMo(float scale, float dur, float easeIn, float easeOut) { FinisherTime.SlowMo(scale, dur, easeIn, easeOut); RTFinisher.Stage("slowmo", scale.ToString("0.00")); }
+    public void SlowCurve(SlowPoint[] pts, float easeOut) { FinisherTime.Curve(pts, easeOut); RTFinisher.Stage("slowmo", "curve"); }   // V62
     public void TimeRestore() { FinisherTime.Restore(); }
 
     public void Notify(string text)

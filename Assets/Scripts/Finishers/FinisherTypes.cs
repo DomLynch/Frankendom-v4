@@ -13,7 +13,7 @@ public enum FinisherLoc { Arm, Leg, Torso, Head }                               
 public struct FinisherContext
 {
     public DuelFighter killer, victim; public int killerSide, victimSide;   // 0 = Dracula, 1 = Pitborn
-    public FinisherMove move; public FinisherLoc loc;
+    public FinisherMove move; public FinisherLoc loc; public bool deathblow;   // deathblow = the blow was a posture-break deathblow (V61B)
 }
 
 public struct FinisherGoreCall { public string type, unit, param; public DuelFighter victim, attacker; public Vector3 point, away; public float strength; }
@@ -43,9 +43,18 @@ public class FinisherShot
     public float fitMargin = 1.15f;     // > 1 = air around the fighters
     public float minDist = 4f, maxDist = 7.5f;
     public float pushIn = 0f, pushSeconds = 0f;   // slow push-in: dist shrinks by pushIn metres over pushSeconds (unscaled) after the cut
+    // V61B: frame the victim's REAL body (SkinnedMeshRenderer bounds), not the root transform that stays where the fighter stood after a death clip
+    public string track = "body";       // "body" (default: live body bounds) | "root" (the old transform-based look)
+    public bool frameBody = false;      // focus "target": dist grows until the body fits the frame (see frameTop / frameMargin)
+    public float frameTop = 0f;         // > 0: only the top N metres of the body must fit (head + chest close-up); 0 = the whole body
+    public float frameMargin = 1.2f, frameMaxDist = 9f;   // air around the body; the distance never grows past max(dist, frameMaxDist)
+    public float lookMin = 0.2f;        // the look-at stays at least this far above the bottom of the framed part (a prone body is looked at, not the floor)
+    public float bodyFollow = 10f;      // smoothing rate (1/s) of the body bounds
 }
 [Serializable] public class FinisherShotKey { public float t = 0f; public string rel = "start"; public string shot = ""; public float blend = -1f; }       // rel: "start" | "contact"
-[Serializable] public class FinisherSlowKey { public float t = 0f; public string rel = "contact"; public float scale = 0.25f, duration = 0.6f, easeIn = 0.05f, easeOut = 0.25f; }   // duration in UNSCALED seconds
+// V62: one point of a per-finisher time-scale curve (t = unscaled seconds after the key fires, scale = Time.timeScale factor; smoothstep between points)
+[Serializable] public class SlowPoint { public float t = 0f; public float scale = 1f; }
+[Serializable] public class FinisherSlowKey { public float t = 0f; public string rel = "contact"; public float scale = 0.25f, duration = 0.6f, easeIn = 0.05f, easeOut = 0.25f; public SlowPoint[] curve = new SlowPoint[0]; }   // duration in UNSCALED seconds. V62: curve non-empty = a time-scale CURVE instead of the single dip (scale/duration/easeIn ignored; easeOut = the tail back to 1 after the last point)
 
 [Serializable] public class FinisherGoreKey { public float t = 0f; public string rel = "contact"; public string type = ""; public string cut = ""; public string bone = ""; public float strength = 1f; public string param = ""; }   // type: head_detach | skull_split | cut | blood_burst | custom
 [Serializable]
@@ -84,6 +93,10 @@ public class FinisherEntry
     public FinisherGoreKey[] gore = new FinisherGoreKey[0];
     public FinisherSlowKey[] slowmo = new FinisherSlowKey[0];
     public float holdAfter = 1.6f;          // seconds (unscaled) the final frame stays before control returns
+    // V62 pair probe (-finisherauto logs where the killer's hand is relative to the victim's body at contact and suggests pairOffset numbers; tune in data, never in code)
+    public float bladeReach = 0.6f;                       // wanted horizontal distance (stand-in metres, x killer scale) from the killer's hand to the victim's probe bone at contact
+    public string probeKillerBone = "RightHand", probeVictimBone = "Spine2";   // bone-name suffixes
+    public ContactFrame[] sheetFrames = new ContactFrame[0];   // non-empty = this entry's own -finisherauto contact-sheet frames (else rt.auto.sheetFrames)
     public string note = "";
 }
 [Serializable] public class SprayCfg { public float seconds = 1.0f, rate = 90f, coneDeg = 16f, gravity = 8f; public float[] speed = { 2.5f, 4.5f }, size = { 0.03f, 0.06f }, life = { 0.5f, 0.9f }; }
@@ -137,6 +150,8 @@ public class FinisherRotation
     public int seed = 20261104;
     public bool noImmediateRepeat = true;
     public string fallbackEntry = "";       // entry id used when nothing matches ("" = the normal death)
+    public string[] enabledIds = new string[0];   // V61B: non-empty = ONLY these entry ids may be picked by the rotation (the other entries stay in the file for ForceId / -finisherauto / ById)
+    public bool perWeapon = true;           // V62: the rotation position is kept per killer weapon (rotation.weapons), persisted in finisher_rotation.json
     public RotWeapons weapons = new RotWeapons();
 }
 
@@ -155,6 +170,19 @@ public class FinisherAutoCfg
     public float shotAfterKill = 0.8f;       // shot 4: seconds after the victim's Die()
     public float aggression = 1.3f, pressure = 1f, parry = 0f, dodge = 0f;   // Dracula's AI profile (the aggressive steer)
     public string shotMode = "auto";         // auto | screen | camera
+    // V61B contact sheets (finisher_contact_<id>.png + finisher_contact_all.png in the out dir): frames at start / contact / kill / end of hold / after the release
+    public int sheetCols = 3, sheetCellW = 640, sheetCombinedW = 960;
+    public float sheetMaxSeconds = 30f;      // unscaled, per finisher incl. the frames after the release
+    public bool pairProbe = true;            // V62: log hand-to-victim-body probe lines at the contact (summary NOTE lines)
+    // V61C: length / luma / clearance checks of -finisherauto (all data)
+    public float maxFinisherSeconds = 7f;       // a finisher that runs longer (paced seconds, capture stalls excluded) FAILS the run; 0 = no limit
+    public float lumaTolerance = 0.15f;      // every finisher frame's mean luma must be within this fraction of the gameplay frames' mean luma; 0 = no check
+    public bool lumaFails = true;            // false = the luma check only warns
+    public int lumaRefFrames = 3;            // gameplay frames (before the scene starts) averaged for the reference
+    public string clearKillerBone = "Head", clearVictimBone = "Spine2";   // clearance probe at the contact (bone-name suffixes; Spine and Spine1 of the victim are checked too)
+    public float clearChestRadiusM = 0.30f;  // estimated chest half thickness of the victim at scale 1 (x victim scale); clearance = bone distance - this
+    public float minClearanceM = 0.10f;      // clearance below this = WARN with a suggested pairOffset
+    public ContactFrame[] sheetFrames = ContactFrame.Defaults();
 }
 
 [Serializable]
@@ -165,10 +193,13 @@ public class FinisherRtCfg
     public bool persistRotation = true;      // finisher_rotation.json in persistentDataPath
     public bool notify = true;               // feed line "Finisher: <id>" in steer mode
     public bool disableMotionBlur = true;    // a global high-priority Volume forces MotionBlur off while a scene runs
+    public bool deathblowFinishes = true;    // V61B: a posture-break deathblow ALWAYS starts a finisher (even when it would not lower HP to zero); the scene then kills
+    public bool offInBalanceAuto = true;     // V61B: -balanceauto runs keep the plain death (no cinematic) unless -finisherauto forces it
     public float maxSeconds = 25f;           // wall-clock watchdog of one scene (unscaled)
     public string forceId = "";              // debug: always play this entry id (empty = rotation)
     public string fallbackShot = "kill";     // shot id when an entry has no shot at t <= 0 (unknown id = built-in orbit)
     public FinisherAutoCfg auto = new FinisherAutoCfg();   // -finisherauto harness data (FinisherAuto.cs)
+    public FinisherLookCfg look = new FinisherLookCfg();   // V61C: finisher camera keeps the gameplay look (FinisherLook.cs)
 }
 
 // ---------------- the file ----------------

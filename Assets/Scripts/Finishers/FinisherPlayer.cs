@@ -10,14 +10,24 @@ public static class FinisherPlayer
 {
     public static event Action<FinisherGoreCall> OnGore;
     public static event Action<string> OnFinisherStart;   // entry id (UI / audio / stats)
+    public static event Action<string> OnPairProbe;       // V62: probe text at the contact (FinisherAuto summary)
+    public static bool ProbeEnabled;
+    public static float ClearHead = float.NaN, ClearHand = float.NaN;   // V61C: clearance (m) at the last contact: killer head / killer hand to the victim chest (negative = inside the body)
 
-    static int lastIndex = -1, kills; static string lastId; static bool rotLoaded;
+    class RotState { public int lastIndex = -1, kills; public string lastId; }   // V62: one rotation position PER WEAPON (persisted by FinisherRotationStore)
+    static readonly Dictionary<string, RotState> rot = new Dictionary<string, RotState>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { lastIndex = -1; kills = 0; lastId = null; rotLoaded = false; OnGore = null; OnFinisherStart = null; }
+    static void ResetStatics() { rot.Clear(); OnGore = null; OnFinisherStart = null; OnPairProbe = null; ProbeEnabled = false; }
 
     // the rotation index survives a restart (Application.persistentDataPath\finisher_rotation.json, FinisherRotationStore); read once on the first pick
-    static void EnsureRotation() { if (rotLoaded) return; rotLoaded = true; FinisherRotationStore.Load(out lastIndex, out kills, out lastId); }
+    static RotState State(string key)
+    {
+        RotState s; if (rot.TryGetValue(key, out s)) return s;
+        s = new RotState(); FinisherRotationStore.Load(key, out s.lastIndex, out s.kills, out s.lastId); rot[key] = s; return s;
+    }
+    /// <summary>What a game restart does to the in-memory rotation (FinisherRotationCheck): memory dropped, the file is read again on the next pick.</summary>
+    internal static void ResetRotationForTest() { rot.Clear(); FinisherRotationStore.DropCache(); }
 
     // ---------------- selection ----------------
     static int Hash(string s) { unchecked { int h = 17; if (s != null) foreach (char c in s) h = h * 31 + c; return h; } }
@@ -32,6 +42,13 @@ public static class FinisherPlayer
 
     static bool In(string[] list, string v) { if (list == null || list.Length == 0) return true; foreach (var s in list) if (string.Equals(s, v, StringComparison.OrdinalIgnoreCase) || s == "*") return true; return false; }
 
+    // V61B: rotation.enabledIds (data) restricts the rotation to those entry ids; empty = every enabled entry (the old behaviour)
+    static bool IdAllowed(FinisherRotation rot, string id)
+    {
+        if (rot == null || rot.enabledIds == null || rot.enabledIds.Length == 0) return true;
+        foreach (var s in rot.enabledIds) if (string.Equals(s, id, StringComparison.OrdinalIgnoreCase)) return true;
+        return false;
+    }
     /// <summary>An entry by id (debug / -finisherauto), filters ignored.</summary>
     public static FinisherEntry ById(string id)
     {
@@ -40,43 +57,60 @@ public static class FinisherPlayer
         return null;
     }
 
-    /// <summary>The entry for this killing blow (rotation + filters), or null = plain death.</summary>
-    public static FinisherEntry Pick(FinisherContext ctx)
+    static string WeaponOf(FinisherRotation cfg, int killerSide) { return killerSide == 0 ? cfg.weapons.Dracula : cfg.weapons.Pitborn; }
+
+    // entries that may be picked for this blow: enabled, in rotation.enabledIds, side / weapon / direction / move / location filters
+    static List<int> EligibleIdx(FinisherFile file, FinisherContext ctx)
     {
-        EnsureRotation();
-        var file = FinisherConfig.Get(); var cfg = file.rotation; var entries = file.entries;
-        if (entries == null || entries.Length == 0) return null;
-        string weapon = ctx.killerSide == 0 ? cfg.weapons.Dracula : cfg.weapons.Pitborn, dir = DirectionOf(ctx.killer, ctx.victim);
-        string side = ctx.killerSide == 0 ? "Dracula" : "Pitborn";
-        var ok = new List<int>();
+        var cfg = file.rotation; var entries = file.entries; var ok = new List<int>(); if (entries == null) return ok;
+        string weapon = WeaponOf(cfg, ctx.killerSide), dir = DirectionOf(ctx.killer, ctx.victim), side = ctx.killerSide == 0 ? "Dracula" : "Pitborn";
         for (int i = 0; i < entries.Length; i++)
         {
-            var e = entries[i]; if (e == null || !e.enabled) continue;
+            var e = entries[i]; if (e == null || !e.enabled || !IdAllowed(cfg, e.id)) continue;
             if (e.attackerSide != "any" && !string.Equals(e.attackerSide, side, StringComparison.OrdinalIgnoreCase)) continue;
             if (!In(e.weapons, weapon) || !In(e.directions, dir) || !In(e.moves, ctx.move.ToString()) || !In(e.locations, ctx.loc.ToString())) continue;
             ok.Add(i);
         }
+        return ok;
+    }
+    internal static List<string> EligibleIds(FinisherContext ctx)
+    {
+        var file = FinisherConfig.Get(); var r = new List<string>(); foreach (int i in EligibleIdx(file, ctx)) r.Add(file.entries[i].id); return r;
+    }
+
+    /// <summary>The entry for this killing blow (rotation + filters), or null = plain death.
+    /// V62: the rotation position is per weapon (rotation.perWeapon), found again through the last id (robust against an edited entry list), never the same id twice in a row while more than one is eligible, persisted.</summary>
+    public static FinisherEntry Pick(FinisherContext ctx)
+    {
+        var file = FinisherConfig.Get(); var cfg = file.rotation; var entries = file.entries;
+        if (entries == null || entries.Length == 0) return null;
+        string weapon = WeaponOf(cfg, ctx.killerSide);
+        var ok = EligibleIdx(file, ctx);
         if (ok.Count == 0)
         {
             if (!string.IsNullOrEmpty(cfg.fallbackEntry)) foreach (var e in entries) if (e != null && e.id == cfg.fallbackEntry) return e;
             return null;
         }
+        string key = cfg.perWeapon ? weapon : "*"; var st = State(key);
+        int lastIdx = st.lastIndex;
+        if (!string.IsNullOrEmpty(st.lastId)) for (int i = 0; i < entries.Length; i++) if (entries[i] != null && entries[i].id == st.lastId) { lastIdx = i; break; }
         int pickIdx;
         if (cfg.mode == "random")
         {
-            var rng = new System.Random(cfg.seed ^ Hash(weapon) ^ (Hash(dir) * 7) ^ (kills * 7919));
+            var rng = new System.Random(cfg.seed ^ Hash(weapon) ^ (Hash(DirectionOf(ctx.killer, ctx.victim)) * 7) ^ (st.kills * 7919));
             var pool = new List<int>(ok);
-            if (cfg.noImmediateRepeat && pool.Count > 1) pool.RemoveAll(i => entries[i].id == lastId);
+            if (cfg.noImmediateRepeat && pool.Count > 1) pool.RemoveAll(i => entries[i].id == st.lastId);
             float sum = 0f; foreach (int i in pool) sum += Mathf.Max(0f, entries[i].weight);
             double r = rng.NextDouble() * Math.Max(sum, 1e-6f); pickIdx = pool[pool.Count - 1];
             foreach (int i in pool) { r -= Mathf.Max(0f, entries[i].weight); if (r < 0) { pickIdx = i; break; } }
         }
         else
         {
-            pickIdx = ok[0]; foreach (int i in ok) if (i > lastIndex) { pickIdx = i; break; }   // next eligible entry after the last one, wrapping
+            pickIdx = ok[0]; foreach (int i in ok) if (i > lastIdx) { pickIdx = i; break; }   // next eligible entry after the last one, wrapping
+            if (cfg.noImmediateRepeat && ok.Count > 1 && entries[pickIdx].id == st.lastId) pickIdx = ok[(ok.IndexOf(pickIdx) + 1) % ok.Count];
         }
-        lastIndex = pickIdx; lastId = entries[pickIdx].id; kills++;
-        FinisherRotationStore.Save(lastIndex, kills, lastId);
+        st.lastIndex = pickIdx; st.lastId = entries[pickIdx].id; st.kills++;
+        FinisherRotationStore.Save(key, st.lastIndex, st.kills, st.lastId);
         return entries[pickIdx];
     }
 
@@ -187,6 +221,7 @@ public static class FinisherPlayer
                 {
                     contactSeen = true; contactT = T;
                     host.FireEvent(A, V, "Hit", true, loc, A.CurrentMove);
+                    if (ProbeEnabled) { Probe(e, A, V, axis, rightV, ks); Clearance(e, A, V, ks); }
                     if (rig) host.CameraShake(0.03f);
                     if (!vClip && e.dieAt <= -1.5f && !dead) { V.Die(); dead = true; }
                 }
@@ -217,7 +252,7 @@ public static class FinisherPlayer
             {
                 if (slowDone[i]) continue; var k = slows[i];
                 float at = k.rel == "contact" ? (contactSeen ? contactT : planned) + k.t : k.t;
-                if (T >= at) { slowDone[i] = true; host.SlowMo(k.scale, k.duration, k.easeIn, k.easeOut); }
+                if (T >= at) { slowDone[i] = true; if (k.curve != null && k.curve.Length > 0) host.SlowCurve(k.curve, k.easeOut); else host.SlowMo(k.scale, k.duration, k.easeIn, k.easeOut); }   // V62: curve = per-finisher time-scale curve (data)
             }
             for (int i = 0; i < gores.Count; i++)
             {
@@ -239,6 +274,59 @@ public static class FinisherPlayer
         if (rig) host.CameraDone();
     }
 
+    // ---------------- pair probe (V62) ----------------
+    static Transform FindBone(Transform root, string suffix)
+    {
+        if (root == null || string.IsNullOrEmpty(suffix)) return null;
+        foreach (var t in root.GetComponentsInChildren<Transform>()) if (t.name.EndsWith(suffix, StringComparison.OrdinalIgnoreCase)) return t;
+        return null;
+    }
+    // At the contact: where is the victim's probe bone relative to the killer's hand, in the pair frame (right / up / along the lane)? The suggestion moves the victim so the bone ends bladeReach ahead of the
+    // hand and on its line. Numbers are in stand-in metres (divided by the killer scale), ready to paste into finishers.json pairOffset.
+    static void Probe(FinisherEntry e, DuelFighter A, DuelFighter V, Vector3 axis, Vector3 rightV, float ks)
+    {
+        try
+        {
+            if (OnPairProbe == null) return;
+            var hb = FindBone(A.transform, e.probeKillerBone); var vb = FindBone(V.transform, e.probeVictimBone);
+            if (hb == null || vb == null) { OnPairProbe("probe " + e.id + ": bone not found (" + e.probeKillerBone + " " + (hb != null) + ", " + e.probeVictimBone + " " + (vb != null) + ")"); return; }
+            Vector3 d = vb.position - hb.position; float mx = Vector3.Dot(d, rightV), mz = Vector3.Dot(d, axis), my = d.y;
+            float cx = e.pairOffset != null && e.pairOffset.Length >= 3 ? e.pairOffset[0] : 0f, cz = e.pairOffset != null && e.pairOffset.Length >= 3 ? e.pairOffset[2] : e.distance;
+            float nx = cx + (-mx) / ks, nz = cz + (e.bladeReach * ks - mz) / ks;
+            string f = "0.00";
+            OnPairProbe("probe " + e.id + ": " + e.probeKillerBone + " -> victim " + e.probeVictimBone + " = right " + mx.ToString(f) + " up " + my.ToString(f) + " along " + mz.ToString(f) + " m (want along " + (e.bladeReach * ks).ToString(f)
+                + "); pairOffset now [" + cx.ToString("0.000") + ", 0, " + cz.ToString("0.000") + "] suggest [" + nx.ToString("0.000") + ", 0, " + nz.ToString("0.000") + "]");
+        }
+        catch (Exception ex) { Debug.LogWarning("[finisher] probe: " + ex.Message); }
+    }
+
+    // ---------------- clearance probe (V61C) ----------------
+    // At the contact: distance from the killer's head and hand to the victim's chest bones (Spine / Spine1 / clearVictimBone) minus the estimated chest radius (clearChestRadiusM x victim scale).
+    // Negative = the killer's head or hand is inside the victim's body. Below minClearanceM the line suggests a pairOffset forward value (stand-in metres, killer scale divided out).
+    static void Clearance(FinisherEntry e, DuelFighter A, DuelFighter V, float ks)
+    {
+        try
+        {
+            ClearHead = ClearHand = float.NaN;
+            var cfg = FinisherConfig.Get().rt.auto;
+            var head = FindBone(A.transform, cfg.clearKillerBone); var hand = FindBone(A.transform, string.IsNullOrEmpty(e.probeKillerBone) ? "RightHand" : e.probeKillerBone);
+            float rad = cfg.clearChestRadiusM * Mathf.Max(0.5f, V.scale), bh = float.MaxValue, bw = float.MaxValue; string nameH = "?", nameW = "?";
+            foreach (var sfx in new[] { "Spine", "Spine1", cfg.clearVictimBone })
+            {
+                var vb = FindBone(V.transform, sfx); if (vb == null) continue;
+                if (head != null) { float d = Vector3.Distance(head.position, vb.position) - rad; if (d < bh) { bh = d; nameH = sfx; } }
+                if (hand != null) { float d = Vector3.Distance(hand.position, vb.position) - rad; if (d < bw) { bw = d; nameW = sfx; } }
+            }
+            if (bh == float.MaxValue && bw == float.MaxValue) { if (OnPairProbe != null) OnPairProbe("clearance " + e.id + ": bones not found (" + cfg.clearKillerBone + " " + (head != null) + ", victim chest " + cfg.clearVictimBone + ")"); return; }
+            if (bh != float.MaxValue) ClearHead = bh; if (bw != float.MaxValue) ClearHand = bw;
+            float worst = Mathf.Min(bh, bw), cz = e.pairOffset != null && e.pairOffset.Length >= 3 ? e.pairOffset[2] : e.distance;
+            string sug = worst < cfg.minClearanceM ? "; pairOffset forward now " + cz.ToString("0.000") + " suggest " + (cz + (cfg.minClearanceM - worst) / ks).ToString("0.000") : "; ok";
+            if (OnPairProbe != null)
+                OnPairProbe("clearance " + e.id + ": head -> victim " + nameH + " " + (bh == float.MaxValue ? "-" : bh.ToString("0.00")) + " m, hand -> victim " + nameW + " " + (bw == float.MaxValue ? "-" : bw.ToString("0.00"))
+                    + " m (chest radius est " + rad.ToString("0.00") + " m = " + cfg.clearChestRadiusM.ToString("0.00") + " x scale " + V.scale.ToString("0.00") + "; negative = inside the body; want >= " + cfg.minClearanceM.ToString("0.00") + ")" + sug);
+        }
+        catch (Exception ex) { Debug.LogWarning("[finisher] clearance: " + ex.Message); }
+    }
     // ---------------- gore ----------------
     static void Gore(FinisherGoreKey k, DuelFighter victim, DuelFighter attacker, FinisherLoc loc)
     {

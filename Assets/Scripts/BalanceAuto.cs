@@ -380,7 +380,7 @@ public class BalanceAuto : MonoBehaviour
     {
         try
         {
-            var tex = ScreenCapture.CaptureScreenshotAsTexture();
+            CaptureUtil.HideConsole(); var tex = ScreenCapture.CaptureScreenshotAsTexture();
             if (tex != null)
             {
                 File.WriteAllBytes(path, tex.EncodeToPNG());

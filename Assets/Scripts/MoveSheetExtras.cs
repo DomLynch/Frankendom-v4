@@ -228,7 +228,7 @@ public class HeadSheet : MonoBehaviour
             string fn = row.id + "_" + e.name + (row.captureTicks.Length > 1 ? "_t" + k : "") + ".png"; File.WriteAllBytes(Path.Combine(outDir, fn), tex.EncodeToPNG());
             Destroy(tex); sm.Release(); Destroy(sm); doneCaps++; log.Add("# wrote " + fn + " cam pos " + e.cam.transform.position.ToString("F2"));
         }
-        if (k == 0 && row.liveShot) { string fn = row.id + "_live.png"; ScreenCapture.CaptureScreenshot(Path.Combine(outDir, fn)); doneCaps++; log.Add("# wrote " + fn + " (live game camera)"); DumpParticles(); yield return null; yield return null; }
+        if (k == 0 && row.liveShot) { string fn = row.id + "_live.png"; CaptureUtil.HideConsole(); ScreenCapture.CaptureScreenshot(Path.Combine(outDir, fn)); doneCaps++; log.Add("# wrote " + fn + " (live game camera)"); DumpParticles(); yield return null; yield return null; }
         if (doneCaps >= wantCaps) Finish();
     }
 

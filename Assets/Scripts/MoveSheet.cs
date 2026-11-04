@@ -64,7 +64,7 @@ public class MoveSheet : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
-        string mv = Arg("-sheet:");
+        string mv = Arg("-sheet:"); if (!string.IsNullOrEmpty(mv)) CaptureUtil.HideConsole();
         if (string.IsNullOrEmpty(mv)) return;
         Application.runInBackground = true;
         if (FindFirstObjectByType<MoveSheet>() != null) return;

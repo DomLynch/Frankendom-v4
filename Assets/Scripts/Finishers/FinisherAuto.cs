@@ -44,6 +44,10 @@ public class FinisherAuto : MonoBehaviour
         public bool started, ended, endOk, forced, contact, victimDead, timeOk, frozenClear, camOk, done, pass;
         public float tStart, tEnd, tContact = -1f, tKill = -1f, duration, fightSeconds;
         public int shots, slowmo, gore, exceptions;
+        public float paced, pacedKill = -1f, refLuma = -1f, clearHead = float.NaN, clearHand = float.NaN; public int stalls; public bool lumaOk = true;   // V61C
+        public readonly List<float> lumas = new List<float>(); public readonly List<string> lumaLabels = new List<string>();
+        public bool sampDone; public string sheetFile = ""; public Texture2D sheetSmall;   // V61B contact sheet
+        public readonly List<Texture2D> thumbs = new List<Texture2D>(); public readonly List<string> thumbLabels = new List<string>();
         public readonly List<string> cuts = new List<string>(), notes = new List<string>(), files = new List<string>(), warns = new List<string>(), errors = new List<string>();
     }
 
@@ -59,6 +63,8 @@ public class FinisherAuto : MonoBehaviour
     readonly StringBuilder pending = new StringBuilder();
     int totalExceptions, foreignExceptions; readonly List<string> exceptionList = new List<string>();
     float fpsMin = 9999f, fpsSum; int fpsN; bool shotFrame; string timedOutWhy;
+    bool rotOk = true; string rotReport = "";   // V62: FinisherRotationCheck result (every run; -finisherrotonly = only this, no scene)
+    void OnPairProbe(string s) { if (cur != null) cur.notes.Add(s); Log(s); }
 
     // ------------------------------------------------------------------ lifecycle
     void Awake()
@@ -77,6 +83,7 @@ public class FinisherAuto : MonoBehaviour
             C = RTFinisher.Cfg.auto ?? new FinisherAutoCfg();
             string lst = Arg("-finisherlist:"); if (!string.IsNullOrEmpty(lst)) only = lst.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
             RTFinisher.ForceEnable = true; FinisherRotationStore.Suspended = true;
+            FinisherPlayer.ProbeEnabled = C.pairProbe; FinisherPlayer.OnPairProbe += OnPairProbe;   // V62
             Application.logMessageReceived += OnUnityLog;
             RTFinisher.OnStart += OnStart; RTFinisher.OnStage += OnStage; RTFinisher.OnEnd += OnEnd;
             FinisherPlayer.OnGore += OnGore;
@@ -93,6 +100,7 @@ public class FinisherAuto : MonoBehaviour
         Application.logMessageReceived -= OnUnityLog;
         RTFinisher.OnStart -= OnStart; RTFinisher.OnStage -= OnStage; RTFinisher.OnEnd -= OnEnd;
         FinisherPlayer.OnGore -= OnGore; ContactRelay.OnKilled -= OnKilled;
+        FinisherPlayer.OnPairProbe -= OnPairProbe; FinisherPlayer.ProbeEnabled = false;   // V62
     }
 
     // ------------------------------------------------------------------ logging / exit
@@ -155,6 +163,8 @@ public class FinisherAuto : MonoBehaviour
             return;
         }
         float dt = Time.unscaledDeltaTime;
+        CaptureUtil.HideConsole();   // V61C: no red console lines in any captured frame
+        if (cur != null && cur.started && !cur.ended) { if (dt > 0.25f) { cur.stalls++; cur.paced += 1f / 60f; } else cur.paced += dt; }   // V61C: scene length without capture stalls / hitches
         if (shotFrame) shotFrame = false;
         else if (dt > 0f && Time.frameCount > 10) { float fps = 1f / dt; if (fps < fpsMin) fpsMin = fps; fpsSum += fps; fpsN++; }
         if (timeout > 0f && Time.realtimeSinceStartup - t0 > timeout && timedOutWhy == null)
@@ -169,7 +179,7 @@ public class FinisherAuto : MonoBehaviour
     void OnStart(FinisherEntry e, DuelFighter k, DuelFighter v)
     {
         if (cur == null) return;
-        cur.started = true; cur.tStart = Time.unscaledTime; cur.killerName = k.name; cur.victimName = v.name;
+        cur.started = true; cur.tStart = Time.unscaledTime; FinisherPlayer.ClearHead = FinisherPlayer.ClearHand = float.NaN; cur.killerName = k.name; cur.victimName = v.name;
         Log("  scene start id=" + e.id + " killer=" + k.name + " victim=" + v.name + (cur.forced ? " (forced blow)" : " (natural blow)"));
     }
     void OnStage(string what, string detail)
@@ -187,7 +197,7 @@ public class FinisherAuto : MonoBehaviour
         Log("  scene end ok=" + ok + " " + msg + " duration=" + cur.duration.ToString("0.00", IC) + "s");
     }
     void OnGore(FinisherGoreCall g) { if (cur != null && cur.started) { cur.gore++; Log("  gore " + g.type + " unit=" + g.unit); } }
-    void OnKilled(DuelFighter f, MoveDef m) { if (cur != null && cur.started && cur.tKill < 0f && f == V) { cur.tKill = Time.unscaledTime; Log("  victim Die() at +" + (cur.tKill - cur.tStart).ToString("0.00", IC) + "s"); } }
+    void OnKilled(DuelFighter f, MoveDef m) { if (cur != null && cur.started && cur.tKill < 0f && f == V) { cur.tKill = Time.unscaledTime; cur.pacedKill = cur.paced; Log("  victim Die() at +" + (cur.tKill - cur.tStart).ToString("0.00", IC) + "s"); } }
 
     // ------------------------------------------------------------------ main
     IEnumerator Main()
@@ -207,6 +217,9 @@ public class FinisherAuto : MonoBehaviour
         timeout = C.bootWaitSeconds + Mathf.Max(1, list.Count) * C.perFinisherSeconds;
         float tv; var ts = Arg("-finishertimeout:"); if (ts != null && float.TryParse(ts, System.Globalization.NumberStyles.Float, IC, out tv) && tv > 0f) timeout = tv;
         Log("entries: " + list.Count + " [" + string.Join(", ", list.ConvertAll(x => x.id).ToArray()) + "] timeout " + timeout.ToString("0") + " s rotationFile " + (FinisherRotationStore.FilePath ?? "?") + " (suspended: not written)");
+        try { rotOk = FinisherRotationCheck.Run(out rotReport); } catch (Exception ex) { rotOk = false; rotReport = "rotation check threw " + ex + "\n"; }   // V62
+        foreach (var ln in rotReport.Split('\n')) if (ln.Trim().Length > 0) Log("rot| " + ln.TrimEnd());
+        if (Flag("-finisherrotonly")) { Exit(rotOk ? 0 : 2, rotOk ? "rotation check passed" : "rotation check failed"); yield break; }
         if (list.Count == 0) { Fail("no finisher entries (duel_rules.json finishers.entries empty / all disabled / -finisherlist matches nothing)"); yield break; }
 
         for (int i = 0; i < list.Count && !exiting; i++)
@@ -222,7 +235,7 @@ public class FinisherAuto : MonoBehaviour
             if (exiting) yield break;
             float until = Time.realtimeSinceStartup + C.betweenSeconds; while (Time.realtimeSinceStartup < until) yield return null;
         }
-        if (!exiting) { bool allPass = recs.Count == list.Count && recs.TrueForAll(r => r.pass) && totalExceptions == 0; Exit(allPass ? 0 : 2, allPass ? "all finishers passed" : "finisher failures or exceptions"); }
+        if (!exiting) { bool allPass = recs.Count == list.Count && recs.TrueForAll(r => r.pass) && totalExceptions == 0 && rotOk; Exit(allPass ? 0 : 2, allPass ? "all finishers passed" : "finisher failures or exceptions"); }
     }
 
     bool FindFighters()
@@ -255,6 +268,7 @@ public class FinisherAuto : MonoBehaviour
         else { dBrain.enabled = false; D.moveDir = Vector3.zero; D.guardHeld = false; }    // Dracula is the victim: he stands still, the Pitborn AI does the killing
         SetVictimHp(1f);
 
+        StartCoroutine(GameplayLuma(cur));   // V61C: reference luma of the gameplay camera before the scene
         // fight until the real hook starts the scene
         float fightStart = Time.realtimeSinceStartup, forcedAt = -1f;
         while (!cur.started && !exiting)
@@ -270,7 +284,7 @@ public class FinisherAuto : MonoBehaviour
         if (cur.started)
         {
             // shots while the scene runs
-            int taken = 0, want = Mathf.Max(1, C.shotsPerFinisher); float sceneT0 = Time.unscaledTime;
+            int taken = 0, want = Mathf.Max(1, C.shotsPerFinisher); float sceneT0 = Time.unscaledTime; StartCoroutine(Sampler(cur, entry));
             string[] labels = { "start", "contact", "afterhit", "end" };
             while (RTFinisher.Busy && !exiting && Time.unscaledTime - sceneT0 < C.sceneMaxSeconds)
             {
@@ -280,6 +294,7 @@ public class FinisherAuto : MonoBehaviour
             }
             if (RTFinisher.Busy && !exiting) { cur.errors.Add("scene watchdog " + C.sceneMaxSeconds + " s (still Busy)"); cur.cause = "scene hang"; }
             while (taken < want && !exiting) { yield return Shot(taken, labels[Mathf.Min(taken, labels.Length - 1)] + "_late"); taken++; }   // scene shorter than the schedule: fill up so there are always N shots
+            { float sw = Time.unscaledTime; while (!cur.sampDone && !exiting && Time.unscaledTime - sw < C.sheetMaxSeconds) yield return null; ComposeSheet(cur); }   // V61B: contact sheet frames incl. the fight-end camera after the release
             // settle one frame, then verify the restored state
             yield return null; yield return null;
         }
@@ -368,6 +383,22 @@ public class FinisherAuto : MonoBehaviour
                 if (!r.contact) r.warns.Add("no contact event seen");
                 if (r.tKill < 0f) r.errors.Add("victim Die() never ran");
             }
+            if (r.started)   // V61C: length, luma and clearance checks
+            {
+                float lim = C.maxFinisherSeconds;
+                if (lim > 0f && r.paced > lim) r.errors.Add("too long: " + r.paced.ToString("0.0", IC) + " s paced (limit " + lim.ToString("0.0", IC) + " s), Die() at +" + (r.pacedKill >= 0f ? r.pacedKill.ToString("0.0", IC) : "?") + " s");
+                if (r.refLuma > 0f && C.lumaTolerance > 0f)
+                {
+                    var bad = new List<string>();
+                    for (int i = 0; i < r.lumas.Count; i++) { if (r.lumaLabels[i].StartsWith("~")) continue; float dev = r.lumas[i] / r.refLuma - 1f; if (Mathf.Abs(dev) > C.lumaTolerance) bad.Add(r.lumaLabels[i] + " " + (dev * 100f).ToString("+0;-0", IC) + "%"); }
+                    r.lumaOk = bad.Count == 0;
+                    if (!r.lumaOk) { string m = "luma differs from gameplay (" + r.refLuma.ToString("0.000", IC) + ", tolerance " + (C.lumaTolerance * 100f).ToString("0", IC) + "%): " + string.Join(", ", bad.ToArray()); if (C.lumaFails) r.errors.Add(m); else r.warns.Add(m); }
+                }
+                else r.warns.Add("no gameplay luma reference: luma not judged");
+                r.clearHead = FinisherPlayer.ClearHead; r.clearHand = FinisherPlayer.ClearHand;
+                float worstC = Mathf.Min(float.IsNaN(r.clearHead) ? 99f : r.clearHead, float.IsNaN(r.clearHand) ? 99f : r.clearHand);
+                if (worstC < C.minClearanceM) r.warns.Add("clearance " + worstC.ToString("0.00", IC) + " m at the contact (want >= " + C.minClearanceM.ToString("0.00", IC) + "): bodies / weapon too close, see the NOTE clearance line");
+            }
             r.pass = r.started && r.errors.Count == 0 && r.exceptions == 0;
         }
         catch (Exception ex) { r.errors.Add("verdict: " + ex.Message); r.pass = false; }
@@ -389,6 +420,7 @@ public class FinisherAuto : MonoBehaviour
 
     string SaveShot(string path)
     {
+        CaptureUtil.HideConsole();
         string mode = (C.shotMode ?? "auto").ToLowerInvariant();
         if (mode != "camera")
         {
@@ -422,16 +454,150 @@ public class FinisherAuto : MonoBehaviour
         return lum / Mathf.Max(1, n) < 0.003f;
     }
 
+    // ------------------------------------------------------------------ V61C luma check (finisher frames vs gameplay frames)
+    IEnumerator GameplayLuma(Rec r)
+    {
+        float sum = 0f; int n = 0, want = Mathf.Max(1, C.lumaRefFrames); float next = Time.realtimeSinceStartup + 1.5f;
+        while (!exiting && !r.started && n < want)
+        {
+            if (Time.realtimeSinceStartup >= next)
+            {
+                CaptureUtil.HideConsole();
+                yield return new WaitForEndOfFrame();
+                if (r.started || exiting) break;
+                try { var tex = ScreenCapture.CaptureScreenshotAsTexture(); if (tex != null) { sum += FinisherLook.MeanLuma(tex); n++; Destroy(tex); } } catch (Exception ex) { r.warns.Add("luma ref: " + ex.Message); }
+                shotFrame = true; next = Time.realtimeSinceStartup + 1.0f;
+            }
+            yield return null;
+        }
+        if (n > 0) { r.refLuma = sum / n; Log("  luma reference (gameplay camera, " + n + " frames) = " + r.refLuma.ToString("0.000", IC)); }
+        else Log("  luma reference: none (the scene started before the first gameplay frame)");
+    }
+
+    void AddLuma(Rec r, Texture2D tex, ContactFrame k)
+    {
+        try
+        {
+            float l = FinisherLook.MeanLuma(tex); string lab = string.IsNullOrEmpty(k.label) ? (k.rel ?? "") : k.label; bool rel = string.Equals(k.rel, "release", StringComparison.OrdinalIgnoreCase);
+            r.lumas.Add(l); r.lumaLabels.Add((rel ? "~" : "") + lab);   // "~" = after the release (the gameplay camera again): reported, not judged
+        }
+        catch (Exception ex) { r.warns.Add("luma: " + ex.Message); }
+    }
+
+    string LumaLine(Rec r)
+    {
+        var sb = new StringBuilder("gameplay ref " + (r.refLuma > 0f ? r.refLuma.ToString("0.000", IC) : "none"));
+        for (int i = 0; i < r.lumas.Count; i++)
+            sb.Append(" | " + r.lumaLabels[i] + " " + r.lumas[i].ToString("0.000", IC) + (r.refLuma > 0f ? " (" + (r.lumas[i] / r.refLuma - 1f).ToString("+0%;-0%", IC) + ")" : ""));
+        return sb.ToString();
+    }
+
+    // ------------------------------------------------------------------ V61B contact sheets
+    // Per finisher a sheet of auto.sheetFrames frames (default 9 = 3 columns x 3 rows: start, contact, afterhit ..., kill, end of hold, then the fight-end camera after the release),
+    // finisher_contact_<id>.png in the out dir; one combined sheet finisher_contact_all.png (all finishers stacked). Frames come from ScreenCapture.CaptureScreenshotAsTexture.
+    IEnumerator Sampler(Rec r, FinisherEntry e)
+    {
+        var fr = e != null && e.sheetFrames != null && e.sheetFrames.Length > 0 ? e.sheetFrames : C.sheetFrames;   // V62: per-entry frames in data
+        if (fr == null || fr.Length == 0) { r.sampDone = true; yield break; }
+        float hardStop = Time.unscaledTime + Mathf.Max(5f, C.sheetMaxSeconds); int lastFrame = -1;
+        int cw = Mathf.Max(64, C.sheetCellW), ch = Mathf.Max(36, Mathf.RoundToInt(cw * (float)Mathf.Max(1, Screen.height) / Mathf.Max(1, Screen.width)));
+        for (int i = 0; i < fr.Length && !exiting; i++)
+        {
+            var k = fr[i];
+            while (!exiting && Time.unscaledTime < hardStop && !FrameDue(r, e, k)) yield return null;
+            if (exiting || Time.unscaledTime >= hardStop) break;
+            CaptureUtil.HideConsole();
+            if (Time.frameCount == lastFrame) yield return null;
+            yield return new WaitForEndOfFrame();
+            lastFrame = Time.frameCount;
+            try
+            {
+                var tex = ScreenCapture.CaptureScreenshotAsTexture();
+                if (tex != null) { AddLuma(r, tex, k); r.thumbs.Add(ScaleTex(tex, cw, ch)); r.thumbLabels.Add(string.IsNullOrEmpty(k.label) ? k.rel + (k.t >= 0f ? "+" : "") + k.t.ToString("0.##", IC) : k.label); Destroy(tex); }
+            }
+            catch (Exception ex) { r.warns.Add("sheet frame " + i + ": " + ex.Message); }
+            shotFrame = true;
+        }
+        r.sampDone = true;
+    }
+
+    bool FrameDue(Rec r, FinisherEntry e, ContactFrame k)
+    {
+        float now = Time.unscaledTime; string rel = (k.rel ?? "start").ToLowerInvariant();
+        if (rel == "release") return r.ended && now >= r.tEnd + k.t;                       // after RTFinisher.End: the fight-end camera (CameraDeath)
+        if (r.ended) return true;                                                         // the scene is over: take what is left now
+        if (rel == "contact") return r.contact ? now >= r.tContact + k.t : now >= r.tStart + 1f + k.t;
+        if (rel == "kill") return r.tKill >= 0f && now >= r.tKill + k.t;
+        if (rel == "hold") return r.tKill >= 0f && now >= r.tKill + Mathf.Max(0f, e.holdAfter) * k.t;   // t = fraction of the entry's holdAfter after Die()
+        return now >= r.tStart + k.t;                                                     // "start"
+    }
+
+    static Texture2D ScaleTex(Texture2D src, int w, int h)
+    {
+        var rt = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGB32); var prev = RenderTexture.active;
+        try
+        {
+            Graphics.Blit(src, rt); RenderTexture.active = rt;
+            var o = new Texture2D(w, h, TextureFormat.RGB24, false); o.ReadPixels(new Rect(0, 0, w, h), 0, 0, false); o.Apply(false);
+            return o;
+        }
+        finally { RenderTexture.active = prev; RenderTexture.ReleaseTemporary(rt); }
+    }
+
+    void ComposeSheet(Rec r)
+    {
+        try
+        {
+            if (r.thumbs.Count == 0) return;
+            int cols = Mathf.Max(1, C.sheetCols), rows = (r.thumbs.Count + cols - 1) / cols, cw = r.thumbs[0].width, ch = r.thumbs[0].height;
+            var sheet = new Texture2D(cols * cw, rows * ch, TextureFormat.RGB24, false);
+            var blank = new Color32[cols * cw * rows * ch]; sheet.SetPixels32(blank);
+            for (int i = 0; i < r.thumbs.Count; i++)
+            {
+                int c = i % cols, rw = i / cols;   // row 0 = top of the sheet
+                sheet.SetPixels32(c * cw, (rows - 1 - rw) * ch, cw, ch, r.thumbs[i].GetPixels32());
+            }
+            sheet.Apply(false);
+            r.sheetFile = "finisher_contact_" + r.id + ".png";
+            File.WriteAllBytes(Path.Combine(dir, r.sheetFile), sheet.EncodeToPNG());
+            int cwAll = Mathf.Max(64, C.sheetCombinedW);
+            r.sheetSmall = ScaleTex(sheet, cwAll, Mathf.Max(8, Mathf.RoundToInt(cwAll * (float)sheet.height / sheet.width)));
+            Destroy(sheet);
+            Log("  SHEET " + r.sheetFile + " " + r.thumbs.Count + " frames [" + string.Join(", ", r.thumbLabels.ToArray()) + "]");
+            foreach (var t in r.thumbs) Destroy(t);
+            r.thumbs.Clear();
+        }
+        catch (Exception ex) { r.warns.Add("sheet: " + ex.Message); Log("  SHEET failed: " + ex.Message); }
+    }
+
+    string combinedFile = "";
+    void WriteCombinedSheet()
+    {
+        var list = recs.FindAll(x => x.sheetSmall != null);
+        if (list.Count == 0) return;
+        int w = list[0].sheetSmall.width, total = 0; foreach (var x in list) total += x.sheetSmall.height;
+        var all = new Texture2D(w, total, TextureFormat.RGB24, false); all.SetPixels32(new Color32[w * total]);
+        int y = total;
+        foreach (var x in list) { y -= x.sheetSmall.height; all.SetPixels32(0, y, w, x.sheetSmall.height, x.sheetSmall.GetPixels32()); }
+        all.Apply(false);
+        combinedFile = "finisher_contact_all.png";
+        File.WriteAllBytes(Path.Combine(dir, combinedFile), all.EncodeToPNG());
+        Log("combined sheet " + combinedFile + " " + w + "x" + total + " (" + list.Count + " finishers, top to bottom: " + string.Join(", ", list.ConvertAll(x => x.id).ToArray()) + ")");
+    }
+
     // ------------------------------------------------------------------ summary
     void WriteSummary(int code, string why)
     {
-        bool allPass = code == 0 && recs.Count > 0 && recs.TrueForAll(r => r.pass) && totalExceptions == 0;
+        bool allPass = code == 0 && (recs.Count > 0 || Flag("-finisherrotonly")) && recs.TrueForAll(r => r.pass) && totalExceptions == 0 && rotOk;
+        try { WriteCombinedSheet(); } catch (Exception ex) { Log("combined sheet failed: " + ex.Message); }   // V61B
         var sb = new StringBuilder();
         sb.AppendLine("finisher_auto_summary  " + DateTime.Now.ToString("s") + "  unity " + Application.unityVersion + "  " + Screen.width + "x" + Screen.height);
         sb.AppendLine("VERDICT: " + (allPass ? "PASS" : "FAIL") + "   (exit code " + code + ", " + why + ")");
         sb.AppendLine("finishers: " + recs.Count + "  passed: " + recs.FindAll(r => r.pass).Count + "  exceptions: " + totalExceptions + (foreignExceptions > 0 ? " (outside a finisher: " + foreignExceptions + ")" : ""));
         sb.AppendLine("fps: avg " + (fpsN > 0 ? (fpsSum / fpsN).ToString("0.0", IC) : "?") + "  worst " + (fpsN > 0 ? fpsMin.ToString("0.0", IC) : "?") + "  (screenshot frames excluded)");
         sb.AppendLine("rotation file untouched: " + (FinisherRotationStore.FilePath ?? "?"));
+        sb.Append(rotReport);   // V62: rotation check lines (temp file; the player's file is never written)
+        if (combinedFile.Length > 0) sb.AppendLine("combined contact sheet: " + combinedFile);
         sb.AppendLine();
         foreach (var r in recs)
         {
@@ -440,9 +606,14 @@ public class FinisherAuto : MonoBehaviour
             sb.AppendLine("    clips: attacker " + (r.attackerPlayed.Length > 0 ? r.attackerPlayed : "?") + " | victim " + (r.victimPlayed.Length > 0 ? r.victimPlayed : "?"));
             sb.AppendLine("    duration " + r.duration.ToString("0.00", IC) + " s (unscaled)  contact at +" + (r.tContact >= 0f ? (r.tContact - r.tStart).ToString("0.00", IC) : "-") + " s  Die() at +" + (r.tKill >= 0f ? (r.tKill - r.tStart).ToString("0.00", IC) : "-") + " s");
             sb.AppendLine("    camera: " + (r.cuts.Count > 0 ? string.Join(", ", r.cuts.ToArray()) : "(no cuts)") + "  slow-mo x" + r.slowmo + "  gore x" + r.gore);
+            sb.AppendLine("    length: " + r.paced.ToString("0.00", IC) + " s paced (raw " + r.duration.ToString("0.00", IC) + " s, " + r.stalls + " capture stall frames excluded), Die() at +" + (r.pacedKill >= 0f ? r.pacedKill.ToString("0.00", IC) : "-") + " s paced, limit " + (C.maxFinisherSeconds > 0f ? C.maxFinisherSeconds.ToString("0.0", IC) + " s" : "none") + (C.maxFinisherSeconds > 0f ? (r.paced > C.maxFinisherSeconds ? "  TOO LONG" : "  ok") : ""));
+            sb.AppendLine("    luma: " + LumaLine(r) + (r.refLuma > 0f && C.lumaTolerance > 0f ? "  tolerance " + (C.lumaTolerance * 100f).ToString("0", IC) + "%  " + (r.lumaOk ? "ok" : "OFF") : ""));
+            sb.AppendLine("    clearance: head " + (float.IsNaN(r.clearHead) ? "-" : r.clearHead.ToString("0.00", IC)) + " m, hand " + (float.IsNaN(r.clearHand) ? "-" : r.clearHand.ToString("0.00", IC)) + " m (victim chest, estimated radius subtracted; negative = inside)");
             sb.AppendLine("    checks: victimDead=" + r.victimDead + " frozenClear=" + r.frozenClear + " timeScaleRestored=" + r.timeOk + " cameraReleased=" + r.camOk + " exceptions=" + r.exceptions);
             sb.AppendLine("    shots (" + r.shots + "): " + string.Join(", ", r.files.ToArray()));
+            if (r.sheetFile.Length > 0) sb.AppendLine("    sheet: " + r.sheetFile);
             foreach (var w in r.warns) sb.AppendLine("    WARN  " + w);
+            foreach (var nt in r.notes) sb.AppendLine("    NOTE  " + nt);   // V62: pair probe lines
             foreach (var er in r.errors) sb.AppendLine("    ERROR " + er);
         }
         if (exceptionList.Count > 0) { sb.AppendLine(); sb.AppendLine("exceptions:"); foreach (var x in exceptionList) sb.AppendLine("  " + x); }
