@@ -96,6 +96,7 @@ public class AIBrain : MonoBehaviour
     {
         if (df == null) return;
         if (!inited) Init();
+        if (STSteer.Active) STSteer.PreBrain(this);   // steer layer hook (inert without -steer)
         var o = df.opponent;
         if (df.Dead || o == null || o.Dead) { df.moveDir = Vector3.zero; df.guardHeld = false; df.run = false; df.heavyHeld = false; return; }
         int now = Duel.TickCount;

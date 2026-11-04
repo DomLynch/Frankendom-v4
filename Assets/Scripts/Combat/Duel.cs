@@ -57,7 +57,7 @@ public class Duel : MonoBehaviour
         {
             d.SpendStamina(a.Rule("blockCost", 25f) * (heavy ? 1.2f : 1f) + m.staminaDamage * 0.3f);
             d.AddPosture(m.posture * 0.5f);
-            d.health = Mathf.Max(1f, d.health - m.damage * m.chip);
+            d.health = Mathf.Max(1f, d.health - m.damage * m.chip * (STSteer.Active ? STSteer.DamageMul(a, d) : 1f));
             if (d.stamina <= 0f || m.breaksGuard)
             {
                 d.stamina = 0f; d.Stagger(60, "stagger_loop"); Fire(a, d, "GuardBroken", true, false);
@@ -70,6 +70,7 @@ public class Duel : MonoBehaviour
         bool rear = Angle(d.transform.forward, -ad) > 90f;                 // attacker behind the defender
         bool counter = d.InWindup; lastRear = rear; lastCounter = counter;
         float dmg = m.damage * a.damageScale * chargeMul * (rear ? a.Rule("rear.damage", 1.25f) : 1f) * (counter ? a.Rule("counter.damage", 1.25f) : 1f);
+        if (STSteer.Active) dmg *= STSteer.DamageMul(a, d);   // steer stance modifiers (dealt / taken, Trickster per-hit roll)
         float stg = m.stagger * chargeMul * (rear ? a.Rule("rear.stagger", 1.25f) : 1f) * (counter ? a.Rule("counter.stagger", 1.5f) : 1f);
         d.health -= dmg;
         d.AddPosture(m.posture * (rear ? a.Rule("rear.posture", 1.5f) : 1f));

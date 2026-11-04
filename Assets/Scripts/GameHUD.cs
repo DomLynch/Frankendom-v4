@@ -46,6 +46,7 @@ public class GameHUD : MonoBehaviour
     {
         if (showFps) GUI.Label(new Rect(Screen.width / 2 - 60, 8, 140, 24), "FPS " + fpsShown.ToString("F0"));
         if (showFps && pf && Camera.main) { var c = Camera.main.transform; var rel = c.position - pf.transform.position; var fl = new Vector3(c.forward.x, 0f, c.forward.z).normalized; float back = -Vector3.Dot(rel, new Vector3(c.forward.x, 0f, c.forward.z).normalized); var ax = ef ? ef.transform.position - pf.transform.position : Vector3.forward; ax.y = 0f; ax.Normalize(); float side = Vector3.Dot(rel, Quaternion.Euler(0f, 90f, 0f) * ax); float pitch = Mathf.Asin(c.forward.y) * Mathf.Rad2Deg; var sp = Camera.main.WorldToScreenPoint(pf.transform.position + Vector3.up); GUI.Label(new Rect(Screen.width / 2 - 200, 28, 420, 24), $"CAM h={rel.y:F2} back={back:F2} side={side:F2} pitch={pitch:F1} px={sp.x / Screen.width:F2}"); }
+        if (STSteer.Active) return;   // steer mode: STUI draws the bar, hints and banners (FPS/CAM debug above stays)
         if (big == null) big = new GUIStyle(GUI.skin.label) { fontSize = 48, alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold };
         Panel(new Rect(22, 8, 376, 76)); Panel(new Rect(Screen.width - 398, 8, 376, 76));
         if (player) { Outlined(new Rect(30, 14, 300, 24), "DRACULA"); Bar(new Rect(30, 38, 360, 20), player.current / player.max, new Color(0.7f, 0.05f, 0.08f)); }

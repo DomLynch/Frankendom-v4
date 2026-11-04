@@ -275,7 +275,7 @@ public class ADPlayback : MonoBehaviour
         if (!Ready && !Begin()) yield break;
         Busy = true;
         var rig = ADCameraRig.Ensure();
-        pendingTrade = null;
+        pendingTrade = null; killCut = false;
         yield return Reposition();
         yield return WaitIdle(b);
         Prep();
@@ -382,8 +382,16 @@ public class ADPlayback : MonoBehaviour
         }
         if (pendingTrade != null) { ApplyContact(b, pendingTrade, riposteQueue, sched, true); pendingTrade = null; }   // the partner hit never came: the first one still lands (a kill trade must kill)
         Cleanup();
-        if (rig != null) rig.Cut(camCfg.endShot, fa[0].transform, fa[1].transform);
-        if (!b.killed) yield return Reposition();   // distance and lane restored after every beat (the dead stay where they fell)
+        if (b.killed)
+        {
+            // killing beat: the camera stays on the dying fighter (kill shot = victim full body, slow push-in) for killHoldSeconds, then the controller shows the end screen
+            for (float th = 0f; th < C.killHoldSeconds; th += Mathf.Max(Time.unscaledDeltaTime, 0.001f)) { ADTime.Tick(); yield return null; }
+        }
+        else
+        {
+            if (rig != null) rig.Cut(camCfg.endShot, fa[0].transform, fa[1].transform);
+            yield return Reposition();
+        }   // distance and lane restored after every beat (the dead stay where they fell)
         Busy = false;
     }
 
@@ -457,7 +465,7 @@ public class ADPlayback : MonoBehaviour
         ApplyContact(b, a, riposteQ, sched);
         if (pendingTrade != null && pendingTrade != a) { var p = pendingTrade; pendingTrade = null; ApplyContact(b, p, riposteQ, sched, true); }
     }
-    Atk pendingTrade;
+    Atk pendingTrade; bool killCut;
 
     string KindOf(Atk a)
     {
@@ -478,6 +486,7 @@ public class ADPlayback : MonoBehaviour
         var os = ADCConfig.OutcomeShot(KindOf(a));
         string shotId = os != null ? ((a.crit && !string.IsNullOrEmpty(os.critShot)) ? os.critShot : os.shot) : null;
         if (a.kills && !string.IsNullOrEmpty(cfg.killShot)) shotId = cfg.killShot;
+        if (a.kills) killCut = true; else if (killCut) shotId = null;   // once the kill shot is on, no other contact of the beat may cut away from the victim
         if (rig != null && !string.IsNullOrEmpty(shotId)) rig.Cut(shotId, me.transform, foe.transform);
 
         switch (a.cls)

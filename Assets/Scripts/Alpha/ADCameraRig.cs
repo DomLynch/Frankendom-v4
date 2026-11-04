@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 
 // Alpha step 1, lane C: the cinematic duel camera. No free/tactical camera. It replaces CameraRig.cs only while the alpha duel is active
 // (Begin disables CameraRig, End restores it, the FOV and the cursor). All poses come from ADShot rows in duel_rules.json "camera".
@@ -19,7 +21,7 @@ public class ADCameraRig : MonoBehaviour
     // blend: from-pose snapshot -> live shot pose
     Vector3 fromPos; Quaternion fromRot; float fromFov; float blendT = 1f, blendDur = 0f;
     // shake
-    float shakeAmp, shakeLeft;
+    float shakeAmp, shakeLeft; float shotStart; GameObject noBlurGo;
 
     public static ADCameraRig Ensure()
     {
@@ -31,7 +33,7 @@ public class ADCameraRig : MonoBehaviour
         return r;
     }
     void Awake() { Instance = this; cam = GetComponent<Camera>(); }
-    void OnDestroy() { if (Instance == this) Instance = null; ADTime.Restore(); }
+    void OnDestroy() { if (Instance == this) Instance = null; ADTime.Restore(); SetNoBlur(false); }
 
     // fighters: Dracula (the player) and the Pitborn. The plan view sits behind Dracula.
     public void Begin(Transform draculaT, Transform pitbornT)
@@ -47,6 +49,7 @@ public class ADCameraRig : MonoBehaviour
             Cursor.lockState = CursorLockMode.None; Cursor.visible = true;   // the alpha UI is clicked
         }
         Active = true; enabled = true;
+        SetNoBlur(true);
         fromPos = transform.position; fromRot = transform.rotation; fromFov = cam.fieldOfView;
         Cut(ADCConfig.Camera.planShot, dracula, pitborn, 0f);
     }
@@ -54,7 +57,7 @@ public class ADCameraRig : MonoBehaviour
     public void End()
     {
         if (!Active) return;
-        Active = false; enabled = false; ADTime.Restore();
+        Active = false; enabled = false; ADTime.Restore(); SetNoBlur(false);
         if (cam) cam.fieldOfView = oldFov;
         if (oldRig) oldRig.enabled = oldRigEnabled;
         Cursor.lockState = oldLock; Cursor.visible = oldCursorVisible;
@@ -75,7 +78,7 @@ public class ADCameraRig : MonoBehaviour
         if (!Active || cam == null || s == null) return;
         // snapshot where the camera is right now, blend from there
         fromPos = transform.position; fromRot = transform.rotation; fromFov = cam.fieldOfView;
-        shot = s; actor = actorT ? actorT : dracula; target = targetT ? targetT : pitborn;
+        shot = s; shotStart = Time.unscaledTime; actor = actorT ? actorT : dracula; target = targetT ? targetT : pitborn;
         sideUsed = s.side == 0f ? (sideFlip = -sideFlip) : Mathf.Sign(s.side);
         blendDur = blendOverride >= 0f ? blendOverride : s.blend; blendT = blendDur <= 0f ? 1f : 0f;
         if (s.shake > 0f) { shakeAmp = s.shake; shakeLeft = 0.25f; }
@@ -99,7 +102,20 @@ public class ADCameraRig : MonoBehaviour
         float a = s.angleDeg * Mathf.Deg2Rad * sideUsed;
         Vector3 perp = Vector3.Cross(Vector3.up, axis);
         Vector3 dir = -axis * Mathf.Cos(a) + perp * Mathf.Sin(a);
-        pos = new Vector3(f.x, f.y, f.z) + dir * s.dist + perp * s.shoulder * sideUsed;
+        float dist = s.dist;
+        if (s.fit)
+        {
+            // distance from the real separation: the camera plane sees the pair's axis foreshortened by |sin(a)|, plus the half bodies each side; also the body height
+            float tanV = Mathf.Tan(Mathf.Clamp(s.fov, 10f, 90f) * 0.5f * Mathf.Deg2Rad), asp = cam != null && cam.aspect > 0.1f ? cam.aspect : 1.7778f, tanH = tanV * asp;
+            float sep = Flat(tp - ap).magnitude, ca = Mathf.Abs(Mathf.Cos(a)), sa = Mathf.Abs(Mathf.Sin(a));
+            bool pairFit = s.fitTarget != "target";
+            float span = pairFit ? sep * sa + 2f * s.bodyHalfWidth : 2f * s.bodyHalfWidth;
+            float depth = pairFit ? sep * ca * 0.5f : 0f;
+            float need = Mathf.Max(span * 0.5f / tanH, s.bodyHeight * 0.5f / tanV) * s.fitMargin + depth;
+            dist = Mathf.Clamp(need, s.minDist, Mathf.Max(s.minDist, s.maxDist));
+        }
+        if (s.pushIn > 0f && s.pushSeconds > 0f) dist -= s.pushIn * Mathf.Clamp01((Time.unscaledTime - shotStart) / s.pushSeconds);
+        pos = new Vector3(f.x, f.y, f.z) + dir * dist + perp * s.shoulder * sideUsed;
         pos.y = f.y + s.height;
         Vector3 look = Vector3.Lerp(f, tp, Mathf.Clamp01(s.lookAhead)); look.y = f.y + s.lookHeight;
         rot = Quaternion.LookRotation(look - pos, Vector3.up);
@@ -130,6 +146,29 @@ public class ADCameraRig : MonoBehaviour
     }
 
     void Update() { ADTime.Tick(); }
+
+    // Motion blur off for the whole alpha duel: a global Volume with a very high priority overriding MotionBlur intensity to 0 wins over every scene / default profile (HDRP).
+    void SetNoBlur(bool on)
+    {
+        try
+        {
+            if (on)
+            {
+                if (noBlurGo != null || !ADCConfig.Camera.disableMotionBlur) return;
+                var go = new GameObject("ADNoMotionBlur"); var v = go.AddComponent<Volume>();
+                v.isGlobal = true; v.priority = 10000f; v.weight = 1f;
+                var prof = ScriptableObject.CreateInstance<VolumeProfile>();
+                var mb = prof.Add<MotionBlur>(true); mb.intensity.Override(0f); mb.active = true;
+                v.sharedProfile = prof; noBlurGo = go;
+            }
+            else if (noBlurGo != null)
+            {
+                var v = noBlurGo.GetComponent<Volume>(); if (v != null && v.sharedProfile != null) Destroy(v.sharedProfile);
+                Destroy(noBlurGo); noBlurGo = null;
+            }
+        }
+        catch (System.Exception e) { Debug.LogWarning("[ADCameraRig] motion blur override: " + e.Message); }
+    }
 
     // ---- camera collision + floor (data: camera_collision.json, the same file CameraRig.cs reads) ----
     [System.Serializable] class ColRow { public bool enabled = true; public float radius = 0.35f, minDistFromTarget = 1.2f, minGroundY = 0f, minHeightAboveGround = 0.6f; public int[] ignoreLayers = { 8, 9 }; }

@@ -9,6 +9,7 @@ public class ADWounds : IADWounds
 {
     readonly ADWoundsCfg cfg;
     readonly Dictionary<ADFighter, ADWoundSet> sets = new Dictionary<ADFighter, ADWoundSet>();
+    readonly Dictionary<ADWoundSet, ADFighter> owners = new Dictionary<ADWoundSet, ADFighter>();
     static readonly Dictionary<ADSide, ADWoundsRuntime> bound = new Dictionary<ADSide, ADWoundsRuntime>();
 
     public ADWounds() : this(ADGoreGate.Wounds ? ADWoundsData.Get() : null) { }
@@ -23,9 +24,8 @@ public class ADWounds : IADWounds
         ADWoundSet s;
         if (rt != null && rt.wounds != null) s = rt.wounds;
         else if (!sets.TryGetValue(f, out s)) { s = new ADWoundSet(cfg, f); sets[f] = s; }
-        // a new fight starts with a clean ADFighter (severity 0 everywhere): drop the old accumulation and the old gore
-        bool clean = true; for (int i = 0; i < f.wounds.Length; i++) if (f.wounds[i] != 0) clean = false;
-        if (clean) { bool any = false; for (int i = 0; i < s.damage.Length; i++) if (s.damage[i] > 0f) any = true; if (any) { s.Reset(); if (rt != null) rt.ResetGore(); } }
+        // a new fight = a new ADFighter instance for this wound set: drop the old accumulation and gore ONCE. (Never by severity==0: sub-threshold damage must accumulate across hits.)
+        ADFighter prev; if (!owners.TryGetValue(s, out prev) || !ReferenceEquals(prev, f)) { owners[s] = f; s.Reset(); if (rt != null) rt.ResetGore(); }
         return s;
     }
 

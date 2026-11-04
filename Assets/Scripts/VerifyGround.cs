@@ -46,6 +46,18 @@ public class VerifyGround : MonoBehaviour
         public string[] excludeNames = { "Fog", "Haze", "Ash", "Smoke", "Embers", "Door", "Shaft", "Glow", "Sky" };
         public float startWaitSeconds = 20f, maxTotalSeconds = 900f;
         public int shotWidth = 0;                  // reserved
+        public HeadCfg head = new HeadCfg();
+    }
+
+    // Head close-up check (Dracula's original head): data block "head" of verify_ground.json
+    [Serializable]
+    public class HeadCfg
+    {
+        public bool enabled = true;
+        public float distance = 0.9f, fov = 25f, maxYawDeg = 20f, lookUp = 0f, gapTol = 0.03f, restGap = -1f;   // restGap < 0 = the neck-head distance measured at boot
+        public int tile = 512;
+        public string bone = "mixamorig:Head", neckBone = "mixamorig:Neck", rendererName = "head", metaHumanName = "MetaHumanHead";
+        public string forwardAxis = "auto";        // head bone local axis that points out of the face: auto (the one nearest the body forward at boot) | +z | -z | +x | -x | +y | -y
     }
 
     // ---------------- boot ----------------
@@ -88,6 +100,9 @@ public class VerifyGround : MonoBehaviour
     int fightFrames; float fightMinDt = 9f, fightMaxDt; float fightFpsTime; int fightFpsFrames;
     readonly Dictionary<string, float> fightYWorst = new Dictionary<string, float>(), fightYWorstT = new Dictionary<string, float>(), fightYMin = new Dictionary<string, float>(), fightYMax = new Dictionary<string, float>(); bool fightYFail;
     string fightNote = "";
+    // head check
+    RenderTexture headRT; Texture2D headTex; Transform headBone, neckBone; Vector3 headAxis = Vector3.forward; float restGap = -1f;
+    string headVerdict = "SKIPPED"; readonly List<string> headLines = new List<string>();
     readonly List<string> notes = new List<string>();
 
     class Row
@@ -217,6 +232,7 @@ public class VerifyGround : MonoBehaviour
         foreach (var f in fighters) { origPos[f] = f.transform.position; origRot[f] = f.transform.rotation; vy[f] = -1f; }
         BuildCandidates();
         MakeSideCam();
+        if (D.head != null && D.head.enabled) HeadSetup(fighters[0]);
 
         // points
         var pts = new List<Vector2>();
@@ -265,6 +281,39 @@ public class VerifyGround : MonoBehaviour
         overlay = "";
         if (sideCam) sideCam.enabled = false;
 
+        // ---- head close-up check (Dracula's original head) ----
+        if (D.head != null && D.head.enabled)
+        {
+            var dracH = fighters[0]; var pitH = fighters[1];
+            overlay = "VERIFY HEAD";
+            Teleport(dracH, new Vector3(0f, 0f, midZ), Vector3.forward);
+            Teleport(pitH, new Vector3(0f, 0f, Mathf.Min(midZ + D.oppGap, D.oppZMax)), Vector3.back);
+            float ht = 0f;
+            while (ht < D.settleSeconds) { if (!D.gameLocomotion) { Gravity(dracH); Gravity(pitH); } ht += Time.unscaledDeltaTime; yield return null; }
+            if (!D.gameLocomotion) { Gravity(dracH); Gravity(pitH); }
+            HeadMeasure(dracH);
+            string[] hn = { "front", "right", "left", "back" };
+            var tiles = new Color[4][];
+            sideCam.targetTexture = headRT; sideCam.fieldOfView = D.head.fov; sideCam.nearClipPlane = 0.05f; sideCam.enabled = true;
+            for (int hi = 0; hi < 4; hi++)
+            {
+                PlaceHeadCam(dracH, hi);
+                yield return new WaitForEndOfFrame();
+                var prevRT = RenderTexture.active; RenderTexture.active = headRT;
+                headTex.ReadPixels(new Rect(0, 0, D.head.tile, D.head.tile), 0, 0, false); headTex.Apply(false);
+                RenderTexture.active = prevRT;
+                tiles[hi] = headTex.GetPixels();
+                File.WriteAllBytes(Path.Combine(outDir, "head_" + hn[hi] + ".png"), headTex.EncodeToPNG());
+                yield return null;
+            }
+            sideCam.enabled = false; sideCam.targetTexture = sideRT;
+            int ts = D.head.tile; var sheet = new Texture2D(ts * 2, ts * 2, TextureFormat.RGB24, false, false);
+            sheet.SetPixels(0, ts, ts, ts, tiles[0]); sheet.SetPixels(ts, ts, ts, ts, tiles[1]); sheet.SetPixels(0, 0, ts, ts, tiles[2]); sheet.SetPixels(ts, 0, ts, ts, tiles[3]);
+            sheet.Apply(false);
+            File.WriteAllBytes(Path.Combine(outDir, "head_sheet.png"), sheet.EncodeToPNG()); Destroy(sheet);
+            overlay = "";
+        }
+
         // ---- fight phase ----
         FightOn();
         float ft = 0f, nextShot = D.shotEvery; int shotN = 0; int ow = 0;
@@ -303,7 +352,90 @@ public class VerifyGround : MonoBehaviour
         WriteSummary();
         int fails = 0; foreach (var r in rows) if (r.verdict == "FAIL") fails++;
         if (fightYFail) fails++;
-        Quit(fails > 0 ? 1 : 0);
+        Quit(fails > 0 || headVerdict == "FAIL" ? 1 : 0);
+    }
+
+    // ---------------- head check ----------------
+    static Vector3 ParseAxis(string a)
+    {
+        if (string.IsNullOrEmpty(a)) return Vector3.zero;
+        a = a.Trim().ToLowerInvariant(); float sg = a.StartsWith("-", StringComparison.Ordinal) ? -1f : 1f;
+        if (a.EndsWith("x", StringComparison.Ordinal)) return Vector3.right * sg;
+        if (a.EndsWith("y", StringComparison.Ordinal)) return Vector3.up * sg;
+        if (a.EndsWith("z", StringComparison.Ordinal)) return Vector3.forward * sg;
+        return Vector3.zero;
+    }
+
+    static Vector3 Flat(Vector3 v) { v.y = 0f; return v.sqrMagnitude > 1e-8f ? v.normalized : Vector3.forward; }
+
+    void HeadSetup(DuelFighter drac)
+    {
+        headRT = new RenderTexture(D.head.tile, D.head.tile, 24, RenderTextureFormat.ARGB32) { antiAliasing = 1 }; headRT.Create();
+        headTex = new Texture2D(D.head.tile, D.head.tile, TextureFormat.RGB24, false, false);
+        headBone = FindBone(drac.transform, D.head.bone); neckBone = FindBone(drac.transform, D.head.neckBone);
+        if (headBone == null) return;
+        Vector3 ax = ParseAxis(D.head.forwardAxis);
+        if (ax == Vector3.zero)
+        {
+            // auto: the local axis of the head bone that points most along the body forward at boot (the Mixamo head bone has no fixed "forward")
+            Vector3 fwd = Flat(drac.transform.forward); float best = -2f;
+            foreach (var c in new[] { Vector3.right, Vector3.left, Vector3.up, Vector3.down, Vector3.forward, Vector3.back })
+            { float d = Vector3.Dot(headBone.TransformDirection(c), fwd); if (d > best) { best = d; ax = c; } }
+        }
+        headAxis = ax;
+        if (neckBone != null) restGap = D.head.restGap >= 0f ? D.head.restGap : Vector3.Distance(neckBone.position, headBone.position);
+        notes.Add("head: bone " + D.head.bone + " forward axis (local) " + headAxis + ", rest neck-head gap " + Fmt(restGap));
+    }
+
+    void HeadMeasure(DuelFighter drac)
+    {
+        var HC = D.head; var I = IC; bool fail = false; var sb = new StringBuilder();
+        if (headBone == null) { headVerdict = "FAIL"; headLines.Add("bone '" + HC.bone + "' not found under " + drac.name); Debug.Log("[VERIFY] HEAD FAIL " + headLines[0]); return; }
+        var mh = GameObject.Find(HC.metaHumanName);   // finds active objects only
+        bool mhActive = mh != null && mh.activeInHierarchy;
+        float ang = Vector3.Angle(headBone.TransformDirection(headAxis), drac.transform.forward);
+        // original head renderer: name == rendererName (else contains it), not under the MetaHuman head
+        Renderer hr = null;
+        foreach (var r in drac.GetComponentsInChildren<Renderer>(true))
+        {
+            if (InsideNamed(r.transform, HC.metaHumanName)) continue;
+            if (string.Equals(r.name, HC.rendererName, StringComparison.OrdinalIgnoreCase)) { hr = r; break; }
+        }
+        if (hr == null)
+            foreach (var r in drac.GetComponentsInChildren<Renderer>(true))
+            {
+                if (InsideNamed(r.transform, HC.metaHumanName) || r.name.IndexOf("metahuman", StringComparison.OrdinalIgnoreCase) >= 0) continue;
+                if (r.name.IndexOf(HC.rendererName, StringComparison.OrdinalIgnoreCase) >= 0) { hr = r; break; }
+            }
+        bool hrOn = hr != null && hr.enabled && hr.gameObject.activeInHierarchy;
+        float gap = neckBone != null ? Vector3.Distance(neckBone.position, headBone.position) : float.NaN;
+        float gd = float.IsNaN(gap) || restGap < 0f ? float.NaN : gap - restGap;
+        float headY = headBone.position.y;
+        if (mhActive) { fail = true; sb.Append("MetaHumanHead ACTIVE; "); }
+        if (ang > HC.maxYawDeg) { fail = true; sb.Append("head faces " + ang.ToString("F1", I) + " deg off the body (max " + HC.maxYawDeg.ToString("F0", I) + "); "); }
+        if (!hrOn) { fail = true; sb.Append(hr == null ? "original head renderer '" + HC.rendererName + "' not found; " : "original head renderer '" + hr.name + "' disabled; "); }
+        if (!float.IsNaN(gd) && Mathf.Abs(gd) > HC.gapTol) sb.Append("note: neck-head gap differs from rest by " + gd.ToString("F3", I) + " m; ");
+        headVerdict = fail ? "FAIL" : "PASS";
+        string line = "MetaHumanHeadActive=" + mhActive + " headAngleDeg=" + ang.ToString("F1", I) + " (" + (ang <= HC.maxYawDeg ? "PASS" : "FAIL") + ") headRenderer=" + (hr != null ? hr.name : "none") + " enabled=" + hrOn
+            + " neckHeadGap=" + Fmt(gap) + " rest=" + Fmt(restGap) + " delta=" + Fmt(gd) + " headY=" + headY.ToString("F3", I) + " rootY=" + drac.transform.position.y.ToString("F3", I) + " " + sb;
+        headLines.Add(line);
+        Debug.Log("[VERIFY] HEAD " + headVerdict + " " + line);
+    }
+
+    static bool InsideNamed(Transform t, string n)
+    {
+        for (; t != null; t = t.parent) if (t.name == n) return true;
+        return false;
+    }
+
+    // fixed world axes relative to the body root forward: 0 front, 1 right, 2 left, 3 back; camera distance from the head bone, looking at it
+    void PlaceHeadCam(DuelFighter drac, int view)
+    {
+        Vector3 fwd = Flat(drac.transform.forward), right = Vector3.Cross(Vector3.up, fwd);
+        Vector3 dir = view == 0 ? fwd : view == 1 ? right : view == 2 ? -right : -fwd;
+        Vector3 look = headBone != null ? headBone.position + Vector3.up * D.head.lookUp : drac.transform.position + Vector3.up * 1.7f;
+        Vector3 pos = look + dir * D.head.distance;
+        sideCam.transform.position = pos; sideCam.transform.rotation = Quaternion.LookRotation(look - pos);
     }
 
     string HpText()
@@ -664,7 +796,8 @@ public class VerifyGround : MonoBehaviour
         }
         var sb = new StringBuilder();
         if (fightYFail) fail++;   // a fighter left the ground band during the fight
-        sb.AppendLine("VERDICT: " + (fail > 0 ? "FAIL" : warn > 0 ? "PASS_WITH_WARNINGS" : "PASS") + "   (exit code " + (fail > 0 ? 1 : 0) + ")");
+        bool anyFail = fail > 0 || headVerdict == "FAIL";
+        sb.AppendLine("VERDICT: " + (anyFail ? "FAIL" : warn > 0 ? "PASS_WITH_WARNINGS" : "PASS") + "   (exit code " + (anyFail ? 1 : 0) + ")");
         sb.AppendLine("rows: " + rows.Count + "   PASS " + pass + "   FAIL " + fail + "   WARN " + warn + "   tolerance " + D.tolerance.ToString("F3", IC) + " m");
         sb.AppendLine("mode: " + (D.gameLocomotion ? "game locomotion (DuelFighter gravity + stair clamp)" : "harness gravity, no clamp") + "   foot ref: " + (D.useSole ? "baked sole (fallback ankle bone - " + D.ankleHeight.ToString("0.00", IC) + ")" : "ankle bone"));
         if (worstFoot != null) sb.AppendLine("worst foot delta  : " + worstFoot.dFoot.ToString("F3", IC) + " m  " + worstFoot.fighter + " x=" + worstFoot.tx.ToString("F1", IC) + " z=" + worstFoot.tz.ToString("F1", IC) + " (" + worstFoot.topName + ")");
@@ -673,6 +806,8 @@ public class VerifyGround : MonoBehaviour
         foreach (var r in rows) if (r.verdict == "FAIL") sb.AppendLine(r.fighter + " x=" + r.tx.ToString("F1", IC) + " z=" + r.tz.ToString("F1", IC) + " dFoot=" + Fmt(r.dFoot) + " dGround=" + Fmt(r.dGround) + " top=" + r.topName + " : " + r.note);
         sb.AppendLine("--- WARN rows (unreadable meshes: bounds only) ---");
         foreach (var r in rows) if (r.verdict == "WARN") sb.AppendLine(r.fighter + " x=" + r.tx.ToString("F1", IC) + " z=" + r.tz.ToString("F1", IC) + " boundsTop=" + Fmt(r.boundsTop) + " (" + r.boundsName + ") meshTop=" + Fmt(r.top) + " dGround=" + Fmt(r.dGround) + " dFoot=" + Fmt(r.dFoot));
+        sb.AppendLine("HEAD: " + headVerdict);
+        foreach (var hl in headLines) sb.AppendLine("  " + hl);
         sb.AppendLine("--- fight ---");
         float avg = fightFpsTime > 0f ? fightFpsFrames / fightFpsTime : 0f;
         sb.AppendLine("seconds " + D.fightSeconds.ToString("F0", IC) + "  frames " + fightFrames + "  avg_fps " + avg.ToString("F1", IC) + "  min_fps " + (fightMaxDt > 0f ? (1f / fightMaxDt).ToString("F1", IC) : "n/a") + "  max_fps " + (fightMinDt < 9f ? (1f / fightMinDt).ToString("F1", IC) : "n/a") + "  res " + Screen.width + "x" + Screen.height + "  gpu " + SystemInfo.graphicsDeviceName);

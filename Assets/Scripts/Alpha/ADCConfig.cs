@@ -23,6 +23,14 @@ public class ADShot
     public float fov = 38f;
     public float blend = 0.25f;         // seconds (unscaled) to move here from wherever the camera is; 0 = hard cut
     public float shake = 0f;            // metres of camera shake on arrival (decays in ~0.25 s)
+    // fit: dist is DERIVED so the fighters fit the frame (both full bodies for fitTarget "pair", the target alone for "target"), from the real separation, fov and aspect
+    public bool fit = false;
+    public string fitTarget = "pair";   // "pair" | "target"
+    public float bodyHalfWidth = 0.9f;  // metres each side of a fighter's centre that must stay in frame (weapon arm included)
+    public float bodyHeight = 2.6f;     // metres from the feet that must stay in frame (the Pitborn with horns)
+    public float fitMargin = 1.15f;     // > 1 = air around the fighters
+    public float minDist = 4f, maxDist = 7.5f;
+    public float pushIn = 0f, pushSeconds = 0f;   // slow push-in: dist shrinks by pushIn metres over pushSeconds (unscaled) after the cut
 }
 [Serializable] public class ADShotKey { public float t = 0f; public string rel = "start"; public string shot = ""; public float blend = -1f; }       // rel: "start" | "contact"
 [Serializable] public class ADSlowKey { public float t = 0f; public string rel = "contact"; public float scale = 0.25f, duration = 0.6f, easeIn = 0.05f, easeOut = 0.25f; }   // duration in UNSCALED seconds
@@ -52,6 +60,7 @@ public class ADPlaybackCfg
     public string slashSide = "left";            // which light clip Slash uses ("left"|"right")
     public string hitLightClip = "hit_light_front", hitBackClip = "hit_light_back", hitHeavyClip = "hit_heavy", staggerClip = "stagger_loop";
     public bool useFinishers = true;
+    public float killHoldSeconds = 2.0f;         // the kill shot stays on the dying fighter this long (unscaled) before the end screen
     public float idleWaitSeconds = 3f;           // max wait for both fighters to be free before a beat's presses (a knocked-down fighter needs 1.5 s to get up)
     public float finisherMaxSeconds = 20f;       // watchdog of the whole finisher scene
 }
@@ -59,6 +68,7 @@ public class ADPlaybackCfg
 [Serializable]
 public class ADCameraCfg
 {
+    public bool disableMotionBlur = true;        // while the alpha duel runs (plan + clash + kill): a global high-priority Volume forces MotionBlur intensity 0, removed on End
     public string planShot = "plan";             // over-the-shoulder planning view behind Dracula looking at the Pitborn
     public string startShot = "wide34";          // first cut of every beat
     public string endShot = "plan";              // after the beat

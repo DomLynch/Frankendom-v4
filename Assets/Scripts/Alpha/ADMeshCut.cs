@@ -39,6 +39,7 @@ public static class ADMeshCut
     public static ADCutResult Cut(Transform victimRoot, string unitId, int seed, Vector3 awayDir, float push = 1f, float pieceImpulse = 60f)
     {
         var res = new ADCutResult { unit = unitId };
+        if (victimRoot == null) { res.note = "victimRoot null"; return res; }
         if (!ADGoreGate.Finishers) { res.note = "finishers disabled (rules.enableFinishers=false)"; return res; }
         var cfg = ADWoundsData.Get(); var cc = cfg.cuts;
         var unit = FindUnit(unitId);
@@ -70,7 +71,10 @@ public static class ADMeshCut
             if (smr == null || smr.sharedMesh == null || !smr.enabled) continue;
             if (!smr.sharedMesh.isReadable) { unreadable++; WarnUnreadable(smr); continue; }
             Vector3 cap;
-            if (!CutSkinned(smr, set, root, parentBone, unit, cc, split, ref physRoot, res, out cap)) continue;
+            bool cutOk;
+            try { cutOk = CutSkinned(smr, set, root, parentBone, unit, cc, split, ref physRoot, res, out cap); }
+            catch (Exception ex) { cap = Vector3.zero; cutOk = false; WarnOnce("ex:" + smr.name + unitId, "cut of '" + unitId + "' on '" + smr.name + "' threw " + ex.GetType().Name + ": " + ex.Message); res.note = "cut exception: " + ex.Message; }
+            if (!cutOk) continue;
             touched++;
             if (!haveCap) { firstCap = cap; haveCap = true; }
         }
@@ -78,7 +82,7 @@ public static class ADMeshCut
         if (touched == 0)
         {
             if (unreadable > 0 && !split) { Fallback(victimRoot, root, unit, res); }
-            else res.note = unreadable > 0 ? "meshes not readable (enable Read/Write on the model import)" : "no vertices skinned to " + unitId;
+            else res.note = unreadable > 0 ? "meshes not readable (enable Read/Write on the model import)" : (smrs.Length == 0 ? "no SkinnedMeshRenderer on the victim" : (res.note.Length > 0 ? res.note : "no vertices skinned to " + unitId));
             if (!res.ok) return res;
         }
         else
@@ -171,6 +175,14 @@ public static class ADMeshCut
         for (int v = 0; v < vc; v++) c.weld[v] = Weld(wmap, c.bpos[v], Mathf.Max(1e-5f, cc.weldM), v);
 
         int subs = mesh.subMeshCount; c.tris = new int[subs][]; c.label = new int[subs][];
+        if (subs <= 0) { UnityEngine.Object.Destroy(baked); WarnOnce("nosub:" + mesh.name, "mesh '" + mesh.name + "' has no submeshes"); return false; }
+        for (int s = 0; s < subs; s++)
+        {
+            var idx = mesh.GetIndices(s);
+            bool bad = mesh.GetTopology(s) != MeshTopology.Triangles || idx.Length % 3 != 0;
+            for (int q = 0; q < idx.Length && !bad; q++) if (idx[q] < 0 || idx[q] >= vc) bad = true;   // index overflow
+            if (bad) { UnityEngine.Object.Destroy(baked); WarnOnce("badidx:" + mesh.name + s, "mesh '" + mesh.name + "' submesh " + s + " is not a clean triangle list (topology/index range): cut skipped"); return false; }
+        }
         Matrix4x4 toBone = root.worldToLocalMatrix * smr.transform.localToWorldMatrix;
         int axis = unit.splitAxis == "y" ? 1 : (unit.splitAxis == "z" ? 2 : 0);
         int piecesA = 0;
@@ -264,7 +276,7 @@ public static class ADMeshCut
         // ---------- rebuild the body without the removed triangles
         var body = BuildBody(c, mesh, subs, bodyCap, edges, second, capSub);
         smr.sharedMesh = body;
-        var newMats = new Material[subs + 1]; for (int i = 0; i < subs; i++) newMats[i] = i < mats.Length ? mats[i] : null; newMats[subs] = bodyCap ? capMatFlesh : mats[Mathf.Min(0, mats.Length - 1)];
+        var newMats = new Material[subs + 1]; for (int i = 0; i < subs; i++) newMats[i] = i < mats.Length ? mats[i] : null; newMats[subs] = bodyCap ? capMatFlesh : (mats.Length > 0 ? mats[0] : capMatFlesh);
         smr.sharedMaterials = newMats;
 
         // world position of the cap centre for the blood
@@ -325,7 +337,7 @@ public static class ADMeshCut
             foreach (var e in loop)
             {
                 Vector3 a = c.bpos[e[0]], b = c.bpos[e[1]];
-                Vector3 n = Vector3.Cross(a - b, cen - b).normalized;   // winding (b, a, cen)
+                Vector3 n = Vector3.Cross(a - b, cen - b); if (n.sqrMagnitude < 1e-14f) continue; n.Normalize();   // winding (b, a, cen); skips zero-area triangles
                 int ia = P.Count; P.Add(b); P.Add(a); P.Add(cen); N.Add(n); N.Add(n); N.Add(n); U.Add(Vector2.zero); U.Add(Vector2.zero); U.Add(Vector2.zero);
                 T[capSub].Add(ia); T[capSub].Add(ia + 1); T[capSub].Add(ia + 2);
             }
@@ -355,7 +367,7 @@ public static class ADMeshCut
                 foreach (var e in loop)
                 {
                     Vector3 a = c.pos[e[0]], b = c.pos[e[1]];
-                    Vector3 n = Vector3.Cross(a - b, cen - b).normalized;
+                    Vector3 n = Vector3.Cross(a - b, cen - b); if (n.sqrMagnitude < 1e-14f) continue; n.Normalize();
                     int ia = P.Count; P.Add(b); P.Add(a); N.Add(n); N.Add(n); U.Add(Vector2.zero); U.Add(Vector2.zero); BW.Add(c.bw[e[1]]); BW.Add(c.bw[e[0]]);
                     T[capSub].Add(ia); T[capSub].Add(ia + 1); T[capSub].Add(ci);
                 }
@@ -378,6 +390,9 @@ public static class ADMeshCut
     }
 
     // ------------------------------------------------------------------ physics, blood, fallback
+    static readonly HashSet<string> warned = new HashSet<string>();
+    static void WarnOnce(string key, string msg) { if (warned.Add(key)) Debug.LogError("[ADMeshCut] " + msg); }
+
     static readonly HashSet<string> warnedUnreadable = new HashSet<string>();
     // LOUD, once per mesh: the cut needs Mesh.isReadable. Fallback = bone scaled to 0 + placeholder sphere (head/limbs); splitCrown does nothing. Fix: Editor menu Tools/Alpha/Make models readable (Assets/Editor/AlphaReadable.cs).
     static void WarnUnreadable(SkinnedMeshRenderer smr)
