@@ -1,0 +1,19 @@
+{
+  "seed": 1234,
+  "maxFightSeconds": 180,
+  "sampleEvery": 5,
+  "endDelay": 2.5,
+  "bootWaitSeconds": 20,
+  "reloadWaitSeconds": 20,
+  "timeoutSeconds": 900,
+  "settleFrames": 30,
+  "startShotAt": 1,
+  "minAvgDuration": 60,
+  "maxAvgDuration": 120,
+  "minWinRate": 0.4,
+  "maxWinRate": 0.7,
+  "minPitbornMoves": 4,
+  "shotMode": "screen",
+  "draculaName": "Dracula",
+  "pitbornName": "Pitborn"
+}

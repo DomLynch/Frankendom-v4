@@ -29,7 +29,15 @@ public class STAuto : MonoBehaviour
         public string shotMode = "auto";        // auto = game screen (with the UI), camera render texture if that comes out black | screen | camera
         public int shotWidth = 0, shotHeight = 0;   // camera mode size (0 = Screen size)
         public bool logSamples = false;         // true: a sample line every sampleEvery s (default: only state changes)
+        // v58: opening sequence (guarantees the tactics are tried early); after the last entry the random cycle continues every commandEvery
+        public FirstCmd[] firstCommands = {
+            new FirstCmd { t = 0.5f, tactic = "Press" }, new FirstCmd { t = 3.5f, tactic = "Circle" }, new FirstCmd { t = 6.5f, tactic = "GuardUp" },
+            new FirstCmd { t = 9.5f, tactic = "Dodge" }, new FirstCmd { t = 12.5f, tactic = "Feint" }, new FirstCmd { t = 15.5f, tactic = "BackOff" }, new FirstCmd { t = 18.5f, tactic = "GoForKill" } };
+        // v58: balance harness (-seeds:N)
+        public float seedsTimeoutSeconds = 900f, balanceMinDuration = 60f, balanceMaxDuration = 120f, balanceMinWinRate = 0.4f, balanceMaxWinRate = 0.7f;
+        public float restartWaitSeconds = 20f;
     }
+    [Serializable] public class FirstCmd { public float t; public string tactic = ""; public string stance = ""; }
     [Serializable] class Root { public AutoCfg auto; }
 
     // ------------------------------------------------------------ boot
@@ -38,6 +46,8 @@ public class STAuto : MonoBehaviour
     /// <summary>True when -steerauto is on the command line (S1: treat this as -steer).</summary>
     public static bool Requested { get { return Flag("-steerauto"); } }
     public static STAuto Instance;
+    /// <summary>-seeds:N (default 1): N consecutive fights with seeds seed, seed+1, ... and steer_balance_summary.txt.</summary>
+    public static int SeedsN { get { int n; var a = Arg("-seeds:"); return a != null && int.TryParse(a, out n) && n > 1 ? n : 1; } }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
@@ -65,7 +75,10 @@ public class STAuto : MonoBehaviour
     System.Random rng;
     DuelFighter D, P;                      // Dracula, Pitborn
     string[] stances, tactics;
-    int slot, shotN, cmdN;
+    int slot, shotN, cmdN, seedsN = 1, fightIdx, openIdx; float openEnd, fightDur, nextKill; string shotPrefix = "steer_";
+    class Rec { public int idx, seed; public float dur, dmgDealt, dmgTaken, dHp, pHp; public string winner, endReason, tactics; public int hitsD, hitsP, parriesD, parriesP, dodgesD, dodgesP, acc, att; }
+    readonly List<Rec> recs = new List<Rec>();
+    readonly Dictionary<string, int> sumAtt = new Dictionary<string, int>(), sumAcc = new Dictionary<string, int>();
     float nextCmd, nextShot, nextSample, nextSummary;
     bool shotThisFrame;
 
@@ -118,12 +131,17 @@ public class STAuto : MonoBehaviour
             try { if (File.Exists(summaryPath)) File.Delete(summaryPath); } catch { }
             try { Directory.CreateDirectory(shotDir); } catch (Exception e) { Debug.LogWarning("[steerauto] cannot create " + shotDir + ": " + e.Message); }
             LoadCfg();
-            timeout = C.timeoutSeconds > 0f ? C.timeoutSeconds : 200f;
+            seedsN = SeedsN;
+            if (C.firstCommands == null) C.firstCommands = new FirstCmd[0];
+            Array.Sort(C.firstCommands, (x, y) => x.t.CompareTo(y.t));
+            openEnd = C.firstCommands.Length > 0 ? C.firstCommands[C.firstCommands.Length - 1].t : 0f;
+            timeout = seedsN > 1 ? (C.seedsTimeoutSeconds > 0f ? C.seedsTimeoutSeconds : 900f) : (C.timeoutSeconds > 0f ? C.timeoutSeconds : 200f);
             float tv; var ts = Arg("-steertimeout:");
             if (ts != null && float.TryParse(ts, System.Globalization.NumberStyles.Float, IC, out tv) && tv > 0f) timeout = tv;
             int sv; var ss = Arg("-steerseed:"); if (ss != null && int.TryParse(ss, out sv)) C.seed = sv;
             strict = Flag("-steerstrict");
             rng = new System.Random(C.seed);
+            foreach (var tn0 in STAutoApi.TacticNames) { sumAtt[tn0] = 0; sumAcc[tn0] = 0; }
             stances = STAutoApi.StanceNames; tactics = STAutoApi.TacticNames;
             foreach (var tn in tactics) { attempted[tn] = 0; accepted[tn] = 0; refused[tn] = 0; }
             Application.logMessageReceived += OnUnityLog;
@@ -131,7 +149,7 @@ public class STAuto : MonoBehaviour
             ContactRelay.OnDodge += OnDodge;
             ContactRelay.OnAttackStarted += OnAttack;
             Log("steerauto start " + DateTime.Now.ToString("s") + " unity " + Application.unityVersion + " res " + Screen.width + "x" + Screen.height
-                + " seconds " + C.seconds + " commandEvery " + C.commandEvery + " shotEvery " + C.shotEvery + " seed " + C.seed + " timeout " + timeout + "s shotMode " + C.shotMode + " data " + dataSrc);
+                + " seeds " + seedsN + " seconds " + C.seconds + " opening " + C.firstCommands.Length + " cmds until " + openEnd.ToString("F1", IC) + "s" + " commandEvery " + C.commandEvery + " shotEvery " + C.shotEvery + " seed " + C.seed + " timeout " + timeout + "s shotMode " + C.shotMode + " data " + dataSrc);
         }
         catch (Exception e) { Fail(e, "Awake"); }
     }
@@ -183,7 +201,8 @@ public class STAuto : MonoBehaviour
     public void Log(string line)
     {
         string stamp = fightStart >= 0f ? "f" + (Time.realtimeSinceStartup - fightStart).ToString("F2", IC).PadLeft(7) : "b" + (Time.realtimeSinceStartup - t0).ToString("F2", IC).PadLeft(7);
-        try { File.AppendAllText(logPath, stamp + "s " + line + "\n"); } catch { }
+        if (!logOpen) pending.AppendLine(stamp + "s " + line);
+        else { try { File.AppendAllText(logPath, stamp + "s " + line + "\n"); } catch { } }
         Debug.Log("[steerauto] " + line);
     }
 
@@ -197,6 +216,7 @@ public class STAuto : MonoBehaviour
         if (!logOpen) { logOpen = true; try { File.AppendAllText(logPath, pending.ToString()); } catch { } pending.Length = 0; }
         try { if (cur != null && cur.open) CloseCmd("exit"); } catch { }
         try { WriteSummary(code, why, verdictOverride); } catch (Exception e) { Log("summary failed: " + e); }
+        if (seedsN > 1) { try { WriteBalance(code, why, verdictOverride); } catch (Exception e) { Log("balance summary failed: " + e); } }
         Log("EXIT code " + code + " (" + why + ")" + (foreignExceptions > 0 ? " foreignExceptions=" + foreignExceptions : ""));
         Application.Quit(code);
 #if UNITY_EDITOR
@@ -339,50 +359,121 @@ public class STAuto : MonoBehaviour
         for (int i = 0; i < 20; i++) yield return null;   // let Awake/Start of the steer layer settle
         int hooked = STAutoApi.Hook(OnSteerEvent);
         STAutoApi.ForceAutoLog();
-        STAutoApi.Mark("steerauto", "harness attached", "seed " + C.seed);   // S1's first Log() (re)creates the file; our buffered boot lines follow
+        STAutoApi.Mark("steerauto", "harness attached", "seed " + C.seed + " seeds " + seedsN);   // S1's first Log() (re)creates the file; our buffered boot lines follow
         logOpen = true;
         try { File.AppendAllText(logPath, pending.ToString()); } catch { }
         pending.Length = 0;
 
-        // 2) start
-        fightStart = Time.realtimeSinceStartup; started = true;
-        dHpStart = dHpPrev = dHpMin = D.health; pHpStart = pHpPrev = pHpMin = P.health;
-        dStatePrev = D.state; pStatePrev = P.state; tickStart = Duel.TickCount;
-        nextCmd = C.firstCommandAt; nextShot = C.shotEvery; nextSample = C.sampleEvery; nextSummary = C.summaryEvery;
-        Log("FIGHT START stance " + STAutoApi.Stance + " hooked steer events " + hooked + " hp D" + dHpStart.ToString("F0", IC) + "/P" + pHpStart.ToString("F0", IC)
-            + " dist " + Dist().ToString("F2", IC) + " tactics [" + string.Join(",", tactics) + "] stances [" + string.Join(",", stances) + "]");
-
-        // 3) the scripted player
         string endReason = "";
-        while (!exiting)
+        for (fightIdx = 0; fightIdx < seedsN && !exiting; fightIdx++)
         {
-            float t = Time.realtimeSinceStartup - fightStart;
-            if (t >= nextCmd) { nextCmd += C.commandEvery; Command(t); }
-            if (t >= nextSample) { nextSample += C.sampleEvery; Sample(t); }
-            if (t >= nextSummary) { nextSummary += C.summaryEvery; Summary10(t); }
-            if (t >= nextShot) { nextShot += C.shotEvery; yield return Shot(t); }
-            if (D.Dead || P.Dead) { endReason = (P.Dead ? "Pitborn" : "Dracula") + " died"; break; }
-            if (t >= C.seconds) { endReason = C.seconds.ToString("F0", IC) + " s elapsed"; break; }
-            yield return null;
-        }
-        if (exiting) yield break;
+            if (fightIdx > 0)
+            {
+                yield return RestartFight();
+                if (exiting) yield break;
+            }
+            // 2) start (per-fight state is reset here)
+            int seed = C.seed + fightIdx;
+            ResetFight(seed);
+            fightStart = Time.realtimeSinceStartup; started = true; ended = false;
+            dHpStart = dHpPrev = dHpMin = D.health; pHpStart = pHpPrev = pHpMin = P.health;
+            dStatePrev = D.state; pStatePrev = P.state; tickStart = Duel.TickCount;
+            nextCmd = C.firstCommandAt; nextSample = C.sampleEvery; nextSummary = C.summaryEvery; nextKill = 0.5f; openIdx = 0;
+            bool single = seedsN <= 1;
+            nextShot = single ? C.shotEvery : 1f;   // seeds mode: one shot at the start (1 s) and one at the end of each fight
+            shotPrefix = single ? "steer_" : "steer_f" + (fightIdx + 1) + "_";
+            Log("FIGHT START " + (fightIdx + 1) + "/" + seedsN + " seed " + seed + " stance " + STAutoApi.Stance + " hooked steer events " + hooked + " hp D" + dHpStart.ToString("F0", IC) + "/P" + pHpStart.ToString("F0", IC)
+                + " dist " + Dist().ToString("F2", IC) + " tactics [" + string.Join(",", tactics) + "] stances [" + string.Join(",", stances) + "]");
 
-        // 4) the end: let the death/last blow play, last shot, summary, exit
-        float te = Time.realtimeSinceStartup - fightStart;
-        Log("FIGHT END (" + endReason + ") at " + te.ToString("F1", IC) + " s");
-        if (cur != null && cur.open) CloseCmd("fight end");
-        float until = Time.realtimeSinceStartup + (D.Dead || P.Dead ? C.endDelay : 0.2f);
-        while (Time.realtimeSinceStartup < until && !exiting) { Track(); yield return null; }
-        if (exiting) yield break;
-        lastTactic = D.Dead || P.Dead ? "end" : lastTactic;
-        yield return Shot(Time.realtimeSinceStartup - fightStart);
-        ended = true;
-        Summary10(Time.realtimeSinceStartup - fightStart);
-        Exit(0, endReason, null);
+            // 3) the scripted player
+            endReason = "";
+            while (!exiting)
+            {
+                float t = Time.realtimeSinceStartup - fightStart;
+                if (openIdx < C.firstCommands.Length)
+                {
+                    var fc = C.firstCommands[openIdx];
+                    if (t >= fc.t) { openIdx++; Command(t, fc, null); if (openIdx >= C.firstCommands.Length) nextCmd = t + C.commandEvery; }
+                }
+                else if (t >= nextCmd) { nextCmd += C.commandEvery; Command(t, null, null); }
+                if (t >= nextKill)   // GoForKill whenever it is enabled (once per fight)
+                {
+                    nextKill = t + 0.5f;
+                    if (accepted.ContainsKey("GoForKill") && accepted["GoForKill"] == 0 && STAutoApi.Enabled("GoForKill") && STAutoApi.Cooldown01("GoForKill") <= 0f) Command(t, null, "GoForKill");
+                }
+                if (t >= nextSample) { nextSample += C.sampleEvery; Sample(t); }
+                if (t >= nextSummary) { nextSummary += C.summaryEvery; Summary10(t); }
+                if (t >= nextShot) { nextShot = single ? nextShot + C.shotEvery : float.MaxValue; yield return Shot(t); }
+                if (D.Dead || P.Dead) { endReason = (P.Dead ? "Pitborn" : "Dracula") + " died"; break; }
+                if (t >= C.seconds) { endReason = C.seconds.ToString("F0", IC) + " s elapsed"; break; }
+                yield return null;
+            }
+            if (exiting) yield break;
+
+            // 4) the end: let the death/last blow play, last shot, record
+            fightDur = Time.realtimeSinceStartup - fightStart;
+            Log("FIGHT END " + (fightIdx + 1) + "/" + seedsN + " (" + endReason + ") at " + fightDur.ToString("F1", IC) + " s");
+            if (cur != null && cur.open) CloseCmd("fight end");
+            float until = Time.realtimeSinceStartup + (D.Dead || P.Dead ? C.endDelay : 0.2f);
+            while (Time.realtimeSinceStartup < until && !exiting) { Track(); yield return null; }
+            if (exiting) yield break;
+            lastTactic = D.Dead || P.Dead ? "end" : lastTactic;
+            yield return Shot(Time.realtimeSinceStartup - fightStart);
+            ended = true;
+            Summary10(Time.realtimeSinceStartup - fightStart);
+            AddRecord(seed, endReason);
+        }
+        Exit(0, seedsN > 1 ? seedsN + " fights done" : endReason, null);
+    }
+
+    void ResetFight(int seed)
+    {
+        S = new Stats(); win = new Stats(); cur = null; slot = 0; cmdN = 0; shotN = 0; contactEvents = 0; acceptedAll = refusedAll = stanceChanges = 0; lastTactic = "none";
+        foreach (var tn in tactics) { attempted[tn] = 0; accepted[tn] = 0; refused[tn] = 0; }
+        lastRefusal.Clear(); stanceUsed.Clear();
+        rng = new System.Random(seed);
+        UnityEngine.Random.InitState(seed);
+        STStanceMods.Seed(seed);     // S1's per-hit Trickster roll
+        winFpsSum = 0; winFpsN = 0; winFpsMin = 9999f;
+        dStatePrev = D.state; pStatePrev = P.state; dMovePrev = ""; pMovePrev = "";
+    }
+
+    void AddRecord(int seed, string endReason)
+    {
+        var r = new Rec { idx = fightIdx + 1, seed = seed, dur = fightDur, endReason = endReason, dmgDealt = S.dmgDealt, dmgTaken = S.dmgTaken, dHp = D.health, pHp = P.health,
+            hitsD = S.hitsD, hitsP = S.hitsP, parriesD = S.parriesD, parriesP = S.parriesP, dodgesD = S.dodgesD, dodgesP = S.dodgesP };
+        r.winner = P.Dead && !D.Dead ? "Dracula" : D.Dead && !P.Dead ? "Pitborn" : D.Dead && P.Dead ? "both" : "none (time limit)";
+        var sb = new StringBuilder();
+        foreach (var tn in tactics) { r.acc += accepted[tn]; r.att += attempted[tn]; sumAtt[tn] += attempted[tn]; sumAcc[tn] += accepted[tn]; sb.Append(tn + " " + accepted[tn] + "/" + attempted[tn] + "  "); }
+        r.tactics = sb.ToString().TrimEnd();
+        recs.Add(r);
+        Log("FIGHT RESULT " + r.idx + "/" + seedsN + " seed " + r.seed + " dur " + r.dur.ToString("F1", IC) + " winner " + r.winner + " dmg dealt " + r.dmgDealt.ToString("F0", IC) + " taken " + r.dmgTaken.ToString("F0", IC) + " hits D" + r.hitsD + "/P" + r.hitsP + " | tactics acc/att: " + r.tactics);
+    }
+
+    // new fight for the next seed: S1's restart path (STSteer.RestartFight reloads the scene; STController, STAuto and the flags survive it) and wait for fresh, living fighters
+    IEnumerator RestartFight()
+    {
+        var oldD = D; var oldP = P;
+        started = false;
+        Log("RESTART via STSteer.RestartFight (scene reload)");
+        try { STSteer.RestartFight(); } catch (Exception e) { Fail(e, "RestartFight"); yield break; }
+        float w0 = Time.realtimeSinceStartup; float lastNote = -1f;
+        while (true)
+        {
+            yield return null;
+            var d = STAutoApi.Dracula; var p = STAutoApi.Pitborn;
+            if (d != null && p != null && d != oldD && p != oldP && !d.Dead && !p.Dead) { D = d; P = p; break; }
+            if (Time.realtimeSinceStartup - w0 > C.restartWaitSeconds) { Fail("restart: no fresh living fighters after " + C.restartWaitSeconds.ToString("F0", IC) + " s"); yield break; }
+            if (Time.realtimeSinceStartup - lastNote >= 1f) { lastNote = Time.realtimeSinceStartup; Log("waiting for the restarted fight ..."); }
+        }
+        for (int i = 0; i < 30; i++) yield return null;
+        if (D == null || P == null || D.Dead || P.Dead) { Fail("restart: fighters not usable after settle"); yield break; }
     }
 
     // ------------------------------------------------------------ the scripted player
-    void Command(float t)
+    static string Canon(string[] arr, string v) { if (string.IsNullOrEmpty(v)) return null; foreach (var a in arr) if (string.Equals(a, v, StringComparison.OrdinalIgnoreCase)) return a; return null; }
+
+    void Command(float t, FirstCmd fc, string forced)
     {
         try
         {
@@ -391,7 +482,10 @@ public class STAuto : MonoBehaviour
             var sb = new StringBuilder();
             // stance: change (to a different one, cycling through all four) with probability stanceChance; always on the first slot
             string stNow = STAutoApi.Stance, stNew = null;
-            if (slot == 1 || rng.NextDouble() < C.stanceChance)
+            string fcStance = fc != null ? Canon(stances, fc.stance) : null;
+            if (forced != null) { }                                              // forced GoForKill: no stance change
+            else if (fcStance != null) { if (fcStance != stNow) stNew = fcStance; }
+            else if (slot == 1 || rng.NextDouble() < C.stanceChance)
             {
                 var opts = new List<string>(); foreach (var s in stances) if (s != stNow) opts.Add(s);
                 // prefer the least used stance so all four get exercised, break ties with the seeded rng
@@ -407,7 +501,10 @@ public class STAuto : MonoBehaviour
             }
             // tactic: never-accepted ones first, then the least accepted; ready (enabled, no cooldown) ones before others; GoForKill probe every n-th slot
             string tac = null;
-            if (C.goForKillTryEvery > 0 && slot % C.goForKillTryEvery == 0 && Array.IndexOf(tactics, "GoForKill") >= 0) tac = "GoForKill";
+            string fcTac = fc != null ? Canon(tactics, fc.tactic) : null;
+            if (forced != null) tac = forced;
+            else if (fcTac != null) tac = fcTac;
+            else if (C.goForKillTryEvery > 0 && slot % C.goForKillTryEvery == 0 && Array.IndexOf(tactics, "GoForKill") >= 0) tac = "GoForKill";
             else
             {
                 int bestScore = int.MaxValue; var pick = new List<string>();
@@ -439,7 +536,7 @@ public class STAuto : MonoBehaviour
             }
             cmdN++;
             cur = new Cmd { n = cmdN, t = t, text = sb.ToString(), snap = S.Clone(), dist0 = Dist(), distMin = Dist(), distMax = Dist(), stance = STAutoApi.Stance };
-            Log("COMMAND #" + cmdN + " slot " + slot + ": " + cur.text + " | stance now " + cur.stance + " | D " + D.state + " hp D" + D.health.ToString("F0", IC) + "/P" + P.health.ToString("F0", IC)
+            Log("COMMAND #" + cmdN + " slot " + slot + (fc != null ? " (opening)" : forced != null ? " (GoForKill enabled)" : "") + ": " + cur.text + " | stance now " + cur.stance + " | D " + D.state + " hp D" + D.health.ToString("F0", IC) + "/P" + P.health.ToString("F0", IC)
                 + " dist " + cur.dist0.ToString("F2", IC) + " cooldowns [" + CooldownText() + "]");
         }
         catch (Exception e) { Fail(e, "Command"); }
@@ -495,7 +592,7 @@ public class STAuto : MonoBehaviour
     IEnumerator Shot(float t)
     {
         yield return new WaitForEndOfFrame();
-        string name = "steer_" + ((int)t).ToString("D3", IC) + "_" + lastTactic;
+        string name = shotPrefix + ((int)t).ToString("D3", IC) + "_" + lastTactic;
         string path = Path.Combine(shotDir, name + ".png");
         try
         {
@@ -509,33 +606,20 @@ public class STAuto : MonoBehaviour
 
     string SaveShot(string path)
     {
-        string mode = (C.shotMode ?? "auto").ToLowerInvariant();
-        if (mode != "camera")
-        {
-            var tex = ScreenCapture.CaptureScreenshotAsTexture();   // final frame including the OnGUI bar
-            if (tex != null)
-            {
-                bool black = IsBlack(tex);
-                if (!black || mode == "screen") { File.WriteAllBytes(path, tex.EncodeToPNG()); Destroy(tex); return black ? "screen, black" : "screen"; }
-                Destroy(tex);
-            }
-            else if (mode == "screen") throw new Exception("CaptureScreenshotAsTexture returned null");
-        }
-        // render texture readback of the game camera: works when the window is minimised / in the background (the OnGUI bar is not in it)
-        var cam = Camera.main; if (cam == null) throw new Exception("no main camera");
-        int w = C.shotWidth > 0 ? C.shotWidth : Mathf.Max(16, Screen.width), h = C.shotHeight > 0 ? C.shotHeight : Mathf.Max(16, Screen.height);
-        var rt = new RenderTexture(w, h, 24, RenderTextureFormat.ARGB32) { antiAliasing = 1 }; rt.Create();
-        var prevT = cam.targetTexture; var prevA = RenderTexture.active; Texture2D t2 = null;
         try
         {
-            cam.targetTexture = rt; cam.Render();
-            RenderTexture.active = rt;
-            t2 = new Texture2D(w, h, TextureFormat.RGB24, false, false);
-            t2.ReadPixels(new Rect(0, 0, w, h), 0, 0, false); t2.Apply(false);
-            File.WriteAllBytes(path, t2.EncodeToPNG());
+            var tex = ScreenCapture.CaptureScreenshotAsTexture();
+            if (tex != null)
+            {
+                File.WriteAllBytes(path, tex.EncodeToPNG());
+                bool black = IsBlack(tex);
+                Destroy(tex);
+                return black ? "screen, black" : "screen";
+            }
         }
-        finally { cam.targetTexture = prevT; RenderTexture.active = prevA; rt.Release(); Destroy(rt); if (t2 != null) Destroy(t2); }
-        return "camera " + w + "x" + h;
+        catch (Exception ex) { Debug.LogWarning("[shot] CaptureScreenshotAsTexture: " + ex.Message); }
+        try { ScreenCapture.CaptureScreenshot(path); } catch { }
+        return "screen capture fallback";
     }
 
     static bool IsBlack(Texture2D tex)
@@ -561,7 +645,12 @@ public class STAuto : MonoBehaviour
             foreach (var tn in tactics)
             {
                 if (accepted[tn] > 0) continue;
-                if (attempted[tn] == 0) problems.Add("tactic " + tn + " was never attempted");
+                if (attempted[tn] == 0)
+                {
+                    if (fightDur <= 0f) fightDur = dur;
+                    if (fightDur <= openEnd + 0.5f) warns.Add("tactic " + tn + " not attempted: the fight ended at " + fightDur.ToString("F1", IC) + " s, inside the opening sequence (last opening command at " + openEnd.ToString("F1", IC) + " s)");
+                    else problems.Add("tactic " + tn + " was never attempted");
+                }
                 else warns.Add("tactic " + tn + " never accepted: " + (lastRefusal.ContainsKey(tn) ? lastRefusal[tn] : "?") + " (" + attempted[tn] + " tries)");
             }
         }
@@ -590,6 +679,54 @@ public class STAuto : MonoBehaviour
         foreach (var w in warns) sb.AppendLine("WARN: " + w);
         File.WriteAllText(summaryPath, sb.ToString());
     }
+
+    // ------------------------------------------------------------ balance summary (-seeds:N)
+    void WriteBalance(int code, string why, string verdictOverride)
+    {
+        string path = Path.Combine(dir, "steer_balance_summary.txt");
+        int n = recs.Count;
+        float sumDur = 0, sumDealt = 0, sumTaken = 0, sumHD = 0, sumHP = 0; int dWins = 0, pWins = 0; bool bothHit = n > 0;
+        foreach (var r in recs)
+        {
+            sumDur += r.dur; sumDealt += r.dmgDealt; sumTaken += r.dmgTaken; sumHD += r.hitsD; sumHP += r.hitsP;
+            if (r.winner == "Dracula") dWins++; else if (r.winner == "Pitborn") pWins++;
+            if (r.hitsD <= 0 || r.hitsP <= 0) bothHit = false;
+        }
+        float avgDur = n > 0 ? sumDur / n : 0f, winRate = n > 0 ? (float)dWins / n : 0f;
+        var reasons = new List<string>();
+        if (n < seedsN) reasons.Add("only " + n + " of " + seedsN + " fights completed");
+        if (n > 0 && (avgDur < C.balanceMinDuration || avgDur > C.balanceMaxDuration)) reasons.Add("average duration " + avgDur.ToString("F1", IC) + " s outside " + C.balanceMinDuration.ToString("F0", IC) + "-" + C.balanceMaxDuration.ToString("F0", IC));
+        if (n > 0 && (winRate < C.balanceMinWinRate || winRate > C.balanceMaxWinRate)) reasons.Add("Dracula win rate " + (winRate * 100f).ToString("F0", IC) + "% outside " + (C.balanceMinWinRate * 100f).ToString("F0", IC) + "-" + (C.balanceMaxWinRate * 100f).ToString("F0", IC) + "%");
+        if (!bothHit) reasons.Add("a side landed no hits in at least one fight");
+        string verdict = verdictOverride ?? (reasons.Count == 0 ? "PASS" : "FAIL");
+        var sb = new StringBuilder();
+        sb.AppendLine("VERDICT: " + verdict + "   (exit code " + code + ", " + why + ")");
+        sb.AppendLine("date " + DateTime.Now.ToString("s") + "  unity " + Application.unityVersion + "  res " + Screen.width + "x" + Screen.height + "  seeds " + C.seed + ".." + (C.seed + seedsN - 1) + "  fights " + n + "/" + seedsN + "  data " + dataSrc);
+        sb.AppendLine("pass rule: average duration " + C.balanceMinDuration.ToString("F0", IC) + "-" + C.balanceMaxDuration.ToString("F0", IC) + " s AND Dracula win rate " + (C.balanceMinWinRate * 100f).ToString("F0", IC) + "-" + (C.balanceMaxWinRate * 100f).ToString("F0", IC) + "% AND both sides land hits in every fight");
+        foreach (var r in reasons) sb.AppendLine("PROBLEM: " + r);
+        sb.AppendLine();
+        sb.AppendLine("per fight (damage dealt = by Dracula to the Pitborn, taken = by Dracula from the Pitborn; tactics = accepted/attempted):");
+        foreach (var r in recs)
+            sb.AppendLine("  #" + r.idx + " seed " + r.seed + "  " + r.dur.ToString("F1", IC) + " s  winner " + r.winner + " (" + r.endReason + ")  hp end D" + r.dHp.ToString("F0", IC) + "/P" + r.pHp.ToString("F0", IC)
+                + "  dmg dealt " + r.dmgDealt.ToString("F0", IC) + " taken " + r.dmgTaken.ToString("F0", IC) + "  hits D" + r.hitsD + "/P" + r.hitsP + "  parries by D" + r.parriesD + "/P" + r.parriesP + "  dodges D" + r.dodgesD + "/P" + r.dodgesP
+                + "\n       tactics: " + r.tactics);
+        sb.AppendLine();
+        if (n > 0)
+        {
+            sb.AppendLine("averages over " + n + " fights:");
+            sb.AppendLine("  duration " + avgDur.ToString("F1", IC) + " s   Dracula wins " + dWins + "/" + n + " (" + (winRate * 100f).ToString("F0", IC) + "%)   Pitborn wins " + pWins + "   no winner " + (n - dWins - pWins));
+            sb.AppendLine("  damage dealt by Dracula " + (sumDealt / n).ToString("F1", IC) + "   damage taken by Dracula " + (sumTaken / n).ToString("F1", IC));
+            sb.AppendLine("  hits landed: Dracula " + (sumHD / n).ToString("F1", IC) + "   Pitborn " + (sumHP / n).ToString("F1", IC));
+        }
+        sb.AppendLine("tactics, all fights (accepted/attempted):");
+        foreach (var tn in tactics) sb.AppendLine("  " + tn.PadRight(10) + sumAcc[tn] + "/" + sumAtt[tn] + (sumAtt[tn] == 0 ? "   <- never attempted" : ""));
+        float fpsAvg = allFpsN > 0 ? allFpsSum / allFpsN : 0f;
+        sb.AppendLine("fps over all fights: avg " + fpsAvg.ToString("F1", IC) + "  worst frame " + (allFpsN > 0 ? allFpsMin.ToString("F1", IC) : "-"));
+        sb.AppendLine("exceptions: steer " + stExceptions + ", foreign " + foreignExceptions);
+        foreach (var e in exceptionList) sb.AppendLine("  " + e);
+        File.WriteAllText(path, sb.ToString());
+    }
+
 
     static string DictText(Dictionary<string, int> d)
     {

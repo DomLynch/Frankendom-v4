@@ -87,6 +87,12 @@
       "durationFrom": "move:kick",
       "separation": 2.2
     },
+    {"id": "upgrade_heavy", "subject": "Dracula", "action": "press", "press": "light", "then": "upgrade", "thenTick": 11, "durationFrom": "move:heavy_overhead", "tailTicks": 20, "separation": 2.2},
+    {"id": "upgrade_heavy_late", "subject": "Dracula", "action": "press", "press": "light", "then": "upgrade", "thenTick": 22, "durationFrom": "move:light_right", "tailTicks": 0, "separation": 2.2},
+    {"id": "cancel_roll_late", "subject": "Dracula", "action": "press", "press": "light", "then": "roll", "thenTick": 30, "durationFrom": "move:light_right", "tailTicks": 44, "separation": 2.2, "follow": true},
+    {"id": "cancel_roll_light", "subject": "Dracula", "action": "press", "press": "light", "then": "roll", "thenTick": 12, "durationFrom": "move:light_right", "tailTicks": 44, "separation": 2.2, "follow": true},
+    {"id": "queue_chain_light", "subject": "Dracula", "action": "press", "press": "light", "then": "light", "thenTick": 4, "durationFrom": "move:light_right", "tailTicks": 34, "separation": 2.2},
+    {"id": "queue_late_roll", "subject": "Dracula", "action": "press", "press": "heavy", "then": "roll", "thenTick": 6, "durationFrom": "move:heavy_overhead", "tailTicks": 50, "separation": 2.2, "follow": true},
     {
       "id": "roll",
       "subject": "Dracula",

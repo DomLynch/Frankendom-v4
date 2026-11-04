@@ -96,6 +96,7 @@ public class AIBrain : MonoBehaviour
     {
         if (df == null) return;
         if (!inited) Init();
+        if (Duel.Frozen) { df.moveDir = Vector3.zero; df.guardHeld = false; df.run = false; df.heavyHeld = false; return; }   // FN1: nobody decides while a finisher scene runs
         if (STSteer.Active) STSteer.PreBrain(this);   // steer layer hook (inert without -steer)
         var o = df.opponent;
         if (df.Dead || o == null || o.Dead) { df.moveDir = Vector3.zero; df.guardHeld = false; df.run = false; df.heavyHeld = false; return; }
@@ -326,7 +327,8 @@ public class AIBrain : MonoBehaviour
 
         float floor = p.discipline * df.maxStamina / 100f;
         bool low = df.stamina < floor;
-        bool shaky = df.posture >= df.Rule("posture.max", U.rules.postureMax) * D.shakyShare;
+        bool shaky = df.posture >= df.PostureMax * D.shakyShare;
+        bool dbGo = PostureTable.AiGo(df, o);   // P6: the opponent is posture-broken and its deathblow window has been open for the AI reaction time
         if (s.decision <= 0f)
         {
             float r = s.Roll();
@@ -337,6 +339,7 @@ public class AIBrain : MonoBehaviour
         if (gap > D.hardApproachGap || (!low && !shaky && gap > D.midApproachGap)) s.mode = AiMode.Approach;
         if (tick < s.retreatUntil || ((low || shaky) && gap < D.lowCloseRetreatGap)) s.mode = AiMode.Retreat;
         else if ((low || shaky) && s.mode == AiMode.Retreat && gap >= D.circleReturnGap) s.mode = AiMode.Circle;
+        if (dbGo && PostureTable.Get().ai.approach) s.mode = AiMode.Approach;   // P6: close in for the deathblow
 
         // ---- reaction to a noticed swing ----
         if (canAct && noticed && s.plan != AiPlan.None && s.plan != AiPlan.Ignore)
@@ -377,6 +380,17 @@ public class AIBrain : MonoBehaviour
             float sThrust = !threat && !guarded && InReach(mThrust, "thrust") && s.next != AiNext.None && (advancing || s.next == AiNext.Thrust) ? (advancing ? 0.9f : 0.8f) : 0f;
             if (low) { sChain = 0f; sKick = 0f; sHeavy = 0f; sLight = 0f; sThrust = 0f; sInterrupt = 0f; }   // stamina discipline: only punishes below the floor
             if (!canAct) { sCritical = 0f; sCounter = 0f; sPunish = 0f; sKick = 0f; sHeavy = 0f; sLight = 0f; sInterrupt = 0f; sThrust = 0f; }   // mid-recovery: only the chain follow-up
+            // P6 deathblow: highest score of all, picks the first move of posture.json ai.order that is in reach
+            float sDeath = 0f; string dbAct = "light";
+            if (dbGo && r < PostureTable.AiChance(p.aggression))
+            {
+                var dbOrder = PostureTable.Get().ai.order;
+                for (int di = 0; dbOrder != null && di < dbOrder.Length; di++)
+                {
+                    MoveDef dbM = dbOrder[di] == "heavy" ? mHeavy : dbOrder[di] == "thrust" ? mThrust : mLight;
+                    if (InReach(dbM, dbOrder[di])) { sDeath = PostureTable.Get().ai.score; dbAct = dbOrder[di]; break; }
+                }
+            }
             // first strictly-greater wins in V3's insertion order (stable sort)
             string best = "none"; float score = 0f;
             if (sCritical > score) { score = sCritical; best = "critical"; }
@@ -388,10 +402,11 @@ public class AIBrain : MonoBehaviour
             if (sLight > score) { score = sLight; best = "light"; }
             if (sInterrupt > score) { score = sInterrupt; best = "interrupt"; }
             if (sThrust > score) { score = sThrust; best = "thrust"; }
+            if (sDeath > score) { score = sDeath; best = "deathblow"; }
             lastScores = best + " " + score.ToString("0.0");
             if (score > 0f)
             {
-                string action = best == "kick" ? "kick"
+                string action = best == "deathblow" ? dbAct : best == "kick" ? "kick"
                     : (best == "heavy" || best == "critical" || best == "counter") ? "heavy"
                     : (best == "thrust" || ((best == "chain" || best == "punish") && !InReach(mLight, "light"))) ? "thrust" : "light";
                 s.wait = Rnd((D.waitBase + s.Roll() * D.waitSpread) * (D.waitAggrCeil - p.aggression)); s.next = AiNext.None;
@@ -406,7 +421,7 @@ public class AIBrain : MonoBehaviour
                 if (best == "heavy") s.hold = (guarded || reads.roller || reads.parryHappy) && s.Roll() < chargeChance;
                 else s.hold = best == "light" && reads.parryHappy && s.Roll() < R.baitShare;
                 float feintChance = Mathf.Max(p.feint, reads.parryHappy ? R.feint : 0f);
-                s.feint = feintChance > 0f && (action == "heavy" || action == "light") && !s.hold && s.Roll() < feintChance;
+                s.feint = feintChance > 0f && best != "deathblow" && (action == "heavy" || action == "light") && !s.hold && s.Roll() < feintChance;
                 intent.action = action; intent.held = s.hold;
                 return intent;
             }

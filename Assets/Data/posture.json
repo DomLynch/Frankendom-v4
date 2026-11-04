@@ -1,0 +1,21 @@
+{
+  "enabled": true,
+  "debugLog": false,
+  "defaultMax": 100,
+  "fighters": [
+    { "key": "Dracula", "max": 100, "holdTicks": 0, "decayPerSecond": -1, "deathblowMinHealthFrac": 0.6 },
+    { "key": "Pitborn", "max": 130, "holdTicks": 0, "decayPerSecond": -1, "deathblowMinHealthFrac": 0.5 }
+  ],
+  "hit":   { "light": 14, "thrust": 12, "heavy": 26, "kick": 20, "other": -1 },
+  "block": { "light": 6, "heavy": 14, "kick": 10, "attackerBlocked": 0 },
+  "parry": { "attacker": 30, "relief": 12 },
+  "decay": { "holdTicks": 60, "perSecond": 14 },
+  "posBreak": { "stunTicks": 100, "windowTicks": 120, "resetFraction": 0.25, "clip": "stagger_loop", "flashTicks": 30 },
+  "deathblow": { "damageMul": 4, "minHealthFrac": 0.5, "killBelowFrac": 0.25, "staggerTicks": 60 },
+  "ai": { "enabled": true, "score": 2.0, "reactionTicks": 12, "chanceBase": 0.7, "chanceAggression": 0.3, "approach": true, "order": ["light", "thrust", "heavy"] },
+  "hud": {
+    "enabled": true, "alwaysShow": true, "height": 6, "gap": 2, "highFrom": 0.6, "pulseHz": 4, "labelFontSize": 12,
+    "bgColor": [0, 0, 0, 0.65], "color": [0.80, 0.72, 0.30], "highColor": [0.95, 0.50, 0.12], "breakColor": [0.95, 0.18, 0.12], "deathblowColor": [1.0, 0.92, 0.85],
+    "breakText": "POSTURE BROKEN", "deathblowText": "DEATHBLOW"
+  }
+}

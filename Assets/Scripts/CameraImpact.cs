@@ -43,7 +43,7 @@ public class CameraImpact : MonoBehaviour
         Vector3 off = blow * s.along + blowRight * s.side + Vector3.down * s.drop;
         if (s.screen != 0f) off += transform.right * s.screen;     // across the frame (camera right, + = right)
         if (s.push != 0f) off += transform.forward * s.push;       // along the view (+ = in)
-        kickOffset = off;
+        kickOffset = off * ImpactTable.MoveMul(e.moveId);   // P1: hit-weight scale (camera_impact.json moveWeights)
         kick = 1f;
         kickHold = s.hold;
         kickRate = s.settle > 0f ? 1f / s.settle : 1f / 0.15f;

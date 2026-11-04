@@ -8,7 +8,7 @@
     "minWindupSpeed": 0.6,
     "maxWindupSpeed": 2.6,
     "maxRecoverySpeed": 2.4,
-    "blendIn": 0.06,
+    "blendIn": 0.04,
     "blendOut": 0.12,
     "stepStopDist": 0.0
   },
@@ -24,7 +24,7 @@
       "character": "Dracula", "move": "light_right", "enabled": true,
       "clip": "atk_light_R", "startTime": 0.10, "contactTime": 0.60, "endTime": 1.2, "holdClipTime": 0.0,
       "fallbackClip": "light_attack_R", "fbStartTime": 0.0, "fbContactTime": 0.27, "fbEndTime": 1.1, "fbHoldClipTime": 0.0,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.06, "blendOut": 0.12,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.12,
       "rootMotion": "inplace", "maxStep": 0.5, "useStepIn": true, "stepIn": 0.3,
       "source": "hq025-Dydy_LP_AttackFwd_1", "note": "1.0 s in place, forward cut; hand speed peak 0.33-0.38 s"
     },
@@ -32,7 +32,7 @@
       "character": "Dracula", "move": "slash_riposte", "enabled": true,
       "clip": "atk_light_R", "startTime": 0.10, "contactTime": 0.60, "endTime": 1.2, "holdClipTime": 0.0,
       "fallbackClip": "light_attack_R", "fbStartTime": 0.0, "fbContactTime": 0.27, "fbEndTime": 1.1, "fbHoldClipTime": 0.0,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.06, "blendOut": 0.12,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.12,
       "rootMotion": "inplace", "maxStep": 0.5, "useStepIn": true, "stepIn": 0.4,
       "source": "hq025-Dydy_LP_AttackFwd_1", "note": "same clip as light_right (12 tick wind-up, so about x1.6 before the cut)"
     },
@@ -40,7 +40,7 @@
       "character": "Dracula", "move": "light_left", "enabled": true,
       "clip": "atk_light_L", "startTime": 0.17, "contactTime": 0.55, "endTime": 1.25, "holdClipTime": 0.0,
       "fallbackClip": "light_attack_L", "fbStartTime": 0.55, "fbContactTime": 0.93, "fbEndTime": 1.7, "fbHoldClipTime": 0.0,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.06, "blendOut": 0.12,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.12,
       "rootMotion": "inplace", "maxStep": 0.5, "useStepIn": true, "stepIn": 0.3,
       "source": "122900901-sword-and-shield-slash", "note": "1.37 s horizontal forehand slash, anticipation 0.37 s, hand peak 0.57 s; start 0.17 skips the idle lead-in"
     },
@@ -48,7 +48,7 @@
       "character": "Dracula", "move": "thrust", "enabled": true,
       "clip": "atk_thrust", "startTime": 0.1, "contactTime": 0.40, "endTime": 0.95, "holdClipTime": 0.0,
       "fallbackClip": "thrust", "fbStartTime": 0.05, "fbContactTime": 0.33, "fbEndTime": 1.067, "fbHoldClipTime": 0.0,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.06, "blendOut": 0.12,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.12,
       "rootMotion": "inplace", "maxStep": 0.8, "useStepIn": true, "stepIn": 0.7,
       "source": "hq023-Rap_Attack_Fwd_1", "note": "rapier lunge, 1.73 s, 0.92 m hips travel baked out; arm fully extended 0.37-0.47 s, second flourish after 1.0 s is cut by endTime"
     },
@@ -56,7 +56,7 @@
       "character": "Dracula", "move": "heavy_overhead", "enabled": true,
       "clip": "atk_heavy", "startTime": 0.0, "contactTime": 0.70, "endTime": 1.0, "holdClipTime": 0.45,
       "fallbackClip": "heavy_release", "fbStartTime": 0.0, "fbContactTime": 0.8, "fbEndTime": 1.7, "fbHoldClipTime": 0.25,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.06, "blendOut": 0.15,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.15,
       "rootMotion": "inplace", "maxStep": 0.7, "useStepIn": true, "stepIn": 0.6,
       "source": "hq039-Zboro_AttackFwd_2strong", "note": "1.7 s in place; sword raised 0.43-0.64 s, strike peak 0.77 s; charge parks at 0.40 s (blade rising, cocked)"
     },
@@ -64,7 +64,7 @@
       "character": "Dracula", "move": "riposte", "enabled": true,
       "clip": "atk_riposte", "startTime": 0.35, "contactTime": 0.57, "endTime": 1.2, "holdClipTime": 0.0,
       "fallbackClip": "riposte", "fbStartTime": 0.25, "fbContactTime": 0.5, "fbEndTime": 1.2, "fbHoldClipTime": 0.0,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.05, "blendOut": 0.12,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.12,
       "rootMotion": "inplace", "maxStep": 0.6, "useStepIn": true, "stepIn": 0.4,
       "source": "hq058-Sien_Smalls_AttackCountertempo_102_impact", "note": "1.95 s counter-tempo thrust; start 0.35 skips the step-back (the parry already is the step back); lunge extended 0.57-0.98 s"
     },
@@ -73,7 +73,7 @@
       "character": "Pitborn", "move": "light_right", "enabled": true,
       "clip": "light_attack_R", "startTime": 0.0, "contactTime": 0.27, "endTime": 1.1, "holdClipTime": 0.0,
       "fallbackClip": "", "fbStartTime": 0.0, "fbContactTime": 0.0, "fbEndTime": 0.0, "fbHoldClipTime": 0.0,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.06, "blendOut": 0.12,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.12,
       "rootMotion": "inplace", "maxStep": 0.5, "useStepIn": false, "stepIn": 0.0,
       "source": "", "note": "existing Pitborn clip, contact measured (hand speed peak 0.27 s), the old squash played it contact-first at about tick 12 of 20"
     },
@@ -81,7 +81,7 @@
       "character": "Pitborn", "move": "slash_riposte", "enabled": true,
       "clip": "light_attack_R", "startTime": 0.0, "contactTime": 0.27, "endTime": 1.1, "holdClipTime": 0.0,
       "fallbackClip": "", "fbStartTime": 0.0, "fbContactTime": 0.0, "fbEndTime": 0.0, "fbHoldClipTime": 0.0,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.06, "blendOut": 0.12,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.12,
       "rootMotion": "inplace", "maxStep": 0.5, "useStepIn": false, "stepIn": 0.0,
       "source": "", "note": ""
     },
@@ -89,7 +89,7 @@
       "character": "Pitborn", "move": "light_left", "enabled": true,
       "clip": "light_attack_L", "startTime": 0.0, "contactTime": 0.53, "endTime": 1.3, "holdClipTime": 0.0,
       "fallbackClip": "", "fbStartTime": 0.0, "fbContactTime": 0.0, "fbEndTime": 0.0, "fbHoldClipTime": 0.0,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.06, "blendOut": 0.12,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.12,
       "rootMotion": "inplace", "maxStep": 0.5, "useStepIn": false, "stepIn": 0.0,
       "source": "", "note": "clip is 1.9 s; contact 0.53 s, tail after 1.3 s cut"
     },
@@ -97,7 +97,7 @@
       "character": "Pitborn", "move": "thrust", "enabled": true,
       "clip": "thrust", "startTime": 0.5, "contactTime": 0.93, "endTime": 1.5, "holdClipTime": 0.0,
       "fallbackClip": "", "fbStartTime": 0.0, "fbContactTime": 0.0, "fbEndTime": 0.0, "fbHoldClipTime": 0.0,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.06, "blendOut": 0.12,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.12,
       "rootMotion": "inplace", "maxStep": 0.8, "useStepIn": false, "stepIn": 0.0,
       "source": "", "note": "clip is 2.0 s; contact 0.93 s; the first 0.5 s (lead-in) skipped"
     },
@@ -105,7 +105,7 @@
       "character": "Pitborn", "move": "heavy_overhead", "enabled": true,
       "clip": "heavy_release", "startTime": 0.1, "contactTime": 0.97, "endTime": 1.9, "holdClipTime": 0.35,
       "fallbackClip": "", "fbStartTime": 0.0, "fbContactTime": 0.0, "fbEndTime": 0.0, "fbHoldClipTime": 0.0,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.06, "blendOut": 0.15,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.15,
       "rootMotion": "inplace", "maxStep": 0.6, "useStepIn": false, "stepIn": 0.0,
       "source": "", "note": "clip is 3.0 s (old squash x2.65); contact 0.97 s"
     },
@@ -113,7 +113,7 @@
       "character": "Pitborn", "move": "riposte", "enabled": true,
       "clip": "riposte", "startTime": 0.35, "contactTime": 0.73, "endTime": 1.3, "holdClipTime": 0.0,
       "fallbackClip": "", "fbStartTime": 0.0, "fbContactTime": 0.0, "fbEndTime": 0.0, "fbHoldClipTime": 0.0,
-      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.05, "blendOut": 0.12,
+      "windupSpeed": 0.0, "recoverySpeed": 0.0, "blendIn": 0.04, "blendOut": 0.12,
       "rootMotion": "inplace", "maxStep": 0.6, "useStepIn": false, "stepIn": 0.0,
       "source": "", "note": "clip is 2.2 s; contact 0.73 s"
     }

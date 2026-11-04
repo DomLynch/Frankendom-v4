@@ -111,6 +111,11 @@ public class CueBus : MonoBehaviour
     void OnContact(DuelFighter a, DuelFighter d, string type, bool heavy, bool perfect)
     {
         bool kick = a.CurrentMove != null && a.CurrentMove.id == "kick";
+        {   // P2: cues.json (weapon x surface x weight); falls through to the built-in mapping below when the table is off
+            var hr = type == "Hit" ? HitReactionTable.Last : null;
+            string evt = type == "Hit" ? "hit" : type == "GuardBroken" ? "guard_break" : type == "Parried" ? "parry" : type == "Blocked" ? (perfect ? "block_perfect" : "block") : "";
+            if (evt != "" && CueTable.Dispatch(this, evt, a, d, hr != null ? hr.weight : (kick ? "kick" : heavy ? "heavy" : "light"), a.CurrentMove != null ? a.CurrentMove.id : "")) return;
+        }
         switch (type)
         {
             case "Hit": Play(kick ? "hit_kick" : heavy ? "hit_heavy" : "hit_flesh", 0.3f); break;
@@ -121,15 +126,18 @@ public class CueBus : MonoBehaviour
     }
     void OnAttackStarted(DuelFighter f, MoveDef m)
     {
+        if (CueTable.Dispatch(this, "attack_start", f, null, m.id == "kick" ? "kick" : IsHeavy(m) ? "heavy" : "light", m.id)) return;   // P2: cues.json
         if (m.id == "kick") Play("whoosh_light", 0.09f);
         else if (IsHeavy(m)) Play("whoosh_heavy", 0.18f);
         else Play("whoosh_light", 0.12f);
     }
-    void OnAttackMissed(DuelFighter f, MoveDef m) { Play("whoosh_light", 0.1f, 0f, 0.8f); }
-    void OnAction(DuelFighter f, string action) { if (action == "roll") Play("roll", 0.12f); else if (action == "backstep") Play("backstep", 0.09f); }
+    void OnAttackMissed(DuelFighter f, MoveDef m) { if (CueTable.Dispatch(this, "attack_miss", f, null, m != null && m.id == "kick" ? "kick" : IsHeavy(m) ? "heavy" : "light", m != null ? m.id : "")) return; Play("whoosh_light", 0.1f, 0f, 0.8f); }
+    void OnAction(DuelFighter f, string action) { if (CueTable.Dispatch(this, action, f, null, "light", "")) return; if (action == "roll") Play("roll", 0.12f); else if (action == "backstep") Play("backstep", 0.09f); }
     void OnKilled(DuelFighter f, MoveDef m)
     {
         frameStamp = Time.frameCount; frameCap = 8; frameUsed = Mathf.Min(frameUsed, 7);
+        var hr = HitReactionTable.Last;   // P2: the killing blow (set by Duel.Resolve before Die); victim = f
+        if (CueTable.Dispatch(this, "kill", hr != null ? hr.attacker : null, f, hr != null ? hr.weight : "light", hr != null ? hr.moveId : (m != null ? m.id : ""))) return;
         Play("death_voice", 0.45f, 0.03f); Play("kill", 0.65f, 0.65f);
         bool stab = m != null && (m.id.Contains("thrust") || m.id == "riposte");
         Play(stab ? "flesh_stab" : "flesh_cut", 0.45f);

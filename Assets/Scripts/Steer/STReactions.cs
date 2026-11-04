@@ -319,6 +319,7 @@ public class STReactions : MonoBehaviour
     }
 
     // ---------------- write the knobs into the brains ----------------
+    public void ReapplyDracula() { if (dra != null) ApplyKnobs(dra); }
     void ApplyKnobs(Ctx c)
     {
         if (!BrainOn(c)) return;

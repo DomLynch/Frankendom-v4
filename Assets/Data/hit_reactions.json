@@ -1,0 +1,430 @@
+{
+ "version": 1,
+ "_notes": "Hit reactions by location x direction x weight. Most specific row wins, a later row wins a tie (character 8, location 4, direction 2, weight 1; '*' = any). state = clip that EXISTS in both controllers today; prefer = better clip used automatically once it is imported under that exact state name (HasState check); fallback is for knockdown rows when allowKnockdown is false. staggerScale 1 = sim unchanged (it multiplies the stagger ticks Duel.Resolve already computed). directions: attacker position in the victim frame; face to face the swing side decides left/right, mirrorSwing=true because an attacker's right-hand swing lands on the victim's left.",
+ "enabled": true,
+ "allowKnockdown": false,
+ "logPicks": false,
+ "heights": {
+  "head": 1.5,
+  "torso": 0.9
+ },
+ "directions": {
+  "front": 55,
+  "back": 90,
+  "mirrorSwing": true
+ },
+ "weights": {
+  "kickMoves": [
+   "kick"
+  ],
+  "heavyMinDamage": 18,
+  "heavyIfCharges": true,
+  "escalateOnCounter": true,
+  "escalateOnRear": false
+ },
+ "defaultState": "hit_light_front",
+ "moves": [
+  {
+   "id": "kick",
+   "location": "legs",
+   "side": ""
+  },
+  {
+   "id": "light_right",
+   "location": "arm",
+   "side": "right"
+  },
+  {
+   "id": "light_left",
+   "location": "arm",
+   "side": "left"
+  },
+  {
+   "id": "slash_riposte",
+   "location": "arm",
+   "side": "right"
+  },
+  {
+   "id": "skill_stomp",
+   "location": "legs"
+  },
+  {
+   "id": "skill_reaping",
+   "location": "arm",
+   "side": "right"
+  },
+  {
+   "id": "skill_hewer",
+   "location": "arm",
+   "side": "right"
+  },
+  {
+   "swingDirection": "overhead",
+   "location": "head",
+   "height": 1.65
+  },
+  {
+   "swingDirection": "thrust",
+   "location": "torso",
+   "height": 1.1
+  },
+  {
+   "swingDirection": "low",
+   "location": "legs",
+   "height": 0.5
+  },
+  {
+   "swingDirection": "right",
+   "location": "arm",
+   "side": "right"
+  },
+  {
+   "swingDirection": "left",
+   "location": "arm",
+   "side": "left"
+  },
+  {
+   "id": "*",
+   "location": "torso",
+   "height": 1.1
+  }
+ ],
+ "rows": [
+  {
+   "character": "*",
+   "location": "*",
+   "direction": "*",
+   "weight": "light",
+   "state": "hit_light_front",
+   "prefer": "",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "today's light flinch"
+  },
+  {
+   "character": "*",
+   "location": "*",
+   "direction": "back",
+   "weight": "light",
+   "state": "hit_light_back",
+   "prefer": "",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "react-small-from-back (already in both controllers)"
+  },
+  {
+   "character": "*",
+   "location": "*",
+   "direction": "*",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "today's heavy stagger"
+  },
+  {
+   "character": "*",
+   "location": "*",
+   "direction": "back",
+   "weight": "heavy",
+   "state": "hit_light_back",
+   "prefer": "hit_large_back",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "no heavy-back clip yet: back flinch until 128670938 is imported"
+  },
+  {
+   "character": "*",
+   "location": "*",
+   "direction": "*",
+   "weight": "kick",
+   "state": "hit_light_front",
+   "prefer": "hit_gut",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "kick lands low/gut"
+  },
+  {
+   "character": "*",
+   "location": "head",
+   "direction": "front",
+   "weight": "light",
+   "state": "hit_light_front",
+   "prefer": "hit_small_front",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "128670943/44/45 standing-react-small"
+  },
+  {
+   "character": "*",
+   "location": "head",
+   "direction": "left",
+   "weight": "light",
+   "state": "hit_light_front",
+   "prefer": "hit_small_left",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "128670943/44/45 standing-react-small"
+  },
+  {
+   "character": "*",
+   "location": "head",
+   "direction": "right",
+   "weight": "light",
+   "state": "hit_light_front",
+   "prefer": "hit_small_right",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "128670943/44/45 standing-react-small"
+  },
+  {
+   "character": "*",
+   "location": "torso",
+   "direction": "front",
+   "weight": "light",
+   "state": "hit_light_front",
+   "prefer": "hit_small_front",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "128670943/44/45 standing-react-small"
+  },
+  {
+   "character": "*",
+   "location": "torso",
+   "direction": "left",
+   "weight": "light",
+   "state": "hit_light_front",
+   "prefer": "hit_small_left",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "128670943/44/45 standing-react-small"
+  },
+  {
+   "character": "*",
+   "location": "torso",
+   "direction": "right",
+   "weight": "light",
+   "state": "hit_light_front",
+   "prefer": "hit_small_right",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "128670943/44/45 standing-react-small"
+  },
+  {
+   "character": "*",
+   "location": "arm",
+   "direction": "front",
+   "weight": "light",
+   "state": "hit_light_front",
+   "prefer": "hit_small_front",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "128670943/44/45 standing-react-small"
+  },
+  {
+   "character": "*",
+   "location": "arm",
+   "direction": "left",
+   "weight": "light",
+   "state": "hit_light_front",
+   "prefer": "hit_small_left",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "128670943/44/45 standing-react-small"
+  },
+  {
+   "character": "*",
+   "location": "arm",
+   "direction": "right",
+   "weight": "light",
+   "state": "hit_light_front",
+   "prefer": "hit_small_right",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "128670943/44/45 standing-react-small"
+  },
+  {
+   "character": "*",
+   "location": "head",
+   "direction": "front",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "hit_large_front",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+  },
+  {
+   "character": "*",
+   "location": "head",
+   "direction": "left",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "hit_large_left",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+  },
+  {
+   "character": "*",
+   "location": "head",
+   "direction": "right",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "hit_large_right",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+  },
+  {
+   "character": "*",
+   "location": "torso",
+   "direction": "front",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "hit_large_front",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+  },
+  {
+   "character": "*",
+   "location": "torso",
+   "direction": "left",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "hit_large_left",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+  },
+  {
+   "character": "*",
+   "location": "torso",
+   "direction": "right",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "hit_large_right",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+  },
+  {
+   "character": "*",
+   "location": "arm",
+   "direction": "front",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "hit_large_front",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+  },
+  {
+   "character": "*",
+   "location": "arm",
+   "direction": "left",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "hit_large_left",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+  },
+  {
+   "character": "*",
+   "location": "arm",
+   "direction": "right",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "hit_large_right",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+  },
+  {
+   "character": "*",
+   "location": "torso",
+   "direction": "front",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "hit_gut",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "128650924 standing-react-large-gut: belly blow"
+  },
+  {
+   "character": "*",
+   "location": "head",
+   "direction": "front",
+   "weight": "heavy",
+   "state": "hit_heavy",
+   "prefer": "",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "keep big-hit-to-head (Dracula) / big-side-hit (Pitborn)"
+  },
+  {
+   "character": "*",
+   "location": "legs",
+   "direction": "back",
+   "weight": "*",
+   "state": "hit_light_back",
+   "prefer": "",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "from behind: back flinch whatever the weight"
+  },
+  {
+   "character": "*",
+   "location": "legs",
+   "direction": "*",
+   "weight": "light",
+   "state": "hit_light_front",
+   "prefer": "hit_gut",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "no leg clip yet (see handoff): gut react"
+  },
+  {
+   "character": "*",
+   "location": "legs",
+   "direction": "*",
+   "weight": "heavy",
+   "state": "knockdown",
+   "prefer": "",
+   "fallback": "hit_heavy",
+   "staggerScale": 1.0,
+   "knockdown": true,
+   "note": "sweep / stomp: knockdown ONLY when allowKnockdown=true (changes the sim: Down state)"
+  }
+ ]
+}

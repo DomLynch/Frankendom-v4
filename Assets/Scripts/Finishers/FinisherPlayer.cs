@@ -1,0 +1,268 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+// The finisher scene player (was FinisherPlayer). Self-contained: entry pick + rotation (persisted), pair placement, paired clips (killer + victim), timed shots / slow-mo / gore,
+// the Die() timing. Everything tunable is data: finishers.json entries. Run() talks to the real-time duel only through RTFinisherHost.
+//   cut gore: type "cut" (or head_detach -> unit "head", skull_split -> unit "head_split") -> MeshCut.Cut; type "blood_burst" / failed cut -> a CombatEvent "Hit" at the wound.
+public static class FinisherPlayer
+{
+    public static event Action<FinisherGoreCall> OnGore;
+    public static event Action<string> OnFinisherStart;   // entry id (UI / audio / stats)
+
+    static int lastIndex = -1, kills; static string lastId; static bool rotLoaded;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetStatics() { lastIndex = -1; kills = 0; lastId = null; rotLoaded = false; OnGore = null; OnFinisherStart = null; }
+
+    // the rotation index survives a restart (Application.persistentDataPath\finisher_rotation.json, FinisherRotationStore); read once on the first pick
+    static void EnsureRotation() { if (rotLoaded) return; rotLoaded = true; FinisherRotationStore.Load(out lastIndex, out kills, out lastId); }
+
+    // ---------------- selection ----------------
+    static int Hash(string s) { unchecked { int h = 17; if (s != null) foreach (char c in s) h = h * 31 + c; return h; } }
+
+    static string DirectionOf(DuelFighter attacker, DuelFighter victim)
+    {
+        if (attacker == null || victim == null) return "front";
+        Vector3 to = attacker.transform.position - victim.transform.position; to.y = 0f; if (to.sqrMagnitude < 1e-4f) return "front";
+        float dot = Vector3.Dot(victim.transform.forward, to.normalized);
+        return dot > 0.5f ? "front" : dot < -0.5f ? "back" : "side";
+    }
+
+    static bool In(string[] list, string v) { if (list == null || list.Length == 0) return true; foreach (var s in list) if (string.Equals(s, v, StringComparison.OrdinalIgnoreCase) || s == "*") return true; return false; }
+
+    /// <summary>An entry by id (debug / -finisherauto), filters ignored.</summary>
+    public static FinisherEntry ById(string id)
+    {
+        var cfg = FinisherConfig.Get(); if (cfg.entries == null || string.IsNullOrEmpty(id)) return null;
+        foreach (var e in cfg.entries) if (e != null && e.id == id) return e;
+        return null;
+    }
+
+    /// <summary>The entry for this killing blow (rotation + filters), or null = plain death.</summary>
+    public static FinisherEntry Pick(FinisherContext ctx)
+    {
+        EnsureRotation();
+        var file = FinisherConfig.Get(); var cfg = file.rotation; var entries = file.entries;
+        if (entries == null || entries.Length == 0) return null;
+        string weapon = ctx.killerSide == 0 ? cfg.weapons.Dracula : cfg.weapons.Pitborn, dir = DirectionOf(ctx.killer, ctx.victim);
+        string side = ctx.killerSide == 0 ? "Dracula" : "Pitborn";
+        var ok = new List<int>();
+        for (int i = 0; i < entries.Length; i++)
+        {
+            var e = entries[i]; if (e == null || !e.enabled) continue;
+            if (e.attackerSide != "any" && !string.Equals(e.attackerSide, side, StringComparison.OrdinalIgnoreCase)) continue;
+            if (!In(e.weapons, weapon) || !In(e.directions, dir) || !In(e.moves, ctx.move.ToString()) || !In(e.locations, ctx.loc.ToString())) continue;
+            ok.Add(i);
+        }
+        if (ok.Count == 0)
+        {
+            if (!string.IsNullOrEmpty(cfg.fallbackEntry)) foreach (var e in entries) if (e != null && e.id == cfg.fallbackEntry) return e;
+            return null;
+        }
+        int pickIdx;
+        if (cfg.mode == "random")
+        {
+            var rng = new System.Random(cfg.seed ^ Hash(weapon) ^ (Hash(dir) * 7) ^ (kills * 7919));
+            var pool = new List<int>(ok);
+            if (cfg.noImmediateRepeat && pool.Count > 1) pool.RemoveAll(i => entries[i].id == lastId);
+            float sum = 0f; foreach (int i in pool) sum += Mathf.Max(0f, entries[i].weight);
+            double r = rng.NextDouble() * Math.Max(sum, 1e-6f); pickIdx = pool[pool.Count - 1];
+            foreach (int i in pool) { r -= Mathf.Max(0f, entries[i].weight); if (r < 0) { pickIdx = i; break; } }
+        }
+        else
+        {
+            pickIdx = ok[0]; foreach (int i in ok) if (i > lastIndex) { pickIdx = i; break; }   // next eligible entry after the last one, wrapping
+        }
+        lastIndex = pickIdx; lastId = entries[pickIdx].id; kills++;
+        FinisherRotationStore.Save(lastIndex, kills, lastId);
+        return entries[pickIdx];
+    }
+
+    // ---------------- helpers ----------------
+    static void PressById(DuelFighter f, string id)
+    {
+        switch (id)
+        {
+            case "heavy_overhead": f.Press("heavy"); break;
+            case "thrust": f.Press("thrust"); break;
+            case "kick": f.Press("kick"); break;
+            case "special1": f.special1Cd = 0; f.Press("special1"); break;
+            case "special2": f.special2Cd = 0; f.Press("special2"); break;
+            default: f.Press(id); break;    // light_left / light_right
+        }
+    }
+    static string MoveKey(string id) { return id == "special1" ? "skill_cleave" : id == "special2" ? "skill_reaping" : id; }
+
+    static float ClipLength(Fighter f, string clip)
+    {
+        if (f == null || f.anim == null || f.anim.runtimeAnimatorController == null) return 0f;
+        foreach (var c in f.anim.runtimeAnimatorController.animationClips) if (c.name == clip) return c.length;
+        return 0f;
+    }
+    public static bool HasState(Fighter f, string clip) { return f != null && f.anim != null && !string.IsNullOrEmpty(clip) && f.anim.HasState(0, Animator.StringToHash(clip)); }
+
+    static Vector3 Flat(Vector3 v) { v.y = 0f; return v; }
+
+    /// <summary>Moves a fighter without the CharacterController fighting the teleport.</summary>
+    public static void Teleport(DuelFighter f, Vector3 pos, Vector3 facing)
+    {
+        var cc = f.GetComponent<CharacterController>();
+        if (cc) cc.enabled = false;
+        f.transform.position = pos;
+        facing.y = 0f; if (facing.sqrMagnitude > 1e-4f) f.transform.rotation = Quaternion.LookRotation(facing.normalized, Vector3.up);
+        if (cc) cc.enabled = true;
+    }
+
+    // ---------------- playback ----------------
+    public static IEnumerator Run(RTFinisherHost host, FinisherEntry e, FinisherContext ctx)
+    {
+        if (!host.Begin()) yield break;
+        bool rig = host.HasCamera;
+        DuelFighter A = host.Fighter(ctx.killerSide), V = host.Fighter(ctx.victimSide);
+        Fighter fa = A.GetComponent<Fighter>(), fv = V.GetComponent<Fighter>();
+        FinisherLoc loc = ctx.loc;
+        if (e.placeholder) Debug.Log("[finisher] " + e.id + " uses placeholder clips");
+        if (OnFinisherStart != null) OnFinisherStart(e.id);
+        host.Notify("Finisher: " + e.id);
+        host.Prep();
+
+        // placement: pair on the lane axis, facing each other (hidden by the hard first cut). distance / pairOffset are stand-in metres scaled by the killer;
+        // killerYawDeg turns the killer so its clip's own facing points at the victim, victimYawDeg likewise for the victim.
+        Vector3 mid = (A.transform.position + V.transform.position) * 0.5f, axis = Flat(V.transform.position - A.transform.position);
+        if (axis.sqrMagnitude < 1e-4f) axis = A.transform.forward; axis.Normalize();
+        float ks = e.distanceScaleByKiller ? Mathf.Max(0.5f, A.scale) : 1f;
+        Vector3 rightV = Vector3.Cross(Vector3.up, axis);
+        float dz = Mathf.Max(0.6f, e.distance * ks), dx = 0f;
+        if (e.pairOffset != null && e.pairOffset.Length >= 3) { dx = e.pairOffset[0] * ks; dz = Mathf.Max(0.6f, e.pairOffset[2] * ks); }
+        Vector3 pa = new Vector3(mid.x, A.transform.position.y, mid.z) - axis * (dz * 0.5f) - rightV * (dx * 0.5f);
+        Vector3 pv = pa + axis * dz + rightV * dx; pv.y = V.transform.position.y;
+        Teleport(A, pa, Quaternion.Euler(0f, e.killerYawDeg, 0f) * axis);
+        Teleport(V, pv, Quaternion.Euler(0f, e.victimYawDeg, 0f) * -axis);
+        A.opponent = null; V.opponent = null; A.guardHeld = false; V.guardHeld = false; A.moveDir = V.moveDir = Vector3.zero;
+
+        bool clipPath = !string.IsNullOrEmpty(e.attackerClip) && HasState(fa, e.attackerClip);
+        string moveKey = MoveKey(e.attackerMove);
+        var md = A.moves != null ? A.moves.Get(moveKey) : null;
+        var ac = AttackClipTable.Get(); float frac = ac != null && ac.enabled && ac.defaults != null ? ac.defaults.contactActiveFrac : 0.5f;
+        int off = Mathf.Max(1, Mathf.RoundToInt(frac * (md != null ? md.Active(false) : 4)));
+        float planned = e.contactAt >= 0f ? e.contactAt : clipPath ? 0.6f : (1 + (md != null ? md.Windup(false) : 14) + off) / 60f;
+        bool vClip = !string.IsNullOrEmpty(e.victimClip) && HasState(fv, e.victimClip);
+        float vLen = vClip ? ClipLength(fv, e.victimClip) / Mathf.Max(0.05f, e.victimClipSpeed) : 0f;
+
+        // the DuelFighter state machine must not touch a body that plays a paired clip
+        if (clipPath) A.enabled = false;
+        if (vClip) V.enabled = false;
+
+        // timelines
+        var shots = new List<FinisherShotKey>(e.shots ?? new FinisherShotKey[0]); shots.Sort((p, q) => p.t.CompareTo(q.t));
+        var slows = new List<FinisherSlowKey>(e.slowmo ?? new FinisherSlowKey[0]);
+        var gores = new List<FinisherGoreKey>(e.gore ?? new FinisherGoreKey[0]);
+        bool[] shotDone = new bool[shots.Count], slowDone = new bool[slows.Count], goreDone = new bool[gores.Count];
+        bool contactSeen = false, vStarted = false, dead = false;
+        float T = 0f, contactT = planned, vStart = 0f, wall0 = Time.unscaledTime;
+
+        if (clipPath) { fa.holdLast = false; fa.ForceExact(e.attackerClip, e.attackerFade, e.attackerClipStart); fa.anim.speed = e.attackerClipSpeed * fa.animWeight; }
+        else { PressById(A, e.attackerMove); }
+
+        // first shot is a hard cut (the pair was just placed)
+        if (rig)
+        {
+            bool any = false;
+            for (int i = 0; i < shots.Count; i++) if (shots[i].t <= 0f && shots[i].rel != "contact") { host.CameraCut(shots[i].shot, A.transform, V.transform, 0f, e.shotDefs); shotDone[i] = true; any = true; break; }
+            if (!any) host.CameraCut(FinisherConfig.Get().rt.fallbackShot, A.transform, V.transform, 0f, e.shotDefs);
+        }
+
+        float total = Mathf.Max(e.duration, planned + 0.5f);
+        while (T < total)
+        {
+            T += Time.deltaTime;
+            host.TimeTick();
+            // contact
+            if (!contactSeen)
+            {
+                bool hit = clipPath ? T >= planned : (A.state == FState.Active && A.CurrentMove != null && A.CurrentMove.id == moveKey && A.t >= off);
+                if (hit)
+                {
+                    contactSeen = true; contactT = T;
+                    host.FireEvent(A, V, "Hit", true, loc, A.CurrentMove);
+                    if (rig) host.CameraShake(0.03f);
+                    if (!vClip && e.dieAt <= -1.5f && !dead) { V.Die(); dead = true; }
+                }
+            }
+            // victim clip
+            if (vClip && !vStarted)
+            {
+                float vs = e.victimStart >= 0f ? e.victimStart : (contactSeen ? contactT : planned);
+                if (T >= vs && (e.victimStart >= 0f || contactSeen)) { vStarted = true; fv.holdLast = false; fv.ForceExact(e.victimClip, e.victimFade, 0f); fv.anim.speed = e.victimClipSpeed * fv.animWeight; vStart = T; }
+            }
+            if (vClip && vStarted && !dead && e.dieAt != -1f)
+            {
+                float at = e.dieAt >= 0f ? e.dieAt : vStart + vLen;
+                if (T >= at)
+                {
+                    dead = true; V.enabled = true; V.Die();
+                    if (e.holdLast && fv.anim != null && fv.anim.enabled) { fv.holdLast = true; fv.ForceExact(e.victimClip, 0f, Mathf.Max(0f, ClipLength(fv, e.victimClip) - 0.02f)); }
+                }
+            }
+            // shots, slow-mo, gore
+            for (int i = 0; i < shots.Count; i++)
+            {
+                if (shotDone[i]) continue; var k = shots[i];
+                float at = k.rel == "contact" ? (contactSeen ? contactT : planned) + k.t : k.t;
+                if (T >= at) { shotDone[i] = true; if (rig) host.CameraCut(k.shot, A.transform, V.transform, k.blend, e.shotDefs); }
+            }
+            for (int i = 0; i < slows.Count; i++)
+            {
+                if (slowDone[i]) continue; var k = slows[i];
+                float at = k.rel == "contact" ? (contactSeen ? contactT : planned) + k.t : k.t;
+                if (T >= at) { slowDone[i] = true; host.SlowMo(k.scale, k.duration, k.easeIn, k.easeOut); }
+            }
+            for (int i = 0; i < gores.Count; i++)
+            {
+                if (goreDone[i]) continue; var k = gores[i];
+                float at = k.rel == "contact" ? (contactSeen ? contactT : planned) + k.t : k.t;
+                if (T >= at && (k.rel != "contact" || contactSeen || at <= planned + 0.001f)) { goreDone[i] = true; Gore(k, V, A, loc); }
+            }
+            if (Time.unscaledTime - wall0 > total * 8f + 6f) { Debug.LogWarning("[finisher] timeout " + e.id); break; }
+            yield return null;
+        }
+        if (!dead) { V.enabled = true; V.Die(); }
+        // hold the last frame (unscaled), then give control back
+        host.TimeRestore();
+        float hold = Mathf.Max(0f, e.holdAfter);
+        for (float t = 0f; t < hold; t += Time.unscaledDeltaTime) yield return null;
+        if (clipPath) { A.enabled = true; if (fa != null) { fa.holdLast = false; fa.Force("idle", 0.15f); if (fa.anim) fa.anim.speed = fa.animWeight; } }
+        A.state = FState.Loco; A.t = 0;
+        host.Cleanup();
+        if (rig) host.CameraDone();
+    }
+
+    // ---------------- gore ----------------
+    static void Gore(FinisherGoreKey k, DuelFighter victim, DuelFighter attacker, FinisherLoc loc)
+    {
+        Vector3 away = Flat(victim.transform.position - attacker.transform.position); if (away.sqrMagnitude < 1e-4f) away = attacker.transform.forward; away.Normalize();
+        string unit = !string.IsNullOrEmpty(k.cut) ? k.cut : k.type == "head_detach" ? "head" : k.type == "skull_split" ? "head_split" : "";
+        var call = new FinisherGoreCall { type = k.type, unit = unit, param = k.param, victim = victim, attacker = attacker, away = away, strength = k.strength, point = victim.transform.position + Vector3.up * 1.4f * Mathf.Max(1f, victim.scale) };
+        if (OnGore != null) OnGore(call);
+        bool handled = false;
+        if (unit.Length > 0 && FinisherConfig.EnableGore)
+        {
+            try
+            {
+                var res = MeshCut.Cut(victim.transform, unit, FinisherConfig.Get().rotation.seed + Mathf.Abs(Hash(unit)) % 1000, away, k.strength, 60f * k.strength);
+                handled = res != null && res.ok;   // ok=false (unknown unit, unreadable mesh, exception inside) -> the head-hide / blood fallback below runs
+                if (res != null && !res.ok) Debug.LogWarning("[finisher] cut '" + unit + "' not done: " + res.note);
+            }
+            catch (Exception ex) { Debug.LogWarning("[finisher] MeshCut.Cut failed: " + ex.Message); }
+        }
+        if (!handled)
+        {
+            // stand-in when the mesh cut cannot run: head_detach hides the head bone so the beat still reads, plus a blood event at the wound
+            if (k.type == "head_detach") foreach (var t in victim.GetComponentsInChildren<Transform>()) if (t.name.EndsWith("Head")) { t.localScale = Vector3.one * 0.0001f; break; }
+            ContactRelay.RaiseEvent(new CombatEvent { type = "Hit", actor = attacker, target = victim, moveId = attacker.CurrentMove != null ? attacker.CurrentMove.id : "", heavy = true, location = loc == FinisherLoc.Head ? "head" : "torso", direction = "front", point = call.point, tick = Duel.TickCount });
+        }
+        if (k.type == "blood_burst") ContactRelay.RaiseEvent(new CombatEvent { type = "Hit", actor = attacker, target = victim, heavy = true, location = "torso", direction = "front", point = call.point, tick = Duel.TickCount });
+    }
+}

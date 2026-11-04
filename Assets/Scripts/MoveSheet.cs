@@ -22,6 +22,7 @@ public class MoveSheet : MonoBehaviour
     {
         public string id = "", subject = "Dracula", action = "press", press = "", durationFrom = "", dir = "none";
         public int durationTicks = 0, tailTicks = 0, side = 0;
+        public string then = ""; public int thenTick = 0, thenSide = 0;   // P1: a SECOND press `thenTick` sim ticks after the first (roll / sidestep / backstep / light / ...), to prove cancel windows and the press queue
         public bool guard, run, follow;
         public float separation = 2.2f, startZ = 0f;
         public string hand = "";   // handcam rows: "right" | "left" ("" = handcam.hand; the -hand: argument wins)
@@ -81,7 +82,7 @@ public class MoveSheet : MonoBehaviour
     Transform hips, neck, wsock; float wYmax;   // weapon socket + far end of the weapon along its shaft (socket-local Y)
     Camera camSide, cam34; RenderTexture rtSide, rt34, rtSmall; Texture2D readTex;
     Color32[] sheetSide, sheet34; int sheetW, sheetH;
-    int tick0, B, dur, pre; int[] ages; int nextTile, doneTiles; bool pressed;
+    int tick0, B, dur, pre; int[] ages; int nextTile, doneTiles; bool pressed, thenDone;
     Vector3 axis, fixedMid, subjFwd; float groundY;
     readonly List<string> log = new List<string>();
     readonly Dictionary<int, string> hashName = new Dictionary<int, string>();
@@ -277,6 +278,12 @@ public class MoveSheet : MonoBehaviour
         if (frame > D.timeoutTicks + D.settleTicks + dur + 200) { note += "TIMEOUT (sim did not advance); "; Finish(); return; }
         if (!pressed) { fixedMid = (dracula.transform.position + pitborn.transform.position) * 0.5f; axis = Flat(opp.transform.position - subj.transform.position).normalized; subjFwd = axis; groundY = subj.transform.position.y; }
         if (!pressed && Duel.TickCount + 1 >= B) { pressed = true; DoPress(); }
+        if (pressed && !thenDone && !string.IsNullOrEmpty(row.then) && Duel.TickCount >= B + row.thenTick)
+        {
+            thenDone = true; subj.stamina = subj.maxStamina;
+            if (row.then == "sidestep") subj.PressSidestep(row.thenSide); else if (row.then == "upgrade") log.Add("# hold-to-heavy upgrade " + (subj.UpgradeToHeavy(16) ? "OK" : "REFUSED")); else subj.Press(row.then);
+            log.Add("# then-press '" + row.then + "' at tick " + Duel.TickCount + " (+" + (Duel.TickCount - B) + ") state=" + subj.state + ":" + subj.t);
+        }
         if (pressed && row.action == "hold")
         {
             bool active = Duel.TickCount < B + dur;

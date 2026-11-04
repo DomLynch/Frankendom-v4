@@ -1,0 +1,451 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+// -finisherauto verify harness for the real-time finishers (RTFinisher / SteerFinisherHost / FinisherPlayer.Run).
+// For EACH enabled entry of finishers.json "entries" (or -finisherlist:id1,id2) it restarts the scene, steers Dracula with the aggressive AI (Dracula's AIBrain on, player brain off),
+// sets the victim's HP to 1 and lets the killer land a hit. After auto.killWaitSeconds without a kill it forces the lethal blow by calling Duel.Resolve itself (logged "forced").
+// The real Duel.Resolve -> RTFinisher.TryBegin hook is what starts the scene, so the whole chain is exercised. Entries with attackerSide "Pitborn" make Dracula the victim (his AI is switched off).
+// Per finisher it logs: id, clips used, duration, camera cuts, slow-mo / gore counts, ok / failed + exceptions; takes auto.shotsPerFinisher (4) screenshots.
+//   <out>\finisher_auto_log.txt       one line per event, written immediately
+//   <out>\finisher_shots\NN_<id>_k_<label>.png
+//   <out>\finisher_auto_summary.txt   VERDICT PASS|FAIL + one block per finisher + fps
+//   exit code: 0 = every finisher PASS, 2 = a finisher FAILED or an exception, 3 = -finishertimeout:<s> (default boot + n * auto.perFinisherSeconds)
+// Options: -finisherlist:<ids> -finisherout:<dir> (default the exe dir) -finishertimeout:<s> -finisherdisabled (include entries with enabled=false)
+// Finishers stay OFF in the shipped data; this harness switches them on in memory only (RTFinisher.ForceEnable) and never writes the rotation file.
+[DefaultExecutionOrder(-70)]
+public class FinisherAuto : MonoBehaviour
+{
+    static string Arg(string prefix) { foreach (var a in Environment.GetCommandLineArgs()) if (a.StartsWith(prefix, StringComparison.Ordinal)) return a.Substring(prefix.Length); return null; }
+    static bool Flag(string n) { return Array.IndexOf(Environment.GetCommandLineArgs(), n) >= 0; }
+    public static bool Requested { get { return Flag("-finisherauto"); } }
+    static readonly System.Globalization.CultureInfo IC = System.Globalization.CultureInfo.InvariantCulture;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    static void Boot()
+    {
+        if (!Requested) return;
+        try
+        {
+            Application.runInBackground = true;
+            if (FindAnyObjectByType<FinisherAuto>() != null) return;
+            var go = new GameObject("FinisherAuto"); DontDestroyOnLoad(go); go.AddComponent<FinisherAuto>();
+        }
+        catch (Exception e) { Debug.LogError("[finisherauto] boot failed: " + e); }
+    }
+
+    class Rec
+    {
+        public string id = "", killerName = "", victimName = "", attackerClip = "", victimClip = "", attackerPlayed = "", victimPlayed = "", msg = "", cause = "";
+        public bool started, ended, endOk, forced, contact, victimDead, timeOk, frozenClear, camOk, done, pass;
+        public float tStart, tEnd, tContact = -1f, tKill = -1f, duration, fightSeconds;
+        public int shots, slowmo, gore, exceptions;
+        public readonly List<string> cuts = new List<string>(), notes = new List<string>(), files = new List<string>(), warns = new List<string>(), errors = new List<string>();
+    }
+
+    FinisherAutoCfg C = new FinisherAutoCfg();
+    string dir, logPath, shotDir, summaryPath;
+    float t0, timeout, exitAt, baseScale = 1f; bool exiting; int exitCode;
+    readonly List<Rec> recs = new List<Rec>();
+    Rec cur;
+    DuelFighter D, P, K, V;
+    AIBrain dBrain; PlayerBrain dPlayer;
+    FinisherEntry entry;
+    string[] only;
+    readonly StringBuilder pending = new StringBuilder();
+    int totalExceptions, foreignExceptions; readonly List<string> exceptionList = new List<string>();
+    float fpsMin = 9999f, fpsSum; int fpsN; bool shotFrame; string timedOutWhy;
+
+    // ------------------------------------------------------------------ lifecycle
+    void Awake()
+    {
+        t0 = Time.realtimeSinceStartup; baseScale = Time.timeScale <= 0f ? 1f : Time.timeScale;
+        try
+        {
+            string o = Arg("-finisherout:");
+            try { dir = !string.IsNullOrEmpty(o) ? o : Path.GetDirectoryName(Path.GetFullPath(Application.dataPath)); } catch { dir = "."; }
+            if (string.IsNullOrEmpty(dir)) dir = ".";
+            Directory.CreateDirectory(dir);
+            logPath = Path.Combine(dir, "finisher_auto_log.txt"); shotDir = Path.Combine(dir, "finisher_shots"); summaryPath = Path.Combine(dir, "finisher_auto_summary.txt");
+            try { File.WriteAllText(logPath, ""); } catch (Exception e) { Debug.LogWarning("[finisherauto] cannot write " + logPath + ": " + e.Message); }
+            try { if (File.Exists(summaryPath)) File.Delete(summaryPath); } catch { }
+            try { Directory.CreateDirectory(shotDir); } catch (Exception e) { Debug.LogWarning("[finisherauto] cannot create " + shotDir + ": " + e.Message); }
+            C = RTFinisher.Cfg.auto ?? new FinisherAutoCfg();
+            string lst = Arg("-finisherlist:"); if (!string.IsNullOrEmpty(lst)) only = lst.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+            RTFinisher.ForceEnable = true; FinisherRotationStore.Suspended = true;
+            Application.logMessageReceived += OnUnityLog;
+            RTFinisher.OnStart += OnStart; RTFinisher.OnStage += OnStage; RTFinisher.OnEnd += OnEnd;
+            FinisherPlayer.OnGore += OnGore;
+            ContactRelay.OnKilled += OnKilled;
+            Log("finisherauto start " + DateTime.Now.ToString("s") + " unity " + Application.unityVersion + " res " + Screen.width + "x" + Screen.height + " out " + dir);
+        }
+        catch (Exception e) { Fail("Awake: " + e); }
+    }
+
+    void Start() { StartCoroutine(Guard(Main())); }
+
+    void OnDestroy()
+    {
+        Application.logMessageReceived -= OnUnityLog;
+        RTFinisher.OnStart -= OnStart; RTFinisher.OnStage -= OnStage; RTFinisher.OnEnd -= OnEnd;
+        FinisherPlayer.OnGore -= OnGore; ContactRelay.OnKilled -= OnKilled;
+    }
+
+    // ------------------------------------------------------------------ logging / exit
+    void Log(string line)
+    {
+        string s = "[" + (Time.realtimeSinceStartup - t0).ToString("0.00", IC) + "] " + line;
+        Debug.Log("[finisherauto] " + line);
+        try { File.AppendAllText(logPath, s + "\n"); } catch { }
+    }
+
+    void Fail(string msg)
+    {
+        totalExceptions++; exceptionList.Add(msg); Log("ERROR: " + msg);
+        if (cur != null) { cur.errors.Add(msg); cur.exceptions++; }
+        Exit(2, msg);
+    }
+
+    void Exit(int code, string why)
+    {
+        if (exiting) return;
+        exiting = true; exitCode = code; exitAt = Time.unscaledTime;
+        try { Time.timeScale = baseScale; } catch { }
+        try { WriteSummary(code, why); } catch (Exception e) { Log("summary failed: " + e); }
+        Log("EXIT code " + code + " (" + why + ")");
+        Application.Quit(code);
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+
+    void OnUnityLog(string msg, string stack, LogType type)
+    {
+        if (type != LogType.Exception || exiting) return;
+        string one = (msg ?? "") + " | " + FirstLine(stack);
+        totalExceptions++; exceptionList.Add(one);
+        if (cur != null && !cur.done) { cur.exceptions++; cur.errors.Add("exception: " + one); }
+        else foreignExceptions++;
+        Log("EXCEPTION: " + msg + "\n" + stack);
+    }
+    static string FirstLine(string s) { if (string.IsNullOrEmpty(s)) return ""; int i = s.IndexOf('\n'); return i < 0 ? s : s.Substring(0, i); }
+
+    IEnumerator Guard(IEnumerator it)
+    {
+        while (!exiting)
+        {
+            bool more;
+            try { more = it.MoveNext(); } catch (Exception e) { Fail("Main: " + e); yield break; }
+            if (!more) yield break;
+            yield return it.Current;
+        }
+    }
+
+    void Update()
+    {
+        if (exiting)
+        {
+#if !UNITY_EDITOR
+            if (Time.unscaledTime - exitAt > 3f) Environment.Exit(exitCode);
+#endif
+            return;
+        }
+        float dt = Time.unscaledDeltaTime;
+        if (shotFrame) shotFrame = false;
+        else if (dt > 0f && Time.frameCount > 10) { float fps = 1f / dt; if (fps < fpsMin) fpsMin = fps; fpsSum += fps; fpsN++; }
+        if (timeout > 0f && Time.realtimeSinceStartup - t0 > timeout && timedOutWhy == null)
+        {
+            timedOutWhy = "timeout " + timeout.ToString("0") + " s";
+            if (cur != null && !cur.done) { cur.errors.Add("timeout"); cur.cause = "timeout"; }
+            Exit(3, timedOutWhy);
+        }
+    }
+
+    // ------------------------------------------------------------------ events from RTFinisher
+    void OnStart(FinisherEntry e, DuelFighter k, DuelFighter v)
+    {
+        if (cur == null) return;
+        cur.started = true; cur.tStart = Time.unscaledTime; cur.killerName = k.name; cur.victimName = v.name;
+        Log("  scene start id=" + e.id + " killer=" + k.name + " victim=" + v.name + (cur.forced ? " (forced blow)" : " (natural blow)"));
+    }
+    void OnStage(string what, string detail)
+    {
+        if (cur == null || !cur.started) return;
+        if (what == "contact" && !cur.contact) { cur.contact = true; cur.tContact = Time.unscaledTime; Log("  contact " + detail); }
+        else if (what == "shot") { cur.cuts.Add(detail); }
+        else if (what == "slowmo") { cur.slowmo++; }
+        else if (what == "notify") { cur.notes.Add(detail); }
+    }
+    void OnEnd(bool ok, string msg)
+    {
+        if (cur == null) return;
+        cur.ended = true; cur.endOk = ok; cur.tEnd = Time.unscaledTime; cur.duration = cur.tEnd - cur.tStart; if (!ok) cur.errors.Add("scene: " + msg); else if (!string.IsNullOrEmpty(msg)) cur.warns.Add(msg);
+        Log("  scene end ok=" + ok + " " + msg + " duration=" + cur.duration.ToString("0.00", IC) + "s");
+    }
+    void OnGore(FinisherGoreCall g) { if (cur != null && cur.started) { cur.gore++; Log("  gore " + g.type + " unit=" + g.unit); } }
+    void OnKilled(DuelFighter f, MoveDef m) { if (cur != null && cur.started && cur.tKill < 0f && f == V) { cur.tKill = Time.unscaledTime; Log("  victim Die() at +" + (cur.tKill - cur.tStart).ToString("0.00", IC) + "s"); } }
+
+    // ------------------------------------------------------------------ main
+    IEnumerator Main()
+    {
+        yield return null; yield return null;
+        var cfg = FinisherConfig.Get();
+        var list = new List<FinisherEntry>();
+        bool incDisabled = Flag("-finisherdisabled");
+        if (cfg != null && cfg.entries != null)
+            foreach (var e in cfg.entries)
+            {
+                if (e == null) continue;
+                if (only != null) { if (Array.IndexOf(only, e.id) < 0) continue; }
+                else if (!e.enabled && !incDisabled) continue;
+                list.Add(e);
+            }
+        timeout = C.bootWaitSeconds + Mathf.Max(1, list.Count) * C.perFinisherSeconds;
+        float tv; var ts = Arg("-finishertimeout:"); if (ts != null && float.TryParse(ts, System.Globalization.NumberStyles.Float, IC, out tv) && tv > 0f) timeout = tv;
+        Log("entries: " + list.Count + " [" + string.Join(", ", list.ConvertAll(x => x.id).ToArray()) + "] timeout " + timeout.ToString("0") + " s rotationFile " + (FinisherRotationStore.FilePath ?? "?") + " (suspended: not written)");
+        if (list.Count == 0) { Fail("no finisher entries (duel_rules.json finishers.entries empty / all disabled / -finisherlist matches nothing)"); yield break; }
+
+        for (int i = 0; i < list.Count && !exiting; i++)
+        {
+            if (i > 0)
+            {
+                Log("restart scene");
+                Time.timeScale = baseScale;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                yield return null; yield return null;
+            }
+            yield return RunOne(list[i], i);
+            if (exiting) yield break;
+            float until = Time.realtimeSinceStartup + C.betweenSeconds; while (Time.realtimeSinceStartup < until) yield return null;
+        }
+        if (!exiting) { bool allPass = recs.Count == list.Count && recs.TrueForAll(r => r.pass) && totalExceptions == 0; Exit(allPass ? 0 : 2, allPass ? "all finishers passed" : "finisher failures or exceptions"); }
+    }
+
+    bool FindFighters()
+    {
+        D = P = null;
+        var g = GameObject.Find("Dracula"); if (g != null) D = g.GetComponent<DuelFighter>();
+        g = GameObject.Find("Pitborn"); if (g != null) P = g.GetComponent<DuelFighter>();
+        if (D == null || P == null)
+            foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) { if (RTFinisher.SideOf(f) == 1) { if (P == null) P = f; } else if (D == null) D = f; }
+        return D != null && P != null;
+    }
+
+    IEnumerator RunOne(FinisherEntry e, int index)
+    {
+        entry = e; cur = new Rec { id = e.id }; recs.Add(cur);
+        RTFinisher.ForceEnable = true; RTFinisher.ForceId = e.id;
+        Log("=== finisher " + (index + 1) + " id=" + e.id + " attackerSide=" + e.attackerSide + " attacker=" + (string.IsNullOrEmpty(e.attackerClip) ? "move:" + e.attackerMove : "clip:" + e.attackerClip) + " victim=" + (string.IsNullOrEmpty(e.victimClip) ? "death" : "clip:" + e.victimClip) + (e.placeholder ? " (placeholder)" : ""));
+        float tb = Time.realtimeSinceStartup;
+        while (!FindFighters() && Time.realtimeSinceStartup - tb < C.bootWaitSeconds) yield return null;
+        if (D == null || P == null) { cur.errors.Add("fighters not found"); cur.cause = "no fighters"; Finish(); yield break; }
+        yield return null; yield return null;
+
+        int vs = string.Equals(e.attackerSide, "Pitborn", StringComparison.OrdinalIgnoreCase) ? 0 : 1;   // "any" and "Dracula" kill the Pitborn
+        V = vs == 0 ? D : P; K = vs == 0 ? P : D;
+        cur.killerName = K.name; cur.victimName = V.name;
+        if (D.opponent == null) D.opponent = P; if (P.opponent == null) P.opponent = D;
+        dPlayer = D.GetComponent<PlayerBrain>(); if (dPlayer != null) dPlayer.enabled = false;
+        dBrain = D.GetComponent<AIBrain>(); if (dBrain == null) dBrain = D.gameObject.AddComponent<AIBrain>();
+        if (vs == 1) { if (!dBrain.enabled) dBrain.enabled = true; }                       // Dracula is steered by the aggressive AI
+        else { dBrain.enabled = false; D.moveDir = Vector3.zero; D.guardHeld = false; }    // Dracula is the victim: he stands still, the Pitborn AI does the killing
+        SetVictimHp(1f);
+
+        // fight until the real hook starts the scene
+        float fightStart = Time.realtimeSinceStartup, forcedAt = -1f;
+        while (!cur.started && !exiting)
+        {
+            KeepAlive();
+            float el = Time.realtimeSinceStartup - fightStart;
+            if (V.Dead) { cur.errors.Add("victim died without a finisher scene (plain death). TryBegin refusal: " + RTFinisher.LastRefusal); cur.cause = "plain death"; break; }
+            if (forcedAt < 0f && el > C.killWaitSeconds) { forcedAt = el; ForceKill(); }
+            if (forcedAt >= 0f && el > forcedAt + C.forceExtraSeconds) { cur.errors.Add("no finisher scene started (forced blow did not kill). TryBegin refusal: " + RTFinisher.LastRefusal); cur.cause = "no start"; break; }
+            yield return null;
+        }
+        cur.fightSeconds = Time.realtimeSinceStartup - fightStart;
+        if (cur.started)
+        {
+            // shots while the scene runs
+            int taken = 0, want = Mathf.Max(1, C.shotsPerFinisher); float sceneT0 = Time.unscaledTime;
+            string[] labels = { "start", "contact", "afterhit", "end" };
+            while (RTFinisher.Busy && !exiting && Time.unscaledTime - sceneT0 < C.sceneMaxSeconds)
+            {
+                float now = Time.unscaledTime;
+                if (taken < want && Due(taken, now)) { yield return Shot(taken, labels[Mathf.Min(taken, labels.Length - 1)]); taken++; }
+                else yield return null;
+            }
+            if (RTFinisher.Busy && !exiting) { cur.errors.Add("scene watchdog " + C.sceneMaxSeconds + " s (still Busy)"); cur.cause = "scene hang"; }
+            while (taken < want && !exiting) { yield return Shot(taken, labels[Mathf.Min(taken, labels.Length - 1)] + "_late"); taken++; }   // scene shorter than the schedule: fill up so there are always N shots
+            // settle one frame, then verify the restored state
+            yield return null; yield return null;
+        }
+        Finish();
+    }
+
+    // when is shot n due (unscaled)? 0: start + delay | 1: contact | 2: contact + after | 3: kill + after (or contact + 2 x after)
+    bool Due(int n, float now)
+    {
+        if (!cur.started) return false;
+        switch (n)
+        {
+            case 0: return now >= cur.tStart + C.shotStartDelay;
+            case 1: return cur.contact ? now >= cur.tContact + 0.03f : now >= cur.tStart + C.shotStartDelay + 0.8f;
+            case 2: return cur.contact ? now >= cur.tContact + C.shotAfterContact : now >= cur.tStart + C.shotStartDelay + 1.8f;
+            default: return cur.tKill >= 0f ? now >= cur.tKill + C.shotAfterKill : (cur.contact ? now >= cur.tContact + 2f * C.shotAfterContact : now >= cur.tStart + C.shotStartDelay + 2.8f);
+        }
+    }
+
+    void SetVictimHp(float hp)
+    {
+        if (V == null) return; V.health = hp; var h = V.GetComponent<Health>(); if (h != null) h.current = hp;
+    }
+
+    // the killer must survive and the victim stays at 1 HP until the blow lands
+    void KeepAlive()
+    {
+        if (K != null && !K.Dead && K.health < K.maxHealth * 0.6f) K.health = K.maxHealth;
+        if (V != null && !V.Dead && !RTFinisher.Busy && V.health > 1f) SetVictimHp(1f);
+        if (dBrain != null && dBrain.enabled && dBrain.profile != null)   // aggressive steer on Dracula (Init() re-creates the profile after every enable, so write it every frame)
+        {
+            var p = dBrain.profile; p.aggression = C.aggression; p.pressure = C.pressure; p.parry = C.parry; p.dodge = C.dodge;
+        }
+    }
+
+    // lethal blow by hand (the same entry point the AI uses): killer next to the victim, victim upright and not guarding, Duel.Resolve with a heavy
+    void ForceKill()
+    {
+        try
+        {
+            cur.forced = true;
+            Vector3 vp = V.transform.position, dirv = K.transform.position - vp; dirv.y = 0f; if (dirv.sqrMagnitude < 1e-3f) dirv = -V.transform.forward; dirv.Normalize();
+            FinisherPlayer.Teleport(K, vp + dirv * 1.3f, -dirv);
+            V.guardHeld = false; V.moveDir = Vector3.zero; if (!V.Dead && V.state != FState.Loco) { V.state = FState.Loco; V.t = 0; }
+            K.state = FState.Loco; K.t = 0; SetVictimHp(1f);
+            string mid = !string.IsNullOrEmpty(entry.attackerMove) ? entry.attackerMove : "heavy_overhead";
+            MoveDef mv = K.moves != null ? K.moves.Get(mid) : null; if (mv == null && K.moves != null) mv = K.moves.Get("heavy_overhead");
+            if (mv == null) { cur.errors.Add("ForceKill: no MoveDef '" + mid + "'"); return; }
+            Log("  no kill after " + C.killWaitSeconds + " s of fighting: forcing the lethal blow (" + mv.id + ")");
+            Duel.Resolve(K, V, mv, 1f);
+        }
+        catch (Exception ex) { cur.errors.Add("ForceKill: " + ex.Message); Log("ForceKill failed: " + ex); }
+    }
+
+    // ------------------------------------------------------------------ verdict of one finisher
+    static bool HasState(DuelFighter f, string clip) { return FinisherPlayer.HasState(f != null ? f.GetComponent<Fighter>() : null, clip); }
+
+    void Finish()
+    {
+        var r = cur; if (r == null || r.done) return;
+        try
+        {
+            var e = entry;
+            bool aClip = !string.IsNullOrEmpty(e.attackerClip), vClip = !string.IsNullOrEmpty(e.victimClip);
+            bool aHas = aClip && HasState(K, e.attackerClip), vHas = vClip && HasState(V, e.victimClip);
+            r.attackerClip = e.attackerClip; r.victimClip = e.victimClip;
+            r.attackerPlayed = aHas ? "clip:" + e.attackerClip : "move:" + e.attackerMove + (aClip ? " (clip state '" + e.attackerClip + "' missing: fell back)" : "");
+            r.victimPlayed = vHas ? "clip:" + e.victimClip : "death" + (vClip ? " (clip state '" + e.victimClip + "' missing: fell back)" : "");
+            if (aClip && !aHas) { string w = "attackerClip '" + e.attackerClip + "' is not an Animator state of " + (K != null ? K.name : "?"); if (e.placeholder) r.warns.Add(w); else r.errors.Add(w); }
+            if (vClip && !vHas) { string w = "victimClip '" + e.victimClip + "' is not an Animator state of " + (V != null ? V.name : "?"); if (e.placeholder) r.warns.Add(w); else r.errors.Add(w); }
+
+            var hp = V != null ? V.GetComponent<Health>() : null;
+            r.victimDead = V != null && V.Dead && (hp == null || hp.Dead);
+            r.frozenClear = !Duel.Frozen && !RTFinisher.Busy;   // Busy false = GameHUD / STUI would now show VICTORY / YOU DIED
+            r.timeOk = Mathf.Abs(Time.timeScale - baseScale) < 0.02f;
+            var cr = FindFirstObjectByType<CameraRig>(); r.camOk = cr == null || !cr.Yield;
+            if (r.started && r.cuts.Count == 0 && (e.shots != null && e.shots.Length > 0)) r.warns.Add("entry has shots but no camera cut happened (no CameraRig / shot ids unknown)");
+            if (!r.started) { /* cause already set */ }
+            else
+            {
+                if (!r.ended) r.errors.Add("scene never reported its end");
+                if (!r.victimDead) r.errors.Add("victim not dead after the scene");
+                if (!r.frozenClear) r.errors.Add("Duel.Frozen / RTFinisher.Busy still set after the scene");
+                if (!r.timeOk) r.errors.Add("Time.timeScale not restored (" + Time.timeScale.ToString("0.###", IC) + ")");
+                if (!r.camOk) r.errors.Add("CameraRig.Yield still true");
+                if (!r.contact) r.warns.Add("no contact event seen");
+                if (r.tKill < 0f) r.errors.Add("victim Die() never ran");
+            }
+            r.pass = r.started && r.errors.Count == 0 && r.exceptions == 0;
+        }
+        catch (Exception ex) { r.errors.Add("verdict: " + ex.Message); r.pass = false; }
+        r.done = true;
+        Log("RESULT id=" + r.id + " " + (r.pass ? "ok" : "FAILED") + " clips=" + r.attackerPlayed + " / " + r.victimPlayed + " duration=" + r.duration.ToString("0.00", IC) + "s camera=[" + string.Join(",", r.cuts.ToArray()) + "] slowmo=" + r.slowmo + " gore=" + r.gore + " shots=" + r.shots + " exceptions=" + r.exceptions
+            + (r.warns.Count > 0 ? " warn=" + string.Join("; ", r.warns.ToArray()) : "") + (r.errors.Count > 0 ? " errors=" + string.Join("; ", r.errors.ToArray()) : ""));
+    }
+
+    // ------------------------------------------------------------------ screenshots
+    IEnumerator Shot(int n, string label)
+    {
+        yield return new WaitForEndOfFrame();
+        string name = (recs.Count).ToString("D2", IC) + "_" + cur.id + "_" + (n + 1) + "_" + label;
+        string path = Path.Combine(shotDir, name + ".png");
+        try { string how = SaveShot(path); cur.shots++; cur.files.Add(name + ".png"); Log("  SHOT " + name + ".png (" + how + ")"); }
+        catch (Exception e) { cur.warns.Add("shot failed " + name + ": " + e.Message); Log("  SHOT failed " + name + ": " + e.Message); }
+        shotFrame = true;
+    }
+
+    string SaveShot(string path)
+    {
+        string mode = (C.shotMode ?? "auto").ToLowerInvariant();
+        if (mode != "camera")
+        {
+            var tex = ScreenCapture.CaptureScreenshotAsTexture();
+            if (tex != null)
+            {
+                bool black = IsBlack(tex);
+                if (!black || mode == "screen") { File.WriteAllBytes(path, tex.EncodeToPNG()); Destroy(tex); return black ? "screen, black" : "screen"; }
+                Destroy(tex);
+            }
+            else if (mode == "screen") throw new Exception("CaptureScreenshotAsTexture returned null");
+        }
+        var cam = Camera.main; if (cam == null) throw new Exception("no main camera");
+        int w = Mathf.Max(16, Screen.width), h = Mathf.Max(16, Screen.height);
+        var rt = new RenderTexture(w, h, 24, RenderTextureFormat.ARGB32) { antiAliasing = 1 }; rt.Create();
+        var prevT = cam.targetTexture; var prevA = RenderTexture.active; Texture2D t2 = null;
+        try
+        {
+            cam.targetTexture = rt; cam.Render(); RenderTexture.active = rt;
+            t2 = new Texture2D(w, h, TextureFormat.RGB24, false, false); t2.ReadPixels(new Rect(0, 0, w, h), 0, 0, false); t2.Apply(false);
+            File.WriteAllBytes(path, t2.EncodeToPNG());
+        }
+        finally { cam.targetTexture = prevT; RenderTexture.active = prevA; rt.Release(); Destroy(rt); if (t2 != null) Destroy(t2); }
+        return "camera " + w + "x" + h;
+    }
+
+    static bool IsBlack(Texture2D tex)
+    {
+        float lum = 0f; int n = 0;
+        for (int yy = 1; yy < 9; yy++) for (int xx = 1; xx < 16; xx++) { Color c = tex.GetPixel(tex.width * xx / 16, tex.height * yy / 9); lum += c.r + c.g + c.b; n++; }
+        return lum / Mathf.Max(1, n) < 0.003f;
+    }
+
+    // ------------------------------------------------------------------ summary
+    void WriteSummary(int code, string why)
+    {
+        bool allPass = code == 0 && recs.Count > 0 && recs.TrueForAll(r => r.pass) && totalExceptions == 0;
+        var sb = new StringBuilder();
+        sb.AppendLine("finisher_auto_summary  " + DateTime.Now.ToString("s") + "  unity " + Application.unityVersion + "  " + Screen.width + "x" + Screen.height);
+        sb.AppendLine("VERDICT: " + (allPass ? "PASS" : "FAIL") + "   (exit code " + code + ", " + why + ")");
+        sb.AppendLine("finishers: " + recs.Count + "  passed: " + recs.FindAll(r => r.pass).Count + "  exceptions: " + totalExceptions + (foreignExceptions > 0 ? " (outside a finisher: " + foreignExceptions + ")" : ""));
+        sb.AppendLine("fps: avg " + (fpsN > 0 ? (fpsSum / fpsN).ToString("0.0", IC) : "?") + "  worst " + (fpsN > 0 ? fpsMin.ToString("0.0", IC) : "?") + "  (screenshot frames excluded)");
+        sb.AppendLine("rotation file untouched: " + (FinisherRotationStore.FilePath ?? "?"));
+        sb.AppendLine();
+        foreach (var r in recs)
+        {
+            sb.AppendLine("--- " + r.id + ": " + (r.pass ? "ok" : "FAILED") + (r.cause.Length > 0 ? " (" + r.cause + ")" : ""));
+            sb.AppendLine("    killer " + r.killerName + " -> victim " + r.victimName + (r.forced ? "  [blow forced after " + r.fightSeconds.ToString("0.0", IC) + " s]" : "  [natural blow after " + r.fightSeconds.ToString("0.0", IC) + " s]"));
+            sb.AppendLine("    clips: attacker " + (r.attackerPlayed.Length > 0 ? r.attackerPlayed : "?") + " | victim " + (r.victimPlayed.Length > 0 ? r.victimPlayed : "?"));
+            sb.AppendLine("    duration " + r.duration.ToString("0.00", IC) + " s (unscaled)  contact at +" + (r.tContact >= 0f ? (r.tContact - r.tStart).ToString("0.00", IC) : "-") + " s  Die() at +" + (r.tKill >= 0f ? (r.tKill - r.tStart).ToString("0.00", IC) : "-") + " s");
+            sb.AppendLine("    camera: " + (r.cuts.Count > 0 ? string.Join(", ", r.cuts.ToArray()) : "(no cuts)") + "  slow-mo x" + r.slowmo + "  gore x" + r.gore);
+            sb.AppendLine("    checks: victimDead=" + r.victimDead + " frozenClear=" + r.frozenClear + " timeScaleRestored=" + r.timeOk + " cameraReleased=" + r.camOk + " exceptions=" + r.exceptions);
+            sb.AppendLine("    shots (" + r.shots + "): " + string.Join(", ", r.files.ToArray()));
+            foreach (var w in r.warns) sb.AppendLine("    WARN  " + w);
+            foreach (var er in r.errors) sb.AppendLine("    ERROR " + er);
+        }
+        if (exceptionList.Count > 0) { sb.AppendLine(); sb.AppendLine("exceptions:"); foreach (var x in exceptionList) sb.AppendLine("  " + x); }
+        File.WriteAllText(summaryPath, sb.ToString());
+    }
+}

@@ -45,6 +45,7 @@ public class STTactics
         if (def.usesPerFight > 0 && uses[i] >= def.usesPerFight) return false;
         if (def.foeHealthFracMax > 0f && o.health / Mathf.Max(1f, o.maxHealth) > def.foeHealthFracMax) return false;
         if (def.staminaMin > 0f && d.stamina < def.staminaMin) return false;
+        if (t == STTactic.GoForKill && d.special1Cd > 0) return false;
         return true;
     }
     public float TimeLeft(STTactic t)

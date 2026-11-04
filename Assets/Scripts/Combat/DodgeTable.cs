@@ -22,6 +22,7 @@ public static class DodgeTable
         public float easePower = 1f;        // 1 = constant speed; 2 = fast start easing to rest (travel = 1-(1-x)^power)
         public float clipSpeed = 0f;        // > 0: fixed Animator speed; 0 = stretch the clip over ticks + clipTailTicks
         public int clipTailTicks = 0;       // extra ticks of clip length beyond the move (backstep plays its clip over 12 + 30)
+        public float blendIn = 0f;          // P1: > 0 = crossfade seconds INTO the dodge clip (ForceExact, bypasses anim_blend.json); 0 = the old AnimBlend fade
         public string fxAction = "";        // name raised on ContactRelay.OnAction (audio/dust). "" = the move's own name
     }
     [Serializable]

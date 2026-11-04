@@ -3,6 +3,7 @@
 // Desktop controls ported 1:1 from Frankendom V3 (kbm.ts / input.json):
 // WASD/arrows move, Shift run. F or LMB = strike: tap = light (alternating), +A/D held = that-side slash, +W held = stab, HOLD 220 ms = heavy; G = heavy; T = stab;
 // E/Space = roll (tap = backstep, hold > 150 ms = roll); Q or RMB hold = guard; C = kick; 1/Z = special 1 (Skull Crack); 2/X = special 2 (Whirlwind); Tab = lock-on toggle; R = recenter.
+[DefaultExecutionOrder(-200)]   // P1: before Duel.Update (order 0) so a key pressed this frame is in the buffers when the tick runs (no extra frame of latency)
 public class PlayerBrain : MonoBehaviour
 {
     public Transform cam; public CameraRig rig;
@@ -14,7 +15,7 @@ public class PlayerBrain : MonoBehaviour
     }
     void Update()
     {
-        if (df.Dead) { df.moveDir = Vector3.zero; df.guardHeld = false; return; }
+        if (df.Dead || Duel.Frozen) { df.moveDir = Vector3.zero; df.guardHeld = false; return; }   // FN1: Frozen = a finisher scene runs
         if (TouchControls.Active)
         {
             // a touch screen laptop flips TouchControls.Active on the first touch and it never cleared: keyboard keys then did nothing (no roll, no guard). Real key input on desktop switches it back off.
@@ -22,6 +23,7 @@ public class PlayerBrain : MonoBehaviour
             TouchControls.Active = false;
         }
         Vector2 inp = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (LatencyProbe.On) ProbeKeys();
         Vector3 fwd = cam ? Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized : Vector3.forward;
         Vector3 right = cam ? Vector3.ProjectOnPlane(cam.right, Vector3.up).normalized : Vector3.right;
         df.moveDir = inp.sqrMagnitude > 0.01f ? (fwd * inp.y + right * inp.x).normalized : Vector3.zero;
@@ -41,21 +43,21 @@ public class PlayerBrain : MonoBehaviour
 
         bool strike = Input.GetMouseButton(0) || Input.GetKey(KeyCode.F);
         bool strikeDownNow = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F);
-        if (strikeDownNow) { strikeDown = Time.time; heavyFired = false; }
+        var fc = CombatFeel.Get(); bool fireOnDown = fc.enabled && fc.input.strikeFire == "down"; float heavyHold = fc.enabled ? fc.input.heavyHoldSeconds : 0.22f;   // cancel.json input: "down" fires the light on key-down (heavy then only by G)
+        if (strikeDownNow) { strikeDown = Time.time; heavyFired = false; if (fireOnDown) { FireLight(inp); firedOnDown = true; } else firedOnDown = false; }
         if (strikeDown >= 0f)
         {
             df.heavyHeld = strike && heavyFired;
-            if (strike && !heavyFired && Time.time - strikeDown >= 0.22f) { df.Press("heavy"); heavyFired = true; }
+            if (strike && !heavyFired && !firedOnDown && Time.time - strikeDown >= heavyHold) { df.Press("heavy"); heavyFired = true; }
+            if (strike && firedOnDown && !heavyFired && Time.time - strikeDown >= fc.input.holdToHeavyMs / 1000f)   // hold-to-heavy upgrade (cancel.json input.holdToHeavyMs)
+            {
+                if (df.UpgradeToHeavy(fc.input.holdToHeavyUntilTick)) heavyFired = true;
+                else if (df.state == FState.Active || df.state == FState.Recovery || Time.time - strikeDown > 0.6f) heavyFired = true;   // too late for this light: stop trying
+            }
             if (!strike)
             {
-                if (!heavyFired)
-                {
-                    if (inp.y > 0.5f && Mathf.Abs(inp.x) < 0.5f) df.Press("thrust");
-                    else if (inp.x < -0.5f) df.Press("light_left");
-                    else if (inp.x > 0.5f) df.Press("light_right");
-                    else df.Press("light");
-                }
-                strikeDown = -1f; df.heavyHeld = false;
+                if (!heavyFired && !firedOnDown) FireLight(inp);
+                strikeDown = -1f; df.heavyHeld = false; firedOnDown = false;
             }
         }
         else df.heavyHeld = Input.GetKey(KeyCode.G);
@@ -86,6 +88,26 @@ public class PlayerBrain : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Tab) && rig) rig.lockEnabled = !rig.lockEnabled;
         if (Input.GetKeyDown(KeyCode.R) && rig) rig.Recenter();
+    }
+
+    bool firedOnDown;
+    void FireLight(Vector2 inp)
+    {
+        if (inp.y > 0.5f && Mathf.Abs(inp.x) < 0.5f) df.Press("thrust");
+        else if (inp.x < -0.5f) df.Press("light_left");
+        else if (inp.x > 0.5f) df.Press("light_right");
+        else df.Press("light");
+    }
+    // latency probe (flag only): label the physical key-down the sim / animator start is measured from
+    void ProbeKeys()
+    {
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F)) LatencyProbe.KeyDown("strike");
+        else if (Input.GetKeyDown(KeyCode.G)) LatencyProbe.KeyDown("heavy");
+        else if (Input.GetKeyDown(KeyCode.T)) LatencyProbe.KeyDown("thrust");
+        else if (Input.GetKeyDown(KeyCode.C)) LatencyProbe.KeyDown("kick");
+        else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) LatencyProbe.KeyDown("dodge");
+        else if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X)) LatencyProbe.KeyDown("special");
+        else if (df.moveDir.sqrMagnitude < 0.01f && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))) LatencyProbe.KeyDown("move");
     }
 
     // ---------------- dodge helpers (data: Assets/Data/dodge.json) ----------------

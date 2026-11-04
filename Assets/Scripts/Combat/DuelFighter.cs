@@ -36,22 +36,48 @@ public class DuelFighter : MonoBehaviour
     {
         if (state != FState.Windup || move == null) return;
         if (t > 10 || stamina < R("feintCost", 10)) return;
-        stamina -= R("feintCost", 10); regenWait = (int)R("regenDelay", 45); ToLoco(); PlayClip("idle", 0, 0.1f); f.holdLast = false;
+        stamina -= R("feintCost", 10); regenWait = RegenDelay(); ToLoco(); PlayClip("idle", 0, 0.1f); f.holdLast = false;
     }
     public void Press(string what)
     {
-        int ttl = (int)R("bufferTtl", 11);
+        int ttl = CombatFeel.QueueTtl(this, (int)R("bufferTtl", 11));   // P1: while a move / dodge / stagger runs, the press lives until the move can take it (cancel.json queue)
         if (what == "special1" || what == "special2" || what == "light_left" || what == "light_right" || what == "heavy_overhead") { pMove = what == "special1" ? "skill_cleave" : what == "special2" ? "skill_reaping" : what; pMoveTtl = ttl; return; }
         switch (what) { case "sidestep": sideDir = 0; pSide = ttl; break; case "backstep": pBack = ttl; break; case "light": pLight = ttl; break; case "heavy": pHeavy = ttl; break; case "thrust": pThrust = ttl; break; case "kick": pKick = ttl; break; case "roll": pRoll = ttl; break; }
     }
 
     // sidestep request: dir -1 = left, +1 = right, 0 = back, relative to the opponent (dodge.json sidestep)
-    public void PressSidestep(int dir) { sideDir = dir < 0 ? -1 : (dir > 0 ? 1 : 0); pSide = (int)R("bufferTtl", 11); }
+    public void PressSidestep(int dir) { sideDir = dir < 0 ? -1 : (dir > 0 ? 1 : 0); pSide = CombatFeel.QueueTtl(this, (int)R("bufferTtl", 11)); }
+
+    // P1: true for the fighter a PlayerBrain drives (cancel.json scope "player"); sim ticks left in the current state (press queue length)
+    bool isPlayer, isPlayerSet;
+    public bool IsPlayer { get { if (!isPlayerSet) { isPlayerSet = true; isPlayer = GetComponent<PlayerBrain>() != null; } return isPlayer; } }
+    // P1 hold-to-heavy: the attack key is still held after a light / stab fired on key-down -> turn that wind-up into the heavy (no pose hold: the heavy clip crossfades in from the swing).
+    // Only inside the wind-up (t <= maxTick); the light's stamina is given back since the heavy charges its own.
+    public bool UpgradeToHeavy(int maxTick)
+    {
+        if (state != FState.Windup || move == null || move.charges || move.id == "heavy_overhead" || t > maxTick) return false;
+        stamina = Mathf.Min(maxStamina, stamina + move.stamina);
+        StartMove("heavy_overhead", false);
+        return true;
+    }
+    public int TicksLeft()
+    {
+        switch (state)
+        {
+            case FState.Windup: return move == null ? 0 : (move.Windup(chained) - t) + move.Active(chained) + move.Recovery(chained);
+            case FState.Active: return move == null ? 0 : (move.Active(chained) - t) + move.Recovery(chained);
+            case FState.Recovery: return move == null ? 0 : move.Recovery(chained) - t;
+            case FState.ParryRecover: return (int)R("parryRecovery", 8) - t;
+            case FState.Stagger: return staggerTicks - t;
+            case FState.Roll: return dodgeTicks - t;
+        }
+        return 0;
+    }
 
     void Awake()
     {
         cc = GetComponent<CharacterController>(); hp = GetComponent<Health>(); f = GetComponent<Fighter>(); scale = transform.lossyScale.y;
-        health = maxHealth; stamina = maxStamina; hp.max = maxHealth; hp.current = maxHealth;
+        maxStamina = StaminaTable.MaxStamina(CharKey(), maxStamina); health = maxHealth; stamina = maxStamina; hp.max = maxHealth; hp.current = maxHealth;
     }
     void OnEnable() { Duel.Register(this); }
     void OnDisable() { Duel.Unregister(this); }
@@ -171,8 +197,8 @@ public class DuelFighter : MonoBehaviour
     public void Tick()
     {
         if (state == FState.Dead) return;
-        if (regenWait > 0) regenWait--; else stamina = Mathf.Min(maxStamina, stamina + R("regen", 0.667f));
-        if (posture > 0) { if (postureHold > 0) postureHold--; else posture = Mathf.Max(0f, posture - R("posture.decay", 0.2f)); }
+        StaminaTick();
+        PostureTick();
         if (parryCd > 0) parryCd--;
         if (riposteTicks > 0) riposteTicks--;
         if (blockFlash > 0) blockFlash--;
@@ -189,7 +215,7 @@ public class DuelFighter : MonoBehaviour
             case FState.Active: TickActive(); break;
             case FState.Recovery: TickRecovery(); break;
             case FState.Roll: if (t >= dodgeTicks) { dodgeCd = dodgeCdTicks; ToLoco(); } break;
-            case FState.ParryRecover: if (t >= R("parryRecovery", 8)) ToLoco(); break;
+            case FState.ParryRecover: if (t >= ParrySelfRecovery()) ToLoco(); break;
             case FState.Stagger: if (t >= staggerTicks) ToLoco(); break;
             case FState.Down:
                 if (t == 54) PlayClip("get_up", 36);
@@ -213,11 +239,11 @@ public class DuelFighter : MonoBehaviour
     void TickFree()
     {
         bool runCancel = run && moveDir.sqrMagnitude > 0.01f && DodgeTable.Get().enabled && DodgeTable.Get().guard.runDropsGuard;   // Shift + move while the guard key is held: the guard drops and he runs
-        if (guardHeld && stamina > 0f && !runCancel)
+        if (guardHeld && (stamina > 0f || StaminaTable.Get().guard.allowAtZero || !StaminaTable.Get().enabled) && !runCancel)
         {
             if (state != FState.Guard)
             {
-                state = FState.Guard; t = 0; guardAge = 0; parryWindow = parryCd == 0; parryCd = (int)R("parryCooldown", 30);
+                state = FState.Guard; t = 0; guardAge = 0; parryWindow = parryCd == 0; parryCd = ParryCooldown();
             }
             guardAge++;
         }
@@ -237,16 +263,16 @@ public class DuelFighter : MonoBehaviour
             if (pRoll > 0 && stamina >= RollCost()) { StartRoll(); return; }
         }
         if (riposteTicks > 0 && (pLight > 0 || pHeavy > 0 || pThrust > 0)) { StartMove("riposte", false); return; }
-        if (pHeavy > 0) { StartMove("heavy_overhead", false); return; }
+        if (pHeavy > 0) { if (HeavyAllowed()) { StartMove("heavy_overhead", false); return; } pLight = Mathf.Max(pLight, pHeavy); pHeavy = 0; }
         if (pLight > 0) { StartMove(lastLightRight ? "light_left" : "light_right", false); return; }
         if (pThrust > 0) { StartMove("thrust", false); return; }
         if (pKick > 0) { StartMove("kick", false); return; }
     }
 
     // ---------------- dodges (dodge.json; "enabled": false falls back to the V3 rules-defs values) ----------------
-    float RollCost() { var d = DodgeTable.Get(); return d.enabled ? d.roll.stamina : R("rollCost", 30f); }
-    float BackstepCost() { var d = DodgeTable.Get(); return d.enabled ? d.backstep.stamina : R("backstep.cost", 10f); }
-    float SidestepCost() { return DodgeTable.Get().sidestep.stamina; }
+    float RollCost() { var d = DodgeTable.Get(); return StaminaTable.DodgeCost("roll", d.enabled ? d.roll.stamina : R("rollCost", 30f)); }
+    float BackstepCost() { var d = DodgeTable.Get(); return StaminaTable.DodgeCost("backstep", d.enabled ? d.backstep.stamina : R("backstep.cost", 10f)); }
+    float SidestepCost() { return StaminaTable.DodgeCost("sidestep", DodgeTable.Get().sidestep.stamina); }
 
     Vector3 OppFlat()   // unit ground direction to the opponent (own forward when there is none)
     {
@@ -266,6 +292,13 @@ public class DuelFighter : MonoBehaviour
 
     void PlayDodgeClip(string clip, DodgeTable.DodgeRow r)
     {
+        if (r.blendIn > 0f && HasState(clip))   // P1: dodge.json blendIn = short, explicit crossfade (input-to-motion latency)
+        {
+            f.holdLast = false; paused = false; f.ForceExact(clip, r.blendIn);
+            float len = ClipLen(clip);
+            f.anim.speed = (r.clipSpeed > 0f ? r.clipSpeed : (len > 0f ? len / ((r.ticks + r.clipTailTicks) / 60f) : 1f)) * f.animWeight;
+            return;
+        }
         if (r.clipSpeed > 0f) { PlayClip(clip, 0); f.anim.speed = r.clipSpeed * f.animWeight; }
         else PlayClip(clip, r.ticks + r.clipTailTicks);
     }
@@ -274,8 +307,8 @@ public class DuelFighter : MonoBehaviour
     {
         var d = DodgeTable.Get(); var r = d.roll;
         int ticks = (int)R("roll", 36), isf = (int)R("safeStart", 4), ief = (int)R("safeEnd", 20); float dist = 3.2f, cost = R("rollCost", 30f), pow = 1f, turn = 12f; int cd = 0;
-        if (d.enabled) { ticks = r.ticks; isf = r.iframeStart; ief = r.iframeEnd; dist = r.distance; cost = r.stamina; pow = r.easePower; turn = r.turnRate; cd = r.cooldownTicks; }
-        stamina -= cost; regenWait = (int)R("regenDelay", 45);
+        if (d.enabled) { ticks = r.ticks; isf = r.iframeStart; ief = r.iframeEnd; dist = r.distance; cost = RollCost(); pow = r.easePower; turn = r.turnRate; cd = r.cooldownTicks; }
+        stamina = Mathf.Max(0f, stamina - cost); regenWait = RegenDelay();
         if (moveDir.sqrMagnitude > 0.01f) rollDir = moveDir.normalized;
         else
         {
@@ -290,22 +323,22 @@ public class DuelFighter : MonoBehaviour
         else if (d.enabled) PlayDodgeClip(clip, r); else PlayClip(clip, ticks);
         if (d.debugLog) Debug.Log("[Dodge] " + name + " ROLL dir=" + rollDir + " ticks=" + ticks + " dist=" + dist + " stamina=" + stamina);
         ContactRelay.Action(this, (d.enabled && !string.IsNullOrEmpty(r.fxAction)) ? r.fxAction : "roll");
-        ContactRelay.Dodge(this, "roll", rollDir);
+        ContactRelay.Dodge(this, "roll", rollDir); LatencyProbe.Started(this, "dodge", "roll");
     }
 
     void StartBackstep()
     {
         var d = DodgeTable.Get(); var r = d.backstep;
         int ticks = (int)R("backstep.ticks", 12), isf = (int)R("safeStart", 4), ief = (int)R("safeEnd", 20); float dist = 1.4f, cost = R("backstep.cost", 10f), pow = 1f; int cd = 0;
-        if (d.enabled) { ticks = r.ticks; isf = r.iframeStart; ief = r.iframeEnd; dist = r.distance; cost = r.stamina; pow = r.easePower; cd = r.cooldownTicks; }
-        stamina -= cost; regenWait = (int)R("regenDelay", 45);
+        if (d.enabled) { ticks = r.ticks; isf = r.iframeStart; ief = r.iframeEnd; dist = r.distance; cost = BackstepCost(); pow = r.easePower; cd = r.cooldownTicks; }
+        stamina = Mathf.Max(0f, stamina - cost); regenWait = RegenDelay();
         rollDir = -OppFlat();   // straight away from the opponent (the old -transform.forward is the same while he is faced); the body keeps facing him
         BeginDodge(1, ticks, dist, isf, ief, pow, cd, 12f);
         string clip = (d.enabled && !string.IsNullOrEmpty(r.clip)) ? r.clip : "backstep";
         if (d.enabled) PlayDodgeClip(clip, r); else PlayClip(clip, ticks + 30);
         if (d.debugLog) Debug.Log("[Dodge] " + name + " BACKSTEP ticks=" + ticks + " stamina=" + stamina);
         ContactRelay.Action(this, (d.enabled && !string.IsNullOrEmpty(r.fxAction)) ? r.fxAction : "backstep");
-        ContactRelay.Dodge(this, "backstep", rollDir);
+        ContactRelay.Dodge(this, "backstep", rollDir); LatencyProbe.Started(this, "dodge", "backstep");
     }
 
     void StartSidestep()
@@ -318,12 +351,12 @@ public class DuelFighter : MonoBehaviour
         else if (sideDir > 0) { rollDir = right; clip = r.clipRight; }
         else { rollDir = -toO; clip = r.clipBack; }
         if (string.IsNullOrEmpty(clip)) clip = r.clip;
-        stamina -= r.stamina; regenWait = (int)R("regenDelay", 45);
+        stamina = Mathf.Max(0f, stamina - SidestepCost()); regenWait = RegenDelay();
         BeginDodge(2, r.ticks, r.distance, r.iframeStart, r.iframeEnd, r.easePower, r.cooldownTicks, 12f);
         PlayDodgeClip(clip, r);
         if (d.debugLog) Debug.Log("[Dodge] " + name + " SIDESTEP dir=" + sideDir + " clip=" + clip + " stamina=" + stamina);
         ContactRelay.Action(this, string.IsNullOrEmpty(r.fxAction) ? "backstep" : r.fxAction);
-        ContactRelay.Dodge(this, "sidestep", rollDir);
+        ContactRelay.Dodge(this, "sidestep", rollDir); LatencyProbe.Started(this, "dodge", "sidestep");
     }
 
     void StartMove(string id, bool isChained)
@@ -332,12 +365,13 @@ public class DuelFighter : MonoBehaviour
         move = m; chained = isChained; state = FState.Windup; t = 0; hitDone = false; charge = 0;
         pLight = pHeavy = pThrust = pKick = 0;
         if (id == "light_right") lastLightRight = true; else if (id == "light_left") lastLightRight = false;
-        stamina = Mathf.Max(0f, stamina - m.stamina); regenWait = (int)R("regenDelay", 45);
+        stamina = Mathf.Max(0f, stamina - MoveCost(m)); regenWait = RegenDelay();
         int total = m.Windup(isChained) + m.Active(isChained) + m.Recovery(isChained);
         var arow = AttackClipTable.Get().enabled ? AttackClipTable.Find(CharKey(), id) : null;
         fadeOutLen = 0f;
         if (!BeginAttackClip(arow, m, isChained)) PlayClip(ClipFor(id), total, 0.06f);   // no row / state: old whole-clip squash
         ContactRelay.AttackStarted(this, m);
+        LatencyProbe.Started(this, "attack", id);
     }
 
     void TickWindup()
@@ -369,12 +403,39 @@ public class DuelFighter : MonoBehaviour
             if (pHeavy > 0 && System.Array.IndexOf(move.chainFollow, "heavy_overhead") >= 0) { StartMove("heavy_overhead", true); return; }
             if (pLight > 0) { foreach (var fid in move.chainFollow) if (fid.StartsWith("light")) { StartMove(fid, true); return; } }
         }
-        if (dodgeCd <= 0 && t > move.Recovery(chained) / 2)
+        if (CombatFeel.Applies(this)) { if (TryCancel()) return; }   // P1: cancel windows from cancel.json (roll / sidestep / backstep / guard / buffered attacks at the earliest legal tick)
+        else if (dodgeCd <= 0 && t > move.Recovery(chained) / 2)
         {
             if (pSide > 0 && stamina >= SidestepCost()) { StartSidestep(); return; }
             if (pRoll > 0 && stamina >= RollCost()) { StartRoll(); return; }
         }
         if (t >= move.Recovery(chained)) ToLoco();
+    }
+
+    // P1 cancel windows: a buffered action runs on the first Recovery tick the table allows (after the active window), not only when the recovery has finished.
+    bool TryCancel()
+    {
+        string mid = move.id; int e;
+        if (dodgeCd <= 0)
+        {
+            if (pBack > 0 && Can(mid, "backstep", out e) && stamina >= BackstepCost()) { StartBackstep(); return true; }
+            if (pSide > 0 && Can(mid, "sidestep", out e) && stamina >= SidestepCost()) { StartSidestep(); return true; }
+            if (pRoll > 0 && Can(mid, "roll", out e) && stamina >= RollCost()) { StartRoll(); return true; }
+        }
+        bool queued = pMove != null || pHeavy > 0 || pLight > 0 || pThrust > 0 || pKick > 0;
+        if (!queued && guardHeld && stamina > 0f && Can(mid, "guard", out e)) { ToLoco(); TickFree(); return true; }   // TickFree enters Guard
+        bool atk;
+        if (pMove != null) atk = Can(mid, "special", out e) && (pMove == "skill_cleave" ? special1Cd <= 0 : pMove == "skill_reaping" ? special2Cd <= 0 : true);
+        else atk = (pHeavy > 0 && Can(mid, "heavy", out e)) || (pLight > 0 && Can(mid, "light", out e)) || (pThrust > 0 && Can(mid, "thrust", out e)) || (pKick > 0 && Can(mid, "kick", out e));
+        if (atk) { ToLoco(); TickFree(); return true; }   // TickFree starts the buffered move (riposte / heavy / light / thrust / kick / special)
+        return false;
+    }
+    bool Can(string moveId, string to, out int e)
+    {
+        e = CombatFeel.Earliest(moveId, to);
+        if (e < 0 || t < e) return false;
+        if (CombatFeel.OnHitOnly(moveId, to) && !hitDone) return false;
+        return true;
     }
 
     // ---------------- reactions (called by Duel.Resolve) ----------------
@@ -396,16 +457,115 @@ public class DuelFighter : MonoBehaviour
         var col = GetComponent<Collider>(); if (col) col.enabled = false;
         hp.onDied.Invoke();
     }
-    public void ParrySuccess() { atkOn = false; fadeOutLen = 0f; state = FState.ParryRecover; t = 0; riposteTicks = (int)R("parryStun", 90); PlayClip("parry", (int)R("parryRecovery", 8) + 10, 0.04f); }
+    public void ParrySuccess() { atkOn = false; fadeOutLen = 0f; state = FState.ParryRecover; t = 0; riposteTicks = ParryRiposteWindow(); ParryNote(); PlayClip("parry", (int)ParrySelfRecovery() + 10, 0.04f); }
     public void BlockHit(bool heavy) { blockFlash = 10; f.Force("guard_hit", 0.04f); f.anim.speed = 1.4f; }
-    public void AddPosture(float p) { posture += p; postureHold = (int)R("posture.hold", 60); }
+    public void AddPosture(float p) { posture = Mathf.Min(posture + p, PostureMax); postureHold = PostureTable.HoldTicks(CharKey(), (int)R("posture.hold", 60)); if (p > 0f) statPostureGained += p; }
     public void SetKnock(Vector3 v) { knock = v; }
-    public bool InParryWindow => state == FState.Guard && parryWindow && guardAge <= (int)R("parry", 10);
-    public bool IsGuarding => state == FState.Guard;
+    public bool InParryWindow => state == FState.Guard && parryWindow && guardAge <= ParryWindowTicks() && !(exhausted && StaminaTable.Get().exhausted.noParry);
+    public bool IsGuarding => state == FState.Guard && (!exhausted || guardAge > StaminaTable.Get().guard.raiseDelayExhausted);
     public bool IFrames => state == FState.Roll && t >= dodgeIS && t <= dodgeIE;   // set per move by BeginDodge (dodge.json iframeStart/End)
     public bool InWindup => state == FState.Windup;
+    // ---------------- stamina / guard / parry (P5; data: stamina.json, parry.json via StaminaTable) ----------------
+    bool exhausted; int guardBreakFlash, parryOkFlash; float stLast;
+    public float statSpent; public int statParries, statBlocks, statGuardBreaks, statExhaustEntries, statExhaustTicks, statHeavyDowngrades;   // balance counters (BalanceAuto reads these)
+    public bool Exhausted => exhausted;
+    public int GuardBreakFlash => guardBreakFlash;
+    public int ParryFlash => parryOkFlash;
+    public int ParryWindowTicks() { return StaminaTable.ParryWindow(CharKey(), (int)R("parry", 10)); }
+    public int ParryWindowLeft => InParryWindow ? Mathf.Max(0, ParryWindowTicks() - guardAge) : 0;
+    int RegenDelay() { var S = StaminaTable.Get(); return !S.enabled ? (int)R("regenDelay", 45) : (exhausted ? S.regen.exhaustedDelayTicks : S.regen.delayTicks); }
+    int ParryCooldown() { var P = StaminaTable.Parry(); return P.enabled ? P.cooldownTicks : (int)R("parryCooldown", 30); }
+    float ParrySelfRecovery() { var P = StaminaTable.Parry(); return P.enabled ? P.selfRecoveryTicks : R("parryRecovery", 8); }
+    int ParryRiposteWindow() { var P = StaminaTable.Parry(); return P.enabled ? P.riposteWindowTicks : (int)R("parryStun", 90); }
+    void ParryNote() { var P = StaminaTable.Parry(); if (P.enabled) { stamina = Mathf.Max(0f, stamina - P.staminaCost); regenWait = RegenDelay(); } parryOkFlash = StaminaTable.Get().hud.parryFlashTicks; statParries++; }
+    float MoveCost(MoveDef m) { return StaminaTable.MoveCost(m); }
+    float SpeedMulExhausted() { return exhausted ? StaminaTable.Get().exhausted.walkMul : 1f; }
+    public float DamageScaleNow => damageScale * (exhausted ? StaminaTable.Get().exhausted.damageMul : 1f);
+    bool HeavyAllowed() { var S = StaminaTable.Get(); bool ok = !S.enabled || (!exhausted && stamina >= S.exhausted.heavyMinStamina); if (!ok) statHeavyDowngrades++; return ok; }
+    public void NoteBlock() { statBlocks++; }
+    public void GuardBreakStun(int ticks = -1)
+    {
+        var S = StaminaTable.Get(); var G = S.guardBreak;
+        if (ticks <= 0) stamina = S.enabled ? G.staminaAfter : 0f; guardBreakFlash = G.flashTicks; statGuardBreaks++;
+        if (S.debugLog) Debug.Log("[Stamina] " + name + " GUARD BREAK tick=" + Duel.TickCount);
+        Stagger(ticks > 0 ? ticks : (S.enabled ? G.staggerTicks : 60), "stagger_loop");
+    }
+    void StaminaTick()
+    {
+        var S = StaminaTable.Get();
+        if (guardBreakFlash > 0) guardBreakFlash--; if (parryOkFlash > 0) parryOkFlash--;
+        if (!S.enabled) { if (regenWait > 0) regenWait--; else stamina = Mathf.Min(maxStamina, stamina + R("regen", 0.667f)); return; }
+        if (regenWait > 0) regenWait--;
+        else
+        {
+            float mul = StaminaTable.RegenMul(CharKey()); if (state == FState.Guard) mul *= S.regen.guardMul; if (exhausted) mul *= S.regen.exhaustedMul;
+            stamina = Mathf.Min(maxStamina, stamina + S.regen.perSecond * mul / 60f);
+        }
+        if (state == FState.Guard && guardAge > S.guard.holdFreeTicks && S.guard.holdDrainPerSecond > 0f) stamina = Mathf.Max(0f, stamina - S.guard.holdDrainPerSecond / 60f);
+        if (!exhausted && stamina <= 0f)
+        {
+            exhausted = true; statExhaustEntries++; regenWait = Mathf.Max(regenWait, S.regen.exhaustedDelayTicks);
+            if (S.debugLog) Debug.Log("[Stamina] " + name + " EXHAUSTED tick=" + Duel.TickCount);
+        }
+        else if (exhausted && stamina >= S.exhausted.recoverAt) exhausted = false;
+        if (exhausted) statExhaustTicks++;
+        float cur = Mathf.Max(0f, stamina); if (cur < stLast) statSpent += stLast - cur; stLast = cur;
+    }
+        // ---------------- posture (P6; data: posture.json via PostureTable. "enabled": false = the old V3 rules) ----------------
+    int deathWindow, deathTotal, breakFlash; bool postureBroken;
+    public int statPostureBreaks, statDeathblows, statDeathblowsTaken, statDeathblowsMissed; public float statPostureGained;   // balance counters (BalanceAuto reads these): breaks suffered, deathblows dealt / taken, windows that ran out unused
+    public string PostureKey => CharKey();
+    public float PostureMax => PostureTable.Max(CharKey(), R("posture.max", 100f));
+    public bool PostureBroken => postureBroken && state != FState.Dead;
+    public bool DeathblowOpen => deathWindow > 0 && state != FState.Dead && PostureTable.Get().enabled;
+    public int DeathblowLeft => deathWindow;
+    public int DeathblowTotal => deathTotal;
+    public int DeathblowAge => deathTotal - deathWindow;
+    public int PostureBreakFlash => breakFlash;
+    public void RelievePosture(float p) { posture = Mathf.Max(0f, posture - p); }
+    void PostureTick()
+    {
+        var P = PostureTable.Get();
+        if (breakFlash > 0) breakFlash--;
+        if (!P.enabled) { if (posture > 0) { if (postureHold > 0) postureHold--; else posture = Mathf.Max(0f, posture - R("posture.decay", 0.2f)); } return; }
+        if (postureBroken)
+        {
+            if (deathWindow > 0) deathWindow--;
+            if (deathWindow <= 0 || posture <= 0f) EndPostureBreak(false);   // window over (or something reset posture, e.g. a knockdown / finisher cleanup)
+            return;                                                          // posture holds at max while broken
+        }
+        if (posture >= PostureMax) { BeginPostureBreak(); return; }          // posture added without Duel.Resolve (steer reactions)
+        if (posture > 0f) { if (postureHold > 0) postureHold--; else posture = Mathf.Max(0f, posture - PostureTable.DecayPerTick(CharKey(), R("posture.decay", 0.2f))); }
+    }
+    // called by Duel.Resolve right after posture was added; true when this fighter just broke
+    public bool TryPostureBreak(DuelFighter by)
+    {
+        if (!PostureTable.Get().enabled || postureBroken || state == FState.Dead || posture < PostureMax) return false;
+        BeginPostureBreak(); return true;
+    }
+    void BeginPostureBreak()
+    {
+        var P = PostureTable.Get(); var B = P.posBreak;
+        postureBroken = true; posture = PostureMax; deathTotal = Mathf.Max(1, B.windowTicks); deathWindow = deathTotal; breakFlash = B.flashTicks; statPostureBreaks++;
+        if (P.debugLog) Debug.Log("[Posture] " + name + " POSTURE BREAK tick=" + Duel.TickCount + " window=" + deathTotal);
+        Stagger(B.stunTicks, string.IsNullOrEmpty(B.clip) ? "stagger_loop" : B.clip);
+    }
+    void EndPostureBreak(bool consumed)
+    {
+        var P = PostureTable.Get();
+        if (!consumed && deathWindow <= 0) statDeathblowsMissed++;
+        postureBroken = false; deathWindow = 0; posture = PostureMax * Mathf.Clamp01(P.posBreak.resetFraction); postureHold = PostureTable.HoldTicks(CharKey(), (int)R("posture.hold", 60));
+    }
+    // the next hit on a broken fighter landed (Duel.Resolve): count it for both sides and close the window
+    public void ConsumeDeathblow(DuelFighter by)
+    {
+        if (!postureBroken) return;
+        statDeathblowsTaken++; if (by != null) by.statDeathblows++;
+        if (PostureTable.Get().debugLog) Debug.Log("[Posture] DEATHBLOW on " + name + " tick=" + Duel.TickCount + " windowLeft=" + deathWindow);
+        EndPostureBreak(true);
+    }
     public float Rule(string k, float d) { return R(k, d); }
-    public void SpendStamina(float s) { stamina -= s; regenWait = (int)R("regenDelay", 45); }
+    public void SpendStamina(float s) { stamina -= s; regenWait = RegenDelay(); }
 
     // ---------------- presentation (per frame) ----------------
     void Update()
@@ -417,8 +577,8 @@ public class DuelFighter : MonoBehaviour
         bool faceOpp = opponent && !opponent.Dead && dist < 14f;
         switch (state)
         {
-            case FState.Loco: v = moveDir * (run ? runSpeed : walkSpeed); break;
-            case FState.Guard: { var dg = DodgeTable.Get(); v = moveDir * walkSpeed * (dg.enabled ? dg.guard.speedMul : R("guardSpeed", 0.35f) * 1.6f); break; }   // run is off while guarding (the branch never reads `run`)
+            case FState.Loco: v = moveDir * (run ? runSpeed : walkSpeed) * SpeedMulExhausted(); break;
+            case FState.Guard: { var dg = DodgeTable.Get(); v = moveDir * walkSpeed * (dg.enabled ? dg.guard.speedMul : R("guardSpeed", 0.35f) * 1.6f) * SpeedMulExhausted(); break; }   // run is off while guarding (the branch never reads `run`)
             case FState.Roll:
             {
                 // distance travelled follows 1-(1-x)^power over the move (power 1 = constant speed); sim time, so hit-stop freezes it
@@ -431,11 +591,12 @@ public class DuelFighter : MonoBehaviour
                 break;
             }
             case FState.Windup:
-                if (t >= R("stepInFrom", 3) && move != null && dist > StepStopDist()) { float si = StepInFor(); if (si > 0f) v = dir * (si * scale / Mathf.Max(0.1f, (move.Windup(chained) - 3) / 60f)); }   // stepIn: data (attack_clips.json) or the move's value
+                if (!PresentationClock.Frozen && t >= R("stepInFrom", 3) && move != null && dist > StepStopDist()) { float si = StepInFor(); if (si > 0f) v = dir * (si * scale / Mathf.Max(0.1f, (move.Windup(chained) - 3) / 60f)); }   // stepIn: data (attack_clips.json) or the move's value
                 break;
-            case FState.Stagger: case FState.Down: v = knock; knock *= Mathf.Pow(0.88f, dt * 60f); faceOpp = false; break;
+            case FState.Stagger: case FState.Down: if (!PresentationClock.Frozen) { v = knock; knock *= Mathf.Pow(0.88f, dt * 60f); } faceOpp = false; break;   // P1: no knock slide while the animation is frozen (hit-stop)
             case FState.Dead: faceOpp = false; break;
         }
+        if (PresentationClock.Frozen) { v.x = 0f; v.z = 0f; }   // P1: hit-stop freezes the body with the animation (the legs are frozen too: no ice-skating)
         vy = cc.isGrounded ? -1f : vy - 20f * dt;
         v.y = vy; if (cc.enabled) cc.Move(v * dt);
         // kill-plane recovery (audit: a knockback pushed a fighter off the ground collider and it fell for ever, the camera followed): remember the last grounded position, restore it when far below
@@ -463,6 +624,7 @@ public class DuelFighter : MonoBehaviour
         {
             f.anim.speed = f.animWeight;
             bool moving = moveDir.sqrMagnitude > 0.01f;
+            if (moving) LatencyProbe.Started(this, "move", run ? "run" : "walk");
             bool guarding = state == FState.Guard;
             bool runNow = run && !guarding;   // no running while the guard is up
             string clip;

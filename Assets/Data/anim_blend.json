@@ -5,13 +5,13 @@
   "defaultMs": 150,
   "blendMs": {
     "locomotion": 120,
-    "attackIn": 75,
+    "attackIn": 45,
     "attackOut": 80,
-    "specialIn": 75,
+    "specialIn": 45,
     "specialOut": 80,
     "hurtIn": 40,
     "hurtOut": 80,
-    "rollIn": 60,
+    "rollIn": 40,
     "rollOut": 120
   },
   "settleMs": {
@@ -35,6 +35,7 @@
     { "state": "hit_light_back", "kind": "hurt" },
     { "state": "hit_light_front", "kind": "hurt" },
     { "state": "roll_forward", "kind": "roll" },
+    { "state": "dodge_diveroll", "kind": "roll" },
     { "state": "backstep", "kind": "roll" }
   ],
   "pairs": [

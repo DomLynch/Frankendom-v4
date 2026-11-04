@@ -34,3 +34,5 @@
 *.cubemap filter=lfs diff=lfs merge=lfs -text
 Assets/**/*.asset filter=lfs diff=lfs merge=lfs -text
 ProjectSettings/*.asset text eol=lf
+
+*.anim filter=lfs diff=lfs merge=lfs -text

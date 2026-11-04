@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "enabled": true,
+  "scope": "player",
+  "latencyProbe": false,
+  "latencyTargetMs": 100,
+  "latencyTargetMoves": ["light_left", "light_right", "thrust"],
+  "_about": "Combat feel (lane P1), read by CombatFeel.cs. scope: 'player' = only the PlayerBrain fighter uses the cancel table + press queue (the AI keeps its tuned S5 timings); 'all' = both. input.strikeFire: 'down' (default, Strategy decision) = the light/stab fires on key-DOWN; holding the key past holdToHeavyMs while still inside the wind-up (tick <= holdToHeavyUntilTick) cancels into the heavy; G = heavy | 'release' = V3 (a tap fires on key-UP, ~60-110 ms late; hold heavyHoldSeconds = heavy). queue: a press made while a move / dodge / stagger runs stays alive for (ticks left in that state + extraTicks), capped at maxTicks, so it runs at the earliest legal tick and is never eaten. rows: cancel windows out of Recovery: move ('*' = any) , to (roll|sidestep|backstep|guard|light|heavy|thrust|kick|special), earliest = Recovery tick t (1 = first tick after the active window; recovery lengths: light 22, thrust 21, heavy 31, kick 25), -1 = never, onHitOnly = only when the swing connected (hit confirm). No row for an attack = it runs when the recovery ends (or via the move's own chain window). Old rule without this file: dodges after half the recovery.",
+  "input": { "strikeFire": "down", "holdToHeavyMs": 180, "holdToHeavyUntilTick": 16, "heavyHoldSeconds": 0.22 },
+  "queue": { "enabled": true, "extraTicks": 11, "maxTicks": 40, "states": ["Windup", "Active", "Recovery", "ParryRecover", "Stagger", "Roll"] },
+  "rows": [
+    { "move": "*",              "to": "sidestep", "earliest": 6 },
+    { "move": "*",              "to": "backstep", "earliest": 6 },
+    { "move": "*",              "to": "roll",     "earliest": 8 },
+    { "move": "*",              "to": "guard",    "earliest": 10 },
+    { "move": "heavy_overhead", "to": "sidestep", "earliest": 10 },
+    { "move": "heavy_overhead", "to": "backstep", "earliest": 10 },
+    { "move": "heavy_overhead", "to": "roll",     "earliest": 14 },
+    { "move": "heavy_overhead", "to": "guard",    "earliest": 16 },
+    { "move": "kick",           "to": "sidestep", "earliest": 8 },
+    { "move": "kick",           "to": "backstep", "earliest": 8 },
+    { "move": "kick",           "to": "roll",     "earliest": 10 },
+    { "move": "kick",           "to": "guard",    "earliest": 12 },
+    { "move": "skill_cleave",   "to": "sidestep", "earliest": 16 },
+    { "move": "skill_cleave",   "to": "backstep", "earliest": 16 },
+    { "move": "skill_cleave",   "to": "roll",     "earliest": 16 },
+    { "move": "skill_cleave",   "to": "guard",    "earliest": 20 },
+    { "move": "skill_reaping",  "to": "sidestep", "earliest": 16 },
+    { "move": "skill_reaping",  "to": "backstep", "earliest": 16 },
+    { "move": "skill_reaping",  "to": "roll",     "earliest": 16 },
+    { "move": "skill_reaping",  "to": "guard",    "earliest": 20 }
+  ]
+}

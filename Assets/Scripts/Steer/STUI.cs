@@ -290,7 +290,7 @@ public class STUI : MonoBehaviour
         bannerBtn = new Rect(Screen.width * 0.5f - 170f * S, Screen.height * 0.5f + 70f * S, 340f * S, 54f * S);
     }
     bool Over(Rect r) { return r.Contains(Event.current.mousePosition); }
-    bool Dead(int who) { if (STUIPreview.On) return false; var h = who == 0 ? hpD : hpP; return h != null && h.Dead; }
+    bool Dead(int who) { if (STUIPreview.On) return false; var h = who == 0 ? hpD : hpP; return !RTFinisher.Busy && h != null && h.Dead; }   // FN1: the end banner waits for the finisher scene
 
     // ---------------- OnGUI ----------------
     void OnGUI()

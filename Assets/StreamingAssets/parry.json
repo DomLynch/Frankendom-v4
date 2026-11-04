@@ -1,0 +1,12 @@
+{
+  "enabled": true,
+  "windowTicks": 10,
+  "cooldownTicks": 30,
+  "attackerStaggerTicks": 80,
+  "attackerStaggerHeavyTicks": 100,
+  "riposteWindowTicks": 90,
+  "selfRecoveryTicks": 8,
+  "attackerPosture": 25,
+  "staminaCost": 4,
+  "parryHeavies": true
+}

@@ -47,7 +47,7 @@ public class CombatVFX : MonoBehaviour
 
     void Burst(ParticleSystem ps, Vector3 pos, Vector3 dir, int count, float cone)
     {
-        if (ps == null) return;
+        if (ps == null || count <= 0) return;
         ps.transform.position = pos; ps.transform.rotation = Quaternion.LookRotation(dir == Vector3.zero ? Vector3.up : dir);
         var sh = ps.shape; sh.shapeType = ParticleSystemShapeType.Cone; sh.angle = cone; sh.radius = 0.05f;
         ps.Emit(count);
@@ -60,12 +60,15 @@ public class CombatVFX : MonoBehaviour
         switch (type)
         {
             case "Hit":
-                if (d.name.Contains("Pitborn")) Burst(flash, pos, dir, 1, 5f);
-                Burst(drops, pos, dir, heavy ? 16 : 7, 40f);
-                if (d.name.Contains("Pitborn")) Burst(sparks, pos, dir, heavy ? 9 : 4, 35f);   // bright sparks only on metal/armour
-                Burst(puff, pos - Vector3.up * 0.4f, Vector3.up + dir * 0.3f, heavy ? 2 : 1, 60f);
-                Burst(mist, pos, dir, heavy ? 5 : 2, 50f);
-                break;
+                {
+                    var bs = BloodTable.For(d, heavy, d.Dead);   // P2: blood.json (weight x location x victim); sparks / flash only where the victim row says metal
+                    if (bs.flash) Burst(flash, pos, dir, 1, 5f);
+                    Burst(drops, pos, dir, Mathf.RoundToInt((heavy ? 16 : 7) * bs.drops), 40f);
+                    if (bs.sparks) Burst(sparks, pos, dir, heavy ? 9 : 4, 35f);   // bright sparks only on metal/armour
+                    Burst(puff, pos - Vector3.up * 0.4f, Vector3.up + dir * 0.3f, heavy ? 2 : 1, 60f);
+                    Burst(mist, pos, dir, Mathf.RoundToInt((heavy ? 5 : 2) * bs.mist), 50f);
+                    break;
+                }
             case "Blocked": Burst(flash, pos, -dir, 1, 5f); Burst(guardSparks, pos, -dir + Vector3.up * 0.3f, perfect ? 22 : 12, 50f); break;
             case "Parried": Burst(guardSparks, pos, Vector3.up + dir * 0.4f, 30, 70f); break;
             case "GuardBroken": Burst(guardSparks, pos, dir, 36, 80f); Burst(puff, pos, dir, 6, 80f); break;

@@ -1,0 +1,909 @@
+{
+ "version": 1,
+ "_notes": "Cue table: CueBus event -> sprite cue(s). Most specific row wins PER LAYER (impact / voice / base); weapon = attacker's weapon, surface = defender's surface, weight = light|heavy|kick, attacker/defender = character filters, moves[] = exact move ids (empty = any). who='attacker'|'defender' applies that character's voicePitch to the cue. 'disabled' rows are kept but never play. Only cues in CueBus.Manifest exist: see Tools/validate_hit_reactions.py. 'legacy default' rows reproduce what CueBus hard-coded before this table, so with only those rows nothing changes. Missing sounds are listed in _agents/P2_handoff.md.",
+ "enabled": true,
+ "weapons": [
+  {
+   "character": "Dracula",
+   "weapon": "sword"
+  },
+  {
+   "character": "Pitborn",
+   "weapon": "maul"
+  }
+ ],
+ "surfaces": [
+  {
+   "character": "Dracula",
+   "surface": "flesh"
+  },
+  {
+   "character": "Pitborn",
+   "surface": "armour"
+  }
+ ],
+ "voicePitch": [
+  {
+   "character": "Dracula",
+   "rate": 1.0
+  },
+  {
+   "character": "Pitborn",
+   "rate": 0.78
+  }
+ ],
+ "rows": [
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "hit_flesh",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "heavy",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "hit_heavy",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "kick",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "hit_kick",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "sword",
+   "surface": "flesh",
+   "weight": "light",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "sword on flesh, light: slice on top of the hit",
+   "play": [
+    {
+     "cue": "hit_flesh",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "flesh_cut",
+     "gain": 0.12,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "sword",
+   "surface": "flesh",
+   "weight": "heavy",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "sword on flesh, heavy",
+   "play": [
+    {
+     "cue": "hit_heavy",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "flesh_cut",
+     "gain": 0.18,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "maul",
+   "surface": "flesh",
+   "weight": "light",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "maul on flesh, light: dull thud + a little bone",
+   "play": [
+    {
+     "cue": "hit_heavy",
+     "gain": 0.3,
+     "delay": 0,
+     "rate": 0.9,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "bone_crack",
+     "gain": 0.12,
+     "delay": 0.02,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "maul",
+   "surface": "flesh",
+   "weight": "heavy",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "maul on flesh, heavy",
+   "play": [
+    {
+     "cue": "hit_heavy",
+     "gain": 0.36,
+     "delay": 0,
+     "rate": 0.85,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "bone_crack",
+     "gain": 0.22,
+     "delay": 0.02,
+     "rate": 0.95,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "sword",
+   "surface": "armour",
+   "weight": "light",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "sword on armour: clang over a muffled hit (sparks come from CombatVFX)",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 0.4,
+     "delay": 0,
+     "rate": 1.15,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "hit_flesh",
+     "gain": 0.16,
+     "delay": 0.01,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "sword",
+   "surface": "armour",
+   "weight": "heavy",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "sword on armour: clang over a muffled hit (sparks come from CombatVFX)",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 0.4,
+     "delay": 0,
+     "rate": 1.15,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "hit_flesh",
+     "gain": 0.16,
+     "delay": 0.01,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "flesh",
+   "weight": "kick",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "kick on flesh",
+   "play": [
+    {
+     "cue": "hit_kick",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "bone_crack",
+     "gain": 0.08,
+     "delay": 0.0,
+     "rate": 1.2,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "armour",
+   "weight": "kick",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "kick on armour",
+   "play": [
+    {
+     "cue": "hit_kick",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "block",
+     "gain": 0.2,
+     "delay": 0,
+     "rate": 0.9,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "voice",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "heavy",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": true,
+   "note": "STOPGAP pain: death_voice pitched up; Pitborn goes through voicePitch. Enable after a listen test",
+   "play": [
+    {
+     "cue": "death_voice",
+     "gain": 0.1,
+     "delay": 0.02,
+     "rate": 1.35,
+     "who": "defender",
+     "chance": 0.5
+    }
+   ]
+  },
+  {
+   "evt": "block",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 1.0,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "block",
+   "layer": "impact",
+   "weapon": "maul",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "maul on guard: lower, heavier clang",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 1.0,
+     "delay": 0,
+     "rate": 0.8,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "block",
+   "layer": "impact",
+   "weapon": "sword",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "sword on guard",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 1.0,
+     "delay": 0,
+     "rate": 1.05,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "block_perfect",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "block_perfect",
+     "gain": 0.55,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "parry",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "parry",
+     "gain": 1.0,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "guard_break",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "guard_break",
+     "gain": 1.0,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "hit_flesh",
+     "gain": 0.55,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "guard_break",
+   "layer": "impact",
+   "weapon": "maul",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "maul breaks the guard",
+   "play": [
+    {
+     "cue": "guard_break",
+     "gain": 1.0,
+     "delay": 0,
+     "rate": 0.85,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "hit_heavy",
+     "gain": 0.4,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "attack_start",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "whoosh_light",
+     "gain": 0.12,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "attack_start",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "heavy",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "whoosh_heavy",
+     "gain": 0.18,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "attack_start",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "kick",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "whoosh_light",
+     "gain": 0.09,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "attack_start",
+   "layer": "impact",
+   "weapon": "maul",
+   "surface": "*",
+   "weight": "heavy",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "maul swing: slower, lower",
+   "play": [
+    {
+     "cue": "whoosh_heavy",
+     "gain": 0.2,
+     "delay": 0,
+     "rate": 0.8,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "attack_start",
+   "layer": "impact",
+   "weapon": "maul",
+   "surface": "*",
+   "weight": "light",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "maul light swing still heavy-sounding",
+   "play": [
+    {
+     "cue": "whoosh_heavy",
+     "gain": 0.14,
+     "delay": 0,
+     "rate": 0.9,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "attack_miss",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "whoosh_light",
+     "gain": 0.1,
+     "delay": 0,
+     "rate": 0.8,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "attack_start",
+   "layer": "voice",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "heavy",
+   "attacker": "Dracula",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "Dracula effort on heavy swings (2 short slices only)",
+   "play": [
+    {
+     "cue": "effort_voice",
+     "gain": 0.22,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "attacker",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "attack_start",
+   "layer": "voice",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "heavy",
+   "attacker": "Pitborn",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "Pitborn battle growl on heavy windup (V3 charge_foe)",
+   "play": [
+    {
+     "cue": "charge_foe",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "attacker",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "attack_start",
+   "layer": "voice",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "light",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": true,
+   "note": "STOPGAP light-swing effort: only 2 slices exist, would repeat. Needs new grunts",
+   "play": [
+    {
+     "cue": "effort_voice",
+     "gain": 0.12,
+     "delay": 0.0,
+     "rate": 1.1,
+     "who": "attacker",
+     "chance": 0.5
+    }
+   ]
+  },
+  {
+   "evt": "roll",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "roll",
+     "gain": 0.12,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "backstep",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "backstep",
+     "gain": 0.09,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "sidestep",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "sidestep reuses the backstep slice, lighter",
+   "play": [
+    {
+     "cue": "backstep",
+     "gain": 0.07,
+     "delay": 0,
+     "rate": 1.1,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "kill",
+   "layer": "base",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default; voicePitch applies to the victim's voice",
+   "play": [
+    {
+     "cue": "death_voice",
+     "gain": 0.45,
+     "delay": 0.03,
+     "rate": 1.0,
+     "who": "defender",
+     "chance": 1.0
+    },
+    {
+     "cue": "kill",
+     "gain": 0.65,
+     "delay": 0.65,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "kill",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "legacy default",
+   "play": [
+    {
+     "cue": "flesh_cut",
+     "gain": 0.45,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "kill",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [
+    "thrust",
+    "riposte",
+    "skill_witchfire",
+    "skill_lunge",
+    "skill_jab"
+   ],
+   "disabled": false,
+   "note": "legacy: stab sounds for thrust / riposte",
+   "play": [
+    {
+     "cue": "flesh_stab",
+     "gain": 0.45,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "kill",
+   "layer": "impact",
+   "weapon": "maul",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "maul kill: crushing",
+   "play": [
+    {
+     "cue": "bone_crack",
+     "gain": 0.5,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "flesh_tear",
+     "gain": 0.3,
+     "delay": 0.04,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  }
+ ]
+}

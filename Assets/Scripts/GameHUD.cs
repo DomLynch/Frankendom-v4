@@ -42,6 +42,7 @@ public class GameHUD : MonoBehaviour
     void Start() { foreach (var a in System.Environment.GetCommandLineArgs()) if (a == "-fps" || a == "-gaps" || a == "-autoplay") showFps = true; }
     void Outlined(Rect r, string t) { var o = new GUIStyle(GUI.skin.label); o.normal.textColor = Color.black; foreach (var d in new[] { new Vector2(-2, 0), new Vector2(2, 0), new Vector2(0, -2), new Vector2(0, 2), new Vector2(-2, -2), new Vector2(2, 2), new Vector2(-2, 2), new Vector2(2, -2) }) GUI.Label(new Rect(r.x + d.x, r.y + d.y, r.width, r.height), t, o); GUI.Label(r, t); }
     void Panel(Rect r) { GUI.color = new Color(0, 0, 0, 0.6f); GUI.DrawTexture(r, Texture2D.whiteTexture); GUI.color = Color.white; }
+    static bool FinisherRTBusy() { return RTFinisher.Busy; }   // FN1: VICTORY / YOU DIED / Retry wait until the finisher scene is over
     void OnGUI()
     {
         if (showFps) GUI.Label(new Rect(Screen.width / 2 - 60, 8, 140, 24), "FPS " + fpsShown.ToString("F0"));
@@ -51,11 +52,11 @@ public class GameHUD : MonoBehaviour
         Panel(new Rect(22, 8, 376, 76)); Panel(new Rect(Screen.width - 398, 8, 376, 76));
         if (player) { Outlined(new Rect(30, 14, 300, 24), "DRACULA"); Bar(new Rect(30, 38, 360, 20), player.current / player.max, new Color(0.7f, 0.05f, 0.08f)); }
         if (enemy) { Outlined(new Rect(Screen.width - 390, 14, 300, 24), "PITBORN"); Bar(new Rect(Screen.width - 390, 38, 360, 20), enemy.current / enemy.max, new Color(0.8f, 0.45f, 0.1f)); }
-        if (pf) { Bar(new Rect(30, 62, 360, 8), pf.stamina / pf.maxStamina, new Color(0.2f, 0.65f, 0.3f)); Bar(new Rect(30, 72, 360, 8), pf.posture / 100f, new Color(0.85f, 0.8f, 0.3f)); }
-        if (ef) { Bar(new Rect(Screen.width - 390, 62, 360, 8), ef.stamina / ef.maxStamina, new Color(0.2f, 0.65f, 0.3f)); Bar(new Rect(Screen.width - 390, 72, 360, 8), ef.posture / 100f, new Color(0.85f, 0.8f, 0.3f)); }
+        if (pf) CombatHudBars.Draw(new Rect(30, 38, 360, 20), pf, true);
+        if (ef) CombatHudBars.Draw(new Rect(Screen.width - 390, 38, 360, 20), ef, false);
         if (pf) { Ring(new Rect(Screen.width - 170, Screen.height - 100, 64, 64), pf.special1Cd / 540f, "1", "S"); Ring(new Rect(Screen.width - 90, Screen.height - 100, 64, 64), pf.special2Cd / 540f, "2", "W"); }
         if (showHelp || Time.timeSinceLevelLoad < 10f) GUI.Label(new Rect(30, Screen.height - 30, 1600, 24), "WASD move  Shift run  F/LMB strike (tap=light, A/D=side, W=stab, hold=heavy)  T stab  G heavy  E/Space roll (+A/D/S = evade)  tap A/D twice = side-step  Q/RMB guard  C kick  1/2 specials  Tab lock  R recenter  Backspace restart");
-        string msg = player && player.Dead ? "YOU DIED  -  press Backspace" : enemy && enemy.Dead ? "VICTORY  -  press Backspace" : null;
+        string msg = FinisherRTBusy() ? null : player && player.Dead ? "YOU DIED  -  press Backspace" : enemy && enemy.Dead ? "VICTORY  -  press Backspace" : null;
         if (msg != null)
         {
             GUI.Label(new Rect(0, Screen.height / 2 - 60, Screen.width, 120), msg, big);

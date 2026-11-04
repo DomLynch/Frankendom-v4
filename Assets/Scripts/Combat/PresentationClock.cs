@@ -5,7 +5,7 @@ using UnityEngine;
 //  RequestStop(ms): the sim accumulator (Duel.Update) stops accumulating and fighter Animators freeze (Fighter.ApplyFreeze) while Frozen;
 //  particles, blood, the camera shove, the lock blend and Flinch keep running on their own (unscaled) time.
 //  Tuning lives in Assets/Data/hit_stop.json (frames per contact tier / per move); only the hero special lands a 6-frame stop today.
-[Serializable] public class HitStopRow { public string id; public int frames; public float ms; }
+[Serializable] public class HitStopRow { public string id; public int frames; public float ms; public string type; }   // type: the contact type a per-move row applies to ("" = "Hit" only, so a blocked / parried swing never gets the landed-hit stop)
 [Serializable]
 public class HitStopTable
 {
@@ -23,9 +23,9 @@ public class HitStopTable
     public float StopMs(CombatEvent e)
     {
         string mid = e.moveId ?? "";
-        var mr = Find(moves, mid); if (mr != null) return MsOf(mr);
+        var mr = Find(moves, mid); if (mr != null && (string.IsNullOrEmpty(mr.type) ? e.type == "Hit" : mr.type == e.type)) return MsOf(mr);
         string tier = null;
-        if (mid.Length > 0 && mid == kickMoveId) tier = "kick";
+        if (mid.Length > 0 && mid == kickMoveId && e.type == "Hit") tier = "kick";
         else if (mid.Length > 0 && !string.IsNullOrEmpty(specialMovePrefix) && mid.StartsWith(specialMovePrefix) && IsSpecialType(e.type)) tier = "special";
         else switch (e.type)
         {
@@ -81,7 +81,14 @@ public static class PresentationClock
         if (!was && OnFrozenChanged != null) OnFrozenChanged(true);
     }
 
-    public static void RequestStop(CombatEvent e) { if (Table != null) RequestStop(Table.StopMs(e)); }
+    static readonly bool logOn = Array.IndexOf(Environment.GetCommandLineArgs(), "-hitstoplog") >= 0;   // P1 proof flag: one line per stop
+    public static void RequestStop(CombatEvent e)
+    {
+        if (Table == null) return;
+        float ms = Table.StopMs(e);
+        if (logOn) Debug.Log("[HitStop] tick " + Duel.TickCount + " " + e.type + " move=" + e.moveId + " heavy=" + e.heavy + " -> " + ms.ToString("0") + " ms (frame " + Time.frameCount + ")");
+        RequestStop(ms);
+    }
 
     // call once per rendered frame, before Duel.Update (the driver runs at execution order -1000)
     public static void Tick(float unscaledDt)

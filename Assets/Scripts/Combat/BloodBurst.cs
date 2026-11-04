@@ -41,14 +41,15 @@ public class BloodBurst : MonoBehaviour
             pos = pos - (pos - cp).normalized * pull;   // toward the camera, along the camera->contact ray
             grow = Mathf.Min(GrowMax, Mathf.Max(1f, far / Mathf.Max(0.01f, near)));
         }
-        int count = kill ? 25 : 15, drops = kill ? 3 : 2;
+        var bs = BloodTable.For(e.target, e.heavy, kill);   // P2: blood.json weight x location x victim multipliers (all 1 = V3 numbers)
+        int count = Mathf.Max(1, Mathf.RoundToInt((kill ? 25 : 15) * bs.count)), drops = Mathf.Max(1, Mathf.RoundToInt((kill ? 3 : 2) * bs.drops));
         var ep = new ParticleSystem.EmitParams();
         for (int i = 0; i < count; i++)
         {
             float a = Rnd() * Mathf.PI * 2f; Vector3 v; float life, size, stretch;
             if (i < drops) { life = Between(0.5f, 0.72f); size = Between(0.07f, 0.12f) * Thin; stretch = Between(1.1f, 1.5f) * Long; v = new Vector3(Mathf.Cos(a) * Between(0.3f, 1.1f) + dir.x * Between(0.3f, 1.0f), Between(1.6f, 3.0f), Mathf.Sin(a) * Between(0.3f, 1.1f) + dir.z * Between(0.3f, 1.0f)); }
             else { life = Between(0.14f, 0.4f); size = Between(0.018f, 0.05f) * Thin; stretch = Between(1.3f, 2.4f) * Long; float sp = Between(1.2f, 3.6f); v = new Vector3(Mathf.Cos(a) * sp * 0.6f + dir.x * Between(0.5f, 2.4f), Between(0.2f, 2.6f), Mathf.Sin(a) * sp * 0.6f + dir.z * Between(0.5f, 2.4f)); }
-            ep.position = pos; ep.velocity = v; ep.startLifetime = life; ep.startSize = size * grow * sceneScale; ep.startColor = Color.white;
+            ep.position = pos; ep.velocity = new Vector3(v.x * bs.speed, v.y * bs.speed * bs.up, v.z * bs.speed); ep.startLifetime = life; ep.startSize = size * grow * sceneScale; ep.startColor = Color.white;
             ep.applyShapeToPosition = false; ps.Emit(ep, 1);
             // strand length = width x stretch: Stretch mode scales the length by the system's lengthScale, so average it per burst
         }

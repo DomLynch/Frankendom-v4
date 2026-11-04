@@ -1,0 +1,1319 @@
+{
+  "version": 1,
+  "note": "STANDALONE finisher data (no duel_rules.json). Read by Finishers loader (FN1), the mesh cut and Assets/Editor/FinisherClipSetup.cs (clipImport). StreamingAssets copy must be identical. Offsets are stand-in metres; TUNE from renders.",
+  "enableFinishers": false,
+  "enableGore": true,
+  "rotation": {
+    "mode": "sequence",
+    "seed": 20261104,
+    "noImmediateRepeat": true,
+    "fallbackEntry": "",
+    "weapons": {
+      "Dracula": "sword",
+      "Pitborn": "maul"
+    }
+  },
+  "entries": [
+    {
+      "id": "decapitation",
+      "enabled": true,
+      "placeholder": false,
+      "weight": 3,
+      "attackerSide": "any",
+      "weapons": [],
+      "directions": [],
+      "moves": [],
+      "locations": [],
+      "attackerMove": "light_left",
+      "attackerClip": "fin_beheading_k",
+      "contactAt": 1.1,
+      "duration": 4.7,
+      "victimClip": "death",
+      "dieAt": 4.6,
+      "distance": 1.1,
+      "shotDefs": [
+        {
+          "id": "dc_wide",
+          "focus": "mid",
+          "angleDeg": 38,
+          "side": 1,
+          "dist": 4.6,
+          "height": 1.7,
+          "lookHeight": 1.3,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0
+        },
+        {
+          "id": "dc_close",
+          "focus": "target",
+          "angleDeg": 75,
+          "side": 1,
+          "dist": 2.3,
+          "height": 1.55,
+          "lookHeight": 1.6,
+          "lookAhead": 0.1,
+          "fov": 28,
+          "blend": 0.05,
+          "shake": 0.05
+        },
+        {
+          "id": "dc_fall",
+          "focus": "target",
+          "angleDeg": 110,
+          "side": 1,
+          "dist": 3.4,
+          "height": 1.0,
+          "lookHeight": 0.9,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0.9
+        }
+      ],
+      "shots": [
+        {
+          "t": 0,
+          "rel": "start",
+          "shot": "dc_wide"
+        },
+        {
+          "t": -0.1,
+          "rel": "contact",
+          "shot": "dc_close"
+        },
+        {
+          "t": 0.5,
+          "rel": "contact",
+          "shot": "dc_fall"
+        }
+      ],
+      "gore": [
+        {
+          "t": 0.03,
+          "rel": "contact",
+          "type": "head_detach",
+          "cut": "head",
+          "strength": 1
+        }
+      ],
+      "slowmo": [
+        {
+          "t": -0.12,
+          "rel": "contact",
+          "scale": 0.15,
+          "duration": 1.1,
+          "easeIn": 0.08,
+          "easeOut": 0.5
+        }
+      ],
+      "holdAfter": 1.8,
+      "note": "wind-up 0..0.95, downward slash peaks 34.7 m/s at 1.10 s (right hand), head-off effect at contact; victim plays its own death clip 0.3 s later (stagger 0..1.7 s of that clip, down 2.6-3.1 s)",
+      "attackerClipSpeed": 1.0,
+      "attackerFade": 0.1,
+      "attackerClipStart": 0.0,
+      "victimClipSpeed": 1.0,
+      "victimFade": 0.1,
+      "victimStart": 1.4,
+      "holdLast": true,
+      "victimYawDeg": 0.0,
+      "pairOffset": [
+        0.0,
+        0.0,
+        1.1
+      ],
+      "killerYawDeg": -5.0,
+      "distanceScaleByKiller": true
+    },
+    {
+      "id": "split_crown",
+      "enabled": true,
+      "placeholder": false,
+      "weight": 2,
+      "attackerSide": "Dracula",
+      "weapons": [],
+      "directions": [],
+      "moves": [],
+      "locations": [],
+      "attackerMove": "heavy_overhead",
+      "attackerClip": "fin_chop1h_k",
+      "contactAt": 0.48,
+      "duration": 4.0,
+      "victimClip": "death",
+      "dieAt": 3.95,
+      "distance": 1.0,
+      "shotDefs": [
+        {
+          "id": "sc_wide",
+          "focus": "mid",
+          "angleDeg": 50,
+          "side": -1,
+          "dist": 4.8,
+          "height": 1.8,
+          "lookHeight": 1.3,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0
+        },
+        {
+          "id": "sc_close",
+          "focus": "target",
+          "angleDeg": 15,
+          "side": 1,
+          "dist": 2.2,
+          "height": 1.9,
+          "lookHeight": 1.65,
+          "lookAhead": 0.1,
+          "fov": 28,
+          "blend": 0.05,
+          "shake": 0.07
+        },
+        {
+          "id": "sc_side",
+          "focus": "target",
+          "angleDeg": 100,
+          "side": -1,
+          "dist": 3.2,
+          "height": 1.3,
+          "lookHeight": 1.2,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 1.0
+        }
+      ],
+      "shots": [
+        {
+          "t": 0,
+          "rel": "start",
+          "shot": "sc_wide"
+        },
+        {
+          "t": -0.1,
+          "rel": "contact",
+          "shot": "sc_close"
+        },
+        {
+          "t": 0.6,
+          "rel": "contact",
+          "shot": "sc_side"
+        }
+      ],
+      "gore": [
+        {
+          "t": 0.02,
+          "rel": "contact",
+          "type": "skull_split",
+          "cut": "head_split",
+          "strength": 1
+        }
+      ],
+      "slowmo": [
+        {
+          "t": -0.1,
+          "rel": "contact",
+          "scale": 0.15,
+          "duration": 1.0,
+          "easeIn": 0.08,
+          "easeOut": 0.5
+        }
+      ],
+      "holdAfter": 1.8,
+      "note": "one-hand overhead chop: hand peaks 1.6 m at 0.2 s, comes down 0.5 s; crown split effect at contact, body drops straight down (death)",
+      "attackerClipSpeed": 1.0,
+      "attackerFade": 0.1,
+      "attackerClipStart": 0.0,
+      "victimClipSpeed": 1.0,
+      "victimFade": 0.1,
+      "victimStart": 0.73,
+      "holdLast": true,
+      "victimYawDeg": 0.0,
+      "pairOffset": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "killerYawDeg": 4.0,
+      "distanceScaleByKiller": true
+    },
+    {
+      "id": "split_crown_pit",
+      "enabled": true,
+      "placeholder": false,
+      "weight": 2,
+      "attackerSide": "Pitborn",
+      "weapons": [],
+      "directions": [],
+      "moves": [],
+      "locations": [],
+      "attackerMove": "heavy_overhead",
+      "attackerClip": "fin_chop2h_k",
+      "contactAt": 0.48,
+      "duration": 3.8,
+      "victimClip": "death",
+      "dieAt": 3.65,
+      "distance": 1.0,
+      "shotDefs": [
+        {
+          "id": "sp_wide",
+          "focus": "mid",
+          "angleDeg": 50,
+          "side": -1,
+          "dist": 4.8,
+          "height": 1.8,
+          "lookHeight": 1.3,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0
+        },
+        {
+          "id": "sp_close",
+          "focus": "target",
+          "angleDeg": 15,
+          "side": 1,
+          "dist": 2.2,
+          "height": 1.9,
+          "lookHeight": 1.65,
+          "lookAhead": 0.1,
+          "fov": 28,
+          "blend": 0.05,
+          "shake": 0.07
+        },
+        {
+          "id": "sp_side",
+          "focus": "target",
+          "angleDeg": 100,
+          "side": -1,
+          "dist": 3.2,
+          "height": 1.3,
+          "lookHeight": 1.2,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 1.0
+        }
+      ],
+      "shots": [
+        {
+          "t": 0,
+          "rel": "start",
+          "shot": "sp_wide"
+        },
+        {
+          "t": -0.1,
+          "rel": "contact",
+          "shot": "sp_close"
+        },
+        {
+          "t": 0.6,
+          "rel": "contact",
+          "shot": "sp_side"
+        }
+      ],
+      "gore": [
+        {
+          "t": 0.02,
+          "rel": "contact",
+          "type": "skull_split",
+          "cut": "head_split",
+          "strength": 1
+        }
+      ],
+      "slowmo": [
+        {
+          "t": -0.1,
+          "rel": "contact",
+          "scale": 0.15,
+          "duration": 1.0,
+          "easeIn": 0.08,
+          "easeOut": 0.5
+        }
+      ],
+      "holdAfter": 1.8,
+      "note": "two-hand overhead chop, same timing as the one-hand clip",
+      "attackerClipSpeed": 1.0,
+      "attackerFade": 0.1,
+      "attackerClipStart": 0.0,
+      "victimClipSpeed": 1.0,
+      "victimFade": 0.1,
+      "victimStart": 0.73,
+      "holdLast": true,
+      "victimYawDeg": 0.0,
+      "pairOffset": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "killerYawDeg": 4.0,
+      "distanceScaleByKiller": true
+    },
+    {
+      "id": "river_light",
+      "enabled": true,
+      "placeholder": false,
+      "weight": 3,
+      "attackerSide": "Dracula",
+      "weapons": [],
+      "directions": [],
+      "moves": [],
+      "locations": [],
+      "attackerMove": "light_left",
+      "attackerClip": "fin_river_light_k",
+      "contactAt": 0.7,
+      "duration": 2.4,
+      "victimClip": "fin_river_light_v",
+      "dieAt": -2,
+      "distance": 1.15,
+      "shotDefs": [
+        {
+          "id": "ri_wide",
+          "focus": "mid",
+          "angleDeg": 38,
+          "side": 1,
+          "dist": 4.6,
+          "height": 1.7,
+          "lookHeight": 1.3,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0
+        },
+        {
+          "id": "ri_close",
+          "focus": "target",
+          "angleDeg": 75,
+          "side": 1,
+          "dist": 2.3,
+          "height": 1.55,
+          "lookHeight": 1.6,
+          "lookAhead": 0.1,
+          "fov": 28,
+          "blend": 0.05,
+          "shake": 0.05
+        },
+        {
+          "id": "ri_fall",
+          "focus": "target",
+          "angleDeg": 110,
+          "side": 1,
+          "dist": 3.4,
+          "height": 1.0,
+          "lookHeight": 0.9,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0.9
+        }
+      ],
+      "shots": [
+        {
+          "t": 0,
+          "rel": "start",
+          "shot": "ri_wide"
+        },
+        {
+          "t": -0.1,
+          "rel": "contact",
+          "shot": "ri_close"
+        },
+        {
+          "t": 0.5,
+          "rel": "contact",
+          "shot": "ri_fall"
+        }
+      ],
+      "gore": [
+        {
+          "t": 0.02,
+          "rel": "contact",
+          "type": "cut",
+          "cut": "wound_torso",
+          "strength": 1
+        },
+        {
+          "t": 0.59,
+          "rel": "contact",
+          "type": "cut",
+          "cut": "belly_open",
+          "strength": 1
+        }
+      ],
+      "slowmo": [
+        {
+          "t": -0.1,
+          "rel": "contact",
+          "scale": 0.25,
+          "duration": 0.9,
+          "easeIn": 0.06,
+          "easeOut": 0.4
+        }
+      ],
+      "holdAfter": 1.6,
+      "note": "lunging slash: first strike 0.70 s (hand 26.9 m/s, victim head 15.6 m/s), victim flung up ~0.8 s, down at 1.2, flourish slash 1.27 s, settled 1.73 s",
+      "attackerClipSpeed": 1.0,
+      "attackerFade": 0.1,
+      "attackerClipStart": 0.0,
+      "victimClipSpeed": 1.0,
+      "victimFade": 0.1,
+      "victimStart": 0.0,
+      "holdLast": true,
+      "victimYawDeg": -1.0,
+      "pairOffset": [
+        0.0,
+        0.0,
+        1.15
+      ],
+      "killerYawDeg": -9.0,
+      "distanceScaleByKiller": true
+    },
+    {
+      "id": "hengdao_heavy",
+      "enabled": true,
+      "placeholder": false,
+      "weight": 3,
+      "attackerSide": "Pitborn",
+      "weapons": [],
+      "directions": [],
+      "moves": [],
+      "locations": [],
+      "attackerMove": "light_left",
+      "attackerClip": "fin_hengdao_k",
+      "contactAt": 1.0,
+      "duration": 3.45,
+      "victimClip": "fin_hengdao_v",
+      "dieAt": -2,
+      "distance": 1.2,
+      "shotDefs": [
+        {
+          "id": "he_wide",
+          "focus": "mid",
+          "angleDeg": 38,
+          "side": 1,
+          "dist": 4.6,
+          "height": 1.7,
+          "lookHeight": 1.3,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0
+        },
+        {
+          "id": "he_close",
+          "focus": "target",
+          "angleDeg": 75,
+          "side": 1,
+          "dist": 2.3,
+          "height": 1.55,
+          "lookHeight": 1.6,
+          "lookAhead": 0.1,
+          "fov": 28,
+          "blend": 0.05,
+          "shake": 0.05
+        },
+        {
+          "id": "he_fall",
+          "focus": "target",
+          "angleDeg": 110,
+          "side": 1,
+          "dist": 3.4,
+          "height": 1.0,
+          "lookHeight": 0.9,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0.9
+        }
+      ],
+      "shots": [
+        {
+          "t": 0,
+          "rel": "start",
+          "shot": "he_wide"
+        },
+        {
+          "t": -0.1,
+          "rel": "contact",
+          "shot": "he_close"
+        },
+        {
+          "t": 0.5,
+          "rel": "contact",
+          "shot": "he_fall"
+        }
+      ],
+      "gore": [
+        {
+          "t": 0.03,
+          "rel": "contact",
+          "type": "cut",
+          "cut": "belly_open",
+          "strength": 1
+        }
+      ],
+      "slowmo": [
+        {
+          "t": -0.1,
+          "rel": "contact",
+          "scale": 0.2,
+          "duration": 1.2,
+          "easeIn": 0.06,
+          "easeOut": 0.5
+        }
+      ],
+      "holdAfter": 1.8,
+      "note": "heavy blade cut peaks 40.9 m/s at 1.00 s; victim staggers 1.0-1.7, collapses 1.7-2.7, settled 2.7 s",
+      "attackerClipSpeed": 1.0,
+      "attackerFade": 0.1,
+      "attackerClipStart": 0.0,
+      "victimClipSpeed": 1.0,
+      "victimFade": 0.1,
+      "victimStart": 0.0,
+      "holdLast": true,
+      "victimYawDeg": 11.0,
+      "pairOffset": [
+        0.0,
+        0.0,
+        1.2
+      ],
+      "killerYawDeg": 19.0,
+      "distanceScaleByKiller": true
+    },
+    {
+      "id": "counter_greatsword",
+      "enabled": false,
+      "placeholder": false,
+      "weight": 3,
+      "attackerSide": "Pitborn",
+      "weapons": [],
+      "directions": [],
+      "moves": [],
+      "locations": [],
+      "attackerMove": "light_left",
+      "attackerClip": "fin_counter_k",
+      "contactAt": 0.15,
+      "duration": 2.05,
+      "victimClip": "fin_counter_v",
+      "dieAt": -2,
+      "distance": 1.0,
+      "shotDefs": [
+        {
+          "id": "co_wide",
+          "focus": "mid",
+          "angleDeg": 38,
+          "side": 1,
+          "dist": 4.6,
+          "height": 1.7,
+          "lookHeight": 1.3,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0
+        },
+        {
+          "id": "co_close",
+          "focus": "target",
+          "angleDeg": 75,
+          "side": 1,
+          "dist": 2.3,
+          "height": 1.55,
+          "lookHeight": 1.6,
+          "lookAhead": 0.1,
+          "fov": 28,
+          "blend": 0.05,
+          "shake": 0.05
+        },
+        {
+          "id": "co_fall",
+          "focus": "target",
+          "angleDeg": 110,
+          "side": 1,
+          "dist": 3.4,
+          "height": 1.0,
+          "lookHeight": 0.9,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0.9
+        }
+      ],
+      "shots": [
+        {
+          "t": 0,
+          "rel": "start",
+          "shot": "co_wide"
+        },
+        {
+          "t": -0.1,
+          "rel": "contact",
+          "shot": "co_close"
+        },
+        {
+          "t": 0.5,
+          "rel": "contact",
+          "shot": "co_fall"
+        }
+      ],
+      "gore": [
+        {
+          "t": 0.03,
+          "rel": "contact",
+          "type": "cut",
+          "cut": "belly_open",
+          "strength": 1
+        }
+      ],
+      "slowmo": [
+        {
+          "t": -0.1,
+          "rel": "contact",
+          "scale": 0.2,
+          "duration": 1.2,
+          "easeIn": 0.06,
+          "easeOut": 0.5
+        }
+      ],
+      "holdAfter": 1.8,
+      "note": "FALLBACK for hengdao (enable if it reads badly): counter strike at 0.13 s, victim flung 0.4 m back and down by 0.4 s. Killer faces -51 deg at t0 (turns during the clip), TUNE",
+      "attackerClipSpeed": 1.0,
+      "attackerFade": 0.1,
+      "attackerClipStart": 0.0,
+      "victimClipSpeed": 1.0,
+      "victimFade": 0.1,
+      "victimStart": 0.0,
+      "holdLast": true,
+      "victimYawDeg": -25.0,
+      "pairOffset": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "killerYawDeg": -51.0,
+      "distanceScaleByKiller": true
+    },
+    {
+      "id": "run_through",
+      "enabled": true,
+      "placeholder": true,
+      "weight": 2,
+      "attackerSide": "any",
+      "weapons": [],
+      "directions": [],
+      "moves": [],
+      "locations": [],
+      "attackerMove": "thrust",
+      "attackerClip": "",
+      "contactAt": -1,
+      "duration": 3.2,
+      "victimClip": "",
+      "dieAt": -2,
+      "distance": 1.5,
+      "shotDefs": [
+        {
+          "id": "rt_wide",
+          "focus": "mid",
+          "angleDeg": 80,
+          "side": 1,
+          "dist": 4.4,
+          "height": 1.5,
+          "lookHeight": 1.2,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0
+        },
+        {
+          "id": "rt_close",
+          "focus": "mid",
+          "angleDeg": 90,
+          "side": 1,
+          "dist": 2.4,
+          "height": 1.3,
+          "lookHeight": 1.2,
+          "lookAhead": 0,
+          "fov": 30,
+          "blend": 0.4
+        }
+      ],
+      "shots": [
+        {
+          "t": 0,
+          "rel": "start",
+          "shot": "rt_wide"
+        },
+        {
+          "t": 0,
+          "rel": "contact",
+          "shot": "rt_close"
+        }
+      ],
+      "gore": [
+        {
+          "t": 0.02,
+          "rel": "contact",
+          "type": "cut",
+          "cut": "wound_torso",
+          "strength": 1
+        }
+      ],
+      "slowmo": [
+        {
+          "t": 0,
+          "rel": "contact",
+          "scale": 0.3,
+          "duration": 1.2,
+          "easeIn": 0.08,
+          "easeOut": 0.5
+        }
+      ],
+      "holdAfter": 1.8,
+      "note": "placeholder clips; real: paired Death_RunThrough 2.4 s + Fin_RunThrough, blade stays in, victim arches then kneels. top20 hq-rapier-thrust-torso if missing"
+    },
+    {
+      "id": "opened",
+      "enabled": true,
+      "placeholder": true,
+      "weight": 1,
+      "attackerSide": "any",
+      "weapons": [
+        "sword"
+      ],
+      "directions": [],
+      "moves": [],
+      "locations": [],
+      "attackerMove": "light_right",
+      "attackerClip": "",
+      "contactAt": -1,
+      "duration": 3.0,
+      "victimClip": "",
+      "dieAt": -2,
+      "distance": 1.7,
+      "shotDefs": [
+        {
+          "id": "op_wide",
+          "focus": "mid",
+          "angleDeg": 60,
+          "side": 1,
+          "dist": 4.6,
+          "height": 1.4,
+          "lookHeight": 1.0,
+          "lookAhead": 0,
+          "fov": 34,
+          "blend": 0
+        },
+        {
+          "id": "op_low",
+          "focus": "target",
+          "angleDeg": 85,
+          "side": 1,
+          "dist": 3.0,
+          "height": 0.9,
+          "lookHeight": 1.0,
+          "lookAhead": 0,
+          "fov": 32,
+          "blend": 0.6
+        }
+      ],
+      "shots": [
+        {
+          "t": 0,
+          "rel": "start",
+          "shot": "op_wide"
+        },
+        {
+          "t": 0.1,
+          "rel": "contact",
+          "shot": "op_low"
+        }
+      ],
+      "gore": [
+        {
+          "t": 0.03,
+          "rel": "contact",
+          "type": "cut",
+          "cut": "belly_open",
+          "strength": 1
+        }
+      ],
+      "slowmo": [
+        {
+          "t": 0,
+          "rel": "contact",
+          "scale": 0.25,
+          "duration": 1.0,
+          "easeIn": 0.06,
+          "easeOut": 0.4
+        }
+      ],
+      "holdAfter": 1.8,
+      "note": "placeholder swing; waist cut is lane B (MeshCut unit belly_open, falls back to torso_waist)"
+    }
+  ],
+  "cuts": {
+    "weightMin": 0.5,
+    "pieceImpulseScale": 0.2,
+    "weldM": 0.0002,
+    "capColor": [
+      0.435,
+      0.114,
+      0.114,
+      1.0
+    ],
+    "innerColor": [
+      0.165,
+      0.043,
+      0.043,
+      1.0
+    ],
+    "units": [
+      {
+        "id": "head",
+        "kind": "subtree",
+        "bones": [
+          "head"
+        ],
+        "parentBones": [
+          "neck"
+        ],
+        "loc": 3,
+        "massKg": 5.0,
+        "colliderRadiusM": 0.11,
+        "jetSeconds": 1.6,
+        "torqueMul": 0.7,
+        "upBias": 0.55,
+        "scatter": 0.35,
+        "angularDrag": 0.4,
+        "lifeSeconds": 0,
+        "extraDecals": 10
+      },
+      {
+        "id": "head_split",
+        "kind": "split",
+        "bones": [
+          "head"
+        ],
+        "parentBones": [
+          "neck"
+        ],
+        "loc": 3,
+        "openDeg": 16,
+        "splitAxis": "x",
+        "splitOffsetM": 0.0,
+        "jetSeconds": 1.6,
+        "extraDecals": 12
+      },
+      {
+        "id": "torso_waist",
+        "kind": "subtree",
+        "bones": [
+          "spine"
+        ],
+        "parentBones": [
+          "hips"
+        ],
+        "loc": 2,
+        "massKg": 30.0,
+        "colliderRadiusM": 0.0,
+        "jetSeconds": 1.8,
+        "torqueMul": 0.4,
+        "upBias": 0.3,
+        "scatter": 0.2,
+        "angularDrag": 0.8,
+        "lifeSeconds": 0,
+        "extraDecals": 14
+      },
+      {
+        "id": "belly_open",
+        "kind": "wound",
+        "bones": [
+          "spine1"
+        ],
+        "parentBones": [
+          "spine"
+        ],
+        "loc": 2,
+        "jetSeconds": 1.2,
+        "extraDecals": 10
+      },
+      {
+        "id": "arm_right",
+        "kind": "subtree",
+        "bones": [
+          "rightarm"
+        ],
+        "parentBones": [
+          "spine2"
+        ],
+        "loc": 0,
+        "massKg": 3.5,
+        "colliderRadiusM": 0.0,
+        "jetSeconds": 1.2,
+        "torqueMul": 0.5,
+        "upBias": 0.45,
+        "scatter": 0.3,
+        "angularDrag": 0.5,
+        "lifeSeconds": 0,
+        "extraDecals": 6
+      },
+      {
+        "id": "arm_left",
+        "kind": "subtree",
+        "bones": [
+          "leftarm"
+        ],
+        "parentBones": [
+          "spine2"
+        ],
+        "loc": 0,
+        "massKg": 3.5,
+        "colliderRadiusM": 0.0,
+        "jetSeconds": 1.2,
+        "torqueMul": 0.5,
+        "upBias": 0.45,
+        "scatter": 0.3,
+        "angularDrag": 0.5,
+        "lifeSeconds": 0,
+        "extraDecals": 6
+      },
+      {
+        "id": "leg_right",
+        "kind": "subtree",
+        "bones": [
+          "rightupleg"
+        ],
+        "parentBones": [
+          "hips"
+        ],
+        "loc": 1,
+        "massKg": 9.0,
+        "colliderRadiusM": 0.0,
+        "jetSeconds": 1.2,
+        "torqueMul": 0.5,
+        "upBias": 0.45,
+        "scatter": 0.3,
+        "angularDrag": 0.5,
+        "lifeSeconds": 0,
+        "extraDecals": 6
+      },
+      {
+        "id": "leg_left",
+        "kind": "subtree",
+        "bones": [
+          "leftupleg"
+        ],
+        "parentBones": [
+          "hips"
+        ],
+        "loc": 1,
+        "massKg": 9.0,
+        "colliderRadiusM": 0.0,
+        "jetSeconds": 1.2,
+        "torqueMul": 0.5,
+        "upBias": 0.45,
+        "scatter": 0.3,
+        "angularDrag": 0.5,
+        "lifeSeconds": 0,
+        "extraDecals": 6
+      },
+      {
+        "id": "wound_torso",
+        "kind": "wound",
+        "bones": [
+          "spine1"
+        ],
+        "parentBones": [
+          "spine"
+        ],
+        "loc": 2,
+        "jetSeconds": 1.0,
+        "extraDecals": 8
+      }
+    ]
+  },
+  "gore": {
+    "enabled": true,
+    "maxDecalsPerLoc": 14,
+    "seed": 99,
+    "texSize": 64,
+    "decalsBySeverity": [
+      0,
+      3,
+      6,
+      10
+    ],
+    "critMul": 1.6,
+    "sizeM": [
+      0.07,
+      0.16
+    ],
+    "color": [
+      0.3,
+      0.02,
+      0.02,
+      1.0
+    ],
+    "quadLift": 0.004,
+    "locs": [
+      {
+        "name": "arm",
+        "bones": [
+          "leftarm",
+          "rightarm",
+          "leftforearm",
+          "rightforearm"
+        ],
+        "radiusM": 0.05,
+        "frontArcDeg": 360,
+        "along": [
+          0.2,
+          0.8
+        ]
+      },
+      {
+        "name": "leg",
+        "bones": [
+          "leftupleg",
+          "rightupleg",
+          "leftleg",
+          "rightleg"
+        ],
+        "radiusM": 0.07,
+        "frontArcDeg": 360,
+        "along": [
+          0.2,
+          0.8
+        ]
+      },
+      {
+        "name": "torso",
+        "bones": [
+          "spine1",
+          "spine2",
+          "spine"
+        ],
+        "radiusM": 0.14,
+        "frontArcDeg": 200,
+        "along": [
+          0.2,
+          0.8
+        ]
+      },
+      {
+        "name": "head",
+        "bones": [
+          "head"
+        ],
+        "radiusM": 0.09,
+        "frontArcDeg": 220,
+        "along": [
+          0.3,
+          0.8
+        ]
+      }
+    ],
+    "woundSpray": {
+      "seconds": 0.35,
+      "rate": 60,
+      "coneDeg": 22,
+      "gravity": 8,
+      "speed": [
+        1.5,
+        3.0
+      ],
+      "size": [
+        0.02,
+        0.045
+      ],
+      "life": [
+        0.3,
+        0.6
+      ]
+    },
+    "neckSpray": {
+      "seconds": 1.4,
+      "rate": 90,
+      "coneDeg": 16,
+      "gravity": 8,
+      "speed": [
+        2.5,
+        4.5
+      ],
+      "size": [
+        0.03,
+        0.06
+      ],
+      "life": [
+        0.5,
+        0.9
+      ]
+    }
+  },
+  "clipImport": {
+    "sourceDir": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/finishers/clips",
+    "glbDir": "Assets/Characters/Finishers",
+    "characters": [
+      {
+        "name": "Dracula",
+        "controller": "Assets/Characters/Dracula.controller",
+        "referenceState": "guard_idle",
+        "outClipDir": "Assets/Characters/Dracula/FinisherClips",
+        "hipsRestZ": 1.000807,
+        "hipsCorrection": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "Pitborn",
+        "controller": "Assets/Characters/Pitborn.controller",
+        "referenceState": "guard_idle",
+        "outClipDir": "Assets/Characters/Pitborn/FinisherClips",
+        "hipsRestZ": 0.975189,
+        "hipsCorrection": [
+          1.0,
+          0.0,
+          -0.0,
+          0.0
+        ]
+      }
+    ],
+    "clips": [
+      {
+        "id": "fin_beheading_k",
+        "file": "x-la-beheading-of-god-2-k.glb",
+        "role": "killer",
+        "targets": [
+          "Dracula",
+          "Pitborn"
+        ],
+        "rootXZ": "inplace",
+        "maxStepM": 0.0,
+        "hipsRestZ": 1.042749,
+        "hipsYOffsetM": 0.0,
+        "expectedDurationS": 2.433
+      },
+      {
+        "id": "fin_chop1h_k",
+        "file": "x-hs-chop-one-hand-overhead-k.glb",
+        "role": "killer",
+        "targets": [
+          "Dracula"
+        ],
+        "rootXZ": "inplace",
+        "maxStepM": 0.0,
+        "hipsRestZ": 0.832392,
+        "hipsYOffsetM": 0.0,
+        "expectedDurationS": 1.35
+      },
+      {
+        "id": "fin_chop2h_k",
+        "file": "x-hs-chop-two-hand-overhead-k.glb",
+        "role": "killer",
+        "targets": [
+          "Pitborn"
+        ],
+        "rootXZ": "inplace",
+        "maxStepM": 0.0,
+        "hipsRestZ": 0.832392,
+        "hipsYOffsetM": 0.0,
+        "expectedDurationS": 1.35
+      },
+      {
+        "id": "fin_river_light_k",
+        "file": "x-nk-river-light-k.glb",
+        "role": "killer",
+        "targets": [
+          "Dracula"
+        ],
+        "rootXZ": "inplace",
+        "maxStepM": 0.0,
+        "hipsRestZ": 1.042749,
+        "hipsYOffsetM": 0.0,
+        "expectedDurationS": 2.2
+      },
+      {
+        "id": "fin_river_light_v",
+        "file": "x-nk-river-light-v.glb",
+        "role": "victim",
+        "targets": [
+          "Pitborn"
+        ],
+        "rootXZ": "keep",
+        "maxStepM": 0.0,
+        "hipsRestZ": 1.042749,
+        "hipsYOffsetM": 0.0,
+        "expectedDurationS": 2.2
+      },
+      {
+        "id": "fin_hengdao_k",
+        "file": "x-nk-hengdao-heavy-k.glb",
+        "role": "killer",
+        "targets": [
+          "Pitborn"
+        ],
+        "rootXZ": "inplace",
+        "maxStepM": 0.0,
+        "hipsRestZ": 1.042749,
+        "hipsYOffsetM": 0.0,
+        "expectedDurationS": 3.333
+      },
+      {
+        "id": "fin_hengdao_v",
+        "file": "x-nk-hengdao-heavy-v.glb",
+        "role": "victim",
+        "targets": [
+          "Dracula"
+        ],
+        "rootXZ": "keep",
+        "maxStepM": 0.0,
+        "hipsRestZ": 1.042749,
+        "hipsYOffsetM": 0.0,
+        "expectedDurationS": 3.333
+      },
+      {
+        "id": "fin_counter_k",
+        "file": "x-nw-greatsword-counter-k.glb",
+        "role": "killer",
+        "targets": [
+          "Pitborn"
+        ],
+        "rootXZ": "inplace",
+        "maxStepM": 0.0,
+        "hipsRestZ": 1.042749,
+        "hipsYOffsetM": 0.0,
+        "expectedDurationS": 1.933
+      },
+      {
+        "id": "fin_counter_v",
+        "file": "x-nw-greatsword-counter-v.glb",
+        "role": "victim",
+        "targets": [
+          "Dracula"
+        ],
+        "rootXZ": "keep",
+        "maxStepM": 0.0,
+        "hipsRestZ": 1.042749,
+        "hipsYOffsetM": 0.0,
+        "expectedDurationS": 1.867
+      }
+    ]
+  },
+  "rt": {
+    "onlyWhenSteer": false,
+    "allowPlayerVictim": true,
+    "persistRotation": true,
+    "notify": true,
+    "disableMotionBlur": true,
+    "maxSeconds": 25,
+    "forceId": "",
+    "fallbackShot": "kill",
+    "auto": {
+      "bootWaitSeconds": 20,
+      "killWaitSeconds": 20,
+      "forceExtraSeconds": 8,
+      "sceneMaxSeconds": 40,
+      "betweenSeconds": 1,
+      "perFinisherSeconds": 90,
+      "shotsPerFinisher": 4,
+      "shotStartDelay": 0.35,
+      "shotAfterContact": 0.9,
+      "shotAfterKill": 0.8,
+      "aggression": 1.3,
+      "pressure": 1,
+      "parry": 0,
+      "dodge": 0,
+      "shotMode": "auto"
+    }
+  }
+}

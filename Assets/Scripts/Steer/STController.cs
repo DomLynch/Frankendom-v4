@@ -108,6 +108,9 @@ public class STController : MonoBehaviour
         {
             if (pb == null) pb = dr.GetComponent<PlayerBrain>();
             if (pb != null && pb.enabled) { pb.enabled = false; dr.moveDir = Vector3.zero; dr.guardHeld = false; }
+            var tc = dr.GetComponent<TouchControls>();
+            if (tc != null && tc.enabled) tc.enabled = false;
+            TouchControls.Active = false;
         }
         if (pi != null && dr.opponent == null) dr.opponent = pi;
     }
@@ -134,6 +137,7 @@ public class STController : MonoBehaviour
     {
         if (b != brain || Cfg == null) return;
         STAiBias.Refresh(Cfg, Cfg.Stance(STSteer.Stance), Tactics.Def);
+        if (STReactions.Instance != null) STReactions.Instance.ReapplyDracula();
         Tactics.Pre();
     }
 

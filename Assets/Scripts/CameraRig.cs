@@ -13,6 +13,8 @@ public class CameraRig : MonoBehaviour
     public Health enemyHp;
     public float distance = 3.3f, height = 1.6f, shoulder = 0.5f, yaw = 0f, pitch = 2f, sensitivity = 2.2f;   // free-camera values (lock-on off)
     public bool lockEnabled = true;
+    bool yielded;   // FN1: a finisher scene owns the camera (SteerFinisherHost); LateUpdate does nothing meanwhile, on release the lock-on pose snaps back
+    public bool Yield { get { return yielded; } set { if (yielded && !value) snapped = false; yielded = value; } }
     public float framingOk = 1f;   // test-only (read by diagnostics)
     public float lockRange = 12f;
     float lockW; Vector3 camPos, lookAt; bool snapped; float lockYaw;
@@ -45,7 +47,7 @@ public class CameraRig : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!target) return;
+        if (!target || yielded) return;
         if (!colLoaded) LoadCol();
         float dt = Time.deltaTime;
         bool lockOn = lockEnabled && enemy && enemyHp && !enemyHp.Dead && Vector3.Distance(target.position, enemy.position) < lockRange;

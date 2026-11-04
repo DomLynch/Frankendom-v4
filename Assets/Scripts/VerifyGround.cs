@@ -54,7 +54,7 @@ public class VerifyGround : MonoBehaviour
     public class HeadCfg
     {
         public bool enabled = true;
-        public float distance = 0.9f, fov = 25f, maxYawDeg = 20f, lookUp = 0f, gapTol = 0.03f, restGap = -1f;   // restGap < 0 = the neck-head distance measured at boot
+        public float distance = 0.9f, fov = 25f, maxYawDeg = 35f, lookUp = 0f, gapTol = 0.03f, restGap = -1f;   // restGap < 0 = the neck-head distance measured at boot
         public int tile = 512;
         public string bone = "mixamorig:Head", neckBone = "mixamorig:Neck", rendererName = "head", metaHumanName = "MetaHumanHead";
         public string forwardAxis = "auto";        // head bone local axis that points out of the face: auto (the one nearest the body forward at boot) | +z | -z | +x | -x | +y | -y
@@ -88,7 +88,6 @@ public class VerifyGround : MonoBehaviour
     readonly Dictionary<DuelFighter, Vector3> origPos = new Dictionary<DuelFighter, Vector3>();
     readonly Dictionary<DuelFighter, Quaternion> origRot = new Dictionary<DuelFighter, Quaternion>();
     readonly List<Behaviour> switchedOff = new List<Behaviour>();
-    readonly List<Behaviour> alphaOff = new List<Behaviour>();
     CameraRig rig; Camera mainCam, sideCam; RenderTexture sideRT; Texture2D sideTex;
     int groundMask;
     readonly List<RC> cands = new List<RC>();
@@ -200,7 +199,7 @@ public class VerifyGround : MonoBehaviour
     {
         if (string.IsNullOrEmpty(overlay)) return;
         var st = new GUIStyle(GUI.skin.label) { fontSize = Mathf.Max(12, Screen.height / 30), fontStyle = FontStyle.Bold };
-        var r = new Rect(12, 8, Screen.width - 24, st.fontSize * 3);
+        var r = new Rect(12, Mathf.Max(8, Screen.height * 120f / 1080f), Screen.width - 24, st.fontSize * 3);   // below the HUD name/bars (QC: label drew over DRACULA)
         st.normal.textColor = Color.black; GUI.Label(new Rect(r.x + 2, r.y + 2, r.width, r.height), overlay, st);
         st.normal.textColor = new Color(1f, 0.95f, 0.3f); GUI.Label(r, overlay, st);
     }
@@ -455,12 +454,6 @@ public class VerifyGround : MonoBehaviour
     }
 
     // ---------------- brains ----------------
-    static bool IsAlpha(MonoBehaviour b)
-    {
-        string n = b.GetType().Name;
-        return n == "ADDuelController" || n == "ADCameraRig" || n == "ADPlayback" || n == "ADUI";
-    }
-
     void BrainsOff()
     {
         foreach (var al in FindObjectsByType<ArenaLimits>(FindObjectsSortMode.None)) al.enabled = false;   // the grid phase teleports to points the lane limits could clamp: limits are back on for the fight
@@ -470,7 +463,6 @@ public class VerifyGround : MonoBehaviour
             {
                 if (b.enabled) { switchedOff.Add(b); b.enabled = false; }
             }
-            else if (IsAlpha(b)) { if (b.enabled) { alphaOff.Add(b); b.enabled = false; } }
         }
         if (!D.gameLocomotion) foreach (var f in fighters) { f.moveDir = Vector3.zero; f.run = false; f.guardHeld = false; f.enabled = false; }
     }

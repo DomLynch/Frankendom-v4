@@ -40,6 +40,7 @@
                  "cooldownTicks":  0,
                  "easePower":  1.0,
                  "clipSpeed":  0,
+                 "blendIn":  0.04,
                  "clipTailTicks":  0,
                  "fxAction":  "roll",
                  "noInputDir":  "back",
@@ -55,6 +56,7 @@
                      "cooldownTicks":  0,
                      "easePower":  1.0,
                      "clipSpeed":  0,
+                 "blendIn":  0.04,
                      "clipTailTicks":  30,
                      "fxAction":  "backstep"
                  },
@@ -71,6 +73,7 @@
                      "cooldownTicks":  18,
                      "easePower":  2.0,
                      "clipSpeed":  2.0,
+                 "blendIn":  0.04,
                      "clipTailTicks":  0,
                      "fxAction":  "backstep"
                  },
