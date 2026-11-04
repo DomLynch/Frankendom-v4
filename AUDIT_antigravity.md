@@ -201,3 +201,22 @@ enderScale: 67 (AMD FSR 2.2 Quality dynamic resolution profile, sustaining **64.
 - **System Resource Audit:**
   - Free physical RAM: **37.5 GB** (abundantly healthy).
   - Background processes: all batchmode Unity instances exited cleanly.
+
+---
+
+## 13. Pass 47: Doorway Interior Ingestion, Flat Gate Approach Verification, & Standalone Build v47
+- **Zero Idle-Gap Intervention & Build v47 (`Builds/HDRP_v47/HadesSlice.exe`):**
+  - Unblocked doorway-helper milestone once Unity license cleared. Executed `HdrpBatch.V47` incorporating `HdrpWorldMats`, `HdrpBridgeMats`, `HdrpTrench`, `Look` (fog v4), `HdrpApproach` (flat 0.3m gate), `HdrpDoorway` interior depth and flicker, `PropsLayout` (209 props), and `HdrpCharLayer`.
+  - DirectStorage runtime (`dstorage.dll` / `dstoragecore.dll`) compiled cleanly with exit code `0`.
+- **Flat Gate Approach Visual Audit (`hdrp_v47_gate_flat.png` & `hdrp_v47_doorway.png`):**
+  - Evaluated Dom's requested arena variant: gate platform lowered from $y = 2.0\text{ m}$ to $y = 0.3\text{ m}$, eliminating the previous 10-step obstruction.
+  - The massive cosmic Black Sun eclipse halo now dramatically frames the monolithic archway directly at eye level.
+  - Doorway interior volumetric lava chamber illumination radiates outward into the causeway with dynamic red ember flicker (`cam_doorway.png`).
+- **Live Combat Duel Benchmark (`Shots/v47/game/report.txt`):**
+  - Automated combat duel evaluated 15 combat events with 100% camera framing PASS (`cues=45`, `framing=PASS`).
+  - Full combat sequence passed: heavy overhead blocks, light right parry, riposte front/rear, and counter-kick combos.
+  - Authentic combat damage verified: `Dracula = 82.4 HP`, `Pitborn = 78.1 HP`.
+  - Dynamic contact shadows verified under fighters, weapons, and architectural ruins (`hdrp_v47_play2.png`, `hdrp_v47_hit2.png`).
+- **System Memory Audit:**
+  - Free physical RAM: **33.2 GB** (healthy, no leaks).
+  - Background processes: all standalone batchmode instances exited cleanly.

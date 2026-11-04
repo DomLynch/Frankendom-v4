@@ -19867,7 +19867,7 @@
         "pier",
         "variant_gateApproach_flat"
       ],
-      "disabled": false,
+      "disabled": true,
       "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
     },
     {
@@ -19923,7 +19923,7 @@
         "pier",
         "variant_gateApproach_flat"
       ],
-      "disabled": false,
+      "disabled": true,
       "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
     },
     {
@@ -19979,7 +19979,7 @@
         "pier",
         "variant_gateApproach_flat"
       ],
-      "disabled": false,
+      "disabled": true,
       "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
     },
     {
@@ -20165,7 +20165,7 @@
         "pier",
         "variant_gateApproach_flat"
       ],
-      "disabled": false,
+      "disabled": true,
       "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
     },
     {
@@ -20221,7 +20221,7 @@
         "pier",
         "variant_gateApproach_flat"
       ],
-      "disabled": false,
+      "disabled": true,
       "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
     },
     {
@@ -20277,7 +20277,7 @@
         "pier",
         "variant_gateApproach_flat"
       ],
-      "disabled": false,
+      "disabled": true,
       "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
     },
     {
@@ -20435,7 +20435,7 @@
         "bridge",
         "variant_gateApproach_flat"
       ],
-      "disabled": false,
+      "disabled": true,
       "rationale": "gateApproach variant flat (Strategy: LOWER the gate): platformTop 2.0 -> 0.3. Deck stays y 0, basalt paving continues flat at y 0 over z 16.55..22.6 (x +-3.0), one 0.15 step (z 22.6..23.2), lip/landing top 0.30 (z 23.2..24.2, x +-3.6) up to the gate base. Pieces are at real Unity positions (pos 0,0,0). The stair run, RampCollider, TreadRay are removed; add a flat BoxCollider top 0 over z 16.5..22.6 and lower PlatformBody/LandingCollider/HeroGate by 1.7."
     },
     {
@@ -22004,7 +22004,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_wall_2m_768",
@@ -22032,7 +22032,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_post_capped_769",
@@ -22060,7 +22060,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_wall_2m_770",
@@ -22088,7 +22088,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_post_capped_771",
@@ -22116,7 +22116,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_wall_2m_772",
@@ -22144,7 +22144,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_post_capped_773",
@@ -22172,7 +22172,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_wall_2m_broken_A_774",
@@ -22200,7 +22200,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_post_capped_775",
@@ -22228,7 +22228,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_post_capped_776",
@@ -22256,7 +22256,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_wall_2m_777",
@@ -22284,7 +22284,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_post_capped_778",
@@ -22312,7 +22312,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_wall_2m_779",
@@ -22340,7 +22340,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_post_capped_780",
@@ -22368,7 +22368,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_wall_2m_broken_A_781",
@@ -22396,7 +22396,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_post_capped_782",
@@ -22424,7 +22424,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_wall_2m_783",
@@ -22452,7 +22452,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     },
     {
       "id": "worldbridge_post_capped_784",
@@ -22480,7 +22480,7 @@
         "parapet",
         "variant_gateApproach_flat"
       ],
-      "disabled": false
+      "disabled": true
     }
   ],
   "scatter": [

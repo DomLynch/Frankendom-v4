@@ -12,7 +12,9 @@
                         "steps",
                         "stepPier",
                         "TreadRay",
-                        "RampCollider"
+                        "RampCollider",
+                        "coping",
+                        "wallpanel"
                     ],
     "moveNames":  [
                       "HeroGate",

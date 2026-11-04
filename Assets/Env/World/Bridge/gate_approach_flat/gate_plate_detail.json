@@ -1,0 +1,9 @@
+{
+ "material": "gate_approach_flat atlas material (HDRP Lit)",
+ "detailMap": "Assets/Env/World/Bridge/gate_approach_flat/gate_plate_detail.png",
+ "detailUVMapping": "Triplanar (world), tiling so one tile = 1.0 m (tiling = 1)",
+ "detailAlbedoScale": 1.0,
+ "detailNormalScale": 0.8,
+ "detailSmoothnessScale": 0.6,
+ "note": "unique atlas keeps layout/AO/tint; this adds about 2048 px/m grain with no extra per-plate texture memory. Also usable on the Balu2 and BlocksV2 stone."
+}
