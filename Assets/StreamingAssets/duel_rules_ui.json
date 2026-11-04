@@ -1,0 +1,204 @@
+{
+  "ui": {
+    "refHeight": 1080,
+    "slots": 3,
+    "planSeconds": 10,
+    "logMax": 200,
+    "bannerTime": 1.8,
+    "toastTime": 1.6,
+    "dragThreshold": 6,
+    "allowDuplicates": true,
+    "requireFull": true,
+    "keyConfirm": "Return",
+    "keyClear": "Backspace",
+    "keyRestart": "R",
+    "defaultStance": "Neutral",
+    "colPanel": "#121214DD",
+    "colBorder": "#2E2E33FF",
+    "colText": "#CFC9BDFF",
+    "colDim": "#6F6A62FF",
+    "colDisabled": "#4A4743FF",
+    "colCrimson": "#8A1C1CFF",
+    "colEmber": "#C4602AFF",
+    "colHp": "#8A1414FF",
+    "colSlot": "#1A1A1DFF",
+    "colGood": "#9C8F5AFF",
+    "colBad": "#8A1C1CFF",
+    "colSel": "#4D1717F2",
+    "woundColors": [
+      "#2A2A2EFF",
+      "#8A6A2AFF",
+      "#B0501FFF",
+      "#8A1414FF"
+    ],
+    "timerW": 360,
+    "timerWarn": 5,
+    "timerCrit": 2.5,
+    "stances": [
+      {
+        "id": "Aggressive",
+        "label": "Aggressive",
+        "key": "Q",
+        "tip": "+25% damage dealt, +20% damage taken."
+      },
+      {
+        "id": "Defensive",
+        "label": "Defensive",
+        "key": "W",
+        "tip": "-20% damage dealt, -25% damage taken."
+      },
+      {
+        "id": "Neutral",
+        "label": "Neutral",
+        "key": "E",
+        "tip": "No modifiers."
+      },
+      {
+        "id": "Trickster",
+        "label": "Trickster",
+        "key": "R",
+        "tip": "A gamble each round: 25% +30% dealt, 25% +30% taken, 50% nothing."
+      }
+    ],
+    "moves": [
+      {
+        "id": "Light",
+        "label": "Light",
+        "key": "1",
+        "sub": "fast",
+        "tip": "Quick strike. Beaten by guard, interrupted by nothing slower."
+      },
+      {
+        "id": "Slash",
+        "label": "Slash",
+        "key": "2",
+        "sub": "wide",
+        "tip": "Wide cut. Catches a sidestep. Beaten by guard."
+      },
+      {
+        "id": "Stab",
+        "label": "Stab",
+        "key": "3",
+        "sub": "fastest",
+        "tip": "Fastest attack. Interrupts a heavy wind-up. Dodged by roll or sidestep."
+      },
+      {
+        "id": "Heavy",
+        "label": "Heavy",
+        "key": "4",
+        "sub": "slow, big",
+        "tip": "Breaks guard for big damage. Slow: punished by a dodge or a stab."
+      },
+      {
+        "id": "Kick",
+        "label": "Kick",
+        "key": "5",
+        "sub": "stagger",
+        "tip": "Staggers the target. Gets through guard."
+      },
+      {
+        "id": "Guard",
+        "label": "Guard",
+        "key": "6",
+        "sub": "parry",
+        "tip": "Beats light and slash (parry, then riposte). Loses to heavy and kick."
+      },
+      {
+        "id": "Roll",
+        "label": "Roll",
+        "key": "7",
+        "sub": "evade",
+        "tip": "Dodges heavy and stab."
+      },
+      {
+        "id": "Sidestep",
+        "label": "Sidestep",
+        "key": "8",
+        "sub": "evade",
+        "tip": "Dodges heavy and stab. Caught by slash."
+      },
+      {
+        "id": "Special",
+        "label": "Special",
+        "key": "9",
+        "sub": "once per fight",
+        "tip": "Your one big move this fight. Single use.",
+        "special": true
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "Hit",
+        "label": "Hit",
+        "glyph": "X",
+        "color": "#B0501FFF"
+      },
+      {
+        "id": "Blocked",
+        "label": "Blocked",
+        "glyph": "[]",
+        "color": "#8F8A80FF"
+      },
+      {
+        "id": "Parried",
+        "label": "Parried",
+        "glyph": "/",
+        "color": "#9C8F5AFF"
+      },
+      {
+        "id": "Riposte",
+        "label": "Riposte",
+        "glyph": ">>",
+        "color": "#B07A2AFF"
+      },
+      {
+        "id": "Dodged",
+        "label": "Dodged",
+        "glyph": "~",
+        "color": "#6E7F5AFF"
+      },
+      {
+        "id": "Clash",
+        "label": "Clash",
+        "glyph": "><",
+        "color": "#C4602AFF"
+      },
+      {
+        "id": "Interrupted",
+        "label": "Interrupted",
+        "glyph": "!",
+        "color": "#A04A3AFF"
+      },
+      {
+        "id": "GuardBreak",
+        "label": "Guard break",
+        "glyph": "#",
+        "color": "#8A1C1CFF"
+      },
+      {
+        "id": "Whiff",
+        "label": "Whiff",
+        "glyph": "o",
+        "color": "#6F6A62FF"
+      },
+      {
+        "id": "Staggered",
+        "label": "Staggered",
+        "glyph": "*",
+        "color": "#A08A4AFF"
+      },
+      {
+        "id": "Killed",
+        "label": "Killed",
+        "glyph": "+",
+        "color": "#8A1414FF"
+      },
+      {
+        "id": "Struck",
+        "label": "Struck",
+        "glyph": "X",
+        "color": "#8A1C1CFF"
+      }
+    ]
+  }
+}

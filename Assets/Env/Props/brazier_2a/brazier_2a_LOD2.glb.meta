@@ -1,0 +1,78 @@
+fileFormatVersion: 2
+guid: 523c6501629ebb0409566d576475b3cd
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: brazier_2a_albedo
+    second: {fileID: 2800000, guid: 8f57c016823214046bd1594c9ae01b77, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: brazier_2a_normal
+    second: {fileID: 2800000, guid: bb46b392f59b35d4091af838a974a596, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: brazier_2a_orm
+    second: {fileID: 2800000, guid: 7cd6b9668692c3c4c833f289941d3328, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: coal_albedo
+    second: {fileID: 2800000, guid: 9ac5fc6602ee86a40a610b19abac112f, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: coal_emissive_final
+    second: {fileID: 2800000, guid: d7548e3bd5051c149a0a6135a7d22d7b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: coal_normal
+    second: {fileID: 2800000, guid: 5624f635fa2a5454791a4b7e95ac0112, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: plinth_albedo
+    second: {fileID: 2800000, guid: e7c4f67e8025adc47a3d035cbf4db34a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: plinth_normal
+    second: {fileID: 2800000, guid: b0ca5993df27afd41a1b482ba78addd4, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: plinth_orm
+    second: {fileID: 2800000, guid: 5f5b2bc79c6246642b640f8c8029d19e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: plinth_orm_wet
+    second: {fileID: 2800000, guid: 4f188e73f2654e34e94834e85a6b6dc0, type: 3}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 715df9372183c47e389bb6e19fbc3b52, type: 3}
+  editorImportSettings:
+    generateSecondaryUVSet: 0
+  importSettings:
+    nodeNameMethod: 1
+    animationMethod: 2
+    generateMipMaps: 1
+    texturesReadable: 0
+    defaultMinFilterMode: 9729
+    defaultMagFilterMode: 9729
+    anisotropicFilterLevel: 1
+  instantiationSettings:
+    mask: -1
+    layer: 0
+    skinUpdateWhenOffscreen: 1
+    lightIntensityFactor: 1
+    sceneObjectCreation: 2
+  assetDependencies: []
+  reportItems: []

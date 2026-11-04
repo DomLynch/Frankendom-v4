@@ -1,0 +1,1 @@
+{ "_note": "CANDIDATE, not measured. Ultra = everything on, STP at 67% render scale.", "clouds": true, "volumetricFog": true, "ssgi": true, "ssr": true, "contactShadows": true, "shadows": true, "ssao": true, "ssgiFullRes": true, "renderScale": 67 }

@@ -1,0 +1,36 @@
+{
+ "name": "top_coping_lip",
+ "atlas": 1024,
+ "density_px_m": 320,
+ "tris0": 16888,
+ "mb0": 1.33,
+ "dims": [
+  2.0,
+  0.6,
+  0.3
+ ],
+ "bbox_min": [
+  -1.0,
+  -0.3,
+  0.0
+ ],
+ "bbox_max": [
+  1.0,
+  0.3,
+  0.3
+ ],
+ "glb": {
+  "mr": true,
+  "occ": true,
+  "nrm": true,
+  "base": true,
+  "images": 3,
+  "prims": 1,
+  "nmat": 1
+ },
+ "tris1": 8452,
+ "mb1": 0.49,
+ "tris2": 2542,
+ "mb2": 0.14,
+ "sec": 6.8
+}

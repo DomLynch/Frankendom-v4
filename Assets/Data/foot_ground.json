@@ -1,0 +1,27 @@
+{
+  "_about": "FootGround.cs: per-foot ground raycast + two-bone leg IK + pelvis offset (lowest foot defines the hips) + foot levelling + toe flattening, in LateUpdate after the Animator. ankleHeight = Foot bone height above the sole when flat (m); plantSnap/maxLift = ankle height above its ground within which the foot is fully planted / released (m); pelvisDownMax/UpMax = hips travel limits (m); pelvisSmooth = seconds; ignoreLayers = physics layers the rays skip (8 characters, 9 other fighters); states[] = per Animator state weight 0..1 (roll tucks, so weighted down); unlisted states use the global weight. enabled=false switches it off.",
+  "characters": [
+    {
+      "name": "Dracula",
+      "enabled": true,
+      "debug": true,
+      "debugEvery": 6,
+      "weight": 1.0,
+      "ankleHeight": 0.10,
+      "rayUp": 0.6,
+      "rayDown": 0.9,
+      "ignoreLayers": [8, 9],
+      "pelvisDownMax": 0.25,
+      "pelvisUpMax": 0.10,
+      "pelvisSmooth": 0.06,
+      "plantSnap": 0.02,
+      "maxLift": 0.16,
+      "levelWeight": 1.0,
+      "toeFlatWeight": 1.0,
+      "stateBlend": 0.1,
+      "states": [
+        { "states": ["roll_forward", "death", "knockdown", "get_up", "hit_heavy"], "weight": 0.25 }
+      ]
+    }
+  ]
+}

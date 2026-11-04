@@ -1,0 +1,22 @@
+{
+  "_about": "ArmHold.cs: damps the sword-arm swing in locomotion. Each bone's local rotation is blended toward its slow running mean (tau seconds), removing weight*w of the swing around the clip mean pose. states[].weight = 0..1 per Animator state short name (attack/hit states are not listed = untouched). blend = seconds to ease the weight in/out. Set enabled=false to disable.",
+  "characters": [
+    {
+      "name": "Dracula",
+      "enabled": true,
+      "debug": true,
+      "debugEvery": 30,
+      "tau": 1.0,
+      "blend": 0.15,
+      "bones": [
+        { "bone": "mixamorig:RightArm", "w": 1.0 },
+        { "bone": "mixamorig:RightForeArm", "w": 1.0 },
+        { "bone": "mixamorig:RightHand", "w": 0.9 }
+      ],
+      "states": [
+        { "states": ["walk", "run", "strafe_L", "strafe_R", "backstep"], "weight": 0.95 },
+        { "states": ["idle"], "weight": 0.6 }
+      ]
+    }
+  ]
+}

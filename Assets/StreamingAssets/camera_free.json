@@ -1,0 +1,1 @@
+﻿{ "yawLimitDeg": 180, "pitchMinDeg": -5, "pitchMaxDeg": 60, "note": "free camera clamp OFF by default (Dom wants the full 360 world); lower yawLimitDeg to re-enable" }

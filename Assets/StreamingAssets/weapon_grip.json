@@ -1,0 +1,63 @@
+{
+ "_about": "Data for Assets/Scripts/WeaponGrip.cs: re-poses WeaponSocket_R relative to the hand bone every LateUpdate (absolute). socketOffset = metres in the hand-bone frame; socketEuler = degrees on the socket's original rotation; slide = metres the hand moves along the shaft towards the head. Pitborn x35 / z-120: head forward at the light impact, up and forward at the heavy impact; GripPose (absolute curl) wraps the fingers. Dracula z20 + offset + slide 0.05 seats the hilt in the fist.",
+ "characters": [
+  {
+   "name": "Pitborn",
+   "enabled": true,
+   "hand": "RightHand",
+   "socket": "WeaponSocket_R",
+   "socketOffset": [
+    0,
+    0.04,
+    0.02
+   ],
+   "socketEuler": [
+    35,
+    0,
+    -120
+   ],
+   "slide": 0.0,
+   "debugLog": false
+  },
+  {
+   "name": "Pitborn",
+   "enabled": true,
+   "hand": "RightHand",
+   "socket": "WeaponSocket_R",
+   "socketOffset": [
+    0,
+    0.04,
+    0.02
+   ],
+   "socketEuler": [
+    0,
+    0,
+    -90
+   ],
+   "slide": 0.0,
+   "blendSeconds": 0.1,
+   "states": [
+    "atk_heavy"
+   ],
+   "debugLog": false
+  },
+  {
+   "name": "Dracula",
+   "enabled": true,
+   "hand": "RightHand",
+   "socket": "WeaponSocket_R",
+   "socketOffset": [
+    -0.013,
+    0.025,
+    0.009
+   ],
+   "socketEuler": [
+    0,
+    0,
+    20
+   ],
+   "slide": 0.05,
+   "debugLog": false
+  }
+ ]
+}

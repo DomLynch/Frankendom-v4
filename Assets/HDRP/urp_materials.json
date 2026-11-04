@@ -1,0 +1,3246 @@
+[
+ {
+  "path": "Assets/Characters/Dracula/Mats/dracula_boot_l_0.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "de560e7967350f14cb206e7ee1f49c98:2800000",
+   "_BumpMap": "c019f0cf06c5025429ae5b845a2f5b87:2800000",
+   "_MainTex": "de560e7967350f14cb206e7ee1f49c98:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.25,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Characters/Dracula/Mats/dracula_boot_r_0.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "e08f8f1fc538f5c4ab3d676508fd25ee:2800000",
+   "_BumpMap": "de19e026b8f81c84bb6306501eb1a4a2:2800000",
+   "_MainTex": "e08f8f1fc538f5c4ab3d676508fd25ee:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.25,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Characters/Dracula/Mats/dracula_cloak_0.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "49247547eedcb804bbf4d4804c0d53b8:2800000",
+   "_BumpMap": "f7b422f79c059684c949be3e1cddec0e:2800000",
+   "_MainTex": "49247547eedcb804bbf4d4804c0d53b8:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.25,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Characters/Dracula/Mats/dracula_coat_0.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "9dad16b407694a147a829458a0c4f9b4:2800000",
+   "_BumpMap": "319c91e84479796459fd14db86bf9af8:2800000",
+   "_MainTex": "9dad16b407694a147a829458a0c4f9b4:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.25,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Characters/Dracula/Mats/dracula_hands_mh_0.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "8dac6b824e72bf04caf99e78b5ad10b8:2800000",
+   "_MainTex": "8dac6b824e72bf04caf99e78b5ad10b8:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.25,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Characters/Dracula/Mats/dracula_head_0.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "7b45bb7a1e8f6db44b1f9f5dc3e208b8:2800000",
+   "_BumpMap": "fb420709d321cb546b34489087071189:2800000",
+   "_MainTex": "7b45bb7a1e8f6db44b1f9f5dc3e208b8:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.25,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Characters/Dracula/Mats/dracula_head_1.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "7b45bb7a1e8f6db44b1f9f5dc3e208b8:2800000",
+   "_BumpMap": "fb420709d321cb546b34489087071189:2800000",
+   "_MainTex": "7b45bb7a1e8f6db44b1f9f5dc3e208b8:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.25,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Characters/Pitborn/Mats/pitborn_Body_0.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "26384a0e4847f6c408e8e328b8525ae3:2800000",
+   "_BumpMap": "ea0530bd1df0d1f418f992b6ac2fa96e:2800000",
+   "_MainTex": "26384a0e4847f6c408e8e328b8525ae3:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.2,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Ash.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.05,
+    0.05,
+    0.05,
+    0.85
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    0.049999982,
+    0.049999982,
+    0.049999982,
+    0.85
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Backdrop.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_EmissionMap": "f8f95c2a01bb99946ba496352434eca7:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.5,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_Color": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.07,
+    0.07,
+    0.07,
+    0.07
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Basalt.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "fc885b8aadd6d4547852c0b3e8089ce5:2800000",
+   "_BumpMap": "1e1e560d6c5c00e4e922b42d77b36689:2800000",
+   "_DetailAlbedoMap": "f5b5adf71f8bd314aa92684cb3d6e760:2800000",
+   "_MainTex": "fc885b8aadd6d4547852c0b3e8089ce5:2800000",
+   "_OcclusionMap": "40327efe42be2914eb0382935cbcaaab:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 0.15,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.28,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.32,
+    0.32,
+    0.33,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_BasaltBlock.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "fc885b8aadd6d4547852c0b3e8089ce5:2800000",
+   "_BumpMap": "1e1e560d6c5c00e4e922b42d77b36689:2800000",
+   "_DetailAlbedoMap": "f5b5adf71f8bd314aa92684cb3d6e760:2800000",
+   "_MainTex": "fc885b8aadd6d4547852c0b3e8089ce5:2800000",
+   "_OcclusionMap": "40327efe42be2914eb0382935cbcaaab:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 0.15,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.35,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_BloodBurst.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_BrazierFire.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    2.2,
+    0.8,
+    0.18,
+    0.9
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    2.2,
+    0.8,
+    0.17999998,
+    0.9
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Coal_Glow.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {},
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.5,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.15,
+    0.1,
+    0.05,
+    1.0
+   ],
+   "_Color": [
+    0.14999998,
+    0.09999997,
+    0.049999982,
+    1.0
+   ],
+   "_EmissionColor": [
+    2.5,
+    0.7,
+    0.15,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_DoorBlack.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {},
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 0.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.01,
+    0.005,
+    0.005,
+    0.92
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    0.01,
+    0.005,
+    0.005,
+    0.92
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_DoorDepth.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 0.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.18,
+    0.03,
+    0.015,
+    0.35
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    0.17999998,
+    0.03,
+    0.015,
+    0.35
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_DoorGlow.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "3fee526768fa6cf49bbba18b51a311ca:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    2.6,
+    0.75,
+    0.16,
+    0.95
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    2.6,
+    0.75,
+    0.15999997,
+    0.95
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_DoorShaft.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 0.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    0.3,
+    0.08,
+    0.08
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    1.0,
+    0.29999998,
+    0.079999976,
+    0.08
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_DoorVoid.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 0.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.42,
+    0.08,
+    0.03,
+    0.55
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    0.41999996,
+    0.079999976,
+    0.03,
+    0.55
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Ember.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    4.0,
+    1.2,
+    0.3,
+    1.0
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    4.0,
+    1.2,
+    0.29999998,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Fire.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.2,
+    0.4,
+    0.1,
+    0.45
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    1.2,
+    0.39999998,
+    0.09999997,
+    0.45
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_GateHaze.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.34,
+    0.35,
+    0.37,
+    0.07
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    0.33999997,
+    0.34999996,
+    0.36999997,
+    0.07
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_GroundFog.mat",
+  "kind": "other",
+  "shader": "650dd9526735d5b46b79224bc6e94025",
+  "tex": {
+   "_BaseMap": "09562fcae224de1448d5ea17f2ec6701:2800000",
+   "_MainTex": "09562fcae224de1448d5ea17f2ec6701:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_QueueOffset": 0.0,
+   "_SampleGI": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.55,
+    0.57,
+    0.6,
+    0.4
+   ],
+   "_Color": [
+    0.54999995,
+    0.56999993,
+    0.6,
+    0.4
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Haze.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.42,
+    0.43,
+    0.45,
+    0.16
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    0.41999996,
+    0.42999998,
+    0.45,
+    0.16
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_HillRoad.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "289db0fbb3ecd05419cbad788847f2d8:2800000",
+   "_BumpMap": "172625e55366f214886a6f718de8a7a3:2800000",
+   "_MainTex": "289db0fbb3ecd05419cbad788847f2d8:2800000",
+   "_OcclusionMap": "10161aaff85ce7b45ad4cac95614c551:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.22,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.62,
+    0.62,
+    0.64,
+    1.0
+   ],
+   "_Color": [
+    0.62,
+    0.62,
+    0.6399999,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Marble.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "f7202be89a7c89d4080efe401689285c:2800000",
+   "_BumpMap": "780ca71fd03dbba42a5b6964acaf8059:2800000",
+   "_MainTex": "f7202be89a7c89d4080efe401689285c:2800000",
+   "_OcclusionMap": "a3dd6b28464ff7b40bbeeaad7b271c93:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.35,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_PlatformCourses.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "fc885b8aadd6d4547852c0b3e8089ce5:2800000",
+   "_BumpMap": "1e1e560d6c5c00e4e922b42d77b36689:2800000",
+   "_DetailAlbedoMap": "f5b5adf71f8bd314aa92684cb3d6e760:2800000",
+   "_MainTex": "fc885b8aadd6d4547852c0b3e8089ce5:2800000",
+   "_OcclusionMap": "40327efe42be2914eb0382935cbcaaab:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 0.15,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.35,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Puddle.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000",
+   "_MainTex": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.97,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.015,
+    0.017,
+    0.02,
+    0.9
+   ],
+   "_Color": [
+    0.015,
+    0.017,
+    0.02,
+    0.9
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Ridge.mat",
+  "kind": "other",
+  "shader": "650dd9526735d5b46b79224bc6e94025",
+  "tex": {},
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_Cull": 0.0,
+   "_Cutoff": 0.5,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_QueueOffset": 0.0,
+   "_SampleGI": 0.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.105,
+    0.11,
+    0.12,
+    1.0
+   ],
+   "_Color": [
+    0.10499997,
+    0.10999996,
+    0.11999995,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_RoadDirt.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {},
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.08,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.07,
+    0.065,
+    0.06,
+    1.0
+   ],
+   "_Color": [
+    0.06999998,
+    0.064999975,
+    0.059999965,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_RoadSlab.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "289db0fbb3ecd05419cbad788847f2d8:2800000",
+   "_BumpMap": "172625e55366f214886a6f718de8a7a3:2800000",
+   "_MainTex": "289db0fbb3ecd05419cbad788847f2d8:2800000",
+   "_OcclusionMap": "10161aaff85ce7b45ad4cac95614c551:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.22,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.5,
+    0.5,
+    0.52,
+    1.0
+   ],
+   "_Color": [
+    0.5,
+    0.5,
+    0.52,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Shore.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "290c5514f008b37478d5406a062ca2bc:2800000",
+   "_BumpMap": "33a472ac5a7ba6f4a9538251cb11dff2:2800000",
+   "_MainTex": "290c5514f008b37478d5406a062ca2bc:2800000",
+   "_OcclusionMap": "bcbffb8d249141d4ebe9114af70ab9b0:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.35,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Sky.mat",
+  "kind": "other",
+  "shader": "0000000000000000f000000000000000",
+  "tex": {
+   "_MainTex": "12cd962d014df2c44bf8577270e1bc99:2800000"
+  },
+  "f": {
+   "_Exposure": 1.1,
+   "_ImageType": 0.0,
+   "_Layout": 0.0,
+   "_Mapping": 1.0,
+   "_MirrorOnBack": 0.0,
+   "_Rotation": 0.0
+  },
+  "c": {
+   "_Tint": [
+    0.3,
+    0.5,
+    0.56,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Smoke.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.3,
+    0.3,
+    0.32,
+    0.7
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    0.29999998,
+    0.29999998,
+    0.31999996,
+    0.7
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_SmokeBank.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.36,
+    0.37,
+    0.39,
+    0.2
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    0.35999998,
+    0.36999997,
+    0.38999996,
+    0.2
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_SmokeCol.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.28,
+    0.28,
+    0.3,
+    0.22
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    0.27999997,
+    0.27999997,
+    0.29999998,
+    0.22
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_StepMist.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "e4048fd24d3cfde419acf8e02e0bce39:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 1.0,
+   "_CameraFarFadeDistance": 5.0,
+   "_CameraNearFadeDistance": 1.5,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.55,
+    0.1,
+    0.04,
+    0.1
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_CameraFadeParams": [
+    1.5,
+    0.2857143,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    0.54999995,
+    0.09999997,
+    0.04,
+    0.1
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Trail_maul_start.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "9b2e4488f7e1d044e981a59115bacad3:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 0.0,
+   "_CameraFarFadeDistance": 2.0,
+   "_CameraNearFadeDistance": 1.0,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Trail_sword_start.mat",
+  "kind": "particle",
+  "shader": "0406db5a14f94604a8c57ccfbc9f3b46",
+  "tex": {
+   "_BaseMap": "9b2e4488f7e1d044e981a59115bacad3:2800000"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendOp": 0.0,
+   "_CameraFadingEnabled": 0.0,
+   "_CameraFarFadeDistance": 2.0,
+   "_CameraNearFadeDistance": 1.0,
+   "_ColorMode": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DistortionBlend": 0.5,
+   "_DistortionEnabled": 0.0,
+   "_DistortionStrength": 1.0,
+   "_DistortionStrengthScaled": 0.1,
+   "_DstBlend": 10.0,
+   "_DstBlendAlpha": 10.0,
+   "_FlipbookBlending": 0.0,
+   "_FlipbookMode": 0.0,
+   "_Mode": 0.0,
+   "_QueueOffset": 0.0,
+   "_SoftParticlesEnabled": 0.0,
+   "_SoftParticlesFarFadeDistance": 1.0,
+   "_SoftParticlesNearFadeDistance": 0.0,
+   "_SrcBlend": 5.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 1.0,
+   "_ZWrite": 0.0
+  },
+  "c": {
+   "_BaseColor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_BaseColorAddSubDiff": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "_Color": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SoftParticleFadeParams": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/M_Water.mat",
+  "kind": "lit",
+  "shader": "933532a4fcc9baf4fa0491de14d08ed7",
+  "tex": {
+   "_BaseMap": "37ff0d3e7e9b51a4295ccd2fd9c6062c:2800000",
+   "_BumpMap": "37b0cde1cd153f44c8a1778969400b9d:2800000",
+   "_MainTex": "37ff0d3e7e9b51a4295ccd2fd9c6062c:2800000",
+   "_OcclusionMap": "fae06380d9a2ffc4b9a2020dd78cc44f:2800000"
+  },
+  "f": {
+   "_AddPrecomputedVelocity": 0.0,
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 1.0,
+   "_BumpScale": 1.0,
+   "_ClearCoatMask": 0.0,
+   "_ClearCoatSmoothness": 0.0,
+   "_Cull": 2.0,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1.0,
+   "_DetailNormalMapScale": 1.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_EnvironmentReflections": 1.0,
+   "_GlossMapScale": 0.0,
+   "_Glossiness": 0.0,
+   "_GlossyReflections": 0.0,
+   "_Metallic": 0.0,
+   "_OcclusionStrength": 1.0,
+   "_Parallax": 0.005,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_ScreenSpaceReflections": 1.0,
+   "_ScreenSpaceReflectionsContributeTransparent": 1.0,
+   "_Smoothness": 0.92,
+   "_SmoothnessTextureChannel": 0.0,
+   "_SpecularHighlights": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_XRMotionVectorsPass": 1.0,
+   "_ZWrite": 1.0
+  },
+  "c": {
+   "_BaseColor": [
+    0.006,
+    0.007,
+    0.008,
+    1.0
+   ],
+   "_Color": [
+    0.006,
+    0.007,
+    0.008,
+    1.0
+   ],
+   "_EmissionColor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "_SpecColor": [
+    0.19999996,
+    0.19999996,
+    0.19999996,
+    1.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/Mats/matte_cw3_dark_fill.mat",
+  "kind": "other",
+  "shader": "",
+  "tex": {
+   "baseColorTexture": "3761f8c2402dee744b61319845600523:2050813195529893684",
+   "metallicRoughnessTexture": "3761f8c2402dee744b61319845600523:8203061250971360006",
+   "normalTexture": "3761f8c2402dee744b61319845600523:-8187494945611128755"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_BUILTIN_AlphaClip": 0.0,
+   "_BUILTIN_Blend": 0.0,
+   "_BUILTIN_CullMode": 2.0,
+   "_BUILTIN_DstBlend": 0.0,
+   "_BUILTIN_QueueControl": 1.0,
+   "_BUILTIN_QueueOffset": 0.0,
+   "_BUILTIN_SrcBlend": 1.0,
+   "_BUILTIN_Surface": 0.0,
+   "_BUILTIN_ZTest": 4.0,
+   "_BUILTIN_ZWrite": 1.0,
+   "_BUILTIN_ZWriteControl": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 0.0,
+   "_CastShadows": 1.0,
+   "_Cull": 0.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_QueueControl": 1.0,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_ZTest": 4.0,
+   "_ZWrite": 1.0,
+   "_ZWriteControl": 0.0,
+   "alphaCutoff": 0.0,
+   "baseColorTexture_texCoord": 0.0,
+   "emissiveExposureWeight": 0.0,
+   "emissiveTexture_texCoord": 0.0,
+   "metallicFactor": 0.0,
+   "metallicRoughnessTexture_texCoord": 0.0,
+   "normalTexture_scale": 1.0,
+   "normalTexture_texCoord": 0.0,
+   "occlusionTexture_strength": 1.0,
+   "occlusionTexture_texCoord": 0.0,
+   "roughnessFactor": 0.85,
+   "transmissionFactor": 0.0
+  },
+  "c": {
+   "baseColorFactor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "baseColorTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "emissiveFactor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "emissiveTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "metallicRoughnessTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "normalTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "occlusionTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/Mats/matte_cw3_wet_black_basalt.mat",
+  "kind": "other",
+  "shader": "",
+  "tex": {
+   "baseColorTexture": "3761f8c2402dee744b61319845600523:733067908141138410",
+   "metallicRoughnessTexture": "3761f8c2402dee744b61319845600523:8203061250971360006",
+   "normalTexture": "3761f8c2402dee744b61319845600523:-8187494945611128755"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_BUILTIN_AlphaClip": 0.0,
+   "_BUILTIN_Blend": 0.0,
+   "_BUILTIN_CullMode": 2.0,
+   "_BUILTIN_DstBlend": 0.0,
+   "_BUILTIN_QueueControl": 1.0,
+   "_BUILTIN_QueueOffset": 0.0,
+   "_BUILTIN_SrcBlend": 1.0,
+   "_BUILTIN_Surface": 0.0,
+   "_BUILTIN_ZTest": 4.0,
+   "_BUILTIN_ZWrite": 1.0,
+   "_BUILTIN_ZWriteControl": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 0.0,
+   "_CastShadows": 1.0,
+   "_Cull": 0.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_QueueControl": 1.0,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_ZTest": 4.0,
+   "_ZWrite": 1.0,
+   "_ZWriteControl": 0.0,
+   "alphaCutoff": 0.0,
+   "baseColorTexture_texCoord": 0.0,
+   "emissiveExposureWeight": 0.0,
+   "emissiveTexture_texCoord": 0.0,
+   "metallicFactor": 0.0,
+   "metallicRoughnessTexture_texCoord": 0.0,
+   "normalTexture_scale": 1.0,
+   "normalTexture_texCoord": 0.0,
+   "occlusionTexture_strength": 1.0,
+   "occlusionTexture_texCoord": 0.0,
+   "roughnessFactor": 0.85,
+   "transmissionFactor": 0.0
+  },
+  "c": {
+   "baseColorFactor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "baseColorTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "emissiveFactor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "emissiveTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "metallicRoughnessTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "normalTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "occlusionTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/Mats/matte_cw4_stairs.mat",
+  "kind": "other",
+  "shader": "",
+  "tex": {
+   "baseColorTexture": "3761f8c2402dee744b61319845600523:6212345665111361752",
+   "metallicRoughnessTexture": "3761f8c2402dee744b61319845600523:8753050817245944134",
+   "normalTexture": "3761f8c2402dee744b61319845600523:-5511129005580035644",
+   "occlusionTexture": "3761f8c2402dee744b61319845600523:8753050817245944134"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_BUILTIN_AlphaClip": 0.0,
+   "_BUILTIN_Blend": 0.0,
+   "_BUILTIN_CullMode": 2.0,
+   "_BUILTIN_DstBlend": 0.0,
+   "_BUILTIN_QueueControl": 1.0,
+   "_BUILTIN_QueueOffset": 0.0,
+   "_BUILTIN_SrcBlend": 1.0,
+   "_BUILTIN_Surface": 0.0,
+   "_BUILTIN_ZTest": 4.0,
+   "_BUILTIN_ZWrite": 1.0,
+   "_BUILTIN_ZWriteControl": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 0.0,
+   "_CastShadows": 1.0,
+   "_Cull": 0.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_QueueControl": 1.0,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_ZTest": 4.0,
+   "_ZWrite": 1.0,
+   "_ZWriteControl": 0.0,
+   "alphaCutoff": 0.0,
+   "baseColorTexture_texCoord": 0.0,
+   "emissiveExposureWeight": 0.0,
+   "emissiveTexture_texCoord": 0.0,
+   "metallicFactor": 0.0,
+   "metallicRoughnessTexture_texCoord": 0.0,
+   "normalTexture_scale": 1.0,
+   "normalTexture_texCoord": 0.0,
+   "occlusionTexture_strength": 1.0,
+   "occlusionTexture_texCoord": 0.0,
+   "roughnessFactor": 0.85,
+   "transmissionFactor": 0.0
+  },
+  "c": {
+   "baseColorFactor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "baseColorTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "emissiveFactor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "emissiveTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "metallicRoughnessTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "normalTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "occlusionTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ {
+  "path": "Assets/Env/Mats/matte_cw4_wall_st.mat",
+  "kind": "other",
+  "shader": "",
+  "tex": {
+   "baseColorTexture": "3761f8c2402dee744b61319845600523:3372661540823994719",
+   "metallicRoughnessTexture": "3761f8c2402dee744b61319845600523:3168932943722986775",
+   "normalTexture": "3761f8c2402dee744b61319845600523:6521034322575737892",
+   "occlusionTexture": "3761f8c2402dee744b61319845600523:3168932943722986775"
+  },
+  "f": {
+   "_AlphaClip": 0.0,
+   "_AlphaToMask": 0.0,
+   "_BUILTIN_AlphaClip": 0.0,
+   "_BUILTIN_Blend": 0.0,
+   "_BUILTIN_CullMode": 2.0,
+   "_BUILTIN_DstBlend": 0.0,
+   "_BUILTIN_QueueControl": 1.0,
+   "_BUILTIN_QueueOffset": 0.0,
+   "_BUILTIN_SrcBlend": 1.0,
+   "_BUILTIN_Surface": 0.0,
+   "_BUILTIN_ZTest": 4.0,
+   "_BUILTIN_ZWrite": 1.0,
+   "_BUILTIN_ZWriteControl": 0.0,
+   "_Blend": 0.0,
+   "_BlendModePreserveSpecular": 0.0,
+   "_CastShadows": 1.0,
+   "_Cull": 0.0,
+   "_DstBlend": 0.0,
+   "_DstBlendAlpha": 0.0,
+   "_QueueControl": 1.0,
+   "_QueueOffset": 0.0,
+   "_ReceiveShadows": 1.0,
+   "_SrcBlend": 1.0,
+   "_SrcBlendAlpha": 1.0,
+   "_Surface": 0.0,
+   "_WorkflowMode": 1.0,
+   "_ZTest": 4.0,
+   "_ZWrite": 1.0,
+   "_ZWriteControl": 0.0,
+   "alphaCutoff": 0.0,
+   "baseColorTexture_texCoord": 0.0,
+   "emissiveExposureWeight": 0.0,
+   "emissiveTexture_texCoord": 0.0,
+   "metallicFactor": 0.0,
+   "metallicRoughnessTexture_texCoord": 0.0,
+   "normalTexture_scale": 1.0,
+   "normalTexture_texCoord": 0.0,
+   "occlusionTexture_strength": 1.0,
+   "occlusionTexture_texCoord": 0.0,
+   "roughnessFactor": 0.85,
+   "transmissionFactor": 0.0
+  },
+  "c": {
+   "baseColorFactor": [
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "baseColorTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "emissiveFactor": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "emissiveTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "metallicRoughnessTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "normalTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "occlusionTexture_Rotation": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ }
+]

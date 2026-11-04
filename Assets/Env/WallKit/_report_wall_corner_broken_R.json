@@ -1,0 +1,36 @@
+{
+ "name": "wall_corner_broken_R",
+ "atlas": 2048,
+ "density_px_m": 320,
+ "tris0": 39702,
+ "mb0": 6.98,
+ "dims": [
+  2.0,
+  1.9767,
+  2.0
+ ],
+ "bbox_min": [
+  -1.0,
+  -0.9767,
+  0.0
+ ],
+ "bbox_max": [
+  1.0,
+  1.0,
+  2.0
+ ],
+ "glb": {
+  "mr": true,
+  "occ": true,
+  "nrm": true,
+  "base": true,
+  "images": 3,
+  "prims": 1,
+  "nmat": 1
+ },
+ "tris1": 19954,
+ "mb1": 2.29,
+ "tris2": 5972,
+ "mb2": 0.63,
+ "sec": 34.8
+}

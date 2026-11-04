@@ -1,0 +1,51 @@
+# Unity generated
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Bb]uilds/
+/[Bb]uild/
+*.csproj
+*.sln
+*.suo
+*.user
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+.vs/
+.vscode/
+.idea/
+.utmp/
+
+# Captures, test output and agent scratch
+/Shots/
+/PlayShots*/
+/TestOut/
+/_agents/
+/Tools/*
+!/Tools/*.py
+!/Tools/*.ps1
+!/Tools/*.cs
+!/Tools/*.md
+/Tools/_backup*/
+*_backup*/
+*.bak
+*_backup.*
+*~/
+*~.meta
+
+# Epic MetaHuman source assets (licence: no public redistribution; feature on hold)
+/Assets/MetaHumanHead/
+/Assets/MetaHumanHead.meta
+/Assets/StreamingAssets/MetaHumanHead/
+/Assets/StreamingAssets/MetaHumanHead.meta
+
+# Stray files
+/SERSDOM12*
+crashlytics-build.properties
+sysinfo.txt

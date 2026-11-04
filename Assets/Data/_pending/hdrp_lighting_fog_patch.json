@@ -1,0 +1,14 @@
+{
+  "_notes": "PATCH for Assets/Data/hdrp_lighting_ultra.json 'fog' block (NOT applied; others tune that file). From kits_out/3d/hades_env/unity_staging/world/world_fog.json (horizon grey sRGB 84 measured on the black-sun panorama, height fog so the far band 120-420 m dissolves into the painting). Keys map 1:1 onto HdrpScene.FogRow: baseHeight, maxHeight, albedo (HdrpScene.Col passes the floats straight to Color, so use the LINEAR value 0.115). Only these three keys change. 'optional' keys are NOT part of the minimal patch: world_fog proposes meanFreePath 140 (current 24 is much denser; a fog this thin at 140 will not hide the far band, so try 60-80 first) and anisotropy 0.35 (already 0.35). Current values: baseHeight -1.0, maxHeight 18, albedo [0.10,0.10,0.13], meanFreePath 24.",
+  "fog": {
+    "baseHeight": -1.0,
+    "maxHeight": 38,
+    "albedo": [0.115, 0.115, 0.113]
+  },
+  "optional": {
+    "fog": { "meanFreePath": 140, "anisotropy": 0.35 }
+  },
+  "revert": {
+    "fog": { "baseHeight": -1.0, "maxHeight": 18, "albedo": [0.10, 0.10, 0.13] }
+  }
+}

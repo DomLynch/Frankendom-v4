@@ -1,0 +1,16 @@
+{
+    "clouds": true,
+    "volumetricFog": true,
+    "ssgi": true,
+    "ssr": true,
+    "shadows": true,
+    "renderScale": 67,
+    "ssgiQuality": 2,
+    "ssgiFullRes": true,
+    "fogQuality": 2,
+    "ssao": true,
+    "hideMHHead": false,
+    "exposureEV": 9.4,
+    "contactShadows": true,
+    "cascades": 2
+}

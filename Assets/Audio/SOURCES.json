@@ -1,0 +1,107 @@
+{
+  "crowd": {
+    "page": "https://freesound.org/people/deleted_user_2104797/sounds/324892/",
+    "url": "https://cdn.freesound.org/previews/324/324892_2104797-hq.mp3",
+    "sha256": "fc51ed774485a68d5dc81d35cb88fc44020d46e057866e49f055249b10e29473",
+    "title": "Crowd Cheer.wav",
+    "author": "deleted_user_2104797",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "retrieved": "2026-09-19"
+  },
+  "gasp": {
+    "page": "https://freesound.org/people/HowardV/sounds/264376/",
+    "url": "https://cdn.freesound.org/previews/264/264376_1654262-hq.mp3",
+    "sha256": "f0ce488c955396ca2f464f5e801ba9af69afc4db5db6e4875b7047c9fe27a741",
+    "title": "small crowd gasp shock surprise",
+    "author": "HowardV",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "retrieved": "2026-09-19"
+  },
+  "grunt": {
+    "page": "https://freesound.org/people/tonsil5/sounds/416839/",
+    "url": "https://cdn.freesound.org/previews/416/416839_8247784-hq.mp3",
+    "sha256": "2c95137fbe752dbeb2f9ab5272ad2a8ab79643949164cd4e5ef7a4d6e45043eb",
+    "title": "Grunt1 - Death Pain.wav",
+    "author": "tonsil5",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "retrieved": "2026-09-19"
+  },
+  "tear": {
+    "page": "https://freesound.org/people/aust_paul/sounds/30931/",
+    "url": "https://cdn.freesound.org/previews/30/30931_15696-hq.mp3",
+    "sha256": "91351c4e316e4d8f7d8a5c900e65e566ae4d3975e1b7f9c6237a358b209debca",
+    "title": "rip_tear FLESH!.wav",
+    "author": "aust_paul",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "retrieved": "2026-09-19"
+  },
+  "grunt2": {
+    "page": "https://freesound.org/people/tonsil5/sounds/416838/",
+    "url": "https://cdn.freesound.org/previews/416/416838_8247784-hq.mp3",
+    "sha256": "ff0eef4e4d953286aec159572a766f16eac33346d701d2ef3530a1a06383f9e5",
+    "title": "Grunt2 - Death Pain.wav",
+    "author": "tonsil5",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "retrieved": "2026-09-19"
+  },
+  "swordhit": {
+    "page": "https://freesound.org/people/CogFireStudios/sounds/547042/",
+    "url": "https://cdn.freesound.org/previews/547/547042_7614679-hq.mp3",
+    "sha256": "bfa9309e46739a5bd2fc4424b98f383a55e080012e5b0eec1bb747e910329bb9",
+    "title": "Hit Impact Sword 3",
+    "author": "CogFireStudios",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "note": "Owner picked it 2026-09-22 (candidate J of three CC0 freesound hits; \"this is good i like it\"). hit_flesh variant at pitch 1: the strike from 0 s, .62 s (tail is under -34 dBFS by .75 s).",
+    "retrieved": "2026-09-22"
+  },
+  "fleshslice": {
+    "page": "https://freesound.org/people/NeoSpica/sounds/504615/",
+    "url": "https://cdn.freesound.org/previews/504/504615_7704891-hq.mp3",
+    "sha256": "f8e3d47aa24053707ac879fbb1c2760d577ee56ba8b9869ddf09eadafcdc4bed",
+    "title": "Slicing through flesh",
+    "author": "NeoSpica",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "note": "Owner picked it 2026-09-23 (candidate B of twelve CC0 flesh landings, \"these are fine\"). hit_flesh variant at pitch 1: the take from 0.13 s, 0.75 s.",
+    "retrieved": "2026-09-23"
+  },
+  "bloodyblade": {
+    "page": "https://freesound.org/people/Kreastricon62/sounds/323525/",
+    "url": "https://cdn.freesound.org/previews/323/323525_4336114-hq.mp3",
+    "sha256": "1ec4bb7ec3e44484420f5aef4bcae592e1188163b60ca37b656a5c28587a3b7f",
+    "title": "Bloody Blade.wav",
+    "author": "Kreastricon62",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "note": "Owner picked it 2026-09-23 (candidate C of twelve CC0 flesh landings, \"these are fine\"). hit_flesh variant at pitch 1: the take from 0.07 s, 0.6 s.",
+    "retrieved": "2026-09-23"
+  },
+  "messystab": {
+    "page": "https://freesound.org/people/Logicogonist/sounds/811118/",
+    "url": "https://cdn.freesound.org/previews/811/811118_3797507-hq.mp3",
+    "sha256": "be244d2624cee30191b413d6edee212ae3e9f2916af589c0d4dc69a906884bb1",
+    "title": "messy stabber 1",
+    "author": "Logicogonist",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "note": "Owner picked it 2026-09-23 (candidate H of twelve CC0 flesh landings, \"these are fine\"). hit_flesh variant at pitch 1: the take from 4.23 s, 0.7 s.",
+    "retrieved": "2026-09-23"
+  },
+  "meatysplosh": {
+    "page": "https://freesound.org/people/magnuswaker/sounds/528834/",
+    "url": "https://cdn.freesound.org/previews/528/528834_11537497-hq.mp3",
+    "sha256": "2cd6428e8f2e06524bc621bd20b8bd200c72ed5bc27fb401d2d81772636c28f1",
+    "title": "Meaty Splosh",
+    "author": "magnuswaker",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "note": "Owner picked it 2026-09-23 (candidate J of twelve CC0 flesh landings, \"these are fine\"). hit_flesh variant at pitch 1: the take from 0.04 s, 0.7 s.",
+    "retrieved": "2026-09-23"
+  }
+}

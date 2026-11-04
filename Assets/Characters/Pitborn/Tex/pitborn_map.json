@@ -1,0 +1,12 @@
+{
+ "Body": {
+  "mat": "Material_0.001",
+  "base": "pitborn_Body_base.jpg",
+  "normal": "pitborn_Body_normal.jpg",
+  "mr": "pitborn_Body_mr.jpg",
+  "emissive": null,
+  "color": null,
+  "metal": null,
+  "rough": null
+ }
+}

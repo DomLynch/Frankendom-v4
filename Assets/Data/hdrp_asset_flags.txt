@@ -1,0 +1,8 @@
+supportVolumetricClouds=true
+supportVolumetrics=true
+supportSSR=true
+supportSSGI=true
+supportRayTracing=true
+supportWater=true
+supportWaterExclusion=true
+supportLightLayers=true

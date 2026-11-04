@@ -1,0 +1,120 @@
+﻿{
+  "version": 1,
+  "seed": 20261104,
+  "rules": {
+    "planSeconds": 10.0,
+    "fallbackBeatSeconds": 1.6,
+    "replaySeconds": 2.5,
+    "resultSeconds": 0.5,
+    "autoPlayDracula": false,
+    "beats": 3,
+    "repeatPlanOnTimeout": true,
+    "hpDracula": 80,
+    "hpPitborn": 120,
+    "usedSpecialFallback": "Guard",
+    "damageVariance": 0.1,
+    "minDamage": 1,
+    "staggerTierPenalty": 1.5,
+    "tierEpsilon": 0.01,
+    "clashDamageMul": 0.0,
+    "tradeOnAttackVsAttack": true,
+    "riposteChance": 0.5,
+    "riposteDamage": 8.0,
+    "woundMinDamage": 5,
+    "maxSeverity": 3,
+    "armHeavyMulPerSeverity": 0.15,
+    "legTierPerSeverity": 0.5,
+    "defaultPlan": { "stance": "Neutral", "moves": ["Light", "Light", "Guard"] },
+    "moves": [
+      { "id": "Light",    "attack": true,  "damage": 7,  "tier": 2, "staggers": false },
+      { "id": "Slash",    "attack": true,  "damage": 10, "tier": 3, "staggers": false },
+      { "id": "Stab",     "attack": true,  "damage": 9,  "tier": 1, "staggers": false },
+      { "id": "Heavy",    "attack": true,  "damage": 20, "tier": 5, "staggers": false },
+      { "id": "Kick",     "attack": true,  "damage": 5,  "tier": 3, "staggers": true },
+      { "id": "Guard",    "attack": false, "damage": 0,  "tier": 0, "staggers": false },
+      { "id": "Roll",     "attack": false, "damage": 0,  "tier": 0, "staggers": false },
+      { "id": "Sidestep", "attack": false, "damage": 0,  "tier": 0, "staggers": false },
+      { "id": "Special",  "attack": true,  "damage": 20, "tier": 5, "staggers": false }
+    ],
+    "fallbackWounds": [
+      { "move": "Light",   "arm": 0.20, "leg": 0.20, "torso": 0.50, "head": 0.10 },
+      { "move": "Slash",   "arm": 0.30, "leg": 0.20, "torso": 0.40, "head": 0.10 },
+      { "move": "Stab",    "arm": 0.10, "leg": 0.10, "torso": 0.60, "head": 0.20 },
+      { "move": "Heavy",   "arm": 0.30, "leg": 0.20, "torso": 0.30, "head": 0.20 },
+      { "move": "Kick",    "arm": 0.05, "leg": 0.45, "torso": 0.50, "head": 0.00 },
+      { "move": "Special", "arm": 0.20, "leg": 0.20, "torso": 0.40, "head": 0.20 }
+    ]
+  },
+  "matrix": {
+    "rows": [
+      { "a": "Stab", "b": "Heavy", "outA": "Hit", "outB": "Interrupted", "aHits": 1, "bHits": 0, "voidOther": true, "reason": "{a} interrupted {b}" },
+      { "a": "Guard", "b": "Light,Slash", "outA": "Parried", "outB": "Blocked", "aHits": 0, "bHits": 0, "riposteA": true, "reason": "{a} beat {b} (parry)" },
+      { "a": "Guard", "b": "Heavy,Special", "outA": "GuardBreak", "outB": "Hit", "aHits": 0, "bHits": 1, "staggerA": true, "reason": "{b} broke {a}" },
+      { "a": "Guard", "b": "Kick", "outA": "Staggered", "outB": "Hit", "aHits": 0, "bHits": 1, "staggerA": true, "reason": "{b} staggered {a}" },
+      { "a": "Guard", "b": "Stab", "outA": "Parried", "outB": "Blocked", "aHits": 0, "bHits": 0, "reason": "{a} stopped {b}" },
+      { "a": "Roll", "b": "Heavy,Special", "outA": "Dodged", "outB": "Whiff", "aHits": 0, "bHits": 0, "staggerB": true, "reason": "{a} dodged {b}" },
+      { "a": "Sidestep", "b": "Heavy", "outA": "Dodged", "outB": "Whiff", "aHits": 0, "bHits": 0, "staggerB": true, "reason": "{a} dodged {b}" },
+      { "a": "Sidestep", "b": "Special", "outA": "Struck", "outB": "Hit", "aHits": 0, "bHits": 1, "reason": "{b} caught {a}" },
+      { "a": "Roll,Sidestep", "b": "Stab", "outA": "Dodged", "outB": "Whiff", "aHits": 0, "bHits": 0, "reason": "{a} dodged {b}" },
+      { "a": "Roll", "b": "Slash", "outA": "Dodged", "outB": "Whiff", "aHits": 0, "bHits": 0, "reason": "{a} dodged {b}" },
+      { "a": "Sidestep", "b": "Slash", "outA": "Struck", "outB": "Hit", "aHits": 0, "bHits": 1, "reason": "{b} caught {a}" },
+      { "a": "Sidestep", "b": "Kick", "outA": "Dodged", "outB": "Whiff", "aHits": 0, "bHits": 0, "reason": "{a} dodged {b}" },
+      { "a": "Roll", "b": "Kick", "outA": "Struck", "outB": "Hit", "aHits": 0, "bHits": 1, "reason": "{b} caught {a}" },
+      { "a": "Roll,Sidestep", "b": "Light", "outA": "Struck", "outB": "Hit", "aHits": 0, "bHits": 1, "reason": "{b} was too quick for {a}" },
+      { "a": "Guard,Roll,Sidestep", "b": "Guard,Roll,Sidestep", "outA": "Whiff", "outB": "Whiff", "aHits": 0, "bHits": 0, "reason": "nothing landed" }
+    ]
+  },
+  "stances": {
+    "rows": [
+      { "id": "Aggressive", "dealtMul": 1.25, "takenMul": 1.20, "speedDelta": 0 },
+      { "id": "Defensive",  "dealtMul": 0.80, "takenMul": 0.75, "speedDelta": 0 },
+      { "id": "Neutral",    "dealtMul": 1.0,  "takenMul": 1.0,  "speedDelta": 0 },
+      { "id": "Trickster",  "dealtMul": 1.0,  "takenMul": 1.0,  "speedDelta": 0,
+        "chances": [
+          { "chance": 0.25, "dealtMul": 1.30, "takenMul": 1.0,  "label": "Trickster: +30% dealt" },
+          { "chance": 0.25, "dealtMul": 1.0,  "takenMul": 1.30, "label": "Trickster: +30% taken" },
+          { "chance": 0.50, "dealtMul": 1.0,  "takenMul": 1.0,  "label": "Trickster: nothing" }
+        ] }
+    ]
+  },
+  "crit": { "chance": 0.08, "mul": 1.75, "locationHead": 0.0 },
+  "special": {
+    "dracula": {
+      "damage": 16, "tier": 5, "healFraction": 0.6, "knockdown": false,
+      "id": "blood_drain", "side": "Dracula", "usesPerFight": 1, "speedTierName": "slow",
+      "unblockable": false, "guardMode": "reduced", "guardReduce": 0.5, "avoidedBy": ["Roll"],
+      "critAllowed": true, "hitLocation": "Torso", "area": false, "staggerBeats": 1,
+      "windupClip": "special_skullcrack", "strikeClip": "special_skullcrack", "victimClip": "hit_heavy", "getUpClip": "get_up",
+      "cue": "blood_drain", "cameraHint": "closeup", "slowMo": 0.3, "slowMoSeconds": 0.6,
+      "_about": "Bite/grab drain. Heals healFraction of damage dealt. Clips are existing Animator states (Dracula.controller); swap to a dedicated clip later by editing windupClip/strikeClip only."
+    },
+    "pitborn": {
+      "damage": 26, "tier": 5, "healFraction": 0.0, "knockdown": true,
+      "id": "ground_slam", "side": "Pitborn", "usesPerFight": 1, "speedTierName": "slow",
+      "unblockable": false, "guardMode": "reduced", "guardReduce": 0.5, "avoidedBy": ["Roll"],
+      "critAllowed": true, "hitLocation": "any", "area": true, "staggerBeats": 0,
+      "windupClip": "heavy_windup_hold", "strikeClip": "heavy_release", "victimClip": "knockdown", "getUpClip": "get_up",
+      "cue": "ground_slam", "cameraHint": "wide_low", "slowMo": 0.25, "slowMoSeconds": 0.7,
+      "_about": "Heavy overhead slam: area (catches Sidestep too), knockdown, slow tier, guard only halves it, Roll avoids it. Uses the Pitborn heavy overhead clips."
+    }
+  },  "wounds": {},
+  "ai": {
+    "earlyRounds": 2, "lowHpFrac": 0.4, "lowHpDefensiveStanceMul": 2.0, "repeatMoveMul": 0.5, "specialWeight": 2.0,
+    "stances": [
+      { "id": "Aggressive", "w": 3.0 }, { "id": "Defensive", "w": 2.0 }, { "id": "Neutral", "w": 3.0 }, { "id": "Trickster", "w": 1.5 }
+    ],
+    "moves": [
+      { "id": "Light", "w": 3.0 }, { "id": "Slash", "w": 3.0 }, { "id": "Stab", "w": 2.0 }, { "id": "Heavy", "w": 2.5 },
+      { "id": "Kick", "w": 1.5 }, { "id": "Guard", "w": 2.0 }, { "id": "Roll", "w": 1.0 }, { "id": "Sidestep", "w": 1.0 },
+      { "id": "Special", "w": 2.0 }
+    ],
+    "difficulty": [
+      { "id": "easy",   "attackMul": 0.8, "defendMul": 1.2, "temperature": 1.4, "specialMinRound": 4, "specialLowHpFrac": 0.25, "guardLowHpMul": 1.5, "heavyEarlyMul": 1.2 },
+      { "id": "normal", "attackMul": 1.0, "defendMul": 1.0, "temperature": 1.0, "specialMinRound": 3, "specialLowHpFrac": 0.35, "guardLowHpMul": 2.0, "heavyEarlyMul": 1.5 },
+      { "id": "hard",   "attackMul": 1.2, "defendMul": 1.0, "temperature": 0.8, "specialMinRound": 2, "specialLowHpFrac": 0.45, "guardLowHpMul": 2.5, "heavyEarlyMul": 1.8 }
+    ]
+  },
+  "camera": {},
+  "ui": {},
+  "finishers": {}
+}

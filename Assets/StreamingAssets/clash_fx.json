@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "enabled": 1,
+  "sheets": {
+    "_notes": "Unreal-baked flipbooks (development use) layered on the procedural FX. Missing shader/texture = procedural only. proceduralCountScale: 1 = procedural unchanged, 0 = the baked sheet replaces it. Textures are held in the scene by a ClashFxSheets object (HdrpFixes run); resource = Resources fallback name. Sparks: impact at (impactU, impactV) of the cell, V from the top. Dust: ground line at groundV. intensity is display-referred (sheet RGB reaches ~12 for sparks).",
+    "enabled": 1,
+    "shader": "Furnace/ClashFlipbook",
+    "sparks": {
+      "enabled": 1,
+      "texture": "Assets/VFX/Flipbooks/ue_hit_sparks_color_6x4.exr", "textureHeavy": "Assets/VFX/Flipbooks/ue_hit_sparks_heavy_color_6x4.exr",
+      "resource": "Flipbooks/ue_hit_sparks_color_6x4", "resourceHeavy": "Flipbooks/ue_hit_sparks_heavy_color_6x4",
+      "tilesX": 6, "tilesY": 4, "poolSize": 8, "lifetime": 0.8,
+      "size": 1.1, "sizePerStrength": 0.7, "heavySizeScale": 1.3, "impactU": 0.24, "impactV": 0.56,
+      "intensity": 0.35, "softDistance": 0.0, "proceduralCountScale": 0.5,
+      "tint": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 }
+    },
+    "dust": {
+      "enabled": 1,
+      "texture": "Assets/VFX/Flipbooks/ue_dust_puff_color_8x8.exr", "motion": "Assets/VFX/Flipbooks/ue_dust_puff_mv_8x8.png",
+      "resource": "Flipbooks/ue_dust_puff_color_8x8", "resourceMotion": "Flipbooks/ue_dust_puff_mv_8x8",
+      "tilesX": 8, "tilesY": 8, "poolSize": 8, "frameBlend": 1, "lifetime": 1.6,
+      "size": 0.8, "sizePerStrength": 0.9, "groundV": 0.74, "intensity": 0.8, "softDistance": 0.3, "mvStrength": 0.006,
+      "minStrength": 0.3, "proceduralCountScale": 0.5,
+      "tint": { "r": 0.9, "g": 0.85, "b": 0.8, "a": 0.55 }
+    }
+  },
+  "shaders": ["Sprites/Default", "Legacy Shaders/Particles/Alpha Blended"],
+  "fighterRefreshSeconds": 1.0,
+  "sparks": {
+    "poolSize": 192,
+    "cooldown": 0.04,
+    "countBase": 4, "countRandomPerStrength": 2, "countRandomBase": 2,
+    "firstWaveMin": 0.4, "firstWaveRange": 0.4, "lateDelay": 0.033,
+    "anchorHeight": 1.1, "anchorBack": 0.35, "anchorJitter": 0.12,
+    "alongBias": 0.35, "alongScale": 1.2, "sideSpread": 3.0, "upMin": 0.1, "upRange": 1.8,
+    "speedMin": 1.4, "speedRange": 4.5, "speedBase": 0.8, "speedPerStrength": 0.4,
+    "lifeMin": 0.15, "lifeRange": 0.35, "lifePerStrength": 0.04,
+    "sizeMin": 0.012, "sizeRange": 0.02,
+    "lengthScale": 3.0, "velocityScale": 0.045, "maxParticleSize": 0.5,
+    "gravity": 1.0,
+    "opacity": 0.7,
+    "colorHot":  { "r": 1.0,  "g": 1.0,  "b": 1.0,  "a": 1.0 },
+    "colorCool": { "r": 0.58, "g": 0.60, "b": 0.66, "a": 1.0 },
+    "coolAt": 0.6,
+    "textureSize": 16, "textureEdgePower": 1.2,
+    "glintPool": 8, "glintLife": 0.085, "glintSize": 0.07, "glintSizePerStrength": 0.03,
+    "glintColor": { "r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0 }
+  },
+  "dust": {
+    "poolSize": 128,
+    "cooldown": 0.05,
+    "lifetime": 1.0, "lifetimeJitter": 0.2,
+    "fadeInFraction": 0.06, "sizeGrowth": 1.9,
+    "color": { "r": 0.30, "g": 0.26, "b": 0.22, "a": 0.30 },
+    "colorJitter": 0.06,
+    "gravity": 0.02,
+    "dragLimit": 0.05, "dragDampen": 0.04,
+    "floorOffset": 0.035,
+    "textureSize": 32, "textureEdgePower": 1.5,
+    "block": { "countBase": 5, "countPerStrength": 4, "radius": 0.1, "speedBase": 0.42, "speedPerStrength": 0.3, "liftBase": 0.2, "liftPerStrength": 0.16, "sizeBase": 0.22, "sizePerStrength": 0.1, "footBack": 0.3, "footSide": 0.22 },
+    "plant": { "count": 5, "radius": 0.075, "speed": 0.32, "lift": 0.14, "size": 0.2 },
+    "heuristic": {
+      "enabled": 1,
+      "minSpeed": 0.6, "runSpeed": 3.5,
+      "walkStride": 0.9, "runStride": 1.5,
+      "plantCooldown": 0.28, "maxStepMeters": 1.0,
+      "footSide": 0.14, "footForward": 0.1,
+      "skipWhenDead": 1
+    }
+  },
+  "rows": [
+    { "type": "Parried",     "heavy": -1, "perfect": -1, "targetContains": "", "spark": 0.9,  "dust": 0.0,  "feet": "rear" },
+    { "type": "GuardBroken", "heavy": -1, "perfect": -1, "targetContains": "", "spark": 0.8,  "dust": 1.0,  "feet": "both" },
+    { "type": "Blocked",     "heavy": 1,  "perfect": -1, "targetContains": "", "spark": 0.8,  "dust": 0.6,  "feet": "rear" },
+    { "type": "Blocked",     "heavy": -1, "perfect": 1,  "targetContains": "", "spark": 0.65, "dust": 0.25, "feet": "rear" },
+    { "type": "Blocked",     "heavy": -1, "perfect": -1, "targetContains": "", "spark": 0.4,  "dust": 0.4,  "feet": "rear" },
+    { "type": "Hit",         "heavy": 1,  "perfect": -1, "targetContains": "Pitborn", "spark": 0.0, "dust": 1.0, "feet": "rear" },
+    { "type": "Hit",         "heavy": 1,  "perfect": -1, "targetContains": "", "spark": 0.0, "dust": 1.0, "feet": "rear" }
+  ],
+  "actions": [
+    { "action": "roll",     "dust": 0.45, "feet": "both" },
+    { "action": "backstep", "dust": 0.3,  "feet": "rear" }
+  ]
+}

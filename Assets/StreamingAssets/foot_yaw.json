@@ -1,0 +1,82 @@
+﻿{
+    "_about":  "Per-foot YAW correction + arm tilt for bandy / toe-out legs. Ported from OpenTrident clip-panel.js fitClip (footYaw rotates the Foot about the shin axis; arm tilt premultiplies the upper-arm local rotation about the parent X axis). handedSign: glTF to Unity flips handedness, which reverses the sense of an axis-angle about a reflected axis; -1 reproduces the web look, flip to 1 if the toes turn the wrong way. footYaw = [left, right] degrees. Categories are matched by Animator state short name; the first match wins, unmatched states use the row footYaw. During an Animator transition the values are blended by the transition normalizedTime.",
+    "defaults":  {
+                     "name":  "",
+                     "enabled":  false,
+                     "handedSign":  -1,
+                     "footYaw":  [
+                                     0,
+                                     0
+                                 ],
+                     "armTilt":  [
+                                     0,
+                                     0
+                                 ],
+                     "armAxis":  [
+                                     1,
+                                     0,
+                                     0
+                                 ],
+                     "armWeight":  1,
+                     "categories":  [
+
+                                    ]
+                 },
+    "characters":  [
+                       {
+                           "name":  "Dracula",
+                           "enabled":  false,
+                           "handedSign":  -1,
+                           "footYaw":  [
+                                           29,
+                                           -29
+                                       ],
+                           "armTilt":  [
+                                           -8,
+                                           -12
+                                       ],
+                           "armAxis":  [
+                                           1,
+                                           0,
+                                           0
+                                       ],
+                           "armWeight":  1,
+                           "categories":  [
+                                              {
+                                                  "id":  "locomotion",
+                                                  "states":  [
+                                                                 "walk",
+                                                                 "run",
+                                                                 "strafe_L",
+                                                                 "strafe_R",
+                                                                 "backstep",
+                                                                 "roll_forward"
+                                                             ],
+                                                  "footYaw":  [
+                                                                  25,
+                                                                  -25
+                                                              ],
+                                                  "armWeight":  1
+                                              },
+                                              {
+                                                  "id":  "idle",
+                                                  "states":  [
+                                                                 "idle",
+                                                                 "guard_idle",
+                                                                 "guard_left",
+                                                                 "guard_right",
+                                                                 "guard_up",
+                                                                 "guard_hit"
+                                                             ],
+                                                  "footYaw":  [
+                                                                  26,
+                                                                  -26
+                                                              ],
+                                                  "armWeight":  1
+                                              }
+                                          ],
+                           "debug":  false,
+                           "debugEvery":  20
+                       }
+                   ]
+}

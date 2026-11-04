@@ -1,0 +1,8 @@
+$K = "C:\Users\dom12\Documents\kits_out\3d"
+$T = "C:\Users\dom12\Documents\unity_test\Tools"
+$U = "C:\Users\dom12\Documents\unity_test\Assets\Characters"
+$B = "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe"
+python -I $T\merge_clips.py "$K\pitborn\staged\Pitborn_A_rigged.glb" "$T\Pitborn_anim.glb"
+python -I $T\merge_clips.py "$K\crimson-regent\v4\assembled_v4f.glb" "$T\Dracula_anim.glb"
+& $B -b -P $T\conv2.py -- "$T\Pitborn_anim.glb" "$U\Pitborn\Pitborn.fbx" 2>&1 | Select-String "ACTIONS|rror"
+& $B -b -P $T\conv2.py -- "$T\Dracula_anim.glb" "$U\Dracula\Dracula.fbx" 2>&1 | Select-String "ACTIONS|rror"

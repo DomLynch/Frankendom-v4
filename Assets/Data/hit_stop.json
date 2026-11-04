@@ -1,0 +1,17 @@
+{
+  "tickHz": 60,
+  "kickMoveId": "kick",
+  "specialMovePrefix": "skill_",
+  "specialEventTypes": ["Hit"],
+  "tiers": [
+    { "id": "hitLight",   "frames": 3, "ms": 0 },
+    { "id": "hitHeavy",   "frames": 5, "ms": 0 },
+    { "id": "blockLight", "frames": 0, "ms": 0 },
+    { "id": "blockHeavy", "frames": 0, "ms": 0 },
+    { "id": "parry",      "frames": 0, "ms": 0 },
+    { "id": "guardBreak", "frames": 6, "ms": 0 },
+    { "id": "special",    "frames": 6, "ms": 0 },
+    { "id": "kick",       "frames": 0, "ms": 0 }
+  ],
+  "moves": []
+}

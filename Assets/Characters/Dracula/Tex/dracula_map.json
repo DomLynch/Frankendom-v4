@@ -1,0 +1,77 @@
+{
+ "boot_l": {
+  "mat": "Material_0",
+  "base": "dracula_boot_l_base.jpg",
+  "normal": "dracula_boot_l_normal.jpg",
+  "mr": "dracula_boot_l_mr.jpg",
+  "emissive": null,
+  "color": null,
+  "metal": null,
+  "rough": null
+ },
+ "boot_r": {
+  "mat": "Material_0",
+  "base": "dracula_boot_r_base.jpg",
+  "normal": "dracula_boot_r_normal.jpg",
+  "mr": "dracula_boot_r_mr.jpg",
+  "emissive": null,
+  "color": null,
+  "metal": null,
+  "rough": null
+ },
+ "cloak": {
+  "mat": "meshy_textured",
+  "base": "dracula_cloak_base.jpg",
+  "normal": "dracula_cloak_normal.jpg",
+  "mr": "dracula_cloak_mr.jpg",
+  "emissive": null,
+  "color": null,
+  "metal": null,
+  "rough": null
+ },
+ "coat": {
+  "mat": "Material_0",
+  "base": "dracula_coat_base.jpg",
+  "normal": "dracula_coat_normal.jpg",
+  "mr": "dracula_coat_mr.jpg",
+  "emissive": null,
+  "color": null,
+  "metal": null,
+  "rough": null
+ },
+ "head": {
+  "mat": "head_hair",
+  "base": "dracula_head_base.jpg",
+  "normal": "dracula_head_normal.jpg",
+  "mr": null,
+  "emissive": null,
+  "color": null,
+  "metal": 0,
+  "rough": 0.6000000238418579
+ },
+ "hands_mh": {
+  "mat": "hand_mh",
+  "base": "dracula_hands_mh_base.jpg",
+  "normal": null,
+  "mr": null,
+  "emissive": null,
+  "color": null,
+  "metal": 0.0,
+  "rough": 0.72
+ },
+ "trouser_tube": {
+  "mat": "trouser_tube",
+  "base": null,
+  "normal": null,
+  "mr": null,
+  "emissive": null,
+  "color": [
+   0.045,
+   0.04,
+   0.04,
+   1.0
+  ],
+  "metal": 0.0,
+  "rough": 0.9
+ }
+}

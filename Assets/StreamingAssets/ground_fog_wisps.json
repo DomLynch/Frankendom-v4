@@ -1,0 +1,358 @@
+{
+ "_notes": "Low-lying ground fog hugging the terrain outside the bridge so the ruins rise out of mist. One HDRP Local Volumetric Fog (box) per row: center = box centre in Unity world space (y = local ground + 0.38 * height, so the bottom sits at about local ground - 0.1 m), size = box size in metres, rotY degrees, meanFreePath metres (lower = thicker; fog fraction across the 3 m height about 1 - exp(-3 / mfp), 15-25 %), blendDistance metres (soft edges), albedo sRGB. Optional: a 32^3 Perlin Texture3D as the volume Mask Texture (scroll speed [0.015, 0, 0.01], tiling 1) makes the wisps drift; without it they are uniform patches. Volumetric fog must stay enabled in the global Fog (world_fog.json). Budget: 16 volumes, all non-overlapping; reduce to 8 if the volumetric cost shows in the profiler. No volume inside |x|<15, 0<z<36 (bridge, trench, gate). Terrain height was sampled with world_height.py (trench excluded).",
+ "global": {
+  "meanFreePath": 270,
+  "albedoSrgb": [
+   55,
+   54,
+   54
+  ]
+ },
+ "mask": {
+  "optional": true,
+  "texture3D": "Perlin 32x32x32, 4 octaves",
+  "scrollSpeed": [
+   0.015,
+   0.0,
+   0.01
+  ]
+ },
+ "volumes": [
+  {
+   "name": "GroundWisp_00",
+   "center": [
+    125.4,
+    -0.53,
+    68.8
+   ],
+   "size": [
+    58.2,
+    3.68,
+    51.0
+   ],
+   "rotY": 7.1,
+   "meanFreePath": 11.5,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_01",
+   "center": [
+    44.2,
+    0.9,
+    6.0
+   ],
+   "size": [
+    44.9,
+    4.17,
+    55.3
+   ],
+   "rotY": 126.9,
+   "meanFreePath": 12.9,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_02",
+   "center": [
+    60.7,
+    0.29,
+    58.3
+   ],
+   "size": [
+    44.3,
+    2.63,
+    44.9
+   ],
+   "rotY": 151.6,
+   "meanFreePath": 19.1,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_03",
+   "center": [
+    -58.2,
+    1.53,
+    -54.3
+   ],
+   "size": [
+    55.4,
+    4.19,
+    57.8
+   ],
+   "rotY": 104.0,
+   "meanFreePath": 12.3,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_04",
+   "center": [
+    -40.4,
+    2.11,
+    -91.0
+   ],
+   "size": [
+    64.8,
+    3.12,
+    58.5
+   ],
+   "rotY": 7.3,
+   "meanFreePath": 15.0,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_05",
+   "center": [
+    -10.2,
+    1.6,
+    -89.9
+   ],
+   "size": [
+    58.2,
+    3.57,
+    55.5
+   ],
+   "rotY": 42.0,
+   "meanFreePath": 14.5,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_06",
+   "center": [
+    72.9,
+    0.86,
+    31.5
+   ],
+   "size": [
+    68.3,
+    4.15,
+    37.0
+   ],
+   "rotY": 142.7,
+   "meanFreePath": 13.0,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_07",
+   "center": [
+    0.9,
+    0.34,
+    80.4
+   ],
+   "size": [
+    56.3,
+    3.28,
+    35.1
+   ],
+   "rotY": 135.6,
+   "meanFreePath": 15.1,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_08",
+   "center": [
+    -92.1,
+    1.17,
+    56.7
+   ],
+   "size": [
+    56.6,
+    3.68,
+    65.1
+   ],
+   "rotY": 161.5,
+   "meanFreePath": 18.6,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_09",
+   "center": [
+    -45.4,
+    0.4,
+    37.0
+   ],
+   "size": [
+    64.6,
+    3.02,
+    51.1
+   ],
+   "rotY": 40.8,
+   "meanFreePath": 17.5,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_10",
+   "center": [
+    -44.2,
+    -0.25,
+    109.7
+   ],
+   "size": [
+    45.2,
+    3.99,
+    52.8
+   ],
+   "rotY": 118.7,
+   "meanFreePath": 11.5,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_11",
+   "center": [
+    95.5,
+    -0.63,
+    -24.4
+   ],
+   "size": [
+    49.0,
+    4.04,
+    65.4
+   ],
+   "rotY": 40.1,
+   "meanFreePath": 14.2,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_12",
+   "center": [
+    15.8,
+    0.44,
+    29.5
+   ],
+   "size": [
+    34.5,
+    3.54,
+    68.0
+   ],
+   "rotY": 43.2,
+   "meanFreePath": 11.8,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_13",
+   "center": [
+    -10.7,
+    0.61,
+    53.7
+   ],
+   "size": [
+    61.2,
+    3.89,
+    35.3
+   ],
+   "rotY": 164.6,
+   "meanFreePath": 18.9,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_14",
+   "center": [
+    11.8,
+    0.41,
+    -23.6
+   ],
+   "size": [
+    59.1,
+    2.83,
+    36.1
+   ],
+   "rotY": 69.8,
+   "meanFreePath": 14.9,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  },
+  {
+   "name": "GroundWisp_15",
+   "center": [
+    7.3,
+    1.08,
+    110.9
+   ],
+   "size": [
+    69.3,
+    3.03,
+    66.2
+   ],
+   "rotY": 162.5,
+   "meanFreePath": 18.2,
+   "blendDistance": 7.0,
+   "albedoSrgb": [
+    64,
+    62,
+    61
+   ]
+  }
+ ]
+}

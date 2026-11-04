@@ -1,0 +1,452 @@
+{
+    "sky":  {
+                "enable":  true,
+                "top":  [
+                            0.006,
+                            0.006,
+                            0.007
+                        ],
+                "mid":  [
+                            0.055,
+                            0.057,
+                            0.062
+                        ],
+                "bottom":  [
+                               0.055,
+                               0.057,
+                               0.062
+                           ],
+                "diffusion":  3.5,
+                "exposure":  11.0,
+                "hdriPath":  "Assets/VFX/Gateway/sky_blacksun_8k_s15t.png",
+                "hdriExposure":  10.75,
+                "hdriRotation":  0
+            },
+    "shadow":  {
+                   "light":  "Key_ColdSun",
+                   "resolution":  2048,
+                   "cascades":  2,
+                   "split0":  0.3,
+                   "split1":  0.2,
+                   "split2":  0.5,
+                   "maxDistance":  40,
+                   "updateMode":  "OnEnable",
+                   "alwaysDrawDynamic":  true,
+                   "normalBias":  1.0,
+                   "slopeBias":  0.05,
+                   "contact":  true
+               },
+    "exposureEV":  9.4,
+    "hdriExposure":  1.3,
+    "fog":  {
+                "meanFreePath":  75,
+                "baseHeight":  0,
+                "maxHeight":  25,
+                "albedo":  [0.55, 0.62, 0.72],
+                "anisotropy":  0.6,
+                "budget":  0.5
+            },
+    "post":  {
+                 "bloomIntensity":  0.22,
+                 "bloomThreshold":  0.92,
+                 "ssaoIntensity":  1.2,
+                 "motionBlur":  0.05,
+                 "vignette":  0.48,
+                 "saturation":  -30,
+                 "contrast":  33,
+                 "grain":  0.16
+             },
+    "lights":  [
+                   {
+                       "name":  "Key_ColdSun",
+                       "value":  7000,
+                       "unit":  "Lux",
+                       "color":  [
+                                     0.95,
+                                     0.96,
+                                     1
+                                 ]
+                   },
+                   {
+                       "name":  "MoonFill",
+                       "value":  1100,
+                       "unit":  "Lux",
+                       "color":  [
+                                     0.55,
+                                     0.5,
+                                     0.5
+                                 ]
+                   },
+                   {
+                       "name":  "Rim_Character",
+                       "value":  0,
+                       "unit":  "Lux",
+                       "color":  [
+                                     0.85,
+                                     0.8,
+                                     0.78
+                                 ]
+                   },
+                   {
+                       "name":  "Rim_Behind",
+                       "value":  0,
+                       "unit":  "Candela"
+                   },
+                   {
+                       "name":  "DoorWarmLight",
+                       "value":  3000,
+                       "unit":  "Candela",
+                       "color":  [
+                                     1.0,
+                                     0.40,
+                                     0.10
+                                 ]
+                   },
+                   {
+                       "name":  "DoorSpill",
+                       "value":  4400,
+                       "unit":  "Candela",
+                       "color":  [
+                                     1.0,
+                                     0.36,
+                                     0.08
+                                 ]
+                   },
+                   {
+                       "name":  "PitbornRedRim",
+                       "value":  0,
+                       "unit":  "Candela"
+                   }
+               ],
+    "clouds":  {
+                   "enable":  false,
+                   "preset":  "Stormy",
+                   "opacity":  0.88,
+                   "sunDimmer":  0.2,
+                   "ambientDimmer":  0.25,
+                   "lowestAltitude":  700,
+                   "thickness":  2200,
+                   "tint":  [
+                                0.42,
+                                0.42,
+                                0.44
+                            ],
+                   "shapeFactor":  0.92
+               },
+    "extra":  [
+                  {
+                      "name":  "DoorRectLight",
+                      "kind":  "Rectangle",
+                      "unit":  "Lumen",
+                      "value":  0,
+                      "color":  [
+                                    1.0,
+                                    0.32,
+                                    0.08
+                                ],
+                      "pos":  [
+                                  0,
+                                  4.6,
+                                  28.6
+                              ],
+                      "euler":  [
+                                    0,
+                                    180,
+                                    0
+                                ],
+                      "size":  [
+                                   3.4,
+                                   5
+                               ],
+                      "shadows":  false
+                  },
+                  {
+                      "name":  "FillCool",
+                      "kind":  "Directional",
+                      "unit":  "Lux",
+                      "value":  900,
+                      "color":  [
+                                    0.6,
+                                    0.55,
+                                    0.55
+                                ],
+                      "pos":  [
+                                  0,
+                                  20,
+                                  0
+                              ],
+                      "euler":  [
+                                    35,
+                                    15,
+                                    0
+                                ],
+                      "size":  [
+                                   0,
+                                   0
+                               ],
+                      "shadows":  false
+                  },
+                  {
+                      "name":  "MoonRim",
+                      "kind":  "Directional",
+                      "unit":  "Lux",
+                      "value":  2000,
+                      "color":  [
+                                    0.75,
+                                    0.7,
+                                    0.72
+                                ],
+                      "pos":  [
+                                  0,
+                                  20,
+                                  0
+                              ],
+                      "euler":  [
+                                    38,
+                                    180,
+                                    0
+                                ],
+                      "size":  [
+                                   0,
+                                   0
+                               ],
+                      "shadows":  false
+                  },
+                  {
+                      "name":  "DoorShadowWarm",
+                      "kind":  "Point",
+                      "unit":  "Candela",
+                      "value":  3000,
+                      "color":  [
+                                    1,
+                                    0.45,
+                                    0.15
+                                ],
+                      "pos":  [
+                                  0,
+                                  3.6,
+                                  26
+                              ],
+                      "euler":  [
+                                    0,
+                                    0,
+                                    0
+                                ],
+                      "size":  [
+                                   0,
+                                   0
+                               ],
+                      "shadows":  true
+                  }
+              ],
+    "fogVolumes":  [
+                       {
+                           "name":  "DoorHaze",
+                           "pos":  [
+                                       0,
+                                       3.8,
+                                       29.5
+                                   ],
+                           "size":  [
+                                        4,
+                                        5,
+                                        6
+                                    ],
+                           "color":  [
+                                         0.28,
+                                         0.06,
+                                         0.015
+                                     ],
+                           "meanFreePath":  25,
+                           "blend":  1.5
+                       },
+                       {
+                           "name":  "BridgeHazeL",
+                           "pos":  [
+                                       -6,
+                                       0.4,
+                                       14
+                                   ],
+                           "size":  [
+                                        6,
+                                        2.5,
+                                        28
+                                    ],
+                           "color":  [
+                                         0.10,
+                                         0.10,
+                                         0.12
+                                     ],
+                           "meanFreePath":  22,
+                           "blend":  2
+                       },
+                       {
+                           "name":  "BridgeHazeR",
+                           "pos":  [
+                                       6,
+                                       0.4,
+                                       14
+                                   ],
+                           "size":  [
+                                        6,
+                                        2.5,
+                                        28
+                                    ],
+                           "color":  [
+                                         0.10,
+                                         0.10,
+                                         0.12
+                                     ],
+                           "meanFreePath":  22,
+                           "blend":  2
+                       },
+                       {
+                           "name":  "MoatHazeL",
+                           "pos":  [
+                                       -34,
+                                       0.2,
+                                       22
+                                   ],
+                           "size":  [
+                                        36,
+                                        2.5,
+                                        60
+                                    ],
+                           "color":  [
+                                         0.08,
+                                         0.08,
+                                         0.10
+                                     ],
+                           "meanFreePath":  16,
+                           "blend":  4
+                       },
+                       {
+                           "name":  "MoatHazeR",
+                           "pos":  [
+                                       34,
+                                       0.2,
+                                       22
+                                   ],
+                           "size":  [
+                                        36,
+                                        2.5,
+                                        60
+                                    ],
+                           "color":  [
+                                         0.08,
+                                         0.08,
+                                         0.10
+                                     ],
+                           "meanFreePath":  16,
+                           "blend":  4
+                       },
+                       {
+                           "name":  "MoatHazeFront",
+                           "pos":  [
+                                       0,
+                                       0.2,
+                                       -8
+                                   ],
+                           "size":  [
+                                        60,
+                                        2.5,
+                                        20
+                                    ],
+                           "color":  [
+                                         0.08,
+                                         0.08,
+                                         0.10
+                                     ],
+                           "meanFreePath":  18,
+                           "blend":  4
+                       },
+                       {
+                           "name":  "BankHazeL",
+                           "pos":  [
+                                       -14,
+                                       0.5,
+                                       12
+                                   ],
+                           "size":  [
+                                        16,
+                                        3,
+                                        30
+                                    ],
+                           "color":  [
+                                         0.09,
+                                         0.09,
+                                         0.11
+                                     ],
+                           "meanFreePath":  18,
+                           "blend":  3
+                       },
+                       {
+                           "name":  "BankHazeR",
+                           "pos":  [
+                                       14,
+                                       0.5,
+                                       12
+                                   ],
+                           "size":  [
+                                        16,
+                                        3,
+                                        30
+                                    ],
+                           "color":  [
+                                         0.09,
+                                         0.09,
+                                         0.11
+                                     ],
+                           "meanFreePath":  18,
+                           "blend":  3
+                       }
+                   ],
+    "materialTints":  [
+                          {
+                              "match":  "matte_cw4_stairs",
+                              "value":  0.52,
+                              "doubleSided":  false
+                          },
+                          {
+                              "match":  "matte_cw4_wall_st",
+                              "value":  0.48,
+                              "doubleSided":  false
+                          }
+                      ],
+    "materialColors":  [
+                           {
+                               "material":  "M_DoorVoid",
+                               "prop":  "_BaseColor",
+                               "color":  [
+                                             0.10,
+                                             0.02,
+                                             0.008,
+                                             0.20
+                                         ]
+                           },
+                           {
+                               "material":  "M_GroundFog",
+                               "prop":  "_UnlitColor",
+                               "color":  [
+                                             0.12,
+                                             0.13,
+                                             0.16,
+                                             0.30
+                                         ]
+                           },
+                           {
+                               "material":  "M_Ridge",
+                               "prop":  "_BaseColor",
+                               "color":  [
+                                             0.05,
+                                             0.05,
+                                             0.06,
+                                             1
+                                         ]
+                           }
+                       ],
+    "indirect":  {
+                     "diffuse":  0.3,
+                     "reflection":  1
+                 }
+}

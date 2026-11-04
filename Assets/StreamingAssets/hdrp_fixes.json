@@ -1,0 +1,192 @@
+﻿{
+    "props":  [
+                  {
+                      "name":  "hero_weapon_sword",
+                      "glb":  "Assets/Env/Props/hero_weapon_sword/hero_weapon_sword_LOD0.glb",
+                      "lods":  [
+                                   "Assets/Env/Props/hero_weapon_sword/hero_weapon_sword_LOD1.glb",
+                                   "Assets/Env/Props/hero_weapon_sword/hero_weapon_sword_LOD2.glb"
+                               ],
+                      "lodHeights":  [
+                                         0.1,
+                                         0.03,
+                                         0.008
+                                     ],
+                      "pos":  [
+                                  -3.2,
+                                  1.9,
+                                  21.5
+                              ],
+                      "euler":  [
+                                    0,
+                                    20,
+                                    0
+                                ],
+                      "scale":  [
+                                    1,
+                                    1,
+                                    1
+                                ]
+                  }
+              ],
+    "hide":  [
+                 "DoorBlackTop",
+                 "DoorBlack",
+                 "DoorGlowCard",
+                 "DoorDepth",
+                 "DoorVoidGradient",
+                 "StepMist",
+                 "DoorFire",
+                 "DoorSmoke",
+                 "DoorSparks",
+                 "GateColumn",
+                 "GroundFog0",
+                 "GroundFog1",
+                 "GroundFog2",
+                 "GroundFog3",
+                 "GroundFog4",
+                 "GroundFog5",
+                 "GroundFog6",
+                 "GroundFog7",
+                 "GroundFog8",
+                 "WaterFog0",
+                 "WaterFog1",
+                 "WaterFog2",
+                 "WaterFog3",
+                 "WaterFog4",
+                 "WaterFog5",
+                 "WaterFog6",
+                 "WaterFog7",
+                 "WaterFog8",
+                 "DoorShaft",
+                 "Ridges",
+                 "Styx_Water_HDRP",
+                 "Styx_Water"
+             ],
+    "fillLight":  "FillCool",
+    "fillExclude":  [
+                        "dead_tree"
+                    ],
+    "fillLayerBit":  1,
+    "rimLight":  "Rim_Behind",
+    "rimLayerBit":  2,
+    "rimInclude":  [
+                       "Dracula",
+                       "Pitborn"
+                   ],
+    "rim2Light":  "PitbornRedRim",
+    "rim2LayerBit":  3,
+    "rim2Include":  [
+                        "Pitborn"
+                    ],
+    "rim3Light":  "Furnace_GateRim",
+    "rim3LayerBit":  4,
+    "rim3Include":  [
+                        "HeroGate"
+                    ],
+    "keepParticlesUnder":  "FurnaceRoot",
+    "rimExclude":  [
+                       "maul",
+                       "Maul"
+                   ],
+    "water":  {
+                  "x":  0,
+                  "y":  -0.5,
+                  "z":  20,
+                  "size":  0,
+                  "color":  [
+                                0.012,
+                                0.008,
+                                0.008
+                            ],
+                  "metallic":  0.0,
+                  "smoothness":  0.4,
+                  "normalMap":  "Assets/HDRP/water_normal.png",
+                  "normalScale":  0.9,
+                  "normalTiling":  60,
+                  "scroll":  [
+                                 0.004,
+                                 0.0025
+                             ]
+              },
+    "matAdjust":  [
+                      {
+                          "match":  "pitborn_Body",
+                          "color":  [
+                                        0.52,
+                                        0.6,
+                                        0.47
+                                    ],
+                          "metallicMax":  0.45,
+                          "smoothnessMax":  0.32
+                      },
+                      {
+                          "match":  "sword_start_LOD",
+                          "color":  [
+                                        0.9,
+                                        0.9,
+                                        0.9
+                                    ]
+                      },
+                      {
+                          "match":  "maul_start_LOD",
+                          "color":  [
+                                        0.62,
+                                        0.60,
+                                        0.58
+                                    ],
+                          "metallicMax":  0.7,
+                          "smoothnessMax":  0.5,
+                          "aoStrength":  1.0,
+                          "emissiveScale":  0.0
+                      },
+                      {
+                          "match":  "rock_boulder",
+                          "normalScale":  1.0,
+                          "tiling":  2.5
+                      },
+                      {
+                          "match":  "post_capped",
+                          "color":  [
+                                        0.5,
+                                        0.5,
+                                        0.5
+                                    ]
+                      },
+                      {
+                          "match":  "gate_LOD0",
+                          "color":  [
+                                        0.88,
+                                        0.87,
+                                        0.86
+                                    ]
+                      },
+                      {
+                          "match":  "arch_fragment_9",
+                          "color":  [
+                                        0.88,
+                                        0.87,
+                                        0.86
+                                    ]
+                      },
+                      {
+                          "match":  "fallen_pillar_3",
+                          "color":  [
+                                        0.88,
+                                        0.87,
+                                        0.86
+                                    ]
+                      },
+                      {
+                          "match":  "rock_arch_8",
+                          "color":  [
+                                        0.88,
+                                        0.87,
+                                        0.86
+                                    ]
+                      }
+                  ],
+    "boxes":  [
+
+              ]
+}

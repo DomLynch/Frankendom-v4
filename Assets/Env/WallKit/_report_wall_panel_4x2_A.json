@@ -1,0 +1,36 @@
+{
+ "name": "wall_panel_4x2_A",
+ "atlas": 2048,
+ "density_px_m": 320,
+ "tris0": 42842,
+ "mb0": 3.94,
+ "dims": [
+  4.0,
+  0.5,
+  2.0
+ ],
+ "bbox_min": [
+  -2.0,
+  -0.25,
+  0.0
+ ],
+ "bbox_max": [
+  2.0,
+  0.25,
+  2.0
+ ],
+ "glb": {
+  "mr": true,
+  "occ": true,
+  "nrm": true,
+  "base": true,
+  "images": 3,
+  "prims": 1,
+  "nmat": 1
+ },
+ "tris1": 21454,
+ "mb1": 1.42,
+ "tris2": 6314,
+ "mb2": 0.41,
+ "sec": 33.2
+}

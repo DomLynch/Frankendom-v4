@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Gateway_Rift
+  m_Shader: {fileID: 4800000, guid: c29d974eef1c1e04a8c0f740abc0cc91, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3001
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _CloudTex:
+        m_Texture: {fileID: 2800000, guid: 006a6d566705de44d8faf8307be8d44b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Cube:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PanoTex:
+        m_Texture: {fileID: 2800000, guid: 54f51ef0ce3db5d47b319dec1a9c5829, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ChromaAmt: 0.1
+    - _CornerRadius: 0.14
+    - _DissolveNoise: 0.5
+    - _DissolveScale: 1.4
+    - _DissolveSoft: 0.14
+    - _EdgeDarken: 0.75
+    - _EdgeSoft: 0.05
+    - _ExposureWeight: 0
+    - _Flash: 0
+    - _HaloWidth: 0.1
+    - _InnerFade: 1.1
+    - _Intensity: 2
+    - _L0Radius: 10000
+    - _L1Drift: 1.2
+    - _L1Intensity: 0.25
+    - _L1Radius: 60
+    - _L2Intensity: 0.15
+    - _L2Radius: 14
+    - _L2Scale: 3.2
+    - _L2Speed: 0.06
+    - _Open: 0
+    - _Reflect: 0
+    - _RefractMix: 1
+    - _RimWidth: 0.02
+    - _RippleAmp: 0.003
+    - _RippleFreq: 9
+    - _RippleSpeed: 3.5
+    - _Shock: 0
+    - _SpinSpeed: 0.5
+    - _Spread: 4.5
+    - _StarBoost: 1.6
+    - _UseCube: 0
+    - _VeinCrackle: 0
+    - _VeinOutReach: 0
+    - _VeinReach: 0
+    - _VeinScale: 2.4
+    - _VeinSharp: 10
+    - _VeinSpeed: 0.9
+    m_Colors:
+    - _FrameHalf: {r: 2.02, g: 2.52, b: 0, a: 0}
+    - _HaloColor: {r: 0.9, g: 0.12, b: 0.04, a: 1}
+    - _L1Tint: {r: 1, g: 0.75, b: 0.65, a: 1}
+    - _L2Color: {r: 1, g: 0.12, b: 0.04, a: 1}
+    - _QuadSize: {r: 6.2, g: 7.2, b: 0, a: 0}
+    - _RimColor: {r: 3, g: 0.55, b: 0.18, a: 1}
+    - _Rot: {r: 0, g: -42, b: 0, a: 0}
+    - _Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _VeinColor: {r: 2.4, g: 0.35, b: 0.1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

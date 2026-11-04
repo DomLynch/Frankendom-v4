@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "source": "frankendom-v3 data/fight.json blendMs + settleMs, src/fight/anim-blend.ts",
+  "enabled": true,
+  "defaultMs": 150,
+  "blendMs": {
+    "locomotion": 120,
+    "attackIn": 75,
+    "attackOut": 80,
+    "specialIn": 75,
+    "specialOut": 80,
+    "hurtIn": 40,
+    "hurtOut": 80,
+    "rollIn": 60,
+    "rollOut": 120
+  },
+  "settleMs": {
+    "roll": 120
+  },
+  "stateKinds": [
+    { "state": "light_attack_R", "kind": "attack" },
+    { "state": "light_attack_L", "kind": "attack" },
+    { "state": "thrust", "kind": "attack" },
+    { "state": "heavy_release", "kind": "attack" },
+    { "state": "riposte", "kind": "attack" },
+    { "state": "kick", "kind": "attack" },
+    { "state": "atk_light_R", "kind": "attack" },
+    { "state": "atk_light_L", "kind": "attack" },
+    { "state": "atk_thrust", "kind": "attack" },
+    { "state": "atk_heavy", "kind": "attack" },
+    { "state": "atk_riposte", "kind": "attack" },
+    { "state": "special_whirlwind", "kind": "special" },
+    { "state": "special_skullcrack", "kind": "special" },
+    { "state": "hit_heavy", "kind": "hurt" },
+    { "state": "hit_light_back", "kind": "hurt" },
+    { "state": "hit_light_front", "kind": "hurt" },
+    { "state": "roll_forward", "kind": "roll" },
+    { "state": "backstep", "kind": "roll" }
+  ],
+  "pairs": [
+    { "from": "*", "to": "death", "ms": 80 },
+    { "from": "*", "to": "knockdown", "ms": 50 },
+    { "from": "*", "to": "parry", "ms": 40 }
+  ]
+}
