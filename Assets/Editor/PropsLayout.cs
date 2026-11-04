@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +16,7 @@ public static class PropsLayout
     [System.Serializable] public class LodProfile { public string name; public float[] screenHeights; }
     [System.Serializable] public class Prop
     {
-        public string id, group, library, asset, lodProfile, ground, yBase, note;
+        public string id, group, library, asset, lodProfile, ground, groundMode, yBase, note;
         public float[] pos, rotEuler;
         public float scale = 1f, sinkFraction, baseColorMul;
         public bool shadowsOff, disabled;
@@ -131,6 +131,12 @@ public static class PropsLayout
             var bb = Encapsulated(lod0);
             root.transform.position += new Vector3(0f, (pos.y - bb.size.y * p.sinkFraction) - bb.min.y, 0f);
         }
+        else if (p.ground == "pivot" || p.groundMode == "pivot")
+        {
+            // pieces authored in real world coordinates (e.g. ground_paving, bounds y -0.4..+0.15 with the stone tops at 0): the pivot goes to pos exactly, no bounds offset
+            root.transform.localScale = Vector3.one * s; root.transform.rotation = rot;
+            root.transform.position = new Vector3(pos.x, pos.y, pos.z);
+        }
         else
         {
             // old PlaceLod: LOD0 bounds bottom sits on pos.y (props have a bottom-centre origin); the bounds are read at identity
@@ -182,3 +188,4 @@ public static class PropsLayout
         UnityEditor.SceneManagement.EditorSceneManager.SaveScene(sc);
     }
 }
+

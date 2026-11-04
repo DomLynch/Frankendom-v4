@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -23,8 +23,11 @@ public static class HdrpTrench
     const string RootName = "HadesTrench";
 
     [MenuItem("Hades/World/Apply trench setup")]
+    static bool GroundVariantOn() { try { return System.IO.File.Exists("Assets/Data/ground.json") && JsonUtility.FromJson<GroundFlag>(System.IO.File.ReadAllText("Assets/Data/ground.json")).enabled; } catch { return false; } }
+    [System.Serializable] class GroundFlag { public bool enabled; }
     public static void Run()
     {
+        if (GroundVariantOn()) { return; }
         if (!File.Exists(DataPath)) { Debug.LogWarning("HDRPTRENCH missing " + DataPath); return; }
         var cfg = JsonUtility.FromJson<Cfg>(File.ReadAllText(DataPath));
         if (cfg == null) { Debug.LogWarning("HDRPTRENCH cannot parse " + DataPath); return; }
@@ -97,3 +100,4 @@ public static class HdrpTrench
         return n;
     }
 }
+

@@ -35,6 +35,9 @@ public class ADCutUnit
     public float massKg = 5f, colliderRadiusM = 0.1f, openDeg = 14f, splitOffsetM = 0f;
     public string splitAxis = "x";           // bone-local axis the split plane is perpendicular to
     public float jetSeconds = 1.0f;
+    // gib physics + blood (all data): torque scale, upward bias and sideways scatter of the throw, angular drag, piece lifetime (0 = stays), extra decals splashed on the body at the cut
+    public float torqueMul = 0.5f, upBias = 0.45f, scatter = 0.3f, angularDrag = 0.5f, lifeSeconds = 0f;
+    public int extraDecals = 8;
 }
 [Serializable]
 public class ADCutsCfg
@@ -112,6 +115,9 @@ public class ADCutPicker
     /// <summary>Plan for one kill, or null (plain death). Port of planCut.</summary>
     public ADCutPlanResult Plan(ADCutsCfg c, string weapon, int victimId, Func<string, bool> has)
     {
+#if UNITY_5_3_OR_NEWER
+        if (!ADGoreGate.Finishers) return null;   // disabled: plain death
+#endif
         string id = Pick(c, weapon, victimId); if (id == null) return null;
         ADCutFinisher row = null;
         for (int i = 0; i < c.finishers.Length; i++) if (c.finishers[i] != null && c.finishers[i].id == id) { row = c.finishers[i]; break; }

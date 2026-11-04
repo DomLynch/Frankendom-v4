@@ -34,8 +34,8 @@ public class ADPlayback : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        ADDuelController.BeatPlayer = b => PlayBeat(b);
-        ADDuelController.FinisherPlayer = b => ADFinisherPlayer.RunAfterBeat(this, b);
+        ADDuelController.BeatPlayer = b => Watchdog(PlayBeat(b), ADPlayTable.BeatTimeout(b, C.maxBeatSeconds) + 2f * C.repositionSeconds + 3f, "beat");
+        ADDuelController.FinisherPlayer = b => Watchdog(ADFinisherPlayer.RunAfterBeat(this, b), C.finisherMaxSeconds, "finisher");
         ADDuelController.OnRestart += OnRestartDuel;
     }
     void OnRestartDuel()
@@ -48,6 +48,39 @@ public class ADPlayback : MonoBehaviour
         if (ADCameraRig.Instance != null) ADCameraRig.Instance.Plan();
     }
     void OnDestroy() { ADDuelController.OnRestart -= OnRestartDuel; if (Instance == this) Instance = null; }
+
+    // Runs `inner` (nested IEnumerators flattened) and gives up after maxSeconds of real time, so a missed animator state or event can never hang the round.
+    // On a timeout or an exception: fighters released, time scale restored, camera back on the plan view.
+    IEnumerator Watchdog(IEnumerator inner, float maxSeconds, string what)
+    {
+        var stack = new Stack<IEnumerator>(); stack.Push(inner);
+        float t0 = Time.unscaledTime; bool bad = false;
+        while (stack.Count > 0)
+        {
+            if (Time.unscaledTime - t0 > maxSeconds) { Debug.LogWarning("[ADPlayback] " + what + " watchdog after " + maxSeconds.ToString("0.0") + " s"); bad = true; break; }
+            var top = stack.Peek(); bool more;
+            try { more = top.MoveNext(); } catch (Exception e) { Debug.LogException(e); bad = true; break; }
+            if (!more) { stack.Pop(); continue; }
+            var cur = top.Current;
+            if (cur is IEnumerator nested) { stack.Push(nested); continue; }
+            yield return cur;
+        }
+        if (bad) Recover();
+    }
+
+    void Recover()
+    {
+        Busy = false; ADTime.Restore();
+        if (!Ready) return;
+        Cleanup();
+        for (int i = 0; i < 2; i++)
+        {
+            var f = fighters[i]; if (f == null || f.Dead) continue;
+            f.guardHeld = false; f.moveDir = Vector3.zero; if (f.state != FState.Loco) { f.state = FState.Loco; f.t = 0; }
+            var fi = f.GetComponent<Fighter>(); if (fi != null && fi.anim) { fi.holdLast = false; fi.anim.speed = 1f; fi.Force("idle", 0.1f); }
+        }
+        if (ADCameraRig.Instance != null) ADCameraRig.Instance.Plan();
+    }
 
     // ---------------- setup ----------------
     // Finds the two DuelFighters, switches the brains off, claims the camera. Call once when the alpha duel starts.
@@ -86,7 +119,22 @@ public class ADPlayback : MonoBehaviour
         var f = fighters[(int)side]; if (f == null) return;
         var fi = f.GetComponent<Fighter>(); var col = f.GetComponent<Collider>(); if (col) col.enabled = true;
         f.health = f.maxHealth; f.state = FState.Loco; f.t = 0; f.stamina = f.maxStamina; f.posture = 0f;
+        f.moveDir = Vector3.zero; f.guardHeld = false; f.heavyHeld = false; f.run = false; f.opponent = null; f.SetKnock(Vector3.zero);
+        var hp = f.GetComponent<Health>(); if (hp != null) hp.current = hp.max;
+        var rd = f.GetComponent<RagdollDeath>(); if (rd != null && !rd.IsRagdoll) { }   // a built ragdoll cannot be revived: NeedsReload() tells the controller to reload the scene
         if (fi != null) { fi.holdLast = false; if (fi.anim) { fi.anim.speed = 1f; fi.Force("idle", 0.1f); } }
+    }
+
+    // True when a fighter cannot be revived in place (a ragdoll was built, or the animator is gone): the controller reloads the scene instead.
+    public bool NeedsReload()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            var f = fighters[i]; if (f == null) return true;
+            var rd = f.GetComponent<RagdollDeath>(); if (rd != null && rd.IsRagdoll) return true;
+            var fi = f.GetComponent<Fighter>(); if (fi == null || fi.anim == null) return true;
+        }
+        return false;
     }
 
     static Vector3 Flat(Vector3 v) { v.y = 0f; return v; }
@@ -98,24 +146,24 @@ public class ADPlayback : MonoBehaviour
     {
         if (!Ready || !laneSet) yield break;
         if (dist <= 0f) dist = C.engageDist;
-        Vector3[] goal = { laneMid - laneAxis * (dist * 0.5f), laneMid + laneAxis * (dist * 0.5f) };
+        Vector3[] goal = { ADPlayTable.ClampToArena(laneMid - laneAxis * (dist * 0.5f)), ADPlayTable.ClampToArena(laneMid + laneAxis * (dist * 0.5f)) };
         float t = 0f;
         while (t < C.repositionSeconds)
         {
             bool all = true;
             for (int i = 0; i < 2; i++)
             {
-                var f = fighters[i]; if (f.Dead) continue;
+                var f = fighters[i]; if (f == null || f.Dead) continue;
                 Vector3 dl = Flat(goal[i] - f.transform.position);
                 if (dl.magnitude > C.repositionTolerance && (f.state == FState.Loco || f.state == FState.Guard)) { f.moveDir = dl.normalized; f.guardHeld = false; f.run = false; all = false; }
                 else { f.moveDir = Vector3.zero; if (dl.magnitude > C.repositionTolerance) all = false; }
             }
             if (all) break;
-            t += Time.deltaTime; yield return null;
+            t += Mathf.Max(Time.unscaledDeltaTime, 0.001f); yield return null;
         }
         for (int i = 0; i < 2; i++)
         {
-            var f = fighters[i]; f.moveDir = Vector3.zero;
+            var f = fighters[i]; if (f == null) continue; f.moveDir = Vector3.zero;
             if (f.Dead) continue;
             Vector3 dl = Flat(goal[i] - f.transform.position);
             if (dl.magnitude > 0.02f && dl.magnitude <= Mathf.Max(C.snapTolerance, 0.02f)) Teleport(f, new Vector3(goal[i].x, f.transform.position.y, goal[i].z), laneAxis * (i == 0 ? 1f : -1f));
@@ -137,7 +185,7 @@ public class ADPlayback : MonoBehaviour
     class Atk   // one attack of the beat
     {
         public int me, foe; public ADMove move; public string moveId; public Cls cls; public ADLoc loc; public int dmg; public bool crit, kills, knockdown, staggerPost, riposte;
-        public int windup, off; public int startTick, contactTick; public bool fired, dead, applied; public bool heavy; public bool isRiposte;
+        public int windup, off; public string defId; public int startTick, contactTick; public bool fired, dead, applied; public bool heavy; public bool isRiposte;
         public int triggerTick;
     }
     class Sched { public int tick; public Action act; public bool done; }
@@ -154,8 +202,16 @@ public class ADPlayback : MonoBehaviour
     bool Stag(ADBeat b, int i) { return i == 0 ? b.staggerA : b.staggerB; }
     bool Knock(ADBeat b, int i) { return i == 0 ? b.knockdownA : b.knockdownB; }
 
+    static string DefId(string id) { return id == "special1" ? "skill_cleave" : id == "special2" ? "skill_reaping" : id; }   // MoveTable id of a Press name
+
     string MoveId(ADMove m, int i)
     {
+        if (m == ADMove.Special && !ADPlayTable.Specials) m = ADMove.Heavy;   // specials are deferred (rules.enableSpecials)
+        if (m != ADMove.Special && fighters[i] != null)
+        {
+            var pr = ADPlayTable.Press(fighters[i], m);
+            if (pr != null) return ADPlayTable.Alternates(fighters[i], m) ? pr[(lightRight[i] ? 1 : 0) % pr.Length] : pr[0];   // alpha_playback.json
+        }
         switch (m)
         {
             case ADMove.Light: return lightRight[i] ? C.lightRightMove : C.lightLeftMove;
@@ -167,15 +223,16 @@ public class ADPlayback : MonoBehaviour
         }
         return "";
     }
+    // Named ids go through DuelFighter's pMove buffer (11 ticks): they start from Loco/Guard only, are never turned into a riposte by a lingering parry window, and expire if the fighter is busy.
+    // "thrust" and "kick" only have the plain buffers: thrust can become the riposte while riposteTicks > 0 (WaitIdle waits that out).
     void PressMove(DuelFighter f, ADMove m, string id)
     {
-        switch (m)
+        switch (id)
         {
-            case ADMove.Stab: f.Press("thrust"); break;
-            case ADMove.Heavy: f.Press("heavy"); break;
-            case ADMove.Kick: f.Press("kick"); break;
-            case ADMove.Special: f.special1Cd = 0; f.special2Cd = 0; f.Press(id == C.special1Move ? "special1" : "special2"); break;
-            default: f.Press(id); break;   // light_left / light_right
+            case "thrust": f.Press("thrust"); return;
+            case "kick": f.Press("kick"); return;
+            case "special1": case "special2": f.special1Cd = 0; f.special2Cd = 0; f.Press(id); return;
+            default: f.Press(id); return;   // light_left / light_right / heavy_overhead
         }
     }
     int OffTicks(MoveDef md)
@@ -208,7 +265,7 @@ public class ADPlayback : MonoBehaviour
         Busy = true;
         var rig = ADCameraRig.Ensure();
         // killing blow: ADDuelController runs FinisherPlayer(beat) right after this beat, so when a finisher is wanted the whole scene is played there
-        if (b.killed && C.useFinishers && ADFinisherPlayer.Wants(b)) { Busy = false; yield break; }
+        if (b.killed && C.useFinishers && ADPlayTable.Finishers && ADFinisherPlayer.Wants(b)) { Busy = false; yield break; }
         yield return PlayBeatPlain(b);
     }
 
@@ -218,7 +275,9 @@ public class ADPlayback : MonoBehaviour
         if (!Ready && !Begin()) yield break;
         Busy = true;
         var rig = ADCameraRig.Ensure();
+        pendingTrade = null;
         yield return Reposition();
+        yield return WaitIdle(b);
         Prep();
         var fa = fighters; var atk = new List<Atk>(); var sched = new List<Sched>();
         int T0 = Duel.TickCount + Mathf.Max(2, C.leadTicks);
@@ -230,12 +289,13 @@ public class ADPlayback : MonoBehaviour
             int y = 1 - x; var m = Mv(b, x); Cls cl = Classify(b, x, y);
             if (!IsAttack(m) || Lost(b, x)) continue;
             var a = new Atk { me = x, foe = y, move = m, cls = cl, moveId = MoveId(m, x), dmg = DmgTo(b, y), loc = LocOf(b, y) };
-            a.crit = CritBy(b, x) && cl == Cls.Land; a.heavy = m == ADMove.Heavy || m == ADMove.Special || a.crit;
+            a.defId = DefId(a.moveId);
+            a.crit = ADFlags.CritCam && CritBy(b, x) && cl == Cls.Land; a.heavy = m == ADMove.Heavy || m == ADMove.Special || a.crit || a.defId == C.heavyMove;
             a.kills = b.killed && (int)b.victim == y && (cl == Cls.Land || cl == Cls.GuardBreak);
             a.knockdown = Knock(b, y) && (cl == Cls.Land || cl == Cls.GuardBreak);
             a.staggerPost = Stag(b, x) && (cl == Cls.Whiff || cl == Cls.Dodged);
             a.riposte = false;
-            var md = fa[x].moves != null ? fa[x].moves.Get(a.moveId) : null;
+            var md = fa[x].moves != null ? fa[x].moves.Get(a.defId) : null;
             a.windup = md != null ? md.Windup(false) : 12; a.off = OffTicks(md);
             ax[x] = a; atk.Add(a);
             if (m == ADMove.Light) lightRight[x] = !lightRight[x];
@@ -291,9 +351,10 @@ public class ADPlayback : MonoBehaviour
         sched.Sort((p, q) => p.tick.CompareTo(q.tick));
 
         // 5. run
-        float t0 = Time.unscaledTime, settle = 0f; var riposteQueue = new List<Atk>();
+        float beatTimeout = ADPlayTable.BeatTimeout(b, C.maxBeatSeconds), t0 = Time.unscaledTime, settle = 0f; var riposteQueue = new List<Atk>();
         while (true)
         {
+            if (fa[0] == null || fa[1] == null) { Debug.LogWarning("[ADPlayback] a fighter was destroyed during the beat"); break; }
             int tick = Duel.TickCount;
             foreach (var s in sched) if (!s.done && tick >= s.tick) { s.done = true; s.act(); }
             FaceEach();
@@ -303,8 +364,10 @@ public class ADPlayback : MonoBehaviour
             {
                 if (a.fired || a.dead) continue;
                 var me = fa[a.me]; var md = me.CurrentMove;
-                bool inMove = (me.state == FState.Windup || me.state == FState.Active) && md != null && md.id == a.moveId;
-                if (me.state == FState.Active && md != null && md.id == a.moveId && me.t >= a.off) { a.fired = true; OnContact(b, a, all, riposteQueue, sched); }
+                bool same = md != null && md.id == a.defId;
+                bool inMove = (me.state == FState.Windup || me.state == FState.Active || me.state == FState.Recovery) && same;
+                // Active with t >= off, or already Recovery (a 1-tick Active such as the kick is stepped over within one sim tick and never seen as Active with t >= 1)
+                if (same && ((me.state == FState.Active && me.t >= a.off) || me.state == FState.Recovery)) { a.fired = true; OnContact(b, a, all, riposteQueue, sched); }
                 else if (!inMove && a.contactTick > 0 && tick > a.contactTick + 12 && a.cls != Cls.Interrupted) { a.dead = true; }   // never reached the contact (cancelled)
                 else if (!inMove && a.cls == Cls.Interrupted && tick > a.contactTick + 12) a.dead = true;
             }
@@ -314,23 +377,47 @@ public class ADPlayback : MonoBehaviour
             foreach (var a in riposteQueue) if (!a.fired && !a.dead) pending = true;
             bool idle = Idle(fa[0]) && Idle(fa[1]);
             if (!pending && idle) { settle += Time.unscaledDeltaTime; if (settle >= C.settleSeconds) break; } else settle = 0f;
-            if (Time.unscaledTime - t0 > C.maxBeatSeconds) { Debug.LogWarning("[ADPlayback] beat timeout " + b); break; }
+            if (Time.unscaledTime - t0 > beatTimeout) { Debug.LogWarning("[ADPlayback] beat timeout " + b); break; }
             yield return null;
         }
+        if (pendingTrade != null) { ApplyContact(b, pendingTrade, riposteQueue, sched, true); pendingTrade = null; }   // the partner hit never came: the first one still lands (a kill trade must kill)
         Cleanup();
         if (rig != null) rig.Cut(camCfg.endShot, fa[0].transform, fa[1].transform);
+        if (!b.killed) yield return Reposition();   // distance and lane restored after every beat (the dead stay where they fell)
         Busy = false;
     }
 
+    // Both fighters must be free (Loco/Guard/Dead) before a press, or the 11-tick input buffer expires and the move silently never starts.
+    // Bounded by idleWaitSeconds; a fighter still stuck after that is forced back to Loco. A Stab also waits out a lingering parry window (riposteTicks turns thrust into the riposte).
+    IEnumerator WaitIdle(ADBeat b)
+    {
+        float t0 = Time.unscaledTime;
+        while (Time.unscaledTime - t0 < C.idleWaitSeconds)
+        {
+            if (fighters[0] == null || fighters[1] == null) yield break;
+            bool ok = Idle(fighters[0]) && Idle(fighters[1]);
+            for (int i = 0; i < 2 && ok; i++) if (Mv(b, i) == ADMove.Stab && Duel.TickCount < riposteLockUntil[i]) ok = false;
+            if (ok) yield break;
+            yield return null;
+        }
+        for (int i = 0; i < 2; i++)
+        {
+            var f = fighters[i]; if (f == null || Idle(f)) continue;
+            Debug.LogWarning("[ADPlayback] " + f.name + " still " + f.state + " before beat " + b.beat + ": forced to Loco");
+            f.state = FState.Loco; f.t = 0; var fi = f.GetComponent<Fighter>(); if (fi != null) { fi.holdLast = false; if (fi.anim) { fi.anim.speed = 1f; fi.Force("idle", 0.1f); } }
+        }
+    }
+    readonly int[] riposteLockUntil = new int[2];
+
     static bool Idle(DuelFighter f) { return f.state == FState.Loco || f.state == FState.Guard || f.state == FState.Dead; }
 
-    void Slow(ADSlowKey k) { if (k != null) ADTime.SlowMo(k.scale, k.duration, k.easeIn, k.easeOut); }
+    void Slow(ADSlowKey k) { if (k != null && ADFlags.CritCam) ADTime.SlowMo(k.scale, k.duration, k.easeIn, k.easeOut); }
 
     void Prep()
     {
         for (int i = 0; i < 2; i++)
         {
-            var f = fighters[i]; savedHealth[i] = f.health;
+            var f = fighters[i]; if (f == null) continue; savedHealth[i] = f.health;
             f.opponent = null; f.moveDir = Vector3.zero; f.run = false; f.guardHeld = false; f.heavyHeld = false;
             f.stamina = f.maxStamina; f.posture = 0f;
             if (!f.Dead) f.health = Mathf.Max(f.health, C.healthPad);
@@ -340,7 +427,7 @@ public class ADPlayback : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
         {
-            var f = fighters[i]; f.moveDir = Vector3.zero; f.guardHeld = false; f.posture = 0f; f.stamina = f.maxStamina; f.opponent = null;
+            var f = fighters[i]; if (f == null) continue; f.moveDir = Vector3.zero; f.guardHeld = false; f.posture = 0f; f.stamina = f.maxStamina; f.opponent = null;
             if (!f.Dead) f.health = savedHealth[i];
         }
     }
@@ -350,7 +437,7 @@ public class ADPlayback : MonoBehaviour
         for (int i = 0; i < 2; i++)
         {
             var f = fighters[i]; var o = fighters[1 - i];
-            if (f.Dead || f.state == FState.Stagger || f.state == FState.Down || (f.state == FState.Roll)) continue;
+            if (f == null || o == null || f.Dead || f.state == FState.Stagger || f.state == FState.Down || (f.state == FState.Roll)) continue;
             if (f.moveDir.sqrMagnitude > 0.01f && f.state == FState.Loco) continue;   // walking: the sim turns him toward the walk
             Vector3 d = Flat(o.transform.position - f.transform.position); if (d.sqrMagnitude < 1e-4f) continue;
             f.transform.rotation = Quaternion.Slerp(f.transform.rotation, Quaternion.LookRotation(d.normalized, Vector3.up), Mathf.Min(1f, 10f * Time.deltaTime));
@@ -398,7 +485,8 @@ public class ADPlayback : MonoBehaviour
             case Cls.Land:
             {
                 int st = a.heavy ? C.hitStaggerHeavy : C.hitStaggerLight; if (a.crit) st += C.critStaggerExtra; if (a.move == ADMove.Kick) st = C.kickStaggerTicks;
-                string clip = a.heavy ? C.hitHeavyClip : (Angle(foe.transform.forward, -away) > 90f ? C.hitBackClip : C.hitLightClip);
+                bool fromBack = Angle(foe.transform.forward, -away) > 90f;
+                string clip = ADPlayTable.Hit(foe, a.loc, a.heavy, fromBack, a.heavy ? C.hitHeavyClip : (fromBack ? C.hitBackClip : C.hitLightClip));
                 foe.SetKnock(away * kb * (a.crit ? C.knockCrit / Mathf.Max(0.1f, C.knockHeavy) : 1f));
                 if (a.kills) { foe.Die(); }
                 else if (a.knockdown) foe.KnockDown();
@@ -410,7 +498,7 @@ public class ADPlayback : MonoBehaviour
             case Cls.GuardBreak:
             {
                 foe.stamina = 0f; foe.SetKnock(away * kb * 0.6f);
-                if (a.kills) foe.Die(); else if (a.knockdown) foe.KnockDown(); else foe.Stagger(C.guardBreakTicks, C.staggerClip);
+                if (a.kills) foe.Die(); else if (a.knockdown) foe.KnockDown(); else foe.Stagger(C.guardBreakTicks, ADPlayTable.Reaction(foe, "guardBreak", C.staggerClip));
                 Fire(me, foe, "GuardBroken", true, false, a.loc, md);
                 break;
             }
@@ -420,7 +508,7 @@ public class ADPlayback : MonoBehaviour
                 break;
             case Cls.Parried:
             {
-                foe.ParrySuccess(); me.Stagger(C.parryStaggerTicks, C.staggerClip);
+                foe.ParrySuccess(); me.Stagger(C.parryStaggerTicks, ADPlayTable.Reaction(me, "parriedAttacker", C.staggerClip)); riposteLockUntil[a.foe] = Duel.TickCount + (int)foe.Rule("parryStun", 90f) + 2;
                 Fire(me, foe, "Parried", a.heavy, true, ADLoc.Arm, md);
                 Slow(cfg.parrySlow);
                 bool rip = Out(b, a.foe) == ADOutcome.Riposte || (a.foe == 0 ? b.riposteA : b.riposteB);
@@ -436,14 +524,14 @@ public class ADPlayback : MonoBehaviour
                 break;
             }
             case Cls.Clash:
-                me.Stagger(C.clashStaggerTicks, C.staggerClip);
-                if (!foe.Dead && foe.state != FState.Stagger) foe.Stagger(C.clashStaggerTicks, C.staggerClip);
+                me.Stagger(C.clashStaggerTicks, ADPlayTable.Reaction(me, "clash", C.staggerClip));
+                if (!foe.Dead && foe.state != FState.Stagger) foe.Stagger(C.clashStaggerTicks, ADPlayTable.Reaction(foe, "clash", C.staggerClip));
                 Fire(me, foe, "Blocked", true, false, ADLoc.Arm, md);
                 Fire(foe, me, "Blocked", true, false, ADLoc.Arm, foe.CurrentMove);
                 if (rig != null) rig.Shake(0.05f);
                 break;
             case Cls.Dodged: case Cls.Whiff:
-                if (a.staggerPost) { var Me = me; int ft = C.whiffStaggerTicks > 0 ? C.whiffStaggerTicks : 30; sched.Add(new Sched { tick = Duel.TickCount + 10, act = () => { if (!Me.Dead) Me.Stagger(ft, C.staggerClip); } }); }
+                if (a.staggerPost) { var Me = me; int ft = C.whiffStaggerTicks > 0 ? C.whiffStaggerTicks : 30; sched.Add(new Sched { tick = Duel.TickCount + 10, act = () => { if (!Me.Dead) Me.Stagger(ft, ADPlayTable.Reaction(Me, "whiffStagger", C.staggerClip)); } }); }
                 break;
         }
         a.applied = true;

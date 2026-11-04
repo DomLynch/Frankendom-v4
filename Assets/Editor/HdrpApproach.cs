@@ -55,8 +55,13 @@ public static class HdrpApproach
         Debug.Log("HDRPAPPROACH WARNING constants.platformTop not found in the first 400 lines of " + lp);
     }
 
+    static bool GroundVariantOn() { try { return System.IO.File.Exists("Assets/Data/ground.json") && JsonUtility.FromJson<GroundFlag>(System.IO.File.ReadAllText("Assets/Data/ground.json")).enabled; } catch { return false; } }
+
+    [System.Serializable] class GroundFlag { public bool enabled; }
+
     public static void Run()
     {
+        if (GroundVariantOn()) { return; }
         string path = "Assets/Data/approach.json";
         var F = File.Exists(path) ? JsonUtility.FromJson<Row>(File.ReadAllText(path)) : new Row();
         bool flat = F.mode == "flat";
@@ -127,6 +132,7 @@ public static class HdrpApproach
         EditorSceneManager.MarkSceneDirty(sc); EditorSceneManager.SaveScene(sc);
     }
 }
+
 
 
 

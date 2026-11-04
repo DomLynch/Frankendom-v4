@@ -30,6 +30,7 @@ public static class ADMeshCut
     /// <summary>True when the body has the unit's bone (used as the `has` predicate of the plan).</summary>
     public static bool CanCut(Transform victimRoot, string unitId)
     {
+        if (!ADGoreGate.Finishers || victimRoot == null) return false;
         var u = FindUnit(unitId); if (u == null) return false;
         return u.kind == "wound" ? FindBone(victimRoot, u.bones) != null : FindBone(victimRoot, u.bones) != null;
     }
@@ -38,6 +39,7 @@ public static class ADMeshCut
     public static ADCutResult Cut(Transform victimRoot, string unitId, int seed, Vector3 awayDir, float push = 1f, float pieceImpulse = 60f)
     {
         var res = new ADCutResult { unit = unitId };
+        if (!ADGoreGate.Finishers) { res.note = "finishers disabled (rules.enableFinishers=false)"; return res; }
         var cfg = ADWoundsData.Get(); var cc = cfg.cuts;
         var unit = FindUnit(unitId);
         if (unit == null) { res.note = "unknown unit " + unitId; return res; }
@@ -66,7 +68,7 @@ public static class ADMeshCut
         {
             var smr = smrs[s];
             if (smr == null || smr.sharedMesh == null || !smr.enabled) continue;
-            if (!smr.sharedMesh.isReadable) { unreadable++; continue; }
+            if (!smr.sharedMesh.isReadable) { unreadable++; WarnUnreadable(smr); continue; }
             Vector3 cap;
             if (!CutSkinned(smr, set, root, parentBone, unit, cc, split, ref physRoot, res, out cap)) continue;
             touched++;
@@ -376,6 +378,14 @@ public static class ADMeshCut
     }
 
     // ------------------------------------------------------------------ physics, blood, fallback
+    static readonly HashSet<string> warnedUnreadable = new HashSet<string>();
+    // LOUD, once per mesh: the cut needs Mesh.isReadable. Fallback = bone scaled to 0 + placeholder sphere (head/limbs); splitCrown does nothing. Fix: Editor menu Tools/Alpha/Make models readable (Assets/Editor/AlphaReadable.cs).
+    static void WarnUnreadable(SkinnedMeshRenderer smr)
+    {
+        string k = smr.sharedMesh.name; if (!warnedUnreadable.Add(k)) return;
+        Debug.LogError("[ADMeshCut] MESH NOT READABLE: '" + k + "' on '" + smr.name + "'. Mesh cut falls back to bone-scale + placeholder piece. Enable Read/Write (see AlphaReadable / alpha_readable.json).");
+    }
+
     static void Launch(GameObject root, Transform victim, ADCutUnit unit, ADCutsCfg cc, Vector3 away, float push, float impulse, System.Random rnd)
     {
         var rb = root.AddComponent<Rigidbody>(); rb.mass = Mathf.Max(0.1f, unit.massKg);
@@ -394,11 +404,13 @@ public static class ADMeshCut
             }
         }
         var cols = victim.GetComponentsInChildren<Collider>(true); var mine = root.GetComponents<Collider>();
-        for (int i = 0; i < cols.Length; i++) for (int j = 0; j < mine.Length; j++) if (cols[i] != null && !cols[i].transform.IsChildOf(root.transform)) Physics.IgnoreCollision(cols[i], mine[j], true);
+        for (int i = 0; i < cols.Length; i++) for (int j = 0; j < mine.Length; j++) if (cols[i] != null && cols[i].enabled && mine[j] != null && mine[j].enabled && !cols[i].transform.IsChildOf(root.transform)) Physics.IgnoreCollision(cols[i], mine[j], true);
         float k = impulse * push * cc.pieceImpulseScale;
-        Vector3 imp = away * k + Vector3.up * k * 0.45f + new Vector3((float)rnd.NextDouble() - 0.5f, 0f, (float)rnd.NextDouble() - 0.5f) * k * 0.3f;
+        Vector3 imp = away * k + Vector3.up * k * unit.upBias + new Vector3((float)rnd.NextDouble() - 0.5f, 0f, (float)rnd.NextDouble() - 0.5f) * k * unit.scatter;
         rb.AddForce(imp, ForceMode.Impulse);
-        rb.AddTorque(new Vector3((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f) * k * 0.5f, ForceMode.Impulse);
+        rb.AddTorque(new Vector3((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f) * k * unit.torqueMul, ForceMode.Impulse);
+        rb.angularDamping = unit.angularDrag;
+        if (unit.lifeSeconds > 0f) UnityEngine.Object.Destroy(root, unit.lifeSeconds);
     }
 
     static void Blood(ADCutResult res, Transform victim, Transform parentBone, Vector3 pos, Vector3 dir, ADCutUnit unit, ADWoundsCfg cfg, ADWoundsRuntime rt, bool hasPiece)
@@ -411,7 +423,7 @@ public static class ADMeshCut
             res.blood.Add(new ADCutBloodEvent { pos = pos, dir = -dir, kind = "piece", loc = unit.loc });
             ADGoreFx.Spray(res.pieces[0].transform, pos, -dir, cfg.gore.woundSpray, 0.8f);
         }
-        if (rt != null) rt.Splash(unit.loc, 8);
+        if (rt != null) rt.Splash(unit.loc, unit.extraDecals);
     }
 
     static void Fallback(Transform victim, Transform root, ADCutUnit unit, ADCutResult res)
@@ -421,7 +433,7 @@ public static class ADMeshCut
         var go = GameObject.CreatePrimitive(PrimitiveType.Sphere); go.name = "ADPiece_placeholder_" + unit.id;
         go.transform.position = root.position + Vector3.up * 0.1f; go.transform.localScale = Vector3.one * Mathf.Max(0.1f, unit.colliderRadiusM * 2f);
         if (smr != null && smr.sharedMaterial != null) go.GetComponent<Renderer>().sharedMaterial = smr.sharedMaterial;
-        var sc = go.GetComponent<Collider>(); if (sc != null) { var cols = victim.GetComponentsInChildren<Collider>(true); for (int i = 0; i < cols.Length; i++) Physics.IgnoreCollision(cols[i], sc, true); }
+        var sc = go.GetComponent<Collider>(); if (sc != null) { var cols = victim.GetComponentsInChildren<Collider>(true); for (int i = 0; i < cols.Length; i++) if (cols[i] != null && cols[i].enabled && sc.enabled) Physics.IgnoreCollision(cols[i], sc, true); }
         go.AddComponent<Rigidbody>().mass = unit.massKg;
         root.localScale = Vector3.zero;
         res.pieces.Add(go); res.ok = true; res.note = "FALLBACK: meshes not readable, bone scaled to 0 + placeholder sphere (enable Read/Write on the model import)";
@@ -436,6 +448,7 @@ public class ADCutRunner : MonoBehaviour
 
     public static ADCutRunner Run(Transform victim, ADCutPlanResult plan, Vector3 away, int seed, Action<ADCutResult> onCut = null)
     {
+        if (!ADGoreGate.Finishers || victim == null || plan == null) return null;
         var r = victim.gameObject.AddComponent<ADCutRunner>();
         if (onCut != null) r.OnCut += onCut;
         r.StartCoroutine(r.Go(victim, plan, away, seed));

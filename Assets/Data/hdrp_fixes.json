@@ -184,6 +184,10 @@
                                         0.87,
                                         0.86
                                     ]
+                      },
+                      {
+                          "match":  "basalt_weathered",
+                          "smoothnessMax":  0.25
                       }
                   ],
     "boxes":  [

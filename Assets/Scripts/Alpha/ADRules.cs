@@ -142,7 +142,7 @@ public class ADRules
         for (int i = 0; i < p.moves.Length; i++)
         {
             ADMove m = (plan.moves != null && i < plan.moves.Length) ? plan.moves[i] : fb;
-            if (m == ADMove.Special) { if (spent) m = fb; else spent = true; }
+            if (m == ADMove.Special) { if (spent || !Cfg.enableSpecials) m = fb; else spent = true; }
             p.moves[i] = m;
         }
         return p;
@@ -261,6 +261,9 @@ public class ADRules
             else if (IsAttack(mA)) { hitsA = 1f; b.outA = ADOutcome.Hit; b.outB = ADOutcome.Struck; reason = Phrase(ADSide.Dracula, mA) + " found its mark"; }
             else if (IsAttack(mB)) { hitsB = 1f; b.outB = ADOutcome.Hit; b.outA = ADOutcome.Struck; reason = Phrase(ADSide.Pitborn, mB) + " found its mark"; }
             else { b.outA = b.outB = ADOutcome.Whiff; reason = "nothing landed"; }
+            // data-driven special vs a defensive move (lane E 'special' block): guard reduce / avoidedBy override the matrix rows
+            if (mA == ADMove.Special && !IsAttack(mB)) SpecialVsDefence(Data.special.dracula, mB, true, b, ref hitsA, ref hitsB, ref stA, ref stB, ref reason);
+            else if (mB == ADMove.Special && !IsAttack(mA)) SpecialVsDefence(Data.special.pitborn, mA, false, b, ref hitsA, ref hitsB, ref stA, ref stB, ref reason);
         }
 
         // Riposte after a parry (chance from data)
@@ -286,6 +289,7 @@ public class ADRules
             int dmg = Strike(atk, def, rip ? ADMove.Slash : mv, frac, rip, out crit, out loc, out heal, out knock);
             if (byA) { b.dmgToB += dmg; b.locB = loc; b.critA |= crit; b.healA += heal; if (knock) pendKnockB = true; }
             else { b.dmgToA += dmg; b.locA = loc; b.critB |= crit; b.healB += heal; if (knock) pendKnockA = true; }
+            if (!rip && mv == ADMove.Special) { var spx = SpecialOf(atk.side); if (spx != null && spx.staggerBeats > 0 && dmg > 0) { if (byA) pendStaggerB = true; else pendStaggerA = true; } }
             if (!rip && mv != ADMove.Special) { ADMoveDef md; if (moveDefs.TryGetValue(mv, out md) && md.staggers && dmg > 0) { if (byA) pendStaggerB = true; else pendStaggerA = true; } }
             if (def.Dead)
             {
@@ -305,18 +309,43 @@ public class ADRules
         return b;
     }
 
+    void SpecialVsDefence(ADSpecialDef sp, ADMove d, bool spIsA, ADBeat b, ref float hitsA, ref float hitsB, ref bool stA, ref bool stB, ref string reason)
+    {
+        if (sp == null) return;
+        bool hasAvoid = sp.avoidedBy != null && sp.avoidedBy.Length > 0;
+        if (!hasAvoid && string.IsNullOrEmpty(sp.guardMode) && !sp.unblockable) return;   // no data: keep the matrix row
+        ADSide spSide = spIsA ? ADSide.Dracula : ADSide.Pitborn;
+        string pSp = Phrase(spSide, ADMove.Special), pDef = Phrase(spIsA ? ADSide.Pitborn : ADSide.Dracula, d);
+        ADOutcome oSp, oDef; float hits; bool stSp = false, stDef = false;
+        bool avoided = false;
+        if (hasAvoid) foreach (var n in sp.avoidedBy) if (string.Equals(n, d.ToString(), StringComparison.OrdinalIgnoreCase)) avoided = true;
+        if (avoided && d != ADMove.Guard) { oDef = ADOutcome.Dodged; oSp = ADOutcome.Whiff; hits = 0f; stSp = true; reason = pDef + " avoided " + pSp; }
+        else if (d == ADMove.Guard)
+        {
+            if (sp.unblockable || string.Equals(sp.guardMode, "break", StringComparison.OrdinalIgnoreCase)) { oSp = ADOutcome.Hit; oDef = ADOutcome.GuardBreak; hits = 1f; stDef = true; reason = pSp + " broke " + pDef; }
+            else if (string.Equals(sp.guardMode, "reduced", StringComparison.OrdinalIgnoreCase)) { oSp = ADOutcome.Hit; oDef = ADOutcome.Struck; hits = sp.guardReduce; reason = pDef + " only halved " + pSp; }
+            else { oSp = ADOutcome.Blocked; oDef = ADOutcome.Parried; hits = 0f; reason = pDef + " stopped " + pSp; }
+        }
+        else { oSp = ADOutcome.Hit; oDef = ADOutcome.Struck; hits = 1f; reason = pSp + " caught " + pDef; }
+        if (spIsA) { b.outA = oSp; b.outB = oDef; hitsA = hits; hitsB = 0f; stA = stSp; stB = stDef; }
+        else { b.outB = oSp; b.outA = oDef; hitsB = hits; hitsA = 0f; stB = stSp; stA = stDef; }
+    }
+
     int Strike(ADFighter atk, ADFighter def, ADMove mv, float frac, bool riposte, out bool crit, out ADLoc loc, out int heal, out bool knock)
     {
         float baseDmg = riposte ? Cfg.riposteDamage : BaseDamage(atk, mv);
         double v = Rng.Next01();
         float variance = 1f + (float)(v * 2.0 - 1.0) * Cfg.damageVariance;
         crit = Rng.Next01() < Data.crit.chance + atk.critBonus;
+        ADSpecialDef spd = (!riposte && mv == ADMove.Special) ? SpecialOf(atk.side) : null;
+        if (spd != null && !spd.critAllowed) crit = false;
         float mul = frac * atk.stanceDealt * def.stanceTaken * Wounds.DamageMul(atk, mv) * (crit ? Data.crit.mul : 1f);
         int dmg = (int)Math.Round(baseDmg * variance * mul, MidpointRounding.AwayFromZero);
         if (frac > 0f && dmg < Cfg.minDamage) dmg = Cfg.minDamage;
         if (frac <= 0f) dmg = 0;
         dmg = Math.Min(dmg, def.hp);
         loc = Wounds.RollLocation(mv, Rng);
+        if (spd != null && !string.IsNullOrEmpty(spd.hitLocation) && !string.Equals(spd.hitLocation, "any", StringComparison.OrdinalIgnoreCase)) { ADLoc fl; if (Enum.TryParse(spd.hitLocation, true, out fl)) loc = fl; }
         def.hp -= dmg;
         if (dmg > 0) Wounds.Apply(def, loc, dmg, crit);
         heal = 0; knock = false;
@@ -351,11 +380,12 @@ public class ADBasicWounds : IADWounds
     }
     public float DamageMul(ADFighter attacker, ADMove move)
     {
-        if (move != ADMove.Heavy) return 1f;
+        if (!cfg.enableWounds || move != ADMove.Heavy) return 1f;
         return Math.Max(0.4f, 1f - cfg.armHeavyMulPerSeverity * attacker.wounds[(int)ADLoc.Arm]);
     }
     public void Apply(ADFighter victim, ADLoc loc, int damage, bool crit)
     {
+        if (!cfg.enableWounds) return;
         if (damage >= cfg.woundMinDamage || crit) victim.wounds[(int)loc] = Math.Min(cfg.maxSeverity, victim.wounds[(int)loc] + 1);
         victim.speedTierPenalty = cfg.legTierPerSeverity * victim.wounds[(int)ADLoc.Leg];
     }

@@ -6,7 +6,7 @@
                    "attach.localEuler is degrees, applied in the same rest frame (0,0,0 = MetaHuman face looks along the character\u0027s forward). attach.localScale is the WORLD size multiplier of the head (1 = metric MetaHuman size); with compensateParentScale the bone\u0027s lossy scale is divided out.",
                    "lod.switchDistancesM = [lod0Max, lod1Max] in metres from the game camera to the head: below the first value LOD0 (0 = LOD0 never used; close-up cutscenes only), below the second LOD1, else LOD2. Game camera is 4-6 m, README: LOD1 up to 4 m, LOD2 beyond. hysteresisM prevents flicker at a threshold."
                ],
-    "enabled":  true,
+    "enabled":  false,
     "canonFolder":  "C:/Users/dom12/Documents/kits_out/3d/metahuman/third_party",
     "scene":  "Assets/Scenes/HadesSlice.unity",
     "fighterName":  "Dracula",
@@ -41,7 +41,7 @@
                                   ],
                    "compensateParentScale":  true
                },
-    "hideOriginalHead":  true,
+    "hideOriginalHead":  false,
     "hideRenderers":  [
                           "head"
                       ],

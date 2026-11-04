@@ -20,6 +20,7 @@ public class DuelFighter : MonoBehaviour
     int pSide, sideDir, dodgeCd, dodgeKind, dodgeTicks = 36, dodgeIS = 4, dodgeIE = 20, dodgeCdTicks; float dodgeDist = 3.2f, dodgePow = 1f, dodgeAge, dodgeTurn = 30f;   // dodgeKind 0 roll, 1 backstep, 2 sidestep
     int guardLayer = -2; float guardLayerW; string guardLayerCur = "";
     public float scale = 1f, damageScale = 1f;
+    Vector3 lastGroundedPos; bool hasGrounded;
     CharacterController cc; Health hp; Fighter f; float vy; Dictionary<string, float> clipLen;
     // attack clip plan (attack_clips.json): two-segment clip speed, contact on the move's hit tick; atkOn false = the old whole-clip squash
     bool atkOn, atkFresh, atkHold; int atkAge, atkHoldTick; float atkContactTick, atkSpA, atkSpB, atkSpC, atkFadeOut, fadeOutLen, fadeOutUntil; AttackClipTable.Row atkRow; string charKey;
@@ -437,6 +438,13 @@ public class DuelFighter : MonoBehaviour
         }
         vy = cc.isGrounded ? -1f : vy - 20f * dt;
         v.y = vy; if (cc.enabled) cc.Move(v * dt);
+        // kill-plane recovery (audit: a knockback pushed a fighter off the ground collider and it fell for ever, the camera followed): remember the last grounded position, restore it when far below
+        if (cc.enabled && cc.isGrounded && transform.position.y > -0.5f) { lastGroundedPos = transform.position; hasGrounded = true; }
+        if (hasGrounded && transform.position.y < lastGroundedPos.y - 2f)
+        {
+            cc.enabled = false; transform.position = lastGroundedPos + Vector3.up * 0.05f; cc.enabled = true; Physics.SyncTransforms(); vy = -1f; knock = Vector3.zero;
+            Debug.Log("[DuelFighter] " + name + " fell out of the world: restored to " + lastGroundedPos);
+        }
         float lim = 2.45f;   // keep both fighters inside the stair width (no climbing onto the balustrade)
         if (cc.enabled && transform.position.z > 4f && transform.position.z < 22.5f && Mathf.Abs(transform.position.x) > lim) cc.Move(new Vector3(Mathf.Sign(transform.position.x) * lim - transform.position.x, 0f, 0f));
 

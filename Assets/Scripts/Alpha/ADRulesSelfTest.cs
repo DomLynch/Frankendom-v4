@@ -126,6 +126,22 @@ public static class ADRulesSelfTest
         Check(rr.beats[0].knockdownA && rr.beats[0].dmgToA == 26 && rr.beats[0].dmgToB == 7, "light vs slam: both land (light first), Dracula knocked down");
         Check(rr.beats[1].lostA && rr.beats[1].outA == ADOutcome.Staggered, "knocked-down fighter loses the next beat's move");
 
+        // --- special definitions from the 'special' block (lane E): guardMode reduced, avoidedBy Roll, no crit, forced location, stagger ---
+        b = Beat0(Make(), ADMove.Special, ADMove.Guard);
+        Check(b.outA == ADOutcome.Hit && b.outB == ADOutcome.Struck && b.dmgToB == 8, "guard only halves the special (16 -> 8), no guard break, got " + b.dmgToB);
+        b = Beat0(Make(), ADMove.Special, ADMove.Roll);
+        Check(b.outB == ADOutcome.Dodged && b.outA == ADOutcome.Whiff && b.dmgToB == 0 && b.staggerA, "roll avoids the special; the user is staggered");
+        b = Beat0(Make(), ADMove.Special, ADMove.Sidestep);
+        Check(b.outA == ADOutcome.Hit && b.outB == ADOutcome.Struck && b.dmgToB == 16 && b.staggerB && b.locB == ADLoc.Torso, "sidestep does not avoid it; Dracula special: torso, victim staggered");
+        b = Beat0(Make(), ADMove.Sidestep, ADMove.Special);
+        Check(b.outB == ADOutcome.Hit && b.dmgToA == 26 && b.knockdownA, "pitborn slam catches the sidestep, knockdown");
+        b = Beat0(Make(), ADMove.Roll, ADMove.Special);
+        Check(b.outA == ADOutcome.Dodged && b.dmgToA == 0, "roll avoids the slam");
+        b = Beat0(Make(crit: 1.0), ADMove.Special, ADMove.Sidestep);
+        Check(b.crit, "special can crit when critAllowed (data)");
+        { var d = load(); d.rules.damageVariance = 0f; d.crit.chance = 1f; d.special.dracula.critAllowed = false; r = new ADRules(d, new ScriptRng(0.5)); r.StartDuel(); b = Beat0(r, ADMove.Special, ADMove.Sidestep); }
+        Check(!b.crit && b.dmgToB == 16, "critAllowed=false suppresses special crits");
+
         // --- wounds (default provider) ---
         r = Make(); var w = new ADBasicWounds(r.Cfg); var f = new ADFighter { hp = 10, hpMax = 10 };
         w.Apply(f, ADLoc.Leg, 8, false); w.Apply(f, ADLoc.Leg, 8, false); w.Apply(f, ADLoc.Arm, 8, false); w.Apply(f, ADLoc.Arm, 8, false);
@@ -172,7 +188,7 @@ public static class ADRulesSelfTest
 #if UNITY_5_3_OR_NEWER
     public static string Run()
     {
-        var fl = Run(() => ADData.LoadRules());
+        var fl = Run(() => { var x = ADData.LoadRules(); x.rules.enableWounds = x.rules.enableSpecials = true; return x; });
         string s = string.Join("\n", fl.ToArray());
         if (fl.Count > 1) UnityEngine.Debug.LogError(s); else UnityEngine.Debug.Log(s);
         return s;

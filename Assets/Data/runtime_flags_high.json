@@ -1,1 +1,14 @@
-{ "_note": "CANDIDATE, not measured. High = SSGI half-res, 3 cascades, STP at 67%.", "clouds": true, "volumetricFog": true, "ssgi": true, "ssr": true, "contactShadows": true, "shadows": true, "ssao": true, "ssgiFullRes": false, "cascades": 3, "renderScale": 67 }
+﻿{
+    "_note":  "CANDIDATE, not measured. High = SSGI half-res, 3 cascades, STP at 67%.",
+    "clouds":  true,
+    "volumetricFog":  true,
+    "ssgi":  true,
+    "ssr":  true,
+    "contactShadows":  true,
+    "shadows":  true,
+    "ssao":  true,
+    "ssgiFullRes":  false,
+    "cascades":  3,
+    "renderScale":  67,
+    "hideMHHead":  true
+}

@@ -19,6 +19,10 @@ public class CameraRig : MonoBehaviour
     [System.Serializable] class FreeRow { public float yawLimitDeg = 55f, pitchMinDeg = -5f, pitchMaxDeg = 45f; }
     FreeRow free = new FreeRow(); bool freeLoaded;
     void LoadFree() { freeLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_free.json", Application.dataPath + "/Data/camera_free.json" }) { if (!System.IO.File.Exists(p)) continue; try { free = JsonUtility.FromJson<FreeRow>(System.IO.File.ReadAllText(p)); } catch { } break; } }
+    [System.Serializable] class ColRow { public bool enabled = false; public float radius = 0.35f, minDistFromTarget = 1.2f, minGroundY = 0f, minHeightAboveGround = 0.6f; public int[] ignoreLayers = { 8, 9 }; }
+    ColRow col = new ColRow(); bool colLoaded; Vector3 lastGoodPos = new Vector3(0f, 3f, 5f), lastGoodLook = new Vector3(0f, 1f, 15f), lastGoodFwd = Vector3.forward;
+    static bool IsFinite(Vector3 v) { return !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z) || float.IsInfinity(v.x) || float.IsInfinity(v.y) || float.IsInfinity(v.z)); }
+    void LoadCol() { colLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_collision.json", Application.dataPath + "/Data/camera_collision.json" }) { if (!System.IO.File.Exists(p)) continue; try { col = JsonUtility.FromJson<ColRow>(System.IO.File.ReadAllText(p)); } catch { } break; } if (col == null) col = new ColRow(); }
     Camera cam; CameraImpact impact;
     public void Recenter() { if (target) yaw = target.eulerAngles.y; }
     void Awake() { cam = GetComponent<Camera>(); impact = GetComponent<CameraImpact>(); if (!impact) impact = gameObject.AddComponent<CameraImpact>(); foreach (var a in System.Environment.GetCommandLineArgs()) if (a == "-autoplay") lockRange = 80f; }
@@ -42,6 +46,7 @@ public class CameraRig : MonoBehaviour
     void LateUpdate()
     {
         if (!target) return;
+        if (!colLoaded) LoadCol();
         float dt = Time.deltaTime;
         bool lockOn = lockEnabled && enemy && enemyHp && !enemyHp.Dead && Vector3.Distance(target.position, enemy.position) < lockRange;
         lockW = Mathf.MoveTowards(lockW, lockOn ? 1f : 0f, dt * 3f);
@@ -57,6 +62,7 @@ public class CameraRig : MonoBehaviour
         if (enemy)
         {
             Vector3 P = target.position, E = enemy.position;
+            P.y = Mathf.Max(P.y, col.minGroundY); E.y = Mathf.Max(E.y, col.minGroundY);   // a fighter that fell out of the world must not drag the camera down with it (audit E)
             Vector3 flat = E - P; flat.y = 0f; float d = Mathf.Max(0.8f, flat.magnitude);
             float tgtYaw = Mathf.Atan2(flat.x, flat.z) * Mathf.Rad2Deg;          // camera behind the player, facing the enemy
             float blend = 1f - Mathf.Exp(-8f * dt);
@@ -77,10 +83,32 @@ public class CameraRig : MonoBehaviour
         }
         else { camPos = freePos; lookAt = freeLook; }
 
-        transform.position = camPos;
-        transform.rotation = Quaternion.LookRotation(lookAt - transform.position, Vector3.up);
+        var drawPos = camPos;
+        if (!colLoaded) LoadCol();
+        if (col.enabled)   // camera collision: spherecast from the look target to the camera, never ignoring walls/gate (fighter layers ignored), data camera_collision.json
+        {
+            Vector3 from = lookAt, dirv = camPos - from; float len = dirv.magnitude;
+            if (len > 0.01f)
+            {
+                int mask = ~0; foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
+                if (Physics.SphereCast(from, col.radius, dirv / len, out var ch, len, mask, QueryTriggerInteraction.Ignore))
+                    drawPos = from + dirv / len * Mathf.Max(col.minDistFromTarget, ch.distance);
+            }
+        }
+        if (!IsFinite(drawPos) || !IsFinite(lookAt)) { drawPos = lastGoodPos; lookAt = lastGoodLook; camPos = lastGoodPos; }
+        transform.position = drawPos;
+        var lookDir = lookAt - transform.position; if (lookDir.sqrMagnitude < 1e-6f) lookDir = lastGoodFwd;
+        transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
         cam.fieldOfView = Mathf.Lerp(50f, 38.6f, lockW);
         if (impact) impact.Apply(transform);   // contact kick + roll tumble on top of the pose, on unscaled time (CameraImpact.cs)
+        // hard floor for EVERY camera mode (impact shake / roll dip / crit / low-HP cuts included): never below ground + minHeight, never NaN
+        {
+            var cp = transform.position; if (!IsFinite(cp)) { cp = lastGoodPos; transform.position = cp; transform.rotation = Quaternion.LookRotation(lastGoodFwd, Vector3.up); }
+            float floorY = col.minGroundY + col.minHeightAboveGround; if (cp.y < floorY) { cp.y = floorY; transform.position = cp; }
+            lastGoodPos = transform.position; lastGoodLook = lookAt; lastGoodFwd = transform.forward;
+        }
     }
 }
+
+
 

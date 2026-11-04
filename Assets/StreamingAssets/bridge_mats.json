@@ -17,7 +17,7 @@
                      "normalScale":  1.0,
                      "roughnessScale":  1.0,
                      "smoothnessRemapMin":  0.0,
-                     "smoothnessRemapMax":  0.55,
+                     "smoothnessRemapMax":  0.25,
                      "aoStrength":  1.0,
                      "baseColor":  [
                                        0.7,
@@ -41,7 +41,7 @@
                      "normalScale":  1.0,
                      "roughnessScale":  1.0,
                      "smoothnessRemapMin":  0.0,
-                     "smoothnessRemapMax":  0.55,
+                     "smoothnessRemapMax":  0.25,
                      "aoStrength":  1.0,
                      "baseColor":  [
                                        0.7,

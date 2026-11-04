@@ -1,10 +1,10 @@
 {
-  "_notes": "Hades slice prop layout (data layer replacement for BuildSliceProps.AddProps and BuildSliceSmoke.AddBoulders). Coordinates are Unity world metres, y up, z toward the gate. pos y = constants[yBase] + pos[1] (yBase 'world' = 0). ground 'bottom': LOD0 bounds bottom sits on pos y (PlaceLod behaviour). ground 'boundsCentreSink': LOD0 bounds centre goes on pos xz, then the bottom is sunk to waterY - sinkFraction * height (old AddBoulders). Seeded jitter (boulders seed 31, trees seed 77) is baked as numbers; edit the numbers freely. Entries with tag 'new' come from UNITY_MISSING_PROPS.md and are disabled until approved. disabled=true skips an entry. baseColorMul tints base colour (old broken_oar hack). Entries tagged 'hero' (r4) use GLBs from hades_env/processed/hero_props/<name>/ that must be copied to Assets/Env/Props/<name>/; they do not need a Prop-schema change (no alignToGround support in the loader: positions are not terrain-snapped); 'rationale' is a free text field ignored by the loader (JsonUtility skips unknown fields). hero_heavy LOD profile = aggressive switching for >50k tri props. asset file = libraries[library].pattern with {asset} and {lod}. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders.",
+  "_notes": "Hades slice prop layout (data layer replacement for BuildSliceProps.AddProps and BuildSliceSmoke.AddBoulders). Coordinates are Unity world metres, y up, z toward the gate. pos y = constants[yBase] + pos[1] (yBase 'world' = 0). ground 'bottom': LOD0 bounds bottom sits on pos y (PlaceLod behaviour). ground 'boundsCentreSink': LOD0 bounds centre goes on pos xz, then the bottom is sunk to waterY - sinkFraction * height (old AddBoulders). Seeded jitter (boulders seed 31, trees seed 77) is baked as numbers; edit the numbers freely. Entries with tag 'new' come from UNITY_MISSING_PROPS.md and are disabled until approved. disabled=true skips an entry. baseColorMul tints base colour (old broken_oar hack). Entries tagged 'hero' (r4) use GLBs from hades_env/processed/hero_props/<name>/ that must be copied to Assets/Env/Props/<name>/; they do not need a Prop-schema change (no alignToGround support in the loader: positions are not terrain-snapped); 'rationale' is a free text field ignored by the loader (JsonUtility skips unknown fields). hero_heavy LOD profile = aggressive switching for >50k tri props. asset file = libraries[library].pattern with {asset} and {lod}. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders. | v2 (world build): WorldNear/WorldMid/WorldFar groups from scripts/world_layout_gen.py; pos y already snapped to terrain_midground (ground bottom). Libraries world_mid/world_far = Assets/Env/World/{Mid,Far}/<asset>/. hero_*_lite = hero_props/<name>_lite folders.",
   "version": 2,
   "coordinateSpace": "unity world metres",
   "constants": {
     "waterY": -0.9,
-    "platformTop": 0.3
+    "platformTop": 0.0
   },
   "libraries": [
     {
@@ -34,6 +34,10 @@
     {
       "name": "balu2",
       "pattern": "Assets/Env/Balu2/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_ground",
+      "pattern": "Assets/Env/World/Ground/{asset}/{asset}_LOD{lod}.glb"
     }
   ],
   "lodProfiles": [
@@ -138,7 +142,8 @@
     "WorldBehind",
     "WorldTrench",
     "WorldBridge",
-    "WorldDetail"
+    "WorldDetail",
+    "WorldEdge"
   ],
   "props": [
     {
@@ -172,10 +177,10 @@
       "asset": "standing_ruin_pillar_4",
       "lodProfile": "props",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         -14.0,
-        -0.3,
+        -0.92,
         8.0
       ],
       "rotEuler": [
@@ -196,10 +201,10 @@
       "asset": "standing_ruin_pillar_4",
       "lodProfile": "props",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         15.0,
-        -0.3,
+        -0.82,
         17.0
       ],
       "rotEuler": [
@@ -220,10 +225,10 @@
       "asset": "broken_oar_6",
       "lodProfile": "props",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         -5.5,
-        0.05,
+        -0.15,
         13.5
       ],
       "rotEuler": [
@@ -245,10 +250,10 @@
       "asset": "broken_oar_6",
       "lodProfile": "props",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         9.5,
-        0.05,
+        -0.2,
         26.5
       ],
       "rotEuler": [
@@ -270,10 +275,10 @@
       "asset": "broken_oar_6",
       "lodProfile": "props",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         -8.5,
-        0.05,
+        -0.16,
         21.0
       ],
       "rotEuler": [
@@ -295,10 +300,10 @@
       "asset": "arch_fragment_9a",
       "lodProfile": "props",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         -26.0,
-        -0.4,
+        -0.73,
         30.0
       ],
       "rotEuler": [
@@ -319,10 +324,10 @@
       "asset": "arch_fragment_9b",
       "lodProfile": "props",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         27.0,
-        -0.4,
+        -1.09,
         36.0
       ],
       "rotEuler": [
@@ -343,10 +348,10 @@
       "asset": "dead_tree_1a",
       "lodProfile": "trees",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         -14.5,
-        -0.1,
+        -0.74,
         15.0
       ],
       "rotEuler": [
@@ -368,10 +373,10 @@
       "asset": "dead_tree_1b",
       "lodProfile": "trees",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         14.5,
-        -0.1,
+        -1.02,
         13.0
       ],
       "rotEuler": [
@@ -465,10 +470,10 @@
       "asset": "rock_arch_8",
       "lodProfile": "props",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         -30.0,
-        -0.5,
+        -1.04,
         12.0
       ],
       "rotEuler": [
@@ -488,11 +493,11 @@
       "library": "rocks",
       "asset": "rock_boulder_A",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -19.4786,
-        0.0,
+        -1.34,
         32.1853
       ],
       "rotEuler": [
@@ -514,11 +519,11 @@
       "library": "rocks",
       "asset": "rock_boulder_A",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         20.4271,
-        0.0,
+        -1.0,
         27.7618
       ],
       "rotEuler": [
@@ -540,11 +545,11 @@
       "library": "rocks",
       "asset": "rock_boulder_B",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -16.3566,
-        0.0,
+        -0.96,
         9.1826
       ],
       "rotEuler": [
@@ -566,11 +571,11 @@
       "library": "rocks",
       "asset": "rock_boulder_D",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         13.3954,
-        0.0,
+        -0.43,
         2.1665
       ],
       "rotEuler": [
@@ -592,11 +597,11 @@
       "library": "rocks",
       "asset": "rock_boulder_D",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -8.9224,
-        0.0,
+        -0.44,
         -5.9207
       ],
       "rotEuler": [
@@ -618,11 +623,11 @@
       "library": "rocks",
       "asset": "rock_boulder_D",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         8.8837,
-        0.0,
+        -0.32,
         23.2058
       ],
       "rotEuler": [
@@ -644,11 +649,11 @@
       "library": "rocks",
       "asset": "rock_boulder_A",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -18.6216,
-        0.0,
+        -1.16,
         26.3876
       ],
       "rotEuler": [
@@ -670,11 +675,11 @@
       "library": "rocks",
       "asset": "rock_boulder_A",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         11.6413,
-        0.0,
+        -0.69,
         -7.4881
       ],
       "rotEuler": [
@@ -696,11 +701,11 @@
       "library": "rocks",
       "asset": "rock_boulder_D",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -16.3692,
-        0.0,
+        -1.29,
         17.2693
       ],
       "rotEuler": [
@@ -722,11 +727,11 @@
       "library": "rocks",
       "asset": "rock_boulder_E",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         17.4516,
-        0.0,
+        -1.23,
         -4.7724
       ],
       "rotEuler": [
@@ -748,11 +753,11 @@
       "library": "rocks",
       "asset": "rock_boulder_E",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -16.3568,
-        0.0,
+        -0.95,
         8.9855
       ],
       "rotEuler": [
@@ -774,11 +779,11 @@
       "library": "rocks",
       "asset": "rock_boulder_C",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         13.3438,
-        0.0,
+        -0.82,
         18.8811
       ],
       "rotEuler": [
@@ -800,11 +805,11 @@
       "library": "rocks",
       "asset": "rock_boulder_E",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -7.9631,
-        0.0,
+        -0.35,
         33.4125
       ],
       "rotEuler": [
@@ -826,11 +831,11 @@
       "library": "rocks",
       "asset": "rock_boulder_C",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         9.254,
-        0.0,
+        -0.31,
         -4.8894
       ],
       "rotEuler": [
@@ -852,11 +857,11 @@
       "library": "rocks",
       "asset": "rock_boulder_D",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -16.7064,
-        0.0,
+        -1.26,
         24.5512
       ],
       "rotEuler": [
@@ -878,11 +883,11 @@
       "library": "rocks",
       "asset": "rock_boulder_D",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         15.6328,
-        0.0,
+        -0.88,
         -2.4091
       ],
       "rotEuler": [
@@ -904,11 +909,11 @@
       "library": "rocks",
       "asset": "rock_boulder_C",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -20.0238,
-        0.0,
+        -1.09,
         26.9033
       ],
       "rotEuler": [
@@ -930,11 +935,11 @@
       "library": "rocks",
       "asset": "rock_boulder_E",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         9.2181,
-        0.0,
+        -0.33,
         -6.1525
       ],
       "rotEuler": [
@@ -956,11 +961,11 @@
       "library": "rocks",
       "asset": "rock_boulder_D",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -11.5994,
-        0.0,
+        -0.57,
         20.5365
       ],
       "rotEuler": [
@@ -982,11 +987,11 @@
       "library": "rocks",
       "asset": "rock_boulder_E",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         18.8248,
-        0.0,
+        -1.62,
         12.0358
       ],
       "rotEuler": [
@@ -1008,11 +1013,11 @@
       "library": "rocks",
       "asset": "rock_boulder_C",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -18.0837,
-        0.0,
+        -1.14,
         4.2022
       ],
       "rotEuler": [
@@ -1034,11 +1039,11 @@
       "library": "rocks",
       "asset": "rock_boulder_B",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         11.1067,
-        0.0,
+        -0.5,
         25.3793
       ],
       "rotEuler": [
@@ -1060,11 +1065,11 @@
       "library": "rocks",
       "asset": "rock_boulder_D",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -16.5715,
-        0.0,
+        -1.49,
         2.6137
       ],
       "rotEuler": [
@@ -1086,11 +1091,11 @@
       "library": "rocks",
       "asset": "rock_boulder_D",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         13.7206,
-        0.0,
+        -0.83,
         24.1928
       ],
       "rotEuler": [
@@ -1112,11 +1117,11 @@
       "library": "rocks",
       "asset": "rock_boulder_A",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -11.8927,
-        0.0,
+        -0.49,
         4.3805
       ],
       "rotEuler": [
@@ -1138,11 +1143,11 @@
       "library": "rocks",
       "asset": "rock_boulder_A",
       "lodProfile": "boulders",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         17.4406,
-        0.0,
+        -1.21,
         26.1742
       ],
       "rotEuler": [
@@ -1221,10 +1226,10 @@
       "asset": "islet_A",
       "lodProfile": "islet",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         -15.0,
-        -0.03,
+        -0.88,
         22.0
       ],
       "rotEuler": [
@@ -1249,10 +1254,10 @@
       "asset": "islet_B",
       "lodProfile": "islet",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         16.0,
-        -0.03,
+        -0.97,
         26.0
       ],
       "rotEuler": [
@@ -1277,10 +1282,10 @@
       "asset": "islet_A",
       "lodProfile": "islet",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         -22.0,
-        -0.03,
+        -0.65,
         12.0
       ],
       "rotEuler": [
@@ -1305,10 +1310,10 @@
       "asset": "islet_B",
       "lodProfile": "islet",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         22.0,
-        -0.03,
+        -0.92,
         14.0
       ],
       "rotEuler": [
@@ -1333,10 +1338,10 @@
       "asset": "smoke_wall_ruin",
       "lodProfile": "far_ruin",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         -20.0,
-        0.0,
+        -0.87,
         40.0
       ],
       "rotEuler": [
@@ -1360,10 +1365,10 @@
       "asset": "smoke_wall_ruin",
       "lodProfile": "far_ruin",
       "ground": "bottom",
-      "yBase": "waterY",
+      "yBase": "world",
       "pos": [
         22.0,
-        0.0,
+        -0.48,
         44.0
       ],
       "rotEuler": [
@@ -1440,11 +1445,11 @@
       "library": "props",
       "asset": "hero_boulder_A",
       "lodProfile": "hero_heavy",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -6.4,
-        0.0,
+        -0.3,
         9.8
       ],
       "rotEuler": [
@@ -1468,11 +1473,11 @@
       "library": "props",
       "asset": "hero_boulder_B",
       "lodProfile": "hero_heavy",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         -8.4,
-        0.0,
+        -0.31,
         15.8
       ],
       "rotEuler": [
@@ -1496,11 +1501,11 @@
       "library": "props",
       "asset": "hero_boulder_C",
       "lodProfile": "hero_heavy",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         6.6,
-        0.0,
+        -0.3,
         8.8
       ],
       "rotEuler": [
@@ -1524,11 +1529,11 @@
       "library": "props",
       "asset": "hero_boulder_D",
       "lodProfile": "hero_heavy",
-      "ground": "boundsCentreSink",
-      "yBase": "waterY",
+      "ground": "bottom",
+      "yBase": "world",
       "pos": [
         7.6,
-        0.0,
+        -0.3,
         14.2
       ],
       "rotEuler": [
@@ -1920,7 +1925,7 @@
       "yBase": "world",
       "pos": [
         4.93,
-        -1.17,
+        -1.0,
         -10.96
       ],
       "rotEuler": [
@@ -2020,7 +2025,7 @@
       "yBase": "world",
       "pos": [
         -13.25,
-        -1.33,
+        -0.94,
         -0.99
       ],
       "rotEuler": [
@@ -2095,7 +2100,7 @@
       "yBase": "world",
       "pos": [
         -5.35,
-        -1.75,
+        -1.32,
         -8.75
       ],
       "rotEuler": [
@@ -2170,7 +2175,7 @@
       "yBase": "world",
       "pos": [
         2.75,
-        -1.11,
+        -0.4,
         -1.69
       ],
       "rotEuler": [
@@ -2229,31 +2234,6 @@
         0
       ],
       "scale": 2.111,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "near"
-      ]
-    },
-    {
-      "id": "worldnear_hero_debris_rubble_1",
-      "group": "WorldNear",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -8.33,
-        -1.13,
-        1.6
-      ],
-      "rotEuler": [
-        0,
-        216.5,
-        0
-      ],
-      "scale": 1.793,
       "shadowsOff": false,
       "tags": [
         "world",
@@ -2370,7 +2350,7 @@
       "yBase": "world",
       "pos": [
         0.81,
-        -1.39,
+        -0.69,
         -7.69
       ],
       "rotEuler": [
@@ -2570,7 +2550,7 @@
       "yBase": "world",
       "pos": [
         -0.33,
-        -1.67,
+        -1.66,
         -14.68
       ],
       "rotEuler": [
@@ -2697,7 +2677,7 @@
       "yBase": "world",
       "pos": [
         -3.47,
-        -1.5,
+        -1.11,
         -10.35
       ],
       "rotEuler": [
@@ -2723,7 +2703,7 @@
       "yBase": "world",
       "pos": [
         10.74,
-        -0.57,
+        -0.28,
         -3.5
       ],
       "rotEuler": [
@@ -2853,7 +2833,7 @@
       "yBase": "world",
       "pos": [
         -9.07,
-        -1.0,
+        -0.45,
         35.02
       ],
       "rotEuler": [
@@ -2983,7 +2963,7 @@
       "yBase": "world",
       "pos": [
         -8.53,
-        -1.38,
+        -1.08,
         -11.39
       ],
       "rotEuler": [
@@ -3009,7 +2989,7 @@
       "yBase": "world",
       "pos": [
         -9.93,
-        -1.49,
+        -1.11,
         -10.34
       ],
       "rotEuler": [
@@ -3035,7 +3015,7 @@
       "yBase": "world",
       "pos": [
         8.77,
-        -1.08,
+        -0.72,
         -8.74
       ],
       "rotEuler": [
@@ -3061,7 +3041,7 @@
       "yBase": "world",
       "pos": [
         -14.47,
-        -1.53,
+        -1.23,
         9.45
       ],
       "rotEuler": [
@@ -3139,7 +3119,7 @@
       "yBase": "world",
       "pos": [
         -10.47,
-        -1.06,
+        -0.62,
         36.46
       ],
       "rotEuler": [
@@ -3165,7 +3145,7 @@
       "yBase": "world",
       "pos": [
         16.22,
-        -1.14,
+        -1.11,
         20.37
       ],
       "rotEuler": [
@@ -3373,7 +3353,7 @@
       "yBase": "world",
       "pos": [
         14.67,
-        -1.41,
+        -1.4,
         -10.0
       ],
       "rotEuler": [
@@ -3399,7 +3379,7 @@
       "yBase": "world",
       "pos": [
         12.06,
-        -1.23,
+        -1.1,
         -10.1
       ],
       "rotEuler": [
@@ -3451,7 +3431,7 @@
       "yBase": "world",
       "pos": [
         -0.12,
-        -1.18,
+        -0.72,
         -8.38
       ],
       "rotEuler": [
@@ -3607,7 +3587,7 @@
       "yBase": "world",
       "pos": [
         7.99,
-        -1.44,
+        -1.12,
         38.67
       ],
       "rotEuler": [
@@ -3737,7 +3717,7 @@
       "yBase": "world",
       "pos": [
         6.32,
-        -1.17,
+        -1.14,
         -13.08
       ],
       "rotEuler": [
@@ -3919,7 +3899,7 @@
       "yBase": "world",
       "pos": [
         -14.17,
-        -0.88,
+        -0.73,
         0.54
       ],
       "rotEuler": [
@@ -4101,7 +4081,7 @@
       "yBase": "world",
       "pos": [
         9.31,
-        -1.15,
+        -0.3,
         13.47
       ],
       "rotEuler": [
@@ -4257,7 +4237,7 @@
       "yBase": "world",
       "pos": [
         10.54,
-        -0.88,
+        -0.32,
         6.72
       ],
       "rotEuler": [
@@ -4266,32 +4246,6 @@
         0
       ],
       "scale": 0.188,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "near",
-        "rubble"
-      ]
-    },
-    {
-      "id": "worldnear_rock_boulder_D_12",
-      "group": "WorldNear",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -8.21,
-        -1.07,
-        7.72
-      ],
-      "rotEuler": [
-        0,
-        238.9,
-        0
-      ],
-      "scale": 0.588,
       "shadowsOff": false,
       "tags": [
         "world",
@@ -4387,7 +4341,7 @@
       "yBase": "world",
       "pos": [
         -14.99,
-        -1.2,
+        -1.17,
         -10.11
       ],
       "rotEuler": [
@@ -4413,7 +4367,7 @@
       "yBase": "world",
       "pos": [
         -11.73,
-        -1.28,
+        -0.6,
         14.77
       ],
       "rotEuler": [
@@ -4543,7 +4497,7 @@
       "yBase": "world",
       "pos": [
         15.33,
-        -0.96,
+        -0.89,
         1.77
       ],
       "rotEuler": [
@@ -4595,7 +4549,7 @@
       "yBase": "world",
       "pos": [
         -16.11,
-        -1.42,
+        -1.3,
         1.23
       ],
       "rotEuler": [
@@ -4699,7 +4653,7 @@
       "yBase": "world",
       "pos": [
         -9.82,
-        -1.26,
+        -0.38,
         8.23
       ],
       "rotEuler": [
@@ -4803,7 +4757,7 @@
       "yBase": "world",
       "pos": [
         9.77,
-        -1.01,
+        -0.6,
         -7.81
       ],
       "rotEuler": [
@@ -4855,7 +4809,7 @@
       "yBase": "world",
       "pos": [
         -2.21,
-        -1.22,
+        -0.72,
         -8.27
       ],
       "rotEuler": [
@@ -4864,32 +4818,6 @@
         0
       ],
       "scale": 0.276,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "near",
-        "rubble"
-      ]
-    },
-    {
-      "id": "worldnear_rock_boulder_B_17",
-      "group": "WorldNear",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -7.83,
-        -1.04,
-        3.02
-      ],
-      "rotEuler": [
-        0,
-        237.3,
-        0
-      ],
-      "scale": 0.361,
       "shadowsOff": false,
       "tags": [
         "world",
@@ -4907,7 +4835,7 @@
       "yBase": "world",
       "pos": [
         -13.22,
-        -1.17,
+        -0.93,
         35.15
       ],
       "rotEuler": [
@@ -4933,7 +4861,7 @@
       "yBase": "world",
       "pos": [
         8.84,
-        -1.29,
+        -0.28,
         11.57
       ],
       "rotEuler": [
@@ -5063,7 +4991,7 @@
       "yBase": "world",
       "pos": [
         16.86,
-        -1.28,
+        -1.27,
         30.77
       ],
       "rotEuler": [
@@ -5141,7 +5069,7 @@
       "yBase": "world",
       "pos": [
         -15.49,
-        -1.53,
+        -1.25,
         11.61
       ],
       "rotEuler": [
@@ -5219,7 +5147,7 @@
       "yBase": "world",
       "pos": [
         12.76,
-        -1.08,
+        -0.84,
         -7.8
       ],
       "rotEuler": [
@@ -5297,7 +5225,7 @@
       "yBase": "world",
       "pos": [
         10.29,
-        -0.85,
+        -0.33,
         4.14
       ],
       "rotEuler": [
@@ -5349,7 +5277,7 @@
       "yBase": "world",
       "pos": [
         8.71,
-        -0.78,
+        -0.23,
         -2.71
       ],
       "rotEuler": [
@@ -5427,7 +5355,7 @@
       "yBase": "world",
       "pos": [
         13.85,
-        -0.46,
+        -0.36,
         -0.78
       ],
       "rotEuler": [
@@ -5609,7 +5537,7 @@
       "yBase": "world",
       "pos": [
         -12.44,
-        -1.02,
+        -0.87,
         36.98
       ],
       "rotEuler": [
@@ -5661,7 +5589,7 @@
       "yBase": "world",
       "pos": [
         5.14,
-        -0.93,
+        -0.56,
         -8.23
       ],
       "rotEuler": [
@@ -5687,7 +5615,7 @@
       "yBase": "world",
       "pos": [
         16.25,
-        -1.72,
+        -1.68,
         -0.4
       ],
       "rotEuler": [
@@ -5713,7 +5641,7 @@
       "yBase": "world",
       "pos": [
         -10.2,
-        -0.77,
+        -0.28,
         -0.49
       ],
       "rotEuler": [
@@ -5739,7 +5667,7 @@
       "yBase": "world",
       "pos": [
         -16.15,
-        -1.05,
+        -0.98,
         13.53
       ],
       "rotEuler": [
@@ -5791,7 +5719,7 @@
       "yBase": "world",
       "pos": [
         17.61,
-        -1.21,
+        -1.2,
         34.07
       ],
       "rotEuler": [
@@ -5817,7 +5745,7 @@
       "yBase": "world",
       "pos": [
         14.73,
-        -0.87,
+        -0.75,
         -5.89
       ],
       "rotEuler": [
@@ -5869,7 +5797,7 @@
       "yBase": "world",
       "pos": [
         -15.53,
-        -1.24,
+        -1.1,
         3.38
       ],
       "rotEuler": [
@@ -5921,7 +5849,7 @@
       "yBase": "world",
       "pos": [
         -4.85,
-        -1.0,
+        -0.2,
         -0.18
       ],
       "rotEuler": [
@@ -10071,7 +9999,7 @@
       "yBase": "world",
       "pos": [
         -0.51,
-        -1.35,
+        -0.98,
         -9.46
       ],
       "rotEuler": [
@@ -10179,7 +10107,7 @@
       "yBase": "world",
       "pos": [
         10.57,
-        -0.98,
+        -0.54,
         -7.06
       ],
       "rotEuler": [
@@ -10476,7 +10404,7 @@
       "yBase": "world",
       "pos": [
         2.12,
-        -1.47,
+        -0.71,
         -7.54
       ],
       "rotEuler": [
@@ -10692,7 +10620,7 @@
       "yBase": "world",
       "pos": [
         9.92,
-        -1.07,
+        -0.8,
         -9.13
       ],
       "rotEuler": [
@@ -10719,7 +10647,7 @@
       "yBase": "world",
       "pos": [
         12.69,
-        -0.86,
+        -0.59,
         -6.17
       ],
       "rotEuler": [
@@ -10773,7 +10701,7 @@
       "yBase": "world",
       "pos": [
         8.65,
-        -1.24,
+        -1.12,
         -11.85
       ],
       "rotEuler": [
@@ -10881,7 +10809,7 @@
       "yBase": "world",
       "pos": [
         5.54,
-        -0.86,
+        -0.2,
         -1.5
       ],
       "rotEuler": [
@@ -10935,7 +10863,7 @@
       "yBase": "world",
       "pos": [
         3.7,
-        -0.96,
+        -0.84,
         -11.56
       ],
       "rotEuler": [
@@ -11070,7 +10998,7 @@
       "yBase": "world",
       "pos": [
         -4.94,
-        -1.28,
+        -1.16,
         -12.01
       ],
       "rotEuler": [
@@ -11097,7 +11025,7 @@
       "yBase": "world",
       "pos": [
         -6.92,
-        -1.49,
+        -0.2,
         -3.4
       ],
       "rotEuler": [
@@ -12225,7 +12153,7 @@
       "yBase": "world",
       "pos": [
         -16.31,
-        -0.95,
+        -0.9,
         -6.25
       ],
       "rotEuler": [
@@ -12306,7 +12234,7 @@
       "yBase": "world",
       "pos": [
         -11.75,
-        -0.73,
+        -0.43,
         -1.84
       ],
       "rotEuler": [
@@ -12333,7 +12261,7 @@
       "yBase": "world",
       "pos": [
         -12.62,
-        -1.19,
+        -0.7,
         -3.85
       ],
       "rotEuler": [
@@ -12360,7 +12288,7 @@
       "yBase": "world",
       "pos": [
         -17.64,
-        -0.73,
+        -0.72,
         5.87
       ],
       "rotEuler": [
@@ -12873,7 +12801,7 @@
       "yBase": "world",
       "pos": [
         -9.74,
-        -1.42,
+        -0.37,
         14.86
       ],
       "rotEuler": [
@@ -13035,7 +12963,7 @@
       "yBase": "world",
       "pos": [
         -16.98,
-        -1.05,
+        -0.98,
         10.51
       ],
       "rotEuler": [
@@ -13143,7 +13071,7 @@
       "yBase": "world",
       "pos": [
         -15.36,
-        -1.03,
+        -0.92,
         -5.1
       ],
       "rotEuler": [
@@ -13251,7 +13179,7 @@
       "yBase": "world",
       "pos": [
         -13.14,
-        -1.54,
+        -1.05,
         11.94
       ],
       "rotEuler": [
@@ -14784,7 +14712,7 @@
       "yBase": "world",
       "pos": [
         14.12,
-        -0.58,
+        -0.45,
         3.22
       ],
       "rotEuler": [
@@ -15243,7 +15171,7 @@
       "yBase": "world",
       "pos": [
         13.09,
-        -1.46,
+        -1.0,
         10.34
       ],
       "rotEuler": [
@@ -15297,7 +15225,7 @@
       "yBase": "world",
       "pos": [
         9.42,
-        -0.56,
+        -0.23,
         -0.61
       ],
       "rotEuler": [
@@ -15405,7 +15333,7 @@
       "yBase": "world",
       "pos": [
         15.46,
-        -1.51,
+        -1.31,
         9.35
       ],
       "rotEuler": [
@@ -16803,7 +16731,7 @@
       "yBase": "world",
       "pos": [
         11.74,
-        -0.9,
+        -0.69,
         36.53
       ],
       "rotEuler": [
@@ -17316,7 +17244,7 @@
       "yBase": "world",
       "pos": [
         -15.13,
-        -1.22,
+        -1.21,
         37.63
       ],
       "rotEuler": [
@@ -17370,7 +17298,7 @@
       "yBase": "world",
       "pos": [
         13.76,
-        -0.96,
+        -0.81,
         35.37
       ],
       "rotEuler": [
@@ -17397,7 +17325,7 @@
       "yBase": "world",
       "pos": [
         -15.07,
-        -1.36,
+        -1.3,
         35.61
       ],
       "rotEuler": [
@@ -17505,7 +17433,7 @@
       "yBase": "world",
       "pos": [
         16.2,
-        -1.16,
+        -1.15,
         34.31
       ],
       "rotEuler": [
@@ -17760,2663 +17688,871 @@
       ]
     },
     {
-      "id": "worldtrench_trench_lava_607",
-      "group": "WorldTrench",
-      "library": "world_trench",
-      "asset": "trench_lava",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        0.0,
-        -12.6,
-        14.0
-      ],
-      "rotEuler": [
-        0,
-        0.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "lava"
-      ],
-      "rationale": "emissive lava pool plane 9 x 13.4 m filling the trench floor (rocks poke through)"
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_608",
-      "group": "WorldTrench",
+      "id": "worldedge_rock_boulder_A_71",
+      "group": "WorldEdge",
       "library": "rocks",
       "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
+      "lodProfile": "near_hq",
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        -4.15,
-        -11.91,
-        10.7
+        10.33,
+        -0.4,
+        27.93
       ],
       "rotEuler": [
         0,
-        27.7,
+        98.5,
         0
       ],
-      "scale": 1.673,
+      "scale": 0.368,
       "shadowsOff": false,
       "tags": [
         "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_609",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.39,
-        -11.06,
-        18.54
-      ],
-      "rotEuler": [
-        0,
-        319.9,
-        0
-      ],
-      "scale": 3.467,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_610",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.01,
-        -12.13,
-        14.93
-      ],
-      "rotEuler": [
-        0,
-        342.3,
-        0
-      ],
-      "scale": 1.988,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_611",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.79,
-        -7.28,
-        10.09
-      ],
-      "rotEuler": [
-        0,
-        240.5,
-        0
-      ],
-      "scale": 3.698,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_612",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.51,
-        -8.09,
-        8.86
-      ],
-      "rotEuler": [
-        0,
-        126.9,
-        0
-      ],
-      "scale": 4.021,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_613",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.48,
-        -8.08,
-        17.91
-      ],
-      "rotEuler": [
-        0,
-        298.7,
-        0
-      ],
-      "scale": 2.378,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_614",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.64,
-        -8.16,
-        18.99
-      ],
-      "rotEuler": [
-        0,
-        351.7,
-        0
-      ],
-      "scale": 3.002,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_615",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.12,
-        -8.47,
-        16.94
-      ],
-      "rotEuler": [
-        0,
-        107.5,
-        0
-      ],
-      "scale": 2.413,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_616",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.24,
-        -9.23,
-        19.44
-      ],
-      "rotEuler": [
-        0,
-        19.7,
-        0
-      ],
-      "scale": 2.602,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_617",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.88,
-        -8.68,
-        11.73
-      ],
-      "rotEuler": [
-        0,
-        132.5,
-        0
-      ],
-      "scale": 4.152,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_618",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.64,
-        -10.9,
-        17.42
-      ],
-      "rotEuler": [
-        0,
-        353.3,
-        0
-      ],
-      "scale": 4.274,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_E_619",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.12,
-        -6.79,
-        9.52
-      ],
-      "rotEuler": [
-        0,
-        316.4,
-        0
-      ],
-      "scale": 2.041,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_E_620",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.51,
-        -4.88,
-        17.08
-      ],
-      "rotEuler": [
-        0,
-        121.7,
-        0
-      ],
-      "scale": 1.638,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_621",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.37,
-        -11.42,
-        9.88
-      ],
-      "rotEuler": [
-        0,
-        276.9,
-        0
-      ],
-      "scale": 2.68,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_622",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.75,
-        -11.98,
-        19.77
-      ],
-      "rotEuler": [
-        0,
-        278.3,
-        0
-      ],
-      "scale": 3.353,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_623",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.63,
-        -5.68,
-        8.95
-      ],
-      "rotEuler": [
-        0,
-        287.8,
-        0
-      ],
-      "scale": 2.935,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_E_624",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.98,
-        -10.95,
-        15.94
-      ],
-      "rotEuler": [
-        0,
-        210.5,
-        0
-      ],
-      "scale": 4.115,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_625",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.59,
-        -12.96,
-        15.38
-      ],
-      "rotEuler": [
-        0,
-        268.3,
-        0
-      ],
-      "scale": 3.9,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_626",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.99,
-        -7.87,
-        9.69
-      ],
-      "rotEuler": [
-        0,
-        340.2,
-        0
-      ],
-      "scale": 3.168,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_627",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.73,
-        -7.1,
-        18.83
-      ],
-      "rotEuler": [
-        0,
-        309.6,
-        0
-      ],
-      "scale": 1.992,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_628",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.44,
-        -12.33,
-        11.63
-      ],
-      "rotEuler": [
-        0,
-        338.3,
-        0
-      ],
-      "scale": 4.227,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_E_629",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.86,
-        -6.21,
-        14.37
-      ],
-      "rotEuler": [
-        0,
-        281.2,
-        0
-      ],
-      "scale": 2.507,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_630",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.27,
-        -5.55,
-        12.45
-      ],
-      "rotEuler": [
-        0,
-        122.5,
-        0
-      ],
-      "scale": 2.891,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_631",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.32,
-        -4.33,
-        18.85
-      ],
-      "rotEuler": [
-        0,
-        64.6,
-        0
-      ],
-      "scale": 4.353,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_632",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.87,
-        -6.45,
-        14.39
-      ],
-      "rotEuler": [
-        0,
-        11.3,
-        0
-      ],
-      "scale": 3.008,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_633",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.58,
-        -7.87,
-        14.13
-      ],
-      "rotEuler": [
-        0,
-        127.6,
-        0
-      ],
-      "scale": 3.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_mid_slab_heap_a_634",
-      "group": "WorldTrench",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.43,
-        -8.83,
-        11.47
-      ],
-      "rotEuler": [
-        0,
-        116.2,
-        0
-      ],
-      "scale": 0.39,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "ledge"
-      ]
-    },
-    {
-      "id": "worldtrench_mid_slab_heap_b_635",
-      "group": "WorldTrench",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_b",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.44,
-        -7.63,
-        17.52
-      ],
-      "rotEuler": [
-        0,
-        7.9,
-        0
-      ],
-      "scale": 0.514,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "ledge"
-      ]
-    },
-    {
-      "id": "worldtrench_mid_slab_heap_a_636",
-      "group": "WorldTrench",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.1,
-        -8.78,
-        10.53
-      ],
-      "rotEuler": [
-        0,
-        322.3,
-        0
-      ],
-      "scale": 0.573,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "ledge"
-      ]
-    },
-    {
-      "id": "worldtrench_mid_slab_heap_b_637",
-      "group": "WorldTrench",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_b",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.57,
-        -4.78,
-        10.25
-      ],
-      "rotEuler": [
-        0,
-        237.8,
-        0
-      ],
-      "scale": 0.447,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "ledge"
-      ]
-    },
-    {
-      "id": "worldtrench_mid_slab_heap_a_638",
-      "group": "WorldTrench",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.69,
-        -3.81,
-        10.36
-      ],
-      "rotEuler": [
-        0,
-        212.5,
-        0
-      ],
-      "scale": 0.411,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "ledge"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_E_639",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.58,
-        -4.27,
-        10.95
-      ],
-      "rotEuler": [
-        0,
-        56.3,
-        0
-      ],
-      "scale": 4.09,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_640",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.17,
-        -4.35,
-        18.15
-      ],
-      "rotEuler": [
-        0,
-        86.6,
-        0
-      ],
-      "scale": 3.907,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_E_641",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.18,
-        -7.67,
-        11.14
-      ],
-      "rotEuler": [
-        0,
-        179.2,
-        0
-      ],
-      "scale": 4.35,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_642",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.7,
-        -12.97,
-        16.1
-      ],
-      "rotEuler": [
-        0,
-        48.5,
-        0
-      ],
-      "scale": 4.271,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_643",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.28,
-        -4.15,
-        10.09
-      ],
-      "rotEuler": [
-        0,
-        188.8,
-        0
-      ],
-      "scale": 3.712,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_644",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.16,
-        -11.16,
-        8.84
-      ],
-      "rotEuler": [
-        0,
-        309.1,
-        0
-      ],
-      "scale": 3.976,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_645",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.64,
-        -8.06,
-        14.44
-      ],
-      "rotEuler": [
-        0,
-        153.1,
-        0
-      ],
-      "scale": 1.913,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_646",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.82,
-        -9.94,
-        16.54
-      ],
-      "rotEuler": [
-        0,
-        249.6,
-        0
-      ],
-      "scale": 1.988,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_647",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.73,
-        -10.86,
-        11.39
-      ],
-      "rotEuler": [
-        0,
-        154.3,
-        0
-      ],
-      "scale": 4.378,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_648",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.99,
-        -7.58,
-        9.72
-      ],
-      "rotEuler": [
-        0,
-        308.9,
-        0
-      ],
-      "scale": 2.105,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_649",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.71,
-        -6.66,
-        14.23
-      ],
-      "rotEuler": [
-        0,
-        25.8,
-        0
-      ],
-      "scale": 1.934,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_650",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.73,
-        -6.96,
-        17.76
-      ],
-      "rotEuler": [
-        0,
-        265.9,
-        0
-      ],
-      "scale": 3.615,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_651",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.55,
-        -12.75,
-        15.51
-      ],
-      "rotEuler": [
-        0,
-        247.5,
-        0
-      ],
-      "scale": 4.051,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_652",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.19,
-        -8.48,
-        15.85
-      ],
-      "rotEuler": [
-        0,
-        352.6,
-        0
-      ],
-      "scale": 3.311,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_653",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.92,
-        -7.86,
-        9.87
-      ],
-      "rotEuler": [
-        0,
-        5.6,
-        0
-      ],
-      "scale": 2.938,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_E_654",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.29,
-        -11.73,
-        14.57
-      ],
-      "rotEuler": [
-        0,
-        223.6,
-        0
-      ],
-      "scale": 2.67,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_655",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.63,
-        -3.17,
-        16.57
-      ],
-      "rotEuler": [
-        0,
-        111.0,
-        0
-      ],
-      "scale": 1.779,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_E_656",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.48,
-        -4.07,
-        11.74
-      ],
-      "rotEuler": [
-        0,
-        355.6,
-        0
-      ],
-      "scale": 3.38,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_657",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.49,
-        -10.64,
-        12.68
-      ],
-      "rotEuler": [
-        0,
-        340.5,
-        0
-      ],
-      "scale": 1.694,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_658",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.17,
-        -12.34,
-        18.62
-      ],
-      "rotEuler": [
-        0,
-        101.6,
-        0
-      ],
-      "scale": 3.145,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_659",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.72,
-        -7.83,
-        18.38
-      ],
-      "rotEuler": [
-        0,
-        167.8,
-        0
-      ],
-      "scale": 2.407,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_E_660",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.96,
-        -8.76,
-        13.12
-      ],
-      "rotEuler": [
-        0,
-        81.6,
-        0
-      ],
-      "scale": 2.21,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_661",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.57,
-        -12.99,
-        11.01
-      ],
-      "rotEuler": [
-        0,
-        138.8,
-        0
-      ],
-      "scale": 4.081,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_662",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.12,
-        -7.17,
-        9.45
-      ],
-      "rotEuler": [
-        0,
-        61.3,
-        0
-      ],
-      "scale": 2.261,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_663",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.83,
-        -11.55,
-        15.07
-      ],
-      "rotEuler": [
-        0,
-        251.8,
-        0
-      ],
-      "scale": 1.792,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_664",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.16,
-        -8.58,
-        9.07
-      ],
-      "rotEuler": [
-        0,
-        63.1,
-        0
-      ],
-      "scale": 2.546,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "wall"
-      ]
-    },
-    {
-      "id": "worldtrench_mid_slab_heap_a_665",
-      "group": "WorldTrench",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.34,
-        -6.36,
-        13.94
-      ],
-      "rotEuler": [
-        0,
-        33.7,
-        0
-      ],
-      "scale": 0.523,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "ledge"
-      ]
-    },
-    {
-      "id": "worldtrench_mid_slab_heap_b_666",
-      "group": "WorldTrench",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_b",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.19,
-        -5.41,
-        13.26
-      ],
-      "rotEuler": [
-        0,
-        40.8,
-        0
-      ],
-      "scale": 0.417,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "ledge"
-      ]
-    },
-    {
-      "id": "worldtrench_mid_slab_heap_a_667",
-      "group": "WorldTrench",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.13,
-        -5.52,
-        15.87
-      ],
-      "rotEuler": [
-        0,
-        83.4,
-        0
-      ],
-      "scale": 0.381,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "ledge"
-      ]
-    },
-    {
-      "id": "worldtrench_mid_slab_heap_b_668",
-      "group": "WorldTrench",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_b",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.78,
-        -8.19,
-        15.21
-      ],
-      "rotEuler": [
-        0,
-        17.7,
-        0
-      ],
-      "scale": 0.547,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "ledge"
-      ]
-    },
-    {
-      "id": "worldtrench_mid_slab_heap_a_669",
-      "group": "WorldTrench",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.61,
-        -9.01,
-        15.59
-      ],
-      "rotEuler": [
-        0,
-        11.4,
-        0
-      ],
-      "scale": 0.546,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "ledge"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_E_670",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.15,
-        -12.8,
-        12.11
-      ],
-      "rotEuler": [
-        0,
-        283.5,
-        0
-      ],
-      "scale": 1.905,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_671",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        0.78,
-        -12.8,
-        12.32
-      ],
-      "rotEuler": [
-        0,
-        318.7,
-        0
-      ],
-      "scale": 2.155,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_672",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.04,
-        -12.8,
-        16.12
-      ],
-      "rotEuler": [
-        0,
-        16.1,
-        0
-      ],
-      "scale": 1.014,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_673",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.38,
-        -12.8,
-        17.22
-      ],
-      "rotEuler": [
-        0,
-        80.1,
-        0
-      ],
-      "scale": 0.949,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_674",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        0.76,
-        -12.8,
-        16.93
-      ],
-      "rotEuler": [
-        0,
-        206.5,
-        0
-      ],
-      "scale": 1.045,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_675",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -0.54,
-        -12.8,
-        15.6
-      ],
-      "rotEuler": [
-        0,
-        15.7,
-        0
-      ],
-      "scale": 1.123,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_676",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        0.21,
-        -12.8,
-        11.18
-      ],
-      "rotEuler": [
-        0,
-        289.9,
-        0
-      ],
-      "scale": 1.787,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_677",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -0.72,
-        -12.8,
-        15.01
-      ],
-      "rotEuler": [
-        0,
-        307.1,
-        0
-      ],
-      "scale": 2.067,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_A_678",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -0.77,
-        -12.8,
-        18.9
-      ],
-      "rotEuler": [
-        0,
-        211.0,
-        0
-      ],
-      "scale": 2.083,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_679",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.98,
-        -12.8,
-        10.35
-      ],
-      "rotEuler": [
-        0,
-        190.4,
-        0
-      ],
-      "scale": 2.502,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_680",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.28,
-        -12.8,
-        15.3
-      ],
-      "rotEuler": [
-        0,
-        354.6,
-        0
-      ],
-      "scale": 1.822,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_681",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        1.41,
-        -12.8,
-        10.18
-      ],
-      "rotEuler": [
-        0,
-        253.9,
-        0
-      ],
-      "scale": 1.128,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_682",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.86,
-        -12.8,
-        13.79
-      ],
-      "rotEuler": [
-        0,
-        158.5,
-        0
-      ],
-      "scale": 1.786,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_B_683",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.84,
-        -12.8,
-        11.92
-      ],
-      "rotEuler": [
-        0,
-        100.5,
-        0
-      ],
-      "scale": 1.837,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_D_684",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -0.61,
-        -12.8,
-        18.11
-      ],
-      "rotEuler": [
-        0,
-        98.1,
-        0
-      ],
-      "scale": 0.97,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldtrench_rock_boulder_C_685",
-      "group": "WorldTrench",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        0.48,
-        -12.8,
-        18.11
-      ],
-      "rotEuler": [
-        0,
-        102.2,
-        0
-      ],
-      "scale": 1.124,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "trench",
-        "floor"
-      ]
-    },
-    {
-      "id": "worldbridge_bridge_pier_a_686",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -1.9,
-        -14.0,
-        10.0
-      ],
-      "rotEuler": [
-        0,
-        -89.5,
-        0
-      ],
-      "scale": 1.107,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_stairs"
-      ]
-    },
-    {
-      "id": "worldbridge_bridge_pier_a_687",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -1.9,
-        -14.0,
-        10.0
-      ],
-      "rotEuler": [
-        0,
-        -89.3,
-        0
-      ],
-      "scale": 1.088,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true,
-      "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
-    },
-    {
-      "id": "worldbridge_bridge_pier_a_688",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -1.9,
-        -14.0,
-        14.0
-      ],
-      "rotEuler": [
-        0,
-        -88.2,
-        0
-      ],
-      "scale": 1.161,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_stairs"
-      ]
-    },
-    {
-      "id": "worldbridge_bridge_pier_a_689",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -1.9,
-        -14.0,
-        14.0
-      ],
-      "rotEuler": [
-        0,
-        -91.0,
-        0
-      ],
-      "scale": 1.088,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true,
-      "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
-    },
-    {
-      "id": "worldbridge_bridge_pier_a_690",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -1.9,
-        -14.0,
-        18.0
-      ],
-      "rotEuler": [
-        0,
-        -87.7,
-        0
-      ],
-      "scale": 1.214,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_stairs"
-      ]
-    },
-    {
-      "id": "worldbridge_bridge_pier_a_691",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -1.9,
-        -14.0,
-        18.0
-      ],
-      "rotEuler": [
-        0,
-        -86.8,
-        0
-      ],
-      "scale": 1.088,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true,
-      "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
-    },
-    {
-      "id": "worldbridge_bridge_buttress_arch_692",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_buttress_arch",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.0,
-        -13.6,
-        12.0
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "buttress"
-      ]
-    },
-    {
-      "id": "worldbridge_bridge_buttress_arch_693",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_buttress_arch",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -5.0,
-        -13.6,
-        16.0
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "buttress"
-      ]
-    },
-    {
-      "id": "worldbridge_bridge_rubble_ledge_694",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_rubble_ledge",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -4.1,
-        -12.95,
-        9.5
-      ],
-      "rotEuler": [
-        0,
-        345.2,
-        0
-      ],
-      "scale": 0.9,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
+        "edge",
         "rubble"
       ]
     },
     {
-      "id": "worldbridge_bridge_rubble_ledge_695",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_rubble_ledge",
-      "lodProfile": "mid_ruin",
+      "id": "worldedge_fallen_pillar_3_19",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        -4.1,
-        -12.95,
-        13.0
+        10.12,
+        -0.42,
+        6.19
       ],
       "rotEuler": [
         0,
-        78.2,
+        310.2,
         0
       ],
-      "scale": 0.9,
+      "scale": 0.973,
       "shadowsOff": false,
       "tags": [
         "world",
-        "bridge",
-        "rubble"
+        "edge"
       ]
     },
     {
-      "id": "worldbridge_bridge_rubble_ledge_696",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_rubble_ledge",
+      "id": "worldedge_mid_slab_heap_a_16",
+      "group": "WorldEdge",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
       "lodProfile": "mid_ruin",
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        -4.1,
-        -12.95,
-        17.0
+        12.37,
+        -1.14,
+        10.12
       ],
       "rotEuler": [
         0,
-        316.8,
+        141.0,
         0
       ],
-      "scale": 0.9,
+      "scale": 0.388,
       "shadowsOff": false,
       "tags": [
         "world",
-        "bridge",
-        "rubble"
+        "edge"
       ]
     },
     {
-      "id": "worldbridge_bridge_pier_a_697",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
+      "id": "worldedge_hero_debris_rubble_20",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        1.9,
-        -14.0,
-        10.0
+        -11.13,
+        -0.6,
+        26.32
       ],
       "rotEuler": [
         0,
-        92.6,
+        286.1,
         0
       ],
-      "scale": 1.107,
+      "scale": 1.691,
       "shadowsOff": false,
       "tags": [
         "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_stairs"
+        "edge"
       ]
     },
     {
-      "id": "worldbridge_bridge_pier_a_698",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
+      "id": "worldedge_rock_boulder_E_66",
+      "group": "WorldEdge",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "near_hq",
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        1.9,
-        -14.0,
-        10.0
+        11.31,
+        -0.53,
+        22.87
       ],
       "rotEuler": [
         0,
         90.9,
         0
       ],
-      "scale": 1.088,
+      "scale": 0.35,
       "shadowsOff": false,
       "tags": [
         "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true,
-      "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
-    },
-    {
-      "id": "worldbridge_bridge_pier_a_699",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        1.9,
-        -14.0,
-        14.0
-      ],
-      "rotEuler": [
-        0,
-        87.9,
-        0
-      ],
-      "scale": 1.161,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_stairs"
-      ]
-    },
-    {
-      "id": "worldbridge_bridge_pier_a_700",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        1.9,
-        -14.0,
-        14.0
-      ],
-      "rotEuler": [
-        0,
-        88.7,
-        0
-      ],
-      "scale": 1.088,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true,
-      "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
-    },
-    {
-      "id": "worldbridge_bridge_pier_a_701",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        1.9,
-        -14.0,
-        18.0
-      ],
-      "rotEuler": [
-        0,
-        89.5,
-        0
-      ],
-      "scale": 1.214,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_stairs"
-      ]
-    },
-    {
-      "id": "worldbridge_bridge_pier_a_702",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_pier_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        1.9,
-        -14.0,
-        18.0
-      ],
-      "rotEuler": [
-        0,
-        89.8,
-        0
-      ],
-      "scale": 1.088,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "pier",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true,
-      "rationale": "flat variant: deck stays y 0 over the whole trench (underside -0.4), so these piers are the full-height set; enable with the flat entries, disable the variant_gateApproach_stairs piers"
-    },
-    {
-      "id": "worldbridge_bridge_buttress_arch_703",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_buttress_arch",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.0,
-        -13.6,
-        12.0
-      ],
-      "rotEuler": [
-        0,
-        -90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "buttress"
-      ]
-    },
-    {
-      "id": "worldbridge_bridge_buttress_arch_704",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_buttress_arch",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        5.0,
-        -13.6,
-        16.0
-      ],
-      "rotEuler": [
-        0,
-        -90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "buttress"
-      ]
-    },
-    {
-      "id": "worldbridge_bridge_rubble_ledge_705",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_rubble_ledge",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        4.1,
-        -12.95,
-        9.5
-      ],
-      "rotEuler": [
-        0,
-        201.9,
-        0
-      ],
-      "scale": 0.9,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
+        "edge",
         "rubble"
       ]
     },
     {
-      "id": "worldbridge_bridge_rubble_ledge_706",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_rubble_ledge",
+      "id": "worldedge_fallen_pillar_3_20",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        9.6,
+        -0.45,
+        26.5
+      ],
+      "rotEuler": [
+        0,
+        274.0,
+        0
+      ],
+      "scale": 0.918,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_mid_slab_heap_a_17",
+      "group": "WorldEdge",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
       "lodProfile": "mid_ruin",
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        4.1,
-        -12.95,
-        13.0
+        -11.35,
+        -0.78,
+        19.5
       ],
       "rotEuler": [
         0,
-        101.7,
+        20.8,
         0
       ],
-      "scale": 0.9,
+      "scale": 0.312,
       "shadowsOff": false,
       "tags": [
         "world",
-        "bridge",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_hero_debris_rubble_21",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.42,
+        -0.84,
+        14.85
+      ],
+      "rotEuler": [
+        0,
+        233.5,
+        0
+      ],
+      "scale": 1.426,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_rock_boulder_D_65",
+      "group": "WorldEdge",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -9.88,
+        -0.37,
+        26.18
+      ],
+      "rotEuler": [
+        0,
+        256.5,
+        0
+      ],
+      "scale": 0.441,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge",
         "rubble"
       ]
     },
     {
-      "id": "worldbridge_bridge_rubble_ledge_707",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "bridge_rubble_ledge",
+      "id": "worldedge_fallen_pillar_3_21",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -11.58,
+        -0.71,
+        27.9
+      ],
+      "rotEuler": [
+        0,
+        138.1,
+        0
+      ],
+      "scale": 0.946,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_mid_slab_heap_a_18",
+      "group": "WorldEdge",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
       "lodProfile": "mid_ruin",
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        4.1,
-        -12.95,
-        17.0
+        9.64,
+        -0.55,
+        28.38
       ],
       "rotEuler": [
         0,
-        314.9,
+        300.3,
         0
       ],
-      "scale": 0.9,
+      "scale": 0.317,
       "shadowsOff": false,
       "tags": [
         "world",
-        "bridge",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_hero_debris_rubble_22",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        10.64,
+        -0.52,
+        25.38
+      ],
+      "rotEuler": [
+        0,
+        225.5,
+        0
+      ],
+      "scale": 1.225,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_rock_boulder_C_70",
+      "group": "WorldEdge",
+      "library": "rocks",
+      "asset": "rock_boulder_C",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.42,
+        -0.67,
+        25.73
+      ],
+      "rotEuler": [
+        0,
+        108.8,
+        0
+      ],
+      "scale": 0.452,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge",
         "rubble"
       ]
     },
     {
-      "id": "worldbridge_gate_approach_flat_708",
-      "group": "WorldBridge",
-      "library": "world_bridge",
-      "asset": "gate_approach_flat",
+      "id": "worldedge_fallen_pillar_3_22",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        10.3,
+        -0.52,
+        16.03
+      ],
+      "rotEuler": [
+        0,
+        283.0,
+        0
+      ],
+      "scale": 0.928,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_mid_slab_heap_a_19",
+      "group": "WorldEdge",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
       "lodProfile": "mid_ruin",
       "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        10.88,
+        -0.72,
+        22.8
+      ],
+      "rotEuler": [
+        0,
+        127.2,
+        0
+      ],
+      "scale": 0.39,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_hero_debris_rubble_23",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -10.07,
+        -0.46,
+        28.58
+      ],
+      "rotEuler": [
+        0,
+        114.4,
+        0
+      ],
+      "scale": 1.601,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_rock_boulder_B_70",
+      "group": "WorldEdge",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -10.6,
+        -0.45,
+        23.15
+      ],
+      "rotEuler": [
+        0,
+        139.2,
+        0
+      ],
+      "scale": 0.635,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge",
+        "rubble"
+      ]
+    },
+    {
+      "id": "worldedge_fallen_pillar_3_23",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -10.03,
+        -0.5,
+        22.8
+      ],
+      "rotEuler": [
+        0,
+        280.7,
+        0
+      ],
+      "scale": 1.143,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_mid_slab_heap_a_20",
+      "group": "WorldEdge",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        9.09,
+        -0.5,
+        16.84
+      ],
+      "rotEuler": [
+        0,
+        263.7,
+        0
+      ],
+      "scale": 0.423,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_hero_debris_rubble_24",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        9.98,
+        -0.43,
+        15.21
+      ],
+      "rotEuler": [
+        0,
+        201.4,
+        0
+      ],
+      "scale": 1.425,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_rock_boulder_A_72",
+      "group": "WorldEdge",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        9.02,
+        -0.29,
+        8.43
+      ],
+      "rotEuler": [
+        0,
+        346.7,
+        0
+      ],
+      "scale": 0.366,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge",
+        "rubble"
+      ]
+    },
+    {
+      "id": "worldedge_fallen_pillar_3_24",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        10.19,
+        -0.44,
+        4.43
+      ],
+      "rotEuler": [
+        0,
+        232.7,
+        0
+      ],
+      "scale": 0.998,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_mid_slab_heap_a_21",
+      "group": "WorldEdge",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        11.9,
+        -0.86,
+        20.2
+      ],
+      "rotEuler": [
+        0,
+        148.1,
+        0
+      ],
+      "scale": 0.317,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_hero_debris_rubble_25",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -9.77,
+        -0.42,
+        21.39
+      ],
+      "rotEuler": [
+        0,
+        294.8,
+        0
+      ],
+      "scale": 1.108,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_rock_boulder_E_67",
+      "group": "WorldEdge",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -9.48,
+        -0.32,
+        24.54
+      ],
+      "rotEuler": [
+        0,
+        224.9,
+        0
+      ],
+      "scale": 0.474,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge",
+        "rubble"
+      ]
+    },
+    {
+      "id": "worldedge_fallen_pillar_3_25",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        10.07,
+        -0.52,
+        9.32
+      ],
+      "rotEuler": [
+        0,
+        285.5,
+        0
+      ],
+      "scale": 1.168,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_mid_slab_heap_a_22",
+      "group": "WorldEdge",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        9.27,
+        -0.46,
+        3.91
+      ],
+      "rotEuler": [
+        0,
+        242.2,
+        0
+      ],
+      "scale": 0.392,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_hero_debris_rubble_26",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -12.06,
+        -0.93,
+        12.47
+      ],
+      "rotEuler": [
+        0,
+        321.3,
+        0
+      ],
+      "scale": 1.659,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_rock_boulder_D_66",
+      "group": "WorldEdge",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -9.23,
+        -0.32,
+        11.04
+      ],
+      "rotEuler": [
+        0,
+        341.0,
+        0
+      ],
+      "scale": 0.529,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge",
+        "rubble"
+      ]
+    },
+    {
+      "id": "worldedge_fallen_pillar_3_26",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        10.06,
+        -0.47,
+        7.72
+      ],
+      "rotEuler": [
+        0,
+        349.9,
+        0
+      ],
+      "scale": 1.049,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_mid_slab_heap_a_23",
+      "group": "WorldEdge",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -11.41,
+        -0.97,
+        9.7
+      ],
+      "rotEuler": [
+        0,
+        278.5,
+        0
+      ],
+      "scale": 0.424,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_hero_debris_rubble_27",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        10.1,
+        -0.49,
+        10.48
+      ],
+      "rotEuler": [
+        0,
+        319.1,
+        0
+      ],
+      "scale": 1.744,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldedge_rock_boulder_C_71",
+      "group": "WorldEdge",
+      "library": "rocks",
+      "asset": "rock_boulder_C",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.32,
+        -0.61,
+        8.45
+      ],
+      "rotEuler": [
+        0,
+        104.5,
+        0
+      ],
+      "scale": 0.504,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge",
+        "rubble"
+      ]
+    },
+    {
+      "id": "worldedge_fallen_pillar_3_27",
+      "group": "WorldEdge",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -10.33,
+        -0.54,
+        24.82
+      ],
+      "rotEuler": [
+        0,
+        292.5,
+        0
+      ],
+      "scale": 0.938,
+      "shadowsOff": false,
+      "tags": [
+        "world",
+        "edge"
+      ]
+    },
+    {
+      "id": "worldground_ground_paving_0",
+      "group": "WorldEdge",
+      "library": "world_ground",
+      "asset": "ground_paving",
+      "lodProfile": "mid_ruin",
+      "ground": "pivot",
       "yBase": "world",
       "pos": [
         0.0,
@@ -20425,2062 +18561,17 @@
       ],
       "rotEuler": [
         0,
-        0.0,
+        0,
         0
       ],
       "scale": 1.0,
       "shadowsOff": false,
       "tags": [
         "world",
-        "bridge",
-        "variant_gateApproach_flat"
+        "ground",
+        "variant_gateApproach_ground"
       ],
-      "disabled": true,
-      "rationale": "gateApproach variant flat (Strategy: LOWER the gate): platformTop 2.0 -> 0.3. Deck stays y 0, basalt paving continues flat at y 0 over z 16.55..22.6 (x +-3.0), one 0.15 step (z 22.6..23.2), lip/landing top 0.30 (z 23.2..24.2, x +-3.6) up to the gate base. Pieces are at real Unity positions (pos 0,0,0). The stair run, RampCollider, TreadRay are removed; add a flat BoxCollider top 0 over z 16.5..22.6 and lower PlatformBody/LandingCollider/HeroGate by 1.7."
-    },
-    {
-      "id": "worlddetail_skull_pile_5a_709",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "skull_pile_5a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.0,
-        0.0,
-        11.62
-      ],
-      "rotEuler": [
-        0,
-        100.7,
-        0
-      ],
-      "scale": 0.56,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_skull_pile_5a_710",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "skull_pile_5a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.71,
-        0.0,
-        13.2
-      ],
-      "rotEuler": [
-        0,
-        35.7,
-        0
-      ],
-      "scale": 0.597,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_skull_pile_5a_711",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "skull_pile_5a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.81,
-        0.0,
-        13.6
-      ],
-      "rotEuler": [
-        0,
-        350.0,
-        0
-      ],
-      "scale": 0.591,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_skull_pile_5a_712",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "skull_pile_5a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.98,
-        0.0,
-        14.98
-      ],
-      "rotEuler": [
-        0,
-        276.9,
-        0
-      ],
-      "scale": 0.604,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_bone_fragments_7_713",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.74,
-        0.0,
-        12.01
-      ],
-      "rotEuler": [
-        0,
-        207.2,
-        0
-      ],
-      "scale": 0.777,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_bone_fragments_7_714",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.72,
-        0.0,
-        12.13
-      ],
-      "rotEuler": [
-        0,
-        134.4,
-        0
-      ],
-      "scale": 1.003,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_bone_fragments_7_715",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.7,
-        0.0,
-        12.0
-      ],
-      "rotEuler": [
-        0,
-        210.6,
-        0
-      ],
-      "scale": 0.814,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_bone_fragments_7_716",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.79,
-        0.0,
-        14.95
-      ],
-      "rotEuler": [
-        0,
-        105.8,
-        0
-      ],
-      "scale": 1.072,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_bone_fragments_7_717",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.7,
-        0.0,
-        13.33
-      ],
-      "rotEuler": [
-        0,
-        122.0,
-        0
-      ],
-      "scale": 1.059,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_broken_oar_6_718",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "broken_oar_6",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.7,
-        0.0,
-        12.85
-      ],
-      "rotEuler": [
-        0,
-        328.3,
-        0
-      ],
-      "scale": 0.778,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_broken_oar_6_719",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "broken_oar_6",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.88,
-        0.0,
-        13.12
-      ],
-      "rotEuler": [
-        0,
-        112.8,
-        0
-      ],
-      "scale": 0.717,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_broken_oar_6_720",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "broken_oar_6",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.61,
-        0.0,
-        14.77
-      ],
-      "rotEuler": [
-        0,
-        135.4,
-        0
-      ],
-      "scale": 0.856,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_A_721",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.58,
-        0.0,
-        13.78
-      ],
-      "rotEuler": [
-        0,
-        47.8,
-        0
-      ],
-      "scale": 0.069,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_B_722",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.62,
-        0.0,
-        12.88
-      ],
-      "rotEuler": [
-        0,
-        332.3,
-        0
-      ],
-      "scale": 0.106,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_C_723",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.92,
-        0.0,
-        13.27
-      ],
-      "rotEuler": [
-        0,
-        334.7,
-        0
-      ],
-      "scale": 0.126,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_D_724",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.91,
-        0.0,
-        14.47
-      ],
-      "rotEuler": [
-        0,
-        322.0,
-        0
-      ],
-      "scale": 0.125,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_E_725",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.95,
-        0.0,
-        12.74
-      ],
-      "rotEuler": [
-        0,
-        31.7,
-        0
-      ],
-      "scale": 0.138,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_A_726",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.0,
-        0.0,
-        13.83
-      ],
-      "rotEuler": [
-        0,
-        297.8,
-        0
-      ],
-      "scale": 0.111,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_B_727",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.93,
-        0.0,
-        15.31
-      ],
-      "rotEuler": [
-        0,
-        57.3,
-        0
-      ],
-      "scale": 0.122,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_C_728",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.59,
-        0.0,
-        12.94
-      ],
-      "rotEuler": [
-        0,
-        219.3,
-        0
-      ],
-      "scale": 0.063,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_D_729",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.57,
-        0.0,
-        15.96
-      ],
-      "rotEuler": [
-        0,
-        167.6,
-        0
-      ],
-      "scale": 0.139,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_E_730",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.97,
-        0.0,
-        12.24
-      ],
-      "rotEuler": [
-        0,
-        55.3,
-        0
-      ],
-      "scale": 0.132,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_A_731",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.84,
-        0.0,
-        12.64
-      ],
-      "rotEuler": [
-        0,
-        332.7,
-        0
-      ],
-      "scale": 0.126,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_B_732",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.92,
-        0.0,
-        13.35
-      ],
-      "rotEuler": [
-        0,
-        101.8,
-        0
-      ],
-      "scale": 0.113,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_C_733",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -2.7,
-        0.0,
-        12.11
-      ],
-      "rotEuler": [
-        0,
-        175.5,
-        0
-      ],
-      "scale": 0.079,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_D_734",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        2.69,
-        0.0,
-        15.44
-      ],
-      "rotEuler": [
-        0,
-        32.7,
-        0
-      ],
-      "scale": 0.093,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "deck",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_skull_pile_5a_735",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "skull_pile_5a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -7.12,
-        0.0,
-        28.03
-      ],
-      "rotEuler": [
-        0,
-        226.2,
-        0
-      ],
-      "scale": 0.741,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_skull_pile_5a_736",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "skull_pile_5a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -5.81,
-        0.0,
-        26.56
-      ],
-      "rotEuler": [
-        0,
-        318.0,
-        0
-      ],
-      "scale": 0.628,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_skull_pile_5a_737",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "skull_pile_5a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -8.6,
-        0.0,
-        27.69
-      ],
-      "rotEuler": [
-        0,
-        217.2,
-        0
-      ],
-      "scale": 0.575,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_skull_pile_5a_738",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "skull_pile_5a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -9.02,
-        0.0,
-        24.05
-      ],
-      "rotEuler": [
-        0,
-        314.1,
-        0
-      ],
-      "scale": 0.564,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_skull_pile_5a_739",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "skull_pile_5a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        7.74,
-        0.0,
-        24.3
-      ],
-      "rotEuler": [
-        0,
-        254.5,
-        0
-      ],
-      "scale": 0.774,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_bone_fragments_7_740",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -9.09,
-        0.0,
-        23.74
-      ],
-      "rotEuler": [
-        0,
-        314.8,
-        0
-      ],
-      "scale": 0.84,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_bone_fragments_7_741",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -6.54,
-        0.0,
-        23.45
-      ],
-      "rotEuler": [
-        0,
-        72.7,
-        0
-      ],
-      "scale": 1.008,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_bone_fragments_7_742",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -6.48,
-        0.0,
-        26.66
-      ],
-      "rotEuler": [
-        0,
-        153.1,
-        0
-      ],
-      "scale": 1.087,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_bone_fragments_7_743",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        9.18,
-        0.0,
-        28.03
-      ],
-      "rotEuler": [
-        0,
-        56.0,
-        0
-      ],
-      "scale": 0.799,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_bone_fragments_7_744",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        8.16,
-        0.0,
-        28.27
-      ],
-      "rotEuler": [
-        0,
-        134.8,
-        0
-      ],
-      "scale": 1.076,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_bone_fragments_7_745",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        5.58,
-        0.0,
-        27.58
-      ],
-      "rotEuler": [
-        0,
-        332.3,
-        0
-      ],
-      "scale": 0.715,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_broken_oar_6_746",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "broken_oar_6",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -8.0,
-        0.0,
-        24.5
-      ],
-      "rotEuler": [
-        0,
-        181.9,
-        0
-      ],
-      "scale": 0.834,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_broken_oar_6_747",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "broken_oar_6",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        4.83,
-        0.0,
-        28.5
-      ],
-      "rotEuler": [
-        0,
-        87.1,
-        0
-      ],
-      "scale": 0.812,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_broken_oar_6_748",
-      "group": "WorldDetail",
-      "library": "props",
-      "asset": "broken_oar_6",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        7.84,
-        0.0,
-        28.0
-      ],
-      "rotEuler": [
-        0,
-        141.7,
-        0
-      ],
-      "scale": 0.997,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_A_749",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        5.4,
-        0.0,
-        26.77
-      ],
-      "rotEuler": [
-        0,
-        47.1,
-        0
-      ],
-      "scale": 0.113,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_B_750",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -0.03,
-        0.0,
-        24.56
-      ],
-      "rotEuler": [
-        0,
-        1.0,
-        0
-      ],
-      "scale": 0.06,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_C_751",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -6.11,
-        0.0,
-        28.6
-      ],
-      "rotEuler": [
-        0,
-        213.7,
-        0
-      ],
-      "scale": 0.141,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_D_752",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -8.7,
-        0.0,
-        24.59
-      ],
-      "rotEuler": [
-        0,
-        103.2,
-        0
-      ],
-      "scale": 0.143,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_E_753",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        2.88,
-        0.0,
-        24.63
-      ],
-      "rotEuler": [
-        0,
-        307.0,
-        0
-      ],
-      "scale": 0.078,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_A_754",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -4.57,
-        0.0,
-        26.85
-      ],
-      "rotEuler": [
-        0,
-        79.5,
-        0
-      ],
-      "scale": 0.095,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_B_755",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -6.43,
-        0.0,
-        28.37
-      ],
-      "rotEuler": [
-        0,
-        246.0,
-        0
-      ],
-      "scale": 0.078,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_C_756",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        7.79,
-        0.0,
-        25.52
-      ],
-      "rotEuler": [
-        0,
-        354.6,
-        0
-      ],
-      "scale": 0.157,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_D_757",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        6.87,
-        0.0,
-        26.85
-      ],
-      "rotEuler": [
-        0,
-        117.2,
-        0
-      ],
-      "scale": 0.088,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_E_758",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        6.82,
-        0.0,
-        28.51
-      ],
-      "rotEuler": [
-        0,
-        172.9,
-        0
-      ],
-      "scale": 0.145,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_A_759",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -7.8,
-        0.0,
-        24.82
-      ],
-      "rotEuler": [
-        0,
-        87.2,
-        0
-      ],
-      "scale": 0.112,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_B_760",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        8.24,
-        0.0,
-        23.94
-      ],
-      "rotEuler": [
-        0,
-        134.9,
-        0
-      ],
-      "scale": 0.147,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_C_761",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -7.34,
-        0.0,
-        25.56
-      ],
-      "rotEuler": [
-        0,
-        30.1,
-        0
-      ],
-      "scale": 0.137,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_D_762",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -3.95,
-        0.0,
-        24.1
-      ],
-      "rotEuler": [
-        0,
-        332.9,
-        0
-      ],
-      "scale": 0.077,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_E_763",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -3.76,
-        0.0,
-        27.57
-      ],
-      "rotEuler": [
-        0,
-        37.0,
-        0
-      ],
-      "scale": 0.156,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_A_764",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -1.37,
-        0.0,
-        23.86
-      ],
-      "rotEuler": [
-        0,
-        193.1,
-        0
-      ],
-      "scale": 0.109,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_B_765",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -0.56,
-        0.0,
-        23.49
-      ],
-      "rotEuler": [
-        0,
-        158.7,
-        0
-      ],
-      "scale": 0.126,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worlddetail_rock_boulder_C_766",
-      "group": "WorldDetail",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        2.57,
-        0.0,
-        28.27
-      ],
-      "rotEuler": [
-        0,
-        57.5,
-        0
-      ],
-      "scale": 0.093,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "detail",
-        "platform",
-        "pebble"
-      ]
-    },
-    {
-      "id": "worldbridge_post_capped_767",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -3.15,
-        0.0,
-        11.4
-      ],
-      "rotEuler": [
-        0,
-        180.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_wall_2m_768",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "wall_2m",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -3.15,
-        0.0,
-        12.65
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_post_capped_769",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -3.15,
-        0.0,
-        13.9
-      ],
-      "rotEuler": [
-        0,
-        0.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_wall_2m_770",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "wall_2m",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -3.15,
-        0.0,
-        15.15
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_post_capped_771",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -3.15,
-        0.0,
-        16.4
-      ],
-      "rotEuler": [
-        0,
-        180.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_wall_2m_772",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "wall_2m",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -3.15,
-        0.0,
-        17.65
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_post_capped_773",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -3.15,
-        0.0,
-        18.9
-      ],
-      "rotEuler": [
-        0,
-        0.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_wall_2m_broken_A_774",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "wall_2m_broken_A",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -3.15,
-        0.0,
-        20.15
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_post_capped_775",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -3.15,
-        0.0,
-        21.4
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_post_capped_776",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.15,
-        0.0,
-        11.4
-      ],
-      "rotEuler": [
-        0,
-        180.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_wall_2m_777",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "wall_2m",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.15,
-        0.0,
-        12.65
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_post_capped_778",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.15,
-        0.0,
-        13.9
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_wall_2m_779",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "wall_2m",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.15,
-        0.0,
-        15.15
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_post_capped_780",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.15,
-        0.0,
-        16.4
-      ],
-      "rotEuler": [
-        0,
-        180.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_wall_2m_broken_A_781",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "wall_2m_broken_A",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.15,
-        0.0,
-        17.65
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_post_capped_782",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.15,
-        0.0,
-        18.9
-      ],
-      "rotEuler": [
-        0,
-        180.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_wall_2m_783",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "wall_2m",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.15,
-        0.0,
-        20.15
-      ],
-      "rotEuler": [
-        0,
-        90.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
-    },
-    {
-      "id": "worldbridge_post_capped_784",
-      "group": "WorldBridge",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        3.15,
-        0.0,
-        21.4
-      ],
-      "rotEuler": [
-        0,
-        0.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "bridge",
-        "parapet",
-        "variant_gateApproach_flat"
-      ],
-      "disabled": true
+      "rationale": "flush flagstone paving: stone tops average y 0 (terrain lane is -0.05), x +-4 z 0..22.6 with a ragged broken edge fading into the ground, no lip. Authored in WORLD coordinates (bounds y about -0.4..0): ground=pivot means place with the model origin on pos, do NOT lift the bounds bottom to pos.y."
     }
   ],
   "scatter": [
@@ -22595,17 +18686,11 @@
   ],
   "variants": {
     "gateApproach": {
-      "default": "flat",
+      "default": "ground",
       "options": {
-        "stairs": {
-          "platformTop": 2.0,
-          "enableTag": "variant_gateApproach_stairs"
-        },
-        "flat": {
-          "platformTop": 0.3,
-          "enableTag": "variant_gateApproach_flat",
-          "disableTag": "variant_gateApproach_stairs",
-          "note": "lowered gate: set constants.platformTop 0.3 so every yBase platformTop prop drops with it; scene objects tied to the old 2.0 are listed in _agents/hades_gate_lowering.md"
+        "ground": {
+          "platformTop": 0.0,
+          "terrain": "terrain_ground.glb (no trench, lane y -0.05 visual, walk plane y 0)"
         }
       }
     }

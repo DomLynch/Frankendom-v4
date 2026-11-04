@@ -11,11 +11,11 @@ public class ADWounds : IADWounds
     readonly Dictionary<ADFighter, ADWoundSet> sets = new Dictionary<ADFighter, ADWoundSet>();
     static readonly Dictionary<ADSide, ADWoundsRuntime> bound = new Dictionary<ADSide, ADWoundsRuntime>();
 
-    public ADWounds() : this(ADWoundsData.Get()) { }
+    public ADWounds() : this(ADGoreGate.Wounds ? ADWoundsData.Get() : null) { }
     public ADWounds(ADWoundsCfg c) { cfg = c ?? new ADWoundsCfg(); }
 
     /// <summary>Hook a fighter's ADWoundsRuntime (gore) to its side.</summary>
-    public static void Bind(ADSide side, ADWoundsRuntime rt) { bound[side] = rt; }
+    public static void Bind(ADSide side, ADWoundsRuntime rt) { if (rt == null) bound.Remove(side); else bound[side] = rt; }
 
     ADWoundSet SetFor(ADFighter f)
     {
@@ -31,17 +31,20 @@ public class ADWounds : IADWounds
 
     public ADLoc RollLocation(ADMove move, IADRng rng)
     {
+        if (!ADGoreGate.Wounds) return ADLoc.Torso;   // disabled: neutral, no rng drawn
         return (ADLoc)ADWoundRules.RollLocation(cfg, move.ToString(), () => (float)rng.Next01());
     }
 
     public float DamageMul(ADFighter attacker, ADMove move)
     {
+        if (!ADGoreGate.Wounds) return 1f;            // disabled: no wound damage multiplier
         if (move != ADMove.Heavy && move != ADMove.Special) return 1f;
         return SetFor(attacker).HeavyDamageMul();
     }
 
     public void Apply(ADFighter victim, ADLoc loc, int damage, bool crit)
     {
+        if (!ADGoreGate.Wounds) return;               // disabled: no severity, no speed penalty, no gore
         var s = SetFor(victim);
         ADWoundsRuntime rt; bound.TryGetValue(victim.side, out rt);
         if (rt != null) rt.ApplyAt((int)loc, damage, crit); else s.Apply((int)loc, damage, crit);

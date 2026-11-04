@@ -29,7 +29,8 @@ public class ADUI : MonoBehaviour
         public float logW = 400f, logH = 210f;
         public int logMax = 200, slots = 3;
         public float bannerTime = 1.8f, toastTime = 1.6f, dragThreshold = 6f, planSeconds = 10f;
-        public bool allowDuplicates = true, requireFull = true;
+        public bool allowDuplicates = true, requireFull = true, freeCursor = true, showWounds, showSpecial;
+        public float minLayoutWidth = 1620f;
         public string keyConfirm = "Return", keyClear = "Backspace", keyRestart = "R", defaultStance = "Neutral";
         public string tRound = "ROUND {0}", tPlanHint = "Choose a stance and queue {0} moves. The enemy plan is hidden.", tWaiting = "Awaiting the clash...", tResolve = "The clash", tReplay = "Replay", tNext = "Round over",
             tConfirm = "CONFIRM", tClear = "CLEAR", tRestart = "RESTART", tNextOpp = "NEXT OPPONENT", tWin = "VICTORY", tLose = "YOU DIED",
@@ -40,7 +41,8 @@ public class ADUI : MonoBehaviour
         public MoveDef[] moves;
         public OutcomeDef[] outcomes;
     }
-    [Serializable] class Root { public UICfg ui; }
+    [Serializable] class RulesFlags { public bool enableWounds, enableSpecials; }
+    [Serializable] class Root { public UICfg ui; public RulesFlags rules; }
 
     class BeatView { public string a, b, outA, outB, reason; public int dmgToA, dmgToB; public bool crit, filled; }
     struct Side { public float hp, hpMax; public bool set, specialUsed; public int arm, leg, torso, head; }
@@ -59,7 +61,7 @@ public class ADUI : MonoBehaviour
     public void SetSpecialUsed(ADSide side, bool used) { var s = sides[(int)side]; s.specialUsed = used; sides[(int)side] = s; }
     public void SetWounds(ADSide side, int arm, int leg, int torso, int head) { var s = sides[(int)side]; s.arm = arm; s.leg = leg; s.torso = torso; s.head = head; sides[(int)side] = s; }
     public void SetFighter(ADFighter f)
-    { SetHp(f.side, f.hp, f.hpMax); SetSpecialUsed(f.side, f.specialUsed); SetWounds(f.side, f.Wound(ADLoc.Arm), f.Wound(ADLoc.Leg), f.Wound(ADLoc.Torso), f.Wound(ADLoc.Head)); }
+    { if (f == null) return; SetHp(f.side, f.hp, f.hpMax); SetSpecialUsed(f.side, f.specialUsed); SetWounds(f.side, f.Wound(ADLoc.Arm), f.Wound(ADLoc.Leg), f.Wound(ADLoc.Torso), f.Wound(ADLoc.Head)); }
 
     public void BeginRound(int round, float planSeconds = -1f)
     {
@@ -71,7 +73,7 @@ public class ADUI : MonoBehaviour
     }
     public void BeginResolve() { phase = Phase.Resolve; ClearBeats(); beatCursor = 0; }
     public void ShowBeat(ADBeat r)
-    { ShowBeatRaw(r.a.ToString(), r.b.ToString(), r.outA.ToString(), r.outB.ToString(), r.dmgToA, r.dmgToB, r.crit, r.reason); }
+    { if (r == null) return; ShowBeatRaw(r.a.ToString(), r.b.ToString(), r.outA.ToString(), r.outB.ToString(), r.dmgToA, r.dmgToB, r.crit, r.reason); }
     public void ShowBeatRaw(string moveA, string moveB, string outA, string outB, int dmgToA, int dmgToB, bool crit, string reason)
     {
         if (beatCursor >= beats.Length) return;
@@ -101,12 +103,14 @@ public class ADUI : MonoBehaviour
     string toast, bannerStr; float toastT = -99f, bannerT = -99f;
     List<string> log = new List<string>(); Vector2 logScroll; bool logScrollToEnd;
     Drag drag = new Drag { hand = -1, slot = -1 };
+    HashSet<KeyCode> heldKeys = new HashSet<KeyCode>(); int logOffset;
     Dictionary<KeyCode, Action> keys = new Dictionary<KeyCode, Action>();
     Dictionary<string, Color> col = new Dictionary<string, Color>();
     GUIStyle txt;
-    float S { get { return Screen.height / cfg.refHeight; } }
+    // Layout is authored for 1920x1080. Scale by height; a window too narrow for it (4:3, small 16:10) scales by width instead.
+    float S { get { return Mathf.Max(0.1f, Mathf.Min(Screen.height / cfg.refHeight, Screen.width / cfg.minLayoutWidth)); } }
     float W { get { return Screen.width / S; } }
-    float H { get { return cfg.refHeight; } }
+    float H { get { return Screen.height / S; } }
 
     // ---------------- load ----------------
     public static UICfg LoadCfg()
@@ -123,27 +127,72 @@ public class ADUI : MonoBehaviour
                 string text = p.StartsWith("@") ? p.Substring(1) : (File.Exists(p) ? File.ReadAllText(p) : null);
                 if (text == null) continue;
                 var r = JsonUtility.FromJson<Root>(text);
-                if (r != null && r.ui != null && r.ui.moves != null && r.ui.moves.Length > 0) return r.ui;
+                if (r != null && r.ui != null && r.ui.moves != null && r.ui.moves.Length > 0)
+                { if (r.rules != null) { r.ui.showWounds = r.ui.showWounds || r.rules.enableWounds; r.ui.showSpecial = r.ui.showSpecial || r.rules.enableSpecials; } return r.ui; }
             }
             catch (Exception e) { Debug.LogWarning("ADUI: cannot read " + p + ": " + e.Message); }
         }
-        Debug.LogError("ADUI: no 'ui' block with moves found in duel_rules.json");
-        return new UICfg { stances = new StanceDef[0], moves = new MoveDef[0], outcomes = new OutcomeDef[0] };
+        Debug.LogWarning("ADUI: no 'ui' block in duel_rules.json, using code defaults");
+        return DefaultCfg();
     }
+
+    static UICfg DefaultCfg()
+    {
+        var c = new UICfg();
+        c.woundColors = new[] { "#2E2E33FF", "#6B5A2AFF", "#9A4A1AFF", "#8A1C1CFF" };
+        c.stances = new[] {
+            new StanceDef { id = "Aggressive", label = "Aggressive", key = "Q", tip = "+25% damage dealt, +20% taken." },
+            new StanceDef { id = "Defensive", label = "Defensive", key = "W", tip = "-20% damage dealt, -25% taken." },
+            new StanceDef { id = "Neutral", label = "Neutral", key = "E", tip = "No modifiers." },
+            new StanceDef { id = "Trickster", label = "Trickster", key = "R", tip = "Gamble: bonus or penalty." } };
+        string[] ids = { "Light", "Slash", "Stab", "Heavy", "Kick", "Guard", "Roll", "Sidestep" };
+        c.moves = new MoveDef[ids.Length];
+        for (int i = 0; i < ids.Length; i++) c.moves[i] = new MoveDef { id = ids[i], label = ids[i], key = (i + 1).ToString(), tip = "", sub = "" };
+        c.outcomes = new OutcomeDef[0];
+        return c;
+    }
+
+    // Free, visible cursor while the alpha UI is up; the previous state is restored when it goes away.
+    bool cursorTaken; CursorLockMode prevLock; bool prevVisible;
+    void TakeCursor()
+    {
+        if (!cfg.freeCursor || Application.isBatchMode) return;
+        if (!cursorTaken) { prevLock = Cursor.lockState; prevVisible = Cursor.visible; cursorTaken = true; }
+        if (Cursor.lockState != CursorLockMode.None) Cursor.lockState = CursorLockMode.None;
+        if (!Cursor.visible) Cursor.visible = true;
+    }
+    void ReleaseCursor()
+    {
+        if (!cursorTaken) return;
+        cursorTaken = false; Cursor.lockState = prevLock; Cursor.visible = prevVisible;
+    }
+    void OnDisable() { ReleaseCursor(); }
 
     void Awake()
     {
         Instance = this;
         if (cfg == null) cfg = LoadCfg();
+        if (cfg.stances == null) cfg.stances = new StanceDef[0];
+        if (cfg.moves == null) cfg.moves = new MoveDef[0];
+        if (cfg.outcomes == null) cfg.outcomes = new OutcomeDef[0];
+        if (cfg.minLayoutWidth < 800f) cfg.minLayoutWidth = 1620f;
+        if (cfg.refHeight < 100f) cfg.refHeight = 1080f;
+        if (!cfg.showSpecial)
+        {
+            var ml = new List<MoveDef>();
+            foreach (var md in cfg.moves) if (!md.special && !string.Equals(md.id, "Special", StringComparison.OrdinalIgnoreCase)) ml.Add(md);
+            cfg.moves = ml.ToArray();
+        }
         queue = new int[Mathf.Max(1, cfg.slots)]; for (int i = 0; i < queue.Length; i++) queue[i] = -1;
         beats = new BeatView[queue.Length]; ClearBeats();
         foreach (var s in cfg.stances) { var id = s.id; BindKey(s.key, () => SetStance(ParseStance(id))); }
         for (int i = 0; i < cfg.moves.Length; i++) { int mi = i; BindKey(cfg.moves[i].key, () => HandClick(mi)); }
         BindKey(cfg.keyConfirm, Confirm); BindKey(cfg.keyClear, ClearQueue);
-        BindKey(cfg.keyRestart, () => { });
     }
-    void OnDestroy() { if (Instance == this) Instance = null; }
-    void BindKey(string name, Action a) { KeyCode k; if (!string.IsNullOrEmpty(name) && Enum.TryParse(name, true, out k)) keys[k] = a; }
+    void OnDestroy() { ReleaseCursor(); if (Instance == this) Instance = null; }
+    static string KeyName(string n) { return !string.IsNullOrEmpty(n) && n.Length == 1 && char.IsDigit(n[0]) ? "Alpha" + n : n; }   // "1" would parse as KeyCode 1, not Alpha1
+    static bool IsKey(KeyCode k, string name) { name = KeyName(name); KeyCode c; return !string.IsNullOrEmpty(name) && Enum.TryParse(name, true, out c) && c == k; }
+    void BindKey(string name, Action a) { name = KeyName(name); KeyCode k; if (!string.IsNullOrEmpty(name) && Enum.TryParse(name, true, out k)) keys[k] = a; }
     void ClearBeats() { for (int i = 0; i < beats.Length; i++) beats[i] = new BeatView(); }
     static ADStance ParseStance(string s) { return (ADStance)Enum.Parse(typeof(ADStance), s, true); }
     static ADMove ParseMove(string s) { return (ADMove)Enum.Parse(typeof(ADMove), s, true); }
@@ -157,9 +206,9 @@ public class ADUI : MonoBehaviour
 
     void Update()
     {
+        TakeCursor();
         if (phase == Phase.Plan)
         {
-            foreach (var kv in keys) if (Input.GetKeyDown(kv.Key)) kv.Value();
             if (cfg.planSeconds > 0f && frozenTimer < 0f && Time.unscaledTime >= planEnd)
             {
                 Toast(cfg.tTimeout);
@@ -167,7 +216,16 @@ public class ADUI : MonoBehaviour
                 else { phase = Phase.Waiting; if (OnPlanConfirmed != null) OnPlanConfirmed(null); }
             }
         }
-        else if (phase == Phase.End && Input.GetKeyDown(KeyCode.R) && cfg.keyRestart == "R") EndAction();
+    }
+
+    // Keys come from IMGUI key events, so this works with the old Input Manager, the new Input System or both.
+    void HandleKey(KeyCode k)
+    {
+        if (phase == Phase.End)
+        { if (IsKey(k, cfg.keyRestart) || k == KeyCode.Return || k == KeyCode.KeypadEnter || k == KeyCode.Space) EndAction(); return; }
+        if (phase != Phase.Plan) return;
+        if (k == KeyCode.KeypadEnter) { Confirm(); return; }
+        Action a; if (keys.TryGetValue(k, out a)) a();
     }
 
     // ---------------- actions ----------------
@@ -280,19 +338,34 @@ public class ADUI : MonoBehaviour
     void OnGUI()
     {
         if (cfg == null || cfg.moves == null) return;
-        GUI.matrix = Matrix4x4.Scale(new Vector3(S, S, 1f));
+        GUI.depth = -1000;                                   // on top of GameHUD
         var e = Event.current;
-        if (e.type == EventType.Repaint) Draw(e.mousePosition);
-        else HandleEvent(e);
-        GUI.matrix = Matrix4x4.identity;
+        float sc = S;
+        Vector2 mouse = e.mousePosition / sc;                // raw position (identity matrix) in layout units: no reliance on GUI.matrix unclipping
+        if (e.type == EventType.Repaint)
+        {
+            GUI.matrix = Matrix4x4.Scale(new Vector3(sc, sc, 1f));
+            Draw(mouse);
+            GUI.matrix = Matrix4x4.identity;
+        }
+        else HandleEvent(e, mouse);
     }
 
-    void HandleEvent(Event e)
+    void HandleEvent(Event e, Vector2 m)
     {
-        Vector2 m = e.mousePosition;
+        if (e.type == EventType.KeyDown && e.keyCode != KeyCode.None && !heldKeys.Contains(e.keyCode)) { heldKeys.Add(e.keyCode); HandleKey(e.keyCode); e.Use(); return; }
+        if (e.type == EventType.KeyUp) { heldKeys.Remove(e.keyCode); return; }
+        if (e.type == EventType.ScrollWheel && LogRect().Contains(m)) { logOffset = Mathf.Max(0, logOffset - (e.delta.y > 0 ? 1 : -1)); e.Use(); return; }
         if (phase == Phase.End)
         { if (e.type == EventType.MouseDown && e.button == 0 && EndButton().Contains(m)) { EndAction(); e.Use(); } return; }
         if (phase != Phase.Plan) return;
+        if (e.type == EventType.MouseDown && e.button == 1)
+        {
+            int sl = -1; for (int i = 0; i < queue.Length; i++) if (SlotRect(i).Contains(m)) sl = i;
+            if (sl >= 0) queue[sl] = -1;
+            else { for (int i = queue.Length - 1; i >= 0; i--) if (queue[i] >= 0) { queue[i] = -1; break; } }   // right click elsewhere: undo the last queued move
+            drag = new Drag { hand = -1, slot = -1 }; e.Use(); return;
+        }
         if (e.type == EventType.MouseDown && e.button == 0)
         {
             for (int i = 0; i < cfg.stances.Length; i++) if (StanceRect(i).Contains(m)) { SetStance(ParseStance(cfg.stances[i].id)); e.Use(); return; }
@@ -355,10 +428,10 @@ public class ADUI : MonoBehaviour
         Txt(new Rect(r.x + 12, r.y + 4, 300, 26), name, 20, C(cfg.colText), TextAnchor.MiddleLeft, true);
         Fill(new Rect(r.x + 12, r.y + 30, 56, 2), C(cfg.colCrimson));
         if (!b.set) return;
-        float wf = 44f, x = r.x + 12, w = r.width - 24 - wf - 8;
+        float wf = cfg.showWounds ? 44f : 0f, x = r.x + 12, w = r.width - 24 - wf - (cfg.showWounds ? 8f : 0f);
         Bar(new Rect(x, r.y + 38, w, 26), b.hp, b.hpMax, C(cfg.colHp), cfg.tHp + " " + Mathf.CeilToInt(b.hp) + " / " + Mathf.CeilToInt(b.hpMax));
-        Txt(new Rect(x, r.y + 66, w, 14), !b.specialUsed ? cfg.tSpecial : "", 11, C(cfg.colEmber), TextAnchor.MiddleLeft);
-        DrawWoundFigure(new Rect(r.xMax - 12 - wf, r.y + 12, wf, 64), b);
+        if (cfg.showSpecial) Txt(new Rect(x, r.y + 66, w, 14), !b.specialUsed ? cfg.tSpecial : "", 11, C(cfg.colEmber), TextAnchor.MiddleLeft);
+        if (cfg.showWounds) DrawWoundFigure(new Rect(r.xMax - 12 - wf, r.y + 12, wf, 64), b);
     }
 
     void DrawBanner()
@@ -403,7 +476,7 @@ public class ADUI : MonoBehaviour
             var r = BeatRect(i); var bv = beats[i]; Panel(r, i == curBeat);
             Txt(new Rect(r.x + 6, r.y + 2, 30, 16), (i + 1).ToString(), 13, C(cfg.colDim), TextAnchor.MiddleLeft);
             if (!bv.filled) { Txt(new Rect(r.x, r.y + 50, r.width, 30), "-", 28, C(cfg.colDisabled)); continue; }
-            if (bv.crit) Txt(new Rect(r.x, r.y + 2, r.width - 8, 16), cfg.tCrit, 12, C(cfg.colEmber), TextAnchor.MiddleRight, true);
+            if (bv.crit && cfg.showWounds) Txt(new Rect(r.x, r.y + 2, r.width - 8, 16), cfg.tCrit, 12, C(cfg.colEmber), TextAnchor.MiddleRight, true);
             float q = r.width * 0.25f;
             Txt(new Rect(r.x + q - 70, r.y + 18, 140, 20), cfg.tYou + ": " + MoveLabel(bv.a), 14, C(cfg.colText), TextAnchor.MiddleCenter, true);
             Txt(new Rect(r.xMax - q - 70, r.y + 18, 140, 20), cfg.tHim + ": " + MoveLabel(bv.b), 14, C(cfg.colText), TextAnchor.MiddleCenter, true);
@@ -422,11 +495,11 @@ public class ADUI : MonoBehaviour
         var r = LogRect(); Panel(r);
         Txt(new Rect(r.x + 10, r.y + 3, 100, 18), cfg.tLog, 12, C(cfg.colDim), TextAnchor.MiddleLeft);
         var view = new Rect(r.x + 6, r.y + 22, r.width - 12, r.height - 28);
-        float lh = 20f, contentH = Mathf.Max(view.height, log.Count * lh);
-        if (logScrollToEnd) { logScroll.y = contentH; logScrollToEnd = false; }
-        logScroll = GUI.BeginScrollView(view, logScroll, new Rect(0, 0, view.width - 18, contentH));
-        for (int i = 0; i < log.Count; i++) Txt(new Rect(2, i * lh, view.width - 22, lh), log[i], 14, i == log.Count - 1 ? C(cfg.colText) : C(cfg.colDim), TextAnchor.MiddleLeft);
-        GUI.EndScrollView();
+        float lh = 20f; int vis = Mathf.Max(1, (int)(view.height / lh));
+        if (logScrollToEnd) { logOffset = 0; logScrollToEnd = false; }
+        logOffset = Mathf.Clamp(logOffset, 0, Mathf.Max(0, log.Count - vis));
+        int last = log.Count - 1 - logOffset, first = Mathf.Max(0, last - vis + 1);
+        for (int i = first; i <= last; i++) Txt(new Rect(view.x + 2, view.y + (i - first) * lh, view.width - 4, lh), log[i], 14, i == log.Count - 1 ? C(cfg.colText) : C(cfg.colDim), TextAnchor.MiddleLeft);
     }
 
     void DrawPlan(Vector2 m)
@@ -496,6 +569,6 @@ public class ADUI : MonoBehaviour
         Txt(new Rect(0, H * 0.5f - 90f, W, 120f), won ? cfg.tWin : cfg.tLose, 96, won ? C(cfg.colGood) : C(cfg.colBad), TextAnchor.MiddleCenter, true);
         Fill(new Rect(W * 0.5f - 120f, H * 0.5f + 40f, 240f, 2f), C(cfg.colCrimson));
         var r = EndButton(); Fill(r, C(cfg.colSel)); Frame(r, C(cfg.colEmber), 2f);
-        Txt(r, won ? cfg.tNextOpp : cfg.tRestart + "  [" + cfg.keyRestart + "]", 24, C(cfg.colText), TextAnchor.MiddleCenter, true);
+        Txt(r, won ? cfg.tNextOpp + "  [Enter]" : cfg.tRestart + "  [" + cfg.keyRestart + "]", 24, C(cfg.colText), TextAnchor.MiddleCenter, true);
     }
 }

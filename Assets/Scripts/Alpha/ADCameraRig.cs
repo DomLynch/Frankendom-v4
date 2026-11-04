@@ -37,6 +37,7 @@ public class ADCameraRig : MonoBehaviour
     public void Begin(Transform draculaT, Transform pitbornT)
     {
         if (cam == null) cam = GetComponent<Camera>();
+        if (cam == null) return;   // a rig on a non-camera object does nothing
         dracula = draculaT; pitborn = pitbornT;
         if (!Active)
         {
@@ -89,7 +90,7 @@ public class ADCameraRig : MonoBehaviour
 
     static Vector3 Flat(Vector3 v) { v.y = 0f; return v; }
 
-    void Pose(ADShot s, out Vector3 pos, out Quaternion rot, out float fov)
+    void Pose(ADShot s, out Vector3 pos, out Quaternion rot, out float fov, out Vector3 lookPt, out Vector3 focusPt)
     {
         Vector3 ap = actor.position, tp = target.position;
         Vector3 axis = Flat(tp - ap); if (axis.sqrMagnitude < 1e-4f) axis = Flat(actor.forward); if (axis.sqrMagnitude < 1e-4f) axis = Vector3.forward; axis.Normalize();
@@ -102,7 +103,7 @@ public class ADCameraRig : MonoBehaviour
         pos.y = f.y + s.height;
         Vector3 look = Vector3.Lerp(f, tp, Mathf.Clamp01(s.lookAhead)); look.y = f.y + s.lookHeight;
         rot = Quaternion.LookRotation(look - pos, Vector3.up);
-        fov = s.fov;
+        fov = s.fov; lookPt = look; focusPt = new Vector3(f.x, f.y + Mathf.Max(0.8f, s.lookHeight), f.z);
     }
 
     void LateUpdate()
@@ -110,7 +111,7 @@ public class ADCameraRig : MonoBehaviour
         if (!Active || cam == null) return;
         if (shot == null || actor == null || target == null) return;
         float dt = Time.unscaledDeltaTime;
-        Pose(shot, out Vector3 p, out Quaternion r, out float fv);
+        Pose(shot, out Vector3 p, out Quaternion r, out float fv, out Vector3 lookPt, out Vector3 focusPt);
         if (blendT < 1f)
         {
             blendT = blendDur <= 0f ? 1f : Mathf.Min(1f, blendT + dt / blendDur);
@@ -122,10 +123,44 @@ public class ADCameraRig : MonoBehaviour
             shakeLeft -= dt; float w = Mathf.Clamp01(shakeLeft / 0.25f);
             p += new Vector3(Mathf.Sin(Time.unscaledTime * 90f), Mathf.Cos(Time.unscaledTime * 77f), Mathf.Sin(Time.unscaledTime * 63f)) * shakeAmp * w;
         }
+        // never inside geometry, never below the floor (same approach as CameraRig.cs: spherecast from the look target to the camera, camera_collision.json)
+        Vector3 safe = Constrain(p, focusPt);
+        if ((safe - p).sqrMagnitude > 1e-4f) { p = safe; Vector3 ld = lookPt - p; if (ld.sqrMagnitude > 1e-4f) r = Quaternion.LookRotation(ld, Vector3.up); }
         transform.SetPositionAndRotation(p, r); cam.fieldOfView = fv;
     }
 
     void Update() { ADTime.Tick(); }
+
+    // ---- camera collision + floor (data: camera_collision.json, the same file CameraRig.cs reads) ----
+    [System.Serializable] class ColRow { public bool enabled = true; public float radius = 0.35f, minDistFromTarget = 1.2f, minGroundY = 0f, minHeightAboveGround = 0.6f; public int[] ignoreLayers = { 8, 9 }; }
+    ColRow col; Vector3 lastGood; bool haveGood;
+    static bool Finite(Vector3 v) { return !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z) || float.IsInfinity(v.x) || float.IsInfinity(v.y) || float.IsInfinity(v.z)); }
+    void LoadCol()
+    {
+        col = new ColRow();
+        foreach (var path in new[] { Application.streamingAssetsPath + "/camera_collision.json", Application.dataPath + "/Data/camera_collision.json" })
+        {
+            try { if (!System.IO.File.Exists(path)) continue; var c = JsonUtility.FromJson<ColRow>(System.IO.File.ReadAllText(path)); if (c != null) col = c; break; } catch { }
+        }
+    }
+    Vector3 Constrain(Vector3 p, Vector3 from)
+    {
+        if (col == null) LoadCol();
+        if (!Finite(p)) return haveGood ? lastGood : transform.position;
+        if (col.enabled)
+        {
+            Vector3 d = p - from; float len = d.magnitude;
+            if (len > 0.01f)
+            {
+                int mask = ~0; if (col.ignoreLayers != null) foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
+                if (Physics.SphereCast(from, col.radius, d / len, out var hit, len, mask, QueryTriggerInteraction.Ignore))
+                    p = from + d / len * Mathf.Max(col.minDistFromTarget, hit.distance);
+            }
+        }
+        float floorY = col.minGroundY + col.minHeightAboveGround; if (p.y < floorY) p.y = floorY;
+        lastGood = p; haveGood = true;
+        return p;
+    }
 }
 
 // Time.timeScale dips on unscaled time. Several requests merge: the lowest scale wins while any is running.

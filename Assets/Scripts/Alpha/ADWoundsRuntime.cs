@@ -201,7 +201,7 @@ public class ADWoundsRuntime : MonoBehaviour
     public ADWoundsCfg Cfg { get { return cfg; } }
     public Transform ModelRoot { get { EnsureInit(); return modelRoot; } }
 
-    public static ADWoundsRuntime For(GameObject fighter) { var r = fighter.GetComponent<ADWoundsRuntime>(); return r != null ? r : fighter.AddComponent<ADWoundsRuntime>(); }
+    public static ADWoundsRuntime For(GameObject fighter) { if (!ADGoreGate.Gore || fighter == null) return null; var r = fighter.GetComponent<ADWoundsRuntime>(); return r != null ? r : fighter.AddComponent<ADWoundsRuntime>(); }
 
     void Awake() { EnsureInit(); }
     void EnsureInit()
@@ -246,6 +246,7 @@ public class ADWoundsRuntime : MonoBehaviour
     /// Returns the location int (0 Arm, 1 Leg, 2 Torso, 3 Head); dmgOut is the damage after the location multiplier (lane A may use it or ignore it).</summary>
     public int RegisterHit(string move, float dmg, bool crit, out float dmgOut)
     {
+        if (!ADGoreGate.Wounds) { dmgOut = dmg; return 2; }
         EnsureInit();
         int loc = ADWoundRules.RollLocation(cfg, move, Rnd);
         dmgOut = dmg * ADWoundRules.LocationDamageMul(cfg, loc);
@@ -256,9 +257,10 @@ public class ADWoundsRuntime : MonoBehaviour
     /// <summary>Register a hit at a location the rules already chose (ADBeat.locA / locB).</summary>
     public bool ApplyAt(int loc, float dmg, bool crit)
     {
+        if (!ADGoreGate.Wounds) return false;
         EnsureInit();
         bool up = wounds.Apply(loc, dmg, crit);
-        if (!cfg.gore.enabled) return up;
+        if (!cfg.gore.enabled || !ADGoreGate.Gore) return up;
         if (up)
         {
             int s = wounds.severity[loc];
@@ -270,7 +272,7 @@ public class ADWoundsRuntime : MonoBehaviour
     }
 
     /// <summary>Splash `count` more decals on a location (finishers call this at the cut).</summary>
-    public void Splash(int loc, int count) { EnsureInit(); AddDecals(loc, count, 3); }
+    public void Splash(int loc, int count) { if (!ADGoreGate.Gore) return; EnsureInit(); AddDecals(loc, count, 3); }
 
     ADGoreLoc GoreLoc(int loc)
     {
@@ -320,6 +322,7 @@ public class ADWoundsRuntime : MonoBehaviour
     /// <summary>Clear all gore and wounds (rematch / next opponent).</summary>
     public void ResetGore()
     {
+        if (!ADGoreGate.Wounds && !ADGoreGate.Gore) return;
         EnsureInit();
         for (int l = 0; l < decalObjs.Length; l++) { for (int i = 0; i < decalObjs[l].Count; i++) if (decalObjs[l][i] != null) Destroy(decalObjs[l][i]); decalObjs[l].Clear(); }
         decals.Clear(); wounds.Reset();
@@ -328,6 +331,7 @@ public class ADWoundsRuntime : MonoBehaviour
     /// <summary>Spray a short wound burst at a location (e.g. on the big hit). Uses the woundSpray block.</summary>
     public void WoundSpray(int loc, Vector3 awayDir)
     {
+        if (!ADGoreGate.Gore) return;
         EnsureInit();
         var gl = GoreLoc(loc); var bone = gl != null ? FindBone(gl.bones) : null; if (bone == null) return;
         ADGoreFx.Spray(bone, bone.position, awayDir + Vector3.up * 0.3f, cfg.gore.woundSpray);

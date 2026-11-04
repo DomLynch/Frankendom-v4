@@ -1,773 +1,1631 @@
 {
-  "version": 1,
-  "seed": 20261104,
-  "rules": {
-    "planSeconds": 10.0,
-    "fallbackBeatSeconds": 1.6,
-    "replaySeconds": 2.5,
-    "resultSeconds": 0.5,
-    "autoPlayDracula": false,
-    "beats": 3,
-    "repeatPlanOnTimeout": true,
-    "hpDracula": 80,
-    "hpPitborn": 120,
-    "usedSpecialFallback": "Guard",
-    "damageVariance": 0.1,
-    "minDamage": 1,
-    "staggerTierPenalty": 1.5,
-    "tierEpsilon": 0.01,
-    "clashDamageMul": 0.0,
-    "tradeOnAttackVsAttack": true,
-    "riposteChance": 0.5,
-    "riposteDamage": 8.0,
-    "woundMinDamage": 5,
-    "maxSeverity": 3,
-    "armHeavyMulPerSeverity": 0.15,
-    "legTierPerSeverity": 0.5,
-    "defaultPlan": { "stance": "Neutral", "moves": ["Light", "Light", "Guard"] },
-    "moves": [
-      { "id": "Light",    "attack": true,  "damage": 7,  "tier": 2, "staggers": false },
-      { "id": "Slash",    "attack": true,  "damage": 10, "tier": 3, "staggers": false },
-      { "id": "Stab",     "attack": true,  "damage": 9,  "tier": 1, "staggers": false },
-      { "id": "Heavy",    "attack": true,  "damage": 20, "tier": 5, "staggers": false },
-      { "id": "Kick",     "attack": true,  "damage": 5,  "tier": 3, "staggers": true },
-      { "id": "Guard",    "attack": false, "damage": 0,  "tier": 0, "staggers": false },
-      { "id": "Roll",     "attack": false, "damage": 0,  "tier": 0, "staggers": false },
-      { "id": "Sidestep", "attack": false, "damage": 0,  "tier": 0, "staggers": false },
-      { "id": "Special",  "attack": true,  "damage": 20, "tier": 5, "staggers": false }
-    ],
-    "fallbackWounds": [
-      { "move": "Light",   "arm": 0.20, "leg": 0.20, "torso": 0.50, "head": 0.10 },
-      { "move": "Slash",   "arm": 0.30, "leg": 0.20, "torso": 0.40, "head": 0.10 },
-      { "move": "Stab",    "arm": 0.10, "leg": 0.10, "torso": 0.60, "head": 0.20 },
-      { "move": "Heavy",   "arm": 0.30, "leg": 0.20, "torso": 0.30, "head": 0.20 },
-      { "move": "Kick",    "arm": 0.05, "leg": 0.45, "torso": 0.50, "head": 0.00 },
-      { "move": "Special", "arm": 0.20, "leg": 0.20, "torso": 0.40, "head": 0.20 }
-    ]
+ "version": 1,
+ "seed": 20261104,
+ "rules": {
+  "planSeconds": 10.0,
+  "fallbackBeatSeconds": 2.34,
+  "replaySeconds": 2.5,
+  "resultSeconds": 0.5,
+  "autoPlayDracula": false,
+  "aiDifficulty": "normal",
+  "autoConfirmSeconds": 1.2,
+  "autoRestartSeconds": 0.0,
+  "beats": 3,
+  "enableWounds": false,
+  "enableGore": false,
+  "enableCritCam": false,
+  "enableSpecials": false,
+  "enableFinishers": false,
+  "alphaTimeoutSeconds": 300.0,
+  "autoEndScreenSeconds": 3.0,
+  "reviveWaitSeconds": 0.4,
+  "bootWaitSeconds": 10.0,
+  "repeatPlanOnTimeout": true,
+  "hpDracula": 80,
+  "hpPitborn": 120,
+  "usedSpecialFallback": "Guard",
+  "damageVariance": 0.1,
+  "minDamage": 1,
+  "staggerTierPenalty": 1.5,
+  "tierEpsilon": 0.01,
+  "clashDamageMul": 0.0,
+  "tradeOnAttackVsAttack": true,
+  "riposteChance": 0.5,
+  "riposteDamage": 8.0,
+  "woundMinDamage": 5,
+  "maxSeverity": 3,
+  "armHeavyMulPerSeverity": 0.15,
+  "legTierPerSeverity": 0.5,
+  "defaultPlan": {
+   "stance": "Neutral",
+   "moves": [
+    "Light",
+    "Light",
+    "Guard"
+   ]
   },
-  "matrix": {
-    "rows": [
-      { "a": "Stab", "b": "Heavy", "outA": "Hit", "outB": "Interrupted", "aHits": 1, "bHits": 0, "voidOther": true, "reason": "{a} interrupted {b}" },
-      { "a": "Guard", "b": "Light,Slash", "outA": "Parried", "outB": "Blocked", "aHits": 0, "bHits": 0, "riposteA": true, "reason": "{a} beat {b} (parry)" },
-      { "a": "Guard", "b": "Heavy,Special", "outA": "GuardBreak", "outB": "Hit", "aHits": 0, "bHits": 1, "staggerA": true, "reason": "{b} broke {a}" },
-      { "a": "Guard", "b": "Kick", "outA": "Staggered", "outB": "Hit", "aHits": 0, "bHits": 1, "staggerA": true, "reason": "{b} staggered {a}" },
-      { "a": "Guard", "b": "Stab", "outA": "Parried", "outB": "Blocked", "aHits": 0, "bHits": 0, "reason": "{a} stopped {b}" },
-      { "a": "Roll", "b": "Heavy,Special", "outA": "Dodged", "outB": "Whiff", "aHits": 0, "bHits": 0, "staggerB": true, "reason": "{a} dodged {b}" },
-      { "a": "Sidestep", "b": "Heavy", "outA": "Dodged", "outB": "Whiff", "aHits": 0, "bHits": 0, "staggerB": true, "reason": "{a} dodged {b}" },
-      { "a": "Sidestep", "b": "Special", "outA": "Struck", "outB": "Hit", "aHits": 0, "bHits": 1, "reason": "{b} caught {a}" },
-      { "a": "Roll,Sidestep", "b": "Stab", "outA": "Dodged", "outB": "Whiff", "aHits": 0, "bHits": 0, "reason": "{a} dodged {b}" },
-      { "a": "Roll", "b": "Slash", "outA": "Dodged", "outB": "Whiff", "aHits": 0, "bHits": 0, "reason": "{a} dodged {b}" },
-      { "a": "Sidestep", "b": "Slash", "outA": "Struck", "outB": "Hit", "aHits": 0, "bHits": 1, "reason": "{b} caught {a}" },
-      { "a": "Sidestep", "b": "Kick", "outA": "Dodged", "outB": "Whiff", "aHits": 0, "bHits": 0, "reason": "{a} dodged {b}" },
-      { "a": "Roll", "b": "Kick", "outA": "Struck", "outB": "Hit", "aHits": 0, "bHits": 1, "reason": "{b} caught {a}" },
-      { "a": "Roll,Sidestep", "b": "Light", "outA": "Struck", "outB": "Hit", "aHits": 0, "bHits": 1, "reason": "{b} was too quick for {a}" },
-      { "a": "Guard,Roll,Sidestep", "b": "Guard,Roll,Sidestep", "outA": "Whiff", "outB": "Whiff", "aHits": 0, "bHits": 0, "reason": "nothing landed" }
+  "moves": [
+   {
+    "id": "Light",
+    "attack": true,
+    "damage": 7,
+    "tier": 2,
+    "staggers": false
+   },
+   {
+    "id": "Slash",
+    "attack": true,
+    "damage": 10,
+    "tier": 3,
+    "staggers": false
+   },
+   {
+    "id": "Stab",
+    "attack": true,
+    "damage": 9,
+    "tier": 1,
+    "staggers": false
+   },
+   {
+    "id": "Heavy",
+    "attack": true,
+    "damage": 20,
+    "tier": 5,
+    "staggers": false
+   },
+   {
+    "id": "Kick",
+    "attack": true,
+    "damage": 5,
+    "tier": 3,
+    "staggers": true
+   },
+   {
+    "id": "Guard",
+    "attack": false,
+    "damage": 0,
+    "tier": 0,
+    "staggers": false
+   },
+   {
+    "id": "Roll",
+    "attack": false,
+    "damage": 0,
+    "tier": 0,
+    "staggers": false
+   },
+   {
+    "id": "Sidestep",
+    "attack": false,
+    "damage": 0,
+    "tier": 0,
+    "staggers": false
+   },
+   {
+    "id": "Special",
+    "attack": true,
+    "damage": 20,
+    "tier": 5,
+    "staggers": false
+   }
+  ],
+  "fallbackWounds": [
+   {
+    "move": "Light",
+    "arm": 0.2,
+    "leg": 0.2,
+    "torso": 0.5,
+    "head": 0.1
+   },
+   {
+    "move": "Slash",
+    "arm": 0.3,
+    "leg": 0.2,
+    "torso": 0.4,
+    "head": 0.1
+   },
+   {
+    "move": "Stab",
+    "arm": 0.1,
+    "leg": 0.1,
+    "torso": 0.6,
+    "head": 0.2
+   },
+   {
+    "move": "Heavy",
+    "arm": 0.3,
+    "leg": 0.2,
+    "torso": 0.3,
+    "head": 0.2
+   },
+   {
+    "move": "Kick",
+    "arm": 0.05,
+    "leg": 0.45,
+    "torso": 0.5,
+    "head": 0.0
+   },
+   {
+    "move": "Special",
+    "arm": 0.2,
+    "leg": 0.2,
+    "torso": 0.4,
+    "head": 0.2
+   }
+  ]
+ },
+ "matrix": {
+  "rows": [
+   {
+    "a": "Stab",
+    "b": "Heavy",
+    "outA": "Hit",
+    "outB": "Interrupted",
+    "aHits": 1,
+    "bHits": 0,
+    "voidOther": true,
+    "reason": "{a} interrupted {b}"
+   },
+   {
+    "a": "Guard",
+    "b": "Light,Slash",
+    "outA": "Parried",
+    "outB": "Blocked",
+    "aHits": 0,
+    "bHits": 0,
+    "riposteA": true,
+    "reason": "{a} beat {b} (parry)"
+   },
+   {
+    "a": "Guard",
+    "b": "Heavy,Special",
+    "outA": "GuardBreak",
+    "outB": "Hit",
+    "aHits": 0,
+    "bHits": 1,
+    "staggerA": true,
+    "reason": "{b} broke {a}"
+   },
+   {
+    "a": "Guard",
+    "b": "Kick",
+    "outA": "Staggered",
+    "outB": "Hit",
+    "aHits": 0,
+    "bHits": 1,
+    "staggerA": true,
+    "reason": "{b} staggered {a}"
+   },
+   {
+    "a": "Guard",
+    "b": "Stab",
+    "outA": "Parried",
+    "outB": "Blocked",
+    "aHits": 0,
+    "bHits": 0,
+    "reason": "{a} stopped {b}"
+   },
+   {
+    "a": "Roll",
+    "b": "Heavy,Special",
+    "outA": "Dodged",
+    "outB": "Whiff",
+    "aHits": 0,
+    "bHits": 0,
+    "staggerB": true,
+    "reason": "{a} dodged {b}"
+   },
+   {
+    "a": "Sidestep",
+    "b": "Heavy",
+    "outA": "Dodged",
+    "outB": "Whiff",
+    "aHits": 0,
+    "bHits": 0,
+    "staggerB": true,
+    "reason": "{a} dodged {b}"
+   },
+   {
+    "a": "Sidestep",
+    "b": "Special",
+    "outA": "Struck",
+    "outB": "Hit",
+    "aHits": 0,
+    "bHits": 1,
+    "reason": "{b} caught {a}"
+   },
+   {
+    "a": "Roll,Sidestep",
+    "b": "Stab",
+    "outA": "Dodged",
+    "outB": "Whiff",
+    "aHits": 0,
+    "bHits": 0,
+    "reason": "{a} dodged {b}"
+   },
+   {
+    "a": "Roll",
+    "b": "Slash",
+    "outA": "Dodged",
+    "outB": "Whiff",
+    "aHits": 0,
+    "bHits": 0,
+    "reason": "{a} dodged {b}"
+   },
+   {
+    "a": "Sidestep",
+    "b": "Slash",
+    "outA": "Struck",
+    "outB": "Hit",
+    "aHits": 0,
+    "bHits": 1,
+    "reason": "{b} caught {a}"
+   },
+   {
+    "a": "Sidestep",
+    "b": "Kick",
+    "outA": "Dodged",
+    "outB": "Whiff",
+    "aHits": 0,
+    "bHits": 0,
+    "reason": "{a} dodged {b}"
+   },
+   {
+    "a": "Roll",
+    "b": "Kick",
+    "outA": "Struck",
+    "outB": "Hit",
+    "aHits": 0,
+    "bHits": 1,
+    "reason": "{b} caught {a}"
+   },
+   {
+    "a": "Roll,Sidestep",
+    "b": "Light",
+    "outA": "Struck",
+    "outB": "Hit",
+    "aHits": 0,
+    "bHits": 1,
+    "reason": "{b} was too quick for {a}"
+   },
+   {
+    "a": "Guard,Roll,Sidestep",
+    "b": "Guard,Roll,Sidestep",
+    "outA": "Whiff",
+    "outB": "Whiff",
+    "aHits": 0,
+    "bHits": 0,
+    "reason": "nothing landed"
+   }
+  ]
+ },
+ "stances": {
+  "rows": [
+   {
+    "id": "Aggressive",
+    "dealtMul": 1.25,
+    "takenMul": 1.2,
+    "speedDelta": 0
+   },
+   {
+    "id": "Defensive",
+    "dealtMul": 0.8,
+    "takenMul": 0.75,
+    "speedDelta": 0
+   },
+   {
+    "id": "Neutral",
+    "dealtMul": 1.0,
+    "takenMul": 1.0,
+    "speedDelta": 0
+   },
+   {
+    "id": "Trickster",
+    "dealtMul": 1.0,
+    "takenMul": 1.0,
+    "speedDelta": 0,
+    "chances": [
+     {
+      "chance": 0.25,
+      "dealtMul": 1.3,
+      "takenMul": 1.0,
+      "label": "Trickster: +30% dealt"
+     },
+     {
+      "chance": 0.25,
+      "dealtMul": 1.0,
+      "takenMul": 1.3,
+      "label": "Trickster: +30% taken"
+     },
+     {
+      "chance": 0.5,
+      "dealtMul": 1.0,
+      "takenMul": 1.0,
+      "label": "Trickster: nothing"
+     }
     ]
+   }
+  ]
+ },
+ "crit": {
+  "chance": 0.08,
+  "mul": 1.75,
+  "locationHead": 0.0
+ },
+ "special": {
+  "dracula": {
+   "damage": 16,
+   "tier": 5,
+   "healFraction": 0.6,
+   "knockdown": false,
+   "id": "blood_drain",
+   "side": "Dracula",
+   "usesPerFight": 1,
+   "speedTierName": "slow",
+   "unblockable": false,
+   "guardMode": "reduced",
+   "guardReduce": 0.5,
+   "avoidedBy": [
+    "Roll"
+   ],
+   "critAllowed": true,
+   "hitLocation": "Torso",
+   "area": false,
+   "staggerBeats": 1,
+   "windupClip": "special_skullcrack",
+   "strikeClip": "special_skullcrack",
+   "victimClip": "hit_heavy",
+   "getUpClip": "get_up",
+   "cue": "blood_drain",
+   "cameraHint": "closeup",
+   "slowMo": 0.3,
+   "slowMoSeconds": 0.6,
+   "_about": "Bite/grab drain. Heals healFraction of damage dealt. Clips are existing Animator states (Dracula.controller); swap to a dedicated clip later by editing windupClip/strikeClip only."
   },
-  "stances": {
-    "rows": [
-      { "id": "Aggressive", "dealtMul": 1.25, "takenMul": 1.20, "speedDelta": 0 },
-      { "id": "Defensive",  "dealtMul": 0.80, "takenMul": 0.75, "speedDelta": 0 },
-      { "id": "Neutral",    "dealtMul": 1.0,  "takenMul": 1.0,  "speedDelta": 0 },
-      { "id": "Trickster",  "dealtMul": 1.0,  "takenMul": 1.0,  "speedDelta": 0,
-        "chances": [
-          { "chance": 0.25, "dealtMul": 1.30, "takenMul": 1.0,  "label": "Trickster: +30% dealt" },
-          { "chance": 0.25, "dealtMul": 1.0,  "takenMul": 1.30, "label": "Trickster: +30% taken" },
-          { "chance": 0.50, "dealtMul": 1.0,  "takenMul": 1.0,  "label": "Trickster: nothing" }
-        ] }
-    ]
-  },
-  "crit": { "chance": 0.08, "mul": 1.75, "locationHead": 0.0 },
-  "special": {
-    "dracula": {
-      "damage": 16, "tier": 5, "healFraction": 0.6, "knockdown": false,
-      "id": "blood_drain", "side": "Dracula", "usesPerFight": 1, "speedTierName": "slow",
-      "unblockable": false, "guardMode": "reduced", "guardReduce": 0.5, "avoidedBy": ["Roll"],
-      "critAllowed": true, "hitLocation": "Torso", "area": false, "staggerBeats": 1,
-      "windupClip": "special_skullcrack", "strikeClip": "special_skullcrack", "victimClip": "hit_heavy", "getUpClip": "get_up",
-      "cue": "blood_drain", "cameraHint": "closeup", "slowMo": 0.3, "slowMoSeconds": 0.6,
-      "_about": "Bite/grab drain. Heals healFraction of damage dealt. Clips are existing Animator states (Dracula.controller); swap to a dedicated clip later by editing windupClip/strikeClip only."
-    },
-    "pitborn": {
-      "damage": 26, "tier": 5, "healFraction": 0.0, "knockdown": true,
-      "id": "ground_slam", "side": "Pitborn", "usesPerFight": 1, "speedTierName": "slow",
-      "unblockable": false, "guardMode": "reduced", "guardReduce": 0.5, "avoidedBy": ["Roll"],
-      "critAllowed": true, "hitLocation": "any", "area": true, "staggerBeats": 0,
-      "windupClip": "heavy_windup_hold", "strikeClip": "heavy_release", "victimClip": "knockdown", "getUpClip": "get_up",
-      "cue": "ground_slam", "cameraHint": "wide_low", "slowMo": 0.25, "slowMoSeconds": 0.7,
-      "_about": "Heavy overhead slam: area (catches Sidestep too), knockdown, slow tier, guard only halves it, Roll avoids it. Uses the Pitborn heavy overhead clips."
-    }
-  },  "wounds": {
+  "pitborn": {
+   "damage": 26,
+   "tier": 5,
+   "healFraction": 0.0,
+   "knockdown": true,
+   "id": "ground_slam",
+   "side": "Pitborn",
+   "usesPerFight": 1,
+   "speedTierName": "slow",
+   "unblockable": false,
+   "guardMode": "reduced",
+   "guardReduce": 0.5,
+   "avoidedBy": [
+    "Roll"
+   ],
+   "critAllowed": true,
+   "hitLocation": "any",
+   "area": true,
+   "staggerBeats": 0,
+   "windupClip": "heavy_windup_hold",
+   "strikeClip": "heavy_release",
+   "victimClip": "knockdown",
+   "getUpClip": "get_up",
+   "cue": "ground_slam",
+   "cameraHint": "wide_low",
+   "slowMo": 0.25,
+   "slowMoSeconds": 0.7,
+   "_about": "Heavy overhead slam: area (catches Sidestep too), knockdown, slow tier, guard only halves it, Roll avoids it. Uses the Pitborn heavy overhead clips."
+  }
+ },
+ "wounds": {
   "seed": 4242,
   "hitWeights": [
-    { "move": "light",   "arm": 2.0, "leg": 1.0, "torso": 2.0, "head": 0.5 },
-    { "move": "slash",   "arm": 2.0, "leg": 1.0, "torso": 2.0, "head": 1.0 },
-    { "move": "stab",    "arm": 1.0, "leg": 0.5, "torso": 3.0, "head": 1.0 },
-    { "move": "heavy",   "arm": 1.0, "leg": 1.0, "torso": 2.0, "head": 2.0 },
-    { "move": "kick",    "arm": 0.2, "leg": 3.0, "torso": 1.0, "head": 0.2 },
-    { "move": "special", "arm": 1.0, "leg": 1.0, "torso": 3.0, "head": 1.0 },
-    { "move": "*",       "arm": 1.0, "leg": 1.0, "torso": 2.0, "head": 0.5 }
+   {
+    "move": "light",
+    "arm": 2.0,
+    "leg": 1.0,
+    "torso": 2.0,
+    "head": 0.5
+   },
+   {
+    "move": "slash",
+    "arm": 2.0,
+    "leg": 1.0,
+    "torso": 2.0,
+    "head": 1.0
+   },
+   {
+    "move": "stab",
+    "arm": 1.0,
+    "leg": 0.5,
+    "torso": 3.0,
+    "head": 1.0
+   },
+   {
+    "move": "heavy",
+    "arm": 1.0,
+    "leg": 1.0,
+    "torso": 2.0,
+    "head": 2.0
+   },
+   {
+    "move": "kick",
+    "arm": 0.2,
+    "leg": 3.0,
+    "torso": 1.0,
+    "head": 0.2
+   },
+   {
+    "move": "special",
+    "arm": 1.0,
+    "leg": 1.0,
+    "torso": 3.0,
+    "head": 1.0
+   },
+   {
+    "move": "*",
+    "arm": 1.0,
+    "leg": 1.0,
+    "torso": 2.0,
+    "head": 0.5
+   }
   ],
   "locations": [
-    { "name": "arm",   "damageMul": 1.0, "thresholds": [8, 18, 32] },
-    { "name": "leg",   "damageMul": 1.0, "thresholds": [8, 18, 32] },
-    { "name": "torso", "damageMul": 1.0, "thresholds": [10, 22, 40] },
-    { "name": "head",  "damageMul": 1.0, "thresholds": [10, 20, 30] }
+   {
+    "name": "arm",
+    "damageMul": 1.0,
+    "thresholds": [
+     8,
+     18,
+     32
+    ]
+   },
+   {
+    "name": "leg",
+    "damageMul": 1.0,
+    "thresholds": [
+     8,
+     18,
+     32
+    ]
+   },
+   {
+    "name": "torso",
+    "damageMul": 1.0,
+    "thresholds": [
+     10,
+     22,
+     40
+    ]
+   },
+   {
+    "name": "head",
+    "damageMul": 1.0,
+    "thresholds": [
+     10,
+     20,
+     30
+    ]
+   }
   ],
   "effects": {
-    "heavyMulByArmSeverity": [1.0, 0.9, 0.75, 0.55],
-    "speedPenaltyByLegSeverity": [0.0, 0.5, 1.0, 1.5],
-    "critWoundMul": 2.0
+   "heavyMulByArmSeverity": [
+    1.0,
+    0.9,
+    0.75,
+    0.55
+   ],
+   "speedPenaltyByLegSeverity": [
+    0.0,
+    0.5,
+    1.0,
+    1.5
+   ],
+   "critWoundMul": 2.0
   },
   "gore": {
-    "enabled": true,
-    "maxDecalsPerLoc": 14,
-    "seed": 99,
-    "texSize": 64,
-    "decalsBySeverity": [0, 3, 6, 10],
-    "critMul": 1.6,
-    "sizeM": [0.07, 0.16],
-    "color": [0.30, 0.02, 0.02, 1.0],
-    "quadLift": 0.004,
-    "locs": [
-      { "name": "arm",   "bones": ["leftarm", "rightarm", "leftforearm", "rightforearm"], "radiusM": 0.05, "frontArcDeg": 360, "along": [0.2, 0.8] },
-      { "name": "leg",   "bones": ["leftupleg", "rightupleg", "leftleg", "rightleg"],     "radiusM": 0.07, "frontArcDeg": 360, "along": [0.2, 0.8] },
-      { "name": "torso", "bones": ["spine1", "spine2", "spine"],                          "radiusM": 0.14, "frontArcDeg": 200, "along": [0.2, 0.8] },
-      { "name": "head",  "bones": ["head"],                                               "radiusM": 0.09, "frontArcDeg": 220, "along": [0.3, 0.8] }
+   "enabled": true,
+   "maxDecalsPerLoc": 14,
+   "seed": 99,
+   "texSize": 64,
+   "decalsBySeverity": [
+    0,
+    3,
+    6,
+    10
+   ],
+   "critMul": 1.6,
+   "sizeM": [
+    0.07,
+    0.16
+   ],
+   "color": [
+    0.3,
+    0.02,
+    0.02,
+    1.0
+   ],
+   "quadLift": 0.004,
+   "locs": [
+    {
+     "name": "arm",
+     "bones": [
+      "leftarm",
+      "rightarm",
+      "leftforearm",
+      "rightforearm"
+     ],
+     "radiusM": 0.05,
+     "frontArcDeg": 360,
+     "along": [
+      0.2,
+      0.8
+     ]
+    },
+    {
+     "name": "leg",
+     "bones": [
+      "leftupleg",
+      "rightupleg",
+      "leftleg",
+      "rightleg"
+     ],
+     "radiusM": 0.07,
+     "frontArcDeg": 360,
+     "along": [
+      0.2,
+      0.8
+     ]
+    },
+    {
+     "name": "torso",
+     "bones": [
+      "spine1",
+      "spine2",
+      "spine"
+     ],
+     "radiusM": 0.14,
+     "frontArcDeg": 200,
+     "along": [
+      0.2,
+      0.8
+     ]
+    },
+    {
+     "name": "head",
+     "bones": [
+      "head"
+     ],
+     "radiusM": 0.09,
+     "frontArcDeg": 220,
+     "along": [
+      0.3,
+      0.8
+     ]
+    }
+   ],
+   "woundSpray": {
+    "seconds": 0.35,
+    "rate": 60,
+    "coneDeg": 22,
+    "gravity": 8,
+    "speed": [
+     1.5,
+     3.0
     ],
-    "woundSpray": { "seconds": 0.35, "rate": 60, "coneDeg": 22, "gravity": 8, "speed": [1.5, 3.0], "size": [0.02, 0.045], "life": [0.3, 0.6] },
-    "neckSpray":  { "seconds": 1.4,  "rate": 90, "coneDeg": 16, "gravity": 8, "speed": [2.5, 4.5], "size": [0.03, 0.06],  "life": [0.5, 0.9] }
+    "size": [
+     0.02,
+     0.045
+    ],
+    "life": [
+     0.3,
+     0.6
+    ]
+   },
+   "neckSpray": {
+    "seconds": 1.4,
+    "rate": 90,
+    "coneDeg": 16,
+    "gravity": 8,
+    "speed": [
+     2.5,
+     4.5
+    ],
+    "size": [
+     0.03,
+     0.06
+    ],
+    "life": [
+     0.5,
+     0.9
+    ]
+   }
   },
   "cuts": {
-    "enabled": true,
-    "seed": 4101,
-    "chance": 1.0,
-    "pityAfter": 2,
-    "noRepeat": true,
-    "weightMin": 0.5,
-    "pieceImpulseScale": 0.2,
-    "weldM": 0.0002,
-    "capColor": [0.435, 0.114, 0.114, 1.0],
-    "innerColor": [0.165, 0.043, 0.043, 1.0],
-    "units": [
-      { "id": "head",        "kind": "subtree", "bones": ["head"],        "parentBones": ["neck"],   "loc": 3, "massKg": 5.0,  "colliderRadiusM": 0.11, "jetSeconds": 1.6 },
-      { "id": "head_split",  "kind": "split",   "bones": ["head"],        "parentBones": ["neck"],   "loc": 3, "openDeg": 16, "splitAxis": "x", "splitOffsetM": 0.0, "jetSeconds": 1.6 },
-      { "id": "torso_waist", "kind": "subtree", "bones": ["spine"],       "parentBones": ["hips"],   "loc": 2, "massKg": 30.0, "colliderRadiusM": 0.0, "jetSeconds": 1.8 },
-      { "id": "belly_open",  "kind": "wound",   "bones": ["spine1"],      "parentBones": ["spine"],  "loc": 2, "jetSeconds": 1.2 },
-      { "id": "arm_right",   "kind": "subtree", "bones": ["rightarm"],    "parentBones": ["spine2"], "loc": 0, "massKg": 3.5,  "colliderRadiusM": 0.0, "jetSeconds": 1.2 },
-      { "id": "arm_left",    "kind": "subtree", "bones": ["leftarm"],     "parentBones": ["spine2"], "loc": 0, "massKg": 3.5,  "colliderRadiusM": 0.0, "jetSeconds": 1.2 },
-      { "id": "leg_right",   "kind": "subtree", "bones": ["rightupleg"],  "parentBones": ["hips"],   "loc": 1, "massKg": 9.0,  "colliderRadiusM": 0.0, "jetSeconds": 1.2 },
-      { "id": "leg_left",    "kind": "subtree", "bones": ["leftupleg"],   "parentBones": ["hips"],   "loc": 1, "massKg": 9.0,  "colliderRadiusM": 0.0, "jetSeconds": 1.2 }
-    ],
-    "finishers": [
-      { "id": "decapitation", "unit": "head",        "also": [],                                  "atS": 0, "alsoAtS": 0,    "push": 1.0,  "pieceImpulse": 70 },
-      { "id": "splitCrown",   "unit": "head_split",  "also": [],                                  "atS": 0, "alsoAtS": 0,    "push": 1.0,  "pieceImpulse": 0 },
-      { "id": "runThrough",   "unit": "belly_open",  "also": [],                                  "atS": 0, "alsoAtS": 0,    "push": 0.25, "pieceImpulse": 0 },
-      { "id": "opened",       "unit": "torso_waist", "also": [],                                  "atS": 0, "alsoAtS": 0,    "push": 1.0,  "pieceImpulse": 40 },
-      { "id": "dismember",    "unit": "arm_right",   "also": ["arm_left", "leg_right"],           "atS": 0, "alsoAtS": 0.35, "push": 1.0,  "pieceImpulse": 55 },
-      { "id": "hamstringCut", "unit": "leg_right",   "also": ["leg_left"],                        "atS": 0, "alsoAtS": 0.3,  "push": 0.6,  "pieceImpulse": 35 }
-    ],
-    "bindings": [
-      { "weapons": ["sword"], "pool": [ { "id": "decapitation", "weight": 3 }, { "id": "splitCrown", "weight": 2 }, { "id": "runThrough", "weight": 1 }, { "id": "opened", "weight": 1 } ] },
-      { "weapons": ["mace"],  "pool": [ { "id": "splitCrown", "weight": 3 }, { "id": "decapitation", "weight": 1 }, { "id": "opened", "weight": 2 }, { "id": "dismember", "weight": 1 } ] },
-      { "weapons": ["*"],     "pool": [ { "id": "decapitation", "weight": 2 }, { "id": "splitCrown", "weight": 2 }, { "id": "opened", "weight": 1 } ] }
-    ]
-  }
-},
-  "ai": {
-    "earlyRounds": 2, "lowHpFrac": 0.4, "lowHpDefensiveStanceMul": 2.0, "repeatMoveMul": 0.5, "specialWeight": 2.0,
-    "stances": [
-      { "id": "Aggressive", "w": 3.0 }, { "id": "Defensive", "w": 2.0 }, { "id": "Neutral", "w": 3.0 }, { "id": "Trickster", "w": 1.5 }
-    ],
-    "moves": [
-      { "id": "Light", "w": 3.0 }, { "id": "Slash", "w": 3.0 }, { "id": "Stab", "w": 2.0 }, { "id": "Heavy", "w": 2.5 },
-      { "id": "Kick", "w": 1.5 }, { "id": "Guard", "w": 2.0 }, { "id": "Roll", "w": 1.0 }, { "id": "Sidestep", "w": 1.0 },
-      { "id": "Special", "w": 2.0 }
-    ],
-    "difficulty": [
-      { "id": "easy",   "attackMul": 0.8, "defendMul": 1.2, "temperature": 1.4, "specialMinRound": 4, "specialLowHpFrac": 0.25, "guardLowHpMul": 1.5, "heavyEarlyMul": 1.2 },
-      { "id": "normal", "attackMul": 1.0, "defendMul": 1.0, "temperature": 1.0, "specialMinRound": 3, "specialLowHpFrac": 0.35, "guardLowHpMul": 2.0, "heavyEarlyMul": 1.5 },
-      { "id": "hard",   "attackMul": 1.2, "defendMul": 1.0, "temperature": 0.8, "specialMinRound": 2, "specialLowHpFrac": 0.45, "guardLowHpMul": 2.5, "heavyEarlyMul": 1.8 }
-    ]
-  },
-  "camera": {
-    "planShot": "plan",
-    "startShot": "wide34",
-    "endShot": "plan",
-    "critShot": "crit",
-    "killShot": "kill",
-    "shots": [
-      {
-        "id": "plan",
-        "focus": "actor",
-        "angleDeg": 0,
-        "side": 1,
-        "dist": 3.2,
-        "height": 1.95,
-        "lookHeight": 1.45,
-        "shoulder": 0.75,
-        "lookAhead": 0.85,
-        "fov": 40,
-        "blend": 0.6
-      },
-      {
-        "id": "wide34",
-        "focus": "mid",
-        "angleDeg": 42,
-        "side": 0,
-        "dist": 6.6,
-        "height": 2.1,
-        "lookHeight": 1.1,
-        "shoulder": 0,
-        "lookAhead": 0,
-        "fov": 36,
-        "blend": 0.45
-      },
-      {
-        "id": "impact",
-        "focus": "mid",
-        "angleDeg": 68,
-        "side": 0,
-        "dist": 3.3,
-        "height": 1.5,
-        "lookHeight": 1.2,
-        "shoulder": 0,
-        "lookAhead": 0.3,
-        "fov": 34,
-        "blend": 0.06,
-        "shake": 0.02
-      },
-      {
-        "id": "block",
-        "focus": "target",
-        "angleDeg": 55,
-        "side": 0,
-        "dist": 3.0,
-        "height": 1.6,
-        "lookHeight": 1.3,
-        "shoulder": 0,
-        "lookAhead": 0.2,
-        "fov": 33,
-        "blend": 0.06,
-        "shake": 0.03
-      },
-      {
-        "id": "parry",
-        "focus": "mid",
-        "angleDeg": 90,
-        "side": 0,
-        "dist": 2.8,
-        "height": 1.4,
-        "lookHeight": 1.3,
-        "shoulder": 0,
-        "lookAhead": 0,
-        "fov": 32,
-        "blend": 0.05,
-        "shake": 0.03
-      },
-      {
-        "id": "dodge",
-        "focus": "mid",
-        "angleDeg": 30,
-        "side": 0,
-        "dist": 6.0,
-        "height": 1.8,
-        "lookHeight": 1.0,
-        "shoulder": 0,
-        "lookAhead": 0,
-        "fov": 38,
-        "blend": 0.2
-      },
-      {
-        "id": "reverse",
-        "focus": "target",
-        "angleDeg": 180,
-        "side": 1,
-        "dist": 3.2,
-        "height": 1.9,
-        "lookHeight": 1.4,
-        "shoulder": 0.7,
-        "lookAhead": 0.85,
-        "fov": 40,
-        "blend": 0.3
-      },
-      {
-        "id": "crit",
-        "focus": "target",
-        "angleDeg": 80,
-        "side": 0,
-        "dist": 2.2,
-        "height": 1.35,
-        "lookHeight": 1.3,
-        "shoulder": 0,
-        "lookAhead": 0.15,
-        "fov": 28,
-        "blend": 0.04,
-        "shake": 0.06
-      },
-      {
-        "id": "kill",
-        "focus": "target",
-        "angleDeg": 70,
-        "side": 0,
-        "dist": 2.6,
-        "height": 1.2,
-        "lookHeight": 1.1,
-        "shoulder": 0,
-        "lookAhead": 0.1,
-        "fov": 30,
-        "blend": 0.05,
-        "shake": 0.05
-      }
-    ],
-    "outcomeShots": [
-      {
-        "kind": "Land",
-        "shot": "impact",
-        "critShot": "crit"
-      },
-      {
-        "kind": "Riposte",
-        "shot": "impact",
-        "critShot": "crit"
-      },
-      {
-        "kind": "GuardBreak",
-        "shot": "block",
-        "critShot": "crit"
-      },
-      {
-        "kind": "Blocked",
-        "shot": "block"
-      },
-      {
-        "kind": "Parried",
-        "shot": "parry"
-      },
-      {
-        "kind": "Dodged",
-        "shot": "dodge"
-      },
-      {
-        "kind": "Clash",
-        "shot": "parry"
-      }
-    ],
-    "critSlow": {
-      "t": 0,
-      "rel": "contact",
-      "scale": 0.2,
-      "duration": 0.75,
-      "easeIn": 0.06,
-      "easeOut": 0.3
+   "enabled": true,
+   "seed": 4101,
+   "chance": 1.0,
+   "pityAfter": 2,
+   "noRepeat": true,
+   "weightMin": 0.5,
+   "pieceImpulseScale": 0.2,
+   "weldM": 0.0002,
+   "capColor": [
+    0.435,
+    0.114,
+    0.114,
+    1.0
+   ],
+   "innerColor": [
+    0.165,
+    0.043,
+    0.043,
+    1.0
+   ],
+   "units": [
+    {
+     "id": "head",
+     "kind": "subtree",
+     "bones": [
+      "head"
+     ],
+     "parentBones": [
+      "neck"
+     ],
+     "loc": 3,
+     "massKg": 5.0,
+     "colliderRadiusM": 0.11,
+     "jetSeconds": 1.6,
+     "torqueMul": 0.7,
+     "upBias": 0.55,
+     "scatter": 0.35,
+     "angularDrag": 0.4,
+     "lifeSeconds": 0,
+     "extraDecals": 10
     },
-    "parrySlow": {
-      "t": 0,
-      "rel": "contact",
-      "scale": 0.35,
-      "duration": 0.4,
-      "easeIn": 0.04,
-      "easeOut": 0.2
+    {
+     "id": "head_split",
+     "kind": "split",
+     "bones": [
+      "head"
+     ],
+     "parentBones": [
+      "neck"
+     ],
+     "loc": 3,
+     "openDeg": 16,
+     "splitAxis": "x",
+     "splitOffsetM": 0.0,
+     "jetSeconds": 1.6,
+     "extraDecals": 12
     },
-    "playback": {
-      "engageDist": 2.1,
-      "repositionSeconds": 1.6,
-      "repositionTolerance": 0.18,
-      "snapTolerance": 0.8,
-      "leadTicks": 8,
-      "tradeGapTicks": 5,
-      "clashGapTicks": 0,
-      "blockLeadTicks": 22,
-      "parryLeadTicks": 4,
-      "dodgeLeadExtra": 3,
-      "parryStaggerTicks": 55,
-      "blockKnockTicks": 12,
-      "guardBreakTicks": 60,
-      "hitStaggerLight": 22,
-      "hitStaggerHeavy": 40,
-      "critStaggerExtra": 20,
-      "clashStaggerTicks": 40,
-      "kickStaggerTicks": 45,
-      "whiffStaggerTicks": 30,
-      "riposteDelayTicks": 14,
-      "knockLight": 0.5,
-      "knockHeavy": 1.1,
-      "knockCrit": 1.6,
-      "settleSeconds": 0.35,
-      "maxBeatSeconds": 7,
-      "critSlowLeadTicks": 10,
-      "healthPad": 100000,
-      "heavyMove": "heavy_overhead",
-      "lightRightMove": "light_right",
-      "lightLeftMove": "light_left",
-      "stabMove": "thrust",
-      "kickMove": "kick",
-      "special1Move": "special1",
-      "special2Move": "special2",
-      "slashSide": "left",
-      "hitLightClip": "hit_light_front",
-      "hitBackClip": "hit_light_back",
-      "hitHeavyClip": "hit_heavy",
-      "staggerClip": "stagger_loop",
-      "useFinishers": true
+    {
+     "id": "torso_waist",
+     "kind": "subtree",
+     "bones": [
+      "spine"
+     ],
+     "parentBones": [
+      "hips"
+     ],
+     "loc": 2,
+     "massKg": 30.0,
+     "colliderRadiusM": 0.0,
+     "jetSeconds": 1.8,
+     "torqueMul": 0.4,
+     "upBias": 0.3,
+     "scatter": 0.2,
+     "angularDrag": 0.8,
+     "lifeSeconds": 0,
+     "extraDecals": 14
+    },
+    {
+     "id": "belly_open",
+     "kind": "wound",
+     "bones": [
+      "spine1"
+     ],
+     "parentBones": [
+      "spine"
+     ],
+     "loc": 2,
+     "jetSeconds": 1.2,
+     "extraDecals": 10
+    },
+    {
+     "id": "arm_right",
+     "kind": "subtree",
+     "bones": [
+      "rightarm"
+     ],
+     "parentBones": [
+      "spine2"
+     ],
+     "loc": 0,
+     "massKg": 3.5,
+     "colliderRadiusM": 0.0,
+     "jetSeconds": 1.2,
+     "torqueMul": 0.5,
+     "upBias": 0.45,
+     "scatter": 0.3,
+     "angularDrag": 0.5,
+     "lifeSeconds": 0,
+     "extraDecals": 6
+    },
+    {
+     "id": "arm_left",
+     "kind": "subtree",
+     "bones": [
+      "leftarm"
+     ],
+     "parentBones": [
+      "spine2"
+     ],
+     "loc": 0,
+     "massKg": 3.5,
+     "colliderRadiusM": 0.0,
+     "jetSeconds": 1.2,
+     "torqueMul": 0.5,
+     "upBias": 0.45,
+     "scatter": 0.3,
+     "angularDrag": 0.5,
+     "lifeSeconds": 0,
+     "extraDecals": 6
+    },
+    {
+     "id": "leg_right",
+     "kind": "subtree",
+     "bones": [
+      "rightupleg"
+     ],
+     "parentBones": [
+      "hips"
+     ],
+     "loc": 1,
+     "massKg": 9.0,
+     "colliderRadiusM": 0.0,
+     "jetSeconds": 1.2,
+     "torqueMul": 0.5,
+     "upBias": 0.45,
+     "scatter": 0.3,
+     "angularDrag": 0.5,
+     "lifeSeconds": 0,
+     "extraDecals": 6
+    },
+    {
+     "id": "leg_left",
+     "kind": "subtree",
+     "bones": [
+      "leftupleg"
+     ],
+     "parentBones": [
+      "hips"
+     ],
+     "loc": 1,
+     "massKg": 9.0,
+     "colliderRadiusM": 0.0,
+     "jetSeconds": 1.2,
+     "torqueMul": 0.5,
+     "upBias": 0.45,
+     "scatter": 0.3,
+     "angularDrag": 0.5,
+     "lifeSeconds": 0,
+     "extraDecals": 6
+    },
+    {
+     "id": "wound_torso",
+     "kind": "wound",
+     "bones": [
+      "spine1"
+     ],
+     "parentBones": [
+      "spine"
+     ],
+     "loc": 2,
+     "jetSeconds": 1.0,
+     "extraDecals": 8
     }
-  },
-  "ui": {},
-  "finishers": {
-    "enabled": true,
-    "rotation": "sequence",
-    "seed": 20261104,
-    "noImmediateRepeat": true,
-    "playerWeapon": "sword",
-    "pitbornWeapon": "maul",
-    "fallbackEntry": "",
-    "entries": [
+   ],
+   "finishers": [
+    {
+     "id": "decapitation",
+     "unit": "head",
+     "also": [],
+     "atS": 0,
+     "alsoAtS": 0,
+     "push": 1.0,
+     "pieceImpulse": 70
+    },
+    {
+     "id": "splitCrown",
+     "unit": "head_split",
+     "also": [],
+     "atS": 0,
+     "alsoAtS": 0,
+     "push": 1.0,
+     "pieceImpulse": 0
+    },
+    {
+     "id": "runThrough",
+     "unit": "belly_open",
+     "also": [],
+     "atS": 0,
+     "alsoAtS": 0,
+     "push": 0.25,
+     "pieceImpulse": 0
+    },
+    {
+     "id": "opened",
+     "unit": "torso_waist",
+     "also": [],
+     "atS": 0,
+     "alsoAtS": 0,
+     "push": 1.0,
+     "pieceImpulse": 40
+    },
+    {
+     "id": "dismember",
+     "unit": "arm_right",
+     "also": [
+      "arm_left",
+      "leg_right"
+     ],
+     "atS": 0,
+     "alsoAtS": 0.35,
+     "push": 1.0,
+     "pieceImpulse": 55
+    },
+    {
+     "id": "hamstringCut",
+     "unit": "leg_right",
+     "also": [
+      "leg_left"
+     ],
+     "atS": 0,
+     "alsoAtS": 0.3,
+     "push": 0.6,
+     "pieceImpulse": 35
+    }
+   ],
+   "bindings": [
+    {
+     "weapons": [
+      "sword"
+     ],
+     "pool": [
       {
-        "id": "decapitation",
-        "enabled": true,
-        "placeholder": true,
-        "weight": 3,
-        "attackerSide": "any",
-        "weapons": [],
-        "directions": [],
-        "moves": [],
-        "locations": [],
-        "attackerMove": "light_left",
-        "attackerClip": "",
-        "contactAt": -1,
-        "duration": 2.6,
-        "victimClip": "",
-        "dieAt": -2,
-        "distance": 1.7,
-        "shotDefs": [
-          {
-            "id": "dc_wide",
-            "focus": "mid",
-            "angleDeg": 38,
-            "side": 1,
-            "dist": 4.6,
-            "height": 1.7,
-            "lookHeight": 1.3,
-            "lookAhead": 0,
-            "fov": 34,
-            "blend": 0
-          },
-          {
-            "id": "dc_close",
-            "focus": "target",
-            "angleDeg": 75,
-            "side": 1,
-            "dist": 2.3,
-            "height": 1.55,
-            "lookHeight": 1.6,
-            "lookAhead": 0.1,
-            "fov": 28,
-            "blend": 0.05,
-            "shake": 0.05
-          },
-          {
-            "id": "dc_fall",
-            "focus": "target",
-            "angleDeg": 110,
-            "side": 1,
-            "dist": 3.4,
-            "height": 1.0,
-            "lookHeight": 0.9,
-            "lookAhead": 0,
-            "fov": 34,
-            "blend": 0.9
-          }
-        ],
-        "shots": [
-          {
-            "t": 0,
-            "rel": "start",
-            "shot": "dc_wide"
-          },
-          {
-            "t": -0.1,
-            "rel": "contact",
-            "shot": "dc_close"
-          },
-          {
-            "t": 0.5,
-            "rel": "contact",
-            "shot": "dc_fall"
-          }
-        ],
-        "gore": [
-          {
-            "t": 0.03,
-            "rel": "contact",
-            "type": "head_detach",
-            "cut": "head",
-            "strength": 1
-          }
-        ],
-        "slowmo": [
-          {
-            "t": -0.12,
-            "rel": "contact",
-            "scale": 0.15,
-            "duration": 1.1,
-            "easeIn": 0.08,
-            "easeOut": 0.5
-          }
-        ],
-        "holdAfter": 1.8,
-        "note": "placeholder: light_left swing + normal death clip/ragdoll; v1 shares the body clip with Split Crown (Death_SplitCrown) once imported"
+       "id": "decapitation",
+       "weight": 3
       },
       {
-        "id": "split_crown",
-        "enabled": true,
-        "placeholder": true,
-        "weight": 2,
-        "attackerSide": "any",
-        "weapons": [],
-        "directions": [],
-        "moves": [],
-        "locations": [],
-        "attackerMove": "heavy_overhead",
-        "attackerClip": "",
-        "contactAt": -1,
-        "duration": 2.8,
-        "victimClip": "",
-        "dieAt": -2,
-        "distance": 1.6,
-        "shotDefs": [
-          {
-            "id": "sc_wide",
-            "focus": "mid",
-            "angleDeg": 50,
-            "side": -1,
-            "dist": 4.8,
-            "height": 1.8,
-            "lookHeight": 1.3,
-            "lookAhead": 0,
-            "fov": 34,
-            "blend": 0
-          },
-          {
-            "id": "sc_close",
-            "focus": "target",
-            "angleDeg": 15,
-            "side": 1,
-            "dist": 2.2,
-            "height": 1.9,
-            "lookHeight": 1.65,
-            "lookAhead": 0.1,
-            "fov": 28,
-            "blend": 0.05,
-            "shake": 0.07
-          },
-          {
-            "id": "sc_side",
-            "focus": "target",
-            "angleDeg": 100,
-            "side": -1,
-            "dist": 3.2,
-            "height": 1.3,
-            "lookHeight": 1.2,
-            "lookAhead": 0,
-            "fov": 34,
-            "blend": 1.0
-          }
-        ],
-        "shots": [
-          {
-            "t": 0,
-            "rel": "start",
-            "shot": "sc_wide"
-          },
-          {
-            "t": -0.1,
-            "rel": "contact",
-            "shot": "sc_close"
-          },
-          {
-            "t": 0.6,
-            "rel": "contact",
-            "shot": "sc_side"
-          }
-        ],
-        "gore": [
-          {
-            "t": 0.02,
-            "rel": "contact",
-            "type": "skull_split",
-            "cut": "head_split",
-            "strength": 1
-          }
-        ],
-        "slowmo": [
-          {
-            "t": -0.1,
-            "rel": "contact",
-            "scale": 0.15,
-            "duration": 1.0,
-            "easeIn": 0.08,
-            "easeOut": 0.5
-          }
-        ],
-        "holdAfter": 1.8,
-        "note": "placeholder: heavy overhead + normal death (v1: skull halves part, body drops straight down, Death_SplitCrown)"
+       "id": "splitCrown",
+       "weight": 2
       },
       {
-        "id": "run_through",
-        "enabled": true,
-        "placeholder": true,
-        "weight": 2,
-        "attackerSide": "any",
-        "weapons": [],
-        "directions": [],
-        "moves": [],
-        "locations": [],
-        "attackerMove": "thrust",
-        "attackerClip": "",
-        "contactAt": -1,
-        "duration": 3.2,
-        "victimClip": "",
-        "dieAt": -2,
-        "distance": 1.5,
-        "shotDefs": [
-          {
-            "id": "rt_wide",
-            "focus": "mid",
-            "angleDeg": 80,
-            "side": 1,
-            "dist": 4.4,
-            "height": 1.5,
-            "lookHeight": 1.2,
-            "lookAhead": 0,
-            "fov": 34,
-            "blend": 0
-          },
-          {
-            "id": "rt_close",
-            "focus": "mid",
-            "angleDeg": 90,
-            "side": 1,
-            "dist": 2.4,
-            "height": 1.3,
-            "lookHeight": 1.2,
-            "lookAhead": 0,
-            "fov": 30,
-            "blend": 0.4
-          }
-        ],
-        "shots": [
-          {
-            "t": 0,
-            "rel": "start",
-            "shot": "rt_wide"
-          },
-          {
-            "t": 0,
-            "rel": "contact",
-            "shot": "rt_close"
-          }
-        ],
-        "gore": [
-          {
-            "t": 0.02,
-            "rel": "contact",
-            "type": "cut",
-            "cut": "wound_torso",
-            "strength": 1
-          }
-        ],
-        "slowmo": [
-          {
-            "t": 0,
-            "rel": "contact",
-            "scale": 0.3,
-            "duration": 1.2,
-            "easeIn": 0.08,
-            "easeOut": 0.5
-          }
-        ],
-        "holdAfter": 1.8,
-        "note": "placeholder clips; real: paired Death_RunThrough 2.4 s + Fin_RunThrough, blade stays in, victim arches then kneels. top20 hq-rapier-thrust-torso if missing"
+       "id": "runThrough",
+       "weight": 1
       },
       {
-        "id": "opened",
-        "enabled": true,
-        "placeholder": true,
-        "weight": 1,
-        "attackerSide": "any",
-        "weapons": [
-          "sword"
-        ],
-        "directions": [],
-        "moves": [],
-        "locations": [],
-        "attackerMove": "light_right",
-        "attackerClip": "",
-        "contactAt": -1,
-        "duration": 3.0,
-        "victimClip": "",
-        "dieAt": -2,
-        "distance": 1.7,
-        "shotDefs": [
-          {
-            "id": "op_wide",
-            "focus": "mid",
-            "angleDeg": 60,
-            "side": 1,
-            "dist": 4.6,
-            "height": 1.4,
-            "lookHeight": 1.0,
-            "lookAhead": 0,
-            "fov": 34,
-            "blend": 0
-          },
-          {
-            "id": "op_low",
-            "focus": "target",
-            "angleDeg": 85,
-            "side": 1,
-            "dist": 3.0,
-            "height": 0.9,
-            "lookHeight": 1.0,
-            "lookAhead": 0,
-            "fov": 32,
-            "blend": 0.6
-          }
-        ],
-        "shots": [
-          {
-            "t": 0,
-            "rel": "start",
-            "shot": "op_wide"
-          },
-          {
-            "t": 0.1,
-            "rel": "contact",
-            "shot": "op_low"
-          }
-        ],
-        "gore": [
-          {
-            "t": 0.03,
-            "rel": "contact",
-            "type": "cut",
-            "cut": "belly_open",
-            "strength": 1
-          }
-        ],
-        "slowmo": [
-          {
-            "t": 0,
-            "rel": "contact",
-            "scale": 0.25,
-            "duration": 1.0,
-            "easeIn": 0.06,
-            "easeOut": 0.4
-          }
-        ],
-        "holdAfter": 1.8,
-        "note": "placeholder swing; waist cut is lane B (ADMeshCut unit belly_open, falls back to torso_waist)"
+       "id": "opened",
+       "weight": 1
       }
-    ]
+     ]
+    },
+    {
+     "weapons": [
+      "mace"
+     ],
+     "pool": [
+      {
+       "id": "splitCrown",
+       "weight": 3
+      },
+      {
+       "id": "decapitation",
+       "weight": 1
+      },
+      {
+       "id": "opened",
+       "weight": 2
+      },
+      {
+       "id": "dismember",
+       "weight": 1
+      }
+     ]
+    },
+    {
+     "weapons": [
+      "*"
+     ],
+     "pool": [
+      {
+       "id": "decapitation",
+       "weight": 2
+      },
+      {
+       "id": "splitCrown",
+       "weight": 2
+      },
+      {
+       "id": "opened",
+       "weight": 1
+      }
+     ]
+    }
+   ]
   }
+ },
+ "ai": {
+  "earlyRounds": 2,
+  "lowHpFrac": 0.4,
+  "lowHpDefensiveStanceMul": 2.0,
+  "repeatMoveMul": 0.5,
+  "specialWeight": 2.0,
+  "stances": [
+   {
+    "id": "Aggressive",
+    "w": 3.0
+   },
+   {
+    "id": "Defensive",
+    "w": 2.0
+   },
+   {
+    "id": "Neutral",
+    "w": 3.0
+   },
+   {
+    "id": "Trickster",
+    "w": 1.5
+   }
+  ],
+  "moves": [
+   {
+    "id": "Light",
+    "w": 3.0
+   },
+   {
+    "id": "Slash",
+    "w": 3.0
+   },
+   {
+    "id": "Stab",
+    "w": 2.0
+   },
+   {
+    "id": "Heavy",
+    "w": 2.5
+   },
+   {
+    "id": "Kick",
+    "w": 1.5
+   },
+   {
+    "id": "Guard",
+    "w": 2.0
+   },
+   {
+    "id": "Roll",
+    "w": 1.0
+   },
+   {
+    "id": "Sidestep",
+    "w": 1.0
+   },
+   {
+    "id": "Special",
+    "w": 2.0
+   }
+  ],
+  "difficulty": [
+   {
+    "id": "easy",
+    "attackMul": 0.8,
+    "defendMul": 1.2,
+    "temperature": 1.4,
+    "specialMinRound": 4,
+    "specialLowHpFrac": 0.25,
+    "guardLowHpMul": 1.5,
+    "heavyEarlyMul": 1.2
+   },
+   {
+    "id": "normal",
+    "attackMul": 1.0,
+    "defendMul": 1.0,
+    "temperature": 1.0,
+    "specialMinRound": 3,
+    "specialLowHpFrac": 0.35,
+    "guardLowHpMul": 2.0,
+    "heavyEarlyMul": 1.5
+   },
+   {
+    "id": "hard",
+    "attackMul": 1.2,
+    "defendMul": 1.0,
+    "temperature": 0.8,
+    "specialMinRound": 2,
+    "specialLowHpFrac": 0.45,
+    "guardLowHpMul": 2.5,
+    "heavyEarlyMul": 1.8
+   }
+  ]
+ },
+ "camera": {
+  "planShot": "plan",
+  "startShot": "wide34",
+  "endShot": "plan",
+  "critShot": "crit",
+  "killShot": "kill",
+  "shots": [
+   {
+    "id": "plan",
+    "focus": "actor",
+    "angleDeg": 0,
+    "side": 1,
+    "dist": 3.2,
+    "height": 1.95,
+    "lookHeight": 1.45,
+    "shoulder": 0.75,
+    "lookAhead": 0.85,
+    "fov": 40,
+    "blend": 0.6
+   },
+   {
+    "id": "wide34",
+    "focus": "mid",
+    "angleDeg": 42,
+    "side": 0,
+    "dist": 6.6,
+    "height": 2.1,
+    "lookHeight": 1.1,
+    "shoulder": 0,
+    "lookAhead": 0,
+    "fov": 36,
+    "blend": 0.45
+   },
+   {
+    "id": "impact",
+    "focus": "mid",
+    "angleDeg": 68,
+    "side": 0,
+    "dist": 3.3,
+    "height": 1.5,
+    "lookHeight": 1.2,
+    "shoulder": 0,
+    "lookAhead": 0.3,
+    "fov": 34,
+    "blend": 0.06,
+    "shake": 0.02
+   },
+   {
+    "id": "block",
+    "focus": "target",
+    "angleDeg": 55,
+    "side": 0,
+    "dist": 3.0,
+    "height": 1.6,
+    "lookHeight": 1.3,
+    "shoulder": 0,
+    "lookAhead": 0.2,
+    "fov": 33,
+    "blend": 0.06,
+    "shake": 0.03
+   },
+   {
+    "id": "parry",
+    "focus": "mid",
+    "angleDeg": 90,
+    "side": 0,
+    "dist": 2.8,
+    "height": 1.4,
+    "lookHeight": 1.3,
+    "shoulder": 0,
+    "lookAhead": 0,
+    "fov": 32,
+    "blend": 0.05,
+    "shake": 0.03
+   },
+   {
+    "id": "dodge",
+    "focus": "mid",
+    "angleDeg": 30,
+    "side": 0,
+    "dist": 6.0,
+    "height": 1.8,
+    "lookHeight": 1.0,
+    "shoulder": 0,
+    "lookAhead": 0,
+    "fov": 38,
+    "blend": 0.2
+   },
+   {
+    "id": "reverse",
+    "focus": "target",
+    "angleDeg": 180,
+    "side": 1,
+    "dist": 3.2,
+    "height": 1.9,
+    "lookHeight": 1.4,
+    "shoulder": 0.7,
+    "lookAhead": 0.85,
+    "fov": 40,
+    "blend": 0.3
+   },
+   {
+    "id": "crit",
+    "focus": "target",
+    "angleDeg": 80,
+    "side": 0,
+    "dist": 2.2,
+    "height": 1.35,
+    "lookHeight": 1.3,
+    "shoulder": 0,
+    "lookAhead": 0.15,
+    "fov": 28,
+    "blend": 0.04,
+    "shake": 0.06
+   },
+   {
+    "id": "kill",
+    "focus": "target",
+    "angleDeg": 70,
+    "side": 0,
+    "dist": 2.6,
+    "height": 1.2,
+    "lookHeight": 1.1,
+    "shoulder": 0,
+    "lookAhead": 0.1,
+    "fov": 30,
+    "blend": 0.05,
+    "shake": 0.05
+   }
+  ],
+  "outcomeShots": [
+   {
+    "kind": "Land",
+    "shot": "impact",
+    "critShot": "crit"
+   },
+   {
+    "kind": "Riposte",
+    "shot": "impact",
+    "critShot": "crit"
+   },
+   {
+    "kind": "GuardBreak",
+    "shot": "block",
+    "critShot": "crit"
+   },
+   {
+    "kind": "Blocked",
+    "shot": "block"
+   },
+   {
+    "kind": "Parried",
+    "shot": "parry"
+   },
+   {
+    "kind": "Dodged",
+    "shot": "dodge"
+   },
+   {
+    "kind": "Clash",
+    "shot": "parry"
+   }
+  ],
+  "critSlow": {
+   "t": 0,
+   "rel": "contact",
+   "scale": 0.2,
+   "duration": 0.75,
+   "easeIn": 0.06,
+   "easeOut": 0.3
+  },
+  "parrySlow": {
+   "t": 0,
+   "rel": "contact",
+   "scale": 0.35,
+   "duration": 0.43,
+   "easeIn": 0.04,
+   "easeOut": 0.2
+  },
+  "playback": {
+   "engageDist": 2.1,
+   "repositionSeconds": 1.6,
+   "repositionTolerance": 0.18,
+   "snapTolerance": 0.8,
+   "leadTicks": 8,
+   "tradeGapTicks": 5,
+   "clashGapTicks": 0,
+   "blockLeadTicks": 22,
+   "parryLeadTicks": 4,
+   "dodgeLeadExtra": 3,
+   "parryStaggerTicks": 55,
+   "blockKnockTicks": 12,
+   "guardBreakTicks": 60,
+   "hitStaggerLight": 22,
+   "hitStaggerHeavy": 40,
+   "critStaggerExtra": 20,
+   "clashStaggerTicks": 40,
+   "kickStaggerTicks": 45,
+   "whiffStaggerTicks": 30,
+   "riposteDelayTicks": 14,
+   "knockLight": 0.5,
+   "knockHeavy": 1.1,
+   "knockCrit": 1.6,
+   "settleSeconds": 0.35,
+   "maxBeatSeconds": 4.02,
+   "critSlowLeadTicks": 6,
+   "healthPad": 100000,
+   "heavyMove": "heavy_overhead",
+   "lightRightMove": "light_right",
+   "lightLeftMove": "light_left",
+   "stabMove": "thrust",
+   "kickMove": "kick",
+   "special1Move": "special1",
+   "special2Move": "special2",
+   "slashSide": "left",
+   "hitLightClip": "hit_light_front",
+   "hitBackClip": "hit_light_back",
+   "hitHeavyClip": "hit_heavy",
+   "staggerClip": "stagger_loop",
+   "useFinishers": false,
+   "idleWaitSeconds": 3.0,
+   "finisherMaxSeconds": 20.0
+  }
+ },
+ "ui": {},
+ "finishers": {
+  "enabled": true,
+  "rotation": "sequence",
+  "seed": 20261104,
+  "noImmediateRepeat": true,
+  "playerWeapon": "sword",
+  "pitbornWeapon": "maul",
+  "fallbackEntry": "",
+  "entries": [
+   {
+    "id": "decapitation",
+    "enabled": true,
+    "placeholder": true,
+    "weight": 3,
+    "attackerSide": "any",
+    "weapons": [],
+    "directions": [],
+    "moves": [],
+    "locations": [],
+    "attackerMove": "light_left",
+    "attackerClip": "",
+    "contactAt": -1,
+    "duration": 2.6,
+    "victimClip": "",
+    "dieAt": -2,
+    "distance": 1.7,
+    "shotDefs": [
+     {
+      "id": "dc_wide",
+      "focus": "mid",
+      "angleDeg": 38,
+      "side": 1,
+      "dist": 4.6,
+      "height": 1.7,
+      "lookHeight": 1.3,
+      "lookAhead": 0,
+      "fov": 34,
+      "blend": 0
+     },
+     {
+      "id": "dc_close",
+      "focus": "target",
+      "angleDeg": 75,
+      "side": 1,
+      "dist": 2.3,
+      "height": 1.55,
+      "lookHeight": 1.6,
+      "lookAhead": 0.1,
+      "fov": 28,
+      "blend": 0.05,
+      "shake": 0.05
+     },
+     {
+      "id": "dc_fall",
+      "focus": "target",
+      "angleDeg": 110,
+      "side": 1,
+      "dist": 3.4,
+      "height": 1.0,
+      "lookHeight": 0.9,
+      "lookAhead": 0,
+      "fov": 34,
+      "blend": 0.9
+     }
+    ],
+    "shots": [
+     {
+      "t": 0,
+      "rel": "start",
+      "shot": "dc_wide"
+     },
+     {
+      "t": -0.1,
+      "rel": "contact",
+      "shot": "dc_close"
+     },
+     {
+      "t": 0.5,
+      "rel": "contact",
+      "shot": "dc_fall"
+     }
+    ],
+    "gore": [
+     {
+      "t": 0.03,
+      "rel": "contact",
+      "type": "head_detach",
+      "cut": "head",
+      "strength": 1
+     }
+    ],
+    "slowmo": [
+     {
+      "t": -0.12,
+      "rel": "contact",
+      "scale": 0.15,
+      "duration": 1.1,
+      "easeIn": 0.08,
+      "easeOut": 0.5
+     }
+    ],
+    "holdAfter": 1.8,
+    "note": "placeholder: light_left swing + normal death clip/ragdoll; v1 shares the body clip with Split Crown (Death_SplitCrown) once imported"
+   },
+   {
+    "id": "split_crown",
+    "enabled": true,
+    "placeholder": true,
+    "weight": 2,
+    "attackerSide": "any",
+    "weapons": [],
+    "directions": [],
+    "moves": [],
+    "locations": [],
+    "attackerMove": "heavy_overhead",
+    "attackerClip": "",
+    "contactAt": -1,
+    "duration": 2.8,
+    "victimClip": "",
+    "dieAt": -2,
+    "distance": 1.6,
+    "shotDefs": [
+     {
+      "id": "sc_wide",
+      "focus": "mid",
+      "angleDeg": 50,
+      "side": -1,
+      "dist": 4.8,
+      "height": 1.8,
+      "lookHeight": 1.3,
+      "lookAhead": 0,
+      "fov": 34,
+      "blend": 0
+     },
+     {
+      "id": "sc_close",
+      "focus": "target",
+      "angleDeg": 15,
+      "side": 1,
+      "dist": 2.2,
+      "height": 1.9,
+      "lookHeight": 1.65,
+      "lookAhead": 0.1,
+      "fov": 28,
+      "blend": 0.05,
+      "shake": 0.07
+     },
+     {
+      "id": "sc_side",
+      "focus": "target",
+      "angleDeg": 100,
+      "side": -1,
+      "dist": 3.2,
+      "height": 1.3,
+      "lookHeight": 1.2,
+      "lookAhead": 0,
+      "fov": 34,
+      "blend": 1.0
+     }
+    ],
+    "shots": [
+     {
+      "t": 0,
+      "rel": "start",
+      "shot": "sc_wide"
+     },
+     {
+      "t": -0.1,
+      "rel": "contact",
+      "shot": "sc_close"
+     },
+     {
+      "t": 0.6,
+      "rel": "contact",
+      "shot": "sc_side"
+     }
+    ],
+    "gore": [
+     {
+      "t": 0.02,
+      "rel": "contact",
+      "type": "skull_split",
+      "cut": "head_split",
+      "strength": 1
+     }
+    ],
+    "slowmo": [
+     {
+      "t": -0.1,
+      "rel": "contact",
+      "scale": 0.15,
+      "duration": 1.0,
+      "easeIn": 0.08,
+      "easeOut": 0.5
+     }
+    ],
+    "holdAfter": 1.8,
+    "note": "placeholder: heavy overhead + normal death (v1: skull halves part, body drops straight down, Death_SplitCrown)"
+   },
+   {
+    "id": "run_through",
+    "enabled": true,
+    "placeholder": true,
+    "weight": 2,
+    "attackerSide": "any",
+    "weapons": [],
+    "directions": [],
+    "moves": [],
+    "locations": [],
+    "attackerMove": "thrust",
+    "attackerClip": "",
+    "contactAt": -1,
+    "duration": 3.2,
+    "victimClip": "",
+    "dieAt": -2,
+    "distance": 1.5,
+    "shotDefs": [
+     {
+      "id": "rt_wide",
+      "focus": "mid",
+      "angleDeg": 80,
+      "side": 1,
+      "dist": 4.4,
+      "height": 1.5,
+      "lookHeight": 1.2,
+      "lookAhead": 0,
+      "fov": 34,
+      "blend": 0
+     },
+     {
+      "id": "rt_close",
+      "focus": "mid",
+      "angleDeg": 90,
+      "side": 1,
+      "dist": 2.4,
+      "height": 1.3,
+      "lookHeight": 1.2,
+      "lookAhead": 0,
+      "fov": 30,
+      "blend": 0.4
+     }
+    ],
+    "shots": [
+     {
+      "t": 0,
+      "rel": "start",
+      "shot": "rt_wide"
+     },
+     {
+      "t": 0,
+      "rel": "contact",
+      "shot": "rt_close"
+     }
+    ],
+    "gore": [
+     {
+      "t": 0.02,
+      "rel": "contact",
+      "type": "cut",
+      "cut": "wound_torso",
+      "strength": 1
+     }
+    ],
+    "slowmo": [
+     {
+      "t": 0,
+      "rel": "contact",
+      "scale": 0.3,
+      "duration": 1.2,
+      "easeIn": 0.08,
+      "easeOut": 0.5
+     }
+    ],
+    "holdAfter": 1.8,
+    "note": "placeholder clips; real: paired Death_RunThrough 2.4 s + Fin_RunThrough, blade stays in, victim arches then kneels. top20 hq-rapier-thrust-torso if missing"
+   },
+   {
+    "id": "opened",
+    "enabled": true,
+    "placeholder": true,
+    "weight": 1,
+    "attackerSide": "any",
+    "weapons": [
+     "sword"
+    ],
+    "directions": [],
+    "moves": [],
+    "locations": [],
+    "attackerMove": "light_right",
+    "attackerClip": "",
+    "contactAt": -1,
+    "duration": 3.0,
+    "victimClip": "",
+    "dieAt": -2,
+    "distance": 1.7,
+    "shotDefs": [
+     {
+      "id": "op_wide",
+      "focus": "mid",
+      "angleDeg": 60,
+      "side": 1,
+      "dist": 4.6,
+      "height": 1.4,
+      "lookHeight": 1.0,
+      "lookAhead": 0,
+      "fov": 34,
+      "blend": 0
+     },
+     {
+      "id": "op_low",
+      "focus": "target",
+      "angleDeg": 85,
+      "side": 1,
+      "dist": 3.0,
+      "height": 0.9,
+      "lookHeight": 1.0,
+      "lookAhead": 0,
+      "fov": 32,
+      "blend": 0.6
+     }
+    ],
+    "shots": [
+     {
+      "t": 0,
+      "rel": "start",
+      "shot": "op_wide"
+     },
+     {
+      "t": 0.1,
+      "rel": "contact",
+      "shot": "op_low"
+     }
+    ],
+    "gore": [
+     {
+      "t": 0.03,
+      "rel": "contact",
+      "type": "cut",
+      "cut": "belly_open",
+      "strength": 1
+     }
+    ],
+    "slowmo": [
+     {
+      "t": 0,
+      "rel": "contact",
+      "scale": 0.25,
+      "duration": 1.0,
+      "easeIn": 0.06,
+      "easeOut": 0.4
+     }
+    ],
+    "holdAfter": 1.8,
+    "note": "placeholder swing; waist cut is lane B (ADMeshCut unit belly_open, falls back to torso_waist)"
+   }
+  ]
+ }
 }

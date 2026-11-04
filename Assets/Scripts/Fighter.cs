@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 // Shared animation helper: code-driven CrossFade between the clip states, plus a ground snap so feet touch the floor.
 [DefaultExecutionOrder(500)]   // after Duel/DuelFighter.Update so the freeze pin wins before the Animator evaluates
@@ -74,17 +74,29 @@ public class Fighter : MonoBehaviour
             if (toeL == null || toeR == null) return;
         }
         if (hp && hp.Dead) return;
+        if (!startYSet)
+        {
+            startY = model.localPosition.y;
+            startYSet = true;
+            hasFootGround = GetComponentInChildren<FootGround>(true) != null || GetComponent<FootGround>() != null || GetComponentInParent<FootGround>() != null;
+            if (toeL != null && toeR != null) initialToeY = Mathf.Min(toeL.position.y, toeR.position.y) - transform.position.y;
+        }
+        if (hasFootGround) { var q = model.localPosition; if (Mathf.Abs(q.y - startY) > 0.0001f) { q.y = startY; model.localPosition = q; } return; }   // FootGround (IK) owns the feet: this incremental model-Y plant would fight it and sink the model (audit A)
         // plant the lower foot on the real ground (raycast under each toe), so feet land on the stair treads
         float g = transform.position.y, lowestRel = float.MaxValue;
         foreach (var toe in new[] { toeL, toeR })
         {
-            float gy = g; if (Physics.Raycast(toe.position + Vector3.up * 0.6f, Vector3.down, out var hit, 2.5f, ~(1 << 8), QueryTriggerInteraction.Ignore)) gy = hit.point.y;
-            lowestRel = Mathf.Min(lowestRel, toe.position.y - 0.02f - gy);
+            float gy = g; if (Physics.Raycast(toe.position + Vector3.up * 0.6f, Vector3.down, out var hit, 2.5f, ~((1 << 8) | (1 << 9)), QueryTriggerInteraction.Ignore)) gy = hit.point.y;
+            lowestRel = Mathf.Min(lowestRel, (toe.position.y - transform.position.y) - initialToeY - (gy - g));
         }
         float d = Mathf.Clamp(-lowestRel, -0.25f, 0.25f);
-        var p = model.localPosition; p.y += d * Mathf.Clamp01(Time.deltaTime * 5f); model.localPosition = p;
+        var p = model.localPosition; p.y += d * Mathf.Clamp01(Time.deltaTime * 5f); p.y = Mathf.Clamp(p.y, startY - maxModelDrop, startY + maxModelDrop); model.localPosition = p;   // never accumulate beyond +-5 cm of the authored model height
     }
+    float startY, initialToeY; bool startYSet, hasFootGround;
+    public float toePlantY = -0.02f, maxModelDrop = 0.12f;   // toe-end bone height above the ground when planted (the sole lies ~6 cm below the Toe_End bone: verifyGround measured the Pitborn floating 5-8 cm with +0.02), and the max model-Y travel from the authored height
 }
+
+
 
 
 

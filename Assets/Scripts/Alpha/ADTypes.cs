@@ -21,7 +21,7 @@ public class ADPlan
     public ADMove[] moves = new ADMove[3];
     public ADPlan() { }
     public ADPlan(ADStance s, ADMove m1, ADMove m2, ADMove m3) { stance = s; moves = new[] { m1, m2, m3 }; }
-    public ADPlan Clone() { return new ADPlan(stance, moves[0], moves[1], moves[2]); }
+    public ADPlan Clone() { var p = new ADPlan(); p.stance = stance; p.moves = moves != null ? (ADMove[])moves.Clone() : new ADMove[3]; return p; }
     public override string ToString() { return stance + ": " + moves[0] + ", " + moves[1] + ", " + moves[2]; }
 }
 
@@ -150,8 +150,17 @@ public class ADRulesCfg
     public float fallbackBeatSeconds = 1.6f;       // controller: how long a beat lasts when no playback lane is present
     public float replaySeconds = 2.5f;             // controller: replay strip time after a clash
     public float resultSeconds = 0.5f;             // controller: pause before the next plan phase
+    public string aiDifficulty = "normal";        // key into ai.difficulty (lane E)
+    public float autoConfirmSeconds = 1.2f;        // -alphaauto: delay before Dracula's random plan is confirmed (the planning UI shows for this long)
+    public float autoRestartSeconds = 0f;          // -alphaauto: > 0 restarts the duel this long after the kill screen (0 = stay)
     public bool autoPlayDracula = false;           // test/capture: the controller also picks Dracula's plan (also -alphaauto)
     public int beats = 3;
+    // v56 MVP feature flags (all default OFF: wounds/gore/mesh cut, crit cam + slow-mo, specials, finishers). Read through ADFlags.
+    public bool enableWounds = false, enableGore = false, enableCritCam = false, enableSpecials = false, enableFinishers = false;
+    public float alphaTimeoutSeconds = 300f;       // -alphaauto hard stop (command line -alphatimeout:<s> overrides)
+    public float autoEndScreenSeconds = 3f;        // -alphaauto: seconds the end screen is shown before exit 0
+    public float reviveWaitSeconds = 0.4f;         // restart: pause after the revive before the next plan phase
+    public float bootWaitSeconds = 10f;            // bootstrap: max seconds to wait for the two fighters
     public bool repeatPlanOnTimeout = true;
     public int hpDracula = 80, hpPitborn = 120;
     public string usedSpecialFallback = "Guard";   // replaces a second Special in a plan / a Special already spent
@@ -187,7 +196,19 @@ public class ADMatrixRow
 [Serializable] public class ADStanceDef { public string id; public float dealtMul = 1f, takenMul = 1f, speedDelta; public ADChance[] chances; }
 [Serializable] public class ADStancesCfg { public ADStanceDef[] rows; }
 [Serializable] public class ADCritCfg { public float chance = 0.08f; public float mul = 1.75f; public float locationHead = 0f; }
-[Serializable] public class ADSpecialDef { public float damage = 20f; public float tier = 5f; public float healFraction; public bool knockdown; }
+[Serializable]
+public class ADSpecialDef
+{
+    public float damage = 20f; public float tier = 5f; public float healFraction; public bool knockdown;
+    // lane E fields (same JSON block), adopted by ADRules:
+    public bool unblockable;                       // guard cannot hold it: GuardBreak, full damage
+    public string guardMode = "";                  // "reduced": Guard only lets guardReduce of the damage through (no guard break); "break": like unblockable; "" = matrix row
+    public float guardReduce = 0.5f;
+    public string[] avoidedBy;                     // defensive moves that dodge it (e.g. Roll). Defensive moves not listed (Sidestep for an area slam) are caught.
+    public bool critAllowed = true;
+    public string hitLocation = "";                // "Torso" etc. forces the wound location; "" / "any" = rolled
+    public int staggerBeats;                       // > 0: the victim of a landed special is staggered going into the next beat
+}
 [Serializable] public class ADSpecialCfg { public ADSpecialDef dracula, pitborn; }
 
 // Root as JsonUtility sees it: unknown blocks (wounds, ai, camera, ui, finishers) are simply ignored here.
@@ -201,4 +222,30 @@ public class ADRulesData
     public ADStancesCfg stances;
     public ADCritCfg crit;
     public ADSpecialCfg special;
+
+    // Code defaults for any block that is missing / empty in the json, so a bad data file never throws downstream.
+    public void Fill()
+    {
+        if (rules == null) rules = new ADRulesCfg();
+        if (rules.moves == null || rules.moves.Length == 0)
+            rules.moves = new[] {
+                new ADMoveDef { id = "Light", attack = true, damage = 7, tier = 2 }, new ADMoveDef { id = "Slash", attack = true, damage = 10, tier = 3 },
+                new ADMoveDef { id = "Stab", attack = true, damage = 9, tier = 1 }, new ADMoveDef { id = "Heavy", attack = true, damage = 20, tier = 5 },
+                new ADMoveDef { id = "Kick", attack = true, damage = 5, tier = 3, staggers = true }, new ADMoveDef { id = "Guard" }, new ADMoveDef { id = "Roll" },
+                new ADMoveDef { id = "Sidestep" }, new ADMoveDef { id = "Special", attack = true, damage = 20, tier = 5 } };
+        if (rules.beats < 1) rules.beats = 3;
+        if (rules.planSeconds <= 0f) rules.planSeconds = 10f;
+        if (rules.defaultPlan == null) rules.defaultPlan = new ADPlanDef { stance = "Neutral", moves = new[] { "Light", "Light", "Guard" } };
+        if (rules.hpDracula < 1) rules.hpDracula = 80;
+        if (rules.hpPitborn < 1) rules.hpPitborn = 120;
+        if (matrix == null) matrix = new ADMatrixCfg();
+        if (matrix.rows == null) matrix.rows = new ADMatrixRow[0];
+        if (stances == null) stances = new ADStancesCfg();
+        if (stances.rows == null || stances.rows.Length == 0)
+            stances.rows = new[] { new ADStanceDef { id = "Aggressive", dealtMul = 1.25f, takenMul = 1.2f }, new ADStanceDef { id = "Defensive", dealtMul = 0.8f, takenMul = 0.75f }, new ADStanceDef { id = "Neutral" }, new ADStanceDef { id = "Trickster" } };
+        if (crit == null) crit = new ADCritCfg();
+        if (special == null) special = new ADSpecialCfg();
+        if (special.dracula == null) special.dracula = new ADSpecialDef();
+        if (special.pitborn == null) special.pitborn = new ADSpecialDef();
+    }
 }

@@ -1,1 +1,18 @@
-{ "_note": "CANDIDATE, not measured. Medium = SSGI half-res low quality, SSR low, fog low, 2 cascades, no contact shadows, STP at 50% (asset minPercentage 60 may clamp it).", "clouds": true, "volumetricFog": true, "ssgi": true, "ssr": true, "contactShadows": false, "shadows": true, "ssao": true, "ssgiFullRes": false, "ssgiQuality": 0, "ssrQuality": 0, "fogQuality": 0, "cascades": 2, "shadowDistance": 80, "renderScale": 50 }
+﻿{
+    "_note":  "CANDIDATE, not measured. Medium = SSGI half-res low quality, SSR low, fog low, 2 cascades, no contact shadows, STP at 50% (asset minPercentage 60 may clamp it).",
+    "clouds":  true,
+    "volumetricFog":  true,
+    "ssgi":  true,
+    "ssr":  true,
+    "contactShadows":  false,
+    "shadows":  true,
+    "ssao":  true,
+    "ssgiFullRes":  false,
+    "ssgiQuality":  0,
+    "ssrQuality":  0,
+    "fogQuality":  0,
+    "cascades":  2,
+    "shadowDistance":  80,
+    "renderScale":  50,
+    "hideMHHead":  true
+}

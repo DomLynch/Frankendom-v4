@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -22,8 +22,10 @@ public static class ADFinisherPlayer
 
     static ADBeat pickedFor; static ADFinisherEntry picked; static int lastIndex = -1, kills; static string lastId;
 
-    public static void ResetFight() { pickedFor = null; picked = null; lastIndex = -1; kills = 0; lastId = null; }
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { ResetFight(); OnGore = null; OnFinisherStart = null; }
+    // restart keeps the rotation (lastIndex/kills/lastId) so the next kill picks the NEXT entry; only the pick of the finished fight is cleared
+    public static void ResetFight() { pickedFor = null; picked = null; }
+    static void ResetAll() { ResetFight(); lastIndex = -1; kills = 0; lastId = null; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { ResetAll(); OnGore = null; OnFinisherStart = null; }
 
     // ---------------- selection ----------------
     static int Hash(string s) { unchecked { int h = 17; if (s != null) foreach (char c in s) h = h * 31 + c; return h; } }
@@ -41,7 +43,7 @@ public static class ADFinisherPlayer
     // True when this killing beat will be played by a finisher (the choice is made once per beat and kept for Run).
     public static bool Wants(ADBeat b)
     {
-        if (b == null || !b.killed) return false;
+        if (b == null || !b.killed || !ADFlags.Finishers) return false;
         if (pickedFor == b) return picked != null;
         pickedFor = b; picked = Pick(b);
         return picked != null;
@@ -267,7 +269,13 @@ public static class ADFinisherPlayer
                         var pt = ps[i].ParameterType;
                         args[i] = pt == typeof(Transform) ? (object)victim.transform : pt == typeof(string) ? unit : pt == typeof(int) ? (object)(ADCConfig.Finishers.seed + Mathf.Abs(Hash(unit)) % 1000) : pt == typeof(Vector3) ? (object)away : pt == typeof(float) ? (object)(i == 4 ? k.strength : 60f * k.strength) : (ps[i].HasDefaultValue ? ps[i].DefaultValue : null);
                     }
-                    m.Invoke(null, args); handled = true;
+                    var res = m.Invoke(null, args); handled = true;
+                    if (res != null)   // ADMeshCut.Cut reports ok=false (flag off, unknown unit, unreadable mesh) without throwing: then the head-hide / blood fallback must run
+                    {
+                        var okf = res.GetType().GetField("ok"); var okp = res.GetType().GetProperty("ok");
+                        if (okf != null && okf.FieldType == typeof(bool)) handled = (bool)okf.GetValue(res);
+                        else if (okp != null && okp.PropertyType == typeof(bool)) handled = (bool)okp.GetValue(res);
+                    }
                 }
                 catch (Exception ex) { Debug.LogWarning("[finisher] ADMeshCut.Cut failed: " + (ex.InnerException != null ? ex.InnerException.Message : ex.Message)); }
             }

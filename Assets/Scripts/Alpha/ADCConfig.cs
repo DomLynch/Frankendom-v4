@@ -52,6 +52,8 @@ public class ADPlaybackCfg
     public string slashSide = "left";            // which light clip Slash uses ("left"|"right")
     public string hitLightClip = "hit_light_front", hitBackClip = "hit_light_back", hitHeavyClip = "hit_heavy", staggerClip = "stagger_loop";
     public bool useFinishers = true;
+    public float idleWaitSeconds = 3f;           // max wait for both fighters to be free before a beat's presses (a knocked-down fighter needs 1.5 s to get up)
+    public float finisherMaxSeconds = 20f;       // watchdog of the whole finisher scene
 }
 
 [Serializable]

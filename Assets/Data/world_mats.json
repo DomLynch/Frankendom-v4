@@ -1,9 +1,13 @@
-﻿{
-  "_notes": "Hades world build (midground terrain + mid/far kits). Read by Assets/Editor/HdrpWorldMats.cs (Run). Terrain: terrain_midground.glb is placed once under a scene root and gets ONE native HDRP/Lit material built from the 4 PNGs (UV tile 64 m is baked into the GLB UVs, so material tiling stays 1). ORM -> mask map: R metallic (orm.B * metallicScale), G AO (orm.R), B 0, A smoothness (255 - orm.G * roughnessScale), the same conversion HdrpGltfMats uses. Emissive is HDR nits (0.0 = off); start 40, raise only if the cracks vanish at 30 m. If cracks look embossed instead of carved, set normalFlipG true. kitEmissive: absolute _EmissiveColor for glTF-converted materials (Assets/HDRP/Mats, names start with the GLB file name) that have an emissive map; world_mats keeps the repeating brick-crack glow of the mid kit down.",
+{
+  "_notes": "Hades world build (midground terrain + mid/far kits). Read by Assets/Editor/HdrpWorldMats.cs (Run). Terrain: terrain_ground.glb is placed once under a scene root and gets ONE native HDRP/Lit material built from the 4 PNGs (UV tile 64 m is baked into the GLB UVs, so material tiling stays 1). ORM -> mask map: R metallic (orm.B * metallicScale), G AO (orm.R), B 0, A smoothness (255 - orm.G * roughnessScale), the same conversion HdrpGltfMats uses. Emissive is HDR nits (0.0 = off); start 40, raise only if the cracks vanish at 30 m. If cracks look embossed instead of carved, set normalFlipG true. kitEmissive: absolute _EmissiveColor for glTF-converted materials (Assets/HDRP/Mats, names start with the GLB file name) that have an emissive map; world_mats keeps the repeating brick-crack glow of the mid kit down.",
   "terrain": {
-    "glb": "Assets/Env/World/Terrain/terrain_midground.glb",
+    "glb": "Assets/Env/World/Terrain/terrain_ground.glb",
     "rootName": "WorldTerrain",
-    "position": [0, 0, 0],
+    "position": [
+      0.0,
+      0.05,
+      0.0
+    ],
     "shadowsOff": true,
     "material": {
       "path": "Assets/HDRP/World/M_WorldTerrain.mat",
@@ -15,17 +19,27 @@
       "maxSize": 4096,
       "emissiveMaxSize": 2048,
       "aniso": 16,
-      "baseColor": [1, 1, 1],
+      "baseColor": [
+        1,
+        1,
+        1
+      ],
       "normalScale": 1.0,
       "normalFlipG": false,
       "metallicScale": 0.0,
       "roughnessScale": 1.0,
       "emissiveNits": 14,
-      "emissiveColor": [1.0, 0.35, 0.12]
+      "emissiveColor": [
+        1.0,
+        0.35,
+        0.12
+      ]
     }
   },
   "kitEmissive": [
-    { "namePrefix": "mid_", "emissive": 0.3 }
+    {
+      "namePrefix": "mid_",
+      "emissive": 0.3
+    }
   ]
 }
-
