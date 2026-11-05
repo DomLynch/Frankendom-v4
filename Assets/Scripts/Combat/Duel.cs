@@ -78,20 +78,20 @@ public class Duel : MonoBehaviour
         if (STSteer.Active) dmg *= STSteer.DamageMul(a, d); bool db = PostureTable.Get().enabled && d.DeathblowOpen; if (db) dmg = PostureTable.DeathblowDamage(dmg, d);   // P6 deathblow: the next hit on a posture-broken fighter   // steer stance modifiers (dealt / taken, Trickster per-hit roll)
         if (FightBalance.Active) dmg *= FightBalance.HitMul(a, d, m);   // B1: fight_balance.json
         float stg = m.stagger * chargeMul * (rear ? a.Rule("rear.stagger", 1.25f) : 1f) * (counter ? a.Rule("counter.stagger", 1.5f) : 1f);
-        d.health -= dmg;
-        if (db) d.ConsumeDeathblow(a); else d.AddPosture(PostureTable.HitGain(m) * (rear ? a.Rule("rear.posture", 1.5f) : 1f));
-        d.SetKnock(away * m.knockback * a.scale * 0.9f);
+        var pv = PoiseTable.Evaluate(a, d, m, db); dmg *= pv.damageMul; d.health -= dmg;   // V64P: hyper-armour, poise meter, riposte damage multiplier (poise.json)
+        if (db) d.ConsumeDeathblow(a); else d.AddPosture(pv.ClampPosture(d, PostureTable.HitGain(m) * (rear ? a.Rule("rear.posture", 1.5f) : 1f)));
+        d.SetKnock(away * m.knockback * a.scale * 0.9f * pv.knockMul);
         if (db && d.health > 0f && RTFinisher.DeathblowFinishes && RTFinisher.TryBegin(a, d, m, true)) return true;   // V61B: a posture-break deathblow ALWAYS starts a finisher (finishers.json rt.deathblowFinishes), lethal or not; the scene's Die() is the kill
         if (d.health <= 0f)
         {
             if (RTFinisher.TryBegin(a, d, m, db)) return true;   // FN1: killing-blow finisher scene (finishers.json enableFinishers, default false); the plain death below is the fallback
             d.Die(); Fire(a, d, "Hit", heavy, false); return true;
         }
-        if (PostureTable.Get().enabled) { if (d.TryPostureBreak(a)) { Fire(a, d, "GuardBroken", true, false); return true; } }   // P6: posture break = long stagger + deathblow window (posture.json)
+        if (pv.armoured) { Fire(a, d, "Hit", heavy, false); return true; }   /* V64P */ if (PostureTable.Get().enabled) { if (d.TryPostureBreak(a)) { Fire(a, d, "GuardBroken", true, false); return true; } }   // P6: posture break = long stagger + deathblow window (posture.json)
         else if (d.posture >= a.Rule("posture.max", 100f)) { d.KnockDown(); Fire(a, d, "GuardBroken", true, false); return true; }
-        if (hr != null && hr.knockdown) { d.KnockDown(); Fire(a, d, "Hit", heavy, false); return true; }   // data: allowKnockdown + a knockdown row (sim change, default off)
+        if (hr != null && hr.knockdown && !pv.absorb && !pv.grace) { d.KnockDown(); Fire(a, d, "Hit", heavy, false); return true; }   // data: allowKnockdown + a knockdown row (sim change, default off)
         string clip = hr != null ? hr.state : (heavy ? "hit_heavy" : (rear ? "hit_light_back" : "hit_light_front"));
-        d.Stagger(Mathf.Max(db ? PostureTable.Get().deathblow.staggerTicks : 0, (int)(stg * (hr != null ? hr.staggerScale : 1f))), clip);
+        if (pv.absorb) d.PoiseBreakOut(pv.breakOutTicks); else if (!pv.grace) d.Stagger(Mathf.Max(db ? PostureTable.Get().deathblow.staggerTicks : 0, (int)(stg * (hr != null ? hr.staggerScale : 1f))), clip);   // V64P: poise absorb = break-out, grace = no interrupt
         Fire(a, d, "Hit", heavy, false);
         return true;
     }

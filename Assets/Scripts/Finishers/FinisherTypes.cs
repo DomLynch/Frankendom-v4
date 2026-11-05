@@ -119,6 +119,8 @@ public class PieceCfg   // V62C: the severed piece (head) physics; finishers.jso
     public float rescueBelowM = 0.3f;               // ONE safety rescue only when the collider bottom is more than this under the ground (not every frame)
     public int maxRescues = 1;
     public float settleSeconds = 0.5f;
+    // V64F2: a resting piece whose VISIBLE mesh (horns, hair) sinks into the floor (the collider is a smaller sphere) is lifted once to the floor and frozen (kinematic), logged "SettleLift"
+    public bool settleLift = true, settleFreeze = true; public float settleTolM = 0.02f, settleMaxLiftM = 0.4f, settleStillS = 0.2f;
 }
 [Serializable] public class GoreCfg
 {
@@ -162,6 +164,19 @@ public class CutsCfg
     public float[] capColor = { 0.435f, 0.114f, 0.114f, 1f };   // flesh
     public float[] innerColor = { 0.165f, 0.043f, 0.043f, 1f };
     public CutUnit[] units = new CutUnit[0];
+    public CapMaterialCfg capMaterial = new CapMaterialCfg();   // V64F: the material of the cut faces (red, wet, dark, non-glowing); enabled = false keeps the legacy capColor / innerColor clone
+}
+
+// V64F: gore cap material. shader "" = clone of the cut renderer's own material (pipeline keywords kept) with every texture removed, subsurface / transmission switched off, emission black,
+// colour + smoothness from here, double sided (a flipped cap face never shows the inside of the mesh); a shader name (e.g. "HDRP/Lit") builds a fresh material instead.
+[Serializable]
+public class CapMaterialCfg
+{
+    public bool enabled = true;
+    public float[] color = { 0.2f, 0.025f, 0.03f, 1f }, innerColor = { 0.09f, 0.012f, 0.015f, 1f };
+    public float smoothness = 0.78f, metallic = 0f;
+    public bool doubleSided = true, clearSubsurface = true;
+    public string shader = "";
 }
 
 // ---------------- rotation + real-time settings ----------------
@@ -228,6 +243,8 @@ public class FinisherRtCfg
     public string fallbackShot = "kill";     // shot id when an entry has no shot at t <= 0 (unknown id = built-in orbit)
     public FinisherAutoCfg auto = new FinisherAutoCfg();   // -finisherauto harness data (FinisherAuto.cs)
     public FinisherLookCfg look = new FinisherLookCfg();   // V61C: finisher camera keeps the gameplay look (FinisherLook.cs)
+    public FinisherPairCfg pair = new FinisherPairCfg();               // V64F: interpenetration probe of the two fighters (FinisherPairProbe.cs)
+    public VictimLookCfg victimLook = new VictimLookCfg();             // V64F: victim material luma probe + stuck-flash guard (FinisherVictimLook.cs)
     public FinisherGroundCfg ground = new FinisherGroundCfg();   // V62B: foot-to-ground probe + correction during a scene (FinisherGround.cs)
 }
 

@@ -37,5 +37,32 @@
     {"id": "skill_*",        "mul": 1.3}
   ],
   "rollTumble": {"angleDeg": 8, "seconds": 0.6, "shift": 0.046, "dip": 0.08},
+  "shake": {
+    "_about": "V65CAM camera shake by hit weight (CamShake.cs). One pulse per contact = damped smooth noise (position m in the camera's right/up, roll deg), x ImpactTable.MoveMul(move). amp m, rollDeg, freq Hz, decay s (envelope exp(-t/decay)). victimMul = the player is struck, attackerMul = the player lands it. Comfort: maxPosM / maxRollDeg soft cap (tanh), maxFreqHz, maxPulses at once; scale 0 = no shake (accessibility). Real time: unaffected by hit-stop / slow-mo.",
+    "enabled": true,
+    "scale": 1.0,
+    "maxPosM": 0.07,
+    "maxRollDeg": 0.9,
+    "maxFreqHz": 14,
+    "maxPulses": 6,
+    "attackS": 0.025,
+    "endAt": 0.02,
+    "victimMul": 1.0,
+    "attackerMul": 0.6,
+    "bystanderMul": 0.4,
+    "useMoveWeight": true,
+    "classes": [
+      {"id": "blockLight", "amp": 0.005, "rollDeg": 0.08, "freq": 12, "decay": 0.08},
+      {"id": "hitLight",   "amp": 0.008, "rollDeg": 0.12, "freq": 11, "decay": 0.10},
+      {"id": "parry",      "amp": 0.010, "rollDeg": 0.15, "freq": 8,  "decay": 0.14},
+      {"id": "blockHeavy", "amp": 0.012, "rollDeg": 0.20, "freq": 10, "decay": 0.12},
+      {"id": "kick",       "amp": 0.014, "rollDeg": 0.20, "freq": 10, "decay": 0.14},
+      {"id": "hitHeavy",   "amp": 0.022, "rollDeg": 0.35, "freq": 9,  "decay": 0.18},
+      {"id": "guardBreak", "amp": 0.028, "rollDeg": 0.45, "freq": 8,  "decay": 0.24},
+      {"id": "special",    "amp": 0.030, "rollDeg": 0.50, "freq": 8,  "decay": 0.26},
+      {"id": "crit",       "amp": 0.030, "rollDeg": 0.50, "freq": 9,  "decay": 0.22},
+      {"id": "deathblow",  "amp": 0.045, "rollDeg": 0.80, "freq": 7,  "decay": 0.35}
+    ]
+  },
   "simHz": 60
 }

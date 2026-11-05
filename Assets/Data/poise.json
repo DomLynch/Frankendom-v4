@@ -1,0 +1,44 @@
+{
+  "enabled": true,
+  "debugLog": false,
+  "_about": "Lane V64P, read by PoiseTable.cs. armour = HYPER-ARMOUR: while a fighter is inside the armoured window of one of his moves a clean hit still damages (x damageMul) but does not stagger, knock down or posture-break him and the swing goes on. Per fighter key (Dracula / Pitborn), rows in file order, first matching row wins, move = id | * | prefix pattern like heavy*, 'armour': false excludes a move. The window: Windup from tick fromTick (a heavy charge parks at its chamber tick 10, so fromTick <= 10 covers the charge) + the whole Active window + the first recoveryTicks ticks of Recovery. knockMul scales the knock-back of the hit, postureMul scales the posture it adds (an armoured fighter's posture stops below max so he can never be posture-broken inside the window). meter = POISE METER: every clean, interrupting hit on a fighter is counted, hits older than windowTicks (60 = 1 s) are forgotten; after `hits` of them the NEXT hit is absorbed: it damages (x absorbDamageMul) but does not stagger, a stagger already running is cut short (break-out) and a grace window of breakOutTicks starts in which hits damage (x graceDamageMul) but never interrupt. Anti stun-lock for both fighters. countArmoured: do armoured hits count toward the meter. fighters[] overrides any meter field per fighter (-1 = inherit, enabled false = no meter). riposte = damage multiplier on the riposte moves (applied in Duel.Resolve). enabled false or no file = the exact old rules.",
+  "armour": {
+    "enabled": true,
+    "fighters": [
+      {
+        "key": "Pitborn",
+        "moves": [
+          { "move": "skill_jab",    "armour": false },
+          { "move": "skill_pommel", "armour": false },
+          { "move": "skill_shove",  "armour": false },
+          { "move": "heavy*",       "fromTick": 8, "recoveryTicks": 0, "damageMul": 1.0, "knockMul": 0.2, "postureMul": 0.5 },
+          { "move": "critical",     "fromTick": 8, "recoveryTicks": 0, "damageMul": 1.0, "knockMul": 0.2, "postureMul": 0.5 },
+          { "move": "skill_*",      "fromTick": 6, "recoveryTicks": 0, "damageMul": 1.0, "knockMul": 0.2, "postureMul": 0.5 }
+        ]
+      },
+      {
+        "key": "Dracula",
+        "moves": [
+          { "move": "skill_*",      "fromTick": 8, "recoveryTicks": 0, "damageMul": 1.0, "knockMul": 0.2, "postureMul": 0.5 }
+        ]
+      }
+    ]
+  },
+  "meter": {
+    "enabled": true,
+    "hits": 3,
+    "windowTicks": 150,
+    "breakOutTicks": 45,
+    "absorbDamageMul": 0.75,
+    "graceDamageMul": 0.6,
+    "countArmoured": false,
+    "fighters": [
+      { "key": "Pitborn", "enabled": true, "hits": 3, "windowTicks": 180, "breakOutTicks": 48 },
+      { "key": "Dracula", "enabled": true, "hits": 3, "windowTicks": 150, "breakOutTicks": 42 }
+    ]
+  },
+  "riposte": {
+    "damageMul": 0.8,
+    "moves": [ "riposte", "slash_riposte", "heavy_riposte" ]
+  }
+}

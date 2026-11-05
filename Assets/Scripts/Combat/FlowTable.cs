@@ -26,7 +26,7 @@ public static class FlowTable
     [Serializable] public class LockCfg { public bool enabled = true, startLocked = true, pushAwayBreaks = false, attackRelocks = false, guardFacesTarget = true; public float range = 14f; public string[] keys = { "Tab", "Mouse2", "JoystickButton9" }; public LockHud hud = new LockHud(); }
 
     // ---------------- attack magnetism + turn tracking ----------------
-    [Serializable] public class MagnetCfg { public bool enabled = true; public float maxAngleDeg = 50f, maxDistance = 3.2f, snapMs = 90f; }
+    [Serializable] public class MagnetCfg { public bool enabled = true; public float maxAngleDeg = 50f, maxDistance = 3.2f, snapMs = 90f, botMaxDistance = 1.5f; }   // V64P: botMaxDistance = magnetism range cap for a fighter that is not the human (AI / bot), 0 = no cap
     [Serializable] public class TurnCfg { public bool enabled = true; public float windupDegPerSec = 480f, activeDegPerSec = 80f, recoveryDegPerSec = 200f; }
     [Serializable] public class MoveRow { public string move = "*"; public float maxAngleDeg = -1f, maxDistance = -1f, snapMs = -1f, windupDegPerSec = -1f, activeDegPerSec = -1f, recoveryDegPerSec = -1f; }   // -1 = inherit
     [Serializable] public class AttackCfg { public MagnetCfg magnet = new MagnetCfg(); public TurnCfg turn = new TurnCfg(); public MoveRow[] moves = new MoveRow[0]; }
@@ -39,10 +39,40 @@ public static class FlowTable
     // ---------------- riposte ----------------
     [Serializable] public class RiposteCfg { public bool enabled = true, auto = true, consume = false, hint = true; public string[] keys = { "B", "JoystickButton1" }; public string move = "riposte", hintText = "RIPOSTE"; public int fontSize = 16; }
 
+    // ---------------- bot: the flow layer on the BalanceAuto bot (lane V64P, FlowBot.cs) ----------------
+    // The key presses a human makes, as data: chain a follow-up inside the flow.json chain rows, cancel a recovery into a dodge / guard when a swing comes, take the riposte after a parry, label dodges
+    // with a direction. wX = relative weight of the follow-up type. All chances per decision; reaction ticks are sim ticks (60 = 1 s).
+    [Serializable]
+    public class BotCfg
+    {
+        public bool chain = true, cancel = true, riposte = true, dodgeDir = true;
+        public float chainOnHit = 0.6f, chainOnWhiff = 0.15f, chainDecay = 0.75f, minStamina = 30f, reachMargin = 0.25f;
+        public int maxLinks = 4, jitterTicks = 3;
+        public float wLight = 1f, wHeavy = 0.35f, wThrust = 0.6f, wKick = 0.25f;
+        public float cancelChance = 0.3f, cancelGuardShare = 0.3f, cancelMinStamina = 12f; public int cancelLeadMin = 3, cancelLeadMax = 10, guardHoldTicks = 14;
+        public float riposteChance = 0.85f; public int riposteReactMin = 8, riposteReactMax = 22;
+        public float dirLeft = 0.35f, dirRight = 0.35f, dirBack = 0.2f, dirForward = 0.1f;
+        // V65BOT: chainReserve = stamina that must be left after the follow-up (its cost comes from stamina.json); stepInShare = share of the follow-up's stepIn counted as extra reach;
+        // chainDropsDodge = a plain dodge the AI left queued does not block a chain the bot chose; cancelFoeHeavy = id prefixes of foe swings that get the heavy cancel rule (dodge, cancelHeavyChance,
+        // cancelHeavyDist metres, lead window cancelHeavyLeadMin..Max ticks of the foe wind-up left); riposteSlack = metres beyond reach the riposte key is still pressed (the riposte steps in)
+        public float chainReserve = 6f, stepInShare = 0.7f, cancelHeavyChance = 0.85f, cancelHeavyDist = 2.5f, riposteSlack = 0.6f; public bool chainDropsDodge = true; public int cancelHeavyLeadMin = 3, cancelHeavyLeadMax = 11;
+        public string[] cancelFoeHeavy = { "heavy", "critical", "skill_" };
+        // V65BOT2: active parry (the AI profile holds the guard, so its parry window is never fresh): on a parryable foe wind-up with parryLead* ticks left the bot re-raises the guard and holds it parryHoldTicks
+        public bool parry = true; public float parryTryChance = 0.6f; public int parryLeadMin = 4, parryLeadMax = 8, parryHoldTicks = 12;
+    }
+    // the first chain row for from -> to, whatever the recovery tick (FlowBot picks a follow-up type and schedules the press from the row's window)
+    public static ChainRow ChainRowFor(string fromId, string toType, bool hit)
+    {
+        var rows = Get().chain.rows;
+        for (int i = 0; i < rows.Length; i++) { var r = rows[i]; if (r == null || r.to != toType || !MatchMove(r.from, fromId)) continue; if (r.onHitOnly && !hit) continue; return r; }
+        return null;
+    }
+
+
     [Serializable]
     public class Data
     {
-        public bool enabled = true, debugLog; public string scope = "player";
+        public bool enabled = true, debugLog, applyToBot = true; public string scope = "player"; public BotCfg bot = new BotCfg();   // V64P: applyToBot = the BalanceAuto bot (flowBotOn) gets the flow layer
         public ChainCfg chain = new ChainCfg(); public LockCfg lockOn = new LockCfg(); public AttackCfg attack = new AttackCfg(); public DodgeCfg dodge = new DodgeCfg(); public RiposteCfg riposte = new RiposteCfg();
     }
 
@@ -55,7 +85,7 @@ public static class FlowTable
     public static bool Applies(DuelFighter f)
     {
         var d = Get();
-        return d.enabled && f != null && (d.scope == "all" || f.FlowHuman);
+        return d.enabled && f != null && (d.scope == "all" || f.FlowHuman || (d.applyToBot && f.flowBotOn));   // V64P
     }
 
     // ---------------- lookups ----------------
@@ -79,7 +109,13 @@ public static class FlowTable
     }
 
     public struct AtkParams { public bool magnet; public float maxAngle, maxDist, snapMs, windup, active, recovery; }
-    public static AtkParams Attack(string moveId)
+    public static AtkParams Attack(string moveId, DuelFighter who = null)   // V64P: who != null and not the human -> magnetism range capped at botMaxDistance
+    {
+        var p = AttackBase(moveId);
+        if (who != null && !who.FlowHuman) { float cap = Get().attack.magnet.botMaxDistance; if (cap > 0f && p.maxDist > cap) p.maxDist = cap; }
+        return p;
+    }
+    static AtkParams AttackBase(string moveId)
     {
         var a = Get().attack;
         var p = new AtkParams { magnet = a.magnet.enabled, maxAngle = a.magnet.maxAngleDeg, maxDist = a.magnet.maxDistance, snapMs = a.magnet.snapMs, windup = a.turn.windupDegPerSec, active = a.turn.activeDegPerSec, recovery = a.turn.recoveryDegPerSec };
@@ -190,7 +226,7 @@ public static class FlowTable
             if (d.lockOn == null) d.lockOn = new LockCfg(); if (d.lockOn.hud == null) d.lockOn.hud = new LockHud(); if (d.lockOn.range <= 0f) d.lockOn.range = 14f;
             if (d.attack == null) d.attack = new AttackCfg(); if (d.attack.magnet == null) d.attack.magnet = new MagnetCfg(); if (d.attack.turn == null) d.attack.turn = new TurnCfg(); if (d.attack.moves == null) d.attack.moves = new MoveRow[0];
             if (d.dodge == null) d.dodge = new DodgeCfg(); if (d.dodge.dirs == null) d.dodge.dirs = new DodgeRow[0];
-            if (d.riposte == null) d.riposte = new RiposteCfg();
+            if (d.riposte == null) d.riposte = new RiposteCfg(); if (d.bot == null) d.bot = new BotCfg();   // V64P
             if (string.IsNullOrEmpty(d.scope)) d.scope = "player";
             data = d;
         }

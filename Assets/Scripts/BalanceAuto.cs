@@ -77,7 +77,7 @@ public class BalanceAuto : MonoBehaviour
         public float dmgDealt, dmgTaken; public int hits, parries, blocks, guardBreaks, dodges, attacks;
         public readonly int[] cat = new int[Cats.Length]; public readonly Dictionary<string, int> moves = new Dictionary<string, int>();
     }
-    class Rec { public string dAdapt = "", pAdapt = ""; public int idx, seed; public float dur; public string winner, endReason; public Side d = new Side(), p = new Side(); public float dHp, pHp; public int[] dPost = new int[4], pPost = new int[4]; public float dGain, pGain; }   // P7: posture counters {breaks suffered, deathblows dealt, deathblows taken, windows missed}
+    class Rec { public string dAdapt = "", pAdapt = ""; public int idx, seed; public float dur; public string winner, endReason; public Side d = new Side(), p = new Side(); public float dHp, pHp; public int[] dPost = new int[4], pPost = new int[4]; public float dGain, pGain; public float[] dF = new float[12], pF = new float[12]; public string dFlow = "", pFlow = ""; }   // V64P   // P7: posture counters {breaks suffered, deathblows dealt, deathblows taken, windows missed}
     Side sd = new Side(), sp = new Side();      // current fight: Dracula, Pitborn
     readonly List<Rec> recs = new List<Rec>();
 
@@ -344,6 +344,7 @@ public class BalanceAuto : MonoBehaviour
         if (D.opponent == null) D.opponent = P;
         if (P.opponent == null) P.opponent = D;
         var rig = FindAnyObjectByType<CameraRig>(); if (rig != null) { rig.lockRange = 80f; rig.enabled = true; }
+        FlowBotSetup();   // V64P
         Time.timeScale = 1f;
         Log("autoplay forced: Dracula AIBrain " + (dBrain.enabled ? "on" : "OFF") + " (playerBot), PlayerBrain " + (pb != null ? "off" : "absent") + ", Pitborn AIBrain " + (pBrain != null && pBrain.enabled ? "on" : "MISSING/OFF")
             + ", AIBrain.GlobalSeed " + seed);
@@ -364,9 +365,9 @@ public class BalanceAuto : MonoBehaviour
         if (P != null) { r.pPost = new[] { P.statPostureBreaks, P.statDeathblows, P.statDeathblowsTaken, P.statDeathblowsMissed }; r.pGain = P.statPostureGained; }
         r.winner = P.Dead && !D.Dead ? "Dracula" : D.Dead && !P.Dead ? "Pitborn" : D.Dead && P.Dead ? "both" : "none (time limit)";
         try { var ad = AiAdapt.Of(D); r.dAdapt = ad != null ? ad.Report() : "(adapt off)"; ad = AiAdapt.Of(P); r.pAdapt = ad != null ? ad.Report() : "(adapt off)"; } catch (Exception) { }   // V63
-        recs.Add(r);
+        FlowStats(r); recs.Add(r);   // V64P
         Log("FIGHT RESULT " + r.idx + "/" + seedsN + " seed " + seed + " dur " + dur.ToString("F1", IC) + " winner " + r.winner + " dmg D->P " + sd.dmgDealt.ToString("F0", IC) + " P->D " + sp.dmgDealt.ToString("F0", IC)
-            + " hits D" + sd.hits + "/P" + sp.hits + " pitborn moves " + sp.moves.Count + " posture " + PostureText(r));
+            + " hits D" + sd.hits + "/P" + sp.hits + " pitborn moves " + sp.moves.Count + " posture " + PostureText(r) + " | flow D: " + r.dFlow + " | flow P: " + r.pFlow);
     }
 
     // ------------------------------------------------------------ screenshots (STAuto conventions: screen grab, camera render texture when black)
@@ -430,6 +431,72 @@ public class BalanceAuto : MonoBehaviour
     static float TopShare(Side s, out string id) { id = "-"; int best = 0; foreach (var kv in s.moves) if (kv.Value > best) { best = kv.Value; id = kv.Key; } return s.attacks > 0 ? best / (float)s.attacks : 0f; }
     static string Pct(float f) { return (f * 100f).ToString("F0", IC) + "%"; }
 
+    // V64P: the flow layer on the bot + poise / hyper-armour / combo logging
+    void FlowBotSetup()
+    {
+        var fc = FlowTable.Get(); bool on = fc.enabled && fc.applyToBot;
+        D.flowBotOn = on; if (P != null) P.flowBotOn = false;
+        var fb = D.GetComponent<FlowBot>();
+        if (on) { if (fb == null) fb = D.gameObject.AddComponent<FlowBot>(); fb.enabled = true; fb.Seed(); }
+        else if (fb != null) fb.enabled = false;
+        var pz = PoiseTable.Get();
+        Log("V64P flow layer on the bot (flow.json applyToBot): " + (on ? "ON (chain " + fc.bot.chain + ", cancel " + fc.bot.cancel + ", riposte key " + fc.bot.riposte + ", dodge directions " + fc.bot.dodgeDir + ", magnetism cap " + fc.attack.magnet.botMaxDistance.ToString("F1", IC) + " m)" : "off (the bot plays the old unflowed way)")
+            + "   poise.json " + (pz.enabled ? "ON (armour " + pz.armour.enabled + ", meter " + pz.meter.enabled + " " + pz.meter.hits + " hits, riposte x" + pz.riposte.damageMul.ToString("F2", IC) + ")" : "off"));
+    }
+    // F[]: 0 comboMax 1 comboStrings 2 comboSum 3 chains 4 cancelDodge 5 cancelGuard 6 cancelAtk 7 riposteKey 8 riposteMoves 9 magnetSnaps 10 poiseAbsorbs 11 armourHits
+    static float[] FlowArr(DuelFighter f, Side s)
+    {
+        var a = new float[12]; if (f == null) return a;
+        a[0] = f.statComboMax; a[1] = f.statComboCount; a[2] = f.statComboSum; a[3] = f.flowChains; a[4] = f.statCancelDodge; a[5] = f.statCancelGuard; a[6] = f.statCancelAtk;
+        a[7] = f.flowRipostes; a[8] = MoveN(s, "riposte") + MoveN(s, "slash_riposte") + MoveN(s, "heavy_riposte"); a[9] = f.statMagnetSnaps; a[10] = f.statPoiseAbsorbs; a[11] = f.statArmourHits;
+        return a;
+    }
+    static string FlowText(float[] a, DuelFighter f)
+    {
+        return "combo max " + a[0].ToString("F0", IC) + " avg " + (a[1] > 0 ? a[2] / a[1] : 0f).ToString("F2", IC) + " (" + a[1].ToString("F0", IC) + " strings, " + a[3].ToString("F0", IC) + " chain links)"
+            + " cancels dodge " + a[4].ToString("F0", IC) + " guard " + a[5].ToString("F0", IC) + " attack " + a[6].ToString("F0", IC)
+            + " ripostes key " + a[7].ToString("F0", IC) + " moves " + a[8].ToString("F0", IC) + " magnet snaps " + a[9].ToString("F0", IC)
+            + " poise absorbs " + a[10].ToString("F0", IC) + " armour hits " + a[11].ToString("F0", IC) + " dir dodges " + (f != null ? f.statDirDodges : 0);
+    }
+    void FlowStats(Rec r)
+    {
+        try
+        {
+            if (D != null) D.FlowComboFlush(); if (P != null) P.FlowComboFlush();
+            r.dF = FlowArr(D, r.d); r.pF = FlowArr(P, r.p); r.dFlow = FlowText(r.dF, D); r.pFlow = FlowText(r.pF, P);
+            { var fbd = D != null ? D.GetComponent<FlowBot>() : null; if (fbd != null) r.dFlow += " | " + fbd.Diag(); }   // V65BOT: which gate stopped a chain / cancel / riposte
+        }
+        catch (Exception) { }
+    }
+    void AppendFlowAverages(StringBuilder sb, int n)
+    {
+        var sD = new float[12]; var sP = new float[12]; float maxD = 0f, maxP = 0f;
+        foreach (var r in recs) { for (int k = 0; k < 12; k++) { sD[k] += r.dF[k]; sP[k] += r.pF[k]; } maxD = Mathf.Max(maxD, r.dF[0]); maxP = Mathf.Max(maxP, r.pF[0]); }
+        var fc = FlowTable.Get();
+        sb.AppendLine("  V64P flow layer on the bot " + (fc.enabled && fc.applyToBot ? "ON" : "OFF") + ": Dracula combo max " + maxD.ToString("F0", IC) + " avg " + (sD[1] > 0 ? sD[2] / sD[1] : 0f).ToString("F2", IC) + " (targets: avg >= 1.4, max >= 3)  chain links/fight " + (sD[3] / n).ToString("F1", IC)
+            + "  cancels/fight dodge " + (sD[4] / n).ToString("F1", IC) + " guard " + (sD[5] / n).ToString("F1", IC) + " attack " + (sD[6] / n).ToString("F1", IC) + "  ripostes/fight key " + (sD[7] / n).ToString("F1", IC) + " (all riposte moves " + (sD[8] / n).ToString("F1", IC) + ")  magnet snaps/fight " + (sD[9] / n).ToString("F1", IC));
+        sb.AppendLine("  V64P Pitborn (unflowed AI): combo max " + maxP.ToString("F0", IC) + " avg " + (sP[1] > 0 ? sP[2] / sP[1] : 0f).ToString("F2", IC) + "  cancels/fight dodge " + (sP[4] / n).ToString("F1", IC) + " guard " + (sP[5] / n).ToString("F1", IC) + "  magnet snaps/fight " + (sP[9] / n).ToString("F1", IC));
+        sb.AppendLine("  V64P poise per fight (targets: absorbs 0.5-3 per side, Pitborn armour hits 1-6): absorbs D " + (sD[10] / n).ToString("F1", IC) + " P " + (sP[10] / n).ToString("F1", IC) + "  armour hits D " + (sD[11] / n).ToString("F1", IC) + " P " + (sP[11] / n).ToString("F1", IC));
+        if (fc.enabled && fc.applyToBot && fc.bot.chain && sD[3] <= 0f) sb.AppendLine("  WARN: flow layer on the bot but no chain link in the whole run (flow.json chain rows / bot.chainOn* too low, or the bot never recovers in reach)");
+        if (PoiseTable.Get().enabled && PoiseTable.Get().meter.enabled && (sD[10] / n > 4f || sP[10] / n > 4f)) sb.AppendLine("  WARN: poise absorbs above 4 per fight: the meter fires too often (raise meter.hits or shorten meter.windowTicks)");
+        if (PoiseTable.Get().enabled && PoiseTable.Get().armour.enabled && sP[11] <= 0f) sb.AppendLine("  WARN: the Pitborn never took a hit on hyper-armour in the whole run (armour rows too narrow, or he rarely uses heavies / specials)");
+    }
+
+    // V65BOT: flow targets line per run (WARN only, the verdict rule is unchanged)
+    void AppendFlowTargets(StringBuilder sb, int n)
+    {
+        var fc = FlowTable.Get(); if (n <= 0 || !(fc.enabled && fc.applyToBot)) return;
+        float cStr = 0f, cSum = 0f, canc = 0f, chains = 0f, key = 0f, rmov = 0f, snaps = 0f, par = 0f;
+        foreach (var r in recs) { cStr += r.dF[1]; cSum += r.dF[2]; chains += r.dF[3]; canc += r.dF[4] + r.dF[5] + r.dF[6]; key += r.dF[7]; rmov += r.dF[8]; snaps += r.dF[9]; par += r.d.parries; }
+        float avg = cStr > 0f ? cSum / cStr : 0f;
+        sb.AppendLine("  V65BOT flow targets (WARN only, verdict unchanged): combo avg " + avg.ToString("F2", IC) + " (>= 1.6)   cancels/fight " + (canc / n).ToString("F1", IC) + " (>= 3; dodge+guard+attack cancels, chain links not counted: " + (chains / n).ToString("F1", IC) + "/fight)"
+            + "   ripostes by key/fight " + (key / n).ToString("F1", IC) + " vs parries/fight " + (par / n).ToString("F1", IC) + " (key == parries; all riposte moves " + (rmov / n).ToString("F1", IC) + ")   magnet snaps/fight " + (snaps / n).ToString("F1", IC) + " (> 0)");
+        if (avg < 1.6f) sb.AppendLine("  WARN: flow target: Dracula combo avg " + avg.ToString("F2", IC) + " below 1.6 (see the 'bot chain decisions' gates in the per-fight flow D line)");
+        if (canc / n < 3f) sb.AppendLine("  WARN: flow target: cancels/fight " + (canc / n).ToString("F1", IC) + " below 3 (bot.cancelChance / cancelHeavyChance / cancelHeavyLeadMax in flow.json)");
+        if (par > 0f && key < par * 0.9f) sb.AppendLine("  WARN: flow target: riposte-key presses " + key.ToString("F0", IC) + " below parries " + par.ToString("F0", IC) + " (bot.riposteChance / riposteReactMax / riposteSlack)");
+        if (snaps <= 0f) sb.AppendLine("  WARN: flow target: no magnetism snap on the bot in the whole run (attack.magnet.botMaxDistance too low, or the bot swings from outside it)");
+    }
+
     void WriteSummary(int code, string why, string verdictOverride)
     {
         int n = recs.Count;
@@ -465,7 +532,7 @@ public class BalanceAuto : MonoBehaviour
             sb.AppendLine("  #" + r.idx + " seed " + r.seed + "  " + r.dur.ToString("F1", IC) + " s  winner " + r.winner + " (" + r.endReason + ")  hp end D" + r.dHp.ToString("F0", IC) + "/P" + r.pHp.ToString("F0", IC));
             sb.AppendLine("       damage D>P " + r.d.dmgDealt.ToString("F0", IC) + "  P>D " + r.p.dmgDealt.ToString("F0", IC) + "   hits landed D " + r.d.hits + "  P " + r.p.hits + "   swings landed/attempted D " + r.d.hits + "/" + r.d.attacks + " P " + r.p.hits + "/" + r.p.attacks);
             sb.AppendLine("       parries (by) D " + r.d.parries + " P " + r.p.parries + "   blocks D " + r.d.blocks + " P " + r.p.blocks + "   guardbreaks on D " + r.d.guardBreaks + " P " + r.p.guardBreaks + "   dodges D " + r.d.dodges + " P " + r.p.dodges);
-            sb.AppendLine("       posture " + PostureText(r));
+            sb.AppendLine("       posture " + PostureText(r)); sb.AppendLine("       V64P flow D: " + r.dFlow); sb.AppendLine("       V64P flow P: " + r.pFlow);
             sb.AppendLine("       moves D (" + r.d.attacks + "): " + CatText(r.d));
             sb.AppendLine("       moves P (" + r.p.attacks + "): " + CatText(r.p) + "   distinct " + r.p.moves.Count + ": " + MoveText(r.p));
             { string tdI, tpI; float tdS = TopShare(r.d, out tdI), tpS = TopShare(r.p, out tpI);
@@ -485,7 +552,7 @@ public class BalanceAuto : MonoBehaviour
                 + "  deathblows dealt D " + (tD[1] / (float)n).ToString("F1", IC) + " P " + (tP[1] / (float)n).ToString("F1", IC) + "  taken D " + (tD[2] / (float)n).ToString("F1", IC) + " P " + (tP[2] / (float)n).ToString("F1", IC)
                 + "  missed D " + (tD[3] / (float)n).ToString("F1", IC) + " P " + (tP[3] / (float)n).ToString("F1", IC)
                 + "  | totals: breaks " + (tD[0] + tP[0]) + ", deathblows " + (tD[1] + tP[1]) + ", conversion " + ((tD[0] + tP[0]) > 0 ? ((tD[1] + tP[1]) * 100f / (tD[0] + tP[0])).ToString("F0", IC) + "%" : "-"));
-            sb.AppendLine("  Pitborn distinct moves per fight " + (sPM / n).ToString("F1", IC) + " (min " + minPitMoves + "), over the run " + allPit.Count);
+            AppendFlowAverages(sb, n); AppendFlowTargets(sb, n); sb.AppendLine("  Pitborn distinct moves per fight " + (sPM / n).ToString("F1", IC) + " (min " + minPitMoves + "), over the run " + allPit.Count);
             {   // V63 balance targets: riposte share <= 30% of Pitborn swings, no single move > 40%, parries spread, enrage entered
                 float ripP = 0, ripD = 0, topPmax = 0, topDmax = 0; int parD = 0, parP = 0, enr = 0, kickD = 0, kickP = 0; string idd;
                 foreach (var r in recs) { ripP += RipShare(r.p); ripD += RipShare(r.d); topPmax = Mathf.Max(topPmax, TopShare(r.p, out idd)); topDmax = Mathf.Max(topDmax, TopShare(r.d, out idd)); parD += r.d.parries; parP += r.p.parries; kickD += MoveN(r.d, "kick"); kickP += MoveN(r.p, "kick"); if (r.pAdapt.Contains("enrage yes")) enr++; }

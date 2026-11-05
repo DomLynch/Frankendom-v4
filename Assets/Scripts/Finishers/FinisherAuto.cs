@@ -46,7 +46,7 @@ public class FinisherAuto : MonoBehaviour
         public int shots, slowmo, gore, exceptions;
         public float paced, pacedKill = -1f, refLuma = -1f, clearHead = float.NaN, clearHand = float.NaN; public int stalls; public bool lumaOk = true;   // V61C
         public readonly List<float> lumas = new List<float>(); public readonly List<string> lumaLabels = new List<string>();
-        public string groundLine = "", headLine = "", vigLine = "";   // V62B
+        public string groundLine = "", headLine = "", vigLine = "", pairLine = "", lookLine = "";   // V62B
         public bool sampDone; public string sheetFile = ""; public Texture2D sheetSmall;   // V61B contact sheet
         public readonly List<Texture2D> thumbs = new List<Texture2D>(); public readonly List<string> thumbLabels = new List<string>();
         public readonly List<string> cuts = new List<string>(), notes = new List<string>(), files = new List<string>(), warns = new List<string>(), errors = new List<string>();
@@ -408,11 +408,29 @@ public class FinisherAuto : MonoBehaviour
                     foreach (var gs in new[] { gk, gv })
                     {
                         if (!gs.any || gs.n == 0) { r.warns.Add("ground probe: " + gs.who + " has no samples (no ground under the feet / never judged)"); continue; }
-                        if (gs.max > gcf.failAboveM) r.errors.Add("foot-to-ground: " + gs.who + " floats " + gs.max.ToString("0.00", IC) + " m above the ground (limit " + gcf.failAboveM.ToString("0.00", IC) + " m)");
+                        if (gs.max > gcf.failAboveM)
+                        {
+                            // V64F2: a victim lying with its feet in the air is judged by its lowest BODY point (below), not by the soles
+                            bool bodyJudged = gcf.bodyClamp && gs.who.StartsWith("victim") && FinisherGround.Victim.bn > 0;
+                            string fm = "foot-to-ground: " + gs.who + (bodyJudged ? " has the feet " : " floats ") + gs.max.ToString("0.00", IC) + " m above the ground (limit " + gcf.failAboveM.ToString("0.00", IC) + " m)" + (bodyJudged ? "; the lowest body point decides (body-to-ground)" : "");
+                            if (bodyJudged) r.warns.Add(fm); else r.errors.Add(fm);
+                        }
                         if (gs.min < -gcf.failBelowM) r.errors.Add("foot-to-ground: " + gs.who + " sunk " + (-gs.min).ToString("0.00", IC) + " m into the ground (limit " + gcf.failBelowM.ToString("0.00", IC) + " m)");
                         if (gcf.correct && (gs.rawMax > gcf.failAboveM || gs.rawMin < -gcf.failBelowM)) r.warns.Add("ground correction was needed: " + gs.who + " raw gap " + gs.rawMin.ToString("+0.00;-0.00", IC) + " .. " + gs.rawMax.ToString("+0.00;-0.00", IC) + " m (the clip / placement floats or sinks; the root was moved to the ground)");
                     }
                 }
+                // V64F: the victim is judged by its lowest BODY point too (corpse floating at an angle), the pair must not interpenetrate, the victim material must not get lighter
+                if (gcf != null && gcf.enabled && gcf.bodyClamp)
+                {
+                    var gvb = FinisherGround.Victim;
+                    if (gvb.bn == 0) r.warns.Add("body-to-ground: " + gvb.who + " has no samples");
+                    else
+                    {
+                        if (gvb.bMax > gcf.failBodyAboveM) r.errors.Add("body-to-ground: " + gvb.who + " lowest body point floats " + gvb.bMax.ToString("0.00", IC) + " m above the ground (limit " + gcf.failBodyAboveM.ToString("0.00", IC) + " m)");
+                        if (gvb.bMin < -gcf.failBodyBelowM) r.errors.Add("body-to-ground: " + gvb.who + " lowest body point sunk " + (-gvb.bMin).ToString("0.00", IC) + " m into the ground (limit " + gcf.failBodyBelowM.ToString("0.00", IC) + " m)");
+                    }
+                }
+                { string pl, ll; FinisherPairProbe.Verify(r.id, r.errors, r.warns, out pl); r.pairLine = pl; Log("pair: " + pl); FinisherVictimLook.Verify(r.id, r.errors, r.warns, out ll); r.lookLine = ll; if (ll.Length > 0) Log(ll); }
                 var cutsCfg = FinisherConfig.Get().cuts; var hl = new List<string>();
                 if (e.gore != null && cutsCfg != null && cutsCfg.units != null && V != null)
                     foreach (var gk2 in e.gore)
@@ -646,6 +664,8 @@ public class FinisherAuto : MonoBehaviour
             if (r.groundLine.Length > 0) sb.AppendLine("    ground: " + r.groundLine + "  (limit +" + FinisherConfig.Get().rt.ground.failAboveM.ToString("0.00", IC) + " / -" + FinisherConfig.Get().rt.ground.failBelowM.ToString("0.00", IC) + " m)");
             if (r.headLine.Length > 0) sb.AppendLine("    severed: " + r.headLine);
             if (r.vigLine.Length > 0) sb.AppendLine("    vignette: " + r.vigLine);
+            if (r.pairLine.Length > 0) sb.AppendLine("    pair: " + r.pairLine);
+            if (r.lookLine.Length > 0) sb.AppendLine("    " + r.lookLine);
             sb.AppendLine("    checks: victimDead=" + r.victimDead + " frozenClear=" + r.frozenClear + " timeScaleRestored=" + r.timeOk + " cameraReleased=" + r.camOk + " exceptions=" + r.exceptions);
             sb.AppendLine("    shots (" + r.shots + "): " + string.Join(", ", r.files.ToArray()));
             if (r.sheetFile.Length > 0) sb.AppendLine("    sheet: " + r.sheetFile);

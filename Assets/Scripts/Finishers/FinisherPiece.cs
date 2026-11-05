@@ -128,8 +128,23 @@ public sealed class FinisherPiece : MonoBehaviour
         }
         if (rb.linearVelocity.sqrMagnitude < 0.01f && rb.angularVelocity.sqrMagnitude < 0.04f) still += Time.fixedDeltaTime; else still = 0f;
         Settled = still > cfg.settleSeconds;
+        if (cfg.settleLift && !rb.isKinematic && still > cfg.settleStillS && SettleLifts < 3)
+        {
+            Bounds vb; if (Visible(out vb))
+            {
+                bool f2; float gy2 = SurfaceY(new Vector3(vb.center.x, vb.max.y, vb.center.z), out f2);
+                float gap = f2 ? vb.min.y - gy2 : 0f;
+                if (f2 && gap < -cfg.settleTolM)
+                {
+                    SettleLifts++; float up = Mathf.Min(-gap + cfg.spawnClampM, cfg.settleMaxLiftM); var to = rb.position + Vector3.up * up; rb.position = to; transform.position = to;
+                    if (cfg.settleFreeze) { rb.linearVelocity = Vector3.zero; rb.angularVelocity = Vector3.zero; rb.isKinematic = true; }
+                    Debug.Log("[finisher] piece '" + name + "' (" + unit + ") SettleLift x" + SettleLifts + ": visible mesh " + (-gap).ToString("0.00") + " m under the ground, lifted " + up.ToString("0.00") + " m" + (cfg.settleFreeze ? " and frozen" : ""));
+                }
+            }
+        }
     }
 
+    public int SettleLifts;   // V64F2
     void Rescue(Vector3 move, string why)
     {
         Rescues++; var to = rb.position + move; rb.position = to; transform.position = to; rb.linearVelocity = Vector3.zero; rb.angularVelocity = Vector3.zero;

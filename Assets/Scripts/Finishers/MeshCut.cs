@@ -141,18 +141,41 @@ public static class MeshCut
 
     static Color Col(float[] c) { return new Color(c[0], c[1], c[2], c.Length > 3 ? c[3] : 1f); }
 
+    // V64F: cap (cut face) material. With cuts.capMaterial.enabled: dark wet red, non-glowing, no textures, no subsurface / transmission (the skin clone rendered the cap as a flat brown slab),
+    // double sided; otherwise the legacy clone with capColor / innerColor.
     static Material CapMaterial(SkinnedMeshRenderer smr, CutsCfg cc, bool inner)
     {
+        var cm = cc.capMaterial; bool nw = cm != null && cm.enabled;
         Material src = null; var mats = smr.sharedMaterials;
         for (int i = 0; i < mats.Length && src == null; i++) src = mats[i];
-        Material m = src != null ? new Material(src) : new Material(Shader.Find("Standard"));
+        Shader sh = nw && !string.IsNullOrEmpty(cm.shader) ? Shader.Find(cm.shader) : null;
+        Material m = sh != null ? new Material(sh) : (src != null ? new Material(src) : new Material(Shader.Find("Standard")));
         m.name = "FinisherCapFlesh";
-        var col = Col(inner ? cc.innerColor : cc.capColor);
+        var col = Col(nw ? (inner ? cm.innerColor : cm.color) : (inner ? cc.innerColor : cc.capColor));
         foreach (var p in new[] { "_BaseColor", "_Color" }) if (m.HasProperty(p)) m.SetColor(p, col);
         foreach (var p in new[] { "_BaseColorMap", "_MainTex", "_NormalMap", "_BumpMap", "_MaskMap", "_EmissiveColorMap", "_DetailMap" }) if (m.HasProperty(p)) m.SetTexture(p, null);
-        foreach (var p in new[] { "_Smoothness", "_Glossiness" }) if (m.HasProperty(p)) m.SetFloat(p, 0.5f);
-        if (m.HasProperty("_Metallic")) m.SetFloat("_Metallic", 0f);
+        float smooth = nw ? cm.smoothness : 0.5f;
+        foreach (var p in new[] { "_Smoothness", "_Glossiness" }) if (m.HasProperty(p)) m.SetFloat(p, smooth);
+        if (m.HasProperty("_Metallic")) m.SetFloat("_Metallic", nw ? cm.metallic : 0f);
         if (m.HasProperty("_EmissiveColor")) m.SetColor("_EmissiveColor", Color.black);
+        if (nw)
+        {
+            foreach (var p in new[] { "_SubsurfaceMaskMap", "_ThicknessMap", "_CoatMaskMap", "_BentNormalMap", "_TangentMap", "_AnisotropyMap", "_IridescenceThicknessMap", "_SpecularColorMap", "_DiffuseScatteringMap" }) if (m.HasProperty(p)) m.SetTexture(p, null);
+            foreach (var p in new[] { "_SmoothnessRemapMin", "_AORemapMin" }) if (m.HasProperty(p)) m.SetFloat(p, 0f);
+            foreach (var p in new[] { "_SmoothnessRemapMax", "_AORemapMax", "_AO", "_NormalScale" }) if (m.HasProperty(p)) m.SetFloat(p, 1f);
+            foreach (var p in new[] { "_EmissiveIntensity", "_CoatMask", "_SubsurfaceMask", "_Anisotropy", "_IridescenceThickness" }) if (m.HasProperty(p)) m.SetFloat(p, 0f);
+            if (cm.clearSubsurface)
+            {
+                if (m.HasProperty("_MaterialID")) m.SetFloat("_MaterialID", 1f);   // HDRP Lit: 1 = Standard (0 = subsurface scattering)
+                foreach (var k in new[] { "_MATERIAL_FEATURE_SUBSURFACE_SCATTERING", "_MATERIAL_FEATURE_TRANSMISSION", "_MATERIAL_FEATURE_ANISOTROPY", "_MATERIAL_FEATURE_IRIDESCENCE", "_MATERIAL_FEATURE_CLEAR_COAT", "_MATERIAL_FEATURE_SPECULAR_COLOR" }) m.DisableKeyword(k);
+            }
+            if (cm.doubleSided)
+            {
+                if (m.HasProperty("_DoubleSidedEnable")) { m.SetFloat("_DoubleSidedEnable", 1f); m.EnableKeyword("_DOUBLESIDED_ON"); }
+                if (m.HasProperty("_DoubleSidedNormalMode")) m.SetFloat("_DoubleSidedNormalMode", 1f);   // mirror
+                foreach (var p in new[] { "_CullMode", "_CullModeForward", "_Cull" }) if (m.HasProperty(p)) m.SetFloat(p, 0f);
+            }
+        }
         return m;
     }
 

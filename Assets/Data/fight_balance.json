@@ -17,7 +17,7 @@
    "key": "Pitborn",
    "maxHealth": 550,
    "maxStamina": 0,
-   "damageMul": 1.05,
+   "damageMul": 1.0,
    "takenMul": 1.0,
    "specialDamageMul": 1.0,
    "specialCooldownTicks": 1500,

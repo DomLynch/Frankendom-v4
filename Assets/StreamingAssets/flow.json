@@ -2,6 +2,7 @@
   "enabled": true,
   "debugLog": false,
   "scope": "player",
+  "applyToBot": true,
   "_about": "Dracula moveset flow (lane V64FLOW), read by FlowTable.cs. scope 'player' = only a fighter whose PlayerBrain is enabled (a human); the AI, the BalanceAuto bot and the MoveSheet harness are untouched; 'all' = everyone. enabled false or no file = the exact old behaviour. Timings are 60 Hz sim ticks (Recovery tick t: 1 = first tick after the active window; recovery lengths light 22, thrust 21, heavy 31, kick 25).",
   "chain": {
     "_about": "Attack-to-attack cancels (player only). A queued attack (the press queue of cancel.json keeps a press alive through the move) starts at the first Recovery tick a row allows. First matching row wins (file order). from = move id | * | prefix pattern like light*; to = light | heavy | thrust | kick; earliest/latest = Recovery tick range (latest 0 = until the recovery ends); onHitOnly = only when the swing connected (hit, block or parry); chained = use the shorter chained wind-up where the move has one (light, heavy). replaceBuiltin true = these rows replace the V3 chain window (move-defs chain.window 18, same range for light>light and light>heavy). maxLinks = chain links per string (0 = no limit). Dodge presses always win over an attack press; dodge cancels stay in cancel.json.",
@@ -44,7 +45,7 @@
   },
   "attack": {
     "_about": "Attack magnetism and turn tracking (player only). magnet: at the start of a swing, if the target is within maxDistance (metres, x fighter scale) and within maxAngleDeg of the swing intent (locked: the target line; unlocked: the held stick direction, else the current facing) the body snaps to the target over snapMs. turn: the body turns toward the swing direction at most windupDegPerSec / activeDegPerSec / recoveryDegPerSec (the active frames are the sticky ones). moves[] overrides per move (id, * or prefix pattern; -1 = inherit). Hit-stop freezes the turn. Without a snap the old V3 tracking was an unlimited exponential slerp (rate 10 per second).",
-    "magnet": { "enabled": true, "maxAngleDeg": 50.0, "maxDistance": 3.2, "snapMs": 90.0 },
+    "magnet": { "enabled": true, "maxAngleDeg": 50.0, "maxDistance": 3.2, "snapMs": 90.0, "botMaxDistance": 2.8 },
     "turn": { "enabled": true, "windupDegPerSec": 480.0, "activeDegPerSec": 80.0, "recoveryDegPerSec": 200.0 },
     "moves": [
       { "move": "heavy*",  "maxAngleDeg": 40.0, "snapMs": 120.0, "activeDegPerSec": 60.0 },
@@ -64,6 +65,18 @@
       { "dir": "right",   "iframeStart": 2, "iframeEnd": 10, "distance": 2.0, "stamina": 8.0 },
       { "dir": "free",    "iframeStart": 4, "iframeEnd": 28, "distance": 3.2, "stamina": 24.0 }
     ]
+  },
+  "bot": {
+    "_about": "V64P: the flow layer on the BalanceAuto bot (applyToBot true). FlowBot.cs makes the key presses a human would, the SAME DuelFighterFlow / FlowTable code paths do the rest (chain rows, magnetism, directional dodge i-frames, riposte key, cancel table). chainOnHit / chainOnWhiff = chance to press a follow-up when the recovery starts (x chainDecay per link already chained, maxLinks per string); wLight..wKick = relative weight of the follow-up type (only types with a chain row from that move and in reach); jitterTicks = random delay after the row's earliest tick; cancelChance = per incoming swing seen while in recovery, cancelLead* = ticks of the foe's wind-up left when the cancel is pressed, cancelGuardShare = guard instead of dodge; riposteChance + riposteReact* = take the riposte key after a parry, reaction in ticks; dir* = weights of the dodge direction label. Pitborn is never touched (scope 'player').",
+    "chain": true, "cancel": true, "riposte": true, "dodgeDir": true,
+    "chainOnHit": 0.7, "chainOnWhiff": 0.2, "chainDecay": 0.85, "maxLinks": 5, "minStamina": 14.0, "reachMargin": 0.15, "jitterTicks": 3,
+    "chainReserve": 6.0, "stepInShare": 0.7, "chainDropsDodge": true,
+    "wLight": 1.0, "wHeavy": 0.35, "wThrust": 0.6, "wKick": 0.25,
+    "cancelChance": 0.7, "cancelGuardShare": 0.3, "cancelMinStamina": 12.0, "cancelLeadMin": 3, "cancelLeadMax": 11, "guardHoldTicks": 14,
+    "cancelHeavyChance": 0.85, "cancelHeavyDist": 2.5, "cancelHeavyLeadMin": 3, "cancelHeavyLeadMax": 11, "cancelFoeHeavy": [ "heavy", "critical", "skill_" ],
+    "parry": true, "parryTryChance": 0.6, "parryLeadMin": 4, "parryLeadMax": 8, "parryHoldTicks": 12,
+    "riposteChance": 1.0, "riposteReactMin": 2, "riposteReactMax": 7, "riposteSlack": 0.6,
+    "dirLeft": 0.35, "dirRight": 0.35, "dirBack": 0.2, "dirForward": 0.1
   },
   "riposte": {
     "_about": "Riposte after a parry (the 90-tick riposte window of parry.json riposteWindowTicks). auto true = any strike press (F / LMB, G, T) inside the window plays the riposte (V3 / P5 behaviour); keys = a dedicated riposte key (B / gamepad B, JoystickButton1) that also works during the 8-tick parry recovery (the press waits). consume true = one riposte per parry. move = riposte | slash_riposte | heavy_riposte. hint shows the RIPOSTE text while the window is open.",

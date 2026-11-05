@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "STANDALONE finisher data (no duel_rules.json). Read by Finishers loader (FN1), the mesh cut and Assets/Editor/FinisherClipSetup.cs (clipImport). StreamingAssets copy must be identical. Offsets are stand-in metres; TUNE from renders. V61B: finishers ON, rotation.enabledIds = decapitation / split_crown / split_crown_pit, shots frame the victim body (frameBody), *_settle shot at the end. V62: rotation.perWeapon + enabledIds += river_light, hengdao_heavy; per-finisher slow-mo curves, *_settle rest shots, per-entry sheetFrames, pair probe fields. V61C: finisher length 4-6 s (clip start / speed / dieAt / slow-mo / hold), split_crown pairOffset forward 1.4, rt.look (camera keeps the gameplay look), auto.maxFinisherSeconds / lumaTolerance / clearance. V63G: rotation.enabledIds = decapitation + split_crown; head_split gets gore.cleaves/bursts \"crown\" (wound line, side patches, drips, bigger burst); rt.look.vignette (slow-mo-only override, fades out and is removed); rt.auto.vignette* checks.",
+  "note": "STANDALONE finisher data (no duel_rules.json). Read by Finishers loader (FN1), the mesh cut and Assets/Editor/FinisherClipSetup.cs (clipImport). StreamingAssets copy must be identical. Offsets are stand-in metres; TUNE from renders. V61B: finishers ON, rotation.enabledIds = decapitation / split_crown / split_crown_pit, shots frame the victim body (frameBody), *_settle shot at the end. V62: rotation.perWeapon + enabledIds += river_light, hengdao_heavy; per-finisher slow-mo curves, *_settle rest shots, per-entry sheetFrames, pair probe fields. V61C: finisher length 4-6 s (clip start / speed / dieAt / slow-mo / hold), split_crown pairOffset forward 1.4, rt.look (camera keeps the gameplay look), auto.maxFinisherSeconds / lumaTolerance / clearance. V63G: rotation.enabledIds = decapitation + split_crown; head_split gets gore.cleaves/bursts \"crown\" (wound line, side patches, drips, bigger burst); rt.look.vignette (slow-mo-only override, fades out and is removed); rt.auto.vignette* checks. V64F: river_light pair placement re-derived; rt.pair (interpenetration probe), rt.victimLook (victim luma probe / stuck-flash guard), rt.ground body clamp for the victim, cuts.capMaterial (dark wet red cap). rotation.enabledIds unchanged (river_light / hengdao_heavy stay OFF: enable = add the ids to the list). V64F2: rt.pair radiusK 0.6 + failPairs (torso/leg only fail, arm / hand overlaps warn); gore.piece settleLift (resting head lifted to the floor); the victim foot-float is a WARN when the lowest body point is judged.",
   "enableFinishers": true,
   "enableGore": true,
   "rotation": {
@@ -503,7 +503,7 @@
       "duration": 2.4,
       "victimClip": "fin_river_light_v",
       "dieAt": -2,
-      "distance": 0.616,
+      "distance": 1.15,
       "shotDefs": [
         {
           "id": "ri_wide",
@@ -682,7 +682,7 @@
         }
       ],
       "holdAfter": 1.2,
-      "note": "lunging slash: first strike 0.70 s (hand 26.9 m/s, victim head 15.6 m/s), victim flung up ~0.8 s, down at 1.2, flourish slash 1.27 s, settled 1.73 s",
+      "note": "lunging slash: first strike 0.70 s (hand 26.9 m/s, victim head 15.6 m/s), victim flung up ~0.8 s, down at 1.2, flourish slash 1.27 s, settled 1.73 s | V64F: pairOffset re-derived from both paired clips (capsule sim): the old 0.616 m put the Pitborn torso 0.05 m from the hand and the bodies overlapped for ~0.8 s (worst -0.18 m); now 1.15 m: no overlap, min capsule separation +0.10 m, hand to torso edge 0.57 m at contact.",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
@@ -690,17 +690,17 @@
       "victimFade": 0.1,
       "victimStart": 0.0,
       "holdLast": true,
-      "victimYawDeg": -1.0,
+      "victimYawDeg": 0.0,
       "pairOffset": [
-        -0.024,
+        -0.1,
         0.0,
-        0.616
+        1.15
       ],
       "killerYawDeg": -9.0,
       "distanceScaleByKiller": true,
-      "bladeReach": 0.55,
+      "bladeReach": 0.75,
       "probeKillerBone": "RightHand",
-      "probeVictimBone": "Neck",
+      "probeVictimBone": "Spine1",
       "sheetFrames": [
         {
           "rel": "start",
@@ -1466,7 +1466,27 @@
         "jetSeconds": 1.0,
         "extraDecals": 8
       }
-    ]
+    ],
+    "capMaterial": {
+      "enabled": true,
+      "color": [
+        0.2,
+        0.025,
+        0.03,
+        1.0
+      ],
+      "innerColor": [
+        0.09,
+        0.012,
+        0.015,
+        1.0
+      ],
+      "smoothness": 0.78,
+      "metallic": 0.0,
+      "doubleSided": true,
+      "clearSubsurface": true,
+      "shader": ""
+    }
   },
   "gore": {
     "enabled": true,
@@ -1601,7 +1621,12 @@
       "spawnClampM": 0.01,
       "rescueBelowM": 0.3,
       "maxRescues": 1,
-      "settleSeconds": 0.5
+      "settleSeconds": 0.5,
+      "settleLift": true,
+      "settleTolM": 0.02,
+      "settleMaxLiftM": 0.4,
+      "settleStillS": 0.2,
+      "settleFreeze": true
     },
     "cleaves": [
       {
@@ -2072,7 +2097,189 @@
           "footM": 0.17,
           "toeEndM": 0.06
         }
+      ],
+      "bodyClamp": true,
+      "bodyHipsMaxM": 0.75,
+      "bodySunkTolM": 0.02,
+      "bodyFloatTolM": 0.02,
+      "bodyLowerMps": 3.0,
+      "failBodyAboveM": 0.1,
+      "failBodyBelowM": 0.1,
+      "bodyBones": [
+        {
+          "suffix": "Hips",
+          "radiusM": 0.15
+        },
+        {
+          "suffix": "Spine",
+          "radiusM": 0.14
+        },
+        {
+          "suffix": "Spine1",
+          "radiusM": 0.15
+        },
+        {
+          "suffix": "Spine2",
+          "radiusM": 0.16
+        },
+        {
+          "suffix": "Neck",
+          "radiusM": 0.07
+        },
+        {
+          "suffix": "Head",
+          "radiusM": 0.11
+        },
+        {
+          "suffix": "LeftShoulder",
+          "radiusM": 0.07
+        },
+        {
+          "suffix": "RightShoulder",
+          "radiusM": 0.07
+        },
+        {
+          "suffix": "LeftArm",
+          "radiusM": 0.06
+        },
+        {
+          "suffix": "RightArm",
+          "radiusM": 0.06
+        },
+        {
+          "suffix": "LeftForeArm",
+          "radiusM": 0.05
+        },
+        {
+          "suffix": "RightForeArm",
+          "radiusM": 0.05
+        },
+        {
+          "suffix": "LeftHand",
+          "radiusM": 0.05
+        },
+        {
+          "suffix": "RightHand",
+          "radiusM": 0.05
+        },
+        {
+          "suffix": "LeftUpLeg",
+          "radiusM": 0.1
+        },
+        {
+          "suffix": "RightUpLeg",
+          "radiusM": 0.1
+        },
+        {
+          "suffix": "LeftLeg",
+          "radiusM": 0.07
+        },
+        {
+          "suffix": "RightLeg",
+          "radiusM": 0.07
+        }
       ]
+    },
+    "pair": {
+      "enabled": true,
+      "hipsBone": "Hips",
+      "hipsMinM": 0.35,
+      "hipsFailS": 0.3,
+      "capsulePenM": 0.03,
+      "capsuleFailS": 0.3,
+      "capsulesFail": true,
+      "capsules": [
+        {
+          "a": "Hips",
+          "b": "Spine",
+          "radiusM": 0.17,
+          "group": "core"
+        },
+        {
+          "a": "Spine",
+          "b": "Spine1",
+          "radiusM": 0.17,
+          "group": "core"
+        },
+        {
+          "a": "Spine1",
+          "b": "Spine2",
+          "radiusM": 0.17,
+          "group": "core"
+        },
+        {
+          "a": "Spine2",
+          "b": "Neck",
+          "radiusM": 0.12,
+          "group": "core"
+        },
+        {
+          "a": "Neck",
+          "b": "Head",
+          "radiusM": 0.1,
+          "group": "core"
+        },
+        {
+          "a": "LeftUpLeg",
+          "b": "LeftLeg",
+          "radiusM": 0.1,
+          "group": "leg"
+        },
+        {
+          "a": "LeftLeg",
+          "b": "LeftFoot",
+          "radiusM": 0.07,
+          "group": "leg"
+        },
+        {
+          "a": "RightUpLeg",
+          "b": "RightLeg",
+          "radiusM": 0.1,
+          "group": "leg"
+        },
+        {
+          "a": "RightLeg",
+          "b": "RightFoot",
+          "radiusM": 0.07,
+          "group": "leg"
+        },
+        {
+          "a": "LeftArm",
+          "b": "LeftForeArm",
+          "radiusM": 0.06,
+          "group": "arm"
+        },
+        {
+          "a": "LeftForeArm",
+          "b": "LeftHand",
+          "radiusM": 0.05,
+          "group": "arm"
+        },
+        {
+          "a": "RightArm",
+          "b": "RightForeArm",
+          "radiusM": 0.06,
+          "group": "arm"
+        },
+        {
+          "a": "RightForeArm",
+          "b": "RightHand",
+          "radiusM": 0.05,
+          "group": "arm"
+        }
+      ],
+      "radiusK": 0.6,
+      "failPairs": [
+        "core-core",
+        "core-leg"
+      ]
+    },
+    "victimLook": {
+      "enabled": true,
+      "scrub": true,
+      "rise": 0.25,
+      "emissiveNits": 0.5,
+      "maxRise": 0.25
     }
   }
 }

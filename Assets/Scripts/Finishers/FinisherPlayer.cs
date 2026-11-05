@@ -177,6 +177,8 @@ public static class FinisherPlayer
         A.opponent = null; V.opponent = null; A.guardHeld = false; V.guardHeld = false; A.moveDir = V.moveDir = Vector3.zero;
         // V62B: ground contact of both bodies during the scene (lift a sunk body, lower a floating one, stats for -finisherauto); removes itself when the scene is over
         FinisherGround.ResetStats(); var gA = FinisherGround.Attach(A, true); var gV = FinisherGround.Attach(V, false); var gcfg = FinisherConfig.Get().rt.ground; float dieT = -1f;
+        // V64F: pair interpenetration probe (hips + body capsules over the whole scene) and the victim material luma probe / stuck-flash guard
+        FinisherPairProbe.Begin(A, V); FinisherVictimLook.Reset(); FinisherVictimLook.Before = FinisherVictimLook.Sample(V); FinisherVictimLook.Scrub(V, "start"); bool vlDone = false;
 
         bool clipPath = !string.IsNullOrEmpty(e.attackerClip) && HasState(fa, e.attackerClip);
         string moveKey = MoveKey(e.attackerMove);
@@ -244,6 +246,8 @@ public static class FinisherPlayer
                 }
             }
             if (dead && dieT < 0f) dieT = T;
+            FinisherPairProbe.Sample(Time.deltaTime);
+            if (dead && !vlDone && T >= dieT + 0.3f) { vlDone = true; FinisherVictimLook.Scrub(V, "after death"); }
             if (gA != null) gA.Judge = contactSeen && T >= contactT + gcfg.killerJudgeAfterContactS;
             if (gV != null) { gV.CanLower = dead; gV.Judge = dead && dieT >= 0f && T >= dieT + gcfg.victimJudgeAfterDieS; }
             // shots, slow-mo, gore
@@ -273,7 +277,8 @@ public static class FinisherPlayer
         host.TimeRestore();
         float hold = Mathf.Max(0f, e.holdAfter);
         if (gA != null) gA.Judge = true; if (gV != null) { gV.CanLower = true; gV.Judge = true; }   // V62B: the final hold is always judged
-        for (float t = 0f; t < hold; t += Time.unscaledDeltaTime) yield return null;
+        for (float t = 0f; t < hold; t += Time.unscaledDeltaTime) { FinisherPairProbe.Sample(Time.unscaledDeltaTime); yield return null; }
+        FinisherVictimLook.Scrub(V, "final hold"); FinisherVictimLook.After = FinisherVictimLook.Sample(V);   // V64F
         if (clipPath) { A.enabled = true; if (fa != null) { fa.holdLast = false; fa.Force("idle", 0.15f); if (fa.anim) fa.anim.speed = fa.animWeight; } }
         A.state = FState.Loco; A.t = 0;
         host.Cleanup();

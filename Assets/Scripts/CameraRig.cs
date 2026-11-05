@@ -80,17 +80,18 @@ public class CameraRig : MonoBehaviour
             lockPos.x = Mathf.Clamp(lockPos.x, -11.5f, 11.5f);
             Vector3 wantPos = Vector3.Lerp(freePos, lockPos, lockW), wantLook = Vector3.Lerp(freeLook, lockLook, lockW);
             CameraDeath.Shape(target, enemy, enemyHp, ref wantPos, ref wantLook, camPos);   // V61B: after a death keep the look-at on the dead fighter's body (camera_death.json)
+            CamFraming.Begin(P, target.lossyScale.y, E, enemy.lossyScale.y);   // V65CAM: both fighters stay in the safe area (camera_framing.json)
             if (!snapped) { camPos = wantPos; lookAt = wantLook; snapped = true; }
             else { camPos = Vector3.Lerp(camPos, wantPos, blend); lookAt = Vector3.Lerp(lookAt, wantLook, blend); }
             if (lockW > 0.5f) yaw = lockYaw;   // keep the free camera continuous when the lock breaks
         }
-        else { camPos = freePos; lookAt = freeLook; }
+        else { camPos = freePos; lookAt = freeLook; CamFraming.Clear(); }
 
-        var drawPos = camPos;
+        var drawPos = enemy ? CamFraming.Fit(camPos, lookAt, lockW, cam.aspect) : camPos;   // V65CAM: pushed straight back along the view ray until both fighters fit
         if (!colLoaded) LoadCol();
         if (col.enabled)   // camera collision: spherecast from the look target to the camera, never ignoring walls/gate (fighter layers ignored), data camera_collision.json
         {
-            Vector3 from = lookAt, dirv = camPos - from; float len = dirv.magnitude;
+            Vector3 from = lookAt, dirv = drawPos - from; float len = dirv.magnitude;
             if (len > 0.01f)
             {
                 int mask = ~0; foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
@@ -102,8 +103,8 @@ public class CameraRig : MonoBehaviour
         transform.position = drawPos;
         var lookDir = lookAt - transform.position; if (lookDir.sqrMagnitude < 1e-6f) lookDir = lastGoodFwd;
         transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
-        cam.fieldOfView = Mathf.Lerp(Mathf.Lerp(50f, 38.6f, lockW), CameraDeath.Fov, CameraDeath.Weight);
-        if (impact) impact.Apply(transform);   // contact kick + roll tumble on top of the pose, on unscaled time (CameraImpact.cs)
+        cam.fieldOfView = CamFraming.WidenFov(transform, Mathf.Lerp(Mathf.Lerp(50f, 38.6f, lockW), CameraDeath.Fov, CameraDeath.Weight), lockW, cam.aspect);   // V65CAM: opens up only if collision still crops a fighter
+        if (impact) impact.Apply(transform); CamShake.Apply(transform);   // V65CAM: weight-scaled shake (camera_impact.json shake) on top;   // contact kick + roll tumble on top of the pose, on unscaled time (CameraImpact.cs)
         // hard floor for EVERY camera mode (impact shake / roll dip / crit / low-HP cuts included): never below ground + minHeight, never NaN
         {
             var cp = transform.position; if (!IsFinite(cp)) { cp = lastGoodPos; transform.position = cp; transform.rotation = Quaternion.LookRotation(lastGoodFwd, Vector3.up); }

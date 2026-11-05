@@ -43,7 +43,7 @@ public partial class DuelFighter
     {
         if (pRipo > 0) pRipo--;
         if (pendDir.Length > 0 && pRoll <= 0 && pBack <= 0 && pSide <= 0) pendDir = "";
-        if (state != FState.Windup && state != FState.Active && state != FState.Recovery) flowLinks = 0;
+        if (state != FState.Windup && state != FState.Active && state != FState.Recovery) { flowLinks = 0; ComboEnd(); }   // V64P
     }
 
     // ---------------- chain: attack-to-attack ----------------
@@ -66,7 +66,7 @@ public partial class DuelFighter
             if (type == "heavy" && !HeavyAllowed()) { pLight = Mathf.Max(pLight, pHeavy); pHeavy = 0; continue; }   // same downgrade as TickFree
             string id = type == "heavy" ? "heavy_overhead" : type == "light" ? (lastLightRight ? "light_left" : "light_right") : type;
             if (moves.Get(id) == null) continue;
-            flowLinks++; flowChains++; flowLastChain = move.id + ">" + id;
+            flowLinks++; flowChains++; flowChainNext = true; flowLastChain = move.id + ">" + id;   // V64P
             if (FlowTable.Get().debugLog) Debug.Log("[Flow] " + name + " CHAIN " + flowLastChain + " at recovery t=" + t + " (link " + flowLinks + ", hit " + hitDone + ")");
             StartMove(id, row.chained);
             return true;
@@ -128,9 +128,9 @@ public partial class DuelFighter
     // magnetism cone / range around that, snap to the target instead. The snap takes magnet.snapMs; beyond it the per-phase turn cap applies.
     void FlowAttackStart(MoveDef m)
     {
-        magnetLeft = 0f; magnetTotal = 0f; attackDirSet = false; magnetEligible = false; flowMagnetUsed = false;
+        ComboStart(m); magnetLeft = 0f; magnetTotal = 0f; attackDirSet = false; magnetEligible = false; flowMagnetUsed = false;   // V64P
         if (m == null || !FlowTable.Applies(this) || !FlowTable.Get().attack.turn.enabled) return;
-        var A = FlowTable.Attack(m.id);
+        var A = FlowTable.Attack(m.id, this);   // V64P: bot magnetism cap
         bool haveOpp = opponent != null && !opponent.Dead;
         Vector3 toO = OppFlat();
         Vector3 fwd = transform.forward; fwd.y = 0f; fwd = fwd.sqrMagnitude < 1e-4f ? toO : fwd.normalized;
@@ -139,7 +139,7 @@ public partial class DuelFighter
         if (haveOpp) { Vector3 o = opponent.transform.position - transform.position; o.y = 0f; dist = o.magnitude; ang = Vector3.Angle(intent, toO); }
         magnetEligible = A.magnet && haveOpp && dist <= A.maxDist * scale + 0.001f && ang <= A.maxAngle;
         attackDir = magnetEligible ? toO : intent; attackDirSet = true;
-        if (magnetEligible) { magnetTotal = Mathf.Max(0.001f, A.snapMs / 1000f); magnetLeft = magnetTotal; flowMagnetUsed = true; }
+        if (magnetEligible) { magnetTotal = Mathf.Max(0.001f, A.snapMs / 1000f); magnetLeft = magnetTotal; flowMagnetUsed = true; statMagnetSnaps++; }
         if (FlowTable.Get().debugLog) Debug.Log("[Flow] " + name + " ATTACK " + m.id + " lock=" + lockFacing + " dist=" + dist.ToString("0.00") + " angle=" + ang.ToString("0") + " magnet=" + magnetEligible);
     }
 
@@ -149,7 +149,7 @@ public partial class DuelFighter
         if (state != FState.Windup && state != FState.Active && state != FState.Recovery) return false;
         if (move == null || !FlowTable.Applies(this) || !FlowTable.Get().attack.turn.enabled) return false;
         if (PresentationClock.Frozen) return true;   // hit-stop: the body stands still
-        var A = FlowTable.Attack(move.id);
+        var A = FlowTable.Attack(move.id, this);   // V64P
         bool haveOpp = opponent != null && !opponent.Dead && dist < FlowTable.Get().lockOn.range;
         Vector3 want = lockFacing && haveOpp ? dirToOpp : (attackDirSet ? attackDir : transform.forward);
         want.y = 0f; if (want.sqrMagnitude < 1e-4f) return true;

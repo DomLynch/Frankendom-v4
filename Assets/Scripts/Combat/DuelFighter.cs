@@ -207,7 +207,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         if (pSide > 0) pSide--; if (dodgeCd > 0 && state != FState.Roll) dodgeCd--;
         if (state == FState.Guard) { float gd = DodgeTable.Get().guard.staminaDrainPerSecond; if (gd > 0f) stamina = Mathf.Max(0f, stamina - gd / 60f); }   // data, OFF at 0
         t++;
-        FlowTickPre();   // V64FLOW
+        FlowTickPre(); PoiseTick();   // V64FLOW + V64P
         bool wasPaused = paused;
         switch (state)
         {
@@ -288,7 +288,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     void BeginDodge(int kind, int ticks, float dist, int isf, int ief, float pow, int cd, float turn)
     {
         dodgeKind = kind; backstep = kind == 1; dodgeTicks = Mathf.Max(1, ticks); dodgeDist = dist; dodgeIS = isf; dodgeIE = ief;
-        dodgePow = Mathf.Max(1f, pow); dodgeCdTicks = Mathf.Max(0, cd); dodgeTurn = turn; dodgeAge = 0f; FlowDodgeBegin(kind);
+        dodgePow = Mathf.Max(1f, pow); dodgeCdTicks = Mathf.Max(0, cd); dodgeTurn = turn; dodgeAge = 0f; if (state == FState.Recovery) statCancelDodge++; FlowDodgeBegin(kind);   // V64P: cancel counter
         state = FState.Roll; t = 0; pRoll = 0; pBack = 0; pSide = 0; atkOn = false; fadeOutLen = 0f;
     }
 
@@ -427,11 +427,11 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             if (pRoll > 0 && Can(mid, "roll", out e) && stamina >= RollCost()) { StartRoll(); return true; }
         }
         bool queued = pMove != null || pHeavy > 0 || pLight > 0 || pThrust > 0 || pKick > 0;
-        if (!queued && guardHeld && stamina > 0f && Can(mid, "guard", out e)) { ToLoco(); TickFree(); return true; }   // TickFree enters Guard
+        if (!queued && guardHeld && stamina > 0f && Can(mid, "guard", out e)) { statCancelGuard++; ToLoco(); TickFree(); return true; }   // V64P   // TickFree enters Guard
         bool atk;
         if (pMove != null) atk = Can(mid, "special", out e) && (pMove == "skill_cleave" ? special1Cd <= 0 : pMove == "skill_reaping" ? special2Cd <= 0 : true);
         else atk = (pHeavy > 0 && Can(mid, "heavy", out e)) || (pLight > 0 && Can(mid, "light", out e)) || (pThrust > 0 && Can(mid, "thrust", out e)) || (pKick > 0 && Can(mid, "kick", out e));
-        if (atk) { ToLoco(); TickFree(); return true; }   // TickFree starts the buffered move (riposte / heavy / light / thrust / kick / special)
+        if (atk) { statCancelAtk++; ToLoco(); TickFree(); return true; }   // V64P   // TickFree starts the buffered move (riposte / heavy / light / thrust / kick / special)
         return false;
     }
     bool Can(string moveId, string to, out int e)
