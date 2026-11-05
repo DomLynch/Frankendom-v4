@@ -181,6 +181,7 @@ public static class MHIntegrate
     // ---- scene
     static Transform FindFighter(MHAttachData cfg)
     {
+        if (cfg.fighterName.StartsWith("@")) cfg.fighterName = RosterResolver.ExpandNames(new[] { cfg.fighterName })[0]; /* HCKIT5 v95 "@player" / "@enemy" instead of a character name */
         foreach (var f in UnityEngine.Object.FindObjectsByType<Fighter>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             if (f.name.IndexOf(cfg.fighterName, StringComparison.OrdinalIgnoreCase) >= 0 || (f.model != null && f.model.name.IndexOf(cfg.fighterName, StringComparison.OrdinalIgnoreCase) >= 0)) return f.transform;
         foreach (var t in Resources.FindObjectsOfTypeAll<Transform>()) if (t.gameObject.scene.IsValid() && t.name == cfg.fighterName) return t;

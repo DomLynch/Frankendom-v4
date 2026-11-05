@@ -29,10 +29,10 @@ public class GameHUD : MonoBehaviour
     {
         var H = HudCfg.Get();
         if (toggleKeyName != H.hint.toggleKey) { toggleKeyName = H.hint.toggleKey; System.Enum.TryParse(toggleKeyName, true, out toggleKey); }
-        if (H.hint.enabled && Input.GetKeyDown(toggleKey)) { hintPinned = true; hintOn = !hintOn; }
+        if (H.hint.enabled && InputMap.Down("hints", toggleKey)) { hintPinned = true; hintOn = !hintOn; }
         if (Input.GetKeyDown(KeyCode.F3)) showFps = !showFps;
         fpsAcc += Time.unscaledDeltaTime; fpsN++; if (fpsAcc >= 0.5f) { fpsShown = fpsN / fpsAcc; fpsAcc = 0f; fpsN = 0; }
-        if (Input.GetKeyDown(KeyCode.Escape)) { Cursor.lockState = CursorLockMode.None; Cursor.visible = true; }
+        if (Input.GetKeyDown(KeyCode.Escape) && !MenuUI.Enabled) { Cursor.lockState = CursorLockMode.None; Cursor.visible = true; }
         // steer mode has no GameLoop key handling: keep the old Backspace restart there only
         if (STSteer.Active && Input.GetKeyDown(KeyCode.Backspace)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         // the controls panel is up for hint.showSeconds after the fight starts (0 = only on F1), unless F1 has been used

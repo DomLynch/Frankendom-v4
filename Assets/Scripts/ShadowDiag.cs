@@ -82,7 +82,7 @@ public class ShadowDiag : MonoBehaviour
     void Place(DuelFighter f, Vector3 p, Vector3 facing)
     {
         var cc = f.GetComponent<CharacterController>();
-        if (Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out var hit, 40f, PhysMasks.Ground, QueryTriggerInteraction.Ignore)) p.y = hit.point.y;
+        if (Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out var hit, 40f, ~((1 << 8) | (1 << 9)), QueryTriggerInteraction.Ignore)) p.y = hit.point.y;
         if (cc) cc.enabled = false;
         f.transform.position = p; if (facing.sqrMagnitude > 1e-4f) f.transform.rotation = Quaternion.LookRotation(facing);
         if (cc) cc.enabled = true;

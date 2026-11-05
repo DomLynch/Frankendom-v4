@@ -1,323 +1,343 @@
 {
- "version": 1,
- "_notes": "Wounds that build up over a fight (WoundSystem.cs / WoundDecals.cs / WoundTable.cs). Rows are keyed by roster character id; \"*\" is the default row any character without its own row gets (a new character such as Joan needs no row). Rows are standalone: copy the \"*\" row and change what differs. decals: a DecalProjector per landed hit on the body at the hit height, aligned to the swing (slash = tilted horizontal streak, stab = round puncture, overhead = vertical streak), parented to the nearest bone, maxDecals per fighter then the oldest fades over fadeOutSec. stages: lowest hpFrac that HP is below wins; moveMul = limp, regenMul = breathing (stamina regen), guardRaiseExtraTicks = slower guard raise, guardLayerMul = guard arm sag (upper-body guard layer weight), dripEverySec = blood drips on the ground (BloodGround). legSlowSec/legSlowMul = V3 leg-hit slow. staminaCeilPerWound/staminaCeilMin = stamina ceiling lost per landed hit (fraction of max). vignette = player-only low-HP screen-edge blood (enabled false = off). Textures are generated in code (needs real textures later). Set enabled false for a hard off.",
- "enabled": true,
- "decals": true,
- "states": true,
- "debugLog": false,
- "refreshSec": 0.5,
- "decal": {
-  "color": [
-   0.35,
-   0.02,
-   0.02
-  ],
-  "smoothness": 0.8,
-  "texSize": 128,
-  "variants": 3,
-  "seed": 41,
-  "drawDistance": 25.0,
-  "fadeScale": 0.8,
-  "startAngleFade": 60.0,
-  "endAngleFade": 90.0,
-  "quadFallback": false
- },
- "vignette": {
-  "enabled": true,
-  "startFrac": 0.35,
-  "maxAlpha": 0.55,
-  "inner": 0.45,
-  "pulseHz": 0.9,
-  "pulseDepth": 0.2,
-  "fadeInSec": 0.6,
-  "texSize": 128,
-  "guiDepth": -900,
-  "color": [
-   0.18,
-   0.0,
-   0.01
-  ]
- },
- "characters": [
-  {
-   "id": "*",
-   "maxDecals": 4,
-   "fadeOutSec": 2.5,
-   "lifeSec": 40.0,
-   "opacity": 0.85,
-   "sizeJitter": 0.2,
-   "heavySizeMul": 1.3,
-   "killSizeMul": 1.5,
-   "counterSizeMul": 1.15,
-   "depth": 0.2,
-   "bodyRadius": 0.2,
-   "lateral": 0.14,
-   "lateralJitter": 0.06,
-   "headY": 1.55,
-   "torsoY": 1.15,
-   "armY": 1.2,
-   "legsY": 0.5,
-   "heightJitter": 0.08,
-   "slash": {
-    "tex": "streak",
-    "length": 0.22,
-    "width": 0.05,
-    "baseRollDeg": 0.0,
-    "tiltDeg": 18.0
-   },
-   "stab": {
-    "tex": "puncture",
-    "length": 0.1,
-    "width": 0.1,
-    "baseRollDeg": 0.0,
-    "tiltDeg": 180.0
-   },
-   "overhead": {
-    "tex": "streak",
-    "length": 0.36,
-    "width": 0.07,
-    "baseRollDeg": 90.0,
-    "tiltDeg": 8.0
-   },
-   "legSlowSec": 4.0,
-   "legSlowMul": 0.85,
-   "staminaCeilPerWound": 0.02,
-   "staminaCeilMin": 0.7,
-   "blendSec": 0.6,
-   "stages": [
-    {
-     "id": "hurt",
-     "hpFrac": 0.5,
-     "moveMul": 0.92,
-     "regenMul": 0.85,
-     "guardLayerMul": 0.9,
-     "guardRaiseExtraTicks": 4,
-     "dripEverySec": 0.0,
-     "dripSplats": 1,
-     "dripSizeMul": 0.6
-    },
-    {
-     "id": "dying",
-     "hpFrac": 0.25,
-     "moveMul": 0.78,
-     "regenMul": 0.6,
-     "guardLayerMul": 0.5,
-     "guardRaiseExtraTicks": 10,
-     "dripEverySec": 1.6,
-     "dripSplats": 1,
-     "dripSizeMul": 0.6
-    }
-   ]
-  },
-  {
-   "id": "Dracula",
-   "maxDecals": 4,
-   "fadeOutSec": 2.5,
-   "lifeSec": 40.0,
-   "opacity": 0.85,
-   "sizeJitter": 0.2,
-   "heavySizeMul": 1.3,
-   "killSizeMul": 1.5,
-   "counterSizeMul": 1.15,
-   "depth": 0.2,
-   "bodyRadius": 0.2,
-   "lateral": 0.14,
-   "lateralJitter": 0.06,
-   "headY": 1.55,
-   "torsoY": 1.15,
-   "armY": 1.2,
-   "legsY": 0.5,
-   "heightJitter": 0.08,
-   "slash": {
-    "tex": "streak",
-    "length": 0.22,
-    "width": 0.05,
-    "baseRollDeg": 0.0,
-    "tiltDeg": 18.0
-   },
-   "stab": {
-    "tex": "puncture",
-    "length": 0.1,
-    "width": 0.1,
-    "baseRollDeg": 0.0,
-    "tiltDeg": 180.0
-   },
-   "overhead": {
-    "tex": "streak",
-    "length": 0.36,
-    "width": 0.07,
-    "baseRollDeg": 90.0,
-    "tiltDeg": 8.0
-   },
-   "legSlowSec": 4.0,
-   "legSlowMul": 0.85,
-   "staminaCeilPerWound": 0.02,
-   "staminaCeilMin": 0.7,
-   "blendSec": 0.6,
-   "stages": [
-    {
-     "id": "hurt",
-     "hpFrac": 0.5,
-     "moveMul": 0.92,
-     "regenMul": 0.85,
-     "guardLayerMul": 0.9,
-     "guardRaiseExtraTicks": 4,
-     "dripEverySec": 0.0,
-     "dripSplats": 1,
-     "dripSizeMul": 0.6
-    },
-    {
-     "id": "dying",
-     "hpFrac": 0.25,
-     "moveMul": 0.78,
-     "regenMul": 0.6,
-     "guardLayerMul": 0.5,
-     "guardRaiseExtraTicks": 10,
-     "dripEverySec": 1.6,
-     "dripSplats": 1,
-     "dripSizeMul": 0.6
-    }
-   ]
-  },
-  {
-   "id": "Joan",
-   "maxDecals": 4,
-   "fadeOutSec": 2.5,
-   "lifeSec": 40.0,
-   "opacity": 0.85,
-   "sizeJitter": 0.2,
-   "heavySizeMul": 1.3,
-   "killSizeMul": 1.5,
-   "counterSizeMul": 1.15,
-   "depth": 0.1845,
-   "bodyRadius": 0.1845,
-   "lateral": 0.1291,
-   "lateralJitter": 0.0553,
-   "headY": 1.4296,
-   "torsoY": 1.0607,
-   "armY": 1.1068,
-   "legsY": 0.4612,
-   "heightJitter": 0.0738,
-   "slash": {
-    "tex": "streak",
-    "length": 0.22,
-    "width": 0.05,
-    "baseRollDeg": 0.0,
-    "tiltDeg": 18.0
-   },
-   "stab": {
-    "tex": "puncture",
-    "length": 0.1,
-    "width": 0.1,
-    "baseRollDeg": 0.0,
-    "tiltDeg": 180.0
-   },
-   "overhead": {
-    "tex": "streak",
-    "length": 0.36,
-    "width": 0.07,
-    "baseRollDeg": 90.0,
-    "tiltDeg": 8.0
-   },
-   "legSlowSec": 4.0,
-   "legSlowMul": 0.85,
-   "staminaCeilPerWound": 0.02,
-   "staminaCeilMin": 0.7,
-   "blendSec": 0.6,
-   "stages": [
-    {
-     "id": "hurt",
-     "hpFrac": 0.5,
-     "moveMul": 0.92,
-     "regenMul": 0.85,
-     "guardLayerMul": 0.9,
-     "guardRaiseExtraTicks": 4,
-     "dripEverySec": 0.0,
-     "dripSplats": 1,
-     "dripSizeMul": 0.6
-    },
-    {
-     "id": "dying",
-     "hpFrac": 0.25,
-     "moveMul": 0.78,
-     "regenMul": 0.6,
-     "guardLayerMul": 0.5,
-     "guardRaiseExtraTicks": 10,
-     "dripEverySec": 1.6,
-     "dripSplats": 1,
-     "dripSizeMul": 0.6
-    }
-   ]
-  },
-  {
-   "id": "Pitborn",
-   "maxDecals": 4,
-   "fadeOutSec": 2.5,
-   "lifeSec": 40.0,
-   "opacity": 0.8,
-   "sizeJitter": 0.2,
-   "heavySizeMul": 1.3,
-   "killSizeMul": 1.5,
-   "counterSizeMul": 1.15,
-   "depth": 0.25,
-   "bodyRadius": 0.3,
-   "lateral": 0.2,
-   "lateralJitter": 0.08,
-   "headY": 1.75,
-   "torsoY": 1.3,
-   "armY": 1.35,
-   "legsY": 0.6,
-   "heightJitter": 0.1,
-   "slash": {
-    "tex": "streak",
-    "length": 0.4,
-    "width": 0.08,
-    "baseRollDeg": 0.0,
-    "tiltDeg": 18.0
-   },
-   "stab": {
-    "tex": "puncture",
-    "length": 0.12,
-    "width": 0.12,
-    "baseRollDeg": 0.0,
-    "tiltDeg": 180.0
-   },
-   "overhead": {
-    "tex": "streak",
-    "length": 0.42,
-    "width": 0.08,
-    "baseRollDeg": 90.0,
-    "tiltDeg": 8.0
-   },
-   "legSlowSec": 4.0,
-   "legSlowMul": 0.9,
-   "staminaCeilPerWound": 0.015,
-   "staminaCeilMin": 0.75,
-   "blendSec": 0.6,
-   "stages": [
-    {
-     "id": "hurt",
-     "hpFrac": 0.5,
-     "moveMul": 0.95,
-     "regenMul": 0.9,
-     "guardLayerMul": 0.92,
-     "guardRaiseExtraTicks": 3,
-     "dripEverySec": 0.0,
-     "dripSplats": 1,
-     "dripSizeMul": 0.7
-    },
-    {
-     "id": "dying",
-     "hpFrac": 0.25,
-     "moveMul": 0.82,
-     "regenMul": 0.65,
-     "guardLayerMul": 0.55,
-     "guardRaiseExtraTicks": 8,
-     "dripEverySec": 1.8,
-     "dripSplats": 1,
-     "dripSizeMul": 0.7
-    }
-   ]
-  }
- ]
+    "version":  1,
+    "_notes":  "Wounds that build up over a fight (WoundSystem.cs / WoundDecals.cs / WoundTable.cs). Rows are keyed by roster character id; \"*\" is the default row any character without its own row gets (a new character such as Joan needs no row). Rows are standalone: copy the \"*\" row and change what differs. decals: a DecalProjector per landed hit on the body at the hit height, aligned to the swing (slash = tilted horizontal streak, stab = round puncture, overhead = vertical streak), parented to the nearest bone, maxDecals per fighter then the oldest fades over fadeOutSec. stages: lowest hpFrac that HP is below wins; moveMul = limp, regenMul = breathing (stamina regen), guardRaiseExtraTicks = slower guard raise, guardLayerMul = guard arm sag (upper-body guard layer weight), dripEverySec = blood drips on the ground (BloodGround). legSlowSec/legSlowMul = V3 leg-hit slow. staminaCeilPerWound/staminaCeilMin = stamina ceiling lost per landed hit (fraction of max). vignette = player-only low-HP screen-edge blood (enabled false = off). Textures are generated in code (needs real textures later). Set enabled false for a hard off. WOUNDLOOK v96 decal.*: color = _BaseColor tint (dark red, never white), coreColor/edgeColor = albedo ramp relative to color, smoothness (core, wet) / smoothnessEdge, aoCore, normalStrength/normalBlur/lipHeight = cut groove + lips, alphaGamma = opacity falloff, maskBlueScale/decalBlend = HDRP blend.",
+    "enabled":  true,
+    "decals":  true,
+    "states":  true,
+    "debugLog":  false,
+    "refreshSec":  0.5,
+    "decal":  {
+                  "color":  [
+                                0.45,
+                                0.02,
+                                0.02
+                            ],
+                  "smoothness":  0.7,
+                  "texSize":  128,
+                  "variants":  3,
+                  "seed":  41,
+                  "drawDistance":  25.0,
+                  "fadeScale":  0.8,
+                  "startAngleFade":  60.0,
+                  "endAngleFade":  90.0,
+                  "quadFallback":  false,
+                  "coreColor":  [
+                                    0.35,
+                                    0.25,
+                                    0.25
+                                ],
+                  "edgeColor":  [
+                                    1.0,
+                                    0.85,
+                                    0.7
+                                ],
+                  "smoothnessEdge":  0.4,
+                  "aoCore":  0.35,
+                  "normalStrength":  3.0,
+                  "normalBlur":  0.04,
+                  "lipHeight":  0.35,
+                  "alphaGamma":  0.8,
+                  "maskBlueScale":  1.0,
+                  "decalBlend":  1.0,
+                  "affectNormal":  true,
+                  "affectAO":  true
+              },
+    "vignette":  {
+                     "enabled":  true,
+                     "startFrac":  0.35,
+                     "maxAlpha":  0.55,
+                     "inner":  0.45,
+                     "pulseHz":  0.9,
+                     "pulseDepth":  0.2,
+                     "fadeInSec":  0.6,
+                     "texSize":  128,
+                     "guiDepth":  -900,
+                     "color":  [
+                                   0.18,
+                                   0.0,
+                                   0.01
+                               ]
+                 },
+    "characters":  [
+                       {
+                           "id":  "*",
+                           "maxDecals":  4,
+                           "fadeOutSec":  2.5,
+                           "lifeSec":  40.0,
+                           "opacity":  0.95,
+                           "sizeJitter":  0.2,
+                           "heavySizeMul":  1.3,
+                           "killSizeMul":  1.5,
+                           "counterSizeMul":  1.15,
+                           "depth":  0.2,
+                           "bodyRadius":  0.2,
+                           "lateral":  0.14,
+                           "lateralJitter":  0.06,
+                           "headY":  1.55,
+                           "torsoY":  1.15,
+                           "armY":  1.2,
+                           "legsY":  0.5,
+                           "heightJitter":  0.08,
+                           "slash":  {
+                                         "tex":  "streak",
+                                         "length":  0.297,
+                                         "width":  0.068,
+                                         "baseRollDeg":  0.0,
+                                         "tiltDeg":  18.0
+                                     },
+                           "stab":  {
+                                        "tex":  "puncture",
+                                        "length":  0.135,
+                                        "width":  0.135,
+                                        "baseRollDeg":  0.0,
+                                        "tiltDeg":  180.0
+                                    },
+                           "overhead":  {
+                                            "tex":  "streak",
+                                            "length":  0.486,
+                                            "width":  0.095,
+                                            "baseRollDeg":  90.0,
+                                            "tiltDeg":  8.0
+                                        },
+                           "legSlowSec":  4.0,
+                           "legSlowMul":  0.85,
+                           "staminaCeilPerWound":  0.02,
+                           "staminaCeilMin":  0.7,
+                           "blendSec":  0.6,
+                           "stages":  [
+                                          {
+                                              "id":  "hurt",
+                                              "hpFrac":  0.5,
+                                              "moveMul":  0.92,
+                                              "regenMul":  0.85,
+                                              "guardLayerMul":  0.9,
+                                              "guardRaiseExtraTicks":  4,
+                                              "dripEverySec":  0.0,
+                                              "dripSplats":  1,
+                                              "dripSizeMul":  0.6
+                                          },
+                                          {
+                                              "id":  "dying",
+                                              "hpFrac":  0.25,
+                                              "moveMul":  0.78,
+                                              "regenMul":  0.6,
+                                              "guardLayerMul":  0.5,
+                                              "guardRaiseExtraTicks":  10,
+                                              "dripEverySec":  1.6,
+                                              "dripSplats":  1,
+                                              "dripSizeMul":  0.6
+                                          }
+                                      ]
+                       },
+                       {
+                           "id":  "Dracula",
+                           "maxDecals":  4,
+                           "fadeOutSec":  2.5,
+                           "lifeSec":  40.0,
+                           "opacity":  0.95,
+                           "sizeJitter":  0.2,
+                           "heavySizeMul":  1.3,
+                           "killSizeMul":  1.5,
+                           "counterSizeMul":  1.15,
+                           "depth":  0.2,
+                           "bodyRadius":  0.2,
+                           "lateral":  0.14,
+                           "lateralJitter":  0.06,
+                           "headY":  1.55,
+                           "torsoY":  1.15,
+                           "armY":  1.2,
+                           "legsY":  0.5,
+                           "heightJitter":  0.08,
+                           "slash":  {
+                                         "tex":  "streak",
+                                         "length":  0.297,
+                                         "width":  0.068,
+                                         "baseRollDeg":  0.0,
+                                         "tiltDeg":  18.0
+                                     },
+                           "stab":  {
+                                        "tex":  "puncture",
+                                        "length":  0.135,
+                                        "width":  0.135,
+                                        "baseRollDeg":  0.0,
+                                        "tiltDeg":  180.0
+                                    },
+                           "overhead":  {
+                                            "tex":  "streak",
+                                            "length":  0.486,
+                                            "width":  0.095,
+                                            "baseRollDeg":  90.0,
+                                            "tiltDeg":  8.0
+                                        },
+                           "legSlowSec":  4.0,
+                           "legSlowMul":  0.85,
+                           "staminaCeilPerWound":  0.02,
+                           "staminaCeilMin":  0.7,
+                           "blendSec":  0.6,
+                           "stages":  [
+                                          {
+                                              "id":  "hurt",
+                                              "hpFrac":  0.5,
+                                              "moveMul":  0.92,
+                                              "regenMul":  0.85,
+                                              "guardLayerMul":  0.9,
+                                              "guardRaiseExtraTicks":  4,
+                                              "dripEverySec":  0.0,
+                                              "dripSplats":  1,
+                                              "dripSizeMul":  0.6
+                                          },
+                                          {
+                                              "id":  "dying",
+                                              "hpFrac":  0.25,
+                                              "moveMul":  0.78,
+                                              "regenMul":  0.6,
+                                              "guardLayerMul":  0.5,
+                                              "guardRaiseExtraTicks":  10,
+                                              "dripEverySec":  1.6,
+                                              "dripSplats":  1,
+                                              "dripSizeMul":  0.6
+                                          }
+                                      ]
+                       },
+                       {
+                           "id":  "Joan",
+                           "maxDecals":  4,
+                           "fadeOutSec":  2.5,
+                           "lifeSec":  40.0,
+                           "opacity":  0.95,
+                           "sizeJitter":  0.2,
+                           "heavySizeMul":  1.3,
+                           "killSizeMul":  1.5,
+                           "counterSizeMul":  1.15,
+                           "depth":  0.1845,
+                           "bodyRadius":  0.1845,
+                           "lateral":  0.1291,
+                           "lateralJitter":  0.0553,
+                           "headY":  1.4296,
+                           "torsoY":  1.0607,
+                           "armY":  1.1068,
+                           "legsY":  0.4612,
+                           "heightJitter":  0.0738,
+                           "slash":  {
+                                         "tex":  "streak",
+                                         "length":  0.297,
+                                         "width":  0.068,
+                                         "baseRollDeg":  0.0,
+                                         "tiltDeg":  18.0
+                                     },
+                           "stab":  {
+                                        "tex":  "puncture",
+                                        "length":  0.135,
+                                        "width":  0.135,
+                                        "baseRollDeg":  0.0,
+                                        "tiltDeg":  180.0
+                                    },
+                           "overhead":  {
+                                            "tex":  "streak",
+                                            "length":  0.486,
+                                            "width":  0.095,
+                                            "baseRollDeg":  90.0,
+                                            "tiltDeg":  8.0
+                                        },
+                           "legSlowSec":  4.0,
+                           "legSlowMul":  0.85,
+                           "staminaCeilPerWound":  0.02,
+                           "staminaCeilMin":  0.7,
+                           "blendSec":  0.6,
+                           "stages":  [
+                                          {
+                                              "id":  "hurt",
+                                              "hpFrac":  0.5,
+                                              "moveMul":  0.92,
+                                              "regenMul":  0.85,
+                                              "guardLayerMul":  0.9,
+                                              "guardRaiseExtraTicks":  4,
+                                              "dripEverySec":  0.0,
+                                              "dripSplats":  1,
+                                              "dripSizeMul":  0.6
+                                          },
+                                          {
+                                              "id":  "dying",
+                                              "hpFrac":  0.25,
+                                              "moveMul":  0.78,
+                                              "regenMul":  0.6,
+                                              "guardLayerMul":  0.5,
+                                              "guardRaiseExtraTicks":  10,
+                                              "dripEverySec":  1.6,
+                                              "dripSplats":  1,
+                                              "dripSizeMul":  0.6
+                                          }
+                                      ]
+                       },
+                       {
+                           "id":  "Pitborn",
+                           "maxDecals":  4,
+                           "fadeOutSec":  2.5,
+                           "lifeSec":  40.0,
+                           "opacity":  0.95,
+                           "sizeJitter":  0.2,
+                           "heavySizeMul":  1.3,
+                           "killSizeMul":  1.5,
+                           "counterSizeMul":  1.15,
+                           "depth":  0.25,
+                           "bodyRadius":  0.3,
+                           "lateral":  0.2,
+                           "lateralJitter":  0.08,
+                           "headY":  1.75,
+                           "torsoY":  1.3,
+                           "armY":  1.35,
+                           "legsY":  0.6,
+                           "heightJitter":  0.1,
+                           "slash":  {
+                                         "tex":  "streak",
+                                         "length":  0.54,
+                                         "width":  0.108,
+                                         "baseRollDeg":  0.0,
+                                         "tiltDeg":  18.0
+                                     },
+                           "stab":  {
+                                        "tex":  "puncture",
+                                        "length":  0.162,
+                                        "width":  0.162,
+                                        "baseRollDeg":  0.0,
+                                        "tiltDeg":  180.0
+                                    },
+                           "overhead":  {
+                                            "tex":  "streak",
+                                            "length":  0.567,
+                                            "width":  0.108,
+                                            "baseRollDeg":  90.0,
+                                            "tiltDeg":  8.0
+                                        },
+                           "legSlowSec":  4.0,
+                           "legSlowMul":  0.9,
+                           "staminaCeilPerWound":  0.015,
+                           "staminaCeilMin":  0.75,
+                           "blendSec":  0.6,
+                           "stages":  [
+                                          {
+                                              "id":  "hurt",
+                                              "hpFrac":  0.5,
+                                              "moveMul":  0.95,
+                                              "regenMul":  0.9,
+                                              "guardLayerMul":  0.92,
+                                              "guardRaiseExtraTicks":  3,
+                                              "dripEverySec":  0.0,
+                                              "dripSplats":  1,
+                                              "dripSizeMul":  0.7
+                                          },
+                                          {
+                                              "id":  "dying",
+                                              "hpFrac":  0.25,
+                                              "moveMul":  0.82,
+                                              "regenMul":  0.65,
+                                              "guardLayerMul":  0.55,
+                                              "guardRaiseExtraTicks":  8,
+                                              "dripEverySec":  1.8,
+                                              "dripSplats":  1,
+                                              "dripSizeMul":  0.7
+                                          }
+                                      ]
+                       }
+                   ]
 }

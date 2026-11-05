@@ -167,7 +167,7 @@ public class AIBrain : MonoBehaviour
         }
         bool Charging(DuelFighter f)
         {
-            return f.state == FState.Windup && f.move != null && f.move.charges && f.heavyHeld && f.t >= (int)f.move.chamber;
+            return f.state == FState.Windup && f.move != null && f.move.charges && f.heavyHeld && f.t >= f.WeaponTicks((int)f.move.chamber); /* WEAPONSWAP v88 */
         }
         Intent Done()
         {

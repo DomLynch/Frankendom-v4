@@ -12,6 +12,9 @@ Nothing is overwritten: an existing outGlb is moved to Tools/_backup_clips_bake/
 """
 import json, struct, sys, os, shutil, uuid, time
 import numpy as np
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from clip_sets_lib import expand_bake   # HCKIT5 v95
+from paths import resolve as resolve_path   # HCKIT5 v95
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))   # unity_test_hdrp
 
@@ -106,7 +109,7 @@ def bake(entry, report):
             if r.get('character') == entry['character']: contacts.setdefault(r['clip'], r['contactTime'])
 
     for c in entry['clips']:
-        src = c['source']
+        src = resolve_path(c['source'])   # HCKIT5 v95 ${kitsOut} tokens
         mode = c.get('rootMotion', 'inplace'); max_step = float(c.get('maxStep', 0.0))
         if posture:
             times, rot, hipt, ratio = PF.retarget(rig, None, src, sys.modules[__name__])
@@ -196,7 +199,7 @@ def main():
     cfg = json.load(open(os.path.join(ROOT, 'Assets', 'Data', 'attack_clips.json'), encoding='utf-8-sig'))
     only = sys.argv[1] if len(sys.argv) > 1 else None
     report = []
-    for e in cfg['bake']:
+    for e in expand_bake(cfg, 'attack'):   # HCKIT5 v95 explicit bake rows + roster clipSet rows
         if only and e['character'] != only:
             continue
         bake(e, report)

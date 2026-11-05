@@ -91,7 +91,7 @@ public class Fighter : MonoBehaviour
     }
     float ToeRel(Transform toe, float g)
     {
-        float gy = g; if (Physics.Raycast(toe.position + Vector3.up * 0.6f, Vector3.down, out var hit, 2.5f, PhysMasks.Ground, QueryTriggerInteraction.Ignore)) gy = hit.point.y;
+        float gy = g; if (Physics.Raycast(toe.position + Vector3.up * 0.6f, Vector3.down, out var hit, 2.5f, ~((1 << 8) | (1 << 9)), QueryTriggerInteraction.Ignore)) gy = hit.point.y;
         return (toe.position.y - transform.position.y) - initialToeY - (gy - g);
     }
     float startY, initialToeY; bool startYSet, hasFootGround;

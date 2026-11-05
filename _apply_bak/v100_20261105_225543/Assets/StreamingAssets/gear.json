@@ -1,0 +1,710 @@
+{
+  "enabled": true,
+  "debugLog": false,
+  "statsWithoutAsset": true,
+  "hideUnequippedLayers": true,
+  "maxMissingBoneFrac": 0.25,
+  "_about": "Lane GEAR v79, read by GearTable.cs. slots: 4 armour slots on the shared 106-joint rig + mainHand/offHand + 2 Remnants (Dom 2026-11-05 00:18: the relic slots are called Remnants, not Grafts); the hand and remnant slots are data only (visual false). An item's slot may be a slot id or a group (remnant -> first free of remnant1/remnant2). items: layer = a mesh already on the wearer (Joan base layers), glb/resource = a skinned gear mesh rebound to the wearer's bones by name (part = one node of a multi-mesh glb), coversZones = body zones masked while it is worn, hidesLayers = wearer layer meshes it hides, dropFrom = character ids (roster.json) or *, dropChance 0..1. Starting gear: roster.json rows 'loadout'. boneZones: bone name (lower case, mixamorig: stripped) -> zone, first match wins, prefix/suffix/has all must hold. stats: how armor / poise / weight turn into gameplay (see GearHooks.cs). GEAR2: glbMirror = the other side glb, equipped with glb as ONE pair in the same slot (partMirror = node filter for it); items[].materials and materials.byName = rows {smoothness, metallic, normalScale, sheen} per material NAME applied after the HDRP/Lit swap (-1 / missing = untouched; key * = every material of the item without its own row; precedence item[name] > byName[name] > item[*] > byName[*]); hidesLayers = wearer layer meshes switched off while the item is worn (tabard -> Layer_Tunic); coversZones masks body triangles only when ALL pieces of the item loaded. A missing glb = stats only, one warning.",
+  "slots": [
+    {
+      "id": "head",
+      "group": "",
+      "visual": true
+    },
+    {
+      "id": "chest",
+      "group": "",
+      "visual": true
+    },
+    {
+      "id": "arms",
+      "group": "",
+      "visual": true
+    },
+    {
+      "id": "legs",
+      "group": "",
+      "visual": true
+    },
+    {
+      "id": "mainHand",
+      "group": "hand",
+      "visual": false
+    },
+    {
+      "id": "offHand",
+      "group": "hand",
+      "visual": false
+    },
+    {
+      "id": "remnant1",
+      "group": "remnant",
+      "visual": false
+    },
+    {
+      "id": "remnant2",
+      "group": "remnant",
+      "visual": false
+    }
+  ],
+  "zones": [
+    "head",
+    "neck",
+    "torso",
+    "pelvis",
+    "shoulderL",
+    "shoulderR",
+    "upperArmL",
+    "upperArmR",
+    "forearmL",
+    "forearmR",
+    "handL",
+    "handR",
+    "thighL",
+    "thighR",
+    "shinL",
+    "shinR",
+    "footL",
+    "footR"
+  ],
+  "boneZones": [
+    {
+      "zone": "head",
+      "prefix": "head"
+    },
+    {
+      "zone": "head",
+      "prefix": "fk_hair"
+    },
+    {
+      "zone": "neck",
+      "prefix": "neck"
+    },
+    {
+      "zone": "torso",
+      "prefix": "spine"
+    },
+    {
+      "zone": "torso",
+      "prefix": "fk_socket_back"
+    },
+    {
+      "zone": "torso",
+      "prefix": "fk_shoulder_fix"
+    },
+    {
+      "zone": "pelvis",
+      "prefix": "hips"
+    },
+    {
+      "zone": "pelvis",
+      "prefix": "fk_hip_fix"
+    },
+    {
+      "zone": "pelvis",
+      "prefix": "fk_skirt"
+    },
+    {
+      "zone": "shoulderL",
+      "prefix": "leftshoulder"
+    },
+    {
+      "zone": "forearmL",
+      "prefix": "leftforearm"
+    },
+    {
+      "zone": "forearmL",
+      "prefix": "lowerarm_twist",
+      "suffix": "_l"
+    },
+    {
+      "zone": "upperArmL",
+      "prefix": "leftarm"
+    },
+    {
+      "zone": "upperArmL",
+      "prefix": "upperarm_twist",
+      "suffix": "_l"
+    },
+    {
+      "zone": "handL",
+      "prefix": "lefthand"
+    },
+    {
+      "zone": "handL",
+      "prefix": "fk_socket_hand",
+      "suffix": "_l"
+    },
+    {
+      "zone": "thighL",
+      "prefix": "leftupleg"
+    },
+    {
+      "zone": "thighL",
+      "prefix": "thigh_twist",
+      "suffix": "_l"
+    },
+    {
+      "zone": "shinL",
+      "prefix": "leftleg"
+    },
+    {
+      "zone": "shinL",
+      "prefix": "calf_twist",
+      "suffix": "_l"
+    },
+    {
+      "zone": "shinL",
+      "prefix": "fk_knee_fix",
+      "suffix": "_l"
+    },
+    {
+      "zone": "shinR",
+      "prefix": "fk_knee_fix",
+      "suffix": "_r"
+    },
+    {
+      "zone": "footL",
+      "prefix": "leftfoot"
+    },
+    {
+      "zone": "footL",
+      "prefix": "lefttoe"
+    },
+    {
+      "zone": "shoulderR",
+      "prefix": "rightshoulder"
+    },
+    {
+      "zone": "forearmR",
+      "prefix": "rightforearm"
+    },
+    {
+      "zone": "forearmR",
+      "prefix": "lowerarm_twist",
+      "suffix": "_r"
+    },
+    {
+      "zone": "upperArmR",
+      "prefix": "rightarm"
+    },
+    {
+      "zone": "upperArmR",
+      "prefix": "upperarm_twist",
+      "suffix": "_r"
+    },
+    {
+      "zone": "handR",
+      "prefix": "righthand"
+    },
+    {
+      "zone": "handR",
+      "prefix": "fk_socket_hand",
+      "suffix": "_r"
+    },
+    {
+      "zone": "thighR",
+      "prefix": "rightupleg"
+    },
+    {
+      "zone": "thighR",
+      "prefix": "thigh_twist",
+      "suffix": "_r"
+    },
+    {
+      "zone": "shinR",
+      "prefix": "rightleg"
+    },
+    {
+      "zone": "shinR",
+      "prefix": "calf_twist",
+      "suffix": "_r"
+    },
+    {
+      "zone": "footR",
+      "prefix": "rightfoot"
+    },
+    {
+      "zone": "footR",
+      "prefix": "righttoe"
+    }
+  ],
+  "stats": {
+    "armorK": 100,
+    "maxReduction": 0.8,
+    "poisePerMeterHit": 10,
+    "posturePerPoise": 0.01,
+    "minPostureMul": 0.5,
+    "weightFree": 6,
+    "regenPerWeight": 0.01,
+    "minRegenMul": 0.5
+  },
+  "mask": {
+    "mode": "triangles",
+    "vertexThreshold": 0.5,
+    "triangleRule": "all",
+    "shaderProp": "_GearHideMask"
+  },
+  "materials": {
+    "_about": "kitGEAR + GEAR2: runtime-loaded glb gear (glTFast) gets HDRP/Lit instead of the glTFast shader-graph materials (GearMaterials.cs). Base colour and normal map are copied; metallic / smoothness / normalScale are these constants (neutral: a material with no row looks like plain dielectric, never chrome), then the rows below and items[].materials are applied. convertGltf false keeps the glTFast materials (rows still apply to clones). styleLayers false leaves the wearer Layer_* meshes untouched. shaderFallbacks: tried when `shader` is not in the build. sheen > 0 uses sheenShader when it exists (hdrp_char_mats.json fabric shader), else stays Lit. byName = materials of the Joan chef glb (Layer_* are flat colour, no textures): Steel = Layer_Helmet / Layer_Greaves, Leather = Layer_Bracers, Heraldry = Layer_Tunic; values are the glb metallic / (1 - roughness) factors.",
+    "convertGltf": true,
+    "styleLayers": true,
+    "shader": "HDRP/Lit",
+    "shaderFallbacks": [
+      "Universal Render Pipeline/Lit",
+      "Standard"
+    ],
+    "matchShaderContains": [
+      "glTF",
+      "InternalError"
+    ],
+    "metallic": 0.0,
+    "smoothness": 0.3,
+    "normalScale": 1.0,
+    "doubleSided": true,
+    "sheenShader": "Shader Graphs/CharFabric",
+    "sheenColor": [
+      0.9,
+      0.55,
+      0.55
+    ],
+    "byName": {
+      "Steel": {
+        "smoothness": 0.65,
+        "metallic": 0.9
+      },
+      "Leather": {
+        "smoothness": 0.2,
+        "metallic": 0.0
+      },
+      "Heraldry": {
+        "smoothness": 0.15,
+        "metallic": 0.0,
+        "sheen": 0.35
+      }
+    }
+  },
+  "drop": {
+    "enabled": true,
+    "autoCollect": false,
+    "skipIfOwned": true,
+    "maxPerKill": 3,
+    "seed": 0,
+    "spawnHeight": 0.3,
+    "lifetimeSeconds": 0
+  },
+  "items": [
+    {
+      "id": "joan_tunic",
+      "name": "Heraldic tunic",
+      "slot": "chest",
+      "layer": "Layer_Tunic",
+      "coversZones": [
+        "torso",
+        "pelvis",
+        "shoulderL",
+        "shoulderR"
+      ],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 2,
+        "poise": 0,
+        "weight": 2
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "Joan base layer (ch13 chef_base glb node Layer_Tunic, material Heraldry). Already on the wearer: equipping shows it. Zones are a first guess, tune after one render."
+    },
+    {
+      "id": "joan_helmet",
+      "name": "Steel helm",
+      "slot": "head",
+      "layer": "Layer_Helmet",
+      "coversZones": [
+        "head"
+      ],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 5,
+        "poise": 3,
+        "weight": 3
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "Joan base layer (Layer_Helmet, material Steel). Not in the default loadout (bare headed); a closed helm hides the whole head zone."
+    },
+    {
+      "id": "joan_bracers",
+      "name": "Leather bracers",
+      "slot": "arms",
+      "layer": "Layer_Bracers",
+      "coversZones": [
+        "forearmL",
+        "forearmR"
+      ],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 3,
+        "poise": 1,
+        "weight": 1.5
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "Joan base layer (Layer_Bracers, material Leather)."
+    },
+    {
+      "id": "joan_greaves",
+      "name": "Steel greaves",
+      "slot": "legs",
+      "layer": "Layer_Greaves",
+      "coversZones": [
+        "shinL",
+        "shinR",
+        "footL",
+        "footR"
+      ],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 4,
+        "poise": 1,
+        "weight": 2.5
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "Joan base layer (Layer_Greaves, material Steel)."
+    },
+    {
+      "id": "joan_tabard",
+      "name": "Heraldic tabard",
+      "slot": "chest",
+      "glb": "Gear/joan_tabard.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [
+        "Layer_Tunic"
+      ],
+      "stats": {
+        "armor": 3,
+        "poise": 0,
+        "weight": 1.5
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "materials": {
+        "Tabard": {
+          "smoothness": 0.2,
+          "metallic": 0.0,
+          "normalScale": 0.8,
+          "sheen": 0.5
+        }
+      },
+      "notes": "GEAR2. kits_out/3d/gear/joan_tabard/joan_tabard.glb (laneTABARD, 11k tris, 14 bones of the 106 rig, material 'Tabard', double sided, KHR sheen) -> StreamingAssets/Gear/joan_tabard.glb (apply_gear2.ps1). Red wool: metallic 0, smoothness 0.2, normal 0.8, sheen 0.5 (needs the sheen shader, else plain Lit). hidesLayers Layer_Tunic: the sleeved shirt layer goes while the tabard is worn (same chest slot, so equipping it replaces joan_tunic anyway). coversZones empty ON PURPOSE: open sides + split hem, masking torso/pelvis would leave holes at the sides. To wear it: Joan roster loadout joan_tabard instead of joan_tunic."
+    },
+    {
+      "id": "joan_boots",
+      "name": "Leather boots",
+      "slot": "legs",
+      "glb": "Gear/joan_boots.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [
+        "shinL",
+        "shinR",
+        "footL",
+        "footR"
+      ],
+      "hidesLayers": [
+        "Layer_Greaves"
+      ],
+      "stats": {
+        "armor": 2,
+        "poise": 1,
+        "weight": 1.5
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "materials": {
+        "*": {
+          "smoothness": 0.25,
+          "metallic": 0.0,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "GEAR2 PLACEHOLDER PATH: kits_out/3d/gear/joan_boots/joan_boots.glb is being made (laneBOOTS); file name, material names and zones are guesses. Missing file = stats only, one warning, no masking, the legs show bare. Same legs slot as joan_greaves (boots replace the greaves layer; hidesLayers Layer_Greaves keeps it off even if greaves sit in another slot later). coversZones feet + shins: masked ONLY after the glb loaded, so a missing asset never leaves a hole. Material rows: '*' = leather; a metal part named Steel / a leather part named Leather pick up materials.byName (exact names beat '*'). Rename/add rows when the glb exists (python _agents/laneGEAR2/tools/glb_materials.py <glb> prints the names)."
+    },
+    {
+      "id": "pitborn_pauldron_joan",
+      "name": "Pitborn pauldrons",
+      "slot": "arms",
+      "glb": "Gear/pitborn_pauldron_joan_R.glb",
+      "glbMirror": "Gear/pitborn_pauldron_joan_L.glb",
+      "resource": "",
+      "part": "",
+      "partMirror": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 8,
+        "poise": 6,
+        "weight": 4
+      },
+      "dropFrom": [
+        "Pitborn"
+      ],
+      "dropChance": 1.0,
+      "materials": {
+        "*": {
+          "smoothness": 0.5,
+          "metallic": 0.85,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "GEAR2. Pair: pitborn_pauldron_joan_R.glb (glb) + _L.glb (glbMirror), laneDROP1b refit to Joan (dome on RightShoulder, lames on RightArm, 1.75 cm offset), one material 'pitborn_pauldron.001' (dark steel + gold): metallic 0.85, smoothness 0.5. kits_out/3d/gear/pitborn_pauldron/ -> StreamingAssets/Gear/. coversZones empty on purpose: it is a 5 mm plate standing 1.75 cm off the body, a mask under it would show holes with the arm raised. Known: cross-body slash frames 6-16 still clip on the R side (GEAR_ITEM.md). Slot arms: replaces the leather bracers. Replaces pitborn_pauldron as THE first drop (dropChance 1.0)."
+    },
+    {
+      "id": "pitborn_pauldron",
+      "name": "Pitborn pauldron",
+      "slot": "arms",
+      "glb": "Gear/pitborn_pauldron.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [
+        "shoulderR"
+      ],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 8,
+        "poise": 6,
+        "weight": 4
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "materials": {
+        "*": {
+          "smoothness": 0.5,
+          "metallic": 0.85,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "glb = StreamingAssets/Gear/pitborn_pauldron.glb (female fit, kept so existing loot_save.json entries still resolve). SUPERSEDED by pitborn_pauldron_joan (R+L, refit to Joan): no longer drops. Right plate only, fitted to mh-female-01, NOT to the chef body: expect clipping and a gap."
+    },
+    {
+      "id": "pauldron_joan",
+      "name": "Steel pauldron (dome + 3 lames)",
+      "slot": "arms",
+      "glb": "Gear/pauldron_joan_R.glb",
+      "glbMirror": "Gear/pauldron_joan_L.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 4,
+        "poise": 1,
+        "weight": 2.5
+      },
+      "dropFrom": [
+        "Pitborn"
+      ],
+      "dropChance": 0.0,
+      "materials": {
+        "pauldron_mat": {
+          "smoothness": 0.5,
+          "metallic": 0.75,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 3/10 (dome oversized, reaches toward the neck, intersects the body in all poses): NOT READY, kept out of the drop table. Same arms slot as the vambrace and as pitborn_pauldron_joan: only one of the three can be worn (a separate shoulders slot would let pauldron + vambrace combine, see MANIFEST). coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3)."
+    },
+    {
+      "id": "vambrace_joan",
+      "name": "Steel vambrace with straps",
+      "slot": "arms",
+      "glb": "Gear/vambrace_joan_R.glb",
+      "glbMirror": "Gear/vambrace_joan_L.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [
+        "Layer_Bracers"
+      ],
+      "stats": {
+        "armor": 4,
+        "poise": 1,
+        "weight": 2.5
+      },
+      "dropFrom": [
+        "Pitborn"
+      ],
+      "dropChance": 0.0,
+      "materials": {
+        "vambrace_mat": {
+          "smoothness": 0.5,
+          "metallic": 0.75,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 6/10: rest clearance 0.9-1.1 cm, intersects in elbow-110, Run12, Heavy24 and a few attack frames; straps are leather in the same atlas (one material, so the metallic row is a compromise: the metallic-roughness map is not converted). coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3)."
+    },
+    {
+      "id": "gorget_joan",
+      "name": "Steel gorget (collar + 4 lames)",
+      "slot": "chest",
+      "glb": "Gear/gorget_joan_R.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 4,
+        "poise": 1,
+        "weight": 2.5
+      },
+      "dropFrom": [
+        "Pitborn"
+      ],
+      "dropChance": 0.0,
+      "materials": {
+        "gorget_mat": {
+          "smoothness": 0.5,
+          "metallic": 0.75,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 4/10: 29 verts inside the body at rest, bulky. ONE symmetric piece: the file keeps the runner's _R name, gorget_joan_L.glb is not used. Chest slot = replaces the tabard / tunic while worn. coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3)."
+    },
+    {
+      "id": "greave_joan",
+      "name": "Steel greave (shin plate + knee cop)",
+      "slot": "legs",
+      "glb": "Gear/greave_joan_R.glb",
+      "glbMirror": "Gear/greave_joan_L.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [
+        "Layer_Greaves"
+      ],
+      "stats": {
+        "armor": 4,
+        "poise": 1,
+        "weight": 2.5
+      },
+      "dropFrom": [
+        "Pitborn"
+      ],
+      "dropChance": 0.0,
+      "materials": {
+        "greave_mat": {
+          "smoothness": 0.5,
+          "metallic": 0.75,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 6/10: R rest clearance 0.55 cm (below the 1 cm target), L intersects in walk / attack / knee-80 frames, flat shin plate. Legs slot = replaces joan_boots / joan_greaves. coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3)."
+    },
+    {
+      "id": "pitborn_chest",
+      "name": "Pitborn cuirass",
+      "slot": "chest",
+      "glb": "Gear/pitborn_chest_joan.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 10,
+        "poise": 8,
+        "weight": 6
+      },
+      "dropFrom": [
+        "Pitborn"
+      ],
+      "dropChance": 1.0,
+      "notes": "v87 PLACEHOLDER (Dom): Pitborn's chest piece drop. The glb does not exist yet, the art comes later: a missing glb = stats only, no visual, no exception. Drops with the pauldrons and the maul on the first win."
+    },
+    {
+      "id": "pitborn_maul",
+      "name": "Pitborn maul",
+      "slot": "mainHand",
+      "glb": "",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 9
+      },
+      "dropFrom": [
+        "Pitborn"
+      ],
+      "dropChance": 1.0,
+      "notes": "v87 (Dom): Pitborn's own weapon as a main-hand drop. mainHand is a data-only slot (visual false): equipping records the item and applies its stats; swapping Joan's sword mesh for the maul on WeaponSocket_R needs a small weapon-swap component (v88)."
+    },
+    {
+      "id": "bascinet_joan",
+      "name": "Steel bascinet (open face, aventail edge)",
+      "slot": "head",
+      "glb": "Gear/bascinet_joan.glb",
+      "rig": "psyche-106",
+      "tris": 5292,
+      "coversZones": [],
+      "hidesLayers": [
+        "Joan_Hair"
+      ],
+      "stats": {
+        "armor": 5,
+        "poise": 2,
+        "weight": 2.8
+      },
+      "dropFrom": [
+        "Pitborn"
+      ],
+      "dropChance": 0.15,
+      "tier": "drop",
+      "source": "modelled v2 (laneHELMET2): smooth analytic shell, fitted to the Joan_v6b scalp",
+      "doubleSided": false,
+      "materials": {
+        "*": {
+          "metallic": 0.85,
+          "smoothness": 0.62
+        }
+      },
+      "notes": "v2: smooth pointed bascinet (analytic ogive skull over a low-order scalp fit, straight brow edge, flared raised neck guard), 4.2 mm plate, 9 mm brass rolled edge, steel #4a4a4e metallic 0.85 roughness 0.34-0.46 brushed, subtle hammering (max tilt ~4 deg). 0 intersecting tris vs head in rest/turn/tilt/neck poses; 0 overlaps with body/tunic in all 11 gameplay actions (min 7.9 mm to tunic in Death); only Stress_OverheadRoll clips. Old files in _work/v1."
+    },
+    {
+      "id": "cap_joan",
+      "name": "Steel kettle cap",
+      "slot": "head",
+      "glb": "Gear/cap_joan.glb",
+      "rig": "psyche-106",
+      "tris": 5292,
+      "coversZones": [],
+      "hidesLayers": [
+        "Joan_Hair"
+      ],
+      "stats": {
+        "armor": 3,
+        "poise": 1,
+        "weight": 1.6
+      },
+      "dropFrom": [
+        "Pitborn"
+      ],
+      "dropChance": 0.3,
+      "tier": "drop",
+      "source": "modelled v2 (laneHELMET2): smooth analytic shell, fitted to the Joan_v6b scalp",
+      "doubleSided": false,
+      "materials": {
+        "*": {
+          "metallic": 0.85,
+          "smoothness": 0.62
+        }
+      },
+      "notes": "v2: kettle hat, round elliptical dome + flat even 3.8 cm brim (9 deg droop), 9 mm brass rolled edge, same steel material. 0 overlaps in all actions (min 0.6 mm brim-to-body in Roll, no overlap)."
+    }
+  ]
+}

@@ -258,8 +258,8 @@ public static class StanceLayer
             var p = Player(); if (p == null || p.Dead) return;
             if (nextK == null) { nextK = Keys(I.nextKeys); prevK = Keys(I.prevKeys); padN = Keys(I.padNextButtons); padP = Keys(I.padPrevButtons); }
             int step = 0;
-            if (AnyDown(nextK) || AnyDown(padN)) step = 1;
-            else if (AnyDown(prevK) || AnyDown(padP)) step = -1;
+            if (InputMap.AnyDown("stanceNext", nextK) || AnyDown(padN)) step = 1;
+            else if (InputMap.AnyDown("stancePrev", prevK) || AnyDown(padP)) step = -1;
             if (step == 0 && I.wheel && Time.unscaledTime >= wheelT)
             {
                 float w = Input.mouseScrollDelta.y; if (I.wheelInvert) w = -w;

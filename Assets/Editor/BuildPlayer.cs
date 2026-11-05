@@ -5,19 +5,14 @@ public static class BuildPlayerCmd
 {
     public static void Run()
     {
-        // data layer -> StreamingAssets so the player reads the same JSON as the editor (loaders look in Application.streamingAssetsPath when Assets/Data is absent)
-        System.IO.Directory.CreateDirectory("Assets/StreamingAssets");
-        foreach (var f in System.IO.Directory.GetFiles("Assets/Data", "*.json")) System.IO.File.Copy(f, "Assets/StreamingAssets/" + System.IO.Path.GetFileName(f), true);
+        // HCKIT3 v93: identity, window, graphics API, exe name, output folder and the data copy come from BuildCfg (Tools/build_config.json); was: productName/1920x1080/D3D12/"HadesSlice.exe"/Tools/build_dir.txt literals here.
+        // data layer -> StreamingAssets so the player reads the same JSON as the editor (loaders look in Application.streamingAssetsPath when Assets/Data is absent); editor-only tool configs (build.editorOnlyData) are skipped
+        BuildCfg.CopyDataToStreaming();
         AssetDatabase.Refresh();
-        PlayerSettings.productName = "HadesSlice";
-        PlayerSettings.fullScreenMode = FullScreenMode.FullScreenWindow; PlayerSettings.resizableWindow = true;
-        PlayerSettings.runInBackground = true;
-        PlayerSettings.defaultScreenWidth = 1920; PlayerSettings.defaultScreenHeight = 1080;
-        PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64, false); PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, new[] { UnityEngine.Rendering.GraphicsDeviceType.Direct3D12 });
-        var r = BuildPipeline.BuildPlayer(new[] { "Assets/Scenes/HadesSlice.unity" }, (System.IO.File.Exists("Tools/build_dir.txt") ? System.IO.File.ReadAllText("Tools/build_dir.txt").Trim() : "Builds/HDRP_ultra") + "/HadesSlice.exe", BuildTarget.StandaloneWindows64, BuildCfg.Options());
+        BuildCfg.ApplyPlayerSettings();
+        string dir = BuildCfg.OutputDir();   // HCKIT3 v93: -buildDir <folder> (Tools/build_and_gate.ps1 passes it), legacy Tools/build_dir.txt, else build.defaultDir
+        var r = BuildPipeline.BuildPlayer(BuildCfg.Scenes(), dir + "/" + BuildCfg.ExeName(), BuildTarget.StandaloneWindows64, BuildCfg.Options());   // HCKIT3 v93: scene list from build.json (was a literal array here)
         Debug.Log("BUILD " + r.summary.result + " " + r.summary.totalSize + " errors=" + r.summary.totalErrors);
+        BuildCfg.WriteBuildInfo(dir, r);   // HCKIT3 v93: <dir>/build_info.json (exe, dataDir, version) for the gate
     }
 }
-
-
-

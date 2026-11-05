@@ -321,7 +321,7 @@ public class GatewayRift : MonoBehaviour
         {
             if (boomClip == null) boomClip = MakeBoom(B);
             boomSource.spatialBlend = B.spatialBlend;
-            boomSource.PlayOneShot(boomClip, B.gain);
+            boomSource.PlayOneShot(boomClip, B.gain * AudioMix.Gain(AudioMix.AmbienceId));   // RCHYGIENE v100: audio_mix.json ambience slider (the procedural boom stays off: gateway.json boom.procedural=false)
         }
         else if (!boomWarned) { boomWarned = true; Debug.Log("GATEWAY boom skipped: cue '" + B.cue + "' has no clip and procedural boom is off"); }
     }

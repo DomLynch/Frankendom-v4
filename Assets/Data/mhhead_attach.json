@@ -9,7 +9,7 @@
     "enabled":  false,
     "canonFolder":  "C:/Users/dom12/Documents/kits_out/3d/metahuman/third_party",
     "scene":  "Assets/Scenes/HadesSlice.unity",
-    "fighterName":  "Dracula",
+    "fighterName":  "@player",
     "boneNames":  [
                       "mixamorig:Head",
                       "Head"

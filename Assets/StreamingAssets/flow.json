@@ -78,12 +78,13 @@
     "_about": "V64P: the flow layer on the BalanceAuto bot (applyToBot true). FlowBot.cs makes the key presses a human would, the SAME DuelFighterFlow / FlowTable code paths do the rest (chain rows, magnetism, directional dodge i-frames, riposte key, cancel table). chainOnHit / chainOnWhiff = chance to press a follow-up when the recovery starts (x chainDecay per link already chained, maxLinks per string); wLight..wKick = relative weight of the follow-up type (only types with a chain row from that move and in reach); jitterTicks = random delay after the row's earliest tick; cancelChance = per incoming swing seen while in recovery, cancelLead* = ticks of the foe's wind-up left when the cancel is pressed, cancelGuardShare = guard instead of dodge; riposteChance + riposteReact* = take the riposte key after a parry, reaction in ticks; dir* = weights of the dodge direction label. Pitborn is never touched (scope 'player').",
     "chain": true, "cancel": true, "riposte": true, "dodgeDir": true,
     "chainOnHit": 0.7, "chainOnWhiff": 0.2, "chainDecay": 0.85, "maxLinks": 5, "minStamina": 14.0, "reachMargin": 0.15, "jitterTicks": 3,
-    "chainReserve": 6.0, "stepInShare": 0.7, "chainDropsDodge": true,
+    "chainReserve": 12.0, "stepInShare": 0.7, "chainDropsDodge": true,
     "wLight": 1.0, "wHeavy": 0.35, "wThrust": 0.6, "wKick": 0.25,
-    "cancelChance": 0.7, "cancelGuardShare": 0.3, "cancelMinStamina": 12.0, "cancelLeadMin": 3, "cancelLeadMax": 11, "guardHoldTicks": 14,
+    "cancelChance": 0.8, "cancelGuardShare": 0.45, "cancelMinStamina": 12.0, "cancelLeadMin": 3, "cancelLeadMax": 14, "guardHoldTicks": 14,
     "cancelHeavyChance": 0.85, "cancelHeavyDist": 2.5, "cancelHeavyLeadMin": 3, "cancelHeavyLeadMax": 11, "cancelFoeHeavy": [ "heavy", "critical", "skill_" ],
-    "parry": true, "parryTryChance": 0.6, "parryLeadMin": 4, "parryLeadMax": 8, "parryHoldTicks": 12,
+    "parry": true, "parryTryChance": 0.75, "parryLeadMin": 3, "parryLeadMax": 9, "parryHoldTicks": 12,
     "riposteChance": 1.0, "riposteReactMin": 2, "riposteReactMax": 7, "riposteSlack": 0.6,
+    "parrySideRead": 0.70, "cancelSideRead": 0.65, "armourTradeChance": 0.30, "armourLeadMin": 11, "armourLeadMax": 22, "armourMove": "heavy_overhead",   "_balance2": "BALANCE2 v96: parrySideRead / cancelSideRead = chance the bot aims the guard side that covers the swing when it deliberately parries / guard-cancels (-1 = controls.json bot.sideReadChance, which stays the coin flip for the AI own guard); armourTrade* = on a foe wind-up with armourLeadMin..Max ticks left the bot starts armourMove when poise.json gives that move armour at that tick, so the hit is taken through armour and its own blow lands in the foe recovery",
     "dirLeft": 0.35, "dirRight": 0.35, "dirBack": 0.2, "dirForward": 0.1
   },
   "riposte": {

@@ -97,11 +97,11 @@ public static class DirectionalGuard
     }
 
     // FlowBot: aim the guard at the incoming swing with chance sideReadChance (roll, pick = two 0..1 rolls from the bot's own deterministic RNG), else a wrong side
-    public static void BotAim(DuelFighter df, MoveDef incoming, float roll, float pick)
+    public static void BotAim(DuelFighter df, MoveDef incoming, float roll, float pick, float chance = -1f)   // BALANCE2 v96: chance >= 0 overrides controls.json bot.sideReadChance (deliberate parry / guard-cancel)
     {
         if (df == null || !ControlsTable.SideRequired) return;
         int best = BestSideFor(incoming);
-        if (roll < ControlsTable.Get().bot.sideReadChance) { df.guardSide = best; return; }
+        if (roll < (chance >= 0f ? chance : ControlsTable.Get().bot.sideReadChance)) { df.guardSide = best; return; }   // BALANCE2 v96
         var S = ControlsTable.Get().guard.sides;
         int n = S.Length + 1;   // centre + every side
         int start = Mathf.Min(n - 1, (int)(pick * n));

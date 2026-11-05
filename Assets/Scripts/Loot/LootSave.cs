@@ -17,6 +17,8 @@ public static class LootSave
     static bool loaded;
     public static bool Applied;   // the saved selection has been put on a wearer at least once; before that Save() keeps the loaded rows instead of reading an empty slot list
     public static string LastError = "";
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)] static void HookErase() { SaveSlot.OnErase += Erase; }   // REBIND v100: New game forgets the carried items
+    static void Erase() { owned.Clear(); wanted.Clear(); loaded = true; Applied = false; try { if (File.Exists(Path_)) File.Delete(Path_); } catch (Exception e) { LastError = e.Message; } }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { owned.Clear(); wanted.Clear(); loaded = false; Applied = false; LastError = ""; }
 
@@ -72,7 +74,7 @@ public static class LootSave
             string p = Path_, dir = Path.GetDirectoryName(p); if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
             string tmp = p + ".tmp"; File.WriteAllText(tmp, JsonUtility.ToJson(f, true));
             if (File.Exists(p)) File.Delete(p);
-            File.Move(tmp, p); LastError = "";
+            File.Move(tmp, p); LastError = ""; SaveSlot.LootChanged();   // REBIND v100: the save slot keeps a pointer + counts
             if (LootCfg.Get().debugLog) Debug.Log("[LootUI] saved " + p);
         }
         catch (Exception e) { LastError = e.Message; Debug.LogWarning("[LootUI] save write failed: " + e.Message); }

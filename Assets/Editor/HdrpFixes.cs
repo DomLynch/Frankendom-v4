@@ -45,7 +45,7 @@ public static class HdrpFixes
             bx.GetComponent<Renderer>().sharedMaterial = bm; bx.GetComponent<Renderer>().renderingLayerMask = 1;
         }
         // character-only rim light: its huge cone lit the walkway floor as a pale wedge, so it only affects the fighters' renderers
-        var rimSets = new[] { (F.rimLight, F.rimLayerBit, F.rimInclude), (F.rim2Light, F.rim2LayerBit, F.rim2Include), (F.rim3Light, F.rim3LayerBit, F.rim3Include) };
+        var rimSets = new[] { (F.rimLight, F.rimLayerBit, RosterResolver.ExpandNames(F.rimInclude)), (F.rim2Light, F.rim2LayerBit, RosterResolver.ExpandNames(F.rim2Include)), (F.rim3Light, F.rim3LayerBit, RosterResolver.ExpandNames(F.rim3Include)) /* HCKIT5 v95 @all / @player / @enemy in the rim include lists */ };
         foreach (var rs in rimSets)
         {
             if (string.IsNullOrEmpty(rs.Item1)) continue;

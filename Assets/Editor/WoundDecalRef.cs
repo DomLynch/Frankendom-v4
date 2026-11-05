@@ -29,11 +29,28 @@ public static class WoundDecalRef
         // _MATERIAL_AFFECTS_ALBEDO,_MATERIAL_AFFECTS_MASKMAP) and the player still had no colour/mask variants. Give the reference material real textures so the keywords survive.
         m.SetTexture("_BaseColorMap", MakeTex("WoundDecalRef_base", true));
         m.SetTexture("_MaskMap", MakeTex("WoundDecalRef_mask", false));
+        // WOUNDLOOK v96: the runtime decals also use _NORMALMAP / _MATERIAL_AFFECTS_NORMAL; give the ref a flat normal map and AffectNormal so those variants ship in the player
+        m.SetFloat("_AffectNormal", 1f); m.SetTexture("_NormalMap", MakeNormalTex("WoundDecalRef_normal"));
+        m.SetColor("_BaseColor", new Color(0.3f, 0.015f, 0.015f, 1f));
+        m.EnableKeyword("_NORMALMAP"); m.EnableKeyword("_MATERIAL_AFFECTS_NORMAL");
         m.EnableKeyword("_COLORMAP"); m.EnableKeyword("_MASKMAP"); m.EnableKeyword("_MATERIAL_AFFECTS_ALBEDO"); m.EnableKeyword("_MATERIAL_AFFECTS_MASKMAP");
-        m.DisableKeyword("_NORMALMAP"); m.DisableKeyword("_EMISSIVEMAP"); m.DisableKeyword("_MATERIAL_AFFECTS_NORMAL");
+        m.DisableKeyword("_EMISSIVEMAP");
         if (created) AssetDatabase.CreateAsset(m, Path); else EditorUtility.SetDirty(m);
         AssetDatabase.SaveAssets();
-        Debug.Log("WoundDecalRef: " + (created ? "created " : "refreshed ") + Path + " keywords: " + string.Join(",", m.shaderKeywords)); if (!m.IsKeywordEnabled("_COLORMAP") || !m.IsKeywordEnabled("_MASKMAP")) Debug.LogError("WoundDecalRef: _COLORMAP / _MASKMAP are NOT enabled after save: the decal variants will be missing from the player");
+        Debug.Log("WoundDecalRef: " + (created ? "created " : "refreshed ") + Path + " keywords: " + string.Join(",", m.shaderKeywords)); if (!m.IsKeywordEnabled("_NORMALMAP") || !m.IsKeywordEnabled("_COLORMAP") || !m.IsKeywordEnabled("_MASKMAP")) Debug.LogError("WoundDecalRef: _COLORMAP / _MASKMAP are NOT enabled after save: the decal variants will be missing from the player");
+    }
+
+    static Texture2D MakeNormalTex(string name)   // WOUNDLOOK v96
+    {
+        string path = "Assets/Resources/" + name + ".png"; var t = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+        if (t == null)
+        {
+            var src = new Texture2D(4, 4, TextureFormat.RGBA32, false, true); var px = new Color32[16]; for (int i = 0; i < 16; i++) px[i] = new Color32(128, 128, 255, 255); src.SetPixels32(px); src.Apply();
+            File.WriteAllBytes(path, src.EncodeToPNG()); Object.DestroyImmediate(src); AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+            var ti = AssetImporter.GetAtPath(path) as TextureImporter; if (ti != null) { ti.textureType = TextureImporterType.NormalMap; ti.mipmapEnabled = false; ti.SaveAndReimport(); }
+            t = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+        }
+        return t;
     }
 
     static Texture2D MakeTex(string name, bool srgb)

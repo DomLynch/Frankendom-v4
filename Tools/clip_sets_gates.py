@@ -73,7 +73,7 @@ def run(cfg, ccfg, roster, proj, cid, reps, outdir):
         if setname not in reps: continue
         rep = reps[setname]; S = cfg['sets'][setname]
         jn, bn = L.load(rep['file']); rn = L.Rig(jn, bn); Mn = G.Metrics(rn)
-        livep = os.path.join(proj, S['live'].format(id=cid)) if S.get('live') else reps['finishers_live']['file']
+        livep = os.path.join(proj, S['live'].format(id=cid)) if S.get('live') else (reps['finishers_live']['file'] if 'finishers_live' in reps else os.path.join(proj, [c for c in roster['characters'] if c['id'] == cid][0]['modelGlb']))   # PITCLIPS: no live attack/dodge clip of these names -> live column = None
         jl, bl = L.load(livep); rl = L.Rig(jl, bl); Ml = G.Metrics(rl)
         rows = {r['state']: r for r in S['rows'][cid]}
         rig_files += [rep['file'], livep]
@@ -82,12 +82,14 @@ def run(cfg, ccfg, roster, proj, cid, reps, outdir):
             jr, br = L.load(row['src']); rr = L.Rig(jr, br); Mr = G.Metrics(rr); an = list(rr.anims)[0]
             modified = bool(info.get('posture')) or info.get('legFix') == 'applied'
             posture = bool(info.get('posture'))
-            mn = G.clip_metrics(Mn, None, st, g, n); ml = G.clip_metrics(Ml, None, st, g, n)
-            mn['knee'] = G.knee_for(jn, bn, st); ml['knee'] = G.knee_for(jl, bl, st)
+            has_live = st in rl.anims   # PITCLIPS
+            mn = G.clip_metrics(Mn, None, st, g, n); ml = G.clip_metrics(Ml, None, st, g, n) if has_live else None
+            mn['knee'] = G.knee_for(jn, bn, st)
+            if ml: ml['knee'] = G.knee_for(jl, bl, st)
             skip = info.get('legFix') == 'applied' or posture
-            pn = pose_vs(Mn, st, Mr, an, n, skip); pl = pose_vs(Ml, st, Mr, an, n, skip)
+            pn = pose_vs(Mn, st, Mr, an, n, skip); pl = pose_vs(Ml, st, Mr, an, n, skip) if has_live else {'mean': float('nan'), 'max': float('nan'), 'finger': float('nan')}
             pnl = pose_vs(Mn, st, Ml, st, n, True) if st in rl.anims else None
-            pts = planted_times(Mn, st, n, g['plantedM']); tn = toe_stats(Mn, st, pts); tl = toe_stats(Ml, st, pts) if st in rl.anims else None; tr = toe_stats(Mr, an, pts)
+            pts = planted_times(Mn, st, n, g['plantedM']); tn = toe_stats(Mn, st, pts); tl = toe_stats(Ml, st, pts) if has_live else None; tr = toe_stats(Mr, an, pts)
             rowd = {'set': setname, 'state': st, 'duration': info['durationS'], 'frames': info['frames'], 'legFix': info.get('legFix'), 'swivel': info.get('legFixMaxSwivelDeg', 0.0), 'posture': posture,
                     'kneePre': info['kneeMedialPreFixM'], 'new': mn, 'live': ml, 'poseNew': pn, 'poseLive': pl, 'poseNewVsLive': pnl, 'toeNew': tn, 'toeLive': tl, 'toeRaw': tr, 'inherited': []}
             inh = []    # violations the live clip has too (same source behaviour): reported as INHERITED, not as a regression
@@ -98,19 +100,19 @@ def run(cfg, ccfg, roster, proj, cid, reps, outdir):
             if posture:      # declared modification (Joan's own posture rows): the rebuilt clip must reproduce the live bake, deviation from raw is reported
                 if pnl and pnl['mean'] > g['liveDiffMeanDeg']: bad.append('G-pose %s differs from the live bake by mean %.1f deg (> %.0f)' % (st, pnl['mean'], g['liveDiffMeanDeg']))
             elif pn['mean'] > g['poseMeanDeg'] or pn['max'] > g['poseMaxDeg']: bad.append('G-pose %s mean %.2f max %.2f vs raw (limits %.1f/%.1f)' % (st, pn['mean'], pn['max'], g['poseMeanDeg'], g['poseMaxDeg']))
-            lim('G-knee %s inward %.3f m > %.3f' % (st, mn['knee'], g['kneeMedialMaxM']), mn['knee'], ml['knee'], mn['knee'] is not None and mn['knee'] > g['kneeMedialMaxM'])
+            lim('G-knee %s inward %.3f m > %.3f' % (st, mn['knee'], g['kneeMedialMaxM']), mn['knee'], ml['knee'] if ml else None, mn['knee'] is not None and mn['knee'] > g['kneeMedialMaxM'])
             if tn and tr:
                 ref = tl if (posture and tl) else tr; tol = g['toeYawTolModifiedDeg'] if (info.get('legFix') == 'applied' and not posture) else g['toeYawTolDeg']
                 dl = abs(tn['L'] - ref['L']); dr = abs(tn['R'] - ref['R'])
                 if dl > tol or dr > tol: bad.append('G-toe %s planted-frame yaw L %.1f/R %.1f vs %s %.1f/%.1f (> %.0f)' % (st, tn['L'], tn['R'], 'live' if ref is tl else 'raw', ref['L'], ref['R'], tol))
-            lim('G-plant %s toe %.3f m below the floor line' % (st, mn['floorMin']), mn['floorMin'], ml['floorMin'], mn['floorMin'] < -g['footFloorMaxM'])
-            lim('G-sword %s blade %.3f m inside the head sphere' % (st, mn['sword']), mn['sword'], ml['sword'], mn['sword'] < g['sword']['minClearanceM'])
+            lim('G-plant %s toe %.3f m below the floor line' % (st, mn['floorMin']), mn['floorMin'], ml['floorMin'] if ml else None, mn['floorMin'] < -g['footFloorMaxM'])
+            lim('G-sword %s blade %.3f m inside the head sphere' % (st, mn['sword']), mn['sword'], ml['sword'] if ml else None, mn['sword'] < g['sword']['minClearanceM'])
             rowd['inherited'] = inh
             rowd['review'] = []
             if S.get('reviewOnly'): rowd['review'] = bad; allrev += ['%s/%s' % (setname, x) for x in bad]; bad = []
             rowd['failed'] = bad; table.append(rowd); allbad += ['%s/%s' % (setname, x) for x in bad]; allinh += ['%s/%s' % (setname, x) for x in inh]
             print('  %-9s %-18s pose %.2f/%.1f (live %.2f/%.1f) knee %+.3f (live %+.3f, pre %+.3f) toe %s plant %+.3f (live %+.3f) sword %+.3f (live %+.3f)%s' % (
-                setname, st, pn['mean'], pn['max'], pl['mean'], pl['max'], mn['knee'], ml['knee'], info['kneeMedialPreFixM'], ('%.0f/%.0f' % (tn['L'], tn['R'])) if tn else 'n/a', mn['floorMin'], ml['floorMin'], mn['sword'], ml['sword'], '  FAIL' if bad else ('  (inherited %d)' % len(inh) if inh else '')))
+                setname, st, pn['mean'], pn['max'], pl['mean'], pl['max'], mn['knee'], (ml['knee'] if ml else float('nan')), info['kneeMedialPreFixM'], ('%.0f/%.0f' % (tn['L'], tn['R'])) if tn else 'n/a', mn['floorMin'], (ml['floorMin'] if ml else float('nan')), mn['sword'], (ml['sword'] if ml else float('nan')), '  FAIL' if bad else ('  (inherited %d)' % len(inh) if inh else '')))
     # G-rig over every output file + the live ones + the old finisher sources
     ra = dict(ccfg['gates']['rigAudit']); ra['files'] = [f for f in dict.fromkeys(rig_files) if os.path.exists(f)] + [os.path.join(proj, 'Tools/finisher_src_legfix/*.glb')]
     c2 = {'gates': {'rigAudit': ra}}

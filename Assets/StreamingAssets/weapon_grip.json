@@ -106,6 +106,26 @@
   {
    "name": "*",
    "enabled": false
+  },
+  {
+   "name": "Joan",
+   "weapon": "pitborn_maul",
+   "enabled": true,
+   "hand": "RightHand",
+   "socket": "WeaponSocket_R",
+   "socketOffset": [
+    -0.0093,
+    -0.0006,
+    0.0387
+   ],
+   "socketEuler": [
+    6.49,
+    -15.0,
+    19.9
+   ],
+   "slide": -0.0437,
+   "debugLog": false,
+   "_fit": "laneDROPPIT v2 (Blender fit on joan_v6b with the game's socket maths, shaft radius 2.68 cm). Used while the pitborn_maul visual is on the socket (WeaponSwap.IdOf)."
   }
  ]
 }

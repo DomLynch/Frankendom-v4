@@ -741,11 +741,11 @@
    "defender": "*",
    "moves": [],
    "disabled": false,
-   "note": "Pitborn battle growl on heavy windup (V3 charge_foe)",
+   "note": "Pitborn battle growl on heavy windup (V3 charge_foe) | laneDRILL: charge_foe (5 x 80 ms tonal 176 Hz bursts = drill/buzz) swapped for the effort_voice grunt; voicePitch .78 makes it deep",
    "play": [
     {
-     "cue": "charge_foe",
-     "gain": 0.3,
+     "cue": "effort_voice",
+     "gain": 0.22,
      "delay": 0.0,
      "rate": 1.0,
      "who": "attacker",

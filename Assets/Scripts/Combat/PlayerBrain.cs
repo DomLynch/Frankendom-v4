@@ -24,19 +24,19 @@ public class PlayerBrain : MonoBehaviour
             if (Application.isMobilePlatform || Input.touchCount > 0 || !TouchRelease.AnyHeld()) return;   // HCKIT4 v95
             TouchControls.Active = false;
         }
-        Vector2 inp = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 inp = InputMap.Move();   // REBIND v100
         if (LatencyProbe.On) ProbeKeys();
         Vector3 fwd = cam ? Vector3.ProjectOnPlane(cam.forward, Vector3.up).normalized : Vector3.forward;
         Vector3 right = cam ? Vector3.ProjectOnPlane(cam.right, Vector3.up).normalized : Vector3.right;
         df.moveDir = inp.sqrMagnitude > 0.01f ? (fwd * inp.y + right * inp.x).normalized : Vector3.zero;
-        df.run = Input.GetKey(KeyCode.LeftShift);
+        df.run = InputMap.Held("run", KeyCode.LeftShift);
         dirIn.Sample(rig, df, cam);   // CTRL v68: mouse / stick history, combat camera auto lock, pad specials; SwipeNow = scheme swipe + locked on
-        df.guardHeld = Input.GetMouseButton(1) || Input.GetKey(KeyCode.Q) || dirIn.PadGuardHeld;
+        df.guardHeld = InputMap.Held("guard", KeyCode.Mouse1, KeyCode.Q) || dirIn.PadGuardHeld;
         // directional guard: Q + arrow keys = guard side L/R/up (V3 kbm.ts); swipe + locked: the mouse slide / right stick picks it (arrows still override)
-        int arrowSide = Input.GetKey(KeyCode.LeftArrow) ? 1 : Input.GetKey(KeyCode.RightArrow) ? 2 : Input.GetKey(KeyCode.UpArrow) ? 3 : 0;
+        int arrowSide = InputMap.Held("guardLeft", KeyCode.LeftArrow) ? 1 : InputMap.Held("guardRight", KeyCode.RightArrow) ? 2 : InputMap.Held("guardUp", KeyCode.UpArrow) ? 3 : 0;
         int swipeSide = dirIn.SwipeNow ? dirIn.GuardStep(df.guardHeld) : dirIn.GuardStep(false);
         df.guardSide = arrowSide != 0 ? arrowSide : swipeSide;
-        if (Input.GetKeyDown(KeyCode.V)) df.Feint();
+        if (InputMap.Down("feint", KeyCode.V)) df.Feint();
         // lock-break: push away from the enemy (>120 deg) for 0.25 s; any attack re-locks
         if (rig && df.opponent && inp.sqrMagnitude > 0.01f && FlowTable.PushAwayBreaks)
         {
@@ -44,10 +44,10 @@ public class PlayerBrain : MonoBehaviour
             if (Vector3.Angle(df.moveDir, toE) > FlowTable.LockBreakAngle) { awayT += Time.deltaTime; if (awayT > FlowTable.LockBreakSeconds) rig.lockEnabled = false; } else awayT = 0f;   // HCKIT4 v95
         }
         else awayT = 0f;
-        if (rig && FlowTable.AttackRelocks && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F))) rig.lockEnabled = true;
+        if (rig && FlowTable.AttackRelocks && (InputMap.Down("strike", KeyCode.Mouse0, KeyCode.F))) rig.lockEnabled = true;
 
-        bool strike = Input.GetMouseButton(0) || Input.GetKey(KeyCode.F) || dirIn.PadAttackHeld;
-        bool strikeDownNow = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F) || dirIn.PadAttackDown;
+        bool strike = InputMap.Held("strike", KeyCode.Mouse0, KeyCode.F) || dirIn.PadAttackHeld;
+        bool strikeDownNow = InputMap.Down("strike", KeyCode.Mouse0, KeyCode.F) || dirIn.PadAttackDown;
         if (dirIn.SwipeNow) { dirIn.StrikeStep(); strikeDown = -1f; firedOnDown = false; heavyFired = false; }   // CTRL v68: swipe strike (tap light / hold heavy, slide = direction); the classic block below is skipped
         else
         {
@@ -68,11 +68,11 @@ public class PlayerBrain : MonoBehaviour
                 strikeDown = -1f; df.heavyHeld = false; firedOnDown = false;
             }
         }
-        else df.heavyHeld = Input.GetKey(KeyCode.G);
+        else df.heavyHeld = InputMap.Held("heavy", KeyCode.G);
         }
-        if (Input.GetKeyDown(KeyCode.G)) df.Press("heavy");
-        if (Input.GetKeyDown(KeyCode.T)) df.Press("thrust");
-        if (Input.GetKeyDown(KeyCode.C)) df.Press("kick");
+        if (InputMap.Down("heavy", KeyCode.G)) df.Press("heavy");
+        if (InputMap.Down("thrust", KeyCode.T)) df.Press("thrust");
+        if (InputMap.Down("kick", KeyCode.C)) df.Press("kick");
         if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Z)) df.Press("special1");
         if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.X)) df.Press("special2");
         // dodge keys (dodge.json input): "immediate" = the key decides on key-down (roll / sidestep by the held direction, see DodgeFromKey);
@@ -96,7 +96,7 @@ public class PlayerBrain : MonoBehaviour
             }
         }
         FlowTable.PlayerInput(rig, df);   // V64FLOW: lock toggle (flow.json lockOn.keys, default Tab / MMB / pad R3), df.lockFacing, riposte key (default B / pad B)
-        if (Input.GetKeyDown(KeyCode.R) && rig) rig.Recenter();
+        if (InputMap.Down("recenter", KeyCode.R) && rig) rig.Recenter();
     }
 
     bool firedOnDown;
@@ -110,13 +110,13 @@ public class PlayerBrain : MonoBehaviour
     // latency probe (flag only): label the physical key-down the sim / animator start is measured from
     void ProbeKeys()
     {
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F)) LatencyProbe.KeyDown("strike");
-        else if (Input.GetKeyDown(KeyCode.G)) LatencyProbe.KeyDown("heavy");
-        else if (Input.GetKeyDown(KeyCode.T)) LatencyProbe.KeyDown("thrust");
-        else if (Input.GetKeyDown(KeyCode.C)) LatencyProbe.KeyDown("kick");
-        else if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space)) LatencyProbe.KeyDown("dodge");
-        else if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X)) LatencyProbe.KeyDown("special");
-        else if (df.moveDir.sqrMagnitude < 0.01f && (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))) LatencyProbe.KeyDown("move");
+        if (InputMap.Down("strike", KeyCode.Mouse0, KeyCode.F)) LatencyProbe.KeyDown("strike");
+        else if (InputMap.Down("heavy", KeyCode.G)) LatencyProbe.KeyDown("heavy");
+        else if (InputMap.Down("thrust", KeyCode.T)) LatencyProbe.KeyDown("thrust");
+        else if (InputMap.Down("kick", KeyCode.C)) LatencyProbe.KeyDown("kick");
+        else if (InputMap.Down("dodge", KeyCode.E, KeyCode.Space)) LatencyProbe.KeyDown("dodge");
+        else if (InputMap.Down("special1", KeyCode.Alpha1, KeyCode.Z) || InputMap.Down("special2", KeyCode.Alpha2, KeyCode.X)) LatencyProbe.KeyDown("special");
+        else if (df.moveDir.sqrMagnitude < 0.01f && (InputMap.Down("moveForward", KeyCode.W) || InputMap.Down("moveLeft", KeyCode.A) || InputMap.Down("moveBack", KeyCode.S) || InputMap.Down("moveRight", KeyCode.D))) LatencyProbe.KeyDown("move");
     }
 
     // ---------------- dodge helpers (data: Assets/Data/dodge.json) ----------------
@@ -136,7 +136,7 @@ public class PlayerBrain : MonoBehaviour
         kRight = ParseKeys(d.input.doubleTap.rightKeys, new[] { KeyCode.D });
         kBack = ParseKeys(d.input.doubleTap.backKeys, new[] { KeyCode.S });
     }
-    KeyCode[] RollKeys(DodgeTable.Data d) { EnsureKeys(d); return kRoll; }
+    KeyCode[] RollKeys(DodgeTable.Data d) { EnsureKeys(d); return InputMap.Keys("dodge", kRoll); }
     static bool AnyDown(KeyCode[] ks) { for (int i = 0; i < ks.Length; i++) if (Input.GetKeyDown(ks[i])) return true; return false; }
     static bool AnyHeld(KeyCode[] ks) { for (int i = 0; i < ks.Length; i++) if (Input.GetKey(ks[i])) return true; return false; }
     bool Locked() { return rig != null && rig.lockEnabled && df.opponent != null && !df.opponent.Dead; }
@@ -176,9 +176,9 @@ public class PlayerBrain : MonoBehaviour
         EnsureKeys(d);
         if (!Locked()) return;
         float w = d.input.doubleTap.seconds;
-        if (AnyDown(kLeft)) TapSide(0, -1, w);
-        if (AnyDown(kRight)) TapSide(1, 1, w);
-        if (AnyDown(kBack)) TapSide(2, 0, w);
+        if (AnyDown(InputMap.Primary("moveLeft", kLeft))) TapSide(0, -1, w);
+        if (AnyDown(InputMap.Primary("moveRight", kRight))) TapSide(1, 1, w);
+        if (AnyDown(InputMap.Primary("moveBack", kBack))) TapSide(2, 0, w);
     }
     void TapSide(int slot, int dir, float window)
     {

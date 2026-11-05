@@ -4,7 +4,7 @@
     {
       "name": "Dracula",
       "enabled": true,
-      "debug": true,
+      "debug": false,
       "debugEvery": 30,
       "tau": 1.0,
       "blend": 0.15,

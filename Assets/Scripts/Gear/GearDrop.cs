@@ -45,7 +45,7 @@ public static class GearDrop
     {
         var G = GearTable.Get(); var win = new List<GearTable.Item>();
         if (!G.enabled || string.IsNullOrEmpty(victimId)) return win;
-        int max = Mathf.Max(0, G.drop.maxPerKill);
+        int max = Mathf.Max(0, G.drop.MaxFor(victimId)); /* WEAPONSWAP v88: drop.maxPerKillBy (Pitborn 3) */
         for (int i = 0; i < G.items.Length && win.Count < max; i++)
         {
             var it = G.items[i]; if (it == null || it.dropChance <= 0f || it.dropFrom == null) continue;

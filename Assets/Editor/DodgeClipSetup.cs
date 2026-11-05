@@ -21,7 +21,7 @@ public static class DodgeClipSetup
     [MenuItem("Tools/Combat/Add Dodge Clips")]
     public static void Run()
     {
-        string json = File.ReadAllText("Assets/Data/dodge_clips.json");
+        string json = ClipSets.ExpandJson(File.ReadAllText("Assets/Data/dodge_clips.json"), "dodge"); /* HCKIT5 v95 clipSets + roster clipSet -> bake entries */
         var cfg = JsonUtility.FromJson<Cfg>(json);
         if (cfg == null || cfg.bake == null || cfg.bake.Length == 0) { Debug.LogWarning("DodgeClipSetup: no bake entries in dodge_clips.json"); return; }
         Roster.Reload();   // bake rows are keyed by roster id; the controller path comes from roster.json when the row names one (the dodge_clips.json path is the fallback)

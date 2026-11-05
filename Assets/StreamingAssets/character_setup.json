@@ -1,0 +1,62 @@
+{
+  "_about": "Data for Assets/Editor/CharacterSetup.cs (Hades > Characters > Set up enemy / player from roster row). Editor only (HCKIT3 build_config editorOnlyData may skip it in the player). A new monster = one roster.json row + its glb/controller assets; the rig profile below supplies the bone / socket names that JoanSwap used to hold for one character. controllerTemplate = the null-motion template (laneCLIPBUILD Tools > Combat > Create Null-Motion Clip Template). stateSources = where EnsureStates looks for an already baked <state>.anim. Roster optional keys read by the editor tools: clipSet (attack_clips.json / dodge_clips.json clipSets id), templateFor (\"player\" | \"enemy\": the scene object cloned for that role), lightLayerGroup (\"lit\" | \"restore\"; default: the enemy restores, everyone else is lit).",
+  "scene": "Assets/Scenes/HadesSlice.unity",
+  "controllerTemplate": "Assets/Characters/_ClipTemplate.controller",
+  "stateSources": [
+    "{folder}/AttackClips/{state}.anim",
+    "{folder}/DodgeClips/{state}.anim",
+    "{finisherClipFolder}/{state}.anim"
+  ],
+  "rigs": [
+    {
+      "id": "mixamo106",
+      "rightHand": "mixamorig:RightHand",
+      "middle": "mixamorig:RightHandMiddle1",
+      "socket": "WeaponSocket_R",
+      "socketReach": 0.55,
+      "layer": 8,
+      "hideNodePrefixes": [
+        "Layer_",
+        "Icosphere"
+      ]
+    }
+  ],
+  "characters": [
+    {
+      "id": "Pitborn",
+      "rig": "mixamo106"
+    }
+  ],
+  "todo": {
+    "Pitborn": {
+      "owner": "laneCLIPBUILD clip_build.json characters.<id>.extraRows (pitbornPack hook, allowedFor) / a Pitborn bake row; nothing below is invented here",
+      "missingAttackRows": [
+        "heavy_left",
+        "heavy_right",
+        "heavy_thrust",
+        "light_overhead"
+      ],
+      "missingAttackRowsNote": "PITCLIPS v100: the four heavy variants (heavy_left, heavy_right, heavy_thrust, light_overhead) have rows since v100; dodge_diveroll too (states are added by Add Attack Clips / Add Dodge Clips)",
+      "missingStates": [
+        "atk_light_R",
+        "atk_light_L",
+        "atk_thrust",
+        "atk_heavy",
+        "atk_riposte",
+        "atk_cut_out",
+        "atk_cut_in",
+        "dodge_dive",
+        "dodge_diveroll",
+        "dodge_corkscrew"
+      ],
+      "missingStatesNote": "Pitborn.controller has none of these; dodge.json roll.clip dodge_diveroll is the one the game asks for (gate E WARN). EnsureStates adds a state only when <Pitborn folder>/AttackClips|DodgeClips/<state>.anim exists; bake them from the maul pack, then run Hades > Characters > Ensure missing clip states",
+      "finisherStates": [
+        "fin_chop1h_k",
+        "fin_counter_v",
+        "fin_hengdao_v",
+        "fin_river_light_k"
+      ],
+      "finisherStatesNote": "FinisherClipSetup territory (clipImport row exists)"
+    }
+  }
+}

@@ -313,7 +313,9 @@ public sealed class GameLoopDriver : MonoBehaviour
         if (active)
         {
             if (GameLoop.SceneLoads == 1) GameLoop.OpponentIndex = Mathf.Max(0, GameLoop.Opponents().startIndex);
+            if (GameLoop.SceneLoads == 1) SaveSlot.ApplyLadder();   // REBIND v100: resume the saved ladder row
             GameLoop.FightsStarted++;
+            SaveSlot.FightStarted(GameLoop.OpponentIndex, GameLoop.FightNumber);   // REBIND v100
             GameLoop.FadeAlpha = GameLoop.FadeOn ? 1f : 0f; fadeTarget = 0f; fadeDur = HudCfg.Get().fade.inS;
         }
         else { GameLoop.FadeAlpha = 0f; fadeTarget = 0f; }
@@ -353,6 +355,7 @@ public sealed class GameLoopDriver : MonoBehaviour
         {
             ended = true; GameLoop.Outcome = pd ? GameLoop.Result.Defeat : GameLoop.Result.Victory; GameLoop.Seconds = Duel.TickCount / 60f; endT = Time.unscaledTime;
             Debug.Log("[GameLoop] fight " + GameLoop.FightNumber + " " + GameLoop.Outcome + " | " + GameLoop.StatsLine());
+            if (GameLoop.Outcome == GameLoop.Result.Victory) SaveSlot.Victory(GameLoop.OpponentIndex, GameLoop.FightNumber);   // REBIND v100
         }
         if (ended)
         {
@@ -364,6 +367,7 @@ public sealed class GameLoopDriver : MonoBehaviour
         if (pending != null) return;
         if (!ReferenceEquals(keyOwner, H)) { keyOwner = H; kConfirm = HudCfg.Keys(H.input.confirmKeys, new[] { KeyCode.Return }); kRetry = HudCfg.Keys(H.input.retryKeys, new[] { KeyCode.Backspace }); kMid = HudCfg.Keys(H.input.midFightRetryKeys, new[] { KeyCode.Backspace }); }
         if (LootUI.Blocking) return;   // LOOTUI v85: the equip screen owns Enter / A / B (confirm / retry keys)
+        if (MenuUI.Blocking) return;   // MENU v100: the pause menu owns Enter / A / B / Backspace
         if (STSteer.Active) return;
         if (HudCfg.AnyDown(kMid)) { GameLoop.Retry(); return; }
         if (GameLoop.ScreenAlpha >= 0.5f)

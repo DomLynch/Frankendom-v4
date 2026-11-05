@@ -2,7 +2,7 @@
   "_about": "Editor-only data for Assets/Editor/JoanSwap.cs (Hades > Joan menu): which roster id is cloned (templateId) into which new object (newId), where the source glb comes from, which glb nodes stay hidden, and how glb materials map to Mats/*.mat built from Tex/<tex>_base.jpg + _normal.jpg (Tools/char_tex_install.py writes the jpgs from hdrp_char_mats.json 'extract'). glbMaterial names are the CHEF names (Ch13_body, Ch13_hair, Heraldry, Steel, Leather): check them against joan_chef_v1.glb (python _agents/laneJOAN/tools/glb_measure.py <glb> prints 'materials') and edit here and in hdrp_char_mats.json extract[].groups[].glbMaterial together. glbHeightM = rest-pose skinned height of the chef body (tools/skinned_measure.py), used only if BakeMesh cannot measure.",
   "newId": "Joan",
   "templateId": "Dracula",
-  "sourceGlb": "C:/Users/dom12/Documents/kits_out/3d/joan/assembled/joan_v6_mixamo_dark.glb",
+  "sourceGlb": "${kitsOut}/3d/joan/assembled/joan_v6c.glb",
   "scene": "Assets/Scenes/HadesSlice.unity",
   "layer": 8,
   "rightHand": "mixamorig:RightHand",
@@ -31,6 +31,12 @@
         1.0,
         1.03
       ]
+    },
+    {
+      "glbMaterial": "Joan_hair",
+      "mat": "Assets/Characters/Joan/Mats/joan_hairshell_0.mat",
+      "tex": "joan_head",
+      "smoothness": 0.15
     }
   ]
 }

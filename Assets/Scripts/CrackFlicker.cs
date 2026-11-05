@@ -6,6 +6,7 @@ using UnityEngine;
 public class CrackFlicker : MonoBehaviour
 {
     [System.Serializable] class Row { public bool enabled = true; public float hzA = 0.27f, hzB = 0.41f, amplitude = 0.1f, lodBias = 2f; public string[] materials = { "M_WorldTerrain" }; }
+    public static float BaseLodBias;   // TIERS v96: the data lodBias (approved look); QualityTiers.ApplyLod multiplies it by the tier's lodBiasMul after every tier change
     Row row; Material[] mats; Color[] baseCol; static readonly int Em = Shader.PropertyToID("_EmissiveColor");
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -18,7 +19,7 @@ public class CrackFlicker : MonoBehaviour
             try { r = JsonUtility.FromJson<Row>(File.ReadAllText(p)); } catch { }
             break;
         }
-        if (r.lodBias > 0f) QualitySettings.lodBias = r.lodBias;
+        if (r.lodBias > 0f) { BaseLodBias = r.lodBias; QualitySettings.lodBias = r.lodBias * QualityTiers.LodBiasMul; }   // TIERS v96: x1 on Ultra
         if (!r.enabled) return;
         var go = new GameObject("CrackFlicker"); DontDestroyOnLoad(go); var cf = go.AddComponent<CrackFlicker>(); cf.row = r;
     }

@@ -19,6 +19,8 @@ public static class GuardLayerSetup
     // ... and none of these (hips, legs, feet, skirt)
     static readonly string[] LowerTokens = { "UpLeg", "Leg", "Foot", "Toe", "ik_foot", "thigh", "calf", "skirt", "hip_fix", "knee", "Neck", "Head", "Eye", "Jaw" };   // Neck/Head chain off: the base layer drives the head (guard clip put it 40-60 deg left on idle legs)
 
+    public static void RunFor(string id) { foreach (var r in RosterEditor.Characters()) if (r.id == id && !string.IsNullOrEmpty(r.controller)) Setup(r.controller, r.guardMask); AssetDatabase.SaveAssets(); AssetDatabase.Refresh(); Debug.Log("GuardLayerSetup: RunFor " + id + " done (mask from the character's own guard_idle bindings)"); }   /* HCKIT5 v95 one roster id (CharacterSetup) */
+
     [MenuItem("Tools/Combat/Add Guard Upper-Body Layer")]
     public static void Run()
     {

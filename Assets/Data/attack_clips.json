@@ -332,6 +332,106 @@
       "note": "clip is 2.2 s; contact 0.73 s"
     },
     {
+      "character": "Pitborn",
+      "move": "heavy_right",
+      "enabled": true,
+      "clip": "atk_heavy_R",
+      "startTime": 0.1,
+      "contactTime": 0.6,
+      "endTime": 1.25,
+      "holdClipTime": 0.35,
+      "fallbackClip": "light_attack_R",
+      "fbStartTime": 0.0,
+      "fbContactTime": 0.27,
+      "fbEndTime": 1.1,
+      "fbHoldClipTime": 0.0,
+      "windupSpeed": 0.0,
+      "recoverySpeed": 0.0,
+      "blendIn": 0.04,
+      "blendOut": 0.15,
+      "rootMotion": "inplace",
+      "maxStep": 0.6,
+      "useStepIn": false,
+      "stepIn": 0.0,
+      "source": "122340901 Great Sword Slash (Pitborn pack attack_1)",
+      "note": "hand rises to apex 0.50 s (hold 0.35 = cocked right, rising; release x0.68 is inside the 0.6 speed floor), then descends R-to-L across the body: hand crosses the centre line at 0.60 s, right-hand speed peak 0.55 s (12 m/s), settled 1.23 s. Source travel 0.33 m baked out (inplace), same as the live Pitborn rows."
+    },
+    {
+      "character": "Pitborn",
+      "move": "heavy_left",
+      "enabled": true,
+      "clip": "atk_heavy_L",
+      "startTime": 0.2,
+      "contactTime": 0.8,
+      "endTime": 1.65,
+      "holdClipTime": 0.5,
+      "fallbackClip": "light_attack_L",
+      "fbStartTime": 0.0,
+      "fbContactTime": 0.53,
+      "fbEndTime": 1.3,
+      "fbHoldClipTime": 0.0,
+      "windupSpeed": 0.0,
+      "recoverySpeed": 0.0,
+      "blendIn": 0.04,
+      "blendOut": 0.15,
+      "rootMotion": "inplace",
+      "maxStep": 0.6,
+      "useStepIn": false,
+      "stepIn": 0.0,
+      "source": "122360901 Great Sword Slash (Pitborn pack attack_2)",
+      "note": "hands rise up-left from 0.2 s (start 0.2: a start of 0.0 would need x3.9 to reach the hold, the cap is x2.6) to the cocked pose 0.50 s (hold 0.50), then L-to-R diagonal slash: right-hand speed peak 0.80 s (7.7 m/s), settled 1.67 s; clip 1.83 s. Source travel 0.68 m baked out."
+    },
+    {
+      "character": "Pitborn",
+      "move": "heavy_thrust",
+      "enabled": true,
+      "clip": "atk_heavy_thrust",
+      "startTime": 0.1,
+      "contactTime": 0.5,
+      "endTime": 0.95,
+      "holdClipTime": 0.25,
+      "fallbackClip": "thrust",
+      "fbStartTime": 0.5,
+      "fbContactTime": 0.93,
+      "fbEndTime": 1.5,
+      "fbHoldClipTime": 0.0,
+      "windupSpeed": 0.0,
+      "recoverySpeed": 0.0,
+      "blendIn": 0.04,
+      "blendOut": 0.15,
+      "rootMotion": "inplace",
+      "maxStep": 0.8,
+      "useStepIn": false,
+      "stepIn": 0.0,
+      "source": "122640901 Great Sword Attack (Pitborn pack attack_5)",
+      "note": "hands drawn back-right 0.2-0.4 s (hold 0.25, release x0.68), forward drive peaks 0.43 s (8.3 m/s), max forward reach 0.50-0.55 s (contact 0.50), settled 0.73 s; clip 1.2 s, travel 0.12 m baked out. The pack has no extended-arm thrust (hands reach 0.5 m from the shoulders in all 8 attacks): this is the closest forward drive. Not measured in play."
+    },
+    {
+      "character": "Pitborn",
+      "move": "light_overhead",
+      "enabled": true,
+      "clip": "atk_overhead",
+      "startTime": 0.95,
+      "contactTime": 1.4,
+      "endTime": 1.8,
+      "holdClipTime": 0.0,
+      "fallbackClip": "heavy_release",
+      "fbStartTime": 0.1,
+      "fbContactTime": 0.97,
+      "fbEndTime": 1.9,
+      "fbHoldClipTime": 0.0,
+      "windupSpeed": 0.0,
+      "recoverySpeed": 0.0,
+      "blendIn": 0.08,
+      "blendOut": 0.15,
+      "rootMotion": "inplace",
+      "maxStep": 0.6,
+      "useStepIn": false,
+      "stepIn": 0.0,
+      "source": "122370901 Great Sword Slash (Pitborn pack attack_3)",
+      "note": "0.0-0.9 s is a preparatory two-sided swing (too long for a light attack; skipped: start 0.95 = 0.45 s of wind-up to contact, like the Dracula/Joan light rows, blendIn 0.08 because it starts mid-motion), apex 1.17 s (hand 2.03 m), downward chop speed peak 1.40 s (5.1 m/s, hand drops 0.7 m in 0.3 s), settled 1.53 s; clip 1.8 s (end 1.8 so the recovery runs at x0.8, 1.75 gave x0.7). Source travel 1.08 m baked out (the largest of the four)."
+    },
+    {
       "character": "Dracula",
       "move": "heavy_right",
       "enabled": true,
@@ -832,6 +932,182 @@
       "note": "DEFAULT row for any character without its own row for this move (HCKIT2 v93). Old whole-controller states every roster controller has; times measured on the Pitborn clip. clip is 2.2 s; contact 0.73 s"
     }
   ],
+  "clipSets": [
+    {
+      "id": "mixamo_sword",
+      "note": "shared default clip set for a Mixamo-106 humanoid with a one-hand weapon (copy of the attack bake list). A roster row with \"clipSet\": \"mixamo_sword\" and no explicit bake row gets an entry built from its roster row (Assets/Editor/ClipSets.cs, Tools/clip_sets_lib.py); an explicit bake row overrides it.",
+      "referenceState": "guard_idle",
+      "posture": true,
+      "outGlb": "{folder}/{id}_attacks_v2.glb",
+      "outClipDir": "{folder}/AttackClips",
+      "clips": [
+        {
+          "state": "atk_light_R",
+          "source": "${kitsOut}/3d/combat_clips_unity/clips/122770901-sword-and-shield-slash.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "posture": {
+            "ankleLiftCapM": 0.0295,
+            "maxStrideM": 0.3147,
+            "contactHandY": 1.4262
+          }
+        },
+        {
+          "state": "atk_light_L",
+          "source": "${kitsOut}/3d/combat_clips_unity/clips/122900901-sword-and-shield-slash.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "posture": {
+            "maxStrideM": 0.541
+          }
+        },
+        {
+          "state": "atk_thrust",
+          "source": "${kitsOut}/3d/combat_clips_unity/clips/hq023-Rap_Attack_Fwd_1.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "posture": {
+            "ankleLiftCapM": 0.0295,
+            "maxStrideM": 0.3147,
+            "yawAbsolute": true,
+            "footYawMaxDeg": 35.0,
+            "hipsYawMaxDeg": 25.0,
+            "chestYawMaxDeg": 30.0,
+            "contactHandY": 1.4754,
+            "contactHandMaxShiftM": 0.3934,
+            "bladeMaxLeadDeg": 35.0,
+            "bladeWristMaxDeg": 80.0,
+            "bladeAim": [
+              {
+                "t0": 0.14,
+                "t1": 0.34,
+                "blend": 0.06,
+                "axis": [
+                  0.0,
+                  0.1,
+                  0.99
+                ]
+              },
+              {
+                "t0": 0.62,
+                "t1": 0.95,
+                "blend": 0.08,
+                "axis": [
+                  0.0,
+                  0.2,
+                  0.98
+                ]
+              }
+            ],
+            "handClamp": [
+              {
+                "t0": 0.1,
+                "t1": 0.36,
+                "blend": 0.06,
+                "yMax": 1.2787
+              },
+              {
+                "t0": 0.6,
+                "t1": 0.95,
+                "blend": 0.08,
+                "yMax": 1.377
+              }
+            ]
+          }
+        },
+        {
+          "state": "atk_heavy",
+          "source": "${kitsOut}/3d/combat_clips_unity/clips/hq039-Zboro_AttackFwd_2strong.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "posture": {
+            "ankleLiftCapM": 0.0295,
+            "maxStrideM": 0.3147,
+            "contactHandY": 1.6721,
+            "contactHandMaxShiftM": 0.4426,
+            "bladeMaxLeadDeg": 60.0,
+            "bladeWristMaxDeg": 90.0,
+            "bladeAim": [
+              {
+                "t0": 0.3,
+                "t1": 0.6,
+                "blend": 0.08,
+                "axis": [
+                  0.0,
+                  0.85,
+                  -0.5
+                ]
+              },
+              {
+                "t0": 0.67,
+                "t1": 0.75,
+                "blend": 0.04,
+                "axis": [
+                  0.0,
+                  -0.55,
+                  0.83
+                ]
+              },
+              {
+                "t0": 0.8,
+                "t1": 1.05,
+                "blend": 0.06,
+                "axis": [
+                  0.0,
+                  -0.15,
+                  0.98
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "state": "atk_riposte",
+          "source": "${kitsOut}/3d/combat_clips_unity/top20/clips/hq058-Sien_Smalls_AttackCountertempo_102_impact.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "posture": {
+            "ankleLiftCapM": 0.0295,
+            "maxStrideM": 0.3147,
+            "contactHandY": 1.4754,
+            "contactHandMaxShiftM": 0.3934,
+            "bladeMaxLeadDeg": 35.0,
+            "bladeWristMaxDeg": 80.0
+          }
+        },
+        {
+          "state": "atk_cut_out",
+          "source": "${kitsOut}/3d/combat_clips_unity/clips_flagged_excluded/104990902-stable-sword-outward-slash.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "posture": {
+            "ankleLiftCapM": 0.0295,
+            "maxStrideM": 0.3443,
+            "contactHandY": 1.3278,
+            "yawAbsolute": true,
+            "footYawMaxDeg": 35.0,
+            "hipsYawMaxDeg": 22.0,
+            "chestYawMaxDeg": 28.0
+          }
+        },
+        {
+          "state": "atk_cut_in",
+          "source": "${kitsOut}/3d/combat_clips_unity/clips/104990901-stable-sword-inward-slash.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "posture": {
+            "ankleLiftCapM": 0.0295,
+            "maxStrideM": 0.3443,
+            "contactHandY": 1.3278,
+            "yawAbsolute": true,
+            "footYawMaxDeg": 35.0,
+            "hipsYawMaxDeg": 22.0,
+            "chestYawMaxDeg": 28.0
+          }
+        }
+      ]
+    }
+  ],
   "bake": [
     {
       "character": "Dracula",
@@ -1180,6 +1456,40 @@
             "hipsYawMaxDeg": 22.0,
             "chestYawMaxDeg": 28.0
           }
+        }
+      ]
+    },
+    {
+      "character": "Pitborn",
+      "controller": "Assets/Characters/Pitborn.controller",
+      "baseGlb": "Assets/Characters/Pitborn/Pitborn_combat.glb",
+      "outGlb": "Assets/Characters/Pitborn/Pitborn_attacks_v2.glb",
+      "outClipDir": "Assets/Characters/Pitborn/AttackClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "atk_heavy_R",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122340901-great-sword-slash.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "atk_heavy_L",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122360901-great-sword-slash.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "atk_heavy_thrust",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122640901-great-sword-attack.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "atk_overhead",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122370901-great-sword-slash.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
         }
       ]
     }

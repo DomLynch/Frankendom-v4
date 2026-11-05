@@ -1,6 +1,22 @@
-import os, sys, glob, re
+import os, sys, glob, re, json
 import numpy as np
 from PIL import Image
+
+# HCKIT3 v93: thresholds / globs / caps / log strings come from Tools/gate_config.json "qc" (defaults below = the old literals)
+def _qc_cfg():
+    d = {"p1Max": 0.040, "meanMax": 0.280, "contrastMin": 0.500, "sampleCaps": {"verify": 10, "fight": 5, "cam": 5},
+         "globs": {"verify": "verify_out/*_game.png", "fight": "verify_out/fight_*.png", "cam": "camproof/cam_*.png"},
+         "failLogStrings": ["HDRP/Decal shader missing", "using bone-parented quads"]}
+    try:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "gate_config.json"), encoding="utf-8-sig") as f:
+            j = json.load(f).get("qc", {})
+        for k in d:
+            if k in j: d[k] = j[k]
+    except Exception:
+        pass
+    return d
+
+QC = _qc_cfg()
 
 def analyze_image(path):
     try:
@@ -38,25 +54,24 @@ def audit_directory(build_dir):
         try:
             with open(lf, 'r', errors='ignore') as f:
                 content = f.read()
-                if "HDRP/Decal shader missing" in content:
-                    fallback_errors.append(f"{os.path.basename(lf)}: HDRP/Decal shader missing fallback detected!")
-                if "using bone-parented quads" in content:
-                    fallback_errors.append(f"{os.path.basename(lf)}: Bone-parented quad sticker fallback detected!")
+                for bad in QC["failLogStrings"]:
+                    if bad in content:
+                        fallback_errors.append(f"{os.path.basename(lf)}: fallback string detected: {bad}")
         except Exception as e:
             pass
 
     # 2. Image sampling
-    verify_imgs = glob.glob(os.path.join(build_dir, "verify_out", "*_game.png"))
-    fight_imgs = glob.glob(os.path.join(build_dir, "verify_out", "fight_*.png"))
-    cam_imgs = glob.glob(os.path.join(build_dir, "camproof", "cam_*.png"))
+    verify_imgs = glob.glob(os.path.join(build_dir, *QC["globs"]["verify"].split("/")))
+    fight_imgs = glob.glob(os.path.join(build_dir, *QC["globs"]["fight"].split("/")))
+    cam_imgs = glob.glob(os.path.join(build_dir, *QC["globs"]["cam"].split("/")))
     
     sample_imgs = []
     if verify_imgs:
-        sample_imgs.extend(verify_imgs[:10])
+        sample_imgs.extend(verify_imgs[:QC["sampleCaps"]["verify"]])
     if fight_imgs:
-        sample_imgs.extend(fight_imgs[:5])
+        sample_imgs.extend(fight_imgs[:QC["sampleCaps"]["fight"]])
     if cam_imgs:
-        sample_imgs.extend(cam_imgs[:5])
+        sample_imgs.extend(cam_imgs[:QC["sampleCaps"]["cam"]])
 
     results = []
     for p in sample_imgs:
@@ -92,17 +107,17 @@ def audit_directory(build_dir):
         gates_passed = False
         reasons.extend(fallback_errors)
 
-    if avg_p1 > 0.040:
+    if avg_p1 > QC["p1Max"]:
         gates_passed = False
-        reasons.append(f"HARD FAIL: Shadow floor washed out (p1 = {avg_p1:.4f} > 0.040, blacks are grey)")
+        reasons.append(f"HARD FAIL: Shadow floor washed out (p1 = {avg_p1:.4f} > {QC['p1Max']:.3f}, blacks are grey)")
 
-    if avg_mean > 0.280:
+    if avg_mean > QC["meanMax"]:
         gates_passed = False
-        reasons.append(f"HARD FAIL: Scene overexposed (mean = {avg_mean:.4f} > 0.280, scene too bright)")
+        reasons.append(f"HARD FAIL: Scene overexposed (mean = {avg_mean:.4f} > {QC['meanMax']:.3f}, scene too bright)")
 
-    if avg_contrast < 0.500:
+    if avg_contrast < QC["contrastMin"]:
         gates_passed = False
-        reasons.append(f"HARD FAIL: Low contrast / dynamic range crushed ({avg_contrast:.4f} < 0.500)")
+        reasons.append(f"HARD FAIL: Low contrast / dynamic range crushed ({avg_contrast:.4f} < {QC['contrastMin']:.3f})")
 
     print("-" * 50)
     if gates_passed:

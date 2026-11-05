@@ -301,14 +301,14 @@ public class STReactions : MonoBehaviour
             else if (a.kind == "trade")
             {
                 var lt = who.moves != null ? who.moves.Get("light_right") : null;
-                who.Press(lt != null && gap <= lt.reach * who.scale + who.radius + foe.radius ? "light" : "thrust");
+                who.Press(lt != null && gap <= lt.reach * who.ReachScale + who.radius + foe.radius ? "light" : "thrust");
             }
             else if (a.kind == "punish")
             {
                 if (foe.state != FState.Recovery && foe.state != FState.Stagger) continue;   // he has recovered already
                 var c = CtxOf(who); var lt = who.moves != null ? who.moves.Get("light_right") : null; var hv = who.moves != null ? who.moves.Get("heavy_overhead") : null;
-                int left = foe.CurrentMove != null && foe.state == FState.Recovery ? foe.CurrentMove.Recovery(false) - foe.t : 20;
-                float lightReach = lt != null ? lt.reach * who.scale + who.radius + foe.radius : 1.5f;
+                int left = foe.CurrentMove != null && foe.state == FState.Recovery ? foe.WeaponTicks(foe.CurrentMove.Recovery(false)) /* WEAPONSWAP v88 */ - foe.t : 20;
+                float lightReach = lt != null ? lt.reach * who.ReachScale + who.radius + foe.radius : 1.5f;
                 string mv;
                 if (gap > lightReach) mv = "thrust";
                 else if (hv != null && left > hv.Windup(false) + 2 && Rand() < (c != null ? c.cfg.punishHeavyShare : 0.3f)) mv = "heavy";

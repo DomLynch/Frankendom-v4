@@ -1,0 +1,18 @@
+{
+  "_about": "Player-facing options (lane TIERS). DATA + API only: the settings UI is another lane and must go through GameSettings (Scripts/GameSettings.cs): GameSettings.MenuRows() gives one row per entry of 'menu' below with Label / Kind / Choices / Get() / Set() / Cycle(), GameSettings.Changed fires after any Set. Values persist in PlayerPrefs under 'prefsPrefix' + id (the graphics tier keeps its own key, quality_tiers.json prefsKey). Harness runs (balance / verify / proofs / perfbench / finisherauto ...) ignore saved player options and use the defaults below, so gates stay deterministic. Missing file or enabled=false = defaults baked in GameSettings.cs (graphics ultra, free camera in combat off).",
+  "enabled": true,
+  "prefsPrefix": "gs.",
+  "graphics": {
+    "_about": "The tier list (ids, labels, notes, target fps) comes from quality_tiers.json. suggestOnFirstRun=true would pick GameSettings.SuggestedTier() (highest tier whose minVramMb fits SystemInfo.graphicsMemorySize) the first time the game runs; false (default) = always start on quality_tiers.json defaultTier (ultra, MAX). applyAtRuntime=true lets the menu switch tier live (QualityTiers.SetTier: new HDRP asset + volume clone, expect a one second hitch); false = the choice is saved and applied at the next launch.",
+    "suggestOnFirstRun": false,
+    "applyAtRuntime": true
+  },
+  "camera": {
+    "_about": "freeInCombat: false (default) = the combat camera behaves as controls.json camera.combatCamera says today (auto lock-on at duel start / within enterRange, Tab toggles). true = the player owns the camera: no auto lock at duel start (flow.json lockOn.startLocked is ignored) and no auto lock on entering combat; Tab / middle mouse still toggle the lock by hand. In the swipe scheme the mouse is the attack direction only while locked, so free camera plays with the classic click attacks until the player locks on. Takes effect immediately (read every frame by DirectionalInput.CombatCam), the already running lock state is left as it is.",
+    "freeInCombat": false
+  },
+  "menu": [
+    { "id": "graphics.tier", "label": "Graphics", "kind": "choice", "source": "graphics.tiers", "hint": "Ultra is the full look. Lower tiers trade effects for frame rate on 8-16 GB graphics cards." },
+    { "id": "camera.freeInCombat", "label": "Free camera in combat", "kind": "toggle", "hint": "Off: the camera locks on to the enemy when the duel starts. On: you steer the camera yourself." }
+  ]
+}

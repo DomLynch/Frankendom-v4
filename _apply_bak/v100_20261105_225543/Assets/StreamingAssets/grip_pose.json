@@ -1,0 +1,64 @@
+{
+ "defaults": {
+  "name": "",
+  "fingerDeg": 62,
+  "thumbDeg": 35,
+  "thumbWeight": 0.7,
+  "falloff": 1.0,
+  "fingerAxis": [
+   0,
+   0,
+   1
+  ],
+  "thumbAxis": [
+   0,
+   1,
+   0
+  ],
+  "leftHand": false,
+  "leftWeight": 1.0
+ },
+ "characters": [
+  {
+   "name": "Pitborn",
+   "fingerDeg": 78,
+   "thumbDeg": 40,
+   "thumbWeight": 0.8,
+   "falloff": 1.0,
+   "fingerAxis": [
+    0,
+    0,
+    1
+   ],
+   "thumbAxis": [
+    0,
+    1,
+    0
+   ],
+   "leftHand": true,
+   "leftWeight": 1.0,
+   "leftStates": [
+    "atk_heavy"
+   ]
+  },
+  {
+   "name": "Joan",
+   "fingerDeg": 58,
+   "thumbDeg": 35,
+   "thumbWeight": 0.7,
+   "falloff": 0.85,
+   "fingerAxis": [
+    0,
+    0,
+    1
+   ],
+   "thumbAxis": [
+    0,
+    1,
+    0
+   ],
+   "leftHand": false,
+   "leftWeight": 1.0
+  }
+ ]
+}

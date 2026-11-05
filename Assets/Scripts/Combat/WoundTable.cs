@@ -36,6 +36,10 @@ public static class WoundTable
     {
         public float[] color = new float[] { 0.25f, 0.02f, 0.02f }; public float smoothness = 0.8f;
         public int texSize = 64, variants = 3, seed = 41; public float drawDistance = 25f, fadeScale = 0.8f, startAngleFade = 0f, endAngleFade = 180f;
+        // WOUNDLOOK v96: wet dark-red look, all data. color = base tint (_BaseColor, also the flat fallback if the colour-map variant is stripped); coreColor/edgeColor scale the albedo ramp (relative to color) from wound centre to rim.
+        public float[] coreColor = new float[] { 0.35f, 0.25f, 0.25f }, edgeColor = new float[] { 1f, 0.85f, 0.7f };
+        public float smoothnessEdge = 0.4f, aoCore = 0.35f, normalStrength = 3f, normalBlur = 0.04f, lipHeight = 0.35f, alphaGamma = 0.8f, maskBlueScale = 1f, decalBlend = 1f;
+        public bool affectNormal = true, affectAO = true;
         public bool quadFallback = true;   // no HDRP/Decal shader in the player = a bone-parented blood quad instead (BloodGround's material)
     }
     [Serializable] public class VignetteCfg
@@ -87,6 +91,8 @@ public static class WoundTable
             if (dd.vignette == null) dd.vignette = new VignetteCfg();
             if (dd.characters == null) dd.characters = new Row[0];
             if (dd.decal.color == null || dd.decal.color.Length < 3) dd.decal.color = new float[] { 0.25f, 0.02f, 0.02f };
+            if (dd.decal.coreColor == null || dd.decal.coreColor.Length < 3) dd.decal.coreColor = new float[] { 0.35f, 0.25f, 0.25f };   // WOUNDLOOK v96
+            if (dd.decal.edgeColor == null || dd.decal.edgeColor.Length < 3) dd.decal.edgeColor = new float[] { 1f, 0.85f, 0.7f };   // WOUNDLOOK v96
             if (dd.vignette.color == null || dd.vignette.color.Length < 3) dd.vignette.color = new float[] { 0.18f, 0f, 0.01f };
             foreach (var r in dd.characters)
             {

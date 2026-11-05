@@ -46,7 +46,7 @@ public partial class DuelFighter
     public bool FlowAttackQueued => pLight > 0 || pHeavy > 0 || pThrust > 0 || pKick > 0 || pMove != null;
     public bool FlowDodgeQueued => pRoll > 0 || pBack > 0 || pSide > 0;
     public bool FlowChainBlocked => pMove != null;
-    public int RecoveryLen => move != null ? move.Recovery(chained) : 0;
+    public int RecoveryLen => move != null ? Tk(move.Recovery(chained)) : 0;
     public bool FlowChainedMove => chained;
 
     // ---- balance counters (BalanceAuto reads these; counted for every fighter) ----

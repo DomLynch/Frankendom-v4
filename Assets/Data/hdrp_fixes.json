@@ -101,16 +101,10 @@
     "fillLayerBit": 1,
     "rimLight": "Rim_Behind",
     "rimLayerBit": 2,
-    "rimInclude": [
-        "Dracula",
-        "Joan",
-        "Pitborn"
-    ],
+    "rimInclude": ["@all"],
     "rim2Light": "PitbornRedRim",
     "rim2LayerBit": 3,
-    "rim2Include": [
-        "Pitborn"
-    ],
+    "rim2Include": ["@enemy"],
     "rim3Light": "Furnace_GateRim",
     "rim3LayerBit": 4,
     "rim3Include": [

@@ -12,8 +12,7 @@
       "decapitation",
       "split_crown",
       "split_crown_pit",
-      "run_through",
-      "opened"
+      "run_through"
     ],
     "perWeapon": true,
     "_enableAllIds": [
@@ -1364,7 +1363,7 @@
     },
     {
       "id": "opened",
-      "enabled": true,
+      "enabled": false,
       "placeholder": true,
       "weight": 1,
       "attackerSide": "any",

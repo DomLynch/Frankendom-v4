@@ -258,7 +258,7 @@ public class AiAdapt
         var ot = AiWorld.Track(o); if (ot.landed) return opening;
         if (ot.serial != whiffSerial) { whiffSerial = ot.serial; whiffTake = Roll() < chance; if (whiffTake) nWhiff++; }
         if (!whiffTake) return opening;
-        whiffRemain = o.move.Recovery(ot.chained) - o.t;
+        whiffRemain = o.WeaponTicks(o.move.Recovery(ot.chained)) /* WEAPONSWAP v88 */ - o.t;
         if (whiffRemain >= P.punishMinRemain && o.t >= P.punishReact) { whiffNow = true; return true; }
         return opening;
     }

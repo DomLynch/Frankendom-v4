@@ -1,0 +1,111 @@
+{
+ "_about": "Data for Assets/Scripts/WeaponGrip.cs: re-poses WeaponSocket_R relative to the hand bone every LateUpdate (absolute). socketOffset = metres in the hand-bone frame; socketEuler = degrees on the socket's original rotation; slide = metres the hand moves along the shaft towards the head. Pitborn x35 / z-120: head forward at the light impact, up and forward at the heavy impact; GripPose (absolute curl) wraps the fingers. Dracula z20 + offset + slide 0.05 seats the hilt in the fist. Joan (laneJOANGRIP v78): the grip axis lies across the palm diagonal (heel of the hand to the index knuckle), found by transferring Dracula's grip by hand landmarks, then fitted so the fingers wrap the grip, the hand sits mid-grip (not against the guard) and the blade follows the forearm (rows fitted in Blender on the Joan rig, socket maths mirrored from WeaponGrip.cs/BuildSliceWeapons.cs). Joan locomotion row (laneSWORDGRIP): states idle/walk/run/strafe_L/strafe_R carry the sword up and forward (blade pitch about +45 deg in idle, grip axis within 40 deg of the knuckle line); every other Joan state keeps the combat row above (guards and attacks unchanged). Fitted in Blender on Joan_combat.glb with the WeaponGrip.cs socket maths.",
+ "characters": [
+  {
+   "name": "Pitborn",
+   "enabled": true,
+   "hand": "RightHand",
+   "socket": "WeaponSocket_R",
+   "socketOffset": [
+    0,
+    0.04,
+    0.02
+   ],
+   "socketEuler": [
+    35,
+    0,
+    -120
+   ],
+   "slide": 0.0,
+   "debugLog": false
+  },
+  {
+   "name": "Pitborn",
+   "enabled": true,
+   "hand": "RightHand",
+   "socket": "WeaponSocket_R",
+   "socketOffset": [
+    0,
+    0.04,
+    0.02
+   ],
+   "socketEuler": [
+    0,
+    0,
+    -90
+   ],
+   "slide": 0.0,
+   "blendSeconds": 0.1,
+   "states": [
+    "atk_heavy"
+   ],
+   "debugLog": false
+  },
+  {
+   "name": "Dracula",
+   "enabled": true,
+   "hand": "RightHand",
+   "socket": "WeaponSocket_R",
+   "socketOffset": [
+    -0.013,
+    0.025,
+    0.009
+   ],
+   "socketEuler": [
+    0,
+    0,
+    20
+   ],
+   "slide": 0.05,
+   "debugLog": false
+  },
+  {
+   "name": "Joan",
+   "enabled": true,
+   "hand": "RightHand",
+   "socket": "WeaponSocket_R",
+   "socketOffset": [
+    -0.0149,
+    0.0137,
+    0.0355
+   ],
+   "socketEuler": [
+    4.42,
+    -2.18,
+    20.51
+   ],
+   "slide": -0.0346,
+   "debugLog": false
+  },
+  {
+   "name": "Joan",
+   "enabled": true,
+   "hand": "RightHand",
+   "socket": "WeaponSocket_R",
+   "socketOffset": [
+    0.0167,
+    0.012,
+    0.0347
+   ],
+   "socketEuler": [
+    -51.2,
+    152.18,
+    -107.79
+   ],
+   "slide": -0.0475,
+   "blendSeconds": 0.15,
+   "states": [
+    "idle",
+    "walk",
+    "run",
+    "strafe_L",
+    "strafe_R"
+   ],
+   "debugLog": false
+  },
+  {
+   "name": "*",
+   "enabled": false
+  }
+ ]
+}

@@ -5,6 +5,7 @@
   "characters": [
     {
       "id": "Joan",
+      "clipSet": "mixamo_sword",
       "displayName": "Joan of Arc",
       "objectName": "Joan",
       "weapon": "sword",
@@ -22,6 +23,7 @@
     },
     {
       "id": "Pitborn",
+      "templateFor": "enemy",
       "displayName": "Pitborn",
       "objectName": "Pitborn",
       "weapon": "maul",
@@ -37,6 +39,8 @@
     },
     {
       "id": "Dracula",
+      "clipSet": "mixamo_sword",
+      "templateFor": "player",
       "displayName": "Dracula",
       "objectName": "Dracula",
       "weapon": "sword",

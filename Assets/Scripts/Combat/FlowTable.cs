@@ -59,6 +59,9 @@ public static class FlowTable
         public string[] cancelFoeHeavy = { "heavy", "critical", "skill_" };
         // V65BOT2: active parry (the AI profile holds the guard, so its parry window is never fresh): on a parryable foe wind-up with parryLead* ticks left the bot re-raises the guard and holds it parryHoldTicks
         public bool parry = true; public float parryTryChance = 0.6f; public int parryLeadMin = 4, parryLeadMax = 8, parryHoldTicks = 12;
+        // BALANCE2 v96: the bot uses the whole moveset. parrySideRead / cancelSideRead = chance the deliberate parry / guard-cancel aims the side that covers the swing (-1 = controls.json bot.sideReadChance, unchanged);
+        // armourTrade* = on a foe wind-up with armourLeadMin..Max ticks left, start armourMove (an armoured move in poise.json for this fighter) with chance armourTradeChance, so the blow is taken through the armour
+        public float parrySideRead = -1f, cancelSideRead = -1f, armourTradeChance = 0f; public int armourLeadMin = 11, armourLeadMax = 22; public string armourMove = "heavy_overhead";   // BALANCE2 v96
     }
     // the first chain row for from -> to, whatever the recovery tick (FlowBot picks a follow-up type and schedules the press from the row's window)
     public static ChainRow ChainRowFor(string fromId, string toType, bool hit)
@@ -169,16 +172,16 @@ public static class FlowTable
         var d = Get();
         if (!d.enabled || !d.lockOn.enabled)
         {
-            if (rig && Input.GetKeyDown(KeyCode.Tab)) rig.lockEnabled = !rig.lockEnabled;   // old behaviour
+            if (rig && InputMap.Down("lock", KeyCode.Tab)) rig.lockEnabled = !rig.lockEnabled;   // old behaviour
             if (df) df.lockFacing = true;
         }
         else
         {
-            if (!inited && rig) { inited = true; rig.lockEnabled = d.lockOn.startLocked; }
-            if (rig && AnyDown(Keys(ref lockKeys, ref lockKeysSrc, d.lockOn.keys, new[] { KeyCode.Tab }))) ToggleLock(rig, df);
+            if (!inited && rig) { inited = true; rig.lockEnabled = d.lockOn.startLocked && !GameSettings.FreeCameraInCombat; }   // TIERS v96: free camera in combat starts unlocked
+            if (rig && InputMap.AnyDown("lock", Keys(ref lockKeys, ref lockKeysSrc, d.lockOn.keys, new[] { KeyCode.Tab }))) ToggleLock(rig, df);
             if (df) df.lockFacing = FacingLocked(rig, df);
         }
-        if (d.enabled && d.riposte.enabled && df && AnyDown(Keys(ref ripKeys, ref ripKeysSrc, d.riposte.keys, new[] { KeyCode.B }))) df.PressRiposte();
+        if (d.enabled && d.riposte.enabled && df && InputMap.AnyDown("riposte", Keys(ref ripKeys, ref ripKeysSrc, d.riposte.keys, new[] { KeyCode.B }))) df.PressRiposte();
     }
 
     static KeyCode[] lockKeys, ripKeys; static string[] lockKeysSrc, ripKeysSrc;

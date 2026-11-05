@@ -30,7 +30,7 @@ public class AutoShot : MonoBehaviour
     }
     void Start()
     {
-        Application.runInBackground = true;
+        Application.runInBackground = ReleaseCfg.RunInBackground();   // RCHYGIENE v100: a player build pauses when it loses focus; proof / gate runs (harness flags, -logFile, -out:, ... release.json) keep running
         foreach (var a in System.Environment.GetCommandLineArgs()) if (a == "-autoplay") on = true;
         dir = Path.Combine(Application.dataPath, "..", "PlayShots"); foreach (var oa in System.Environment.GetCommandLineArgs()) if (oa.StartsWith("-out:")) dir = oa.Substring(5); Directory.CreateDirectory(dir);
         if (on) StartWatchdog();
@@ -159,7 +159,7 @@ public class AutoShot : MonoBehaviour
             {
                 foreach (var go in new[] { dr, pi }) { var cc = go.GetComponent<CharacterController>(); if (cc) cc.enabled = false; }
                 Vector3 pp = new Vector3(0f, 0f, z0), ep = new Vector3(0f, 0f, z0 + g);
-                foreach (var pr in new[] { (dr, pp), (pi, ep) }) { var p = pr.Item2; if (Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out var hit, 40f, PhysMasks.Ground)) p.y = hit.point.y; pr.Item1.transform.position = p; }
+                foreach (var pr in new[] { (dr, pp), (pi, ep) }) { var p = pr.Item2; if (Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out var hit, 40f, ~((1 << 8) | (1 << 9)))) p.y = hit.point.y; pr.Item1.transform.position = p; }
                 dr.transform.rotation = Quaternion.LookRotation(Vector3.forward); pi.transform.rotation = Quaternion.LookRotation(Vector3.back);
             }
             gapFrames++;

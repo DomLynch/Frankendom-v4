@@ -6,7 +6,7 @@ using UnityEngine;
 // Imports Frankendom V3 move-defs.json + rules-defs.json into ScriptableObjects (Assets/Data).
 public static class CombatDataImporter
 {
-    const string Src = "C:/HANDOVER-Macbook/extracted/7-repos/frankendom-v3/src/fight/";
+    static string Src { get { return ProjectPaths.Get("handoverDir") + "/extracted/7-repos/frankendom-v3/src/fight/"; } } /* HCKIT5 v95 K9: path from Tools/paths.json (default = the old literal) */
 
     [Serializable] class Chained { public int windup, active, recovery; }
     [Serializable] class Chain { public int window; public string[] follow; }
@@ -28,7 +28,7 @@ public static class CombatDataImporter
     public static void ImportDifficulty()
     {
         Directory.CreateDirectory("Assets/Data");
-        File.Copy("C:/HANDOVER-Macbook/extracted/7-repos/frankendom-v3/data/difficulty.json", "Assets/Data/difficulty.json", true);
+        if (!ProjectPaths.Flag("importV3")) { Debug.LogWarning("CombatDataImporter: one-shot V3 import skipped (it overwrites the tuned difficulty / move / rule data and re-creates the .asset files): pass -importV3 to run it"); return; } /* HCKIT5 v95 K9 guard */ File.Copy(ProjectPaths.Get("handoverDir") + "/extracted/7-repos/frankendom-v3/data/difficulty.json", "Assets/Data/difficulty.json", true);
         var dj = JsonUtility.FromJson<DiffJ>(File.ReadAllText("Assets/Data/difficulty.json"));
         var t = ScriptableObject.CreateInstance<DifficultyTable>();
         t.rows.AddRange(dj.rows);
@@ -44,6 +44,7 @@ public static class CombatDataImporter
     {
         ImportDifficulty();
         Directory.CreateDirectory("Assets/Data");
+        if (!ProjectPaths.Flag("importV3")) return; /* HCKIT5 v95 K9 guard */
         File.Copy(Src + "move-defs.json", "Assets/Data/move-defs.json", true);
         File.Copy(Src + "rules-defs.json", "Assets/Data/rules-defs.json", true);
 

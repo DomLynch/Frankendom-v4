@@ -70,10 +70,10 @@ public class CameraRig : MonoBehaviour
 
         // free camera (lock-on off): mouse yaw/pitch over the right shoulder
         if (!freeLoaded) LoadFree();
-        if (!DirectionalInput.MouseReserved)   // CTRL v68: locked-on swipe scheme = the mouse is the attack / guard direction, not the camera
+        if (!DirectionalInput.MouseReserved && !MenuUI.Open /* MENU v100: the pause menu owns the mouse */)   // CTRL v68: locked-on swipe scheme = the mouse is the attack / guard direction, not the camera
         {
-            yaw += Input.GetAxis("Mouse X") * sensitivity; yaw = Mathf.Clamp(Mathf.DeltaAngle(0f, yaw), -free.yawLimitDeg, free.yawLimitDeg);
-            pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * sensitivity, free.pitchMinDeg, free.pitchMaxDeg);
+            yaw += Input.GetAxis("Mouse X") * sensitivity * MenuSettings.CamSens; /* MENU v100: Settings > Gameplay > camera sensitivity */ yaw = Mathf.Clamp(Mathf.DeltaAngle(0f, yaw), -free.yawLimitDeg, free.yawLimitDeg);
+            pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * sensitivity * MenuSettings.CamSens, free.pitchMinDeg, free.pitchMaxDeg); /* MENU v100 */
         }
         var rot = Quaternion.Euler(pitch, yaw, 0f);
         Vector3 focus = target.position + Vector3.up * height + rot * Vector3.right * shoulder;
@@ -113,7 +113,7 @@ public class CameraRig : MonoBehaviour
             Vector3 from = lookAt, dirv = drawPos - from; float len = dirv.magnitude;
             if (len > 0.01f)
             {
-                int mask = PhysMasks.NotPhys; foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
+                int mask = ~0; foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
                 if (Physics.SphereCast(from, col.radius, dirv / len, out var ch, len, mask, QueryTriggerInteraction.Ignore))
                     drawPos = from + dirv / len * Mathf.Max(col.minDistFromTarget, ch.distance);
             }

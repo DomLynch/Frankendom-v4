@@ -99,7 +99,7 @@ public static class CombatSlowMo
 
     static void End()
     {
-        if (owns) { Time.timeScale = 1f; if (!PhysicsClock.Scripted) Time.fixedDeltaTime = baseFixed; }   // PHYS1 v1: PhysX runs on the sim clock now
+        if (owns) { Time.timeScale = 1f; Time.fixedDeltaTime = baseFixed; }
         owns = false; pending = null;
     }
     public static void Abort() { End(); }
@@ -125,14 +125,14 @@ public static class CombatSlowMo
                 else { End(); w = 0f; }
                 if (owns)
                 {
-                    float ts = Mathf.Lerp(1f, scale, w); Time.timeScale = ts; if (!PhysicsClock.Scripted) Time.fixedDeltaTime = baseFixed * ts; MinSeen = Mathf.Min(MinSeen, ts);
+                    float ts = Mathf.Lerp(1f, scale, w); Time.timeScale = ts; Time.fixedDeltaTime = baseFixed * ts; MinSeen = Mathf.Min(MinSeen, ts);
                 }
             }
             orphan = 0f; return;
         }
         // watchdog: a stuck sub-1 timeScale nobody owns
         float cur = Time.timeScale;
-        if (cur > 0.0001f && cur < 0.999f && !fin) { orphan += dt; if (orphan > Mathf.Max(0.5f, r.watchdogS)) { Debug.LogWarning("[CombatSlowMo] watchdog: timeScale " + cur.ToString("0.00") + " stuck for " + orphan.ToString("0.0") + " s, forced to 1"); Time.timeScale = 1f; if (!PhysicsClock.Scripted) Time.fixedDeltaTime = baseFixed; WatchdogFires++; orphan = 0f; } }
+        if (cur > 0.0001f && cur < 0.999f && !fin) { orphan += dt; if (orphan > Mathf.Max(0.5f, r.watchdogS)) { Debug.LogWarning("[CombatSlowMo] watchdog: timeScale " + cur.ToString("0.00") + " stuck for " + orphan.ToString("0.0") + " s, forced to 1"); Time.timeScale = 1f; Time.fixedDeltaTime = baseFixed; WatchdogFires++; orphan = 0f; } }
         else orphan = 0f;
     }
 }

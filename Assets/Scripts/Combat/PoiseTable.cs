@@ -81,6 +81,21 @@ public static class PoiseTable
         return null;
     }
 
+    // BALANCE2 v96: does fighter d have an armour row (armour on) for this move id; fromTick = the wind-up tick the armour starts at. The bot asks before it trades a swing for armour.
+    public static bool HasArmour(DuelFighter d, string moveId, out int fromTick)
+    {
+        fromTick = 0; var C = Get().armour; if (!C.enabled || d == null || string.IsNullOrEmpty(moveId)) return false;
+        var af = RosterResolver.ByIdOrDefault(C.fighters, rrx => rrx.key, d.PostureKey);
+        if (af == null || af.moves == null) return false;
+        for (int i = 0; i < af.moves.Length; i++)
+        {
+            var r = af.moves[i]; if (r == null || !MatchMove(r.move, moveId)) continue;
+            if (!r.armour) return false;
+            fromTick = r.fromTick; return true;
+        }
+        return false;
+    }
+
     struct MeterNow { public bool on; public int hits, window, breakOut; public float absorb, grace; }
     static MeterNow MeterFor(DuelFighter d)
     {

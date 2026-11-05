@@ -108,7 +108,7 @@ public class STTactics
     bool InReach(MoveDef m, float dist, float inset)
     {
         if (m == null) return false;
-        return dist <= m.reach * d.scale + d.radius + o.radius + 0.45f - inset;
+        return dist <= m.reach * d.ReachScale + d.radius + o.radius + 0.45f - inset;
     }
 
     // called every frame from AIBrain.Update (before Decide)
@@ -139,7 +139,7 @@ public class STTactics
             int cd = def.special == "special2" ? d.special2Cd : d.special1Cd;
             var mv = d.moves != null ? d.moves.Get(mid) : null;
             Vector3 to = o.transform.position - d.transform.position; to.y = 0f;
-            if (mv != null && cd <= 0 && to.magnitude <= Mathf.Min(def.specialReach, mv.reach * d.scale + d.radius + o.radius + 0.45f) - def.reachInset)
+            if (mv != null && cd <= 0 && to.magnitude <= Mathf.Min(def.specialReach, mv.reach * d.ReachScale + d.radius + o.radius + 0.45f) - def.reachInset)
             {
                 d.Press(def.special); nextSpecialTick = now + 20;
                 STSteer.Log("tactic:GoForKill:special", Describe(), "pressed " + def.special);

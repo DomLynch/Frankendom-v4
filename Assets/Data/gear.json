@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "debugLog": true,
+  "debugLog": false,
   "statsWithoutAsset": true,
   "hideUnequippedLayers": true,
   "maxMissingBoneFrac": 0.25,
@@ -288,10 +288,57 @@
     "enabled": true,
     "autoCollect": false,
     "skipIfOwned": true,
-    "maxPerKill": 3,
+    "maxPerKill": 1,
     "seed": 0,
     "spawnHeight": 0.3,
-    "lifetimeSeconds": 0
+    "lifetimeSeconds": 0,
+    "maxPerKillBy": [
+      {
+        "victim": "Pitborn",
+        "max": 3
+      }
+    ],
+    "_maxPerKillBy": "WEAPONSWAP v88: per-victim cap; a victim without a row uses maxPerKill. Pitborn drops 3: maul + pauldron pair + chest (Dom's loot design)."
+  },
+  "weaponSwap": {
+    "_about": "WEAPONSWAP v88 (WeaponSwap.cs, TwoHandIK.cs). slots = slot ids whose items are weapons (items[].weapon). socket = where the weapon glb is parented (the node WeaponGrip.cs moves); the socket's other children (the default sword LODs) are hidden except keepChildren; trailNode is re-parented under the weapon's tip node. ik: left-arm two-bone solve for twoHanded weapons: palmFrac = palm point on the wrist->middle-finger line, palmToShaftM = palm centre to shaft axis, rollDeg = hand roll about the shaft, flipPalm = turn the hand over if the fist faces away, keepAnimatedRotation = move the wrist only, reachFadeM = IK fades out over this much of out-of-reach distance, poleHintLocal/poleHintMix = elbow side, states/releaseStates = Animator states to limit / release, releaseWhenFrozen = let go during finishers, debugLog = print palm-to-shaft distance every debugEvery frames.",
+    "enabled": true,
+    "slots": [
+      "mainHand"
+    ],
+    "socket": "WeaponSocket_R",
+    "keepChildren": [
+      "TrailTip"
+    ],
+    "trailNode": "TrailTip",
+    "ik": {
+      "arm": "mixamorig:LeftArm",
+      "forearm": "mixamorig:LeftForeArm",
+      "hand": "mixamorig:LeftHand",
+      "middle": "mixamorig:LeftHandMiddle1",
+      "curlAxis": [
+        0,
+        0,
+        1
+      ],
+      "palmFrac": 0.55,
+      "palmToShaftM": 0.035,
+      "rollDeg": 0,
+      "flipPalm": false,
+      "keepAnimatedRotation": false,
+      "reachFadeM": 0.15,
+      "poleHintLocal": [
+        -0.5,
+        -1,
+        -0.3
+      ],
+      "poleHintMix": 0.3,
+      "states": [],
+      "releaseStates": [],
+      "releaseWhenFrozen": true,
+      "debugLog": false,
+      "debugEvery": 30
+    }
   },
   "items": [
     {
@@ -626,23 +673,106 @@
     },
     {
       "id": "pitborn_maul",
-      "name": "Pitborn maul",
+      "name": "Pitborn's maul",
       "slot": "mainHand",
-      "glb": "",
+      "glb": "Gear/pitborn_maul_joan_LOD0.glb",
       "resource": "",
       "part": "",
       "coversZones": [],
       "hidesLayers": [],
       "stats": {
         "armor": 0,
-        "poise": 0,
-        "weight": 9
+        "poise": 3,
+        "weight": 7
       },
       "dropFrom": [
         "Pitborn"
       ],
       "dropChance": 1.0,
-      "notes": "v87 (Dom): Pitborn's own weapon as a main-hand drop. mainHand is a data-only slot (visual false): equipping records the item and applies its stats; swapping Joan's sword mesh for the maul on WeaponSocket_R needs a small weapon-swap component (v88)."
+      "notes": "WEAPONSWAP v88 (Dom's loot design: Joan starts with her sword, Pitborn's maul drops and REPLACES it in the mainHand slot). glb = laneDROPPIT pitborn_maul_joan_LOD0.glb (0.88 m, grip node = origin, +Y shaft, nodes tip / head / grip_off / grip_off_low). weapon{} = multipliers on the default sword: damage x1.5, speed x0.75 (every move phase 1.33x the ticks: about +10 percent damage per second but bigger single hits and a longer commit), reach x0.9 (maul head 0.55-0.70 m from the grip vs the sword tip at 1.0 m; two hands claw some back), posture x1.8 (it breaks guards). stats = armor 0 / poise 3 / weight 7 (weight 7 > weightFree 6: slightly slower stamina regen). twoHanded true = TwoHandIK holds the shaft with the left hand. Tune all of it here, no code.",
+      "weapon": {
+        "id": "pitborn_maul",
+        "twoHanded": true,
+        "damageMul": 1.5,
+        "speedMul": 0.75,
+        "reachMul": 0.9,
+        "postureMul": 1.8,
+        "cueWeapon": "maul",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      },
+      "materials": {
+        "*": {
+          "smoothness": 0.35,
+          "metallic": 0.7,
+          "normalScale": 1.0
+        }
+      }
+    },
+    {
+      "id": "bascinet_joan",
+      "name": "Steel bascinet (open face, aventail edge)",
+      "slot": "head",
+      "glb": "Gear/bascinet_joan.glb",
+      "rig": "psyche-106",
+      "tris": 5292,
+      "coversZones": [],
+      "hidesLayers": [
+        "Joan_Hair"
+      ],
+      "stats": {
+        "armor": 5,
+        "poise": 2,
+        "weight": 2.8
+      },
+      "dropFrom": [
+        "Pitborn"
+      ],
+      "dropChance": 0.15,
+      "tier": "drop",
+      "source": "modelled v2 (laneHELMET2): smooth analytic shell, fitted to the Joan_v6b scalp",
+      "doubleSided": false,
+      "materials": {
+        "*": {
+          "metallic": 0.85,
+          "smoothness": 0.62
+        }
+      },
+      "notes": "v2: smooth pointed bascinet (analytic ogive skull over a low-order scalp fit, straight brow edge, flared raised neck guard), 4.2 mm plate, 9 mm brass rolled edge, steel #4a4a4e metallic 0.85 roughness 0.34-0.46 brushed, subtle hammering (max tilt ~4 deg). 0 intersecting tris vs head in rest/turn/tilt/neck poses; 0 overlaps with body/tunic in all 11 gameplay actions (min 7.9 mm to tunic in Death); only Stress_OverheadRoll clips. Old files in _work/v1."
+    },
+    {
+      "id": "cap_joan",
+      "name": "Steel kettle cap",
+      "slot": "head",
+      "glb": "Gear/cap_joan.glb",
+      "rig": "psyche-106",
+      "tris": 5292,
+      "coversZones": [],
+      "hidesLayers": [
+        "Joan_Hair"
+      ],
+      "stats": {
+        "armor": 3,
+        "poise": 1,
+        "weight": 1.6
+      },
+      "dropFrom": [
+        "Pitborn"
+      ],
+      "dropChance": 0.3,
+      "tier": "drop",
+      "source": "modelled v2 (laneHELMET2): smooth analytic shell, fitted to the Joan_v6b scalp",
+      "doubleSided": false,
+      "materials": {
+        "*": {
+          "metallic": 0.85,
+          "smoothness": 0.62
+        }
+      },
+      "notes": "v2: kettle hat, round elliptical dome + flat even 3.8 cm brim (9 deg droop), 9 mm brass rolled edge, same steel material. 0 overlaps in all actions (min 0.6 mm brim-to-body in Roll, no overlap)."
     }
   ]
 }

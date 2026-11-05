@@ -2,7 +2,7 @@
   "_about": "Loot pickup + equip UI (lane LOOTUI v85), read by Scripts/Loot/LootCfg.cs (StreamingAssets first, then Assets/Data). Everything the player sees is here: keys, colours, layout, text, slot list, stat labels, rarity colours, marker look. Sizes are px at referenceHeight (1080) and scale with Screen.height like hud.json. Colours are [r,g,b(,a)] 0..1 (the palette is the HUD's: ink / dim / charcoal / crimson / gold / frame). enabled=false = no loot UI at all. Harness runs (-balanceauto, -autoplay, ...) never start it; -lootdemo drops demo.items in front of the player and lets Tab open the screen any time.",
   "version": 1,
   "enabled": true,
-  "debugLog": true,
+  "debugLog": false,
   "referenceHeight": 1080,
   "minScale": 0.6,
   "maxScale": 3.0,

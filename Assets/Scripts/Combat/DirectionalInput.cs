@@ -130,7 +130,7 @@ public class DirectionalInput : MonoBehaviour
     {
         if (df == null) return;
         var C = ControlsTable.Get(); var A = C.attack; float now = Time.unscaledTime;
-        bool mDown = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F), mHeld = Input.GetMouseButton(0) || Input.GetKey(KeyCode.F);
+        bool mDown = InputMap.Down("strike", KeyCode.Mouse0, KeyCode.F), mHeld = InputMap.Held("strike", KeyCode.Mouse0, KeyCode.F);   // REBIND v100
         bool pDown = PadAttackDown, pHeld = PadAttackHeld;
         bool held = mHeld || pHeld;
         if ((mDown || pDown) && pressT < 0f)
@@ -138,7 +138,7 @@ public class DirectionalInput : MonoBehaviour
             pressT = now; fromPad = pDown && !mDown; heavyFired = false; lightOnDown = false; firedId = null; firedDir = "";
             if (A.strikeFire == "down") { firedDir = DirFrom(pressT, fromPad); Fire(MoveFor(firedDir, false)); lightOnDown = true; }
         }
-        if (pressT < 0f) { df.heavyHeld = Input.GetKey(KeyCode.G); return; }   // G = heavy key, as in the classic scheme
+        if (pressT < 0f) { df.heavyHeld = InputMap.Held("heavy", KeyCode.G); return; }   // G = heavy key, as in the classic scheme
         if (held && !heavyFired && now - pressT >= HoldSeconds())
         {
             string dir = DirFrom(pressT, fromPad), id = MoveFor(dir, true);
@@ -217,7 +217,7 @@ public class DirectionalInput : MonoBehaviour
     void CombatCam(ControlsTable.Data C)
     {
         var K = C.camera;
-        if (!C.enabled || K.combatCamera != "locked" || rig == null || df == null) return;
+        if (!C.enabled || K.combatCamera != "locked" || rig == null || df == null || GameSettings.FreeCameraInCombat) return;   // TIERS v96: player option "free camera in combat" (default off)
         if (!camInit) { camInit = true; return; }   // FlowTable.PlayerInput applies flow.json startLocked on the first frame
         var o = df.opponent; bool alive = o != null && !o.Dead;
         float d = 1e9f; if (alive) { Vector3 v = o.transform.position - df.transform.position; v.y = 0f; d = v.magnitude; }

@@ -25,6 +25,7 @@ public class FlowBot : MonoBehaviour
     int dRWin, dRTake, dRKey, dRAi, dRReach, dRBusy;
     int dPOpp, dPTake, dPTry, dPFresh, dPStam, dPCd, dPFar;   // active parry
     int parKey = -1; bool parTake;
+    int armKey = -1; bool armTake; int dAOpp, dATake, dAPress, dAReach, dAStam, dANoRow;   // BALANCE2 v96: armour trade diagnostics
 
     void Awake() { df = GetComponent<DuelFighter>(); Seed(); }
     void OnEnable() { if (df != null) df.flowBotDir = PickDir; }
@@ -42,6 +43,7 @@ public class FlowBot : MonoBehaviour
             + " pressed " + dPressed + " (late out-of-reach " + dPressReach + " dodge-queued " + dPressDodge + ", dropped ai-dodge " + dDropped + ")"
             + " | cancel foe-swings " + dCOpp + " (heavy " + dCOppHeavy + ") taken " + dCTake + " pressed dodge " + dCDodge + " guard " + dCGuard + " (skipped: stamina " + dCStam + " dodge-cd " + dCCd + " queued " + dCQueued + " far " + dCDist + ")"
             + " | riposte windows " + dRWin + " take " + dRTake + " key " + dRKey + " (ai first " + dRAi + ", out-of-reach ticks " + dRReach + ", busy ticks " + dRBusy + ")"
+            + " | armour trades foe-swings " + dAOpp + " take " + dATake + " pressed " + dAPress + " (skipped: no-row " + dANoRow + " stamina " + dAStam + " far " + dAReach + ")"   // BALANCE2 v96
             + " | parry foe-swings " + dPOpp + " take " + dPTake + " raised " + dPTry + " (skipped: fresh " + dPFresh + " stamina " + dPStam + " cooldown " + dPCd + " far " + dPFar + ")";
     }
 
@@ -62,7 +64,7 @@ public class FlowBot : MonoBehaviour
     {
         if (m == null || o == null) return false;
         Vector3 v = o.transform.position - transform.position; v.y = 0f;
-        return v.magnitude <= m.reach * df.scale + df.radius + o.radius + 0.45f + m.stepIn * stepShare - margin;
+        return v.magnitude <= m.reach * df.ReachScale + df.radius + o.radius + 0.45f + m.stepIn * stepShare - margin;
     }
 
     static bool MatchAny(string[] pre, string id)
@@ -84,6 +86,7 @@ public class FlowBot : MonoBehaviour
         if (B.cancel) CancelLogic(o, B, tick);
         if (B.riposte && C.riposte.enabled) RiposteLogic(o, B, C, tick);
         if (B.parry) ParryLogic(o, B, tick);
+        if (B.armourTradeChance > 0f) ArmourLogic(o, B, tick);   // BALANCE2 v96
     }
 
     // ---- active parry: the AI profile holds the guard (guard 1), so the first-ticks parry window is almost never fresh. On a parryable foe wind-up the bot re-raises the guard so the window covers contact ----
@@ -96,13 +99,34 @@ public class FlowBot : MonoBehaviour
         if (!parTake) return;
         int left = o.WindupLeft;
         if (left > B.parryLeadMax || left < B.parryLeadMin) return;
-        { Vector3 v = df.transform.position - o.transform.position; v.y = 0f; if (v.magnitude > o.CurrentMove.reach * o.scale + o.radius + df.radius + 0.75f) { dPFar++; parTake = false; return; } }
+        { Vector3 v = df.transform.position - o.transform.position; v.y = 0f; if (v.magnitude > o.CurrentMove.reach * o.ReachScale + o.radius + df.radius + 0.75f) { dPFar++; parTake = false; return; } }
         parTake = false;
         if (df.Exhausted || df.stamina <= 0f) { dPStam++; return; }
         if (df.state == FState.Guard && df.InParryWindow) { dPFresh++; return; }   // the guard just went up: the window is already open
         if (!df.FlowParryReady) { dPCd++; return; }
-        if (ControlsTable.SideRequired) DirectionalGuard.BotAim(df, o.CurrentMove, R(), R());   // CTRL v68: aim the guard side (controls.json bot.sideReadChance)
+        if (ControlsTable.SideRequired) DirectionalGuard.BotAim(df, o.CurrentMove, R(), R(), B.parrySideRead);   // CTRL v68: aim the guard side (controls.json bot.sideReadChance); BALANCE2 v96: flow.json bot.parrySideRead
         df.FlowParryRaise(df.state == FState.Guard, B.parryHoldTicks); dPTry++;
+    }
+
+    // ---- BALANCE2 v96 armour trade: a foe wind-up with armourLeadMin..Max ticks left and an armoured move of my own (poise.json row) = start it, so the blow is taken through the armour
+    // (damage still lands, no stagger / posture break) and my swing then lands in the foe's recovery. One roll per foe swing (armourTradeChance). Runs after ParryLogic. ----
+    void ArmourLogic(DuelFighter o, FlowTable.BotCfg B, int tick)
+    {
+        if (df.state != FState.Loco && df.state != FState.Guard) return;
+        if (o.state != FState.Windup || o.CurrentMove == null) return;
+        int key = tick - o.t;
+        if (key != armKey) { armKey = key; dAOpp++; armTake = R() < B.armourTradeChance; if (armTake) dATake++; }
+        if (!armTake) return;
+        int left = o.WindupLeft;
+        if (left > B.armourLeadMax || left < B.armourLeadMin) return;
+        armTake = false;
+        var mv = df.moves.Get(string.IsNullOrEmpty(B.armourMove) ? "heavy_overhead" : B.armourMove);
+        int armFrom; if (mv == null || !PoiseTable.HasArmour(df, mv.id, out armFrom)) { dANoRow++; return; }
+        if (left < armFrom + 1) { dANoRow++; return; }   // the blow would land before the armoured tick of the wind-up
+        if (df.Exhausted || df.stamina < df.FlowMoveCost(mv) + B.chainReserve) { dAStam++; return; }
+        if (df.FlowAttackQueued || df.FlowDodgeQueued) return;
+        if (!InReach(mv, o, B.reachMargin * 0.5f, B.stepInShare)) { dAReach++; return; }
+        df.Press(mv.id == "heavy_overhead" ? "heavy" : mv.id); dAPress++;
     }
 
     // ---- attack chains: a human string = press the next attack inside the recovery window of flow.json chain.rows ----
@@ -187,9 +211,9 @@ public class FlowBot : MonoBehaviour
         int left = o.WindupLeft;
         int lo = cancelHeavy ? B.cancelHeavyLeadMin : B.cancelLeadMin, hi = cancelHeavy ? B.cancelHeavyLeadMax : B.cancelLeadMax;
         if (left > hi || left < lo) return;
-        { Vector3 v = df.transform.position - o.transform.position; v.y = 0f; float lim = cancelHeavy ? B.cancelHeavyDist : o.CurrentMove.reach * o.scale + o.radius + df.radius + 0.75f; if (v.magnitude > lim) { dCDist++; cancelTake = false; return; } }   // the swing cannot reach him anyway
+        { Vector3 v = df.transform.position - o.transform.position; v.y = 0f; float lim = cancelHeavy ? B.cancelHeavyDist : o.CurrentMove.reach * o.ReachScale + o.radius + df.radius + 0.75f; if (v.magnitude > lim) { dCDist++; cancelTake = false; return; } }   // the swing cannot reach him anyway
         cancelTake = false;
-        if (cancelGuard) { if (!df.FlowDodgeQueued) { if (ControlsTable.SideRequired) DirectionalGuard.BotAim(df, o.CurrentMove, R(), R()); df.FlowForceGuard(B.guardHoldTicks); dCGuard++; } else dCQueued++; }   // CTRL v68: guard side
+        if (cancelGuard) { if (!df.FlowDodgeQueued) { if (ControlsTable.SideRequired) DirectionalGuard.BotAim(df, o.CurrentMove, R(), R(), B.cancelSideRead); df.FlowForceGuard(B.guardHoldTicks); dCGuard++; } else dCQueued++; }   // CTRL v68: guard side; BALANCE2 v96: flow.json bot.cancelSideRead
         else if (df.stamina < B.cancelMinStamina) dCStam++;
         else if (!df.FlowDodgeReady) dCCd++;
         else if (df.FlowDodgeQueued) dCQueued++;

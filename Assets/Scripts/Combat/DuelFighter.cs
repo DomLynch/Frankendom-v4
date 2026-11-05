@@ -29,7 +29,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     float R(string k, float d) { return rules ? rules.N(k, d) : d; }
     public bool Dead => state == FState.Dead;
     public MoveDef CurrentMove => move;
-    public int WindupLeft => state == FState.Windup && move != null ? move.Windup(chained) - t : 99;
+    public int WindupLeft => state == FState.Windup && move != null ? Tk(move.Windup(chained)) - t : 99;
 
     // feint: cancel a wind-up before the move's feintUntil tick (V3: 10 stamina)
     public void Feint()
@@ -65,9 +65,9 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     {
         switch (state)
         {
-            case FState.Windup: return move == null ? 0 : (move.Windup(chained) - t) + move.Active(chained) + move.Recovery(chained);
-            case FState.Active: return move == null ? 0 : (move.Active(chained) - t) + move.Recovery(chained);
-            case FState.Recovery: return move == null ? 0 : move.Recovery(chained) - t;
+            case FState.Windup: return move == null ? 0 : (Tk(move.Windup(chained)) - t) + Tk(move.Active(chained)) + Tk(move.Recovery(chained));
+            case FState.Active: return move == null ? 0 : (Tk(move.Active(chained)) - t) + Tk(move.Recovery(chained));
+            case FState.Recovery: return move == null ? 0 : Tk(move.Recovery(chained)) - t;
             case FState.ParryRecover: return ParryRecoverLen() - t;   // lanePARRY: parry or whiff recovery
             case FState.Stagger: return staggerTicks - t;
             case FState.Roll: return dodgeTicks - t;
@@ -141,10 +141,10 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         if (len <= 0.05f || ct <= 0.05f) return false;
         ct = Mathf.Min(ct, len); if (en <= ct + 0.05f || en > len) en = len;
         st = Mathf.Clamp(st, 0f, ct - 0.05f);
-        int w = m.Windup(isChained), a = m.Active(isChained), r = m.Recovery(isChained), total = w + a + r;
+        int w = Tk(m.Windup(isChained)), a = Tk(m.Active(isChained)), r = Tk(m.Recovery(isChained)), total = w + a + r;
         float contactTick = Mathf.Max(1f, w + df.contactActiveFrac * a);
         float windS = contactTick / 60f, recS = Mathf.Max(1f, total - contactTick) / 60f;
-        int cham = (int)m.chamber;
+        int cham = Tk((int)m.chamber);
         atkHold = m.charges && cham > 0 && cham < contactTick - 1f && hold > st + 0.02f && hold < ct - 0.02f;
         atkHoldTick = cham;
         if (atkHold)
@@ -371,7 +371,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         pLight = pHeavy = pThrust = pKick = 0;
         if (id == "light_right") lastLightRight = true; else if (id == "light_left") lastLightRight = false;
         stamina = Mathf.Max(0f, stamina - MoveCost(m)); regenWait = RegenDelay();
-        int total = m.Windup(isChained) + m.Active(isChained) + m.Recovery(isChained);
+        int total = Tk(m.Windup(isChained)) + Tk(m.Active(isChained)) + Tk(m.Recovery(isChained));
         var arow = AttackClipTable.Get().enabled ? AttackClipTable.Find(CharKey(), id) : null;
         fadeOutLen = 0f;
         if (!BeginAttackClip(arow, m, isChained)) PlayClip(ClipFor(id), total, 0.06f);   // no row / state: old whole-clip squash
@@ -382,13 +382,13 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
 
     void TickWindup()
     {
-        int w = move.Windup(chained);
-        if (move.charges && t >= (int)move.chamber && heavyHeld && charge < (int)R("charge.max", 54))
+        int w = Tk(move.Windup(chained));
+        if (move.charges && t >= Tk((int)move.chamber) && heavyHeld && charge < (int)R("charge.max", 54))
         {
-            charge++; t = (int)move.chamber; if (!paused) { paused = true; f.anim.speed = 0f; }
+            charge++; t = Tk((int)move.chamber); if (!paused) { paused = true; f.anim.speed = 0f; }
             return;
         }
-        if (paused) { paused = false; if (!atkOn) f.anim.speed = ClipLen("heavy_release") / ((w + move.Active(chained) + move.Recovery(chained)) / 60f); }
+        if (paused) { paused = false; if (!atkOn) f.anim.speed = ClipLen("heavy_release") / ((w + Tk(move.Active(chained)) + Tk(move.Recovery(chained))) / 60f); }
         if (t >= w) { state = FState.Active; t = 0; }
     }
 
@@ -399,7 +399,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             float mul = (move.charges && charge >= (int)R("charge.min", 30)) ? R("charge.damage", 1.5f) : 1f;
             if (Duel.Resolve(this, opponent, move, mul)) hitDone = true;
         }
-        if (t >= move.Active(chained)) { if (!hitDone) ContactRelay.AttackMissed(this, move); state = FState.Recovery; t = 0; }
+        if (t >= Tk(move.Active(chained))) { if (!hitDone) ContactRelay.AttackMissed(this, move); state = FState.Recovery; t = 0; }
     }
 
     void TickRecovery()
@@ -411,12 +411,12 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         }
         if (FlowChain()) return;   // V64FLOW: attack-to-attack chain rows (flow.json chain)
         if (CombatFeel.Applies(this)) { if (TryCancel()) return; }   // P1: cancel windows from cancel.json (roll / sidestep / backstep / guard / buffered attacks at the earliest legal tick)
-        else if (dodgeCd <= 0 && t > move.Recovery(chained) / 2)
+        else if (dodgeCd <= 0 && t > Tk(move.Recovery(chained)) / 2)
         {
             if (pSide > 0 && stamina >= SidestepCost()) { StartSidestep(); return; }
             if (pRoll > 0 && stamina >= RollCost()) { StartRoll(); return; }
         }
-        if (t >= move.Recovery(chained)) ToLoco();
+        if (t >= Tk(move.Recovery(chained))) ToLoco();
     }
 
     // P1 cancel windows: a buffered action runs on the first Recovery tick the table allows (after the active window), not only when the recovery has finished.
@@ -485,7 +485,6 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public void BlockHit(bool heavy) { blockFlash = 10; f.Force("guard_hit", 0.04f); f.anim.speed = 1.4f; }
     public void AddPosture(float p) { posture = Mathf.Min(posture + p, PostureMax); postureHold = PostureTable.HoldTicks(CharKey(), (int)R("posture.hold", 60)); if (p > 0f) statPostureGained += p; }
     public void SetKnock(Vector3 v) { knock = v; }
-    public Vector3 KnockVelocity => knock;   // PHYS1 v1: read-only copy for the death ragdoll (presentation never writes the sim)
     public bool InParryWindow => state == FState.Guard && parryWindow && guardAge <= ParryWindowTicks() && !(exhausted && StaminaTable.Get().exhausted.noParry);
     public bool IsGuarding => state == FState.Guard && guardAge >= WoundSystem.GuardRaiseExtra(this) && (!exhausted || guardAge > StaminaTable.Get().guard.raiseDelayExhausted);
     public bool IFrames => state == FState.Roll && t >= dodgeIS && t <= dodgeIE;   // set per move by BeginDodge (dodge.json iframeStart/End)
@@ -505,7 +504,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     void ParryNote() { var P = StaminaTable.Parry(); if (P.enabled) { stamina = Mathf.Clamp(stamina - P.staminaCost + P.staminaGain, 0f, Mathf.Max(stamina, maxStamina)); if (P.staminaCost > 0f) regenWait = RegenDelay(); } parryOkFlash = StaminaTable.Get().hud.parryFlashTicks; statParries++; }   // lanePARRY: staminaGain = the parry reward
     float MoveCost(MoveDef m) { return StaminaTable.MoveCost(m) * StanceLayer.AttackCostMul(this); }   // STANCE2 v81: stances.json attackCostMul
     float SpeedMulExhausted() { return (exhausted ? StaminaTable.Get().exhausted.walkMul : 1f) * WoundSystem.MoveMul(this) * StanceLayer.MoveSpeedMul(this); }   /* STANCE2 v81: stances.json moveSpeedMul */   // lane WOUND: limp (HP stages) and leg-hit slow, 1 when healthy / off
-    public float DamageScaleNow => damageScale * (exhausted ? StaminaTable.Get().exhausted.damageMul : 1f);
+    public float DamageScaleNow => damageScale * (exhausted ? StaminaTable.Get().exhausted.damageMul : 1f) * WeaponHooks.DamageMul(this); /* WEAPONSWAP v88: weapon damage */
     bool HeavyAllowed() { var S = StaminaTable.Get(); bool ok = !S.enabled || (!exhausted && stamina >= S.exhausted.heavyMinStamina); if (!ok) statHeavyDowngrades++; return ok; }
     public void NoteBlock() { statBlocks++; parryGuardContact = true; }
     public void GuardBreakStun(int ticks = -1)
@@ -617,7 +616,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
                 break;
             }
             case FState.Windup:
-                if (!PresentationClock.Frozen && t >= R("stepInFrom", 3) && move != null && dist > StepStopDist()) { float si = StepInFor(); if (si > 0f) v = FlowStepDir(dir) * (si * scale / Mathf.Max(0.1f, (move.Windup(chained) - 3) / 60f)); }   // stepIn: data (attack_clips.json) or the move's value
+                if (!PresentationClock.Frozen && t >= R("stepInFrom", 3) && move != null && dist > StepStopDist()) { float si = StepInFor(); if (si > 0f) v = FlowStepDir(dir) * (si * scale / Mathf.Max(0.1f, (Tk(move.Windup(chained)) - 3) / 60f)); }   // stepIn: data (attack_clips.json) or the move's value
                 break;
             case FState.Stagger: case FState.Down: if (!PresentationClock.Frozen) { v = knock; knock *= Mathf.Pow(0.88f, dt * 60f); } faceOpp = false; break;   // P1: no knock slide while the animation is frozen (hit-stop)
             case FState.Dead: faceOpp = false; break;

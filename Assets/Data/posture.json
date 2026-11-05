@@ -19,7 +19,7 @@
     },
     {
       "key": "Pitborn",
-      "max": 60,
+      "max": 75,
       "holdTicks": 0,
       "decayPerSecond": 9,
       "deathblowMinHealthFrac": 0.5

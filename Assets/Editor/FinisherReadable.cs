@@ -18,7 +18,10 @@ public static class FinisherReadable
         if (!File.Exists(path)) { Debug.LogError("[FinisherReadable] missing " + path); return; }
         var cfg = JsonUtility.FromJson<Cfg>(File.ReadAllText(path));
         int changed = 0, unreadable = 0, meshes = 0;
-        foreach (string m in cfg.models)
+        // HCKIT3 v93: every roster character modelGlb + animGlb is checked as well (json "models" stays as extra entries), so a new roster row needs no edit of finisher_readable.json. Neutral today: the 6 roster glbs ARE the 6 listed models.
+        Roster.Reload(); var list = new System.Collections.Generic.List<string>(cfg.models);
+        foreach (var rc in Roster.All) { if (!string.IsNullOrEmpty(rc.modelGlb) && !list.Contains(rc.modelGlb)) list.Add(rc.modelGlb); if (!string.IsNullOrEmpty(rc.animGlb) && !list.Contains(rc.animGlb)) list.Add(rc.animGlb); }
+        foreach (string m in list)
         {
             var imp = AssetImporter.GetAtPath(m);
             if (imp == null) { Debug.LogWarning("[FinisherReadable] not found: " + m); continue; }

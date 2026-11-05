@@ -18,7 +18,7 @@ public static class HdrpCharLayer
         var F = JsonUtility.FromJson<Row>(File.ReadAllText(path));
         if (!F.enabled) { Debug.Log("HDRPCHARLAYER disabled"); return; }
         var sc = EditorSceneManager.OpenScene("Assets/Scenes/HadesSlice.unity");
-        F.characters = RosterResolver.ExpandNames(F.characters); F.restore = RosterResolver.ExpandNames(F.restore);   // HCKIT2 v93 @player / @enemy / @all
+        F.characters = RosterResolver.ExpandNames(F.characters); F.restore = RosterResolver.ExpandNames(F.restore); F.characters = RosterGroups.Expand(F.characters); F.restore = RosterGroups.Expand(F.restore); /* HCKIT5 v95 @lit / @restore tokens from the roster */   // HCKIT2 v93 @player / @enemy / @all
         uint cb = 1u << F.charBit; int rends = 0, door = 0, other = 0;
         foreach (var r in Object.FindObjectsByType<Renderer>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {

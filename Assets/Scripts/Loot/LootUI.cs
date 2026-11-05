@@ -148,7 +148,7 @@ public sealed class LootUI : MonoBehaviour
     static Vector3 Ground(Vector3 p)
     {
         var Pl = LootCfg.Get().pillar;
-        int n = Physics.RaycastNonAlloc(p + Vector3.up * Pl.groundRayUp, Vector3.down, hits, Pl.groundRayUp + Pl.groundRayDown, PhysMasks.NotPhys & Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+        int n = Physics.RaycastNonAlloc(p + Vector3.up * Pl.groundRayUp, Vector3.down, hits, Pl.groundRayUp + Pl.groundRayDown, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
         float best = float.MaxValue; Vector3 pt = p;
         for (int i = 0; i < n; i++)
         {

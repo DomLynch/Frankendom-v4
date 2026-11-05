@@ -1,0 +1,22 @@
+{
+  "_about": "AudioMix.cs (lane laneRCHYGIENE, v100). The mix: one level per category. master rides on AudioListener.volume; every other category multiplies the volume of the sources that route through it (CueBus: cues[] below picks the category of each cue; GatewayRift: ambience; a looping source: AudioMix.Bind(source, category, baseVolume)). defaultLevel = the value before the player touches a slider and what 'Restore defaults' sets; min / max = the slider limits; menu=false hides the slider (a category with no sound in it yet: ui, music). cues[]: cue = an exact CueBus cue name, or a prefix ending in '*'; anything not listed plays in defaultCategory. pause: the pause menu fades the sound out over fadeOutS (and in over fadeInS) in unscaled time before AudioListener.pause; fade=false pauses at once. display: how the menu prints a slider (value x scale, format fmt, suffix). The player's levels are saved in settings.json (mix[]). No audio assets are added by this file.",
+  "enabled": true,
+  "masterId": "master",
+  "defaultCategory": "sfx",
+  "categories": [
+    { "id": "master",   "label": "Master volume", "hint": "Everything you hear.",                          "defaultLevel": 1.0, "min": 0.0, "max": 1.0, "menu": true },
+    { "id": "sfx",      "label": "Effects",       "hint": "Blades, blocks, hits and voices.",              "defaultLevel": 1.0, "min": 0.0, "max": 1.0, "menu": true },
+    { "id": "ambience", "label": "Ambience",      "hint": "The gate, the crowd and the world around the duel.", "defaultLevel": 1.0, "min": 0.0, "max": 1.0, "menu": true },
+    { "id": "ui",       "label": "Interface",     "hint": "Menu and loot screen sounds.",                  "defaultLevel": 1.0, "min": 0.0, "max": 1.0, "menu": false },
+    { "id": "music",    "label": "Music",         "hint": "Score and stingers.",                           "defaultLevel": 1.0, "min": 0.0, "max": 1.0, "menu": false }
+  ],
+  "cues": [
+    { "cue": "crowd_*",      "category": "ambience" },
+    { "cue": "gateway_*",    "category": "ambience" },
+    { "cue": "ambient_*",    "category": "ambience" },
+    { "cue": "ui_*",         "category": "ui" },
+    { "cue": "music_*",      "category": "music" }
+  ],
+  "pause": { "fade": true, "fadeOutS": 0.25, "fadeInS": 0.3, "silentBelow": 0.002 },
+  "display": { "step": 0.05, "scale": 100.0, "fmt": "0", "suffix": "%" }
+}

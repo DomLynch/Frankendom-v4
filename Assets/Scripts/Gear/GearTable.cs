@@ -30,8 +30,46 @@ public static class GearTable
         public string[] coversZones = new string[0], hidesLayers = new string[0], dropFrom = new string[0];
         public float dropChance = 0f;
         public Stats stats = new Stats();
+        public WeaponDef weapon = new WeaponDef();   // WEAPONSWAP v88: set (weapon.id) on mainHand weapon items
         public bool HasVisualSource { get { return layer.Length > 0 || glb.Length > 0 || resource.Length > 0; } }
         public bool IsPair { get { return glbMirror.Length > 0; } }
+    }
+    // WEAPONSWAP v88: items[].weapon = the weapon block of a mainHand item (WeaponSwap.cs): the numbers are multipliers on the wearer's DEFAULT weapon (the sword = 1 / 1 / 1 / 1)
+    [Serializable]
+    public class WeaponDef
+    {
+        public string id = "";                         // weapon id ("" = not a weapon item). WeaponGrip.cs / GripPose.cs rows carry the same id in "weapon"
+        public float damageMul = 1f, speedMul = 1f, reachMul = 1f, postureMul = 1f;   // damage dealt, move speed (0.75 = every windup / active / recovery 1.33x as many ticks), hit reach, posture put on the defender
+        public bool twoHanded = false;                 // left-arm IK (TwoHandIK.cs) onto offHandNode
+        public string cueWeapon = "";                  // cues.json weapon key while it is held ("" = the roster weapon's)
+        public string gripNode = "grip", tipNode = "tip", offHandNode = "grip_off";   // glb nodes: grip (socket origin), tip (swing-trail tip), off-hand target on the shaft axis
+        public float ikWeight = 1f, ikBlendSeconds = 0.15f;   // two-hand IK weight (0..1) and the seconds it takes to blend in / out
+        public void Fix() { if (id == null) id = ""; if (cueWeapon == null) cueWeapon = ""; if (gripNode == null) gripNode = ""; if (tipNode == null) tipNode = ""; if (offHandNode == null) offHandNode = ""; }
+    }
+    [Serializable]
+    public class WeaponIkCfg   // TwoHandIK.cs (gear.json weaponSwap.ik)
+    {
+        public string arm = "mixamorig:LeftArm", forearm = "mixamorig:LeftForeArm", hand = "mixamorig:LeftHand", middle = "mixamorig:LeftHandMiddle1";
+        public float[] curlAxis = new[] { 0f, 0f, 1f };   // finger-curl axis in the finger bone's frame (grip_pose.json fingerAxis)
+        public float palmFrac = 0.55f, palmToShaftM = 0.035f, rollDeg = 0f;   // palm point = this share of wrist->middle finger; palm centre to the shaft axis; extra roll of the hand about the shaft
+        public bool flipPalm = false, keepAnimatedRotation = false;   // flipPalm = the fingers curl away from the shaft (turn the hand over); keepAnimatedRotation = move the wrist only
+        public float reachFadeM = 0.15f;               // the IK weight falls to 0 over this much of out-of-reach distance
+        public float[] poleHintLocal = new[] { -0.5f, -1f, -0.3f };   // elbow direction hint in the fighter's frame (left, down, back)
+        public float poleHintMix = 0.3f;               // 0 = keep the animated elbow side, 1 = the hint
+        public string[] states = new string[0], releaseStates = new string[0];   // Animator states the IK is limited to (empty = all) / released in
+        public bool releaseWhenFrozen = true, debugLog = false; public int debugEvery = 30;
+        public void Fix() { if (curlAxis == null || curlAxis.Length < 3) curlAxis = new[] { 0f, 0f, 1f }; if (poleHintLocal == null || poleHintLocal.Length < 3) poleHintLocal = new[] { -0.5f, -1f, -0.3f }; if (states == null) states = new string[0]; if (releaseStates == null) releaseStates = new string[0]; }
+    }
+    [Serializable]
+    public class WeaponCfg   // WeaponSwap.cs (gear.json weaponSwap)
+    {
+        public bool enabled = true;
+        public string[] slots = new[] { "mainHand" };   // slot ids whose items are weapons
+        public string socket = "WeaponSocket_R";        // where the weapon glb goes (the node WeaponGrip.cs moves)
+        public string[] keepChildren = new[] { "TrailTip" };   // socket children that stay visible when the default weapon is hidden
+        public string trailNode = "TrailTip";           // re-parented under the weapon's tip node
+        public WeaponIkCfg ik = new WeaponIkCfg();
+        public void Fix() { if (slots == null) slots = new string[0]; if (socket == null) socket = ""; if (keepChildren == null) keepChildren = new string[0]; if (trailNode == null) trailNode = ""; if (ik == null) ik = new WeaponIkCfg(); ik.Fix(); }
     }
     // one material row (gear.json): -1 = not set, leave the material's own value
     [Serializable]
@@ -63,7 +101,7 @@ public static class GearTable
     public class DropCfg
     {
         public bool enabled = true, autoCollect = false, skipIfOwned = true;
-        public int maxPerKill = 1, seed = 0;     // seed 0 = time based, else a fixed roll sequence (balance bots)
+        public int maxPerKill = 1, seed = 0; public MaxRow[] maxPerKillBy = new MaxRow[0]; [Serializable] public class MaxRow { public string victim = ""; public int max = 1; } public int MaxFor(string victimId) { if (maxPerKillBy != null && victimId != null) for (int i = 0; i < maxPerKillBy.Length; i++) if (maxPerKillBy[i] != null && maxPerKillBy[i].victim == victimId) return maxPerKillBy[i].max; return maxPerKill; } /* WEAPONSWAP v88: per-victim cap (Pitborn 3) */     // seed 0 = time based, else a fixed roll sequence (balance bots)
         public float spawnHeight = 0.3f, lifetimeSeconds = 0f;   // 0 = the marker stays
     }
     [Serializable]
@@ -89,6 +127,7 @@ public static class GearTable
         public string[] zones = new string[0];
         public BoneZone[] boneZones = new BoneZone[0];
         public StatRules stats = new StatRules(); public MaskCfg mask = new MaskCfg(); public DropCfg drop = new DropCfg(); public MaterialCfg materials = new MaterialCfg();
+        public WeaponCfg weaponSwap = new WeaponCfg();   // WEAPONSWAP v88
         public Item[] items = new Item[0];
     }
     [Serializable] class RosterRow { public string id = ""; public string[] loadout; }
@@ -230,7 +269,7 @@ public static class GearTable
         {
             var d = JsonUtility.FromJson<Data>(json); if (d == null) { data.enabled = false; return; }
             if (d.slots == null) d.slots = new SlotDef[0]; if (d.zones == null) d.zones = new string[0]; if (d.boneZones == null) d.boneZones = new BoneZone[0];
-            if (d.items == null) d.items = new Item[0]; if (d.stats == null) d.stats = new StatRules(); if (d.mask == null) d.mask = new MaskCfg(); if (d.drop == null) d.drop = new DropCfg();
+            if (d.items == null) d.items = new Item[0]; if (d.weaponSwap == null) d.weaponSwap = new WeaponCfg(); d.weaponSwap.Fix(); if (d.drop != null && d.drop.maxPerKillBy == null) d.drop.maxPerKillBy = new DropCfg.MaxRow[0]; /* WEAPONSWAP v88 */ if (d.stats == null) d.stats = new StatRules(); if (d.mask == null) d.mask = new MaskCfg(); if (d.drop == null) d.drop = new DropCfg();
             foreach (var s in d.slots) if (s != null) { if (s.id == null) s.id = ""; if (s.group == null) s.group = ""; }
             foreach (var b in d.boneZones) if (b != null) { if (b.zone == null) b.zone = ""; b.prefix = b.prefix == null ? "" : b.prefix.ToLowerInvariant(); b.suffix = b.suffix == null ? "" : b.suffix.ToLowerInvariant(); if (b.has == null) b.has = new string[0]; else for (int i = 0; i < b.has.Length; i++) b.has[i] = b.has[i] == null ? "" : b.has[i].ToLowerInvariant(); }
             foreach (var it in d.items) Fill(it);
@@ -272,6 +311,6 @@ public static class GearTable
         if (it.layer == null) it.layer = ""; if (it.part == null) it.part = ""; if (it.notes == null) it.notes = "";
         if (it.glbMirror == null) it.glbMirror = ""; if (it.partMirror == null) it.partMirror = ""; if (it.materialRows == null) it.materialRows = new Dictionary<string, MatRow>(StringComparer.OrdinalIgnoreCase);
         if (it.coversZones == null) it.coversZones = new string[0]; if (it.hidesLayers == null) it.hidesLayers = new string[0]; if (it.dropFrom == null) it.dropFrom = new string[0];
-        if (it.stats == null) it.stats = new Stats();
+        if (it.stats == null) it.stats = new Stats(); if (it.weapon == null) it.weapon = new WeaponDef(); it.weapon.Fix(); /* WEAPONSWAP v88 */
     }
 }

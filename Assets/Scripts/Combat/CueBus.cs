@@ -76,7 +76,7 @@ public class CueBus : MonoBehaviour
         int idx = NextVariant(v.Length, li); last[name] = idx;
         int vi = 0; double oldest = double.MaxValue; double now = AudioSettings.dspTime;
         for (int i = 0; i < Voices; i++) { if (busyUntil[i] <= now) { vi = i; oldest = -1; break; } if (busyUntil[i] < oldest) { oldest = busyUntil[i]; vi = i; } }
-        var a = voices[vi]; a.Stop(); a.clip = v[idx]; a.volume = Mathf.Clamp01(gain * OutputGain); a.pitch = rate * (1f + PitchSpread * (Rand() * 2f - 1f));
+        var a = voices[vi]; a.Stop(); a.clip = v[idx]; a.volume = Mathf.Clamp01(gain * OutputGain * AudioMix.CueGain(name)); /* RCHYGIENE v100: audio_mix.json category of this cue (sfx / ambience / ui / music) x its slider */ a.pitch = rate * (1f + PitchSpread * (Rand() * 2f - 1f));
         double start = now + Mathf.Max(0f, delay) + AudioManifest.Get().scheduleLeadS; a.PlayScheduled(start); busyUntil[vi] = start + v[idx].length / Mathf.Max(AudioManifest.Get().minPitch, a.pitch);   // HCKIT4 v95
         played++;
         Log.Add($"{AutoShot.RecFrame / 30f + Mathf.Max(0f, delay):F4}\t{name}\t{idx}\t{a.volume:F4}\t{a.pitch:F4}");

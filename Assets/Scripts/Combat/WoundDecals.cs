@@ -4,6 +4,7 @@ using UnityEngine.Rendering.HighDefinition;
 
 // Wound decals: a cut / puncture mark placed ON the victim's body at the hit point, aligned to the swing, parented to the nearest bone so it moves with the body.
 // slash (light_left / light_right ...) = horizontal streak tilted by the swing side, thrust / riposte = round puncture, overhead / heavy = vertical streak (all shapes in wounds.json).
+// WOUNDLOOK v96: wet dark-red look from wounds.json decal.* (colour ramp, normal groove, AO, smoothness), see MapSet.
 // Real HDRP DecalProjector (HDRP/Decal material: albedo + smoothness mask), dark blood base ~(0.25, 0.02, 0.02), smoothness 0.8, all from wounds.json "decal".
 // ART GAP: no authored textures exist, so the streak / puncture masks are generated here in code (WoundDecals.MakeMask). Replace with painted masks later.
 // If the HDRP/Decal shader is missing from the player (not in Always Included Shaders), a bone-parented blood quad on BloodGround's material is used instead (decal.quadFallback).
@@ -15,7 +16,6 @@ public static class WoundDecals
 
     static readonly Dictionary<string, Texture2D[]> maskCache = new Dictionary<string, Texture2D[]>();   // key = shape tex name; straight-alpha colour texture per variant
     static readonly Dictionary<string, Texture2D[]> premulCache = new Dictionary<string, Texture2D[]>(); // premultiplied copy for the quad fallback
-    static Texture2D maskMap;                                                                             // HDRP decal mask: smoothness in alpha
     static readonly List<Material> decalMats = new List<Material>();
     static Material quadMat; static Mesh quad; static Shader decalShader; static bool shaderLooked, warned, decalSrcLogged;   // QC1 v95
     static readonly int TintId = Shader.PropertyToID("_Tint"), MainTexId = Shader.PropertyToID("_MainTex");
@@ -61,6 +61,48 @@ public static class WoundDecals
         }
     }
 
+    // WOUNDLOOK v96: per (shape, variant) HDRP decal maps built from the same height mask: base colour (ramp edge->core relative to decal.color, alpha = mask), normal (groove + raised lips), mask (R metal 0, G AO, B blend, A smoothness: wet core)
+    class Maps { public Texture2D color, normal, mask; }
+    static readonly Dictionary<string, Maps[]> mapCache = new Dictionary<string, Maps[]>();
+    static float[] Blur(float[] src, int n, int r)
+    {
+        if (r < 1) return (float[])src.Clone(); var tmp = new float[src.Length]; var dst = new float[src.Length];
+        for (int y = 0; y < n; y++) for (int x = 0; x < n; x++) { float sum = 0; int c = 0; for (int k = -r; k <= r; k++) { int xx = x + k; if (xx < 0 || xx >= n) continue; sum += src[y * n + xx]; c++; } tmp[y * n + x] = sum / c; }
+        for (int y = 0; y < n; y++) for (int x = 0; x < n; x++) { float sum = 0; int c = 0; for (int k = -r; k <= r; k++) { int yy = y + k; if (yy < 0 || yy >= n) continue; sum += tmp[yy * n + x]; c++; } dst[y * n + x] = sum / c; }
+        return dst;
+    }
+    static byte B8(float v) { return (byte)Mathf.RoundToInt(Mathf.Clamp01(v) * 255f); }
+    static Maps[] MapSet(string kind, WoundTable.DecalCfg dc)
+    {
+        Maps[] arr; if (mapCache.TryGetValue(kind, out arr)) return arr;
+        int n = Mathf.Clamp(dc.texSize, 16, 256), vc = Mathf.Max(1, dc.variants); arr = new Maps[vc];
+        int r1 = Mathf.Max(1, Mathf.RoundToInt(dc.normalBlur * n)), r2 = r1 * 3;
+        for (int v = 0; v < vc; v++)
+        {
+            var a = MakeMask(kind, n, dc.seed * 131 + v * 7919 + (kind == "puncture" ? 17 : 0));
+            var h1 = Blur(a, n, r1); var h2 = Blur(a, n, r2);
+            var h = new float[a.Length]; for (int i = 0; i < h.Length; i++) h[i] = -h1[i] + dc.lipHeight * Mathf.Max(0f, h2[i] - h1[i]) * 2f;   // groove inside, raised lip just outside
+            var cpx = new Color32[a.Length]; var npx = new Color32[a.Length]; var mpx = new Color32[a.Length];
+            for (int y = 0; y < n; y++) for (int x = 0; x < n; x++)
+            {
+                int i = y * n + x; float m = a[i], core = Mathf.Clamp01((h1[i] - 0.35f) / 0.5f);   // core = deep inside the cut
+                float al = Mathf.Pow(m, Mathf.Max(0.05f, dc.alphaGamma));
+                cpx[i] = new Color32(B8(Mathf.Lerp(dc.edgeColor[0], dc.coreColor[0], core)), B8(Mathf.Lerp(dc.edgeColor[1], dc.coreColor[1], core)), B8(Mathf.Lerp(dc.edgeColor[2], dc.coreColor[2], core)), B8(al));
+                int xl = Mathf.Max(0, x - 1), xr = Mathf.Min(n - 1, x + 1), yd = Mathf.Max(0, y - 1), yu = Mathf.Min(n - 1, y + 1);
+                float dx = (h[y * n + xr] - h[y * n + xl]) * 0.5f * n * dc.normalStrength / 32f, dy = (h[yu * n + x] - h[yd * n + x]) * 0.5f * n * dc.normalStrength / 32f;
+                var nv = new Vector3(-dx, -dy, 1f).normalized; npx[i] = new Color32(B8(nv.x * 0.5f + 0.5f), B8(nv.y * 0.5f + 0.5f), B8(nv.z * 0.5f + 0.5f), 255);
+                mpx[i] = new Color32(0, B8(Mathf.Lerp(1f, dc.aoCore, core)), B8(al), B8(Mathf.Lerp(dc.smoothnessEdge, dc.smoothness, core)));
+            }
+            var mp = new Maps();
+            mp.color = new Texture2D(n, n, TextureFormat.RGBA32, true, false) { name = "Wound_" + kind + v + "_c", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear }; mp.color.SetPixels32(cpx); mp.color.Apply(true, true);
+            mp.normal = new Texture2D(n, n, TextureFormat.RGBA32, true, true) { name = "Wound_" + kind + v + "_n", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear }; mp.normal.SetPixels32(npx); mp.normal.Apply(true, true);
+            mp.mask = new Texture2D(n, n, TextureFormat.RGBA32, true, true) { name = "Wound_" + kind + v + "_m", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear }; mp.mask.SetPixels32(mpx); mp.mask.Apply(true, true);
+            arr[v] = mp;
+        }
+        mapCache[kind] = arr; return arr;
+    }
+
+    // quad fallback only: premultiplied colour mask in the json colour
     static Texture2D[] Masks(string kind, WoundTable.DecalCfg dc, bool premul)
     {
         var cache = premul ? premulCache : maskCache; Texture2D[] arr;
@@ -71,23 +113,13 @@ public static class WoundDecals
             var a = MakeMask(kind, n, dc.seed * 131 + v * 7919 + (kind == "puncture" ? 17 : 0)); var px = new Color32[n * n];
             for (int i = 0; i < px.Length; i++)
             {
-                float al = a[i];
-                byte c0 = (byte)Mathf.RoundToInt(Mathf.Clamp01(dc.color[0]) * 255f), c1 = (byte)Mathf.RoundToInt(Mathf.Clamp01(dc.color[1]) * 255f), c2 = (byte)Mathf.RoundToInt(Mathf.Clamp01(dc.color[2]) * 255f), a8 = (byte)Mathf.RoundToInt(al * 255f);
+                float al = a[i]; byte c0 = B8(dc.color[0]), c1 = B8(dc.color[1]), c2 = B8(dc.color[2]), a8 = B8(al);
                 px[i] = premul ? new Color32((byte)(c0 * al), (byte)(c1 * al), (byte)(c2 * al), a8) : new Color32(c0, c1, c2, a8);
             }
             var t = new Texture2D(n, n, TextureFormat.RGBA32, true, false) { name = "Wound_" + kind + v + (premul ? "_pm" : ""), wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
             t.SetPixels32(px); t.Apply(true, true); arr[v] = t;
         }
         cache[kind] = arr; return arr;
-    }
-
-    static Texture2D MaskMap(WoundTable.DecalCfg dc)
-    {
-        if (maskMap != null) return maskMap;
-        // HDRP decal mask map: R metallic, G AO, B mask opacity, A smoothness
-        var px = new Color32[4]; byte sm = (byte)Mathf.RoundToInt(Mathf.Clamp01(dc.smoothness) * 255f);
-        for (int i = 0; i < 4; i++) px[i] = new Color32(0, 255, 255, sm);
-        maskMap = new Texture2D(2, 2, TextureFormat.RGBA32, false, true) { name = "Wound_Mask", wrapMode = TextureWrapMode.Clamp }; maskMap.SetPixels32(px); maskMap.Apply(false, true); return maskMap;
     }
 
     // one HDRP/Decal material per (shape, variant); null = shader unavailable
@@ -101,10 +133,14 @@ public static class WoundDecals
         m.name = key; m.hideFlags = HideFlags.DontUnloadUnusedAsset; m.enableInstancing = true;   // QC1 v95
         m.EnableKeyword("_COLORMAP"); m.EnableKeyword("_MASKMAP"); m.EnableKeyword("_MATERIAL_AFFECTS_ALBEDO"); m.EnableKeyword("_MATERIAL_AFFECTS_MASKMAP");   // QC1 v95
         if (!decalSrcLogged) { decalSrcLogged = true; Debug.Log("[WoundDecals] decal material from " + (refMat != null ? "Resources/WoundDecalRef" : "Shader.Find (no reference asset: variants may be stripped)")); }   // QC1 v95
-        var tex = Masks(kind, dc, false); m.SetTexture("_BaseColorMap", tex[variant % tex.Length]); { float cm = Mathf.Max(0.01f, Mathf.Max(dc.color[0], Mathf.Max(dc.color[1], dc.color[2]))); m.SetColor("_BaseColor", new Color(dc.color[0] / cm, dc.color[1] / cm, dc.color[2] / cm, 1f)); }   // v96: the wounds.json hue at full brightness: if the colour-map variant is ever missing the decal draws red, never white (the colour is already baked into the mask texture)
-        m.SetTexture("_MaskMap", MaskMap(dc));
-        m.SetFloat("_AffectAlbedo", 1f); m.SetFloat("_AffectNormal", 0f); m.SetFloat("_AffectMetal", 0f); m.SetFloat("_AffectAO", 0f); m.SetFloat("_AffectSmoothness", 1f); m.SetFloat("_AffectEmission", 0f);
-        m.SetFloat("_DecalBlend", 1f);
+        // WOUNDLOOK v96: wet dark-red cut. _BaseColor = json colour (never white: if the _COLORMAP variant is stripped the flat decal is still dark red); colour map is a relative ramp; normal map = groove + lips; mask map = AO / blend / wet smoothness
+        var mp = MapSet(kind, dc); var mset = mp[variant % mp.Length];
+        m.SetColor("_BaseColor", new Color(dc.color[0], dc.color[1], dc.color[2], 1f)); m.SetTexture("_BaseColorMap", mset.color);
+        m.SetTexture("_MaskMap", mset.mask);
+        if (dc.affectNormal) { m.SetTexture("_NormalMap", mset.normal); m.EnableKeyword("_NORMALMAP"); m.EnableKeyword("_MATERIAL_AFFECTS_NORMAL"); }   // these variants only ship if WoundDecalRef also enables them (editor script)
+        m.SetFloat("_AffectAlbedo", 1f); m.SetFloat("_AffectNormal", dc.affectNormal ? 1f : 0f); m.SetFloat("_AffectMetal", 0f); m.SetFloat("_AffectAO", dc.affectAO ? 1f : 0f); m.SetFloat("_AffectSmoothness", 1f); m.SetFloat("_AffectEmission", 0f);
+        m.SetFloat("_DecalBlend", Mathf.Clamp01(dc.decalBlend)); m.SetFloat("_DecalMaskMapBlueScale", Mathf.Clamp01(dc.maskBlueScale));
+        m.SetFloat("_NormalBlendSrc", 0f); m.SetFloat("_MaskBlendSrc", 1f);
         if (m.HasProperty("_SmoothnessRemapMin")) m.SetFloat("_SmoothnessRemapMin", 0f);
         if (m.HasProperty("_SmoothnessRemapMax")) m.SetFloat("_SmoothnessRemapMax", 1f);
         decalMats.Add(m); return m;

@@ -31,15 +31,27 @@ public static class JoanSwap
 
     const string DataPath = "Assets/Data/joan_swap.json";
 
+    public static Cfg Override;   /* HCKIT5 v95 CharacterSetup hands in a Cfg built from roster + character_setup.json; null = joan_swap.json as before */
     static Cfg Load()
     {
+        if (Override != null) return Override; /* HCKIT5 v95 */
         if (!File.Exists(DataPath)) { Debug.LogError("JOANSWAP missing " + DataPath); return null; }
         var c = JsonUtility.FromJson<Cfg>(File.ReadAllText(DataPath));
+        if (c != null) c.templateId = TemplateId(c);   // HCKIT3 v93: the clone template id comes from config, not from a character name in this tool
         if (c == null || string.IsNullOrEmpty(c.newId) || string.IsNullOrEmpty(c.templateId)) { Debug.LogError("JOANSWAP bad " + DataPath); return null; }
         return c;
     }
 
-    static string Short(string clipName) { int i = clipName.IndexOf('|'); return i >= 0 ? clipName.Substring(i + 1) : clipName; }
+    // HCKIT3 v93: roster id of the scene character that is CLONED to get a fighter object (its component set). Order: -swapTemplate:<id> on the Unity command line, Tools/build_config.json swap.templateId
+    // (today "Dracula", unchanged), then joan_swap.json templateId (legacy). Dom: no Dracula ENEMY; the template object still has to exist in the scene until a neutral template does.
+    static string TemplateId(Cfg c)
+    {
+        string a = BuildCfg.ArgValue("-swapTemplate"); if (!string.IsNullOrEmpty(a)) return a;
+        string b = BuildCfg.Config().swap.templateId; if (!string.IsNullOrEmpty(b)) return b;
+        return c.templateId;
+    }
+
+    public static string Short(string clipName) /* HCKIT5 v95 was private */ { int i = clipName.IndexOf('|'); return i >= 0 ? clipName.Substring(i + 1) : clipName; }
     // NODRAC v93: a clip / mask under ANOTHER roster character's folder is foreign. It is re-pointed to the same-named asset in the new character's own folder, or cleared (never kept).
     static bool IsForeign(string path, Ctx cx) { if (string.IsNullOrEmpty(path)) return false; foreach (var d in cx.foreignDirs) if (path.StartsWith(d)) return true; return false; }   // NODRAC v93
     static AnimationClip OwnClipByName(string clipName, Ctx cx)   // NODRAC v93
@@ -54,7 +66,7 @@ public static class JoanSwap
         return null;
     }
 
-    static void EnsureFolder(string path)
+    public static void EnsureFolder(string path)   /* HCKIT5 v95 was private */
     {
         if (string.IsNullOrEmpty(path) || AssetDatabase.IsValidFolder(path)) return;
         string parent = Path.GetDirectoryName(path).Replace('\\', '/');
@@ -116,7 +128,7 @@ public static class JoanSwap
     }
 
     // ------------------------------------------------------------------ 2 scene object
-    static GameObject FindRoot(Scene sc, string objectName)
+    public static GameObject FindRoot(Scene sc, string objectName)   /* HCKIT5 v95 was private */
     {
         foreach (var g in sc.GetRootGameObjects()) if (g.name == objectName) return g;
         return null;
@@ -168,7 +180,8 @@ public static class JoanSwap
         inst.name = modelName; inst.transform.localPosition = lp; inst.transform.localRotation = lr; inst.transform.localScale = Vector3.one; inst.transform.SetSiblingIndex(sib);
         foreach (var t in inst.GetComponentsInChildren<Transform>(true))
             foreach (var pfx in cfg.hideNodePrefixes) if (!string.IsNullOrEmpty(pfx) && t.name.StartsWith(pfx)) { t.gameObject.SetActive(false); break; }
-        GearGlbHidden.Apply(inst, jr.modelGlb);   // kitGEAR v79: nodes with glTF extras {"hidden":true} (the 4 gear layers) are inactive until GearSlots equips them`n        foreach (var lg in inst.GetComponentsInChildren<Animation>(true)) Object.DestroyImmediate(lg);
+        GearGlbHidden.Apply(inst, jr.modelGlb);   // kitGEAR v79: nodes with glTF extras {"hidden":true} (the 4 gear layers) are inactive until GearSlots equips them
+        foreach (var lg in inst.GetComponentsInChildren<Animation>(true)) { try { Object.DestroyImmediate(lg); } catch (System.Exception) { lg.enabled = false; } }   // HCKIT3 v93: was dead code (a back-tick-n ended the comment above, so this line was part of it); removes legacy Animation components from the glb instance as intended; a component owned by the glb prefab cannot be destroyed on an instance, so it is disabled instead
 
         // scale to heightM (0 = the template's model scale)
         float h1 = WorldHeight(inst);
@@ -308,7 +321,7 @@ public static class JoanSwap
     }
 
     // every serialized object reference in the scene (outside both characters) that points into 'from' is re-pointed to the same-path counterpart in 'to'
-    static int Repoint(GameObject from, GameObject to, Scene sc)
+    public static int Repoint(GameObject from, GameObject to, Scene sc)   /* HCKIT5 v95 was private */
     {
         var map = new Dictionary<Object, Object>(); BuildMap(from.transform, to.transform, map);
         int n = 0, unmapped = 0;

@@ -1,0 +1,12 @@
+Assets\Scripts\Gear\WeaponSwap.cs
+Assets\Scripts\Gear\TwoHandIK.cs
+Assets\Scripts\Combat\DuelFighterWeapon.cs
+Assets\StreamingAssets\Gear\pitborn_maul_joan_LOD0.glb
+Assets\Scripts\PerfMem.cs
+Assets\Editor\PerfMemApply.cs
+Assets\Data\perf_mem.json
+Assets\StreamingAssets\perf_mem.json
+Assets\Data\perf_mem_build.json
+Assets\StreamingAssets\perf_mem_build.json
+Assets\Data\texture_plan.json
+Assets\StreamingAssets\texture_plan.json

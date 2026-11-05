@@ -2,8 +2,7 @@
     "enabled": true,
     "charBit": 7,
     "characters": [
-        "Dracula",
-        "Joan",
+        "@lit",
         "MetaHumanHead"
     ],
     "doorLightContains": [
@@ -20,6 +19,6 @@
         "Rim_Character"
     ],
     "restore": [
-        "@enemy"
+        "@restore"
     ]
 }

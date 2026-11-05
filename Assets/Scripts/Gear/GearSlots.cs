@@ -227,6 +227,7 @@ public class GearSlots : MonoBehaviour, IGearStatSource
     }
 
     // recompute (a) which wearer layer meshes show, (b) the covered body zones, (c) the body mask. Cheap; runs on every equip / unequip / visual result.
+    readonly HashSet<Renderer> hiddenByGear = new HashSet<Renderer>();   // JOANHAIR v1: renderers an equipped item hid by name (hidesLayers) come back when no item hides them any more
     void RefreshVisuals()
     {
         var G = GearTable.Get(); if (!G.enabled) return;
@@ -244,8 +245,9 @@ public class GearSlots : MonoBehaviour, IGearStatSource
         {
             if (r.GetComponentInParent<GearPiece>() != null || r.GetComponent<GearPiece>() != null) continue;
             bool isLayer = ownedLayers.Contains(r.name), equipped = gearRenderers.Contains(r);
-            if (hide.Contains(r.name)) r.gameObject.SetActive(false);
-            else if (isLayer && managesLayers && !equipped) r.gameObject.SetActive(false);
+            if (hide.Contains(r.name)) { r.gameObject.SetActive(false); hiddenByGear.Add(r); }   // JOANHAIR v1
+            else if (isLayer && managesLayers && !equipped) { r.gameObject.SetActive(false); hiddenByGear.Remove(r); }
+            else if (hiddenByGear.Remove(r)) r.gameObject.SetActive(true);   // JOANHAIR v1: Joan_Hair returns on unequip
             else if (isLayer && equipped && !r.gameObject.activeSelf) r.gameObject.SetActive(true);   // GEAR2: a layer another item had hidden comes back when that item goes
         }
         // (b)(c) body = the wearer's skinned meshes that are not gear and not an equipped layer

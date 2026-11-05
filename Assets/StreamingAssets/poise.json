@@ -63,6 +63,14 @@
         "key": "Joan",
         "moves": [
           {
+            "move": "heavy*",
+            "fromTick": 10,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.3,
+            "postureMul": 0.6
+          },
+          {
             "move": "skill_*",
             "fromTick": 8,
             "recoveryTicks": 0,

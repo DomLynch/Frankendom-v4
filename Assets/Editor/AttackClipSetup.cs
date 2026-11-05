@@ -21,7 +21,7 @@ public static class AttackClipSetup
     [MenuItem("Tools/Combat/Add Attack Clips")]
     public static void Run()
     {
-        string json = File.ReadAllText("Assets/Data/attack_clips.json");
+        string json = ClipSets.ExpandJson(File.ReadAllText("Assets/Data/attack_clips.json"), "attack"); /* HCKIT5 v95 clipSets + roster clipSet -> bake entries */
         var cfg = JsonUtility.FromJson<Cfg>(json);
         if (cfg == null || cfg.bake == null || cfg.bake.Length == 0) { Debug.LogWarning("AttackClipSetup: no bake entries in attack_clips.json"); return; }
         Roster.Reload();   // bake rows are keyed by roster id; the controller path comes from roster.json when the row names one (the attack_clips.json path is the fallback)
