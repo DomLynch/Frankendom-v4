@@ -7,6 +7,7 @@ public class AtmosFlicker : MonoBehaviour
     public Light target;
     public FurnaceFlicker.Noise noise;
     float baseIntensity; bool steady;
+    bool guard; float eps, lastI = float.NaN;   // PERF3 v100 D1
 
     void Awake()
     {
@@ -14,11 +15,14 @@ public class AtmosFlicker : MonoBehaviour
         if (target == null) { enabled = false; return; }
         baseIntensity = target.intensity;
         steady = noise.baseValue == 0f && noise.amplitude == 0f;
+        guard = PerfFixes.On("D1"); eps = FlickerGuard.Eps;
     }
 
     void Update()
     {
         if (steady) return;
-        target.intensity = baseIntensity * Mathf.Max(0f, FurnaceFlicker.Eval(noise, Time.time));
+        float v = baseIntensity * Mathf.Max(0f, FurnaceFlicker.Eval(noise, Time.time));
+        if (guard && !float.IsNaN(lastI) && !FlickerGuard.Moved(lastI, v, baseIntensity, eps)) return;   // PERF3 v100 D1: write only on change
+        target.intensity = v; lastI = v;
     }
 }

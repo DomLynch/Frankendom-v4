@@ -50,8 +50,10 @@ public static class GearAssetLoader
         try
         {
             holder.transform.SetParent(parent, false);
-            var gltf = new GLTFast.GltfImport();
-            bool ok = await gltf.LoadFile(file);
+            GLTFast.GltfImport gltf = null; bool ok = false;
+            var pre = GlbPreload.Take(file);   // PERF3 v100 C3: parsed during the intro (perf_fixes.json C3); a miss or a failed preload = the old path below
+            if (pre != null) { gltf = await pre; ok = gltf != null; }
+            if (!ok) { gltf = new GLTFast.GltfImport(); ok = await gltf.LoadFile(file); }
             if (ok) ok = await gltf.InstantiateMainSceneAsync(holder.transform);
             if (!ok) { gltf.Dispose(); UnityEngine.Object.Destroy(holder); return new Loaded(); }
             return new Loaded { root = holder, res = gltf };

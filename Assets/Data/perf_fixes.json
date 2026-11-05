@@ -1,0 +1,71 @@
+{
+  "_notes": "lanePERF3 v100. Read by Scripts/PerfFixes.cs (+ FxPrewarm C1, GlbPreload C3, the flicker scripts D1/D1b). Each fix has its own enabled flag so the look gate can A/B them ONE AT A TIME. The shipped flags are look-neutral: the fixes that change what is drawn (A1, A1b, A4, B3) are false until the look gate passes them; C1 / C3 / D1 do not change the picture. Without a rebuild: -perffix:A1,A4 (only these on) | -perffix:none (baseline) | -noperffix:D1 (json minus these) | -perfharness (C1 / C3 also in harness runs). HDRP-asset fixes (A3 shadow depth bits 16, B3 decal atlas 2048 + asset draw distance 80) are NOT runtime: see asset_variants/make_variant.py (documented, not applied).",
+  "enabled": true,
+  "applyAfterFrames": 3,
+  "secondPassAfterFrames": 60,
+
+  "A1": {
+    "enabled": false,
+    "requestRender": true,
+    "lights": [
+      { "name": "DoorShadowWarm", "updateMode": "OnEnable", "alwaysDrawDynamic": true, "note": "point 3000 cd, y 1.6, z 26, range 10, 512 soft shadow: static casters cached, fighters still drawn every frame (alwaysDrawDynamicShadows)" },
+      { "name": "DoorwayFlickerLight", "updateMode": "OnEnable", "alwaysDrawDynamic": true, "note": "point 20000 cd, y 1.68, z 23.8, range 20, 512 soft shadow; its intensity flickers (DoorwayFlicker), intensity does not invalidate the cache, a moved transform would" }
+    ]
+  },
+  "A1b": {
+    "enabled": false,
+    "rangeMargin": 0.0,
+    "excludeRoster": true,
+    "excludeRigidbodies": true,
+    "excludeAnimators": true,
+    "excludePathContains": ["Shard", "Rift", "Portal", "Orbit", "Gateway", "Ember", "Debris", "Piece"],
+    "note": "A1 saves nothing if every prop counts as a dynamic caster: this marks MeshRenderers inside the light range as Renderer.staticShadowCaster so they go into the cached map. A moving MeshRenderer marked here would keep a FROZEN shadow: check the 'A1b staticCasters=' count in the log and the shadow of anything that moves (shards, rift, chains) in the look gate."
+  },
+  "A4": {
+    "enabled": false,
+    "mode": "Off",
+    "renderers": [
+      { "match": "ground_paving", "enabled": true, "note": "the arena floor plates (LOD0-2, scene object 'worldground_ground_paving_0'): a floor never shadows anything visible" },
+      { "match": "WorldTerrain", "enabled": true, "note": "terrain mesh; terrain_ground is already Off in the saved scene (laneSHADOW)" },
+      { "match": "TerrainCentrePlug", "enabled": true, "note": "terrain plug under the arena" },
+      { "match": "terrain_ground", "enabled": true, "note": "already Off in the scene, listed so a rebuilt scene keeps it Off" },
+      { "match": "Plane_DoorwayFloor", "enabled": true, "note": "doorway floor plane" }
+    ]
+  },
+  "B3": {
+    "enabled": false,
+    "projectorDrawDistanceMax": 80.0,
+    "note": "RUNTIME half only: caps DecalProjector.drawDistance (never raises it). Scene decals are already 40 (decals.json projectorDefaults) and wound decals 25 (wounds.json decal.drawDistance), so this is a safety cap and changes nothing today. The real B3 change is in the HDRP asset (decalSettings.drawDistance 1000 -> 80, atlas 4096 -> 2048): asset_variants/make_variant.py --B3."
+  },
+  "C1": {
+    "enabled": true,
+    "inHarness": false,
+    "capMaterials": true,
+    "capCastShadows": true,
+    "useBodyMesh": true,
+    "pieceStub": true,
+    "pieceStubFrames": 2,
+    "pieceStubDistance": 5000.0,
+    "note": "FxPrewarm also builds + draws the MeshCut cap materials of each fighter body (sub-pixel, shadows on) and a throw-away severed-piece physics stub during the intro. Needs perf.json prewarm true and finishers.json enableFinishers + enableGore."
+  },
+  "C3": {
+    "enabled": true,
+    "inHarness": false,
+    "fromGearJson": true,
+    "files": [],
+    "startDelayFrames": 30,
+    "framesBetweenFiles": 20,
+    "maxTotalMb": 128.0,
+    "note": "GlbPreload parses the runtime-loaded gear glbs (gear.json items[].glb + files[]) with glTFast during the intro; GearAssetLoader takes the parsed import (hook: patches/GearAssetLoader_C3.py). Joan / Dracula / Pitborn bodies are imported assets of the scene and cannot be preloaded from code. Does nothing until the gear kit (GearAssetLoader) is merged."
+  },
+  "D1": {
+    "enabled": true,
+    "epsilonRel": 0.002,
+    "epsilonEmissiveRel": 0.002,
+    "note": "Flicker, DoorwayFlicker, AtmosFlicker, FurnaceFlicker (lights, emissive, fire rate), CrackFlicker: write a value only when it moved more than epsilon x its base since the last WRITE (0.002 = 0.2 pct, below what a gate can see). Set both to 0 for 'any change'."
+  },
+  "D1b": {
+    "enabled": false,
+    "note": "CrackFlicker and FurnaceFlicker emissive via a per-renderer MaterialPropertyBlock instead of Material.SetColor on the shared material. A renderer with a property block drops out of the SRP Batcher: A/B it (it can be SLOWER with many renderers)."
+  }
+}

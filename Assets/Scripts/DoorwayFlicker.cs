@@ -13,12 +13,14 @@ public class DoorwayFlicker : MonoBehaviour
     float baseIntensity;
     FurnaceFlicker.Noise noise;
     bool ok;
+    bool guard; float eps, lastI = float.NaN;   // PERF3 v100 D1
 
     void Awake()
     {
         if (target == null) target = GetComponent<Light>();
         if (target == null) { enabled = false; return; }
         baseIntensity = target.intensity;
+        guard = PerfFixes.On("D1"); eps = FlickerGuard.Eps;   // PERF3 v100 D1
         foreach (var p in new[] { Application.streamingAssetsPath + "/doorway.json", Application.dataPath + "/Data/doorway.json" })
         {
             if (!File.Exists(p)) continue;
@@ -31,6 +33,8 @@ public class DoorwayFlicker : MonoBehaviour
     void Update()
     {
         if (!ok) return;
-        target.intensity = baseIntensity * FurnaceFlicker.Eval(noise, Time.time);
+        float v = baseIntensity * FurnaceFlicker.Eval(noise, Time.time);
+        if (guard && !float.IsNaN(lastI) && !FlickerGuard.Moved(lastI, v, baseIntensity, eps)) return;   // PERF3 v100 D1: write only on change
+        target.intensity = v; lastI = v;
     }
 }

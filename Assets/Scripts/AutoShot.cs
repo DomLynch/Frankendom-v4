@@ -11,6 +11,7 @@ public class AutoShot : MonoBehaviour
     void StartWatchdog()
     {
         lastTickTime = System.Diagnostics.Stopwatch.GetTimestamp(); string outDir = dir;
+        string logPath = Application.consoleLogPath; if (string.IsNullOrEmpty(logPath)) logPath = System.IO.Path.Combine(Application.persistentDataPath, "Player.log");   // PERF3 v100: was a hard-coded ...\LocalLow\DefaultCompany\HadesSlice path; read on the main thread, the timer thread must not touch Application
         wd = new System.Threading.Timer(_ =>
         {
             double idle = (System.Diagnostics.Stopwatch.GetTimestamp() - lastTickTime) / (double)System.Diagnostics.Stopwatch.Frequency;
@@ -18,7 +19,7 @@ public class AutoShot : MonoBehaviour
             {
                 try
                 {
-                    string log = System.IO.Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.UserProfile), "AppData", "LocalLow", "DefaultCompany", "HadesSlice", "Player.log");
+                    string log = logPath;
                     string tail = System.IO.File.Exists(log) ? string.Join("\n", System.Linq.Enumerable.TakeLast(System.IO.File.ReadAllLines(log), 40)) : "no log";
                     System.IO.File.WriteAllText(System.IO.Path.Combine(outDir, "watchdog.txt"), $"HANG: no frame for {idle:F0}s, last frame {frameTick}\n{tail}");
                 }

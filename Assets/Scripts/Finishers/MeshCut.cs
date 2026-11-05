@@ -179,6 +179,14 @@ public static class MeshCut
         return m;
     }
 
+    // PERF3 v100 C1 (FxPrewarm): the cap materials a cut of this renderer would build (outer + inner), built now so FxPrewarm can draw each once, sub-pixel, and the first finisher does not compile the pipeline state.
+    // The caller destroys them. Nothing here touches the sim or any RNG.
+    public static void CollectPrewarmCaps(SkinnedMeshRenderer smr, CutsCfg cc, List<Material> into)
+    {
+        if (smr == null || cc == null || into == null) return;
+        try { into.Add(CapMaterial(smr, cc, false)); into.Add(CapMaterial(smr, cc, true)); } catch (Exception e) { Debug.LogWarning("[MeshCut] prewarm caps: " + e.Message); }
+    }
+
     // ------------------------------------------------------------------ the cut
     static bool CutSkinned(SkinnedMeshRenderer smr, HashSet<Transform> set, Transform root, Transform parentBone, CutUnit unit, CutsCfg cc, bool split, ref GameObject physRoot, CutResult res, out Vector3 capWorld)
     {

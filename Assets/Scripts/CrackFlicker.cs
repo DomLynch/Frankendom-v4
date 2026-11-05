@@ -23,17 +23,35 @@ public class CrackFlicker : MonoBehaviour
         var go = new GameObject("CrackFlicker"); DontDestroyOnLoad(go); var cf = go.AddComponent<CrackFlicker>(); cf.row = r;
     }
 
+    // PERF3 v100 D1 / D1b: D1 = write only when the common multiplier k moved (perf_fixes.json D1.epsilonEmissiveRel); D1b = per-renderer MaterialPropertyBlock instead of the shared Material.SetColor
+    // (note: a renderer with a property block is not SRP-Batcher compatible; the terrain has few renderers, but A/B it: see PERFBENCH_AB_PLAN.md).
+    bool guard, useMpb; float lastK = float.NaN, epsK; Renderer[] tRend; int[] tIdx, tMat; MaterialPropertyBlock mpb;
+
     void Start()
     {
         var list = new System.Collections.Generic.List<Material>();
         foreach (var rr in FindObjectsByType<Renderer>(FindObjectsSortMode.None)) foreach (var m in rr.sharedMaterials) if (m != null && !list.Contains(m) && m.HasProperty(Em)) foreach (var n in row.materials) if (m.name.Contains(n)) list.Add(m);
         mats = list.ToArray(); baseCol = new Color[mats.Length]; for (int i = 0; i < mats.Length; i++) baseCol[i] = mats[i].GetColor(Em);
+        guard = PerfFixes.On("D1"); epsK = FlickerGuard.EpsEmissive; useMpb = PerfFixes.On("D1b");
+        if (useMpb)
+        {
+            var rl = new System.Collections.Generic.List<Renderer>(); var il = new System.Collections.Generic.List<int>(); var ml = new System.Collections.Generic.List<int>();
+            foreach (var rr in FindObjectsByType<Renderer>(FindObjectsSortMode.None)) { var sm = rr.sharedMaterials; for (int j = 0; j < sm.Length; j++) { int mi = System.Array.IndexOf(mats, sm[j]); if (mi >= 0) { rl.Add(rr); il.Add(j); ml.Add(mi); } } }
+            tRend = rl.ToArray(); tIdx = il.ToArray(); tMat = ml.ToArray(); mpb = new MaterialPropertyBlock();
+        }
     }
 
     void Update()
     {
         if (mats == null) return;
         float t = Time.unscaledTime, k = 1f + row.amplitude * 0.5f * (Mathf.Sin(t * row.hzA * 6.2832f) + Mathf.Sin(t * row.hzB * 6.2832f + 1.3f));
+        if (guard && !float.IsNaN(lastK) && !FlickerGuard.Moved(lastK, k, 1f, epsK)) return;   // PERF3 v100 D1: write only on change
+        lastK = k;
+        if (useMpb)   // PERF3 v100 D1b
+        {
+            for (int i = 0; i < tRend.Length; i++) { if (tRend[i] == null) continue; mpb.Clear(); mpb.SetColor(Em, baseCol[tMat[i]] * k); tRend[i].SetPropertyBlock(mpb, tIdx[i]); }
+            return;
+        }
         for (int i = 0; i < mats.Length; i++) if (mats[i] != null) mats[i].SetColor(Em, baseCol[i] * k);
     }
 }

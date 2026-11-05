@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 public static class GameLoop
 {
     public enum Result { None, Victory, Defeat }
-    [Serializable] public class Row { public string id = ""; public string name = "PITBORN"; public string title = ""; public float hpMul = 1f, damageMul = 1f; public int difficulty = 0; }
+    [Serializable] public class Row { public string id = ""; public string name = ""; public string title = ""; public float hpMul = 1f, damageMul = 1f; public int difficulty = 0; }
     [Serializable] public class Table { public bool enabled = true; public int startIndex = 0, applyAfterFrames = 10; public float endlessHpStep = 0.08f, endlessDamageStep = 0.04f; public Row[] rows = new Row[0]; }
     [Serializable] class DiffFile { public DifficultyRow[] rows = new DifficultyRow[0]; }
 
@@ -218,7 +218,7 @@ public static class GameLoop
         {
             if (Prompt(new Rect(cx - slot * 0.5f - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * 1.5f + S.promptHintSize * 1.9f), S.retryText, S.retryHint, false, accent, a, live, rep)) Retry();
             if (Prompt(new Rect(cx + slot * 0.5f - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * 1.5f + S.promptHintSize * 1.9f), S.nextText, S.confirmHint, true, accent, a, live, rep)) Next();
-            if (win && rep) HudDraw.Text(new Rect(0, py + S.promptSize * 1.5f + S.promptHintSize * 2.1f, vw, S.nextLabelSize * 1.6f), string.Format(S.nextPreview, NextRow().title.Length > 0 ? NextRow().title : Cap(NextRow().name)), "serif", S.nextLabelSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.dim, a * 0.8f), true);
+            if (win && rep) HudDraw.Text(new Rect(0, py + S.promptSize * 1.5f + S.promptHintSize * 2.1f, vw, S.nextLabelSize * 1.6f), string.Format(S.nextPreview, NextRow().title.Length > 0 ? NextRow().title : Cap(string.IsNullOrEmpty(NextRow().name) ? Roster.EnemyName : NextRow().name)), "serif", S.nextLabelSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.dim, a * 0.8f), true);
         }
         else if (Prompt(new Rect(cx - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * 1.5f + S.promptHintSize * 1.9f), S.retryText, S.retryHintDefeat, true, accent, a, live, rep)) Retry();
     }

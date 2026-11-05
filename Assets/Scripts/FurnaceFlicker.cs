@@ -26,6 +26,7 @@ public class FurnaceFlicker : MonoBehaviour
         public float baseIntensity;   // in the light's own unit (lumen / candela), from the JSON
         public Noise noise;
         public float correlation;     // 0 = own noise only, 1 = master noise only
+        [NonSerialized] public float lastWritten = float.NaN;   // PERF3 v100 D1
     }
 
     [Serializable]
@@ -35,6 +36,7 @@ public class FurnaceFlicker : MonoBehaviour
         public Color baseEmissive;    // HDRP _EmissiveColor in nits
         public float amount;          // 0..1: how strongly the master noise moves this emissive
         [NonSerialized] public Material material;
+        [NonSerialized] public float lastK = float.NaN;   // PERF3 v100 D1
     }
 
     public Noise master;
@@ -50,6 +52,7 @@ public class FurnaceFlicker : MonoBehaviour
     static readonly int DistortionMapId = Shader.PropertyToID("_DistortionVectorMap");
     const float PerlinSpread = 1.6f;  // Mathf.PerlinNoise*2-1 rarely leaves +/-0.6; this normalises fBm to about +/-1
     Material shimmerMaterial;
+    bool guardD1, mpbD1b; float epsD1, epsEmD1, lastFireK = float.NaN; MaterialPropertyBlock mpb;   // PERF3 v100 D1 / D1b (perf_fixes.json)
     Vector2 shimmerOffset;
 
     public static float Eval(in Noise n, float t)
@@ -69,7 +72,8 @@ public class FurnaceFlicker : MonoBehaviour
 
     void Awake()
     {
-        if (emissives != null)
+        guardD1 = PerfFixes.On("D1"); mpbD1b = PerfFixes.On("D1b"); epsD1 = FlickerGuard.Eps; epsEmD1 = FlickerGuard.EpsEmissive; if (mpbD1b) mpb = new MaterialPropertyBlock();
+        if (emissives != null && !mpbD1b)   // PERF3 v100 D1b: with a property block per renderer the shared material is never written, so it is not cloned either
             for (int i = 0; i < emissives.Length; i++)
             {
                 var e = emissives[i];
@@ -101,15 +105,26 @@ public class FurnaceFlicker : MonoBehaviour
                 var d = lights[i];
                 if (d == null || d.light == null) continue;
                 float own = Eval(d.noise, t);
-                d.light.intensity = d.baseIntensity * Mathf.Lerp(own, m, d.correlation);
+                float v = d.baseIntensity * Mathf.Lerp(own, m, d.correlation);
+                if (guardD1 && !float.IsNaN(d.lastWritten) && !FlickerGuard.Moved(d.lastWritten, v, d.baseIntensity, epsD1)) continue;   // PERF3 v100 D1: write only on change
+                d.light.intensity = v; d.lastWritten = v;
             }
 
         if (emissives != null)
             for (int i = 0; i < emissives.Length; i++)
             {
                 var e = emissives[i];
-                if (e == null || e.material == null) continue;
+                if (e == null || (e.material == null && !mpbD1b)) continue;
                 float k = 1f + (m - master.baseValue) * e.amount;
+                if (guardD1 && !float.IsNaN(e.lastK) && !FlickerGuard.Moved(e.lastK, k, 1f, epsEmD1)) continue;   // PERF3 v100 D1: write only on change
+                e.lastK = k;
+                if (mpbD1b)   // PERF3 v100 D1b: property block on slot 0 of each renderer (what the clone replaced), the shared material stays untouched
+                {
+                    if (e.renderers == null) continue;
+                    mpb.Clear(); mpb.SetColor(EmissiveId, e.baseEmissive * (k < 0f ? 0f : k));
+                    for (int r = 0; r < e.renderers.Length; r++) if (e.renderers[r] != null) e.renderers[r].SetPropertyBlock(mpb, 0);
+                    continue;
+                }
                 e.material.SetColor(EmissiveId, e.baseEmissive * (k < 0f ? 0f : k));
             }
 
@@ -118,6 +133,8 @@ public class FurnaceFlicker : MonoBehaviour
             {
                 if (fire[i] == null) continue;
                 float k = 1f + (m - master.baseValue) * fireAmount;
+                if (guardD1 && !float.IsNaN(lastFireK) && i == 0 && !FlickerGuard.Moved(lastFireK, k, 1f, epsEmD1)) break;   // PERF3 v100 D1: the fire layers share k; skip the whole loop when it did not move
+                if (i == 0) lastFireK = k;
                 var em = fire[i].emission;
                 em.rateOverTimeMultiplier = fireBaseRate[i] * (k < 0.05f ? 0.05f : k);
             }

@@ -19,14 +19,14 @@ public static class CombatSlowMo
         public ClassRow[] classes = new ClassRow[0];
     }
 
-    static Row cfg; static CameraRig rig; static bool owns; static float baseFixed = 0.02f;
+    static Row cfg; static CameraRig rig; static bool owns; static float baseFixed;   // PERF3 v100: was 0.02 (stale vs the 60 Hz project); always read from Time.fixedDeltaTime (ResetStatics / Boot)
     static string pending; static float pendingAt; static float lastStart = -999f;
     static float scale = 1f, age, holdEnd, easeIn, easeOut; static float orphan; static int lastFrame = -1;
     static readonly Dictionary<DuelFighter, int> seenDb = new Dictionary<DuelFighter, int>();
     public static int Started, Merged, Skipped, WatchdogFires; public static float MinSeen = 1f; public static string LastClass = "";   // proof counters
     public static bool Active { get { return owns; } }
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cfg = null; rig = null; owns = false; pending = null; lastStart = -999f; orphan = 0f; lastFrame = -1; seenDb.Clear(); Started = Merged = Skipped = WatchdogFires = 0; MinSeen = 1f; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cfg = null; rig = null; owns = false; pending = null; lastStart = -999f; orphan = 0f; lastFrame = -1; seenDb.Clear(); Started = Merged = Skipped = WatchdogFires = 0; MinSeen = 1f; baseFixed = Time.fixedDeltaTime; }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
