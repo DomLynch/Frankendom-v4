@@ -608,7 +608,7 @@
       "id": "pitborn_chest",
       "name": "Pitborn cuirass",
       "slot": "chest",
-      "glb": "Gear/pitborn_chest.glb",
+      "glb": "Gear/pitborn_chest_joan.glb",
       "resource": "",
       "part": "",
       "coversZones": [],

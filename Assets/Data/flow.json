@@ -47,7 +47,9 @@
     "hud": {
       "enabled": true, "dot": true, "toast": true, "dotPx": 7.0, "yOffset": 1.15, "fontSize": 11, "toastFontSize": 15, "toastSeconds": 0.9, "toastY": 0.12,
       "text": "LOCK", "onText": "LOCK ON", "offText": "LOCK OFF", "color": [ 0.96, 0.93, 0.85, 0.92 ]
-    }
+    },
+    "breakAngleDeg": 120.0,
+    "breakSeconds": 0.25
   },
   "attack": {
     "_about": "Attack magnetism and turn tracking (player only). magnet: at the start of a swing, if the target is within maxDistance (metres, x fighter scale) and within maxAngleDeg of the swing intent (locked: the target line; unlocked: the held stick direction, else the current facing) the body snaps to the target over snapMs. turn: the body turns toward the swing direction at most windupDegPerSec / activeDegPerSec / recoveryDegPerSec (the active frames are the sticky ones). moves[] overrides per move (id, * or prefix pattern; -1 = inherit). Hit-stop freezes the turn. Without a snap the old V3 tracking was an unlimited exponential slerp (rate 10 per second).",

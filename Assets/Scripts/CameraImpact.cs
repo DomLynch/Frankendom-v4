@@ -59,7 +59,7 @@ public class CameraImpact : MonoBehaviour
         float hz = d.simHz > 0f ? d.simHz : 1f;
 
         // a landed kick is its own beat: straight down, no push, no side
-        if (e.type == "Hit" && e.moveId == "kick")
+        if (e.type == CombatClass.Hit && CombatClass.IsKick(e.moveId))   // HCKIT4 v95
         {
             s.drop = ImpactTable.ContactRow("kick").drop; s.settle = settle; return true;
         }
@@ -71,7 +71,7 @@ public class CameraImpact : MonoBehaviour
             case "Parried":     tier = "parry"; b = ImpactTable.KickRow("parried"); break;
             case "Blocked":     tier = "block"; b = ImpactTable.KickRow(e.heavy ? "blockedHeavy" : (e.perfect ? "blockedPerfect" : "blockedLight")); break;
             case "Hit":
-                if (!string.IsNullOrEmpty(e.moveId) && e.moveId.StartsWith("skill_")) { tier = "special"; special = true; b = ImpactTable.KickRow("hitHeavy"); }   // along/drop replaced below
+                if (CombatClass.IsSpecial(e.moveId)) { tier = "special"; special = true; b = ImpactTable.KickRow("hitHeavy"); }   // along/drop replaced below   // HCKIT4 v95
                 else if (e.heavy) { tier = "full"; b = ImpactTable.KickRow("hitHeavy"); }
                 else { tier = "half"; b = ImpactTable.KickRow("hitLight"); }
                 break;

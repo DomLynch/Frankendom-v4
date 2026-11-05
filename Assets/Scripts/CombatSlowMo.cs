@@ -60,7 +60,7 @@ public static class CombatSlowMo
     {
         var r = Cfg(); if (!r.enabled) return;
         string cls = null;
-        if (e.type == "Parried") cls = "parry";
+        if (e.type == CombatClass.Parried) cls = CombatClass.Parry;   // HCKIT4 v95
         else if (e.type == "Hit")
         {
             if (e.actor != null)
@@ -68,7 +68,7 @@ public static class CombatSlowMo
                 int seen; seenDb.TryGetValue(e.actor, out seen); int now = e.actor.statDeathblows; seenDb[e.actor] = now;
                 if (now > seen) cls = "deathblow";
             }
-            if (cls == null && (e.counter || e.rear || e.moveId == "critical")) cls = "crit";
+            if (cls == null && CombatClass.IsCrit(e)) cls = CombatClass.Crit;   // HCKIT4 v95
         }
         if (cls == null) return;
         var c = Find(cls); if (c == null) return;

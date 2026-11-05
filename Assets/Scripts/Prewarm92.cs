@@ -21,7 +21,9 @@ using Debug = UnityEngine.Debug;
 // Log lines: "[Prewarm92] step <name> <ms> ms", "[Prewarm92] done total <s> s ..." and "[Prewarm92] HITCH <ms> ms ...".
 public class Prewarm92 : MonoBehaviour
 {
-    [Serializable] public class StepsC { public bool cleave = true, woundDecals = true, lootMaterials = true, lootFonts = true, volumes = true, clips = true, ragdollStub = true; }
+    [Serializable] public class StepsC { public bool cleave = true, woundDecals = true, lootMaterials = true, lootFonts = true, volumes = true, clips = true, ragdollStub = true, goreFx = true, cutDry = true; }   // FINFIX v93: + goreFx, cutDry
+    [Serializable] public class GoreFxC { public float distance = 80f, seconds = 0.15f; }   // FINFIX v93: real-config neck + wound sprays at this distance in front of the camera (sub-pixel strands), destroyed with the draw frames
+    [Serializable] public class CutDryC { public string[] units = { "head", "head_split" }; public bool allFighters = true; public float budgetMs = 6f; public int checkEvery = 512, maxFrames = 900; }   // FINFIX v93: dry run of the staged mesh cut on the real fighters
     [Serializable] public class VolC { public int frames = 3; public float vignetteIntensity = 0.5f, priority = 9000f; }
     [Serializable] public class ClipsC { public bool touchAllControllerClips = true, reportMissingFinisherClips = true; }
     [Serializable] public class RagC { public int parts = 18, frames = 2; public float distance = 5000f, radius = 0.06f, length = 0.3f, mass = 4f, spring = 300f, damper = 12f, swing = 40f, twist = 20f; }
@@ -31,6 +33,7 @@ public class Prewarm92 : MonoBehaviour
     public class Cfg
     {
         public bool enabled = true, inHarness = false, ragdollStubAlways = false; public float startDelaySeconds = 1.5f; public int framesBetweenSteps = 3, drawFrames = 3;
+        public GoreFxC goreFx = new GoreFxC(); public CutDryC cutDry = new CutDryC();   // FINFIX v93
         public StepsC steps = new StepsC(); public VolC volumes = new VolC(); public ClipsC clips = new ClipsC(); public RagC ragdollStub = new RagC(); public FontsC fonts = new FontsC(); public HitchC hitch = new HitchC();
     }
 
@@ -46,6 +49,7 @@ public class Prewarm92 : MonoBehaviour
         catch (Exception e) { Debug.LogWarning("[Prewarm92] prewarm92.json: " + e.Message); }
         if (cfg.steps == null) cfg.steps = new StepsC(); if (cfg.volumes == null) cfg.volumes = new VolC(); if (cfg.clips == null) cfg.clips = new ClipsC(); if (cfg.ragdollStub == null) cfg.ragdollStub = new RagC();
         if (cfg.fonts == null) cfg.fonts = new FontsC(); if (cfg.fonts.kinds == null) cfg.fonts.kinds = new string[0]; if (cfg.fonts.bold == null || cfg.fonts.bold.Length == 0) cfg.fonts.bold = new[] { false }; if (cfg.hitch == null) cfg.hitch = new HitchC();
+        if (cfg.goreFx == null) cfg.goreFx = new GoreFxC(); if (cfg.cutDry == null) cfg.cutDry = new CutDryC(); if (cfg.cutDry.units == null) cfg.cutDry.units = new string[0];   // FINFIX v93
         cfg.framesBetweenSteps = Mathf.Max(1, cfg.framesBetweenSteps); cfg.drawFrames = Mathf.Max(1, cfg.drawFrames);
         return cfg;
     }
@@ -112,6 +116,7 @@ public class Prewarm92 : MonoBehaviour
         if (S.volumes) { step("volumes", () => { volProf = MakeVolume(); }); yield return Frames(c.framesBetweenSteps); }
         if (S.ragdollStub && (c.ragdollStubAlways || RagdollDeath.Cfg.enabled)) { step("ragdollStub", () => MakeRagdollStub(Camera.main != null ? Camera.main.transform.position : Vector3.zero)); yield return Frames(c.framesBetweenSteps); }
         if (S.lootFonts && LootCfg.Get().enabled) { step("lootFonts", LootFonts); fontsArmed = true; yield return Frames(c.framesBetweenSteps); }
+        if (S.goreFx && FinisherConfig.EnableGore) { step("goreFx", () => GoreFxWarm(cam)); yield return Frames(c.framesBetweenSteps); }   // FINFIX v93
 
         // ---- draw: sub-pixel meshes in front of the camera, decal projectors, the volume at weight 0 ----
         var quad = GoreFx.Quad(); GameObject decalGo = null; int frames = Mathf.Max(c.drawFrames, Mathf.Max(c.volumes.frames, c.ragdollStub.frames)); float maxDraw = 0f;
@@ -145,10 +150,47 @@ public class Prewarm92 : MonoBehaviour
         yield return null;
         TotalSeconds = Time.realtimeSinceStartup - t0;
         Debug.Log("[Prewarm92] done total " + TotalSeconds.ToString("0.00") + " s after scene load (start delay " + c.startDelaySeconds.ToString("0.0") + " s), steps " + stepsRun + ":" + report + ", shared mats " + shared.Count + ", loot mats " + temp.Count + ", draw max " + maxDraw.ToString("0") + " ms, max frame " + maxFrameMs.ToString("0") + " ms");
+        if (S.cutDry && FinisherConfig.EnableGore) yield return CutDry();   // FINFIX v93
         // this component stays alive: Update keeps the hitch watcher running for the rest of the session
     }
 
     static IEnumerator Frames(int n) { for (int i = 0; i < n; i++) yield return null; }
+
+    // FINFIX v93 ---- goreFx: the finisher's REAL neck + wound sprays (all the particle modules, colour-over-lifetime gradient, the stretched strand material) emitted sub-pixel far in front of the camera, so the first
+    // contact does not pay the module / shader first-use. GoreFx.PrewarmSpray (FxPrewarm) only covers a bare one-particle system.
+    void GoreFxWarm(Camera cam)
+    {
+        var g = FinisherConfig.Get().gore; if (g == null || cam == null) return;
+        var root = new GameObject("Prewarm92Gore"); junk.Add(root);
+        Vector3 p = cam.transform.position + cam.transform.forward * Mathf.Max(5f, cfg.goreFx.distance);
+        root.transform.position = p;
+        float s = Mathf.Max(0.05f, cfg.goreFx.seconds);
+        if (g.neckSpray != null) GoreFx.Spray(root.transform, p, cam.transform.forward, g.neckSpray, s);
+        if (g.woundSpray != null) GoreFx.Spray(root.transform, p, cam.transform.up, g.woundSpray, s);
+    }
+
+    // FINFIX v93 ---- cutDry: the staged mesh cut (MeshCut.Prepare) on each real fighter, run to the end in small per-frame slices and then DISCARDED (nothing is applied: the body mesh is untouched, the piece objects are
+    // destroyed). It pays the first-use cost (Mono JIT of the cut loops, the generic Dictionary / List instantiations, the big array allocations, the cap material) at the start of the fight instead of at the first contact.
+    IEnumerator CutDry()
+    {
+        var D = cfg.cutDry; if (D.units.Length == 0) yield break;
+        var list = new List<DuelFighter>(FindObjectsByType<DuelFighter>(FindObjectsSortMode.None));
+        for (int i = 0; i < list.Count; i++)
+        {
+            var f = list[i]; if (f == null || f.Dead) continue;
+            if (!D.allFighters && !(f.name.Contains(Roster.EnemyObject) || f.transform.root.name.Contains(Roster.EnemyObject))) continue;
+            foreach (var unit in D.units)
+            {
+                if (f == null || RTFinisher.Busy || f.Dead) break;
+                if (!MeshCut.IsMeshUnit(unit) || !MeshCut.CanCut(f.transform, unit)) continue;
+                var job = MeshCut.Prepare(f.transform, unit, 1); int frames = 0;
+                while (!job.Step(D.budgetMs, D.checkEvery) && frames++ < D.maxFrames && !RTFinisher.Busy) yield return null;
+                Debug.Log("[Prewarm92] cutDry " + f.name + "/" + unit + (job.done ? "" : " (stopped early)") + ": cpu " + job.cpuMs.ToString("0") + " ms in " + job.slices + " slices, max slice " + job.maxSliceMs.ToString("0") + " ms" + (job.failed ? " FAILED " + job.note : ""));
+                job.Discard();
+                yield return null;
+            }
+        }
+    }
     static bool IsDecal(Material m) { return m.shader != null && m.shader.name == "HDRP/Decal"; }
 
     // ---- clips: load the clip data of every controller, check the finisher states exist ----

@@ -102,5 +102,6 @@
   "bot": {
     "_about": "FlowBot (balance bot) guard side: when it raises a guard / parry against a swing, sideReadChance = it picks the side that covers the swing, else a wrong side. AIBrain keeps its own read skill (ai profile 'read').",
     "sideReadChance": 0.53
-  }
+  },
+  "touchRelease": { "_about": "HCKIT4 v95: keys whose HOLD hands the player back to the keyboard after a touch (PlayerBrain: TouchControls.Active stays on until a real key is pressed). Key names = UnityEngine.KeyCode. Per-action rebinding is laneREBIND (settings.json keys); this list is the stock set (move, run-roll, guard, strike).", "keys": ["W", "A", "S", "D", "Space", "E", "Q", "F"] }
 }

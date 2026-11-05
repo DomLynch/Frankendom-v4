@@ -1,0 +1,438 @@
+{
+ "_about": "CLIPBUILD clip_build.json: single source of truth for character clip builds (Tools/clip_build.py + Assets/Editor/CharacterClipBuild.cs). Every base state is built from a RAW Mixamo library clip onto the roster character own skeleton. No character is named in code: ids come from roster.json; characters{} only holds per-character overrides. A tuning profile is legal only for its owner (Joan profile = zero offsets = raw Mixamo; the Dracula crimson_v5 profile cannot be used by anyone else). Rows with \"foreign\" are explicit exceptions with a reason. attacks/dodges/finishers sets are listed under delegated and keep running through bake_attack_clips.py / bake_dodge_clips.py / FinisherClipSetup until merged.",
+ "outputDir": "out",
+ "outputDirMerged": "Assets/Characters/{folder}",
+ "alwaysBuild": [],
+ "skipIds": [
+  "Pitborn"
+ ],
+ "skipReason": "Pitborn keeps his legacy clips until reviewed: his body is not Mixamo-native (HC2) and his missing attack rows will come from the combat_clips_unity pack through pitbornPackHook. Remove him from skipIds to build him (raw Mixamo, waiver gates).",
+ "foreignTokens": [
+  "crimson"
+ ],
+ "requiredBones": [
+  "Hips",
+  "Spine",
+  "Spine1",
+  "Spine2",
+  "Neck",
+  "Head",
+  "LeftUpLeg",
+  "LeftLeg",
+  "LeftFoot",
+  "LeftToeBase",
+  "RightUpLeg",
+  "RightLeg",
+  "RightFoot",
+  "RightToeBase",
+  "LeftArm",
+  "LeftForeArm",
+  "LeftHand",
+  "RightArm",
+  "RightForeArm",
+  "RightHand"
+ ],
+ "tools": {
+  "python": "python",
+  "legFix": {
+   "maxSwivelDeg": 50.0,
+   "mode": "auto",
+   "kneeMedialTriggerM": 0.02,
+   "note": "auto = only clips whose inward knee offset exceeds the trigger are fixed (raw loops stay raw); always | auto | off"
+  }
+ },
+ "sources": {
+  "lib": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/_work/lib",
+  "v3": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/v3_specials/dracula"
+ },
+ "pitbornPackHook": {
+  "_about": "HOOK ONLY (Strategy 2026-11-05): kits_out/3d/combat_clips_unity (OpenTrident handoff: Dracula + Pitborn, 52 bones, Hips translation in every clip, loop flags unreliable, attacks travel 1-3.7 m). The Pitborn enemy row may later list sources from it: set enabled true and add rows with src \"pitbornPack:<file>\" under characters.Pitborn.extraRows. clip_build.py refuses a pitbornPack source for any id not in allowedFor, so it can never reach Joan.",
+  "sources.pitbornPack": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity",
+  "allowedFor": [
+   "Pitborn"
+  ],
+  "enabled": false
+ },
+ "controllerTemplate": {
+  "note": "null-motion template for CharacterClipBuild.cs (Unity side): every state of this controller is created with motion = null and filled from the character own combat glb. Dracula.controller is NOT a template any more.",
+  "asset": "Assets/Characters/_ClipTemplate.controller"
+ },
+ "guard": {
+  "states": [
+   "guard_idle",
+   "guard_left",
+   "guard_right",
+   "guard_up"
+  ],
+  "upperTokens": [
+   "Spine",
+   "ik_hand"
+  ],
+  "lowerTokens": [
+   "UpLeg",
+   "Leg",
+   "Foot",
+   "Toe",
+   "ik_foot",
+   "thigh",
+   "calf",
+   "skirt",
+   "hip_fix",
+   "knee",
+   "Neck",
+   "Head",
+   "Eye",
+   "Jaw"
+  ],
+  "note": "mask built from the character own root (glb root node, Armature for Joan) and assigned to roster.guardMask"
+ },
+ "delegated": {
+  "attacks": "Tools/bake_attack_clips.py + AttackClipSetup.cs",
+  "dodges": "Tools/bake_dodge_clips.py + DodgeClipSetup.cs",
+  "finishers": "FinisherClipSetup.cs (raw Mixamo finisher sources; NOT on the 106 rig yet, see gates.rigAudit)"
+ },
+ "gates": {
+  "samplesPerClip": 12,
+  "poseMeanDeg": 3.0,
+  "poseMaxDeg": 6.0,
+  "kneeMedialMaxM": 0.02,
+  "swivelFailDeg": 15.0,
+  "toeYawTolDeg": 8.0,
+  "toeYawTargetLeftDeg": 12.0,
+  "toeYawTargetRightDeg": -12.0,
+  "toeYawTargetTolDeg": 8.0,
+  "toeGateClips": [
+   "idle",
+   "guard_idle"
+  ],
+  "footPlantClips": [
+   "idle",
+   "walk",
+   "run",
+   "guard_idle",
+   "stagger_loop",
+   "strafe_L",
+   "strafe_R"
+  ],
+  "footFloorMaxM": 0.05,
+  "armClearanceMeshMinM": 0.012,
+  "headExtensionMaxDeg": 35.0,
+  "neckExtensionMaxDeg": 25.0,
+  "sword": {
+   "bladeLengthM": 0.95,
+   "tangBackM": 0.15,
+   "axis": "forearm",
+   "headRadiusM": 0.115,
+   "headCentreUpM": 0.09,
+   "minClearanceM": 0.0,
+   "note": "approximation: blade axis = forearm direction (weapon_grip.json Joan row: the blade follows the forearm), segment from hand-tang to hand+blade, head = sphere at the Head bone + up"
+  },
+  "rigAudit": {
+   "joints": 106,
+   "blocking": true,
+   "characters": [
+    "Joan"
+   ],
+   "files": [
+    "Assets/Characters/Joan/*.glb",
+    "Tools/finisher_src_legfix/*.glb",
+    "C:/Users/dom12/Documents/kits_out/3d/joan/assembled/joan_v6c.glb"
+   ],
+   "note": "Dom order 2026-11-05: Joan is on the Mixamo v2 106-bone rig everywhere (model, combat/attacks/dodges/finisher clips, controller, masks)"
+  },
+  "waiver": {
+   "Pitborn": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 25.0,
+    "why": "body is not Mixamo-native (HC2: mean 10.7 deg bone-direction error under rotation copy); reported, not hidden"
+   }
+  },
+  "neckExempt": {
+   "get_up": "raw Mixamo getting-up looks up from the floor (39 deg, identical in the raw source and the live Dracula-tuned clip)"
+  },
+  "exceptClips": {
+   "special_skullcrack": "foreign v3 clip, no raw original",
+   "special_whirlwind": "foreign v3 clip, no raw original"
+  }
+ },
+ "tuning": {
+  "crimson_v5": {
+   "owner": "Dracula",
+   "rules": "kits_out/3d/combat_clips/dracula_v5/crimson_v5.clip_rules.json",
+   "note": "arm 15 deg / forearm 8 / UpLeg toe-out 37 / finger rest + claw curls. Only Dracula may use it."
+  },
+  "joan_clearance": {
+   "owner": "Joan",
+   "armAbductDeg": 0.0,
+   "forwardAxis": [
+    0,
+    0,
+    1
+   ],
+   "clips": [
+    "idle",
+    "walk",
+    "run",
+    "guard_idle",
+    "stagger_loop",
+    "strafe_L",
+    "strafe_R"
+   ],
+   "note": "Joan-owned arm-to-jacket clearance. 0 = raw Mixamo. Raise only with a measured clearance number (see VERIFY). Positive = arms away from the body, Left +/Right - about forward."
+  }
+ },
+ "characters": {
+  "Joan": {
+   "tuning": "joan_clearance"
+  },
+  "Pitborn": {
+   "tuning": null,
+   "extraRows": [],
+   "note": "raw Mixamo build for review only; Pitborn body is not Mixamo-native (see gates.waiver)"
+  },
+  "Dracula": {
+   "tuning": "crimson_v5"
+  }
+ },
+ "base": [
+  {
+   "state": "idle",
+   "src": "lib:113410901-idle"
+  },
+  {
+   "state": "walk",
+   "src": "lib:124540901-walk"
+  },
+  {
+   "state": "run",
+   "src": "lib:111290901-run"
+  },
+  {
+   "state": "kick",
+   "src": "lib:101550901-kicking"
+  },
+  {
+   "state": "death",
+   "src": "lib:101170903-dying"
+  },
+  {
+   "state": "light_attack_L",
+   "src": "lib:113550901-hook-punch"
+  },
+  {
+   "state": "light_attack_R",
+   "src": "lib:118370901-right-hook"
+  },
+  {
+   "state": "heavy_windup",
+   "src": "lib:128650912-standing-melee-attack-downward",
+   "note": "whole clip, same as heavy_release; the controller state plays frames 0..impact (attack_clips.json times)"
+  },
+  {
+   "state": "heavy_release",
+   "src": "lib:128650912-standing-melee-attack-downward"
+  },
+  {
+   "state": "thrust",
+   "src": "lib:110470902-lead-jab"
+  },
+  {
+   "state": "roll_forward",
+   "src": "lib:127690916-standing-dodge-forward"
+  },
+  {
+   "state": "guard_idle",
+   "src": "lib:128650903-standing-block-idle"
+  },
+  {
+   "state": "guard_hit",
+   "src": "lib:128650904-standing-block-react-large"
+  },
+  {
+   "state": "parry",
+   "src": "lib:113570901-inward-block"
+  },
+  {
+   "state": "riposte",
+   "src": "lib:110440904-body-jab-cross"
+  },
+  {
+   "state": "hit_light_front",
+   "src": "lib:116910904-head-hit"
+  },
+  {
+   "state": "hit_light_back",
+   "src": "lib:128670942-standing-react-small-from-back"
+  },
+  {
+   "state": "hit_heavy",
+   "src": "lib:116900902-big-hit-to-head"
+  },
+  {
+   "state": "stagger_loop",
+   "src": "lib:103100901-dizzy-idle"
+  },
+  {
+   "state": "knockdown",
+   "src": "lib:110370902-livershot-knockdown"
+  },
+  {
+   "state": "get_up",
+   "src": "lib:137190901-getting-up"
+  },
+  {
+   "state": "strafe_L",
+   "src": "lib:117860901-left-strafe-walking"
+  },
+  {
+   "state": "strafe_R",
+   "src": "lib:117860902-right-strafe-walking"
+  },
+  {
+   "state": "backstep",
+   "src": "lib:115840901-jump-backward"
+  },
+  {
+   "state": "guard_left",
+   "derive": {
+    "from": "lib:128650903-standing-block-idle",
+    "worldRot": [
+     {
+      "bone": "Spine2",
+      "axis": [
+       0,
+       1,
+       0
+      ],
+      "deg": 10.0
+     },
+     {
+      "bone": "LeftArm",
+      "axis": [
+       0,
+       1,
+       0
+      ],
+      "deg": 22.0
+     },
+     {
+      "bone": "RightArm",
+      "axis": [
+       0,
+       1,
+       0
+      ],
+      "deg": 22.0
+     }
+    ]
+   },
+   "ref": "v3:guard_left",
+   "note": "recipe measured from v3_specials guard_left vs raw guard_idle: constant world rotation about up on every frame (matches the v3 file at 0.0 deg)"
+  },
+  {
+   "state": "guard_right",
+   "derive": {
+    "from": "lib:128650903-standing-block-idle",
+    "worldRot": [
+     {
+      "bone": "Spine2",
+      "axis": [
+       0,
+       1,
+       0
+      ],
+      "deg": -10.0
+     },
+     {
+      "bone": "LeftArm",
+      "axis": [
+       0,
+       1,
+       0
+      ],
+      "deg": -22.0
+     },
+     {
+      "bone": "RightArm",
+      "axis": [
+       0,
+       1,
+       0
+      ],
+      "deg": -22.0
+     }
+    ]
+   },
+   "ref": "v3:guard_right"
+  },
+  {
+   "state": "guard_up",
+   "derive": {
+    "from": "lib:128650903-standing-block-idle",
+    "worldRot": [
+     {
+      "bone": "LeftArm",
+      "axis": [
+       -1,
+       0,
+       0
+      ],
+      "deg": 22.0
+     },
+     {
+      "bone": "RightArm",
+      "axis": [
+       -1,
+       0,
+       0
+      ],
+      "deg": 22.0
+     },
+     {
+      "bone": "LeftForeArm",
+      "axis": [
+       -1,
+       0,
+       0
+      ],
+      "deg": 30.0
+     },
+     {
+      "bone": "RightForeArm",
+      "axis": [
+       -1,
+       0,
+       0
+      ],
+      "deg": 30.0
+     }
+    ]
+   },
+   "ref": "v3:guard_up"
+  },
+  {
+   "state": "heavy_windup_hold",
+   "derive": {
+    "from": "lib:128650912-standing-melee-attack-downward",
+    "hold": {
+     "frameA": 7,
+     "frameB": 11,
+     "periodS": 1.6,
+     "fps": 20
+    }
+   },
+   "ref": "v3:heavy_windup_hold",
+   "note": "cosine ease between raw heavy_release frames 7 and 11; the v3 original also had +-0.6-0.8 deg spine breathing (omitted)"
+  },
+  {
+   "state": "special_skullcrack",
+   "foreign": "v3 psyche JSON clip, no Mixamo original exists (flagged exception; sword two-hand grip fingers)",
+   "src": "v3:special_skullcrack"
+  },
+  {
+   "state": "special_whirlwind",
+   "foreign": "v3 psyche JSON clip, no Mixamo original exists (flagged exception; sword two-hand grip fingers)",
+   "src": "v3:special_whirlwind"
+  }
+ ]
+}

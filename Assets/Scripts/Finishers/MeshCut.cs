@@ -35,11 +35,20 @@ public static class MeshCut
         return u.kind == "wound" ? FindBone(victimRoot, u.bones) != null : FindBone(victimRoot, u.bones) != null;
     }
 
-    /// <summary>Cut one unit off/open on the victim. awayDir = direction the blow pushes (world). push/pieceImpulse come from the finisher row. Pieces are returned (not parented to the victim).</summary>
+    /// <summary>FINFIX v93: true when the unit changes the victim's mesh (subtree / split), false for blood-only "wound" units and unknown ids.</summary>
+    public static bool IsMeshUnit(string unitId) { var u = FindUnit(unitId); return u != null && u.kind != "wound"; }
+
+    /// <summary>Cut one unit off/open on the victim. awayDir = direction the blow pushes (world). push/pieceImpulse come from the finisher row. Pieces are returned (not parented to the victim).
+    /// FINFIX v93: now Prepare + finish + Commit in one call (same result as before). The finisher player uses Prepare (time-sliced under the wind-up) and Commit at the contact instead.</summary>
     public static CutResult Cut(Transform victimRoot, string unitId, int seed, Vector3 awayDir, float push = 1f, float pieceImpulse = 60f)
     {
         // FN2: never let a cut take the kill down with it (real-time path: Die() already ran, colliders are off, the ragdoll may exist). Any exception -> ok=false + one warning; the finisher player then runs its head-hide fallback.
-        try { return CutImpl(victimRoot, unitId, seed, awayDir, push, pieceImpulse); }
+        try
+        {
+            var job = Prepare(victimRoot, unitId, seed);
+            job.Step(0f, 0);   // budget 0 = run to the end in this call
+            return Commit(job, awayDir, push, pieceImpulse);
+        }
         catch (Exception ex)
         {
             WarnOnce("cut-ex:" + unitId, "Cut('" + unitId + "') threw " + ex.GetType().Name + ": " + ex.Message + " | " + ex.StackTrace);
@@ -47,63 +56,155 @@ public static class MeshCut
         }
     }
 
-    static CutResult CutImpl(Transform victimRoot, string unitId, int seed, Vector3 awayDir, float push, float pieceImpulse)
+    /// <summary>FINFIX v93: the staged cut. A job does ALL the expensive CPU work (bake, weld, labels, edges, cap loops, the new piece and body meshes) without touching the scene's look: the piece objects are created
+    /// inactive, the body mesh swap is stored. Step(budgetMs) runs it in slices (one per frame); Commit applies it in a few ms (swap the body mesh, show + place + launch the piece, blood). Discard() throws it away.</summary>
+    public sealed class CutJob
     {
-        var res = new CutResult { unit = unitId };
-        if (victimRoot == null) { res.note = "victimRoot null"; return res; }
-        if (!FinisherConfig.EnableGore) { res.note = "gore disabled (finishers.json enableGore=false)"; return res; }
+        public readonly string unitId; public CutResult res; public bool done, committed, failed; public int slices; public float cpuMs, maxSliceMs; public string note = "";
+        internal Transform victimRoot, root, parentBone; internal CutUnit unit; internal CutsCfg cc; internal FinisherFile cfg; internal int seed; internal System.Random rnd;
+        internal IEnumerator it; internal float budgetMs; internal int every = 512; internal readonly System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        internal Vector3 bakePos; internal Quaternion bakeRot;             // the unit's root bone at the bake: the pose delta to the bone at the commit moves the piece
+        internal readonly List<Action> apply = new List<Action>();         // body mesh + material swaps, run by Commit
+        internal readonly List<GameObject> hidden = new List<GameObject>();   // pieces, inactive until Commit
+        internal readonly List<UnityEngine.Object> owned = new List<UnityEngine.Object>();   // meshes / materials created, destroyed by Discard
+        internal GameObject physRoot; internal Vector3 physPos0; internal Quaternion physRot0;
+        internal Vector3 firstCap; internal bool haveCap, isWound, needFallback, applied; internal int unreadable, touched, disabledSkipped;
+        internal CutJob(string id) { unitId = id; }
+        internal bool Over() { return budgetMs > 0f && sw.Elapsed.TotalMilliseconds > budgetMs; }
+        /// <summary>Runs the job until the budget (ms of CPU in this call; 0 = to the end) is used or it is done. Returns true when done. Never throws (a failure sets failed + note and done).</summary>
+        public bool Step(float budget, int checkEvery)
+        {
+            if (done) return true;
+            budgetMs = budget; if (checkEvery > 0) every = checkEvery;
+            sw.Restart();
+            try {
+                if (it == null) it = Run(this);
+                if (budget <= 0f) { while (it.MoveNext()) {} done = true; }
+                else { if (!it.MoveNext()) done = true; }
+            }
+            catch (Exception ex) { failed = true; done = true; note = "cut exception: " + ex.Message; WarnOnce("job-ex:" + unitId, "cut job '" + unitId + "' threw " + ex.GetType().Name + ": " + ex.Message + " | " + ex.StackTrace); }
+            sw.Stop(); slices++; float ms = (float)sw.Elapsed.TotalMilliseconds; cpuMs += ms; if (ms > maxSliceMs) maxSliceMs = ms;
+            return done;
+        }
+        public void Discard()
+        {
+            if (committed) return;
+            foreach (var g in hidden) if (g != null) UnityEngine.Object.Destroy(g);
+            foreach (var o in owned) if (o != null) UnityEngine.Object.Destroy(o);
+            hidden.Clear(); owned.Clear(); apply.Clear(); done = true; committed = true;
+        }
+    }
+
+    /// <summary>Starts a staged cut (no work is done until Step). Never throws.</summary>
+    public static CutJob Prepare(Transform victimRoot, string unitId, int seed)
+    {
+        var j = new CutJob(unitId) { victimRoot = victimRoot, seed = seed, res = new CutResult { unit = unitId } };
+        return j;
+    }
+
+    /// <summary>Applies a finished (or, if not finished, completes it now) staged cut: body mesh swap, piece shown / placed / launched, blood. Same CutResult as the old Cut().</summary>
+    public static CutResult Commit(CutJob j, Vector3 awayDir, float push = 1f, float pieceImpulse = 60f)
+    {
+        var res = j.res;
+        try
+        {
+            if (!j.done) j.Step(0f, 0);
+            if (j.committed) return res;
+            j.committed = true;
+            if (j.failed || j.root == null || j.unit == null) { if (res.note.Length == 0) res.note = j.note.Length > 0 ? j.note : "cut not prepared"; FailCleanup(j); return res; }
+            if (j.res.note.Length > 0 && !j.isWound && j.touched == 0 && !j.needFallback) return res;   // setup refusal (unknown unit, bone not found, gore off ...)
+            Transform victimRoot = j.victimRoot, root = j.root, parentBone = j.parentBone; var unit = j.unit;
+            Vector3 jetDir = (root.position - parentBone.position); if (jetDir.sqrMagnitude < 1e-6f) jetDir = Vector3.up; jetDir.Normalize();
+            awayDir.y = 0f; if (awayDir.sqrMagnitude < 1e-4f) awayDir = victimRoot.forward * -1f; awayDir.Normalize();
+            if (j.isWound)
+            {
+                res.ok = true; res.note = "wound only";
+                Blood(res, victimRoot, parentBone, root.position, jetDir, unit, j.cfg, false);
+                return res;
+            }
+            // the bone moved between the bake and now: carry the baked piece (and the cap centre) with it (rigid, y-up bone pose delta)
+            Quaternion dq = root.rotation * Quaternion.Inverse(j.bakeRot); Vector3 bp = j.bakePos, np = root.position;
+            if (j.touched == 0)
+            {
+                if (j.unreadable > 0 && unit.kind != "split") { Fallback(victimRoot, root, unit, res); }
+                else res.note = j.unreadable > 0 ? "meshes not readable (enable Read/Write on the model import)" : (j.note.Length > 0 ? j.note : "no vertices skinned to " + unit.id + " [bone " + root.name + ", " + j.disabledSkipped + " disabled and skipped" + (j.disabledSkipped > 0 ? ": the visible head is probably a separate mesh (e.g. a MetaHuman head swap hides the original head renderer); the unit cleave / burst fallback runs" : "") + "]");
+                if (!res.ok) return res;
+            }
+            else
+            {
+                res.ok = true;
+                foreach (var a in j.apply) { try { a(); } catch (Exception ex) { Debug.LogWarning("[MeshCut] apply: " + ex.Message); } }
+                j.applied = true;
+                if (j.physRoot != null)
+                {
+                    j.physRoot.transform.SetPositionAndRotation(np + dq * (j.physPos0 - bp), dq * j.physRot0);
+                }
+                foreach (var g in j.hidden) if (g != null) g.SetActive(true);
+                if (j.physRoot != null) Launch(j.physRoot, victimRoot, unit, j.cc, awayDir, push, pieceImpulse, j.rnd);
+            }
+            Vector3 cap = j.haveCap ? np + dq * (j.firstCap - bp) : root.position;
+            Blood(res, victimRoot, parentBone, cap, jetDir, unit, j.cfg, j.physRoot != null);
+            j.apply.Clear(); j.hidden.Clear(); j.owned.Clear();
+        }
+        catch (Exception ex)
+        {
+            WarnOnce("commit-ex:" + j.unitId, "Commit('" + j.unitId + "') threw " + ex.GetType().Name + ": " + ex.Message + " | " + ex.StackTrace);
+            res.ok = false; res.note = "cut exception: " + ex.Message; if (!j.applied) FailCleanup(j);
+        }
+        return res;
+    }
+
+    // a failed job leaves inactive pieces and built meshes behind: destroy them (the body mesh was never swapped)
+    static void FailCleanup(CutJob j)
+    {
+        foreach (var g in j.hidden) if (g != null) UnityEngine.Object.Destroy(g);
+        foreach (var o in j.owned) if (o != null) UnityEngine.Object.Destroy(o);
+        j.hidden.Clear(); j.owned.Clear(); j.apply.Clear(); j.res.pieces.Clear();
+    }
+
+    // the job body (an iterator: every `yield return null` is a point where Step may stop when its budget is used)
+    static IEnumerator Run(CutJob j)
+    {
+        var res = j.res; Transform victimRoot = j.victimRoot;
+        if (victimRoot == null) { res.note = "victimRoot null"; yield break; }
+        if (!FinisherConfig.EnableGore) { res.note = "gore disabled (finishers.json enableGore=false)"; yield break; }
         var cfg = FinisherConfig.Get(); var cc = cfg != null ? cfg.cuts : null;
-        if (cc == null || cc.units == null || cfg.gore == null) { res.note = "cuts/gore data missing (finishers.json cuts / gore blocks)"; return res; }
-        var unit = FindUnit(unitId);
-        if (unit == null) { res.note = "unknown unit " + unitId; return res; }
+        if (cc == null || cc.units == null || cfg.gore == null) { res.note = "cuts/gore data missing (finishers.json cuts / gore blocks)"; yield break; }
+        var unit = FindUnit(j.unitId);
+        if (unit == null) { res.note = "unknown unit " + j.unitId; yield break; }
         Transform root = FindBone(victimRoot, unit.bones);
-        if (root == null) { res.note = "bone not found for " + unitId; return res; }
+        if (root == null) { res.note = "bone not found for " + j.unitId; yield break; }
         Transform parentBone = FindBone(victimRoot, unit.parentBones) ?? root.parent;
         if (parentBone == null) parentBone = root;
-        Vector3 jetDir = (root.position - parentBone.position); if (jetDir.sqrMagnitude < 1e-6f) jetDir = Vector3.up; jetDir.Normalize();
-        awayDir.y = 0f; if (awayDir.sqrMagnitude < 1e-4f) awayDir = victimRoot.forward * -1f; awayDir.Normalize();
-
-        if (unit.kind == "wound")
-        {
-            res.ok = true; res.note = "wound only";
-            Blood(res, victimRoot, parentBone, root.position, jetDir, unit, cfg, false);
-            return res;
-        }
+        j.cfg = cfg; j.cc = cc; j.unit = unit; j.root = root; j.parentBone = parentBone;
+        j.rnd = new System.Random(j.seed * 7919 + j.unitId.GetHashCode());
+        if (unit.kind == "wound") { j.isWound = true; yield break; }
 
         var set = new HashSet<Transform>(root.GetComponentsInChildren<Transform>(true));
-        var rnd = new System.Random(seed * 7919 + unitId.GetHashCode());
-        var smrs = victimRoot.GetComponentsInChildren<SkinnedMeshRenderer>(false);
-        GameObject physRoot = null; Vector3 firstCap = root.position; bool haveCap = false; int unreadable = 0, touched = 0, disabledSkipped = 0;
+        var smrsAll = victimRoot.GetComponentsInChildren<SkinnedMeshRenderer>(false);
         bool split = unit.kind == "split";
-
-        for (int s = 0; s < smrs.Length; s++)
+        // bake every renderer in the same frame (one pose for the whole cut)
+        j.bakePos = root.position; j.bakeRot = root.rotation;
+        var smrs = new List<SkinnedMeshRenderer>(); var bakedMeshes = new List<Mesh>(); var smrPose = new List<Matrix4x4>(); var smrPos = new List<Vector3>(); var smrRot = new List<Quaternion>(); var smrScale = new List<Vector3>();
+        for (int s = 0; s < smrsAll.Length; s++)
         {
-            var smr = smrs[s];
+            var smr = smrsAll[s];
             if (smr == null || smr.sharedMesh == null) continue;
-            if (!smr.enabled) { disabledSkipped++; continue; }
-            if (!smr.sharedMesh.isReadable) { unreadable++; WarnUnreadable(smr); continue; }
-            Vector3 cap;
-            bool cutOk;
-            try { cutOk = CutSkinned(smr, set, root, parentBone, unit, cc, split, ref physRoot, res, out cap); }
-            catch (Exception ex) { cap = Vector3.zero; cutOk = false; WarnOnce("ex:" + smr.name + unitId, "cut of '" + unitId + "' on '" + smr.name + "' threw " + ex.GetType().Name + ": " + ex.Message); res.note = "cut exception: " + ex.Message; }
-            if (!cutOk) continue;
-            touched++;
-            if (!haveCap) { firstCap = cap; haveCap = true; }
+            if (!smr.enabled) { j.disabledSkipped++; continue; }
+            if (!smr.sharedMesh.isReadable) { j.unreadable++; WarnUnreadable(smr); continue; }
+            var baked = new Mesh(); j.owned.Add(baked); smr.BakeMesh(baked, false);
+            smrs.Add(smr); bakedMeshes.Add(baked); smrPose.Add(smr.transform.localToWorldMatrix); smrPos.Add(smr.transform.position); smrRot.Add(smr.transform.rotation); smrScale.Add(smr.transform.lossyScale);
         }
-
-        if (touched == 0)
+        Matrix4x4 rootW2L = root.worldToLocalMatrix;
+        if (smrs.Count == 0 && j.unreadable == 0) j.note = smrsAll.Length == 0 ? "no SkinnedMeshRenderer on the victim" : "";
+        for (int s = 0; s < smrs.Count; s++)
         {
-            if (unreadable > 0 && !split) { Fallback(victimRoot, root, unit, res); }
-            else res.note = unreadable > 0 ? "meshes not readable (enable Read/Write on the model import)" : (smrs.Length == 0 ? "no SkinnedMeshRenderer on the victim" : (res.note.Length > 0 ? res.note : "no vertices skinned to " + unitId + " [bone " + root.name + ", " + smrs.Length + " renderers, " + disabledSkipped + " disabled and skipped" + (disabledSkipped > 0 ? ": the visible head is probably a separate mesh (e.g. a MetaHuman head swap hides the original head renderer); the unit cleave / burst fallback runs" : "") + "]"));
-            if (!res.ok) return res;
+            if (j.Over()) yield return null;
+            var sub = CutSkinnedSteps(j, smrs[s], bakedMeshes[s], smrPose[s], smrPos[s], smrRot[s], smrScale[s], rootW2L, set, root, parentBone, unit, cc, split);
+            while (sub.MoveNext()) yield return null;
         }
-        else
-        {
-            res.ok = true;
-            if (physRoot != null) Launch(physRoot, victimRoot, unit, cc, awayDir, push, pieceImpulse, rnd);
-        }
-        Blood(res, victimRoot, parentBone, haveCap ? firstCap : root.position, jetDir, unit, cfg, physRoot != null);
-        return res;
+        foreach (var b in bakedMeshes) if (b != null) UnityEngine.Object.Destroy(b);
+        for (int i = j.owned.Count - 1; i >= 0; i--) if (j.owned[i] is Mesh && bakedMeshes.Contains((Mesh)j.owned[i])) j.owned.RemoveAt(i);
     }
 
     // ------------------------------------------------------------------ helpers
@@ -188,19 +289,21 @@ public static class MeshCut
     }
 
     // ------------------------------------------------------------------ the cut
-    static bool CutSkinned(SkinnedMeshRenderer smr, HashSet<Transform> set, Transform root, Transform parentBone, CutUnit unit, CutsCfg cc, bool split, ref GameObject physRoot, CutResult res, out Vector3 capWorld)
+    // FINFIX v93: the old synchronous CutSkinned as a sliced iterator. Same maths and the same result meshes; differences: (1) it works on the mesh baked at the job start (all renderers one pose), (2) nothing visible is changed - the body mesh
+    // swap is stored in j.apply and the pieces are created inactive (j.hidden), (3) only the triangles near the cut are welded / edge-mapped (exact: every edge between a cut and an uncut triangle has both ends inside the cut's bounding box),
+    // (4) the big loops yield when the job's frame budget is used (CutJob.Over).
+    static IEnumerator CutSkinnedSteps(CutJob j, SkinnedMeshRenderer smr, Mesh baked, Matrix4x4 smrL2W, Vector3 smrPos, Quaternion smrRot, Vector3 smrScale, Matrix4x4 rootW2L, HashSet<Transform> set, Transform root, Transform parentBone, CutUnit unit, CutsCfg cc, bool split)
     {
-        capWorld = Vector3.zero;
         var mesh = smr.sharedMesh; var bones = smr.bones;
         var bw = mesh.boneWeights; int vc = mesh.vertexCount;
-        if (bw.Length != vc || bones == null || bones.Length == 0) return false;
-
-        var baked = new Mesh(); smr.BakeMesh(baked, false);
-        if (baked.vertexCount != vc) { UnityEngine.Object.Destroy(baked); return false; }
+        if (bw.Length != vc || bones == null || bones.Length == 0) yield break;
+        if (baked.vertexCount != vc) yield break;
+        int every = Mathf.Max(16, j.every), n = 0;
         var c = new Ctx { pos = mesh.vertices, nrm = mesh.normals, uv = mesh.uv, bw = bw, bpos = baked.vertices, bnrm = baked.normals };
         if (c.nrm.Length != vc) c.nrm = new Vector3[vc];
         if (c.uv.Length != vc) c.uv = new Vector2[vc];
         if (c.bnrm.Length != vc) c.bnrm = c.nrm;
+        if (j.Over()) yield return null;
 
         // vertex membership by skin weight
         var inA = new bool[vc]; int nA = 0;
@@ -210,23 +313,20 @@ public static class MeshCut
             w += InSet(bones, b.boneIndex0, set) ? b.weight0 : 0f; w += InSet(bones, b.boneIndex1, set) ? b.weight1 : 0f;
             w += InSet(bones, b.boneIndex2, set) ? b.weight2 : 0f; w += InSet(bones, b.boneIndex3, set) ? b.weight3 : 0f;
             if (w >= cc.weightMin) { inA[v] = true; nA++; }
+            if (++n >= every) { n = 0; if (j.Over()) yield return null; }
         }
-        if (nA == 0) { UnityEngine.Object.Destroy(baked); return false; }
-
-        // weld by baked position so seam-split vertices (uv/normal splits) match across triangles
-        var wmap = new Dictionary<(int, int, int), int>(); c.weld = new int[vc];
-        for (int v = 0; v < vc; v++) c.weld[v] = Weld(wmap, c.bpos[v], Mathf.Max(1e-5f, cc.weldM), v);
+        if (nA == 0) yield break;
 
         int subs = mesh.subMeshCount; c.tris = new int[subs][]; c.label = new int[subs][];
-        if (subs <= 0) { UnityEngine.Object.Destroy(baked); WarnOnce("nosub:" + mesh.name, "mesh '" + mesh.name + "' has no submeshes"); return false; }
+        if (subs <= 0) { WarnOnce("nosub:" + mesh.name, "mesh '" + mesh.name + "' has no submeshes"); yield break; }
         for (int s = 0; s < subs; s++)
         {
             var idx = mesh.GetIndices(s);
             bool bad = mesh.GetTopology(s) != MeshTopology.Triangles || idx.Length % 3 != 0;
-            for (int q = 0; q < idx.Length && !bad; q++) if (idx[q] < 0 || idx[q] >= vc) bad = true;   // index overflow
-            if (bad) { UnityEngine.Object.Destroy(baked); WarnOnce("badidx:" + mesh.name + s, "mesh '" + mesh.name + "' submesh " + s + " is not a clean triangle list (topology/index range): cut skipped"); return false; }
+            for (int q = 0; q < idx.Length && !bad; q++) { if (idx[q] < 0 || idx[q] >= vc) bad = true; if (++n >= every * 8) { n = 0; if (j.Over()) yield return null; } }   // index overflow
+            if (bad) { WarnOnce("badidx:" + mesh.name + s, "mesh '" + mesh.name + "' submesh " + s + " is not a clean triangle list (topology/index range): cut skipped"); yield break; }
         }
-        Matrix4x4 toBone = root.worldToLocalMatrix * smr.transform.localToWorldMatrix;
+        Matrix4x4 toBone = rootW2L * smrL2W;
         int axis = unit.splitAxis == "y" ? 1 : (unit.splitAxis == "z" ? 2 : 0);
         int piecesA = 0;
         for (int s = 0; s < subs; s++)
@@ -237,23 +337,54 @@ public static class MeshCut
             {
                 int i0 = c.tris[s][t * 3], i1 = c.tris[s][t * 3 + 1], i2 = c.tris[s][t * 3 + 2];
                 int k = (inA[i0] ? 1 : 0) + (inA[i1] ? 1 : 0) + (inA[i2] ? 1 : 0);
-                if (k < 2) continue;
-                int lab = 1;
-                if (split)
+                if (k >= 2)
                 {
-                    Vector3 cen = toBone.MultiplyPoint3x4((c.bpos[i0] + c.bpos[i1] + c.bpos[i2]) / 3f);
-                    float d = (axis == 0 ? cen.x : axis == 1 ? cen.y : cen.z) - unit.splitOffsetM;
-                    lab = d >= 0f ? 2 : 3;
+                    int lab = 1;
+                    if (split)
+                    {
+                        Vector3 cen = toBone.MultiplyPoint3x4((c.bpos[i0] + c.bpos[i1] + c.bpos[i2]) / 3f);
+                        float d = (axis == 0 ? cen.x : axis == 1 ? cen.y : cen.z) - unit.splitOffsetM;
+                        lab = d >= 0f ? 2 : 3;
+                    }
+                    c.label[s][t] = lab; piecesA++;
                 }
-                c.label[s][t] = lab; piecesA++;
+                if (++n >= every) { n = 0; if (j.Over()) yield return null; }
             }
         }
-        if (piecesA == 0) { UnityEngine.Object.Destroy(baked); return false; }
+        if (piecesA == 0) yield break;
 
-        // edges between differently labelled triangles
+        // FINFIX v93: the cut's bounding box (baked positions of every vertex of a cut triangle, padded): only vertices / triangles touching it can be on a cut boundary
+        Vector3 bmin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue), bmax = -bmin;
+        for (int s = 0; s < subs; s++)
+            for (int t = 0; t < c.label[s].Length; t++)
+            {
+                if (c.label[s][t] == 0) continue;
+                for (int k = 0; k < 3; k++) { Vector3 p = c.bpos[c.tris[s][t * 3 + k]]; bmin = Vector3.Min(bmin, p); bmax = Vector3.Max(bmax, p); }
+                if (++n >= every) { n = 0; if (j.Over()) yield return null; }
+            }
+        float pad = Mathf.Max(0.01f, cc.weldM * 8f); bmin -= new Vector3(pad, pad, pad); bmax += new Vector3(pad, pad, pad);
+        var near = new bool[vc];
+        for (int v = 0; v < vc; v++)
+        {
+            Vector3 p = c.bpos[v];
+            near[v] = p.x >= bmin.x && p.x <= bmax.x && p.y >= bmin.y && p.y <= bmax.y && p.z >= bmin.z && p.z <= bmax.z;
+            if (++n >= every) { n = 0; if (j.Over()) yield return null; }
+        }
+
+        // weld by baked position so seam-split vertices (uv/normal splits) match across triangles (only near vertices; the others keep their own index and are never read)
+        var wmap = new Dictionary<(int, int, int), int>(); c.weld = new int[vc];
+        for (int v = 0; v < vc; v++)
+        {
+            c.weld[v] = near[v] ? Weld(wmap, c.bpos[v], Mathf.Max(1e-5f, cc.weldM), v) : v;
+            if (++n >= every) { n = 0; if (j.Over()) yield return null; }
+        }
+
+        // edges between differently labelled triangles (near triangles only)
         var edges = new Dictionary<long, Edge>();
         for (int s = 0; s < subs; s++)
             for (int t = 0; t < c.label[s].Length; t++)
+            {
+                if (!(near[c.tris[s][t * 3]] || near[c.tris[s][t * 3 + 1]] || near[c.tris[s][t * 3 + 2]])) continue;
                 for (int e = 0; e < 3; e++)
                 {
                     int a = c.tris[s][t * 3 + e], b = c.tris[s][t * 3 + (e + 1) % 3];
@@ -262,11 +393,15 @@ public static class MeshCut
                     Edge ed; if (edges.TryGetValue(key, out ed)) { ed.count++; ed.l2 = c.label[s][t]; edges[key] = ed; }
                     else edges[key] = new Edge { l1 = c.label[s][t], a1 = a, b1 = b, count = 1, l2 = -1 };
                 }
+                if (++n >= every) { n = 0; if (j.Over()) yield return null; }
+            }
 
         // the two owners of a boundary edge need their own directed copy; keep first owner in the record, find the second owner's direction by a second pass
         var second = new Dictionary<long, int[]>();
         for (int s = 0; s < subs; s++)
             for (int t = 0; t < c.label[s].Length; t++)
+            {
+                if (!(near[c.tris[s][t * 3]] || near[c.tris[s][t * 3 + 1]] || near[c.tris[s][t * 3 + 2]])) continue;
                 for (int e = 0; e < 3; e++)
                 {
                     int a = c.tris[s][t * 3 + e], b = c.tris[s][t * 3 + (e + 1) % 3];
@@ -276,56 +411,65 @@ public static class MeshCut
                     if (ed.a1 == a && ed.b1 == b && ed.l1 == c.label[s][t]) continue;   // the first owner
                     second[key] = new[] { c.label[s][t], a, b };
                 }
+                if (++n >= every) { n = 0; if (j.Over()) yield return null; }
+            }
+        if (j.Over()) yield return null;
 
-        var capMatFlesh = CapMaterial(smr, cc, false);
+        var capMatFlesh = CapMaterial(smr, cc, false); j.owned.Add(capMatFlesh);
         int capSub = subs;
         var mats = smr.sharedMaterials;
         var pieceMats = new Material[subs + 1]; for (int i = 0; i < subs; i++) pieceMats[i] = i < mats.Length ? mats[i] : null; pieceMats[subs] = capMatFlesh;
 
-        // ---------- build pieces
+        // ---------- build pieces (inactive until Commit)
         int[] labels = split ? new[] { 2, 3 } : new[] { 1 };
         Transform pieceParent;
-        if (!split && physRoot == null)
+        if (!split && j.physRoot == null)
         {
-            physRoot = new GameObject("Piece_" + unit.id);
-            physRoot.transform.position = root.position; physRoot.transform.rotation = Quaternion.identity;
+            j.physRoot = new GameObject("Piece_" + unit.id);
+            j.physRoot.transform.position = j.bakePos; j.physRoot.transform.rotation = Quaternion.identity;
+            j.physPos0 = j.bakePos; j.physRot0 = Quaternion.identity;
+            j.physRoot.SetActive(false); j.hidden.Add(j.physRoot);
         }
-        pieceParent = split ? root : physRoot.transform;
+        pieceParent = split ? root : j.physRoot.transform;
         bool bodyCap = !split;
         foreach (int lab in labels)
         {
             int other = split ? (lab == 2 ? 3 : 2) : 0;
             var pm = BuildPiece(c, subs, lab, other, edges, second, capSub, split ? 1 : 1);
             if (pm == null) continue;
+            j.owned.Add(pm);
             var go = new GameObject("Mesh_" + unit.id + "_" + lab);
             var mf = go.AddComponent<MeshFilter>(); mf.sharedMesh = pm;
             var mr = go.AddComponent<MeshRenderer>(); mr.sharedMaterials = pieceMats;
-            go.transform.position = smr.transform.position; go.transform.rotation = smr.transform.rotation; go.transform.localScale = smr.transform.lossyScale;
+            go.transform.position = smrPos; go.transform.rotation = smrRot; go.transform.localScale = smrScale;
             if (split)
             {
-                // halves stay on the bone and hinge open a little around the neck
+                // halves stay on the bone and hinge open a little around the neck (they are children of the bone from now on: the bone's motion carries them)
                 Vector3 pivot = parentBone.position;
                 Vector3 hinge = HingeAxis(root, axis);
                 go.transform.RotateAround(pivot, hinge, (lab == 2 ? -1f : 1f) * unit.openDeg * 0.5f);
                 go.transform.SetParent(root, true);
+                go.SetActive(false); j.hidden.Add(go);
             }
             else
             {
                 go.transform.SetParent(pieceParent, true);
             }
-            res.pieces.Add(split ? go : physRoot);
+            j.res.pieces.Add(split ? go : j.physRoot);
+            if (j.Over()) yield return null;
         }
 
-        // ---------- rebuild the body without the removed triangles
-        var body = BuildBody(c, mesh, subs, bodyCap, edges, second, capSub);
-        smr.sharedMesh = body;
+        // ---------- rebuild the body without the removed triangles (swapped in by Commit)
+        var body = BuildBody(c, mesh, subs, bodyCap, edges, second, capSub); j.owned.Add(body);
         var newMats = new Material[subs + 1]; for (int i = 0; i < subs; i++) newMats[i] = i < mats.Length ? mats[i] : null; newMats[subs] = bodyCap ? capMatFlesh : (mats.Length > 0 && mats[0] != null ? mats[0] : capMatFlesh);
-        smr.sharedMaterials = newMats;
+        var smrRef = smr;
+        j.apply.Add(() => { if (smrRef != null) { smrRef.sharedMesh = body; smrRef.sharedMaterials = newMats; } });
+        // pieces / body / cap material are now kept by the job: they must not be destroyed by Discard after a Commit (Commit clears j.owned)
 
-        // world position of the cap centre for the blood
-        capWorld = CapCentre(c, edges, second, split ? 2 : 1, split ? 3 : 0, smr.transform);
-        UnityEngine.Object.Destroy(baked);
-        return true;
+        // world position of the cap centre for the blood (bake pose)
+        Vector3 capWorld = CapCentre(c, edges, second, split ? 2 : 1, split ? 3 : 0, smrL2W);
+        j.touched++;
+        if (!j.haveCap) { j.firstCap = capWorld; j.haveCap = true; }
     }
 
     static bool InSet(Transform[] bones, int idx, HashSet<Transform> set) { return idx >= 0 && idx < bones.Length && bones[idx] != null && set.Contains(bones[idx]); }
@@ -355,7 +499,14 @@ public static class MeshCut
     static List<List<int[]>> Loops(List<int[]> edgeList, int[] weld)
     {
         var parent = new Dictionary<int, int>();
-        Func<int, int> find = null; find = x => { int p; if (!parent.TryGetValue(x, out p)) { parent[x] = x; return x; } if (p == x) return x; int r = find(p); parent[x] = r; return r; };
+        Func<int, int> find = x => {
+            int root = x;
+            while (parent.TryGetValue(root, out int p) && p != root) root = p;
+            int curr = x;
+            while (parent.TryGetValue(curr, out int p) && p != root) { parent[curr] = root; curr = p; }
+            parent[x] = root;
+            return root;
+        };
         foreach (var e in edgeList) { int a = find(weld[e[0]]), b = find(weld[e[1]]); if (a != b) parent[a] = b; }
         var groups = new Dictionary<int, List<int[]>>();
         foreach (var e in edgeList) { int r = find(weld[e[0]]); List<int[]> g; if (!groups.TryGetValue(r, out g)) { g = new List<int[]>(); groups[r] = g; } g.Add(e); }
@@ -424,12 +575,12 @@ public static class MeshCut
         return m;
     }
 
-    static Vector3 CapCentre(Ctx c, Dictionary<long, Edge> edges, Dictionary<long, int[]> second, int label, int other, Transform smrT)
+    static Vector3 CapCentre(Ctx c, Dictionary<long, Edge> edges, Dictionary<long, int[]> second, int label, int other, Matrix4x4 smrL2W)   // FINFIX v93: bake-pose matrix instead of the live transform
     {
         var bl = Boundary(edges, second, label, other);
-        if (bl.Count == 0) return smrT.position;
+        if (bl.Count == 0) return smrL2W.MultiplyPoint3x4(Vector3.zero);
         Vector3 cen = Vector3.zero; foreach (var e in bl) cen += c.bpos[e[0]]; cen /= bl.Count;
-        return smrT.TransformPoint(cen);
+        return smrL2W.MultiplyPoint3x4(cen);
     }
 
     // ------------------------------------------------------------------ physics, blood, fallback
@@ -472,10 +623,22 @@ public static class MeshCut
         var cols = victim.GetComponentsInChildren<Collider>(true); var mine = root.GetComponents<Collider>();
         for (int i = 0; i < cols.Length; i++) for (int j = 0; j < mine.Length; j++) if (cols[i] != null && !cols[i].transform.IsChildOf(root.transform)) SafeIgnore(cols[i], mine[j]);
         float k = impulse * push * cc.pieceImpulseScale;
+        if (unit.launchSideMps > 0f || unit.launchUpMps > 0f)
+        {
+            // FINFIX v93 (V3 severed head): thrown with VELOCITIES, independent of the piece's mass: launchSideMps away from the killer, launchUpMps up, a little scatter (m/s), spin about the blow heading (rad/s)
+            Vector3 vel = away * unit.launchSideMps * push + Vector3.up * unit.launchUpMps + new Vector3((float)rnd.NextDouble() - 0.5f, 0f, (float)rnd.NextDouble() - 0.5f) * unit.scatter;
+            rb.angularDamping = unit.angularDrag;
+            if (unit.spinRadS > 0f) rb.maxAngularVelocity = Mathf.Max(rb.maxAngularVelocity, unit.spinRadS);
+            rb.linearVelocity = vel;
+            if (unit.spinRadS > 0f) rb.angularVelocity = away * unit.spinRadS;
+        }
+        else
+        {
         Vector3 imp = away * k + Vector3.up * k * unit.upBias + new Vector3((float)rnd.NextDouble() - 0.5f, 0f, (float)rnd.NextDouble() - 0.5f) * k * unit.scatter;
         rb.AddForce(imp, ForceMode.Impulse);
         rb.AddTorque(new Vector3((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f) * k * unit.torqueMul, ForceMode.Impulse);
         rb.angularDamping = unit.angularDrag;
+        }
         if (unit.lifeSeconds > 0f) UnityEngine.Object.Destroy(root, unit.lifeSeconds);
     }
 

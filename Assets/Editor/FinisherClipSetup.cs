@@ -20,7 +20,7 @@ using UnityEngine;
 // Controllers are backed up once to Tools/_backup_clips_finishersetup/. Nothing outside the data file's paths is touched.
 public static class FinisherClipSetup
 {
-    [Serializable] class CharCfg { public string name, controller, referenceState, outClipDir; public float hipsRestZ = 1f; public float[] hipsCorrection; }
+    [Serializable] class CharCfg { public string name, controller, referenceState, outClipDir, bakedGlb; /* CLIPBUILD2 v1: bakedGlb = clips already baked onto this character's own skeleton (Tools/clip_sets.py) */ public float hipsRestZ = 1f; public float[] hipsCorrection; }
     [Serializable] class ClipCfg { public string id, file, role, rootXZ = "inplace"; public string[] targets; public float maxStepM, hipsRestZ = 1f, hipsYOffsetM, expectedDurationS; }
     [Serializable] class EntryCfg { public string id, attackerSide = "any", attackerClip, victimClip; public bool enabled; }
     [Serializable] class ImportCfg { public string sourceDir, glbDir; public CharCfg[] characters; public ClipCfg[] clips; }
@@ -255,6 +255,32 @@ public static class FinisherClipSetup
         {
             var cc = cfg.clips[i];
             if (!Targets(cc, ch.name)) continue;
+            // CLIPBUILD2 v1: the clip is already baked onto this character's own 106-joint skeleton (Joan_finishers.glb, Tools/clip_sets.py): copy the curves (path remap only), no Hips retarget here.
+            if (!string.IsNullOrEmpty(ch.bakedGlb))
+            {
+                AnimationClip bs = null;
+                foreach (var bo in AssetDatabase.LoadAllAssetsAtPath(ch.bakedGlb)) { var bac = bo as AnimationClip; if (bac != null && bac.name == cc.id) { bs = bac; break; } }
+                if (bs == null) { Debug.LogWarning("FinisherClipSetup: " + ch.name + " clip '" + cc.id + "': not in baked glb " + ch.bakedGlb); totalUnmatched++; continue; }
+                string bpath = ch.outClipDir + "/" + cc.id + ".anim";
+                var bdst = AssetDatabase.LoadAssetAtPath<AnimationClip>(bpath); bool bNew = bdst == null;
+                if (bNew) bdst = new AnimationClip(); else bdst.ClearCurves();
+                bdst.name = cc.id; bdst.frameRate = bs.frameRate > 0f ? bs.frameRate : 30f; bdst.legacy = false;
+                int bhit = 0, bmiss = 0;
+                foreach (var bb in AnimationUtility.GetCurveBindings(bs))
+                {
+                    if (bb.type != typeof(Transform)) continue;
+                    string bnp; if (!map.TryGetValue(Key(Leaf(bb.path)), out bnp)) { bmiss++; continue; }
+                    var bnb = bb; bnb.path = bnp; AnimationUtility.SetEditorCurve(bdst, bnb, AnimationUtility.GetEditorCurve(bs, bb)); bhit++;
+                }
+                var bset = AnimationUtility.GetAnimationClipSettings(bs); bset.loopTime = false; bset.loopBlend = false; AnimationUtility.SetAnimationClipSettings(bdst, bset);
+                if (bNew) AssetDatabase.CreateAsset(bdst, bpath); else EditorUtility.SetDirty(bdst);
+                var bst = FindState(baseSm, cc.id); if (bst == null) bst = baseSm.AddState(cc.id);
+                bst.motion = bdst; bst.writeDefaultValues = true; bst.speed = 1f;
+                added++; totalClips++; totalStates++; totalUnmatched += bmiss;
+                Debug.Log("FinisherClipSetup: " + ch.name + " state '" + cc.id + "' (baked glb) len " + bdst.length.ToString("0.000") + " s (expected " + cc.expectedDurationS.ToString("0.000") + "), curves remapped " + bhit + ", unmatched " + bmiss);
+                if (cc.expectedDurationS > 0f && Mathf.Abs(bdst.length - cc.expectedDurationS) > 0.06f) Debug.LogWarning("FinisherClipSetup: " + cc.id + " length " + bdst.length.ToString("0.000") + " differs from expected " + cc.expectedDurationS.ToString("0.000"));
+                continue;
+            }
             string glb = cfg.glbDir + "/" + cc.file, found = "";
             var s = File.Exists(glb) ? LoadSource(glb, out found) : null;
             if (s == null && File.Exists(glb)) { AssetDatabase.ImportAsset(glb, ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport); s = LoadSource(glb, out found); }   // FN3: one forced reimport before giving up

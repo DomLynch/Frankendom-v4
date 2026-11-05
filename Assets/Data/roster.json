@@ -4,21 +4,6 @@
   "enemy": "Pitborn",
   "characters": [
     {
-      "id": "Dracula",
-      "displayName": "Dracula",
-      "objectName": "Dracula",
-      "weapon": "sword",
-      "controller": "Assets/Characters/Dracula.controller",
-      "modelGlb": "Assets/Characters/Dracula/Dracula_combat.glb",
-      "animGlb": "Assets/Characters/Dracula/Dracula_anim.glb",
-      "guardMask": "Assets/Characters/GuardUpper_Dracula.mask",
-      "finisherClipFolder": "Assets/Characters/Dracula/FinisherClips",
-      "heightM": 0,
-      "scaleFloor": 1.0,
-      "armoured": false,
-      "notes": "flesh: bleeds, no sparks. Non-player row since v76 (switch back: roster.json \"player\": \"Dracula\" + Hades > Joan > Apply roster player to scene)"
-    },
-    {
       "id": "Joan",
       "displayName": "Joan of Arc",
       "objectName": "Joan",
@@ -49,6 +34,21 @@
       "scaleFloor": 1.0,
       "armoured": true,
       "notes": "armoured: sparks and flash on hits"
+    },
+    {
+      "id": "Dracula",
+      "displayName": "Dracula",
+      "objectName": "Dracula",
+      "weapon": "sword",
+      "controller": "Assets/Characters/Dracula.controller",
+      "modelGlb": "Assets/Characters/Dracula/Dracula_combat.glb",
+      "animGlb": "Assets/Characters/Dracula/Dracula_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_Dracula.mask",
+      "finisherClipFolder": "Assets/Characters/Dracula/FinisherClips",
+      "heightM": 0,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "flesh: bleeds, no sparks. Non-player row since v76 (switch back: roster.json \"player\": \"Dracula\" + Hades > Joan > Apply roster player to scene)"
     }
   ]
 }

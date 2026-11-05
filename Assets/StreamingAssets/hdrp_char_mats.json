@@ -120,14 +120,6 @@
     {
       "path": "Assets/Characters/Dracula/Tex/dracula_cloak_sheenmask.png",
       "maxSize": 2048
-    },
-    {
-      "path": "Assets/Characters/Joan/Tex/joan_body_mask.png",
-      "maxSize": 2048
-    },
-    {
-      "path": "Assets/Characters/Joan/Tex/joan_hair_mask.png",
-      "maxSize": 2048
     }
   ],
   "fabric": {
@@ -175,13 +167,11 @@
     },
     {
       "mat": "Assets/Characters/Joan/Mats/joan_body_0.mat",
-      "mask": "Assets/Characters/Joan/Tex/joan_body_mask.png",
       "sheen": "off",
       "smoothnessMax": 0.35
     },
     {
       "mat": "Assets/Characters/Joan/Mats/joan_hair_0.mat",
-      "mask": "Assets/Characters/Joan/Tex/joan_hair_mask.png",
       "sheen": "off",
       "smoothnessMax": 0.35
     }

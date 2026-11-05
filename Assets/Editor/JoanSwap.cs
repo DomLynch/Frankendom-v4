@@ -40,6 +40,19 @@ public static class JoanSwap
     }
 
     static string Short(string clipName) { int i = clipName.IndexOf('|'); return i >= 0 ? clipName.Substring(i + 1) : clipName; }
+    // NODRAC v93: a clip / mask under ANOTHER roster character's folder is foreign. It is re-pointed to the same-named asset in the new character's own folder, or cleared (never kept).
+    static bool IsForeign(string path, Ctx cx) { if (string.IsNullOrEmpty(path)) return false; foreach (var d in cx.foreignDirs) if (path.StartsWith(d)) return true; return false; }   // NODRAC v93
+    static AnimationClip OwnClipByName(string clipName, Ctx cx)   // NODRAC v93
+    {
+        string nm = Short(clipName);
+        foreach (var g in AssetDatabase.FindAssets("t:AnimationClip", new[] { cx.ownDir }))
+        {
+            string p = AssetDatabase.GUIDToAssetPath(g);
+            foreach (var o in AssetDatabase.LoadAllAssetsAtPath(p)) { var c = o as AnimationClip; if (c != null && !c.name.StartsWith("__preview") && Short(c.name) == nm) { cx.n++; return c; } }
+        }
+        cx.dropped++; Debug.LogWarning("JOANSWAP clip '" + nm + "' belongs to another character: state motion cleared (no same-named clip in " + cx.ownDir + " yet: run AttackClipSetup / DodgeClipSetup / FinisherClipSetup)");
+        return null;
+    }
 
     static void EnsureFolder(string path)
     {
@@ -50,7 +63,7 @@ public static class JoanSwap
     }
 
     // ------------------------------------------------------------------ 1 import
-    class Ctx { public Dictionary<string, AnimationClip> clips = new Dictionary<string, AnimationClip>(); public string from = ""; public int n, miss; }
+    class Ctx { public Dictionary<string, AnimationClip> clips = new Dictionary<string, AnimationClip>(); public string from = ""; public int n, miss; public string ownDir = ""; public List<string> foreignDirs = new List<string>(); public int dropped; }   // NODRAC v93: ownDir / foreignDirs / dropped
 
     [MenuItem("Hades/Joan/1 Import model + controller")]
     public static void ImportModel()
@@ -64,14 +77,18 @@ public static class JoanSwap
         AssetDatabase.ImportAsset(jr.modelGlb, ImportAssetOptions.ForceSynchronousImport);
         if (!string.IsNullOrEmpty(jr.animGlb) && File.Exists(jr.animGlb)) AssetDatabase.ImportAsset(jr.animGlb, ImportAssetOptions.ForceSynchronousImport);
         if (!File.Exists(jr.controller)) { if (!AssetDatabase.CopyAsset(tr.controller, jr.controller)) { Debug.LogError("JOANSWAP controller copy failed " + tr.controller + " -> " + jr.controller); return; } }
-        if (!string.IsNullOrEmpty(jr.guardMask) && !File.Exists(jr.guardMask) && File.Exists(tr.guardMask)) AssetDatabase.CopyAsset(tr.guardMask, jr.guardMask);
+        if (!string.IsNullOrEmpty(jr.guardMask) && !File.Exists(jr.guardMask)) AssetDatabase.CreateAsset(new AvatarMask(), jr.guardMask);   // NODRAC v93: was CopyAsset(template mask) = another rig's bone paths; GuardLayerSetup.Run writes this character's own
         var ctrl = AssetDatabase.LoadAssetAtPath<AnimatorController>(jr.controller);
         if (ctrl == null) { Debug.LogError("JOANSWAP controller not loadable " + jr.controller); return; }
-        var cx = new Ctx { from = tr.modelGlb };
+        var cx = new Ctx { from = tr.modelGlb, ownDir = dir };
+        foreach (var rr in Roster.All) { if (rr == null || rr.id == jr.id || string.IsNullOrEmpty(rr.modelGlb)) continue; string fd = Path.GetDirectoryName(rr.modelGlb).Replace('\\', '/') + "/"; if (!cx.foreignDirs.Contains(fd)) cx.foreignDirs.Add(fd); }   // NODRAC v93
+        { var lyrs = ctrl.layers; var own = string.IsNullOrEmpty(jr.guardMask) ? null : AssetDatabase.LoadAssetAtPath<AvatarMask>(jr.guardMask); bool ch = false;   // NODRAC v93: a layer mask of another character is replaced by this character's roster mask (GuardLayerSetup.Run fills its bone paths)
+          for (int li = 0; li < lyrs.Length; li++) { var am = lyrs[li].avatarMask; if (am != null && IsForeign(AssetDatabase.GetAssetPath(am), cx)) { lyrs[li].avatarMask = own; ch = true; Debug.LogWarning("JOANSWAP layer '" + lyrs[li].name + "' mask was another character's: now " + (own != null ? jr.guardMask : "none")); } }
+          if (ch) ctrl.layers = lyrs; }
         foreach (var o in AssetDatabase.LoadAllAssetsAtPath(jr.modelGlb)) { var c = o as AnimationClip; if (c != null && !c.name.StartsWith("__preview")) cx.clips[Short(c.name)] = c; }
         foreach (var l in ctrl.layers) WalkSm(l.stateMachine, cx);
         EditorUtility.SetDirty(ctrl); AssetDatabase.SaveAssets();
-        Debug.Log("JOANSWAP import: " + jr.modelGlb + " clips=" + cx.clips.Count + " repointed=" + cx.n + " missing=" + cx.miss + " controller=" + jr.controller + " (attack / dodge / finisher states: run AttackClipSetup, DodgeClipSetup, FinisherClipSetup next)");
+        Debug.Log("JOANSWAP import: " + jr.modelGlb + " clips=" + cx.clips.Count + " repointed=" + cx.n + " missing=" + cx.miss + " foreignCleared=" + cx.dropped + " controller=" + jr.controller + " (attack / dodge / finisher states: run AttackClipSetup, DodgeClipSetup, FinisherClipSetup next)");
     }
 
     static void WalkSm(AnimatorStateMachine sm, Ctx cx)
@@ -86,7 +103,8 @@ public static class JoanSwap
         var clip = m as AnimationClip;
         if (clip != null)
         {
-            if (AssetDatabase.GetAssetPath(clip) != cx.from) return m;   // only clips that come from the template's combat glb
+            string cpath = AssetDatabase.GetAssetPath(clip);   // NODRAC v93
+            if (cpath != cx.from) return IsForeign(cpath, cx) ? OwnClipByName(clip.name, cx) : m;   // NODRAC v93: was 'return m' = any template .anim (Attack/Dodge/FinisherClips) stayed on the new character
             AnimationClip j;
             if (cx.clips.TryGetValue(Short(clip.name), out j)) { cx.n++; return j; }
             cx.miss++; Debug.LogWarning("JOANSWAP no clip '" + Short(clip.name) + "' in the new combat glb: state keeps the template clip");

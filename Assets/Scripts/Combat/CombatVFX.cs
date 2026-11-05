@@ -4,7 +4,7 @@
 public class CombatVFX : MonoBehaviour
 {
     public Material spark, dust, blood;
-    ParticleSystem sparks, puff, mist, guardSparks, flash, drops;
+    ParticleSystem sparks, puff, mist, guardSparks, flash, drops; HitVfxCfg.Data vx;   // HCKIT4 v95
 
     void OnEnable() { ContactRelay.OnContact += OnContact; }
     void OnDisable() { ContactRelay.OnContact -= OnContact; }
@@ -13,15 +13,10 @@ public class CombatVFX : MonoBehaviour
     {
         // HDRP/Unlit ignores particle vertex colour/alpha (grey-white cards that never fade): rebuild the three materials on Furnace/Particle (fx_materials.json roles spark/dust/blood)
         spark = FxMaterials.Particle(spark, "spark"); dust = FxMaterials.Particle(dust, "dust"); blood = FxMaterials.Particle(blood, "blood");
-        // streaky velocity-stretched spark lines (white-yellow core to orange, short life, gravity), a brief small flash, dark-red blood droplets and a small dust puff
-        sparks = Make("ImpactSparks", spark, 0.015f, 0.03f, 0.1f, 0.25f, 4f, 10f, new Color(1f, 0.9f, 0.55f), -1.0f);
-        guardSparks = Make("GuardSparks", spark, 0.015f, 0.03f, 0.1f, 0.25f, 4f, 9f, new Color(1f, 0.97f, 0.8f), -1.0f);
-        Stretch(sparks, new Color(1f, 0.95f, 0.7f), new Color(1f, 0.45f, 0.1f)); Stretch(guardSparks, new Color(1f, 1f, 0.9f), new Color(1f, 0.55f, 0.15f));
-        flash = Make("HitFlash", spark, 0.25f, 0.35f, 0.05f, 0.08f, 0f, 0f, new Color(1f, 0.85f, 0.6f, 0.8f), 0f);
-        drops = Make("BloodDrops", blood, 0.02f, 0.04f, 0.4f, 0.8f, 2f, 5f, HitFeelTable.Get().blood.dropColor, -1.2f);   // laneHITFX v81: was new Color(0.145f, 0.008f, 0.008f, 1f) #250202, alpha-blended billboards (no stretch needles)
-        { var dr = drops.GetComponent<ParticleSystemRenderer>(); dr.renderMode = ParticleSystemRenderMode.Billboard; dr.maxParticleSize = 0.06f; }
-        puff = Make("DustPuff", dust, 0.3f, 0.6f, 0.6f, 1.0f, 0.3f, 0.9f, new Color(0.4f, 0.4f, 0.42f, 0.28f), -0.05f);
-        mist = Make("BloodMist", blood, 0.03f, 0.07f, 0.35f, 0.6f, 1.5f, 3.5f, HitFeelTable.Get().blood.mistColor, -1.2f);   // laneHITFX v81: was new Color(0.22f, 0.015f, 0.015f, 0.95f)
+        // HCKIT4 v95 K10a: every number below is hit_vfx.json (HitVfxCfg); defaults = the old literals
+        vx = HitVfxCfg.Get();
+        sparks = Make("ImpactSparks", vx.sparks); guardSparks = Make("GuardSparks", vx.guardSparks); flash = Make("HitFlash", vx.flash);
+        drops = Make("BloodDrops", vx.drops); puff = Make("DustPuff", vx.puff); mist = Make("BloodMist", vx.mist);
     }
 
     // PERF (FxPrewarm): one sub-pixel particle through each system (uses no RNG, no sim state)
@@ -31,29 +26,35 @@ public class CombatVFX : MonoBehaviour
         for (int i = 0; i < all.Length; i++)
         {
             if (all[i] == null) continue;
-            var ep = new ParticleSystem.EmitParams(); ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = 0.1f; ep.startSize = size; ep.startColor = Color.white;
+            var ep = new ParticleSystem.EmitParams(); ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = HitVfxCfg.Get().prewarmLifeS; ep.startSize = size; ep.startColor = Color.white;   // HCKIT4 v95
             all[i].Emit(ep, 1);
         }
     }
 
-    void Stretch(ParticleSystem ps, Color a, Color b, float len = 5.2f)
+    void Stretch(ParticleSystem ps, Color a, Color b)   // HCKIT4 v95 K10a
     {
-        var r = ps.GetComponent<ParticleSystemRenderer>(); r.renderMode = ParticleSystemRenderMode.Stretch; r.velocityScale = 0.06f; r.lengthScale = len; r.cameraVelocityScale = 0f; r.maxParticleSize = 0.5f;
+        var sc = vx.stretchCfg;
+        var r = ps.GetComponent<ParticleSystemRenderer>(); r.renderMode = ParticleSystemRenderMode.Stretch; r.velocityScale = sc.velocityScale; r.lengthScale = sc.lengthScale; r.cameraVelocityScale = sc.cameraVelocityScale; r.maxParticleSize = sc.maxParticleSize;
         var col = ps.colorOverLifetime; col.enabled = true; var g = new Gradient();
-        g.SetKeys(new[] { new GradientColorKey(a, 0f), new GradientColorKey(b, 0.6f), new GradientColorKey(b, 1f) }, new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0.9f, 0.5f), new GradientAlphaKey(0f, 1f) }); col.color = g;
+        g.SetKeys(new[] { new GradientColorKey(a, 0f), new GradientColorKey(b, sc.midAt), new GradientColorKey(b, 1f) }, new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(sc.midAlpha, sc.midAlphaAt), new GradientAlphaKey(0f, 1f) }); col.color = g;
     }
-    ParticleSystem Make(string n, Material m, float s0, float s1, float l0, float l1, float v0, float v1, Color c, float grav)
+    ParticleSystem Make(string n, HitVfxCfg.Sys s)
     {
+        var cm = vx.common;
+        Material m = s.material == "dust" ? dust : s.material == "blood" ? blood : spark;
+        Color c = s.colorFrom == "dropColor" ? HitFeelTable.Get().blood.dropColor : s.colorFrom == "mistColor" ? HitFeelTable.Get().blood.mistColor : HitVfxCfg.C(s.color, Color.white);
         var go = new GameObject(n); go.transform.SetParent(transform);
         var ps = go.AddComponent<ParticleSystem>();
-        var main = ps.main; main.playOnAwake = false; main.loop = false; main.startLifetime = new ParticleSystem.MinMaxCurve(l0, l1);
-        main.startSpeed = new ParticleSystem.MinMaxCurve(v0, v1); main.startSize = new ParticleSystem.MinMaxCurve(s0, s1); main.startColor = c;
-        main.gravityModifier = grav < 0 ? -grav : -grav; main.simulationSpace = ParticleSystemSimulationSpace.World; main.maxParticles = 200;
+        var main = ps.main; main.playOnAwake = false; main.loop = false; main.startLifetime = new ParticleSystem.MinMaxCurve(s.lifeMin, s.lifeMax);
+        main.startSpeed = new ParticleSystem.MinMaxCurve(s.speedMin, s.speedMax); main.startSize = new ParticleSystem.MinMaxCurve(s.sizeMin, s.sizeMax); main.startColor = c;
+        main.gravityModifier = -s.gravity; main.simulationSpace = ParticleSystemSimulationSpace.World; main.maxParticles = cm.maxParticles;
         var em = ps.emission; em.enabled = false;
-        var sh = ps.shape; sh.shapeType = ParticleSystemShapeType.Sphere; sh.radius = 0.08f;
+        var sh = ps.shape; sh.shapeType = ParticleSystemShapeType.Sphere; sh.radius = cm.shapeRadius;
         var fade = ps.colorOverLifetime; fade.enabled = true; var g = new Gradient();
-        g.SetKeys(new[] { new GradientColorKey(Color.white, 0), new GradientColorKey(Color.white, 1) }, new[] { new GradientAlphaKey(1, 0), new GradientAlphaKey(0.8f, 0.5f), new GradientAlphaKey(0, 1) }); fade.color = g;
-        var r = go.GetComponent<ParticleSystemRenderer>(); r.sharedMaterial = m; r.maxParticleSize = 0.25f;
+        g.SetKeys(new[] { new GradientColorKey(Color.white, 0), new GradientColorKey(Color.white, 1) }, new[] { new GradientAlphaKey(1, 0), new GradientAlphaKey(cm.fadeMidAlpha, cm.fadeMidAt), new GradientAlphaKey(0, 1) }); fade.color = g;
+        var r = go.GetComponent<ParticleSystemRenderer>(); r.sharedMaterial = m; r.maxParticleSize = cm.rendererMaxSize;
+        if (s.stretch) Stretch(ps, HitVfxCfg.C(s.stretchFrom, Color.white), HitVfxCfg.C(s.stretchTo, Color.white));
+        if (s.billboard) { r.renderMode = ParticleSystemRenderMode.Billboard; r.maxParticleSize = s.billboardMaxSize; }
         return ps;
     }
 
@@ -61,29 +62,30 @@ public class CombatVFX : MonoBehaviour
     {
         if (ps == null || count <= 0) return;
         ps.transform.position = pos; ps.transform.rotation = Quaternion.LookRotation(dir == Vector3.zero ? Vector3.up : dir);
-        var sh = ps.shape; sh.shapeType = ParticleSystemShapeType.Cone; sh.angle = cone; sh.radius = 0.05f;
+        var sh = ps.shape; sh.shapeType = ParticleSystemShapeType.Cone; sh.angle = cone; sh.radius = vx.burstShapeRadius;   // HCKIT4 v95
         ps.Emit(count);
     }
 
     void OnContact(DuelFighter a, DuelFighter d, string type, bool heavy, bool perfect)
     {
-        Vector3 pos = d.transform.position + Vector3.up * (1.1f * FighterScale.Of(d));
-        Vector3 dir = (d.transform.position - a.transform.position); dir.y = 0.15f; dir.Normalize();
+        var x = HitVfxCfg.Get();   // HCKIT4 v95 K10a: heights, counts and cones from hit_vfx.json
+        Vector3 pos = d.transform.position + Vector3.up * (x.hitHeightM * FighterScale.Of(d));
+        Vector3 dir = (d.transform.position - a.transform.position); dir.y = x.hitDirY; dir.Normalize();
         switch (type)
         {
-            case "Hit":
+            case CombatClass.Hit:
                 {
-                    var bs = BloodTable.For(d, heavy, d.Dead);   // P2: blood.json (weight x location x victim); sparks / flash only where the victim row says metal
-                    if (bs.flash) Burst(flash, pos, dir, 1, 5f);
-                    Burst(drops, pos, dir, Mathf.RoundToInt((heavy ? 16 : 7) * bs.drops), 40f);
-                    if (bs.sparks) Burst(sparks, pos, dir, heavy ? 9 : 4, 35f);   // bright sparks only on metal/armour
-                    Burst(puff, pos - Vector3.up * 0.4f, Vector3.up + dir * 0.3f, heavy ? 2 : 1, 60f);
-                    Burst(mist, pos, dir, Mathf.RoundToInt((heavy ? 5 : 2) * bs.mist), 50f);
+                    var h = x.hit; var bs = BloodTable.For(d, heavy, d.Dead);   // P2: blood.json (weight x location x victim); sparks / flash only where the victim row says metal
+                    if (bs.flash) Burst(flash, pos, dir, h.flashCount, h.flashCone);
+                    Burst(drops, pos, dir, Mathf.RoundToInt((heavy ? h.dropsHeavy : h.dropsLight) * bs.drops), h.dropsCone);
+                    if (bs.sparks) Burst(sparks, pos, dir, heavy ? h.sparksHeavy : h.sparksLight, h.sparksCone);   // bright sparks only on metal/armour
+                    Burst(puff, pos - Vector3.up * x.puffDropM, Vector3.up + dir * h.puffDirMix, heavy ? h.puffHeavy : h.puffLight, h.puffCone);
+                    Burst(mist, pos, dir, Mathf.RoundToInt((heavy ? h.mistHeavy : h.mistLight) * bs.mist), h.mistCone);
                     break;
                 }
-            case "Blocked": Burst(flash, pos, -dir, 1, 5f); Burst(guardSparks, pos, -dir + Vector3.up * 0.3f, Mathf.RoundToInt((perfect ? 22 : 12) * HitFeel.GuardSparkScale), 50f); break;   // laneHITFX v81: HitFeel's HDR burst replaces these (guardSparkScale 0); 1 if HitFeel is off
-            case "Parried": Burst(guardSparks, pos, Vector3.up + dir * 0.4f, Mathf.RoundToInt(30 * HitFeel.GuardSparkScale), 70f); break;   // laneHITFX v81
-            case "GuardBroken": Burst(guardSparks, pos, dir, Mathf.RoundToInt(36 * HitFeel.GuardSparkScale), 80f); Burst(puff, pos, dir, 6, 80f); break;   // laneHITFX v81
+            case CombatClass.Blocked: { var b = x.block; Burst(flash, pos, -dir, b.flashCount, b.flashCone); Burst(guardSparks, pos, -dir + Vector3.up * b.upMix, Mathf.RoundToInt((perfect ? b.sparksPerfect : b.sparks) * HitFeel.GuardSparkScale), b.sparksCone); break; }   // laneHITFX v81: HitFeel's HDR burst replaces these (guardSparkScale 0); 1 if HitFeel is off
+            case CombatClass.Parried: { var p = x.parried; Burst(guardSparks, pos, Vector3.up + dir * p.dirMix, Mathf.RoundToInt(p.sparks * HitFeel.GuardSparkScale), p.cone); break; }
+            case CombatClass.GuardBroken: { var g = x.guardBroken; Burst(guardSparks, pos, dir, Mathf.RoundToInt(g.sparks * HitFeel.GuardSparkScale), g.sparksCone); Burst(puff, pos, dir, g.puff, g.puffCone); break; }
         }
     }
 }

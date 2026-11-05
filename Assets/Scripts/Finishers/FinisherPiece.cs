@@ -16,6 +16,7 @@ public sealed class FinisherPiece : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { All.Clear(); Destroyed = 0; }
 
     public string unit = ""; public Transform victim; public int Rescues; public bool Settled; public float Born; public float SpawnLift; public string ColliderInfo = "";
+    public int RestClamps; public float RestM = -1f; bool restLogged;   // FINFIX v93: how often the rest-distance clamp pulled the piece back; horizontal distance from the cut point once it rests (-1 = still moving)
     Rigidbody rb; Collider col; float still; Vector3 spawn; int mask; PieceCfg cfg; static readonly RaycastHit[] hits = new RaycastHit[16];
 
     /// <summary>Called by FinisherPlayer.Gore right after MeshCut.Cut: every piece with a Rigidbody (the halves of a split stay attached and are skipped) gets a keeper.</summary>
@@ -119,6 +120,18 @@ public sealed class FinisherPiece : MonoBehaviour
     void FixedUpdate()
     {
         if (rb == null || col == null) return;
+        // FINFIX v93: gore.piece.restMaxM - the head never travels (or rests) farther than this from the neck: pulled back onto the circle, the outward speed removed, the rest damped
+        if (cfg.restMaxM > 0f && !rb.isKinematic)
+        {
+            Vector3 off = rb.position - spawn; off.y = 0f; float dm = off.magnitude;
+            if (dm > cfg.restMaxM)
+            {
+                Vector3 dir = off / dm; Vector3 tp = rb.position; tp.x = spawn.x + dir.x * cfg.restMaxM; tp.z = spawn.z + dir.z * cfg.restMaxM;
+                rb.position = tp; transform.position = tp; RestClamps++;
+                Vector3 v = rb.linearVelocity; float outv = Mathf.Max(0f, v.x * dir.x + v.z * dir.z);
+                v.x = (v.x - dir.x * outv) * cfg.restMaxDamp; v.z = (v.z - dir.z * outv) * cfg.restMaxDamp; rb.linearVelocity = v;
+            }
+        }
         // safety only (data gore.piece.rescueBelowM / maxRescues): the COLLIDER bottom (not the pivot) is far under the floor, or the piece left the world
         if (Rescues < cfg.maxRescues)
         {
@@ -128,6 +141,11 @@ public sealed class FinisherPiece : MonoBehaviour
         }
         if (rb.linearVelocity.sqrMagnitude < 0.01f && rb.angularVelocity.sqrMagnitude < 0.04f) still += Time.fixedDeltaTime; else still = 0f;
         Settled = still > cfg.settleSeconds;
+        if (Settled && !restLogged)   // FINFIX v93: the head-rest distance (VERIFY.md greps this line)
+        {
+            restLogged = true; Vector3 ro = rb.position - spawn; ro.y = 0f; RestM = ro.magnitude;
+            Debug.Log("[finisher] piece '" + name + "' (" + unit + ") REST " + RestM.ToString("0.00") + " m from the cut point, " + (Time.unscaledTime - Born).ToString("0.0") + " s after the cut, rest clamps " + RestClamps + (cfg.restMaxM > 0f ? " (limit " + cfg.restMaxM.ToString("0.00") + " m)" : ""));
+        }
         if (cfg.settleLift && !rb.isKinematic && still > cfg.settleStillS && SettleLifts < 3)
         {
             Bounds vb; if (Visible(out vb))

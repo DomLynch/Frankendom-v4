@@ -93,6 +93,8 @@ public static class CamFraming
             if (add < 0.005f) break;
             total = Mathf.Min(r.maxExtraDist, total + add);
         }
+        float cap = LookOptions.CamCapM();   // LOOKOPT v95: combatCamCap switch (look_options.json); 0 = off = today's pull-back
+        if (cap > 0f) total = Mathf.Min(total, Mathf.Max(0f, cap - dir.magnitude));   // camera at most cap m from the look-at, never closer than the base pose
         return pos - dn * total;
     }
 

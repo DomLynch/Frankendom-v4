@@ -68,9 +68,9 @@ public static class CamShake
         string mid = e.moveId ?? "";
         switch (e.type)
         {
-            case "GuardBroken": return "guardBreak";
-            case "Parried": return "parry";
-            case "Blocked": return e.heavy ? "blockHeavy" : "blockLight";
+            case CombatClass.GuardBroken: return CombatClass.GuardBreak;   // HCKIT4 v95
+            case CombatClass.Parried: return CombatClass.Parry;   // HCKIT4 v95
+            case CombatClass.Blocked: return CombatClass.Of(e.type, e.heavy);   // HCKIT4 v95
             case "Hit":
                 if (e.actor != null)
                 {
@@ -78,10 +78,10 @@ public static class CamShake
                     int now = e.actor.statDeathblows; seenDb[e.actor] = now;
                     if (now > seen) return "deathblow";
                 }
-                if (mid == "kick") return "kick";
-                if (mid.StartsWith("skill_", StringComparison.Ordinal)) return "special";
-                if (e.counter || e.rear || mid == "critical") return "crit";
-                return e.heavy ? "hitHeavy" : "hitLight";
+                if (CombatClass.IsKick(mid)) return CombatClass.Kick;   // HCKIT4 v95
+                if (CombatClass.IsSpecial(mid)) return CombatClass.Special;   // HCKIT4 v95
+                if (CombatClass.IsCrit(e)) return CombatClass.Crit;   // HCKIT4 v95
+                return CombatClass.Of(e.type, e.heavy);   // HCKIT4 v95
         }
         return null;
     }

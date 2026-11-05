@@ -282,12 +282,12 @@ public class HitFeel : MonoBehaviour
         {
             case "Hit":
                 if (e.target != null && e.target.Dead) return "kill";
-                string kick = PresentationClock.Table != null && !string.IsNullOrEmpty(PresentationClock.Table.kickMoveId) ? PresentationClock.Table.kickMoveId : "kick";
-                if (!string.IsNullOrEmpty(e.moveId) && e.moveId == kick) return "kick";
-                return e.heavy ? "hitHeavy" : "hitLight";
-            case "Blocked": return e.heavy ? "blockHeavy" : "blockLight";
-            case "Parried": return "parry";
-            case "GuardBroken": return "guardBreak";
+                string kick = PresentationClock.Table != null && !string.IsNullOrEmpty(PresentationClock.Table.kickMoveId) ? PresentationClock.Table.kickMoveId : CombatClass.KickMoveId;   // HCKIT4 v95
+                if (!string.IsNullOrEmpty(e.moveId) && e.moveId == kick) return CombatClass.Kick;   // HCKIT4 v95
+                return CombatClass.Of(e.type, e.heavy);   // HCKIT4 v95
+            case CombatClass.Blocked: return CombatClass.Of(e.type, e.heavy);   // HCKIT4 v95
+            case CombatClass.Parried: return CombatClass.Parry;   // HCKIT4 v95
+            case CombatClass.GuardBroken: return CombatClass.GuardBreak;   // HCKIT4 v95
         }
         return null;
     }

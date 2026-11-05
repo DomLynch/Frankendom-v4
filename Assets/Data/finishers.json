@@ -35,10 +35,10 @@
       "locations": [],
       "attackerMove": "light_left",
       "attackerClip": "fin_beheading_k",
-      "contactAt": 0.6,
-      "duration": 3.1,
+      "contactAt": 1.1,
+      "duration": 4.6,
       "victimClip": "death",
-      "dieAt": 3.0,
+      "dieAt": 4.4,
       "distance": 1.2,
       "shotDefs": [
         {
@@ -61,7 +61,7 @@
           "focus": "target",
           "angleDeg": 75,
           "side": 1,
-          "dist": 2.3,
+          "dist": 2.8,
           "height": 1.55,
           "lookHeight": 1.6,
           "lookAhead": 0.1,
@@ -70,7 +70,7 @@
           "shake": 0.05,
           "frameBody": true,
           "frameTop": 0.9,
-          "frameMargin": 1.1,
+          "frameMargin": 1.5,
           "frameMaxDist": 9,
           "lookMin": 0.2,
           "track": "body",
@@ -132,12 +132,12 @@
           "shot": "dc_close"
         },
         {
-          "t": 0.5,
+          "t": 0.7,
           "rel": "contact",
           "shot": "dc_fall"
         },
         {
-          "t": 2.85,
+          "t": 4.2,
           "rel": "start",
           "shot": "dc_settle",
           "blend": 0.8
@@ -152,24 +152,15 @@
           "strength": 1
         }
       ],
-      "slowmo": [
-        {
-          "t": -0.1,
-          "rel": "contact",
-          "scale": 0.18,
-          "duration": 0.8,
-          "easeIn": 0.08,
-          "easeOut": 0.4
-        }
-      ],
-      "holdAfter": 1.2,
-      "note": "wind-up 0..0.95, downward slash peaks 34.7 m/s at 1.10 s (right hand), head-off effect at contact; victim plays its own death clip 0.3 s later (stagger 0..1.7 s of that clip, down 2.6-3.1 s) | JOANFIN v77: v75 gate FAIL (capsule overlap killer LeftLeg>LeftFoot x victim Spine2>Neck 0.94 s, worst -0.12 m). Model (tools/pairsim.py: killer clip end pose vs the Pitborn death-clip final pose): dz 1.16 -> -0.00 m, dz 1.20 + victimYawDeg 20 -> +0.30 m (the fallen torso lies across the killer left foot; turning the victim 20 deg swings the body off it). dz +0.04 keeps hand->neck 0.89 m < blade 1.0 m.",
+      "slowmo": [],
+      "holdAfter": 1.5,
+      "note": "wind-up 0..0.95, downward slash peaks 34.7 m/s at 1.10 s (right hand), head-off effect at contact; victim plays its own death clip 0.3 s later (stagger 0..1.7 s of that clip, down 2.6-3.1 s) | JOANFIN v77: v75 gate FAIL (capsule overlap killer LeftLeg>LeftFoot x victim Spine2>Neck 0.94 s, worst -0.12 m). Model (tools/pairsim.py: killer clip end pose vs the Pitborn death-clip final pose): dz 1.16 -> -0.00 m, dz 1.20 + victimYawDeg 20 -> +0.30 m (the fallen torso lies across the killer left foot; turning the victim 20 deg swings the body off it). dz +0.04 keeps hand->neck 0.89 m < blade 1.0 m. | FINFIX v93: attackerClipStart=0.0, attackerClipSpeed=1.0, contactAt=1.1, victimStart=1.4, victimClipSpeed=0.75, victimClipStart=0.5, dieAt=4.4, duration=4.6, holdAfter=1.5",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.12,
-      "attackerClipStart": 0.5,
-      "victimClipSpeed": 1.5,
+      "attackerClipStart": 0.0,
+      "victimClipSpeed": 0.75,
       "victimFade": 0.1,
-      "victimStart": 0.9,
+      "victimStart": 1.4,
       "holdLast": true,
       "victimYawDeg": 20.0,
       "pairOffset": [
@@ -192,7 +183,8 @@
           "distance": 1.275,
           "note": "Joan 1.58 m: right hand 0.16 m lower and 0.02 m back at the cut (FK of the clip on her bone lengths), so the victim moves 0.024 m closer (abs) to keep the measured hand->neck vector. Reach: hand->Pitborn neck 0.86 m in 3D vs blade 1.0 m: possible ONLY while Pitborn is hunched (posture break, neck 1.6 m); a standing Pitborn neck is 2.0 m, her hand 1.5-1.7 m: not reachable from the ground -> requireDeathblow (no decapitation on a plain HP kill)."
         }
-      ]
+      ],
+      "victimClipStart": 0.5
     },
     {
       "id": "split_crown",
@@ -207,9 +199,9 @@
       "attackerMove": "heavy_overhead",
       "attackerClip": "fin_chop1h_k",
       "contactAt": 0.48,
-      "duration": 3.0,
+      "duration": 4.2,
       "victimClip": "death",
-      "dieAt": 2.85,
+      "dieAt": 4.0,
       "distance": 1.4,
       "shotDefs": [
         {
@@ -229,18 +221,24 @@
         },
         {
           "id": "sc_close",
-          "focus": "mid",
-          "angleDeg": 90,
-          "side": -1,
-          "dist": 5.0,
-          "height": 1.7,
-          "lookHeight": 1.75,
-          "lookAhead": 0,
-          "fov": 30,
+          "focus": "target",
+          "angleDeg": 75,
+          "side": 1,
+          "dist": 2.8,
+          "height": 1.55,
+          "lookHeight": 1.6,
+          "lookAhead": 0.1,
+          "fov": 28,
           "blend": 0.05,
           "shake": 0.07,
           "gate": true,
-          "darkenEV": 0.0
+          "darkenEV": 0.0,
+          "frameBody": true,
+          "frameTop": 0.9,
+          "frameMargin": 1.5,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
         },
         {
           "id": "sc_side",
@@ -297,12 +295,12 @@
           "shot": "sc_close"
         },
         {
-          "t": 0.6,
+          "t": 0.8,
           "rel": "contact",
           "shot": "sc_side"
         },
         {
-          "t": 2.7,
+          "t": 3.7,
           "rel": "start",
           "shot": "sc_settle",
           "blend": 0.8
@@ -317,24 +315,15 @@
           "strength": 1
         }
       ],
-      "slowmo": [
-        {
-          "t": -0.1,
-          "rel": "contact",
-          "scale": 0.18,
-          "duration": 0.7,
-          "easeIn": 0.08,
-          "easeOut": 0.4
-        }
-      ],
-      "holdAfter": 1.2,
-      "note": "one-hand overhead chop: hand peaks 1.6 m at 0.2 s, comes down 0.5 s; crown split effect at contact, body drops straight down (death)",
+      "slowmo": [],
+      "holdAfter": 1.5,
+      "note": "one-hand overhead chop: hand peaks 1.6 m at 0.2 s, comes down 0.5 s; crown split effect at contact, body drops straight down (death) | FINFIX v93: attackerClipStart=0.0, attackerClipSpeed=1.0, contactAt=0.48, victimStart=0.78, victimClipSpeed=0.75, victimClipStart=0.5, dieAt=4.0, duration=4.2, holdAfter=1.5",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
-      "victimClipSpeed": 1.5,
+      "victimClipSpeed": 0.75,
       "victimFade": 0.1,
-      "victimStart": 0.73,
+      "victimStart": 0.78,
       "holdLast": true,
       "victimYawDeg": 0.0,
       "pairOffset": [
@@ -359,11 +348,12 @@
           "distance": 1.417,
           "note": "Joan: chop hand 0.13 m lower and 0.09 m back; victim 0.093 m closer (abs). Crown of a hunched Pitborn (head 1.7-1.9 m) is inside hand 1.4 + blade tip reach; a standing Pitborn crown is 2.5 m (hand + 1.0 = 2.4 at best, vertical blade): unreachable -> requireDeathblow."
         }
-      ]
+      ],
+      "victimClipStart": 0.5
     },
     {
       "id": "split_crown_pit",
-      "enabled": true,
+      "enabled": false,
       "placeholder": false,
       "weight": 2,
       "attackerSide": "enemy",
@@ -374,9 +364,9 @@
       "attackerMove": "heavy_overhead",
       "attackerClip": "fin_chop2h_k",
       "contactAt": 0.48,
-      "duration": 3.0,
+      "duration": 4.2,
       "victimClip": "death",
-      "dieAt": 2.85,
+      "dieAt": 4.0,
       "distance": 1.05,
       "shotDefs": [
         {
@@ -396,18 +386,24 @@
         },
         {
           "id": "sp_close",
-          "focus": "mid",
-          "angleDeg": 110,
-          "side": -1,
-          "dist": 5.2,
-          "height": 1.7,
-          "lookHeight": 1.7,
-          "lookAhead": 0,
-          "fov": 32,
+          "focus": "target",
+          "angleDeg": 75,
+          "side": 1,
+          "dist": 2.8,
+          "height": 1.55,
+          "lookHeight": 1.6,
+          "lookAhead": 0.1,
+          "fov": 28,
           "blend": 0.05,
           "shake": 0.07,
           "gate": true,
-          "darkenEV": 0
+          "darkenEV": 0,
+          "frameBody": true,
+          "frameTop": 0.9,
+          "frameMargin": 1.5,
+          "frameMaxDist": 9,
+          "lookMin": 0.2,
+          "track": "body"
         },
         {
           "id": "sp_side",
@@ -464,12 +460,12 @@
           "shot": "sp_close"
         },
         {
-          "t": 0.6,
+          "t": 0.8,
           "rel": "contact",
           "shot": "sp_side"
         },
         {
-          "t": 2.7,
+          "t": 3.7,
           "rel": "start",
           "shot": "sp_settle",
           "blend": 0.8
@@ -484,24 +480,15 @@
           "strength": 1
         }
       ],
-      "slowmo": [
-        {
-          "t": -0.1,
-          "rel": "contact",
-          "scale": 0.18,
-          "duration": 0.7,
-          "easeIn": 0.08,
-          "easeOut": 0.4
-        }
-      ],
-      "holdAfter": 1.2,
-      "note": "two-hand overhead chop, same timing as the one-hand clip",
+      "slowmo": [],
+      "holdAfter": 1.5,
+      "note": "two-hand overhead chop, same timing as the one-hand clip | FINFIX v93: attackerClipStart=0.0, attackerClipSpeed=1.0, contactAt=0.48, victimStart=0.78, victimClipSpeed=0.75, victimClipStart=0.5, dieAt=4.0, duration=4.2, holdAfter=1.5",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
-      "victimClipSpeed": 1.5,
+      "victimClipSpeed": 0.75,
       "victimFade": 0.1,
-      "victimStart": 0.73,
+      "victimStart": 0.78,
       "holdLast": true,
       "victimYawDeg": 0.0,
       "pairOffset": [
@@ -510,7 +497,8 @@
         1.05
       ],
       "killerYawDeg": 4.0,
-      "distanceScaleByKiller": true
+      "distanceScaleByKiller": true,
+      "victimClipStart": 0.5
     },
     {
       "id": "river_light",
@@ -524,8 +512,8 @@
       "locations": [],
       "attackerMove": "light_left",
       "attackerClip": "fin_river_light_k",
-      "contactAt": 0.7,
-      "duration": 2.4,
+      "contactAt": 0.875,
+      "duration": 3.0,
       "victimClip": "fin_river_light_v",
       "dieAt": -2,
       "distance": 0.839,
@@ -621,12 +609,12 @@
           "shot": "ri_close"
         },
         {
-          "t": 0.5,
+          "t": 0.6,
           "rel": "contact",
           "shot": "ri_fall"
         },
         {
-          "t": 1.6,
+          "t": 2.4,
           "rel": "start",
           "shot": "ri_settle",
           "blend": 0.8
@@ -641,77 +629,20 @@
           "strength": 1
         },
         {
-          "t": 0.59,
+          "t": 0.74,
           "rel": "contact",
           "type": "cut",
           "cut": "belly_open",
           "strength": 1
         }
       ],
-      "slowmo": [
-        {
-          "t": -0.1,
-          "rel": "contact",
-          "scale": 0.25,
-          "duration": 0.9,
-          "easeIn": 0.06,
-          "easeOut": 0.4,
-          "curve": [
-            {
-              "t": 0.0,
-              "scale": 1.0
-            },
-            {
-              "t": 0.1,
-              "scale": 0.25
-            },
-            {
-              "t": 0.7,
-              "scale": 0.25
-            },
-            {
-              "t": 1.1,
-              "scale": 0.6
-            },
-            {
-              "t": 1.5,
-              "scale": 1.0
-            }
-          ]
-        },
-        {
-          "t": 0.55,
-          "rel": "contact",
-          "scale": 0.3,
-          "duration": 0.4,
-          "easeIn": 0.05,
-          "easeOut": 0.3,
-          "curve": [
-            {
-              "t": 0.0,
-              "scale": 1.0
-            },
-            {
-              "t": 0.08,
-              "scale": 0.3
-            },
-            {
-              "t": 0.35,
-              "scale": 0.3
-            },
-            {
-              "t": 0.65,
-              "scale": 1.0
-            }
-          ]
-        }
-      ],
-      "holdAfter": 1.2,
-      "note": "lunging slash: first strike 0.70 s (hand 26.9 m/s, victim head 15.6 m/s), victim flung up ~0.8 s, down at 1.2, flourish slash 1.27 s, settled 1.73 s | V64F: pairOffset re-derived from both paired clips (capsule sim): the old 0.616 m put the Pitborn torso 0.05 m from the hand and the bodies overlapped for ~0.8 s (worst -0.18 m); now 1.15 m: no overlap, min capsule separation +0.10 m, hand to torso edge 0.57 m at contact. | JOANFIN v77: v75 gate FAIL (ri_close afterhit luma -65%): pairOffset follows the probe suggestion [0.486, 0, 0.839]; capsule model over the two paired clips: min separation +0.05 m (limit -0.03), no re-overlap. | kitV81: ri_close darkenEV -0.7 (a stop brighter; Strategy decision) and river_light added to rotation.enabledIds.",
-      "attackerClipSpeed": 1.0,
+      "slowmo": [],
+      "holdAfter": 1.8,
+      "note": "lunging slash: first strike 0.70 s (hand 26.9 m/s, victim head 15.6 m/s), victim flung up ~0.8 s, down at 1.2, flourish slash 1.27 s, settled 1.73 s | V64F: pairOffset re-derived from both paired clips (capsule sim): the old 0.616 m put the Pitborn torso 0.05 m from the hand and the bodies overlapped for ~0.8 s (worst -0.18 m); now 1.15 m: no overlap, min capsule separation +0.10 m, hand to torso edge 0.57 m at contact. | JOANFIN v77: v75 gate FAIL (ri_close afterhit luma -65%): pairOffset follows the probe suggestion [0.486, 0, 0.839]; capsule model over the two paired clips: min separation +0.05 m (limit -0.03), no re-overlap. | kitV81: ri_close darkenEV -0.7 (a stop brighter; Strategy decision) and river_light added to rotation.enabledIds. | FINFIX v93: attackerClipSpeed=0.8, victimClipSpeed=0.8, contactAt=0.875, victimStart=0.0, dieAt=-2, duration=3.0, holdAfter=1.8",
+      "attackerClipSpeed": 0.8,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
-      "victimClipSpeed": 1.0,
+      "victimClipSpeed": 0.8,
       "victimFade": 0.1,
       "victimStart": 0.0,
       "holdLast": true,
@@ -799,8 +730,8 @@
       "locations": [],
       "attackerMove": "light_left",
       "attackerClip": "fin_hengdao_k",
-      "contactAt": 0.77,
-      "duration": 2.65,
+      "contactAt": 1.11,
+      "duration": 3.8,
       "victimClip": "fin_hengdao_v",
       "dieAt": -2,
       "distance": 0.5,
@@ -896,12 +827,12 @@
           "shot": "he_close"
         },
         {
-          "t": 0.5,
+          "t": 0.6,
           "rel": "contact",
           "shot": "he_fall"
         },
         {
-          "t": 2.0,
+          "t": 2.9,
           "rel": "start",
           "shot": "he_settle",
           "blend": 0.8
@@ -916,48 +847,13 @@
           "strength": 1
         }
       ],
-      "slowmo": [
-        {
-          "t": -0.1,
-          "rel": "contact",
-          "scale": 0.2,
-          "duration": 1.8,
-          "easeIn": 0.06,
-          "easeOut": 0.3,
-          "curve": [
-            {
-              "t": 0.0,
-              "scale": 1.0
-            },
-            {
-              "t": 0.1,
-              "scale": 0.2
-            },
-            {
-              "t": 0.6,
-              "scale": 0.2
-            },
-            {
-              "t": 1.0,
-              "scale": 0.5
-            },
-            {
-              "t": 1.4,
-              "scale": 0.5
-            },
-            {
-              "t": 1.8,
-              "scale": 1.0
-            }
-          ]
-        }
-      ],
-      "holdAfter": 1.2,
-      "note": "heavy blade cut peaks 40.9 m/s at 1.00 s; victim staggers 1.0-1.7, collapses 1.7-2.7, settled 2.7 s",
-      "attackerClipSpeed": 1.3,
+      "slowmo": [],
+      "holdAfter": 1.5,
+      "note": "heavy blade cut peaks 40.9 m/s at 1.00 s; victim staggers 1.0-1.7, collapses 1.7-2.7, settled 2.7 s | FINFIX v93: attackerClipSpeed=0.9, victimClipSpeed=0.9, contactAt=1.11, victimStart=0.0, dieAt=-2, duration=3.8, holdAfter=1.5",
+      "attackerClipSpeed": 0.9,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
-      "victimClipSpeed": 1.3,
+      "victimClipSpeed": 0.9,
       "victimFade": 0.1,
       "victimStart": 0.0,
       "holdLast": true,
@@ -1032,8 +928,8 @@
       "locations": [],
       "attackerMove": "light_left",
       "attackerClip": "fin_counter_k",
-      "contactAt": 0.15,
-      "duration": 2.05,
+      "contactAt": 0.18,
+      "duration": 2.3,
       "victimClip": "fin_counter_v",
       "dieAt": -2,
       "distance": 1.0,
@@ -1108,7 +1004,7 @@
           "shot": "co_close"
         },
         {
-          "t": 0.5,
+          "t": 0.6,
           "rel": "contact",
           "shot": "co_fall"
         }
@@ -1122,22 +1018,13 @@
           "strength": 1
         }
       ],
-      "slowmo": [
-        {
-          "t": -0.1,
-          "rel": "contact",
-          "scale": 0.2,
-          "duration": 1.2,
-          "easeIn": 0.06,
-          "easeOut": 0.5
-        }
-      ],
-      "holdAfter": 1.2,
-      "note": "FALLBACK for hengdao (enable if it reads badly): counter strike at 0.13 s, victim flung 0.4 m back and down by 0.4 s. Killer faces -51 deg at t0 (turns during the clip), TUNE",
-      "attackerClipSpeed": 1.0,
+      "slowmo": [],
+      "holdAfter": 1.5,
+      "note": "FALLBACK for hengdao (enable if it reads badly): counter strike at 0.13 s, victim flung 0.4 m back and down by 0.4 s. Killer faces -51 deg at t0 (turns during the clip), TUNE | FINFIX v93: attackerClipSpeed=0.85, victimClipSpeed=0.85, contactAt=0.18, victimStart=0.0, dieAt=-2, duration=2.3, holdAfter=1.5",
+      "attackerClipSpeed": 0.85,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
-      "victimClipSpeed": 1.0,
+      "victimClipSpeed": 0.85,
       "victimFade": 0.1,
       "victimStart": 0.0,
       "holdLast": true,
@@ -1163,7 +1050,7 @@
       "attackerMove": "thrust",
       "attackerClip": "",
       "contactAt": -1,
-      "duration": 3.2,
+      "duration": 4.2,
       "victimClip": "",
       "dieAt": -2,
       "distance": 1.5,
@@ -1219,18 +1106,9 @@
           "strength": 1
         }
       ],
-      "slowmo": [
-        {
-          "t": 0,
-          "rel": "contact",
-          "scale": 0.3,
-          "duration": 1.2,
-          "easeIn": 0.08,
-          "easeOut": 0.5
-        }
-      ],
-      "holdAfter": 1.2,
-      "note": "placeholder clips; real: paired Death_RunThrough 2.4 s + Fin_RunThrough, blade stays in, victim arches then kneels. top20 hq-rapier-thrust-torso if missing"
+      "slowmo": [],
+      "holdAfter": 1.5,
+      "note": "placeholder clips; real: paired Death_RunThrough 2.4 s + Fin_RunThrough, blade stays in, victim arches then kneels. top20 hq-rapier-thrust-torso if missing | FINFIX v93: duration=4.2, holdAfter=1.5"
     },
     {
       "id": "opened",
@@ -1247,7 +1125,7 @@
       "attackerMove": "light_right",
       "attackerClip": "",
       "contactAt": -1,
-      "duration": 3.0,
+      "duration": 4.0,
       "victimClip": "",
       "dieAt": -2,
       "distance": 1.7,
@@ -1309,23 +1187,14 @@
           "strength": 1
         }
       ],
-      "slowmo": [
-        {
-          "t": 0,
-          "rel": "contact",
-          "scale": 0.25,
-          "duration": 1.0,
-          "easeIn": 0.06,
-          "easeOut": 0.4
-        }
-      ],
-      "holdAfter": 1.2,
-      "note": "placeholder swing; waist cut is lane B (MeshCut unit belly_open, falls back to torso_waist)"
+      "slowmo": [],
+      "holdAfter": 1.5,
+      "note": "placeholder swing; waist cut is lane B (MeshCut unit belly_open, falls back to torso_waist) | FINFIX v93: duration=4.0, holdAfter=1.5"
     }
   ],
   "cuts": {
     "weightMin": 0.5,
-    "pieceImpulseScale": 0.2,
+    "pieceImpulseScale": 0.07,
     "weldM": 0.0002,
     "capColor": [
       0.435,
@@ -1353,12 +1222,15 @@
         "massKg": 5.0,
         "colliderRadiusM": 0.11,
         "jetSeconds": 1.6,
-        "torqueMul": 0.7,
+        "torqueMul": 0.12,
         "upBias": 0.55,
-        "scatter": 0.35,
-        "angularDrag": 0.4,
+        "scatter": 0.15,
+        "angularDrag": 2.0,
         "lifeSeconds": 0,
-        "extraDecals": 10
+        "extraDecals": 10,
+        "launchSideMps": 1.1,
+        "launchUpMps": 1.8,
+        "spinRadS": 9.0
       },
       {
         "id": "head_split",
@@ -1648,14 +1520,14 @@
       "fitK": 0.5,
       "radiusScale": 1.0,
       "minRadiusM": 0.08,
-      "dynamicFriction": 0.6,
-      "staticFriction": 0.6,
-      "bounciness": 0.1,
+      "dynamicFriction": 1.0,
+      "staticFriction": 1.0,
+      "bounciness": 0.05,
       "collisionMode": "ContinuousSpeculative",
       "interpolate": true,
       "sleepThreshold": 0.05,
       "maxDepenetrationVelocity": 2.0,
-      "linearDamping": 0.05,
+      "linearDamping": 0.6,
       "spawnClampM": 0.01,
       "rescueBelowM": 0.1,
       "maxRescues": 1,
@@ -1664,7 +1536,9 @@
       "settleTolM": 0.02,
       "settleMaxLiftM": 0.4,
       "settleStillS": 0.2,
-      "settleFreeze": true
+      "settleFreeze": true,
+      "restMaxM": 1.5,
+      "restMaxDamp": 0.4
     },
     "cleaves": [
       {
@@ -1856,6 +1730,7 @@
       },
       {
         "name": "Joan",
+        "bakedGlb": "Assets/Characters/Joan/Joan_finishers.glb",
         "referenceState": "guard_idle",
         "hipsRestZ": 0.9898683,
         "hipsCorrection": [
@@ -2004,7 +1879,7 @@
     "persistRotation": true,
     "notify": true,
     "disableMotionBlur": true,
-    "maxSeconds": 25,
+    "maxSeconds": 30.0,
     "forceId": "",
     "fallbackShot": "kill",
     "auto": {
@@ -2075,7 +1950,7 @@
         }
       ],
       "pairProbe": true,
-      "maxFinisherSeconds": 7.0,
+      "maxFinisherSeconds": 9.0,
       "lumaTolerance": 0.6,
       "lumaFails": true,
       "lumaRefFrames": 3,
@@ -2090,7 +1965,7 @@
       "vignetteWaitS": 2.0,
       "vignetteAbsolute": false
     },
-    "deathblowFinishes": true,
+    "deathblowFinishes": false,
     "offInBalanceAuto": true,
     "look": {
       "copyCameraData": true,
@@ -2342,7 +2217,28 @@
         "pairScale": 1.0,
         "note": "default killer: no pair scaling (HCKIT2 v93). Pair scale could be computed from roster heightM later."
       }
-    ]
+    ],
+    "deathblowFinishHpFrac": -1.0,
+    "maxStepS": 0.05,
+    "contactShake": 0.08,
+    "contactShakeS": 0.25,
+    "contactHoldMs": 130.0,
+    "hpToZeroAtContact": true,
+    "precut": {
+      "enabled": true,
+      "startAt": 0.05,
+      "budgetMs": 16.0,
+      "catchUpBudgetMs": 40.0,
+      "catchUpBeforeContactS": 0.5,
+      "checkEvery": 512
+    }
   },
-  "_joanfin": "JOANFIN v77: entries[].overrides (killer / victim roster id, FinisherPair), rt.killers (pairScale per killer id). Joan as VICTIM (split_crown_pit, hengdao_heavy): bones 0.09-0.10 m lower than Dracula, the maul / hengdao cut crosses that height in 3-10 ms at 30-40 m/s: no change needed."
+  "_joanfin": "JOANFIN v77: entries[].overrides (killer / victim roster id, FinisherPair), rt.killers (pairScale per killer id). Joan as VICTIM (split_crown_pit, hengdao_heavy): bones 0.09-0.10 m lower than Dracula, the maul / hengdao cut crosses that height in 3-10 ms at 30-40 m/s: no change needed.",
+  "_finfix": "FINFIX v93 (laneFINFIX): real-time finisher lengthening, NO Time.timeScale. slowmo [] on every entry (slow_mo.json enabled false), victim clip speed 0.75 (decapitation / split crown, as V3), paired clips at one shared speed, later victim start, longer hold; 130 ms animation-only contact hold (rt.contactHoldMs); head thrown with V3 velocities (cuts.units[head].launchSideMps/launchUpMps/spinRadS) and clamped to gore.piece.restMaxM from the neck; contact shake rt.contactShake; HP bar -> 0 at the contact (rt.hpToZeroAtContact); finisher only on a kill (rt.deathblowFinishes false); rt.maxStepS clamps the finisher clocks; rt.precut builds the mesh cut in slices under the wind-up.",
+  "bodyBounds": { "_about": "HCKIT4 v95: FinisherBody (live body bounds the finisher / death cameras frame). Per roster id (exact id first, then the \"*\" row, then the built-in numbers). centerYM x scale = fallback bounds centre height when the body has no skinned mesh; sizeM = fallback bounds size; maxSizeM = cap of a stray huge skinned bound; all x max(scaleFloor, lossyScale.y); refreshS = renderer list refresh. Today every row has the old literals - set a real height per character here.", "rows": [
+      {"character": "*", "centerYM": 0.9, "sizeM": [0.8, 1.8, 0.8], "maxSizeM": [3.2, 3.4, 3.2], "scaleFloor": 0.5, "refreshS": 0.25},
+      {"character": "Joan", "centerYM": 0.9, "sizeM": [0.8, 1.8, 0.8], "maxSizeM": [3.2, 3.4, 3.2], "scaleFloor": 0.5, "refreshS": 0.25},
+      {"character": "Pitborn", "centerYM": 0.9, "sizeM": [0.8, 1.8, 0.8], "maxSizeM": [3.2, 3.4, 3.2], "scaleFloor": 0.5, "refreshS": 0.25},
+      {"character": "Dracula", "centerYM": 0.9, "sizeM": [0.8, 1.8, 0.8], "maxSizeM": [3.2, 3.4, 3.2], "scaleFloor": 0.5, "refreshS": 0.25}
+    ] }
 }

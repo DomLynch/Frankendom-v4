@@ -434,18 +434,44 @@ def gate_F(R, data, sa, args, ros):
         R.add('F', 'WARN', 'mhhead_attach.fighterName', '"%s" is the MetaHuman head owner but the roster player is "%s" (head sits on a non-player)' % (mh['fighterName'], ros.player))
     if R.count('F', 'FAIL') == 0 and R.count('F', 'WARN') == 0: R.add('F', 'PASS', 'summary', 'no duplicate fact disagrees')
 
+
+# -------------------------------------------------------------------------------- gate G (only with --overlay): no character gains or loses a row
+def gate_G(R, data, sa, args, ros):
+    before = PROJECT / 'Assets' / 'Data'
+    if not args.overlay: R.add('G', 'INFO', 'summary', 'needs --overlay (compares live rows with live+overlay rows)'); return
+    bros = Roster(before); nchg = 0
+    def own(rows, field, r_, cid):
+        out = []
+        for r in rows or []:
+            if not isinstance(r, dict): continue
+            k = r.get(field)
+            if isinstance(k, str) and k and k != STAR and r_.resolve(k) == cid:
+                c = dict(r); c[field] = '<key>'; out.append(json.dumps(c, sort_keys=True))
+        return sorted(out)
+    for f, path, field, kind in KEYED:
+        b, a = jload(before / f), jload(data / f)
+        if b is None or a is None: continue
+        for cid in ros.ids:
+            ob, oa = own(rows_at(b, path), field, bros, cid), own(rows_at(a, path), field, ros, cid)
+            if ob != oa:
+                nchg += 1
+                what = 'GAINS %d row(s)' % (len(oa) - len(ob)) if len(oa) > len(ob) else 'LOSES %d row(s)' % (len(ob) - len(oa)) if len(oa) < len(ob) else 'own row CONTENT changed'
+                R.add('G', 'FAIL', '%s:%s [%s]' % (f, path, cid), '%s through the merge (a role token or key rename must never change which rows a character has)' % what)
+    R.add('G', 'PASS' if nchg == 0 else 'INFO', 'summary', 'own-row sets per roster id compared across %d keyed arrays: %d changed' % (len(KEYED), nchg))
+
 # -------------------------------------------------------------------------------- main
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('--gates', default='ABCDEF'); ap.add_argument('--data'); ap.add_argument('--sa'); ap.add_argument('--overlay')
+    ap = argparse.ArgumentParser(); ap.add_argument('--gates', default='ABCDEFG'); ap.add_argument('--data'); ap.add_argument('--sa'); ap.add_argument('--overlay')
     ap.add_argument('--fix', action='store_true'); ap.add_argument('--strict', action='store_true'); ap.add_argument('--json'); ap.add_argument('--quiet', action='store_true', help='hide PASS and INFO lines')
     args = ap.parse_args(); R = Res()
     data, sa, tmp = setup(args); ros = Roster(data)
-    names = {'A': 'Data == StreamingAssets', 'B': 'key hygiene', 'C': 'coverage per roster character', 'D': 'baked asset vs json', 'E': 'controller states', 'F': 'duplicate facts'}
+    names = {'A': 'Data == StreamingAssets', 'B': 'key hygiene', 'C': 'coverage per roster character', 'D': 'baked asset vs json', 'E': 'controller states', 'F': 'duplicate facts', 'G': 'row coverage unchanged by the merge'}
     if not ros.ids: print('FAIL: roster.json unreadable'); return 1
     for g in args.gates.upper():
+        if g == 'G' and not args.overlay: continue
         try:
             {'A': lambda: gate_A(R, data, sa, args), 'B': lambda: gate_B(R, data, sa, args, ros), 'C': lambda: gate_C(R, data, sa, args, ros),
-             'D': lambda: gate_D(R, data, sa, args, ros), 'E': lambda: gate_E(R, data, sa, args, ros), 'F': lambda: gate_F(R, data, sa, args, ros)}[g]()
+             'D': lambda: gate_D(R, data, sa, args, ros), 'E': lambda: gate_E(R, data, sa, args, ros), 'F': lambda: gate_F(R, data, sa, args, ros), 'G': lambda: gate_G(R, data, sa, args, ros)}[g]()
         except Exception as e:
             R.add(g, 'FAIL', 'gate crashed', repr(e))
     print('data_gates: project=%s  roster=%s  player=%s  enemy=%s%s' % (PROJECT, ','.join(ros.ids), ros.player, ros.enemy, '  OVERLAY=' + args.overlay if args.overlay else ''))

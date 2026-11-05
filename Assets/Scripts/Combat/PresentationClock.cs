@@ -10,7 +10,7 @@ using UnityEngine;
 public class HitStopTable
 {
     public int tickHz = 60;
-    public string kickMoveId = "kick", specialMovePrefix = "skill_";
+    public string kickMoveId = CombatClass.KickMoveId, specialMovePrefix = CombatClass.SpecialPrefix;   // HCKIT4 v95
     public string[] specialEventTypes = new string[0];
     public HitStopRow[] tiers = new HitStopRow[0];
     public HitStopRow[] moves = new HitStopRow[0];
@@ -29,10 +29,7 @@ public class HitStopTable
         else if (mid.Length > 0 && !string.IsNullOrEmpty(specialMovePrefix) && mid.StartsWith(specialMovePrefix) && IsSpecialType(e.type)) tier = "special";
         else switch (e.type)
         {
-            case "Hit": tier = e.heavy ? "hitHeavy" : "hitLight"; break;
-            case "Blocked": tier = e.heavy ? "blockHeavy" : "blockLight"; break;
-            case "Parried": tier = "parry"; break;
-            case "GuardBroken": tier = "guardBreak"; break;
+            default: tier = CombatClass.Of(e.type, e.heavy); break;   // HCKIT4 v95 K8: hit / block / parry / guardBreak by CombatClass
         }
         return tier == null ? 0f : MsOf(Find(tiers, tier));
     }

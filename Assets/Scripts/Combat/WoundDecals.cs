@@ -17,7 +17,7 @@ public static class WoundDecals
     static readonly Dictionary<string, Texture2D[]> premulCache = new Dictionary<string, Texture2D[]>(); // premultiplied copy for the quad fallback
     static Texture2D maskMap;                                                                             // HDRP decal mask: smoothness in alpha
     static readonly List<Material> decalMats = new List<Material>();
-    static Material quadMat; static Mesh quad; static Shader decalShader; static bool shaderLooked, warned;
+    static Material quadMat; static Mesh quad; static Shader decalShader; static bool shaderLooked, warned, decalSrcLogged;   // QC1 v95
     static readonly int TintId = Shader.PropertyToID("_Tint"), MainTexId = Shader.PropertyToID("_MainTex");
     static MaterialPropertyBlock mpb;
 
@@ -96,7 +96,11 @@ public static class WoundDecals
         if (!shaderLooked) { shaderLooked = true; decalShader = Shader.Find("HDRP/Decal"); }
         if (decalShader == null) return null;
         string key = kind + "#" + variant; for (int i = decalMats.Count - 1; i >= 0; i--) { if (decalMats[i] == null) { decalMats.RemoveAt(i); continue; } if (decalMats[i].name == key) return decalMats[i]; }   // v75 leak fix: a destroyed material is dropped, never handed to a projector
-        var m = new Material(decalShader) { name = key, hideFlags = HideFlags.DontUnloadUnusedAsset, enableInstancing = true };
+        var refMat = Resources.Load<Material>("WoundDecalRef");   // QC1 v95
+        var m = refMat != null ? new Material(refMat) : new Material(decalShader);   // QC1 v95
+        m.name = key; m.hideFlags = HideFlags.DontUnloadUnusedAsset; m.enableInstancing = true;   // QC1 v95
+        m.EnableKeyword("_COLORMAP"); m.EnableKeyword("_MASKMAP"); m.EnableKeyword("_MATERIAL_AFFECTS_ALBEDO"); m.EnableKeyword("_MATERIAL_AFFECTS_MASKMAP");   // QC1 v95
+        if (!decalSrcLogged) { decalSrcLogged = true; Debug.Log("[WoundDecals] decal material from " + (refMat != null ? "Resources/WoundDecalRef" : "Shader.Find (no reference asset: variants may be stripped)")); }   // QC1 v95
         var tex = Masks(kind, dc, false); m.SetTexture("_BaseColorMap", tex[variant % tex.Length]); m.SetColor("_BaseColor", Color.white);
         m.SetTexture("_MaskMap", MaskMap(dc));
         m.SetFloat("_AffectAlbedo", 1f); m.SetFloat("_AffectNormal", 0f); m.SetFloat("_AffectMetal", 0f); m.SetFloat("_AffectAO", 0f); m.SetFloat("_AffectSmoothness", 1f); m.SetFloat("_AffectEmission", 0f);

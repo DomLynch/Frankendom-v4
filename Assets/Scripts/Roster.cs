@@ -27,7 +27,7 @@ public static class Roster
 {
     [Serializable] public class Cfg { public string note = ""; public string player = ""; public string enemy = ""; public RosterCharacter[] characters = new RosterCharacter[0]; }
 
-    const string FallbackPlayer = "Dracula", FallbackEnemy = "Pitborn";   // the ONLY character literals in code
+    const string FallbackEnemy = "Pitborn";   // the ONLY character literal in code /*NODRAC v93*/ FallbackPlayer literal removed: the fallback player is the first roster row that is not the enemy (FirstNonEnemy)
 
     static Cfg c;
     public static string Source = "(none)";
@@ -90,12 +90,15 @@ public static class Roster
         catch (Exception e) { Debug.LogWarning("[Roster] load failed, fallback pair used: " + e.Message); k = null; }
         if (k == null) k = new Cfg();
         if (k.characters == null) k.characters = new RosterCharacter[0];
-        if (string.IsNullOrEmpty(k.player)) k.player = FallbackPlayer;
+        if (string.IsNullOrEmpty(k.enemy)) k.enemy = FallbackEnemy;
+        if (string.IsNullOrEmpty(k.player)) k.player = FirstNonEnemy(k);   // NODRAC v93: was FallbackPlayer = "Dracula"
         if (string.IsNullOrEmpty(k.enemy)) k.enemy = FallbackEnemy;
         foreach (var r in k.characters) Fill(r);
         c = k;
     }
 
+    // NODRAC v93: first roster row that is not the enemy (roster.json lists the player first; "" when the roster is empty)
+    static string FirstNonEnemy(Cfg k) { if (k.characters != null) foreach (var r in k.characters) if (r != null && !string.IsNullOrEmpty(r.id) && r.id != k.enemy) return r.id; return ""; }
     static RosterCharacter Synth(string id) { var r = new RosterCharacter { id = id }; Fill(r); return r; }
     static void Fill(RosterCharacter r)
     {

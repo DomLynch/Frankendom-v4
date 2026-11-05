@@ -19,6 +19,7 @@ public class HeadClamp : MonoBehaviour
         public float yaw = 45f, pitch = 20f;      // default limits (deg, head relative to the torso)
         public float neckShare = 0.5f;            // the neck bone alone is limited to share x the limits (the rest is taken by the head bone)
         public float knee = 0.8f;                 // soft limit: no change below knee x limit, smooth approach to the limit above it
+        public float maxUpDeg = 90f, maxUpKnee = 0.5f;   // JOANHEAD: cap on the head's WORLD pitch (deg up from level, root frame); 90 = off. Soft: unchanged below knee x cap, tanh to the cap above. Faded by the category on/off weight
         public Limit[] categories; public Look look = new Look();
     }
     [System.Serializable] public class Root { public Row defaults = new Row(); public Row[] characters; }
@@ -146,6 +147,23 @@ public class HeadClamp : MonoBehaviour
         SetPose(b, q, torsoPose * (c * rel)); return true;
     }
 
+    // JOANHEAD: the Mixamo idle / walk loops carry the head 9..17 deg ABOVE level (chin up) in the root frame. The clamp above only limits the head relative to the torso,
+    // so it cannot level it. This caps the head's absolute pitch (root frame, up = +) at row.maxUpDeg (soft), taking the excess off the neck (neckShare) and the head.
+    void CapWorldPitch(float w)
+    {
+        if (w <= 0f || row.maxUpDeg >= 89f) return;
+        float wy, wp; YawPitch(Pose(head, qHead), out wy, out wp);
+        float cap = Mathf.Max(0f, row.maxUpDeg); if (wp <= cap * Mathf.Clamp01(row.maxUpKnee)) return;
+        float target = Mathf.Lerp(wp, Soft(wp, cap, row.maxUpKnee), w); float excess = wp - target; if (excess < 0.01f) return;
+        if (neck != null && row.neckShare > 0f)
+        {
+            Quaternion pn = Pose(neck, qNeck); float ny, np; YawPitch(pn, out ny, out np);
+            SetPose(neck, qNeck, Quaternion.FromToRotation(pn * Vector3.forward, Dir(ny, np - excess * row.neckShare)) * pn);
+        }
+        Quaternion ph = Pose(head, qHead); float hy, hp; YawPitch(ph, out hy, out hp);   // the head follows the neck (child), so re-read it
+        SetPose(head, qHead, Quaternion.FromToRotation(ph * Vector3.forward, Dir(hy, target)) * ph);
+    }
+
     // measured now (after every LateUpdate that ran before the caller): head yaw / pitch relative to the torso
     public bool Measure(out float yaw, out float pitch, out float torsoYawRoot, out float hipsYawRoot)
     {
@@ -191,6 +209,7 @@ public class HeadClamp : MonoBehaviour
         float rawY, rawP; float w = ForceOff ? 0f : on;
         if (w > 0f && neck != null && row.neckShare > 0f) ClampBone(neck, qNeck, tp, y * row.neckShare, p * row.neckShare, out rawY, out rawP, w);
         ClampBone(head, qHead, tp, y, p, out rawYaw, out rawPitch, w);
+        CapWorldPitch(w);   // JOANHEAD
         Quaternion rel2 = Quaternion.Inverse(tp) * Pose(head, qHead); YawPitch(rel2, out nowYaw, out nowPitch);
         if ((debugLog || row.debug) && PerfFlags.VerboseLogs) { if ((Time.frameCount % 60) == 0) Debug.Log("[HeadClamp] raw yaw/pitch=" + rawYaw.ToString("F1") + "/" + rawPitch.ToString("F1") + " now=" + nowYaw.ToString("F1") + "/" + nowPitch.ToString("F1") + " limit=" + y + "/" + p); }
     }

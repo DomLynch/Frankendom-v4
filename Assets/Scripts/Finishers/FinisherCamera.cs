@@ -17,6 +17,7 @@ public class FinisherCamera : MonoBehaviour
     FinisherShot shot; Transform actor, target; float sideUsed = 1f, sideFlip = 1f;
     Vector3 fromPos; Quaternion fromRot; float fromFov; float blendT = 1f, blendDur = 0f;
     float shakeAmp, shakeLeft; float shotStart; GameObject noBlurGo;
+    float shotAge, shakeDur = 0.25f;   // FINFIX v93: shot clock + shake length built from the clamped frame step (FinisherTime.Step), so one long frame cannot jump the push-in or end the shake
     readonly FinisherBody tb = new FinisherBody(), ab = new FinisherBody();   // V61B: live body bounds of the victim (target) and the killer (actor): the shots frame the BODY, not the root transform
     float flipLock;
     // V62B: gate-facing azimuth + per-shot exposure offset
@@ -66,14 +67,14 @@ public class FinisherCamera : MonoBehaviour
     {
         if (!Active || cam == null || s == null) return;
         fromPos = transform.position; fromRot = transform.rotation; fromFov = cam.fieldOfView;   // blend from where the camera is right now
-        shot = s; shotStart = Time.unscaledTime; actor = actorT ? actorT : actor; target = targetT ? targetT : target; tb.Set(target); ab.Set(actor); flipLock = 0f;
+        shot = s; shotStart = Time.unscaledTime; shotAge = 0f; actor = actorT ? actorT : actor; target = targetT ? targetT : target; tb.Set(target); ab.Set(actor); flipLock = 0f;
         sideUsed = s.side == 0f ? (sideFlip = -sideFlip) : Mathf.Sign(s.side);
         blendDur = blendOverride >= 0f ? blendOverride : s.blend; blendT = blendDur <= 0f ? 1f : 0f;
-        if (s.shake > 0f) { shakeAmp = s.shake; shakeLeft = 0.25f; }
+        if (s.shake > 0f) { shakeAmp = s.shake; shakeLeft = 0.25f; shakeDur = 0.25f; }
         gateRot = 0f; gateMir = false; gateNoMir = false; { var Lk = FinisherConfig.Get().rt.look; evTarget = (Lk != null ? Lk.darkenEV : 0f) + s.darkenEV; }   // V62B
     }
 
-    public void Shake(float amp, float seconds = 0.25f) { shakeAmp = amp; shakeLeft = seconds; }
+    public void Shake(float amp, float seconds = 0.25f) { shakeAmp = amp; shakeLeft = seconds; shakeDur = Mathf.Max(0.01f, seconds); }   // FINFIX v93: shakeDur
 
     static FinisherShot Fallback()
     {
@@ -119,7 +120,7 @@ public class FinisherCamera : MonoBehaviour
                 dist = Mathf.Min(Mathf.Max(dist, need), Mathf.Max(dist, s.frameMaxDist));
             }
         }
-        if (s.pushIn > 0f && s.pushSeconds > 0f) dist -= s.pushIn * Mathf.Clamp01((Time.unscaledTime - shotStart) / s.pushSeconds);
+        if (s.pushIn > 0f && s.pushSeconds > 0f) dist -= s.pushIn * Mathf.Clamp01(shotAge / s.pushSeconds)   /* FINFIX v93 */;
         pos = new Vector3(f.x, f.y, f.z) + dir * dist + perp * s.shoulder * sideUsed;
         pos.y = f.y + s.height;
         Vector3 look = Vector3.Lerp(f, tp, Mathf.Clamp01(s.lookAhead)); look.y = lookY;
@@ -131,7 +132,7 @@ public class FinisherCamera : MonoBehaviour
     {
         if (!Active || cam == null) return;
         if (shot == null || actor == null || target == null) return;
-        float dt = Time.unscaledDeltaTime;
+        float dt = FinisherTime.Step(Time.unscaledDeltaTime); shotAge += dt;   // FINFIX v93: clamped step
         tb.Update(dt, shot.bodyFollow); ab.Update(dt, shot.bodyFollow);
         Pose(shot, out Vector3 p, out Quaternion r, out float fv, out Vector3 lookPt, out Vector3 focusPt);
         // V61B: never inside the killer's or the victim's own body (that was the black frame): swing to the other side once, then re-pose
@@ -148,7 +149,7 @@ public class FinisherCamera : MonoBehaviour
         }
         if (shakeLeft > 0f)
         {
-            shakeLeft -= dt; float w = Mathf.Clamp01(shakeLeft / 0.25f);
+            shakeLeft -= dt; float w = Mathf.Clamp01(shakeLeft / shakeDur);   // FINFIX v93: shakeDur
             p += new Vector3(Mathf.Sin(Time.unscaledTime * 90f), Mathf.Cos(Time.unscaledTime * 77f), Mathf.Sin(Time.unscaledTime * 63f)) * shakeAmp * w;
         }
         // never inside geometry, never below the floor

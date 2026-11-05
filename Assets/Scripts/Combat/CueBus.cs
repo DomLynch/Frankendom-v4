@@ -7,43 +7,19 @@ using UnityEngine;
 public class CueBus : MonoBehaviour
 {
     public AudioClip sprite;
-    const float SpriteSeconds = 46.108f, OutputGain = 0.65f, PitchSpread = 0.05f;
-    const int Voices = 8, BaseSeed = 731;
+    static float SpriteSeconds { get { return AudioManifest.Get().spriteSeconds; } }   // HCKIT4 v95 K9: audio_manifest.json (was const 46.108 s, gain .65, pitch .05, 8 voices, seed 731)
+    static float OutputGain { get { return AudioManifest.Get().outputGain; } }
+    static float PitchSpread { get { return AudioManifest.Get().pitchSpread; } }
+    static int Voices { get { return AudioManifest.Get().voices; } }
+    static uint BaseSeed { get { return (uint)AudioManifest.Get().seed; } }
 
-    // cue -> variants [start, duration] in seconds (V3 MANIFEST)
-    static readonly Dictionary<string, float[]> Manifest = new Dictionary<string, float[]>
-    {
-        { "whoosh_light", new[] { 0.02f, 0.192f, 0.272f, 0.185f, 0.517f, 0.182f, 0.759f, 0.181f } },
-        { "whoosh_heavy", new[] { 1f, 0.291f, 1.352f, 0.294f, 1.706f, 0.253f, 2.019f, 0.272f } },
-        { "draw", new[] { 2.351f, 0.3f, 2.711f, 0.3f } },
-        { "hit_flesh", new[] { 3.071f, 0.62f, 3.751f, 0.45f, 4.261f, 0.75f, 5.071f, 0.6f, 5.731f, 0.7f } },
-        { "hit_heavy", new[] { 6.491f, 0.75f, 7.301f, 0.55f, 7.911f, 0.852f, 8.824f, 0.682f, 9.565f, 0.795f } },
-        { "hit_kick", new[] { 10.421f, 0.28f, 10.761f, 0.28f, 11.101f, 0.28f, 11.441f, 0.28f } },
-        { "block", new[] { 11.781f, 0.5f, 12.341f, 0.5f, 12.901f, 0.48f, 13.441f, 0.48f } },
-        { "block_perfect", new[] { 13.981f, 0.6f, 14.641f, 0.6f, 15.301f, 0.6f, 15.961f, 0.6f } },
-        { "parry", new[] { 16.621f, 0.72f, 17.401f, 0.72f, 18.181f, 0.72f, 18.961f, 0.66f, 19.681f, 0.66f, 20.401f, 0.66f } },
-        { "guard_break", new[] { 21.121f, 0.46f, 21.641f, 0.46f, 22.161f, 0.46f, 22.681f, 0.46f } },
-        { "whip", new[] { 23.201f, 0.28f, 23.541f, 0.28f } },
-        { "whip_raise", new[] { 23.881f, 0.4f, 24.341f, 0.4f } },
-        { "charge", new[] { 24.801f, 0.5f, 25.361f, 0.5f } },
-        { "kill", new[] { 25.921f, 0.62f, 26.601f, 0.82f, 27.481f, 0.7f } },
-        { "roll", new[] { 28.241f, 0.32f, 28.621f, 0.32f, 29.001f, 0.32f, 29.381f, 0.32f } },
-        { "backstep", new[] { 29.761f, 0.15f, 29.971f, 0.15f, 30.181f, 0.15f, 30.391f, 0.15f } },
-        { "death_voice", new[] { 30.601f, 0.44f, 31.101f, 0.62f, 31.781f, 0.44f, 32.281f, 0.62f } },
-        { "flesh_cut", new[] { 32.961f, 0.18f, 33.201f, 0.18f, 33.441f, 0.18f, 33.681f, 0.18f } },
-        { "flesh_stab", new[] { 33.921f, 0.16f, 34.141f, 0.16f } },
-        { "flesh_tear", new[] { 34.361f, 0.34f, 34.761f, 0.34f } },
-        { "bone_crack", new[] { 35.161f, 0.5f, 35.721f, 0.38f } },
-        { "crowd_gasp", new[] { 36.161f, 0.42f, 36.641f, 0.42f } },
-        { "crowd_cheer", new[] { 37.121f, 2.5f, 39.681f, 2.5f, 42.241f, 2.5f } },
-        { "charge_foe", new[] { 44.801f, 0.397f, 45.257f, 0.391f } },
-        { "effort_voice", new[] { 45.708f, 0.15f, 45.918f, 0.15f } },
-    };
+    // cue -> variants [start, duration] in seconds (V3 MANIFEST) now lives in audio_manifest.json (cues[]), read once in Awake   // HCKIT4 v95 K9
+    static Dictionary<string, float[]> Manifest { get { return AudioManifest.Slices(); } }
 
     readonly Dictionary<string, AudioClip[]> clips = new Dictionary<string, AudioClip[]>();
     readonly Dictionary<string, int> last = new Dictionary<string, int>();
     AudioSource[] voices; double[] busyUntil;
-    uint seed = BaseSeed; int frameUsed, frameCap = 4, frameStamp = -1;
+    uint seed; int frameUsed, frameCap, frameStamp = -1;   // HCKIT4 v95 K9: seed / frameCap are set in Awake (AudioManifest reads a file: not allowed in a MonoBehaviour field initializer)
     public int played;   // test hook (AutoShot report)
     public static readonly List<string> Log = new List<string>();   // -record: every cue with its game time, to mix the soundtrack offline
 
@@ -59,7 +35,7 @@ public class CueBus : MonoBehaviour
 
     void Awake()
     {
-        voices = new AudioSource[Voices]; busyUntil = new double[Voices];
+        seed = BaseSeed; frameCap = AudioManifest.Get().frameCap; voices = new AudioSource[Voices]; busyUntil = new double[Voices];   // HCKIT4 v95
         for (int i = 0; i < Voices; i++) { var go = new GameObject("Voice" + i); go.transform.SetParent(transform); var a = go.AddComponent<AudioSource>(); a.playOnAwake = false; a.spatialBlend = 0f; voices[i] = a; }
         if (!sprite) { Debug.LogWarning("CueBus: no sprite assigned"); return; }
         int ch = sprite.channels, hz = sprite.frequency; var data = new float[sprite.samples * ch];
@@ -72,7 +48,7 @@ public class CueBus : MonoBehaviour
                 int s0 = Mathf.Clamp(Mathf.RoundToInt(kv.Value[i * 2] * hz), 0, sprite.samples - 1), n = Mathf.Min(Mathf.RoundToInt(kv.Value[i * 2 + 1] * hz), sprite.samples - s0);
                 var seg = new float[n * ch]; System.Array.Copy(data, s0 * ch, seg, 0, n * ch);
                 // 8 ms edge fades so the slices never click
-                int fade = Mathf.Min(n / 4, Mathf.RoundToInt(0.008f * hz));
+                int fade = Mathf.Min(n / 4, Mathf.RoundToInt(AudioManifest.Get().edgeFadeS * hz));   // HCKIT4 v95
                 for (int k = 0; k < fade; k++) { float g = (float)k / fade; for (int c = 0; c < ch; c++) { seg[k * ch + c] *= g; seg[(n - 1 - k) * ch + c] *= g; } }
                 var clip = AudioClip.Create(kv.Key + "_" + i, n, ch, hz, false); clip.SetData(seg, 0); v[i] = clip;
             }
@@ -93,7 +69,7 @@ public class CueBus : MonoBehaviour
     public void Play(string name, float gain, float delay = 0f, float rate = 1f)
     {
         if (!clips.TryGetValue(name, out var v) || v.Length == 0) return;
-        if (frameStamp != Time.frameCount) { frameStamp = Time.frameCount; frameUsed = 0; frameCap = 4; }
+        if (frameStamp != Time.frameCount) { frameStamp = Time.frameCount; frameUsed = 0; frameCap = AudioManifest.Get().frameCap; }   // HCKIT4 v95
         if (frameUsed >= frameCap) return;   // V3: 4 cues per frame (8 on a death)
         frameUsed++;
         last.TryGetValue(name, out int li); if (!last.ContainsKey(name)) li = -1;
@@ -101,46 +77,48 @@ public class CueBus : MonoBehaviour
         int vi = 0; double oldest = double.MaxValue; double now = AudioSettings.dspTime;
         for (int i = 0; i < Voices; i++) { if (busyUntil[i] <= now) { vi = i; oldest = -1; break; } if (busyUntil[i] < oldest) { oldest = busyUntil[i]; vi = i; } }
         var a = voices[vi]; a.Stop(); a.clip = v[idx]; a.volume = Mathf.Clamp01(gain * OutputGain); a.pitch = rate * (1f + PitchSpread * (Rand() * 2f - 1f));
-        double start = now + Mathf.Max(0f, delay) + 0.01; a.PlayScheduled(start); busyUntil[vi] = start + v[idx].length / Mathf.Max(0.1f, a.pitch);
+        double start = now + Mathf.Max(0f, delay) + AudioManifest.Get().scheduleLeadS; a.PlayScheduled(start); busyUntil[vi] = start + v[idx].length / Mathf.Max(AudioManifest.Get().minPitch, a.pitch);   // HCKIT4 v95
         played++;
         Log.Add($"{AutoShot.RecFrame / 30f + Mathf.Max(0f, delay):F4}\t{name}\t{idx}\t{a.volume:F4}\t{a.pitch:F4}");
     }
 
-    static bool IsHeavy(MoveDef m) { if (m == null) return false; string id = m.id; return id.StartsWith("heavy") || id == "riposte" || id == "slash_riposte" || id.StartsWith("skill_"); }
+    static bool IsHeavy(MoveDef m) { return CombatClass.IsHeavyMove(m); }   // HCKIT4 v95 K8: combat_classes.json heavyMovePrefixes / heavyMoveIds
+    // HCKIT4 v95 K9: the built-in event -> cue mapping (used only while cues.json is off) = audio_manifest.json fallback rows (evt + cond), played in file order
+    void Fb(string evt, string cond)
+    {
+        var rows = AudioManifest.Get().fallback;
+        for (int i = 0; i < rows.Length; i++) { var r = rows[i]; if (r != null && r.evt == evt && r.cond == cond) Play(r.cue, r.gain, r.delay, r.rate <= 0f ? 1f : r.rate); }
+    }
 
     void OnContact(DuelFighter a, DuelFighter d, string type, bool heavy, bool perfect)
     {
-        bool kick = a.CurrentMove != null && a.CurrentMove.id == "kick";
+        bool kick = a.CurrentMove != null && CombatClass.IsKick(a.CurrentMove.id);   // HCKIT4 v95
         {   // P2: cues.json (weapon x surface x weight); falls through to the built-in mapping below when the table is off
             var hr = type == "Hit" ? HitReactionTable.Last : null;
             string evt = type == "Hit" ? "hit" : type == "GuardBroken" ? "guard_break" : type == "Parried" ? "parry" : type == "Blocked" ? (perfect ? "block_perfect" : "block") : "";
             if (evt != "" && CueTable.Dispatch(this, evt, a, d, hr != null ? hr.weight : (kick ? "kick" : heavy ? "heavy" : "light"), a.CurrentMove != null ? a.CurrentMove.id : "")) return;
         }
-        switch (type)
+        switch (type)   // HCKIT4 v95 K9
         {
-            case "Hit": Play(kick ? "hit_kick" : heavy ? "hit_heavy" : "hit_flesh", 0.3f); break;
-            case "GuardBroken": Play("guard_break", 1f); Play("hit_flesh", 0.55f); break;
-            case "Parried": Play("parry", 1f); break;
-            case "Blocked": if (perfect) Play("block_perfect", 0.55f); else Play("block", 1f); break;
+            case CombatClass.Hit: Fb("hit", kick ? "kick" : heavy ? "heavy" : "light"); break;
+            case CombatClass.GuardBroken: Fb("guard_break", "*"); break;
+            case CombatClass.Parried: Fb("parry", "*"); break;
+            case CombatClass.Blocked: Fb("block", perfect ? "perfect" : "normal"); break;
         }
     }
     void OnAttackStarted(DuelFighter f, MoveDef m)
     {
-        if (CueTable.Dispatch(this, "attack_start", f, null, m.id == "kick" ? "kick" : IsHeavy(m) ? "heavy" : "light", m.id)) return;   // P2: cues.json
-        if (m.id == "kick") Play("whoosh_light", 0.09f);
-        else if (IsHeavy(m)) Play("whoosh_heavy", 0.18f);
-        else Play("whoosh_light", 0.12f);
+        if (CueTable.Dispatch(this, "attack_start", f, null, CombatClass.IsKick(m.id) ? "kick" : IsHeavy(m) ? "heavy" : "light", m.id)) return;   // P2: cues.json   // HCKIT4 v95
+        Fb("attack_start", CombatClass.IsKick(m.id) ? "kick" : IsHeavy(m) ? "heavy" : "light");   // HCKIT4 v95 K9
     }
-    void OnAttackMissed(DuelFighter f, MoveDef m) { if (CueTable.Dispatch(this, "attack_miss", f, null, m != null && m.id == "kick" ? "kick" : IsHeavy(m) ? "heavy" : "light", m != null ? m.id : "")) return; Play("whoosh_light", 0.1f, 0f, 0.8f); }
-    void OnAction(DuelFighter f, string action) { if (CueTable.Dispatch(this, action, f, null, "light", "")) return; if (action == "roll") Play("roll", 0.12f); else if (action == "backstep") Play("backstep", 0.09f); }
+    void OnAttackMissed(DuelFighter f, MoveDef m) { if (CueTable.Dispatch(this, "attack_miss", f, null, m != null && CombatClass.IsKick(m.id) ? "kick" : IsHeavy(m) ? "heavy" : "light", m != null ? m.id : "")) return; Fb("attack_miss", "*"); }   // HCKIT4 v95
+    void OnAction(DuelFighter f, string action) { if (CueTable.Dispatch(this, action, f, null, "light", "")) return; Fb(action, "*"); }   // HCKIT4 v95
     void OnKilled(DuelFighter f, MoveDef m)
     {
-        frameStamp = Time.frameCount; frameCap = 8; frameUsed = Mathf.Min(frameUsed, 7);
+        frameStamp = Time.frameCount; frameCap = AudioManifest.Get().deathFrameCap; frameUsed = Mathf.Min(frameUsed, frameCap - 1);   // HCKIT4 v95
         var hr = HitReactionTable.Last;   // P2: the killing blow (set by Duel.Resolve before Die); victim = f
         if (CueTable.Dispatch(this, "kill", hr != null ? hr.attacker : null, f, hr != null ? hr.weight : "light", hr != null ? hr.moveId : (m != null ? m.id : ""))) return;
-        Play("death_voice", 0.45f, 0.03f); Play("kill", 0.65f, 0.65f);
-        bool stab = m != null && (m.id.Contains("thrust") || m.id == "riposte");
-        Play(stab ? "flesh_stab" : "flesh_cut", 0.45f);
+        Fb("kill", "*"); Fb("kill", CombatClass.IsStab(m) ? "stab" : "cut");   // HCKIT4 v95 K9
     }
 }
 

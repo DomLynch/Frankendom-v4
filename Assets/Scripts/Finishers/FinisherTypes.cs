@@ -82,6 +82,7 @@ public class FinisherEntry
     // victim
     public string victimClip = "";          // Animator state; "" = the normal death (DuelFighter.Die)
     public float victimClipSpeed = 1f, victimFade = 0.08f, victimStart = -1f;   // victimStart -1 = at the contact
+    public float victimClipStart = 0f;      // FINFIX v93: second INSIDE the victim clip where it starts (skips a standing lead-in, e.g. the Mixamo death clip's first ~0.5 s)
     public float dieAt = -2f;               // seconds when DuelFighter.Die() runs (ragdoll hook): -2 = at the contact when no victimClip, else at the clip end; -1 = never
     public bool holdLast = true;
     // placement (centre distance of the pair and who faces whom)
@@ -97,6 +98,8 @@ public class FinisherEntry
     public FinisherGoreKey[] gore = new FinisherGoreKey[0];
     public FinisherSlowKey[] slowmo = new FinisherSlowKey[0];
     public float holdAfter = 1.6f;          // seconds (unscaled) the final frame stays before control returns
+    public float contactHoldMs = -1f;       // FINFIX v93: animation-only hold at the contact (both Animators stop for this many real ms, the scene clock / camera / blood keep running; NO Time.timeScale). -1 = rt.contactHoldMs
+    public float contactShake = -1f;        // FINFIX v93: camera shake amplitude at the contact (m); -1 = rt.contactShake
     // V62 pair probe (-finisherauto logs where the killer's hand is relative to the victim's body at contact and suggests pairOffset numbers; tune in data, never in code)
     public float bladeReach = 0.6f;                       // wanted horizontal distance (stand-in metres, x killer scale) from the killer's hand to the victim's probe bone at contact
     public string probeKillerBone = "RightHand", probeVictimBone = "Spine2";   // bone-name suffixes
@@ -133,6 +136,8 @@ public class PieceCfg   // V62C: the severed piece (head) physics; finishers.jso
     public bool interpolate = true;
     public float sleepThreshold = 0.05f, maxDepenetrationVelocity = 2f, linearDamping = 0.05f;   // linearDamping < 0 = leave the MeshCut value
     public float spawnClampM = 0.01f;               // at spawn the lowest point of the mesh is lifted to at least ground + this
+    public float restMaxM = 0f;                     // FINFIX v93: > 0 = the piece never rests (or travels) farther than this from where it was cut (horizontal metres); beyond it the position is pulled back and the horizontal speed killed. 0 = off
+    public float restMaxDamp = 0.5f;                // FINFIX v93: horizontal speed multiplier applied each physics step while the clamp is active (0 = dead stop)
     public float rescueBelowM = 0.3f;               // ONE safety rescue only when the collider bottom is more than this under the ground (not every frame)
     public int maxRescues = 1;
     public float settleSeconds = 0.5f;
@@ -169,6 +174,8 @@ public class CutUnit
     public float jetSeconds = 1.0f;
     // gib physics + blood (all data): torque scale, upward bias and sideways scatter of the throw, angular drag, piece lifetime (0 = stays), extra decals splashed on the body at the cut
     public float torqueMul = 0.5f, upBias = 0.45f, scatter = 0.3f, angularDrag = 0.5f, lifeSeconds = 0f;
+    // FINFIX v93 (V3 severed-head numbers): > 0 = the piece is thrown with these VELOCITIES instead of the impulse (launchSideMps horizontally away from the killer, launchUpMps up, spinRadS about the blow heading); 0 = the old impulse / torque
+    public float launchSideMps = 0f, launchUpMps = 0f, spinRadS = 0f;
     public int extraDecals = 8;
     public string cleave = "", burst = "";   // V63G: ids in gore.cleaves / gore.bursts (a dark wound line + patches + drips on the head, and a bigger blood burst, on top of the cut; FinisherCleave)
 }
@@ -322,7 +329,13 @@ public class FinisherRtCfg
     public bool persistRotation = true;      // finisher_rotation.json in persistentDataPath
     public bool notify = true;               // feed line "Finisher: <id>" in steer mode
     public bool disableMotionBlur = true;    // a global high-priority Volume forces MotionBlur off while a scene runs
-    public bool deathblowFinishes = true;    // V61B: a posture-break deathblow ALWAYS starts a finisher (even when it would not lower HP to zero); the scene then kills
+    public bool deathblowFinishes = false;   // V61B: true = a posture-break deathblow ALWAYS starts a finisher (even when it would not lower HP to zero); the scene then kills. FINFIX v93: default FALSE = V3 behaviour (a finisher only on a real kill; the deathblow is a big hit)
+    public float deathblowFinishHpFrac = -1f;   // FINFIX v93: only with deathblowFinishes true: -1 = every deathblow, otherwise only when the HP left after the hit is <= this fraction of max HP
+    public float maxStepS = 0.05f;           // FINFIX v93: largest time step (s) the finisher clocks (scene T, camera blends / shake, slow-mo, hold) take in one frame; one long frame cannot skip a beat. 0 = off
+    public float contactShake = 0.08f, contactShakeS = 0.25f;   // FINFIX v93: camera shake (m, seconds) at the contact (was a hard-coded 0.03)
+    public float contactHoldMs = 130f;       // FINFIX v93: animation-only hold at the contact (real ms, both Animators stopped; the clock, camera and effects keep running; no Time.timeScale). 0 = off
+    public bool hpToZeroAtContact = true;    // FINFIX v93: the victim's HP bar goes to 0 at the contact (not at Die()); the kill itself is still the scene's Die()
+    public PrecutCfg precut = new PrecutCfg();   // FINFIX v93: the mesh cut is built in slices under the wind-up and only applied at the contact
     public bool offInBalanceAuto = true;     // V61B: -balanceauto runs keep the plain death (no cinematic) unless -finisherauto forces it
     public float maxSeconds = 25f;           // wall-clock watchdog of one scene (unscaled)
     public string forceId = "";              // debug: always play this entry id (empty = rotation)
@@ -333,6 +346,18 @@ public class FinisherRtCfg
     public FinisherPairCfg pair = new FinisherPairCfg();               // V64F: interpenetration probe of the two fighters (FinisherPairProbe.cs)
     public VictimLookCfg victimLook = new VictimLookCfg();             // V64F: victim material luma probe + stuck-flash guard (FinisherVictimLook.cs)
     public FinisherGroundCfg ground = new FinisherGroundCfg();   // V62B: foot-to-ground probe + correction during a scene (FinisherGround.cs)
+}
+
+// FINFIX v93: MeshCut.Prepare is time-sliced from the scene start; the cut is applied at its gore key (a cheap swap). Not finished by then = it is finished synchronously (logged).
+[Serializable]
+public class PrecutCfg
+{
+    public bool enabled = true;
+    public float startAt = 0.05f;            // scene seconds when the prepare job starts (after the hard cut to the first shot)
+    public float budgetMs = 8f;              // CPU ms per frame the job may use
+    public float catchUpBudgetMs = 30f;      // budget once the contact is closer than catchUpBeforeContactS
+    public float catchUpBeforeContactS = 0.5f;
+    public int checkEvery = 512;             // loop iterations between two stopwatch checks
 }
 
 // ---------------- the file ----------------

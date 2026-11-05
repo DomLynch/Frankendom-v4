@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;   // LOOKOPT v95: DecalProjector for finisherBlood.wetDecal
 
 // Blood art for the finisher cut: spray strands + the decals splashed at the cut. (Was GoreFx / WoundsRuntime; the per-hit wound rules and severity state are gone.)
 public static class GoreFx
@@ -169,6 +170,34 @@ public static class GoreFx
         return null;
     }
 
+    // LOOKOPT v95 (finisherBlood.wetDecal): the splat as a real HDRP DecalProjector (lit, glossy). Material per variant, cached. False = HDRP/Decal missing -> caller keeps the old quad.
+    static Shader wetShader; static bool wetLooked; static Material[] wetMats; static Texture2D wetMask;
+    static bool WetDecal(Transform bone, Vector3 surfacePos, Vector3 outDir, Vector3 axis, float size, int variant, GoreCfg g, string loc)
+    {
+        if (!wetLooked) { wetLooked = true; wetShader = Shader.Find("HDRP/Decal"); }
+        if (wetShader == null) return false;
+        var o = LookOptions.Cfg().finisherBlood;
+        if (wetMats == null) wetMats = new Material[4];
+        int i = variant & 3;
+        if (wetMats[i] == null)
+        {
+            var m = new Material(wetShader) { name = "FinisherBloodWet" + i, hideFlags = HideFlags.DontUnloadUnusedAsset };
+            if (wetMask == null) { wetMask = new Texture2D(1, 1, TextureFormat.RGBA32, false, true); wetMask.SetPixel(0, 0, new Color(0f, 1f, 0f, Mathf.Clamp01(o.smoothness))); wetMask.Apply(); }   // R metal 0, G AO 1, A smoothness
+            m.SetTexture("_BaseColorMap", Splats(g)[i]); var c = g.color; m.SetColor("_BaseColor", new Color(c[0], c[1], c[2], 1f));
+            m.SetTexture("_MaskMap", wetMask);
+            m.SetFloat("_AffectAlbedo", 1f); m.SetFloat("_AffectNormal", 0f); m.SetFloat("_AffectMetal", 0f); m.SetFloat("_AffectAO", 0f); m.SetFloat("_AffectSmoothness", 1f); m.SetFloat("_AffectEmission", 0f);
+            m.SetFloat("_DecalBlend", 1f);
+            wetMats[i] = m;
+        }
+        var go = new GameObject("FinisherBloodWet_" + loc);
+        go.transform.SetPositionAndRotation(surfacePos, Quaternion.LookRotation(-outDir, axis));   // projects back onto the limb
+        go.transform.SetParent(bone, true);
+        var p = go.AddComponent<DecalProjector>();
+        p.material = wetMats[i]; p.size = new Vector3(size, size, Mathf.Max(0.02f, o.depth)); p.pivot = Vector3.zero; p.fadeFactor = 1f;
+        p.drawDistance = 25f; p.fadeScale = 0.8f; p.startAngleFade = 60f; p.endAngleFade = 90f;
+        return true;
+    }
+
     /// <summary>Splash `count` blood decals on a body location of the victim (the finisher cut calls this). loc: 0 arm, 1 leg, 2 torso, 3 head. Decals are quads parented to the bones.</summary>
     public static void Splash(Transform victim, int loc, int count, GoreCfg g)
     {
@@ -200,6 +229,7 @@ public static class GoreFx
             Vector3 dir = (Mathf.Cos(ang) * fwd + Mathf.Sin(ang) * side).normalized;
             float size = Mathf.Lerp(g.sizeM[0], g.sizeM[1], Rnd()) * 1.75f;   // severity 3 look: the cut is the worst wound
 
+            if (LookOptions.Cfg().finisherBlood.wetDecal && WetDecal(bone, p + dir * (gl.radiusM + g.quadLift), dir, axis, size, (int)(Rnd() * 4f), g, names[loc])) continue;   // LOOKOPT v95: lit HDRP/Decal instead of the flat quad
             var go = new GameObject("FinisherBlood_" + names[loc]);
             go.AddComponent<MeshFilter>().sharedMesh = Quad();
             var mr = go.AddComponent<MeshRenderer>(); mr.sharedMaterial = mat;

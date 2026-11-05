@@ -1,6 +1,6 @@
 {
   "_about": "V65CAM gameplay slow-mo (CombatSlowMo.cs). ONE dip at a time (a second request merges: lower scale, longer hold up to maxSeconds in total; never stacked), all timers on unscaled time, cooldownS between dips, never while a finisher owns the clock (finisher slow-mo curves stay in finishers.json). scale = Time.timeScale at the hold; easeInS / holdS / easeOutS in unscaled seconds; minScale = the floor for every class; delayS = wait after the contact; watchdogS = a sub-1 timeScale that nobody owns is forced back to 1 after that long; attackerPlayerOnly = only when the player lands the blow. laneHITFX v81: delayS = the hit-stop freeze (hit_feel.json parry 100 ms, crit ~80-110, deathblow ~120) so the freeze plays first and the dip is not eaten by it. Parry 0.35 for ~0.35 s all in, crit 0.45, deathblow (only when no finisher takes it over) 0.25.",
-  "enabled": true,
+  "enabled": false,   "_finfix": "FINFIX v93: false = no gameplay slow-mo at all (online-safe, no Time.timeScale); the code path stays, set true for the old parry / crit / deathblow dips",
   "minScale": 0.2,
   "maxSeconds": 0.9,
   "cooldownS": 1.2,

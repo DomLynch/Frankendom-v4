@@ -1004,7 +1004,8 @@
         "label": "GO FOR KILL",
         "key": "G"
       }
-    ]
+    ],
+    "icons": { "_about": "HCKIT4 v95: STIcons procedural textures. glyphRes = square size of a stance / tactic glyph, glyphAa = edge softness (x signed distance), roundRes = disc / ring texture size, ringEdgePx / thinRingPx = ring edge widths in texels of roundRes, pieSteps = cooldown pie frames (angle steps), pieRes = pie texture size. The glyph shapes themselves are art and stay in STIcons.cs.", "glyphRes": 128, "glyphAa": 0.75, "roundRes": 128, "ringEdgePx": 5.0, "thinRingPx": 2.2, "pieSteps": 48, "pieRes": 96 }
   },
   "auto": {
     "seconds": 150,

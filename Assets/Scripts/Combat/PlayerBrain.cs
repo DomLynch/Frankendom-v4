@@ -21,7 +21,7 @@ public class PlayerBrain : MonoBehaviour
         if (TouchControls.Active)
         {
             // a touch screen laptop flips TouchControls.Active on the first touch and it never cleared: keyboard keys then did nothing (no roll, no guard). Real key input on desktop switches it back off.
-            if (Application.isMobilePlatform || Input.touchCount > 0 || !(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.E) || Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.F))) return;
+            if (Application.isMobilePlatform || Input.touchCount > 0 || !TouchRelease.AnyHeld()) return;   // HCKIT4 v95
             TouchControls.Active = false;
         }
         Vector2 inp = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -41,7 +41,7 @@ public class PlayerBrain : MonoBehaviour
         if (rig && df.opponent && inp.sqrMagnitude > 0.01f && FlowTable.PushAwayBreaks)
         {
             Vector3 toE = df.opponent.transform.position - transform.position; toE.y = 0f;
-            if (Vector3.Angle(df.moveDir, toE) > 120f) { awayT += Time.deltaTime; if (awayT > 0.25f) rig.lockEnabled = false; } else awayT = 0f;
+            if (Vector3.Angle(df.moveDir, toE) > FlowTable.LockBreakAngle) { awayT += Time.deltaTime; if (awayT > FlowTable.LockBreakSeconds) rig.lockEnabled = false; } else awayT = 0f;   // HCKIT4 v95
         }
         else awayT = 0f;
         if (rig && FlowTable.AttackRelocks && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F))) rig.lockEnabled = true;

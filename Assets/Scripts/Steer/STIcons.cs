@@ -7,7 +7,20 @@ using UnityEngine;
 // (alpha = shape) that STUI tints per state. Also holds the disc / ring / pie textures.
 public static class STIcons
 {
-    const int N = 128;
+    static int N { get { return Cfg().glyphRes; } }   // HCKIT4 v95 K13: steer.json ui.icons (texture sizes, edge widths); the glyph geometry below is art and stays code
+    [Serializable] class IconCfg { public int glyphRes = 128, roundRes = 128, pieSteps = 48, pieRes = 96; public float glyphAa = 0.75f, ringEdgePx = 5f, thinRingPx = 2.2f; }
+    [Serializable] class IconUi { public IconCfg icons; }
+    [Serializable] class IconRoot { public IconUi ui; }
+    static IconCfg icfg;
+    static IconCfg Cfg()
+    {
+        if (icfg != null) return icfg;
+        var c = new IconCfg();
+        try { string s = DataPath.ReadText("steer.json"); if (!string.IsNullOrEmpty(s)) { var r = JsonUtility.FromJson<IconRoot>(s); if (r != null && r.ui != null && r.ui.icons != null) c = r.ui.icons; } }
+        catch (Exception ex) { Debug.LogWarning("STIcons: steer.json icons read failed: " + ex.Message); }
+        c.glyphRes = Mathf.Clamp(c.glyphRes, 16, 512); c.roundRes = Mathf.Clamp(c.roundRes, 16, 512); c.pieRes = Mathf.Clamp(c.pieRes, 16, 512); c.pieSteps = Mathf.Clamp(c.pieSteps, 4, 360);
+        icfg = c; return c;
+    }
 
     static float Seg(float px, float py, float ax, float ay, float bx, float by, float r)
     {
@@ -145,7 +158,7 @@ public static class STIcons
             for (int i = 0; i < N; i++)
             {
                 float d = Shape(id, (i + 0.5f) / N, (j + 0.5f) / N);
-                float a = Mathf.Clamp01(0.5f - d * N * 0.75f);
+                float a = Mathf.Clamp01(0.5f - d * N * Cfg().glyphAa);   // HCKIT4 v95
                 px[j * N + i] = new Color32(255, 255, 255, (byte)(a * 255f));
             }
         t.SetPixels32(px); t.Apply(false, false);
@@ -155,14 +168,14 @@ public static class STIcons
     static Texture2D disc, ring, thinRing;
     static Texture2D MakeRound(int mode)   // 0 disc, 1 ring (thick edge), 2 thin ring
     {
-        const int S = 128; var t = new Texture2D(S, S, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear, hideFlags = HideFlags.HideAndDontSave };
+        int S = Cfg().roundRes; var t = new Texture2D(S, S, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear, hideFlags = HideFlags.HideAndDontSave };   // HCKIT4 v95
         var px = new Color32[S * S]; float c = (S - 1) * 0.5f, R = S * 0.5f - 1f;
         for (int y = 0; y < S; y++) for (int x = 0; x < S; x++)
             {
                 float r = Mathf.Sqrt((x - c) * (x - c) + (y - c) * (y - c));
                 float a = Mathf.Clamp01(R - r + 0.5f);
-                if (mode == 1) a *= Mathf.Clamp01(r - (R - 5f) + 0.5f);
-                if (mode == 2) a *= Mathf.Clamp01(r - (R - 2.2f) + 0.5f);
+                if (mode == 1) a *= Mathf.Clamp01(r - (R - Cfg().ringEdgePx) + 0.5f);   // HCKIT4 v95
+                if (mode == 2) a *= Mathf.Clamp01(r - (R - Cfg().thinRingPx) + 0.5f);   // HCKIT4 v95
                 px[y * S + x] = new Color32(255, 255, 255, (byte)(a * 255f));
             }
         t.SetPixels32(px); t.Apply(false, false); return t;
@@ -172,7 +185,7 @@ public static class STIcons
     public static Texture2D ThinRing { get { if (thinRing == null) thinRing = MakeRound(2); return thinRing; } }
 
     // pie overlays: pie(i) covers the first i/PieSteps of the circle, clockwise from 12 o'clock (white, tinted by the caller)
-    public const int PieSteps = 48;
+    public static int PieSteps { get { return Cfg().pieSteps; } }   // HCKIT4 v95
     static Texture2D[] pies;
     public static Texture2D Pie(float frac)
     {
@@ -180,7 +193,7 @@ public static class STIcons
         int i = Mathf.Clamp(Mathf.CeilToInt(frac * PieSteps - 0.001f), 0, PieSteps);
         if (i == 0) return null;
         if (pies[i] != null) return pies[i];
-        const int S = 96; var t = new Texture2D(S, S, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear, hideFlags = HideFlags.HideAndDontSave };
+        int S = Cfg().pieRes; var t = new Texture2D(S, S, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear, hideFlags = HideFlags.HideAndDontSave };   // HCKIT4 v95
         var px = new Color32[S * S]; float c = (S - 1) * 0.5f, R = S * 0.5f - 1f, lim = (float)i / PieSteps * 2f * Mathf.PI;
         for (int y = 0; y < S; y++) for (int x = 0; x < S; x++)
             {

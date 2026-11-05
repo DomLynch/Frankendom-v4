@@ -1,0 +1,6 @@
+{
+  "_about": "HCKIT4 v95 K8: the move-id vocabulary the combat presentation classes share (CombatClass.cs: CamShake, CameraImpact, HitFeel, PresentationClock, CombatSlowMo, CueBus). kickMoveId = the kick; specialMovePrefix = ids that start with it are specials; critMoveId = the critical blow (counter and rear hits are crits too); heavyMovePrefixes / heavyMoveIds = a swing is heavy when its id starts with / equals one of them (cue weight, whoosh); stabMoveContains / stabMoveIds = the killing blow is a stab. A new move class is one edit here, not seven in code. Event types (Hit, Blocked, Parried, GuardBroken) and class names (hitHeavy ...) are keys of other json files and stay in code.",
+  "kickMoveId": "kick", "specialMovePrefix": "skill_", "critMoveId": "critical",
+  "heavyMovePrefixes": ["heavy", "skill_"], "heavyMoveIds": ["riposte", "slash_riposte"],
+  "stabMoveContains": ["thrust"], "stabMoveIds": ["riposte"]
+}

@@ -35,12 +35,20 @@ public static class FinisherTime
     }
     public static bool Slowed { get { return dips.Count > 0; } }
 
+    /// <summary>FINFIX v93: a frame step clamped to finishers.json rt.maxStepS (0.05 s): the finisher clocks (scene T, camera blends, shake, slow-mo dips, holds) advance by at most this per frame,
+    /// so one long frame (a JIT / asset hitch of seconds) cannot skip a beat or expire a whole shot. maxStepS 0 = no clamp.</summary>
+    public static float Step(float dt)
+    {
+        float m = 0f; try { m = FinisherConfig.Get().rt.maxStepS; } catch (System.Exception) { }
+        return m > 0f && dt > m ? m : dt;
+    }
+
     // call once per frame (CameraRig.Update and the playback coroutines both may call it; it runs once per frame)
     public static void Tick()
     {
         if (lastFrame == Time.frameCount) return; lastFrame = Time.frameCount;
         if (dips.Count == 0) return;
-        float dt = Time.unscaledDeltaTime, lowest = 1f;
+        float dt = Step(Time.unscaledDeltaTime), lowest = 1f;   // FINFIX v93: clamped step
         for (int i = dips.Count - 1; i >= 0; i--)
         {
             var d = dips[i]; d.age += dt;

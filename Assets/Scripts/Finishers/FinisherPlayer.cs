@@ -187,7 +187,7 @@ public static class FinisherPlayer
         int off = Mathf.Max(1, Mathf.RoundToInt(frac * (md != null ? md.Active(false) : 4)));
         float planned = e.contactAt >= 0f ? e.contactAt : clipPath ? 0.6f : (1 + (md != null ? md.Windup(false) : 14) + off) / 60f;
         bool vClip = !string.IsNullOrEmpty(e.victimClip) && HasState(fv, e.victimClip);
-        float vLen = vClip ? ClipLength(fv, e.victimClip) / Mathf.Max(0.05f, e.victimClipSpeed) : 0f;
+        float vLen = vClip ? Mathf.Max(0.05f, ClipLength(fv, e.victimClip) - Mathf.Max(0f, e.victimClipStart)) / Mathf.Max(0.05f, e.victimClipSpeed) : 0f;   // FINFIX v93: minus victimClipStart
 
         // the DuelFighter state machine must not touch a body that plays a paired clip
         if (clipPath) A.enabled = false;
@@ -212,11 +212,30 @@ public static class FinisherPlayer
             if (!any) host.CameraCut(FinisherConfig.Get().rt.fallbackShot, A.transform, V.transform, 0f, e.shotDefs);
         }
 
+        // FINFIX v93: the mesh cut of the first cut-type gore key is BUILT in slices from the scene start (under the wind-up) and only APPLIED at its key (a few ms), so the contact frame does not stall.
+        var rtc = FinisherConfig.Get().rt; var pre = rtc.precut ?? new PrecutCfg();
+        MeshCut.CutJob[] cutJobs = new MeshCut.CutJob[gores.Count]; int jobIdx = -1; float jobT0 = -1f, jobReadyT = -1f;
+        if (pre.enabled && FinisherConfig.EnableGore)
+            for (int i = 0; i < gores.Count && jobIdx < 0; i++)
+            {
+                string pu = GoreUnit(gores[i]);
+                if (pu.Length > 0 && MeshCut.IsMeshUnit(pu) && MeshCut.CanCut(V.transform, pu)) { cutJobs[i] = MeshCut.Prepare(V.transform, pu, FinisherConfig.Get().rotation.seed + Mathf.Abs(Hash(pu)) % 1000); jobIdx = i; }
+            }
+        // FINFIX v93: animation-only contact hold (both Animators stopped for contactHoldMs; the scene clock, camera, blood and the sim are NOT slowed or stopped)
+        bool held = false; float holdLeft = 0f, savedA = 1f, savedV = 1f, ratioWas = 1f;
         float total = Mathf.Max(e.duration, planned + 0.5f);
         while (T < total)
         {
-            T += Time.deltaTime;
+            float dt = FinisherTime.Step(Time.deltaTime);   // FINFIX v93: clamped step - one long frame cannot skip a beat
+            T += dt;
             host.TimeTick();
+            if (jobIdx >= 0 && !cutJobs[jobIdx].done && T >= pre.startAt)
+            {
+                float toContact = (contactSeen ? 0f : planned - T);
+                if (jobT0 < 0f) jobT0 = T;
+                cutJobs[jobIdx].Step(toContact < pre.catchUpBeforeContactS ? pre.catchUpBudgetMs : pre.budgetMs, pre.checkEvery);
+                if (cutJobs[jobIdx].done) { jobReadyT = T; Debug.Log("[finisher] cut '" + cutJobs[jobIdx].unitId + "' prepared at T=" + T.ToString("0.00") + " s (started " + jobT0.ToString("0.00") + "), " + cutJobs[jobIdx].slices + " slices, cpu " + cutJobs[jobIdx].cpuMs.ToString("0") + " ms, max slice " + cutJobs[jobIdx].maxSliceMs.ToString("0") + " ms" + (cutJobs[jobIdx].failed ? " FAILED: " + cutJobs[jobIdx].note : "")); }
+            }
             // contact
             if (!contactSeen)
             {
@@ -226,7 +245,9 @@ public static class FinisherPlayer
                     contactSeen = true; contactT = T;
                     host.FireEvent(A, V, "Hit", true, loc, A.CurrentMove);
                     if (ProbeEnabled) { Probe(e, A, V, axis, rightV, ks); Clearance(e, A, V, ks); }
-                    if (rig) host.CameraShake(0.03f);
+                    { float cs = e.contactShake >= 0f ? e.contactShake : rtc.contactShake; if (rig && cs > 0f) host.CameraShake(cs, rtc.contactShakeS); }   // FINFIX v93: json (was a hard-coded 0.03)
+                    if (rtc.hpToZeroAtContact && !V.Dead) { V.health = 0f; var hpz = V.GetComponent<Health>(); if (hpz != null) hpz.current = 0f; Debug.Log("[finisher] " + e.id + " contact at T=" + T.ToString("0.00") + " s: victim HP -> 0"); }   // FINFIX v93: the bar drains at the contact, not at Die()
+                    { float hm = e.contactHoldMs >= 0f ? e.contactHoldMs : rtc.contactHoldMs; if (hm > 0f) { held = true; holdLeft = hm / 1000f; if (fa != null && fa.anim != null) { savedA = fa.anim.speed; fa.anim.speed = 0f; } if (fv != null && fv.anim != null) { savedV = fv.anim.speed; fv.anim.speed = 0f; } } }   // FINFIX v93
                     if (!vClip && e.dieAt <= -1.5f && !dead) { V.Die(); dead = true; }
                 }
             }
@@ -234,7 +255,7 @@ public static class FinisherPlayer
             if (vClip && !vStarted)
             {
                 float vs = e.victimStart >= 0f ? e.victimStart : (contactSeen ? contactT : planned);
-                if (T >= vs && (e.victimStart >= 0f || contactSeen)) { vStarted = true; fv.holdLast = false; fv.ForceExact(e.victimClip, e.victimFade, 0f); fv.anim.speed = e.victimClipSpeed * fv.animWeight; vStart = T; }
+                if (T >= vs && (e.victimStart >= 0f || contactSeen)) { vStarted = true; fv.holdLast = false; fv.ForceExact(e.victimClip, e.victimFade, Mathf.Max(0f, e.victimClipStart)); fv.anim.speed = held ? 0f : e.victimClipSpeed * fv.animWeight; if (held) savedV = e.victimClipSpeed * fv.animWeight; vStart = T; }
             }
             if (vClip && vStarted && !dead && e.dieAt != -1f)
             {
@@ -246,7 +267,17 @@ public static class FinisherPlayer
                 }
             }
             if (dead && dieT < 0f) dieT = T;
-            FinisherPairProbe.Sample(Time.deltaTime);
+            FinisherPairProbe.Sample(dt);
+            if (held) { holdLeft -= dt; if (holdLeft <= 0f) { held = false; if (fa != null && fa.anim != null) fa.anim.speed = savedA; if (fv != null && fv.anim != null) fv.anim.speed = savedV; } }   // FINFIX v93: end of the contact hold
+            {   // FINFIX v93: the animators follow the clamped scene clock - a frame longer than rt.maxStepS advances them by the same clamped step (the contact stays on the slash, a 7 s hitch moves nothing)
+                float raw = Mathf.Max(1e-4f, Time.deltaTime), ratio = Mathf.Clamp01(dt / raw);
+                if (ratio < 0.999f || ratioWas < 0.999f)
+                {
+                    if (clipPath && fa != null && fa.anim != null) fa.anim.speed = (held ? 0f : e.attackerClipSpeed * fa.animWeight) * ratio;
+                    if (vClip && vStarted && !dead && fv != null && fv.anim != null) fv.anim.speed = (held ? 0f : e.victimClipSpeed * fv.animWeight) * ratio;
+                    ratioWas = ratio;
+                }
+            }
             if (dead && !vlDone && T >= dieT + 0.3f) { vlDone = true; FinisherVictimLook.Scrub(V, "after death"); }
             if (gA != null) gA.Judge = contactSeen && T >= contactT + gcfg.killerJudgeAfterContactS;
             if (gV != null) { gV.CanLower = dead; gV.Judge = dead && dieT >= 0f && T >= dieT + gcfg.victimJudgeAfterDieS; }
@@ -267,17 +298,19 @@ public static class FinisherPlayer
             {
                 if (goreDone[i]) continue; var k = gores[i];
                 float at = k.rel == "contact" ? (contactSeen ? contactT : planned) + k.t : k.t;
-                if (T >= at && (k.rel != "contact" || contactSeen || at <= planned + 0.001f)) { goreDone[i] = true; Gore(k, V, A, loc); }
+                if (T >= at && (k.rel != "contact" || contactSeen || at <= planned + 0.001f)) { goreDone[i] = true; Gore(k, V, A, loc, cutJobs[i], T, jobReadyT); }
             }
             if (Time.unscaledTime - wall0 > total * 8f + 6f) { Debug.LogWarning("[finisher] timeout " + e.id); break; }
             yield return null;
         }
+        if (held) { held = false; if (fa != null && fa.anim != null) fa.anim.speed = savedA; if (fv != null && fv.anim != null) fv.anim.speed = savedV; }
+        for (int i = 0; i < cutJobs.Length; i++) if (cutJobs[i] != null && !cutJobs[i].committed) cutJobs[i].Discard();   // FINFIX v93: a prepared cut that never fired is thrown away
         if (!dead) { V.enabled = true; V.Die(); }
         // hold the last frame (unscaled), then give control back
         host.TimeRestore();
         float hold = Mathf.Max(0f, e.holdAfter);
         if (gA != null) gA.Judge = true; if (gV != null) { gV.CanLower = true; gV.Judge = true; }   // V62B: the final hold is always judged
-        for (float t = 0f; t < hold; t += Time.unscaledDeltaTime) { FinisherPairProbe.Sample(Time.unscaledDeltaTime); yield return null; }
+        for (float t = 0f; t < hold; ) { float hd = FinisherTime.Step(Time.unscaledDeltaTime); t += hd; FinisherPairProbe.Sample(hd); yield return null; }   // FINFIX v93: clamped step
         FinisherVictimLook.Scrub(V, "final hold"); FinisherVictimLook.After = FinisherVictimLook.Sample(V);   // V64F
         if (clipPath) { A.enabled = true; if (fa != null) { fa.holdLast = false; fa.Force("idle", 0.15f); if (fa.anim) fa.anim.speed = fa.animWeight; } }
         A.state = FState.Loco; A.t = 0;
@@ -339,10 +372,11 @@ public static class FinisherPlayer
         catch (Exception ex) { Debug.LogWarning("[finisher] clearance: " + ex.Message); }
     }
     // ---------------- gore ----------------
-    static void Gore(FinisherGoreKey k, DuelFighter victim, DuelFighter attacker, FinisherLoc loc)
+    static string GoreUnit(FinisherGoreKey k) { return !string.IsNullOrEmpty(k.cut) ? k.cut : k.type == "head_detach" ? "head" : k.type == "skull_split" ? "head_split" : ""; }   // FINFIX v93: the unit a key cuts
+    static void Gore(FinisherGoreKey k, DuelFighter victim, DuelFighter attacker, FinisherLoc loc, MeshCut.CutJob job = null, float sceneT = 0f, float readyT = -1f)
     {
         Vector3 away = Flat(victim.transform.position - attacker.transform.position); if (away.sqrMagnitude < 1e-4f) away = attacker.transform.forward; away.Normalize();
-        string unit = !string.IsNullOrEmpty(k.cut) ? k.cut : k.type == "head_detach" ? "head" : k.type == "skull_split" ? "head_split" : "";
+        string unit = GoreUnit(k);
         var call = new FinisherGoreCall { type = k.type, unit = unit, param = k.param, victim = victim, attacker = attacker, away = away, strength = k.strength, point = victim.transform.position + Vector3.up * 1.4f * FighterScale.Of(victim) };
         if (OnGore != null) OnGore(call);
         bool handled = false;
@@ -350,7 +384,10 @@ public static class FinisherPlayer
         {
             try
             {
-                var res = MeshCut.Cut(victim.transform, unit, FinisherConfig.Get().rotation.seed + Mathf.Abs(Hash(unit)) % 1000, away, k.strength, 60f * k.strength);
+                var sw = System.Diagnostics.Stopwatch.StartNew();   // FINFIX v93
+                CutResult res;
+                if (job != null) { bool wasDone = job.done; res = MeshCut.Commit(job, away, k.strength, 60f * k.strength); Debug.Log("[finisher] cut '" + unit + "' COMMIT at T=" + sceneT.ToString("0.00") + " s took " + sw.ElapsedMilliseconds + " ms (prepared " + (wasDone ? "in time at T=" + readyT.ToString("0.00") : "NOT in time: finished synchronously, cpu " + job.cpuMs.ToString("0") + " ms") + ")"); }
+                else { res = MeshCut.Cut(victim.transform, unit, FinisherConfig.Get().rotation.seed + Mathf.Abs(Hash(unit)) % 1000, away, k.strength, 60f * k.strength); Debug.Log("[finisher] cut '" + unit + "' sync (no precut) took " + sw.ElapsedMilliseconds + " ms"); }
                 FinisherPiece.Adopt(res, victim.transform, unit); handled = res != null && res.ok;   // V62B: the severed piece stays as a physics prop   // ok=false (unknown unit, unreadable mesh, exception inside) -> the head-hide / blood fallback below runs
                 if (res != null && !res.ok) Debug.LogWarning("[finisher] cut '" + unit + "' not done: " + res.note);
             }

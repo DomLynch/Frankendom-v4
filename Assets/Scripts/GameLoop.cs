@@ -185,7 +185,7 @@ public static class GameLoop
     {
         float a = ScreenAlpha; if (a <= 0.001f || Outcome == Result.None) return;
         var H = HudCfg.Get(); var S = H.screens; var C = H.colors; bool win = Outcome == Result.Victory;
-        var E = win ? S.victory : S.defeat; Color accent = HudCfg.Col(E.color); Color tint = HudCfg.Col(win ? S.victoryTint : S.defeatTint);
+        var E = win ? S.victory : S.defeat; Color accent = HudCfg.Col(E.color); Color tint = LookOptions.DeathTint(win, HudCfg.Col(win ? S.victoryTint : S.defeatTint));   // LOOKOPT v95: deathWash switch (look_options.json), off = hud.json tint
         bool rep = Event.current.type == EventType.Repaint; float e = a * a * (3f - 2f * a);
         float cx = vw * 0.5f, bh = S.bandHeight, y0 = vh * 0.5f - bh * 0.5f - S.bandLift;
         HudDraw.Alpha = 1f; HudDraw.Outline = S.outlinePx; HudDraw.OutlineAlpha = S.outlineAlpha;   // HUDFIX v92: outlined text on the end screen (reset at the end of DrawEnd)

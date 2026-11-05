@@ -23,7 +23,7 @@ public static class FlowTable
         public bool enabled = true, dot = true, toast = true; public float dotPx = 7f, yOffset = 1.15f, toastSeconds = 0.9f, toastY = 0.12f; public int fontSize = 11, toastFontSize = 15;
         public string text = "LOCK", onText = "LOCK ON", offText = "LOCK OFF"; public float[] color = { 0.96f, 0.93f, 0.85f, 0.92f };
     }
-    [Serializable] public class LockCfg { public bool enabled = true, startLocked = true, pushAwayBreaks = false, attackRelocks = false, guardFacesTarget = true; public float range = 14f; public string[] keys = { "Tab", "Mouse2", "JoystickButton9" }; public LockHud hud = new LockHud(); }
+    [Serializable] public class LockCfg { public bool enabled = true, startLocked = true, pushAwayBreaks = false, attackRelocks = false, guardFacesTarget = true; public float range = 14f; public float breakAngleDeg = 120f, breakSeconds = 0.25f; public string[] keys = { "Tab", "Mouse2", "JoystickButton9" }; public LockHud hud = new LockHud(); }   // HCKIT4 v95
 
     // ---------------- attack magnetism + turn tracking ----------------
     [Serializable] public class MagnetCfg { public bool enabled = true; public float maxAngleDeg = 50f, maxDistance = 3.2f, snapMs = 90f, botMaxDistance = 1.5f; }   // V64P: botMaxDistance = magnetism range cap for a fighter that is not the human (AI / bot), 0 = no cap
@@ -148,6 +148,8 @@ public static class FlowTable
 
     // ---------------- lock-on ----------------
     public static bool PushAwayBreaks { get { var d = Get(); return !d.enabled || !d.lockOn.enabled || d.lockOn.pushAwayBreaks; } }   // true = the old V3 behaviour
+    public static float LockBreakAngle { get { return Get().lockOn.breakAngleDeg; } }   // HCKIT4 v95: flow.json lockOn.breakAngleDeg / breakSeconds (pushAwayBreaks: push away from the foe past this angle for this long)
+    public static float LockBreakSeconds { get { return Get().lockOn.breakSeconds; } }
     public static bool AttackRelocks { get { var d = Get(); return !d.enabled || !d.lockOn.enabled || d.lockOn.attackRelocks; } }
     public static float lastToggleTime = -99f; public static bool lastToggleOn;
     static bool inited;

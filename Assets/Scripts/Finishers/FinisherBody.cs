@@ -10,22 +10,23 @@ public sealed class FinisherBody
     public Bounds Bounds { get { return b; } }
     public Transform Root { get { return root; } }
 
-    public void Set(Transform t) { if (root == t) return; root = t; smr = null; have = false; refreshAt = 0f; }
+    public void Set(Transform t) { if (root == t) return; root = t; smr = null; have = false; refreshAt = 0f; cfg = FinisherBodyCfg.For(t); }
+    FinisherBodyCfg.Row cfg = FinisherBodyCfg.Default;   // HCKIT4 v95: per-character body bounds rows (finishers.json bodyBounds)
 
     // rate = smoothing per second (unscaled dt); the first call snaps
     public bool Update(float dt, float rate)
     {
         if (root == null) { have = false; return false; }
-        if (smr == null || Time.unscaledTime >= refreshAt) { smr = root.GetComponentsInChildren<SkinnedMeshRenderer>(false); refreshAt = Time.unscaledTime + 0.25f; }
+        if (smr == null || Time.unscaledTime >= refreshAt) { smr = root.GetComponentsInChildren<SkinnedMeshRenderer>(false); refreshAt = Time.unscaledTime + cfg.refreshS; }   // HCKIT4 v95
         bool any = false; Bounds raw = new Bounds(root.position, Vector3.zero);
         for (int i = 0; i < smr.Length; i++)
         {
             var r = smr[i]; if (r == null || !r.enabled || !r.gameObject.activeInHierarchy) continue;
             if (!any) { raw = r.bounds; any = true; } else raw.Encapsulate(r.bounds);
         }
-        float sc = Mathf.Max(0.5f, root.lossyScale.y);
-        if (!any) raw = new Bounds(root.position + Vector3.up * 0.9f * sc, new Vector3(0.8f, 1.8f, 0.8f) * sc);
-        Vector3 maxSize = new Vector3(3.2f, 3.4f, 3.2f) * sc;   // a stray huge skinned bound (cloth, a flying piece) must not drag the camera away
+        float sc = Mathf.Max(cfg.scaleFloor, root.lossyScale.y);   // HCKIT4 v95
+        if (!any) raw = new Bounds(root.position + Vector3.up * cfg.centerYM * sc, FinisherBodyCfg.V(cfg.sizeM) * sc);   // HCKIT4 v95
+        Vector3 maxSize = FinisherBodyCfg.V(cfg.maxSizeM) * sc;   // a stray huge skinned bound (cloth, a flying piece) must not drag the camera away   // HCKIT4 v95
         raw.size = Vector3.Min(raw.size, maxSize);
         if (!have) { b = raw; have = true; return true; }
         float k = 1f - Mathf.Exp(-Mathf.Max(0.1f, rate) * Mathf.Max(0f, dt));

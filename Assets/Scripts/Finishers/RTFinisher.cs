@@ -61,6 +61,13 @@ public static class RTFinisher
         try
         {
             if (!Enabled || Busy || a == null || d == null) return false;
+            // FINFIX v93: V3 trigger = a finisher only on a KILL. A posture-break deathblow that does not take the HP to zero is a big hit (Duel.Resolve gives the deathblow damage), not a finisher,
+            // unless rt.deathblowFinishes is true (the old v61B behaviour), optionally only when the HP left is <= rt.deathblowFinishHpFrac of max.
+            if (deathblow && d.health > 0f)
+            {
+                if (!Cfg.deathblowFinishes) { LastRefusal = "deathblow did not kill and rt.deathblowFinishes is false (finisher only on a kill)"; return false; }
+                if (Cfg.deathblowFinishHpFrac >= 0f && d.maxHealth > 0f && d.health > Cfg.deathblowFinishHpFrac * d.maxHealth) { LastRefusal = "deathblow left " + (d.health / d.maxHealth).ToString("0.00") + " of max HP (> rt.deathblowFinishHpFrac)"; return false; }
+            }
             int ks = SideOf(a), vs = SideOf(d);
             if (ks == vs) { LastRefusal = "same side"; return false; }
             if (vs == 0 && !Cfg.allowPlayerVictim) { LastRefusal = "player victim disabled"; return false; }
@@ -205,6 +212,7 @@ public sealed class RTFinisherHost
     public bool HasCamera { get { return arig != null && arig.Active; } }
     public void CameraCut(string shotId, Transform actor, Transform target, float blend, FinisherShot[] localDefs) { if (HasCamera) arig.Cut(shotId, actor, target, blend, localDefs); RTFinisher.Stage("shot", shotId); }
     public void CameraShake(float amplitude) { if (HasCamera) arig.Shake(amplitude); }
+    public void CameraShake(float amplitude, float seconds) { if (HasCamera) arig.Shake(amplitude, seconds); }   // FINFIX v93: shake length from json
     public void CameraDone() { Abort(); }
 
     public void TimeTick() { FinisherTime.Tick(); }
