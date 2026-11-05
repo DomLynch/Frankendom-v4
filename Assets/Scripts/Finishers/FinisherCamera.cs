@@ -19,6 +19,9 @@ public class FinisherCamera : MonoBehaviour
     float shakeAmp, shakeLeft; float shotStart; GameObject noBlurGo;
     readonly FinisherBody tb = new FinisherBody(), ab = new FinisherBody();   // V61B: live body bounds of the victim (target) and the killer (actor): the shots frame the BODY, not the root transform
     float flipLock;
+    // V62B: gate-facing azimuth + per-shot exposure offset
+    float gateRot; bool gateMir, gateNoMir; VolumeProfile noBlurProf; Exposure exOv; float exBase = float.NaN, evCur, evTarget; bool evWarned;
+    public string ShotId { get { return shot != null ? shot.id : ""; } }
 
     public static FinisherCamera Ensure()
     {
@@ -67,6 +70,7 @@ public class FinisherCamera : MonoBehaviour
         sideUsed = s.side == 0f ? (sideFlip = -sideFlip) : Mathf.Sign(s.side);
         blendDur = blendOverride >= 0f ? blendOverride : s.blend; blendT = blendDur <= 0f ? 1f : 0f;
         if (s.shake > 0f) { shakeAmp = s.shake; shakeLeft = 0.25f; }
+        gateRot = 0f; gateMir = false; gateNoMir = false; { var Lk = FinisherConfig.Get().rt.look; evTarget = (Lk != null ? Lk.darkenEV : 0f) + s.darkenEV; }   // V62B
     }
 
     public void Shake(float amp, float seconds = 0.25f) { shakeAmp = amp; shakeLeft = seconds; }
@@ -89,6 +93,7 @@ public class FinisherCamera : MonoBehaviour
         float a = s.angleDeg * Mathf.Deg2Rad * sideUsed;
         Vector3 perp = Vector3.Cross(Vector3.up, axis);
         Vector3 dir = -axis * Mathf.Cos(a) + perp * Mathf.Sin(a);
+        dir = GateAdjust(s, dir, f, perp);   // V62B: look toward the gate
         float dist = s.dist;
         float tanV = Mathf.Tan(Mathf.Clamp(s.fov, 10f, 90f) * 0.5f * Mathf.Deg2Rad), asp = cam != null && cam.aspect > 0.1f ? cam.aspect : 1.7778f, tanH = tanV * asp;
         if (s.fit)
@@ -132,7 +137,7 @@ public class FinisherCamera : MonoBehaviour
         // V61B: never inside the killer's or the victim's own body (that was the black frame): swing to the other side once, then re-pose
         if (Time.unscaledTime >= flipLock && Inside(p))
         {
-            sideUsed = -sideUsed; flipLock = Time.unscaledTime + 0.6f;
+            sideUsed = -sideUsed; flipLock = Time.unscaledTime + 0.6f; gateRot = 0f; gateMir = false; gateNoMir = true;
             Pose(shot, out p, out r, out fv, out lookPt, out focusPt);
         }
         if (blendT < 1f)
@@ -149,7 +154,7 @@ public class FinisherCamera : MonoBehaviour
         // never inside geometry, never below the floor
         Vector3 safe = Constrain(p, focusPt);
         if ((safe - p).sqrMagnitude > 1e-4f) { p = safe; Vector3 ld = lookPt - p; if (ld.sqrMagnitude > 1e-4f) r = Quaternion.LookRotation(ld, Vector3.up); }
-        transform.SetPositionAndRotation(p, r); cam.fieldOfView = fv; LookEnforce();
+        transform.SetPositionAndRotation(p, r); cam.fieldOfView = fv; LookEnforce(); EvTick(dt);
     }
 
     // ---- V61C: the finisher shots keep the GAMEPLAY camera's look (data: finishers.json rt.look; FinisherLook.cs) ----
@@ -190,6 +195,58 @@ public class FinisherCamera : MonoBehaviour
         catch (System.Exception e) { Debug.LogWarning("[FinisherCamera] look end: " + e.Message); }
     }
 
+    // ---- V62B: camera side (toward the gate) and per-shot exposure ----
+    // V62C: robust gate facing. dir = flat direction from the focus to the camera; the camera looks along -dir. Per shot the cosine between the view direction and the direction to the gate must be
+    // >= the shot's gateMinDot (FinisherShot.gateMinDot, -2 = rt.look.gateMinDot; the wide / fall / settle shots carry 0.8 = within ~37 deg so the gate glow, not the grey ruins, is in the frame).
+    // Order: keep the earlier decision while it holds (no flicker, reset at every cut) > keep as is > MIRROR the azimuth about the pair axis (rt.look.gateMirror) > rotate in 15 degree steps (both signs,
+    // mirrored or not, smallest turn first).
+    Vector3 GateAdjust(FinisherShot s, Vector3 dir, Vector3 f, Vector3 perp)
+    {
+        var L = FinisherConfig.Get().rt.look;
+        if (L == null || !L.gateFacing || !s.gate || L.gatePoint == null || L.gatePoint.Length < 3) return dir;
+        Vector3 g = new Vector3(L.gatePoint[0] - f.x, 0f, L.gatePoint[2] - f.z); if (g.sqrMagnitude < 1f) return dir; g.Normalize();
+        Vector3 d = Flat(dir); if (d.sqrMagnitude < 1e-6f) return dir; d.Normalize();
+        Vector3 pf = Flat(perp); if (pf.sqrMagnitude < 1e-6f) pf = Vector3.right; pf.Normalize();
+        float min = Mathf.Clamp(s.gateMinDot > -1.5f ? s.gateMinDot : L.gateMinDot, -1f, 0.99f);
+        bool mirOk = L.gateMirror && !gateNoMir;
+        if (gateRot != 0f || gateMir)
+        {
+            Vector3 kd = GateDir(dir, pf, gateMir, gateRot);
+            if (Vector3.Dot(-Flat(kd).normalized, g) >= min - 0.05f) return kd;
+        }
+        gateRot = 0f; gateMir = false;
+        if (Vector3.Dot(-d, g) >= min) return dir;
+        if (mirOk && Vector3.Dot(-GateDir(d, pf, true, 0f), g) >= min) { gateMir = true; return GateDir(dir, pf, true, 0f); }
+        float bestA = 0f, bestCost = float.MaxValue; bool bestM = false;
+        for (int k = 1; k <= 12; k++)
+            for (int m = 0; m < (mirOk ? 2 : 1); m++)
+                for (int sg = -1; sg <= 1; sg += 2)
+                {
+                    float dg = 15f * k * sg; float dt = Vector3.Dot(-GateDir(d, pf, m == 1, dg), g);
+                    if (dt < min) continue;
+                    float cost = 15f * k + m * 0.5f + (1f - dt) * 0.1f;
+                    if (cost < bestCost) { bestCost = cost; bestA = dg; bestM = m == 1; }
+                }
+        if (bestCost == float.MaxValue) return dir;
+        gateRot = bestA; gateMir = bestM; return GateDir(dir, pf, bestM, bestA);
+    }
+    static Vector3 GateDir(Vector3 v, Vector3 pf, bool mirror, float deg)
+    {
+        if (mirror) v = v - 2f * Vector3.Dot(v, pf) * pf;
+        return deg != 0f ? Quaternion.AngleAxis(deg, Vector3.up) * v : v;
+    }
+
+    void CaptureEv() { exBase = FinisherLook.StackFixedEV(); evCur = FinisherConfig.Get().rt.look != null ? FinisherConfig.Get().rt.look.darkenEV : 0f; evTarget = evCur; exOv = null; evWarned = false; }
+    void EvTick(float dt)
+    {
+        if (noBlurProf == null) return;
+        var L = FinisherConfig.Get().rt.look; float rate = Mathf.Max(0.1f, L != null ? L.evRate : 4f);
+        evCur = Mathf.MoveTowards(evCur, evTarget, rate * dt);
+        if (exOv == null && Mathf.Abs(evCur) < 1e-4f && Mathf.Abs(evTarget) < 1e-4f) return;
+        if (float.IsNaN(exBase)) { if (!evWarned) { evWarned = true; Debug.LogWarning("[FinisherCamera] exposure offset requested but the scene exposure is not Fixed: ignored"); } return; }
+        if (exOv == null) exOv = FinisherLook.ExposureOverride(noBlurProf);
+        if (exOv != null) exOv.fixedExposure.Override(exBase + evCur);
+    }
     void Update() { FinisherTime.Tick(); }
 
     bool Inside(Vector3 p)
@@ -207,16 +264,16 @@ public class FinisherCamera : MonoBehaviour
             if (on)
             {
                 if (noBlurGo != null || !FinisherConfig.Get().rt.disableMotionBlur) return;
-                var go = new GameObject("FinisherNoMotionBlur"); var v = go.AddComponent<Volume>();
+                CaptureEv(); var go = new GameObject("FinisherNoMotionBlur"); var v = go.AddComponent<Volume>();
                 v.isGlobal = true; v.priority = 10000f; v.weight = 1f;
                 var prof = ScriptableObject.CreateInstance<VolumeProfile>();
                 var mb = prof.Add<MotionBlur>(true); mb.intensity.Override(0f); mb.active = true; FinisherLook.DarkenExposure(prof);
-                v.sharedProfile = prof; noBlurGo = go;
+                v.sharedProfile = prof; noBlurGo = go; noBlurProf = prof;
             }
             else if (noBlurGo != null)
             {
                 var v = noBlurGo.GetComponent<Volume>(); if (v != null && v.sharedProfile != null) Destroy(v.sharedProfile);
-                Destroy(noBlurGo); noBlurGo = null;
+                Destroy(noBlurGo); noBlurGo = null; noBlurProf = null; exOv = null; evCur = evTarget = 0f;
             }
         }
         catch (System.Exception e) { Debug.LogWarning("[FinisherCamera] motion blur override: " + e.Message); }

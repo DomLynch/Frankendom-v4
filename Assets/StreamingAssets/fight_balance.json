@@ -4,20 +4,20 @@
  "fighters": [
   {
    "key": "Dracula",
-   "maxHealth": 450.0,
+   "maxHealth": 500,
    "maxStamina": 0,
    "damageMul": 1.1,
    "takenMul": 1.0,
-   "specialDamageMul": 1.0,
+   "specialDamageMul": 0.8,
    "specialCooldownTicks": 1500,
    "specialInitialCooldownTicks": 300,
    "specialMaxUses": 0
   },
   {
    "key": "Pitborn",
-   "maxHealth": 500.0,
+   "maxHealth": 550,
    "maxStamina": 0,
-   "damageMul": 0.9,
+   "damageMul": 1.0,
    "takenMul": 1.0,
    "specialDamageMul": 1.0,
    "specialCooldownTicks": 1500,

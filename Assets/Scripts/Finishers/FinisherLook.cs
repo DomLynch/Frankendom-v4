@@ -16,6 +16,12 @@ public class FinisherLookCfg
     public bool freezeVolumeAnchor = true;
     public bool enforceEachFrame = true;
     public float darkenEV = 0f;
+    // V62B: every finisher camera looks toward the gate (the gate glow side is dark, the arena back side is pale grey); per-shot override FinisherShot.gate
+    public bool gateFacing = true;
+    public float[] gatePoint = { 0f, 4f, 24f };   // world x, y, z of the gate opening (V62C: HdrpDoorway measured the gate bounds frontZ 22.82 / centre z 27.0; gateway.json says "front face z 27"; 24 = just inside the front face)
+    public float gateMinDot = 0.25f;               // the flat view direction must have at least this cosine with the direction to the gate (0.25 = within ~75 deg)
+    public bool gateMirror = true;                 // V62C: when the view does not face the gate, first MIRROR the azimuth about the pair axis, then rotate in 15 degree steps
+    public float evRate = 4f;                      // stops per second the per-shot exposure offset moves
 }
 
 public class LookSnap
@@ -74,6 +80,19 @@ public static class FinisherLook
         catch (Exception e) { Debug.LogWarning("[FinisherLook] darkenEV: " + e.Message); }
     }
 
+    /// <summary>V62B: the Exposure override of a (high priority) profile, created when it is not there yet (Fixed mode).</summary>
+    public static Exposure ExposureOverride(VolumeProfile prof)
+    {
+        if (prof == null) return null;
+        Exposure ex; if (prof.TryGet(out ex)) return ex;
+        ex = prof.Add<Exposure>(true); ex.mode.Override(ExposureMode.Fixed); ex.active = true; return ex;
+    }
+    /// <summary>V62B: the scene's Fixed exposure value (EV100) from the live Volume stack; NaN when the scene exposure is not Fixed.</summary>
+    public static float StackFixedEV()
+    {
+        try { var st = VolumeManager.instance.stack; var cur = st != null ? st.GetComponent<Exposure>() : null; if (cur != null && cur.mode.value == ExposureMode.Fixed) return cur.fixedExposure.value; } catch (Exception) { }
+        return float.NaN;
+    }
     /// <summary>Mean sRGB luma (Rec.709 weights, 0..1) of the picture's middle band: the HUD bars at the top and the console / HUD strip at the bottom are left out. 48 x 27 samples.</summary>
     public static float MeanLuma(Texture2D tex)
     {

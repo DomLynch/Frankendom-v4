@@ -31,6 +31,7 @@ public class BalanceAuto : MonoBehaviour
         public float startShotAt = 1f;
         public float minAvgDuration = 60f, maxAvgDuration = 120f, minWinRate = 0.4f, maxWinRate = 0.7f;
         public int minPitbornMoves = 4;
+        public float maxRiposteShare = 0.3f, maxMoveShare = 0.4f;   // V63 WARN thresholds (do not change the verdict)
         public string shotMode = "auto";          // auto = game screen, camera render texture if black | screen | camera
         public string draculaName = "Dracula", pitbornName = "Pitborn";
     }
@@ -76,7 +77,7 @@ public class BalanceAuto : MonoBehaviour
         public float dmgDealt, dmgTaken; public int hits, parries, blocks, guardBreaks, dodges, attacks;
         public readonly int[] cat = new int[Cats.Length]; public readonly Dictionary<string, int> moves = new Dictionary<string, int>();
     }
-    class Rec { public int idx, seed; public float dur; public string winner, endReason; public Side d = new Side(), p = new Side(); public float dHp, pHp; public int[] dPost = new int[4], pPost = new int[4]; public float dGain, pGain; }   // P7: posture counters {breaks suffered, deathblows dealt, deathblows taken, windows missed}
+    class Rec { public string dAdapt = "", pAdapt = ""; public int idx, seed; public float dur; public string winner, endReason; public Side d = new Side(), p = new Side(); public float dHp, pHp; public int[] dPost = new int[4], pPost = new int[4]; public float dGain, pGain; }   // P7: posture counters {breaks suffered, deathblows dealt, deathblows taken, windows missed}
     Side sd = new Side(), sp = new Side();      // current fight: Dracula, Pitborn
     readonly List<Rec> recs = new List<Rec>();
 
@@ -362,6 +363,7 @@ public class BalanceAuto : MonoBehaviour
         if (D != null) { r.dPost = new[] { D.statPostureBreaks, D.statDeathblows, D.statDeathblowsTaken, D.statDeathblowsMissed }; r.dGain = D.statPostureGained; }
         if (P != null) { r.pPost = new[] { P.statPostureBreaks, P.statDeathblows, P.statDeathblowsTaken, P.statDeathblowsMissed }; r.pGain = P.statPostureGained; }
         r.winner = P.Dead && !D.Dead ? "Dracula" : D.Dead && !P.Dead ? "Pitborn" : D.Dead && P.Dead ? "both" : "none (time limit)";
+        try { var ad = AiAdapt.Of(D); r.dAdapt = ad != null ? ad.Report() : "(adapt off)"; ad = AiAdapt.Of(P); r.pAdapt = ad != null ? ad.Report() : "(adapt off)"; } catch (Exception) { }   // V63
         recs.Add(r);
         Log("FIGHT RESULT " + r.idx + "/" + seedsN + " seed " + seed + " dur " + dur.ToString("F1", IC) + " winner " + r.winner + " dmg D->P " + sd.dmgDealt.ToString("F0", IC) + " P->D " + sp.dmgDealt.ToString("F0", IC)
             + " hits D" + sd.hits + "/P" + sp.hits + " pitborn moves " + sp.moves.Count + " posture " + PostureText(r));
@@ -422,6 +424,12 @@ public class BalanceAuto : MonoBehaviour
         return sb.Length == 0 ? "(none)" : sb.ToString();
     }
 
+    // V63 balance helpers
+    static int MoveN(Side s, string id) { int c; s.moves.TryGetValue(id, out c); return c; }
+    static float RipShare(Side s) { return s.attacks > 0 ? (MoveN(s, "riposte") + MoveN(s, "slash_riposte") + MoveN(s, "heavy_riposte")) / (float)s.attacks : 0f; }
+    static float TopShare(Side s, out string id) { id = "-"; int best = 0; foreach (var kv in s.moves) if (kv.Value > best) { best = kv.Value; id = kv.Key; } return s.attacks > 0 ? best / (float)s.attacks : 0f; }
+    static string Pct(float f) { return (f * 100f).ToString("F0", IC) + "%"; }
+
     void WriteSummary(int code, string why, string verdictOverride)
     {
         int n = recs.Count;
@@ -460,6 +468,10 @@ public class BalanceAuto : MonoBehaviour
             sb.AppendLine("       posture " + PostureText(r));
             sb.AppendLine("       moves D (" + r.d.attacks + "): " + CatText(r.d));
             sb.AppendLine("       moves P (" + r.p.attacks + "): " + CatText(r.p) + "   distinct " + r.p.moves.Count + ": " + MoveText(r.p));
+            { string tdI, tpI; float tdS = TopShare(r.d, out tdI), tpS = TopShare(r.p, out tpI);
+              sb.AppendLine("       V63 riposte share of swings D " + Pct(RipShare(r.d)) + " P " + Pct(RipShare(r.p)) + " (ripostes D " + (MoveN(r.d, "riposte") + MoveN(r.d, "slash_riposte") + MoveN(r.d, "heavy_riposte")) + " P " + (MoveN(r.p, "riposte") + MoveN(r.p, "slash_riposte") + MoveN(r.p, "heavy_riposte"))
+                  + ", slash_riposte D " + MoveN(r.d, "slash_riposte") + " P " + MoveN(r.p, "slash_riposte") + ")   top move D " + tdI + " " + Pct(tdS) + " P " + tpI + " " + Pct(tpS) + "   kicks D " + MoveN(r.d, "kick") + " P " + MoveN(r.p, "kick"));
+              sb.AppendLine("       V63 adapt D: " + r.dAdapt); sb.AppendLine("       V63 adapt P: " + r.pAdapt); }
         }
         sb.AppendLine();
         if (n > 0)
@@ -474,6 +486,15 @@ public class BalanceAuto : MonoBehaviour
                 + "  missed D " + (tD[3] / (float)n).ToString("F1", IC) + " P " + (tP[3] / (float)n).ToString("F1", IC)
                 + "  | totals: breaks " + (tD[0] + tP[0]) + ", deathblows " + (tD[1] + tP[1]) + ", conversion " + ((tD[0] + tP[0]) > 0 ? ((tD[1] + tP[1]) * 100f / (tD[0] + tP[0])).ToString("F0", IC) + "%" : "-"));
             sb.AppendLine("  Pitborn distinct moves per fight " + (sPM / n).ToString("F1", IC) + " (min " + minPitMoves + "), over the run " + allPit.Count);
+            {   // V63 balance targets: riposte share <= 30% of Pitborn swings, no single move > 40%, parries spread, enrage entered
+                float ripP = 0, ripD = 0, topPmax = 0, topDmax = 0; int parD = 0, parP = 0, enr = 0, kickD = 0, kickP = 0; string idd;
+                foreach (var r in recs) { ripP += RipShare(r.p); ripD += RipShare(r.d); topPmax = Mathf.Max(topPmax, TopShare(r.p, out idd)); topDmax = Mathf.Max(topDmax, TopShare(r.d, out idd)); parD += r.d.parries; parP += r.p.parries; kickD += MoveN(r.d, "kick"); kickP += MoveN(r.p, "kick"); if (r.pAdapt.Contains("enrage yes")) enr++; }
+                sb.AppendLine("  V63 riposte share of swings: Pitborn " + Pct(ripP / n) + " (target <= " + Pct(C.maxRiposteShare) + ")  Dracula " + Pct(ripD / n) + "   worst single-move share per fight: Pitborn " + Pct(topPmax) + " Dracula " + Pct(topDmax) + " (target <= " + Pct(C.maxMoveShare) + ")");
+                sb.AppendLine("  V63 parries (by) per fight: Dracula " + (parD / (float)n).ToString("F1", IC) + " Pitborn " + (parP / (float)n).ToString("F1", IC) + "   kicks per fight: Dracula " + (kickD / (float)n).ToString("F1", IC) + " Pitborn " + (kickP / (float)n).ToString("F1", IC) + "   Pitborn enrage entered in " + enr + "/" + n + " fights");
+                if (ripP / n > C.maxRiposteShare) sb.AppendLine("  WARN: Pitborn riposte share " + Pct(ripP / n) + " above " + Pct(C.maxRiposteShare));
+                if (topPmax > C.maxMoveShare || topDmax > C.maxMoveShare) sb.AppendLine("  WARN: a single move exceeds " + Pct(C.maxMoveShare) + " of swings in at least one fight");
+                if (parD + parP >= 6 && (parD < (parD + parP) * 0.3f || parP < (parD + parP) * 0.3f)) sb.AppendLine("  WARN: parries lopsided (D " + parD + " / P " + parP + ")");
+            }
         }
         sb.AppendLine("fps over all fights: avg " + (fpsN > 0 ? (fpsSum / fpsN).ToString("F1", IC) : "-") + "  worst frame " + (fpsN > 0 ? fpsMin.ToString("F1", IC) : "-") + "   (target >= 120 at 1080p)");
         sb.AppendLine("exceptions: harness " + myExceptions + ", foreign " + foreignExceptions);

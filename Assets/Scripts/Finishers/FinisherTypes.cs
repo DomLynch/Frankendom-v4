@@ -50,6 +50,10 @@ public class FinisherShot
     public float frameMargin = 1.2f, frameMaxDist = 9f;   // air around the body; the distance never grows past max(dist, frameMaxDist)
     public float lookMin = 0.2f;        // the look-at stays at least this far above the bottom of the framed part (a prone body is looked at, not the floor)
     public float bodyFollow = 10f;      // smoothing rate (1/s) of the body bounds
+    // V62B: camera side + exposure per shot (data)
+    public bool gate = true;            // true: the camera is placed so it looks TOWARD the gate (rt.look.gatePoint); the azimuth is rotated (nearest angle, mirrored side first) until the view direction is within rt.look.gateMinDot of the gate direction
+    public float gateMinDot = -2f;      // V62C: per-shot minimum cosine between the view direction and the gate direction (-2 = rt.look.gateMinDot); the wide / fall / settle shots use 0.8
+    public float darkenEV = 0f;         // extra stops this shot is darker (+) / brighter (-) than the gameplay exposure, on top of rt.look.darkenEV (Fixed exposure only; blended at rt.look.evRate stops / s)
 }
 [Serializable] public class FinisherShotKey { public float t = 0f; public string rel = "start"; public string shot = ""; public float blend = -1f; }       // rel: "start" | "contact"
 // V62: one point of a per-finisher time-scale curve (t = unscaled seconds after the key fires, scale = Time.timeScale factor; smoothstep between points)
@@ -101,6 +105,21 @@ public class FinisherEntry
 }
 [Serializable] public class SprayCfg { public float seconds = 1.0f, rate = 90f, coneDeg = 16f, gravity = 8f; public float[] speed = { 2.5f, 4.5f }, size = { 0.03f, 0.06f }, life = { 0.5f, 0.9f }; }
 [Serializable] public class GoreLocRow { public string name = "torso"; public string[] bones = new string[0]; public float radiusM = 0.12f; public float frontArcDeg = 360f; public float[] along = { 0.2f, 0.8f }; }
+[Serializable]
+public class PieceCfg   // V62C: the severed piece (head) physics; finishers.json gore.piece. Read by FinisherPiece.
+{
+    public string shape = "sphere";                 // sphere | capsule | box (fitted to the piece's renderer bounds)
+    public float fitK = 0.5f;                       // sphere / capsule radius = min extent + (max - min) * fitK (0 = tightest, 1 = the horns' reach)
+    public float radiusScale = 1f, minRadiusM = 0.08f;
+    public float dynamicFriction = 0.6f, staticFriction = 0.6f, bounciness = 0.1f;   // low friction / bounce: it rolls a little and stops
+    public string collisionMode = "ContinuousSpeculative";   // ContinuousSpeculative | Continuous | ContinuousDynamic | Discrete
+    public bool interpolate = true;
+    public float sleepThreshold = 0.05f, maxDepenetrationVelocity = 2f, linearDamping = 0.05f;   // linearDamping < 0 = leave the MeshCut value
+    public float spawnClampM = 0.01f;               // at spawn the lowest point of the mesh is lifted to at least ground + this
+    public float rescueBelowM = 0.3f;               // ONE safety rescue only when the collider bottom is more than this under the ground (not every frame)
+    public int maxRescues = 1;
+    public float settleSeconds = 0.5f;
+}
 [Serializable] public class GoreCfg
 {
     public bool enabled = true;
@@ -113,6 +132,7 @@ public class FinisherEntry
     public GoreLocRow[] locs = new GoreLocRow[0];
     public SprayCfg woundSpray = new SprayCfg { seconds = 0.35f, rate = 60f };
     public SprayCfg neckSpray = new SprayCfg();
+    public PieceCfg piece = new PieceCfg();   // V62C
 }
 
 [Serializable]
@@ -183,6 +203,9 @@ public class FinisherAutoCfg
     public float clearChestRadiusM = 0.30f;  // estimated chest half thickness of the victim at scale 1 (x victim scale); clearance = bone distance - this
     public float minClearanceM = 0.10f;      // clearance below this = WARN with a suggested pairOffset
     public ContactFrame[] sheetFrames = ContactFrame.Defaults();
+    // V62B: the severed piece (head) must still be there at the end of the scene: alive, visible, resting on the ground (|gap| <= pieceMaxGapM), and the body has no head triangles left
+    public bool pieceCheck = true; public float pieceMaxGapM = 0.15f;
+    public int pieceMaxRescues = 3;      // V62C: the run fails when a severed piece needed MORE safety rescues than this (the physics should keep it above the floor on its own)
 }
 
 [Serializable]
@@ -200,6 +223,7 @@ public class FinisherRtCfg
     public string fallbackShot = "kill";     // shot id when an entry has no shot at t <= 0 (unknown id = built-in orbit)
     public FinisherAutoCfg auto = new FinisherAutoCfg();   // -finisherauto harness data (FinisherAuto.cs)
     public FinisherLookCfg look = new FinisherLookCfg();   // V61C: finisher camera keeps the gameplay look (FinisherLook.cs)
+    public FinisherGroundCfg ground = new FinisherGroundCfg();   // V62B: foot-to-ground probe + correction during a scene (FinisherGround.cs)
 }
 
 // ---------------- the file ----------------
@@ -256,6 +280,7 @@ public static class FinisherConfig
         if (data.gore.locs == null) data.gore.locs = new GoreLocRow[0];
         if (data.gore.woundSpray == null) data.gore.woundSpray = new SprayCfg();
         if (data.gore.neckSpray == null) data.gore.neckSpray = new SprayCfg();
+        if (data.gore.piece == null) data.gore.piece = new PieceCfg();
         if (data.rt == null) data.rt = new FinisherRtCfg();
         if (data.rt.auto == null) data.rt.auto = new FinisherAutoCfg();
     }

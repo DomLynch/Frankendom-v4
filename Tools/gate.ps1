@@ -5,8 +5,9 @@ function Run($name,$flags,$sec){ $p=Start-Process .\HadesSlice.exe -ArgumentList
 Remove-Item gate_result.txt -ErrorAction SilentlyContinue
 $out=@()
 Remove-Item verify_out -Recurse -ErrorAction SilentlyContinue; $out+=Run 'verify_player' @('-verifyGround','-verifyOut:verify_out') 420
-$out+=Run 'balance_player' @('-balanceauto','-seeds:5') 900
+$out+=Run 'balance_player' @('-balanceauto','-seeds:10') 1500
 $out+=Run 'finisher_player' @('-finisherauto') 400
 Remove-Item posture_proof -Recurse -ErrorAction SilentlyContinue; $out+=Run 'posture_player' @('-postureproof','-proofsecs:120') 300
 $out | Set-Content gate_run.txt; "done" | Set-Content gate_done.txt
+
 

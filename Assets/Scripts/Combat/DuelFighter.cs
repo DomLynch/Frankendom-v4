@@ -262,7 +262,7 @@ public class DuelFighter : MonoBehaviour
             if (pSide > 0 && stamina >= SidestepCost()) { StartSidestep(); return; }
             if (pRoll > 0 && stamina >= RollCost()) { StartRoll(); return; }
         }
-        if (riposteTicks > 0 && (pLight > 0 || pHeavy > 0 || pThrust > 0)) { StartMove("riposte", false); return; }
+        if (riposteTicks > 0 && (pLight > 0 || pHeavy > 0 || pThrust > 0)) { StartMove(AiAdapt.RiposteMove(this, pLight > 0, pHeavy > 0, pThrust > 0, ref riposteTicks), false); return; }   // V63: data ai_adapt.json riposte{}
         if (pHeavy > 0) { if (HeavyAllowed()) { StartMove("heavy_overhead", false); return; } pLight = Mathf.Max(pLight, pHeavy); pHeavy = 0; }
         if (pLight > 0) { StartMove(lastLightRight ? "light_left" : "light_right", false); return; }
         if (pThrust > 0) { StartMove("thrust", false); return; }

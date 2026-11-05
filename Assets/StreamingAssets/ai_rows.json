@@ -2,7 +2,7 @@
   "about": "V3 AI constants for AIBrain.cs / AiRead.cs / AiDial.cs / AiTactic.cs. 'read' = src/fight/ai-read-defs.json, 'dial' = src/fight/ai-dial-defs.json (values copied 1:1; the last block of 'dial' marked EXTRA holds literals that were inline in ai.ts), 'tactics' = src/fight/tactic-defs.json, 'fight' = the cleaver's weapon-defs fight row (thrustShare .1, close 1.15 inherited from the longsword), 'profileBase' = the knobs a difficulty row does NOT override, from moves-tables-defs.json 'absent' (-1 = absent, so no roll is drawn, as in V3) plus own_knobs pitborn spamRun 6. 'playerBot' = the full profile used when AIBrain has no DifficultyRow (the -autoplay Dracula bot). 'unity' = glue constants that only exist because the Unity sim differs from V3 (see each field). Difficulty rows themselves stay in difficulty.json (DifficultyTable). Code field defaults mirror this file so a missing file still plays; edit this file, not the code.",
   "read": {
     "feint": 0.16666667, "after": 2, "parry": 0.5, "guardTicks": 180, "guardShare": 0.45, "roll": 0.4,
-    "swings": 11, "lightShare": 0.7, "baitHold": 12, "parryBoost": 2, "parryCap": 0.85, "chargeBoost": 0.4,
+    "swings": 11, "lightShare": 0.7, "baitHold": 12, "parryBoost": 1.5, "parryCap": 0.85, "chargeBoost": 0.4,
     "kickBoost": 0.3, "anticipate": 8, "baitShare": 0.7, "parkShare": 0.5, "lateNotice": 6, "holdTicks": 6,
     "latch": 600, "plus": 2, "decay": 0, "pokerShare": 0.5, "kickerShare": 0.5, "spammerLapseShare": 0.5,
     "guardedKickBase": 0.5
@@ -31,7 +31,7 @@
     "softNotice": false, "tactic": ""
   },
   "playerBot": {
-    "reaction": 18, "accuracy": 0.7, "parry": 0.22, "dodge": 0.15, "aggression": 0.68, "pressure": 0.5,
+    "reaction": 18, "accuracy": 0.7, "parry": 0.30, "dodge": 0.15, "aggression": 0.68, "pressure": 0.5,
     "discipline": 50, "lapse": 0.38, "read": 0.6, "feint": 0, "guard": 1, "disengage": 0, "circle": 0.5,
     "step": 0, "interrupt": 0, "kick": 0, "dash": 0, "stab": 0, "anticipate": -1, "tellReaction": -1,
     "braceHeavy": 0, "spamRun": 0, "spamBoth": 0, "softNotice": false, "tactic": ""

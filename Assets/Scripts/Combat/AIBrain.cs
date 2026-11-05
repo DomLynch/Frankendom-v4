@@ -14,6 +14,7 @@ public class AIBrain : MonoBehaviour
     public static int GlobalSeed;          // -aiseed N on the command line
     public AiProfile profile;              // resolved profile (difficulty row over the Pitborn base, or the player-bot row)
     public AiState ai;                     // V3 AiState (mode, plan, habits...)
+    public AiAdapt adapt;                  // V63 adaptation layer (combos, whiff punish, timing mixups, enrage, habit counters); null = off
     public string lastScores = "";         // debug: last offence scores
 
     class Intent
@@ -40,7 +41,7 @@ public class AIBrain : MonoBehaviour
         if (name == "Dracula" && !auto) enabled = false;
     }
     void OnEnable() { AiWorld.Register(this); }
-    void OnDisable() { AiWorld.Unregister(this); inited = false; }
+    void OnDisable() { AiWorld.Unregister(this); inited = false; if (adapt != null) { adapt.Release(); adapt = null; } }
 
     static uint Hash(string s)
     {
@@ -57,6 +58,7 @@ public class AIBrain : MonoBehaviour
         uint seed = unchecked((uint)A.dial.startSeed ^ Hash(name) ^ (uint)GlobalSeed ^ (uint)seedOffset);
         ai = AiState.Initial(seed, A.dial);
         lastTick = Duel.TickCount; inited = true;
+        adapt = AiAdapt.Create(this);   // V63
     }
 
     // ---- notifications from AiWorld (event-fed habit counters) ----
@@ -65,6 +67,7 @@ public class AIBrain : MonoBehaviour
     public void NoteOwnAttack(MoveDef m)
     {
         if (!inited) return;
+        if (adapt != null) adapt.OnOwnAttack(m);   // V63
         if (m.id != "kick") ai.habits.attacks++;
     }
     public void NoteFoeAttack(MoveDef m, FTrack ot)
@@ -80,11 +83,13 @@ public class AIBrain : MonoBehaviour
         else if (m.id == "thrust") h.thrusts++;
         else if (light) h.lights++;
         else if (m.id == "kick") h.kicks++;
+        if (adapt != null) adapt.OnFoeAttack(m, punishes);   // V63
     }
     public void NoteFoeAction(string a)
     {
         if (!inited) return;
         if (a == "roll") ai.habits.rolls++; else if (a == "backstep") ai.habits.steps++;
+        if (adapt != null) adapt.OnFoeAction(a);   // V63
     }
 
     static MoveDef Mv(DuelFighter f, string id) { return f != null && f.moves != null ? f.moves.Get(id) : null; }
@@ -204,6 +209,7 @@ public class AIBrain : MonoBehaviour
         if (defenceMet) { h.run = R.decay > 0f ? Mathf.Max(0, h.run - (int)D.readDecayStep) : 0; h.latch = h.ticks + (int)R.latch; defenceMet = false; }
         // the first tick a swing sat at its chamber
         if (op == Ph.Attack && Charging(o) && ot.parkSerial != ot.serial) { ot.parkSerial = ot.serial; h.parks++; }
+        if (adapt != null) adapt.Tick(n, op == Ph.Guard, tick);   // V63: base profile + active response / enrage effects
         Reads reads = AiRead.Read(h, p, R);
 
         if (sp != Ph.Attack) { s.hold = false; s.feint = false; }
@@ -301,6 +307,7 @@ public class AIBrain : MonoBehaviour
         bool opening = (op == Ph.Hurt && o.t >= p.reaction) || o.stamina <= 0f
             || (op == Ph.Attack && !ot.landed && oage - ot.windupTot - ot.activeTot >= p.reaction)
             || (reads.roller && op == Ph.Roll && o.t >= safeEnd);
+        if (adapt != null) opening = adapt.Opening(opening);   // V63: faster punish of a whiffed swing
         bool guarded = op == Ph.Guard && o.t >= p.reaction;
         float thrustReach = mThrust != null ? mThrust.reach : 0f, lightReach = mLight != null ? mLight.reach : 0f;
         bool advancing = (op == Ph.Ready || op == Ph.Guard) && oMoved && oldLastGap > gap + D.advanceEps
@@ -339,6 +346,7 @@ public class AIBrain : MonoBehaviour
         if (gap > D.hardApproachGap || (!low && !shaky && gap > D.midApproachGap)) s.mode = AiMode.Approach;
         if (tick < s.retreatUntil || ((low || shaky) && gap < D.lowCloseRetreatGap)) s.mode = AiMode.Retreat;
         else if ((low || shaky) && s.mode == AiMode.Retreat && gap >= D.circleReturnGap) s.mode = AiMode.Circle;
+        if (adapt != null && adapt.WantApproach(gap)) s.mode = AiMode.Approach;   // V63
         if (dbGo && PostureTable.Get().ai.approach) s.mode = AiMode.Approach;   // P6: close in for the deathblow
 
         // ---- reaction to a noticed swing ----
@@ -364,6 +372,11 @@ public class AIBrain : MonoBehaviour
         // ---- offence: utility scores over what the opponent is committed to ----
         if ((canAct || chainOpen) && !exhausted)
         {
+            if (adapt != null)   // V63: riposte take/skip + combo follow-up
+            {
+                string ca = adapt.Pre(chainOpen, canAct, gap, mLight, mHeavy, mThrust);
+                if (ca != null) { if (ca.Length == 0) { intent.guard = true; return Done(); } intent.action = ca; return intent; }
+            }
             float r = s.Roll();
             bool kickNow = ((guarded || reads.parryHappy) && r < R.guardedKickBase + (reads.turtle || reads.parryHappy ? R.kickBoost : 0f))
                 || (p.kick > 0f && !threat && (reads.roller || reads.stepper) && r < p.kick);
@@ -409,7 +422,13 @@ public class AIBrain : MonoBehaviour
                 string action = best == "deathblow" ? dbAct : best == "kick" ? "kick"
                     : (best == "heavy" || best == "critical" || best == "counter") ? "heavy"
                     : (best == "thrust" || ((best == "chain" || best == "punish") && !InReach(mLight, "light"))) ? "thrust" : "light";
+                if (adapt != null)   // V63
+                {
+                    action = adapt.Filter(best, action, InReach(mLight, "light"), InReach(mHeavy, "heavy"), InReach(mThrust, "thrust"), InReach(mKick, "kick"));
+                    if (action == null) return Done();
+                }
                 s.wait = Rnd((D.waitBase + s.Roll() * D.waitSpread) * (D.waitAggrCeil - p.aggression)); s.next = AiNext.None;
+                if (adapt != null) s.wait = adapt.Wait(s.wait);   // V63: early / late / enrage tempo
                 // a less aggressive warden sometimes baits instead: a visible guard the player must open
                 bool baitable = best == "heavy" || best == "light" || (best == "thrust" && !advancing);
                 if (baitable && !guarded && s.Roll() < (1f - p.aggression) * D.baitChance * guardShare)
@@ -448,7 +467,7 @@ public class AIBrain : MonoBehaviour
         bool dash = p.dash > 0f && opening && forward > 0f && gap > A.fight.close + D.dashSlack && df.stamina > rollCost && s.Roll() < p.dash;
         Vector3 lat = new Vector3(dir.z, 0f, -dir.x);   // V3 (cos f, -sin f)
         Vector3 mvec = dir * forward + lat * lateral;
-        intent.mx = mvec.x; intent.mz = mvec.z; intent.run = dash; intent.closing = forward > 0f;
+        intent.mx = mvec.x; intent.mz = mvec.z; intent.run = dash || (adapt != null && adapt.WantDash(gap)); intent.closing = forward > 0f;
         return Done();
     }
 

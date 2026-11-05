@@ -15,7 +15,14 @@
     "enabledIds": [
       "decapitation"
     ],
-    "perWeapon": true
+    "perWeapon": true,
+    "_enableAllIds": [
+      "decapitation",
+      "split_crown",
+      "split_crown_pit",
+      "river_light",
+      "hengdao_heavy"
+    ]
   },
   "entries": [
     {
@@ -46,7 +53,10 @@
           "lookHeight": 1.3,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0
+          "blend": 0,
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "dc_close",
@@ -65,7 +75,9 @@
           "frameMargin": 1.1,
           "frameMaxDist": 9,
           "lookMin": 0.2,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0
         },
         {
           "id": "dc_fall",
@@ -83,7 +95,10 @@
           "frameMargin": 1.2,
           "frameMaxDist": 9,
           "lookMin": 0.2,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "dc_settle",
@@ -101,7 +116,10 @@
           "frameMargin": 1.25,
           "frameMaxDist": 9,
           "lookMin": 0.15,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         }
       ],
       "shots": [
@@ -192,26 +210,25 @@
           "lookHeight": 1.3,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0
+          "blend": 0,
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "sc_close",
-          "focus": "target",
-          "angleDeg": 15,
-          "side": 1,
-          "dist": 2.2,
-          "height": 1.9,
-          "lookHeight": 1.65,
-          "lookAhead": 0.1,
-          "fov": 28,
+          "focus": "mid",
+          "angleDeg": 90,
+          "side": -1,
+          "dist": 5.0,
+          "height": 1.7,
+          "lookHeight": 1.75,
+          "lookAhead": 0,
+          "fov": 30,
           "blend": 0.05,
           "shake": 0.07,
-          "frameBody": true,
-          "frameTop": 0.9,
-          "frameMargin": 1.1,
-          "frameMaxDist": 9,
-          "lookMin": 0.2,
-          "track": "body"
+          "gate": true,
+          "darkenEV": 0.0
         },
         {
           "id": "sc_side",
@@ -229,7 +246,10 @@
           "frameMargin": 1.2,
           "frameMaxDist": 9,
           "lookMin": 0.2,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "sc_settle",
@@ -247,7 +267,10 @@
           "frameMargin": 1.25,
           "frameMaxDist": 9,
           "lookMin": 0.15,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         }
       ],
       "shots": [
@@ -308,7 +331,9 @@
         1.4
       ],
       "killerYawDeg": 4.0,
-      "distanceScaleByKiller": true
+      "distanceScaleByKiller": true,
+      "probeVictimBone": "Head",
+      "bladeReach": 0.5
     },
     {
       "id": "split_crown_pit",
@@ -326,7 +351,7 @@
       "duration": 3.0,
       "victimClip": "death",
       "dieAt": 2.85,
-      "distance": 1.0,
+      "distance": 1.05,
       "shotDefs": [
         {
           "id": "sp_wide",
@@ -338,31 +363,30 @@
           "lookHeight": 1.3,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0
+          "blend": 0,
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "sp_close",
-          "focus": "target",
-          "angleDeg": 15,
-          "side": 1,
-          "dist": 2.2,
-          "height": 1.9,
-          "lookHeight": 1.65,
-          "lookAhead": 0.1,
-          "fov": 28,
+          "focus": "mid",
+          "angleDeg": 110,
+          "side": -1,
+          "dist": 5.2,
+          "height": 1.7,
+          "lookHeight": 1.7,
+          "lookAhead": 0,
+          "fov": 32,
           "blend": 0.05,
           "shake": 0.07,
-          "frameBody": true,
-          "frameTop": 0.9,
-          "frameMargin": 1.1,
-          "frameMaxDist": 9,
-          "lookMin": 0.2,
-          "track": "body"
+          "gate": true,
+          "darkenEV": 0
         },
         {
           "id": "sp_side",
           "focus": "target",
-          "angleDeg": 100,
+          "angleDeg": 125,
           "side": -1,
           "dist": 3.2,
           "height": 1.3,
@@ -375,7 +399,10 @@
           "frameMargin": 1.2,
           "frameMaxDist": 9,
           "lookMin": 0.2,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0,
+          "gateMinDot": 0.8
         },
         {
           "id": "sp_settle",
@@ -393,7 +420,10 @@
           "frameMargin": 1.25,
           "frameMaxDist": 9,
           "lookMin": 0.15,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         }
       ],
       "shots": [
@@ -449,9 +479,9 @@
       "holdLast": true,
       "victimYawDeg": 0.0,
       "pairOffset": [
+        0.32,
         0.0,
-        0.0,
-        1.0
+        1.05
       ],
       "killerYawDeg": 4.0,
       "distanceScaleByKiller": true
@@ -472,7 +502,7 @@
       "duration": 2.4,
       "victimClip": "fin_river_light_v",
       "dieAt": -2,
-      "distance": 1.15,
+      "distance": 0.616,
       "shotDefs": [
         {
           "id": "ri_wide",
@@ -484,7 +514,10 @@
           "lookHeight": 1.3,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0
+          "blend": 0,
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "ri_close",
@@ -503,7 +536,9 @@
           "frameMargin": 1.1,
           "frameMaxDist": 9,
           "lookMin": 0.2,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0
         },
         {
           "id": "ri_fall",
@@ -521,7 +556,10 @@
           "frameMargin": 1.2,
           "frameMaxDist": 9,
           "lookMin": 0.2,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "ri_settle",
@@ -539,7 +577,10 @@
           "frameMargin": 1.25,
           "frameMaxDist": 9,
           "lookMin": 0.15,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         }
       ],
       "shots": [
@@ -650,9 +691,9 @@
       "holdLast": true,
       "victimYawDeg": -1.0,
       "pairOffset": [
+        -0.024,
         0.0,
-        0.0,
-        1.15
+        0.616
       ],
       "killerYawDeg": -9.0,
       "distanceScaleByKiller": true,
@@ -723,7 +764,7 @@
       "duration": 2.65,
       "victimClip": "fin_hengdao_v",
       "dieAt": -2,
-      "distance": 1.2,
+      "distance": 0.5,
       "shotDefs": [
         {
           "id": "he_wide",
@@ -735,7 +776,10 @@
           "lookHeight": 1.3,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0
+          "blend": 0,
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "he_close",
@@ -754,7 +798,9 @@
           "frameMargin": 1.1,
           "frameMaxDist": 9,
           "lookMin": 0.2,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0
         },
         {
           "id": "he_fall",
@@ -772,7 +818,10 @@
           "frameMargin": 1.2,
           "frameMaxDist": 9,
           "lookMin": 0.2,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "he_settle",
@@ -790,7 +839,10 @@
           "frameMargin": 1.25,
           "frameMaxDist": 9,
           "lookMin": 0.15,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         }
       ],
       "shots": [
@@ -872,9 +924,9 @@
       "holdLast": true,
       "victimYawDeg": 11.0,
       "pairOffset": [
+        0.73,
         0.0,
-        0.0,
-        1.2
+        0.5
       ],
       "killerYawDeg": 19.0,
       "distanceScaleByKiller": true,
@@ -957,7 +1009,10 @@
           "lookHeight": 1.3,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0
+          "blend": 0,
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "co_close",
@@ -976,7 +1031,9 @@
           "frameMargin": 1.1,
           "frameMaxDist": 9,
           "lookMin": 0.2,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0
         },
         {
           "id": "co_fall",
@@ -994,7 +1051,10 @@
           "frameMargin": 1.2,
           "frameMaxDist": 9,
           "lookMin": 0.2,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         }
       ],
       "shots": [
@@ -1079,7 +1139,10 @@
           "lookHeight": 1.2,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0
+          "blend": 0,
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "rt_close",
@@ -1091,7 +1154,9 @@
           "lookHeight": 1.2,
           "lookAhead": 0,
           "fov": 30,
-          "blend": 0.4
+          "blend": 0.4,
+          "gate": true,
+          "darkenEV": 0.0
         }
       ],
       "shots": [
@@ -1158,7 +1223,10 @@
           "lookHeight": 1.0,
           "lookAhead": 0,
           "fov": 34,
-          "blend": 0
+          "blend": 0,
+          "gate": true,
+          "darkenEV": 0.0,
+          "gateMinDot": 0.8
         },
         {
           "id": "op_low",
@@ -1176,7 +1244,9 @@
           "frameMargin": 1.2,
           "frameMaxDist": 9,
           "lookMin": 0.2,
-          "track": "body"
+          "track": "body",
+          "gate": true,
+          "darkenEV": 0.0
         }
       ],
       "shots": [
@@ -1511,6 +1581,24 @@
         0.5,
         0.9
       ]
+    },
+    "piece": {
+      "shape": "sphere",
+      "fitK": 0.5,
+      "radiusScale": 1.0,
+      "minRadiusM": 0.08,
+      "dynamicFriction": 0.6,
+      "staticFriction": 0.6,
+      "bounciness": 0.1,
+      "collisionMode": "ContinuousSpeculative",
+      "interpolate": true,
+      "sleepThreshold": 0.05,
+      "maxDepenetrationVelocity": 2.0,
+      "linearDamping": 0.05,
+      "spawnClampM": 0.01,
+      "rescueBelowM": 0.3,
+      "maxRescues": 1,
+      "settleSeconds": 0.5
     }
   },
   "clipImport": {
@@ -1749,7 +1837,10 @@
       "clearKillerBone": "Head",
       "clearVictimBone": "Spine2",
       "clearChestRadiusM": 0.3,
-      "minClearanceM": 0.1
+      "minClearanceM": 0.1,
+      "pieceCheck": true,
+      "pieceMaxGapM": 0.15,
+      "pieceMaxRescues": 3
     },
     "deathblowFinishes": true,
     "offInBalanceAuto": true,
@@ -1757,7 +1848,45 @@
       "copyCameraData": true,
       "freezeVolumeAnchor": true,
       "enforceEachFrame": true,
-      "darkenEV": 0.0
+      "darkenEV": 0.0,
+      "gateFacing": true,
+      "gatePoint": [
+        0.0,
+        4.0,
+        24.0
+      ],
+      "gateMinDot": 0.25,
+      "evRate": 4.0,
+      "gateMirror": true
+    },
+    "ground": {
+      "enabled": true,
+      "correct": true,
+      "sunkTolM": 0.04,
+      "floatTolM": 0.03,
+      "maxMoveM": 0.8,
+      "rayUpM": 1.0,
+      "rayDownM": 3.0,
+      "failAboveM": 0.1,
+      "failBelowM": 0.1,
+      "victimJudgeAfterDieS": 0.4,
+      "killerJudgeAfterContactS": 0.0,
+      "ignoreLayers": [
+        8,
+        9
+      ],
+      "soles": [
+        {
+          "fighter": "Dracula",
+          "footM": 0.09,
+          "toeEndM": 0.06
+        },
+        {
+          "fighter": "Pitborn",
+          "footM": 0.17,
+          "toeEndM": 0.06
+        }
+      ]
     }
   }
 }

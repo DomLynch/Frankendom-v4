@@ -175,6 +175,8 @@ public static class FinisherPlayer
         Teleport(A, pa, Quaternion.Euler(0f, e.killerYawDeg, 0f) * axis);
         Teleport(V, pv, Quaternion.Euler(0f, e.victimYawDeg, 0f) * -axis);
         A.opponent = null; V.opponent = null; A.guardHeld = false; V.guardHeld = false; A.moveDir = V.moveDir = Vector3.zero;
+        // V62B: ground contact of both bodies during the scene (lift a sunk body, lower a floating one, stats for -finisherauto); removes itself when the scene is over
+        FinisherGround.ResetStats(); var gA = FinisherGround.Attach(A, true); var gV = FinisherGround.Attach(V, false); var gcfg = FinisherConfig.Get().rt.ground; float dieT = -1f;
 
         bool clipPath = !string.IsNullOrEmpty(e.attackerClip) && HasState(fa, e.attackerClip);
         string moveKey = MoveKey(e.attackerMove);
@@ -241,6 +243,9 @@ public static class FinisherPlayer
                     if (e.holdLast && fv.anim != null && fv.anim.enabled) { fv.holdLast = true; fv.ForceExact(e.victimClip, 0f, Mathf.Max(0f, ClipLength(fv, e.victimClip) - 0.02f)); }
                 }
             }
+            if (dead && dieT < 0f) dieT = T;
+            if (gA != null) gA.Judge = contactSeen && T >= contactT + gcfg.killerJudgeAfterContactS;
+            if (gV != null) { gV.CanLower = dead; gV.Judge = dead && dieT >= 0f && T >= dieT + gcfg.victimJudgeAfterDieS; }
             // shots, slow-mo, gore
             for (int i = 0; i < shots.Count; i++)
             {
@@ -267,6 +272,7 @@ public static class FinisherPlayer
         // hold the last frame (unscaled), then give control back
         host.TimeRestore();
         float hold = Mathf.Max(0f, e.holdAfter);
+        if (gA != null) gA.Judge = true; if (gV != null) { gV.CanLower = true; gV.Judge = true; }   // V62B: the final hold is always judged
         for (float t = 0f; t < hold; t += Time.unscaledDeltaTime) yield return null;
         if (clipPath) { A.enabled = true; if (fa != null) { fa.holdLast = false; fa.Force("idle", 0.15f); if (fa.anim) fa.anim.speed = fa.animWeight; } }
         A.state = FState.Loco; A.t = 0;
@@ -340,7 +346,7 @@ public static class FinisherPlayer
             try
             {
                 var res = MeshCut.Cut(victim.transform, unit, FinisherConfig.Get().rotation.seed + Mathf.Abs(Hash(unit)) % 1000, away, k.strength, 60f * k.strength);
-                handled = res != null && res.ok;   // ok=false (unknown unit, unreadable mesh, exception inside) -> the head-hide / blood fallback below runs
+                FinisherPiece.Adopt(res, victim.transform, unit); handled = res != null && res.ok;   // V62B: the severed piece stays as a physics prop   // ok=false (unknown unit, unreadable mesh, exception inside) -> the head-hide / blood fallback below runs
                 if (res != null && !res.ok) Debug.LogWarning("[finisher] cut '" + unit + "' not done: " + res.note);
             }
             catch (Exception ex) { Debug.LogWarning("[finisher] MeshCut.Cut failed: " + ex.Message); }

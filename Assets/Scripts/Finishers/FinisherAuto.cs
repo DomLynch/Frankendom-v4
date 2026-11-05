@@ -46,6 +46,7 @@ public class FinisherAuto : MonoBehaviour
         public int shots, slowmo, gore, exceptions;
         public float paced, pacedKill = -1f, refLuma = -1f, clearHead = float.NaN, clearHand = float.NaN; public int stalls; public bool lumaOk = true;   // V61C
         public readonly List<float> lumas = new List<float>(); public readonly List<string> lumaLabels = new List<string>();
+        public string groundLine = "", headLine = "";   // V62B
         public bool sampDone; public string sheetFile = ""; public Texture2D sheetSmall;   // V61B contact sheet
         public readonly List<Texture2D> thumbs = new List<Texture2D>(); public readonly List<string> thumbLabels = new List<string>();
         public readonly List<string> cuts = new List<string>(), notes = new List<string>(), files = new List<string>(), warns = new List<string>(), errors = new List<string>();
@@ -398,6 +399,36 @@ public class FinisherAuto : MonoBehaviour
                 r.clearHead = FinisherPlayer.ClearHead; r.clearHand = FinisherPlayer.ClearHand;
                 float worstC = Mathf.Min(float.IsNaN(r.clearHead) ? 99f : r.clearHead, float.IsNaN(r.clearHand) ? 99f : r.clearHand);
                 if (worstC < C.minClearanceM) r.warns.Add("clearance " + worstC.ToString("0.00", IC) + " m at the contact (want >= " + C.minClearanceM.ToString("0.00", IC) + "): bodies / weapon too close, see the NOTE clearance line");
+                // V62B: foot-to-ground probe (both fighters, judged windows) and the severed piece / headless body check
+                var gcf = FinisherConfig.Get().rt.ground;
+                if (gcf != null && gcf.enabled)
+                {
+                    var gk = FinisherGround.Killer; var gv = FinisherGround.Victim; r.groundLine = gk.Line() + " | " + gv.Line();
+                    foreach (var gs in new[] { gk, gv })
+                    {
+                        if (!gs.any || gs.n == 0) { r.warns.Add("ground probe: " + gs.who + " has no samples (no ground under the feet / never judged)"); continue; }
+                        if (gs.max > gcf.failAboveM) r.errors.Add("foot-to-ground: " + gs.who + " floats " + gs.max.ToString("0.00", IC) + " m above the ground (limit " + gcf.failAboveM.ToString("0.00", IC) + " m)");
+                        if (gs.min < -gcf.failBelowM) r.errors.Add("foot-to-ground: " + gs.who + " sunk " + (-gs.min).ToString("0.00", IC) + " m into the ground (limit " + gcf.failBelowM.ToString("0.00", IC) + " m)");
+                        if (gcf.correct && (gs.rawMax > gcf.failAboveM || gs.rawMin < -gcf.failBelowM)) r.warns.Add("ground correction was needed: " + gs.who + " raw gap " + gs.rawMin.ToString("+0.00;-0.00", IC) + " .. " + gs.rawMax.ToString("+0.00;-0.00", IC) + " m (the clip / placement floats or sinks; the root was moved to the ground)");
+                    }
+                }
+                var cutsCfg = FinisherConfig.Get().cuts; var hl = new List<string>();
+                if (e.gore != null && cutsCfg != null && cutsCfg.units != null && V != null)
+                    foreach (var gk2 in e.gore)
+                    {
+                        if (gk2 == null || string.IsNullOrEmpty(gk2.cut)) continue;
+                        CutUnit cu = null; foreach (var x in cutsCfg.units) if (x != null && x.id == gk2.cut) cu = x;
+                        if (cu == null || cu.kind != "subtree") continue;
+                        int alive, resc; float pgap; FinisherPieceCheck.Pieces(cu.id, C.pieceMaxGapM, out alive, out pgap, out resc);
+                        int left = FinisherPieceCheck.TrianglesLeft(V.transform, cu.id);
+                        hl.Add(cu.id + ": severed piece alive x" + alive + ", gap to ground " + pgap.ToString("+0.00;-0.00", IC) + " m, rescued x" + resc + ", destroyed x" + FinisherPiece.Destroyed + "; body triangles of the part left: " + left);
+                        if (!C.pieceCheck) continue;
+                        if (alive == 0) r.errors.Add("severed '" + cu.id + "' is gone at the end of the scene (destroyed x" + FinisherPiece.Destroyed + ")");
+                        else if (Mathf.Abs(pgap) > C.pieceMaxGapM) r.errors.Add("severed '" + cu.id + "' is " + pgap.ToString("+0.00;-0.00", IC) + " m from the ground (limit " + C.pieceMaxGapM.ToString("0.00", IC) + " m): floating or under the floor");
+                        if (resc > C.pieceMaxRescues) r.errors.Add("severed '" + cu.id + "' needed " + resc + " safety rescues (limit " + C.pieceMaxRescues + "): it tunnels under the floor, see gore.piece (collider / collisionMode)");
+                        if (left > 0) r.errors.Add("the victim's body still has " + left + " triangles of '" + cu.id + "' (not headless at the end frame)");
+                    }
+                r.headLine = string.Join(" | ", hl.ToArray());
             }
             r.pass = r.started && r.errors.Count == 0 && r.exceptions == 0;
         }
@@ -478,12 +509,13 @@ public class FinisherAuto : MonoBehaviour
     {
         try
         {
-            float l = FinisherLook.MeanLuma(tex); string lab = string.IsNullOrEmpty(k.label) ? (k.rel ?? "") : k.label; bool rel = string.Equals(k.rel, "release", StringComparison.OrdinalIgnoreCase);
+            float l = FinisherLook.MeanLuma(tex); string lab = (string.IsNullOrEmpty(k.label) ? (k.rel ?? "") : k.label) + ShotTag() /* V62B: the camera shot id is part of the label (mean luma per shot) */; bool rel = string.Equals(k.rel, "release", StringComparison.OrdinalIgnoreCase);
             r.lumas.Add(l); r.lumaLabels.Add((rel ? "~" : "") + lab);   // "~" = after the release (the gameplay camera again): reported, not judged
         }
         catch (Exception ex) { r.warns.Add("luma: " + ex.Message); }
     }
 
+    static string ShotTag() { var fc = FinisherCamera.Instance; return fc != null && fc.Active && fc.ShotId.Length > 0 ? "[" + fc.ShotId + "]" : ""; }   // V62B
     string LumaLine(Rec r)
     {
         var sb = new StringBuilder("gameplay ref " + (r.refLuma > 0f ? r.refLuma.ToString("0.000", IC) : "none"));
@@ -609,6 +641,8 @@ public class FinisherAuto : MonoBehaviour
             sb.AppendLine("    length: " + r.paced.ToString("0.00", IC) + " s paced (raw " + r.duration.ToString("0.00", IC) + " s, " + r.stalls + " capture stall frames excluded), Die() at +" + (r.pacedKill >= 0f ? r.pacedKill.ToString("0.00", IC) : "-") + " s paced, limit " + (C.maxFinisherSeconds > 0f ? C.maxFinisherSeconds.ToString("0.0", IC) + " s" : "none") + (C.maxFinisherSeconds > 0f ? (r.paced > C.maxFinisherSeconds ? "  TOO LONG" : "  ok") : ""));
             sb.AppendLine("    luma: " + LumaLine(r) + (r.refLuma > 0f && C.lumaTolerance > 0f ? "  tolerance " + (C.lumaTolerance * 100f).ToString("0", IC) + "%  " + (r.lumaOk ? "ok" : "OFF") : ""));
             sb.AppendLine("    clearance: head " + (float.IsNaN(r.clearHead) ? "-" : r.clearHead.ToString("0.00", IC)) + " m, hand " + (float.IsNaN(r.clearHand) ? "-" : r.clearHand.ToString("0.00", IC)) + " m (victim chest, estimated radius subtracted; negative = inside)");
+            if (r.groundLine.Length > 0) sb.AppendLine("    ground: " + r.groundLine + "  (limit +" + FinisherConfig.Get().rt.ground.failAboveM.ToString("0.00", IC) + " / -" + FinisherConfig.Get().rt.ground.failBelowM.ToString("0.00", IC) + " m)");
+            if (r.headLine.Length > 0) sb.AppendLine("    severed: " + r.headLine);
             sb.AppendLine("    checks: victimDead=" + r.victimDead + " frozenClear=" + r.frozenClear + " timeScaleRestored=" + r.timeOk + " cameraReleased=" + r.camOk + " exceptions=" + r.exceptions);
             sb.AppendLine("    shots (" + r.shots + "): " + string.Join(", ", r.files.ToArray()));
             if (r.sheetFile.Length > 0) sb.AppendLine("    sheet: " + r.sheetFile);

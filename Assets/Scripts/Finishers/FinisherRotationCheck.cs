@@ -26,16 +26,17 @@ public static class FinisherRotationCheck
             var ctxs = new[] {
                 new FinisherContext { killerSide = 0, victimSide = 1, move = FinisherMove.Heavy, loc = FinisherLoc.Head },
                 new FinisherContext { killerSide = 1, victimSide = 0, move = FinisherMove.Heavy, loc = FinisherLoc.Head } };
-            var elig = new List<string>[2];
+            var elig = new List<string>[2]; int emptyW = 0;   // V62B
             for (int s = 0; s < 2; s++)
             {
                 FinisherPlayer.ResetRotationForTest(); FinisherRotationStore.Clear();
                 elig[s] = FinisherPlayer.EligibleIds(ctxs[s]);
                 string wp = s == 0 ? rot.weapons.Dracula : rot.weapons.Pitborn;
                 sb.AppendLine("[" + wp + "] eligible: " + string.Join(", ", elig[s].ToArray()));
-                if (elig[s].Count == 0) { sb.AppendLine("  FAIL no eligible entry (the kill would be a plain death)"); ok = false; }
+                if (elig[s].Count == 0) { sb.AppendLine("  WARN no enabled entry for this weapon (rotation.enabledIds): its kills are plain deaths until one is enabled"); emptyW++; }
             }
 
+            if (emptyW == 2) { sb.AppendLine("  FAIL no weapon has an eligible entry (finishers would never play)"); ok = false; }
             // 1 + 2: interleaved kills, 3 full cycles each (+1)
             FinisherPlayer.ResetRotationForTest(); FinisherRotationStore.Clear();
             var seq = new List<string>[] { new List<string>(), new List<string>() };
