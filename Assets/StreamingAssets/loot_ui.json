@@ -80,7 +80,7 @@
   },
   "label": {
     "_about": "The item name above the pillar (serif, rarity colour) + rarity / slot line + the pickup prompt when near. height = metres above the pillar foot; fades out between fadeStartM and fadeEndM from the camera.",
-    "height": 2.9,
+    "height": 1.4,
     "fadeStartM": 14.0,
     "fadeEndM": 24.0,
     "nearAlpha": 1.0,
@@ -92,7 +92,10 @@
     "ruleW": 120.0,
     "promptGap": 8.0,
     "promptHeight": 24.0,
-    "showSub": true
+    "showSub": true,
+    "stackGapY": 8.0,
+    "boxW": 300.0,
+    "cullMargin": 140.0
   },
   "pickup": {
     "_about": "requireVictory: markers appear only after a VICTORY (spawnDelayS after it, after the finisher scene). radius = reach to press the key; promptRadius = distance the prompt shows. spread = metres between markers that drop at one point. fallbackDrops: when no drop source is registered (LootBridge.HasDropSource false, i.e. no GearDrop) these item ids drop at the fallen foe fallbackAfterS after the markers would have appeared. autoPickup = walking over it takes it (no key).",

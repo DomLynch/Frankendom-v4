@@ -5,16 +5,20 @@ using UnityEngine;
 // (GUARD BROKEN, PARRY, POSTURE BROKEN, DEATHBLOW). Called from GameHUD.OnGUI inside its GUI.matrix scale (all numbers are HUD px at the 1080 reference).
 public static class CombatHudBars
 {
-    /// <summary>The pale damage trail of a bar: holds lagDelay s after a drop, then shrinks lagRate (fraction of the bar) per s.</summary>
+    /// <summary>The pale damage trail of a bar. HUDFIX v92: holds bars.lagHold s after the last drop (a new hit re-arms the hold), then closes the gap by an ease (bars.lagEase per s, floor bars.lagMinRate per s) and is forced shut bars.lagMaxS s after the hold ends. A heal or the first call snaps it to the bar.</summary>
     public class Lag
     {
-        public float v = 1f; float since = -1f;
+        public float v = 1f; float holdUntil = -1f, last = -1f; bool init;   // HUDFIX v92
         public void Step(float f, float now, float dt)
         {
             var B = HudCfg.Get().bars;
-            if (f >= v) { v = f; since = -1f; return; }
-            if (since < 0f) since = now;
-            if (now - since >= B.lagDelay) v = Mathf.Max(f, v - B.lagRate * dt);
+            if (!init || f >= v) { init = true; v = f; last = f; holdUntil = -1f; return; }
+            if (f < last - 0.0005f) holdUntil = now + B.lagHold;   // a new hit: wait again, the trail keeps its old top
+            last = f;
+            if (now < holdUntil) return;
+            float gap = v - f, step = Mathf.Max(gap * (1f - Mathf.Exp(-B.lagEase * dt)), B.lagMinRate * dt);
+            if (B.lagMaxS > 0f && now - holdUntil >= B.lagMaxS) step = gap;
+            v = gap <= 0.002f || step >= gap ? f : v - step;
         }
     }
 

@@ -14,7 +14,7 @@ public class BloodEdge : MonoBehaviour
 {
     [Serializable] public class Data
     {
-        public bool enabled = true, playerOnly = true;
+        public bool enabled = true, playerOnly = true, symmetric = true;
         public float edgeMs = 480f, peakStart = 0.12f, peakEnd = 0.43f, headOn = 0.6f, widthFrac = 0.06f, spanFrac = 0.68f, damageRef = 20f, minScale = 0.55f;
         public int guiDepth = -1000, texW = 48, texH = 128, seed = 17;
         public float colorR = 0.14f, colorG = 0f, colorB = 0.01f;
@@ -140,6 +140,7 @@ public class BloodEdge : MonoBehaviour
 
         float scale = dmg > 0f ? Mathf.Lerp(d.minScale, 1f, Mathf.Clamp01(dmg / Mathf.Max(0.01f, d.damageRef))) : 1f;
         bool left = e.direction == "right", right = e.direction == "left";   // V3 EDGE: right -> left edge, left -> right edge, else both
+        if (d.symmetric) { left = right = false; }   // v92 (Goose): one red band on one edge only read as a bug; symmetric = both edges every hit (data: blood_edge.json symmetric)
         bool both = !left && !right;
         float peak = (both ? d.headOn : 1f) * scale;
         if (left || both) flashes.Add(new Flash { edge = 0, strip = pick, peak = peak });

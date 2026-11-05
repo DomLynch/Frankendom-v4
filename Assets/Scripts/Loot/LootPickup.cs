@@ -38,6 +38,18 @@ public sealed class LootPickup : MonoBehaviour
         Apply(0f, 1f);
     }
 
+    // PREWARM v92: the loot marker's shared textures, meshes and the two materials (neutral colour) exist before the first drop; Prewarm92 draws them sub-pixel and destroys the materials. The textures / meshes are the real static caches.
+    internal static void CollectPrewarm(List<Material> mats, List<Mesh> meshes)
+    {
+        var P = LootCfg.Get().pillar; Shader sh = Shader.Find(P.shader); if (sh == null) return;
+        if (pillarTex == null) pillarTex = MakePillarTex(P);
+        if (groundTex == null) groundTex = MakeGroundTex(P);
+        var tmp = new GameObject("LootPrewarm") { hideFlags = HideFlags.HideAndDontSave }; tmp.SetActive(false); var lp = tmp.AddComponent<LootPickup>(); lp.color = Color.white;
+        mats.Add(lp.MakeMat(sh, pillarTex, P.intensity)); mats.Add(lp.MakeMat(sh, groundTex, P.groundIntensity));
+        meshes.Add(GetPillarMesh(P.planes)); meshes.Add(GetGroundMesh());
+        UnityEngine.Object.Destroy(tmp);
+    }
+    // PREWARM v92 end
     Material MakeMat(Shader sh, Texture2D tex, float intensity)
     {
         var P = LootCfg.Get().pillar; var m = new Material(sh); m.name = "LootMat";

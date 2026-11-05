@@ -199,16 +199,42 @@ public sealed class LootUI : MonoBehaviour
         GUI.matrix = m;
     }
 
+    struct Slot { public LootPickup p; public float d, x, y; }   // HUDFIX v92
+    readonly System.Collections.Generic.List<Slot> slots = new System.Collections.Generic.List<Slot>();
+
     void DrawLabels(LootCfg.Data C, float vw, float vh, float s)
     {
         var cam = Camera.main; if (cam == null || live.Count == 0) return;
         var L = C.label; var K = C.colors; var T = C.text; Vector3 cp = cam.transform.position;
+        // HUDFIX v92: pass 1 = project + cull + de-overlap (stack apart by label.stackGapY), pass 2 = draw
+        slots.Clear(); float topY = L.nameSize * 1.5f + L.minScreenMargin, botY = vh - L.minScreenMargin - 90f;
         for (int i = 0; i < live.Count; i++)
         {
             var p = live[i]; if (p == null || p.item == null) continue;
-            float dist = Vector3.Distance(cp, p.Anchor); float a = L.nearAlpha * (1f - Mathf.InverseLerp(L.fadeStartM, L.fadeEndM, dist)); if (a <= 0.01f) continue;
-            Vector3 sp = cam.WorldToScreenPoint(p.Anchor + Vector3.up * L.height); if (sp.z <= 0f) continue;
-            float gx = sp.x / s, gy = (Screen.height - sp.y) / s; gx = Mathf.Clamp(gx, L.minScreenMargin + 300f, vw - L.minScreenMargin - 300f); gy = Mathf.Clamp(gy, L.nameSize * 1.5f + L.minScreenMargin, vh - L.minScreenMargin - 90f);
+            float dist0 = Vector3.Distance(cp, p.Anchor); if (L.nearAlpha * (1f - Mathf.InverseLerp(L.fadeStartM, L.fadeEndM, dist0)) <= 0.01f) continue;
+            Vector3 sp0 = cam.WorldToScreenPoint(p.Anchor + Vector3.up * L.height); if (sp0.z <= 0f) continue;
+            float rx = sp0.x / s, ry = (Screen.height - sp0.y) / s;
+            if (ry < -L.cullMargin || ry > vh + L.cullMargin || rx < -L.cullMargin || rx > vw + L.cullMargin) continue;   // off screen: no label pinned to the edge
+            slots.Add(new Slot { p = p, d = dist0, x = Mathf.Clamp(rx, L.minScreenMargin + 300f, vw - L.minScreenMargin - 300f), y = Mathf.Clamp(ry, topY, botY) });
+        }
+        slots.Sort((a0, b0) => a0.d.CompareTo(b0.d));   // nearest keeps its spot, the rest move
+        float blockH = L.nameSize * 1.5f + 2f + L.lineGap + (L.showSub ? L.subSize * 1.5f + L.promptGap : 0f);
+        for (int i = 1; i < slots.Count; i++)
+        {
+            var sl0 = slots[i]; float step = blockH + L.promptHeight + L.stackGapY, y0 = sl0.y;
+            for (int tries = 0; tries < slots.Count + 1; tries++)
+            {
+                bool hit = false;
+                for (int j = 0; j < i && !hit; j++) if (Mathf.Abs(slots[j].x - sl0.x) < L.boxW && Mathf.Abs(slots[j].y - sl0.y) < step) hit = true;
+                if (!hit) break;
+                sl0.y -= step; if (sl0.y < topY) { sl0.y = y0 + step * (tries + 1); }   // out of room above: stack downward instead
+            }
+            sl0.y = Mathf.Clamp(sl0.y, topY, botY); slots[i] = sl0;
+        }
+        for (int i = 0; i < slots.Count; i++)
+        {
+            var p = slots[i].p;
+            float a = L.nearAlpha * (1f - Mathf.InverseLerp(L.fadeStartM, L.fadeEndM, slots[i].d)); float gx = slots[i].x, gy = slots[i].y;   // HUDFIX v92
             LootDraw.Alpha = a; Color col = LootCfg.RarityColor(p.item);
             LootDraw.Text(new Rect(gx - 300f, gy - L.nameSize * 1.5f, 600f, L.nameSize * 1.5f), p.item.name, "serif", L.nameSize, TextAnchor.LowerCenter, true, col);
             LootDraw.Fill(new Rect(gx - L.ruleW * 0.5f, gy + 2f, L.ruleW, 1f), new Color(col.r, col.g, col.b, 0.75f));

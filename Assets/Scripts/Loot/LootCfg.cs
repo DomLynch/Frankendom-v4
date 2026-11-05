@@ -39,9 +39,10 @@ public static class LootCfg
     [Serializable]
     public class LabelC
     {
-        public float height = 2.9f, fadeStartM = 14f, fadeEndM = 24f, nearAlpha = 1f, minScreenMargin = 24f;
+        public float height = 1.4f, fadeStartM = 14f, fadeEndM = 24f, nearAlpha = 1f, minScreenMargin = 24f;
         public int nameSize = 26, subSize = 13, promptSize = 15; public float lineGap = 4f, ruleW = 120f, promptGap = 8f, promptHeight = 24f;
         public bool showSub = true;
+        public float stackGapY = 8f, boxW = 300f, cullMargin = 140f;   // HUDFIX v92: min vertical gap between stacked labels (px), label box width used for the overlap test, px past the viewport edge where a label is dropped instead of pinned to the edge
     }
     [Serializable]
     public class PickupC

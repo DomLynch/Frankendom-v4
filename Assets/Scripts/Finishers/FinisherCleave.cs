@@ -216,6 +216,18 @@ public static class FinisherCleave
         lineTex.SetPixels32(px); lineTex.Apply(false, true);
         return lineTex;
     }
+    // PREWARM v92: the halo + core cleave materials (and the generated line texture) exist before the first head-split; Prewarm92 draws them sub-pixel. Same Mat() calls as Wound(), so the cached statics are the real ones.
+    internal static void CollectPrewarm(List<Material> into)
+    {
+        var g = FinisherConfig.Get().gore; if (g == null || g.cleaves == null) return;
+        foreach (var cl in g.cleaves)
+        {
+            if (cl == null) continue;
+            var h = Mat(ref haloMat, cl.haloColor, "FinisherCleaveHalo"); var c = Mat(ref coreMat, cl.coreColor, "FinisherCleaveCore");
+            if (h != null && !into.Contains(h)) into.Add(h); if (c != null && !into.Contains(c)) into.Add(c);
+        }
+    }
+    // PREWARM v92 end
     static Material Mat(ref Material m, float[] col, string name)
     {
         if (m != null) return m;

@@ -106,6 +106,15 @@ public static class WoundDecals
         decalMats.Add(m); return m;
     }
 
+    // PREWARM v92: one HDRP/Decal material per wound shape (variant 0) so the first wound does not compile the decal shader / upload the generated masks; Prewarm92 shows them on a sub-pixel DecalProjector.
+    internal static void CollectPrewarm(List<Material> into)
+    {
+        var W = WoundTable.Get(); if (W == null || !W.enabled || !W.decals) return; var seen = new HashSet<string>();
+        foreach (var r in W.characters)
+            foreach (var sh in new[] { r.slash, r.stab, r.overhead })
+                if (sh != null && seen.Add(sh.tex)) { var m = DecalMat(sh.tex, 0, W.decal); if (m != null) into.Add(m); }
+    }
+    // PREWARM v92 end
     static Mesh Quad()
     {
         if (quad != null) return quad;

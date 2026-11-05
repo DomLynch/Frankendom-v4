@@ -9,6 +9,7 @@ using UnityEngine;
 public static class HudDraw
 {
     public static float Alpha = 1f;
+    public static float Outline = 0f, OutlineAlpha = 0.9f;   // HUDFIX v92: glyph outline radius in px (0 = off) in the shadow colour, set around a draw pass like Alpha (the end screen)
 
     static readonly Dictionary<string, Font> fonts = new Dictionary<string, Font>();
     static readonly Dictionary<int, GUIStyle> styles = new Dictionary<int, GUIStyle>();
@@ -16,7 +17,7 @@ public static class HudDraw
     static readonly GUIContent tmp = new GUIContent();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { fonts.Clear(); styles.Clear(); texs.Clear(); capsCache.Clear(); Alpha = 1f; pies = null; }
+    static void ResetStatics() { fonts.Clear(); styles.Clear(); texs.Clear(); capsCache.Clear(); Alpha = 1f; Outline = 0f; pies = null; }
 
     // ---------------- fonts / styles ----------------
     public static Font FontFor(string kind)
@@ -40,6 +41,14 @@ public static class HudDraw
         return s;
     }
     static Color Fade(Color c) { c.a *= Alpha; return c; }
+    static readonly Vector2[] ring8 = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1), new Vector2(0.7071f, 0.7071f), new Vector2(-0.7071f, 0.7071f), new Vector2(0.7071f, -0.7071f), new Vector2(-0.7071f, -0.7071f) };   // HUDFIX v92
+    // HUDFIX v92: 8 offset copies in the shadow colour under a label when Outline > 0
+    static void OutlineLabel(GUIStyle st, Rect r, string s, float ca)
+    {
+        if (Outline <= 0f) return; var sh = HudCfg.Col(HudCfg.Get().colors.shadow);
+        st.normal.textColor = Fade(new Color(sh.r, sh.g, sh.b, OutlineAlpha * ca));
+        for (int i = 0; i < ring8.Length; i++) GUI.Label(new Rect(r.x + ring8[i].x * Outline, r.y + ring8[i].y * Outline, r.width, r.height), s, st);
+    }
 
     // ---------------- basic fills ----------------
     public static void Fill(Rect r, Color c) { var o = GUI.color; GUI.color = Fade(c); GUI.DrawTexture(r, Texture2D.whiteTexture); GUI.color = o; }
@@ -52,6 +61,7 @@ public static class HudDraw
     {
         if (string.IsNullOrEmpty(s) || c.a * Alpha <= 0.003f) return;
         var st = Style(kind, size, a, bold, italic); var sh = HudCfg.Col(HudCfg.Get().colors.shadow); float d = Mathf.Max(1f, size / 13f);
+        OutlineLabel(st, r, s, c.a);   // HUDFIX v92
         st.normal.textColor = Fade(new Color(sh.r, sh.g, sh.b, sh.a * c.a)); GUI.Label(new Rect(r.x + d, r.y + d, r.width, r.height), s, st);
         st.normal.textColor = Fade(c); GUI.Label(r, s, st);
     }
@@ -87,6 +97,7 @@ public static class HudDraw
         {
             var r = L.runs[i]; if (r.ch == " ") continue;
             var st = Style(kind, r.size, TextAnchor.LowerLeft, bold, false); var rc = new Rect(x0 + r.x, y, r.w + 6f, h);
+            if (shadow) OutlineLabel(st, rc, r.ch, c.a);   // HUDFIX v92
             if (shadow) { st.normal.textColor = Fade(new Color(sh.r, sh.g, sh.b, sh.a * c.a)); GUI.Label(new Rect(rc.x + d, rc.y + d, rc.width, rc.height), r.ch, st); }
             st.normal.textColor = Fade(c); GUI.Label(rc, r.ch, st);
         }

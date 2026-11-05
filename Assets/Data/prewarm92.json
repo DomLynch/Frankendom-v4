@@ -1,0 +1,23 @@
+{
+  "_notes": "lanePREWARM v92. Read by Scripts/Prewarm92.cs (HudCfg.ReadData). Extends FxPrewarm (C1 caps + piece stub, GoreFx, ClashFx...) with the parts it did not cover: finisher cleave materials, finisher Volume overrides (NoMotionBlur / Vignette / Exposure), finisher + all Animator clips touched, ragdoll joint stub, wound decal materials, loot pillar/ground materials+textures, loot IMGUI fonts+glyphs, plus a hitch watcher that logs any frame longer than hitchMs. Every step has its own switch. Sub-pixel size / distance / draw frames come from perf.json (prewarmSize, prewarmDistance, prewarmFrames). Command line: -noprewarm92 (all off, for the A/B), -prewarm92harness (also in proof/loop runs). Batch mode: always off.",
+  "enabled": true,
+  "inHarness": false,
+  "startDelaySeconds": 1.5,
+  "framesBetweenSteps": 3,
+  "drawFrames": 3,
+  "steps": {
+    "cleave": true,
+    "woundDecals": true,
+    "lootMaterials": true,
+    "lootFonts": true,
+    "volumes": true,
+    "clips": true,
+    "ragdollStub": true
+  },
+  "volumes": { "frames": 3, "vignetteIntensity": 0.5, "priority": 9000.0, "note": "weight 0 global Volume with MotionBlur + Vignette + the finisher exposure override (FinisherLook.DarkenExposure), same component types as FinisherCamera.SetNoBlur / FinisherVignette.Begin. Priority is below the real ones (10000 / 10001) and weight 0: the picture cannot change." },
+  "clips": { "touchAllControllerClips": true, "reportMissingFinisherClips": true },
+  "ragdollStub": { "parts": 18, "frames": 2, "distance": 5000.0, "radius": 0.06, "length": 0.3, "mass": 4.0, "spring": 300.0, "damper": 12.0, "swing": 40.0, "twist": 20.0, "note": "kinematic root + N dynamic capsule bodies chained with ConfigurableJoint (slerp drive), no gravity, no collisions detected, 5 km below the arena, destroyed after frames. Same component set as RagdollDeath.Build. Only runs when ragdoll.json enabled (RagdollDeath.Cfg.enabled) or stubAlways." },
+  "ragdollStubAlways": false,
+  "fonts": { "kinds": ["serif"], "chars": " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789[]()+-.,:;'/%!?", "bold": [true, false], "note": "sizes come from loot_ui.json (label.nameSize/subSize/promptSize, pickup.toastSize/toastSubSize)." },
+  "hitch": { "enabled": true, "hitchMs": 250.0, "maxLogs": 20, "note": "logs '[Prewarm92] HITCH <ms> ms ...' for any frame longer than hitchMs (unscaled, after the prewarm has started). VERIFY.md greps it." }
+}

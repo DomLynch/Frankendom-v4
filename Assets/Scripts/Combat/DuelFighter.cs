@@ -459,10 +459,27 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     }
     public void Die()
     {
+        FState diedFrom = state;   // DEATHFIX v92: the state the killing blow found (Down = already on the floor)
         atkOn = false; fadeOutLen = 0f; state = FState.Dead; t = 0; health = 0f; hp.current = 0f; ContactRelay.Killed(this, move);
-        PlayClip("death", 0, 0.08f); f.holdLast = true;
+        DeathPlay(diedFrom); f.holdLast = true;   // DEATHFIX v92: was PlayClip("death", 0, 0.08f), which played the clip's ~1.1 s upright lead-in at 0 HP
         var col = GetComponent<Collider>(); if (col) col.enabled = false;
         hp.onDied.Invoke();
+    }
+    // DEATHFIX v92: the death clip (Mixamo, 4.4 s) keeps the hips at standing height for ~1.2 s before the knees buckle, so a fighter at 0 HP stood (and a body killed while knocked down
+    // popped upright first). death.json (per character row, "" = default row) states the clip, the start second inside it, the speed and the crossfade; the Down variant starts at the
+    // clip's floor pose. No row / file / state in the controller = the old behaviour (clip "death" from 0, 0.08 s fade).
+    void DeathPlay(FState from)
+    {
+        var r = DeathTable.Find(CharKey());
+        if (r == null || f == null || f.anim == null) { PlayClip("death", 0, 0.08f); return; }
+        string clip = HasState(r.clip) ? r.clip : "death";
+        bool down = from == FState.Down && r.downEnabled;
+        float start = down ? r.downStartSeconds : r.startSeconds, fade = down ? r.downFade : r.fade;
+        float len = ClipLen(clip);
+        if (len > 0.1f) start = Mathf.Clamp(start, 0f, len - 0.05f); else start = 0f;
+        f.holdLast = false; paused = false;
+        f.ForceExact(clip, Mathf.Max(0f, fade), start);
+        f.anim.speed = Mathf.Max(0.05f, r.speed) * f.animWeight;
     }
     public void ParrySuccess() { parryGuardContact = true; parryWhiffLen = 0; atkOn = false; fadeOutLen = 0f; state = FState.ParryRecover; t = 0; riposteTicks = ParryRiposteWindow(); ParryNote(); PlayClip("parry", (int)ParrySelfRecovery() + 10, 0.04f); }
     public void BlockHit(bool heavy) { blockFlash = 10; f.Force("guard_hit", 0.04f); f.anim.speed = 1.4f; }

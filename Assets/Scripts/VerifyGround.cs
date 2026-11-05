@@ -33,6 +33,7 @@ public class VerifyGround : MonoBehaviour
         public bool gameLocomotion = false;        // true: DuelFighter stays on (its own gravity AND its +-2.45 m stair clamp); false: harness gravity only, no clamp
         public float castFromY = 6f, dropHeight = 0.3f, groundRayUp = 3f, groundRayLen = 20f;
         public float oppGap = 3f, oppXMax = 2f, oppZMin = 9f, oppZMax = 24f;
+        public bool verifyNoMotionBlur = true;     // v92: a global high-priority Volume forces MotionBlur 0 for the verify run only (smeared shots hid the details visual-qc reads); the game profile keeps its value
         public float gameCamSeconds = 0.7f;        // CameraRig is switched back on for the last part of the settle so the game cam shot is the normal rig pose
         public float sideDist = 4.5f, sideHeight = 1.2f, sideFov = 35f, sideLookY = 1f, sideSign = 1f, sideNear = 0.1f;
         public int sideW = 1280, sideH = 720;
@@ -227,6 +228,17 @@ public class VerifyGround : MonoBehaviour
         for (int i = 0; i < 30; i++) yield return null;   // let every Awake/Start settle (rig target, FootGround attach)
         fighters = new[] { dr, pi };
         mainCam = Camera.main; rig = mainCam.GetComponent<CameraRig>(); if (rig == null) rig = FindFirstObjectByType<CameraRig>();
+        if (D.verifyNoMotionBlur)   // v92
+        {
+            try
+            {
+                var nbGo = new GameObject("VerifyNoMotionBlur"); var nbV = nbGo.AddComponent<UnityEngine.Rendering.Volume>();
+                nbV.isGlobal = true; nbV.priority = 10000f; nbV.weight = 1f;
+                var nbP = ScriptableObject.CreateInstance<UnityEngine.Rendering.VolumeProfile>();
+                var nbMb = nbP.Add<MotionBlur>(true); nbMb.intensity.Override(0f); nbMb.active = true; nbV.sharedProfile = nbP;
+            }
+            catch (Exception ex) { Debug.LogWarning("[VERIFY] no-motion-blur volume failed: " + ex.Message); }
+        }
 
         BrainsOff();
         foreach (var f in fighters) { origPos[f] = f.transform.position; origRot[f] = f.transform.rotation; vy[f] = -1f; }

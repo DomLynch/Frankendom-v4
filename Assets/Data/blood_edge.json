@@ -3,6 +3,7 @@
   "source": "frankendom-v3 src/fight/blood-edge.ts + blood-rows.json (blood-edge.*)",
   "enabled": true,
   "playerOnly": true,
+  "symmetric": true,
   "edgeMs": 480,
   "peakStart": 0.12,
   "peakEnd": 0.43,

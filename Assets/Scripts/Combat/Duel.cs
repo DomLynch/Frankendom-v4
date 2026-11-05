@@ -23,6 +23,10 @@ public class Duel : MonoBehaviour
             for (int i = 0; i < fighters.Count; i++) fighters[i].Tick();
             if (PresentationClock.Frozen) { acc = 0f; break; }   // a contact this tick requested a stop (V3 main.ts: accumulator = 0)
         }
+        // DEATHFIX v92: safety net. HP 0 with the state not Dead (any damage path that skipped Resolve's Die(), a finisher that ended without its own Die()) must still kill the fighter.
+        // A running finisher scene owns the kill (it holds the victim at >= 1 HP until its own Die()), so it is skipped while Busy / Frozen. death.json enforceZeroHp.
+        if (DeathTable.Get().enforceZeroHp && !Frozen && !RTFinisher.Busy)
+            for (int i = 0; i < fighters.Count; i++) { var z = fighters[i]; if (z != null && !z.Dead && z.maxHealth > 0f && z.health <= 0f) z.Die(); }
     }
 
     static float Angle(Vector3 fwd, Vector3 to) { fwd.y = 0; to.y = 0; return Vector3.Angle(fwd, to); }

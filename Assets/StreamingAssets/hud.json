@@ -19,7 +19,7 @@
     "gold": [0.86, 0.69, 0.30, 1.0],
     "hpPlayer": [0.66, 0.06, 0.09, 1.0],
     "hpEnemy": [0.72, 0.36, 0.09, 1.0],
-    "hpLag": [0.90, 0.80, 0.62, 0.55],
+    "hpLag": [0.96, 0.88, 0.66, 0.80],
     "hpBack": [0.0, 0.0, 0.0, 0.72],
     "frame": [0.62, 0.49, 0.26, 0.95],
     "frameDim": [0.34, 0.29, 0.22, 0.85],
@@ -37,10 +37,10 @@
     "cooling": [0.42, 0.40, 0.40, 1.0]
   },
   "bars": {
-    "_about": "Thin tapered bars (a long hexagon: pointed ends), drawn from signed-distance textures at texScale texels per px. frame = outline gap + line + end diamonds + fading lead-in lines (framePad, frameLine, capSize, capLead). ticks = fractions marked on the HP bars. lag = the pale damage trail (waits lagDelay s then shrinks lagRate of the bar per s). highFrom = posture fraction where the bar starts turning to postureHigh.",
+    "_about": "Thin tapered bars (a long hexagon: pointed ends), drawn from signed-distance textures at texScale texels per px. frame = outline gap + line + end diamonds + fading lead-in lines (framePad, frameLine, capSize, capLead). ticks = fractions marked on the HP bars. lag = the pale damage trail (HUDFIX v92: holds lagHold s after the last hit, then eases shut: lagEase x the gap per s, never slower than lagMinRate bar fractions per s, forced shut lagMaxS s after the hold). highFrom = posture fraction where the bar starts turning to postureHigh.",
     "texScale": 2.0, "framePad": 3.5, "frameLine": 1.3, "capSize": 7.0, "capLead": 30.0, "backPad": 1.2, "gloss": 0.10,
     "ticks": [0.25, 0.5, 0.75], "tickAlpha": 0.38, "tickHeight": 0.62,
-    "lagDelay": 0.35, "lagRate": 0.45,
+    "lagHold": 0.55, "lagEase": 5.0, "lagMinRate": 0.25, "lagMaxS": 0.9,
     "lowFraction": 0.30, "exhaustedPulseHz": 3.0, "highFrom": 0.6, "pulseHz": 4.0, "flashAlpha": 0.85
   },
   "player": {
@@ -62,7 +62,7 @@
   },
   "stance": {
     "_about": "Bottom-left stance indicator: caption, a diamond + the stance name in its stances.json colour (small caps), a dim key hint. The switch toast (stance name, lower centre) is drawn here too. enabled = false gives the old StanceLayer label back.",
-    "enabled": true, "x": 48, "bottom": 58, "caption": "STANCE", "captionSize": 11, "nameSize": 17, "nameSmall": 13, "tracking": 2.4, "diamond": 9, "hint": "3 / 4", "hintSize": 11,
+    "enabled": true, "x": 48, "bottom": 58, "caption": "STANCE", "captionSize": 14, "nameSize": 21, "nameSmall": 16, "tracking": 2.4, "diamond": 9, "hint": "3 / 4", "hintSize": 14,
     "toastSize": 24, "toastSmall": 18, "toastY": 0.70
   },
   "specials": {
@@ -118,13 +118,14 @@
     "color": [0.96, 0.93, 0.85, 1.0], "heavyColor": [0.95, 0.76, 0.30, 1.0]
   },
   "screens": {
-    "_about": "VICTORY / YOU DIED (GameLoop.DrawEnd): after delayS the screen fades in over fadeInS: a dark wash (dimAlpha), a vignette tinted victoryTint / defeatTint, a soft band (bandHeight, bandAlpha, bandLift) behind a large tracked serif title (titleSize, titleTracking px between letters, settling in from titleTrackingExtra px wider), an ornament rule (ruleW), an italic subtitle, the stats line (showStats) and small text prompts (promptSize; buttonW + buttonGap = prompt slot width; click or key). The HUD fades by hudFade while it shows. Strings: {0} in subtitle = the roster enemy's name.",
-    "delayS": 0.9, "fadeInS": 0.9, "dimAlpha": 0.42, "bandHeight": 420, "bandLift": 20, "bandAlpha": 0.82,
-    "titleSize": 96, "titleTracking": 12, "titleTrackingExtra": 22, "titleLift": 10, "ruleW": 420, "subtitleSize": 23, "subtitleItalic": true, "statsSize": 15, "showStats": true,
-    "promptSize": 21, "promptHintSize": 12, "promptY": 34, "promptGap": 70, "hudFade": 0.85,
-    "buttonW": 236, "buttonH": 50, "buttonGap": 26, "buttonSize": 20, "keyHintSize": 12, "nextLabelSize": 13,
+    "_about": "VICTORY / YOU DIED (GameLoop.DrawEnd): after delayS the screen fades in over fadeInS: a dark wash (dimAlpha), a vignette tinted victoryTint / defeatTint, a soft band (bandHeight, bandAlpha, bandLift) behind a large tracked serif title (titleSize, titleTracking px between letters, settling in from titleTrackingExtra px wider), an ornament rule (ruleW), an italic subtitle, the stats line (showStats) and small text prompts (promptSize; buttonW + buttonGap = prompt slot width; click or key). The HUD fades by hudFade while it shows. HUDFIX v92 legibility: secondary = colour of the caption / stats / key hints / next preview (was colors.dim), outlinePx + outlineAlpha = dark outline round every end-screen glyph, bigger subtitle / stats / hint sizes, darker dim + band. Strings: {0} in subtitle = the roster enemy's name.",
+    "delayS": 0.9, "fadeInS": 0.9, "dimAlpha": 0.62, "bandHeight": 500, "bandLift": 20, "bandAlpha": 0.92,
+    "titleSize": 96, "titleTracking": 12, "titleTrackingExtra": 22, "titleLift": 10, "ruleW": 420, "subtitleSize": 30, "subtitleItalic": true, "statsSize": 22, "showStats": true,
+    "promptSize": 24, "promptHintSize": 17, "promptY": 34, "promptGap": 70, "hudFade": 1.0,
+    "buttonW": 280, "buttonH": 50, "buttonGap": 40, "buttonSize": 20, "keyHintSize": 12, "nextLabelSize": 19,
     "statSep": "     ",
     "nextOnDefeat": false,
+    "secondary": [0.84, 0.81, 0.75, 1.0], "outlinePx": 2.0, "outlineAlpha": 0.9, "plateW": 820, "plateFeather": 140, "plateAlpha": 0.6,
     "victoryTint": [0.0, 0.0, 0.0, 1.0], "defeatTint": [0.16, 0.0, 0.015, 1.0],
     "victory": { "title": "VICTORY", "subtitle": "The {0} falls. The gate stands open.", "color": [0.88, 0.71, 0.31, 1.0] },
     "defeat":  { "title": "YOU DIED", "subtitle": "The dark takes you. Rise again.", "color": [0.74, 0.08, 0.10, 1.0] },

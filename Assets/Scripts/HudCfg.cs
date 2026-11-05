@@ -29,7 +29,8 @@ public static class HudCfg
         public float texScale = 2f;                       // procedural bar texture resolution (texels per HUD px)
         public float framePad = 3.5f, frameLine = 1.3f, capSize = 7f, capLead = 30f;   // ornate frame: outline gap, line, end diamonds, thin lead-in lines beyond the tips
         public float backPad = 1.2f, gloss = 0.10f, tickAlpha = 0.38f, tickHeight = 0.62f; public float[] ticks = { 0.25f, 0.5f, 0.75f };
-        public float lagDelay = 0.35f, lagRate = 0.45f;   // the pale damage trail waits lagDelay s, then shrinks lagRate (fraction of the bar) per s
+        // HUDFIX v92: damage trail = hold, then ease. lagHold s after the LAST hit (each new hit re-arms it), then the trail closes lagEase * gap per s (exponential, no more than the gap), never slower than lagMinRate (bar fractions per s), and is gone lagMaxS s after the hold ends at the latest
+        public float lagHold = 0.55f, lagEase = 5f, lagMinRate = 0.25f, lagMaxS = 0.9f;
         public float lowFraction = 0.30f, exhaustedPulseHz = 3f, highFrom = 0.6f, pulseHz = 4f, flashAlpha = 0.85f;
     }
     [Serializable] public class PlayerC
@@ -84,6 +85,9 @@ public static class HudCfg
         // HUD2: fade + serif title + small prompts
         public bool showStats = true, subtitleItalic = true; public float titleTracking = 12f, titleTrackingExtra = 20f, ruleW = 380f, promptGap = 70f, promptY = 34f, hudFade = 0.85f, titleLift = 10f; public int promptSize = 19, promptHintSize = 12;
         public float[] victoryTint = { 0.02f, 0.015f, 0f, 1f }, defeatTint = { 0.16f, 0f, 0.015f, 1f };
+        // HUDFIX v92: end-screen legibility: secondary text colour (caption, stats, hints, next preview), glyph outline (px at 1080, 0 = off) in the shadow colour
+        public float[] secondary = { 0.84f, 0.81f, 0.75f, 1f }; public float outlinePx = 2f, outlineAlpha = 0.9f;
+        public float plateW = 820f, plateFeather = 140f, plateAlpha = 0.6f;   // HUDFIX v92: dark backing plate behind the end-screen text (width, soft side edges, alpha)
         public EndC victory = new EndC { title = "VICTORY", subtitle = "The {0} falls. The gate stands open.", color = new[] { 0.88f, 0.71f, 0.31f, 1f } };
         public EndC defeat = new EndC { title = "YOU DIED", subtitle = "The dark takes you. Rise again.", color = new[] { 0.74f, 0.08f, 0.10f, 1f } };
         public LabelsC labels = new LabelsC();
