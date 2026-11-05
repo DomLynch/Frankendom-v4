@@ -35,8 +35,9 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public void Feint()
     {
         if (state != FState.Windup || move == null) return;
-        if (t > 10 || stamina < R("feintCost", 10)) return;
-        stamina -= R("feintCost", 10); regenWait = RegenDelay(); ToLoco(); PlayClip("idle", 0, 0.1f); f.holdLast = false;
+        float fCost = R("feintCost", 10) * StanceLayer.FeintCostMul(this);   // lanePARRY: stance feint cost (stances.json)
+        if (t > 10 || stamina < fCost) return;
+        stamina -= fCost; regenWait = RegenDelay(); ToLoco(); PlayClip("idle", 0, 0.1f); f.holdLast = false;
     }
     public void Press(string what)
     {
@@ -67,7 +68,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             case FState.Windup: return move == null ? 0 : (move.Windup(chained) - t) + move.Active(chained) + move.Recovery(chained);
             case FState.Active: return move == null ? 0 : (move.Active(chained) - t) + move.Recovery(chained);
             case FState.Recovery: return move == null ? 0 : move.Recovery(chained) - t;
-            case FState.ParryRecover: return (int)R("parryRecovery", 8) - t;
+            case FState.ParryRecover: return ParryRecoverLen() - t;   // lanePARRY: parry or whiff recovery
             case FState.Stagger: return staggerTicks - t;
             case FState.Roll: return dodgeTicks - t;
         }
@@ -217,7 +218,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             case FState.Active: TickActive(); break;
             case FState.Recovery: TickRecovery(); break;
             case FState.Roll: if (t >= dodgeTicks) { dodgeCd = dodgeCdTicks; ToLoco(); } break;
-            case FState.ParryRecover: if (t >= ParrySelfRecovery()) ToLoco(); break;
+            case FState.ParryRecover: if (t >= ParryRecoverLen()) { parryWhiffLen = 0; ToLoco(); } break;   // lanePARRY
             case FState.Stagger: if (t >= staggerTicks) ToLoco(); break;
             case FState.Down:
                 if (t == 54) PlayClip("get_up", 36);
@@ -246,11 +247,11 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         {
             if (state != FState.Guard)
             {
-                state = FState.Guard; t = 0; guardAge = 0; parryWindow = parryCd == 0; parryCd = ParryCooldown();
+                state = FState.Guard; t = 0; guardAge = 0; parryWindow = parryCd == 0; parryCd = ParryCooldown(); ParryGuardRaised();   // lanePARRY
             }
             guardAge++;
         }
-        else if (state == FState.Guard) { state = FState.Loco; t = 0; }
+        else if (state == FState.Guard) { state = FState.Loco; t = 0; if (ParryWhiffOnDrop()) return; }   // lanePARRY: a whiffed parry tap
 
         if (pMove != null)
         {
@@ -463,7 +464,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         var col = GetComponent<Collider>(); if (col) col.enabled = false;
         hp.onDied.Invoke();
     }
-    public void ParrySuccess() { atkOn = false; fadeOutLen = 0f; state = FState.ParryRecover; t = 0; riposteTicks = ParryRiposteWindow(); ParryNote(); PlayClip("parry", (int)ParrySelfRecovery() + 10, 0.04f); }
+    public void ParrySuccess() { parryGuardContact = true; parryWhiffLen = 0; atkOn = false; fadeOutLen = 0f; state = FState.ParryRecover; t = 0; riposteTicks = ParryRiposteWindow(); ParryNote(); PlayClip("parry", (int)ParrySelfRecovery() + 10, 0.04f); }
     public void BlockHit(bool heavy) { blockFlash = 10; f.Force("guard_hit", 0.04f); f.anim.speed = 1.4f; }
     public void AddPosture(float p) { posture = Mathf.Min(posture + p, PostureMax); postureHold = PostureTable.HoldTicks(CharKey(), (int)R("posture.hold", 60)); if (p > 0f) statPostureGained += p; }
     public void SetKnock(Vector3 v) { knock = v; }
@@ -477,18 +478,18 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public bool Exhausted => exhausted;
     public int GuardBreakFlash => guardBreakFlash;
     public int ParryFlash => parryOkFlash;
-    public int ParryWindowTicks() { return StaminaTable.ParryWindow(CharKey(), (int)R("parry", 10)); }
+    public int ParryWindowTicks() { return Mathf.Max(1, Mathf.RoundToInt(StaminaTable.ParryWindow(CharKey(), (int)R("parry", 10)) * StanceLayer.ParryWindowMul(this))); }   // STANCE2 v81: stances.json parryWindowMul (1 = unchanged)
     public int ParryWindowLeft => InParryWindow ? Mathf.Max(0, ParryWindowTicks() - guardAge) : 0;
     int RegenDelay() { var S = StaminaTable.Get(); return !S.enabled ? (int)R("regenDelay", 45) : (exhausted ? S.regen.exhaustedDelayTicks : S.regen.delayTicks); }
     int ParryCooldown() { var P = StaminaTable.Parry(); return P.enabled ? P.cooldownTicks : (int)R("parryCooldown", 30); }
     float ParrySelfRecovery() { var P = StaminaTable.Parry(); return P.enabled ? P.selfRecoveryTicks : R("parryRecovery", 8); }
     int ParryRiposteWindow() { var P = StaminaTable.Parry(); return P.enabled ? P.riposteWindowTicks : (int)R("parryStun", 90); }
-    void ParryNote() { var P = StaminaTable.Parry(); if (P.enabled) { stamina = Mathf.Max(0f, stamina - P.staminaCost); regenWait = RegenDelay(); } parryOkFlash = StaminaTable.Get().hud.parryFlashTicks; statParries++; }
-    float MoveCost(MoveDef m) { return StaminaTable.MoveCost(m); }
-    float SpeedMulExhausted() { return (exhausted ? StaminaTable.Get().exhausted.walkMul : 1f) * WoundSystem.MoveMul(this); }   // lane WOUND: limp (HP stages) and leg-hit slow, 1 when healthy / off
+    void ParryNote() { var P = StaminaTable.Parry(); if (P.enabled) { stamina = Mathf.Clamp(stamina - P.staminaCost + P.staminaGain, 0f, Mathf.Max(stamina, maxStamina)); if (P.staminaCost > 0f) regenWait = RegenDelay(); } parryOkFlash = StaminaTable.Get().hud.parryFlashTicks; statParries++; }   // lanePARRY: staminaGain = the parry reward
+    float MoveCost(MoveDef m) { return StaminaTable.MoveCost(m) * StanceLayer.AttackCostMul(this); }   // STANCE2 v81: stances.json attackCostMul
+    float SpeedMulExhausted() { return (exhausted ? StaminaTable.Get().exhausted.walkMul : 1f) * WoundSystem.MoveMul(this) * StanceLayer.MoveSpeedMul(this); }   /* STANCE2 v81: stances.json moveSpeedMul */   // lane WOUND: limp (HP stages) and leg-hit slow, 1 when healthy / off
     public float DamageScaleNow => damageScale * (exhausted ? StaminaTable.Get().exhausted.damageMul : 1f);
     bool HeavyAllowed() { var S = StaminaTable.Get(); bool ok = !S.enabled || (!exhausted && stamina >= S.exhausted.heavyMinStamina); if (!ok) statHeavyDowngrades++; return ok; }
-    public void NoteBlock() { statBlocks++; }
+    public void NoteBlock() { statBlocks++; parryGuardContact = true; }
     public void GuardBreakStun(int ticks = -1)
     {
         var S = StaminaTable.Get(); var G = S.guardBreak;
@@ -504,7 +505,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         if (regenWait > 0) regenWait--;
         else
         {
-            float mul = StaminaTable.RegenMul(CharKey()); if (state == FState.Guard) mul *= S.regen.guardMul; if (exhausted) mul *= S.regen.exhaustedMul;
+            float mul = StaminaTable.RegenMul(CharKey()) * GearHooks.StaminaRegenMul(this); /* kitGEAR v79: weight stat */ if (state == FState.Guard) mul *= S.regen.guardMul; if (exhausted) mul *= S.regen.exhaustedMul;
             mul *= WoundSystem.RegenMul(this);   // lane WOUND: heavy breathing when hurt
             stamina = Mathf.Min(maxStamina * WoundSystem.StaminaCeil(this), stamina + S.regen.perSecond * mul / 60f);
         }

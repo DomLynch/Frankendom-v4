@@ -4,96 +4,527 @@
   "memoryTicks": 1800,
   "riposte": {
     "about": "One riposte per parry (consume), and the press picks the riposte move: light press = slash_riposte (the formerly unused slash), heavy and thrust press = riposte. pressLight/Heavy/Thrust = how the AI chooses its counter press. heavy_riposte has no attack_clips row yet, so it is not mapped by default.",
-    "consumeAi": true, "consumePlayer": false, "variantsAi": true, "variantsPlayer": false,
-    "lightMove": "slash_riposte", "heavyMove": "riposte", "thrustMove": "riposte",
-    "pressLight": 0.45, "pressHeavy": 0.2, "pressThrust": 0.35
+    "consumeAi": true,
+    "consumePlayer": false,
+    "variantsAi": true,
+    "variantsPlayer": false,
+    "lightMove": "slash_riposte",
+    "heavyMove": "riposte",
+    "thrustMove": "riposte",
+    "pressLight": 0.45,
+    "pressHeavy": 0.2,
+    "pressThrust": 0.35
   },
   "responses": [
     {
-      "id": "lightSpam", "trigger": "lightSpam", "minCount": 6, "share": 0.75, "rampTicks": 90, "holdTicks": 600, "cutOff": false,
-      "fx": { "parry": 0.12, "dodge": 0.04, "interrupt": 0.2, "lapse": -0.15, "reaction": -6 }
+      "id": "lightSpam",
+      "trigger": "lightSpam",
+      "minCount": 6,
+      "share": 0.75,
+      "rampTicks": 90,
+      "holdTicks": 600,
+      "cutOff": false,
+      "fx": {
+        "parry": 0.12,
+        "dodge": 0.04,
+        "interrupt": 0.2,
+        "lapse": -0.15,
+        "reaction": -6
+      }
     },
     {
-      "id": "rollSame", "trigger": "rollSame", "minCount": 3, "share": 0.7, "rampTicks": 90, "holdTicks": 900, "cutOff": true,
-      "fx": { "kick": 0.1, "aggression": 0.1, "dash": 0.15 }
+      "id": "rollSame",
+      "trigger": "rollSame",
+      "minCount": 3,
+      "share": 0.7,
+      "rampTicks": 90,
+      "holdTicks": 900,
+      "cutOff": true,
+      "fx": {
+        "kick": 0.1,
+        "aggression": 0.1,
+        "dash": 0.15
+      }
     },
     {
-      "id": "turtle", "trigger": "turtle", "minCount": 0, "share": 0.55, "rampTicks": 120, "holdTicks": 600, "cutOff": false,
-      "fx": { "kick": 0.25, "pressure": -0.15, "stab": 0.2, "feint": 0.1 }
+      "id": "turtle",
+      "trigger": "turtle",
+      "minCount": 0,
+      "share": 0.55,
+      "rampTicks": 120,
+      "holdTicks": 600,
+      "cutOff": false,
+      "fx": {
+        "kick": 0.25,
+        "pressure": -0.15,
+        "stab": 0.2,
+        "feint": 0.1
+      }
     }
   ],
   "profiles": [
     {
-      "id": "pitborn_d1_3", "fighter": "Pitborn", "bot": false, "minDiff": 1, "maxDiff": 3,
-      "comboChance": 0.10,
-      "combos": [ { "id": "ll", "steps": ["light", "light"], "weight": 1 } ],
-      "punishChance": 0.25, "punishReact": 6, "punishMinRemain": 8, "punishApproachMin": 12, "punishDashGap": 1.7, "punishHeavyRemain": 34,
-      "delayChance": 0.30, "delayMin": 8, "delayMax": 30, "earlyChance": 0.0, "earlyMul": 0.6, "lateChance": 0.2, "lateMul": 1.5,
-      "riposteTake": 0.35,
-      "kickMax": 2, "kickWindow": 1800, "kickGap": 300,
-      "maxShare": 0.40, "lightMaxShare": 0.65, "minSample": 8,
-      "alts": [
-        { "from": "light", "to": ["thrust", "heavy"] }, { "from": "heavy", "to": ["light", "thrust"] },
-        { "from": "thrust", "to": ["light", "heavy"] }, { "from": "kick", "to": ["light", "thrust", "heavy"] }
+      "id": "pitborn_d1_3",
+      "fighter": "Pitborn",
+      "bot": false,
+      "minDiff": 1,
+      "maxDiff": 3,
+      "comboChance": 0.1,
+      "combos": [
+        {
+          "id": "ll",
+          "steps": [
+            "light",
+            "light"
+          ],
+          "weight": 1
+        }
       ],
-      "enrage": { "enabled": true, "hpFrac": 0.5, "speedMul": 1.08, "waitMul": 0.8, "reactionMul": 0.9, "comboAdd": 0.10, "punishAdd": 0.10, "diversify": 0.2,
-                  "fx": { "aggression": 0.10, "pressure": 0.05, "lapse": -0.10, "stab": 0.10, "kick": 0.05 } }
+      "punishChance": 0.25,
+      "punishReact": 6,
+      "punishMinRemain": 8,
+      "punishApproachMin": 12,
+      "punishDashGap": 1.7,
+      "punishHeavyRemain": 34,
+      "delayChance": 0.3,
+      "delayMin": 8,
+      "delayMax": 30,
+      "earlyChance": 0.0,
+      "earlyMul": 0.6,
+      "lateChance": 0.2,
+      "lateMul": 1.5,
+      "riposteTake": 0.35,
+      "kickMax": 2,
+      "kickWindow": 1800,
+      "kickGap": 300,
+      "maxShare": 0.4,
+      "lightMaxShare": 0.65,
+      "minSample": 8,
+      "alts": [
+        {
+          "from": "light",
+          "to": [
+            "thrust",
+            "heavy"
+          ]
+        },
+        {
+          "from": "heavy",
+          "to": [
+            "light",
+            "thrust"
+          ]
+        },
+        {
+          "from": "thrust",
+          "to": [
+            "light",
+            "heavy"
+          ]
+        },
+        {
+          "from": "kick",
+          "to": [
+            "light",
+            "thrust",
+            "heavy"
+          ]
+        }
+      ],
+      "enrage": {
+        "enabled": true,
+        "hpFrac": 0.5,
+        "speedMul": 1.08,
+        "waitMul": 0.8,
+        "reactionMul": 0.9,
+        "comboAdd": 0.1,
+        "punishAdd": 0.1,
+        "diversify": 0.2,
+        "fx": {
+          "aggression": 0.1,
+          "pressure": 0.05,
+          "lapse": -0.1,
+          "stab": 0.1,
+          "kick": 0.05
+        }
+      }
     },
     {
-      "id": "pitborn_d4_6", "fighter": "Pitborn", "bot": false, "minDiff": 4, "maxDiff": 6,
+      "id": "pitborn_d4_6",
+      "fighter": "Pitborn",
+      "bot": false,
+      "minDiff": 4,
+      "maxDiff": 6,
       "comboChance": 0.22,
       "combos": [
-        { "id": "ll", "steps": ["light", "light"], "weight": 1.0 },
-        { "id": "lh", "steps": ["light", "heavy"], "weight": 0.7 },
-        { "id": "llh", "steps": ["light", "light", "heavy"], "weight": 0.5 }
+        {
+          "id": "ll",
+          "steps": [
+            "light",
+            "light"
+          ],
+          "weight": 1.0
+        },
+        {
+          "id": "lh",
+          "steps": [
+            "light",
+            "heavy"
+          ],
+          "weight": 0.7
+        },
+        {
+          "id": "llh",
+          "steps": [
+            "light",
+            "light",
+            "heavy"
+          ],
+          "weight": 0.5
+        }
       ],
-      "punishChance": 0.45, "punishReact": 5, "punishMinRemain": 7, "punishApproachMin": 11, "punishDashGap": 1.6, "punishHeavyRemain": 34,
-      "delayChance": 0.25, "delayMin": 6, "delayMax": 24, "earlyChance": 0.15, "earlyMul": 0.55, "lateChance": 0.2, "lateMul": 1.6,
+      "punishChance": 0.45,
+      "punishReact": 5,
+      "punishMinRemain": 7,
+      "punishApproachMin": 11,
+      "punishDashGap": 1.6,
+      "punishHeavyRemain": 34,
+      "delayChance": 0.25,
+      "delayMin": 6,
+      "delayMax": 24,
+      "earlyChance": 0.15,
+      "earlyMul": 0.55,
+      "lateChance": 0.2,
+      "lateMul": 1.6,
       "riposteTake": 0.6,
-      "kickMax": 2, "kickWindow": 1800, "kickGap": 300,
-      "maxShare": 0.40, "lightMaxShare": 0.65, "minSample": 8,
+      "kickMax": 2,
+      "kickWindow": 1800,
+      "kickGap": 300,
+      "maxShare": 0.4,
+      "lightMaxShare": 0.65,
+      "minSample": 8,
       "alts": [
-        { "from": "light", "to": ["thrust", "heavy"] }, { "from": "heavy", "to": ["light", "thrust"] },
-        { "from": "thrust", "to": ["light", "heavy"] }, { "from": "kick", "to": ["light", "thrust", "heavy"] }
+        {
+          "from": "light",
+          "to": [
+            "thrust",
+            "heavy"
+          ]
+        },
+        {
+          "from": "heavy",
+          "to": [
+            "light",
+            "thrust"
+          ]
+        },
+        {
+          "from": "thrust",
+          "to": [
+            "light",
+            "heavy"
+          ]
+        },
+        {
+          "from": "kick",
+          "to": [
+            "light",
+            "thrust",
+            "heavy"
+          ]
+        }
       ],
-      "enrage": { "enabled": true, "hpFrac": 0.5, "speedMul": 1.12, "waitMul": 0.65, "reactionMul": 0.85, "comboAdd": 0.20, "punishAdd": 0.20, "diversify": 0.30,
-                  "fx": { "aggression": 0.15, "pressure": 0.10, "lapse": -0.15, "stab": 0.15, "kick": 0.10, "interrupt": 0.10 } }
+      "enrage": {
+        "enabled": true,
+        "hpFrac": 0.5,
+        "speedMul": 1.12,
+        "waitMul": 0.65,
+        "reactionMul": 0.85,
+        "comboAdd": 0.2,
+        "punishAdd": 0.2,
+        "diversify": 0.3,
+        "fx": {
+          "aggression": 0.15,
+          "pressure": 0.1,
+          "lapse": -0.15,
+          "stab": 0.15,
+          "kick": 0.1,
+          "interrupt": 0.1
+        }
+      }
     },
     {
-      "id": "pitborn_d7_10", "fighter": "Pitborn", "bot": false, "minDiff": 7, "maxDiff": 99,
+      "id": "pitborn_d7_10",
+      "fighter": "Pitborn",
+      "bot": false,
+      "minDiff": 7,
+      "maxDiff": 99,
       "comboChance": 0.35,
       "combos": [
-        { "id": "ll", "steps": ["light", "light"], "weight": 1.0 },
-        { "id": "lh", "steps": ["light", "heavy"], "weight": 0.8 },
-        { "id": "llh", "steps": ["light", "light", "heavy"], "weight": 0.8 },
-        { "id": "lll", "steps": ["light", "light", "light"], "weight": 0.4 }
+        {
+          "id": "ll",
+          "steps": [
+            "light",
+            "light"
+          ],
+          "weight": 1.0
+        },
+        {
+          "id": "lh",
+          "steps": [
+            "light",
+            "heavy"
+          ],
+          "weight": 0.8
+        },
+        {
+          "id": "llh",
+          "steps": [
+            "light",
+            "light",
+            "heavy"
+          ],
+          "weight": 0.8
+        },
+        {
+          "id": "lll",
+          "steps": [
+            "light",
+            "light",
+            "light"
+          ],
+          "weight": 0.4
+        }
       ],
-      "punishChance": 0.65, "punishReact": 4, "punishMinRemain": 6, "punishApproachMin": 10, "punishDashGap": 1.5, "punishHeavyRemain": 34,
-      "delayChance": 0.20, "delayMin": 6, "delayMax": 20, "earlyChance": 0.2, "earlyMul": 0.5, "lateChance": 0.2, "lateMul": 1.6,
+      "punishChance": 0.65,
+      "punishReact": 4,
+      "punishMinRemain": 6,
+      "punishApproachMin": 10,
+      "punishDashGap": 1.5,
+      "punishHeavyRemain": 34,
+      "delayChance": 0.2,
+      "delayMin": 6,
+      "delayMax": 20,
+      "earlyChance": 0.2,
+      "earlyMul": 0.5,
+      "lateChance": 0.2,
+      "lateMul": 1.6,
       "riposteTake": 0.75,
-      "kickMax": 3, "kickWindow": 1800, "kickGap": 240,
-      "maxShare": 0.40, "lightMaxShare": 0.65, "minSample": 8,
+      "kickMax": 3,
+      "kickWindow": 1800,
+      "kickGap": 240,
+      "maxShare": 0.4,
+      "lightMaxShare": 0.65,
+      "minSample": 8,
       "alts": [
-        { "from": "light", "to": ["thrust", "heavy"] }, { "from": "heavy", "to": ["light", "thrust"] },
-        { "from": "thrust", "to": ["light", "heavy"] }, { "from": "kick", "to": ["light", "thrust", "heavy"] }
+        {
+          "from": "light",
+          "to": [
+            "thrust",
+            "heavy"
+          ]
+        },
+        {
+          "from": "heavy",
+          "to": [
+            "light",
+            "thrust"
+          ]
+        },
+        {
+          "from": "thrust",
+          "to": [
+            "light",
+            "heavy"
+          ]
+        },
+        {
+          "from": "kick",
+          "to": [
+            "light",
+            "thrust",
+            "heavy"
+          ]
+        }
       ],
-      "enrage": { "enabled": true, "hpFrac": 0.5, "speedMul": 1.15, "waitMul": 0.6, "reactionMul": 0.8, "comboAdd": 0.25, "punishAdd": 0.2, "diversify": 0.35,
-                  "fx": { "aggression": 0.15, "pressure": 0.10, "lapse": -0.15, "stab": 0.15, "kick": 0.10, "interrupt": 0.15 } }
+      "enrage": {
+        "enabled": true,
+        "hpFrac": 0.5,
+        "speedMul": 1.15,
+        "waitMul": 0.6,
+        "reactionMul": 0.8,
+        "comboAdd": 0.25,
+        "punishAdd": 0.2,
+        "diversify": 0.35,
+        "fx": {
+          "aggression": 0.15,
+          "pressure": 0.1,
+          "lapse": -0.15,
+          "stab": 0.15,
+          "kick": 0.1,
+          "interrupt": 0.15
+        }
+      }
     },
     {
-      "id": "dracula_bot", "fighter": "Dracula", "bot": true, "minDiff": 0, "maxDiff": 99,
+      "id": "dracula_bot",
+      "fighter": "Dracula",
+      "bot": true,
+      "minDiff": 0,
+      "maxDiff": 99,
       "comboChance": 0.15,
-      "combos": [ { "id": "ll", "steps": ["light", "light"], "weight": 1 }, { "id": "lh", "steps": ["light", "heavy"], "weight": 0.6 } ],
-      "punishChance": 0.3, "punishReact": 6, "punishMinRemain": 8, "punishApproachMin": 12, "punishDashGap": 1.7, "punishHeavyRemain": 34,
-      "delayChance": 0.15, "delayMin": 6, "delayMax": 20, "earlyChance": 0.1, "earlyMul": 0.6, "lateChance": 0.1, "lateMul": 1.4,
-      "riposteTake": 0.8,
-      "kickMax": 2, "kickWindow": 1800, "kickGap": 300,
-      "maxShare": 0.40, "lightMaxShare": 0.65, "minSample": 8,
-      "alts": [
-        { "from": "light", "to": ["heavy", "thrust"] }, { "from": "heavy", "to": ["light", "thrust"] },
-        { "from": "thrust", "to": ["light", "heavy"] }, { "from": "kick", "to": ["light", "heavy", "thrust"] }
+      "combos": [
+        {
+          "id": "ll",
+          "steps": [
+            "light",
+            "light"
+          ],
+          "weight": 1
+        },
+        {
+          "id": "lh",
+          "steps": [
+            "light",
+            "heavy"
+          ],
+          "weight": 0.6
+        }
       ],
-      "enrage": { "enabled": false }
+      "punishChance": 0.3,
+      "punishReact": 6,
+      "punishMinRemain": 8,
+      "punishApproachMin": 12,
+      "punishDashGap": 1.7,
+      "punishHeavyRemain": 34,
+      "delayChance": 0.15,
+      "delayMin": 6,
+      "delayMax": 20,
+      "earlyChance": 0.1,
+      "earlyMul": 0.6,
+      "lateChance": 0.1,
+      "lateMul": 1.4,
+      "riposteTake": 0.8,
+      "kickMax": 2,
+      "kickWindow": 1800,
+      "kickGap": 300,
+      "maxShare": 0.4,
+      "lightMaxShare": 0.65,
+      "minSample": 8,
+      "alts": [
+        {
+          "from": "light",
+          "to": [
+            "heavy",
+            "thrust"
+          ]
+        },
+        {
+          "from": "heavy",
+          "to": [
+            "light",
+            "thrust"
+          ]
+        },
+        {
+          "from": "thrust",
+          "to": [
+            "light",
+            "heavy"
+          ]
+        },
+        {
+          "from": "kick",
+          "to": [
+            "light",
+            "heavy",
+            "thrust"
+          ]
+        }
+      ],
+      "enrage": {
+        "enabled": false
+      }
+    },
+    {
+      "id": "joan_bot",
+      "fighter": "Joan",
+      "bot": true,
+      "minDiff": 0,
+      "maxDiff": 99,
+      "comboChance": 0.15,
+      "combos": [
+        {
+          "id": "ll",
+          "steps": [
+            "light",
+            "light"
+          ],
+          "weight": 1
+        },
+        {
+          "id": "lh",
+          "steps": [
+            "light",
+            "heavy"
+          ],
+          "weight": 0.6
+        }
+      ],
+      "punishChance": 0.3,
+      "punishReact": 6,
+      "punishMinRemain": 8,
+      "punishApproachMin": 12,
+      "punishDashGap": 1.7,
+      "punishHeavyRemain": 34,
+      "delayChance": 0.15,
+      "delayMin": 6,
+      "delayMax": 20,
+      "earlyChance": 0.1,
+      "earlyMul": 0.6,
+      "lateChance": 0.1,
+      "lateMul": 1.4,
+      "riposteTake": 0.8,
+      "kickMax": 2,
+      "kickWindow": 1800,
+      "kickGap": 300,
+      "maxShare": 0.4,
+      "lightMaxShare": 0.65,
+      "minSample": 8,
+      "alts": [
+        {
+          "from": "light",
+          "to": [
+            "heavy",
+            "thrust"
+          ]
+        },
+        {
+          "from": "heavy",
+          "to": [
+            "light",
+            "thrust"
+          ]
+        },
+        {
+          "from": "thrust",
+          "to": [
+            "light",
+            "heavy"
+          ]
+        },
+        {
+          "from": "kick",
+          "to": [
+            "light",
+            "heavy",
+            "thrust"
+          ]
+        }
+      ],
+      "enrage": {
+        "enabled": false
+      }
     }
   ]
 }

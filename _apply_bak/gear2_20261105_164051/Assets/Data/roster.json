@@ -1,0 +1,49 @@
+{
+  "note": "Who plays whom. player / enemy are character ids; every per-character JSON row is keyed by these ids. Swap a character = add its row here (and its rows in the other JSON files) and change player / enemy. heightM 0 = keep the scene / GameConfig size.",
+  "player": "Joan",
+  "enemy": "Pitborn",
+  "characters": [
+    {
+      "id": "Dracula",
+      "displayName": "Dracula",
+      "objectName": "Dracula",
+      "weapon": "sword",
+      "controller": "Assets/Characters/Dracula.controller",
+      "modelGlb": "Assets/Characters/Dracula/Dracula_combat.glb",
+      "animGlb": "Assets/Characters/Dracula/Dracula_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_Dracula.mask",
+      "finisherClipFolder": "Assets/Characters/Dracula/FinisherClips",
+      "heightM": 0,
+      "armoured": false,
+      "notes": "flesh: bleeds, no sparks. Non-player row since v76 (switch back: roster.json \"player\": \"Dracula\" + Hades > Joan > Apply roster player to scene)"
+    },
+    {
+      "id": "Joan",
+      "displayName": "Joan of Arc",
+      "objectName": "Joan",
+      "weapon": "sword",
+      "controller": "Assets/Characters/Joan.controller",
+      "modelGlb": "Assets/Characters/Joan/Joan_combat.glb",
+      "animGlb": "Assets/Characters/Joan/Joan_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_Joan.mask",
+      "finisherClipFolder": "Assets/Characters/Joan/FinisherClips",
+      "heightM": 1.58,
+      "armoured": false,
+      "notes": "flesh: bleeds, no sparks. Mixamo ch13 chef 106-joint body + Joan face (joan_chef_outfit_v1.glb)"
+    },
+    {
+      "id": "Pitborn",
+      "displayName": "Pitborn",
+      "objectName": "Pitborn",
+      "weapon": "maul",
+      "controller": "Assets/Characters/Pitborn.controller",
+      "modelGlb": "Assets/Characters/Pitborn/Pitborn_combat.glb",
+      "animGlb": "Assets/Characters/Pitborn/Pitborn_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_Pitborn.mask",
+      "finisherClipFolder": "Assets/Characters/Pitborn/FinisherClips",
+      "heightM": 0,
+      "armoured": true,
+      "notes": "armoured: sparks and flash on hits"
+    }
+  ]
+}

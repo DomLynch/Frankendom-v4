@@ -8,6 +8,10 @@
    "weapon": "sword"
   },
   {
+   "character": "Joan",
+   "weapon": "sword"
+  },
+  {
    "character": "Pitborn",
    "weapon": "maul"
   }
@@ -15,6 +19,10 @@
  "surfaces": [
   {
    "character": "Dracula",
+   "surface": "flesh"
+  },
+  {
+   "character": "Joan",
    "surface": "flesh"
   },
   {
@@ -26,6 +34,10 @@
   {
    "character": "Dracula",
    "rate": 1.0
+  },
+  {
+   "character": "Joan",
+   "rate": 1.15
   },
   {
    "character": "Pitborn",
@@ -680,6 +692,28 @@
      "gain": 0.22,
      "delay": 0.0,
      "rate": 1.0,
+     "who": "attacker",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "attack_start",
+   "layer": "voice",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "heavy",
+   "attacker": "Joan",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "Joan effort on heavy swings (2 short slices only)",
+   "play": [
+    {
+     "cue": "effort_voice",
+     "gain": 0.22,
+     "delay": 0.0,
+     "rate": 1.15,
      "who": "attacker",
      "chance": 1.0
     }

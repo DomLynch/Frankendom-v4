@@ -1,4 +1,4 @@
-﻿{
+{
     "_notes":  "Hades-gate GATEWAY: ABYSS by default, RIFT (window into another world) on a boss trigger. Read by GatewayRift.cs (runtime), HdrpGateway.cs (scene builder), HdrpFurnace.cs (skip flags). Units: metres, degrees, seconds. Light \u0027value\u0027 is in the row\u0027s unit (Candela or Lumen, exposure is fixed EV10 so ~1230 nits reads as display 1.0). Edit and press Play (editor reads Assets/Data; BuildPlayer copies to StreamingAssets). Rows under portal.floats/colors/vectors map 1:1 to Furnace/GatewayRift properties. Geometry: gate opening x -2..2, floor y 1.9, top y 6.9, front face z 27, camera looks +Z from z\u003c20. state.forceState = auto|abyss|rift; the player also honours the arg -gateway:abyss|rift|auto (arg wins). Debug keys: F7 abyss, F8 rift, F9 auto.",
     "root":  "GatewayRoot",
     "scenePath":  "Assets/Scenes/HadesSlice.unity",
@@ -606,7 +606,7 @@
     "boom":  {
                  "cue":  "gateway_open",
                  "cueGain":  1.0,
-                 "procedural":  true,
+                 "procedural":  false,
                  "gain":  0.9,
                  "seconds":  2.8,
                  "f0":  62,

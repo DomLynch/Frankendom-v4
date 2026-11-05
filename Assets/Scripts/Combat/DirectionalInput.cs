@@ -249,7 +249,7 @@ public class DirectionalInput : MonoBehaviour
             string dir = heavyFired || lightOnDown ? firedDir : DirFrom(pressT, fromPad);
             DrawDir(c, dir, ControlsTable.Col(heavyFired ? Mk.heavyColor : Mk.attackColor, Color.yellow), Mk);
         }
-        else if (df.guardHeld) DrawGuard(c, df.guardSide, ControlsTable.Col(Mk.guardColor, Color.cyan), Mk);
+        else if (df.guardHeld) { if (!HudCfg.Get().guardDir.enabled) DrawGuard(c, df.guardSide, ControlsTable.Col(Mk.guardColor, Color.cyan), Mk); }   // laneHUD2 v83: GameHUD.DrawGuardDir draws the guard side (arcs, hud.json guardDir{}); the old bar only when that is off
         else if (Mk.showIdle) DrawDir(c, Classify(MouseSince(Time.unscaledTime - C.mouse.flickWindowMs / 1000f), C.mouse.deadZonePx), ControlsTable.Col(Mk.idleColor, Color.white), Mk);
         GUI.color = old;
     }

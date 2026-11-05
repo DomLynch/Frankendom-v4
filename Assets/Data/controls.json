@@ -101,6 +101,6 @@
   },
   "bot": {
     "_about": "FlowBot (balance bot) guard side: when it raises a guard / parry against a swing, sideReadChance = it picks the side that covers the swing, else a wrong side. AIBrain keeps its own read skill (ai profile 'read').",
-    "sideReadChance": 0.8
+    "sideReadChance": 0.53
   }
 }

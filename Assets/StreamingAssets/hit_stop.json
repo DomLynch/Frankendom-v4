@@ -1,5 +1,5 @@
 {
-  "_about": "Hit-stop (P1 feel pass). ms is the freeze of BOTH fighters' animation + the sim clock (PresentationClock); the camera, particles, blood and the camera kick keep running on unscaled time. Tiers = contact type + weight; `moves` rows override the landed-hit (type Hit) stop per move; add \"type\":\"Blocked\" etc. to give a row to another contact type. Light 40, slash 50, stab 55, heavy 80, kick 60, block short, parry none.",
+  "_about": "Hit-stop (P1 feel pass). ms is the freeze of BOTH fighters' animation + the sim clock (PresentationClock); the camera, particles, blood and the camera kick keep running on unscaled time. Tiers = contact type + weight; `moves` rows override the landed-hit (type Hit) stop per move; add \"type\":\"Blocked\" etc. to give a row to another contact type. Light 40, slash 50, stab 55, heavy 80, kick 60, block short, parry 40 (lanePARRY: a short clash freeze before the slow_mo.json parry dip).",
   "tickHz": 60,
   "kickMoveId": "kick",
   "specialMovePrefix": "skill_",
@@ -9,7 +9,7 @@
     { "id": "hitHeavy",   "frames": 0, "ms": 80 },
     { "id": "blockLight", "frames": 0, "ms": 20 },
     { "id": "blockHeavy", "frames": 0, "ms": 30 },
-    { "id": "parry",      "frames": 0, "ms": 0 },
+    { "id": "parry",      "frames": 0, "ms": 40 },
     { "id": "guardBreak", "frames": 0, "ms": 70 },
     { "id": "special",    "frames": 6, "ms": 0 },
     { "id": "kick",       "frames": 0, "ms": 60 }
@@ -21,6 +21,10 @@
     { "id": "thrust",           "frames": 0, "ms": 55 },
     { "id": "riposte",          "frames": 0, "ms": 55 },
     { "id": "heavy_overhead",   "frames": 0, "ms": 80 },
+    { "id": "heavy_left",       "frames": 0, "ms": 80 },
+    { "id": "heavy_right",      "frames": 0, "ms": 80 },
+    { "id": "heavy_thrust",     "frames": 0, "ms": 80 },
+    { "id": "light_overhead",   "frames": 0, "ms": 50 },
     { "id": "heavy_riposte",    "frames": 0, "ms": 80 },
     { "id": "heavy_counter",    "frames": 0, "ms": 80 },
     { "id": "critical",         "frames": 0, "ms": 90 }

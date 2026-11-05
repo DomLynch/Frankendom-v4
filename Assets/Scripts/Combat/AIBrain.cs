@@ -105,6 +105,7 @@ public class AIBrain : MonoBehaviour
         if (STSteer.Active) STSteer.PreBrain(this);   // steer layer hook (inert without -steer)
         var o = df.opponent;
         if (df.Dead || o == null || o.Dead) { df.moveDir = Vector3.zero; df.guardHeld = false; df.run = false; df.heavyHeld = false; return; }
+        AiStance.Tick(df);   // STANCE2 v81: the AI picks its own stance (stances.json "ai"); own RNG, inert while ai.enabled is false
         int now = Duel.TickCount;
         if (now < lastTick) lastTick = now;   // sim restarted
         int n = now - lastTick;
@@ -137,7 +138,7 @@ public class AIBrain : MonoBehaviour
 
         float rollCost = df.Rule("rollCost", U.rules.rollCost);
         float safeStart = df.Rule("safeStart", U.rules.safeStart), safeEnd = df.Rule("safeEnd", U.rules.safeEnd);
-        float parryWindow = df.Rule("parry", U.rules.parry);
+        float parryWindow = StaminaTable.Parry().enabled ? df.ParryWindowTicks() : df.Rule("parry", U.rules.parry);   // lanePARRY: the same window Duel.Resolve uses (parry.json)
 
         MoveDef mLight = Mv(df, "light_right"), mHeavy = Mv(df, "heavy_overhead"), mThrust = Mv(df, "thrust"), mKick = Mv(df, "kick");
         MoveDef omv = o.CurrentMove;
@@ -151,7 +152,7 @@ public class AIBrain : MonoBehaviour
         bool selfGuard = sp == Ph.Guard;
         if (selfGuard && !selfWasGuard) guardEntryTick = tick;
         selfWasGuard = selfGuard;
-        bool parryCooldown = tick - guardEntryTick < df.Rule("parryCooldown", U.rules.parryCooldown);
+        bool parryCooldown = tick - guardEntryTick < (StaminaTable.Parry().enabled ? StaminaTable.Parry().cooldownTicks : df.Rule("parryCooldown", U.rules.parryCooldown));   // lanePARRY
 
         bool Legal(string act)
         {
@@ -275,7 +276,8 @@ public class AIBrain : MonoBehaviour
             else
             {
                 float lapse = reads.spammer ? p.lapse * R.spammerLapseShare : p.lapse;
-                float parryChance2 = reads.spammer ? Mathf.Min(R.parryCap, Mathf.Min(1f - p.dodge, p.parry * R.parryBoost)) : p.parry;
+                float pParry = StaminaTable.AiParryChance(p.parry);   // lanePARRY: parry.json ai.parryAdd / parryMax
+                float parryChance2 = reads.spammer ? Mathf.Min(R.parryCap, Mathf.Min(1f - p.dodge, pParry * R.parryBoost)) : pParry;
                 if (!inRange || s.Roll() < lapse) s.plan = AiPlan.Ignore;
                 else if (r < parryChance2 && !parryCooldown) s.plan = AiPlan.Parry;
                 else if (r < parryChance2 + p.dodge && df.stamina >= rollCost) s.plan = AiPlan.Dodge;

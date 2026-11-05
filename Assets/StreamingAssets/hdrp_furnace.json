@@ -374,7 +374,7 @@
                        "spotAngle":  0,
                        "innerPercent":  0,
                        "range":  45,
-                       "volumetricDimmer":  2.0,
+                       "volumetricDimmer":  0.5,
                        "shadows":  false,
                        "flicker":  {
                                        "baseValue":  1.0,
@@ -401,11 +401,9 @@
                                      0
                                  ],
                        "unit":  "Lumen",
-                       "value":  9000,
+                       "value":  4500,
                        "color":  [
-                                     1.0,
-                                     0.3,
-                                     0.07
+                                     1.0, 0.42, 0.18
                                  ],
                        "size":  [
                                     3.4,
@@ -494,7 +492,7 @@
                        "spotAngle":  0,
                        "innerPercent":  0,
                        "range":  14,
-                       "volumetricDimmer":  2.0,
+                       "volumetricDimmer":  0.5,
                        "shadows":  false,
                        "flicker":  {
                                        "baseValue":  1.0,

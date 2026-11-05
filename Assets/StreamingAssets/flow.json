@@ -18,6 +18,12 @@
       { "from": "thrust",         "to": "kick",   "earliest": 8,  "latest": 21, "onHitOnly": false, "chained": false },
       { "from": "heavy_overhead", "to": "light",  "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": true  },
       { "from": "heavy_overhead", "to": "thrust", "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": false },
+      { "from": "heavy_left", "to": "light",  "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": true  },
+      { "from": "heavy_left", "to": "thrust", "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": false },
+      { "from": "heavy_right", "to": "light",  "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": true  },
+      { "from": "heavy_right", "to": "thrust", "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": false },
+      { "from": "heavy_thrust", "to": "light",  "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": true  },
+      { "from": "heavy_thrust", "to": "thrust", "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": false },
       { "from": "kick",           "to": "light",  "earliest": 6,  "latest": 25, "onHitOnly": false, "chained": true  },
       { "from": "kick",           "to": "thrust", "earliest": 8,  "latest": 25, "onHitOnly": false, "chained": false },
       { "from": "kick",           "to": "heavy",  "earliest": 12, "latest": 25, "onHitOnly": true,  "chained": true  }

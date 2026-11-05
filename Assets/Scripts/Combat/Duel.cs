@@ -36,30 +36,30 @@ public class Duel : MonoBehaviour
         float arc = m.id == "kick" ? a.Rule("kickArc", Mathf.PI / 4f) * Mathf.Rad2Deg : 70f;
         if (dist > m.reach * a.scale + a.radius + d.radius + 0.45f) return false;
         if (Angle(a.transform.forward, ad) > arc) return false;
-        if (d.IFrames) return false;   // rolled through it
+        if (d.IFrames && !d.SidestepIgnoresIFrames(m)) return false;   // rolled through it (lanePARRY: a sidestep does not beat an overhead, parry.json sidestep)
         HitReactionTable.Last = null;   // P2: set again below only for a clean hit
 
         bool heavy = m.charges || m.damage >= 18f;
         string evt;
         Vector3 away = ad.normalized;
-        bool defGuard = d.IsGuarding && Angle(d.transform.forward, -ad) <= a.Rule("guardArc", Mathf.PI / 3f) * Mathf.Rad2Deg && DirectionalGuard.SideOk(a, d, m, heavy);   // CTRL v68: the guard side must cover the swing (controls.json guard.guardRequiresSide)
+        bool defGuard = d.IsGuarding && Angle(d.transform.forward, -ad) <= a.Rule("guardArc", Mathf.PI / 3f) * Mathf.Rad2Deg * StanceLayer.GuardArcMul(d) /* STANCE2 v81 */ && DirectionalGuard.SideOk(a, d, m, heavy);   // CTRL v68: the guard side must cover the swing (controls.json guard.guardRequiresSide)
 
         if (defGuard && d.InParryWindow && m.parryable && (!heavy || !StaminaTable.Parry().enabled || StaminaTable.Parry().parryHeavies))
         {
             d.ParrySuccess();
-            a.Stagger(StaminaTable.ParryStagger(heavy, (int)a.Rule("parryStun", 90)), "stagger_loop"); a.AddPosture(PostureTable.ParryAttackerGain(StaminaTable.Parry().enabled ? StaminaTable.Parry().attackerPosture : a.Rule("posture.parry", 25))); if (PostureTable.Get().enabled) d.RelievePosture(PostureTable.Get().parry.relief); bool pbk = a.TryPostureBreak(d);
+            a.Stagger(StaminaTable.ParryStagger(heavy, (int)a.Rule("parryStun", 90)), "stagger_loop"); a.AddPosture(a.ParryAttackerPosture(heavy));   /* lanePARRY: DuelFighterParry.cs */ if (PostureTable.Get().enabled) d.RelievePosture(PostureTable.Get().parry.relief); bool pbk = a.TryPostureBreak(d);
             Fire(a, d, "Parried", heavy, false); if (pbk) Fire(d, a, "GuardBroken", true, false); return true;
         }
         if (defGuard && m.id == "kick" && m.hasVsGuard)
         {
-            d.SpendStamina(m.vsGuardStaminaDamage); d.GuardBreakStun((int)m.vsGuardStagger); if (PostureTable.Get().enabled) { d.AddPosture(PostureTable.Get().block.kick); d.TryPostureBreak(a); }
+            d.SpendStamina(m.vsGuardStaminaDamage); d.GuardBreakStun((int)m.vsGuardStagger); if (PostureTable.Get().enabled) { d.AddPosture(PostureTable.Get().block.kick * StanceLayer.PostureMul(a, d, false) /* STANCE2 v81 */); d.TryPostureBreak(a); }
             Fire(a, d, "GuardBroken", true, false); return true;
         }
         if (defGuard)
         {
-            d.SpendStamina(StaminaTable.BlockCost(m, heavy, d.Exhausted, a.Rule("blockCost", 25f)));
-            d.AddPosture(PostureTable.BlockGain(m, heavy)); if (PostureTable.Get().enabled && PostureTable.Get().block.attackerBlocked > 0f) a.AddPosture(PostureTable.Get().block.attackerBlocked); bool pbb = d.TryPostureBreak(a);
-            d.health = Mathf.Max(1f, d.health - m.damage * StaminaTable.ChipFrac(m, d.Exhausted) * (STSteer.Active ? STSteer.DamageMul(a, d) : 1f));
+            d.SpendStamina(StaminaTable.BlockCost(m, heavy, d.Exhausted, a.Rule("blockCost", 25f)) * StanceLayer.BlockCostMul(d));   // lanePARRY: stance block cost (stances.json)
+            d.AddPosture(PostureTable.BlockGain(m, heavy) * StanceLayer.PostureMul(a, d, false) /* STANCE2 v81 */); if (PostureTable.Get().enabled && PostureTable.Get().block.attackerBlocked > 0f) a.AddPosture(PostureTable.Get().block.attackerBlocked); bool pbb = d.TryPostureBreak(a);
+            d.health = Mathf.Max(1f, d.health - m.damage * StanceLayer.BlockChipMul(d) /* STANCE2 v81 */ * StaminaTable.ChipFrac(m, d.Exhausted) * (STSteer.Active ? STSteer.DamageMul(a, d) : 1f) * GearHooks.DamageTakenMul(d));   /* kitGEAR v79: armour stat on block chip */
             if (pbb) { Fire(a, d, "GuardBroken", true, false); }
             else if (StaminaTable.BreaksGuard(d.stamina, m, heavy))
             {
@@ -76,10 +76,12 @@ public class Duel : MonoBehaviour
         HitReactionTable.Last = hr;
         float dmg = m.damage * a.DamageScaleNow * chargeMul * (rear ? a.Rule("rear.damage", 1.25f) : 1f) * (counter ? a.Rule("counter.damage", 1.25f) : 1f);
         if (STSteer.Active) dmg *= STSteer.DamageMul(a, d); bool db = PostureTable.Get().enabled && d.DeathblowOpen; if (db) dmg = PostureTable.DeathblowDamage(dmg, d);   // P6 deathblow: the next hit on a posture-broken fighter   // steer stance modifiers (dealt / taken, Trickster per-hit roll)
+        bool dbLethal = db && StanceLayer.KeepLethal && dmg > d.health;   // STANCE2 v81: DeathblowDamage returned health + 1 (lethal); it must stay lethal under any damage multiplier < 1
         if (FightBalance.Active) dmg *= FightBalance.HitMul(a, d, m);   // B1: fight_balance.json
         float stg = m.stagger * chargeMul * (rear ? a.Rule("rear.stagger", 1.25f) : 1f) * (counter ? a.Rule("counter.stagger", 1.5f) : 1f);
-        var pv = PoiseTable.Evaluate(a, d, m, db); dmg *= pv.damageMul; d.health -= dmg;   // V64P: hyper-armour, poise meter, riposte damage multiplier (poise.json)
-        if (db) d.ConsumeDeathblow(a); else d.AddPosture(pv.ClampPosture(d, PostureTable.HitGain(m) * (rear ? a.Rule("rear.posture", 1.5f) : 1f)));
+        var pv = PoiseTable.Evaluate(a, d, m, db); dmg *= pv.damageMul * GearHooks.DamageTakenMul(d); d.health -= dmg; /* kitGEAR v79: armour stat */   // V64P: hyper-armour, poise meter, riposte damage multiplier (poise.json)
+        if (dbLethal && d.health > 0f) d.health = 0f;   // STANCE2 v81: after the last damage multiplier (stance taken, balance, poise, gear armour)
+        if (db) d.ConsumeDeathblow(a); else d.AddPosture(pv.ClampPosture(d, StanceLayer.PostureDealtMul(a, d, true) /* STANCE2 v81: attacker postureDealtMul x Trickster proc; the defender half is the PostureTakenMul(d) factor of this line */ * PostureTable.HitGain(m) * (rear ? a.Rule("rear.posture", 1.5f) : 1f) * StanceLayer.PostureTakenMul(d) * GearHooks.PostureTakenMul(d)));   /* kitGEAR v79: poise stat */   // lanePARRY: stance posture resist
         d.SetKnock(away * m.knockback * a.scale * 0.9f * pv.knockMul);
         if (db && d.health > 0f && RTFinisher.DeathblowFinishes && RTFinisher.TryBegin(a, d, m, true)) return true;   // V61B: a posture-break deathblow ALWAYS starts a finisher (finishers.json rt.deathblowFinishes), lethal or not; the scene's Die() is the kill
         if (d.health <= 0f)

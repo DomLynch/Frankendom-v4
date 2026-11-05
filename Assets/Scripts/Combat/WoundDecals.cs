@@ -95,8 +95,8 @@ public static class WoundDecals
     {
         if (!shaderLooked) { shaderLooked = true; decalShader = Shader.Find("HDRP/Decal"); }
         if (decalShader == null) return null;
-        string key = kind + "#" + variant; for (int i = 0; i < decalMats.Count; i++) if (decalMats[i].name == key) return decalMats[i];
-        var m = new Material(decalShader) { name = key };
+        string key = kind + "#" + variant; for (int i = decalMats.Count - 1; i >= 0; i--) { if (decalMats[i] == null) { decalMats.RemoveAt(i); continue; } if (decalMats[i].name == key) return decalMats[i]; }   // v75 leak fix: a destroyed material is dropped, never handed to a projector
+        var m = new Material(decalShader) { name = key, hideFlags = HideFlags.DontUnloadUnusedAsset, enableInstancing = true };
         var tex = Masks(kind, dc, false); m.SetTexture("_BaseColorMap", tex[variant % tex.Length]); m.SetColor("_BaseColor", Color.white);
         m.SetTexture("_MaskMap", MaskMap(dc));
         m.SetFloat("_AffectAlbedo", 1f); m.SetFloat("_AffectNormal", 0f); m.SetFloat("_AffectMetal", 0f); m.SetFloat("_AffectAO", 0f); m.SetFloat("_AffectSmoothness", 1f); m.SetFloat("_AffectEmission", 0f);
@@ -166,7 +166,7 @@ public static class WoundDecals
         int variant = (int)(Rnd(s) * 1000f) % Mathf.Max(1, dc.variants);
 
         var bone = Nearest(s, victim, point);
-        var go = new GameObject("WoundDecal_" + kind);
+        var go = new GameObject("WoundDecal_" + kind); go.SetActive(false);   // v75 leak fix: inactive until the projector has its material
         Quaternion rot = Quaternion.LookRotation(a2v, Vector3.up) * Quaternion.AngleAxis(roll, Vector3.forward);
         var d = new Decal { t = go.transform, born = Time.unscaledTime, baseOpacity = Mathf.Clamp01(row.opacity) };
         var mat = DecalMat(shape.tex, variant, dc);
@@ -196,6 +196,7 @@ public static class WoundDecals
         go.transform.SetParent(bone, true);
         var ps = bone.lossyScale;
         go.transform.localScale = new Vector3(want.x / Mathf.Max(1e-4f, ps.x), want.y / Mathf.Max(1e-4f, ps.y), want.z / Mathf.Max(1e-4f, ps.z));
+        go.SetActive(true);
         s.list.Add(d); return d;
     }
 

@@ -8,8 +8,8 @@
     "disableNames": [],
     "tunnel": {
         "enabled": true,
-        "startInset": 0.3,
-        "depth": 8.5,
+        "startInset": 2.6,
+        "depth": 6.2,
         "halfWidth": 2.4,
         "height": 5.7,
         "endScale": 0.9,

@@ -185,7 +185,7 @@ public static class AiWorld
         if (e.actor == null || e.target == null) return;
         bool contact = e.type == "Hit" || e.type == "Blocked" || e.type == "Parried" || e.type == "GuardBroken";
         if (contact) Track(e.actor).landed = true;
-        if (e.type == "Parried") Track(e.target).riposteUntil = Duel.TickCount + (int)e.target.Rule("parryStun", AiRows.I.unity.rules.parryStun);
+        if (e.type == "Parried") Track(e.target).riposteUntil = Duel.TickCount + StaminaTable.RiposteWindow((int)e.target.Rule("parryStun", AiRows.I.unity.rules.parryStun));   // lanePARRY: parry.json riposteWindowTicks
         for (int i = 0; i < brains.Count; i++)
         {
             var b = brains[i]; if (b.df == null) continue;

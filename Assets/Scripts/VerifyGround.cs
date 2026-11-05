@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -315,8 +315,14 @@ public class VerifyGround : MonoBehaviour
         }
 
         // ---- fight phase ----
+        // v79 fighters check: exactly two active fighters (player + enemy), distinct names (v79 had a stale second Joan root active)
+        int activeFighters = 0; var fnames = new System.Collections.Generic.HashSet<string>(); bool dupFighter = false;
+        foreach (var fdf in FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) if (fdf != null && fdf.gameObject.activeInHierarchy) { activeFighters++; if (!fnames.Add(fdf.name)) dupFighter = true; }
+        bool fightersFail = activeFighters != 2 || dupFighter;
+        Debug.Log("[VERIFY] FIGHTERS " + (fightersFail ? "FAIL" : "PASS") + " active=" + activeFighters + " names=" + string.Join(",", new System.Collections.Generic.List<string>(fnames).ToArray()));
         FightOn();
         float ft = 0f, nextShot = D.shotEvery; int shotN = 0; int ow = 0;
+        int camFrames = 0, camOut = 0; float camDistWorst = 0f;   // v78 cam check: the game camera must keep the fighters in view (v77 shipped a dead camera, rock close-up, with the ground check PASS)
         yield return null;
         while (ft < D.fightSeconds)
         {
@@ -337,6 +343,16 @@ public class VerifyGround : MonoBehaviour
                 }
                 catch { }
             }
+            if (ft > 2f)
+            {
+                var mc = Camera.main;
+                if (mc == null || fighters == null) { camFrames++; camOut++; }
+                else
+                {
+                    Vector3 cc = Vector3.zero; int cn = 0; bool anyDead = false; foreach (var ff in fighters) if (ff && ff.gameObject.activeInHierarchy) { cc += ff.transform.position; cn++; if (ff.Dead) anyDead = true; }   // v85 alive only: after a death / the victory screen the camera frames the corpse on purpose (a 60-s fight left 72% of a 150-s window 'out of view')
+                    if (cn > 0 && !anyDead && GameLoop.Outcome == GameLoop.Result.None) { cc = cc / cn + Vector3.up; var vp = mc.WorldToViewportPoint(cc); float cd = Vector3.Distance(mc.transform.position, cc); camFrames++; if (vp.z < 0.1f || vp.x < 0.02f || vp.x > 0.98f || vp.y < 0.02f || vp.y > 0.98f || cd > 14f) camOut++; if (cd > camDistWorst) camDistWorst = cd; }
+                }
+            }
             if (ft >= nextShot)
             {
                 nextShot += D.shotEvery; shotN++;
@@ -352,6 +368,10 @@ public class VerifyGround : MonoBehaviour
         WriteSummary();
         int fails = 0; foreach (var r in rows) if (r.verdict == "FAIL") fails++;
         if (fightYFail) fails++;
+        bool camFail = camFrames > 0 && camOut > camFrames * 0.3f;
+        Debug.Log("[VERIFY] CAM " + (camFail ? "FAIL" : "PASS") + " framesOut=" + camOut + "/" + camFrames + " worstDistToFighters=" + camDistWorst.ToString("F1", IC) + " m (limit 14 m, fail when out of view > 30% of frames)");
+        if (camFail) fails++;
+        if (fightersFail) fails++;
         Quit(fails > 0 || headVerdict == "FAIL" ? 1 : 0);
     }
 
@@ -407,6 +427,8 @@ public class VerifyGround : MonoBehaviour
                 if (InsideNamed(r.transform, HC.metaHumanName) || r.name.IndexOf("metahuman", StringComparison.OrdinalIgnoreCase) >= 0) continue;
                 if (r.name.IndexOf(HC.rendererName, StringComparison.OrdinalIgnoreCase) >= 0) { hr = r; break; }
             }
+        if (hr == null)   // v77 head fallback: a character whose head is part of the body mesh (Joan, chef rig) has no renderer named like the head: use its first skinned body mesh
+            foreach (var r in drac.GetComponentsInChildren<SkinnedMeshRenderer>(true)) { if (InsideNamed(r.transform, HC.metaHumanName) || r.name.IndexOf("metahuman", StringComparison.OrdinalIgnoreCase) >= 0) continue; if (r.enabled && r.gameObject.activeInHierarchy) { hr = r; break; } }
         bool hrOn = hr != null && hr.enabled && hr.gameObject.activeInHierarchy;
         float gap = neckBone != null ? Vector3.Distance(neckBone.position, headBone.position) : float.NaN;
         float gd = float.IsNaN(gap) || restGap < 0f ? float.NaN : gap - restGap;

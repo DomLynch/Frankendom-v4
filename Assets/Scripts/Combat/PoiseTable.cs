@@ -94,6 +94,7 @@ public static class PoiseTable
             if (f.absorbDamageMul >= 0f) n.absorb = f.absorbDamageMul; if (f.graceDamageMul >= 0f) n.grace = f.graceDamageMul;
             break;
         }
+        n.hits += GearHooks.PoiseHitsBonus(d);   // kitGEAR v79: poise stat = extra meter hits
         return n;
     }
 

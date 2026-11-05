@@ -1,9 +1,16 @@
 {
-  "_about": "Player HUD + game loop look (lane V66HUD), read by GameHUD.cs / GameLoop.cs / HudCfg.cs (StreamingAssets first, then Assets/Data). All sizes are px at referenceHeight (1080) and scale with Screen.height (clamped minScale..maxScale). Colours are [r,g,b(,a)] 0..1. Missing file or enabled=false keeps the built-in defaults. No art assets: bars, lines, edge gradients and ticks are drawn from code.",
+  "_about": "Player HUD + game loop look (lanes V66HUD, laneHUD2 v83), read by GameHUD.cs / CombatHudBars.cs / HudDraw.cs / GameLoop.cs / HudCfg.cs (StreamingAssets first, then Assets/Data). All sizes are px at referenceHeight (1080) and scale with Screen.height (clamped minScale..maxScale). Colours are [r,g,b(,a)] 0..1. Missing file or enabled=false keeps the built-in defaults. No art assets and no TextMeshPro / uGUI package in the project: bars, frames, glyphs and arcs are generated in code (HudDraw), fonts are OS serif faces through Font.CreateDynamicFontFromOSFont. Character names are never here: they come from Roster (roster.json). Stamina / posture cue texts (GUARD BROKEN, PARRY, POSTURE BROKEN, DEATHBLOW) stay in stamina.json / posture.json hud.",
   "enabled": true,
   "referenceHeight": 1080,
   "minScale": 0.6,
   "maxScale": 3.0,
+  "fonts": {
+    "_about": "First installed face of each list wins (Windows: Palatino Linotype, Book Antiqua, Georgia, Times New Roman ship with the OS). title = names, titles, prompts (drawn as small caps / tracked capitals); serif = body text; ui = debug lines. None found = Unity's default font. osSize = glyph raster size of the dynamic font.",
+    "serif": [ "Palatino Linotype", "Book Antiqua", "Georgia", "Times New Roman" ],
+    "title": [ "Palatino Linotype", "Book Antiqua", "Georgia", "Times New Roman" ],
+    "ui": [ "Palatino Linotype", "Georgia", "Times New Roman" ],
+    "osSize": 40
+  },
   "colors": {
     "ink": [0.93, 0.90, 0.84, 1.0],
     "dim": [0.62, 0.60, 0.56, 0.9],
@@ -13,31 +20,76 @@
     "hpPlayer": [0.66, 0.06, 0.09, 1.0],
     "hpEnemy": [0.72, 0.36, 0.09, 1.0],
     "hpLag": [0.90, 0.80, 0.62, 0.55],
-    "hpBack": [0.0, 0.0, 0.0, 0.7]
+    "hpBack": [0.0, 0.0, 0.0, 0.72],
+    "frame": [0.62, 0.49, 0.26, 0.95],
+    "frameDim": [0.34, 0.29, 0.22, 0.85],
+    "shadow": [0.0, 0.0, 0.0, 0.85],
+    "stamina": [0.36, 0.55, 0.32, 1.0],
+    "staminaLow": [0.80, 0.56, 0.16, 1.0],
+    "staminaExhausted": [0.62, 0.10, 0.08, 1.0],
+    "posture": [0.82, 0.74, 0.34, 1.0],
+    "postureHigh": [0.95, 0.50, 0.12, 1.0],
+    "postureBreak": [0.95, 0.18, 0.12, 1.0],
+    "deathblow": [1.0, 0.92, 0.85, 1.0],
+    "parry": [0.98, 0.82, 0.32, 1.0],
+    "guard": [0.66, 0.74, 0.88, 1.0],
+    "ready": [0.90, 0.74, 0.34, 1.0],
+    "cooling": [0.42, 0.40, 0.40, 1.0]
   },
-  "plate": {
-    "margin": 28, "top": 14, "width": 404, "height": 92, "pad": 12,
-    "nameSize": 15, "nameY": 7, "hpY": 30, "hpHeight": 16,
-    "accentAlpha": 0.85, "tickMarks": [0.25, 0.5, 0.75],
+  "bars": {
+    "_about": "Thin tapered bars (a long hexagon: pointed ends), drawn from signed-distance textures at texScale texels per px. frame = outline gap + line + end diamonds + fading lead-in lines (framePad, frameLine, capSize, capLead). ticks = fractions marked on the HP bars. lag = the pale damage trail (waits lagDelay s then shrinks lagRate of the bar per s). highFrom = posture fraction where the bar starts turning to postureHigh.",
+    "texScale": 2.0, "framePad": 3.5, "frameLine": 1.3, "capSize": 7.0, "capLead": 30.0, "backPad": 1.2, "gloss": 0.10,
+    "ticks": [0.25, 0.5, 0.75], "tickAlpha": 0.38, "tickHeight": 0.62,
     "lagDelay": 0.35, "lagRate": 0.45,
-    "playerName": "DRACULA", "enemyName": "PITBORN",
-    "fightLabel": true, "fightLabelSize": 12, "fightLabelText": "FIGHT {0}", "fightLabelY": 12
+    "lowFraction": 0.30, "exhaustedPulseHz": 3.0, "highFrom": 0.6, "pulseHz": 4.0, "flashAlpha": 0.85
+  },
+  "player": {
+    "_about": "Top-left block: name (serif small caps: first letter nameSize, rest nameSmall, nameTracking px between glyphs), HP bar, stamina and posture bars under it (gap = space above each). The cue text (PARRY, GUARD BROKEN ...) is right-aligned on the name row.",
+    "x": 48, "y": 34, "nameSize": 22, "nameSmall": 16, "nameTracking": 3.0, "nameGap": 9, "cueSize": 15, "cueDy": 3,
+    "showStamina": true, "showPosture": true,
+    "hp": { "w": 440, "h": 12, "taper": 18 },
+    "stamina": { "w": 330, "h": 6, "taper": 9, "gap": 9 },
+    "posture": { "w": 250, "h": 4, "taper": 7, "gap": 8 }
+  },
+  "boss": {
+    "_about": "Top-centre enemy bar: name (serif small caps), the ladder title under it (opponents.json row title, only while the ladder is on), a wide tapered HP bar, the posture bar centred under it and the DEATHBLOW / POSTURE BROKEN cue under that. w is clamped so it never runs into the player block (sideMargin px gap).",
+    "enabled": true, "w": 720, "top": 30, "sideMargin": 30,
+    "nameSize": 24, "nameSmall": 18, "nameTracking": 3.2, "nameGap": 9, "titleSize": 15, "titleGap": 3, "showTitle": true, "cueSize": 17, "cueGap": 8,
+    "showPosture": true, "showStamina": false,
+    "hp": { "h": 14, "taper": 20 },
+    "stamina": { "w": 420, "h": 5, "taper": 8, "gap": 9 },
+    "posture": { "w": 420, "h": 4, "taper": 7, "gap": 9 }
+  },
+  "stance": {
+    "_about": "Bottom-left stance indicator: caption, a diamond + the stance name in its stances.json colour (small caps), a dim key hint. The switch toast (stance name, lower centre) is drawn here too. enabled = false gives the old StanceLayer label back.",
+    "enabled": true, "x": 48, "bottom": 58, "caption": "STANCE", "captionSize": 11, "nameSize": 17, "nameSmall": 13, "tracking": 2.4, "diamond": 9, "hint": "3 / 4", "hintSize": 11,
+    "toastSize": 24, "toastSmall": 18, "toastY": 0.70
+  },
+  "specials": {
+    "_about": "Bottom-right: the two special-move icons (special 1, special 2 of the player's DuelFighter). Round dark icon, thin ring (gold when ready), glyph (slash, crescent, cross, anything else = diamond), a clockwise pie + seconds while cooling down, a flash ring when ready again. cooldownTicks = the full cooldown the pie is measured against (the larger of this and the biggest value seen is used); ticksPerSecond = sim rate (60 Hz).",
+    "enabled": true, "right": 52, "bottom": 56, "size": 62, "gap": 20, "ringPx": 2.2, "glyphScale": 0.62, "ticksPerSecond": 60, "cooldownTicks": 540, "readyFlashS": 0.55,
+    "keySize": 13, "cdSize": 21, "keyDy": 5, "pieSteps": 48,
+    "items": [ { "key": "1", "glyph": "slash", "label": "" }, { "key": "2", "glyph": "crescent", "label": "" } ]
+  },
+  "guardDir": {
+    "_about": "Guard-direction indicator around the screen centre, shown only while the guard is up (and the scene requires a guard side, controls.json guard.guardRequiresSide). One thin tapered arc per guard side of controls.json guard.sides (placed by the side's deg: top 0, left -90, right 90); the held side is lit (gold during the parry window, with a pulse), the others dim; the centre diamond is lit when no side is held. radius = distance of the arcs from the centre, arcDeg = their length, thickness = band width as a fraction of the texture half-size. Replaces the old guard bar of controls.json marker while enabled (the attack marker is unchanged).",
+    "enabled": true, "radius": 64, "arcDeg": 74, "thickness": 0.16, "fadeInS": 0.07, "fadeOutS": 0.2, "idleAlpha": 0.26, "ringAlpha": 0.18, "dotSize": 8, "parryPulseHz": 8, "parryGrow": 0.12
   },
   "debug": {
     "_about": "Developer overlays are off in the player. camLine needs this flag true or the -camdebug argument; F3 / -fps show the FPS label.",
     "camLine": false, "fpsLabelSize": 13
   },
   "hint": {
-    "_about": "Controls hint: bottom-left, shown showSeconds after the fight starts (after delayS), fades over fadeSeconds, F1 toggles it (pinned on / hidden). Rows are the real keys (PlayerBrain.cs, dodge.json, flow.json).",
-    "enabled": true, "toggleKey": "F1", "delayS": 0.9, "showSeconds": 8.0, "fadeSeconds": 1.2,
-    "columns": 2, "colWidth": 232, "rowHeight": 19, "fontSize": 13, "keyWidth": 92, "margin": 28, "pad": 10, "panelAlpha": 0.62,
-    "title": "CONTROLS", "footer": "F1 hide / show",
+    "_about": "Controls panel: hidden until F1 (toggleKey) is pressed; F1 again hides it. showSeconds > 0 would also show it that long after the fight starts (delayS after the start); 0 = F1 only. cornerText = a small dim 'F1  Controls' under the stance line for the first cornerSeconds of a fight. Rows are the real keys (PlayerBrain.cs, dodge.json, flow.json, controls.json).",
+    "enabled": true, "toggleKey": "F1", "delayS": 0.9, "showSeconds": 0.0, "fadeSeconds": 0.25,
+    "columns": 2, "colWidth": 330, "rowHeight": 22, "fontSize": 14, "keyWidth": 130, "margin": 48, "bottom": 96, "pad": 14, "panelAlpha": 0.72,
+    "title": "CONTROLS", "titleSize": 17, "footer": "F1 hide", "footerSize": 12, "cornerText": "F1  Controls", "cornerSize": 11, "cornerSeconds": 12.0, "cornerAlpha": 0.5,
     "rows": [
       { "k": "WASD", "a": "Move" },
       { "k": "Shift", "a": "Run" },
       { "k": "Tab", "a": "Lock target (auto at 4 m)" },
       { "k": "LMB / F / pad RB", "a": "Strike: tap light, hold heavy" },
-      { "k": "LMB + slide", "a": "Slide left / right / up = cut direction; none = stab" },
+      { "k": "LMB + slide", "a": "Cut left / right / up" },
       { "k": "T", "a": "Thrust" },
       { "k": "G", "a": "Heavy" },
       { "k": "C", "a": "Kick" },
@@ -47,28 +99,33 @@
       { "k": "Slide / arrows", "a": "Guard side: left, right, top" },
       { "k": "B", "a": "Riposte after a parry" },
       { "k": "1 / 2 (Z / X)", "a": "Specials (pad Y / X)" },
-           { "k": "Backspace", "a": "Restart fight" },
+      { "k": "3 / 4, wheel", "a": "Stance" },
+      { "k": "Backspace", "a": "Restart fight" },
       { "k": "F3", "a": "FPS" }
     ]
   },
   "vignette": {
-    "_about": "Damage taken: a red edge pulse. alpha = minAlpha + damageFraction (of max HP) * gain, clamped to maxAlpha, then fades over seconds (unscaled).",
+    "_about": "Damage taken: a red edge pulse. alpha = minAlpha + damageFraction (of max HP) * gain, clamped to maxAlpha, then fades over seconds (unscaled). (Not read by any code at the moment: WoundSystem has the low-HP vignette.)",
     "enabled": true, "color": [0.55, 0.02, 0.04], "minAlpha": 0.16, "maxAlpha": 0.62, "gain": 3.2, "seconds": 0.5, "edgeFrac": 0.30, "power": 2.0
   },
   "lowHp": {
-    "_about": "Subtle heartbeat pulse of the same edge below threshold (fraction of max HP). Two soft beats per cycle, faster as HP falls.",
+    "_about": "Subtle heartbeat pulse of the same edge below threshold (fraction of max HP). (Not read by any code at the moment.)",
     "enabled": true, "threshold": 0.30, "maxAlpha": 0.17, "baseHz": 1.1, "maxHz": 1.8, "color": [0.45, 0.02, 0.04]
   },
   "hitTick": {
-    "_about": "Hit confirm: four short ticks around the foe's chest on a landed blow. Heavy blows and guard breaks are larger and gold, a blocked blow is dim.",
+    "_about": "Hit confirm: four short ticks around the foe's chest on a landed blow. (Not read by any code at the moment.)",
     "enabled": true, "seconds": 0.17, "gap": 9, "length": 10, "thickness": 2, "heavyScale": 1.45, "blockedAlpha": 0.45, "chestHeight": 1.25,
     "color": [0.96, 0.93, 0.85, 1.0], "heavyColor": [0.95, 0.76, 0.30, 1.0]
   },
   "screens": {
-    "delayS": 0.9, "fadeInS": 0.7, "dimAlpha": 0.35, "bandHeight": 340, "bandLift": 20, "bandAlpha": 0.74,
-    "titleSize": 78, "subtitleSize": 22, "statsSize": 16, "buttonW": 236, "buttonH": 50, "buttonGap": 26, "buttonSize": 20, "keyHintSize": 12, "nextLabelSize": 13,
+    "_about": "VICTORY / YOU DIED (GameLoop.DrawEnd): after delayS the screen fades in over fadeInS: a dark wash (dimAlpha), a vignette tinted victoryTint / defeatTint, a soft band (bandHeight, bandAlpha, bandLift) behind a large tracked serif title (titleSize, titleTracking px between letters, settling in from titleTrackingExtra px wider), an ornament rule (ruleW), an italic subtitle, the stats line (showStats) and small text prompts (promptSize; buttonW + buttonGap = prompt slot width; click or key). The HUD fades by hudFade while it shows. Strings: {0} in subtitle = the roster enemy's name.",
+    "delayS": 0.9, "fadeInS": 0.9, "dimAlpha": 0.42, "bandHeight": 420, "bandLift": 20, "bandAlpha": 0.82,
+    "titleSize": 96, "titleTracking": 12, "titleTrackingExtra": 22, "titleLift": 10, "ruleW": 420, "subtitleSize": 23, "subtitleItalic": true, "statsSize": 15, "showStats": true,
+    "promptSize": 21, "promptHintSize": 12, "promptY": 34, "promptGap": 70, "hudFade": 0.85,
+    "buttonW": 236, "buttonH": 50, "buttonGap": 26, "buttonSize": 20, "keyHintSize": 12, "nextLabelSize": 13,
     "statSep": "     ",
     "nextOnDefeat": false,
+    "victoryTint": [0.02, 0.015, 0.0, 1.0], "defeatTint": [0.16, 0.0, 0.015, 1.0],
     "victory": { "title": "VICTORY", "subtitle": "The {0} falls. The gate stands open.", "color": [0.88, 0.71, 0.31, 1.0] },
     "defeat":  { "title": "YOU DIED", "subtitle": "The dark takes you. Rise again.", "color": [0.74, 0.08, 0.10, 1.0] },
     "labels": { "time": "Time", "landed": "Hits landed", "taken": "Hits taken", "parries": "Parries", "finisher": "Finisher" },

@@ -102,7 +102,24 @@ public class FinisherEntry
     public string probeKillerBone = "RightHand", probeVictimBone = "Spine2";   // bone-name suffixes
     public ContactFrame[] sheetFrames = new ContactFrame[0];   // non-empty = this entry's own -finisherauto contact-sheet frames (else rt.auto.sheetFrames)
     public string note = "";
+    public FinisherOverride[] overrides = new FinisherOverride[0];   // JOANFIN v77: per killer / victim roster-id rows that replace pair numbers, shots or availability (FinisherPair)
+    public FinisherEntry Clone() { return (FinisherEntry)MemberwiseClone(); }
 }
+// JOANFIN v77: a row of entry.overrides. killer / victim = roster id ("*" = any; an exact id beats "*"). Unset = -999 / -1 / empty (the entry's own value stays). pairOffset values are stand-in metres like the entry's
+// (multiplied by the killer's rt.killers pairScale and DuelFighter.scale), shotDefs rows replace the entry's shots with the same id (or are appended).
+[Serializable]
+public class FinisherOverride
+{
+    public string killer = "*", victim = "*";
+    public bool unavailable = false;        // true: this entry is never picked for that pair (the rotation takes the next one, or a plain death)
+    public bool requireDeathblow = false;   // true: only picked when the blow was a posture-break deathblow (the victim is hunched / staggering, head and neck low enough for a short killer)
+    public float[] pairOffset = new float[0];
+    public float distance = -1f, bladeReach = -1f, killerYawDeg = -999f, victimYawDeg = -999f, contactAt = -1f;
+    public FinisherShot[] shotDefs = new FinisherShot[0];
+    public string note = "";
+}
+// JOANFIN v77: rt.killers row: per roster id scale of the pair distance / offsets / bladeReach (stand-in metres are Dracula-sized; 1 = no change). Multiplies DuelFighter.scale.
+[Serializable] public class FinisherKillerRow { public string id = ""; public float pairScale = 1f; public string note = ""; }
 [Serializable] public class SprayCfg { public float seconds = 1.0f, rate = 90f, coneDeg = 16f, gravity = 8f; public float[] speed = { 2.5f, 4.5f }, size = { 0.03f, 0.06f }, life = { 0.5f, 0.9f }; }
 [Serializable] public class GoreLocRow { public string name = "torso"; public string[] bones = new string[0]; public float radiusM = 0.12f; public float frontArcDeg = 360f; public float[] along = { 0.2f, 0.8f }; }
 [Serializable]
@@ -200,6 +217,56 @@ public static class FinisherSides
         return p == e ? -1 : (p ? 0 : 1);
     }
 }
+// JOANFIN v77: per killer / victim overrides of an entry (finishers.json entries[].overrides, rt.killers). Everything keyed by roster id, no names in code.
+public static class FinisherPair
+{
+    static bool Is(string pat, string id) { return string.IsNullOrEmpty(pat) || pat == "*" || string.Equals(pat, id, StringComparison.OrdinalIgnoreCase); }
+    static bool Exact(string pat, string id) { return !string.IsNullOrEmpty(pat) && pat != "*" && string.Equals(pat, id, StringComparison.OrdinalIgnoreCase); }
+    /// <summary>The best row for this pair: exact killer+victim, then exact killer, then exact victim, then "*" / "*"; null = none.</summary>
+    public static FinisherOverride Find(FinisherEntry e, string killerId, string victimId)
+    {
+        if (e == null || e.overrides == null) return null;
+        FinisherOverride best = null; int bs = -1;
+        foreach (var o in e.overrides)
+        {
+            if (o == null || !Is(o.killer, killerId) || !Is(o.victim, victimId)) continue;
+            int s = (Exact(o.killer, killerId) ? 2 : 0) + (Exact(o.victim, victimId) ? 1 : 0);
+            if (s > bs) { bs = s; best = o; }
+        }
+        return best;
+    }
+    public static bool Available(FinisherEntry e, string killerId, string victimId, bool deathblow)
+    {
+        var o = Find(e, killerId, victimId); if (o == null) return true;
+        return !o.unavailable && (!o.requireDeathblow || deathblow);
+    }
+    public static float KillerScale(string killerId)
+    {
+        var rows = FinisherConfig.Get().rt.killers; if (rows == null) return 1f;
+        foreach (var r in rows) if (r != null && string.Equals(r.id, killerId, StringComparison.OrdinalIgnoreCase)) return Mathf.Max(0.3f, r.pairScale);
+        return 1f;
+    }
+    /// <summary>A copy of the entry with the matching override applied (the loaded entry is never changed); the entry itself when nothing matches.</summary>
+    public static FinisherEntry Resolve(FinisherEntry e, string killerId, string victimId)
+    {
+        var o = Find(e, killerId, victimId); if (o == null) return e;
+        var r = e.Clone();
+        if (o.pairOffset != null && o.pairOffset.Length >= 3) r.pairOffset = o.pairOffset;
+        if (o.distance >= 0f) r.distance = o.distance;
+        if (o.bladeReach >= 0f) r.bladeReach = o.bladeReach;
+        if (o.contactAt >= 0f) r.contactAt = o.contactAt;
+        if (o.killerYawDeg > -998f) r.killerYawDeg = o.killerYawDeg;
+        if (o.victimYawDeg > -998f) r.victimYawDeg = o.victimYawDeg;
+        if (o.shotDefs != null && o.shotDefs.Length > 0)
+        {
+            var list = new System.Collections.Generic.List<FinisherShot>(e.shotDefs ?? new FinisherShot[0]);
+            foreach (var s in o.shotDefs) { if (s == null) continue; int i = list.FindIndex(x => x != null && x.id == s.id); if (i >= 0) list[i] = s; else list.Add(s); }
+            r.shotDefs = list.ToArray();
+        }
+        return r;
+    }
+}
+
 [Serializable]
 public class FinisherRotation
 {
@@ -259,6 +326,7 @@ public class FinisherRtCfg
     public float maxSeconds = 25f;           // wall-clock watchdog of one scene (unscaled)
     public string forceId = "";              // debug: always play this entry id (empty = rotation)
     public string fallbackShot = "kill";     // shot id when an entry has no shot at t <= 0 (unknown id = built-in orbit)
+    public FinisherKillerRow[] killers = new FinisherKillerRow[0];   // JOANFIN v77: per killer roster id pair scale (FinisherPair.KillerScale)
     public FinisherAutoCfg auto = new FinisherAutoCfg();   // -finisherauto harness data (FinisherAuto.cs)
     public FinisherLookCfg look = new FinisherLookCfg();   // V61C: finisher camera keeps the gameplay look (FinisherLook.cs)
     public FinisherPairCfg pair = new FinisherPairCfg();               // V64F: interpenetration probe of the two fighters (FinisherPairProbe.cs)

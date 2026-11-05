@@ -10,7 +10,8 @@
     "fallbackEntry": "",
     "enabledIds": [
       "decapitation",
-      "split_crown"
+      "split_crown",
+      "river_light"
     ],
     "perWeapon": true,
     "_enableAllIds": [
@@ -38,7 +39,7 @@
       "duration": 3.1,
       "victimClip": "death",
       "dieAt": 3.0,
-      "distance": 1.1,
+      "distance": 1.2,
       "shotDefs": [
         {
           "id": "dc_wide",
@@ -162,7 +163,7 @@
         }
       ],
       "holdAfter": 1.2,
-      "note": "wind-up 0..0.95, downward slash peaks 34.7 m/s at 1.10 s (right hand), head-off effect at contact; victim plays its own death clip 0.3 s later (stagger 0..1.7 s of that clip, down 2.6-3.1 s)",
+      "note": "wind-up 0..0.95, downward slash peaks 34.7 m/s at 1.10 s (right hand), head-off effect at contact; victim plays its own death clip 0.3 s later (stagger 0..1.7 s of that clip, down 2.6-3.1 s) | JOANFIN v77: v75 gate FAIL (capsule overlap killer LeftLeg>LeftFoot x victim Spine2>Neck 0.94 s, worst -0.12 m). Model (tools/pairsim.py: killer clip end pose vs the Pitborn death-clip final pose): dz 1.16 -> -0.00 m, dz 1.20 + victimYawDeg 20 -> +0.30 m (the fallen torso lies across the killer left foot; turning the victim 20 deg swings the body off it). dz +0.04 keeps hand->neck 0.89 m < blade 1.0 m.",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.12,
       "attackerClipStart": 0.5,
@@ -170,14 +171,28 @@
       "victimFade": 0.1,
       "victimStart": 0.9,
       "holdLast": true,
-      "victimYawDeg": 0.0,
+      "victimYawDeg": 20.0,
       "pairOffset": [
         0.0,
         0.0,
-        1.1
+        1.2
       ],
       "killerYawDeg": -5.0,
-      "distanceScaleByKiller": true
+      "distanceScaleByKiller": true,
+      "overrides": [
+        {
+          "killer": "Joan",
+          "victim": "*",
+          "requireDeathblow": true,
+          "pairOffset": [
+            0.01,
+            0.0,
+            1.275
+          ],
+          "distance": 1.275,
+          "note": "Joan 1.58 m: right hand 0.16 m lower and 0.02 m back at the cut (FK of the clip on her bone lengths), so the victim moves 0.024 m closer (abs) to keep the measured hand->neck vector. Reach: hand->Pitborn neck 0.86 m in 3D vs blade 1.0 m: possible ONLY while Pitborn is hunched (posture break, neck 1.6 m); a standing Pitborn neck is 2.0 m, her hand 1.5-1.7 m: not reachable from the ground -> requireDeathblow (no decapitation on a plain HP kill)."
+        }
+      ]
     },
     {
       "id": "split_crown",
@@ -330,7 +345,21 @@
       "killerYawDeg": 4.0,
       "distanceScaleByKiller": true,
       "probeVictimBone": "Head",
-      "bladeReach": 0.5
+      "bladeReach": 0.5,
+      "overrides": [
+        {
+          "killer": "Joan",
+          "victim": "*",
+          "requireDeathblow": true,
+          "pairOffset": [
+            0.007,
+            0.0,
+            1.417
+          ],
+          "distance": 1.417,
+          "note": "Joan: chop hand 0.13 m lower and 0.09 m back; victim 0.093 m closer (abs). Crown of a hunched Pitborn (head 1.7-1.9 m) is inside hand 1.4 + blade tip reach; a standing Pitborn crown is 2.5 m (hand + 1.0 = 2.4 at best, vertical blade): unreachable -> requireDeathblow."
+        }
+      ]
     },
     {
       "id": "split_crown_pit",
@@ -499,7 +528,7 @@
       "duration": 2.4,
       "victimClip": "fin_river_light_v",
       "dieAt": -2,
-      "distance": 1.15,
+      "distance": 0.839,
       "shotDefs": [
         {
           "id": "ri_wide",
@@ -535,7 +564,7 @@
           "lookMin": 0.2,
           "track": "body",
           "gate": true,
-          "darkenEV": 0.0
+          "darkenEV": -0.7
         },
         {
           "id": "ri_fall",
@@ -678,7 +707,7 @@
         }
       ],
       "holdAfter": 1.2,
-      "note": "lunging slash: first strike 0.70 s (hand 26.9 m/s, victim head 15.6 m/s), victim flung up ~0.8 s, down at 1.2, flourish slash 1.27 s, settled 1.73 s | V64F: pairOffset re-derived from both paired clips (capsule sim): the old 0.616 m put the Pitborn torso 0.05 m from the hand and the bodies overlapped for ~0.8 s (worst -0.18 m); now 1.15 m: no overlap, min capsule separation +0.10 m, hand to torso edge 0.57 m at contact.",
+      "note": "lunging slash: first strike 0.70 s (hand 26.9 m/s, victim head 15.6 m/s), victim flung up ~0.8 s, down at 1.2, flourish slash 1.27 s, settled 1.73 s | V64F: pairOffset re-derived from both paired clips (capsule sim): the old 0.616 m put the Pitborn torso 0.05 m from the hand and the bodies overlapped for ~0.8 s (worst -0.18 m); now 1.15 m: no overlap, min capsule separation +0.10 m, hand to torso edge 0.57 m at contact. | JOANFIN v77: v75 gate FAIL (ri_close afterhit luma -65%): pairOffset follows the probe suggestion [0.486, 0, 0.839]; capsule model over the two paired clips: min separation +0.05 m (limit -0.03), no re-overlap. | kitV81: ri_close darkenEV -0.7 (a stop brighter; Strategy decision) and river_light added to rotation.enabledIds.",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
@@ -688,9 +717,9 @@
       "holdLast": true,
       "victimYawDeg": 0.0,
       "pairOffset": [
-        -0.1,
+        0.486,
         0.0,
-        1.15
+        0.839
       ],
       "killerYawDeg": -9.0,
       "distanceScaleByKiller": true,
@@ -742,6 +771,19 @@
           "rel": "release",
           "t": 4.0,
           "label": "after_c"
+        }
+      ],
+      "overrides": [
+        {
+          "killer": "Joan",
+          "victim": "*",
+          "pairOffset": [
+            0.486,
+            0.0,
+            0.944
+          ],
+          "distance": 0.944,
+          "note": "Joan: torso target (Spine1 1.2-1.4 m), reachable standing; hand->victim vector kept (clip hand +0.03 forward, -0.04 sideways, -0.05 lower). Capsule model: min separation +0.10 m."
         }
       ]
     },
@@ -1615,7 +1657,7 @@
       "maxDepenetrationVelocity": 2.0,
       "linearDamping": 0.05,
       "spawnClampM": 0.01,
-      "rescueBelowM": 0.3,
+      "rescueBelowM": 0.1,
       "maxRescues": 1,
       "settleSeconds": 0.5,
       "settleLift": true,
@@ -1805,6 +1847,17 @@
         "name": "Dracula",
         "referenceState": "guard_idle",
         "hipsRestZ": 1.000807,
+        "hipsCorrection": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "name": "Joan",
+        "referenceState": "guard_idle",
+        "hipsRestZ": 0.9898683,
         "hipsCorrection": [
           1.0,
           0.0,
@@ -2085,6 +2138,11 @@
           "toeEndM": 0.06
         },
         {
+          "fighter": "Joan",
+          "footM": 0.111,
+          "toeEndM": 0.0553
+        },
+        {
           "fighter": "Pitborn",
           "footM": 0.17,
           "toeEndM": 0.06
@@ -2272,6 +2330,14 @@
       "rise": 0.25,
       "emissiveNits": 0.5,
       "maxRise": 0.25
-    }
-  }
+    },
+    "killers": [
+      {
+        "id": "Joan",
+        "pairScale": 0.9224,
+        "note": "Joan 1.58 m / Dracula 1.713 m world (laneJOAN R_WORLD). Multiplies pairOffset, distance and bladeReach of every entry (placeholders run_through / opened rely on it alone). DuelFighter.scale of the cloned Joan object stays 1; if it is ever set to the height ratio, set pairScale 1."
+      }
+    ]
+  },
+  "_joanfin": "JOANFIN v77: entries[].overrides (killer / victim roster id, FinisherPair), rt.killers (pairScale per killer id). Joan as VICTIM (split_crown_pit, hengdao_heavy): bones 0.09-0.10 m lower than Dracula, the maul / hengdao cut crosses that height in 3-10 ms at 30-40 m/s: no change needed."
 }

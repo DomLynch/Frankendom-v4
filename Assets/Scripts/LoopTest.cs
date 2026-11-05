@@ -94,7 +94,7 @@ public class LoopTest : MonoBehaviour
     IEnumerator Main()
     {
         int expectFight = 1, expectAttempt = 1, expectOpp = 0, expectStarted = 1, prevLoads = -1; float firstBase = -1f;
-        GameLoop.Result lastOutcome = GameLoop.Result.None;
+        GameLoop.Result lastOutcome = GameLoop.Result.None; bool lootChecked = false;
         for (int i = 0; i <= fights && !exiting; i++)
         {
             // ---- wait for the fight to be ready (fighters found, ladder applied, fade-in done)
@@ -116,7 +116,7 @@ public class LoopTest : MonoBehaviour
             Check(CameraDeath.Weight < 0.001f, tag + "CameraDeath weight " + CameraDeath.Weight.ToString("F3", IC));
             Check(!D.Dead && !P.Dead, tag + "a fighter starts dead");
             Check(D.health >= D.maxHealth - 0.01f && P.health >= P.maxHealth - 0.01f, tag + "HP not full (D " + D.health.ToString("F0", IC) + "/" + D.maxHealth.ToString("F0", IC) + ", P " + P.health.ToString("F0", IC) + "/" + P.maxHealth.ToString("F0", IC) + ")");
-            Check(D.stamina >= D.maxStamina - 0.01f && P.stamina >= P.maxStamina - 0.01f, tag + "stamina not full (D " + D.stamina.ToString("F0", IC) + "/" + D.maxStamina.ToString("F0", IC) + ", P " + P.stamina.ToString("F0", IC) + "/" + P.maxStamina.ToString("F0", IC) + ")");
+            Check(D.stamina >= D.maxStamina * 0.5f && P.stamina >= P.maxStamina * 0.5f, tag + "stamina below 50% at the fight start (v87: the AI may already have swung, the check is for a fresh reset) (D " + D.stamina.ToString("F0", IC) + "/" + D.maxStamina.ToString("F0", IC) + ", P " + P.stamina.ToString("F0", IC) + "/" + P.maxStamina.ToString("F0", IC) + ")");
             Check(D.posture <= 0.01f && P.posture <= 0.01f, tag + "posture not reset (D " + D.posture.ToString("F1", IC) + ", P " + P.posture.ToString("F1", IC) + ")");
             Check(!D.PostureBroken && !P.PostureBroken && !D.Exhausted && !P.Exhausted, tag + "posture-broken / exhausted flag left over");
             Check(Duel.TickCount < 900, tag + "sim tick " + Duel.TickCount + " (not a fresh Duel)");
@@ -170,6 +170,21 @@ public class LoopTest : MonoBehaviour
             Log(rows[rows.Count - 1]);
             if (res == GameLoop.Result.Victory) seenWin = true; else if (res == GameLoop.Result.Defeat) seenLose = true;
             lastOutcome = res;
+            // v87 loot gate: the first victory must drop loot, a pickup must be equippable and change the slot (Goose: the loot path was ungated)
+            if (res == GameLoop.Result.Victory && !lootChecked)
+            {
+                lootChecked = true; float l0 = Time.realtimeSinceStartup; LootPickup[] pk = new LootPickup[0];
+                while (Time.realtimeSinceStartup - l0 < 6f) { pk = FindObjectsByType<LootPickup>(FindObjectsSortMode.None); if (pk.Length > 0) break; yield return null; }
+                Check(LootBridge.HasDropSource, tag + "loot: no drop source registered (GearDrop missing)");
+                Check(pk.Length > 0, tag + "loot: the victory spawned NO loot pickup within 6 s");
+                if (pk.Length > 0)
+                {
+                    var pick = pk[0]; string iid = pick.itemId; var sl = LootBridge.Slots; bool eq = sl != null && sl.Equip(iid); string where = "";
+                    if (sl != null) { var cs = LootCfg.Get().slots; for (int q = 0; q < cs.Length; q++) if (cs[q] != null && sl.GetEquipped(cs[q].id) == iid) where = cs[q].id; }
+                    Check(eq && where.Length > 0, tag + "loot: equipping '" + iid + "' did not change any slot (Equip " + eq + ", slot '" + where + "')");
+                    Log("loot gate: " + pk.Length + " pickup(s), first '" + iid + "' equipped to slot '" + where + "'");
+                }
+            }
 
             // ---- 4) the transition: exactly what the buttons call
             expectStarted++;

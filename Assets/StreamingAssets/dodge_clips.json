@@ -9,9 +9,52 @@
       "outClipDir": "Assets/Characters/Dracula/DodgeClips",
       "referenceState": "guard_idle",
       "clips": [
-        { "state": "dodge_dive", "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/127690904-standing-dive-forward.glb", "rootMotion": "inplace", "maxStep": 0.0 },
-        { "state": "dodge_diveroll", "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb", "rootMotion": "inplace", "maxStep": 0.0 },
-        { "state": "dodge_corkscrew", "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/120440901-corkscrew-evade.glb", "rootMotion": "inplace", "maxStep": 0.0 }
+        {
+          "state": "dodge_dive",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/127690904-standing-dive-forward.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "dodge_diveroll",
+          "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "dodge_corkscrew",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/120440901-corkscrew-evade.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        }
+      ]
+    },
+    {
+      "character": "Joan",
+      "controller": "Assets/Characters/Joan.controller",
+      "baseGlb": "Assets/Characters/Joan/Joan_combat.glb",
+      "outGlb": "Assets/Characters/Joan/Joan_dodges.glb",
+      "outClipDir": "Assets/Characters/Joan/DodgeClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "dodge_dive",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/127690904-standing-dive-forward.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "dodge_diveroll",
+          "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "dodge_corkscrew",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/120440901-corkscrew-evade.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        }
       ]
     }
   ]

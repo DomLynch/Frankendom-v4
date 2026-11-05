@@ -81,7 +81,7 @@ public class PlayerBrain : MonoBehaviour
         if (dd.enabled && dd.input.mode != "tapHold")
         {
             rollDown = -1f;
-            if (AnyDown(RollKeys(dd))) DodgeFromKey(dd);
+            if (AnyDown(RollKeys(dd)) && !LootUI.PickupInReach) DodgeFromKey(dd);   // kitGEAR/LOOTUI v85: E takes the item instead of rolling
             if (dd.input.doubleTap.enabled) DoubleTap(dd);
         }
         else

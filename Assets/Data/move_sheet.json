@@ -146,6 +146,62 @@
       "follow": true
     },
     {
+      "id": "heavy_left",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "heavy",
+      "directed": "heavy_left",
+      "durationFrom": "move:heavy_left",
+      "separation": 1.95
+    },
+    {
+      "id": "heavy_right",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "heavy",
+      "directed": "heavy_right",
+      "durationFrom": "move:heavy_right",
+      "separation": 1.95
+    },
+    {
+      "id": "heavy_thrust",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "heavy",
+      "directed": "heavy_thrust",
+      "durationFrom": "move:heavy_thrust",
+      "separation": 1.95
+    },
+    {
+      "id": "light_overhead",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "light",
+      "directed": "light_overhead",
+      "durationFrom": "move:light_overhead",
+      "separation": 1.95
+    },
+    {
+      "id": "guard_left",
+      "subject": "Dracula",
+      "action": "hold",
+      "guard": true,
+      "guardSide": 1,
+      "dir": "none",
+      "durationTicks": 90,
+      "separation": 3.2
+    },
+    {
+      "id": "guard_right",
+      "subject": "Dracula",
+      "action": "hold",
+      "guard": true,
+      "guardSide": 2,
+      "dir": "none",
+      "durationTicks": 90,
+      "separation": 3.2
+    },
+    {
       "id": "walk",
       "subject": "Dracula",
       "action": "hold",

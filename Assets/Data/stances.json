@@ -1,24 +1,170 @@
 {
-  "_about": "Live STANCES for real-time direct control (lanePARRY), read by StanceLayer.cs. A light modifier layer, off in steer mode (-steer: STStanceMods / steer.json stances own it there). Damage: FightBalance.HitMul multiplies a clean hit by the ATTACKER's dealtMul x the DEFENDER's takenMul; Trickster adds a per-hit seeded roll: pDealt chance of x dealtRollMul when he hits, pTaken chance of x takenRollMul when he is hit (owner: 25 % +30 % / 25 % +30 %). Defence: postureTakenMul scales the posture he takes on a block or a clean hit, blockCostMul the stamina a block costs him. feintCostMul scales the V feint cost (V3 Trickster: cheap feints). Numbers from steer.json stances (Aggressive 1.25 / 1.2, Defensive 0.8 / 0.75, Trickster 0.25 x1.3 / 0.25 x1.3). Not touched: block chip damage, the parry, speeds. Input: nextKeys / prevKeys (3 / 4: 1, 2, Z, X are the specials), mouse wheel (wheelCooldownS between steps), gamepad D-pad: padAxisX / padAxisY name Input Manager axes (Windows XInput D-pad = joystick axis 6 horizontal / 7 vertical; this project's Input Manager has no such axis yet, so add 'DPadX' = Joystick Axis 6 and 'DPadY' = Joystick Axis 7 in Project Settings > Input Manager; an undefined axis switches itself off with one log line) or padNextButtons / padPrevButtons (KeyCode JoystickButtonN, pads that report the D-pad as buttons). aiStance = the AI fighter's fixed stance. HUD: bottom-left label + a short centre toast on a switch.",
+  "_about": "Live STANCES (lanePARRY, rebalanced by laneSTANCE2), read by StanceLayer.cs + AiStance.cs. Every number is a multiplier on the Neutral value (1 = unchanged). Off in steer mode (-steer: STStanceMods / steer.json stances own it there). BOTH fighters' stances apply to every blow. DAMAGE: FightBalance.HitMul = attacker dealtMul x defender takenMul x Trickster rolls. POSTURE (STANCE2): attacker postureDealtMul x defender postureTakenMul on a clean hit, a block and a kick into a guard (a parry's attacker posture is NOT stance-scaled: the parry stays the equaliser); with rollsScalePosture a Trickster proc scales that same hit's posture too. GUARD: guardArcMul widens/narrows the block cone (60 deg x), parryWindowMul scales the parry window (parry.json windowTicks, rounded, >= 1), blockCostMul = stamina a block costs, blockChipMul = chip damage through a block. TEMPO: attackCostMul = stamina per swing (stamina.json costs), moveSpeedMul = walk/run/guard-walk speed. feintCostMul = V feint cost (Trickster 0.5). Trickster: pDealt chance of dealtRollMul on damage dealt, pTaken chance of takenRollMul on damage taken (owner: 25 % +30 % / 25 % +30 %, mean x1.075 each way). Trade-offs: AGGRESSIVE +15 % damage, +35 % posture dealt; pays +10 % damage taken, +20 % posture taken, a 15 % narrower block cone, a 10 % shorter parry window, blocks cost +25 %, block chip +50 %, swings cost +25 % stamina. DEFENSIVE +30 % parry window, +15 % block cone, blocks cost -20 %, chip -40 %, takes -15 % damage and -12 % posture; pays -10 % damage and -20 % posture dealt, 12 % slower. NEUTRAL = baseline. Numbers chosen with _agents/laneSTANCE2/tools/stance_sim.py (posture + HP race calibrated on the 47 regime-D fights): no stance row-mean differs from Neutral by more than 2 points at 55 % overall. switchLockS: a human cannot switch again within that many seconds (the AI uses ai.minDwellS). keepLethalDeathblow: Duel keeps a lethal deathblow lethal after multipliers < 1. ai: the AI fighter picks its own stance (AiStance.cs): Defensive when own HP <= lowHpEnter or own posture >= selfPostureEnter (kept until HP > lowHpExit and posture <= selfPostureExit); else Aggressive when the foe's posture >= oppPostureEnter or own HP lead >= leadEnter (kept until foe posture <= oppPostureExit and lead <= leadExit); else Trickster with tricksterChance per decision (held tricksterHoldS s); else Neutral. Decided every decideEveryS s, never before minDwellS s after a change. enabled false = aiStance fixed. forAutoplayPlayer also drives the IsPlayer fighter when AIBrain runs it (-autoplay); the balance bot (FlowBot) never switches: set playerDefault to sweep it. Input: nextKeys / prevKeys (3 / 4), mouse wheel (wheelCooldownS), gamepad D-pad (padAxisX = Input Manager axis 'DPadX', undefined axes switch themselves off), padNextButtons / padPrevButtons. HUD: bottom-left label + a short centre toast on a human switch.",
   "enabled": true,
-  "debugLog": false,
+  "debugLog": true,
   "seed": 4242,
   "playerDefault": "Neutral",
   "aiStance": "Neutral",
   "keepAcrossRestart": true,
-  "order": [ "Neutral", "Aggressive", "Defensive", "Trickster" ],
-  "stances": [
-    { "id": "Neutral",    "label": "NEUTRAL",    "dealtMul": 1.0,  "takenMul": 1.0,  "postureTakenMul": 1.0,  "blockCostMul": 1.0,  "feintCostMul": 1.0, "pDealt": 0.0,  "dealtRollMul": 1.0, "pTaken": 0.0,  "takenRollMul": 1.0, "color": [ 0.86, 0.84, 0.78 ] },
-    { "id": "Aggressive", "label": "AGGRESSIVE", "dealtMul": 1.25, "takenMul": 1.2,  "postureTakenMul": 1.15, "blockCostMul": 1.15, "feintCostMul": 1.0, "pDealt": 0.0,  "dealtRollMul": 1.0, "pTaken": 0.0,  "takenRollMul": 1.0, "color": [ 0.92, 0.36, 0.26 ] },
-    { "id": "Defensive",  "label": "DEFENSIVE",  "dealtMul": 0.8,  "takenMul": 0.75, "postureTakenMul": 0.8,  "blockCostMul": 0.8,  "feintCostMul": 1.0, "pDealt": 0.0,  "dealtRollMul": 1.0, "pTaken": 0.0,  "takenRollMul": 1.0, "color": [ 0.42, 0.62, 0.90 ] },
-    { "id": "Trickster",  "label": "TRICKSTER",  "dealtMul": 1.0,  "takenMul": 1.0,  "postureTakenMul": 1.0,  "blockCostMul": 1.0,  "feintCostMul": 0.5, "pDealt": 0.25, "dealtRollMul": 1.3, "pTaken": 0.25, "takenRollMul": 1.3, "color": [ 0.78, 0.52, 0.92 ] }
+  "rollsScalePosture": true,
+  "keepLethalDeathblow": true,
+  "switchLockS": 1.0,
+  "order": [
+    "Neutral",
+    "Aggressive",
+    "Defensive",
+    "Trickster"
   ],
+  "stances": [
+    {
+      "id": "Neutral",
+      "label": "NEUTRAL",
+      "dealtMul": 1.0,
+      "takenMul": 1.0,
+      "postureDealtMul": 1.0,
+      "postureTakenMul": 1.0,
+      "blockCostMul": 1.0,
+      "blockChipMul": 1.0,
+      "guardArcMul": 1.0,
+      "parryWindowMul": 1.0,
+      "attackCostMul": 1.0,
+      "moveSpeedMul": 1.0,
+      "feintCostMul": 1.0,
+      "pDealt": 0.0,
+      "dealtRollMul": 1.0,
+      "pTaken": 0.0,
+      "takenRollMul": 1.0,
+      "color": [
+        0.86,
+        0.84,
+        0.78
+      ]
+    },
+    {
+      "id": "Aggressive",
+      "label": "AGGRESSIVE",
+      "dealtMul": 1.15,
+      "takenMul": 1.1,
+      "postureDealtMul": 1.35,
+      "postureTakenMul": 1.2,
+      "blockCostMul": 1.25,
+      "blockChipMul": 1.5,
+      "guardArcMul": 0.85,
+      "parryWindowMul": 0.9,
+      "attackCostMul": 1.25,
+      "moveSpeedMul": 1.0,
+      "feintCostMul": 1.0,
+      "pDealt": 0.0,
+      "dealtRollMul": 1.0,
+      "pTaken": 0.0,
+      "takenRollMul": 1.0,
+      "color": [
+        0.92,
+        0.36,
+        0.26
+      ]
+    },
+    {
+      "id": "Defensive",
+      "label": "DEFENSIVE",
+      "dealtMul": 0.9,
+      "takenMul": 0.85,
+      "postureDealtMul": 0.8,
+      "postureTakenMul": 0.88,
+      "blockCostMul": 0.8,
+      "blockChipMul": 0.6,
+      "guardArcMul": 1.15,
+      "parryWindowMul": 1.3,
+      "attackCostMul": 1.0,
+      "moveSpeedMul": 0.88,
+      "feintCostMul": 1.0,
+      "pDealt": 0.0,
+      "dealtRollMul": 1.0,
+      "pTaken": 0.0,
+      "takenRollMul": 1.0,
+      "color": [
+        0.42,
+        0.62,
+        0.9
+      ]
+    },
+    {
+      "id": "Trickster",
+      "label": "TRICKSTER",
+      "dealtMul": 1.0,
+      "takenMul": 1.0,
+      "postureDealtMul": 1.0,
+      "postureTakenMul": 1.0,
+      "blockCostMul": 1.0,
+      "blockChipMul": 1.0,
+      "guardArcMul": 1.0,
+      "parryWindowMul": 1.0,
+      "attackCostMul": 1.0,
+      "moveSpeedMul": 1.0,
+      "feintCostMul": 0.5,
+      "pDealt": 0.25,
+      "dealtRollMul": 1.3,
+      "pTaken": 0.25,
+      "takenRollMul": 1.3,
+      "color": [
+        0.78,
+        0.52,
+        0.92
+      ]
+    }
+  ],
+  "ai": {
+    "enabled": true,
+    "forAutoplayPlayer": false,
+    "decideEveryS": 0.5,
+    "minDwellS": 4.0,
+    "lowHpEnter": 0.3,
+    "lowHpExit": 0.45,
+    "selfPostureEnter": 0.8,
+    "selfPostureExit": 0.5,
+    "oppPostureEnter": 0.65,
+    "oppPostureExit": 0.4,
+    "leadEnter": 0.15,
+    "leadExit": 0.05,
+    "tricksterChance": 0.06,
+    "tricksterHoldS": [
+      4.0,
+      8.0
+    ],
+    "neutralId": "Neutral",
+    "aggressiveId": "Aggressive",
+    "defensiveId": "Defensive",
+    "tricksterId": "Trickster"
+  },
   "input": {
-    "nextKeys": [ "Alpha4" ], "prevKeys": [ "Alpha3" ],
-    "wheel": true, "wheelInvert": false, "wheelCooldownS": 0.15,
-    "padAxisX": "DPadX", "padAxisY": "", "padAxisXNext": true, "padDeadzone": 0.5,
-    "padNextButtons": [], "padPrevButtons": [],
+    "nextKeys": [
+      "Alpha4"
+    ],
+    "prevKeys": [
+      "Alpha3"
+    ],
+    "wheel": true,
+    "wheelInvert": false,
+    "wheelCooldownS": 0.15,
+    "padAxisX": "DPadX",
+    "padAxisY": "",
+    "padAxisXNext": true,
+    "padDeadzone": 0.5,
+    "padNextButtons": [],
+    "padPrevButtons": [],
     "ignoreWhileFrozen": true
   },
-  "hud": { "enabled": true, "x": 16, "yFromBottom": 64, "w": 300, "h": 22, "fontSize": 13, "prefix": "STANCE  ", "toastSeconds": 0.9, "toastFontSize": 16, "alpha": 0.9, "hint": "[3 / 4, wheel, D-pad]" }
+  "hud": {
+    "enabled": true,
+    "x": 16,
+    "yFromBottom": 64,
+    "w": 300,
+    "h": 22,
+    "fontSize": 13,
+    "prefix": "STANCE  ",
+    "toastSeconds": 0.9,
+    "toastFontSize": 16,
+    "alpha": 0.9,
+    "hint": "[3 / 4, wheel, D-pad]"
+  }
 }

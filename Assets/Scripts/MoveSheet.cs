@@ -24,6 +24,7 @@ public class MoveSheet : MonoBehaviour
         public int durationTicks = 0, tailTicks = 0, side = 0;
         public string then = ""; public int thenTick = 0, thenSide = 0;   // P1: a SECOND press `thenTick` sim ticks after the first (roll / sidestep / backstep / light / ...), to prove cancel windows and the press queue
         public bool guard, run, follow;
+        public string directed = ""; public int guardSide = 0;   // kitCOMBAT v82: directed = move id pressed via PressDirected (heavy_left ...); guardSide 1 left / 2 right / 3 top for guard rows
         public float separation = 2.2f, startZ = 0f;
         public string hand = "";   // handcam rows: "right" | "left" ("" = handcam.hand; the -hand: argument wins)
     }
@@ -290,7 +291,7 @@ public class MoveSheet : MonoBehaviour
         {
             bool active = Duel.TickCount < B + dur;
             subj.moveDir = active ? DirVector(row.dir, subjFwd) : Vector3.zero;
-            subj.run = active && row.run; subj.guardHeld = active && row.guard; subj.guardSide = 0;
+            subj.run = active && row.run; subj.guardHeld = active && row.guard; subj.guardSide = active ? row.guardSide : 0;   // kitCOMBAT v82: was 0
         }
         else if (pressed && Duel.TickCount >= B + 3) subj.moveDir = Vector3.zero;   // one-shot moves (roll with a direction): the key direction is only needed for the first ticks
     }
@@ -299,10 +300,10 @@ public class MoveSheet : MonoBehaviour
     {
         subj.stamina = subj.maxStamina;
         subj.moveDir = DirVector(row.dir, subjFwd);
-        subj.run = row.run; subj.guardHeld = row.guard; subj.guardSide = 0;
+        subj.run = row.run; subj.guardHeld = row.guard; subj.guardSide = row.guardSide;   // kitCOMBAT v82: was 0
         switch (row.action)
         {
-            case "press": case "handcam": subj.Press(row.press); break;
+            case "press": case "handcam": if (!string.IsNullOrEmpty(row.directed)) subj.PressDirected(row.directed); else subj.Press(row.press); break;   // kitCOMBAT v82: directed rows
             case "sidestep": subj.PressSidestep(row.side); break;
             case "hold": break;
             default: note += "unknown action '" + row.action + "'; "; break;

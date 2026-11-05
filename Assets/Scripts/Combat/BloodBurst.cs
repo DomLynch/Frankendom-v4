@@ -20,12 +20,15 @@ public class BloodBurst : MonoBehaviour
     void Start()
     {
         material = FxMaterials.Particle(material, "bloodStrands");   // HDRP/Unlit would ignore the colour-over-lifetime and show white strands (fx_materials.json)
+        var hb = HitFeelTable.Get().blood;   // laneHITFX v81: B1 fixes as data (hit_feel.json blood{}); the code defaults equal the v69 look
+        if (material != null && hb.softDistance >= 0f && material.HasProperty("_SoftDistance")) material.SetFloat("_SoftDistance", hb.softDistance);   // laneHITFX v81: soft particles
         var go = new GameObject("BloodStrands"); go.transform.SetParent(transform); ps = go.AddComponent<ParticleSystem>();
         var main = ps.main; main.playOnAwake = false; main.loop = false; main.simulationSpace = ParticleSystemSimulationSpace.World; main.gravityModifier = Gravity / 9.81f; main.maxParticles = 400; main.startLifetime = 0.6f;
         var em = ps.emission; em.enabled = false; var sh = ps.shape; sh.enabled = false;
         var col = ps.colorOverLifetime; col.enabled = true; var g = new Gradient();
-        g.SetKeys(new[] { new GradientColorKey(new Color(0.412f, 0.059f, 0.051f), 0f), new GradientColorKey(new Color(0.125f, 0.02f, 0.016f), 1f) }, new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0.9f, 0.7f), new GradientAlphaKey(0f, 1f) }); col.color = g;
-        var r = go.GetComponent<ParticleSystemRenderer>(); r.sharedMaterial = material; r.renderMode = ParticleSystemRenderMode.Stretch; r.lengthScale = 1.6f; r.velocityScale = 0f; r.cameraVelocityScale = 0f; r.maxParticleSize = 0.5f;
+        g.SetKeys(new[] { new GradientColorKey(hb.startColor, 0f), new GradientColorKey(hb.endColor, 1f) }, new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0.9f, 0.7f), new GradientAlphaKey(0f, 1f) }); col.color = g;
+        var r = go.GetComponent<ParticleSystemRenderer>(); r.sharedMaterial = material; r.renderMode = ParticleSystemRenderMode.Stretch; r.lengthScale = hb.lengthScale; r.velocityScale = hb.velocityScale;   // laneHITFX v81: was 1.6 / 0 in code
+         r.cameraVelocityScale = 0f; r.maxParticleSize = 0.5f;
     }
 
     // PERF (FxPrewarm): one sub-pixel particle (uses no RNG, no sim state)
@@ -50,17 +53,18 @@ public class BloodBurst : MonoBehaviour
             grow = Mathf.Min(GrowMax, Mathf.Max(1f, far / Mathf.Max(0.01f, near)));
         }
         var bs = BloodTable.For(e.target, e.heavy, kill);   // P2: blood.json weight x location x victim multipliers (all 1 = V3 numbers)
-        int count = Mathf.Max(1, Mathf.RoundToInt((kill ? 25 : 15) * bs.count)), drops = Mathf.Max(1, Mathf.RoundToInt((kill ? 3 : 2) * bs.drops));
+        var hf = HitFeelTable.Get().blood; // laneHITFX v81
+        int count = Mathf.Max(1, Mathf.RoundToInt((kill ? 25 : 15) * bs.count * hf.countScale)), drops = Mathf.Max(1, Mathf.RoundToInt((kill ? 3 : 2) * bs.drops));
         var ep = new ParticleSystem.EmitParams();
         for (int i = 0; i < count; i++)
         {
             float a = Rnd() * Mathf.PI * 2f; Vector3 v; float life, size, stretch;
             if (i < drops) { life = Between(0.5f, 0.72f); size = Between(0.07f, 0.12f) * Thin; stretch = Between(1.1f, 1.5f) * Long; v = new Vector3(Mathf.Cos(a) * Between(0.3f, 1.1f) + dir.x * Between(0.3f, 1.0f), Between(1.6f, 3.0f), Mathf.Sin(a) * Between(0.3f, 1.1f) + dir.z * Between(0.3f, 1.0f)); }
             else { life = Between(0.14f, 0.4f); size = Between(0.018f, 0.05f) * Thin; stretch = Between(1.3f, 2.4f) * Long; float sp = Between(1.2f, 3.6f); v = new Vector3(Mathf.Cos(a) * sp * 0.6f + dir.x * Between(0.5f, 2.4f), Between(0.2f, 2.6f), Mathf.Sin(a) * sp * 0.6f + dir.z * Between(0.5f, 2.4f)); }
-            ep.position = pos; ep.velocity = new Vector3(v.x * bs.speed, v.y * bs.speed * bs.up, v.z * bs.speed); ep.startLifetime = life; ep.startSize = size * grow * sceneScale; ep.startColor = Color.white;
+            ep.position = pos; ep.velocity = new Vector3(v.x * bs.speed, v.y * bs.speed * bs.up, v.z * bs.speed); ep.startLifetime = life; ep.startSize = size * grow * sceneScale * hf.sizeScale; ep.startColor = Color.white;
             ep.applyShapeToPosition = false; ps.Emit(ep, 1);
             // strand length = width x stretch: Stretch mode scales the length by the system's lengthScale, so average it per burst
         }
-        var r = ps.GetComponent<ParticleSystemRenderer>(); r.lengthScale = 1.6f;
+        var r = ps.GetComponent<ParticleSystemRenderer>(); r.lengthScale = hf.lengthScale;   // laneHITFX v81: was the literal 1.6
     }
 }

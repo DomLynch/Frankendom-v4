@@ -3,7 +3,7 @@ $d="C:\Users\dom12\Documents\unity_test_hdrp\Builds\HDRP_$v"; Set-Location $d
 function Run($name,$flags,$sec,$w=1920,$h=1080){
     $common=@('-silent-crashes',"-screen-width $w","-screen-height $h",'-screen-fullscreen 0',"-logFile $name.log")
     $p=Start-Process .\HadesSlice.exe -ArgumentList ($flags+$common) -PassThru
-    if(-not $p.WaitForExit($sec*1000)){ $p.Kill(); "$name TIMEOUT" } else { "$name exit=$($p.ExitCode)" }
+    $t0=Get-Date; $killed=$false; $nx=0; while(-not $p.HasExited){ Start-Sleep 2; $p.Refresh(); $ws=[math]::Round($p.WorkingSet64/1GB,1); if(((Get-Date)-$t0).TotalSeconds -ge $nx){ Add-Content gate_mem.log ("{0} {1} {2:F0}s {3} GB" -f (Get-Date -Format HH:mm:ss),$name,((Get-Date)-$t0).TotalSeconds,$ws); $nx+=10 }; if($ws -gt 20){ $p.Kill(); $killed=$true; Add-Content gate_mem.log "$name MEMKILL at $ws GB"; break }; if(((Get-Date)-$t0).TotalSeconds -gt ($sec)){ $p.Kill(); "$name TIMEOUT"; $killed=$true; break } }; if($killed -and (Select-String -Path gate_mem.log -Pattern "$name MEMKILL" -Quiet)){ "$name MEMKILL (working set > 20 GB, see gate_mem.log)" } elseif(-not $killed){ "$name exit=$($p.ExitCode)" }
 }
 Remove-Item gate_result.txt -ErrorAction SilentlyContinue
 $out=@()

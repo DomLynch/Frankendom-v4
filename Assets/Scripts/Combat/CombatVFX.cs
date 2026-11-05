@@ -18,10 +18,10 @@ public class CombatVFX : MonoBehaviour
         guardSparks = Make("GuardSparks", spark, 0.015f, 0.03f, 0.1f, 0.25f, 4f, 9f, new Color(1f, 0.97f, 0.8f), -1.0f);
         Stretch(sparks, new Color(1f, 0.95f, 0.7f), new Color(1f, 0.45f, 0.1f)); Stretch(guardSparks, new Color(1f, 1f, 0.9f), new Color(1f, 0.55f, 0.15f));
         flash = Make("HitFlash", spark, 0.25f, 0.35f, 0.05f, 0.08f, 0f, 0f, new Color(1f, 0.85f, 0.6f, 0.8f), 0f);
-        drops = Make("BloodDrops", blood, 0.02f, 0.04f, 0.4f, 0.8f, 2f, 5f, new Color(0.145f, 0.008f, 0.008f, 1f), -1.2f);   // #250202, alpha-blended billboards (no stretch needles)
+        drops = Make("BloodDrops", blood, 0.02f, 0.04f, 0.4f, 0.8f, 2f, 5f, HitFeelTable.Get().blood.dropColor, -1.2f);   // laneHITFX v81: was new Color(0.145f, 0.008f, 0.008f, 1f) #250202, alpha-blended billboards (no stretch needles)
         { var dr = drops.GetComponent<ParticleSystemRenderer>(); dr.renderMode = ParticleSystemRenderMode.Billboard; dr.maxParticleSize = 0.06f; }
         puff = Make("DustPuff", dust, 0.3f, 0.6f, 0.6f, 1.0f, 0.3f, 0.9f, new Color(0.4f, 0.4f, 0.42f, 0.28f), -0.05f);
-        mist = Make("BloodMist", blood, 0.03f, 0.07f, 0.35f, 0.6f, 1.5f, 3.5f, new Color(0.22f, 0.015f, 0.015f, 0.95f), -1.2f);
+        mist = Make("BloodMist", blood, 0.03f, 0.07f, 0.35f, 0.6f, 1.5f, 3.5f, HitFeelTable.Get().blood.mistColor, -1.2f);   // laneHITFX v81: was new Color(0.22f, 0.015f, 0.015f, 0.95f)
     }
 
     // PERF (FxPrewarm): one sub-pixel particle through each system (uses no RNG, no sim state)
@@ -81,9 +81,9 @@ public class CombatVFX : MonoBehaviour
                     Burst(mist, pos, dir, Mathf.RoundToInt((heavy ? 5 : 2) * bs.mist), 50f);
                     break;
                 }
-            case "Blocked": Burst(flash, pos, -dir, 1, 5f); Burst(guardSparks, pos, -dir + Vector3.up * 0.3f, perfect ? 22 : 12, 50f); break;
-            case "Parried": Burst(guardSparks, pos, Vector3.up + dir * 0.4f, 30, 70f); break;
-            case "GuardBroken": Burst(guardSparks, pos, dir, 36, 80f); Burst(puff, pos, dir, 6, 80f); break;
+            case "Blocked": Burst(flash, pos, -dir, 1, 5f); Burst(guardSparks, pos, -dir + Vector3.up * 0.3f, Mathf.RoundToInt((perfect ? 22 : 12) * HitFeel.GuardSparkScale), 50f); break;   // laneHITFX v81: HitFeel's HDR burst replaces these (guardSparkScale 0); 1 if HitFeel is off
+            case "Parried": Burst(guardSparks, pos, Vector3.up + dir * 0.4f, Mathf.RoundToInt(30 * HitFeel.GuardSparkScale), 70f); break;   // laneHITFX v81
+            case "GuardBroken": Burst(guardSparks, pos, dir, Mathf.RoundToInt(36 * HitFeel.GuardSparkScale), 80f); Burst(puff, pos, dir, 6, 80f); break;   // laneHITFX v81
         }
     }
 }

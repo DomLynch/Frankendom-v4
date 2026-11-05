@@ -12,13 +12,23 @@ using UnityEngine.SceneManagement;
 //   Duel.Resolve block + hit     -> PostureTakenMul(d)    posture the defender takes
 //   DuelFighter.Feint            -> FeintCostMul(f)       feint stamina cost (V3 Trickster: cheap feints)
 // Input (data): next / prev keys, mouse wheel, gamepad D-pad through an Input Manager axis or joystick buttons. HUD: a small label (OnGUI).
+// STANCE2 (laneSTANCE2): BOTH fighters' stances now scale posture AND damage (attacker postureDealtMul x defender postureTakenMul), plus guard / tempo knobs
+//   per stance: guardArcMul (block cone), parryWindowMul (ticks), blockChipMul, attackCostMul (stamina per swing), moveSpeedMul. New hooks (one call each):
+//   Duel.Resolve block + hit + kick-vs-guard -> PostureMul(a, d, clean)    replaces PostureTakenMul(d)
+//   Duel.Resolve guard cone                  -> GuardArcMul(d)             DuelFighter.ParryWindowTicks -> ParryWindowMul(f)
+//   Duel.Resolve block chip                  -> BlockChipMul(d)            DuelFighter.MoveCost -> AttackCostMul(f)    DuelFighter.SpeedMulExhausted -> MoveSpeedMul(f)
+//   AIBrain.Update                           -> AiStance.Tick(df)          the AI picks its own stance (stances.json "ai", AiStance.cs); a human's switch is rate-limited by switchLockS.
 public static class StanceLayer
 {
     [Serializable] public class StanceRow
     {
         public string id = "Neutral", label = "NEUTRAL";
         public float dealtMul = 1f, takenMul = 1f;              // flat damage dealt / taken
+        public float postureDealtMul = 1f;                      // STANCE2: posture this fighter puts on the foe (hit and block), x the foe's postureTakenMul
         public float postureTakenMul = 1f, blockCostMul = 1f;   // defence: posture the fighter takes, stamina a block costs
+        public float blockChipMul = 1f;                         // STANCE2: chip damage through his own block
+        public float guardArcMul = 1f, parryWindowMul = 1f;     // STANCE2: width of his block cone, length of his parry window (ticks, rounded, >= 1)
+        public float attackCostMul = 1f, moveSpeedMul = 1f;     // STANCE2: stamina his swings cost, walk / run / guard-walk speed
         public float feintCostMul = 1f;
         public float pDealt = 0f, dealtRollMul = 1f;            // per-hit chance of an extra multiplier on damage DEALT (Trickster)
         public float pTaken = 0f, takenRollMul = 1f;            // per-hit chance of an extra multiplier on damage TAKEN (Trickster)
@@ -40,8 +50,23 @@ public static class StanceLayer
         public string prefix = "STANCE  "; public float toastSeconds = 0.9f; public int toastFontSize = 16; public float alpha = 0.9f;
         public string hint = "";                                // appended in small text, e.g. "[3/4, wheel, D-pad]"
     }
+    [Serializable] public class AiRow   // STANCE2: AiStance.cs. Hysteresis = a stance is kept until its EXIT threshold is crossed (exit looser than enter), and nothing changes before minDwellS.
+    {
+        public bool enabled = false, forAutoplayPlayer = false;   // forAutoplayPlayer: also drive the IsPlayer fighter when AIBrain runs it (-autoplay); the balance bot (FlowBot) is untouched
+        public float decideEveryS = 0.5f, minDwellS = 4f;
+        public float lowHpEnter = 0.35f, lowHpExit = 0.50f;                 // own HP fraction: Defensive from <= enter, until HP > exit
+        public float selfPostureEnter = 0.65f, selfPostureExit = 0.40f;     // own posture fraction: Defensive from >= enter, until it falls <= exit
+        public float oppPostureEnter = 0.60f, oppPostureExit = 0.35f;       // foe posture fraction: Aggressive (go for the break) from >= enter, until <= exit
+        public float leadEnter = 0.15f, leadExit = 0.05f;                   // own HP fraction minus foe HP fraction: Aggressive from >= enter, until <= exit
+        public float tricksterChance = 0.10f; public float[] tricksterHoldS = { 4f, 8f };   // per decision while Neutral; hold time range
+        public string neutralId = "Neutral", aggressiveId = "Aggressive", defensiveId = "Defensive", tricksterId = "Trickster";
+    }
     [Serializable] public class Cfg
     {
+        public bool rollsScalePosture = true;                   // STANCE2: a Trickster dealt / taken proc also scales the posture of that same hit
+        public bool keepLethalDeathblow = true;                 // STANCE2: Duel keeps a lethal deathblow lethal after the stance / balance multipliers (false = the old order)
+        public float switchLockS = 1f;                         // STANCE2: a human cannot change stance again within this many seconds (the AI uses ai.minDwellS)
+        public AiRow ai = new AiRow();
         public bool enabled = false, debugLog = false; public int seed = 4242;
         public string playerDefault = "Neutral", aiStance = "Neutral";
         public bool keepAcrossRestart = true;                   // the player's pick survives a scene reload
@@ -53,6 +78,7 @@ public static class StanceLayer
     static Cfg C; static bool loaded;
     public static Cfg Get() { if (!loaded) Load(); return C; }
     public static bool Active => Get() != null && C.enabled && !STSteer.Active;
+    public static bool KeepLethal => Active && C.keepLethalDeathblow;   // STANCE2 (Duel.Resolve deathblow)
 
     static readonly Dictionary<DuelFighter, string> stanceOf = new Dictionary<DuelFighter, string>();
     static string playerPick; static uint rng = 1;
@@ -73,6 +99,8 @@ public static class StanceLayer
         if (C.stances == null) C.stances = new StanceRow[0];
         if (C.input == null) C.input = new InputRow();
         if (C.hud == null) C.hud = new HudRow();
+        if (C.ai == null) C.ai = new AiRow();
+        if (C.ai.tricksterHoldS == null || C.ai.tricksterHoldS.Length < 2) C.ai.tricksterHoldS = new float[] { 4f, 8f };
         rng = unchecked((uint)C.seed * 2654435761u + 12345u); if (rng == 0) rng = 1;
     }
     public static void Reload() { loaded = false; }
@@ -94,25 +122,59 @@ public static class StanceLayer
     }
     static StanceRow For(DuelFighter f) { return Active && f != null ? Row(StanceOf(f)) : null; }
 
-    public static void Set(DuelFighter f, string id)
+    static readonly Dictionary<DuelFighter, int> lastSetTick = new Dictionary<DuelFighter, int>();
+    // STANCE2: returns false when a HUMAN switch is refused by switchLockS (the AI passes force = true: AiStance has its own dwell time). Callers that ignore the result still compile.
+    public static bool Set(DuelFighter f, string id, bool force = false)
     {
-        if (f == null || Row(id) == null) return;
+        if (f == null || Row(id) == null) return false;
+        int now = Duel.TickCount, last;
+        if (!force && f.IsPlayer && lastSetTick.TryGetValue(f, out last) && now >= last && (now - last) < LockTicks()) return false;
+        lastSetTick[f] = now;
         stanceOf[f] = id; if (f.IsPlayer) playerPick = id;
         if (Get().debugLog) Debug.Log("[Stance] " + f.name + " -> " + id);
-        StanceDriver.Toast(Row(id));
+        if (f.IsPlayer) StanceDriver.Toast(Row(id));   // STANCE2: the toast is for the human's own switch, not the AI's
+        return true;
     }
+    static int LockTicks() { return Mathf.RoundToInt(Mathf.Max(0f, Get().switchLockS) * Mathf.Max(1f, AiRows.I.unity.ticksPerSecond)); }
+    public static void ResetAi() { lastSetTick.Clear(); AiStance.Reset(); }
 
     // ---- hooks ----
+    static DuelFighter procA, procD; static int procTick = -1; static float procMul = 1f;   // STANCE2: the Trickster proc of the clean hit being resolved, read back by PostureMul in the same tick
     public static float DamageMul(DuelFighter a, DuelFighter d)
     {
         if (!Active) return 1f;
-        float m = 1f; var ra = For(a); var rd = For(d);
-        if (ra != null) { m *= ra.dealtMul; if (ra.pDealt > 0f) { Rolls++; if (Roll() < ra.pDealt) { m *= ra.dealtRollMul; DealtProcs++; } } }
-        if (rd != null) { m *= rd.takenMul; if (rd.pTaken > 0f) { Rolls++; if (Roll() < rd.pTaken) { m *= rd.takenRollMul; TakenProcs++; } } }
-        LastMul = m; return m;
+        float m = 1f, roll = 1f; var ra = For(a); var rd = For(d);
+        if (ra != null) { m *= ra.dealtMul; if (ra.pDealt > 0f) { Rolls++; if (Roll() < ra.pDealt) { roll *= ra.dealtRollMul; DealtProcs++; } } }
+        if (rd != null) { m *= rd.takenMul; if (rd.pTaken > 0f) { Rolls++; if (Roll() < rd.pTaken) { roll *= rd.takenRollMul; TakenProcs++; } } }
+        procA = a; procD = d; procTick = Duel.TickCount; procMul = roll;
+        m *= roll; LastMul = m; return m;
     }
     public static float BlockCostMul(DuelFighter d) { var r = For(d); return r != null ? r.blockCostMul : 1f; }
-    public static float PostureTakenMul(DuelFighter d) { var r = For(d); return r != null ? r.postureTakenMul : 1f; }
+    public static float PostureTakenMul(DuelFighter d) { var r = For(d); return r != null ? r.postureTakenMul : 1f; }   // kept for older callers; Duel now calls PostureMul
+    // STANCE2: posture one blow puts on the defender = attacker postureDealtMul x defender postureTakenMul (x the Trickster proc of this very hit when it was a clean hit and rollsScalePosture)
+    public static float PostureMul(DuelFighter a, DuelFighter d, bool cleanHit)
+    {
+        if (!Active) return 1f;
+        float m = 1f; var ra = For(a); var rd = For(d);
+        if (ra != null) m *= ra.postureDealtMul;
+        if (rd != null) m *= rd.postureTakenMul;
+        if (cleanHit && Get().rollsScalePosture && procTick == Duel.TickCount && procA == a && procD == d) m *= procMul;
+        return m;
+    }
+    // kitV81: the attacker half of PostureMul (postureDealtMul x the Trickster proc of this very hit). Duel's clean-hit line uses it next to the unchanged PostureTakenMul(d) factor, so kitGEAR's hook text on that line still matches whichever kit is applied first
+    public static float PostureDealtMul(DuelFighter a, DuelFighter d, bool cleanHit)
+    {
+        if (!Active) return 1f;
+        float m = 1f; var ra = For(a);
+        if (ra != null) m *= ra.postureDealtMul;
+        if (cleanHit && Get().rollsScalePosture && procTick == Duel.TickCount && procA == a && procD == d) m *= procMul;
+        return m;
+    }
+    public static float BlockChipMul(DuelFighter d) { var r = For(d); return r != null ? r.blockChipMul : 1f; }
+    public static float GuardArcMul(DuelFighter d) { var r = For(d); return r != null ? r.guardArcMul : 1f; }
+    public static float ParryWindowMul(DuelFighter f) { var r = For(f); return r != null ? r.parryWindowMul : 1f; }
+    public static float AttackCostMul(DuelFighter f) { var r = For(f); return r != null ? r.attackCostMul : 1f; }
+    public static float MoveSpeedMul(DuelFighter f) { var r = For(f); return r != null ? r.moveSpeedMul : 1f; }
     public static float FeintCostMul(DuelFighter f) { var r = For(f); return r != null ? r.feintCostMul : 1f; }
 
     // ---- cycling ----
@@ -129,7 +191,7 @@ public static class StanceLayer
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { loaded = false; C = null; stanceOf.Clear(); playerPick = null; Rolls = DealtProcs = TakenProcs = 0; LastMul = 1f; }
+    static void ResetStatics() { loaded = false; C = null; stanceOf.Clear(); ResetAi(); procA = procD = null; procTick = -1; playerPick = null; Rolls = DealtProcs = TakenProcs = 0; LastMul = 1f; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
@@ -147,13 +209,20 @@ public static class StanceLayer
         void OnDisable() { SceneManager.sceneLoaded -= OnLoaded; if (inst == this) inst = null; }
         void OnLoaded(Scene s, LoadSceneMode m)
         {
-            Reload(); stanceOf.Clear(); player = null; nextFind = 0f; nextK = prevK = padN = padP = null; axisXOk = axisYOk = true;
+            Reload(); stanceOf.Clear(); ResetAi(); player = null; nextFind = 0f; nextK = prevK = padN = padP = null; axisXOk = axisYOk = true;
             if (!Get().keepAcrossRestart) playerPick = null;
         }
         public static void Toast(StanceRow r)
         {
             if (inst == null || r == null) return;
             inst.toastText = r.label; inst.toastCol = Col(r.color, 1f); inst.toastUntil = Time.unscaledTime + Get().hud.toastSeconds;
+        }
+        // laneHUD2 v83: GameHUD draws the stance label and the switch toast in the gothic style (hud.json stance{}); it reads the toast through this
+        public static bool ToastState(out string text, out Color col, out float alpha)
+        {
+            text = ""; col = Color.white; alpha = 0f;
+            if (inst == null || Time.unscaledTime >= inst.toastUntil) return false;
+            alpha = Mathf.Clamp01((inst.toastUntil - Time.unscaledTime) / Mathf.Max(0.05f, Get().hud.toastSeconds * 0.5f)); text = inst.toastText; col = inst.toastCol; return true;
         }
         static Color Col(float[] a, float alpha) { return a != null && a.Length >= 3 ? new Color(a[0], a[1], a[2], alpha) : new Color(1f, 1f, 1f, alpha); }
         static KeyCode[] Keys(string[] names)
@@ -208,6 +277,7 @@ public static class StanceLayer
         void OnGUI()
         {
             if (!Active) return;
+            if (HudCfg.Get().stance.enabled) return;   // laneHUD2 v83: GameHUD.DrawStance draws the label and the toast (hud.json stance{}); set stance.enabled false there to get this old label back
             var H = Get().hud; if (!H.enabled) return;
             var p = Player(); if (p == null) return;
             var r = Row(StanceOf(p)); if (r == null) return;

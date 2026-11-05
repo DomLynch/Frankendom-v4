@@ -8,18 +8,68 @@
       {
         "key": "Pitborn",
         "moves": [
-          { "move": "skill_jab",    "armour": false },
-          { "move": "skill_pommel", "armour": false },
-          { "move": "skill_shove",  "armour": false },
-          { "move": "heavy*",       "fromTick": 8, "recoveryTicks": 0, "damageMul": 1.0, "knockMul": 0.2, "postureMul": 0.5 },
-          { "move": "critical",     "fromTick": 8, "recoveryTicks": 0, "damageMul": 1.0, "knockMul": 0.2, "postureMul": 0.5 },
-          { "move": "skill_*",      "fromTick": 6, "recoveryTicks": 0, "damageMul": 1.0, "knockMul": 0.2, "postureMul": 0.5 }
+          {
+            "move": "skill_jab",
+            "armour": false
+          },
+          {
+            "move": "skill_pommel",
+            "armour": false
+          },
+          {
+            "move": "skill_shove",
+            "armour": false
+          },
+          {
+            "move": "heavy*",
+            "fromTick": 8,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.2,
+            "postureMul": 0.5
+          },
+          {
+            "move": "critical",
+            "fromTick": 8,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.2,
+            "postureMul": 0.5
+          },
+          {
+            "move": "skill_*",
+            "fromTick": 6,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.2,
+            "postureMul": 0.5
+          }
         ]
       },
       {
         "key": "Dracula",
         "moves": [
-          { "move": "skill_*",      "fromTick": 8, "recoveryTicks": 0, "damageMul": 1.0, "knockMul": 0.2, "postureMul": 0.5 }
+          {
+            "move": "skill_*",
+            "fromTick": 8,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.2,
+            "postureMul": 0.5
+          }
+        ]
+      },
+      {
+        "key": "Joan",
+        "moves": [
+          {
+            "move": "skill_*",
+            "fromTick": 8,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.2,
+            "postureMul": 0.5
+          }
         ]
       }
     ]
@@ -33,12 +83,35 @@
     "graceDamageMul": 0.6,
     "countArmoured": false,
     "fighters": [
-      { "key": "Pitborn", "enabled": true, "hits": 3, "windowTicks": 180, "breakOutTicks": 48 },
-      { "key": "Dracula", "enabled": true, "hits": 3, "windowTicks": 150, "breakOutTicks": 42 }
+      {
+        "key": "Pitborn",
+        "enabled": true,
+        "hits": 3,
+        "windowTicks": 180,
+        "breakOutTicks": 48
+      },
+      {
+        "key": "Dracula",
+        "enabled": true,
+        "hits": 3,
+        "windowTicks": 150,
+        "breakOutTicks": 42
+      },
+      {
+        "key": "Joan",
+        "enabled": true,
+        "hits": 3,
+        "windowTicks": 150,
+        "breakOutTicks": 42
+      }
     ]
   },
   "riposte": {
     "damageMul": 0.8,
-    "moves": [ "riposte", "slash_riposte", "heavy_riposte" ]
+    "moves": [
+      "riposte",
+      "slash_riposte",
+      "heavy_riposte"
+    ]
   }
 }

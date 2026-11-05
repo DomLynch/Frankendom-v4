@@ -67,6 +67,7 @@ public static class FinisherPlayer
             var e = entries[i]; if (e == null || !e.enabled || !IdAllowed(cfg, e.id)) continue;
             if (!FinisherSides.Matches(e.attackerSide, ctx.killerSide)) continue;
             if (!In(e.weapons, weapon) || !In(e.directions, dir) || !In(e.moves, ctx.move.ToString()) || !In(e.locations, ctx.loc.ToString())) continue;
+            if (!FinisherPair.Available(e, FinisherSides.IdOf(ctx.killerSide), FinisherSides.IdOf(ctx.victimSide), ctx.deathblow)) continue;   // JOANFIN v77: per killer / victim availability (data)
             ok.Add(i);
         }
         return ok;
@@ -151,6 +152,7 @@ public static class FinisherPlayer
     public static IEnumerator Run(RTFinisherHost host, FinisherEntry e, FinisherContext ctx)
     {
         if (!host.Begin()) yield break;
+        e = FinisherPair.Resolve(e, FinisherSides.IdOf(ctx.killerSide), FinisherSides.IdOf(ctx.victimSide));   // JOANFIN v77: per killer / victim pair numbers, shots (data)
         bool rig = host.HasCamera;
         DuelFighter A = host.Fighter(ctx.killerSide), V = host.Fighter(ctx.victimSide);
         Fighter fa = A.GetComponent<Fighter>(), fv = V.GetComponent<Fighter>();
@@ -164,7 +166,7 @@ public static class FinisherPlayer
         // killerYawDeg turns the killer so its clip's own facing points at the victim, victimYawDeg likewise for the victim.
         Vector3 mid = (A.transform.position + V.transform.position) * 0.5f, axis = Flat(V.transform.position - A.transform.position);
         if (axis.sqrMagnitude < 1e-4f) axis = A.transform.forward; axis.Normalize();
-        float ks = e.distanceScaleByKiller ? Mathf.Max(0.5f, A.scale) : 1f;
+        float ks = e.distanceScaleByKiller ? Mathf.Max(0.5f, A.scale) * FinisherPair.KillerScale(FinisherSides.IdOf(ctx.killerSide)) : 1f;   // JOANFIN v77: x rt.killers pairScale of the killer
         Vector3 rightV = Vector3.Cross(Vector3.up, axis);
         float dz = Mathf.Max(0.6f, e.distance * ks), dx = 0f;
         if (e.pairOffset != null && e.pairOffset.Length >= 3) { dx = e.pairOffset[0] * ks; dz = Mathf.Max(0.6f, e.pairOffset[2] * ks); }

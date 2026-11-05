@@ -4,8 +4,15 @@
   "models": [
     "Assets/Characters/Dracula/Dracula_combat.glb",
     "Assets/Characters/Dracula/Dracula_anim.glb",
+    "Assets/Characters/Joan/Joan_combat.glb",
+    "Assets/Characters/Joan/Joan_anim.glb",
     "Assets/Characters/Pitborn/Pitborn_combat.glb",
     "Assets/Characters/Pitborn/Pitborn_anim.glb"
   ],
-  "importerKeys": ["meshReadable", "meshesReadable", "readable", "isReadable"]
+  "importerKeys": [
+    "meshReadable",
+    "meshesReadable",
+    "readable",
+    "isReadable"
+  ]
 }

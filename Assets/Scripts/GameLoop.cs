@@ -51,7 +51,7 @@ public static class GameLoop
             if (harness.HasValue) return harness.Value;
             bool h = false;
             foreach (var a in Environment.GetCommandLineArgs())
-                if (a == "-balanceauto" || a == "-autoplay" || a == "-finisherauto" || a == "-postureproof" || a == "-camproof" || a == "-flowproof" || a == "-gaps" || a == "-props" || a == "-record" || a.StartsWith("-sheet:", StringComparison.Ordinal)) h = true;
+                if (a == "-balanceauto" || a == "-shadowdiag" || a == "-autoplay" || a == "-finisherauto" || a == "-postureproof" || a == "-camproof" || a == "-flowproof" || a == "-gaps" || a == "-props" || a == "-record" || a.StartsWith("-sheet:", StringComparison.Ordinal)) h = true;
             if (LoopTestOn) h = false;
             harness = h; return h;
         }
@@ -160,6 +160,7 @@ public static class GameLoop
         if (!styles.TryGetValue(key, out s) || s == null)
         {
             s = new GUIStyle(GUI.skin.label) { fontSize = size, alignment = a, fontStyle = bold ? FontStyle.Bold : FontStyle.Normal, wordWrap = false, clipping = TextClipping.Overflow, richText = false };
+            var sf = HudDraw.FontFor("serif"); if (sf != null) s.font = sf;   // laneHUD2 v83: serif face (hud.json fonts)
             styles[key] = s;
         }
         return s;
@@ -178,52 +179,68 @@ public static class GameLoop
     }
 
     // ---- the end screen (driver OnGUI; vw / vh = virtual size inside GUI.matrix scale s) ----
+    // laneHUD2 v83: a fade (dark wash + tinted vignette + a soft band), a large tracked serif title, a thin ornament rule, an italic serif subtitle, the stats line and small text prompts (Retry / Next opponent).
+    // Every size, colour and string is hud.json screens{} / colors{} / fonts{}. The prompts are clickable; keys are GameLoopDriver.Update.
     public static void DrawEnd(float vw, float vh)
     {
         float a = ScreenAlpha; if (a <= 0.001f || Outcome == Result.None) return;
         var H = HudCfg.Get(); var S = H.screens; var C = H.colors; bool win = Outcome == Result.Victory;
-        var E = win ? S.victory : S.defeat; Color accent = HudCfg.Col(E.color);
-        Fill(new Rect(0, 0, vw, vh), new Color(0f, 0f, 0f, S.dimAlpha * a));
-        float bh = S.bandHeight, y0 = vh * 0.5f - bh * 0.5f - S.bandLift;
-        Fill(new Rect(0, y0, vw, bh), new Color(0.018f, 0.018f, 0.022f, S.bandAlpha * a));
-        Fill(new Rect(0, y0, vw, 2f), HudCfg.Col(C.crimson, 0.9f * a)); Fill(new Rect(0, y0 + bh - 2f, vw, 2f), HudCfg.Col(C.crimson, 0.9f * a));
-        float cx = vw * 0.5f;
+        var E = win ? S.victory : S.defeat; Color accent = HudCfg.Col(E.color); Color tint = HudCfg.Col(win ? S.victoryTint : S.defeatTint);
+        bool rep = Event.current.type == EventType.Repaint; float e = a * a * (3f - 2f * a);
+        float cx = vw * 0.5f, bh = S.bandHeight, y0 = vh * 0.5f - bh * 0.5f - S.bandLift;
+        HudDraw.Alpha = 1f;
+        if (rep)
+        {
+            Fill(new Rect(0, 0, vw, vh), new Color(0f, 0f, 0f, S.dimAlpha * a));
+            HudDraw.Tex(new Rect(0, 0, vw, vh), HudDraw.Vignette(), new Color(tint.r, tint.g, tint.b, 0.9f * a));
+            HudDraw.Tex(new Rect(0, y0, vw, bh), HudDraw.BandV(), new Color(0f, 0f, 0f, S.bandAlpha * a));
+        }
         var row = CurrentRow();
-        string fight = string.Format(S.fightText, FightNumber, string.IsNullOrEmpty(row.title) ? Cap(row.name) : row.title);
-        Label(new Rect(0, y0 + 16f, vw, 20f), fight.ToUpperInvariant(), S.nextLabelSize, TextAnchor.UpperCenter, true, HudCfg.Col(C.dim, a * 0.9f));
-        float ty = y0 + 38f, th = S.titleSize * 1.3f;
-        Label(new Rect(0, ty, vw, th), E.title, S.titleSize, TextAnchor.MiddleCenter, true, new Color(accent.r, accent.g, accent.b, a));
-        Fill(new Rect(cx - 60f, ty + th + 2f, 120f, 1f), new Color(accent.r, accent.g, accent.b, 0.7f * a));
-        float sy = ty + th + 12f;
-        Label(new Rect(0, sy, vw, 30f), string.Format(E.subtitle, Cap(row.name)), S.subtitleSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.ink, a * 0.95f));
-        Label(new Rect(0, sy + 36f, vw, 24f), StatsLine(), S.statsSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.dim, a));
+        string fight = string.Format(S.fightText, FightNumber, string.IsNullOrEmpty(row.title) ? Cap(Roster.EnemyName) : row.title);
+        float ty = y0 + 70f - S.titleLift, th = S.titleSize * 1.35f;
+        float track = Mathf.Round(S.titleTracking + S.titleTrackingExtra * (1f - e));                    // the letters settle inwards as the screen fades in
+        if (rep)
+        {
+            HudDraw.Caps(cx, y0 + 40f, 0.5f, fight, "serif", S.nextLabelSize, S.nextLabelSize, 3f, HudCfg.Col(C.dim, a * 0.9f), false);
+            HudDraw.Caps(cx, ty, 0.5f, E.title, "title", S.titleSize, S.titleSize, track, new Color(accent.r, accent.g, accent.b, a));
+            float ry = ty + th + 8f, hw = S.ruleW * 0.5f, ds = 9f; Color ac = new Color(accent.r, accent.g, accent.b, 0.8f * a);
+            HudDraw.TexUV(new Rect(cx - hw, ry, hw - ds, 1.3f), HudDraw.GradH(), new Rect(1f, 0f, -1f, 1f), ac);   // opaque at the centre, fades outwards
+            HudDraw.TexUV(new Rect(cx + ds, ry, hw - ds, 1.3f), HudDraw.GradH(), new Rect(0f, 0f, 1f, 1f), ac);
+            HudDraw.Tex(new Rect(cx - ds * 0.5f, ry + 0.65f - ds * 0.5f, ds, ds), HudDraw.Diamond(), ac);
+            float sy = ry + 18f;
+            HudDraw.Text(new Rect(0, sy, vw, S.subtitleSize * 1.6f), string.Format(E.subtitle, Cap(Roster.EnemyName)), "serif", S.subtitleSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.ink, a * 0.95f), S.subtitleItalic);
+            if (S.showStats) HudDraw.Text(new Rect(0, sy + S.subtitleSize * 1.7f, vw, S.statsSize * 1.6f), StatsLine(), "serif", S.statsSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.dim, a));
+        }
 
-        bool canNext = win || S.nextOnDefeat;
-        float bw = S.buttonW, bhh = S.buttonH + 4f, gap = S.buttonGap, by = y0 + bh - bhh - 30f;
-        bool live = a >= 0.5f && !GameLoopDriver.Transitioning;
-        var gold = HudCfg.Col(C.gold); var crim = HudCfg.Col(C.crimson);
+        bool canNext = win || S.nextOnDefeat; bool live = a >= 0.5f && !GameLoopDriver.Transitioning;
+        float slot = S.buttonW + S.buttonGap, py = y0 + bh - S.promptY - S.promptSize * 1.5f - S.promptHintSize * 1.9f;
         if (canNext)
         {
-            var rr = new Rect(cx - bw - gap * 0.5f, by, bw, bhh); var rn = new Rect(cx + gap * 0.5f, by, bw, bhh);
-            if (Button(rr, S.retryText, S.retryHint, false, win ? gold : crim, a, live)) Retry();
-            if (Button(rn, S.nextText, S.confirmHint, true, win ? gold : crim, a, live)) Next();
-            if (win) Label(new Rect(0, by + bhh + 4f, vw, 18f), string.Format(S.nextPreview, NextRow().title.Length > 0 ? NextRow().title : Cap(NextRow().name)), S.nextLabelSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.dim, a * 0.8f));
+            if (Prompt(new Rect(cx - slot * 0.5f - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * 1.5f + S.promptHintSize * 1.9f), S.retryText, S.retryHint, false, accent, a, live, rep)) Retry();
+            if (Prompt(new Rect(cx + slot * 0.5f - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * 1.5f + S.promptHintSize * 1.9f), S.nextText, S.confirmHint, true, accent, a, live, rep)) Next();
+            if (win && rep) HudDraw.Text(new Rect(0, py + S.promptSize * 1.5f + S.promptHintSize * 2.1f, vw, S.nextLabelSize * 1.6f), string.Format(S.nextPreview, NextRow().title.Length > 0 ? NextRow().title : Cap(NextRow().name)), "serif", S.nextLabelSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.dim, a * 0.8f), true);
         }
-        else
-        {
-            var rr = new Rect(cx - bw * 0.5f, by, bw, bhh);
-            if (Button(rr, S.retryText, S.retryHintDefeat, true, crim, a, live)) Retry();
-        }
+        else if (Prompt(new Rect(cx - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * 1.5f + S.promptHintSize * 1.9f), S.retryText, S.retryHintDefeat, true, accent, a, live, rep)) Retry();
     }
 
-    static bool Button(Rect r, string label, string keyHint, bool primary, Color accent, float a, bool live)
+    // a small text prompt: tracked small-caps label, the key hint under it; the primary one is bright with a diamond on each side and a thin rule, the other dim. Returns true when clicked.
+    static bool Prompt(Rect r, string label, string keyHint, bool primary, Color accent, float a, bool live, bool rep)
     {
         var S = HudCfg.Get().screens; var C = HudCfg.Get().colors;
         bool hover = live && r.Contains(Event.current.mousePosition);
-        Fill(r, hover ? new Color(0.13f, 0.11f, 0.11f, 0.95f * a) : new Color(0.05f, 0.05f, 0.055f, 0.92f * a));
-        Frame(r, primary ? new Color(accent.r, accent.g, accent.b, a) : HudCfg.Col(C.dim, 0.55f * a), primary ? 2f : 1f);
-        Label(new Rect(r.x, r.y + 5f, r.width, S.buttonSize * 1.4f), label.ToUpperInvariant(), S.buttonSize, TextAnchor.UpperCenter, true, hover || primary ? HudCfg.Col(C.ink, a) : HudCfg.Col(C.ink, 0.8f * a));
-        Label(new Rect(r.x, r.yMax - S.keyHintSize * 1.7f, r.width, S.keyHintSize * 1.5f), keyHint, S.keyHintSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.dim, 0.9f * a));
+        if (rep)
+        {
+            float k = primary ? 1f : hover ? 0.95f : 0.62f; Color col = HudCfg.Col(C.ink, a * k);
+            float w = HudDraw.Caps(r.center.x, r.y, 0.5f, label, "title", S.promptSize, Mathf.Max(8, S.promptSize - 4), 2.5f, col);
+            if (primary || hover)
+            {
+                float ds = 7f; Color ac = new Color(accent.r, accent.g, accent.b, a * (primary ? 1f : 0.7f)); float cy = r.y + S.promptSize * 0.78f;
+                HudDraw.Tex(new Rect(r.center.x - w * 0.5f - 18f - ds, cy - ds * 0.5f, ds, ds), HudDraw.Diamond(), ac);
+                HudDraw.Tex(new Rect(r.center.x + w * 0.5f + 18f, cy - ds * 0.5f, ds, ds), HudDraw.Diamond(), ac);
+                Fill(new Rect(r.center.x - w * 0.5f, r.y + S.promptSize * 1.5f, w, 1f), new Color(accent.r, accent.g, accent.b, 0.7f * a));
+            }
+            HudDraw.Text(new Rect(r.x, r.y + S.promptSize * 1.6f, r.width, S.promptHintSize * 1.6f), keyHint, "serif", S.promptHintSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.dim, 0.9f * a));
+        }
         return GUI.Button(r, GUIContent.none, GUIStyle.none) && live;
     }
 
@@ -295,7 +312,7 @@ public sealed class GameLoopDriver : MonoBehaviour
     {
         nextFind = Time.unscaledTime + 0.2f;
         DuelFighter d = null, p = null;
-        foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) { if (f.name.Contains("Dracula")) d = f; else if (f.name.Contains("Pitborn")) p = f; }
+        foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) { if (f.name.Contains(Roster.PlayerObject)) d = f; else if (f.name.Contains(Roster.EnemyObject)) p = f; }   // laneHUD2 v83: Roster, not literals
         if (d != null && p != null) { GameLoop.Player = d; GameLoop.Enemy = p; frames = 0; }
     }
 
@@ -335,6 +352,7 @@ public sealed class GameLoopDriver : MonoBehaviour
 
         if (pending != null) return;
         if (!ReferenceEquals(keyOwner, H)) { keyOwner = H; kConfirm = HudCfg.Keys(H.input.confirmKeys, new[] { KeyCode.Return }); kRetry = HudCfg.Keys(H.input.retryKeys, new[] { KeyCode.Backspace }); kMid = HudCfg.Keys(H.input.midFightRetryKeys, new[] { KeyCode.Backspace }); }
+        if (LootUI.Blocking) return;   // LOOTUI v85: the equip screen owns Enter / A / B (confirm / retry keys)
         if (STSteer.Active) return;
         if (HudCfg.AnyDown(kMid)) { GameLoop.Retry(); return; }
         if (GameLoop.ScreenAlpha >= 0.5f)

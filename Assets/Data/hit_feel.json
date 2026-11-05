@@ -1,0 +1,60 @@
+{
+  "_about": "laneHITFX v81 AAA hit feel (Scripts/Combat/HitFeel.cs + HitFeelTable; BloodBurst and CombatVFX read blood{}). Every number lives here. Missing file = HitFeel off and the v69 look (code defaults). visual-qc must gate any change (spark intensity, flash lumen, blood colours).",
+  "version": 1,
+  "enabled": 1,
+  "guardSparkScale": 0.0,
+  "hitstop": {
+    "_about": "ms = lerp(minMs, maxMs, clamp01((damage - dmgLo) / (dmgHi - dmgLo))), damage = health the victim lost on this contact (1 when dmgHi <= dmgLo, so minMs..maxMs collapse to maxMs; use minMs = maxMs for a fixed stop). Dracula/Pitborn move damage: light 14, thrust 11, riposte 24, heavy_overhead 18, heavy_counter 20, heavy_riposte 30, critical 40 (x damage mults). PresentationClock keeps the longest request, so hit_stop.json (the old floor) never adds on top. Not requested while a finisher owns the clock; x duringSlowMoMul while CombatSlowMo runs. slow_mo.json delayS (parry 0.10, deathblow 0.12, crit 0.08) makes the dip start after the freeze.",
+    "enabled": 1,
+    "maxMs": 140,
+    "unknownDamageT": 0.5,
+    "duringSlowMoMul": 0.5,
+    "minRequestMs": 8,
+    "tiers": [
+      { "id": "hitLight",   "minMs": 60,  "maxMs": 80,  "dmgLo": 10, "dmgHi": 24 },
+      { "id": "hitHeavy",   "minMs": 90,  "maxMs": 110, "dmgLo": 18, "dmgHi": 40 },
+      { "id": "kick",       "minMs": 50,  "maxMs": 60,  "dmgLo": 0,  "dmgHi": 8 },
+      { "id": "kill",       "minMs": 110, "maxMs": 130, "dmgLo": 5,  "dmgHi": 40 },
+      { "id": "blockLight", "minMs": 30,  "maxMs": 30,  "dmgLo": 0,  "dmgHi": 0 },
+      { "id": "blockHeavy", "minMs": 50,  "maxMs": 50,  "dmgLo": 0,  "dmgHi": 0 },
+      { "id": "parry",      "minMs": 100, "maxMs": 100, "dmgLo": 0,  "dmgHi": 0 },
+      { "id": "guardBreak", "minMs": 100, "maxMs": 100, "dmgLo": 0,  "dmgHi": 0 }
+    ]
+  },
+  "sparks": {
+    "_about": "HDR emissive streaks on Furnace/Particle (additive, display-referred): intensity 8 at 2200 K cooling to 1700 K at coolAt. Size x clamp(cameraDistance / refDistance, 1, maxGrow) so it reads at gameplay distance. countBase + countPerStrength * rows[].spark, x countScaleHeavy on a heavy blow, +-countRandom.",
+    "enabled": 1,
+    "poolSize": 320, "glintPool": 24, "cooldown": 0.03,
+    "intensity": 8.0, "glintIntensity": 8.0, "kelvin": 2200, "coolKelvin": 1700, "coolAt": 0.55, "glintWhiteMix": 0.55, "opacity": 1.0,
+    "countBase": 14, "countPerStrength": 14, "countRandom": 0.25, "countScaleHeavy": 1.3,
+    "anchorHeight": 1.1, "anchorBack": 0.4, "anchorJitter": 0.1,
+    "alongBias": 0.3, "alongScale": 1.1, "sideSpread": 2.4, "upMin": 0.15, "upRange": 1.4, "towardCamera": 0.7,
+    "speedMin": 2.5, "speedRange": 5.0, "speedPerStrength": 0.35,
+    "lifeMin": 0.18, "lifeRange": 0.27, "gravity": 1.2,
+    "sizeMin": 0.03, "sizeRange": 0.03, "lengthScale": 2.2, "velocityScale": 0.035, "maxParticleSize": 0.5,
+    "glintLife": 0.07, "glintSize": 0.3, "glintSizePerStrength": 0.25,
+    "refDistance": 4.0, "maxGrow": 2.2
+  },
+  "flash": {
+    "_about": "Warm point light (HDRP lumens, no shadows) for `seconds` of unscaled time, intensity falls as (1 - age/seconds)^falloffPower, peak = lumen * rows[].flash, placed towardCamera metres in front of the contact. Same lumen order as MoveSheet's lights (12000 lm / 4 m) under the fixed EV 9.4.",
+    "enabled": 1, "pool": 2,
+    "seconds": 0.05, "lumen": 9000, "range": 4.5, "falloffPower": 1.5, "towardCamera": 0.3, "kelvin": 2200
+  },
+  "rows": [
+    { "type": "Parried",     "heavy": -1, "perfect": -1, "metal": -1, "spark": 1.0,  "flash": 1.0 },
+    { "type": "GuardBroken", "heavy": -1, "perfect": -1, "metal": -1, "spark": 1.2,  "flash": 1.0 },
+    { "type": "Blocked",     "heavy": 1,  "perfect": -1, "metal": -1, "spark": 0.8,  "flash": 0.8 },
+    { "type": "Blocked",     "heavy": -1, "perfect": 1,  "metal": -1, "spark": 0.7,  "flash": 0.7 },
+    { "type": "Blocked",     "heavy": -1, "perfect": -1, "metal": -1, "spark": 0.5,  "flash": 0.5 },
+    { "type": "Hit",         "heavy": 1,  "perfect": -1, "metal": 1,  "spark": 0.6,  "flash": 0.5 },
+    { "type": "Hit",         "heavy": -1, "perfect": -1, "metal": 1,  "spark": 0.4,  "flash": 0.35 }
+  ],
+  "blood": {
+    "_about": "B1 fixes. lengthScale 1.6 (droplets, not needles; was 3.2 before v69), wet dark colour (0.35,0.02,0.02) fading to endColor, softDistance 0.15 on the bloodStrands material (-1 = leave the fx_materials.json value), velocityScale = small flight stretch, sizeScale / countScale x the BloodBurst V3 numbers. dropColor / mistColor = CombatVFX BloodDrops / BloodMist start colours (were 0.145,0.008,0.008 and 0.22,0.015,0.015).",
+    "lengthScale": 1.6, "velocityScale": 0.02, "softDistance": 0.15, "sizeScale": 1.15, "countScale": 1.0,
+    "startColor": { "r": 0.35, "g": 0.02, "b": 0.02, "a": 1.0 },
+    "endColor":   { "r": 0.14, "g": 0.01, "b": 0.01, "a": 1.0 },
+    "dropColor":  { "r": 0.22, "g": 0.012, "b": 0.012, "a": 1.0 },
+    "mistColor":  { "r": 0.30, "g": 0.02, "b": 0.02, "a": 0.9 }
+  }
+}

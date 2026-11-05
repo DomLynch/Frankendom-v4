@@ -1,13 +1,60 @@
 {
   "enabled": true,
   "debugLog": false,
-  "baseColorProps": ["_BaseColor", "_Color"],
+  "baseColorProps": [
+    "_BaseColor",
+    "_Color"
+  ],
   "emissiveProp": "_EmissiveColor",
   "maxSeconds": 0.5,
   "rows": [
-    { "match": "Pitborn", "enabled": true, "onlyDeathblow": true, "onlyHeavy": false, "skipOnKill": true,
-      "seconds": 0.1, "riseSeconds": 0.02, "strength": 0.45, "color": [1.0, 0.82, 0.6], "emissiveNits": 0.0 },
-    { "match": "Dracula", "enabled": false, "onlyDeathblow": true, "onlyHeavy": false, "skipOnKill": true,
-      "seconds": 0.1, "riseSeconds": 0.02, "strength": 0.3, "color": [1.0, 0.9, 0.8], "emissiveNits": 0.0 }
+    {
+      "match": "Pitborn",
+      "enabled": true,
+      "onlyDeathblow": true,
+      "onlyHeavy": false,
+      "skipOnKill": true,
+      "seconds": 0.1,
+      "riseSeconds": 0.02,
+      "strength": 0.45,
+      "color": [
+        1.0,
+        0.82,
+        0.6
+      ],
+      "emissiveNits": 0.0
+    },
+    {
+      "match": "Dracula",
+      "enabled": false,
+      "onlyDeathblow": true,
+      "onlyHeavy": false,
+      "skipOnKill": true,
+      "seconds": 0.1,
+      "riseSeconds": 0.02,
+      "strength": 0.3,
+      "color": [
+        1.0,
+        0.9,
+        0.8
+      ],
+      "emissiveNits": 0.0
+    },
+    {
+      "match": "Joan",
+      "enabled": false,
+      "onlyDeathblow": true,
+      "onlyHeavy": false,
+      "skipOnKill": true,
+      "seconds": 0.1,
+      "riseSeconds": 0.02,
+      "strength": 0.3,
+      "color": [
+        1.0,
+        0.9,
+        0.8
+      ],
+      "emissiveNits": 0.0
+    }
   ]
 }
