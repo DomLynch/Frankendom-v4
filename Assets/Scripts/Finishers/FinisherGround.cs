@@ -42,6 +42,7 @@ public class FinisherGroundCfg
     public bool bodyClamp = true;
     public float bodyHipsMaxM = 0.75f, bodySunkTolM = 0.02f, bodyFloatTolM = 0.02f, bodyLowerMps = 3.0f;
     public float failBodyAboveM = 0.10f, failBodyBelowM = 0.10f;
+    public bool feetWarnWhenBodyOk = false;   // DECAPFOOT v96: false = a victim judged by its lowest BODY point (lying / face-down, heels up) gets NO feet-above-ground warning while that body point is within failBodyAboveM (the soles are not the reference); true = old warning
     public BodyRow[] bodyBones = BodyRow.Defaults();
     public SoleRow[] soles = new SoleRow[0];   // per-character rows keyed by roster id (finishers.json rt.ground.soles); no row = the SoleRow defaults
 }

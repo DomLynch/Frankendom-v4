@@ -159,7 +159,7 @@ public class AutoShot : MonoBehaviour
             {
                 foreach (var go in new[] { dr, pi }) { var cc = go.GetComponent<CharacterController>(); if (cc) cc.enabled = false; }
                 Vector3 pp = new Vector3(0f, 0f, z0), ep = new Vector3(0f, 0f, z0 + g);
-                foreach (var pr in new[] { (dr, pp), (pi, ep) }) { var p = pr.Item2; if (Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out var hit, 40f, ~((1 << 8) | (1 << 9)))) p.y = hit.point.y; pr.Item1.transform.position = p; }
+                foreach (var pr in new[] { (dr, pp), (pi, ep) }) { var p = pr.Item2; if (Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out var hit, 40f, PhysMasks.Ground)) p.y = hit.point.y; pr.Item1.transform.position = p; }
                 dr.transform.rotation = Quaternion.LookRotation(Vector3.forward); pi.transform.rotation = Quaternion.LookRotation(Vector3.back);
             }
             gapFrames++;

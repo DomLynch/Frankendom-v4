@@ -21,6 +21,7 @@ public class Duel : MonoBehaviour
         {
             acc -= 1f / 60f; TickCount++;
             for (int i = 0; i < fighters.Count; i++) fighters[i].Tick();
+            PhysicsClock.OnSimTick();   // PHYS1 v1: ONE Physics.Simulate per 60 Hz sim tick, after the fighters ticked (hit-stop = no tick = no step)
             if (PresentationClock.Frozen) { acc = 0f; break; }   // a contact this tick requested a stop (V3 main.ts: accumulator = 0)
         }
         // DEATHFIX v92: safety net. HP 0 with the state not Dead (any damage path that skipped Resolve's Die(), a finisher that ended without its own Die()) must still kill the fighter.

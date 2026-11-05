@@ -308,7 +308,7 @@ public class FinisherCamera : MonoBehaviour
             Vector3 d = p - from; float len = d.magnitude;
             if (len > 0.01f)
             {
-                int mask = ~0; if (col.ignoreLayers != null) foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
+                int mask = PhysMasks.NotPhys; if (col.ignoreLayers != null) foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
                 if (Physics.SphereCast(from, col.radius, d / len, out var hit, len, mask, QueryTriggerInteraction.Ignore))
                     p = from + d / len * Mathf.Max(col.minDistFromTarget, hit.distance);
             }

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "source": "frankendom-v3 data/physics.json (states.death, kill, motorTuning, bones) + data/hero-death.json (ragdoll); body parts follow the 20-part role table of physics.json 'bones'",
-  "about": "Death-only ragdoll for the Mixamo-rigged fighters (V3_TO_UNITY rows 3, 4, 8). ON since 2026-11-04 (Dom: Dracula lay flat like a board with the death clip held); set enabled false to restore the held death clip. Only the fighter that is killed is converted; nameContains [] = both. Presentation only: the sim never reads it. Spring/damper numbers are PhysX starting points to tune in the player (V3's Jolt motor gain/damping are relative multipliers here).",
+  "about": "Death-only ragdoll for the Mixamo-rigged fighters (V3_TO_UNITY rows 3, 4, 8). ON since 2026-11-04 (Dom: Dracula lay flat like a board with the death clip held); set enabled false to restore the held death clip. Only the fighter that is killed is converted; nameContains [] = both. Presentation only: the sim never reads it. Spring/damper numbers are PhysX starting points to tune in the player (V3's Jolt motor gain/damping are relative multipliers here). PHYS1 v1 (2026-11-05): rig pre-built at scene load (kinematic, Hurtbox-layer trigger capsules), velocities inherited at death, blow impulse along the attacker's facing split over zone / spine2 / hips, V3 role-table joint limits (spine 20/15, spine1+2 18/12, neck 50/60, head 55/70, arm 150/100, hand 80/70, thigh 85/45, foot 40/20, forearm hinge -30..150, shin hinge -3.2..136.8), the 5 rigid cape / skirt bodies removed (their bones carry no skin weight). Hinge: min..max degrees about the axis found from the rest pose (bend +1 = toward the fighter's forward, -1 = backward); enabled:false falls back to swing / twist.",
   "enabled": true,
   "nameContains": [],
   "startDelaySeconds": 0.0,
@@ -39,7 +39,43 @@
       "head": "head",
       "torso": "spine2",
       "legs": "thighL"
-    }
+    },
+    "attackerFacing": true,
+    "defaultZone": "torso",
+    "zoneRules": [
+      {
+        "match": "contains",
+        "value": "overhead",
+        "zone": "head"
+      },
+      {
+        "match": "prefix",
+        "value": "heavy",
+        "zone": "head"
+      },
+      {
+        "match": "equals",
+        "value": "kick",
+        "zone": "legs"
+      }
+    ],
+    "split": [
+      {
+        "part": "zone",
+        "share": 0.5,
+        "note": "V3 puts the whole 70 N s on one part (65 kg Jolt body); a 3-part spread keeps the head / thigh from being flung alone (PH3 P1)"
+      },
+      {
+        "part": "spine2",
+        "share": 0.3,
+        "note": ""
+      },
+      {
+        "part": "hips",
+        "share": 0.2,
+        "note": ""
+      }
+    ]
   },
   "drive": {
     "springPerKg": 300.0,
@@ -50,7 +86,11 @@
     "angularDamping": 0.4,
     "collisionDetection": "ContinuousSpeculative",
     "ignoreSelfCollision": true,
-    "updateSkinnedWhenOffscreen": true
+    "updateSkinnedWhenOffscreen": true,
+    "solverIterations": 16,
+    "solverVelocityIterations": 4,
+    "maxAngularVelocity": 50.0,
+    "maxDepenetrationVelocity": 4.0
   },
   "parts": [
     {
@@ -66,7 +106,14 @@
       "swing": 0,
       "twist": 0,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "spine",
@@ -81,7 +128,14 @@
       "swing": 20,
       "twist": 15,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "spine1",
@@ -93,10 +147,17 @@
       ],
       "massFrac": 0.08,
       "radiusM": 0.14,
-      "swing": 20,
-      "twist": 15,
+      "swing": 18,
+      "twist": 12,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "spine2",
@@ -108,10 +169,17 @@
       ],
       "massFrac": 0.1,
       "radiusM": 0.15,
-      "swing": 20,
-      "twist": 15,
+      "swing": 18,
+      "twist": 12,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "neck",
@@ -123,10 +191,17 @@
       ],
       "massFrac": 0.02,
       "radiusM": 0.06,
-      "swing": 35,
-      "twist": 30,
+      "swing": 50,
+      "twist": 60,
       "gain": 1,
-      "damping": 1
+      "damping": 1,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "head",
@@ -137,10 +212,17 @@
       ],
       "massFrac": 0.07,
       "radiusM": 0.1,
-      "swing": 35,
-      "twist": 40,
+      "swing": 55,
+      "twist": 70,
       "gain": 1,
-      "damping": 1
+      "damping": 1,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "armL",
@@ -152,10 +234,17 @@
       ],
       "massFrac": 0.03,
       "radiusM": 0.05,
-      "swing": 80,
-      "twist": 50,
+      "swing": 150,
+      "twist": 100,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "forearmL",
@@ -170,7 +259,15 @@
       "swing": 70,
       "twist": 30,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": true,
+        "min": -30,
+        "max": 150,
+        "offAxisDeg": 10,
+        "bend": 1,
+        "flip": true
+      }
     },
     {
       "name": "handL",
@@ -182,10 +279,17 @@
       ],
       "massFrac": 0.01,
       "radiusM": 0.04,
-      "swing": 40,
-      "twist": 20,
+      "swing": 80,
+      "twist": 70,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "armR",
@@ -197,10 +301,17 @@
       ],
       "massFrac": 0.03,
       "radiusM": 0.05,
-      "swing": 80,
-      "twist": 50,
+      "swing": 150,
+      "twist": 100,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "forearmR",
@@ -215,7 +326,15 @@
       "swing": 70,
       "twist": 30,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": true,
+        "min": -30,
+        "max": 150,
+        "offAxisDeg": 10,
+        "bend": 1,
+        "flip": true
+      }
     },
     {
       "name": "handR",
@@ -227,10 +346,17 @@
       ],
       "massFrac": 0.01,
       "radiusM": 0.04,
-      "swing": 40,
-      "twist": 20,
+      "swing": 80,
+      "twist": 70,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "thighL",
@@ -242,10 +368,17 @@
       ],
       "massFrac": 0.1,
       "radiusM": 0.08,
-      "swing": 60,
-      "twist": 25,
+      "swing": 85,
+      "twist": 45,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "shinL",
@@ -260,7 +393,15 @@
       "swing": 60,
       "twist": 10,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": true,
+        "min": -3.2,
+        "max": 136.8,
+        "offAxisDeg": 10,
+        "bend": -1,
+        "flip": true
+      }
     },
     {
       "name": "footL",
@@ -272,10 +413,17 @@
       ],
       "massFrac": 0.02,
       "radiusM": 0.05,
-      "swing": 30,
-      "twist": 10,
+      "swing": 40,
+      "twist": 20,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "thighR",
@@ -287,10 +435,17 @@
       ],
       "massFrac": 0.1,
       "radiusM": 0.08,
-      "swing": 60,
-      "twist": 25,
+      "swing": 85,
+      "twist": 45,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     },
     {
       "name": "shinR",
@@ -305,7 +460,15 @@
       "swing": 60,
       "twist": 10,
       "gain": 2,
-      "damping": 0.25
+      "damping": 0.25,
+      "hinge": {
+        "enabled": true,
+        "min": -3.2,
+        "max": 136.8,
+        "offAxisDeg": 10,
+        "bend": -1,
+        "flip": true
+      }
     },
     {
       "name": "footR",
@@ -317,80 +480,48 @@
       ],
       "massFrac": 0.02,
       "radiusM": 0.05,
-      "swing": 30,
-      "twist": 10,
+      "swing": 40,
+      "twist": 20,
       "gain": 2,
-      "damping": 0.25
-    },
-    {
-      "name": "cape1",
-      "parent": "spine2",
-      "end": "cape2",
-      "bones": [
-        "fk_cape_01"
-      ],
-      "massFrac": 0.01,
-      "radiusM": 0.07,
-      "swing": 70,
-      "twist": 25,
-      "gain": 0.15,
-      "damping": 0.6
-    },
-    {
-      "name": "cape2",
-      "parent": "cape1",
-      "end": "cape3",
-      "bones": [
-        "fk_cape_02"
-      ],
-      "massFrac": 0.01,
-      "radiusM": 0.07,
-      "swing": 70,
-      "twist": 25,
-      "gain": 0.1,
-      "damping": 0.6
-    },
-    {
-      "name": "cape3",
-      "parent": "cape2",
-      "end": "",
-      "bones": [
-        "fk_cape_03"
-      ],
-      "massFrac": 0.01,
-      "radiusM": 0.07,
-      "swing": 70,
-      "twist": 25,
-      "gain": 0.1,
-      "damping": 0.6
-    },
-    {
-      "name": "skirtB",
-      "parent": "hips",
-      "end": "",
-      "bones": [
-        "fk_skirt_b"
-      ],
-      "massFrac": 0.008,
-      "radiusM": 0.06,
-      "swing": 60,
-      "twist": 20,
-      "gain": 0.15,
-      "damping": 0.6
-    },
-    {
-      "name": "skirtF",
-      "parent": "hips",
-      "end": "",
-      "bones": [
-        "fk_skirt_f"
-      ],
-      "massFrac": 0.008,
-      "radiusM": 0.06,
-      "swing": 60,
-      "twist": 20,
-      "gain": 0.15,
-      "damping": 0.6
+      "damping": 0.25,
+      "hinge": {
+        "enabled": false,
+        "min": 0,
+        "max": 0,
+        "offAxisDeg": 10,
+        "bend": 1
+      }
     }
-  ]
+  ],
+  "rig": {
+    "prebuild": true,
+    "hurtboxTrigger": true,
+    "maxLive": 3,
+    "sampleFrames": 6,
+    "restCheckMaxDeg": 25.0
+  },
+  "inherit": {
+    "windowFrames": 3,
+    "animScale": 1.0,
+    "rootScale": 1.0,
+    "knockScale": 1.0,
+    "angularScale": 1.0,
+    "maxSpeed": 12.0,
+    "maxAngularSpeed": 25.0,
+    "knockReplacesRoot": true
+  },
+  "limits": {
+    "convertMarginDeg": 8.0,
+    "tightenSeconds": 0.35
+  },
+  "convert": {
+    "disableComponents": [
+      "FootGround",
+      "FootYaw",
+      "HeadClamp",
+      "GripPose",
+      "ArmHold"
+    ],
+    "tinyScale": 0.001
+  }
 }

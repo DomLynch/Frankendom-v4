@@ -113,7 +113,7 @@ public class CameraRig : MonoBehaviour
             Vector3 from = lookAt, dirv = drawPos - from; float len = dirv.magnitude;
             if (len > 0.01f)
             {
-                int mask = ~0; foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
+                int mask = PhysMasks.NotPhys; foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
                 if (Physics.SphereCast(from, col.radius, dirv / len, out var ch, len, mask, QueryTriggerInteraction.Ignore))
                     drawPos = from + dirv / len * Mathf.Max(col.minDistFromTarget, ch.distance);
             }

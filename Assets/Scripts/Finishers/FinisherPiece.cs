@@ -32,7 +32,7 @@ public sealed class FinisherPiece : MonoBehaviour
         }
     }
 
-    void Awake() { All.Add(this); Born = Time.unscaledTime; spawn = transform.position; mask = ~((1 << 8) | (1 << 9)); var f = FinisherConfig.Get(); cfg = f != null && f.gore != null && f.gore.piece != null ? f.gore.piece : new PieceCfg(); }
+    void Awake() { All.Add(this); Born = Time.unscaledTime; spawn = transform.position; mask = PhysMasks.Ground; var f = FinisherConfig.Get(); cfg = f != null && f.gore != null && f.gore.piece != null ? f.gore.piece : new PieceCfg(); }
     void OnDestroy() { All.Remove(this); Destroyed++; if (Application.isPlaying) Debug.Log("[finisher] piece '" + name + "' (" + unit + ") destroyed after " + (Time.unscaledTime - Born).ToString("0.0") + " s"); }
 
     static CollisionDetectionMode Mode(string s)
@@ -50,6 +50,7 @@ public sealed class FinisherPiece : MonoBehaviour
     void Setup()
     {
         rb = GetComponent<Rigidbody>(); if (rb == null) return;
+        if (GetComponent<PieceBody>() != null) { scripted = true; return; }   // FINPHYS v97: PieceBody (FinPhys.cs) owns the colliders, the rest test and the REST line
         if (GetComponent<SeveredHeadArc>() != null || GetComponent<OpenedHalf>() != null) { scripted = true; foreach (var oc in GetComponents<Collider>()) if (oc != null) Destroy(oc); return; }   // V1FIN v94
         if (cfg == null) { var f = FinisherConfig.Get(); cfg = f != null && f.gore != null && f.gore.piece != null ? f.gore.piece : new PieceCfg(); }
         rb.collisionDetectionMode = Mode(cfg.collisionMode); rb.interpolation = cfg.interpolate ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
@@ -195,7 +196,7 @@ public static class FinisherPieceCheck
             if (p == null || p.unit != unitId || !p.gameObject.activeInHierarchy) continue;
             Bounds b; if (!p.Visible(out b)) continue;
             var ray = new Ray(new Vector3(b.center.x, b.center.y + 1.5f, b.center.z), Vector3.down); float gy = b.min.y - 0.05f; bool found = false;
-            foreach (var h in Physics.RaycastAll(ray, 14f, ~((1 << 8) | (1 << 9)), QueryTriggerInteraction.Ignore))
+            foreach (var h in Physics.RaycastAll(ray, 14f, PhysMasks.Ground, QueryTriggerInteraction.Ignore))
             {
                 if (h.collider.transform.IsChildOf(p.transform) || h.collider.GetComponentInParent<FinisherPiece>() != null || h.collider.GetComponentInParent<DuelFighter>() != null) continue;
                 if (!found || h.point.y > gy) { gy = h.point.y; found = true; }

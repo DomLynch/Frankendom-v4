@@ -216,7 +216,7 @@ public class VerifyGround : MonoBehaviour
         string src; D = LoadData(out src);
         if (D.fighters == null || D.fighters.Length < 2) D.fighters = new[] { Roster.PlayerObject, Roster.EnemyObject };   // test order: player, then enemy
         notes.Add("data: " + src);
-        groundMask = ~0; foreach (int l in D.groundMaskExcludeLayers) groundMask &= ~(1 << l);
+        groundMask = PhysMasks.NotPhys; foreach (int l in D.groundMaskExcludeLayers) groundMask &= ~(1 << l);
 
         // wait for the scene: both fighters + the camera rig
         DuelFighter dr = null, pi = null;
@@ -352,7 +352,7 @@ public class VerifyGround : MonoBehaviour
                 try
                 {
                     float fy = ff.transform.position.y; float gy = 0f;
-                    if (Physics.Raycast(ff.transform.position + Vector3.up * 3f, Vector3.down, out var gh, 20f, ~((1 << 8) | (1 << 9)), QueryTriggerInteraction.Ignore)) gy = gh.point.y;
+                    if (Physics.Raycast(ff.transform.position + Vector3.up * 3f, Vector3.down, out var gh, 20f, PhysMasks.Ground, QueryTriggerInteraction.Ignore)) gy = gh.point.y;
                     float dev = Mathf.Abs(fy - gy); if (float.IsNaN(fy)) dev = 999f;
                     if (!fightYWorst.ContainsKey(ff.name) || dev > fightYWorst[ff.name]) { fightYWorst[ff.name] = dev; fightYWorstT[ff.name] = ft; }
                     if (!fightYMin.ContainsKey(ff.name) || fy < fightYMin[ff.name]) fightYMin[ff.name] = fy;

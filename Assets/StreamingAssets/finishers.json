@@ -199,11 +199,12 @@
           "victim": "*",
           "requireDeathblow": true,
           "pairOffset": [
-            0.01,
+            -0.15,
             0.0,
             1.275
           ],
           "distance": 1.275,
+          "victimYawDeg": 40.0,
           "note": "Joan 1.58 m: right hand 0.16 m lower and 0.02 m back at the cut (FK of the clip on her bone lengths), so the victim moves 0.024 m closer (abs) to keep the measured hand->neck vector. Reach: hand->Pitborn neck 0.86 m in 3D vs blade 1.0 m: possible ONLY while Pitborn is hunched (posture break, neck 1.6 m); a standing Pitborn neck is 2.0 m, her hand 1.5-1.7 m: not reachable from the ground -> requireDeathblow (no decapitation on a plain HP kill)."
         }
       ],

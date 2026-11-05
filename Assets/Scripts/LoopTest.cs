@@ -108,27 +108,27 @@ public class LoopTest : MonoBehaviour
             prevLoads = GameLoop.SceneLoads;
             var D = GameLoop.Player; var P = GameLoop.Enemy;
             // v93: the reset state is read at frame 3 (not after 20 frames): at 9-14 fps the Pitborn AI can land its first hit inside a 20-frame settle (v92: Joan 507/520, posture 26, hit-stop on, in 3 of 3 runs)
-            for (int k = 0; k < 3; k++) yield return null;
+            for (int k = 0; k < 1; k++) yield return null;   /* v97: frame 1 (v96 post-run check: Pitborn already at 570/582 at frame 3) */
             int tick3 = Duel.TickCount; float s3Dh = D.health, s3Ph = P.health, s3Dp = D.posture, s3Pp = P.posture; bool s3Stats = GameLoop.Landed == 0 && GameLoop.Taken == 0 && GameLoop.Parries == 0, s3HitStop = PresentationClock.Frozen;
             bool s3Hc; { var hd3 = D.GetComponent<Health>(); var hp3 = P.GetComponent<Health>(); s3Hc = hd3 != null && hp3 != null && hd3.current >= hd3.max - 0.01f && hp3.current >= hp3.max - 0.01f && !hd3.Dead && !hp3.Dead; }
-            for (int k = 3; k < 20; k++) yield return null;
+            for (int k = 1; k < 20; k++) yield return null;
             string tag = "fight " + (i + 1) + (i == fights ? " (post-run check)" : "") + ": ";
-            Log(tag + "settle: sim tick " + tick3 + " at frame 3, " + Duel.TickCount + " at frame 20 (D hp " + D.health.ToString("F0", IC) + " P hp " + P.health.ToString("F0", IC) + " now)");
+            Log(tag + "settle: sim tick " + tick3 + " at frame 1, " + Duel.TickCount + " at frame 20 (D hp " + D.health.ToString("F0", IC) + " P hp " + P.health.ToString("F0", IC) + " now)");
 
             // ---- 1) clean start
             Check(Mathf.Abs(Time.timeScale - 1f) < 1e-3f, tag + "timeScale " + Time.timeScale.ToString("F3", IC));
             Check(!Duel.Frozen, tag + "Duel.Frozen left on"); Check(!RTFinisher.Busy, tag + "RTFinisher.Busy left on"); Check(!s3HitStop, tag + "hit-stop left on"); Check(!CombatSlowMo.Active, tag + "slow-mo left on");
             Check(CameraDeath.Weight < 0.001f, tag + "CameraDeath weight " + CameraDeath.Weight.ToString("F3", IC));
             Check(!D.Dead && !P.Dead, tag + "a fighter starts dead");
-            Check(s3Dh >= D.maxHealth - 0.01f && s3Ph >= P.maxHealth - 0.01f, tag + "HP not full at frame 3 (D " + s3Dh.ToString("F0", IC) + "/" + D.maxHealth.ToString("F0", IC) + ", P " + s3Ph.ToString("F0", IC) + "/" + P.maxHealth.ToString("F0", IC) + ")");
+            Check(s3Dh >= D.maxHealth - 0.01f && s3Ph >= P.maxHealth - 0.01f, tag + "HP not full at frame 1 (D " + s3Dh.ToString("F0", IC) + "/" + D.maxHealth.ToString("F0", IC) + ", P " + s3Ph.ToString("F0", IC) + "/" + P.maxHealth.ToString("F0", IC) + ")");
             Check(D.stamina >= D.maxStamina * 0.5f && P.stamina >= P.maxStamina * 0.5f, tag + "stamina below 50% at the fight start (v87: the AI may already have swung, the check is for a fresh reset) (D " + D.stamina.ToString("F0", IC) + "/" + D.maxStamina.ToString("F0", IC) + ", P " + P.stamina.ToString("F0", IC) + "/" + P.maxStamina.ToString("F0", IC) + ")");
-            Check(s3Dp <= 0.01f && s3Pp <= 0.01f, tag + "posture not reset at frame 3 (D " + s3Dp.ToString("F1", IC) + ", P " + s3Pp.ToString("F1", IC) + ")");
+            Check(s3Dp <= 0.01f && s3Pp <= 0.01f, tag + "posture not reset at frame 1 (D " + s3Dp.ToString("F1", IC) + ", P " + s3Pp.ToString("F1", IC) + ")");
             Check(!D.PostureBroken && !P.PostureBroken && !D.Exhausted && !P.Exhausted, tag + "posture-broken / exhausted flag left over");
             Check(Duel.TickCount < 900, tag + "sim tick " + Duel.TickCount + " (not a fresh Duel)");
             Check(GameLoop.FadeAlpha < 0.05f, tag + "fade alpha " + GameLoop.FadeAlpha.ToString("F2", IC));
             Check(GameLoop.ScreenAlpha < 0.001f && GameLoop.Outcome == GameLoop.Result.None, tag + "end screen left over");
-            Check(s3Stats, tag + "stats not reset at frame 3");
-            Check(s3Hc, tag + "Health components not full at frame 3");
+            Check(s3Stats, tag + "stats not reset at frame 1");
+            Check(s3Hc, tag + "Health components not full at frame 1");
             CameraOk(tag, D);
             Check(GameLoop.FightNumber == expectFight && GameLoop.Attempt == expectAttempt && GameLoop.OpponentIndex == expectOpp, tag + "counters fight " + GameLoop.FightNumber + "/" + expectFight + " attempt " + GameLoop.Attempt + "/" + expectAttempt + " opponent " + GameLoop.OpponentIndex + "/" + expectOpp);
             Check(GameLoop.FightsStarted == expectStarted, tag + "FightsStarted " + GameLoop.FightsStarted + "/" + expectStarted);

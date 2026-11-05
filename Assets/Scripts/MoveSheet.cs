@@ -136,7 +136,7 @@ public class MoveSheet : MonoBehaviour
 
     int GroundMask()
     {
-        int m = ~0;
+        int m = PhysMasks.NotPhys;
         if (D.groundMaskExcludeLayers != null) foreach (int l in D.groundMaskExcludeLayers) m &= ~(1 << l);
         return m;
     }

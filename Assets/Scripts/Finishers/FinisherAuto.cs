@@ -413,7 +413,8 @@ public class FinisherAuto : MonoBehaviour
                             // V64F2: a victim lying with its feet in the air is judged by its lowest BODY point (below), not by the soles
                             bool bodyJudged = gcf.bodyClamp && gs.who.StartsWith("victim") && FinisherGround.Victim.bn > 0;
                             string fm = "foot-to-ground: " + gs.who + (bodyJudged ? " has the feet " : " floats ") + gs.max.ToString("0.00", IC) + " m above the ground (limit " + gcf.failAboveM.ToString("0.00", IC) + " m)" + (bodyJudged ? "; the lowest body point decides (body-to-ground)" : "");
-                            if (bodyJudged) r.warns.Add(fm); else r.errors.Add(fm);
+                            if (bodyJudged) { if (gcf.feetWarnWhenBodyOk || FinisherGround.Victim.bMax > gcf.failBodyAboveM) r.warns.Add(fm); }   // DECAPFOOT v96: body point on the ground = the feet gap is the pose, not a fault
+                            else r.errors.Add(fm);
                         }
                         if (gs.min < -gcf.failBelowM) r.errors.Add("foot-to-ground: " + gs.who + " sunk " + (-gs.min).ToString("0.00", IC) + " m into the ground (limit " + gcf.failBelowM.ToString("0.00", IC) + " m)");
                         if (gcf.correct && (gs.rawMax > gcf.failAboveM || gs.rawMin < -gcf.failBelowM)) r.warns.Add("ground correction was needed: " + gs.who + " raw gap " + gs.rawMin.ToString("+0.00;-0.00", IC) + " .. " + gs.rawMax.ToString("+0.00;-0.00", IC) + " m (the clip / placement floats or sinks; the root was moved to the ground)");

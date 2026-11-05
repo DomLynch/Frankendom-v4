@@ -80,7 +80,7 @@ public class HeadSheet : MonoBehaviour
     }
 
     DuelFighter Find(string n) { foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) if (f.name == n) return f; return null; }
-    int GroundMask() { int m = ~0; if (D.groundMaskExcludeLayers != null) foreach (int l in D.groundMaskExcludeLayers) m &= ~(1 << l); return m; }
+    int GroundMask() { int m = PhysMasks.NotPhys; if (D.groundMaskExcludeLayers != null) foreach (int l in D.groundMaskExcludeLayers) m &= ~(1 << l); return m; }
 
     float GroundAt(float x, float z, float fallback)
     {
