@@ -125,7 +125,7 @@
     "buttonW": 236, "buttonH": 50, "buttonGap": 26, "buttonSize": 20, "keyHintSize": 12, "nextLabelSize": 13,
     "statSep": "     ",
     "nextOnDefeat": false,
-    "victoryTint": [0.02, 0.015, 0.0, 1.0], "defeatTint": [0.16, 0.0, 0.015, 1.0],
+    "victoryTint": [0.0, 0.0, 0.0, 1.0], "defeatTint": [0.16, 0.0, 0.015, 1.0],
     "victory": { "title": "VICTORY", "subtitle": "The {0} falls. The gate stands open.", "color": [0.88, 0.71, 0.31, 1.0] },
     "defeat":  { "title": "YOU DIED", "subtitle": "The dark takes you. Rise again.", "color": [0.74, 0.08, 0.10, 1.0] },
     "labels": { "time": "Time", "landed": "Hits landed", "taken": "Hits taken", "parries": "Parries", "finisher": "Finisher" },

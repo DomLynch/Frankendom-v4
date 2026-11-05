@@ -33,7 +33,7 @@ public static class HitFeelTable
     {
         public int enabled = 1, poolSize = 320, glintPool = 24; public float cooldown = 0.03f;
         public float intensity = 8f, kelvin = 2200f, coolKelvin = 1700f, coolAt = 0.55f, glintWhiteMix = 0.55f, opacity = 1f;
-        public int countBase = 14, countPerStrength = 14; public float countRandom = 0.25f, countScaleHeavy = 1.3f;
+        public int suppressInFinisher = 1; /* v89: 1 = no spark burst / flash while a finisher owns the clock (spark storm in finishers) */ public int countBase = 14, countPerStrength = 14; public float countRandom = 0.25f, countScaleHeavy = 1.3f;
         public float anchorHeight = 1.1f, anchorBack = 0.4f, anchorJitter = 0.1f;
         public float alongBias = 0.3f, alongScale = 1.1f, sideSpread = 2.4f, upMin = 0.15f, upRange = 1.4f, towardCamera = 0.7f;
         public float speedMin = 3f, speedRange = 6f, speedPerStrength = 0.35f;
@@ -305,6 +305,7 @@ public class HitFeel : MonoBehaviour
         LastDamage = dmg;
 
         RequestStop(e, dmg);
+        if (cfg.sparks != null && cfg.sparks.suppressInFinisher != 0 && RTFinisher.Busy) return;   // v89: no sparks / flash during a finisher
 
         bool metal = false;
         try { metal = BloodTable.For(e.target, e.heavy, e.target.Dead).sparks; } catch (Exception) { }   // victims[].sparks (blood.json) = armour: a landed blow on metal also sparks

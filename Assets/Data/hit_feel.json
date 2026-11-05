@@ -24,21 +24,21 @@
   "sparks": {
     "_about": "HDR emissive streaks on Furnace/Particle (additive, display-referred): intensity 8 at 2200 K cooling to 1700 K at coolAt. Size x clamp(cameraDistance / refDistance, 1, maxGrow) so it reads at gameplay distance. countBase + countPerStrength * rows[].spark, x countScaleHeavy on a heavy blow, +-countRandom.",
     "enabled": 1,
-    "poolSize": 320, "glintPool": 24, "cooldown": 0.03,
-    "intensity": 8.0, "glintIntensity": 8.0, "kelvin": 2200, "coolKelvin": 1700, "coolAt": 0.55, "glintWhiteMix": 0.55, "opacity": 1.0,
-    "countBase": 14, "countPerStrength": 14, "countRandom": 0.25, "countScaleHeavy": 1.3,
+    "suppressInFinisher": 1, "poolSize": 320, "glintPool": 24, "cooldown": 0.03,
+    "intensity": 4.0, "glintIntensity": 2.0, "kelvin": 1800, "coolKelvin": 1300, "coolAt": 0.35, "glintWhiteMix": 0.1, "opacity": 1.0,
+    "countBase": 7, "countPerStrength": 6, "countRandom": 0.25, "countScaleHeavy": 1.15,
     "anchorHeight": 1.1, "anchorBack": 0.4, "anchorJitter": 0.1,
-    "alongBias": 0.3, "alongScale": 1.1, "sideSpread": 2.4, "upMin": 0.15, "upRange": 1.4, "towardCamera": 0.7,
+    "alongBias": 0.3, "alongScale": 1.1, "sideSpread": 0.9, "upMin": 0.1, "upRange": 0.8, "towardCamera": 0.7,
     "speedMin": 2.5, "speedRange": 5.0, "speedPerStrength": 0.35,
-    "lifeMin": 0.18, "lifeRange": 0.27, "gravity": 1.2,
-    "sizeMin": 0.03, "sizeRange": 0.03, "lengthScale": 2.2, "velocityScale": 0.035, "maxParticleSize": 0.5,
-    "glintLife": 0.07, "glintSize": 0.3, "glintSizePerStrength": 0.25,
+    "lifeMin": 0.09, "lifeRange": 0.11, "gravity": 1.2,
+    "sizeMin": 0.012, "sizeRange": 0.010, "lengthScale": 1.0, "velocityScale": 0.035, "maxParticleSize": 0.5,
+    "glintLife": 0.04, "glintSize": 0.10, "glintSizePerStrength": 0.08,
     "refDistance": 4.0, "maxGrow": 2.2
   },
   "flash": {
     "_about": "Warm point light (HDRP lumens, no shadows) for `seconds` of unscaled time, intensity falls as (1 - age/seconds)^falloffPower, peak = lumen * rows[].flash, placed towardCamera metres in front of the contact. Same lumen order as MoveSheet's lights (12000 lm / 4 m) under the fixed EV 9.4.",
     "enabled": 1, "pool": 2,
-    "seconds": 0.05, "lumen": 9000, "range": 4.5, "falloffPower": 1.5, "towardCamera": 0.3, "kelvin": 2200
+    "seconds": 0.04, "lumen": 4500, "range": 4.5, "falloffPower": 1.5, "towardCamera": 0.3, "kelvin": 2200
   },
   "rows": [
     { "type": "Parried",     "heavy": -1, "perfect": -1, "metal": -1, "spark": 1.0,  "flash": 1.0 },

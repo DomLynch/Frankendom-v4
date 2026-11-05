@@ -161,7 +161,8 @@ public class LoopTest : MonoBehaviour
             for (int k = 0; k < 5; k++) yield return null;
             var res = GameLoop.Outcome; string resName = res == GameLoop.Result.Victory ? "victory" : res == GameLoop.Result.Defeat ? "defeat" : "none";
             Check(res != GameLoop.Result.None, tag + "no outcome");
-            Check((P.Dead && !D.Dead) ? res == GameLoop.Result.Victory : (D.Dead ? res == GameLoop.Result.Defeat : true), tag + "outcome " + resName + " does not match who died");
+            bool pDown = P.Dead || P.health <= 0.01f, dDown = D.Dead || D.health <= 0.01f;   // v89: a finisher defers the Dead flag, health 0 is the truth
+            Check((pDown && !dDown) ? res == GameLoop.Result.Victory : (dDown ? res == GameLoop.Result.Defeat : true), tag + "outcome " + resName + " does not match who died (P down " + pDown + ", D down " + dDown + ")");
             Check(GameLoop.Seconds > 0.5f, tag + "stats time " + GameLoop.Seconds.ToString("F1", IC));
             yield return Shot("loop_f" + (i + 1) + "_" + resName);
             string stats = GameLoop.StatsLine();
