@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "STANDALONE finisher data (no duel_rules.json). Read by Finishers loader (FN1), the mesh cut and Assets/Editor/FinisherClipSetup.cs (clipImport). StreamingAssets copy must be identical. Offsets are stand-in metres; TUNE from renders. V61B: finishers ON, rotation.enabledIds = decapitation / split_crown / split_crown_pit, shots frame the victim body (frameBody), *_settle shot at the end. V62: rotation.perWeapon + enabledIds += river_light, hengdao_heavy; per-finisher slow-mo curves, *_settle rest shots, per-entry sheetFrames, pair probe fields. V61C: finisher length 4-6 s (clip start / speed / dieAt / slow-mo / hold), split_crown pairOffset forward 1.4, rt.look (camera keeps the gameplay look), auto.maxFinisherSeconds / lumaTolerance / clearance.",
+  "note": "STANDALONE finisher data (no duel_rules.json). Read by Finishers loader (FN1), the mesh cut and Assets/Editor/FinisherClipSetup.cs (clipImport). StreamingAssets copy must be identical. Offsets are stand-in metres; TUNE from renders. V61B: finishers ON, rotation.enabledIds = decapitation / split_crown / split_crown_pit, shots frame the victim body (frameBody), *_settle shot at the end. V62: rotation.perWeapon + enabledIds += river_light, hengdao_heavy; per-finisher slow-mo curves, *_settle rest shots, per-entry sheetFrames, pair probe fields. V61C: finisher length 4-6 s (clip start / speed / dieAt / slow-mo / hold), split_crown pairOffset forward 1.4, rt.look (camera keeps the gameplay look), auto.maxFinisherSeconds / lumaTolerance / clearance. V63G: rotation.enabledIds = decapitation + split_crown; head_split gets gore.cleaves/bursts \"crown\" (wound line, side patches, drips, bigger burst); rt.look.vignette (slow-mo-only override, fades out and is removed); rt.auto.vignette* checks.",
   "enableFinishers": true,
   "enableGore": true,
   "rotation": {
@@ -13,7 +13,8 @@
       "Pitborn": "maul"
     },
     "enabledIds": [
-      "decapitation"
+      "decapitation",
+      "split_crown"
     ],
     "perWeapon": true,
     "_enableAllIds": [
@@ -1331,11 +1332,13 @@
           "neck"
         ],
         "loc": 3,
-        "openDeg": 16,
+        "openDeg": 24.0,
         "splitAxis": "x",
         "splitOffsetM": 0.0,
         "jetSeconds": 1.6,
-        "extraDecals": 12
+        "extraDecals": 20,
+        "cleave": "crown",
+        "burst": "crown"
       },
       {
         "id": "torso_waist",
@@ -1599,7 +1602,179 @@
       "rescueBelowM": 0.3,
       "maxRescues": 1,
       "settleSeconds": 0.5
-    }
+    },
+    "cleaves": [
+      {
+        "id": "crown",
+        "fallbackCenterUpM": 0.12,
+        "fallbackRadiiM": [
+          0.11,
+          0.09,
+          0.12
+        ],
+        "sideMaxRatio": 0.9,
+        "heightMaxRatio": 1.3,
+        "arcFromDeg": -20.0,
+        "arcToDeg": 165.0,
+        "segments": 9,
+        "widthM": 0.035,
+        "haloMul": 3.0,
+        "lengthPad": 1.25,
+        "lift": 0.006,
+        "coreColor": [
+          0.09,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "haloColor": [
+          0.3,
+          0.018,
+          0.018,
+          1.0
+        ],
+        "patches": 2,
+        "patchSizeM": [
+          0.16,
+          0.24
+        ],
+        "drips": 6,
+        "dripLengthM": [
+          0.1,
+          0.26
+        ],
+        "dripWidthM": [
+          0.025,
+          0.05
+        ],
+        "dripElevDeg": [
+          15.0,
+          75.0
+        ],
+        "dripAzimuthDeg": [
+          25.0,
+          105.0
+        ],
+        "seed": 7
+      }
+    ],
+    "bursts": [
+      {
+        "id": "crown",
+        "sprays": [
+          {
+            "dir": "up",
+            "tiltDeg": 0.0,
+            "spray": {
+              "seconds": 0.55,
+              "rate": 380.0,
+              "coneDeg": 24.0,
+              "gravity": 8.0,
+              "speed": [
+                3.5,
+                7.0
+              ],
+              "size": [
+                0.045,
+                0.1
+              ],
+              "life": [
+                0.45,
+                0.9
+              ]
+            }
+          },
+          {
+            "dir": "away",
+            "tiltDeg": 0.0,
+            "spray": {
+              "seconds": 0.45,
+              "rate": 300.0,
+              "coneDeg": 30.0,
+              "gravity": 8.0,
+              "speed": [
+                2.5,
+                5.5
+              ],
+              "size": [
+                0.04,
+                0.09
+              ],
+              "life": [
+                0.4,
+                0.8
+              ]
+            }
+          },
+          {
+            "dir": "toward",
+            "tiltDeg": 0.0,
+            "spray": {
+              "seconds": 0.4,
+              "rate": 220.0,
+              "coneDeg": 34.0,
+              "gravity": 8.0,
+              "speed": [
+                2.0,
+                4.5
+              ],
+              "size": [
+                0.04,
+                0.085
+              ],
+              "life": [
+                0.4,
+                0.8
+              ]
+            }
+          },
+          {
+            "dir": "left",
+            "tiltDeg": 0.0,
+            "spray": {
+              "seconds": 0.35,
+              "rate": 160.0,
+              "coneDeg": 36.0,
+              "gravity": 8.0,
+              "speed": [
+                1.5,
+                3.5
+              ],
+              "size": [
+                0.035,
+                0.07
+              ],
+              "life": [
+                0.35,
+                0.7
+              ]
+            }
+          },
+          {
+            "dir": "right",
+            "tiltDeg": 0.0,
+            "spray": {
+              "seconds": 0.35,
+              "rate": 160.0,
+              "coneDeg": 36.0,
+              "gravity": 8.0,
+              "speed": [
+                1.5,
+                3.5
+              ],
+              "size": [
+                0.035,
+                0.07
+              ],
+              "life": [
+                0.35,
+                0.7
+              ]
+            }
+          }
+        ]
+      }
+    ]
   },
   "clipImport": {
     "sourceDir": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/finishers/clips",
@@ -1840,7 +2015,10 @@
       "minClearanceM": 0.1,
       "pieceCheck": true,
       "pieceMaxGapM": 0.15,
-      "pieceMaxRescues": 3
+      "pieceMaxRescues": 3,
+      "vignetteMaxAfter": 0.01,
+      "vignetteWaitS": 2.0,
+      "vignetteAbsolute": false
     },
     "deathblowFinishes": true,
     "offInBalanceAuto": true,
@@ -1857,7 +2035,15 @@
       ],
       "gateMinDot": 0.25,
       "evRate": 4.0,
-      "gateMirror": true
+      "gateMirror": true,
+      "vignette": {
+        "enabled": true,
+        "slowIntensity": -1.0,
+        "fadeInS": 0.12,
+        "fadeOutS": 0.5,
+        "releaseFadeS": 0.25,
+        "maxLifeS": 40.0
+      }
     },
     "ground": {
       "enabled": true,

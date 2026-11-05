@@ -46,7 +46,7 @@ public class FinisherAuto : MonoBehaviour
         public int shots, slowmo, gore, exceptions;
         public float paced, pacedKill = -1f, refLuma = -1f, clearHead = float.NaN, clearHand = float.NaN; public int stalls; public bool lumaOk = true;   // V61C
         public readonly List<float> lumas = new List<float>(); public readonly List<string> lumaLabels = new List<string>();
-        public string groundLine = "", headLine = "";   // V62B
+        public string groundLine = "", headLine = "", vigLine = "";   // V62B
         public bool sampDone; public string sheetFile = ""; public Texture2D sheetSmall;   // V61B contact sheet
         public readonly List<Texture2D> thumbs = new List<Texture2D>(); public readonly List<string> thumbLabels = new List<string>();
         public readonly List<string> cuts = new List<string>(), notes = new List<string>(), files = new List<string>(), warns = new List<string>(), errors = new List<string>();
@@ -297,6 +297,7 @@ public class FinisherAuto : MonoBehaviour
             while (taken < want && !exiting) { yield return Shot(taken, labels[Mathf.Min(taken, labels.Length - 1)] + "_late"); taken++; }   // scene shorter than the schedule: fill up so there are always N shots
             { float sw = Time.unscaledTime; while (!cur.sampDone && !exiting && Time.unscaledTime - sw < C.sheetMaxSeconds) yield return null; ComposeSheet(cur); }   // V61B: contact sheet frames incl. the fight-end camera after the release
             // settle one frame, then verify the restored state
+            { float vw = Time.unscaledTime; while (FinisherVignette.Alive && !exiting && Time.unscaledTime - vw < C.vignetteWaitS) yield return null; }   // V63G: let the finisher vignette override fade out and be removed
             yield return null; yield return null;
         }
         Finish();
@@ -429,6 +430,7 @@ public class FinisherAuto : MonoBehaviour
                         if (left > 0) r.errors.Add("the victim's body still has " + left + " triangles of '" + cu.id + "' (not headless at the end frame)");
                     }
                 r.headLine = string.Join(" | ", hl.ToArray());
+                { string vl; var ve = new List<string>(); var vwn = new List<string>(); FinisherVignette.Verify(C, out vl, ve, vwn); r.vigLine = vl; Log("vignette: " + vl); foreach (var x in ve) r.errors.Add(x); foreach (var x in vwn) r.warns.Add(x); }   // V63G: vignette / exposure Volume gone after the scene
             }
             r.pass = r.started && r.errors.Count == 0 && r.exceptions == 0;
         }
@@ -643,6 +645,7 @@ public class FinisherAuto : MonoBehaviour
             sb.AppendLine("    clearance: head " + (float.IsNaN(r.clearHead) ? "-" : r.clearHead.ToString("0.00", IC)) + " m, hand " + (float.IsNaN(r.clearHand) ? "-" : r.clearHand.ToString("0.00", IC)) + " m (victim chest, estimated radius subtracted; negative = inside)");
             if (r.groundLine.Length > 0) sb.AppendLine("    ground: " + r.groundLine + "  (limit +" + FinisherConfig.Get().rt.ground.failAboveM.ToString("0.00", IC) + " / -" + FinisherConfig.Get().rt.ground.failBelowM.ToString("0.00", IC) + " m)");
             if (r.headLine.Length > 0) sb.AppendLine("    severed: " + r.headLine);
+            if (r.vigLine.Length > 0) sb.AppendLine("    vignette: " + r.vigLine);
             sb.AppendLine("    checks: victimDead=" + r.victimDead + " frozenClear=" + r.frozenClear + " timeScaleRestored=" + r.timeOk + " cameraReleased=" + r.camOk + " exceptions=" + r.exceptions);
             sb.AppendLine("    shots (" + r.shots + "): " + string.Join(", ", r.files.ToArray()));
             if (r.sheetFile.Length > 0) sb.AppendLine("    sheet: " + r.sheetFile);

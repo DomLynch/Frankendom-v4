@@ -21,6 +21,7 @@ public class FinisherLookCfg
     public float[] gatePoint = { 0f, 4f, 24f };   // world x, y, z of the gate opening (V62C: HdrpDoorway measured the gate bounds frontZ 22.82 / centre z 27.0; gateway.json says "front face z 27"; 24 = just inside the front face)
     public float gateMinDot = 0.25f;               // the flat view direction must have at least this cosine with the direction to the gate (0.25 = within ~75 deg)
     public bool gateMirror = true;                 // V62C: when the view does not face the gate, first MIRROR the azimuth about the pair axis, then rotate in 15 degree steps
+    public FinisherVignetteCfg vignette = new FinisherVignetteCfg();   // V63G: finisher vignette override (slow-mo only, fades out and is removed on release)
     public float evRate = 4f;                      // stops per second the per-shot exposure offset moves
 }
 

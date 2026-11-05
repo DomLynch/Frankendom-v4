@@ -1,0 +1,202 @@
+using System;
+using System.IO;
+using UnityEngine;
+
+// Dracula MOVESET FLOW data layer (lane V64FLOW). Every number lives in Assets/Data/flow.json (copy in StreamingAssets for the player).
+// Lookup order (same as CombatFeel): Resources/flow, Editor Data/flow.json, StreamingAssets/flow.json, Application.dataPath/Data/flow.json.
+// A missing / unparsable file or "enabled": false leaves DuelFighter and PlayerBrain on the exact old behaviour. scope "player" = only a fighter whose PlayerBrain is ENABLED
+// (a human); the AI, the playerBot Dracula of BalanceAuto (PlayerBrain off) and the MoveSheet / PostureProof harnesses are untouched. "all" = every fighter.
+// Sections: chain (attack-to-attack cancel windows), lock (target lock-on toggle + HUD marker), attack (magnetism snap + limited turn speed), dodge (directional dodge overrides), riposte.
+public static class FlowTable
+{
+    // ---------------- chain: attack-to-attack ----------------
+    // from: move id | "*" | prefix pattern "light*"; to: light | heavy | thrust | kick. earliest/latest = Recovery tick t (1 = first tick after the active window), latest <= 0 = until the recovery ends.
+    // First matching row (file order) wins. onHitOnly = only when the swing connected (hit, block or parry). chained = use the move's chained (shorter wind-up) timing where the move has one.
+    [Serializable] public class ChainRow { public string from = "*", to = "light"; public int earliest = 1, latest = 0; public bool onHitOnly, chained = true; }
+    [Serializable] public class Combo { public string name = ""; public string[] steps = new string[0]; }
+    [Serializable] public class ChainCfg { public bool replaceBuiltin = true; public int maxLinks = 5; public ChainRow[] rows = new ChainRow[0]; public Combo[] combos = new Combo[0]; }
+
+    // ---------------- lock-on ----------------
+    [Serializable]
+    public class LockHud
+    {
+        public bool enabled = true, dot = true, toast = true; public float dotPx = 7f, yOffset = 1.15f, toastSeconds = 0.9f, toastY = 0.12f; public int fontSize = 11, toastFontSize = 15;
+        public string text = "LOCK", onText = "LOCK ON", offText = "LOCK OFF"; public float[] color = { 0.96f, 0.93f, 0.85f, 0.92f };
+    }
+    [Serializable] public class LockCfg { public bool enabled = true, startLocked = true, pushAwayBreaks = false, attackRelocks = false, guardFacesTarget = true; public float range = 14f; public string[] keys = { "Tab", "Mouse2", "JoystickButton9" }; public LockHud hud = new LockHud(); }
+
+    // ---------------- attack magnetism + turn tracking ----------------
+    [Serializable] public class MagnetCfg { public bool enabled = true; public float maxAngleDeg = 50f, maxDistance = 3.2f, snapMs = 90f; }
+    [Serializable] public class TurnCfg { public bool enabled = true; public float windupDegPerSec = 480f, activeDegPerSec = 80f, recoveryDegPerSec = 200f; }
+    [Serializable] public class MoveRow { public string move = "*"; public float maxAngleDeg = -1f, maxDistance = -1f, snapMs = -1f, windupDegPerSec = -1f, activeDegPerSec = -1f, recoveryDegPerSec = -1f; }   // -1 = inherit
+    [Serializable] public class AttackCfg { public MagnetCfg magnet = new MagnetCfg(); public TurnCfg turn = new TurnCfg(); public MoveRow[] moves = new MoveRow[0]; }
+
+    // ---------------- directional dodge ----------------
+    // dir: forward | back | left | right (relative to the locked target) | free (lock off). -1 = keep the dodge.json value of the kind that plays.
+    [Serializable] public class DodgeRow { public string dir = ""; public int iframeStart = -1, iframeEnd = -1; public float distance = -1f, stamina = -1f; }
+    [Serializable] public class DodgeCfg { public bool enabled = true, snapToAxes = true; public DodgeRow[] dirs = new DodgeRow[0]; }
+
+    // ---------------- riposte ----------------
+    [Serializable] public class RiposteCfg { public bool enabled = true, auto = true, consume = false, hint = true; public string[] keys = { "B", "JoystickButton1" }; public string move = "riposte", hintText = "RIPOSTE"; public int fontSize = 16; }
+
+    [Serializable]
+    public class Data
+    {
+        public bool enabled = true, debugLog; public string scope = "player";
+        public ChainCfg chain = new ChainCfg(); public LockCfg lockOn = new LockCfg(); public AttackCfg attack = new AttackCfg(); public DodgeCfg dodge = new DodgeCfg(); public RiposteCfg riposte = new RiposteCfg();
+    }
+
+    static Data data; static bool loaded;
+    public static bool ForceApply;   // proof harness: treat the (PlayerBrain-less) scripted Dracula as the human
+    public static bool ForceHud;
+    public static Data Get() { if (!loaded) Load(); return data; }
+    public static void Reload() { loaded = false; Load(); }
+
+    public static bool Applies(DuelFighter f)
+    {
+        var d = Get();
+        return d.enabled && f != null && (d.scope == "all" || f.FlowHuman);
+    }
+
+    // ---------------- lookups ----------------
+    static bool MatchMove(string pat, string id)
+    {
+        if (string.IsNullOrEmpty(pat) || pat == "*" || pat == id) return true;
+        return pat.EndsWith("*", StringComparison.Ordinal) && id.StartsWith(pat.Substring(0, pat.Length - 1), StringComparison.Ordinal);
+    }
+
+    public static ChainRow FindChain(string fromId, string toType, int t, bool hit)
+    {
+        var rows = Get().chain.rows;
+        for (int i = 0; i < rows.Length; i++)
+        {
+            var r = rows[i]; if (r == null || r.to != toType || !MatchMove(r.from, fromId)) continue;
+            if (t < r.earliest || (r.latest > 0 && t > r.latest)) continue;
+            if (r.onHitOnly && !hit) continue;
+            return r;
+        }
+        return null;
+    }
+
+    public struct AtkParams { public bool magnet; public float maxAngle, maxDist, snapMs, windup, active, recovery; }
+    public static AtkParams Attack(string moveId)
+    {
+        var a = Get().attack;
+        var p = new AtkParams { magnet = a.magnet.enabled, maxAngle = a.magnet.maxAngleDeg, maxDist = a.magnet.maxDistance, snapMs = a.magnet.snapMs, windup = a.turn.windupDegPerSec, active = a.turn.activeDegPerSec, recovery = a.turn.recoveryDegPerSec };
+        var rows = a.moves;
+        if (rows != null) for (int i = 0; i < rows.Length; i++)
+        {
+            var r = rows[i]; if (r == null || !MatchMove(r.move, moveId)) continue;
+            if (r.maxAngleDeg >= 0f) p.maxAngle = r.maxAngleDeg; if (r.maxDistance >= 0f) p.maxDist = r.maxDistance; if (r.snapMs >= 0f) p.snapMs = r.snapMs;
+            if (r.windupDegPerSec >= 0f) p.windup = r.windupDegPerSec; if (r.activeDegPerSec >= 0f) p.active = r.activeDegPerSec; if (r.recoveryDegPerSec >= 0f) p.recovery = r.recoveryDegPerSec;
+            break;
+        }
+        return p;
+    }
+
+    public static DodgeRow DodgeDir(string dir)
+    {
+        var c = Get().dodge; if (!c.enabled || c.dirs == null || string.IsNullOrEmpty(dir)) return null;
+        for (int i = 0; i < c.dirs.Length; i++) if (c.dirs[i] != null && c.dirs[i].dir == dir) return c.dirs[i];
+        return null;
+    }
+    // direction name PlayerBrain passes to DuelFighter.SetDodgeDir: relative to the locked target, "free" when the lock is off, "" for a no-input dodge (dodge.json decides)
+    public static string DirName(bool locked, string kind, int side)
+    {
+        if (!locked) return kind == "none" ? "" : "free";
+        if (kind == "lateral") return side < 0 ? "left" : "right";
+        if (kind == "forward") return "forward";
+        if (kind == "back") return "back";
+        return "";
+    }
+
+    // ---------------- lock-on ----------------
+    public static bool PushAwayBreaks { get { var d = Get(); return !d.enabled || !d.lockOn.enabled || d.lockOn.pushAwayBreaks; } }   // true = the old V3 behaviour
+    public static bool AttackRelocks { get { var d = Get(); return !d.enabled || !d.lockOn.enabled || d.lockOn.attackRelocks; } }
+    public static float lastToggleTime = -99f; public static bool lastToggleOn;
+    static bool inited;
+
+    public static bool FacingLocked(CameraRig rig, DuelFighter df) { return rig == null || rig.lockEnabled; }
+    public static void ToggleLock(CameraRig rig, DuelFighter df)
+    {
+        if (rig == null) return;
+        rig.lockEnabled = !rig.lockEnabled; lastToggleTime = Time.unscaledTime; lastToggleOn = rig.lockEnabled;
+        if (df != null) df.lockFacing = FacingLocked(rig, df);
+        if (Get().debugLog) Debug.Log("[Flow] lock " + (rig.lockEnabled ? "ON" : "OFF"));
+    }
+
+    // PlayerBrain calls this once per frame (replaces the old Tab line): lock toggle + facing flag + the dedicated riposte key
+    public static void PlayerInput(CameraRig rig, DuelFighter df)
+    {
+        var d = Get();
+        if (!d.enabled || !d.lockOn.enabled)
+        {
+            if (rig && Input.GetKeyDown(KeyCode.Tab)) rig.lockEnabled = !rig.lockEnabled;   // old behaviour
+            if (df) df.lockFacing = true;
+        }
+        else
+        {
+            if (!inited && rig) { inited = true; rig.lockEnabled = d.lockOn.startLocked; }
+            if (rig && AnyDown(Keys(ref lockKeys, ref lockKeysSrc, d.lockOn.keys, new[] { KeyCode.Tab }))) ToggleLock(rig, df);
+            if (df) df.lockFacing = FacingLocked(rig, df);
+        }
+        if (d.enabled && d.riposte.enabled && df && AnyDown(Keys(ref ripKeys, ref ripKeysSrc, d.riposte.keys, new[] { KeyCode.B }))) df.PressRiposte();
+    }
+
+    static KeyCode[] lockKeys, ripKeys; static string[] lockKeysSrc, ripKeysSrc;
+    static KeyCode[] Keys(ref KeyCode[] cache, ref string[] srcCache, string[] names, KeyCode[] fallback)
+    {
+        if (cache != null && ReferenceEquals(srcCache, names)) return cache;
+        var list = new System.Collections.Generic.List<KeyCode>();
+        if (names != null) for (int i = 0; i < names.Length; i++) { KeyCode k; if (Enum.TryParse(names[i], true, out k)) list.Add(k); }
+        srcCache = names; cache = list.Count > 0 ? list.ToArray() : fallback; return cache;
+    }
+    static bool AnyDown(KeyCode[] ks) { for (int i = 0; i < ks.Length; i++) if (Input.GetKeyDown(ks[i])) return true; return false; }
+    public static string FirstKeyLabel(string[] names, string fallback) { return names != null && names.Length > 0 && !string.IsNullOrEmpty(names[0]) ? names[0] : fallback; }
+
+    // same mapping PlayerBrain.DodgeFromKey uses (dodge.json input.onKey), for harnesses with no keys: dir = forward | back | left | right | free
+    public static void DodgePress(DuelFighter df, string dir)
+    {
+        var inp = DodgeTable.Get().input;
+        string act = dir == "left" || dir == "right" ? inp.onKey.lateral : dir == "back" ? inp.onKey.back : inp.onKey.forward;
+        df.SetDodgeDir(dir);
+        if (act == "sidestep") df.PressSidestep(dir == "left" ? -1 : dir == "right" ? 1 : 0);
+        else if (act == "backstep") df.Press("backstep");
+        else df.Press("roll");
+    }
+
+    // ---------------- load ----------------
+    static void Load()
+    {
+        loaded = true; data = new Data();
+        string json = null;
+        try
+        {
+            var ta = Resources.Load<TextAsset>("flow");
+            if (ta != null) json = ta.text;
+#if UNITY_EDITOR
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/flow.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+#endif
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "flow.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/flow.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+        }
+        catch (Exception ex) { Debug.LogWarning("FlowTable: read failed: " + ex.Message); }
+        if (string.IsNullOrEmpty(json)) { data.enabled = false; return; }   // no file: old behaviour
+        try
+        {
+            var d = JsonUtility.FromJson<Data>(json);
+            if (d == null) { data.enabled = false; return; }
+            if (d.chain == null) d.chain = new ChainCfg(); if (d.chain.rows == null) d.chain.rows = new ChainRow[0]; if (d.chain.combos == null) d.chain.combos = new Combo[0];
+            if (d.lockOn == null) d.lockOn = new LockCfg(); if (d.lockOn.hud == null) d.lockOn.hud = new LockHud(); if (d.lockOn.range <= 0f) d.lockOn.range = 14f;
+            if (d.attack == null) d.attack = new AttackCfg(); if (d.attack.magnet == null) d.attack.magnet = new MagnetCfg(); if (d.attack.turn == null) d.attack.turn = new TurnCfg(); if (d.attack.moves == null) d.attack.moves = new MoveRow[0];
+            if (d.dodge == null) d.dodge = new DodgeCfg(); if (d.dodge.dirs == null) d.dodge.dirs = new DodgeRow[0];
+            if (d.riposte == null) d.riposte = new RiposteCfg();
+            if (string.IsNullOrEmpty(d.scope)) d.scope = "player";
+            data = d;
+        }
+        catch (Exception ex) { Debug.LogError("FlowTable: parse failed: " + ex.Message); data = new Data { enabled = false }; }
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void ResetStatics() { loaded = false; data = null; inited = false; lastToggleTime = -99f; ForceApply = false; ForceHud = false; lockKeys = null; ripKeys = null; }
+}

@@ -5,7 +5,7 @@ public enum FState { Loco, Windup, Active, Recovery, Guard, ParryRecover, Roll, 
 
 // One duelist. Combat state is advanced in whole 60 Hz ticks by Duel; movement and animation blending are per-frame presentation.
 [RequireComponent(typeof(CharacterController), typeof(Health), typeof(Fighter))]
-public class DuelFighter : MonoBehaviour
+public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset flow in DuelFighterFlow.cs
 {
     public MoveTable moves; public RuleTable rules; public DuelFighter opponent;
     public float walkSpeed = 2.2f, runSpeed = 5.5f, maxHealth = 150f, maxStamina = 100f, radius = 0.4f;
@@ -207,6 +207,7 @@ public class DuelFighter : MonoBehaviour
         if (pSide > 0) pSide--; if (dodgeCd > 0 && state != FState.Roll) dodgeCd--;
         if (state == FState.Guard) { float gd = DodgeTable.Get().guard.staminaDrainPerSecond; if (gd > 0f) stamina = Mathf.Max(0f, stamina - gd / 60f); }   // data, OFF at 0
         t++;
+        FlowTickPre();   // V64FLOW
         bool wasPaused = paused;
         switch (state)
         {
@@ -262,7 +263,8 @@ public class DuelFighter : MonoBehaviour
             if (pSide > 0 && stamina >= SidestepCost()) { StartSidestep(); return; }
             if (pRoll > 0 && stamina >= RollCost()) { StartRoll(); return; }
         }
-        if (riposteTicks > 0 && (pLight > 0 || pHeavy > 0 || pThrust > 0)) { StartMove(AiAdapt.RiposteMove(this, pLight > 0, pHeavy > 0, pThrust > 0, ref riposteTicks), false); return; }   // V63: data ai_adapt.json riposte{}
+        if (FlowRiposteFree()) return;   // V64FLOW: dedicated riposte key
+        if (riposteTicks > 0 && FlowRiposteAuto() && (pLight > 0 || pHeavy > 0 || pThrust > 0)) { StartMove(AiAdapt.RiposteMove(this, pLight > 0, pHeavy > 0, pThrust > 0, ref riposteTicks), false); return; }   // V63: data ai_adapt.json riposte{}
         if (pHeavy > 0) { if (HeavyAllowed()) { StartMove("heavy_overhead", false); return; } pLight = Mathf.Max(pLight, pHeavy); pHeavy = 0; }
         if (pLight > 0) { StartMove(lastLightRight ? "light_left" : "light_right", false); return; }
         if (pThrust > 0) { StartMove("thrust", false); return; }
@@ -270,9 +272,9 @@ public class DuelFighter : MonoBehaviour
     }
 
     // ---------------- dodges (dodge.json; "enabled": false falls back to the V3 rules-defs values) ----------------
-    float RollCost() { var d = DodgeTable.Get(); return StaminaTable.DodgeCost("roll", d.enabled ? d.roll.stamina : R("rollCost", 30f)); }
-    float BackstepCost() { var d = DodgeTable.Get(); return StaminaTable.DodgeCost("backstep", d.enabled ? d.backstep.stamina : R("backstep.cost", 10f)); }
-    float SidestepCost() { return StaminaTable.DodgeCost("sidestep", DodgeTable.Get().sidestep.stamina); }
+    float RollCost() { var d = DodgeTable.Get(); return FlowDodgeCost(StaminaTable.DodgeCost("roll", d.enabled ? d.roll.stamina : R("rollCost", 30f))); }
+    float BackstepCost() { var d = DodgeTable.Get(); return FlowDodgeCost(StaminaTable.DodgeCost("backstep", d.enabled ? d.backstep.stamina : R("backstep.cost", 10f))); }
+    float SidestepCost() { return FlowDodgeCost(StaminaTable.DodgeCost("sidestep", DodgeTable.Get().sidestep.stamina)); }
 
     Vector3 OppFlat()   // unit ground direction to the opponent (own forward when there is none)
     {
@@ -286,7 +288,7 @@ public class DuelFighter : MonoBehaviour
     void BeginDodge(int kind, int ticks, float dist, int isf, int ief, float pow, int cd, float turn)
     {
         dodgeKind = kind; backstep = kind == 1; dodgeTicks = Mathf.Max(1, ticks); dodgeDist = dist; dodgeIS = isf; dodgeIE = ief;
-        dodgePow = Mathf.Max(1f, pow); dodgeCdTicks = Mathf.Max(0, cd); dodgeTurn = turn; dodgeAge = 0f;
+        dodgePow = Mathf.Max(1f, pow); dodgeCdTicks = Mathf.Max(0, cd); dodgeTurn = turn; dodgeAge = 0f; FlowDodgeBegin(kind);
         state = FState.Roll; t = 0; pRoll = 0; pBack = 0; pSide = 0; atkOn = false; fadeOutLen = 0f;
     }
 
@@ -316,7 +318,7 @@ public class DuelFighter : MonoBehaviour
             Vector3 fw = transform.forward; fw.y = 0f; if (fw.sqrMagnitude < 1e-4f) fw = Vector3.forward;
             rollDir = nd == "forward" ? fw.normalized : (nd == "away" ? -OppFlat() : -fw.normalized);
         }
-        rollDir.y = 0f;
+        rollDir.y = 0f; FlowRollAxis();   // V64FLOW
         BeginDodge(0, ticks, dist, isf, ief, pow, cd, turn);
         string clip = (d.enabled && !string.IsNullOrEmpty(r.clip)) ? r.clip : "roll_forward";
         if (!HasState(clip)) { clip = "roll_forward"; if (d.enabled) { var o = new DodgeTable.DodgeRow { ticks = ticks, clipTailTicks = 0 }; PlayDodgeClip(clip, o); } else PlayClip(clip, ticks); }   // character without the baked dodge clip (Pitborn): old roll clip
@@ -370,6 +372,7 @@ public class DuelFighter : MonoBehaviour
         var arow = AttackClipTable.Get().enabled ? AttackClipTable.Find(CharKey(), id) : null;
         fadeOutLen = 0f;
         if (!BeginAttackClip(arow, m, isChained)) PlayClip(ClipFor(id), total, 0.06f);   // no row / state: old whole-clip squash
+        FlowAttackStart(m);   // V64FLOW
         ContactRelay.AttackStarted(this, m);
         LatencyProbe.Started(this, "attack", id);
     }
@@ -398,11 +401,12 @@ public class DuelFighter : MonoBehaviour
 
     void TickRecovery()
     {
-        if (move.chainFollow != null && t <= move.chainWindow)
+        if (!FlowChainOwns() && move.chainFollow != null && t <= move.chainWindow)
         {
             if (pHeavy > 0 && System.Array.IndexOf(move.chainFollow, "heavy_overhead") >= 0) { StartMove("heavy_overhead", true); return; }
             if (pLight > 0) { foreach (var fid in move.chainFollow) if (fid.StartsWith("light")) { StartMove(fid, true); return; } }
         }
+        if (FlowChain()) return;   // V64FLOW: attack-to-attack chain rows (flow.json chain)
         if (CombatFeel.Applies(this)) { if (TryCancel()) return; }   // P1: cancel windows from cancel.json (roll / sidestep / backstep / guard / buffered attacks at the earliest legal tick)
         else if (dodgeCd <= 0 && t > move.Recovery(chained) / 2)
         {
@@ -574,7 +578,7 @@ public class DuelFighter : MonoBehaviour
         Vector3 v = Vector3.zero;
         Vector3 toOpp = opponent ? opponent.transform.position - transform.position : transform.forward; toOpp.y = 0f;
         float dist = toOpp.magnitude; Vector3 dir = dist > 0.01f ? toOpp / dist : transform.forward;
-        bool faceOpp = opponent && !opponent.Dead && dist < 14f;
+        bool faceOpp = opponent && !opponent.Dead && dist < FlowFaceRange(14f) && FlowLockOk();   // V64FLOW
         switch (state)
         {
             case FState.Loco: v = moveDir * (run ? runSpeed : walkSpeed) * SpeedMulExhausted(); break;
@@ -591,7 +595,7 @@ public class DuelFighter : MonoBehaviour
                 break;
             }
             case FState.Windup:
-                if (!PresentationClock.Frozen && t >= R("stepInFrom", 3) && move != null && dist > StepStopDist()) { float si = StepInFor(); if (si > 0f) v = dir * (si * scale / Mathf.Max(0.1f, (move.Windup(chained) - 3) / 60f)); }   // stepIn: data (attack_clips.json) or the move's value
+                if (!PresentationClock.Frozen && t >= R("stepInFrom", 3) && move != null && dist > StepStopDist()) { float si = StepInFor(); if (si > 0f) v = FlowStepDir(dir) * (si * scale / Mathf.Max(0.1f, (move.Windup(chained) - 3) / 60f)); }   // stepIn: data (attack_clips.json) or the move's value
                 break;
             case FState.Stagger: case FState.Down: if (!PresentationClock.Frozen) { v = knock; knock *= Mathf.Pow(0.88f, dt * 60f); } faceOpp = false; break;   // P1: no knock slide while the animation is frozen (hit-stop)
             case FState.Dead: faceOpp = false; break;
@@ -615,7 +619,8 @@ public class DuelFighter : MonoBehaviour
             Vector3 oq = opponent.transform.position - transform.position; oq.y = 0f; float dq = oq.magnitude, minSep = Mathf.Max(DodgeTable.Get().minSeparation, radius + opponent.radius + DodgeTable.Get().separationPad);
             if (dq < minSep) cc.Move((dq > 0.001f ? -oq / dq : -transform.forward) * ((minSep - dq) * 0.5f));
         }
-        if (state == FState.Roll && dodgeKind == 0 && rollDir.sqrMagnitude > 0.01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rollDir), Mathf.Min(1f, dodgeTurn * dt));
+        if (FlowFace(dt, dir, dist, faceOpp)) { }   // V64FLOW
+        else if (state == FState.Roll && dodgeKind == 0 && rollDir.sqrMagnitude > 0.01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rollDir), Mathf.Min(1f, dodgeTurn * dt));
         else if (faceOpp && state != FState.Stagger && state != FState.Down) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 10f * dt);
         else if (state == FState.Loco && moveDir.sqrMagnitude > 0.01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 10f * dt);
 

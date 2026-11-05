@@ -133,6 +133,8 @@ public class PieceCfg   // V62C: the severed piece (head) physics; finishers.jso
     public SprayCfg woundSpray = new SprayCfg { seconds = 0.35f, rate = 60f };
     public SprayCfg neckSpray = new SprayCfg();
     public PieceCfg piece = new PieceCfg();   // V62C
+    public CleaveRow[] cleaves = new CleaveRow[0];   // V63G
+    public BurstRow[] bursts = new BurstRow[0];      // V63G
 }
 
 [Serializable]
@@ -149,6 +151,7 @@ public class CutUnit
     // gib physics + blood (all data): torque scale, upward bias and sideways scatter of the throw, angular drag, piece lifetime (0 = stays), extra decals splashed on the body at the cut
     public float torqueMul = 0.5f, upBias = 0.45f, scatter = 0.3f, angularDrag = 0.5f, lifeSeconds = 0f;
     public int extraDecals = 8;
+    public string cleave = "", burst = "";   // V63G: ids in gore.cleaves / gore.bursts (a dark wound line + patches + drips on the head, and a bigger blood burst, on top of the cut; FinisherCleave)
 }
 
 [Serializable]
@@ -205,6 +208,8 @@ public class FinisherAutoCfg
     public ContactFrame[] sheetFrames = ContactFrame.Defaults();
     // V62B: the severed piece (head) must still be there at the end of the scene: alive, visible, resting on the ground (|gap| <= pieceMaxGapM), and the body has no head triangles left
     public bool pieceCheck = true; public float pieceMaxGapM = 0.15f;
+    // V63G: after the scene the finisher vignette override must be gone: vignetteMaxAfter = max |effective vignette after - before| (or the absolute value when vignetteAbsolute), vignetteWaitS = how long the run waits for the fade
+    public float vignetteMaxAfter = 0.01f, vignetteWaitS = 2f; public bool vignetteAbsolute = false;
     public int pieceMaxRescues = 3;      // V62C: the run fails when a severed piece needed MORE safety rescues than this (the physics should keep it above the floor on its own)
 }
 

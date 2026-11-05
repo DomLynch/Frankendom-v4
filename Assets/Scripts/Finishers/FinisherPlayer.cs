@@ -354,6 +354,7 @@ public static class FinisherPlayer
         if (!handled)
         {
             // stand-in when the mesh cut cannot run: head_detach hides the head bone so the beat still reads, plus a blood event at the wound
+            if (unit.Length > 0 && FinisherConfig.EnableGore) FinisherCleave.Fallback(victim.transform, away, unit);   // V63G: wound decals + burst from the head bone (units with cleave / burst ids)
             if (k.type == "head_detach") foreach (var t in victim.GetComponentsInChildren<Transform>()) if (t.name.EndsWith("Head")) { t.localScale = Vector3.one * 0.0001f; break; }
             ContactRelay.RaiseEvent(new CombatEvent { type = "Hit", actor = attacker, target = victim, moveId = attacker.CurrentMove != null ? attacker.CurrentMove.id : "", heavy = true, location = loc == FinisherLoc.Head ? "head" : "torso", direction = "front", point = call.point, tick = Duel.TickCount });
         }

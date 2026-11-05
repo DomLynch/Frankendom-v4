@@ -5,7 +5,7 @@
   "endDelay": 2.5,
   "bootWaitSeconds": 20,
   "reloadWaitSeconds": 20,
-  "timeoutSeconds": 900,
+  "timeoutSeconds": 1800,
   "settleFrames": 30,
   "startShotAt": 1,
   "minAvgDuration": 60,

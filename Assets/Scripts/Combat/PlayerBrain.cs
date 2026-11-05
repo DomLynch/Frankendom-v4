@@ -33,13 +33,13 @@ public class PlayerBrain : MonoBehaviour
         df.guardSide = Input.GetKey(KeyCode.LeftArrow) ? 1 : Input.GetKey(KeyCode.RightArrow) ? 2 : Input.GetKey(KeyCode.UpArrow) ? 3 : 0;
         if (Input.GetKeyDown(KeyCode.V)) df.Feint();
         // lock-break: push away from the enemy (>120 deg) for 0.25 s; any attack re-locks
-        if (rig && df.opponent && inp.sqrMagnitude > 0.01f)
+        if (rig && df.opponent && inp.sqrMagnitude > 0.01f && FlowTable.PushAwayBreaks)
         {
             Vector3 toE = df.opponent.transform.position - transform.position; toE.y = 0f;
             if (Vector3.Angle(df.moveDir, toE) > 120f) { awayT += Time.deltaTime; if (awayT > 0.25f) rig.lockEnabled = false; } else awayT = 0f;
         }
         else awayT = 0f;
-        if (rig && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F))) rig.lockEnabled = true;
+        if (rig && FlowTable.AttackRelocks && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F))) rig.lockEnabled = true;
 
         bool strike = Input.GetMouseButton(0) || Input.GetKey(KeyCode.F);
         bool strikeDownNow = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F);
@@ -86,7 +86,7 @@ public class PlayerBrain : MonoBehaviour
                 else if (!hd) { df.Press("backstep"); rollDown = -1f; }
             }
         }
-        if (Input.GetKeyDown(KeyCode.Tab) && rig) rig.lockEnabled = !rig.lockEnabled;
+        FlowTable.PlayerInput(rig, df);   // V64FLOW: lock toggle (flow.json lockOn.keys, default Tab / MMB / pad R3), df.lockFacing, riposte key (default B / pad B)
         if (Input.GetKeyDown(KeyCode.R) && rig) rig.Recenter();
     }
 
@@ -155,6 +155,7 @@ public class PlayerBrain : MonoBehaviour
         }
         string act = kind == "lateral" ? inp.onKey.lateral : kind == "back" ? inp.onKey.back : kind == "none" ? inp.onKey.none : inp.onKey.forward;
         if (act == "sidestep" && inp.requireLock && !locked) act = "roll";
+        df.SetDodgeDir(FlowTable.DirName(locked, kind, side));   // V64FLOW: forward / back / left / right / free, flow.json dodge.dirs
         if (act == "sidestep") df.PressSidestep(kind == "lateral" ? side : 0);
         else if (act == "backstep") df.Press("backstep");
         else df.Press("roll");
@@ -172,7 +173,7 @@ public class PlayerBrain : MonoBehaviour
     }
     void TapSide(int slot, int dir, float window)
     {
-        if (Time.time - lastTap[slot] <= window) { df.PressSidestep(dir); lastTap[slot] = -9f; } else lastTap[slot] = Time.time;
+        if (Time.time - lastTap[slot] <= window) { df.SetDodgeDir(dir < 0 ? "left" : dir > 0 ? "right" : "back"); df.PressSidestep(dir); lastTap[slot] = -9f; } else lastTap[slot] = Time.time;
     }
 }
 

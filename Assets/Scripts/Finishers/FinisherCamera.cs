@@ -33,7 +33,7 @@ public class FinisherCamera : MonoBehaviour
         return r;
     }
     void Awake() { Instance = this; cam = GetComponent<Camera>(); }
-    void OnDestroy() { if (Instance == this) Instance = null; FinisherTime.Restore(); SetNoBlur(false); LookEnd(); }
+    void OnDestroy() { if (Instance == this) Instance = null; FinisherTime.Restore(); SetNoBlur(false); LookEnd(); FinisherVignette.End(); }
 
     public void Begin(Transform killerT, Transform victimT)
     {
@@ -42,7 +42,7 @@ public class FinisherCamera : MonoBehaviour
         if (!Active) oldFov = cam.fieldOfView;
         actor = killerT; target = victimT; tb.Set(victimT); ab.Set(killerT);
         Active = true; enabled = true;
-        SetNoBlur(true); LookBegin();
+        FinisherVignette.Begin(); SetNoBlur(true); LookBegin();
         fromPos = transform.position; fromRot = transform.rotation; fromFov = cam.fieldOfView;
         shot = null;
     }
@@ -50,7 +50,7 @@ public class FinisherCamera : MonoBehaviour
     public void End()
     {
         if (!Active) return;
-        Active = false; enabled = false; FinisherTime.Restore(); SetNoBlur(false); LookEnd(); shot = null;
+        Active = false; enabled = false; FinisherTime.Restore(); SetNoBlur(false); LookEnd(); FinisherVignette.End(); shot = null;
         if (cam) cam.fieldOfView = oldFov;
     }
 
@@ -273,7 +273,7 @@ public class FinisherCamera : MonoBehaviour
             else if (noBlurGo != null)
             {
                 var v = noBlurGo.GetComponent<Volume>(); if (v != null && v.sharedProfile != null) Destroy(v.sharedProfile);
-                Destroy(noBlurGo); noBlurGo = null; noBlurProf = null; exOv = null; evCur = evTarget = 0f;
+                if (v != null) { v.weight = 0f; v.enabled = false; } noBlurGo.SetActive(false); Destroy(noBlurGo); noBlurGo = null; noBlurProf = null;   /* V63G: out of every Volume query at once (Destroy is deferred) */ exOv = null; evCur = evTarget = 0f;
             }
         }
         catch (System.Exception e) { Debug.LogWarning("[FinisherCamera] motion blur override: " + e.Message); }

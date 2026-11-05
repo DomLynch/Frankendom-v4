@@ -8,6 +8,8 @@ Remove-Item verify_out -Recurse -ErrorAction SilentlyContinue; $out+=Run 'verify
 $out+=Run 'balance_player' @('-balanceauto','-seeds:10') 1500
 $out+=Run 'finisher_player' @('-finisherauto') 400
 Remove-Item posture_proof -Recurse -ErrorAction SilentlyContinue; $out+=Run 'posture_player' @('-postureproof','-proofsecs:120') 300
+Remove-Item flow_proof -Recurse -ErrorAction SilentlyContinue; $out+=Run 'flow_player' @('-flowproof') 300
 $out | Set-Content gate_run.txt; "done" | Set-Content gate_done.txt
+
 
 
