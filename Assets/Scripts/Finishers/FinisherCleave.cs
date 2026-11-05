@@ -68,7 +68,8 @@ public static class FinisherCleave
             Vector3 c; float rF, rS, rH; string how;
             if (cl != null) Ellipsoid(victim, bone, cl, res, fwd, right, sc, out c, out rF, out rS, out rH, out how); else { c = bone.position + Vector3.up * 0.12f * sc; rF = 0.11f * sc; rS = 0.09f * sc; rH = 0.12f * sc; how = "bone"; }
             int quads = 0, drips = 0, sprays = 0;
-            if (cl != null) quads = Wound(bone, cl, c, fwd, right, rF, rS, rH, victim.name.GetHashCode(), out drips);
+            if (cl != null && FinVis.On) { quads = FinVis.CutArc(bone, cl, c, fwd, right, rF, rH, Line(), victim.name.GetHashCode()); drips = 0; }   // FINVIS v1: the cut reveal (a wet line that draws itself along the arc, thickens, drips) replaces the flat red X quads
+            if (cl != null && quads == 0) quads = Wound(bone, cl, c, fwd, right, rF, rS, rH, victim.name.GetHashCode(), out drips);
             if (bu != null) sprays = Burst(bone, bu, pos.sqrMagnitude < 1e-8f ? c : pos, jetDir, away, right);
             Debug.Log("[finisher] cleave '" + (cl != null ? cl.id : "-") + "' burst '" + (bu != null ? bu.id : "-") + "' on " + victim.name + "/" + bone.name + ": head ellipsoid from " + how + " centre " + c.ToString("0.00") + " radii F/S/U "
                 + rF.ToString("0.000") + "/" + rS.ToString("0.000") + "/" + rH.ToString("0.000") + " m; wound quads " + quads + ", drips+patches " + drips + ", spray systems " + sprays);
@@ -198,6 +199,7 @@ public static class FinisherCleave
     // ---------------- art: a pointed, slightly ragged streak (alpha only; the colour is the material's tint) ----------------
     static float H(int i) { float s = Mathf.Sin(i * 127.1f) * 43758.5453f; return s - Mathf.Floor(s); }
     static float N(float x) { int i = Mathf.FloorToInt(x); float f = x - i; f = f * f * (3f - 2f * f); return Mathf.Lerp(H(i), H(i + 1), f); }
+    internal static Texture2D LineTexture() { return Line(); }   // FINVIS v1
     static Texture2D Line()
     {
         if (lineTex != null) return lineTex;

@@ -87,6 +87,7 @@ public class FinisherEntry
     // victim
     public string victimClip = "";          // Animator state; "" = the normal death (DuelFighter.Die)
     public float victimClipSpeed = 1f, victimFade = 0.08f, victimStart = -1f;   // victimStart -1 = at the contact
+    public BladeAimCfg bladeAim;            // V1CLIPS v98: V1 aimBladeAt (blade through the chest) for this entry; null / disabled = the clip as authored
     public V1Clips clipsV1;                 // V1FIN v94: V1's victim (and killer) clip for this entry; null / states missing = the entry as it is
     public FinisherShotKey[] shotsV1;       // V1FIN v94: V1's camera for this entry (used instead of `shots` while rt.v1.enabled && rt.v1.camera); null / empty = `shots`
     public FinisherGoreKey[] goreV1;        // V1FIN v94: V1's gore timing (used instead of `gore` while rt.v1.enabled && rt.v1.timing); null / empty = `gore`
@@ -172,6 +173,7 @@ public class PieceCfg   // V62C: the severed piece (head) physics; finishers.jso
     public PieceCfg piece = new PieceCfg();   // V62C
     public CleaveRow[] cleaves = new CleaveRow[0];   // V63G
     public BurstRow[] bursts = new BurstRow[0];      // V63G
+    public FinVisCfg finisherVfx = new FinVisCfg();   // FINVIS v1: finisher blood v2 (pools, lit droplets, cut reveal); v2 = false is today's look
 }
 
 // V1FIN v94: V1 src/severed-head.ts, every number there. Used by SeveredHeadArc.
@@ -196,6 +198,8 @@ public class ScriptCfg
     public bool enabled = false;
     public float slideSideM = 0.5f, slideAlongM = 0.12f, slideStartS = 0.144f, slideEndS = 0.96f, fallStartS = 0.64f, fallEndS = 2.112f;
     public float fallDeg = 90f, sideSign = 1f, floorM = 0.008f;
+    public DropCfg weapon = new DropCfg();   // V1CLIPS v98: opened.ts dropped weapon (V1Extras.cs)
+    public LegsCfg legs = new LegsCfg();     // V1CLIPS v98: opened.ts scripted leg topple (only without the physics ragdoll)
 }
 
 // V1FIN v94: V1's own clips (OpenTrident finishers_vps\clips-authored, 106-joint Mixamo-named). Applied over an entry only when every named Animator state exists on the fighter (else the entry plays as before).
@@ -205,6 +209,7 @@ public class V1Clips
     public string victimClip = "", attackerClip = "";
     public float victimClipSpeed = 0.75f, victimClipStart = 0f, victimStart = -1f, dieAt = -2f;
     public float attackerClipSpeed = -1f, attackerClipStart = -1f, contactAt = -1f, duration = -1f, holdAfter = -1f;   // -1 = keep the entry's
+    public float[] pairOffset = new float[0];   // V1CLIPS v98: [right, up, forward] replaces the entry's pairOffset while the V1 clips play (placement for the V1 clip poses; up lifts the victim)
     public string source = "";
 }
 
@@ -429,6 +434,8 @@ public class V1FinCfg
     public bool crown = true;        // head-only V1 split (unit head_crown) instead of the body-mesh MeshCut split (unit head_split)
     public bool clips = true;        // entry.clipsV1 (V1's authored victim / killer clips) when the Animator states exist
     public bool blood = true;        // gore.v1blood profiles (finisher-blood.ts timing) on units with a bloodProfile
+    public bool bladeAim = true;     // V1CLIPS v98: entry.bladeAim (V1 aimBladeAt: blade through the chest)
+    public bool openedExtras = true; // V1CLIPS v98: cuts.units[torso_waist].script.weapon / .legs (dropped weapon, leg topple)
     public string crownUnit = "head_crown", crownReplaces = "head_split";
 }
 

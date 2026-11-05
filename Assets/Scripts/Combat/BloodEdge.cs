@@ -96,23 +96,23 @@ public class BloodEdge : MonoBehaviour
         var t = new Texture2D(w, h, TextureFormat.RGBA32, false);
         t.wrapMode = TextureWrapMode.Clamp; t.filterMode = FilterMode.Bilinear; t.name = "BloodEdge_" + index + (mirror ? "_R" : "_L");
         var px = new Color[w * h];
-        float off = d.seed * 1.37f + index * 11.3f;
+        var E = BloodShapes.Get().edge; var K = E.kinds[Mathf.Clamp(kind, 0, E.kinds.Length - 1)];   // HCKIT6 v100: strip curves = blood_shapes.json edge{}
+        float off = d.seed * E.seedMul + index * E.indexMul;
         for (int y = 0; y < h; y++)
         {
             float v = (float)y / (h - 1);
-            float vf = Smooth(0f, 0.18f, v) * Smooth(0f, 0.18f, 1f - v);
-            float reach;
-            if (kind == 0) reach = 0.45f + 0.55f * Mathf.PerlinNoise(v * 3f + off, off);
-            else if (kind == 1) reach = 0.85f;
-            else { float nn = Mathf.PerlinNoise(v * 14f + off, off + 3f); reach = 0.2f + 0.8f * nn * nn; }
-            float rowMod = kind == 1 ? 0.6f + 0.4f * Mathf.PerlinNoise(v * 5f + off, off + 7f) : kind == 2 ? 0.5f + 0.5f * Mathf.PerlinNoise(v * 40f + off, off + 9f) : 1f;
+            float vf = Smooth(0f, E.vFade, v) * Smooth(0f, E.vFade, 1f - v);
+            float reach = K.reachBase;
+            if (K.reachAmp != 0f) { float nn = Mathf.PerlinNoise(v * K.reachFreq + off, off + K.reachY); reach += K.reachSquare ? K.reachAmp * nn * nn : K.reachAmp * nn; }
+            float rowMod = K.rowBase;
+            if (K.rowAmp != 0f) rowMod += K.rowAmp * Mathf.PerlinNoise(v * K.rowFreq + off, off + K.rowY);
             for (int x = 0; x < w; x++)
             {
                 float u = (float)x / (w - 1);
                 float a = Mathf.Clamp01(1f - u / reach);
-                a = kind == 1 ? Mathf.Pow(a, 2.2f) : kind == 2 ? a : Mathf.Pow(a, 1.3f);
-                a = Mathf.Clamp01(a * rowMod * vf * 0.95f);
-                float shade = 0.8f + 0.4f * Mathf.PerlinNoise(u * 6f + off, v * 6f);
+                a = K.pow == 1f ? a : Mathf.Pow(a, K.pow);
+                a = Mathf.Clamp01(a * rowMod * vf * E.gain);
+                float shade = E.shadeBase + E.shadeAmp * Mathf.PerlinNoise(u * E.shadeFreq + off, v * E.shadeFreq);
                 int xi = mirror ? (w - 1 - x) : x;
                 px[y * w + xi] = new Color(d.colorR * shade, d.colorG * shade, d.colorB * shade, a);
             }

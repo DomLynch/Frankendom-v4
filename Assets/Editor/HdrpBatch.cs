@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 public static class HdrpBatch
 {
     public static void Look() { LookImpl(true); }   // HCKIT3 v93: body moved to LookImpl so the production chain can switch HdrpShot (4 renders x 30 frames at 1080p) off by config; Look() itself is unchanged
@@ -47,7 +47,8 @@ public static class HdrpBatch
         Step(c.dodgeClipSetup, "DodgeClipSetup", () => DodgeClipSetup.Run());
         Step(c.finisherClipSetup, "FinisherClipSetup", () => FinisherClipSetup.Run());   // Run(), not RunBatch(): RunBatch calls EditorApplication.Exit
         Step(c.guardLayerSetup, "GuardLayerSetup", () => GuardLayerSetup.RunJoan());   // INT99 v99: live V51 runs RunJoan() here (was Run() behind a default-off flag)
-        Step(c.woundDecalRef, "WoundDecalRef", () => WoundDecalRef.Run());   // INT99 v99: live V51 runs WoundDecalRef.Run() since v95
+        Step(c.woundDecalRef, "WoundDecalRef", () => WoundDecalRef.Run());
+        Step(true, "FinVisDecalRef", () => FinVisDecalRef.Create());   // v99: FINVIS reference material (Assets/Resources/FinVisDecalRef.mat), idempotent   // INT99 v99: live V51 runs WoundDecalRef.Run() since v95
         Step(c.v1FinisherClipSetup, "V1FinisherClipSetup", () => V1FinisherClipSetup.Run());   // INT100 v99: live V51 runs V1FinisherClipSetup.Run() since v96 (V1FINC); Run(), not RunBatch() (RunBatch exits)
         Step(c.finisherReadable, "FinisherReadable", () => FinisherReadable.Run());
         Step(c.gltfMats, "HdrpGltfMats", () => { HdrpGltfMats.Refresh(); HdrpGltfMats.Run(); });

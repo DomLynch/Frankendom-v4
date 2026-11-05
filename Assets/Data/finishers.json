@@ -198,12 +198,11 @@
           "victim": "*",
           "requireDeathblow": true,
           "pairOffset": [
-            -0.15,
+            0.01,
             0.0,
             1.275
           ],
           "distance": 1.275,
-          "victimYawDeg": 40.0,
           "note": "Joan 1.58 m: right hand 0.16 m lower and 0.02 m back at the cut (FK of the clip on her bone lengths), so the victim moves 0.024 m closer (abs) to keep the measured hand->neck vector. Reach: hand->Pitborn neck 0.86 m in 3D vs blade 1.0 m: possible ONLY while Pitborn is hunched (posture break, neck 1.6 m); a standing Pitborn neck is 2.0 m, her hand 1.5-1.7 m: not reachable from the ground -> requireDeathblow (no decapitation on a plain HP kill)."
         }
       ],
@@ -1288,16 +1287,17 @@
           "focus": "mid",
           "angleDeg": 75,
           "side": 1,
-          "dist": 3.8,
-          "height": 3.1,
-          "lookHeight": 0.85,
+          "dist": 4.6,
+          "height": 3.3,
+          "lookHeight": 1.0,
           "lookAhead": 0,
           "fov": 34,
           "blend": 1.76,
           "gate": true,
           "gateMinDot": 0.8,
           "darkenEV": 0.0,
-          "track": "body"
+          "track": "body",
+          "note": "V1CLIPS v98: QC v96 (finisher_contact_run_through frames 4-6): the camera dropped to the floor and cropped the victim at the bottom edge. V1 was dist 3.8 / height 3.1 / look .85: farther (4.6), higher (3.3) and the look target raised to 1.0 so the corpse stays inside the frame; revert = 3.8 / 3.1 / 0.85"
         }
       ],
       "shots": [
@@ -1323,7 +1323,7 @@
       ],
       "slowmo": [],
       "holdAfter": 1.5,
-      "note": "placeholder clips; real: paired Death_RunThrough 2.4 s + Fin_RunThrough, blade stays in, victim arches then kneels. top20 hq-rapier-thrust-torso if missing | FINFIX v93: duration=4.2, holdAfter=1.5 | V1FIN v94: V1 run through: needs the imported V1 clips (states v1_run_through_victim / _killer); without them the thrust placeholder runs with the V1 chest-entry + back-exit blood",
+      "note": "placeholder clips; real: paired Death_RunThrough 2.4 s + Fin_RunThrough, blade stays in, victim arches then kneels. top20 hq-rapier-thrust-torso if missing | FINFIX v93: duration=4.2, holdAfter=1.5 | V1FIN v94: V1 run through: needs the imported V1 clips (states v1_run_through_victim / _killer); without them the thrust placeholder runs with the V1 chest-entry + back-exit blood | V1CLIPS v98: bladeAim (blade through the chest), clipsV1.pairOffset, rt_v1_reveal camera back / up / look 1.0",
       "shotsV1": [
         {
           "t": 0,
@@ -1358,7 +1358,39 @@
         "contactAt": 0.5333,
         "duration": 3.8,
         "holdAfter": 1.5,
-        "source": "OpenTrident finishers_vps/clips-authored/9100002 (victim) + 9100003 (killer), 2.4 s at 0.75x; tip meets the chest at clip 0.4 s"
+        "source": "OpenTrident finishers_vps/clips-authored/9100002 (victim) + 9100003 (killer), 2.4 s at 0.75x; tip meets the chest at clip 0.4 s",
+        "pairOffset": [
+          -0.081,
+          0.08,
+          0.824
+        ],
+        "pairOffsetNote": "V1CLIPS v98: right/forward = the v97 -finisherauto probe suggestion with the V1 clips playing (RightHand -> Spine2 along 1.18 m, want 0.55: suggest [-0.081, 0, 0.824]); up 0.08 = lift: the v97 victim raw ground gap was -0.16..0.00 m (sinking), FinisherGround had to move the root"
+      },
+      "bladeAim": {
+        "enabled": true,
+        "armBone": "RightArm",
+        "handBone": "RightHand",
+        "weaponSockets": [
+          "WeaponSocket_R"
+        ],
+        "victimBone": "Spine1",
+        "segFrom": 0.24,
+        "segTo": 0.85,
+        "startRel": "start",
+        "startS": 0.0,
+        "rampS": 0.25,
+        "holdS": 3.2,
+        "stepMaxM": 0.0,
+        "offHand": {
+          "enabled": true,
+          "bones": [
+            "LeftArm",
+            "LeftForeArm",
+            "LeftHand"
+          ],
+          "pommelM": 0.07
+        },
+        "note": "V1CLIPS v98: V1 characters.ts aimBladeAt (scene.ts:882-883 min(1, finishClock/.25), target the victim spine_02 = Spine1): the MIDDLE of the blade (segment [.24,.85]) is put through the chest by turning the sword arm about the shoulder, the off hand re-solved onto the hilt (.07 behind the sword hand). stepMaxM 0 = no lane slide (pairOffset gives the reach); raise to ~0.2 if the probe still shows the hand far from the chest."
       }
     },
     {
@@ -1666,7 +1698,33 @@
           "fallEndS": 2.112,
           "fallDeg": 90.0,
           "sideSign": 1.0,
-          "floorM": 0.008
+          "floorM": 0.008,
+          "weapon": {
+            "enabled": true,
+            "sockets": [
+              "WeaponSocket_R",
+              "WeaponSocket_L"
+            ],
+            "sideM": 0.25,
+            "alongM": -0.35,
+            "startS": 0.384,
+            "endS": 1.984,
+            "sideSign": 1.0,
+            "floorM": 0.008
+          },
+          "legs": {
+            "enabled": true,
+            "onlyWithoutFinPhys": true,
+            "hipsBone": "Hips",
+            "sideM": -0.35,
+            "alongM": -0.12,
+            "fallDeg": 90.0,
+            "sideSign": 1.0,
+            "hipsRestM": 0.12,
+            "startS": 1.152,
+            "endS": 2.688
+          },
+          "_v1clips": "V1CLIPS v98: opened.ts place(): weapon smooth(.12,.62) -> (.25, -.35) x scale + roll flat; legs smooth(.36,.84) -> (-.35, -.12) x scale + Rz(-90) (seconds = progress x 3.2). legs only run when the V3 physics ragdoll (FINPHYS) is absent / off: it already drops hips + legs"
         }
       },
       {
@@ -2008,6 +2066,127 @@
         "seed": 7
       }
     ],
+    "finisherVfx": {
+      "_about": "FINVIS v1: finisher blood v2. v2 = false is today's look (every hook is off). v2 = true: (pools) V1 growing floor stains as lit HDRP decals with a normal map and wet smoothness; (droplets) lit HDRP/Lit droplet particles that land into the pools; (body) the splat quads become lit wound decals; (reveal) the old red X (cleave line/patches/drips quads) is replaced by a wet blood line that draws itself along the cut edge, thickens, then drips. Textures: StreamingAssets/<dir>/*.png (V1 blood art, make_textures.py). All numbers below; V1 values noted.",
+      "v2": false,
+      "dir": "finvis",
+      "pools": {
+        "enabled": true,
+        "max": 80,
+        "startRadiusM": 0.035,
+        "startTargetM": 0.055,
+        "maxRadiusM": 0.85,
+        "growPerS": 2.2,
+        "seepPerS": 0.08,
+        "seepBelowM": 0.65,
+        "seepMinSeconds": 0.6,
+        "seepRefRate": 78.0,
+        "landAmount": 0.006,
+        "mergeM": 0.2,
+        "squashBase": 0.7,
+        "squashSin": 0.2,
+        "lateSeedS": 7.0,
+        "lateSeedAmount": 0.3,
+        "sessionGapS": 12.0,
+        "lifeS": 90.0,
+        "fadeS": 4.0,
+        "depthM": 0.08,
+        "liftM": 0.02,
+        "drawDistanceM": 40.0,
+        "smoothness": 0.85,
+        "minNormalY": 0.6,
+        "rayUpM": 0.3,
+        "rayDownM": 0.3,
+        "maxLandPerFrame": 12,
+        "tint": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "poolFiles": [
+          "floor-pool",
+          "floor-pool-b"
+        ],
+        "splashFiles": [
+          "floor-splash",
+          "floor-splash-b",
+          "floor-splash-c",
+          "floor-splash-d"
+        ]
+      },
+      "droplets": {
+        "enabled": true,
+        "keepStrands": true,
+        "rateMul": 0.35,
+        "speedMul": 1.0,
+        "coneMul": 1.0,
+        "gravityMs2": 9.81,
+        "stretch": 2.2,
+        "size": [
+          0.012,
+          0.03
+        ],
+        "life": [
+          0.7,
+          1.3
+        ],
+        "color": [
+          0.2,
+          0.012,
+          0.016,
+          1.0
+        ],
+        "smoothness": 0.92,
+        "metallic": 0.0,
+        "maxParticles": 160,
+        "maxCollisionShapes": 256,
+        "collisionQuality": "Medium",
+        "collisionLayers": []
+      },
+      "body": {
+        "enabled": true,
+        "files": [
+          "blood-wound-b",
+          "blood-wound-c",
+          "blood-wound-d"
+        ],
+        "smoothness": 0.8,
+        "depthM": 0.12,
+        "sizeMul": 1.0,
+        "fade": 1.0
+      },
+      "reveal": {
+        "enabled": true,
+        "revealS": 0.28,
+        "thickenS": 0.9,
+        "startWidthMul": 0.35,
+        "endWidthMul": 1.0,
+        "lengthPad": 1.35,
+        "depthM": 0.09,
+        "lineWidthM": 0.022,
+        "ringSegments": 10,
+        "ringRadiusMul": 1.0,
+        "lineColor": [
+          0.11,
+          0.0,
+          0.008,
+          1.0
+        ],
+        "lineSmoothness": 0.9,
+        "drips": 5,
+        "dripDelayS": 0.35,
+        "dripSpreadS": 0.5,
+        "dripGrowS": 1.4,
+        "dripWidthM": 0.035,
+        "dripLengthM": 0.2,
+        "dripFiles": [
+          "blood-wound-b",
+          "blood-wound-c"
+        ],
+        "seed": 17
+      }
+    },
     "bursts": [
       {
         "id": "crown",
@@ -2878,7 +3057,9 @@
       "clips": true,
       "blood": true,
       "crownUnit": "head_crown",
-      "crownReplaces": "head_split"
+      "crownReplaces": "head_split",
+      "bladeAim": true,
+      "openedExtras": true
     }
   },
   "_joanfin": "JOANFIN v77: entries[].overrides (killer / victim roster id, FinisherPair), rt.killers (pairScale per killer id). Joan as VICTIM (split_crown_pit, hengdao_heavy): bones 0.09-0.10 m lower than Dracula, the maul / hengdao cut crosses that height in 3-10 ms at 30-40 m/s: no change needed.",
@@ -2952,5 +3133,10 @@
       }
     ]
   },
-  "_v1fin": "laneV1FIN v94: V1 finishers port on top of FINFIX v93. rt.v1.* are the switches (enabled=false = FINFIX exactly). Numbers: pop 0.16 s, crown 0.183 s, opened 0.18 s, run-through contact 0.533 s, reveal at +1.44 s over 1.76 s."
+  "_v1fin": "laneV1FIN v94: V1 finishers port on top of FINFIX v93. rt.v1.* are the switches (enabled=false = FINFIX exactly). Numbers: pop 0.16 s, crown 0.183 s, opened 0.18 s, run-through contact 0.533 s, reveal at +1.44 s over 1.76 s.",
+  "_v1clips": {
+    "version": 98,
+    "lane": "laneV1CLIPS",
+    "note": "run_through bladeAim + clipsV1.pairOffset + camera, opened weapon drop + leg topple (cuts.units[torso_waist].script.weapon/.legs), rt.v1.bladeAim / openedExtras switches (false = laneV1FIN as shipped). Code: Scripts/Finishers/V1Extras.cs"
+  }
 }

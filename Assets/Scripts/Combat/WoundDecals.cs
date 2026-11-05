@@ -28,32 +28,33 @@ public static class WoundDecals
     // streak: a long tapered gash with a thick core, ragged edge noise and a few drops at the ends. puncture: a round hole with a short radial run and satellite drops.
     static float[] MakeMask(string kind, int n, int seed)
     {
-        var rnd = new System.Random(seed); var a = new float[n * n];
+        var rnd = new System.Random(seed); var a = new float[n * n]; var W = BloodShapes.Get().wound;   // HCKIT6 v100: every shape number is blood_shapes.json wound{} (RNG order unchanged)
         if (kind == "puncture")
         {
-            AddBlob(a, n, 0.5f, 0.5f, 0.1f, 1f, 1f, 0f);
+            AddBlob(a, n, W.centre, W.centre, W.coreR, 1f, 1f, 0f);
             float runAng = (float)(rnd.NextDouble() * Mathf.PI * 2f);
-            for (int i = 0; i < 6; i++) { float d = 0.1f + i * 0.045f; AddBlob(a, n, 0.5f + Mathf.Cos(runAng) * d, 0.5f + Mathf.Sin(runAng) * d, 0.04f - i * 0.004f, 1f, 1f, 0f); }
-            for (int i = 0; i < 9; i++) { float ang = (float)(rnd.NextDouble() * Mathf.PI * 2f), d = 0.16f + (float)rnd.NextDouble() * 0.25f; AddBlob(a, n, 0.5f + Mathf.Cos(ang) * d, 0.5f + Mathf.Sin(ang) * d, 0.012f + (float)rnd.NextDouble() * 0.025f, 1f, 1f, 0f); }
+            for (int i = 0; i < W.runCount; i++) { float d = W.runStart + i * W.runStep; AddBlob(a, n, W.centre + Mathf.Cos(runAng) * d, W.centre + Mathf.Sin(runAng) * d, W.runR - i * W.runRStep, 1f, 1f, 0f); }
+            for (int i = 0; i < W.satCount; i++) { float ang = (float)(rnd.NextDouble() * Mathf.PI * 2f), d = W.satDistMin + (float)rnd.NextDouble() * W.satDistRange; AddBlob(a, n, W.centre + Mathf.Cos(ang) * d, W.centre + Mathf.Sin(ang) * d, W.satRMin + (float)rnd.NextDouble() * W.satRRange, 1f, 1f, 0f); }
         }
         else
         {
-            int seg = 28;
+            int seg = W.seg;
             for (int i = 0; i < seg; i++)
             {
-                float u = i / (float)(seg - 1), x = 0.06f + u * 0.88f, taper = Mathf.Sin(u * Mathf.PI), wob = (float)(rnd.NextDouble() - 0.5) * 0.04f;
-                AddBlob(a, n, x, 0.5f + wob + Mathf.Sin(u * 5f + seed) * 0.03f, 0.03f + 0.07f * taper * (0.75f + 0.5f * (float)rnd.NextDouble()), 1.6f, 1f, 0f);
+                float u = i / (float)(seg - 1), x = W.segX0 + u * W.segXSpan, taper = Mathf.Sin(u * Mathf.PI), wob = (float)(rnd.NextDouble() - 0.5) * W.wobble;
+                AddBlob(a, n, x, W.centre + wob + Mathf.Sin(u * W.sineFreq + seed) * W.sineAmp, W.segR + W.segTaper * taper * (W.segJitterLo + W.segJitterRange * (float)rnd.NextDouble()), W.segSx, 1f, 0f);
             }
-            for (int i = 0; i < 10; i++) AddBlob(a, n, 0.1f + (float)rnd.NextDouble() * 0.8f, 0.5f + ((float)rnd.NextDouble() - 0.5f) * 0.4f, 0.01f + (float)rnd.NextDouble() * 0.02f, 1f, 1f, 0f);
-            for (int i = 0; i < 3; i++) AddBlob(a, n, 0.2f + (float)rnd.NextDouble() * 0.6f, 0.5f - 0.08f - (float)rnd.NextDouble() * 0.12f, 0.012f, 0.6f, 2.4f, 0f);   // short runs below the cut
+            for (int i = 0; i < W.speckCount; i++) AddBlob(a, n, W.speckX0 + (float)rnd.NextDouble() * W.speckXSpan, W.centre + ((float)rnd.NextDouble() - 0.5f) * W.speckYSpan, W.speckRMin + (float)rnd.NextDouble() * W.speckRRange, 1f, 1f, 0f);
+            for (int i = 0; i < W.dripCount; i++) AddBlob(a, n, W.dripX0 + (float)rnd.NextDouble() * W.dripXSpan, W.centre - W.dripDrop - (float)rnd.NextDouble() * W.dripDropRange, W.dripR, W.dripSx, W.dripSy, 0f);   // short runs below the cut
         }
-        for (int i = 0; i < a.Length; i++) a[i] = Mathf.Clamp01(a[i] * 1.5f);
+        for (int i = 0; i < a.Length; i++) a[i] = Mathf.Clamp01(a[i] * BloodShapes.Get().wound.gain);   // HCKIT6 v100
         return a;
     }
 
     static void AddBlob(float[] a, int n, float cx, float cy, float r, float sx, float sy, float unused)
     {
-        int x0 = Mathf.Max(0, (int)((cx - r * sx * 1.2f) * n)), x1 = Mathf.Min(n - 1, (int)((cx + r * sx * 1.2f) * n)), y0 = Mathf.Max(0, (int)((cy - r * sy * 1.2f) * n)), y1 = Mathf.Min(n - 1, (int)((cy + r * sy * 1.2f) * n));
+        float reach = BloodShapes.Get().wound.blobReach;   // HCKIT6 v100: was 1.2f
+        int x0 = Mathf.Max(0, (int)((cx - r * sx * reach) * n)), x1 = Mathf.Min(n - 1, (int)((cx + r * sx * reach) * n)), y0 = Mathf.Max(0, (int)((cy - r * sy * reach) * n)), y1 = Mathf.Min(n - 1, (int)((cy + r * sy * reach) * n));
         for (int y = y0; y <= y1; y++) for (int x = x0; x <= x1; x++)
         {
             float dx = ((x + 0.5f) / n - cx) / (r * sx), dy = ((y + 0.5f) / n - cy) / (r * sy), q = dx * dx + dy * dy;
@@ -75,11 +76,11 @@ public static class WoundDecals
     static Maps[] MapSet(string kind, WoundTable.DecalCfg dc)
     {
         Maps[] arr; if (mapCache.TryGetValue(kind, out arr)) return arr;
-        int n = Mathf.Clamp(dc.texSize, 16, 256), vc = Mathf.Max(1, dc.variants); arr = new Maps[vc];
+        var W = BloodShapes.Get().wound; int n = Mathf.Clamp(dc.texSize, W.texMin, W.texMax), vc = Mathf.Max(1, dc.variants);   /* HCKIT6 v100 */ arr = new Maps[vc];
         int r1 = Mathf.Max(1, Mathf.RoundToInt(dc.normalBlur * n)), r2 = r1 * 3;
         for (int v = 0; v < vc; v++)
         {
-            var a = MakeMask(kind, n, dc.seed * 131 + v * 7919 + (kind == "puncture" ? 17 : 0));
+            var a = MakeMask(kind, n, dc.seed * W.seedMul + v * W.variantMul + (kind == "puncture" ? W.punctureSeedAdd : 0));
             var h1 = Blur(a, n, r1); var h2 = Blur(a, n, r2);
             var h = new float[a.Length]; for (int i = 0; i < h.Length; i++) h[i] = -h1[i] + dc.lipHeight * Mathf.Max(0f, h2[i] - h1[i]) * 2f;   // groove inside, raised lip just outside
             var cpx = new Color32[a.Length]; var npx = new Color32[a.Length]; var mpx = new Color32[a.Length];
@@ -107,10 +108,10 @@ public static class WoundDecals
     {
         var cache = premul ? premulCache : maskCache; Texture2D[] arr;
         if (cache.TryGetValue(kind, out arr)) return arr;
-        int n = Mathf.Clamp(dc.texSize, 16, 256), vc = Mathf.Max(1, dc.variants); arr = new Texture2D[vc];
+        var W = BloodShapes.Get().wound; int n = Mathf.Clamp(dc.texSize, W.texMin, W.texMax), vc = Mathf.Max(1, dc.variants);   /* HCKIT6 v100 */ arr = new Texture2D[vc];
         for (int v = 0; v < vc; v++)
         {
-            var a = MakeMask(kind, n, dc.seed * 131 + v * 7919 + (kind == "puncture" ? 17 : 0)); var px = new Color32[n * n];
+            var a = MakeMask(kind, n, dc.seed * W.seedMul + v * W.variantMul + (kind == "puncture" ? W.punctureSeedAdd : 0)); var px = new Color32[n * n];
             for (int i = 0; i < px.Length; i++)
             {
                 float al = a[i]; byte c0 = B8(dc.color[0]), c1 = B8(dc.color[1]), c2 = B8(dc.color[2]), a8 = B8(al);

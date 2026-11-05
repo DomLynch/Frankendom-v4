@@ -201,7 +201,7 @@ public class VerifyGround : MonoBehaviour
 
     void OnGUI()
     {
-        if (string.IsNullOrEmpty(overlay)) return;
+        if (string.IsNullOrEmpty(overlay) || !Flag("-verifyGround") || !Flag("-verifyOverlay")) return;   // HUDPOLISH: the debug overlay never shows in a normal run, and in a harness run only with -verifyOverlay (it overprinted the boss bar in QC frames)
         var st = new GUIStyle(GUI.skin.label) { fontSize = Mathf.Max(12, Screen.height / 30), fontStyle = FontStyle.Bold };
         var r = new Rect(12, Mathf.Max(8, Screen.height * 120f / 1080f), Screen.width - 24, st.fontSize * 3);   // below the HUD name/bars (QC: label drew over the player name)
         st.normal.textColor = Color.black; GUI.Label(new Rect(r.x + 2, r.y + 2, r.width, r.height), overlay, st);

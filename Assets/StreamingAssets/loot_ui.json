@@ -115,6 +115,8 @@
     "fallbackItems": ["pitborn_pauldron"]
   },
   "screen": {
+    "_layoutNote": "HCKIT6 v100: insetPx..messageS below are the paddings / line factors LootScreen.cs held as literals (line heights = x font size). Every value equals the old literal.",
+    "insetPx": 6, "insetFrameW": 1, "titleLine": 1.4, "subtitleDx": 2, "subtitleDy": 1.28, "boxLine": 1.6, "ruleH": 2, "ruleAlpha": 0.85, "idleFrameAlpha": 0.35, "rowPadX": 14, "rowPadY": 7, "rowTrim": 20, "labelLine": 1.5, "nameTrim": 24, "nameGap": 2, "nameLine": 1.4, "zebraAlpha": 0.025, "arrowGap": 10, "deltaGap": 6, "messageS": 2.5,
     "_about": "Equip screen layout (px at 1080). Three columns: slots (slotColW), carried items (candColW), details (the rest). openInFight false = Tab opens it only when no fight is live (victory, defeat, or no duel in the scene).",
     "panelW": 1220.0,
     "panelH": 720.0,

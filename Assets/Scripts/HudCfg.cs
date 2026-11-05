@@ -41,7 +41,7 @@ public static class HudCfg
     }
     [Serializable] public class BossC
     {
-        public bool enabled = true; public float w = 720f, top = 30f, sideMargin = 30f; public int nameSize = 24, nameSmall = 18, titleSize = 15, cueSize = 17; public float nameTracking = 3.2f, nameGap = 9f, titleGap = 3f, cueGap = 8f;
+        public bool enabled = true; public float w = 720f, top = 30f, sideMargin = 30f; public int nameSize = 24, nameSmall = 18, titleSize = 15, cueSize = 17; public float[] titleColor = null; /*HUDPOLISH: null = colors.dim*/ public float nameTracking = 3.2f, nameGap = 9f, titleGap = 3f, cueGap = 8f;
         public bool showTitle = true, showPosture = true, showStamina = false;
         public BarC hp = new BarC { h = 14f, taper = 20f }, stamina = new BarC { w = 420f, h = 5f, taper = 8f, gap = 9f }, posture = new BarC { w = 420f, h = 4f, taper = 7f, gap = 9f };
     }
@@ -101,11 +101,23 @@ public static class HudCfg
     {
         public string[] confirmKeys = { "Return", "KeypadEnter", "JoystickButton0" }, retryKeys = { "Backspace", "JoystickButton1" }, midFightRetryKeys = { "Backspace" };
     }
+    // HCKIT6 v100 (HC3 K13): the layout factors GameHUD / HudDraw held as literals (hud.json "layout"). Defaults = the old literals.
+    [Serializable] public class LayoutC
+    {
+        public float nameLine = 1.35f, bossMinW = 300f, titleBox = 1.5f, titleAdvance = 1.4f, cueLift = 2f, cueSmallDelta = 3f, cueTracking = 3f;
+        public float captionLift = 1.5f, captionW = 200f, captionH = 1.6f, diamondLine = 1.1f, diamondDx = 1f, diamondGap = 8f, hintGap = 16f, hintW = 160f, hintH = 1.6f, hintAlpha = 0.8f, hintDy = 0.2f, toastTracking = 1.5f;
+        public float cornerFadeS = 1.5f, cornerDy = 1.5f, cornerW = 260f, cornerH = 1.6f;
+        public float[] keysPanel = { 0.02f, 0.02f, 0.025f }; public float keysLinePx = 1f, keysTitleTracking = 3f, keysTitleDy = 0.6f, keysTitleLine = 1.7f, keysTitleSmall = 3f, keysRowInk = 0.9f, keysFooterLine = 1.8f, keysFooterBox = 1.6f, keysFooterLift = 2f, keysFooterAdvance = 1.7f;
+        public float[] iconBack = { 0.025f, 0.025f, 0.03f, 0.86f }, pieShade = { 0f, 0f, 0f, 0.62f }; public float iconInk = 0.95f, iconCoolAlpha = 0.75f, cdInk = 0.95f, flashBase = 1.1f, flashGrow = 0.35f, keyLabelPad = 20f, keyLabelBox = 1.6f, keyLabelInk = 0.85f;
+        public float guardDotCentre = 1.25f, guardRingPx = 0.5f;
+        public float spaceW = 0.55f, lineH = 1.45f, shadowDiv = 14f, runPad = 6f; public int capsCache = 400;
+    }
     [Serializable] public class Data
     {
         public bool enabled = true; public float referenceHeight = 1080f, minScale = 0.6f, maxScale = 3f;
         public ColorsC colors = new ColorsC(); public FontsC fonts = new FontsC(); public BarsC bars = new BarsC(); public PlayerC player = new PlayerC(); public BossC boss = new BossC(); public StanceC stance = new StanceC(); public SpecialsC specials = new SpecialsC(); public GuardDirC guardDir = new GuardDirC(); public DebugC debug = new DebugC(); public HintC hint = new HintC();
         public VignetteC vignette = new VignetteC(); public LowHpC lowHp = new LowHpC(); public HitTickC hitTick = new HitTickC(); public ScreensC screens = new ScreensC(); public FadeC fade = new FadeC(); public InputC input = new InputC();
+        public LayoutC layout = new LayoutC();   // HCKIT6 v100
     }
 
     static Data data; static bool loaded;

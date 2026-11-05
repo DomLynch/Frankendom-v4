@@ -687,6 +687,7 @@ public static partial class MeshCut   // V1FIN v94: partial (MeshCutCrown.cs)
 
     static void Blood(CutResult res, Transform victim, Transform parentBone, Vector3 pos, Vector3 dir, CutUnit unit, FinisherFile cfg, bool hasPiece)
     {
+        if (FinVis.On && string.IsNullOrEmpty(unit.cleave)) FinVisRing(victim, parentBone, pos, dir, unit, cfg);   // FINVIS v1: the cut-reveal ring round the stump (units with a cleave row get the arc line in FinisherCleave instead)
         if (V1Blood(res, victim, parentBone, pos, dir, unit, cfg, hasPiece)) { GoreFx.Splash(victim, unit.loc, unit.extraDecals, cfg.gore); FinisherCleave.Apply(victim, unit, pos, dir, Vector3.zero, res); return; }   // V1FIN v94: V1 finisher-blood.ts sources + phases
         res.blood.Add(new CutBloodEvent { pos = pos, dir = dir, kind = "jet", loc = unit.loc });
         var spray = cfg.gore.neckSpray;
@@ -698,6 +699,14 @@ public static partial class MeshCut   // V1FIN v94: partial (MeshCutCrown.cs)
         }
         GoreFx.Splash(victim, unit.loc, unit.extraDecals, cfg.gore);
         FinisherCleave.Apply(victim, unit, pos, dir, Vector3.zero, res);   // V63G: wound line + patches + drips on the head and the bigger burst (units with cleave / burst ids; no-op otherwise)
+    }
+
+    // FINVIS v1: radius = the gore.locs row of the unit's location (the same skin radius the splats use) x the victim scale
+    static void FinVisRing(Transform victim, Transform bone, Vector3 pos, Vector3 dir, CutUnit unit, FinisherFile cfg)
+    {
+        float rad = 0.1f; var locs = cfg.gore.locs; string[] names = { "arm", "leg", "torso", "head" };
+        if (locs != null && unit.loc >= 0 && unit.loc < names.Length) for (int i = 0; i < locs.Length; i++) if (locs[i] != null && locs[i].name == names[unit.loc]) { rad = locs[i].radiusM; break; }
+        FinVis.CutRing(victim, bone, pos, dir, rad * Mathf.Max(0.5f, victim.lossyScale.y), FinisherCleave.LineTexture());
     }
 
     static void Fallback(Transform victim, Transform root, CutUnit unit, CutResult res)

@@ -54,7 +54,7 @@
   "boss": {
     "_about": "Top-centre enemy bar: name (serif small caps), the ladder title under it (opponents.json row title, only while the ladder is on), a wide tapered HP bar, the posture bar centred under it and the DEATHBLOW / POSTURE BROKEN cue under that. w is clamped so it never runs into the player block (sideMargin px gap).",
     "enabled": true, "w": 720, "top": 30, "sideMargin": 30,
-    "nameSize": 24, "nameSmall": 18, "nameTracking": 3.2, "nameGap": 9, "titleSize": 15, "titleGap": 3, "showTitle": true, "cueSize": 17, "cueGap": 8,
+    "nameSize": 24, "nameSmall": 18, "nameTracking": 3.2, "nameGap": 12, "titleSize": 17, "titleGap": 4, "titleColor": [0.80, 0.76, 0.68, 1.0], "showTitle": true, "cueSize": 17, "cueGap": 8,
     "showPosture": true, "showStamina": false,
     "hp": { "h": 14, "taper": 20 },
     "stamina": { "w": 420, "h": 5, "taper": 8, "gap": 9 },
@@ -62,14 +62,14 @@
   },
   "stance": {
     "_about": "Bottom-left stance indicator: caption, a diamond + the stance name in its stances.json colour (small caps), a dim key hint. The switch toast (stance name, lower centre) is drawn here too. enabled = false gives the old StanceLayer label back.",
-    "enabled": true, "x": 48, "bottom": 58, "caption": "STANCE", "captionSize": 14, "nameSize": 21, "nameSmall": 16, "tracking": 2.4, "diamond": 9, "hint": "3 / 4", "hintSize": 14,
+    "enabled": true, "x": 48, "bottom": 58, "caption": "STANCE", "captionSize": 16, "nameSize": 24, "nameSmall": 18, "tracking": 2.4, "diamond": 10, "hint": "3 / 4", "hintSize": 16,
     "toastSize": 24, "toastSmall": 18, "toastY": 0.70
   },
   "specials": {
     "_about": "Bottom-right: the two special-move icons (special 1, special 2 of the player's DuelFighter). Round dark icon, thin ring (gold when ready), glyph (slash, crescent, cross, anything else = diamond), a clockwise pie + seconds while cooling down, a flash ring when ready again. cooldownTicks = the full cooldown the pie is measured against (the larger of this and the biggest value seen is used); ticksPerSecond = sim rate (60 Hz).",
-    "enabled": true, "right": 52, "bottom": 56, "size": 62, "gap": 20, "ringPx": 2.2, "glyphScale": 0.62, "ticksPerSecond": 60, "cooldownTicks": 540, "readyFlashS": 0.55,
-    "keySize": 13, "cdSize": 21, "keyDy": 5, "pieSteps": 48,
-    "items": [ { "key": "1", "glyph": "slash", "label": "" }, { "key": "2", "glyph": "crescent", "label": "" } ]
+    "enabled": true, "right": 52, "bottom": 72, "size": 62, "gap": 54, "ringPx": 2.2, "glyphScale": 0.62, "ticksPerSecond": 60, "cooldownTicks": 540, "readyFlashS": 0.55,
+    "keySize": 16, "cdSize": 19, "keyDy": 6, "pieSteps": 48,
+    "items": [ { "key": "1", "glyph": "slash", "label": "Skull Crack" }, { "key": "2", "glyph": "crescent", "label": "Whirlwind" } ]
   },
   "guardDir": {
     "_about": "Guard-direction indicator around the PLAYER (STEERUI v93: anchored to the projected body; sideDistFrac / topDistFrac = arc apex distance from the body centre, arcRadiusFrac = arc curvature, centreFrac = body centre height, all fractions of the on-screen player height; anchorPlayer false = screen centre; ringFrac 0 = no faint ring; radius only for the pre-v93 layout), shown only while the guard is up (and the scene requires a guard side, controls.json guard.guardRequiresSide). One thin tapered arc per guard side of controls.json guard.sides (placed by the side's deg: top 0, left -90, right 90); the held side is lit (gold during the parry window, with a pulse), the others dim; the centre diamond is lit when no side is held. radius = distance of the arcs from the centre, arcDeg = their length, thickness = band width as a fraction of the texture half-size. Replaces the old guard bar of controls.json marker while enabled (the attack marker is unchanged).",
@@ -140,5 +140,15 @@
     "confirmKeys": [ "Return", "KeypadEnter", "JoystickButton0" ],
     "retryKeys": [ "Backspace", "JoystickButton1" ],
     "midFightRetryKeys": [ "Backspace" ]
+  },
+  "layout": {
+    "_about": "HCKIT6 v100 (HC3 K13): layout factors GameHUD.cs / HudDraw.cs held as literals (line heights = x font size, px gaps, alphas); every value equals the old literal. nameLine = name row height x nameSize (player + boss); title* = boss ladder title; cue* = cue text under the boss bar; caption* / diamond* / hint* / toast* = stance block; corner* = key hint corner text; keys* = the controls panel; iconBack / pieShade / icon* / cd* / flash* / keyLabel* = special icons; guard* = guard-direction centre dot and ring; spaceW (width of a space = x width of 'a'), lineH, shadowDiv, runPad, capsCache = HudDraw small caps.",
+    "nameLine": 1.35, "bossMinW": 300, "titleBox": 1.5, "titleAdvance": 1.4, "cueLift": 2, "cueSmallDelta": 3, "cueTracking": 3,
+    "captionLift": 1.5, "captionW": 200, "captionH": 1.6, "diamondLine": 1.1, "diamondDx": 1, "diamondGap": 8, "hintGap": 16, "hintW": 160, "hintH": 1.6, "hintAlpha": 0.8, "hintDy": 0.2, "toastTracking": 1.5,
+    "cornerFadeS": 1.5, "cornerDy": 1.5, "cornerW": 260, "cornerH": 1.6,
+    "keysPanel": [0.02, 0.02, 0.025], "keysLinePx": 1, "keysTitleTracking": 3, "keysTitleDy": 0.6, "keysTitleLine": 1.7, "keysTitleSmall": 3, "keysRowInk": 0.9, "keysFooterLine": 1.8, "keysFooterBox": 1.6, "keysFooterLift": 2, "keysFooterAdvance": 1.7,
+    "iconBack": [0.025, 0.025, 0.03, 0.86], "pieShade": [0.0, 0.0, 0.0, 0.62], "iconInk": 0.95, "iconCoolAlpha": 0.75, "cdInk": 0.95, "flashBase": 1.1, "flashGrow": 0.35, "keyLabelPad": 20, "keyLabelBox": 1.6, "keyLabelInk": 0.85,
+    "guardDotCentre": 1.25, "guardRingPx": 0.5,
+    "spaceW": 0.55, "lineH": 1.45, "shadowDiv": 14, "runPad": 6, "capsCache": 400
   }
 }

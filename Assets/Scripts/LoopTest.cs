@@ -11,7 +11,7 @@ using UnityEngine;
 //   per fight start : HP / stamina / posture of both fighters back to full, timeScale 1, no finisher / hit-stop / slow-mo left over, CameraDeath weight 0, a sane lock camera, the fade is done,
 //                     the fight counters moved the way the previous outcome says (Victory -> Next: FightNumber + 1, OpponentIndex + 1, Attempt 1; Defeat -> Retry: Attempt + 1), the Pitborn carries the ladder row's hp
 //   per fight end   : the end screen reaches full alpha, a screenshot of it (loop_fN_victory.png / loop_fN_defeat.png), the stats line, no exception anywhere
-// Dracula is driven like -autoplay / -balanceauto (his AIBrain in the playerBot profile + the flow bot). Fight 1 is natural; the next fights are forced (Pitborn or Dracula dies after -loopforce seconds)
+// The player (D) is driven like -autoplay / -balanceauto (his AIBrain in the playerBot profile + the flow bot). Fight 1 is natural; the next fights are forced (the enemy or the player dies after -loopforce seconds)
 // until BOTH screens have been seen, so a 3-fight run always shows a victory and a defeat screen. Run:
 //   HadesSlice.exe -looptest [-loopfights:3] [-loopforce:12] [-loopmax:120] [-looptimeout:600] [-loopout:<dir>] -logFile looptest.log
 // Result: <out>\looptest_result.txt (PASS / FAIL + one line per fight), exit code 0 / 2 (fail or exception) / 3 (timeout). Nothing is written outside <out>.
@@ -132,8 +132,8 @@ public class LoopTest : MonoBehaviour
             CameraOk(tag, D);
             Check(GameLoop.FightNumber == expectFight && GameLoop.Attempt == expectAttempt && GameLoop.OpponentIndex == expectOpp, tag + "counters fight " + GameLoop.FightNumber + "/" + expectFight + " attempt " + GameLoop.Attempt + "/" + expectAttempt + " opponent " + GameLoop.OpponentIndex + "/" + expectOpp);
             Check(GameLoop.FightsStarted == expectStarted, tag + "FightsStarted " + GameLoop.FightsStarted + "/" + expectStarted);
-            if (firstBase < 0f) firstBase = GameLoop.BaseEnemyHp; else Check(Mathf.Abs(GameLoop.BaseEnemyHp - firstBase) < 0.5f, tag + "scene base Pitborn hp changed (" + GameLoop.BaseEnemyHp.ToString("F0", IC) + " vs " + firstBase.ToString("F0", IC) + ")");
-            if (GameLoop.LadderOn) { float hm, dm; var rw = GameLoop.RowAt(GameLoop.OpponentIndex, out hm, out dm); Check(Mathf.Abs(P.maxHealth - GameLoop.BaseEnemyHp * hm) < 0.6f, tag + "Pitborn hp " + P.maxHealth.ToString("F0", IC) + " != base x " + hm.ToString("F2", IC) + " (row " + rw.id + ")"); }
+            if (firstBase < 0f) firstBase = GameLoop.BaseEnemyHp; else Check(Mathf.Abs(GameLoop.BaseEnemyHp - firstBase) < 0.5f, tag + "scene base " + Roster.EnemyName + " hp changed (" + GameLoop.BaseEnemyHp.ToString("F0", IC) + " vs " + firstBase.ToString("F0", IC) + ")");
+            if (GameLoop.LadderOn) { float hm, dm; var rw = GameLoop.RowAt(GameLoop.OpponentIndex, out hm, out dm); Check(Mathf.Abs(P.maxHealth - GameLoop.BaseEnemyHp * hm) < 0.6f, tag + Roster.EnemyName + " hp " + P.maxHealth.ToString("F0", IC) + " != base x " + hm.ToString("F2", IC) + " (row " + rw.id + ")"); }
             Log(tag + "start OK-check done | fight " + GameLoop.FightNumber + " attempt " + GameLoop.Attempt + " opponent " + GameLoop.CurrentRow().id + " | hp D" + D.maxHealth.ToString("F0", IC) + " P" + P.maxHealth.ToString("F0", IC) + " | dmg x" + GameLoop.AppliedDmgMul.ToString("F2", IC) + " | ai " + GameLoop.AppliedDifficulty + " | first fade alpha " + firstFadeAlpha.ToString("F2", IC));
             if (i == fights) break;
 
@@ -152,7 +152,7 @@ public class LoopTest : MonoBehaviour
                 if (wantForce && !forced)
                 {
                     forced = true;
-                    if (!seenWin) { forcedWhat = "Pitborn"; P.Die(); } else if (!seenLose) { forcedWhat = "Dracula"; D.Die(); } else { forcedWhat = "Pitborn (time limit)"; P.Die(); }
+                    if (!seenWin) { forcedWhat = Roster.EnemyName; P.Die(); } else if (!seenLose) { forcedWhat = Roster.PlayerName; D.Die(); } else { forcedWhat = Roster.EnemyName + " (time limit)"; P.Die(); }   // HCKIT6 v100: roster names, not Pitborn / Dracula
                     Log(tag + "forced outcome: " + forcedWhat + " killed at " + t.ToString("F1", IC) + " s");
                 }
                 yield return null;
@@ -215,8 +215,8 @@ public class LoopTest : MonoBehaviour
         var rig = FindFirstObjectByType<CameraRig>(); Check(rig != null && rig.enabled, tag + "camera rig missing / disabled");
         var p = cam.transform.position; Check(!float.IsNaN(p.x + p.y + p.z) && !float.IsInfinity(p.x + p.y + p.z), tag + "camera position NaN");
         Check(cam.fieldOfView > 10f && cam.fieldOfView < 100f, tag + "camera fov " + cam.fieldOfView.ToString("F1", IC));
-        float dist = Vector3.Distance(p, D.transform.position); Check(dist < 40f, tag + "camera " + dist.ToString("F1", IC) + " m from Dracula");
-        var sp = cam.WorldToViewportPoint(D.transform.position + Vector3.up); Check(sp.z > 0f && sp.x > -0.1f && sp.x < 1.1f, tag + "Dracula not in front of the camera (viewport " + sp.x.ToString("F2", IC) + ", z " + sp.z.ToString("F1", IC) + ")");
+        float dist = Vector3.Distance(p, D.transform.position); Check(dist < 40f, tag + "camera " + dist.ToString("F1", IC) + " m from " + Roster.PlayerName);   // HCKIT6 v100
+        var sp = cam.WorldToViewportPoint(D.transform.position + Vector3.up); Check(sp.z > 0f && sp.x > -0.1f && sp.x < 1.1f, tag + Roster.PlayerName + " not in front of the camera (viewport " + sp.x.ToString("F2", IC) + ", z " + sp.z.ToString("F1", IC) + ")");
     }
 
     // Dracula as in -autoplay / -balanceauto: PlayerBrain off, AIBrain on with the private "auto" flag (playerBot profile), flow bot on, lock range wide; both brains re-seeded

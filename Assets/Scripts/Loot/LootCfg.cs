@@ -42,7 +42,7 @@ public static class LootCfg
         public float height = 1.4f, fadeStartM = 14f, fadeEndM = 24f, nearAlpha = 1f, minScreenMargin = 24f;
         public int nameSize = 26, subSize = 13, promptSize = 15; public float lineGap = 4f, ruleW = 120f, promptGap = 8f, promptHeight = 24f;
         public bool showSub = true;
-        public float stackGapY = 8f, boxW = 300f, cullMargin = 140f;   // HUDFIX v92: min vertical gap between stacked labels (px), label box width used for the overlap test, px past the viewport edge where a label is dropped instead of pinned to the edge
+        public float stackGapY = 8f, boxW = 300f, cullMargin = 140f, plateGap = 14f; /*HUDPOLISH: px between loot labels and the end-screen plate*/   // HUDFIX v92: min vertical gap between stacked labels (px), label box width used for the overlap test, px past the viewport edge where a label is dropped instead of pinned to the edge
     }
     [Serializable]
     public class PickupC
@@ -59,6 +59,8 @@ public static class LootCfg
         public float descGap = 14f, detailNameGap = 6f, openFadeS = 0.18f, hintY = 40f, closeBox = 34f;
         public bool openInFight = false, showEquipHint = true; public float equipHintBottom = 96f; public int equipHintSize = 15;
         public int triTex = 32; public float triPad = 4f;
+        // HCKIT6 v100 (HC3 K13): LootScreen paddings / line factors that were literals (loot_ui.json screen{}); defaults = the old literals
+        public float insetPx = 6f, insetFrameW = 1f, titleLine = 1.4f, subtitleDx = 2f, subtitleDy = 1.28f, boxLine = 1.6f, ruleH = 2f, ruleAlpha = 0.85f, idleFrameAlpha = 0.35f, rowPadX = 14f, rowPadY = 7f, rowTrim = 20f, labelLine = 1.5f, nameTrim = 24f, nameGap = 2f, nameLine = 1.4f, zebraAlpha = 0.025f, arrowGap = 10f, deltaGap = 6f, messageS = 2.5f;
     }
     [Serializable]
     public class TextC

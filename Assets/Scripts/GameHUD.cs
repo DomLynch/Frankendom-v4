@@ -68,7 +68,7 @@ public class GameHUD : MonoBehaviour
     {
         var P = H.player; if (player == null && pf == null) return;
         float x = P.x, y = P.y;
-        float nameH = P.nameSize * 1.35f;
+        float nameH = P.nameSize * H.layout.nameLine; /* HCKIT6 v100 */
         HudDraw.Caps(x, y, 0f, Roster.PlayerName, "title", P.nameSize, P.nameSmall, P.nameTracking, Ink());
         var hp = new Rect(x, y + nameH + P.nameGap, P.hp.w, P.hp.h);
         float f = player != null && player.max > 0f ? Mathf.Clamp01(player.current / player.max) : 0f;
@@ -85,14 +85,14 @@ hp.x, hp.yMax + H.bars.framePad + P.stamina.gap, 0f, pf, true, P.stamina, P.post
     {
         var Bc = H.boss; if (!Bc.enabled || (enemy == null && ef == null)) return;
         float maxW = vw - 2f * (H.player.x + H.player.hp.w + Bc.sideMargin);
-        float w = Mathf.Max(300f, Mathf.Min(Bc.w, maxW)), x = (vw - w) * 0.5f, y = Bc.top;
-        float nameH = Bc.nameSize * 1.35f;
+        float w = Mathf.Max(H.layout.bossMinW, Mathf.Min(Bc.w, maxW)), x = (vw - w) * 0.5f, y = Bc.top;
+        float nameH = Bc.nameSize * H.layout.nameLine;
         HudDraw.Caps(x, y, 0f, Roster.EnemyName, "title", Bc.nameSize, Bc.nameSmall, Bc.nameTracking, Ink());
         float ty = y + nameH;
         if (Bc.showTitle && GameLoop.LadderOn)
         {
             string title = GameLoop.CurrentRow().title;
-            if (!string.IsNullOrEmpty(title)) { HudDraw.Text(new Rect(x, ty + Bc.titleGap, w, Bc.titleSize * 1.5f), title, "serif", Bc.titleSize, TextAnchor.UpperLeft, false, HudCfg.Col(H.colors.dim), true); ty += Bc.titleSize * 1.4f + Bc.titleGap; }
+            if (!string.IsNullOrEmpty(title)) { HudDraw.Text(new Rect(x, ty + Bc.titleGap, w, Bc.titleSize * H.layout.titleBox), title, "serif", Bc.titleSize, TextAnchor.UpperLeft, true, Bc.titleColor != null && Bc.titleColor.Length >= 3 ? HudCfg.Col(Bc.titleColor) : HudCfg.Col(H.colors.dim), true); ty += Bc.titleSize * H.layout.titleAdvance + Bc.titleGap; }
         }
         var hp = new Rect(x, ty + Bc.nameGap, w, Bc.hp.h);
         float f = enemy != null && enemy.max > 0f ? Mathf.Clamp01(enemy.current / enemy.max) : 0f;
@@ -101,7 +101,7 @@ hp.x, hp.yMax + H.bars.framePad + P.stamina.gap, 0f, pf, true, P.stamina, P.post
         string cue = null; Color cc = Color.white; bool big = false; float after = hp.yMax + H.bars.framePad;
         if (ef != null && !ef.Dead) after = CombatHudBars.Draw(   // kitV76 (Goose v75): no stamina / posture strips at 0 HP
 hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.stamina, Bc.posture, Bc.showStamina, Bc.showPosture, out cue, out cc, out big);
-        if (cue != null) HudDraw.Caps(hp.center.x, after + Bc.cueGap - 2f, 0.5f, cue, "title", Bc.cueSize, Mathf.Max(8, Bc.cueSize - 3), 3f, cc);
+        if (cue != null) HudDraw.Caps(hp.center.x, after + Bc.cueGap - H.layout.cueLift, 0.5f, cue, "title", Bc.cueSize, Mathf.Max(8, Bc.cueSize - (int)H.layout.cueSmallDelta), H.layout.cueTracking, cc);
     }
 
     // ---------------- stance (bottom-left) ----------------
@@ -111,14 +111,14 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
         var row = StanceLayer.Row(StanceLayer.StanceOf(pf)); if (row == null) return;
         Color col = HudCfg.Col(row.color, 1f); Color dim = HudCfg.Col(H.colors.dim);
         float y = vh - S.bottom, x = S.x;
-        HudDraw.Text(new Rect(x, y - S.captionSize * 1.5f, 200f, S.captionSize * 1.6f), S.caption, "serif", S.captionSize, TextAnchor.UpperLeft, false, dim);
+        HudDraw.Text(new Rect(x, y - S.captionSize * H.layout.captionLift, H.layout.captionW, S.captionSize * H.layout.captionH), S.caption, "serif", S.captionSize, TextAnchor.UpperLeft, false, dim);
         float d = S.diamond;
-        HudDraw.Tex(new Rect(x - 1f, y + (S.nameSize * 1.1f - d) * 0.5f, d, d), HudDraw.Diamond(), col);
-        float w = HudDraw.Caps(x + d + 8f, y, 0f, row.label, "title", S.nameSize, S.nameSmall, S.tracking, col);
-        if (!string.IsNullOrEmpty(S.hint)) HudDraw.Text(new Rect(x + d + 16f + w, y + S.nameSize * 0.2f, 160f, S.hintSize * 1.6f), S.hint, "serif", S.hintSize, TextAnchor.UpperLeft, false, new Color(dim.r, dim.g, dim.b, dim.a * 0.8f));
+        HudDraw.Tex(new Rect(x - H.layout.diamondDx, y + (S.nameSize * H.layout.diamondLine - d) * 0.5f, d, d), HudDraw.Diamond(), col);
+        float w = HudDraw.Caps(x + d + H.layout.diamondGap, y, 0f, row.label, "title", S.nameSize, S.nameSmall, S.tracking, col);
+        if (!string.IsNullOrEmpty(S.hint)) HudDraw.Text(new Rect(x + d + H.layout.hintGap + w, y + S.nameSize * H.layout.hintDy, H.layout.hintW, S.hintSize * H.layout.hintH), S.hint, "serif", S.hintSize, TextAnchor.UpperLeft, false, new Color(dim.r, dim.g, dim.b, dim.a * H.layout.hintAlpha));
         // switch toast: the new stance's name, lower centre, fades out
         string tt; Color tc; float ta;
-        if (StanceLayer.StanceDriver.ToastState(out tt, out tc, out ta)) HudDraw.Caps(vw * 0.5f, vh * S.toastY, 0.5f, tt, "title", S.toastSize, S.toastSmall, S.tracking + 1.5f, new Color(tc.r, tc.g, tc.b, ta));
+        if (StanceLayer.StanceDriver.ToastState(out tt, out tc, out ta)) HudDraw.Caps(vw * 0.5f, vh * S.toastY, 0.5f, tt, "title", S.toastSize, S.toastSmall, S.tracking + H.layout.toastTracking, new Color(tc.r, tc.g, tc.b, ta));
     }
 
     // ---------------- controls panel (F1) ----------------
@@ -130,26 +130,26 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
         // the small corner prompt, only for the first cornerSeconds of the fight and while the panel is closed
         if (!string.IsNullOrEmpty(K.cornerText) && hintA < 0.01f && !hintPinned && Time.unscaledTime - startT < K.cornerSeconds && H.stance.enabled)
         {
-            float ca = K.cornerAlpha * Mathf.Clamp01((K.cornerSeconds - (Time.unscaledTime - startT)) / 1.5f);
-            HudDraw.Text(new Rect(H.stance.x, vh - H.stance.bottom + H.stance.nameSize * 1.5f, 260f, K.cornerSize * 1.6f), K.cornerText, "serif", K.cornerSize, TextAnchor.UpperLeft, false, new Color(dim.r, dim.g, dim.b, ca));
+            float ca = K.cornerAlpha * Mathf.Clamp01((K.cornerSeconds - (Time.unscaledTime - startT)) / H.layout.cornerFadeS);
+            HudDraw.Text(new Rect(H.stance.x, vh - H.stance.bottom + H.stance.nameSize * H.layout.cornerDy, H.layout.cornerW, K.cornerSize * H.layout.cornerH), K.cornerText, "serif", K.cornerSize, TextAnchor.UpperLeft, false, new Color(dim.r, dim.g, dim.b, ca));
         }
         if (hintA < 0.01f || K.rows == null || K.rows.Length == 0) return;
         int cols = Mathf.Max(1, K.columns), perCol = Mathf.CeilToInt(K.rows.Length / (float)cols);
-        float w = cols * K.colWidth + 2f * K.pad, h = perCol * K.rowHeight + 2f * K.pad + K.titleSize * 1.7f + K.footerSize * 1.7f;
+        float w = cols * K.colWidth + 2f * K.pad, h = perCol * K.rowHeight + 2f * K.pad + K.titleSize * H.layout.keysTitleLine + K.footerSize * H.layout.keysFooterAdvance;
         var r = new Rect(K.margin, vh - K.bottom - h, w, h);
         float old = HudDraw.Alpha; HudDraw.Alpha = old * hintA;
-        HudDraw.Fill(r, new Color(0.02f, 0.02f, 0.025f, K.panelAlpha));
-        var fc = HudCfg.Col(H.colors.frame); HudDraw.Fill(new Rect(r.x, r.y, r.width, 1f), fc); HudDraw.Fill(new Rect(r.x, r.yMax - 1f, r.width, 1f), HudCfg.Col(H.colors.frameDim));
-        HudDraw.Caps(r.x + K.pad, r.y + K.pad * 0.6f, 0f, K.title, "title", K.titleSize, K.titleSize - 3, 3f, Ink());
-        float y0 = r.y + K.pad + K.titleSize * 1.7f; var gold = HudCfg.Col(H.colors.gold);
+        HudDraw.Fill(r, new Color(H.layout.keysPanel[0], H.layout.keysPanel[1], H.layout.keysPanel[2], K.panelAlpha));
+        var fc = HudCfg.Col(H.colors.frame); HudDraw.Fill(new Rect(r.x, r.y, r.width, H.layout.keysLinePx), fc); HudDraw.Fill(new Rect(r.x, r.yMax - H.layout.keysLinePx, r.width, H.layout.keysLinePx), HudCfg.Col(H.colors.frameDim));
+        HudDraw.Caps(r.x + K.pad, r.y + K.pad * H.layout.keysTitleDy, 0f, K.title, "title", K.titleSize, K.titleSize - (int)H.layout.keysTitleSmall, H.layout.keysTitleTracking, Ink());
+        float y0 = r.y + K.pad + K.titleSize * H.layout.keysTitleLine; var gold = HudCfg.Col(H.colors.gold);
         for (int i = 0; i < K.rows.Length; i++)
         {
             int c = i / perCol, rr = i % perCol; var row = K.rows[i]; if (row == null) continue;
             float rx = r.x + K.pad + c * K.colWidth, ry = y0 + rr * K.rowHeight;
             HudDraw.Text(new Rect(rx, ry, K.keyWidth, K.rowHeight), row.k, "serif", K.fontSize, TextAnchor.UpperLeft, true, gold);
-            HudDraw.Text(new Rect(rx + K.keyWidth, ry, K.colWidth - K.keyWidth, K.rowHeight), row.a, "serif", K.fontSize, TextAnchor.UpperLeft, false, Ink(0.9f));
+            HudDraw.Text(new Rect(rx + K.keyWidth, ry, K.colWidth - K.keyWidth, K.rowHeight), row.a, "serif", K.fontSize, TextAnchor.UpperLeft, false, Ink(H.layout.keysRowInk));
         }
-        HudDraw.Text(new Rect(r.x + K.pad, r.yMax - K.footerSize * 1.8f - 2f, r.width - 2f * K.pad, K.footerSize * 1.6f), K.footer, "serif", K.footerSize, TextAnchor.UpperLeft, false, dim, true);
+        HudDraw.Text(new Rect(r.x + K.pad, r.yMax - K.footerSize * H.layout.keysFooterLine - H.layout.keysFooterLift, r.width - 2f * K.pad, K.footerSize * H.layout.keysFooterBox), K.footer, "serif", K.footerSize, TextAnchor.UpperLeft, false, dim, true);
         HudDraw.Alpha = old;
     }
 
@@ -169,22 +169,22 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
             if (ready) cdMax[i] = 0f;
             var r = new Rect(x0 + i * (S.size + S.gap), y0, S.size, S.size);
             Color readyCol = HudCfg.Col(H.colors.ready), coolCol = HudCfg.Col(H.colors.cooling);
-            HudDraw.Tex(r, HudDraw.Disc(), new Color(0.025f, 0.025f, 0.03f, 0.86f));
+            HudDraw.Tex(r, HudDraw.Disc(), new Color(H.layout.iconBack[0], H.layout.iconBack[1], H.layout.iconBack[2], H.layout.iconBack[3]));
             HudDraw.Tex(r, HudDraw.Ring(S.ringPx), ready ? readyCol : HudCfg.Col(H.colors.frameDim));
             float gs = S.size * S.glyphScale; var gr = new Rect(r.center.x - gs * 0.5f, r.center.y - gs * 0.5f, gs, gs);
-            HudDraw.Tex(gr, HudDraw.Glyph(it.glyph), ready ? HudCfg.Col(H.colors.ink, 0.95f) : new Color(coolCol.r, coolCol.g, coolCol.b, 0.75f));
+            HudDraw.Tex(gr, HudDraw.Glyph(it.glyph), ready ? HudCfg.Col(H.colors.ink, H.layout.iconInk) : new Color(coolCol.r, coolCol.g, coolCol.b, H.layout.iconCoolAlpha));
             if (!ready)
             {
-                var pie = HudDraw.Pie(cd / tot, S.pieSteps); if (pie != null) HudDraw.Tex(r, pie, new Color(0f, 0f, 0f, 0.62f));
-                HudDraw.Text(r, Mathf.CeilToInt(cd / Mathf.Max(1f, S.ticksPerSecond)).ToString(), "title", S.cdSize, TextAnchor.MiddleCenter, true, HudCfg.Col(H.colors.ink, 0.95f));
+                var pie = HudDraw.Pie(cd / tot, S.pieSteps); if (pie != null) HudDraw.Tex(r, pie, new Color(H.layout.pieShade[0], H.layout.pieShade[1], H.layout.pieShade[2], H.layout.pieShade[3]));
+                HudDraw.Text(r, Mathf.CeilToInt(cd / Mathf.Max(1f, S.ticksPerSecond)).ToString(), "title", S.cdSize, TextAnchor.MiddleCenter, true, HudCfg.Col(H.colors.ink, H.layout.cdInk));
             }
             else
             {
                 float k = 1f - (now - readyT[i]) / Mathf.Max(0.05f, S.readyFlashS);
-                if (k > 0f) { float g = S.size * (1.1f + 0.35f * (1f - k)); HudDraw.Tex(new Rect(r.center.x - g * 0.5f, r.center.y - g * 0.5f, g, g), HudDraw.Ring(S.ringPx), new Color(readyCol.r, readyCol.g, readyCol.b, k)); }
+                if (k > 0f) { float g = S.size * (H.layout.flashBase + H.layout.flashGrow * (1f - k)); HudDraw.Tex(new Rect(r.center.x - g * 0.5f, r.center.y - g * 0.5f, g, g), HudDraw.Ring(S.ringPx), new Color(readyCol.r, readyCol.g, readyCol.b, k)); }
             }
             string label = string.IsNullOrEmpty(it.label) ? it.key : it.key + "  " + it.label;
-            HudDraw.Text(new Rect(r.x - 20f, r.yMax + S.keyDy, S.size + 40f, S.keySize * 1.6f), label, "serif", S.keySize, TextAnchor.UpperCenter, false, ready ? HudCfg.Col(H.colors.ink, 0.85f) : HudCfg.Col(H.colors.dim));
+            HudDraw.Text(new Rect(r.x - H.layout.keyLabelPad, r.yMax + S.keyDy, S.size + 2f * H.layout.keyLabelPad, S.keySize * H.layout.keyLabelBox), label, "serif", S.keySize, TextAnchor.UpperCenter, false, ready ? HudCfg.Col(H.colors.ink, H.layout.keyLabelInk) : HudCfg.Col(H.colors.dim));
         }
     }
 
@@ -207,7 +207,7 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
         float oa = HudDraw.Alpha;
         var saved = GUI.matrix; GUI.matrix = Matrix4x4.identity;
         // optional faint full ring (ringFrac 0 = off) so the three sides read as one instrument
-        if (G.ringFrac > 0f) { float rr = G.ringFrac * hPx; HudDraw.Tex(new Rect(c.x - rr, c.y - rr, 2f * rr, 2f * rr), HudDraw.Ring(0.5f), new Color(live.r, live.g, live.b, G.ringAlpha * guardA)); }
+        if (G.ringFrac > 0f) { float rr = G.ringFrac * hPx; HudDraw.Tex(new Rect(c.x - rr, c.y - rr, 2f * rr, 2f * rr), HudDraw.Ring(H.layout.guardRingPx), new Color(live.r, live.g, live.b, G.ringAlpha * guardA)); }
         for (int i = 0; i < sides.Length; i++)
         {
             var sd = sides[i]; if (sd == null) continue;
@@ -222,7 +222,7 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
         }
         GUI.matrix = Matrix4x4.identity;
         // centre guard (no side): the small diamond is lit, on the body centre
-        bool centre = pf.guardSide == 0; float ds = G.dotSize * s * (centre ? 1.25f : 1f);
+        bool centre = pf.guardSide == 0; float ds = G.dotSize * s * (centre ? H.layout.guardDotCentre : 1f);
         HudDraw.Tex(new Rect(c.x - ds * 0.5f, c.y - ds * 0.5f, ds, ds), HudDraw.Diamond(), new Color(live.r, live.g, live.b, (centre ? 1f : G.idleAlpha) * guardA));
         GUI.matrix = saved;
         HudDraw.Alpha = oa;

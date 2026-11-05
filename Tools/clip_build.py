@@ -163,19 +163,36 @@ def hold_clip(src, fa, fb, period, fps):
 
 
 # ---------------------------------------------------------------- config
+PACK_KEY = 'enemyPack'   # HCKIT6 v100: source-key role name (rows say "enemyPack:<file>"; the legacy "pitbornPack:" prefix is still accepted)
+
+
+def pack_hook(cfg):   # HCKIT6 v100
+    return cfg.get('enemyPackHook') or cfg.get('pitbornPackHook') or {}
+
+
+def is_pack_src(spec):   # HCKIT6 v100
+    return spec.startswith(PACK_KEY + ':') or spec.startswith('pitbornPack:')
+
+
+def tuning_owner(cfg, roster, name):   # HCKIT6 v100: owner may be a role token (@player / @enemy) or a roster id
+    o = cfg.get('tuning', {}).get(name, {}).get('owner')
+    return roster.get({'@player': 'player', '@enemy': 'enemy'}[o], o) if o in ('@player', '@enemy') else o
+
+
 def resolve_src(cfg, spec):
     if ':' not in spec: fail('bad src "%s" (expected key:file)' % spec)
     key, name = spec.split(':', 1)
-    srcs = dict(cfg['sources']); hk = cfg.get('pitbornPackHook', {})
-    if hk.get('enabled'): srcs['pitbornPack'] = hk['sources.pitbornPack']
-    if key not in srcs: fail('unknown source key %s (pitbornPack needs pitbornPackHook.enabled)' % key)
+    if key == 'pitbornPack': key = PACK_KEY   # HCKIT6 v100: legacy prefix
+    srcs = dict(cfg['sources']); hk = pack_hook(cfg)   # HCKIT6 v100: role-named hook (enemyPackHook / sources.enemyPack); the old pitborn* keys still read
+    if hk.get('enabled'): srcs[PACK_KEY] = hk.get('sources.enemyPack', hk.get('sources.pitbornPack'))   # HCKIT6 v100
+    if key not in srcs: fail('unknown source key %s (%s needs enemyPackHook.enabled)' % (key, PACK_KEY))
     p = os.path.join(srcs[key], name if name.lower().endswith('.glb') else name + '.glb')
     return os.path.normpath(p)
 
 
 def check_config(cfg, roster, ids):
     errs = []
-    owners = {k: v.get('owner') for k, v in cfg.get('tuning', {}).items()}
+    owners = {k: tuning_owner(cfg, roster, k) for k in cfg.get('tuning', {})}   # HCKIT6 v100
     foreign_tokens = [t.lower() for t in cfg.get('foreignTokens', [])] + [c['id'].lower() for c in roster['characters']]
     for cid in ids:
         spec = cfg['characters'].get(cid, {})
@@ -184,7 +201,7 @@ def check_config(cfg, roster, ids):
             if tun not in owners: errs.append('%s: unknown tuning profile %s' % (cid, tun))
             elif owners[tun] != cid: errs.append('%s: tuning profile "%s" belongs to %s (refused: another character\'s profile)' % (cid, tun, owners[tun]))
         for row in cfg['base'] + spec.get('extraRows', []):
-            if row.get('src', '').startswith('pitbornPack:') and cid not in cfg.get('pitbornPackHook', {}).get('allowedFor', []): errs.append('%s/%s: source pack pitbornPack is only for %s' % (cid, row['state'], cfg['pitbornPackHook']['allowedFor'])); continue
+            if is_pack_src(row.get('src', '')) and cid not in pack_hook(cfg).get('allowedFor', []): errs.append('%s/%s: source pack %s is only for %s' % (cid, row['state'], PACK_KEY, pack_hook(cfg).get('allowedFor'))); continue   # HCKIT6 v100
             srcs = [row['src']] if 'src' in row else []
             if 'derive' in row and 'from' in row['derive']: srcs.append(row['derive']['from'])
             for s in srcs:

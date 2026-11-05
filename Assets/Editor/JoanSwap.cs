@@ -23,7 +23,7 @@ public static class JoanSwap
     [System.Serializable]
     public class Cfg
     {
-        public string newId = "", templateId = "", sourceGlb = "", scene = "Assets/Scenes/HadesSlice.unity";
+        public string newId = "", templateId = "", templateController = "" /* HCKIT6 v100 */, sourceGlb = "", scene = "Assets/Scenes/HadesSlice.unity";
         public string rightHand = "mixamorig:RightHand", middle = "mixamorig:RightHandMiddle1", socket = "WeaponSocket_R";
         public int layer = 8; public float socketReach = 0.55f, glbHeightM = 0f;
         public string[] hideNodePrefixes = new string[0]; public MatRow[] materials = new MatRow[0];
@@ -42,6 +42,15 @@ public static class JoanSwap
         return c;
     }
 
+    // HCKIT6 v100: templateId may be a NEUTRAL id (not a roster row, e.g. "_ClipTemplate"). The scene clone source then falls back to the first roster row that is neither the new character nor the enemy
+    // (= the old "Dracula" today, so the behaviour is identical); a templateId that IS a roster id is used as written. templateController (a null-motion controller asset) replaces the clone source's controller when it exists.
+    static RosterCharacter TemplateRow(Cfg c)   // HCKIT6 v100
+    {
+        foreach (var r in Roster.All) if (r != null && r.id == c.templateId) return r;
+        foreach (var r in Roster.All) if (r != null && r.id != c.newId && r.id != Roster.EnemyId) { Debug.Log("JOANSWAP templateId '" + c.templateId + "' is not a roster id: scene clone source = " + r.id); return r; }
+        return Roster.Get(c.templateId);
+    }
+    static string TemplateController(Cfg c, RosterCharacter tr) { return !string.IsNullOrEmpty(c.templateController) && File.Exists(c.templateController) ? c.templateController : tr.controller; }   // HCKIT6 v100
     // HCKIT3 v93: roster id of the scene character that is CLONED to get a fighter object (its component set). Order: -swapTemplate:<id> on the Unity command line, Tools/build_config.json swap.templateId
     // (today "Dracula", unchanged), then joan_swap.json templateId (legacy). Dom: no Dracula ENEMY; the template object still has to exist in the scene until a neutral template does.
     static string TemplateId(Cfg c)
@@ -81,14 +90,14 @@ public static class JoanSwap
     public static void ImportModel()
     {
         var cfg = Load(); if (cfg == null) return;
-        Roster.Reload(); var jr = Roster.Get(cfg.newId); var tr = Roster.Get(cfg.templateId);
+        Roster.Reload(); var jr = Roster.Get(cfg.newId); var tr = TemplateRow(cfg); /* HCKIT6 v100 */
         string dir = Path.GetDirectoryName(jr.modelGlb).Replace('\\', '/');
         EnsureFolder(dir); EnsureFolder(dir + "/Mats"); EnsureFolder(dir + "/Tex");
         if (!string.IsNullOrEmpty(jr.finisherClipFolder)) EnsureFolder(jr.finisherClipFolder);
         if (!File.Exists(jr.modelGlb)) { Debug.LogError("JOANSWAP " + jr.modelGlb + " missing: run _agents/laneJOAN/tools/build_joan_combat.py (it writes it from " + cfg.sourceGlb + ")"); return; }
         AssetDatabase.ImportAsset(jr.modelGlb, ImportAssetOptions.ForceSynchronousImport);
         if (!string.IsNullOrEmpty(jr.animGlb) && File.Exists(jr.animGlb)) AssetDatabase.ImportAsset(jr.animGlb, ImportAssetOptions.ForceSynchronousImport);
-        if (!File.Exists(jr.controller)) { if (!AssetDatabase.CopyAsset(tr.controller, jr.controller)) { Debug.LogError("JOANSWAP controller copy failed " + tr.controller + " -> " + jr.controller); return; } }
+        if (!File.Exists(jr.controller)) { if (!AssetDatabase.CopyAsset(TemplateController(cfg, tr), jr.controller)) { Debug.LogError("JOANSWAP controller copy failed " + tr.controller + " -> " + jr.controller); return; } }
         if (!string.IsNullOrEmpty(jr.guardMask) && !File.Exists(jr.guardMask)) AssetDatabase.CreateAsset(new AvatarMask(), jr.guardMask);   // NODRAC v93: was CopyAsset(template mask) = another rig's bone paths; GuardLayerSetup.Run writes this character's own
         var ctrl = AssetDatabase.LoadAssetAtPath<AnimatorController>(jr.controller);
         if (ctrl == null) { Debug.LogError("JOANSWAP controller not loadable " + jr.controller); return; }
@@ -156,7 +165,7 @@ public static class JoanSwap
     public static void BuildSceneObject()
     {
         var cfg = Load(); if (cfg == null) return;
-        Roster.Reload(); var jr = Roster.Get(cfg.newId); var tr = Roster.Get(cfg.templateId);
+        Roster.Reload(); var jr = Roster.Get(cfg.newId); var tr = TemplateRow(cfg); /* HCKIT6 v100 */
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(jr.modelGlb);
         if (prefab == null) { Debug.LogError("JOANSWAP model not imported " + jr.modelGlb + " (run menu 1)"); return; }
         var ctrl = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(jr.controller);

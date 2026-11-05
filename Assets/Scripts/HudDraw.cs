@@ -75,13 +75,13 @@ public static class HudDraw
     {
         string key = kind + "|" + big + "|" + small + "|" + tracking.ToString("F1") + "|" + (bold ? 1 : 0) + "|" + text; CapsLayout c;
         if (capsCache.TryGetValue(key, out c)) return c;
-        if (capsCache.Count > 400) capsCache.Clear();
+        if (capsCache.Count > HudCfg.Get().layout.capsCache) capsCache.Clear();   /* HCKIT6 v100 */
         string up = text.ToUpperInvariant(); var runs = new List<Run>(); float x = 0f; bool wordStart = true;
         for (int i = 0; i < up.Length; i++)
         {
             char ch = up[i]; int sz = ((wordStart && !MinorWord(text, i)) || big == small) ? big : small; wordStart = ch == ' ';   // v77 minor: 'of' / 'the' keep the small cap size
             var st = Style(kind, sz, TextAnchor.LowerLeft, bold, false); tmp.text = ch.ToString();
-            float w = ch == ' ' ? st.CalcSize(new GUIContent("a")).x * 0.55f : st.CalcSize(tmp).x;
+            float w = ch == ' ' ? st.CalcSize(new GUIContent("a")).x * HudCfg.Get().layout.spaceW : st.CalcSize(tmp).x;
             runs.Add(new Run { ch = ch.ToString(), x = x, size = sz, w = w });
             x += w + tracking;
         }
@@ -92,11 +92,11 @@ public static class HudDraw
     {
         if (string.IsNullOrEmpty(text)) return 0f;
         var L = Layout(text, kind, big, small, tracking, bold); if (c.a * Alpha <= 0.003f) return L.width;
-        float x0 = x - L.width * pivot, h = big * 1.45f; var sh = HudCfg.Col(HudCfg.Get().colors.shadow); float d = Mathf.Max(1f, big / 14f);
+        float x0 = x - L.width * pivot, h = big * HudCfg.Get().layout.lineH; var sh = HudCfg.Col(HudCfg.Get().colors.shadow); float d = Mathf.Max(1f, big / HudCfg.Get().layout.shadowDiv);
         for (int i = 0; i < L.runs.Length; i++)
         {
             var r = L.runs[i]; if (r.ch == " ") continue;
-            var st = Style(kind, r.size, TextAnchor.LowerLeft, bold, false); var rc = new Rect(x0 + r.x, y, r.w + 6f, h);
+            var st = Style(kind, r.size, TextAnchor.LowerLeft, bold, false); var rc = new Rect(x0 + r.x, y, r.w + HudCfg.Get().layout.runPad, h);
             if (shadow) OutlineLabel(st, rc, r.ch, c.a);   // HUDFIX v92
             if (shadow) { st.normal.textColor = Fade(new Color(sh.r, sh.g, sh.b, sh.a * c.a)); GUI.Label(new Rect(rc.x + d, rc.y + d, rc.width, rc.height), r.ch, st); }
             st.normal.textColor = Fade(c); GUI.Label(rc, r.ch, st);

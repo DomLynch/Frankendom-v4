@@ -102,6 +102,7 @@ public static class GoreFx
     {
         if (g == null || into == null) return;
         for (int i = 0; i < 4; i++) { var m = SharedDecalMaterial(g, i); if (m != null) into.Add(m); }
+        FinVis.Warm();   // FINVIS v1: v2 textures / decal + droplet materials loaded now (no-op when finisherVfx.v2 is off)
         if (sprayMat == null) sprayMat = FxMaterials.Particle(null, "bloodStrands");
         if (sprayMat != null) into.Add(sprayMat);
     }
@@ -170,6 +171,7 @@ public static class GoreFx
         var r = go.GetComponent<ParticleSystemRenderer>();
         r.sharedMaterial = sprayMat; r.renderMode = ParticleSystemRenderMode.Stretch; r.lengthScale = 3.2f; r.velocityScale = 0f; r.cameraVelocityScale = 0f; r.maxParticleSize = 0.5f;
         ps.Play();
+        FinVis.OnSpray(go, ps, c, secs);   // FINVIS v1: lit droplets + the wound seep (no-op when finisherVfx.v2 is off)
         UnityEngine.Object.Destroy(go, secs + c.life[1] + 2f);
         return ps;
     }
@@ -201,6 +203,7 @@ public static class GoreFx
         if (wetMats[i] == null)
         {
             var m = new Material(wetShader) { name = "FinisherBloodWet" + i, hideFlags = HideFlags.DontUnloadUnusedAsset };
+            m.EnableKeyword("_COLORMAP"); m.EnableKeyword("_MASKMAP"); m.EnableKeyword("_MATERIAL_AFFECTS_ALBEDO"); m.EnableKeyword("_MATERIAL_AFFECTS_MASKMAP");   // FINVIS v1: LOOKOPT's runtime decal material needs the keywords (QC1 v95, WoundDecals) or it draws nothing
             if (wetMask == null) { wetMask = new Texture2D(1, 1, TextureFormat.RGBA32, false, true); wetMask.SetPixel(0, 0, new Color(0f, 1f, 0f, Mathf.Clamp01(o.smoothness))); wetMask.Apply(); }   // R metal 0, G AO 1, A smoothness
             m.SetTexture("_BaseColorMap", Splats(g)[i]); var c = g.color; m.SetColor("_BaseColor", new Color(c[0], c[1], c[2], 1f));
             m.SetTexture("_MaskMap", wetMask);
@@ -248,6 +251,7 @@ public static class GoreFx
             Vector3 dir = (Mathf.Cos(ang) * fwd + Mathf.Sin(ang) * side).normalized;
             float size = Mathf.Lerp(g.sizeM[0], g.sizeM[1], Rnd()) * 1.75f;   // severity 3 look: the cut is the worst wound
 
+            if (FinVis.On && FinVis.BodySplat(bone, p + dir * (gl.radiusM + g.quadLift), dir, axis, size, (int)(Rnd() * 4f), names[loc])) continue;   // FINVIS v1: lit wound decal (V1 art + normal map) instead of the starburst quad
             if (LookOptions.Cfg().finisherBlood.wetDecal && WetDecal(bone, p + dir * (gl.radiusM + g.quadLift), dir, axis, size, (int)(Rnd() * 4f), g, names[loc])) continue;   // LOOKOPT v95: lit HDRP/Decal instead of the flat quad
             var go = new GameObject("FinisherBlood_" + names[loc]);
             go.AddComponent<MeshFilter>().sharedMesh = Quad();

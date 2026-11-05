@@ -1,0 +1,37 @@
+{
+  "_about": "HCKIT6 v100 (HC3 K10b/c): the shape generators of the blood and wound art, read by Combat/BloodShapes.cs (DataPath: StreamingAssets first in the player). Every number is the literal that BloodBurst / WoundDecals.MakeMask / BloodGround.MakeSplat / BloodEdge.MakeStrip held in code up to v95 (tools/hckit6_selftest.py proves json == old literals). [lo, hi] = a random range (lo + (hi - lo) * rnd). Colours, counts per hit weight and ground sizes stay in blood.json, wounds.json, hit_feel.json and blood_edge.json; this file is only the SHAPE of what is drawn. Presentation only.",
+  "burst": {
+    "_about": "BloodBurst (V3 blood-style.ts): hitCount / killCount particles per landed hit, the first hitDrops / killDrops are heavy drops (drop), the rest a thin spray (spray). Width x Thin (= product of thinFactors), strand length x Long (= longNumer product / longDenom product). gravity 8 m/s2 over gravityRef 9.81. front / minCam / growMax / pullHeight = the foe burst is pulled toward the camera. alphaKeys = alpha, time pairs of the colour-over-lifetime gradient.",
+    "thinFactors": [0.7, 0.65, 0.9], "longNumer": [1.2, 1.2], "longDenom": [0.65, 0.9],
+    "front": 0.35, "minCam": 1.5, "growMax": 3.0, "gravity": 8.0, "gravityRef": 9.81, "pullHeight": 1.2, "nearEps": 0.01,
+    "startLifetime": 0.6, "maxParticleSize": 0.5, "cameraVelocityScale": 0.0, "maxParticles": 400,
+    "hitCount": 15, "killCount": 25, "hitDrops": 2, "killDrops": 3, "seed": 731,
+    "alphaKeys": [1.0, 0.0, 0.9, 0.7, 0.0, 1.0],
+    "drop": { "life": [0.5, 0.72], "size": [0.07, 0.12], "stretch": [1.1, 1.5], "radial": [0.3, 1.1], "along": [0.3, 1.0], "up": [1.6, 3.0] },
+    "spray": { "life": [0.14, 0.4], "size": [0.018, 0.05], "stretch": [1.3, 2.4], "speed": [1.2, 3.6], "along": [0.5, 2.4], "up": [0.2, 2.6], "radialMul": 0.6 }
+  },
+  "wound": {
+    "_about": "WoundDecals.MakeMask. Puncture = round hole (coreR) + a short radial run (runCount blobs, runStart + i * runStep out, radius runR - i * runRStep) + satCount satellite drops. Streak = a tapered gash of seg blobs along x (segX0 + u * segXSpan, wobble, sine), speckCount specks, dripCount short runs below the cut. gain multiplies the mask; texMin / texMax clamp wounds.json decal.texSize.",
+    "texMin": 16, "texMax": 256, "seedMul": 131, "variantMul": 7919, "punctureSeedAdd": 17, "gain": 1.5, "blobReach": 1.2, "centre": 0.5,
+    "coreR": 0.1, "runCount": 6, "runStart": 0.1, "runStep": 0.045, "runR": 0.04, "runRStep": 0.004,
+    "satCount": 9, "satDistMin": 0.16, "satDistRange": 0.25, "satRMin": 0.012, "satRRange": 0.025,
+    "seg": 28, "segX0": 0.06, "segXSpan": 0.88, "wobble": 0.04, "sineFreq": 5.0, "sineAmp": 0.03, "segR": 0.03, "segTaper": 0.07, "segJitterLo": 0.75, "segJitterRange": 0.5, "segSx": 1.6,
+    "speckCount": 10, "speckX0": 0.1, "speckXSpan": 0.8, "speckYSpan": 0.4, "speckRMin": 0.01, "speckRRange": 0.02,
+    "dripCount": 3, "dripX0": 0.2, "dripXSpan": 0.6, "dripDrop": 0.08, "dripDropRange": 0.12, "dripR": 0.012, "dripSx": 0.6, "dripSy": 2.4
+  },
+  "ground": {
+    "_about": "BloodGround.MakeSplat: variants textures, each one main pool (mainR x texture size) + blobBase + rnd*blobRand mid blobs (midR) + pins pin drops (pinR) at dist x texture size from the centre, x stretch sx; reach = blob support radius. stretchY = the splat's length stretch on the floor, hitScatter / hitOffset = placement around the victim, dripMin = wound drip inner radius.",
+    "variants": 3, "blobBase": 4, "blobRand": 4, "pins": 4,
+    "dist": [0.1, 0.38], "mainR": [0.16, 0.24], "midR": [0.04, 0.1], "pinR": [0.012, 0.03], "sx": [0.7, 1.4], "stretchY": [0.8, 1.25],
+    "reach": 2.0, "hitScatter": 0.4, "hitOffset": 0.6, "dripMin": 0.05
+  },
+  "edge": {
+    "_about": "BloodEdge.MakeStrip. kinds[0] soft wobbling smear, kinds[1] soft bleed (wide falloff), kinds[2] dragged streaks. reach = reachBase + reachAmp * perlin(v * reachFreq + off, off + reachY) (squared when reachSquare); row = rowBase + rowAmp * perlin(v * rowFreq + off, off + rowY); alpha = (1 - u / reach)^pow (pow 1 = linear). off = seed * seedMul + index * indexMul; vFade = soft top / bottom fade; shade = shadeBase + shadeAmp * perlin(u * shadeFreq + off, v * shadeFreq).",
+    "kinds": [
+      { "reachBase": 0.45, "reachAmp": 0.55, "reachFreq": 3.0, "reachY": 0.0, "rowBase": 1.0, "rowAmp": 0.0, "rowFreq": 0.0, "rowY": 0.0, "pow": 1.3, "reachSquare": false },
+      { "reachBase": 0.85, "reachAmp": 0.0, "reachFreq": 3.0, "reachY": 0.0, "rowBase": 0.6, "rowAmp": 0.4, "rowFreq": 5.0, "rowY": 7.0, "pow": 2.2, "reachSquare": false },
+      { "reachBase": 0.2, "reachAmp": 0.8, "reachFreq": 14.0, "reachY": 3.0, "rowBase": 0.5, "rowAmp": 0.5, "rowFreq": 40.0, "rowY": 9.0, "pow": 1.0, "reachSquare": true }
+    ],
+    "seedMul": 1.37, "indexMul": 11.3, "vFade": 0.18, "gain": 0.95, "shadeBase": 0.8, "shadeAmp": 0.4, "shadeFreq": 6.0
+  }
+}

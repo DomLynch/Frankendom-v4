@@ -173,7 +173,7 @@ public static class FinisherPlayer
         float dz = Mathf.Max(0.6f, e.distance * ks), dx = 0f;
         if (e.pairOffset != null && e.pairOffset.Length >= 3) { dx = e.pairOffset[0] * ks; dz = Mathf.Max(0.6f, e.pairOffset[2] * ks); }
         Vector3 pa = new Vector3(mid.x, A.transform.position.y, mid.z) - axis * (dz * 0.5f) - rightV * (dx * 0.5f);
-        Vector3 pv = pa + axis * dz + rightV * dx; pv.y = V.transform.position.y;
+        Vector3 pv = pa + axis * dz + rightV * dx; pv.y = V.transform.position.y + (e.pairOffset != null && e.pairOffset.Length >= 3 ? e.pairOffset[1] * ks : 0f);   // V1CLIPS v98: pairOffset[1] = lift
         Teleport(A, pa, Quaternion.Euler(0f, e.killerYawDeg, 0f) * axis);
         Teleport(V, pv, Quaternion.Euler(0f, e.victimYawDeg, 0f) * -axis);
         A.opponent = null; V.opponent = null; A.guardHeld = false; V.guardHeld = false; A.moveDir = V.moveDir = Vector3.zero;
@@ -190,6 +190,9 @@ public static class FinisherPlayer
         float planned = e.contactAt >= 0f ? e.contactAt : clipPath ? 0.6f : (1 + (md != null ? md.Windup(false) : 14) + off) / 60f;
         bool vClip = !string.IsNullOrEmpty(e.victimClip) && HasState(fv, e.victimClip);
         float vLen = vClip ? Mathf.Max(0.05f, ClipLength(fv, e.victimClip) - Mathf.Max(0f, e.victimClipStart)) / Mathf.Max(0.05f, e.victimClipSpeed) : 0f;   // FINFIX v93: minus victimClipStart
+
+        // V1CLIPS v98: V1 aimBladeAt - the blade goes through the chest while the V1 killer clip plays
+        if (v1on && v1c.bladeAim && e.bladeAim != null && e.bladeAim.enabled && clipPath && e.clipsV1 != null && e.attackerClip == e.clipsV1.attackerClip) BladeAim.Begin(A, V, e.bladeAim, planned);
 
         // the DuelFighter state machine must not touch a body that plays a paired clip
         if (clipPath) A.enabled = false;
@@ -325,6 +328,7 @@ public static class FinisherPlayer
         FinisherVictimLook.Scrub(V, "final hold"); FinisherVictimLook.After = FinisherVictimLook.Sample(V);   // V64F
         if (clipPath) { A.enabled = true; if (fa != null) { fa.holdLast = false; fa.Force("idle", 0.15f); if (fa.anim) fa.anim.speed = fa.animWeight; } }
         A.state = FState.Loco; A.t = 0;
+        BladeAim.EndAll();   // V1CLIPS v98
         host.Cleanup();
         if (rig) host.CameraDone();
     }
@@ -396,6 +400,7 @@ public static class FinisherPlayer
         if (!HasState(fv, c.victimClip) || (!string.IsNullOrEmpty(c.attackerClip) && !HasState(fa, c.attackerClip))) { Debug.Log("[finisher] " + e.id + ": V1 clip state '" + c.victimClip + (string.IsNullOrEmpty(c.attackerClip) ? "" : "' / '" + c.attackerClip) + "' not on the fighter (not imported yet): the entry keeps its own clips"); return e; }
         var r = e.Clone(); r.victimClip = c.victimClip; r.victimClipSpeed = c.victimClipSpeed; r.victimClipStart = c.victimClipStart; r.victimStart = c.victimStart; r.dieAt = c.dieAt;
         if (!string.IsNullOrEmpty(c.attackerClip)) r.attackerClip = c.attackerClip; if (c.attackerClipSpeed > 0f) r.attackerClipSpeed = c.attackerClipSpeed; if (c.attackerClipStart >= 0f) r.attackerClipStart = c.attackerClipStart;
+        if (c.pairOffset != null && c.pairOffset.Length >= 3) r.pairOffset = c.pairOffset;   // V1CLIPS v98
         if (c.contactAt >= 0f) r.contactAt = c.contactAt; if (c.duration > 0f) r.duration = c.duration; if (c.holdAfter >= 0f) r.holdAfter = c.holdAfter;
         Debug.Log("[finisher] " + e.id + ": V1 clips '" + c.victimClip + "' x" + c.victimClipSpeed.ToString("0.00") + (string.IsNullOrEmpty(c.attackerClip) ? "" : " + killer '" + c.attackerClip + "'"));
         return r;
@@ -416,7 +421,8 @@ public static class FinisherPlayer
                 if (job != null) { bool wasDone = job.done; res = MeshCut.Commit(job, away, k.strength, 60f * k.strength); Debug.Log("[finisher] cut '" + unit + "' COMMIT at T=" + sceneT.ToString("0.00") + " s took " + sw.ElapsedMilliseconds + " ms (prepared " + (wasDone ? "in time at T=" + readyT.ToString("0.00") : "NOT in time: finished synchronously, cpu " + job.cpuMs.ToString("0") + " ms") + ")"); }
                 else { res = MeshCut.Cut(victim.transform, unit, FinisherConfig.Get().rotation.seed + Mathf.Abs(Hash(unit)) % 1000, away, k.strength, 60f * k.strength); Debug.Log("[finisher] cut '" + unit + "' sync (no precut) took " + sw.ElapsedMilliseconds + " ms"); }
                 budgetHit = res != null && res.budget; if (budgetHit) Debug.LogWarning("[finisher] cut '" + unit + "' budget exceeded: gore-only + plain death (" + res.note + ")");   // CUTLOD v96
-                FinisherPiece.Adopt(res, victim.transform, unit); handled = res != null && res.ok;   // V62B: the severed piece stays as a physics prop   // ok=false (unknown unit, unreadable mesh, exception inside) -> the head-hide / blood fallback below runs
+                FinisherPiece.Adopt(res, victim.transform, unit); if (res != null && res.ok) V1Extras.OnCut(victim, attacker, FinisherConfig.Get().cuts != null ? System.Array.Find(FinisherConfig.Get().cuts.units, uu => uu != null && uu.id == unit) : null, away);   // V1CLIPS v98: opened weapon drop / leg topple
+                handled = res != null && res.ok;   // V62B: the severed piece stays as a physics prop   // ok=false (unknown unit, unreadable mesh, exception inside) -> the head-hide / blood fallback below runs
                 if (res != null && !res.ok) Debug.LogWarning("[finisher] cut '" + unit + "' not done: " + res.note);
             }
             catch (Exception ex) { Debug.LogWarning("[finisher] MeshCut.Cut failed: " + ex.Message); }

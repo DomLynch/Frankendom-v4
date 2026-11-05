@@ -25,6 +25,7 @@ public class BloodGround : MonoBehaviour
 
     float Rnd() { unchecked { seed += 0x6d2b79f5u; uint t = (seed ^ (seed >> 15)) * (1u | seed); t ^= t + (t ^ (t >> 7)) * (61u | t); return (t ^ (t >> 14)) / 4294967296f; } }
     float Between(float lo, float hi) { return lo + (hi - lo) * Rnd(); }
+    float Between(float[] r) { return r[0] + (r[1] - r[0]) * Rnd(); }   // HCKIT6 v100
 
     void OnEnable() { ContactRelay.OnEvent += OnEvent; }
     void OnDisable() { ContactRelay.OnEvent -= OnEvent; }
@@ -41,7 +42,7 @@ public class BloodGround : MonoBehaviour
         quad.uv = new[] { new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) };
         quad.colors = new[] { Color.white, Color.white, Color.white, Color.white };
         quad.triangles = new[] { 0, 2, 1, 0, 3, 2 }; quad.RecalculateNormals(); quad.RecalculateBounds();
-        tex = new Texture2D[3]; for (int i = 0; i < tex.Length; i++) tex[i] = MakeSplat(Mathf.Max(16, g.texSize), g, i);
+        tex = new Texture2D[BloodShapes.Get().ground.variants]; for (int i = 0; i < tex.Length; i++) tex[i] = MakeSplat(Mathf.Max(16, g.texSize), g, i);
         EnsurePool(g);   // PERF: the pooled splat objects (renderers off) are created now instead of in the frame of the first landed hit
     }
 
@@ -52,12 +53,13 @@ public class BloodGround : MonoBehaviour
     Texture2D MakeSplat(int n, BloodTable.GroundCfg g, int variant)
     {
         var px = new float[n * n]; float cx0 = n * 0.5f, cy0 = n * 0.5f;
-        int blobs = 4 + (int)(Rnd() * 4f);
-        for (int b = 0; b < blobs + 4; b++)
+        var G = BloodShapes.Get().ground;   // HCKIT6 v100: splat blob layout = blood_shapes.json ground{}
+        int blobs = G.blobBase + (int)(Rnd() * G.blobRand);
+        for (int b = 0; b < blobs + G.pins; b++)
         {
-            float ang = Rnd() * Mathf.PI * 2f, dist = b == 0 ? 0f : Between(0.1f, 0.38f) * n, rad = b == 0 ? Between(0.16f, 0.24f) * n : (b < blobs ? Between(0.04f, 0.1f) * n : Between(0.012f, 0.03f) * n);
-            float cx = cx0 + Mathf.Cos(ang) * dist, cy = cy0 + Mathf.Sin(ang) * dist; float sx = Between(0.7f, 1.4f);
-            int x0 = Mathf.Max(0, (int)(cx - rad * 2f)), x1 = Mathf.Min(n - 1, (int)(cx + rad * 2f)), y0 = Mathf.Max(0, (int)(cy - rad * 2f)), y1 = Mathf.Min(n - 1, (int)(cy + rad * 2f));
+            float ang = Rnd() * Mathf.PI * 2f, dist = b == 0 ? 0f : Between(G.dist) * n, rad = b == 0 ? Between(G.mainR) * n : (b < blobs ? Between(G.midR) * n : Between(G.pinR) * n);
+            float cx = cx0 + Mathf.Cos(ang) * dist, cy = cy0 + Mathf.Sin(ang) * dist; float sx = Between(G.sx);
+            int x0 = Mathf.Max(0, (int)(cx - rad * G.reach)), x1 = Mathf.Min(n - 1, (int)(cx + rad * G.reach)), y0 = Mathf.Max(0, (int)(cy - rad * G.reach)), y1 = Mathf.Min(n - 1, (int)(cy + rad * G.reach));
             for (int y = y0; y <= y1; y++) for (int x = x0; x <= x1; x++)
             {
                 float dx = (x - cx) / (rad * sx), dy = (y - cy) / rad, q = dx * dx + dy * dy;
@@ -118,12 +120,12 @@ public class BloodGround : MonoBehaviour
         {
             float a = Rnd() * Mathf.PI * 2f; Vector3 rnd = new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a));
             float along = Mathf.Max(Vector3.Dot(rnd, away), 0f) + Mathf.Min(Vector3.Dot(rnd, away), 0f) * g.behindMul;   // mostly on the side the blow pushes toward
-            Vector3 pos = feet + (rnd * 0.4f + away * (0.6f + along)) * Between(g.minRadius, g.maxRadius);
+            var GS = BloodShapes.Get().ground; Vector3 pos = feet + (rnd * GS.hitScatter + away * (GS.hitOffset + along)) * Between(g.minRadius, g.maxRadius);   // HCKIT6 v100
             if (!Ground(pos, out var gp, out var gn, g)) continue;
             var s = Next(g);
             s.born = Time.unscaledTime; s.life = g.lifeSec; s.baseSize = Between(g.minSize, g.maxSize) * (kill ? g.killSizeMul : 1f) * FighterScale.Of(e.target);
             s.t.position = gp + gn * g.yOffset; s.t.rotation = Quaternion.LookRotation(-gn, rnd) ;   // quad faces up (its +Z points into the ground), random yaw
-            s.t.localScale = new Vector3(s.baseSize, s.baseSize * Between(0.8f, 1.25f), 1f);
+            s.t.localScale = new Vector3(s.baseSize, s.baseSize * Between(GS.stretchY), 1f);
             mpb.Clear(); mpb.SetTexture(MainTexId, tex[(int)(Rnd() * tex.Length) % tex.Length]); mpb.SetColor(TintId, Color.white);
             s.r.SetPropertyBlock(mpb); s.r.enabled = true; s.used = true;
         }
@@ -137,12 +139,12 @@ public class BloodGround : MonoBehaviour
         for (int i = 0; i < n; i++)
         {
             float a = instance.Rnd() * Mathf.PI * 2f; Vector3 rnd = new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a));
-            Vector3 pos = feet + rnd * instance.Between(0.05f, g.minRadius);
+            var GS = BloodShapes.Get().ground; Vector3 pos = feet + rnd * instance.Between(GS.dripMin, g.minRadius);   // HCKIT6 v100
             if (!instance.Ground(pos, out var gp, out var gn, g)) continue;
             var s = instance.Next(g);
             s.born = Time.unscaledTime; s.life = g.lifeSec; s.baseSize = instance.Between(g.minSize, g.maxSize) * sizeMul;
             s.t.position = gp + gn * g.yOffset; s.t.rotation = Quaternion.LookRotation(-gn, rnd);
-            s.t.localScale = new Vector3(s.baseSize, s.baseSize * instance.Between(0.8f, 1.25f), 1f);
+            s.t.localScale = new Vector3(s.baseSize, s.baseSize * instance.Between(GS.stretchY), 1f);
             instance.mpb.Clear(); instance.mpb.SetTexture(MainTexId, instance.tex[(int)(instance.Rnd() * instance.tex.Length) % instance.tex.Length]); instance.mpb.SetColor(TintId, Color.white);
             s.r.SetPropertyBlock(instance.mpb); s.r.enabled = true; s.used = true;
         }

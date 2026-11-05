@@ -430,7 +430,7 @@ def gate_F(R, data, sa, args, ros):
         m = re.search(r'defaultLevel:\s*(\d+)', df.read_text(encoding='utf-8', errors='replace'))
         if m and dj.get('default') is not None and int(m.group(1)) != dj['default']: R.add('F', 'WARN', 'difficulty default', 'difficulty.json=%s, Difficulty.asset=%s (asset is dead)' % (dj['default'], m.group(1)))
     mh = jload(data / 'mhhead_attach.json') or {}
-    if isinstance(mh.get('fighterName'), str) and mh['fighterName'] not in ('', ros.player):
+    if isinstance(mh.get('fighterName'), str) and mh['fighterName'] not in ('', ros.player, ROLE_P):   # HCKIT6 v100: "@player" (HCKIT5) follows the role
         R.add('F', 'WARN', 'mhhead_attach.fighterName', '"%s" is the MetaHuman head owner but the roster player is "%s" (head sits on a non-player)' % (mh['fighterName'], ros.player))
     if R.count('F', 'FAIL') == 0 and R.count('F', 'WARN') == 0: R.add('F', 'PASS', 'summary', 'no duplicate fact disagrees')
 

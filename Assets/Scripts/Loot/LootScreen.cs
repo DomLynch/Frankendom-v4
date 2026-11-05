@@ -126,7 +126,7 @@ public static class LootScreen
         if (unfreezeFrame >= 0 && Time.frameCount >= unfreezeFrame) { unfreezeFrame = -1; if (ownFreeze) { Duel.Frozen = false; ownFreeze = false; } }
         if (!Open) { if (LootCfg.AnyDown(kToggle) && CanOpen(demo)) OpenScreen(); return; }
         if (LootCfg.AnyDown(kToggle) || LootCfg.AnyDown(kClose)) { CloseScreen(); return; }
-        if (Time.unscaledTime - messageAt > 2.5f) message = "";
+        if (Time.unscaledTime - messageAt > LootCfg.Get().screen.messageS /* HCKIT6 v100 */) message = "";
         if (LootCfg.AnyDown(kConfirm)) Confirm();
         if (LootCfg.AnyDown(kUnequip)) { var s = SlotAt(slotIdx); if (s != null) DoUnequip(s.id); }
         int dx, dy; Nav(K, out dx, out dy);
@@ -168,21 +168,21 @@ public static class LootScreen
         Color ink = LootCfg.Col(Kc.ink), dim = LootCfg.Col(Kc.dim), gold = LootCfg.Col(Kc.gold), crim = LootCfg.Col(Kc.crimson), frame = LootCfg.Col(Kc.frame), frameDim = LootCfg.Col(Kc.frameDim);
         LootDraw.Fill(new Rect(0, 0, vw, vh), LootCfg.Col(Kc.dimmer));
         float px = (vw - S.panelW) * 0.5f, py = (vh - S.panelH) * 0.5f; var P = new Rect(px, py, S.panelW, S.panelH);
-        LootDraw.Fill(P, LootCfg.Col(Kc.panel)); LootDraw.Frame(P, frame, S.frameW); LootDraw.Frame(new Rect(P.x + 6f, P.y + 6f, P.width - 12f, P.height - 12f), frameDim, 1f);
+        LootDraw.Fill(P, LootCfg.Col(Kc.panel)); LootDraw.Frame(P, frame, S.frameW); LootDraw.Frame(new Rect(P.x + S.insetPx, P.y + S.insetPx, P.width - 2f * S.insetPx, P.height - 2f * S.insetPx), frameDim, S.insetFrameW);
 
         // title
-        LootDraw.Text(new Rect(px + S.pad, py + S.titleY, S.panelW - 2f * S.pad, S.titleSize * 1.4f), T.title.ToUpperInvariant(), "serif", S.titleSize, TextAnchor.UpperLeft, true, gold);
-        LootDraw.Text(new Rect(px + S.pad + 2f, py + S.titleY + S.titleSize * 1.28f, S.panelW - 2f * S.pad, S.subtitleSize * 1.6f), T.subtitle, "serif", S.subtitleSize, TextAnchor.UpperLeft, false, dim, true);
+        LootDraw.Text(new Rect(px + S.pad, py + S.titleY, S.panelW - 2f * S.pad, S.titleSize * S.titleLine), T.title.ToUpperInvariant(), "serif", S.titleSize, TextAnchor.UpperLeft, true, gold);
+        LootDraw.Text(new Rect(px + S.pad + S.subtitleDx, py + S.titleY + S.titleSize * S.subtitleDy, S.panelW - 2f * S.pad, S.subtitleSize * S.boxLine), T.subtitle, "serif", S.subtitleSize, TextAnchor.UpperLeft, false, dim, true);
         var closeR = new Rect(P.xMax - S.pad - S.closeBox, py + S.titleY, S.closeBox, S.closeBox);
         LootDraw.Frame(closeR, frameDim, 1f); LootDraw.Text(closeR, T.close, "serif", S.closeSize, TextAnchor.MiddleCenter, true, dim);
         if (GUI.Button(closeR, GUIContent.none, GUIStyle.none)) CloseScreen();
 
         float c1 = px + S.pad, c2 = c1 + S.slotColW + S.colGap, c3 = c2 + S.candColW + S.colGap, w3 = P.xMax - S.pad - c3;
         float yh = py + S.headerY, y0 = py + S.bodyTop, bodyH = S.panelH - S.bodyTop - S.bodyBottom;
-        LootDraw.Fill(new Rect(c1, yh + S.headerSize * 1.6f, P.xMax - S.pad - c1, 2f), LootCfg.Col(Kc.crimson, 0.85f * a));
-        LootDraw.Text(new Rect(c1, yh, S.slotColW, S.headerSize * 1.6f), T.slotsHeader.ToUpperInvariant(), "serif", S.headerSize, TextAnchor.UpperLeft, true, focus == 0 ? gold : dim);
-        LootDraw.Text(new Rect(c2, yh, S.candColW, S.headerSize * 1.6f), T.candHeader.ToUpperInvariant(), "serif", S.headerSize, TextAnchor.UpperLeft, true, focus == 1 ? gold : dim);
-        LootDraw.Text(new Rect(c3, yh, w3, S.headerSize * 1.6f), T.detailHeader.ToUpperInvariant(), "serif", S.headerSize, TextAnchor.UpperLeft, true, dim);
+        LootDraw.Fill(new Rect(c1, yh + S.headerSize * S.boxLine, P.xMax - S.pad - c1, S.ruleH), LootCfg.Col(Kc.crimson, S.ruleAlpha * a));
+        LootDraw.Text(new Rect(c1, yh, S.slotColW, S.headerSize * S.boxLine), T.slotsHeader.ToUpperInvariant(), "serif", S.headerSize, TextAnchor.UpperLeft, true, focus == 0 ? gold : dim);
+        LootDraw.Text(new Rect(c2, yh, S.candColW, S.headerSize * S.boxLine), T.candHeader.ToUpperInvariant(), "serif", S.headerSize, TextAnchor.UpperLeft, true, focus == 1 ? gold : dim);
+        LootDraw.Text(new Rect(c3, yh, w3, S.headerSize * S.boxLine), T.detailHeader.ToUpperInvariant(), "serif", S.headerSize, TextAnchor.UpperLeft, true, dim);
 
         // slots
         var defs = C.slots;
@@ -191,10 +191,10 @@ public static class LootScreen
             var s = defs[i]; if (s == null) continue;
             var r = new Rect(c1, y0 + i * (S.slotRowH + S.rowGap), S.slotColW, S.slotRowH); bool sel = i == slotIdx; var w = Worn(s.id);
             LootDraw.Fill(r, sel ? LootCfg.Col(Kc.rowSelected) : LootCfg.Col(Kc.charcoal));
-            LootDraw.Frame(r, sel ? (focus == 0 ? frame : frameDim) : new Color(frameDim.r, frameDim.g, frameDim.b, frameDim.a * 0.35f), 1f);
+            LootDraw.Frame(r, sel ? (focus == 0 ? frame : frameDim) : new Color(frameDim.r, frameDim.g, frameDim.b, frameDim.a * S.idleFrameAlpha), 1f);
             if (sel) LootDraw.Fill(new Rect(r.x, r.y, S.accentBar, r.height), crim);
-            LootDraw.Text(new Rect(r.x + 14f, r.y + 7f, r.width - 20f, S.labelSize * 1.5f), (s.label.Length > 0 ? s.label : LootCfg.Pretty(s.id)).ToUpperInvariant(), "serif", S.labelSize, TextAnchor.UpperLeft, true, sel ? gold : dim);
-            var nr = new Rect(r.x + 14f, r.y + 7f + S.labelSize * 1.5f + 2f, r.width - 24f, S.rowNameSize * 1.4f);
+            LootDraw.Text(new Rect(r.x + S.rowPadX, r.y + S.rowPadY, r.width - S.rowTrim, S.labelSize * S.labelLine), (s.label.Length > 0 ? s.label : LootCfg.Pretty(s.id)).ToUpperInvariant(), "serif", S.labelSize, TextAnchor.UpperLeft, true, sel ? gold : dim);
+            var nr = new Rect(r.x + S.rowPadX, r.y + S.rowPadY + S.labelSize * S.labelLine + S.nameGap, r.width - S.nameTrim, S.rowNameSize * S.nameLine);
             if (w != null) LootDraw.Text(nr, w.name, "serif", S.rowNameSize, TextAnchor.UpperLeft, false, LootCfg.RarityColor(w));
             else LootDraw.Text(nr, T.emptySlot, "serif", S.rowNameSize, TextAnchor.UpperLeft, false, dim, true);
             if (GUI.Button(r, GUIContent.none, GUIStyle.none)) { SelectSlot(i); focus = 0; if (ev.clickCount >= 2) focus = 1; }
@@ -209,7 +209,7 @@ public static class LootScreen
             int i = candScroll + row; if (i >= cands.Count) break;
             var it = cands[i]; var r = new Rect(c2, y0 + row * (S.candRowH + S.rowGap), S.candColW, S.candRowH); bool sel = i == candIdx;
             LootDraw.Fill(r, sel ? LootCfg.Col(Kc.rowSelected) : LootCfg.Col(Kc.charcoal));
-            LootDraw.Frame(r, sel ? (focus == 1 ? frame : frameDim) : new Color(frameDim.r, frameDim.g, frameDim.b, frameDim.a * 0.35f), 1f);
+            LootDraw.Frame(r, sel ? (focus == 1 ? frame : frameDim) : new Color(frameDim.r, frameDim.g, frameDim.b, frameDim.a * S.idleFrameAlpha), 1f);
             if (sel) LootDraw.Fill(new Rect(r.x, r.y, S.accentBar, r.height), crim);
             if (it == null) LootDraw.Text(new Rect(r.x + 14f, r.y, r.width - 20f, r.height), T.emptyRow, "serif", S.rowNameSize, TextAnchor.MiddleLeft, false, dim, true);
             else
@@ -222,13 +222,13 @@ public static class LootScreen
             }
             if (GUI.Button(r, GUIContent.none, GUIStyle.none)) { candIdx = i; focus = 1; if (ev.clickCount >= 2) Confirm(); }
         }
-        if (cands.Count <= 1) LootDraw.Text(new Rect(c2 + 6f, y0 + S.candRowH + S.rowGap + 8f, S.candColW, S.bodySize * 1.6f), T.nothing, "serif", S.bodySize, TextAnchor.UpperLeft, false, dim, true);
+        if (cands.Count <= 1) LootDraw.Text(new Rect(c2 + 6f, y0 + S.candRowH + S.rowGap + 8f, S.candColW, S.bodySize * S.boxLine), T.nothing, "serif", S.bodySize, TextAnchor.UpperLeft, false, dim, true);
 
         DrawDetail(c3, y0, w3, bodyH);
 
         // footer
         string hint = T.moveKeys + "     " + T.equipKeys + "     " + T.unequipKeys + "     " + T.closeKeys;
-        LootDraw.Text(new Rect(px, P.yMax - S.hintY, S.panelW, S.hintSize * 1.6f), hint, "serif", S.hintSize, TextAnchor.UpperCenter, false, dim);
+        LootDraw.Text(new Rect(px, P.yMax - S.hintY, S.panelW, S.hintSize * S.boxLine), hint, "serif", S.hintSize, TextAnchor.UpperCenter, false, dim);
         if (message.Length > 0) LootDraw.Text(new Rect(px, P.yMax - S.hintY - S.hintSize * 2.2f, S.panelW, S.hintSize * 1.8f), message, "serif", S.hintSize + 2, TextAnchor.UpperCenter, true, crim);
 
         // modal: nothing under the panel (GameLoop's Retry / Next buttons) sees a click
@@ -246,15 +246,15 @@ public static class LootScreen
         else if (candIdx <= 0 || candIdx >= cands.Count) { fi = worn; vs = null; compare = false; }   // the Unequip row: show what comes off
         else { fi = cands[candIdx]; vs = worn; compare = fi.id != (worn != null ? worn.id : ""); }
         bool removing = focus == 1 && candIdx == 0 && worn != null;
-        if (fi == null) { LootDraw.Text(new Rect(x, y, w, S.bodySize * 1.6f), focus == 0 ? T.emptySlot : T.selectItem, "serif", S.bodySize + 2, TextAnchor.UpperLeft, false, dim, true); return; }
+        if (fi == null) { LootDraw.Text(new Rect(x, y, w, S.bodySize * S.boxLine), focus == 0 ? T.emptySlot : T.selectItem, "serif", S.bodySize + 2, TextAnchor.UpperLeft, false, dim, true); return; }
 
         float yy = y;
-        if (removing) { LootDraw.Text(new Rect(x, yy, w, S.labelSize * 1.6f), T.removing.ToUpperInvariant(), "serif", S.labelSize, TextAnchor.UpperLeft, true, LootCfg.Col(Kc.crimson)); yy += S.labelSize * 1.7f; }
+        if (removing) { LootDraw.Text(new Rect(x, yy, w, S.labelSize * S.boxLine), T.removing.ToUpperInvariant(), "serif", S.labelSize, TextAnchor.UpperLeft, true, LootCfg.Col(Kc.crimson)); yy += S.labelSize * 1.7f; }
         int ns = Mathf.RoundToInt(S.nameSize * 1.35f);
         LootDraw.Text(new Rect(x, yy, w, ns * 1.4f), fi.name, "serif", ns, TextAnchor.UpperLeft, true, LootCfg.RarityColor(fi)); yy += ns * 1.4f + S.detailNameGap;
         var rar = LootCfg.Rarity(fi.rarity); string rl = rar != null && rar.label.Length > 0 ? rar.label : "";
         string line = rl.Length > 0 ? string.Format(T.slotLine, rl, LootCfg.SlotLabel(LootCfg.Slot(fi.slot) != null ? fi.slot : slot.id)) : LootCfg.SlotLabel(LootCfg.Slot(fi.slot) != null ? fi.slot : slot.id);
-        LootDraw.Text(new Rect(x, yy, w, S.labelSize * 1.6f), line.ToUpperInvariant(), "serif", S.labelSize + 1, TextAnchor.UpperLeft, true, dim); yy += S.labelSize * 1.6f + 6f;
+        LootDraw.Text(new Rect(x, yy, w, S.labelSize * S.boxLine), line.ToUpperInvariant(), "serif", S.labelSize + 1, TextAnchor.UpperLeft, true, dim); yy += S.labelSize * S.boxLine + 6f;
         LootDraw.Fill(new Rect(x, yy, w, 1f), LootCfg.Col(Kc.frameDim)); yy += S.descGap * 0.6f;
         if (!string.IsNullOrEmpty(fi.desc))
         {
@@ -264,31 +264,31 @@ public static class LootScreen
 
         // compared-with line
         string cw = !compare ? "" : (vs != null ? string.Format(T.comparedWith, vs.name) : T.comparedEmpty);
-        if (cw.Length > 0) { LootDraw.Text(new Rect(x, yy, w, S.labelSize * 1.6f), cw.ToUpperInvariant(), "serif", S.labelSize, TextAnchor.UpperLeft, true, gold); yy += S.labelSize * 1.9f; }
+        if (cw.Length > 0) { LootDraw.Text(new Rect(x, yy, w, S.labelSize * S.boxLine), cw.ToUpperInvariant(), "serif", S.labelSize, TextAnchor.UpperLeft, true, gold); yy += S.labelSize * 1.9f; }
 
         // stats: keys in loot_ui.json order first, then any other key the items carry
         var keys = new List<string>();
         for (int i = 0; i < C.stats.Length; i++) { var sr = C.stats[i]; if (sr != null && sr.stat.Length > 0 && (fi.Has(sr.stat) || (vs != null && vs.Has(sr.stat)))) keys.Add(sr.stat); }
         AddExtra(keys, fi); AddExtra(keys, vs);
-        if (keys.Count == 0) { LootDraw.Text(new Rect(x, yy, w, S.bodySize * 1.6f), T.noStats, "serif", S.bodySize, TextAnchor.UpperLeft, false, dim, true); return; }
+        if (keys.Count == 0) { LootDraw.Text(new Rect(x, yy, w, S.bodySize * S.boxLine), T.noStats, "serif", S.bodySize, TextAnchor.UpperLeft, false, dim, true); return; }
         float labelW = w - S.statValueW - S.arrowSize - S.deltaW - 24f;
         for (int i = 0; i < keys.Count; i++)
         {
             string k = keys[i]; var row = LootCfg.StatRow(k); float v = fi.Stat(k), o = vs != null ? vs.Stat(k) : 0f; int dec = row != null ? Mathf.Max(0, row.decimals) : 0; string fmt = "F" + dec;
             var rr = new Rect(x, yy, w, S.statRowH);
-            if ((i & 1) == 0) LootDraw.Fill(rr, new Color(1f, 1f, 1f, 0.025f));
+            if ((i & 1) == 0) LootDraw.Fill(rr, new Color(1f, 1f, 1f, S.zebraAlpha));
             LootDraw.Text(new Rect(x + 8f, yy, labelW, S.statRowH), row != null && row.label.Length > 0 ? row.label : LootCfg.Pretty(k), "serif", S.statSize, TextAnchor.MiddleLeft, false, ink);
             float vx = x + 8f + labelW;
             LootDraw.Text(new Rect(vx, yy, S.statValueW, S.statRowH), v.ToString(fmt), "serif", S.statSize, TextAnchor.MiddleRight, true, ink);
             if (compare)
             {
-                float d = v - o; bool better = row == null || row.higherIsBetter ? d > 0f : d < 0f; var ar = new Rect(vx + S.statValueW + 10f, yy + (S.statRowH - S.arrowSize) * 0.5f, S.arrowSize, S.arrowSize);
+                float d = v - o; bool better = row == null || row.higherIsBetter ? d > 0f : d < 0f; var ar = new Rect(vx + S.statValueW + S.arrowGap, yy + (S.statRowH - S.arrowSize) * 0.5f, S.arrowSize, S.arrowSize);
                 float eps = Mathf.Pow(10f, -dec) * 0.5f;
                 if (Mathf.Abs(d) < eps) { LootDraw.Tex(new Rect(ar.x + 2f, ar.y + ar.height * 0.5f - 1f, ar.width - 4f, 2f), LootDraw.Dash(), LootCfg.Col(Kc.even)); }
                 else
                 {
                     var col = better ? LootCfg.Col(Kc.better) : LootCfg.Col(Kc.worse); LootDraw.Tex(ar, LootDraw.Arrow(d > 0f), col);
-                    LootDraw.Text(new Rect(ar.xMax + 6f, yy, S.deltaW, S.statRowH), (d > 0f ? "+" : "") + d.ToString(fmt), "serif", S.statSize - 2, TextAnchor.MiddleLeft, false, col);
+                    LootDraw.Text(new Rect(ar.xMax + S.deltaGap, yy, S.deltaW, S.statRowH), (d > 0f ? "+" : "") + d.ToString(fmt), "serif", S.statSize - 2, TextAnchor.MiddleLeft, false, col);
                 }
             }
             yy += S.statRowH;

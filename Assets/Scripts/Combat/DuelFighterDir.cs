@@ -37,12 +37,14 @@ public partial class DuelFighter
     }
 
     // the move id a buffer of this type starts: the directed one when it is still live, else the old default
+    // v99 (QC5): the undirected fallback goes through MoveVariants (move_variants.json weights, only moves that exist); no row = the old fallback
+    string VariantFallback(string type, string fallback) { string v = MoveVariants.Pick(this, type, fallback); return v != fallback && moves != null && moves.Get(v) != null ? v : fallback; }
     string DirPick(string type, string fallback)
     {
-        if (pDirMove == null) return fallback;
+        if (pDirMove == null) return VariantFallback(type, fallback);
         bool live = Duel.TickCount - pDirTick <= pDirTtl + 1;
-        if (!live) { pDirMove = null; return fallback; }
-        if (pDirType != type) return fallback;
+        if (!live) { pDirMove = null; return VariantFallback(type, fallback); }
+        if (pDirType != type) return VariantFallback(type, fallback);
         string id = pDirMove; pDirMove = null;
         return moves != null && moves.Get(id) != null ? id : fallback;
     }

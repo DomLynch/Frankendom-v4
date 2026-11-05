@@ -208,6 +208,8 @@ public sealed class LootUI : MonoBehaviour
         var L = C.label; var K = C.colors; var T = C.text; Vector3 cp = cam.transform.position;
         // HUDFIX v92: pass 1 = project + cull + de-overlap (stack apart by label.stackGapY), pass 2 = draw
         slots.Clear(); float topY = L.nameSize * 1.5f + L.minScreenMargin, botY = vh - L.minScreenMargin - 90f;
+        bool plate = GameLoop.Outcome != GameLoop.Result.None && GameLoop.ScreenAlpha > 0.001f; float blockH0 = L.nameSize * 1.5f + 2f + L.lineGap + (L.showSub ? L.subSize * 1.5f + L.promptGap : 0f) + L.promptHeight;
+        if (plate) { var SC = HudCfg.Get().screens; botY = Mathf.Min(botY, vh * 0.5f - SC.bandHeight * 0.5f - SC.bandLift - blockH0 - L.plateGap); }   // HUDPOLISH: labels stay above the end-screen plate, stacked upward
         for (int i = 0; i < live.Count; i++)
         {
             var p = live[i]; if (p == null || p.item == null) continue;
@@ -227,9 +229,9 @@ public sealed class LootUI : MonoBehaviour
                 bool hit = false;
                 for (int j = 0; j < i && !hit; j++) if (Mathf.Abs(slots[j].x - sl0.x) < L.boxW && Mathf.Abs(slots[j].y - sl0.y) < step) hit = true;
                 if (!hit) break;
-                sl0.y -= step; if (sl0.y < topY) { sl0.y = y0 + step * (tries + 1); }   // out of room above: stack downward instead
+                sl0.y -= step; if (sl0.y < topY) { if (plate) { sl0.y = Mathf.Min(y0, botY); sl0.x = slots[i].x + ((tries & 1) == 0 ? 1f : -1f) * L.boxW * (tries / 2 + 1); } else sl0.y = y0 + step * (tries + 1); }   // HUDPOLISH: no room above the plate = spread sideways   // out of room above: stack downward instead
             }
-            sl0.y = Mathf.Clamp(sl0.y, topY, botY); slots[i] = sl0;
+            sl0.y = Mathf.Clamp(sl0.y, topY, botY); sl0.x = Mathf.Clamp(sl0.x, L.minScreenMargin + 300f, vw - L.minScreenMargin - 300f); slots[i] = sl0;
         }
         for (int i = 0; i < slots.Count; i++)
         {
