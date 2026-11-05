@@ -244,6 +244,7 @@ public static class FinisherPair
     {
         var rows = FinisherConfig.Get().rt.killers; if (rows == null) return 1f;
         foreach (var r in rows) if (r != null && string.Equals(r.id, killerId, StringComparison.OrdinalIgnoreCase)) return Mathf.Max(0.3f, r.pairScale);
+        foreach (var r2 in rows) if (r2 != null && r2.id == "*") return Mathf.Max(0.3f, r2.pairScale);   // HCKIT2 v93 "*" default killer
         return 1f;
     }
     /// <summary>A copy of the entry with the matching override applied (the loaded entry is never changed); the entry itself when nothing matches.</summary>

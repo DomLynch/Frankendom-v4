@@ -28,6 +28,17 @@ public static class GuardLayerSetup
         Debug.Log("GuardLayerSetup: done");
     }
 
+    // v93: Joan only (batch: -executeMethod GuardLayerSetup.RunJoan). Rebuilds GuardUpper_Joan.mask from Joan's own guard_idle clip bindings (the old mask had Rig/ paths, 0 of 54 resolved on the Armature) and re-points
+    // the GuardUpper layer of Joan.controller at it (it still used GuardUpper_Dracula.mask). Dracula / Pitborn controllers are not touched.
+    public static void RunJoan()
+    {
+        int n = 0;
+        foreach (var r in RosterEditor.Characters()) if (!string.IsNullOrEmpty(r.controller) && r.controller.Contains("Joan")) { Setup(r.controller, r.guardMask); n++; }
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        Debug.Log("GuardLayerSetup: RunJoan done (" + n + " controller)");
+    }
+
     static bool IsUpper(string p)
     {
         bool up = false;

@@ -14,6 +14,10 @@
   {
    "character": "Pitborn",
    "weapon": "maul"
+  },
+  {
+   "character": "*",
+   "weapon": "sword"
   }
  ],
  "surfaces": [
@@ -28,6 +32,10 @@
   {
    "character": "Pitborn",
    "surface": "armour"
+  },
+  {
+   "character": "*",
+   "surface": "flesh"
   }
  ],
  "voicePitch": [
@@ -42,6 +50,10 @@
   {
    "character": "Pitborn",
    "rate": 0.78
+  },
+  {
+   "character": "*",
+   "rate": 1.0
   }
  ],
  "rows": [

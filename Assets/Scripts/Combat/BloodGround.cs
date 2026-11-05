@@ -121,7 +121,7 @@ public class BloodGround : MonoBehaviour
             Vector3 pos = feet + (rnd * 0.4f + away * (0.6f + along)) * Between(g.minRadius, g.maxRadius);
             if (!Ground(pos, out var gp, out var gn, g)) continue;
             var s = Next(g);
-            s.born = Time.unscaledTime; s.life = g.lifeSec; s.baseSize = Between(g.minSize, g.maxSize) * (kill ? g.killSizeMul : 1f) * Mathf.Max(1f, e.target.scale);
+            s.born = Time.unscaledTime; s.life = g.lifeSec; s.baseSize = Between(g.minSize, g.maxSize) * (kill ? g.killSizeMul : 1f) * FighterScale.Of(e.target);
             s.t.position = gp + gn * g.yOffset; s.t.rotation = Quaternion.LookRotation(-gn, rnd) ;   // quad faces up (its +Z points into the ground), random yaw
             s.t.localScale = new Vector3(s.baseSize, s.baseSize * Between(0.8f, 1.25f), 1f);
             mpb.Clear(); mpb.SetTexture(MainTexId, tex[(int)(Rnd() * tex.Length) % tex.Length]); mpb.SetColor(TintId, Color.white);

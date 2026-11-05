@@ -80,6 +80,10 @@
           "weight": 0.6
         }
       ]
+    },
+    {
+      "name": "*",
+      "enabled": false
     }
   ]
 }

@@ -22,6 +22,9 @@ public class STUI : MonoBehaviour
         public string colPanel = "#0C0C0EF2", colPanel2 = "#151517FF", colBorder = "#3A1A1CFF", colCrimson = "#9A2024FF", colEmber = "#E8742CFF",
             colEmberFill = "#7A3416F0", colText = "#F0E8D8FF", colDim = "#9A9384FF", colDisabled = "#7A746AFF", colHover = "#1E1416FF",
             colHpPlayer = "#B01820FF", colHpEnemy = "#D2701CFF", colGhost = "#F0E0C8B0", colKey = "#FFD7A0FF", colBad = "#C0282CFF";
+        // STEERUI v93: button colours / sizes that were literals in Button() (today's values)
+        public string colDisc = "#0F0E0FFF", colDiscActive = "#471A0DFF", colRingOff = "#403833FF", colRingCd = "#733333FF", colBorderOff = "#332B29FF", colBorderCd = "#592629FF", colLockBg = "#0A0808F2", colLockFg = "#C7B294FF";
+        public float discTop = 8f, labelTop = 76f, labelH = 22f, keyChipW = 24f, keyChipH = 22f, keyChipPad = 5f;
         public float barMaxW = 1340f, barH = 136f, barBottom = 14f, pad = 20f, groupGap = 56f, btnGap = 8f;
         public float stanceW = 112f, tactW = 100f, btnH = 102f, discD = 64f, glyph = 50f;
         public float hpW = 460f, hpH = 76f, hpMinPxW = 380f, hpMinPxH = 82f, hpMargin = 22f, hpTop = 8f;
@@ -383,15 +386,15 @@ public class STUI : MonoBehaviour
         Color body = active ? C(cfg.colEmberFill) : hover && enabled ? C(cfg.colHover) : C(cfg.colPanel2);
         Fill(r, body);
         if (active) Fill(new Rect(r.x, r.yMax - 3f * S, r.width, 3f * S), ember);
-        Color bc = active ? ember : !enabled ? new Color(0.2f, 0.17f, 0.16f, 1f) : cd > 0f ? new Color(0.35f, 0.15f, 0.16f, 1f) : crimson;
+        Color bc = active ? ember : !enabled ? C(cfg.colBorderOff) : cd > 0f ? C(cfg.colBorderCd) : crimson;   // STEERUI v93
         if (hover && enabled && !active) bc = ember * 0.85f;
         Frame(r, active ? Mathf.Max(2f, 2f * S) : bt, bc);
         if (flash > 0f) Frame(new Rect(r.x - 2f * S, r.y - 2f * S, r.width + 4f * S, r.height + 4f * S), Mathf.Max(2f, 2f * S), A(flashOk ? C(cfg.colKey) : C(cfg.colBad), flash));
 
         // icon disc
-        float dd = cfg.discD * S; var disc = new Rect(r.center.x - dd * 0.5f, r.y + 8f * S, dd, dd);
-        Tex(disc, STIcons.Disc, active ? new Color(0.28f, 0.1f, 0.05f, 1f) : new Color(0.06f, 0.055f, 0.06f, 1f));
-        Tex(disc, STIcons.ThinRing, active ? key : !enabled ? new Color(0.25f, 0.22f, 0.2f, 1f) : cd > 0f ? new Color(0.45f, 0.2f, 0.2f, 1f) : A(crimson, 1f) * 1.3f);
+        float dd = cfg.discD * S; var disc = new Rect(r.center.x - dd * 0.5f, r.y + cfg.discTop * S, dd, dd);   // STEERUI v93
+        Tex(disc, STIcons.Disc, active ? C(cfg.colDiscActive) : C(cfg.colDisc));   // STEERUI v93
+        Tex(disc, STIcons.ThinRing, active ? key : !enabled ? C(cfg.colRingOff) : cd > 0f ? C(cfg.colRingCd) : A(crimson, 1f) * 1.3f);   // STEERUI v93
         float gd = cfg.glyph * S; var gr = new Rect(r.center.x - gd * 0.5f, disc.center.y - gd * 0.5f, gd, gd);
         bool mask; var xt = External(d, out mask);
         float bright = !enabled ? 0.28f : cd > 0f ? 0.6f : active ? 1f : 0.88f;
@@ -410,15 +413,15 @@ public class STUI : MonoBehaviour
         if (locked)
         {
             float ld = dd * 0.42f; var lr = new Rect(disc.xMax - ld * 0.8f, disc.yMax - ld * 0.95f, ld, ld);
-            Tex(new Rect(lr.x - 2f * S, lr.y - 2f * S, lr.width + 4f * S, lr.height + 4f * S), STIcons.Disc, new Color(0.04f, 0.03f, 0.03f, 0.95f));
-            Tex(lr, STIcons.Get("Lock"), new Color(0.78f, 0.7f, 0.58f, 1f));
+            Tex(new Rect(lr.x - 2f * S, lr.y - 2f * S, lr.width + 4f * S, lr.height + 4f * S), STIcons.Disc, C(cfg.colLockBg));   // STEERUI v93
+            Tex(lr, STIcons.Get("Lock"), C(cfg.colLockFg));   // STEERUI v93
         }
         // label
         string lab = d.label; int lp = Fit(lab, P(cfg.pxLabel), true, r.width - 6f * S);
         Color lc = !enabled ? dis : cd > 0f ? dim : active ? key : text;
-        Txt(new Rect(r.x, r.y + 76f * S, r.width, 22f * S), lab, lp, true, TextAnchor.MiddleCenter, lc);
+        Txt(new Rect(r.x, r.y + cfg.labelTop * S, r.width, cfg.labelH * S), lab, lp, true, TextAnchor.MiddleCenter, lc);
         // key chip
-        var kr = new Rect(r.x + 5f * S, r.y + 5f * S, 24f * S, 22f * S);
+        var kr = new Rect(r.x + cfg.keyChipPad * S, r.y + cfg.keyChipPad * S, cfg.keyChipW * S, cfg.keyChipH * S);   // STEERUI v93
         // key hint stays readable even when the tactic is unavailable (it was drawn in the near-invisible disabled colour: Y / G looked empty)
         Color kc = active ? key : !enabled ? Color.Lerp(dim, text, 0.35f) : text; kc.a = 1f;
         Fill(kr, new Color(0f, 0f, 0f, 0.85f)); Frame(kr, 1f, !enabled ? dim : active ? key : ember * 0.9f);

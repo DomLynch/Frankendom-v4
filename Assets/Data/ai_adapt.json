@@ -64,8 +64,8 @@
   ],
   "profiles": [
     {
-      "id": "pitborn_d1_3",
-      "fighter": "Pitborn",
+      "id": "enemy_d1_3",
+      "fighter": "",
       "bot": false,
       "minDiff": 1,
       "maxDiff": 3,
@@ -150,8 +150,8 @@
       }
     },
     {
-      "id": "pitborn_d4_6",
-      "fighter": "Pitborn",
+      "id": "enemy_d4_6",
+      "fighter": "",
       "bot": false,
       "minDiff": 4,
       "maxDiff": 6,
@@ -254,8 +254,8 @@
       }
     },
     {
-      "id": "pitborn_d7_10",
-      "fighter": "Pitborn",
+      "id": "enemy_d7_10",
+      "fighter": "",
       "bot": false,
       "minDiff": 7,
       "maxDiff": 99,
@@ -449,6 +449,86 @@
     {
       "id": "joan_bot",
       "fighter": "Joan",
+      "bot": true,
+      "minDiff": 0,
+      "maxDiff": 99,
+      "comboChance": 0.15,
+      "combos": [
+        {
+          "id": "ll",
+          "steps": [
+            "light",
+            "light"
+          ],
+          "weight": 1
+        },
+        {
+          "id": "lh",
+          "steps": [
+            "light",
+            "heavy"
+          ],
+          "weight": 0.6
+        }
+      ],
+      "punishChance": 0.3,
+      "punishReact": 6,
+      "punishMinRemain": 8,
+      "punishApproachMin": 12,
+      "punishDashGap": 1.7,
+      "punishHeavyRemain": 34,
+      "delayChance": 0.15,
+      "delayMin": 6,
+      "delayMax": 20,
+      "earlyChance": 0.1,
+      "earlyMul": 0.6,
+      "lateChance": 0.1,
+      "lateMul": 1.4,
+      "riposteTake": 0.8,
+      "kickMax": 2,
+      "kickWindow": 1800,
+      "kickGap": 300,
+      "maxShare": 0.4,
+      "lightMaxShare": 0.65,
+      "minSample": 8,
+      "alts": [
+        {
+          "from": "light",
+          "to": [
+            "heavy",
+            "thrust"
+          ]
+        },
+        {
+          "from": "heavy",
+          "to": [
+            "light",
+            "thrust"
+          ]
+        },
+        {
+          "from": "thrust",
+          "to": [
+            "light",
+            "heavy"
+          ]
+        },
+        {
+          "from": "kick",
+          "to": [
+            "light",
+            "heavy",
+            "thrust"
+          ]
+        }
+      ],
+      "enrage": {
+        "enabled": false
+      }
+    },
+    {
+      "id": "bot_any",
+      "fighter": "",
       "bot": true,
       "minDiff": 0,
       "maxDiff": 99,

@@ -20,6 +20,6 @@
         "Rim_Character"
     ],
     "restore": [
-        "Pitborn"
+        "@enemy"
     ]
 }

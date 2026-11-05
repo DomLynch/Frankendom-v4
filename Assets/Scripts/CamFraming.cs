@@ -48,7 +48,7 @@ public static class CamFraming
 
     public static float Widen { get { return widen; } }
     public static void Clear() { has = false; }
-    public static void Begin(Vector3 posA, float scaleA, Vector3 posB, float scaleB) { has = true; pa = posA; pb = posB; sa = Mathf.Max(1f, scaleA); sb = Mathf.Max(1f, scaleB); }
+    public static void Begin(Vector3 posA, float scaleA, Vector3 posB, float scaleB) { has = true; pa = posA; pb = posB; sa = scaleA; sb = scaleB; /*HCKIT1 v93 K2: the caller passes FighterScale.Eff (per-character floor) */ }
 
     static bool Live(float lockW) { var r = Cfg(); return r.enabled && has && lockW >= r.minLockW && CameraDeath.Weight <= r.maxDeathWeight; }
 

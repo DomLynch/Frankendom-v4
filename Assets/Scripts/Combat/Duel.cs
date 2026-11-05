@@ -109,7 +109,7 @@ public class Duel : MonoBehaviour
     static void Fire(DuelFighter a, DuelFighter d, string type, bool heavy, bool perfect)
     {
         ContactRelay.Raise(a, d, type, heavy, perfect);
-        ContactRelay.RaiseEvent(new CombatEvent { type = type, actor = a, target = d, moveId = a.CurrentMove != null ? a.CurrentMove.id : "", heavy = heavy, perfect = perfect, counter = lastCounter, rear = lastRear, location = LocationOf(a.CurrentMove, d), direction = DirectionOf(a.CurrentMove), weight = HitReactionTable.Last != null ? HitReactionTable.Last.weight : "", hitLocation = HitReactionTable.Last != null ? HitReactionTable.Last.location : "", hitDirection = HitReactionTable.Last != null ? HitReactionTable.Last.direction : "", point = d.transform.position + Vector3.up * (1.1f * Mathf.Max(1f, d.scale)), tick = TickCount });
+        ContactRelay.RaiseEvent(new CombatEvent { type = type, actor = a, target = d, moveId = a.CurrentMove != null ? a.CurrentMove.id : "", heavy = heavy, perfect = perfect, counter = lastCounter, rear = lastRear, location = LocationOf(a.CurrentMove, d), direction = DirectionOf(a.CurrentMove), weight = HitReactionTable.Last != null ? HitReactionTable.Last.weight : "", hitLocation = HitReactionTable.Last != null ? HitReactionTable.Last.location : "", hitDirection = HitReactionTable.Last != null ? HitReactionTable.Last.direction : "", point = d.transform.position + Vector3.up * (1.1f * FighterScale.Of(d)), tick = TickCount });
     }
 }
 

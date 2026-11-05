@@ -197,7 +197,7 @@ public sealed class RTFinisherHost
         {
             type = type, actor = a, target = d, moveId = id, heavy = heavy, perfect = false, counter = false, rear = false,
             location = LocName(loc), direction = id.EndsWith("left") ? "left" : id.EndsWith("right") ? "right" : "front",
-            point = d.transform.position + Vector3.up * (1.1f * Mathf.Max(1f, d.scale)), tick = Duel.TickCount
+            point = d.transform.position + Vector3.up * (1.1f * FighterScale.Of(d)), tick = Duel.TickCount
         });
         if (type == "Hit") RTFinisher.Stage("contact", id);
     }

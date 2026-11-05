@@ -35,7 +35,7 @@ public class HeadClamp : MonoBehaviour
         foreach (var a in FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
             string rn = a.transform.root.name; bool want = false;
-            foreach (var c in D.characters) if (c.enabled && !string.IsNullOrEmpty(c.name) && rn.Contains(c.name)) want = true;
+            { var rrp = RosterResolver.Pick(D.characters, rrx => rrx.name, rn); if (rrp != null && rrp.enabled) want = true; }   // HCKIT2 v93
             if (want && a.GetComponent<HeadClamp>() == null) a.gameObject.AddComponent<HeadClamp>();
         }
         foreach (var arg in System.Environment.GetCommandLineArgs()) if (arg == "-noclamp") ForceOff = true;
@@ -46,7 +46,7 @@ public class HeadClamp : MonoBehaviour
     {
         if (data != null) return data;
         data = new Root();
-        foreach (var p in new[] { Application.streamingAssetsPath + "/head_clamp.json", Application.dataPath + "/Data/head_clamp.json" })
+        foreach (var p in DataPath.Candidates("head_clamp.json")) /* // HCKIT2 v93 */
         {
             if (!System.IO.File.Exists(p)) continue;
             try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null && r.defaults != null) data = r; } catch { }
@@ -62,7 +62,7 @@ public class HeadClamp : MonoBehaviour
     {
         init = true; var D = Load(); row = D.defaults;
         string rn = transform.root.name;
-        if (D.characters != null) foreach (var c in D.characters) if (!string.IsNullOrEmpty(c.name) && rn.Contains(c.name)) row = c;
+        if (D.characters != null) { var rrp = RosterResolver.Pick(D.characters, rrx => rrx.name, rn); if (rrp != null) row = rrp; }   // HCKIT2 v93
         if (row == null || !row.enabled) return;
         if (anim == null) { anim = GetComponent<Animator>(); if (anim == null) anim = GetComponentInChildren<Animator>(true); }
         root = anim != null ? anim.transform : transform;

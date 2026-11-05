@@ -389,7 +389,7 @@ public class MoveSheet : MonoBehaviour
         {
             var sbw = new StringBuilder(); sbw.Append("sockActive=").Append(wsock.gameObject.activeInHierarchy ? 1 : 0).Append(" scale=").Append(wsock.lossyScale.y.ToString("F2", I)).Append(" lods=");
             for (int ci = 0; ci < wsock.childCount; ci++) { var ch = wsock.GetChild(ci); int en = 0, nvis = 0, tot = 0; foreach (var rd in ch.GetComponentsInChildren<Renderer>(true)) { tot++; if (rd.enabled) en++; if (rd.isVisible) nvis++; } sbw.Append(ch.name).Append(':').Append(ch.gameObject.activeSelf ? 'A' : 'a').Append(en).Append('/').Append(tot).Append("/vis").Append(nvis).Append(' '); }
-            Vector3 headP = wsock.TransformPoint(0f, wYmax, 0f), chest = opp.transform.position + Vector3.up * 1.2f * Mathf.Max(1f, opp.scale);
+            Vector3 headP = wsock.TransformPoint(0f, wYmax, 0f), chest = opp.transform.position + Vector3.up * 1.2f * FighterScale.Of(opp);
             sbw.Append("hand=" + V3s(wsock.position) + " head=" + V3s(headP) + " headY=" + (headP.y - subj.transform.position.y).ToString("F2", I) + " head->oppChest=" + Vector3.Distance(headP, chest).ToString("F2", I) + " hand->oppChest=" + Vector3.Distance(wsock.position, chest).ToString("F2", I));
             wpn = sbw.ToString();
         }

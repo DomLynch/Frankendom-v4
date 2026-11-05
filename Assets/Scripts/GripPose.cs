@@ -16,7 +16,7 @@ public class GripPose : MonoBehaviour
     static Root Load()
     {
         if (data != null) return data; data = new Root { defaults = new Row() };
-        foreach (var p in new[] { Application.streamingAssetsPath + "/grip_pose.json", Application.dataPath + "/Data/grip_pose.json" }) { if (!System.IO.File.Exists(p)) continue; try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null && r.defaults != null) data = r; } catch { } break; }
+        foreach (var p in DataPath.Candidates("grip_pose.json")) /* // HCKIT2 v93 */ { if (!System.IO.File.Exists(p)) continue; try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null && r.defaults != null) data = r; } catch { } break; }
         return data;
     }
     Transform[][] Chains(string side)
@@ -27,7 +27,7 @@ public class GripPose : MonoBehaviour
     }
     void Init()
     {
-        init = true; var D = Load(); row = D.defaults; var root = transform.root.name; if (D.characters != null) foreach (var c in D.characters) if (!string.IsNullOrEmpty(c.name) && root.Contains(c.name)) row = c;
+        init = true; var D = Load(); row = D.defaults; var root = transform.root.name; if (D.characters != null) { var rrp = RosterResolver.Pick(D.characters, rrx => rrx.name, root); if (rrp != null) row = rrp; }   // HCKIT2 v93
         if (chains == null) { chains = Chains("Right"); rest = Rest(chains); } if (!row.leftHand) lchains = null;
     }
     static Vector3 Ax(float[] a) { return a != null && a.Length >= 3 ? new Vector3(a[0], a[1], a[2]) : Vector3.forward; }

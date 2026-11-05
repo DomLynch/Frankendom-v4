@@ -101,6 +101,10 @@
                     "weight": 0.25
                 }
             ]
+        },
+        {
+            "name": "*",
+            "enabled": false
         }
     ]
 }

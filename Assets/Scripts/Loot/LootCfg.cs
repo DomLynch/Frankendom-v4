@@ -48,7 +48,7 @@ public static class LootCfg
     public class PickupC
     {
         public bool requireVictory = true, autoPickup = false; public float radius = 1.7f, promptRadius = 3.2f, spawnDelayS = 1.4f, spread = 1.1f, fallbackAfterS = 0.8f, toastS = 3.2f, toastFadeS = 0.6f, toastBottom = 150f;
-        public int toastSize = 22, toastSubSize = 13; public bool fallbackDrops = true; public string[] fallbackItems = { "pitborn_pauldron" };
+        public int toastSize = 22, toastSubSize = 13; public bool fallbackDrops = true; public string[] fallbackItems = new string[0]; /*HCKIT1 v93*/
     }
     [Serializable]
     public class ScreenC
@@ -70,7 +70,7 @@ public static class LootCfg
     }
     [Serializable] public class SaveC { public string file = "loot_save.json"; public bool enabled = true; public int applyAfterFrames = 20; }
     [Serializable] public class CatalogC { public string gearFile = "gear.json"; public string[] gearStatKeys = { "armor", "poise", "weight" }; }
-    [Serializable] public class DemoC { public string flag = "-lootdemo"; public float spawnAfterS = 2f, distance = 3f; public string[] items = { "pitborn_pauldron", "gate_warden_helm" }; }
+    [Serializable] public class DemoC { public string flag = "-lootdemo"; public float spawnAfterS = 2f, distance = 3f; public string[] items = new string[0]; /*HCKIT1 v93*/ }
     [Serializable]
     public class Data
     {

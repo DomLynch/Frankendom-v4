@@ -26,7 +26,7 @@ public class FootYaw : MonoBehaviour
         foreach (var a in Object.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
             string rn = a.transform.root.name; bool want = false;
-            foreach (var c in D.characters) if (c.enabled && !string.IsNullOrEmpty(c.name) && rn.Contains(c.name)) want = true;
+            { var rrp = RosterResolver.Pick(D.characters, rrx => rrx.name, rn); if (rrp != null && rrp.enabled) want = true; }   // HCKIT2 v93
             if (want && a.GetComponent<FootYaw>() == null) a.gameObject.AddComponent<FootYaw>();
         }
     }
@@ -38,7 +38,7 @@ public class FootYaw : MonoBehaviour
     {
         if (data != null) return data;
         data = new Root { defaults = new Row() };
-        foreach (var p in new[] { Application.streamingAssetsPath + "/foot_yaw.json", Application.dataPath + "/Data/foot_yaw.json" })
+        foreach (var p in DataPath.Candidates("foot_yaw.json")) /* // HCKIT2 v93 */
         {
             if (!System.IO.File.Exists(p)) continue;
             try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null && r.defaults != null) data = r; } catch { }
@@ -52,7 +52,7 @@ public class FootYaw : MonoBehaviour
         init = true;
         var D = Load(); row = D.defaults;
         var rootName = transform.root.name;
-        if (D.characters != null) foreach (var c in D.characters) if (!string.IsNullOrEmpty(c.name) && rootName.Contains(c.name)) row = c;
+        if (D.characters != null) { var rrp = RosterResolver.Pick(D.characters, rrx => rrx.name, rootName); if (rrp != null) row = rrp; }   // HCKIT2 v93
         if (row == null || !row.enabled) return;
         if (anim == null) { anim = GetComponentInChildren<Animator>(true); if (anim == null) anim = GetComponentInParent<Animator>(); }
         foreach (var t in GetComponentsInChildren<Transform>(true))

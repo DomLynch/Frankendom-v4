@@ -196,29 +196,56 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
         guardA = Mathf.MoveTowards(guardA, up ? 1f : 0f, dt / Mathf.Max(0.02f, up ? G.fadeInS : G.fadeOutS));
         if (guardA < 0.01f) return;
         var sides = ControlsTable.Get().guard.sides; if (sides == null) return;
-        Vector2 c = new Vector2(vw * 0.5f, vh * 0.5f);
+        // STEERUI v93: v83 rotated with GUIUtility.RotateAroundPivot while the HUD scale matrix was set (the pivot is taken in UNSCALED screen px, the rects in scaled px), so left / right swung away from the centre whenever scale != 1
+        // (Dom 1350x858: the left arc at x=310). Now: everything in screen px with an own rotation matrix, anchored to the player's projected body (feet..head), sizes = hud.json guardDir fractions of the player's screen height.
+        Vector2 c; float hPx; GuardAnchor(G, out c, out hPx);
+        float s = HudCfg.Scale();
         bool parry = pf.ParryWindowLeft > 0;
         Color live = parry ? HudCfg.Col(H.colors.parry) : HudCfg.Col(H.colors.guard);
         float grow = parry ? 1f + G.parryGrow * (0.5f + 0.5f * Mathf.Sin(now * Mathf.PI * 2f * G.parryPulseHz)) : 1f;
-        float R = G.radius, half = R / HudDraw.ArcCentre; var arc = HudDraw.Arc(G.arcDeg, G.thickness);
+        float R = G.arcRadiusFrac * hPx, half = R / HudDraw.ArcCentre; var arc = HudDraw.Arc(G.arcDeg, G.thickness);
         float oa = HudDraw.Alpha;
-        // faint full ring so the three sides read as one instrument
-        HudDraw.Tex(new Rect(c.x - R, c.y - R, 2f * R, 2f * R), HudDraw.Ring(0.5f), new Color(live.r, live.g, live.b, G.ringAlpha * guardA));
-        var saved = GUI.matrix;
+        var saved = GUI.matrix; GUI.matrix = Matrix4x4.identity;
+        // optional faint full ring (ringFrac 0 = off) so the three sides read as one instrument
+        if (G.ringFrac > 0f) { float rr = G.ringFrac * hPx; HudDraw.Tex(new Rect(c.x - rr, c.y - rr, 2f * rr, 2f * rr), HudDraw.Ring(0.5f), new Color(live.r, live.g, live.b, G.ringAlpha * guardA)); }
         for (int i = 0; i < sides.Length; i++)
         {
             var sd = sides[i]; if (sd == null) continue;
             bool active = pf.guardSide == sd.id;
             float hs = active ? half * grow : half; Color col = active ? live : HudCfg.Col(H.colors.guard);
             float a = (active ? 1f : G.idleAlpha) * guardA;
-            GUIUtility.RotateAroundPivot(sd.deg, c);
-            HudDraw.Tex(new Rect(c.x - hs, c.y - hs, 2f * hs, 2f * hs), arc, new Color(col.r, col.g, col.b, a));
-            GUI.matrix = saved;
+            float rad = sd.deg * Mathf.Deg2Rad; Vector2 dirv = new Vector2(Mathf.Sin(rad), -Mathf.Cos(rad));   // screen px, y down: deg 0 = up, +90 = right
+            float dist = Mathf.Lerp(G.sideDistFrac, G.topDistFrac, Mathf.Abs(dirv.y)) * hPx;                 // apex of the arc, from the body centre
+            Vector2 piv = c + dirv * (dist - R);                                                              // centre of the arc's circle (texture centre)
+            GUI.matrix = Matrix4x4.TRS(new Vector3(piv.x, piv.y, 0f), Quaternion.Euler(0f, 0f, sd.deg), Vector3.one) * Matrix4x4.TRS(new Vector3(-piv.x, -piv.y, 0f), Quaternion.identity, Vector3.one);
+            HudDraw.Tex(new Rect(piv.x - hs, piv.y - hs, 2f * hs, 2f * hs), arc, new Color(col.r, col.g, col.b, a));
         }
-        // centre guard (no side): the small diamond is lit
-        bool centre = pf.guardSide == 0; float ds = G.dotSize * (centre ? 1.25f : 1f);
+        GUI.matrix = Matrix4x4.identity;
+        // centre guard (no side): the small diamond is lit, on the body centre
+        bool centre = pf.guardSide == 0; float ds = G.dotSize * s * (centre ? 1.25f : 1f);
         HudDraw.Tex(new Rect(c.x - ds * 0.5f, c.y - ds * 0.5f, ds, ds), HudDraw.Diamond(), new Color(live.r, live.g, live.b, (centre ? 1f : G.idleAlpha) * guardA));
+        GUI.matrix = saved;
         HudDraw.Alpha = oa;
+    }
+
+    // STEERUI v93: body centre (screen px, y down) and body height (screen px) of the player; falls back to the screen centre when the camera or the fighter is unusable (or anchorPlayer is false)
+    float bodyH, bodyHT = -99f;
+    void GuardAnchor(HudCfg.GuardDirC G, out Vector2 c, out float hPx)
+    {
+        c = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f); hPx = Screen.height * G.fallbackHeightFrac;
+        var cam = Camera.main; if (!G.anchorPlayer || cam == null || pf == null) return;
+        float now = Time.unscaledTime;
+        if (now - bodyHT >= G.heightRefreshS)
+        {
+            bodyHT = now; float lo = 1e9f, hi = -1e9f;
+            foreach (var r in pf.GetComponentsInChildren<SkinnedMeshRenderer>()) { if (r == null || !r.enabled) continue; var bb = r.bounds; lo = Mathf.Min(lo, bb.min.y); hi = Mathf.Max(hi, bb.max.y); }
+            float h = hi > lo ? hi - pf.transform.position.y : G.defaultHeightM;
+            bodyH = Mathf.Clamp(h, G.minHeightM, G.maxHeightM);
+        }
+        Vector3 foot = pf.transform.position; Vector3 sf = cam.WorldToScreenPoint(foot), sh = cam.WorldToScreenPoint(foot + Vector3.up * bodyH);
+        if (sf.z <= 0.1f || sh.z <= 0.1f) return;
+        float hp = Mathf.Abs(sh.y - sf.y); if (hp < 8f) return;
+        hPx = hp; c = new Vector2(sf.x, Screen.height - Mathf.Lerp(sf.y, sh.y, G.centreFrac));
     }
 
     // ---------------- debug ----------------

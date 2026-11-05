@@ -6,9 +6,9 @@
   "endlessHpStep": 0.08,
   "endlessDamageStep": 0.04,
   "rows": [
-    { "id": "gate_warden",   "name": "PITBORN", "title": "The Gate Warden",     "hpMul": 1.00, "damageMul": 1.00, "difficulty": 0 },
-    { "id": "pit_veteran",   "name": "PITBORN", "title": "Veteran of the Pit",  "hpMul": 1.12, "damageMul": 1.08, "difficulty": 8 },
-    { "id": "pit_champion",  "name": "PITBORN", "title": "Pit Champion",        "hpMul": 1.25, "damageMul": 1.15, "difficulty": 9 },
-    { "id": "pit_lord",      "name": "PITBORN", "title": "Lord of the Furnace", "hpMul": 1.40, "damageMul": 1.25, "difficulty": 10 }
+    { "id": "gate_warden", "character": "Pitborn",   "name": "PITBORN", "title": "The Gate Warden",     "hpMul": 1.00, "damageMul": 1.00, "difficulty": 0 },
+    { "id": "pit_veteran", "character": "Pitborn",   "name": "PITBORN", "title": "Veteran of the Pit",  "hpMul": 1.12, "damageMul": 1.08, "difficulty": 8 },
+    { "id": "pit_champion", "character": "Pitborn",  "name": "PITBORN", "title": "Pit Champion",        "hpMul": 1.25, "damageMul": 1.15, "difficulty": 9 },
+    { "id": "pit_lord", "character": "Pitborn",      "name": "PITBORN", "title": "Lord of the Furnace", "hpMul": 1.40, "damageMul": 1.25, "difficulty": 10 }
   ]
 }

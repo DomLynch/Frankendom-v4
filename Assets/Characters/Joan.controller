@@ -680,7 +680,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: GuardUpper
     m_StateMachine: {fileID: -6567651864595751169}
-    m_Mask: {fileID: 31900000, guid: 4b17777283597484488ee5cc973c7d63, type: 2}
+    m_Mask: {fileID: 31900000, guid: 987616b4e5e931d4bbfbfd51f8cf2e51, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0

@@ -33,7 +33,7 @@ public class FootGround : MonoBehaviour
     {
         if (data != null) return data;
         data = new Root();
-        foreach (var p in new[] { Application.streamingAssetsPath + "/foot_ground.json", Application.dataPath + "/Data/foot_ground.json" })
+        foreach (var p in DataPath.Candidates("foot_ground.json")) /* // HCKIT2 v93 */
         {
             if (!System.IO.File.Exists(p)) continue;
             try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null) data = r; } catch { }
@@ -49,7 +49,7 @@ public class FootGround : MonoBehaviour
         foreach (var a in Object.FindObjectsByType<Animator>(FindObjectsInactive.Include))
         {
             string rn = a.transform.root.name; bool want = false;
-            foreach (var c in D.characters) if (c.enabled && !string.IsNullOrEmpty(c.name) && rn.Contains(c.name)) want = true;
+            { var rrp = RosterResolver.Pick(D.characters, rrx => rrx.name, rn); if (rrp != null && rrp.enabled) want = true; }   // HCKIT2 v93
             if (want && a.GetComponent<FootGround>() == null) a.gameObject.AddComponent<FootGround>();
         }
     }
@@ -60,7 +60,7 @@ public class FootGround : MonoBehaviour
     void Init()
     {
         init = true; var D = Load(); string rn = transform.root.name;
-        foreach (var c in D.characters) if (!string.IsNullOrEmpty(c.name) && rn.Contains(c.name)) row = c;
+        { var rrp = RosterResolver.Pick(D.characters, rrx => rrx.name, rn); if (rrp != null) row = rrp; }   // HCKIT2 v93
         if (row == null || !row.enabled) { row = null; return; }
         anim = GetComponentInChildren<Animator>(true); if (anim == null) anim = GetComponentInParent<Animator>();
         foreach (var t in GetComponentsInChildren<Transform>(true))

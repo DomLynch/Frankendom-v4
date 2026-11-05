@@ -55,6 +55,22 @@
         0.8
       ],
       "emissiveNits": 0.0
+    },
+    {
+      "match": "*",
+      "enabled": false,
+      "onlyDeathblow": true,
+      "onlyHeavy": false,
+      "skipOnKill": true,
+      "seconds": 0.1,
+      "riseSeconds": 0.02,
+      "strength": 0.3,
+      "color": [
+        1.0,
+        0.9,
+        0.8
+      ],
+      "emissiveNits": 0.0
     }
   ]
 }

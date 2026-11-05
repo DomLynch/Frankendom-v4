@@ -1,107 +1,107 @@
 {
-    "_about":  "Rows for Assets/Scripts/MoveSheetExtras.cs (HeadSheet, lane E). Run: HadesSlice.exe -screen-width 1920 -screen-height 1080 -headsheet:\u003cid\u003e -out:\u003cdir\u003e   (add -noclamp to see the raw animation). idle rows: Dracula placed at (x,z) facing +z, the opponent oppDist further up the stairs, one PNG per camera at each captureTicks entry (ticks after the settle time). cams: dist/angleDeg are relative to Dracula\u0027s start forward (angleDeg 0 = straight in front of him, looking back at him); height is above the ground at the camera (minAboveGround keeps it off the stairs). orbit rows: Dracula locked on the opponent while it circles him through 360 degrees in `seconds`, `frames` tiles evenly over the orbit from a fixed camera. z 16.9 = foot of the stairs, 12.6 = flat pad (AutoShot -gaps numbers).",
-    "tickHz":  60,
-    "settleTicks":  120,
-    "supersample":  2,
-    "logEvery":  6,
-    "timeoutTicks":  4000,
-    "draculaName":  "Dracula",
-    "pitbornName":  "Pitborn",
-    "groundMaskExcludeLayers":  [
-                                    8,
-                                    9
-                                ],
-    "pullMinDist":  1.2,
-    "pullMargin":  0.15,
-    "rows":  [
-                 {
-                     "id":  "idle_face",
-                     "kind":  "idle",
-                     "x":  0.0,
-                     "z":  16.9,
-                     "oppDist":  7.0,
-                     "captureTicks":  [
-                                          0,
-                                          90
-                                      ],
-                     "liveShot":  true,
-                     "cams":  [
-                                  {
-                                      "name":  "face",
-                                      "dist":  2.5,
-                                      "height":  1.55,
-                                      "lookY":  1.45,
-                                      "fov":  30,
-                                      "angleDeg":  0,
-                                      "minAboveGround":  0.6,
-                                      "w":  1280,
-                                      "h":  720
-                                  },
-                                  {
-                                      "name":  "body",
-                                      "dist":  3.6,
-                                      "height":  1.7,
-                                      "lookY":  1.15,
-                                      "fov":  38,
-                                      "angleDeg":  25,
-                                      "minAboveGround":  0.7,
-                                      "w":  1280,
-                                      "h":  720
-                                  }
-                              ]
-                 },
-                 {
-                     "id":  "natural_start",
-                     "kind":  "natural",
-                     "settleTicks":  1,
-                     "captureTicks":  [
-                                          1,
-                                          126,
-                                          132,
-                                          138,
-                                          186,
-                                          192,
-                                          198,
-                                          204
-                                      ],
-                     "liveShot":  true,
-                     "cams":  [
-                                  {
-                                      "name":  "face",
-                                      "dist":  2.8,
-                                      "height":  1.55,
-                                      "lookY":  1.45,
-                                      "fov":  34,
-                                      "angleDeg":  75,
-                                      "minAboveGround":  0.6,
-                                      "w":  1280,
-                                      "h":  720
-                                  }
-                              ]
-                 },
-                 {
-                     "id":  "turn360",
-                     "kind":  "orbit",
-                     "x":  0.0,
-                     "z":  12.6,
-                     "radius":  3.0,
-                     "seconds":  12.0,
-                     "frames":  6,
-                     "cols":  3,
-                     "tileW":  640,
-                     "tileH":  360,
-                     "hideOpponent":  true,
-                     "cams":  [
-                                  {
-                                      "name":  "orbit",
-                                      "dist":  3.6,
-                                      "height":  1.6,
-                                      "lookY":  1.15,
-                                      "fov":  34,
-                                      "angleDeg":  30,
-                                      "minAboveGround":  0.6
-                                  }
-                              ]
-                 }
-             ]
+    "_about": "Rows for Assets/Scripts/MoveSheetExtras.cs (HeadSheet, lane E). Run: HadesSlice.exe -screen-width 1920 -screen-height 1080 -headsheet:<id> -out:<dir>   (add -noclamp to see the raw animation). idle rows: Dracula placed at (x,z) facing +z, the opponent oppDist further up the stairs, one PNG per camera at each captureTicks entry (ticks after the settle time). cams: dist/angleDeg are relative to Dracula's start forward (angleDeg 0 = straight in front of him, looking back at him); height is above the ground at the camera (minAboveGround keeps it off the stairs). orbit rows: Dracula locked on the opponent while it circles him through 360 degrees in `seconds`, `frames` tiles evenly over the orbit from a fixed camera. z 16.9 = foot of the stairs, 12.6 = flat pad (AutoShot -gaps numbers).",
+    "tickHz": 60,
+    "settleTicks": 120,
+    "supersample": 2,
+    "logEvery": 6,
+    "timeoutTicks": 4000,
+    "playerName": "",
+    "enemyName": "",
+    "groundMaskExcludeLayers": [
+        8,
+        9
+    ],
+    "pullMinDist": 1.2,
+    "pullMargin": 0.15,
+    "rows": [
+        {
+            "id": "idle_face",
+            "kind": "idle",
+            "x": 0.0,
+            "z": 16.9,
+            "oppDist": 7.0,
+            "captureTicks": [
+                0,
+                90
+            ],
+            "liveShot": true,
+            "cams": [
+                {
+                    "name": "face",
+                    "dist": 2.5,
+                    "height": 1.55,
+                    "lookY": 1.45,
+                    "fov": 30,
+                    "angleDeg": 0,
+                    "minAboveGround": 0.6,
+                    "w": 1280,
+                    "h": 720
+                },
+                {
+                    "name": "body",
+                    "dist": 3.6,
+                    "height": 1.7,
+                    "lookY": 1.15,
+                    "fov": 38,
+                    "angleDeg": 25,
+                    "minAboveGround": 0.7,
+                    "w": 1280,
+                    "h": 720
+                }
+            ]
+        },
+        {
+            "id": "natural_start",
+            "kind": "natural",
+            "settleTicks": 1,
+            "captureTicks": [
+                1,
+                126,
+                132,
+                138,
+                186,
+                192,
+                198,
+                204
+            ],
+            "liveShot": true,
+            "cams": [
+                {
+                    "name": "face",
+                    "dist": 2.8,
+                    "height": 1.55,
+                    "lookY": 1.45,
+                    "fov": 34,
+                    "angleDeg": 75,
+                    "minAboveGround": 0.6,
+                    "w": 1280,
+                    "h": 720
+                }
+            ]
+        },
+        {
+            "id": "turn360",
+            "kind": "orbit",
+            "x": 0.0,
+            "z": 12.6,
+            "radius": 3.0,
+            "seconds": 12.0,
+            "frames": 6,
+            "cols": 3,
+            "tileW": 640,
+            "tileH": 360,
+            "hideOpponent": true,
+            "cams": [
+                {
+                    "name": "orbit",
+                    "dist": 3.6,
+                    "height": 1.6,
+                    "lookY": 1.15,
+                    "fov": 34,
+                    "angleDeg": 30,
+                    "minAboveGround": 0.6
+                }
+            ]
+        }
+    ]
 }

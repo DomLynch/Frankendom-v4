@@ -343,7 +343,7 @@ public static class FinisherPlayer
     {
         Vector3 away = Flat(victim.transform.position - attacker.transform.position); if (away.sqrMagnitude < 1e-4f) away = attacker.transform.forward; away.Normalize();
         string unit = !string.IsNullOrEmpty(k.cut) ? k.cut : k.type == "head_detach" ? "head" : k.type == "skull_split" ? "head_split" : "";
-        var call = new FinisherGoreCall { type = k.type, unit = unit, param = k.param, victim = victim, attacker = attacker, away = away, strength = k.strength, point = victim.transform.position + Vector3.up * 1.4f * Mathf.Max(1f, victim.scale) };
+        var call = new FinisherGoreCall { type = k.type, unit = unit, param = k.param, victim = victim, attacker = attacker, away = away, strength = k.strength, point = victim.transform.position + Vector3.up * 1.4f * FighterScale.Of(victim) };
         if (OnGore != null) OnGore(call);
         bool handled = false;
         if (unit.Length > 0 && FinisherConfig.EnableGore)

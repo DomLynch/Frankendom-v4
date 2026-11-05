@@ -503,7 +503,7 @@ public class AIBrain : MonoBehaviour
             {
                 for (int i = 0; i < U.zBias.Length; i++)
                 {
-                    var zb = U.zBias[i]; if (zb == null || zb.name != name) continue;
+                    var zb = U.zBias[i]; if (zb == null || !RosterResolver.NameIs(zb.name, name)) continue;   // HCKIT2 v93
                     float z = transform.position.z, lim = o.transform.position.z + zb.offset;
                     if (zb.cmp == "gt" ? z > lim : z < lim) v += new Vector3(0f, 0f, zb.push);
                 }

@@ -405,7 +405,7 @@ public class ClashFx : MonoBehaviour
             if (r == null || r.type != type) continue;
             if (r.heavy >= 0 && (r.heavy == 1) != heavy) continue;
             if (r.perfect >= 0 && (r.perfect == 1) != perfect) continue;
-            if (!string.IsNullOrEmpty(r.targetContains) && !d.name.Contains(r.targetContains)) continue;
+            if (!RosterResolver.NameFilter(r.targetContains, d.name)) continue;   // HCKIT2 v93
             row = r; break;
         }
         if (row == null) return;
@@ -420,7 +420,7 @@ public class ClashFx : MonoBehaviour
         {
             sparkReadyAt = Time.time + cfg.sparks.cooldown;
             var sp = cfg.sparks;
-            Vector3 anchor = d.transform.position + Vector3.up * (sp.anchorHeight * Mathf.Max(1f, d.scale)) - along * sp.anchorBack;
+            Vector3 anchor = d.transform.position + Vector3.up * (sp.anchorHeight * FighterScale.Of(d)) - along * sp.anchorBack;
             int n = sp.countBase + Mathf.RoundToInt(Rand() * (sp.countRandomBase + row.spark * sp.countRandomPerStrength));
             if (sheetSparkR != null)
             {

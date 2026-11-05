@@ -67,7 +67,7 @@ public class CombatVFX : MonoBehaviour
 
     void OnContact(DuelFighter a, DuelFighter d, string type, bool heavy, bool perfect)
     {
-        Vector3 pos = d.transform.position + Vector3.up * (1.1f * Mathf.Max(1f, d.scale));
+        Vector3 pos = d.transform.position + Vector3.up * (1.1f * FighterScale.Of(d));
         Vector3 dir = (d.transform.position - a.transform.position); dir.y = 0.15f; dir.Normalize();
         switch (type)
         {

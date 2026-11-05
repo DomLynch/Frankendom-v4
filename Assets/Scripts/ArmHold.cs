@@ -20,7 +20,7 @@ public class ArmHold : MonoBehaviour
     {
         if (data != null) return data;
         data = new Root();
-        foreach (var p in new[] { Application.streamingAssetsPath + "/arm_hold.json", Application.dataPath + "/Data/arm_hold.json" })
+        foreach (var p in DataPath.Candidates("arm_hold.json")) /* // HCKIT2 v93 */
         {
             if (!System.IO.File.Exists(p)) continue;
             try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null) data = r; } catch { }
@@ -36,7 +36,7 @@ public class ArmHold : MonoBehaviour
         foreach (var a in Object.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
             string rn = a.transform.root.name; bool want = false;
-            foreach (var c in D.characters) if (c.enabled && !string.IsNullOrEmpty(c.name) && rn.Contains(Roster.Get(c.name).objectName)) want = true;
+            { var rrp = RosterResolver.Pick(D.characters, rrx => rrx.name, rn); if (rrp != null && rrp.enabled) want = true; }   // HCKIT2 v93
             if (want && a.GetComponent<ArmHold>() == null) a.gameObject.AddComponent<ArmHold>();
         }
     }
@@ -47,7 +47,7 @@ public class ArmHold : MonoBehaviour
     void Init()
     {
         init = true; var D = Load(); string rn = transform.root.name;
-        foreach (var c in D.characters) if (!string.IsNullOrEmpty(c.name) && rn.Contains(Roster.Get(c.name).objectName)) row = c;
+        { var rrp = RosterResolver.Pick(D.characters, rrx => rrx.name, rn); if (rrp != null) row = rrp; }   // HCKIT2 v93
         if (row == null || !row.enabled || row.bones == null) { row = null; return; }
         anim = GetComponentInChildren<Animator>(true); if (anim == null) anim = GetComponentInParent<Animator>();
         var all = GetComponentsInChildren<Transform>(true);

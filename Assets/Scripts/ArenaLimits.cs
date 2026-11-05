@@ -6,8 +6,12 @@ using UnityEngine;
 [DefaultExecutionOrder(600)]
 public class ArenaLimits : MonoBehaviour
 {
-    [System.Serializable] class Row { public bool enabled = true; public float xMin = -3.8f, xMax = 3.8f, zMin = 8f, zMax = 22f; }
-    static Row row; static bool loaded;
+    [System.Serializable] class Row { public bool enabled = true; public float xMin = -3.8f, xMax = 3.8f, zMin = 8f, zMax = 22f; public bool stairEnabled = true; public float stairHalfWidthX = 2.45f, stairZMin = 4f, stairZMax = 22.5f; /*HCKIT1 v93*/ }
+    static Row row; static bool loaded; static readonly Row stairDefaults = new Row();   /*HCKIT1 v93 K1: the stair lane DuelFighter.Tick clamps to (arena_limits.json stair*); missing file = the old literals 2.45 / 4 / 22.5 */
+    static Row Stair { get { return Load() ?? stairDefaults; } }
+    public static float StairHalfWidthX { get { var r = Stair; return r.stairEnabled ? r.stairHalfWidthX : float.MaxValue; } }   // stairEnabled=false = no stair clamp (a new arena)
+    public static float StairZMin { get { return Stair.stairZMin; } }
+    public static float StairZMax { get { return Stair.stairZMax; } }
     CharacterController cc;
 
     static Row Load()

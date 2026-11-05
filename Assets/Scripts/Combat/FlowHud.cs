@@ -43,7 +43,7 @@ public class FlowHud : MonoBehaviour
             Vector3 dv = df.opponent.transform.position - df.transform.position; dv.y = 0f;
             if (dv.magnitude <= d.lockOn.range)
             {
-                Vector3 sp = cam.WorldToScreenPoint(df.opponent.transform.position + Vector3.up * (h.yOffset * Mathf.Max(1f, df.opponent.scale)));
+                Vector3 sp = cam.WorldToScreenPoint(df.opponent.transform.position + Vector3.up * (h.yOffset * FighterScale.Of(df.opponent)));
                 if (sp.z > 0.1f)
                 {
                     float x = sp.x, y = Screen.height - sp.y, px = h.dotPx;

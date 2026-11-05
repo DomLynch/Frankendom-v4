@@ -27,7 +27,7 @@ public class WeaponGrip : MonoBehaviour
         foreach (var a in Object.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
             string rn = a.transform.root.name; bool want = false;
-            foreach (var c in D.characters) if (c != null && c.enabled && !string.IsNullOrEmpty(c.name) && rn.Contains(c.name)) want = true;
+            { int rrb = RosterResolver.Best(D.characters, rrx => rrx.name, rn); foreach (var c in D.characters) if (c != null && c.enabled && rrb > 0 && RosterResolver.Tier(c.name, rn) == rrb) want = true; }   // HCKIT2 v93
             if (want && a.GetComponent<WeaponGrip>() == null) a.gameObject.AddComponent<WeaponGrip>();
         }
     }
@@ -37,7 +37,7 @@ public class WeaponGrip : MonoBehaviour
     {
         if (data != null) return data;
         data = new Root();
-        foreach (var p in new[] { Application.streamingAssetsPath + "/weapon_grip.json", Application.dataPath + "/Data/weapon_grip.json" })
+        foreach (var p in DataPath.Candidates("weapon_grip.json")) /* // HCKIT2 v93 */
         {
             if (!System.IO.File.Exists(p)) continue;
             try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null && r.characters != null) data = r; } catch { }
@@ -52,7 +52,7 @@ public class WeaponGrip : MonoBehaviour
     void Init()
     {
         init = true; string rn = transform.root.name;
-        foreach (var c in Load().characters) if (c != null && c.enabled && !string.IsNullOrEmpty(c.name) && rn.Contains(c.name)) { rows.Add(c); if (c.states == null || c.states.Length == 0 || row == null) row = c; }
+        { var lc = Load().characters; int rrb = RosterResolver.Best(lc, rrx => rrx.name, rn); foreach (var c in lc) if (c != null && c.enabled && rrb > 0 && RosterResolver.Tier(c.name, rn) == rrb) { rows.Add(c); if (c.states == null || c.states.Length == 0 || row == null) row = c; } }   // HCKIT2 v93
         anim = GetComponent<Animator>();
         if (row == null) { enabled = false; return; }
         foreach (var t in GetComponentsInChildren<Transform>(true)) if (t.name == "mixamorig:" + row.hand) { hand = t; break; }

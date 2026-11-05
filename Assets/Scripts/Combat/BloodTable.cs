@@ -46,7 +46,7 @@ public static class BloodTable
         if (victim != null && d.victims != null)
             for (int i = 0; i < d.victims.Length; i++)
             {
-                var v = d.victims[i]; if (v == null || string.IsNullOrEmpty(v.match) || !victim.name.Contains(v.match)) continue;
+                var v = d.victims[i]; if (v == null || !ReferenceEquals(v, RosterResolver.Pick(d.victims, rrx => rrx.match, victim.name, false))) continue;   // HCKIT2 v93
                 s.victim = v.bloodScale; s.sparks = v.sparks; s.flash = v.flash; s.count *= v.bloodScale; s.drops *= v.bloodScale; s.mist *= v.bloodScale; s.ground *= v.bloodScale; break;
             }
         return s;

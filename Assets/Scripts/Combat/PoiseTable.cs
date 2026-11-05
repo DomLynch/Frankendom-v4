@@ -68,7 +68,7 @@ public static class PoiseTable
     {
         var C = Get().armour; if (!C.enabled || d == null || d.CurrentMove == null) return null;
         ArmourFighter af = null; string key = d.PostureKey;
-        for (int i = 0; i < C.fighters.Length; i++) if (C.fighters[i] != null && C.fighters[i].key == key) { af = C.fighters[i]; break; }
+        af = RosterResolver.ByIdOrDefault(C.fighters, rrx => rrx.key, key);   // HCKIT2 v93
         if (af == null || af.moves == null) return null;
         string id = d.CurrentMove.id; FState s = d.state;
         for (int i = 0; i < af.moves.Length; i++)

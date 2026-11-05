@@ -631,8 +631,8 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             cc.enabled = false; transform.position = lastGroundedPos + Vector3.up * 0.05f; cc.enabled = true; Physics.SyncTransforms(); vy = -1f; knock = Vector3.zero;
             Debug.Log("[DuelFighter] " + name + " fell out of the world: restored to " + lastGroundedPos);
         }
-        float lim = 2.45f;   // keep both fighters inside the stair width (no climbing onto the balustrade)
-        if (cc.enabled && transform.position.z > 4f && transform.position.z < 22.5f && Mathf.Abs(transform.position.x) > lim) cc.Move(new Vector3(Mathf.Sign(transform.position.x) * lim - transform.position.x, 0f, 0f));
+        float lim = ArenaLimits.StairHalfWidthX; /*HCKIT1 v93*/   // keep both fighters inside the stair width (no climbing onto the balustrade)
+        if (cc.enabled && transform.position.z > ArenaLimits.StairZMin && transform.position.z < ArenaLimits.StairZMax && Mathf.Abs(transform.position.x) > lim) cc.Move(new Vector3(Mathf.Sign(transform.position.x) * lim - transform.position.x, 0f, 0f));
 
         // never overlap the opponent: keep a minimum horizontal separation (radii + 0.25 m), each fighter yields half of the overlap, in every state
         if (cc.enabled && opponent && state != FState.Dead && !opponent.Dead)

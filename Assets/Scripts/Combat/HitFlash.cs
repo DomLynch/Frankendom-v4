@@ -31,8 +31,8 @@ public static class HitFlashTable
         try
         {
             var ta = Resources.Load<TextAsset>("hit_flash"); if (ta != null) json = ta.text;
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "hit_flash.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/hit_flash.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) json = DataPath.ReadText("hit_flash.json");   // HCKIT2 v93
+            // (Data/ fallback is inside DataPath)   // HCKIT2 v93
         }
         catch (Exception ex) { Debug.LogWarning("HitFlashTable: read failed: " + ex.Message); }
         if (string.IsNullOrEmpty(json)) return null;
@@ -41,7 +41,7 @@ public static class HitFlashTable
     public static Row RowFor(string key)
     {
         var rows = Get().rows; if (rows == null || string.IsNullOrEmpty(key)) return null;
-        for (int i = 0; i < rows.Length; i++) if (rows[i] != null && !string.IsNullOrEmpty(rows[i].match) && key.IndexOf(rows[i].match, StringComparison.OrdinalIgnoreCase) >= 0) return rows[i];
+        { var rrp = RosterResolver.Pick(rows, rrx => rrx.match, key, false, true); if (rrp != null) return rrp; }   // HCKIT2 v93
         return null;
     }
 }

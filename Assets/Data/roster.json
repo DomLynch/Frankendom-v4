@@ -14,6 +14,7 @@
       "guardMask": "Assets/Characters/GuardUpper_Dracula.mask",
       "finisherClipFolder": "Assets/Characters/Dracula/FinisherClips",
       "heightM": 0,
+      "scaleFloor": 1.0,
       "armoured": false,
       "notes": "flesh: bleeds, no sparks. Non-player row since v76 (switch back: roster.json \"player\": \"Dracula\" + Hades > Joan > Apply roster player to scene)"
     },
@@ -28,6 +29,8 @@
       "guardMask": "Assets/Characters/GuardUpper_Joan.mask",
       "finisherClipFolder": "Assets/Characters/Joan/FinisherClips",
       "heightM": 1.58,
+      "scaleFloor": 1.0,
+      "headRenderer": "Joan_Head",
       "armoured": false,
       "notes": "flesh: bleeds, no sparks. Mixamo ch13 chef 106-joint body + Joan face (joan_chef_outfit_v1.glb)",
       "loadout": []
@@ -43,6 +46,7 @@
       "guardMask": "Assets/Characters/GuardUpper_Pitborn.mask",
       "finisherClipFolder": "Assets/Characters/Pitborn/FinisherClips",
       "heightM": 0,
+      "scaleFloor": 1.0,
       "armoured": true,
       "notes": "armoured: sparks and flash on hits"
     }

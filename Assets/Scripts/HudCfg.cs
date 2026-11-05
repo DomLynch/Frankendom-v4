@@ -60,6 +60,8 @@ public static class HudCfg
     [Serializable] public class GuardDirC
     {
         public bool enabled = true; public float radius = 64f, arcDeg = 74f, thickness = 0.16f, fadeInS = 0.07f, fadeOutS = 0.2f, idleAlpha = 0.26f, dotSize = 8f, ringAlpha = 0.18f, parryPulseHz = 8f, parryGrow = 0.12f;
+        // STEERUI v93: arcs anchored to the player's projected body (fractions of the player's on-screen height); radius is only used by the pre-v93 layout
+        public bool anchorPlayer = true; public float centreFrac = 0.55f, sideDistFrac = 0.38f, topDistFrac = 0.57f, arcRadiusFrac = 0.40f, ringFrac = 0f, fallbackHeightFrac = 0.30f, defaultHeightM = 1.7f, minHeightM = 1.2f, maxHeightM = 2.6f, heightRefreshS = 1f;
     }
     [Serializable] public class DebugC { public bool camLine = false; public int fpsLabelSize = 13; }
     [Serializable] public class HintC

@@ -28,6 +28,7 @@ public class VerifyGround : MonoBehaviour
         public float[] zs = { 11.5f, 14.5f, 17.5f, 20.5f, 23f };
         public float[] edgeXs = { -3.1f, 3.1f };
         public float settleSeconds = 1f, tolerance = 0.05f, fightSeconds = 60f, shotEvery = 3f, fightYTol = 0.15f;
+        public float endAfterDeathSeconds = 4f;     // WOUNDSHOT v84: the fight phase ends this long after either fighter dies (v81 ran 140 s past a death); 0 = always run fightSeconds
         public string[] fighters = new string[0];   // scene object names in test order; empty = { Roster.PlayerObject, Roster.EnemyObject }
         public int[] groundMaskExcludeLayers = { 8, 9 };
         public bool gameLocomotion = false;        // true: DuelFighter stays on (its own gravity AND its +-2.45 m stair clamp); false: harness gravity only, no clamp
@@ -59,6 +60,8 @@ public class VerifyGround : MonoBehaviour
         public int tile = 512;
         public string bone = "mixamorig:Head", neckBone = "mixamorig:Neck", rendererName = "head", metaHumanName = "MetaHumanHead";
         public string forwardAxis = "auto";        // head bone local axis that points out of the face: auto (the one nearest the body forward at boot) | +z | -z | +x | -x | +y | -y
+        public float headBoundsTolM = 0.5f;        // WOUNDSHOT v84: the head renderer's bounds must be within this of the head bone (a wrong mesh far from the head FAILs)
+        public string[] excludeNameParts = { "eyelash", "eyeleash", "lash", "brow", "tooth", "teeth", "tongue", "hair", "eye", "sword", "scabbard", "helmet" };   // never matched by the generic contains search
     }
 
     // ---------------- boot ----------------
@@ -333,7 +336,7 @@ public class VerifyGround : MonoBehaviour
         bool fightersFail = activeFighters != 2 || dupFighter;
         Debug.Log("[VERIFY] FIGHTERS " + (fightersFail ? "FAIL" : "PASS") + " active=" + activeFighters + " names=" + string.Join(",", new System.Collections.Generic.List<string>(fnames).ToArray()));
         FightOn();
-        float ft = 0f, nextShot = D.shotEvery; int shotN = 0; int ow = 0;
+        float ft = 0f, nextShot = D.shotEvery; int shotN = 0; int ow = 0; float deadFor = 0f; string endedBy = "";
         int camFrames = 0, camOut = 0; float camDistWorst = 0f;   // v78 cam check: the game camera must keep the fighters in view (v77 shipped a dead camera, rock close-up, with the ground check PASS)
         yield return null;
         while (ft < D.fightSeconds)
@@ -341,6 +344,8 @@ public class VerifyGround : MonoBehaviour
             float dt = Time.unscaledDeltaTime; ft += dt; fightFrames++;
             if (ft > 2f) { fightMinDt = Mathf.Min(fightMinDt, dt); fightMaxDt = Mathf.Max(fightMaxDt, dt); fightFpsTime += dt; fightFpsFrames++; }
             overlay = "VERIFY FIGHT  t=" + ft.ToString("F1", IC) + "s  " + HpText();
+            { bool anyDead = false; if (fighters != null) foreach (var fd in fighters) if (fd && fd.Dead) { anyDead = true; if (endedBy.Length == 0) endedBy = fd.name + " died at t=" + ft.ToString("F1", IC) + "s"; }   // WOUNDSHOT v84
+              deadFor = anyDead ? deadFor + dt : 0f; if (D.endAfterDeathSeconds > 0f && deadFor >= D.endAfterDeathSeconds) break; }
             if (fighters != null) foreach (var ff in fighters)   // both fighters must stay on the ground for the whole fight (audit: one fell out of the world at ~50 s)
             {
                 if (!ff) continue;
@@ -375,7 +380,7 @@ public class VerifyGround : MonoBehaviour
             yield return null;
         }
         overlay = "";
-        fightNote = "shots=" + ow + " " + HpText();
+        fightNote = "shots=" + ow + " " + HpText() + (endedBy.Length > 0 ? " | " + endedBy + ", fight phase ended " + deadFor.ToString("F1", IC) + " s later (endAfterDeathSeconds " + D.endAfterDeathSeconds.ToString("F1", IC) + ")" : "");
         foreach (var kv in fightYWorst) if (kv.Value > D.fightYTol) fightYFail = true;
         WriteSummary();
         int fails = 0; foreach (var r in rows) if (r.verdict == "FAIL") fails++;
@@ -426,34 +431,51 @@ public class VerifyGround : MonoBehaviour
         var mh = GameObject.Find(HC.metaHumanName);   // finds active objects only
         bool mhActive = mh != null && mh.activeInHierarchy;
         float ang = Vector3.Angle(headBone.TransformDirection(headAxis), drac.transform.forward);
-        // original head renderer: name == rendererName (else contains it), not under the MetaHuman head
-        Renderer hr = null;
+        // WOUNDSHOT v84: the head renderer comes from roster data (roster.json headRenderer of this fighter's character; "" = verify_ground.json head.rendererName), never from "the first body mesh" (the v77 fallback
+        // false-PASSed on any enabled skinned mesh, e.g. the eyelashes or a sword layer). Exact name first; a contains match is only allowed for the generic name and never on an excluded part (eyelash, hair, teeth ...).
+        // No match = FAIL with the renderer names listed. The match must be a real mesh and its bounds must be near the head bone (headBoundsTolM), so a wrong mesh cannot pass.
+        string wantName = Roster.Get(drac.CharacterId).headRenderer; bool fromRoster = !string.IsNullOrEmpty(wantName); if (!fromRoster) wantName = HC.rendererName;
+        Renderer hr = null; var seen = new StringBuilder();
         foreach (var r in drac.GetComponentsInChildren<Renderer>(true))
         {
+            if (seen.Length < 400) seen.Append(r.name).Append(' ');
             if (InsideNamed(r.transform, HC.metaHumanName)) continue;
-            if (string.Equals(r.name, HC.rendererName, StringComparison.OrdinalIgnoreCase)) { hr = r; break; }
+            if (string.Equals(r.name, wantName, StringComparison.OrdinalIgnoreCase)) { hr = r; break; }
         }
-        if (hr == null)
+        if (hr == null && !fromRoster)
             foreach (var r in drac.GetComponentsInChildren<Renderer>(true))
             {
-                if (InsideNamed(r.transform, HC.metaHumanName) || r.name.IndexOf("metahuman", StringComparison.OrdinalIgnoreCase) >= 0) continue;
-                if (r.name.IndexOf(HC.rendererName, StringComparison.OrdinalIgnoreCase) >= 0) { hr = r; break; }
+                if (InsideNamed(r.transform, HC.metaHumanName) || r.name.IndexOf("metahuman", StringComparison.OrdinalIgnoreCase) >= 0 || ExcludedHeadPart(r.name, HC)) continue;
+                if (r.name.IndexOf(wantName, StringComparison.OrdinalIgnoreCase) >= 0) { hr = r; break; }
             }
-        if (hr == null)   // v77 head fallback: a character whose head is part of the body mesh (Joan, chef rig) has no renderer named like the head: use its first skinned body mesh
-            foreach (var r in drac.GetComponentsInChildren<SkinnedMeshRenderer>(true)) { if (InsideNamed(r.transform, HC.metaHumanName) || r.name.IndexOf("metahuman", StringComparison.OrdinalIgnoreCase) >= 0) continue; if (r.enabled && r.gameObject.activeInHierarchy) { hr = r; break; } }
         bool hrOn = hr != null && hr.enabled && hr.gameObject.activeInHierarchy;
+        float headDist = float.NaN; bool hrMesh = false;
+        if (hr != null)
+        {
+            var smrH = hr as SkinnedMeshRenderer; var mfH = hr.GetComponent<MeshFilter>(); Mesh hm = smrH != null ? smrH.sharedMesh : (mfH != null ? mfH.sharedMesh : null);
+            hrMesh = hm != null && hm.vertexCount > 0;
+            if (headBone != null) headDist = Mathf.Sqrt(hr.bounds.SqrDistance(headBone.position));
+        }
         float gap = neckBone != null ? Vector3.Distance(neckBone.position, headBone.position) : float.NaN;
         float gd = float.IsNaN(gap) || restGap < 0f ? float.NaN : gap - restGap;
         float headY = headBone.position.y;
         if (mhActive) { fail = true; sb.Append("MetaHumanHead ACTIVE; "); }
         if (ang > HC.maxYawDeg) { fail = true; sb.Append("head faces " + ang.ToString("F1", I) + " deg off the body (max " + HC.maxYawDeg.ToString("F0", I) + "); "); }
-        if (!hrOn) { fail = true; sb.Append(hr == null ? "original head renderer '" + HC.rendererName + "' not found; " : "original head renderer '" + hr.name + "' disabled; "); }
+        if (!hrOn) { fail = true; sb.Append(hr == null ? "original head renderer '" + wantName + "'" + (fromRoster ? " (roster.json headRenderer of " + drac.CharacterId + ")" : "") + " not found among: " + seen + "; " : "original head renderer '" + hr.name + "' disabled; "); }
+        else if (!hrMesh) { fail = true; sb.Append("head renderer '" + hr.name + "' has no mesh / no vertices; "); }
+        else if (!float.IsNaN(headDist) && headDist > HC.headBoundsTolM) { fail = true; sb.Append("head renderer '" + hr.name + "' bounds are " + headDist.ToString("F2", I) + " m from the head bone (max " + HC.headBoundsTolM.ToString("F2", I) + "): wrong mesh; "); }
         if (!float.IsNaN(gd) && Mathf.Abs(gd) > HC.gapTol) sb.Append("note: neck-head gap differs from rest by " + gd.ToString("F3", I) + " m; ");
         headVerdict = fail ? "FAIL" : "PASS";
-        string line = "MetaHumanHeadActive=" + mhActive + " headAngleDeg=" + ang.ToString("F1", I) + " (" + (ang <= HC.maxYawDeg ? "PASS" : "FAIL") + ") headRenderer=" + (hr != null ? hr.name : "none") + " enabled=" + hrOn
+        string line = "MetaHumanHeadActive=" + mhActive + " headAngleDeg=" + ang.ToString("F1", I) + " (" + (ang <= HC.maxYawDeg ? "PASS" : "FAIL") + ") headRenderer=" + (hr != null ? hr.name : "none") + " (" + (fromRoster ? "roster" : "name") + " '" + wantName + "') enabled=" + hrOn + " mesh=" + hrMesh + " boundsToHeadBone=" + Fmt(headDist)
             + " neckHeadGap=" + Fmt(gap) + " rest=" + Fmt(restGap) + " delta=" + Fmt(gd) + " headY=" + headY.ToString("F3", I) + " rootY=" + drac.transform.position.y.ToString("F3", I) + " " + sb;
         headLines.Add(line);
         Debug.Log("[VERIFY] HEAD " + headVerdict + " " + line);
+    }
+
+    static bool ExcludedHeadPart(string n, HeadCfg HC)   // WOUNDSHOT v84
+    {
+        if (HC.excludeNameParts != null) foreach (var x in HC.excludeNameParts) if (!string.IsNullOrEmpty(x) && n.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0) return true;
+        return false;
     }
 
     static bool InsideNamed(Transform t, string n)

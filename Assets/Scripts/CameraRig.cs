@@ -23,10 +23,21 @@ public class CameraRig : MonoBehaviour
     void LoadFree() { freeLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_free.json", Application.dataPath + "/Data/camera_free.json" }) { if (!System.IO.File.Exists(p)) continue; try { free = JsonUtility.FromJson<FreeRow>(System.IO.File.ReadAllText(p)); } catch { } break; } }
     [System.Serializable] class ColRow { public bool enabled = false; public float radius = 0.35f, minDistFromTarget = 1.2f, minGroundY = 0f, minHeightAboveGround = 0.6f; public int[] ignoreLayers = { 8, 9 }; }
     // V68: lock-on pose multipliers as data (camera_pose.json, StreamingAssets first). 1/1/0 = the V3 pose as before.
-    [System.Serializable] class CamPoseRow { public float backMul = 1f, heightMul = 1f, lookYAdd = 0f, shoulder = 1f; }
+    [System.Serializable] class CamPoseRow { public float backMul = 1f, heightMul = 1f, lookYAdd = 0f, shoulder = 1f; public LockCamRow lockCam = new LockCamRow(); } /*HCKIT1 v93*/
+    /* K3: the V3 closed-form constants (every default = the literal that used to be inline; camera_pose.json lockCam ships the same numbers) */
+    [System.Serializable] class FoeRow { public float refHeightM = 1.8f, scaleToM = 2.1f, back = 2.4f, height = 1.6f; public bool useRosterHeight = true; }   /* foe = how much taller than refHeightM; scaleToM = metres per scale unit; roster heightM > 0 wins */
+    [System.Serializable] class LockCamRow { public float backMin = 4.2f, backPerM = 0.62f, backAdd = 2.8f, backOuter = 1.3f, heightMin = 3.2f, heightPerM = 1.3f, heightScale = 0.67f, heightOuter = 1.3f, blendRate = 8f, gapMin = 0.8f, lookUp = 0.8f, lookAhead = 0.3f, xClamp = 11.5f, fovFree = 50f, fovLock = 38.6f; public FoeRow foe = new FoeRow(); public Vector3 fallbackPos = new Vector3(0f, 3f, 5f), fallbackLook = new Vector3(0f, 1f, 15f); }
     CamPoseRow pose = new CamPoseRow(); bool poseLoaded;
-    void LoadPose() { poseLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_pose.json", Application.dataPath + "/Data/camera_pose.json" }) { if (!System.IO.File.Exists(p)) continue; try { var r = JsonUtility.FromJson<CamPoseRow>(System.IO.File.ReadAllText(p)); if (r != null) pose = r; } catch { } break; } }
-    ColRow col = new ColRow(); bool colLoaded; Vector3 lastGoodPos = new Vector3(0f, 3f, 5f), lastGoodLook = new Vector3(0f, 1f, 15f), lastGoodFwd = Vector3.forward;
+    void LoadPose() { LoadPoseFile(); if (!goodSet) { lastGoodPos = pose.lockCam.fallbackPos; lastGoodLook = pose.lockCam.fallbackLook; } } /*HCKIT1 v93 K3: fallback pose from data until the first good frame */
+    Transform foeTr; float foeRosterH;
+    float FoeTall()   /* K3: was (enemy.lossyScale.y * 2.1f - 1.8f) / 1.8f; the roster height (heightM > 0) replaces the scale guess */
+    {
+        var fo = pose.lockCam.foe; float m = enemy.lossyScale.y * fo.scaleToM;
+        if (fo.useRosterHeight) { if (foeTr != enemy) { foeTr = enemy; foeRosterH = Roster.Get(Roster.IdOf(enemy)).heightM; } if (foeRosterH > 0f) m = foeRosterH; }
+        return Mathf.Max(0f, (m - fo.refHeightM) / fo.refHeightM);
+    }
+    void LoadPoseFile() { poseLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_pose.json", Application.dataPath + "/Data/camera_pose.json" }) { if (!System.IO.File.Exists(p)) continue; try { var r = JsonUtility.FromJson<CamPoseRow>(System.IO.File.ReadAllText(p)); if (r != null) { if (r.lockCam == null) r.lockCam = new LockCamRow(); if (r.lockCam.foe == null) r.lockCam.foe = new FoeRow(); pose = r; } } catch { } break; } }
+    ColRow col = new ColRow(); bool colLoaded, goodSet; Vector3 lastGoodPos = new Vector3(0f, 3f, 5f), lastGoodLook = new Vector3(0f, 1f, 15f), lastGoodFwd = Vector3.forward;
     static bool IsFinite(Vector3 v) { return !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z) || float.IsInfinity(v.x) || float.IsInfinity(v.y) || float.IsInfinity(v.z)); }
     void LoadCol() { colLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_collision.json", Application.dataPath + "/Data/camera_collision.json" }) { if (!System.IO.File.Exists(p)) continue; try { col = JsonUtility.FromJson<ColRow>(System.IO.File.ReadAllText(p)); } catch { } break; } if (col == null) col = new ColRow(); }
     Camera cam; CameraImpact impact;
@@ -40,7 +51,7 @@ public class CameraRig : MonoBehaviour
     // test-only (AutoShot): fraction of feet/waist/head points of a fighter inside the safe area
     public float VisibleFraction(Transform t)
     {
-        float s = Mathf.Max(1f, t.lossyScale.y); int ok = 0;
+        float s = FighterScale.Eff(t.lossyScale.y, t); int ok = 0;
         foreach (float h in new[] { 0.1f, 0.9f, 1.7f })
         {
             Vector3 v = cam.WorldToViewportPoint(t.position + Vector3.up * h * s);
@@ -53,7 +64,7 @@ public class CameraRig : MonoBehaviour
     {
         if (!target || yielded) return;
         if (!colLoaded) LoadCol();
-        float dt = Time.deltaTime;
+        float dt = Time.deltaTime; if (!poseLoaded) LoadPose();
         bool lockOn = lockEnabled && enemy && enemyHp && !enemyHp.Dead && Vector3.Distance(target.position, enemy.position) < lockRange;
         lockW = Mathf.MoveTowards(lockW, lockOn ? 1f : 0f, dt * DirectionalInput.LockEase(lockOn));   // CTRL v68: controls.json camera.easeIn / easeOut (3 / 3 without the file)
 
@@ -72,23 +83,23 @@ public class CameraRig : MonoBehaviour
         {
             Vector3 P = target.position, E = enemy.position;
             P.y = Mathf.Max(P.y, col.minGroundY); E.y = Mathf.Max(E.y, col.minGroundY);   // a fighter that fell out of the world must not drag the camera down with it (audit E)
-            Vector3 flat = E - P; flat.y = 0f; float d = Mathf.Max(0.8f, flat.magnitude);
+            Vector3 flat = E - P; flat.y = 0f; float d = Mathf.Max(pose.lockCam.gapMin, flat.magnitude);
             float tgtYaw = Mathf.Atan2(flat.x, flat.z) * Mathf.Rad2Deg;          // camera behind the player, facing the enemy
-            float blend = 1f - Mathf.Exp(-8f * dt);
+            float blend = 1f - Mathf.Exp(-pose.lockCam.blendRate * dt);
             if (!snapped) lockYaw = tgtYaw; else lockYaw += Mathf.DeltaAngle(lockYaw, tgtYaw) * blend;
-            float foe = Mathf.Max(0f, (enemy.lossyScale.y * 2.1f - 1.8f) / 1.8f);   // how much taller than a man (the enemy 2.5 m = 0.39)
+            var lk = pose.lockCam; float foe = FoeTall();   // how much taller than a man (the enemy 2.5 m = 0.39)
             if (!poseLoaded) LoadPose();
-            float back = (Mathf.Max(4.2f, 0.62f * d + 2.8f) + foe * 2.4f) * 1.3f * pose.backMul;
-            float h = (Mathf.Max(3.2f, 1.3f * d) * 0.67f + foe * 1.6f) * 1.3f * pose.heightMul;
+            float back = (Mathf.Max(lk.backMin, lk.backPerM * d + lk.backAdd) + foe * lk.foe.back) * lk.backOuter * pose.backMul;
+            float h = (Mathf.Max(lk.heightMin, lk.heightPerM * d) * lk.heightScale + foe * lk.foe.height) * lk.heightOuter * pose.heightMul;
             Quaternion yr = Quaternion.Euler(0f, lockYaw, 0f);
             Vector3 fwd = yr * Vector3.forward, right = yr * Vector3.right;
             Vector3 lockPos = new Vector3(P.x, P.y + h, P.z) - fwd * back + right * pose.shoulder;
             Vector3 mid = (P + E) * 0.5f;
-            Vector3 lockLook = new Vector3(mid.x, mid.y + 0.8f + pose.lookYAdd, mid.z) + fwd * 0.3f;   // nudged toward the foe so he sits more central
-            lockPos.x = Mathf.Clamp(lockPos.x, -11.5f, 11.5f);
+            Vector3 lockLook = new Vector3(mid.x, mid.y + lk.lookUp + pose.lookYAdd, mid.z) + fwd * lk.lookAhead;   // nudged toward the foe so he sits more central
+            lockPos.x = Mathf.Clamp(lockPos.x, -lk.xClamp, lk.xClamp);
             Vector3 wantPos = Vector3.Lerp(freePos, lockPos, lockW), wantLook = Vector3.Lerp(freeLook, lockLook, lockW);
             CameraDeath.Shape(target, enemy, enemyHp, ref wantPos, ref wantLook, camPos);   // V61B: after a death keep the look-at on the dead fighter's body (camera_death.json)
-            CamFraming.Begin(P, target.lossyScale.y, E, enemy.lossyScale.y);   // V65CAM: both fighters stay in the safe area (camera_framing.json)
+            CamFraming.Begin(P, FighterScale.Eff(target.lossyScale.y, target), E, FighterScale.Eff(enemy.lossyScale.y, enemy));   // V65CAM: both fighters stay in the safe area (camera_framing.json)
             if (!snapped) { camPos = wantPos; lookAt = wantLook; snapped = true; }
             else { camPos = Vector3.Lerp(camPos, wantPos, blend); lookAt = Vector3.Lerp(lookAt, wantLook, blend); }
             if (lockW > 0.5f) yaw = lockYaw;   // keep the free camera continuous when the lock breaks
@@ -111,13 +122,13 @@ public class CameraRig : MonoBehaviour
         transform.position = drawPos;
         var lookDir = lookAt - transform.position; if (lookDir.sqrMagnitude < 1e-6f) lookDir = lastGoodFwd;
         transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
-        cam.fieldOfView = CamFraming.WidenFov(transform, Mathf.Lerp(Mathf.Lerp(50f, 38.6f, lockW), CameraDeath.Fov, CameraDeath.Weight), lockW, cam.aspect);   // V65CAM: opens up only if collision still crops a fighter
+        cam.fieldOfView = CamFraming.WidenFov(transform, Mathf.Lerp(Mathf.Lerp(pose.lockCam.fovFree, pose.lockCam.fovLock, lockW), CameraDeath.Fov, CameraDeath.Weight), lockW, cam.aspect);   // V65CAM: opens up only if collision still crops a fighter
         if (impact) impact.Apply(transform); CamShake.Apply(transform);   // V65CAM: weight-scaled shake (camera_impact.json shake) on top;   // contact kick + roll tumble on top of the pose, on unscaled time (CameraImpact.cs)
         // hard floor for EVERY camera mode (impact shake / roll dip / crit / low-HP cuts included): never below ground + minHeight, never NaN
         {
             var cp = transform.position; if (!IsFinite(cp)) { cp = lastGoodPos; transform.position = cp; transform.rotation = Quaternion.LookRotation(lastGoodFwd, Vector3.up); }
             float floorY = col.minGroundY + col.minHeightAboveGround; if (cp.y < floorY) { cp.y = floorY; transform.position = cp; }
-            lastGoodPos = transform.position; lastGoodLook = lookAt; lastGoodFwd = transform.forward;
+            lastGoodPos = transform.position; lastGoodLook = lookAt; lastGoodFwd = transform.forward; goodSet = true;
         }
     }
 }

@@ -33,7 +33,7 @@ public static class FightBalance
     {
         if (f == null || C == null || C.fighters == null) return null;
         string n = f.name, r = f.transform.root.name;
-        foreach (var row in C.fighters) if (row != null && row.key.Length > 0 && (n.Contains(row.key) || r.Contains(row.key))) return row;
+        { var rrp = RosterResolver.Pick(C.fighters, rrx => rrx.key, n, false); if (rrp == null) rrp = RosterResolver.Pick(C.fighters, rrx => rrx.key, r, false); if (rrp != null) return rrp; }   // HCKIT2 v93
         return null;
     }
 

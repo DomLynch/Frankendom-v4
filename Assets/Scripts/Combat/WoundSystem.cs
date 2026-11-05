@@ -112,7 +112,7 @@ public class WoundSystem : MonoBehaviour
             if (st != null && st.dripEverySec > 0f && !f.Dead && !RTFinisher.Busy)
             {
                 s.dripT += dt;
-                if (s.dripT >= st.dripEverySec) { s.dripT -= st.dripEverySec; BloodGround.Drip(f.transform.position, Mathf.Max(1, st.dripSplats), st.dripSizeMul * Mathf.Max(1f, f.scale)); }
+                if (s.dripT >= st.dripEverySec) { s.dripT -= st.dripEverySec; BloodGround.Drip(f.transform.position, Mathf.Max(1, st.dripSplats), st.dripSizeMul * FighterScale.Of(f)); }
             }
         }
         // player vignette alpha (eased so a hit does not pop)

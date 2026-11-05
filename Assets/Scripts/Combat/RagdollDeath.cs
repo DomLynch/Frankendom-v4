@@ -167,7 +167,7 @@ public class RagdollDeath : MonoBehaviour
     float MassFor()
     {
         var d = Cfg;
-        for (int i = 0; i < d.massKg.Length; i++) { var r = d.massKg[i]; if (r != null && !string.IsNullOrEmpty(r.contains) && name.Contains(r.contains)) return r.kg; }
+        { var rrp = RosterResolver.Pick(d.massKg, rrx => rrx.contains, name, false); if (rrp != null) return rrp.kg; }   // HCKIT2 v93
         return d.defaultMassKg;
     }
 

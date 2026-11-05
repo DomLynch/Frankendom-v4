@@ -319,7 +319,7 @@ public class HitFeel : MonoBehaviour
         if (along.sqrMagnitude < 1e-4f) along = Vector3.forward;
         along.Normalize();
         var sp = cfg.sparks;
-        Vector3 anchor = e.target.transform.position + Vector3.up * (sp.anchorHeight * Mathf.Max(1f, e.target.scale)) - along * sp.anchorBack;
+        Vector3 anchor = e.target.transform.position + Vector3.up * (sp.anchorHeight * FighterScale.Of(e.target)) - along * sp.anchorBack;
         if (sparkReady && row.spark > 0f) Burst(anchor, along, row.spark, e.heavy);
         Flash(anchor, row.flash);
     }

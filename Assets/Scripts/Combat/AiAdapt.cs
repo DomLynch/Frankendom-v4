@@ -119,11 +119,11 @@ public class AiAdapt
     public static AiAdapt Create(AIBrain brain)
     {
         var C = Cfg(); if (C == null || brain == null || brain.df == null) return null;
-        AdaptProfile pick = null; string key = Roster.IdOfName(brain.name);
+        AdaptProfile pick = null; string key = RosterResolver.IdOfName(brain.name);   // HCKIT2 v93
         for (int i = 0; i < C.profiles.Length && pick == null; i++)
         {
             var r = C.profiles[i]; if (r == null) continue;
-            if (r.fighter.Length > 0 && r.fighter != key) continue;
+            if (r.fighter.Length > 0 && !RosterResolver.KeyIs(r.fighter, key)) continue;   // HCKIT2 v93 (id, @player, @enemy, *; "" = any)
             if (brain.diff == null) { if (r.bot) pick = r; }
             else if (!r.bot && brain.diff.id >= r.minDiff && brain.diff.id <= r.maxDiff) pick = r;
         }

@@ -20,11 +20,27 @@
     "shotEvery":  3,
     "settleSeconds":  1.0,
     "fightYTol":  0.15,
+    "endAfterDeathSeconds":  4.0,
     "maxRendererSizeX":  120.0,
     "head":  {
                  "enabled":  true,
                  "distance":  0.9,
                  "fov":  25,
-                 "maxYawDeg":  35
+                 "maxYawDeg":  35,
+                 "headBoundsTolM":  0.5,
+                 "excludeNameParts":  [
+                                          "eyelash",
+                                          "eyeleash",
+                                          "lash",
+                                          "brow",
+                                          "tooth",
+                                          "teeth",
+                                          "tongue",
+                                          "hair",
+                                          "eye",
+                                          "sword",
+                                          "scabbard",
+                                          "helmet"
+                                      ]
              }
 }

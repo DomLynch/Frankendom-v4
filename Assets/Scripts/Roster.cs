@@ -18,6 +18,8 @@ using UnityEngine;
     public string finisherClipFolder = "";  // baked finisher clips folder
     public float heightM = 0f;              // 0 = keep the scene / GameConfig size
     public bool armoured = false;           // metal: blood.json default sparks / flash when no victims[] row matches
+    public string headRenderer = "";        // WOUNDSHOT v84: exact name of the head mesh object (VerifyGround HEAD check, wound close-ups); "" = verify_ground.json head.rendererName
+    public float scaleFloor = 0f;           /*HCKIT1 v93 K2: floor for metre anchors, Max(scaleFloor, DuelFighter.scale); 0 = camera_framing.json scaleFloor (1) */
     public string notes = "";
 }
 
@@ -102,6 +104,6 @@ public static class Roster
         if (string.IsNullOrEmpty(r.displayName)) r.displayName = r.id;
         if (string.IsNullOrEmpty(r.objectName)) r.objectName = r.id;
         if (r.weapon == null) r.weapon = ""; if (r.controller == null) r.controller = ""; if (r.modelGlb == null) r.modelGlb = "";
-        if (r.animGlb == null) r.animGlb = ""; if (r.guardMask == null) r.guardMask = ""; if (r.finisherClipFolder == null) r.finisherClipFolder = ""; if (r.notes == null) r.notes = "";
+        if (r.animGlb == null) r.animGlb = ""; if (r.guardMask == null) r.guardMask = ""; if (r.headRenderer == null) r.headRenderer = ""; if (r.finisherClipFolder == null) r.finisherClipFolder = ""; if (r.notes == null) r.notes = "";
     }
 }

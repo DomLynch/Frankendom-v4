@@ -166,19 +166,13 @@
     "zBiasScaleDist": 2.3,
     "zBias": [
       {
-        "name": "Dracula",
+        "name": "@player",
         "cmp": "gt",
         "offset": -0.8,
         "push": -0.8
       },
       {
-        "name": "Joan",
-        "cmp": "gt",
-        "offset": -0.8,
-        "push": -0.8
-      },
-      {
-        "name": "Pitborn",
+        "name": "@enemy",
         "cmp": "lt",
         "offset": 1.0,
         "push": 0.7

@@ -23,6 +23,21 @@ public class CaptureMeta : MonoBehaviour
         GUI.Label(new Rect(Screen.width - 260, Screen.height - 44, 250, 36), "FAST/NOT-QC", s);
     }
 
+    // WOUNDSHOT v84: the sidecar json of one PNG. `extra` = more json members ("a":1,"b":"x", no leading comma) appended by a harness that knows more than the scene (hit zone, damage, decal count ...).
+    static string Build(string png, string extra)
+    {
+        var cam = Camera.main; float ev = float.NaN, sky = float.NaN;
+        foreach (var v in FindObjectsByType<Volume>(FindObjectsSortMode.None)) { var p = v.sharedProfile; if (p != null && p.TryGet(out Exposure ex)) ev = ex.fixedExposure.value; if (p != null && p.TryGet(out GradientSky gs)) sky = gs.exposure.value; }
+        string cp = cam ? cam.transform.position.ToString("F2") : "n/a", fov = cam ? cam.fieldOfView.ToString("F1") : "n/a";
+        return "{\"png\":\"" + Path.GetFileName(png) + "\",\"flagsFile\":\"" + RuntimeQuality.FlagsPath.Replace("\\", "/") + "\",\"fast\":" + (RuntimeQuality.Fast ? "true" : "false") + ",\"fixedExposureEV\":" + ev.ToString("F2") + ",\"skyExposure\":" + sky.ToString("F2") + ",\"cameraPos\":\"" + cp + "\",\"fov\":\"" + fov + "\",\"note\":\"camera = main camera when the sidecar was written (within ~1 s of the capture)\",\"time\":\"" + System.DateTime.Now.ToString("s") + "\"" + (string.IsNullOrEmpty(extra) ? "" : "," + extra) + "}";
+    }
+
+    /// <summary>Write the sidecar next to `png` right now (so the 1 s scan in Update does not write the plain one first).</summary>
+    public static void WriteFor(string png, string extra)
+    {
+        try { File.WriteAllText(Path.ChangeExtension(png, ".json"), Build(png, extra)); } catch { }
+    }
+
     void Update()
     {
         if (Time.unscaledTime < next) return; next = Time.unscaledTime + 1f;
@@ -32,10 +47,7 @@ public class CaptureMeta : MonoBehaviour
             foreach (var png in Directory.GetFiles(dir, "*.png", SearchOption.AllDirectories))
             {
                 string js = Path.ChangeExtension(png, ".json"); if (File.Exists(js)) continue;
-                var cam = Camera.main; float ev = float.NaN, sky = float.NaN;
-                foreach (var v in FindObjectsByType<Volume>(FindObjectsSortMode.None)) { var p = v.sharedProfile; if (p != null && p.TryGet(out Exposure ex)) ev = ex.fixedExposure.value; if (p != null && p.TryGet(out GradientSky gs)) sky = gs.exposure.value; }
-                string cp = cam ? cam.transform.position.ToString("F2") : "n/a", fov = cam ? cam.fieldOfView.ToString("F1") : "n/a";
-                File.WriteAllText(js, "{\"png\":\"" + Path.GetFileName(png) + "\",\"flagsFile\":\"" + RuntimeQuality.FlagsPath.Replace("\\", "/") + "\",\"fast\":" + (RuntimeQuality.Fast ? "true" : "false") + ",\"fixedExposureEV\":" + ev.ToString("F2") + ",\"skyExposure\":" + sky.ToString("F2") + ",\"cameraPos\":\"" + cp + "\",\"fov\":\"" + fov + "\",\"note\":\"camera = main camera when the sidecar was written (within ~1 s of the capture)\",\"time\":\"" + System.DateTime.Now.ToString("s") + "\"}");
+                File.WriteAllText(js, Build(png, null));
             }
         }
         catch { }
