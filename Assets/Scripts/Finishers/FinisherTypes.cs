@@ -54,6 +54,11 @@ public class FinisherShot
     public bool gate = true;            // true: the camera is placed so it looks TOWARD the gate (rt.look.gatePoint); the azimuth is rotated (nearest angle, mirrored side first) until the view direction is within rt.look.gateMinDot of the gate direction
     public float gateMinDot = -2f;      // V62C: per-shot minimum cosine between the view direction and the gate direction (-2 = rt.look.gateMinDot); the wide / fall / settle shots use 0.8
     public float darkenEV = 0f;         // extra stops this shot is darker (+) / brighter (-) than the gameplay exposure, on top of rt.look.darkenEV (Fixed exposure only; blended at rt.look.evRate stops / s)
+    // V1FIN v94 (V1 finisherSidePose / decapitation front-hold): the shoulder slide and the look turn are RAMPED over slideRampS (V1 finishPush: 1.3 / 0.75 s) instead of being there from the first frame;
+    // pieceUnit != "" = the look-at moves toward the midpoint of the victim's body and that unit's severed piece (V1: 'the look centres between corpse and head'), by pieceTurn (0..1) x the ramp
+    public float slideRampS = 0f;       // 0 = no ramp (old behaviour)
+    public string pieceUnit = "";       // e.g. "head"; "" = off
+    public float pieceTurn = 0f;
 }
 [Serializable] public class FinisherShotKey { public float t = 0f; public string rel = "start"; public string shot = ""; public float blend = -1f; }       // rel: "start" | "contact"
 // V62: one point of a per-finisher time-scale curve (t = unscaled seconds after the key fires, scale = Time.timeScale factor; smoothstep between points)
@@ -82,6 +87,9 @@ public class FinisherEntry
     // victim
     public string victimClip = "";          // Animator state; "" = the normal death (DuelFighter.Die)
     public float victimClipSpeed = 1f, victimFade = 0.08f, victimStart = -1f;   // victimStart -1 = at the contact
+    public V1Clips clipsV1;                 // V1FIN v94: V1's victim (and killer) clip for this entry; null / states missing = the entry as it is
+    public FinisherShotKey[] shotsV1;       // V1FIN v94: V1's camera for this entry (used instead of `shots` while rt.v1.enabled && rt.v1.camera); null / empty = `shots`
+    public FinisherGoreKey[] goreV1;        // V1FIN v94: V1's gore timing (used instead of `gore` while rt.v1.enabled && rt.v1.timing); null / empty = `gore`
     public float victimClipStart = 0f;      // FINFIX v93: second INSIDE the victim clip where it starts (skips a standing lead-in, e.g. the Mixamo death clip's first ~0.5 s)
     public float dieAt = -2f;               // seconds when DuelFighter.Die() runs (ragdoll hook): -2 = at the contact when no victimClip, else at the clip end; -1 = never
     public bool holdLast = true;
@@ -123,7 +131,11 @@ public class FinisherOverride
 }
 // JOANFIN v77: rt.killers row: per roster id scale of the pair distance / offsets / bladeReach (stand-in metres are Dracula-sized; 1 = no change). Multiplies DuelFighter.scale.
 [Serializable] public class FinisherKillerRow { public string id = ""; public float pairScale = 1f; public string note = ""; }
-[Serializable] public class SprayCfg { public float seconds = 1.0f, rate = 90f, coneDeg = 16f, gravity = 8f; public float[] speed = { 2.5f, 4.5f }, size = { 0.03f, 0.06f }, life = { 0.5f, 0.9f }; }
+[Serializable] public class SprayCfg { public float seconds = 1.0f, rate = 90f, coneDeg = 16f, gravity = 8f; public float[] speed = { 2.5f, 4.5f }, size = { 0.03f, 0.06f }, life = { 0.5f, 0.9f }; public float[] phaseUntilS, phaseRate, phaseSpeed; /* V1FIN v94: non-empty = stepped emission (phaseRate[i] per second until phaseUntilS[i]; phaseSpeed[i] = the start speed then) */ }
+// V1FIN v94: V1 src/finisher-blood.ts as data. One profile per anatomy (decapitation, splitCrown, runThrough, opened): the sources and the emission phases (burst 78/s x strength for 1.7 s, 32/s to 3.5 s, 14/s to 7 s).
+[Serializable] public class V1BloodSource { public string site = ""; public float strength = 1f; public float upOffsetM = 0f, fwdOffsetM = 0f; public float dirUp = 1f, dirFwd = 0f; public bool onPiece = false; public bool fromTop = false; }
+[Serializable] public class V1BloodProfile { public string id = ""; public SprayCfg spray = new SprayCfg(); public V1BloodSource[] sources = new V1BloodSource[0]; }
+
 [Serializable] public class GoreLocRow { public string name = "torso"; public string[] bones = new string[0]; public float radiusM = 0.12f; public float frontArcDeg = 360f; public float[] along = { 0.2f, 0.8f }; }
 [Serializable]
 public class PieceCfg   // V62C: the severed piece (head) physics; finishers.json gore.piece. Read by FinisherPiece.
@@ -156,9 +168,62 @@ public class PieceCfg   // V62C: the severed piece (head) physics; finishers.jso
     public GoreLocRow[] locs = new GoreLocRow[0];
     public SprayCfg woundSpray = new SprayCfg { seconds = 0.35f, rate = 60f };
     public SprayCfg neckSpray = new SprayCfg();
+    public V1BloodProfile[] v1blood = new V1BloodProfile[0];   // V1FIN v94
     public PieceCfg piece = new PieceCfg();   // V62C
     public CleaveRow[] cleaves = new CleaveRow[0];   // V63G
     public BurstRow[] bursts = new BurstRow[0];      // V63G
+}
+
+// V1FIN v94: V1 src/severed-head.ts, every number there. Used by SeveredHeadArc.
+[Serializable]
+public class ArcCfg
+{
+    public bool enabled = false;
+    public float sideMps = 1.1f, upMps = 1.8f, spinRadS = 9f;             // launchSeveredHead: velocity (axis-perpendicular 1.1, up 1.8), spin 9 rad/s
+    public float sideSign = 1f, spinSign = 1f;                            // +1 = the right of the killer->victim axis (the side the V1 camera slides to); see MANIFEST on handedness
+    public float gravity = 12f;                                           // stepSeveredHead: 'a touch heavier than life'
+    public float bounceMinVy = 1f, bounceVy = 0.28f, bounceXz = 0.68f;    // a real bounce: vy < -1 -> vy * -0.28, xz * 0.68
+    public float rollDecayPerS = 2.1f, restSpeed = 0.05f;                 // rolling friction 1 - 2.1 dt; rests at <= 0.05 m/s
+    public float radiusK = 0.38f, radiusMinM = 0.07f, radiusMaxM = 0.24f; // radius = clamp(max(size.x, size.z) * .38, .07, .24) (characters.ts sever)
+    public float maxSubstepS = 0.0166667f;                                // V1 steps once per frame (~1/60); longer frames are split
+    public float restLiftMaxM = 0.4f, restLiftTolM = 0.02f;              // once at rest: lift the visible mesh out of the floor if the V1 sphere radius left it under (<= restLiftMaxM)
+}
+
+// V1FIN v94: V1 src/opened.ts place(): the upper half slides .5 m (x scale) sideways and .12 m along the blow over smooth(.045,.3) of the 3.2 s clock and tips over smooth(.2,.66); seconds = progress x 3.2.
+[Serializable]
+public class ScriptCfg
+{
+    public bool enabled = false;
+    public float slideSideM = 0.5f, slideAlongM = 0.12f, slideStartS = 0.144f, slideEndS = 0.96f, fallStartS = 0.64f, fallEndS = 2.112f;
+    public float fallDeg = 90f, sideSign = 1f, floorM = 0.008f;
+}
+
+// V1FIN v94: V1's own clips (OpenTrident finishers_vps\clips-authored, 106-joint Mixamo-named). Applied over an entry only when every named Animator state exists on the fighter (else the entry plays as before).
+[Serializable]
+public class V1Clips
+{
+    public string victimClip = "", attackerClip = "";
+    public float victimClipSpeed = 0.75f, victimClipStart = 0f, victimStart = -1f, dieAt = -2f;
+    public float attackerClipSpeed = -1f, attackerClipStart = -1f, contactAt = -1f, duration = -1f, holdAfter = -1f;   // -1 = keep the entry's
+    public string source = "";
+}
+
+// V1FIN v94: V1 src/skull.ts (splitSkull) + characters.ts splitCrown(). Used by MeshCut kind "crown".
+[Serializable]
+public class CrownCfg
+{
+    public string frame = "auto";            // "auto": up = neck->head, forward = the victim's facing (a sagittal plane for any rig) | "bone": the head bone's own axes
+    public float openDeg = 10.8858f;         // each half: 0.19 rad about the hinge (z of the head frame)
+    public float openShiftM = 0.008f;        // each half also slides 0.008 m outward
+    public float openDelayS = 0f, openS = 0.384f;   // V1: open = smoothstep((progress - .045) / .12) of the 3.2 s scene = starts with the split, takes 0.384 s
+    public float hingeMinYM = -0.045f;       // hinge height in the head frame: max(bounds.min.y, -0.045)
+    public float hideScale = 0.0001f;        // the real Head bone is scaled to this (V1: bone.scale .0001) so the body stays intact and the corpse reads headless
+    public bool includeBoneMeshes = true;    // plain MeshRenderers under the head bone (helmet, hair cards, horns) are split too
+    public int capTexSize = 64;              // the mottled cut-face texture (V1 skull.ts: 64 x 64)
+    public float[] capTint = { 200f, 175f, 165f };   // texel base colour x shade (0..255)
+    public float capShadeMin = 0.75f, capShadeSpan = 0.25f, capVein = 0.45f, capVeinStep = 0.8f;
+    public float[] capColor = { 0.2667f, 0.0863f, 0.0980f, 1f };   // #441619, multiplies the map
+    public float seamUpM = 0.0f;             // blood origin above the top of the skull (V1: crown bone + .045 up)
 }
 
 [Serializable]
@@ -177,6 +242,10 @@ public class CutUnit
     // FINFIX v93 (V3 severed-head numbers): > 0 = the piece is thrown with these VELOCITIES instead of the impulse (launchSideMps horizontally away from the killer, launchUpMps up, spinRadS about the blow heading); 0 = the old impulse / torque
     public float launchSideMps = 0f, launchUpMps = 0f, spinRadS = 0f;
     public int extraDecals = 8;
+    public ArcCfg arc = new ArcCfg();         // V1FIN v94: V1's scripted severed-head arc (severed-head.ts); used instead of the Rigidbody while rt.v1.enabled && rt.v1.headArc and arc.enabled
+    public ScriptCfg script = new ScriptCfg();   // V1FIN v94: V1's opened.ts schedule for the upper half of a waist cut (kind subtree)
+    public CrownCfg crown = new CrownCfg();   // V1FIN v94: kind "crown" = V1's head-only split (skull.ts)
+    public string bloodProfile = "";          // V1FIN v94: id in gore.v1blood (V1 finisher-blood.ts timing / sources); "" = the old neckSpray / woundSpray
     public string cleave = "", burst = "";   // V63G: ids in gore.cleaves / gore.bursts (a dark wound line + patches + drips on the head, and a bigger blood burst, on top of the cut; FinisherCleave)
 }
 
@@ -335,6 +404,7 @@ public class FinisherRtCfg
     public float contactShake = 0.08f, contactShakeS = 0.25f;   // FINFIX v93: camera shake (m, seconds) at the contact (was a hard-coded 0.03)
     public float contactHoldMs = 130f;       // FINFIX v93: animation-only hold at the contact (real ms, both Animators stopped; the clock, camera and effects keep running; no Time.timeScale). 0 = off
     public bool hpToZeroAtContact = true;    // FINFIX v93: the victim's HP bar goes to 0 at the contact (not at Die()); the kill itself is still the scene's Die()
+    public V1FinCfg v1 = new V1FinCfg();         // V1FIN v94: switches + provenance numbers of the V1 finishers port
     public PrecutCfg precut = new PrecutCfg();   // FINFIX v93: the mesh cut is built in slices under the wind-up and only applied at the contact
     public bool offInBalanceAuto = true;     // V61B: -balanceauto runs keep the plain death (no cinematic) unless -finisherauto forces it
     public float maxSeconds = 25f;           // wall-clock watchdog of one scene (unscaled)
@@ -349,6 +419,19 @@ public class FinisherRtCfg
 }
 
 // FINFIX v93: MeshCut.Prepare is time-sliced from the scene start; the cut is applied at its gore key (a cheap swap). Not finished by then = it is finished synchronously (logged).
+[Serializable]
+public class V1FinCfg
+{
+    public bool enabled = true;      // master: false = the FINFIX v93 behaviour exactly
+    public bool camera = true;       // entry.shotsV1 (front-hold + slide; late 45 degree reveal) instead of entry.shots
+    public bool timing = true;       // entry.goreV1 (head pops 5 % into the victim clip) instead of entry.gore
+    public bool headArc = true;      // cuts.units[].arc (scripted ballistics) instead of the Rigidbody
+    public bool crown = true;        // head-only V1 split (unit head_crown) instead of the body-mesh MeshCut split (unit head_split)
+    public bool clips = true;        // entry.clipsV1 (V1's authored victim / killer clips) when the Animator states exist
+    public bool blood = true;        // gore.v1blood profiles (finisher-blood.ts timing) on units with a bloodProfile
+    public string crownUnit = "head_crown", crownReplaces = "head_split";
+}
+
 [Serializable]
 public class PrecutCfg
 {

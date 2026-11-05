@@ -101,7 +101,7 @@ public static class WoundDecals
         m.name = key; m.hideFlags = HideFlags.DontUnloadUnusedAsset; m.enableInstancing = true;   // QC1 v95
         m.EnableKeyword("_COLORMAP"); m.EnableKeyword("_MASKMAP"); m.EnableKeyword("_MATERIAL_AFFECTS_ALBEDO"); m.EnableKeyword("_MATERIAL_AFFECTS_MASKMAP");   // QC1 v95
         if (!decalSrcLogged) { decalSrcLogged = true; Debug.Log("[WoundDecals] decal material from " + (refMat != null ? "Resources/WoundDecalRef" : "Shader.Find (no reference asset: variants may be stripped)")); }   // QC1 v95
-        var tex = Masks(kind, dc, false); m.SetTexture("_BaseColorMap", tex[variant % tex.Length]); m.SetColor("_BaseColor", Color.white);
+        var tex = Masks(kind, dc, false); m.SetTexture("_BaseColorMap", tex[variant % tex.Length]); { float cm = Mathf.Max(0.01f, Mathf.Max(dc.color[0], Mathf.Max(dc.color[1], dc.color[2]))); m.SetColor("_BaseColor", new Color(dc.color[0] / cm, dc.color[1] / cm, dc.color[2] / cm, 1f)); }   // v96: the wounds.json hue at full brightness: if the colour-map variant is ever missing the decal draws red, never white (the colour is already baked into the mask texture)
         m.SetTexture("_MaskMap", MaskMap(dc));
         m.SetFloat("_AffectAlbedo", 1f); m.SetFloat("_AffectNormal", 0f); m.SetFloat("_AffectMetal", 0f); m.SetFloat("_AffectAO", 0f); m.SetFloat("_AffectSmoothness", 1f); m.SetFloat("_AffectEmission", 0f);
         m.SetFloat("_DecalBlend", 1f);

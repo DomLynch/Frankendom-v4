@@ -17,6 +17,7 @@ public sealed class FinisherPiece : MonoBehaviour
 
     public string unit = ""; public Transform victim; public int Rescues; public bool Settled; public float Born; public float SpawnLift; public string ColliderInfo = "";
     public int RestClamps; public float RestM = -1f; bool restLogged;   // FINFIX v93: how often the rest-distance clamp pulled the piece back; horizontal distance from the cut point once it rests (-1 = still moving)
+    bool scripted;   // V1FIN v94: SeveredHeadArc / OpenedHalf move this piece (kinematic, no collider, no rescue / rest clamp)
     Rigidbody rb; Collider col; float still; Vector3 spawn; int mask; PieceCfg cfg; static readonly RaycastHit[] hits = new RaycastHit[16];
 
     /// <summary>Called by FinisherPlayer.Gore right after MeshCut.Cut: every piece with a Rigidbody (the halves of a split stay attached and are skipped) gets a keeper.</summary>
@@ -49,6 +50,7 @@ public sealed class FinisherPiece : MonoBehaviour
     void Setup()
     {
         rb = GetComponent<Rigidbody>(); if (rb == null) return;
+        if (GetComponent<SeveredHeadArc>() != null || GetComponent<OpenedHalf>() != null) { scripted = true; foreach (var oc in GetComponents<Collider>()) if (oc != null) Destroy(oc); return; }   // V1FIN v94
         if (cfg == null) { var f = FinisherConfig.Get(); cfg = f != null && f.gore != null && f.gore.piece != null ? f.gore.piece : new PieceCfg(); }
         rb.collisionDetectionMode = Mode(cfg.collisionMode); rb.interpolation = cfg.interpolate ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None;
         rb.sleepThreshold = cfg.sleepThreshold; rb.maxDepenetrationVelocity = cfg.maxDepenetrationVelocity;
@@ -119,7 +121,7 @@ public sealed class FinisherPiece : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (rb == null || col == null) return;
+        if (scripted || rb == null || col == null) return;   // V1FIN v94: scripted
         // FINFIX v93: gore.piece.restMaxM - the head never travels (or rests) farther than this from the neck: pulled back onto the circle, the outward speed removed, the rest damped
         if (cfg.restMaxM > 0f && !rb.isKinematic)
         {

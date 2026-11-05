@@ -156,6 +156,8 @@ public static class FinisherPlayer
         bool rig = host.HasCamera;
         DuelFighter A = host.Fighter(ctx.killerSide), V = host.Fighter(ctx.victimSide);
         Fighter fa = A.GetComponent<Fighter>(), fv = V.GetComponent<Fighter>();
+        e = ApplyV1Clips(e, fa, fv);   // V1FIN v94: V1's authored clips when they are imported
+        var v1c = FinisherConfig.Get().rt.v1; bool v1on = v1c != null && v1c.enabled;
         FinisherLoc loc = ctx.loc;
         if (e.placeholder) Debug.Log("[finisher] " + e.id + " uses placeholder clips");
         if (OnFinisherStart != null) OnFinisherStart(e.id);
@@ -194,11 +196,11 @@ public static class FinisherPlayer
         if (vClip) V.enabled = false;
 
         // timelines
-        var shots = new List<FinisherShotKey>(e.shots ?? new FinisherShotKey[0]); shots.Sort((p, q) => p.t.CompareTo(q.t));
+        var shots = new List<FinisherShotKey>(v1on && v1c.camera && e.shotsV1 != null && e.shotsV1.Length > 0 ? e.shotsV1 : (e.shots ?? new FinisherShotKey[0]));   // V1FIN v94: V1's camera shots.Sort((p, q) => p.t.CompareTo(q.t));
         var slows = new List<FinisherSlowKey>(e.slowmo ?? new FinisherSlowKey[0]);
-        var gores = new List<FinisherGoreKey>(e.gore ?? new FinisherGoreKey[0]);
+        var gores = new List<FinisherGoreKey>(v1on && v1c.timing && e.goreV1 != null && e.goreV1.Length > 0 ? e.goreV1 : (e.gore ?? new FinisherGoreKey[0]));   // V1FIN v94: V1's gore timing
         bool[] shotDone = new bool[shots.Count], slowDone = new bool[slows.Count], goreDone = new bool[gores.Count];
-        bool contactSeen = false, vStarted = false, dead = false;
+        bool contactSeen = false, vStarted = false, dead = false, anyGore = false;   // CUTLOD v96: anyGore = a gore key (the cut commit) has fired
         float T = 0f, contactT = planned, vStart = 0f, wall0 = Time.unscaledTime;
 
         if (clipPath) { fa.holdLast = false; fa.ForceExact(e.attackerClip, e.attackerFade, e.attackerClipStart); fa.anim.speed = e.attackerClipSpeed * fa.animWeight; }
@@ -298,7 +300,16 @@ public static class FinisherPlayer
             {
                 if (goreDone[i]) continue; var k = gores[i];
                 float at = k.rel == "contact" ? (contactSeen ? contactT : planned) + k.t : k.t;
-                if (T >= at && (k.rel != "contact" || contactSeen || at <= planned + 0.001f)) { goreDone[i] = true; Gore(k, V, A, loc, cutJobs[i], T, jobReadyT); }
+                if (T >= at && (k.rel != "contact" || contactSeen || at <= planned + 0.001f)) { goreDone[i] = true; Gore(k, V, A, loc, cutJobs[i], T, jobReadyT); anyGore = true; }
+            }
+            {   // CUTLOD v96: finisher watchdog. No gore key committed after cut_lod.json watchdogS real seconds -> drop the pending cuts and fall back to a plain death, so a failed cut can never hang the game
+                var lcw = CutLod.C;
+                if (lcw.enabled && lcw.watchdogS > 0f && gores.Count > 0 && !anyGore && Time.unscaledTime - wall0 > lcw.watchdogS)
+                {
+                    Debug.LogWarning("[finisher] WATCHDOG " + e.id + ": no gore commit after " + (Time.unscaledTime - wall0).ToString("0.0") + " s real (limit " + lcw.watchdogS.ToString("0.0") + " s, T=" + T.ToString("0.00") + "): cuts dropped, plain death");
+                    for (int wi = 0; wi < cutJobs.Length; wi++) if (cutJobs[wi] != null && !cutJobs[wi].committed) cutJobs[wi].Discard();
+                    break;   // the code after the loop kills the victim (V.Die) and gives control back
+                }
             }
             if (Time.unscaledTime - wall0 > total * 8f + 6f) { Debug.LogWarning("[finisher] timeout " + e.id); break; }
             yield return null;
@@ -372,14 +383,30 @@ public static class FinisherPlayer
         catch (Exception ex) { Debug.LogWarning("[finisher] clearance: " + ex.Message); }
     }
     // ---------------- gore ----------------
-    static string GoreUnit(FinisherGoreKey k) { return !string.IsNullOrEmpty(k.cut) ? k.cut : k.type == "head_detach" ? "head" : k.type == "skull_split" ? "head_split" : ""; }   // FINFIX v93: the unit a key cuts
+    static string GoreUnit(FinisherGoreKey k)
+    {
+        string u = !string.IsNullOrEmpty(k.cut) ? k.cut : k.type == "head_detach" ? "head" : k.type == "skull_split" ? "head_split" : "";
+        var v1 = FinisherConfig.Get().rt.v1; if (v1 != null && v1.enabled && v1.crown && u.Length > 0 && u == v1.crownReplaces && MeshCut.IsMeshUnit(v1.crownUnit)) u = v1.crownUnit;   // V1FIN v94: V1's head-only split instead of the body-mesh split
+        return u;
+    }
+    // V1FIN v94: V1's authored clips (entry.clipsV1) replace the victim / killer clip only when every named Animator state exists on the fighter
+    static FinisherEntry ApplyV1Clips(FinisherEntry e, Fighter fa, Fighter fv)
+    {
+        var v1 = FinisherConfig.Get().rt.v1; var c = e.clipsV1; if (v1 == null || !v1.enabled || !v1.clips || c == null || string.IsNullOrEmpty(c.victimClip)) return e;
+        if (!HasState(fv, c.victimClip) || (!string.IsNullOrEmpty(c.attackerClip) && !HasState(fa, c.attackerClip))) { Debug.Log("[finisher] " + e.id + ": V1 clip state '" + c.victimClip + (string.IsNullOrEmpty(c.attackerClip) ? "" : "' / '" + c.attackerClip) + "' not on the fighter (not imported yet): the entry keeps its own clips"); return e; }
+        var r = e.Clone(); r.victimClip = c.victimClip; r.victimClipSpeed = c.victimClipSpeed; r.victimClipStart = c.victimClipStart; r.victimStart = c.victimStart; r.dieAt = c.dieAt;
+        if (!string.IsNullOrEmpty(c.attackerClip)) r.attackerClip = c.attackerClip; if (c.attackerClipSpeed > 0f) r.attackerClipSpeed = c.attackerClipSpeed; if (c.attackerClipStart >= 0f) r.attackerClipStart = c.attackerClipStart;
+        if (c.contactAt >= 0f) r.contactAt = c.contactAt; if (c.duration > 0f) r.duration = c.duration; if (c.holdAfter >= 0f) r.holdAfter = c.holdAfter;
+        Debug.Log("[finisher] " + e.id + ": V1 clips '" + c.victimClip + "' x" + c.victimClipSpeed.ToString("0.00") + (string.IsNullOrEmpty(c.attackerClip) ? "" : " + killer '" + c.attackerClip + "'"));
+        return r;
+    }   // FINFIX v93: the unit a key cuts
     static void Gore(FinisherGoreKey k, DuelFighter victim, DuelFighter attacker, FinisherLoc loc, MeshCut.CutJob job = null, float sceneT = 0f, float readyT = -1f)
     {
         Vector3 away = Flat(victim.transform.position - attacker.transform.position); if (away.sqrMagnitude < 1e-4f) away = attacker.transform.forward; away.Normalize();
         string unit = GoreUnit(k);
         var call = new FinisherGoreCall { type = k.type, unit = unit, param = k.param, victim = victim, attacker = attacker, away = away, strength = k.strength, point = victim.transform.position + Vector3.up * 1.4f * FighterScale.Of(victim) };
         if (OnGore != null) OnGore(call);
-        bool handled = false;
+        bool handled = false, budgetHit = false;   // CUTLOD v96
         if (unit.Length > 0 && FinisherConfig.EnableGore)
         {
             try
@@ -388,11 +415,14 @@ public static class FinisherPlayer
                 CutResult res;
                 if (job != null) { bool wasDone = job.done; res = MeshCut.Commit(job, away, k.strength, 60f * k.strength); Debug.Log("[finisher] cut '" + unit + "' COMMIT at T=" + sceneT.ToString("0.00") + " s took " + sw.ElapsedMilliseconds + " ms (prepared " + (wasDone ? "in time at T=" + readyT.ToString("0.00") : "NOT in time: finished synchronously, cpu " + job.cpuMs.ToString("0") + " ms") + ")"); }
                 else { res = MeshCut.Cut(victim.transform, unit, FinisherConfig.Get().rotation.seed + Mathf.Abs(Hash(unit)) % 1000, away, k.strength, 60f * k.strength); Debug.Log("[finisher] cut '" + unit + "' sync (no precut) took " + sw.ElapsedMilliseconds + " ms"); }
+                budgetHit = res != null && res.budget; if (budgetHit) Debug.LogWarning("[finisher] cut '" + unit + "' budget exceeded: gore-only + plain death (" + res.note + ")");   // CUTLOD v96
                 FinisherPiece.Adopt(res, victim.transform, unit); handled = res != null && res.ok;   // V62B: the severed piece stays as a physics prop   // ok=false (unknown unit, unreadable mesh, exception inside) -> the head-hide / blood fallback below runs
                 if (res != null && !res.ok) Debug.LogWarning("[finisher] cut '" + unit + "' not done: " + res.note);
             }
             catch (Exception ex) { Debug.LogWarning("[finisher] MeshCut.Cut failed: " + ex.Message); }
         }
+        { var v1f = FinisherConfig.Get().rt.v1; if (!handled && !budgetHit && unit.Length > 0 && v1f != null && v1f.enabled && unit == v1f.crownUnit && FinisherConfig.EnableGore)   // V1FIN v94: the V1 crown could not be built -> the old body-mesh split
+          { try { var r2 = MeshCut.Cut(victim.transform, v1f.crownReplaces, FinisherConfig.Get().rotation.seed + Mathf.Abs(Hash(v1f.crownReplaces)) % 1000, away, k.strength, 60f * k.strength); FinisherPiece.Adopt(r2, victim.transform, v1f.crownReplaces); handled = r2 != null && r2.ok; Debug.LogWarning("[finisher] V1 crown not built; old split " + (handled ? "ok" : "failed too")); } catch (Exception ex2) { Debug.LogWarning("[finisher] old split failed: " + ex2.Message); } } }
         if (!handled)
         {
             // stand-in when the mesh cut cannot run: head_detach hides the head bone so the beat still reads, plus a blood event at the wound

@@ -129,6 +129,8 @@ public static class GoreFx
         if (sprayMat == null) sprayMat = FxMaterials.Particle(null, "bloodStrands");
         if (sprayMat == null) return null;
         float secs = secondsOverride > 0f ? secondsOverride : c.seconds;
+        bool phased = c.phaseUntilS != null && c.phaseRate != null && c.phaseUntilS.Length > 0 && c.phaseRate.Length == c.phaseUntilS.Length;   // V1FIN v94: V1 finisher-blood.ts emission phases (burst / seep / drip)
+        if (phased && secondsOverride <= 0f) secs = c.phaseUntilS[c.phaseUntilS.Length - 1];
         var go = new GameObject("FinisherBloodSpray");
         go.transform.SetParent(parent, false);
         go.transform.position = worldPos;
@@ -142,6 +144,23 @@ public static class GoreFx
         main.startSize = new ParticleSystem.MinMaxCurve(c.size[0], c.size[1]);
         var em = ps.emission; em.enabled = true;
         var decay = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(1f, 0.05f));   // jet tapers to drips
+        if (phased)
+        {
+            // V1FIN v94: STEPPED rate (and speed) per phase, normalised over the system duration: rate_i from the end of phase i-1 to phaseUntilS[i]
+            float mx = 0.0001f, mxs = 0.0001f; for (int i = 0; i < c.phaseRate.Length; i++) { mx = Mathf.Max(mx, c.phaseRate[i]); if (c.phaseSpeed != null && i < c.phaseSpeed.Length) mxs = Mathf.Max(mxs, c.phaseSpeed[i]); }
+            var rc = new AnimationCurve(); var sc = new AnimationCurve(); float t0 = 0f;
+            for (int i = 0; i < c.phaseRate.Length; i++)
+            {
+                float k0 = Mathf.Clamp01(t0 / secs), k1 = Mathf.Clamp01(c.phaseUntilS[i] / secs);
+                rc.AddKey(new Keyframe(k0, c.phaseRate[i] / mx, 0f, float.PositiveInfinity)); rc.AddKey(new Keyframe(Mathf.Max(k0 + 1e-4f, k1 - 1e-4f), c.phaseRate[i] / mx, float.PositiveInfinity, 0f));
+                float sv = c.phaseSpeed != null && i < c.phaseSpeed.Length ? c.phaseSpeed[i] / mxs : 1f;
+                sc.AddKey(new Keyframe(k0, sv, 0f, float.PositiveInfinity)); sc.AddKey(new Keyframe(Mathf.Max(k0 + 1e-4f, k1 - 1e-4f), sv, float.PositiveInfinity, 0f));
+                t0 = c.phaseUntilS[i];
+            }
+            em.rateOverTime = new ParticleSystem.MinMaxCurve(mx, rc);
+            if (c.phaseSpeed != null && c.phaseSpeed.Length == c.phaseRate.Length) main.startSpeed = new ParticleSystem.MinMaxCurve(mxs, sc);
+        }
+        else
         em.rateOverTime = new ParticleSystem.MinMaxCurve(c.rate, decay);
         var sh = ps.shape; sh.enabled = true; sh.shapeType = ParticleSystemShapeType.Cone; sh.angle = c.coneDeg; sh.radius = 0.01f;
         var col = ps.colorOverLifetime; col.enabled = true; var g = new Gradient();

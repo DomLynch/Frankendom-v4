@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,10 +25,28 @@ public static class WoundDecalRef
         m.SetFloat("_AffectAlbedo", 1f); m.SetFloat("_AffectNormal", 0f); m.SetFloat("_AffectMetal", 0f); m.SetFloat("_AffectAO", 0f); m.SetFloat("_AffectSmoothness", 1f); m.SetFloat("_AffectEmission", 0f);
         m.SetFloat("_DecalBlend", 1f);
         m.SetColor("_BaseColor", Color.white);
+        // v95b: HDRP's material post-processor re-derives _COLORMAP / _MASKMAP from the texture slots (no texture = keyword off), so v95's EnableKeyword calls were cleared on save (the v95 log listed only
+        // _MATERIAL_AFFECTS_ALBEDO,_MATERIAL_AFFECTS_MASKMAP) and the player still had no colour/mask variants. Give the reference material real textures so the keywords survive.
+        m.SetTexture("_BaseColorMap", MakeTex("WoundDecalRef_base", true));
+        m.SetTexture("_MaskMap", MakeTex("WoundDecalRef_mask", false));
         m.EnableKeyword("_COLORMAP"); m.EnableKeyword("_MASKMAP"); m.EnableKeyword("_MATERIAL_AFFECTS_ALBEDO"); m.EnableKeyword("_MATERIAL_AFFECTS_MASKMAP");
         m.DisableKeyword("_NORMALMAP"); m.DisableKeyword("_EMISSIVEMAP"); m.DisableKeyword("_MATERIAL_AFFECTS_NORMAL");
         if (created) AssetDatabase.CreateAsset(m, Path); else EditorUtility.SetDirty(m);
         AssetDatabase.SaveAssets();
-        Debug.Log("WoundDecalRef: " + (created ? "created " : "refreshed ") + Path + " keywords: " + string.Join(",", m.shaderKeywords));
+        Debug.Log("WoundDecalRef: " + (created ? "created " : "refreshed ") + Path + " keywords: " + string.Join(",", m.shaderKeywords)); if (!m.IsKeywordEnabled("_COLORMAP") || !m.IsKeywordEnabled("_MASKMAP")) Debug.LogError("WoundDecalRef: _COLORMAP / _MASKMAP are NOT enabled after save: the decal variants will be missing from the player");
     }
-}
+
+    static Texture2D MakeTex(string name, bool srgb)
+    {
+        string path = "Assets/Resources/" + name + ".png";
+        var t = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+        if (t == null)
+        {
+            var src = new Texture2D(4, 4, TextureFormat.RGBA32, false, !srgb); var px = new Color32[16]; for (int i = 0; i < 16; i++) px[i] = new Color32(255, 255, 255, 255); src.SetPixels32(px); src.Apply();
+            File.WriteAllBytes(path, src.EncodeToPNG()); Object.DestroyImmediate(src);
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+            var ti = AssetImporter.GetAtPath(path) as TextureImporter; if (ti != null) { ti.sRGBTexture = srgb; ti.mipmapEnabled = false; ti.SaveAndReimport(); }
+            t = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+        }
+        return t;
+    }}

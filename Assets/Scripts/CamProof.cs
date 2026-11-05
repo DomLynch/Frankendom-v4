@@ -189,7 +189,7 @@ public class CamProof : MonoBehaviour
         CamShake.Clear();
 
         // ---- (4) slow-mo
-        var sm = CombatSlowMo.Cfg();
+        var sm = CombatSlowMo.Cfg(); bool smOn = sm.enabled;   // v96: slow_mo.json enabled=false (no slow-mo, FINFIX) -> the slow-mo assertions are skipped (the watchdog check below still runs)
         yield return Frames(Mathf.CeilToInt((sm.cooldownS + 0.2f) * 60f));
         int s0 = CombatSlowMo.Started, m0 = CombatSlowMo.Merged; float minTs = 1f, minUdt = 1f, maxUdt = 0f; bool ok1 = CombatSlowMo.Request("parry"); yield return null; bool ok2 = CombatSlowMo.Request("crit");
         int guard = 0;
@@ -197,8 +197,8 @@ public class CamProof : MonoBehaviour
         yield return Frames(10);
         { string row = "slow-mo: parry request " + ok1 + ", crit request (merge) " + ok2 + ", started " + (CombatSlowMo.Started - s0) + " merged " + (CombatSlowMo.Merged - m0) + ", min timeScale " + minTs.ToString("F3", IC) + " (floor " + sm.minScale.ToString("F2", IC) + "), after " + Time.timeScale.ToString("F4", IC) + ", fixedDeltaTime " + Time.fixedDeltaTime.ToString("F4", IC) + ", unscaledDeltaTime " + minUdt.ToString("F4", IC) + ".." + maxUdt.ToString("F4", IC);
           rows.Add(row); Log(row);
-          if (!ok1) Fail("slow-mo parry request refused"); if (CombatSlowMo.Started - s0 != 1) Fail("slow-mo started " + (CombatSlowMo.Started - s0) + " dips (should be 1: merged, never stacked)");
-          if (minTs < sm.minScale - 1e-3f) Fail("slow-mo below minScale"); if (minTs > 0.999f) Fail("slow-mo never slowed the clock"); if (Mathf.Abs(Time.timeScale - 1f) > 1e-4f) Fail("timeScale not restored: " + Time.timeScale);
+          if (smOn && !ok1) Fail("slow-mo parry request refused"); if (smOn && CombatSlowMo.Started - s0 != 1) Fail("slow-mo started " + (CombatSlowMo.Started - s0) + " dips (should be 1: merged, never stacked)");
+          if (minTs < sm.minScale - 1e-3f) Fail("slow-mo below minScale"); if (smOn && minTs > 0.999f) Fail("slow-mo never slowed the clock"); if (Mathf.Abs(Time.timeScale - 1f) > 1e-4f) Fail("timeScale not restored: " + Time.timeScale);
           if (maxUdt > minUdt * 1.6f + 0.002f) Fail("unscaledDeltaTime changed during slow-mo (UI clocks affected)"); }
         // watchdog: a foreign stuck timeScale
         Time.timeScale = 0.5f; float wd0 = Time.unscaledTime; int wf0 = CombatSlowMo.WatchdogFires; guard = 0;

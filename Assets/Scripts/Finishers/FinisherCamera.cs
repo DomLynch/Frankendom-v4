@@ -121,9 +121,16 @@ public class FinisherCamera : MonoBehaviour
             }
         }
         if (s.pushIn > 0f && s.pushSeconds > 0f) dist -= s.pushIn * Mathf.Clamp01(shotAge / s.pushSeconds)   /* FINFIX v93 */;
-        pos = new Vector3(f.x, f.y, f.z) + dir * dist + perp * s.shoulder * sideUsed;
+        float ramp = s.slideRampS > 0f ? Mathf.Clamp01(shotAge / s.slideRampS) : 1f;   // V1FIN v94: V1 finishPush - the slide and the look turn grow linearly over slideRampS
+        pos = new Vector3(f.x, f.y, f.z) + dir * dist + perp * s.shoulder * ramp * sideUsed;
         pos.y = f.y + s.height;
         Vector3 look = Vector3.Lerp(f, tp, Mathf.Clamp01(s.lookAhead)); look.y = lookY;
+        if (!string.IsNullOrEmpty(s.pieceUnit) && s.pieceTurn > 0f)
+        {
+            // V1FIN v94 (camera.ts): the look centres between the corpse and the severed piece (the corpse alone until it exists), turned by pieceTurn x the ramp
+            Vector3 focus = tp; foreach (var pc in FinisherPiece.All) if (pc != null && pc.unit == s.pieceUnit && pc.gameObject.activeInHierarchy) { Bounds pb; Vector3 pp = pc.Visible(out pb) ? pb.center : pc.transform.position; focus = new Vector3((tp.x + pp.x) * 0.5f, tp.y, (tp.z + pp.z) * 0.5f); break; }
+            look.x += (focus.x - look.x) * s.pieceTurn * ramp; look.z += (focus.z - look.z) * s.pieceTurn * ramp;
+        }
         rot = Quaternion.LookRotation(look - pos, Vector3.up);
         fov = s.fov; lookPt = look; focusPt = new Vector3(f.x, Mathf.Max(f.y + 0.8f, lookY), f.z);
     }

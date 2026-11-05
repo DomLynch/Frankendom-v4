@@ -18,11 +18,12 @@ public struct CutBloodEvent { public Vector3 pos, dir; public string kind; publi
 public class CutResult
 {
     public bool ok; public string note = ""; public string unit = "";
+    public bool budget;   // CUTLOD v96: the cut was aborted because the job exceeded cut_lod.json totalBudgetMs (the caller runs the gore-only + plain death fallback, it must not retry another cut)
     public readonly List<GameObject> pieces = new List<GameObject>();
     public readonly List<CutBloodEvent> blood = new List<CutBloodEvent>();
 }
 
-public static class MeshCut
+public static partial class MeshCut   // V1FIN v94: partial (MeshCutCrown.cs)
 {
     struct Edge { public int l1, a1, b1, l2; public int count; }
 
@@ -69,21 +70,40 @@ public static class MeshCut
         internal readonly List<UnityEngine.Object> owned = new List<UnityEngine.Object>();   // meshes / materials created, destroyed by Discard
         internal GameObject physRoot; internal Vector3 physPos0; internal Quaternion physRot0;
         internal Vector3 firstCap; internal bool haveCap, isWound, needFallback, applied; internal int unreadable, touched, disabledSkipped;
+        // CUTLOD v96: cut-LOD bookkeeping (proxy renderers, triangle counts for the one-line log, budget flag)
+        internal readonly List<GameObject> lodGo = new List<GameObject>(); internal readonly List<LodPair> lodPairs = new List<LodPair>(); internal readonly HashSet<GameObject> lodKeep = new HashSet<GameObject>();
+        internal int lodTris, lodSubst, lodSkipped; internal string lodNote = ""; internal bool budgetHit, lodLogged;
         internal CutJob(string id) { unitId = id; }
+        internal void Abort(string why) { failed = true; done = true; budgetHit = true; note = why; if (res != null) { res.budget = true; res.note = why; } }
         internal bool Over() { return budgetMs > 0f && sw.Elapsed.TotalMilliseconds > budgetMs; }
         /// <summary>Runs the job until the budget (ms of CPU in this call; 0 = to the end) is used or it is done. Returns true when done. Never throws (a failure sets failed + note and done).</summary>
         public bool Step(float budget, int checkEvery)
         {
             if (done) return true;
+            // CUTLOD v96: hard budgets. perFrameMaxMs caps a slice; the synchronous path (budget 0) runs in syncSliceMs slices so the total budget can stop it; totalBudgetMs aborts the whole job (res.budget, failed)
+            var lc = CutLod.C; bool lod = lc.enabled; bool sync = budget <= 0f;
+            if (lod && !sync && lc.perFrameMaxMs > 0f && budget > lc.perFrameMaxMs) budget = lc.perFrameMaxMs;
+            bool sliced = sync && lod && lc.syncSliceMs > 0f; if (sliced) budget = lc.syncSliceMs;
             budgetMs = budget; if (checkEvery > 0) every = checkEvery;
+            var swAll = System.Diagnostics.Stopwatch.StartNew(); float inner = 0f;
             sw.Restart();
             try {
                 if (it == null) it = Run(this);
-                if (budget <= 0f) { while (it.MoveNext()) {} done = true; }
+                if (sync && !sliced) { while (it.MoveNext()) {} done = true; }
+                else if (sliced)
+                {
+                    while (true)
+                    {
+                        sw.Restart(); bool more = it.MoveNext(); float si = (float)sw.Elapsed.TotalMilliseconds; if (si > inner) inner = si;
+                        if (!more) { done = true; break; }
+                        if (lc.totalBudgetMs > 0f && cpuMs + swAll.Elapsed.TotalMilliseconds > lc.totalBudgetMs) { Abort("cut budget exceeded (" + (cpuMs + swAll.Elapsed.TotalMilliseconds).ToString("0") + " ms > " + lc.totalBudgetMs.ToString("0") + " ms)"); break; }
+                    }
+                }
                 else { if (!it.MoveNext()) done = true; }
             }
             catch (Exception ex) { failed = true; done = true; note = "cut exception: " + ex.Message; WarnOnce("job-ex:" + unitId, "cut job '" + unitId + "' threw " + ex.GetType().Name + ": " + ex.Message + " | " + ex.StackTrace); }
-            sw.Stop(); slices++; float ms = (float)sw.Elapsed.TotalMilliseconds; cpuMs += ms; if (ms > maxSliceMs) maxSliceMs = ms;
+            sw.Stop(); slices++; float ms = sliced ? (float)swAll.Elapsed.TotalMilliseconds : (float)sw.Elapsed.TotalMilliseconds; cpuMs += ms; float mx = sliced ? inner : ms; if (mx > maxSliceMs) maxSliceMs = mx;
+            if (!done && lod && lc.totalBudgetMs > 0f && cpuMs > lc.totalBudgetMs) Abort("cut budget exceeded (" + cpuMs.ToString("0") + " ms > " + lc.totalBudgetMs.ToString("0") + " ms)");
             return done;
         }
         public void Discard()
@@ -91,6 +111,8 @@ public static class MeshCut
             if (committed) return;
             foreach (var g in hidden) if (g != null) UnityEngine.Object.Destroy(g);
             foreach (var o in owned) if (o != null) UnityEngine.Object.Destroy(o);
+            foreach (var g in lodGo) if (g != null) UnityEngine.Object.Destroy(g);   // CUTLOD v96
+            lodGo.Clear(); lodPairs.Clear(); lodKeep.Clear();
             hidden.Clear(); owned.Clear(); apply.Clear(); done = true; committed = true;
         }
     }
@@ -104,6 +126,19 @@ public static class MeshCut
 
     /// <summary>Applies a finished (or, if not finished, completes it now) staged cut: body mesh swap, piece shown / placed / launched, blood. Same CutResult as the old Cut().</summary>
     public static CutResult Commit(CutJob j, Vector3 awayDir, float push = 1f, float pieceImpulse = 60f)
+    {
+        // CUTLOD v96: one log line per cut (tris, ms); proxies that were not adopted are destroyed
+        bool was = j.committed; var r = CommitCore(j, awayDir, push, pieceImpulse);
+        if (!was)
+        {
+            foreach (var g in j.lodGo) if (g != null && !j.lodKeep.Contains(g)) UnityEngine.Object.Destroy(g);
+            j.lodGo.Clear(); j.lodPairs.Clear();
+            if (!j.lodLogged) { j.lodLogged = true; LodLog(j, r, "cut"); }
+        }
+        return r;
+    }
+
+    static CutResult CommitCore(CutJob j, Vector3 awayDir, float push, float pieceImpulse)
     {
         var res = j.res;
         try
@@ -159,6 +194,8 @@ public static class MeshCut
     {
         foreach (var g in j.hidden) if (g != null) UnityEngine.Object.Destroy(g);
         foreach (var o in j.owned) if (o != null) UnityEngine.Object.Destroy(o);
+        foreach (var g in j.lodGo) if (g != null) UnityEngine.Object.Destroy(g);   // CUTLOD v96
+        j.lodGo.Clear(); j.lodPairs.Clear(); j.lodKeep.Clear();
         j.hidden.Clear(); j.owned.Clear(); j.apply.Clear(); j.res.pieces.Clear();
     }
 
@@ -179,6 +216,7 @@ public static class MeshCut
         j.cfg = cfg; j.cc = cc; j.unit = unit; j.root = root; j.parentBone = parentBone;
         j.rnd = new System.Random(j.seed * 7919 + j.unitId.GetHashCode());
         if (unit.kind == "wound") { j.isWound = true; yield break; }
+        if (unit.kind == "crown") { var csub = CrownSteps(j); while (csub.MoveNext()) yield return null; yield break; }   // V1FIN v94: V1's head-only split crown (MeshCutCrown.cs)
 
         var set = new HashSet<Transform>(root.GetComponentsInChildren<Transform>(true));
         var smrsAll = victimRoot.GetComponentsInChildren<SkinnedMeshRenderer>(false);
@@ -191,6 +229,7 @@ public static class MeshCut
             var smr = smrsAll[s];
             if (smr == null || smr.sharedMesh == null) continue;
             if (!smr.enabled) { j.disabledSkipped++; continue; }
+            smr = LodPick(j, smr, set, true); if (smr == null) continue;   // CUTLOD v96: the cheap proxy instead of a 400k render mesh (null = not part of this unit / too heavy: skipped)
             if (!smr.sharedMesh.isReadable) { j.unreadable++; WarnUnreadable(smr); continue; }
             var baked = new Mesh(); j.owned.Add(baked); smr.BakeMesh(baked, false);
             smrs.Add(smr); bakedMeshes.Add(baked); smrPose.Add(smr.transform.localToWorldMatrix); smrPos.Add(smr.transform.position); smrRot.Add(smr.transform.rotation); smrScale.Add(smr.transform.lossyScale);
@@ -200,8 +239,11 @@ public static class MeshCut
         for (int s = 0; s < smrs.Count; s++)
         {
             if (j.Over()) yield return null;
+            int touchedBefore = j.touched;   // CUTLOD v96
             var sub = CutSkinnedSteps(j, smrs[s], bakedMeshes[s], smrPose[s], smrPos[s], smrRot[s], smrScale[s], rootW2L, set, root, parentBone, unit, cc, split);
             while (sub.MoveNext()) yield return null;
+            if (j.touched > touchedBefore)   // CUTLOD v96: the proxy took the cut -> at the commit it becomes the visible rest of the mesh and the heavy render mesh goes off (the cut pieces came from the proxy)
+                foreach (var lp in j.lodPairs) if (lp.proxy == smrs[s]) { var lq = lp; j.lodKeep.Add(lq.proxy.gameObject); j.apply.Add(() => { if (lq.proxy != null) lq.proxy.forceRenderingOff = false; if (lq.heavy != null) lq.heavy.enabled = false; }); }
         }
         foreach (var b in bakedMeshes) if (b != null) UnityEngine.Object.Destroy(b);
         for (int i = j.owned.Count - 1; i >= 0; i--) if (j.owned[i] is Mesh && bakedMeshes.Contains((Mesh)j.owned[i])) j.owned.RemoveAt(i);
@@ -606,6 +648,7 @@ public static class MeshCut
     static void Launch(GameObject root, Transform victim, CutUnit unit, CutsCfg cc, Vector3 away, float push, float impulse, System.Random rnd)
     {
         var rb = root.AddComponent<Rigidbody>(); rb.mass = Mathf.Max(0.1f, unit.massKg);
+        { var v1 = FinisherConfig.Get().rt.v1; if (v1 != null && v1.enabled && v1.headArc && unit.arc != null && unit.arc.enabled) { SeveredHeadArc.Begin(root, victim, unit.arc, away); return; } if (v1 != null && v1.enabled && v1.headArc && unit.script != null && unit.script.enabled) { OpenedHalf.Begin(root, victim, unit.script, away); return; } }   // V1FIN v94: V1's scripted head arc instead of the Rigidbody (kinematic; FinisherPiece skips its physics)
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         var rends = root.GetComponentsInChildren<MeshRenderer>();
         if (rends.Length > 0)
@@ -644,6 +687,7 @@ public static class MeshCut
 
     static void Blood(CutResult res, Transform victim, Transform parentBone, Vector3 pos, Vector3 dir, CutUnit unit, FinisherFile cfg, bool hasPiece)
     {
+        if (V1Blood(res, victim, parentBone, pos, dir, unit, cfg, hasPiece)) { GoreFx.Splash(victim, unit.loc, unit.extraDecals, cfg.gore); FinisherCleave.Apply(victim, unit, pos, dir, Vector3.zero, res); return; }   // V1FIN v94: V1 finisher-blood.ts sources + phases
         res.blood.Add(new CutBloodEvent { pos = pos, dir = dir, kind = "jet", loc = unit.loc });
         var spray = cfg.gore.neckSpray;
         GoreFx.Spray(parentBone, pos, dir, spray, unit.jetSeconds);
