@@ -10,7 +10,7 @@ public static class RuntimeQuality
         // extra switches (-1 = leave scene/asset default). quality levels: 0 low, 1 medium, 2 high.
         public bool ssao = true, ssgiFullRes = true; public int ssgiQuality = -1, ssrQuality = -1, fogQuality = -1, cloudMode = -1, cascades = 0; public float fogBudget = -1f, shadowDistance = 0f;
         // look overrides applied in the player so tuning needs no rebuild (-1 = leave as authored)
-        public float exposureEV = -1f, skyExposure = -1f, indirectDiffuse = -1f, indirectSpecular = -1f, hdriExposure = -999f, hdriRotation = -999f; public LightMul[] lightMul; public float[] skyMid; public MatOv[] matOverrides; public bool hideMHHead; }
+        public bool muteInHarness = true; public float exposureEV = -1f, skyExposure = -1f, indirectDiffuse = -1f, indirectSpecular = -1f, hdriExposure = -999f, hdriRotation = -999f; public LightMul[] lightMul; public float[] skyMid; public MatOv[] matOverrides; public bool hideMHHead; }
     [System.Serializable] public class MatOv { public string match; public float[] color; public float smoothness = -1f, metallic = -1f; }
     [System.Serializable] public class LightMul { public string name; public float mul = 1f; }
     static Flags F; static float scale = 100f;
@@ -37,6 +37,22 @@ public static class RuntimeQuality
         catch (System.Exception e) { Debug.Log("RQDIAG failed " + e.Message); }
     }
 
+    // lane LOOK fix 1: one exposure for gameplay AND finisher cameras: every profile that carries an Exposure override gets look.json's mode + EV; the global profile gets contact shadows
+    static void ApplyLook()
+    {
+        try
+        {
+            int n = 0;
+            foreach (var v in Object.FindObjectsByType<Volume>(FindObjectsSortMode.None))
+            {
+                var p = v.sharedProfile; if (p == null) continue;
+                if (p.TryGet(out Exposure ex)) { LookData.ApplyExposure(ex); n++; if (v.isGlobal) LookData.ApplyContactShadows(p); }
+            }
+            Debug.Log("LOOK exposure " + LookData.Get().exposure.mode + " ev=" + LookData.Get().exposure.ev + " on " + n + " profile(s), source " + LookData.Source);
+        }
+        catch (System.Exception e) { Debug.LogWarning("LOOK apply failed: " + e.Message); }
+    }
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
@@ -46,8 +62,14 @@ public static class RuntimeQuality
         FlagsPath = path; Fast = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-fast") >= 0;
         foreach (var a in System.Environment.GetCommandLineArgs()) if (a.StartsWith("-flags:")) { if (Fast) { path = a.Substring(7); FlagsPath = path; } else Debug.LogWarning("RuntimeQuality: -flags: ignored without -fast (runtime_flags.json is used)"); }
         CaptureMeta.Boot();
+        // V68: harness runs (balance / verify / proofs ...) are silent; runtime_flags.json "muteInHarness": false turns the sound back on
+        bool harness = false; foreach (var a in System.Environment.GetCommandLineArgs()) if (a == "-balanceauto" || a == "-verifyGround" || a == "-finisherauto" || a == "-postureproof" || a == "-flowproof" || a == "-camproof" || a == "-looptest" || a == "-latencyprobe" || a == "-perfbench") harness = true;
+        if (harness) AudioListener.volume = 0f;
+        ApplyLook();   // lane LOOK: look.json exposure (+ contact shadows) on every Volume BEFORE the flags, so the flags can still switch features off
         if (!System.IO.File.Exists(path)) return;
         F = JsonUtility.FromJson<Flags>(System.IO.File.ReadAllText(path));
+        if (harness && !F.muteInHarness) AudioListener.volume = 1f;
+        if (F.exposureEV >= 0f && Mathf.Abs(F.exposureEV - LookData.Get().exposure.ev) > 0.001f) Debug.LogWarning("RuntimeQuality: runtime_flags exposureEV " + F.exposureEV + " ignored; look.json exposure.ev " + LookData.Get().exposure.ev + " is the one exposure");
         foreach (var v in Object.FindObjectsByType<Volume>(FindObjectsSortMode.None))
         {
             var p = v.sharedProfile; if (p == null) continue;
@@ -61,7 +83,6 @@ public static class RuntimeQuality
             if (p.TryGet(out ScreenSpaceReflection s2) && F.ssrQuality >= 0) s2.quality.Override(F.ssrQuality);
             if (p.TryGet(out Fog f2)) { if (F.fogQuality >= 0) f2.quality.Override(F.fogQuality); if (F.fogBudget >= 0f) { f2.quality.Override(ScalableSettingLevelParameter.LevelCount); f2.volumetricFogBudget = F.fogBudget; } }
             if (p.TryGet(out VolumetricClouds c2) && F.cloudMode >= 0) c2.cloudSimpleMode.Override((VolumetricClouds.CloudSimpleMode)F.cloudMode);
-            if (F.exposureEV >= 0f && p.TryGet(out Exposure exo)) exo.fixedExposure.Override(F.exposureEV);
             if (F.skyExposure >= 0f && p.TryGet(out GradientSky gsk)) gsk.exposure.Override(F.skyExposure);
             if (F.skyMid != null && F.skyMid.Length >= 3 && p.TryGet(out GradientSky gsm)) { var cm = new Color(F.skyMid[0], F.skyMid[1], F.skyMid[2]); gsm.middle.Override(cm); gsm.bottom.Override(cm); }
             if (p.TryGet(out HDRISky hsk)) { if (F.hdriExposure > -900f) hsk.exposure.Override(F.hdriExposure); if (F.hdriRotation > -900f) hsk.rotation.Override(F.hdriRotation); }
@@ -79,10 +100,10 @@ public static class RuntimeQuality
             if (mo.smoothness >= 0f && mm.HasProperty("_Smoothness")) mm.SetFloat("_Smoothness", mo.smoothness);
             if (mo.metallic >= 0f && mm.HasProperty("_Metallic")) mm.SetFloat("_Metallic", mo.metallic);
         }
-        if (F.hideMHHead) { var mhh = GameObject.Find("MetaHumanHead"); if (mhh != null) mhh.SetActive(false); var drq = GameObject.Find("Dracula"); if (drq != null) foreach (var smr in drq.GetComponentsInChildren<SkinnedMeshRenderer>(true)) if (smr.name == "head") smr.enabled = true; }
+        if (F.hideMHHead) { var mhc = MHAttachData.Load(); var mhh = GameObject.Find(mhc.objectName); if (mhh != null) mhh.SetActive(false); var drq = GameObject.Find(mhc.fighterName); if (drq != null) foreach (var smr in drq.GetComponentsInChildren<SkinnedMeshRenderer>(true)) if (smr.name == "head") smr.enabled = true; }
         if (F.lightMul != null) foreach (var m in F.lightMul) foreach (var l in Object.FindObjectsByType<Light>(FindObjectsSortMode.None)) if (l.name == m.name) l.intensity *= m.mul;
         if (!F.shadows) foreach (var l in Object.FindObjectsByType<Light>(FindObjectsSortMode.None)) l.shadows = LightShadows.None;
-        scale = Mathf.Clamp(F.renderScale, 25f, 100f);
+        var LR = LookData.Get().runtime; scale = Mathf.Clamp(F.renderScale, LR.renderScaleMin, LR.renderScaleMax);
         if (scale < 99.5f)
         {
             foreach (var cam in Object.FindObjectsByType<Camera>(FindObjectsSortMode.None))

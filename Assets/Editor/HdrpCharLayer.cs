@@ -26,7 +26,7 @@ public static class HdrpCharLayer
             if (!inc)
             {
                 bool back = false; if (F.restore != null) foreach (var c in F.restore) if (r.transform.root.name.StartsWith(c)) back = true;
-                if (back) r.renderingLayerMask = (r.renderingLayerMask | 1u) & ~cb;   // back on the Default light layer: keeps the door lights (Pitborn's olive look)
+                if (back) r.renderingLayerMask = (r.renderingLayerMask | 1u) & ~cb;   // back on the Default light layer: keeps the door lights (the enemy's olive look)
                 continue;
             }
             r.renderingLayerMask = (r.renderingLayerMask & ~1u) | cb; rends++;

@@ -12,7 +12,7 @@ public class AIBrain : MonoBehaviour
     public DuelFighter df;
     public int seedOffset;                 // per-brain seed salt (tests)
     public static int GlobalSeed;          // -aiseed N on the command line
-    public AiProfile profile;              // resolved profile (difficulty row over the Pitborn base, or the player-bot row)
+    public AiProfile profile;              // resolved profile (difficulty row over the enemy base, or the player-bot row)
     public AiState ai;                     // V3 AiState (mode, plan, habits...)
     public AiAdapt adapt;                  // V63 adaptation layer (combos, whiff punish, timing mixups, enrage, habit counters); null = off
     public string lastScores = "";         // debug: last offence scores
@@ -38,7 +38,7 @@ public class AIBrain : MonoBehaviour
             if (args[i] == "-autoplay") auto = true;
             int sv; if (args[i] == "-aiseed" && i + 1 < args.Length && int.TryParse(args[i + 1], out sv)) GlobalSeed = sv;
         }
-        if (name == "Dracula" && !auto) enabled = false;
+        if (name == Roster.PlayerObject && !auto) enabled = false;   // the player is driven by PlayerBrain unless -autoplay
     }
     void OnEnable() { AiWorld.Register(this); }
     void OnDisable() { AiWorld.Unregister(this); inited = false; if (adapt != null) { adapt.Release(); adapt = null; } }
@@ -462,7 +462,7 @@ public class AIBrain : MonoBehaviour
         float forward = s.mode == AiMode.Approach && gap > closeTo ? D.forwardSpeed
             : s.mode == AiMode.Retreat && gap < (low ? D.retreatGapLow : D.retreatGapNormal) ? D.backSpeed
             : cramped ? D.backSpeed : 0f;
-        // (hover logic for a guardless fighter vs a read poker/kicker is not ported: the Pitborn always guards)
+        // (hover logic for a guardless fighter vs a read poker/kicker is not ported: the roster enemy always guards)
         float lateral = s.mode == AiMode.Circle ? s.side * D.lateralStep : (s.mode == AiMode.Approach && forward != 0f ? s.side * D.lateralStep * p.circle : 0f);
         bool dash = p.dash > 0f && opening && forward > 0f && gap > A.fight.close + D.dashSlack && df.stamina > rollCost && s.Roll() < p.dash;
         Vector3 lat = new Vector3(dir.z, 0f, -dir.x);   // V3 (cos f, -sin f)
@@ -511,7 +511,8 @@ public class AIBrain : MonoBehaviour
         }
         bool wantGuard = (it.guard || it.action == "parry") && df.state != FState.Roll;
         df.guardHeld = wantGuard;
-        if (wantGuard) df.guardSide = it.guardDir == "left" ? 1 : it.guardDir == "right" ? 2 : it.guardDir == "overhead" ? 3 : 0;
+        if (wantGuard) df.guardSide = (df.flowBotOn && ControlsTable.SideRequired) ? DirectionalGuard.BotSide(df, o) : DirectionalGuard.SideIdFor(it.guardDir);   // v69: the balance bot reads the foe's swing with controls.json bot.sideReadChance (a human-like read), not the AI profile's null-until-noticed side
+        //   // CTRL v68: controls.json guard.sides (left 1, right 2, overhead/top 3, else centre 0); the read itself (profile read) is unchanged
         if (it.action == null || it.action == "parry") return;
         if (it.action == "dodge") df.Press("roll");
         else df.Press(it.action);   // backstep, light, heavy, thrust, kick, special1/2

@@ -1,5 +1,5 @@
 {
- "_notes": "Fighter materials (Assets/Characters/*/Mats/*.mat are what the scene uses, not the GLB materials). 'extract' + 'copy' are read by Tools/char_tex_install.py (re-extracts the per-part jpgs from the installed GLB and bakes mask PNGs: R metal, G AO, A smoothness). 'materials', 'linearTextures', 'fabric' are read by Assets/Editor/HdrpCharMats.cs. sheen 'fabric' needs a Shader Graph (HDRP Fabric target, Cotton/Wool) whose shader name is fabric.shader; if it does not exist the material stays HDRP/Lit with the mask map and the sheen mask is only imported. Boots stay Lit (sheen off).",
+ "_notes": "Fighter materials (Assets/Characters/*/Mats/*.mat are what the scene uses, not the GLB materials). Optional per-material baseColor [r,g,b] (absolute _BaseColor; above 1 brightens the texture, lane LOOK cloak lift) and smoothnessMin / smoothnessMax (absolute mask-map smoothness remap) are applied after the mask. 'extract' + 'copy' are read by Tools/char_tex_install.py (re-extracts the per-part jpgs from the installed GLB and bakes mask PNGs: R metal, G AO, A smoothness). 'materials', 'linearTextures', 'fabric' are read by Assets/Editor/HdrpCharMats.cs. sheen 'fabric' needs a Shader Graph (HDRP Fabric target, Cotton/Wool) whose shader name is fabric.shader; if it does not exist the material stays HDRP/Lit with the mask map and the sheen mask is only imported. Boots stay Lit (sheen off).",
  "extract": [
   {
    "glb": "Assets/Characters/Dracula/Dracula_combat.glb",
@@ -39,7 +39,7 @@
   { "mat": "Assets/Characters/Dracula/Mats/dracula_boot_l_0.mat", "mask": "Assets/Characters/Dracula/Tex/dracula_atlas_mask.png", "sheen": "off" },
   { "mat": "Assets/Characters/Dracula/Mats/dracula_boot_r_0.mat", "mask": "Assets/Characters/Dracula/Tex/dracula_atlas_mask.png", "sheen": "off" },
   { "mat": "Assets/Characters/Dracula/Mats/dracula_coat_0.mat", "mask": "Assets/Characters/Dracula/Tex/dracula_atlas_mask.png", "sheenMask": "Assets/Characters/Dracula/Tex/dracula_coat_sheenmask.png", "sheen": "fabric" },
-  { "mat": "Assets/Characters/Dracula/Mats/dracula_cloak_0.mat", "mask": "Assets/Characters/Dracula/Tex/dracula_cloak_mask.png", "sheenMask": "Assets/Characters/Dracula/Tex/dracula_cloak_sheenmask.png", "sheen": "fabric" },
+  { "mat": "Assets/Characters/Dracula/Mats/dracula_cloak_0.mat", "mask": "Assets/Characters/Dracula/Tex/dracula_cloak_mask.png", "sheenMask": "Assets/Characters/Dracula/Tex/dracula_cloak_sheenmask.png", "sheen": "fabric", "baseColor": [1.0, 1.0, 1.0], "smoothnessMin": 0.2 },
   { "mat": "Assets/Characters/Pitborn/Mats/pitborn_Body_0.mat", "mask": "Assets/Characters/Pitborn/Tex/pitborn_Body_mask.png", "sheen": "off" }
  ]
 }

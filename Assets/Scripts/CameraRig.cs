@@ -22,6 +22,10 @@ public class CameraRig : MonoBehaviour
     FreeRow free = new FreeRow(); bool freeLoaded;
     void LoadFree() { freeLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_free.json", Application.dataPath + "/Data/camera_free.json" }) { if (!System.IO.File.Exists(p)) continue; try { free = JsonUtility.FromJson<FreeRow>(System.IO.File.ReadAllText(p)); } catch { } break; } }
     [System.Serializable] class ColRow { public bool enabled = false; public float radius = 0.35f, minDistFromTarget = 1.2f, minGroundY = 0f, minHeightAboveGround = 0.6f; public int[] ignoreLayers = { 8, 9 }; }
+    // V68: lock-on pose multipliers as data (camera_pose.json, StreamingAssets first). 1/1/0 = the V3 pose as before.
+    [System.Serializable] class CamPoseRow { public float backMul = 1f, heightMul = 1f, lookYAdd = 0f, shoulder = 1f; }
+    CamPoseRow pose = new CamPoseRow(); bool poseLoaded;
+    void LoadPose() { poseLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_pose.json", Application.dataPath + "/Data/camera_pose.json" }) { if (!System.IO.File.Exists(p)) continue; try { var r = JsonUtility.FromJson<CamPoseRow>(System.IO.File.ReadAllText(p)); if (r != null) pose = r; } catch { } break; } }
     ColRow col = new ColRow(); bool colLoaded; Vector3 lastGoodPos = new Vector3(0f, 3f, 5f), lastGoodLook = new Vector3(0f, 1f, 15f), lastGoodFwd = Vector3.forward;
     static bool IsFinite(Vector3 v) { return !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z) || float.IsInfinity(v.x) || float.IsInfinity(v.y) || float.IsInfinity(v.z)); }
     void LoadCol() { colLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_collision.json", Application.dataPath + "/Data/camera_collision.json" }) { if (!System.IO.File.Exists(p)) continue; try { col = JsonUtility.FromJson<ColRow>(System.IO.File.ReadAllText(p)); } catch { } break; } if (col == null) col = new ColRow(); }
@@ -51,12 +55,15 @@ public class CameraRig : MonoBehaviour
         if (!colLoaded) LoadCol();
         float dt = Time.deltaTime;
         bool lockOn = lockEnabled && enemy && enemyHp && !enemyHp.Dead && Vector3.Distance(target.position, enemy.position) < lockRange;
-        lockW = Mathf.MoveTowards(lockW, lockOn ? 1f : 0f, dt * 3f);
+        lockW = Mathf.MoveTowards(lockW, lockOn ? 1f : 0f, dt * DirectionalInput.LockEase(lockOn));   // CTRL v68: controls.json camera.easeIn / easeOut (3 / 3 without the file)
 
         // free camera (lock-on off): mouse yaw/pitch over the right shoulder
         if (!freeLoaded) LoadFree();
-        yaw += Input.GetAxis("Mouse X") * sensitivity; yaw = Mathf.Clamp(Mathf.DeltaAngle(0f, yaw), -free.yawLimitDeg, free.yawLimitDeg);
-        pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * sensitivity, free.pitchMinDeg, free.pitchMaxDeg);
+        if (!DirectionalInput.MouseReserved)   // CTRL v68: locked-on swipe scheme = the mouse is the attack / guard direction, not the camera
+        {
+            yaw += Input.GetAxis("Mouse X") * sensitivity; yaw = Mathf.Clamp(Mathf.DeltaAngle(0f, yaw), -free.yawLimitDeg, free.yawLimitDeg);
+            pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * sensitivity, free.pitchMinDeg, free.pitchMaxDeg);
+        }
         var rot = Quaternion.Euler(pitch, yaw, 0f);
         Vector3 focus = target.position + Vector3.up * height + rot * Vector3.right * shoulder;
         Vector3 freePos = focus - rot * Vector3.forward * distance, freeLook = focus;
@@ -69,14 +76,15 @@ public class CameraRig : MonoBehaviour
             float tgtYaw = Mathf.Atan2(flat.x, flat.z) * Mathf.Rad2Deg;          // camera behind the player, facing the enemy
             float blend = 1f - Mathf.Exp(-8f * dt);
             if (!snapped) lockYaw = tgtYaw; else lockYaw += Mathf.DeltaAngle(lockYaw, tgtYaw) * blend;
-            float foe = Mathf.Max(0f, (enemy.lossyScale.y * 2.1f - 1.8f) / 1.8f);   // how much taller than a man (Pitborn 2.5 m = 0.39)
-            float back = (Mathf.Max(4.2f, 0.62f * d + 2.8f) + foe * 2.4f) * 1.3f;
-            float h = (Mathf.Max(3.2f, 1.3f * d) * 0.67f + foe * 1.6f) * 1.3f;
+            float foe = Mathf.Max(0f, (enemy.lossyScale.y * 2.1f - 1.8f) / 1.8f);   // how much taller than a man (the enemy 2.5 m = 0.39)
+            if (!poseLoaded) LoadPose();
+            float back = (Mathf.Max(4.2f, 0.62f * d + 2.8f) + foe * 2.4f) * 1.3f * pose.backMul;
+            float h = (Mathf.Max(3.2f, 1.3f * d) * 0.67f + foe * 1.6f) * 1.3f * pose.heightMul;
             Quaternion yr = Quaternion.Euler(0f, lockYaw, 0f);
             Vector3 fwd = yr * Vector3.forward, right = yr * Vector3.right;
-            Vector3 lockPos = new Vector3(P.x, P.y + h, P.z) - fwd * back + right * 1.0f;
+            Vector3 lockPos = new Vector3(P.x, P.y + h, P.z) - fwd * back + right * pose.shoulder;
             Vector3 mid = (P + E) * 0.5f;
-            Vector3 lockLook = new Vector3(mid.x, mid.y + 0.8f, mid.z) + fwd * 0.3f;   // nudged toward the foe so he sits more central
+            Vector3 lockLook = new Vector3(mid.x, mid.y + 0.8f + pose.lookYAdd, mid.z) + fwd * 0.3f;   // nudged toward the foe so he sits more central
             lockPos.x = Mathf.Clamp(lockPos.x, -11.5f, 11.5f);
             Vector3 wantPos = Vector3.Lerp(freePos, lockPos, lockW), wantLook = Vector3.Lerp(freeLook, lockLook, lockW);
             CameraDeath.Shape(target, enemy, enemyHp, ref wantPos, ref wantLook, camPos);   // V61B: after a death keep the look-at on the dead fighter's body (camera_death.json)

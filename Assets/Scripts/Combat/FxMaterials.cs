@@ -188,14 +188,34 @@ public class FxMaterialGuard : MonoBehaviour
         nextClear = Time.unscaledTime + Mathf.Max(2f, d.recheckSeconds);
     }
 
+    // PERF: the old Update checked every renderer of the scene in one frame (and re-checked them all every recheckSeconds): a periodic hitch that grew with the particle / decal / piece count.
+    // The renderer list is still gathered at the same moments, but at most perf.json fxScanPerFrame renderers are checked per frame; the next scan waits until the previous one is done.
+    Renderer[] pending; int pendingIdx;
+
     void Update()
     {
         float now = Time.unscaledTime;
+        if (pending != null) { Drain(PerfFlags.C.fxScanPerFrame); return; }
         if (now < nextScan) return;
         var d = FxMaterialTable.Get();
         nextScan = now + Mathf.Max(0.5f, d.scanSeconds);
         if (now >= nextClear) { seen.Clear(); nextClear = now + Mathf.Max(2f, d.recheckSeconds); }
-        Scan();
+        pending = FindObjectsByType<Renderer>(FindObjectsInactive.Include, FindObjectsSortMode.None); pendingIdx = 0;
+        Drain(PerfFlags.C.fxScanPerFrame);
+    }
+
+    void Drain(int budget)
+    {
+        var d = FxMaterialTable.Get();
+        int done = 0;
+        while (pending != null && pendingIdx < pending.Length && done < budget)
+        {
+            var r = pending[pendingIdx++];
+            if (r == null || !seen.Add(r)) continue;
+            done++;
+            try { Check(r, d); } catch (Exception ex) { Debug.LogWarning("[FxGuard] check failed on " + r.name + ": " + ex.Message); }
+        }
+        if (pending != null && pendingIdx >= pending.Length) pending = null;
     }
 
     static bool StartsWithAny(string s, string[] prefixes)
@@ -228,15 +248,8 @@ public class FxMaterialGuard : MonoBehaviour
 
     void Scan()
     {
-        var d = FxMaterialTable.Get();
-        var all = FindObjectsByType<Renderer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        for (int i = 0; i < all.Length; i++)
-        {
-            var r = all[i];
-            if (r == null || seen.Contains(r)) continue;
-            seen.Add(r);
-            try { Check(r, d); } catch (Exception ex) { Debug.LogWarning("[FxGuard] check failed on " + r.name + ": " + ex.Message); }
-        }
+        pending = FindObjectsByType<Renderer>(FindObjectsInactive.Include, FindObjectsSortMode.None); pendingIdx = 0;
+        Drain(int.MaxValue);   // the start-up scan stays complete and immediate
     }
 
     void Check(Renderer r, FxMaterialTable.Data d)

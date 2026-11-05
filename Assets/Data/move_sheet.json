@@ -10,8 +10,8 @@
   "settleTicks": 90,
   "timeoutTicks": 1800,
   "markerPx": 3,
-  "draculaName": "Dracula",
-  "pitbornName": "Pitborn",
+  "playerName": "",
+  "enemyName": "",
   "arena": {
     "x": 0.0,
     "z": 12.6

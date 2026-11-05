@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // V64F: interpenetration probe of the two fighters over the WHOLE finisher scene (-finisherauto, also cheap enough to leave on).
-//  * hips: distance between the two Hips bones every frame. FAIL when it stays below hipsMinM for more than hipsFailS cumulative scene seconds (river_light: the thrown Pitborn passes through Dracula).
+//  * hips: distance between the two Hips bones every frame. FAIL when it stays below hipsMinM for more than hipsFailS cumulative scene seconds (river_light: the thrown victim passes through the killer).
 //  * capsules: both skeletons as bone-to-bone capsules (rt.pair.capsules; radius x the fighter's scale). Separation = segment distance - radii; < -capsulePenM counts as overlapping;
 //    FAIL when the cumulative overlap time exceeds capsuleFailS. Weapons are not modelled (they pass through bodies by design).
 // All numbers are data (finishers.json rt.pair). The component-free static design costs one 20 x 20 segment test per frame while a scene runs.

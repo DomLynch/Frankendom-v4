@@ -5,7 +5,7 @@ using UnityEngine;
 
 // V64F: "the victim's corpse looks bleached" diagnostic + guard (-finisherauto and the finisher itself).
 // Findings from the code (nothing in the finisher code writes an albedo): GoreFx decals / FinisherCleave quads are separate premultiplied dark-red quads (Furnace/Particle, never touch the body material);
-// MeshCut.CapMaterial clones a material only for the cut faces; HitFlash is the ONLY system that writes _BaseColor / _EmissiveColor through a MaterialPropertyBlock (Dracula row disabled, restores on death).
+// MeshCut.CapMaterial clones a material only for the cut faces; HitFlash is the ONLY system that writes _BaseColor / _EmissiveColor through a MaterialPropertyBlock (player row disabled, restores on death).
 // So the cause cannot be proven statically: this class measures it. Sample() = mean luma of the victim's base colours as the renderer will SHOW them (property block value when one overrides it, else the shared material),
 // the mean of the shared materials, how many slots carry a property block, the emissive peak, and how many decal renderers (Furnace/Particle) hang on the victim.
 // Scrub() (data rt.victimLook.scrub) clears a property block whose shown base luma is more than `rise` above its material's luma (or that adds emissive): a stuck flash. Off = measure only.

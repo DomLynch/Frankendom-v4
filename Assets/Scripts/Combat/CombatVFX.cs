@@ -24,6 +24,18 @@ public class CombatVFX : MonoBehaviour
         mist = Make("BloodMist", blood, 0.03f, 0.07f, 0.35f, 0.6f, 1.5f, 3.5f, new Color(0.22f, 0.015f, 0.015f, 0.95f), -1.2f);
     }
 
+    // PERF (FxPrewarm): one sub-pixel particle through each system (uses no RNG, no sim state)
+    public void PrewarmEmit(Vector3 pos, float size)
+    {
+        var all = new[] { sparks, guardSparks, flash, drops, puff, mist };
+        for (int i = 0; i < all.Length; i++)
+        {
+            if (all[i] == null) continue;
+            var ep = new ParticleSystem.EmitParams(); ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = 0.1f; ep.startSize = size; ep.startColor = Color.white;
+            all[i].Emit(ep, 1);
+        }
+    }
+
     void Stretch(ParticleSystem ps, Color a, Color b, float len = 5.2f)
     {
         var r = ps.GetComponent<ParticleSystemRenderer>(); r.renderMode = ParticleSystemRenderMode.Stretch; r.velocityScale = 0.06f; r.lengthScale = len; r.cameraVelocityScale = 0f; r.maxParticleSize = 0.5f;

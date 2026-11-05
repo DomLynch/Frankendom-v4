@@ -25,7 +25,15 @@ public class BloodBurst : MonoBehaviour
         var em = ps.emission; em.enabled = false; var sh = ps.shape; sh.enabled = false;
         var col = ps.colorOverLifetime; col.enabled = true; var g = new Gradient();
         g.SetKeys(new[] { new GradientColorKey(new Color(0.412f, 0.059f, 0.051f), 0f), new GradientColorKey(new Color(0.125f, 0.02f, 0.016f), 1f) }, new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0.9f, 0.7f), new GradientAlphaKey(0f, 1f) }); col.color = g;
-        var r = go.GetComponent<ParticleSystemRenderer>(); r.sharedMaterial = material; r.renderMode = ParticleSystemRenderMode.Stretch; r.lengthScale = 3.5f; r.velocityScale = 0f; r.cameraVelocityScale = 0f; r.maxParticleSize = 0.5f;
+        var r = go.GetComponent<ParticleSystemRenderer>(); r.sharedMaterial = material; r.renderMode = ParticleSystemRenderMode.Stretch; r.lengthScale = 1.6f; r.velocityScale = 0f; r.cameraVelocityScale = 0f; r.maxParticleSize = 0.5f;
+    }
+
+    // PERF (FxPrewarm): one sub-pixel particle (uses no RNG, no sim state)
+    public void PrewarmEmit(Vector3 pos, float size)
+    {
+        if (ps == null) return;
+        var ep = new ParticleSystem.EmitParams(); ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = 0.1f; ep.startSize = size; ep.startColor = Color.white;
+        ps.Emit(ep, 1);
     }
 
     void OnEvent(CombatEvent e)
@@ -53,6 +61,6 @@ public class BloodBurst : MonoBehaviour
             ep.applyShapeToPosition = false; ps.Emit(ep, 1);
             // strand length = width x stretch: Stretch mode scales the length by the system's lengthScale, so average it per burst
         }
-        var r = ps.GetComponent<ParticleSystemRenderer>(); r.lengthScale = 3.2f;
+        var r = ps.GetComponent<ParticleSystemRenderer>(); r.lengthScale = 1.6f;
     }
 }

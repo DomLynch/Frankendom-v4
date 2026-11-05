@@ -94,7 +94,7 @@ public static class MeshCut
         if (touched == 0)
         {
             if (unreadable > 0 && !split) { Fallback(victimRoot, root, unit, res); }
-            else res.note = unreadable > 0 ? "meshes not readable (enable Read/Write on the model import)" : (smrs.Length == 0 ? "no SkinnedMeshRenderer on the victim" : (res.note.Length > 0 ? res.note : "no vertices skinned to " + unitId + " [bone " + root.name + ", " + smrs.Length + " renderers, " + disabledSkipped + " disabled and skipped" + (disabledSkipped > 0 ? ": the visible head is probably a separate mesh (Dracula: MetaHuman head swap hides the original head renderer); the unit cleave / burst fallback runs" : "") + "]"));
+            else res.note = unreadable > 0 ? "meshes not readable (enable Read/Write on the model import)" : (smrs.Length == 0 ? "no SkinnedMeshRenderer on the victim" : (res.note.Length > 0 ? res.note : "no vertices skinned to " + unitId + " [bone " + root.name + ", " + smrs.Length + " renderers, " + disabledSkipped + " disabled and skipped" + (disabledSkipped > 0 ? ": the visible head is probably a separate mesh (e.g. a MetaHuman head swap hides the original head renderer); the unit cleave / burst fallback runs" : "") + "]"));
             if (!res.ok) return res;
         }
         else

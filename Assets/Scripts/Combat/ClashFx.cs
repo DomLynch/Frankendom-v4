@@ -139,6 +139,31 @@ public class ClashFx : MonoBehaviour
         instance = go.AddComponent<ClashFx>();
     }
 
+    // PERF (FxPrewarm): one sub-pixel particle through every pooled system so their pipeline states / buffers exist before the first clash. Uses no RNG and no sim state.
+    public static void PrewarmEmit(Vector3 pos, float size)
+    {
+        if (instance == null || !instance.ready) return;
+        instance.EmitTiny(instance.sparkPS, pos, size); instance.EmitTiny(instance.glintPS, pos, size); instance.EmitTiny(instance.dustPS, pos, size);
+        instance.EmitTiny(instance.sheetSparkR, pos, size); instance.EmitTiny(instance.sheetSparkL, pos, size);
+        instance.EmitTiny(instance.sheetHeavyR, pos, size); instance.EmitTiny(instance.sheetHeavyL, pos, size); instance.EmitTiny(instance.sheetDust, pos, size);
+    }
+    public static void CollectPrewarm(List<Material> into)
+    {
+        if (instance == null || !instance.ready || into == null) return;
+        if (instance.sparkMat != null) into.Add(instance.sparkMat);
+        if (instance.dustMat != null) into.Add(instance.dustMat);
+        if (instance.sheetSparkMat != null) into.Add(instance.sheetSparkMat);
+        if (instance.sheetHeavyMat != null) into.Add(instance.sheetHeavyMat);
+        if (instance.sheetDustMat != null) into.Add(instance.sheetDustMat);
+    }
+    void EmitTiny(ParticleSystem ps, Vector3 pos, float size)
+    {
+        if (ps == null) return;
+        var ep = new ParticleSystem.EmitParams();
+        ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = 0.1f; ep.startSize = size; ep.startColor = (Color32)Color.white;
+        ps.Emit(ep, 1);
+    }
+
     class Foot { public DuelFighter f; public Vector3 prev; public bool has; public float stride, cool; public int side = 1; }
     struct Late { public float at; public Vector3 anchor, along, side; public float strength; public int n; }
 

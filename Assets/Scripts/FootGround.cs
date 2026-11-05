@@ -133,7 +133,7 @@ public class FootGround : MonoBehaviour
         float dt = Mathf.Max(Time.deltaTime, 1e-4f);
         curW = Mathf.MoveTowards(curW, target, dt / Mathf.Max(0.01f, row.stateBlend));
         float W = row.weight * curW;
-        bool dbg = row.debug;
+        bool dbg = row.debug && PerfFlags.VerboseLogs;
         FootInfo bl = default, br = default; if (dbg) { bl = Measure(lFoot); br = Measure(rFoot); }
         if (W <= 0.001f) { pelvis = 0f; lastSetLocal = hips.localPosition; return; }
 

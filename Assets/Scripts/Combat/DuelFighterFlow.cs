@@ -64,7 +64,7 @@ public partial class DuelFighter
             if (!pressed) continue;
             var row = FlowTable.FindChain(move.id, type, t, hitDone); if (row == null) continue;
             if (type == "heavy" && !HeavyAllowed()) { pLight = Mathf.Max(pLight, pHeavy); pHeavy = 0; continue; }   // same downgrade as TickFree
-            string id = type == "heavy" ? "heavy_overhead" : type == "light" ? (lastLightRight ? "light_left" : "light_right") : type;
+            string id = DirPick(type, type == "heavy" ? "heavy_overhead" : type == "light" ? (lastLightRight ? "light_left" : "light_right") : type);   // CTRL v68: directed press
             if (moves.Get(id) == null) continue;
             flowLinks++; flowChains++; flowChainNext = true; flowLastChain = move.id + ">" + id;   // V64P
             if (FlowTable.Get().debugLog) Debug.Log("[Flow] " + name + " CHAIN " + flowLastChain + " at recovery t=" + t + " (link " + flowLinks + ", hit " + hitDone + ")");

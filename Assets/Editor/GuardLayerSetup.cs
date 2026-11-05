@@ -12,7 +12,7 @@ using UnityEngine;
 public static class GuardLayerSetup
 {
     const string LayerName = "GuardUpper";
-    static readonly string[] Controllers = { "Assets/Characters/Dracula.controller", "Assets/Characters/Pitborn.controller" };
+    // controllers + mask paths: roster.json rows (controller, guardMask); a row without guardMask gets Assets/Characters/GuardUpper_<controller name>.mask
     static readonly string[] GuardStates = { "guard_idle", "guard_left", "guard_right", "guard_up" };
     // a bone path is "upper body" when it contains one of these (everything under the spine chain: shoulders, arms, hands, neck, head, cape) ...
     static readonly string[] UpperTokens = { "Spine", "ik_hand" };
@@ -22,7 +22,7 @@ public static class GuardLayerSetup
     [MenuItem("Tools/Combat/Add Guard Upper-Body Layer")]
     public static void Run()
     {
-        foreach (var path in Controllers) Setup(path);
+        foreach (var r in RosterEditor.Characters()) if (!string.IsNullOrEmpty(r.controller)) Setup(r.controller, r.guardMask);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         Debug.Log("GuardLayerSetup: done");
@@ -44,7 +44,7 @@ public static class GuardLayerSetup
         return null;
     }
 
-    static void Setup(string path)
+    static void Setup(string path, string guardMask)
     {
         var ctrl = AssetDatabase.LoadAssetAtPath<AnimatorController>(path);
         if (ctrl == null) { Debug.LogWarning("GuardLayerSetup: controller not found " + path); return; }
@@ -76,7 +76,7 @@ public static class GuardLayerSetup
             }
         }
         var list = new List<string>(paths);
-        string maskPath = "Assets/Characters/GuardUpper_" + Path.GetFileNameWithoutExtension(path) + ".mask";
+        string maskPath = !string.IsNullOrEmpty(guardMask) ? guardMask : "Assets/Characters/GuardUpper_" + Path.GetFileNameWithoutExtension(path) + ".mask";
         var mask = AssetDatabase.LoadAssetAtPath<AvatarMask>(maskPath);
         bool created = mask == null;
         if (created) mask = new AvatarMask();

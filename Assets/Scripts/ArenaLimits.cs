@@ -27,7 +27,7 @@ public class ArenaLimits : MonoBehaviour
     {
         var r = Load(); if (r == null || !r.enabled) return;
         foreach (var f in Object.FindObjectsByType<CharacterController>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-            if ((f.name == "Dracula" || f.name == "Pitborn") && f.GetComponent<ArenaLimits>() == null) { f.gameObject.AddComponent<ArenaLimits>(); Debug.Log("[ArenaLimits] active on " + f.name + " x " + r.xMin + ".." + r.xMax + " z " + r.zMin + ".." + r.zMax); }
+            if ((f.name == Roster.PlayerObject || f.name == Roster.EnemyObject) && f.GetComponent<ArenaLimits>() == null) { f.gameObject.AddComponent<ArenaLimits>(); Debug.Log("[ArenaLimits] active on " + f.name + " x " + r.xMin + ".." + r.xMax + " z " + r.zMin + ".." + r.zMax); }
     }
 
     void Awake() { cc = GetComponent<CharacterController>(); }

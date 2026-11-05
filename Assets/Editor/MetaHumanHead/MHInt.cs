@@ -55,7 +55,7 @@ public static class MHInt
         Renderer le = null, re = null; foreach (var r in b.GetComponentsInChildren<Renderer>()) { if (r.name.StartsWith("eyeLeft_")) le = r; if (r.name.StartsWith("eyeRight_")) re = r; }
         var c = (le.bounds.center + re.bounds.center) * 0.5f; cam.transform.position = c - cam.transform.forward * 0.3f; Save(cam, 1024, "TestOut/eyes_crop_" + name + ".png");
         string refp = Arg("-mhref", @"C:\Users\dom12\Documents\kits_out\3d\metahuman\renders\AGE_F41b_F41_front.png");
-        string e; var look = MHLook.Load("Assets/StreamingAssets/MetaHumanHead/look/dracula.look.json", out e); var Q = look.qa;
+        string e; var look = MHLook.Load(MHIntegrate.LookAsset(), out e); var Q = look.qa;
         var me = Load1024(neutral); var ue = File.Exists(refp) ? Load1024(refp) : null;
         if (ue != null)
         {

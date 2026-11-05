@@ -1,0 +1,85 @@
+{
+  "_about": "Player HUD + game loop look (lane V66HUD), read by GameHUD.cs / GameLoop.cs / HudCfg.cs (StreamingAssets first, then Assets/Data). All sizes are px at referenceHeight (1080) and scale with Screen.height (clamped minScale..maxScale). Colours are [r,g,b(,a)] 0..1. Missing file or enabled=false keeps the built-in defaults. No art assets: bars, lines, edge gradients and ticks are drawn from code.",
+  "enabled": true,
+  "referenceHeight": 1080,
+  "minScale": 0.6,
+  "maxScale": 3.0,
+  "colors": {
+    "ink": [0.93, 0.90, 0.84, 1.0],
+    "dim": [0.62, 0.60, 0.56, 0.9],
+    "charcoal": [0.035, 0.035, 0.04, 0.78],
+    "crimson": [0.62, 0.07, 0.09, 1.0],
+    "gold": [0.86, 0.69, 0.30, 1.0],
+    "hpPlayer": [0.66, 0.06, 0.09, 1.0],
+    "hpEnemy": [0.72, 0.36, 0.09, 1.0],
+    "hpLag": [0.90, 0.80, 0.62, 0.55],
+    "hpBack": [0.0, 0.0, 0.0, 0.7]
+  },
+  "plate": {
+    "margin": 28, "top": 14, "width": 404, "height": 92, "pad": 12,
+    "nameSize": 15, "nameY": 7, "hpY": 30, "hpHeight": 16,
+    "accentAlpha": 0.85, "tickMarks": [0.25, 0.5, 0.75],
+    "lagDelay": 0.35, "lagRate": 0.45,
+    "playerName": "DRACULA", "enemyName": "PITBORN",
+    "fightLabel": true, "fightLabelSize": 12, "fightLabelText": "FIGHT {0}", "fightLabelY": 12
+  },
+  "debug": {
+    "_about": "Developer overlays are off in the player. camLine needs this flag true or the -camdebug argument; F3 / -fps show the FPS label.",
+    "camLine": false, "fpsLabelSize": 13
+  },
+  "hint": {
+    "_about": "Controls hint: bottom-left, shown showSeconds after the fight starts (after delayS), fades over fadeSeconds, F1 toggles it (pinned on / hidden). Rows are the real keys (PlayerBrain.cs, dodge.json, flow.json).",
+    "enabled": true, "toggleKey": "F1", "delayS": 0.9, "showSeconds": 8.0, "fadeSeconds": 1.2,
+    "columns": 2, "colWidth": 232, "rowHeight": 19, "fontSize": 13, "keyWidth": 92, "margin": 28, "pad": 10, "panelAlpha": 0.62,
+    "title": "CONTROLS", "footer": "F1 hide / show",
+    "rows": [
+      { "k": "WASD", "a": "Move" },
+      { "k": "Shift", "a": "Run" },
+      { "k": "Tab", "a": "Lock target (auto at 4 m)" },
+      { "k": "LMB / F / pad RB", "a": "Strike: tap light, hold heavy" },
+      { "k": "LMB + slide", "a": "Slide left / right / up = cut direction; none = stab" },
+      { "k": "T", "a": "Thrust" },
+      { "k": "G", "a": "Heavy" },
+      { "k": "C", "a": "Kick" },
+      { "k": "E / Space", "a": "Dodge (+ direction)" },
+      { "k": "A / D twice", "a": "Side-step" },
+      { "k": "RMB / Q / pad LB", "a": "Guard (tap early: parry)" },
+      { "k": "Slide / arrows", "a": "Guard side: left, right, top" },
+      { "k": "B", "a": "Riposte after a parry" },
+      { "k": "1 / 2 (Z / X)", "a": "Specials (pad Y / X)" },
+           { "k": "Backspace", "a": "Restart fight" },
+      { "k": "F3", "a": "FPS" }
+    ]
+  },
+  "vignette": {
+    "_about": "Damage taken: a red edge pulse. alpha = minAlpha + damageFraction (of max HP) * gain, clamped to maxAlpha, then fades over seconds (unscaled).",
+    "enabled": true, "color": [0.55, 0.02, 0.04], "minAlpha": 0.16, "maxAlpha": 0.62, "gain": 3.2, "seconds": 0.5, "edgeFrac": 0.30, "power": 2.0
+  },
+  "lowHp": {
+    "_about": "Subtle heartbeat pulse of the same edge below threshold (fraction of max HP). Two soft beats per cycle, faster as HP falls.",
+    "enabled": true, "threshold": 0.30, "maxAlpha": 0.17, "baseHz": 1.1, "maxHz": 1.8, "color": [0.45, 0.02, 0.04]
+  },
+  "hitTick": {
+    "_about": "Hit confirm: four short ticks around the foe's chest on a landed blow. Heavy blows and guard breaks are larger and gold, a blocked blow is dim.",
+    "enabled": true, "seconds": 0.17, "gap": 9, "length": 10, "thickness": 2, "heavyScale": 1.45, "blockedAlpha": 0.45, "chestHeight": 1.25,
+    "color": [0.96, 0.93, 0.85, 1.0], "heavyColor": [0.95, 0.76, 0.30, 1.0]
+  },
+  "screens": {
+    "delayS": 0.9, "fadeInS": 0.7, "dimAlpha": 0.35, "bandHeight": 340, "bandLift": 20, "bandAlpha": 0.74,
+    "titleSize": 78, "subtitleSize": 22, "statsSize": 16, "buttonW": 236, "buttonH": 50, "buttonGap": 26, "buttonSize": 20, "keyHintSize": 12, "nextLabelSize": 13,
+    "statSep": "     ",
+    "nextOnDefeat": false,
+    "victory": { "title": "VICTORY", "subtitle": "The {0} falls. The gate stands open.", "color": [0.88, 0.71, 0.31, 1.0] },
+    "defeat":  { "title": "YOU DIED", "subtitle": "The dark takes you. Rise again.", "color": [0.74, 0.08, 0.10, 1.0] },
+    "labels": { "time": "Time", "landed": "Hits landed", "taken": "Hits taken", "parries": "Parries", "finisher": "Finisher" },
+    "retryText": "Retry", "nextText": "Next opponent", "nextPreview": "Next: {0}", "fightText": "FIGHT {0}  -  {1}",
+    "retryHint": "Backspace / B", "confirmHint": "Enter / A", "retryHintDefeat": "Enter / Backspace / A"
+  },
+  "fade": { "enabled": true, "inS": 0.7, "outS": 0.45, "color": [0.0, 0.0, 0.0] },
+  "input": {
+    "_about": "confirm = Next opponent after a victory, Retry after a defeat (only while the end screen shows). retry = Retry; midFightRetry = restart during a fight (Backspace as before; Enter no longer restarts mid-fight). Names are UnityEngine.KeyCode.",
+    "confirmKeys": [ "Return", "KeypadEnter", "JoystickButton0" ],
+    "retryKeys": [ "Backspace", "JoystickButton1" ],
+    "midFightRetryKeys": [ "Backspace" ]
+  }
+}

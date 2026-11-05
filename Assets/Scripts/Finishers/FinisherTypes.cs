@@ -12,7 +12,7 @@ public enum FinisherLoc { Arm, Leg, Torso, Head }                               
 // everything the entry pick needs to know about the killing blow (was Beat)
 public struct FinisherContext
 {
-    public DuelFighter killer, victim; public int killerSide, victimSide;   // 0 = Dracula, 1 = Pitborn
+    public DuelFighter killer, victim; public int killerSide, victimSide;   // 0 = Roster player, 1 = Roster enemy (FinisherSides)
     public FinisherMove move; public FinisherLoc loc; public bool deathblow;   // deathblow = the blow was a posture-break deathblow (V61B)
 }
 
@@ -39,7 +39,7 @@ public class FinisherShot
     public bool fit = false;
     public string fitTarget = "pair";   // "pair" | "target"
     public float bodyHalfWidth = 0.9f;  // metres each side of a fighter's centre that must stay in frame (weapon arm included)
-    public float bodyHeight = 2.6f;     // metres from the feet that must stay in frame (the Pitborn with horns)
+    public float bodyHeight = 2.6f;     // metres from the feet that must stay in frame (the tallest fighter, horns included)
     public float fitMargin = 1.15f;     // > 1 = air around the fighters
     public float minDist = 4f, maxDist = 7.5f;
     public float pushIn = 0f, pushSeconds = 0f;   // slow push-in: dist shrinks by pushIn metres over pushSeconds (unscaled) after the cut
@@ -68,7 +68,7 @@ public class FinisherEntry
     public bool enabled = true;
     public bool placeholder = false;        // true: uses stand-in clips (no paired clip yet); logged
     public float weight = 1f;
-    public string attackerSide = "any";     // "any" | "Dracula" | "Pitborn"
+    public string attackerSide = "any";     // "any" | "player" | "enemy" | a roster character id (FinisherSides.Matches)
     public string[] weapons = new string[0];    // attacker weapon ids ("sword","maul", ...); empty = any
     public string[] directions = new string[0]; // kill direction "front"|"back"|"side"; empty = any
     public string[] moves = new string[0];      // Move names of the killing blow; empty = any
@@ -91,7 +91,7 @@ public class FinisherEntry
     // FN2 pair sync for paired Mixamo clips (all stand-in metres, tuned in data; FinisherPlayer multiplies by the killer's DuelFighter.scale):
     public float[] pairOffset = new float[0];   // [right, up, forward] of the victim centre relative to the killer, in the killer's frame; empty = use `distance` straight ahead
     public float killerYawDeg = 0f;         // extra yaw of the killer GameObject so its clip's own facing points at the victim (clip facing offset)
-    public bool distanceScaleByKiller = true;   // multiply distance / pairOffset by the killer's scale (Pitborn 1.19)
+    public bool distanceScaleByKiller = true;   // multiply distance / pairOffset by the killer's scale (DuelFighter.scale)
     public FinisherShot[] shotDefs = new FinisherShot[0];
     public FinisherShotKey[] shots = new FinisherShotKey[0];
     public FinisherGoreKey[] gore = new FinisherGoreKey[0];
@@ -180,7 +180,26 @@ public class CapMaterialCfg
 }
 
 // ---------------- rotation + real-time settings ----------------
-[Serializable] public class RotWeapons { public string Dracula = "sword", Pitborn = "maul"; }
+// Roster sides of a finisher: side 0 = the roster player, side 1 = the roster enemy. The killer weapon comes from roster.json ("weapon" of that character row).
+public static class FinisherSides
+{
+    public static string IdOf(int side) { return side == 0 ? Roster.PlayerId : Roster.EnemyId; }
+    public static string WeaponOf(int side) { return Roster.Get(IdOf(side)).weapon; }
+    // finishers.json attackerSide: "any" / "" = both sides, "player" / "enemy" = that roster side, anything else = a character id (old files named the character)
+    public static bool Matches(string attackerSide, int side)
+    {
+        if (string.IsNullOrEmpty(attackerSide) || attackerSide == "any") return true;
+        if (string.Equals(attackerSide, "player", StringComparison.OrdinalIgnoreCase)) return side == 0;
+        if (string.Equals(attackerSide, "enemy", StringComparison.OrdinalIgnoreCase)) return side == 1;
+        return string.Equals(attackerSide, IdOf(side), StringComparison.OrdinalIgnoreCase);
+    }
+    // the only side an attackerSide allows, or -1 when both sides may attack
+    public static int OnlySide(string attackerSide)
+    {
+        bool p = Matches(attackerSide, 0), e = Matches(attackerSide, 1);
+        return p == e ? -1 : (p ? 0 : 1);
+    }
+}
 [Serializable]
 public class FinisherRotation
 {
@@ -189,8 +208,7 @@ public class FinisherRotation
     public bool noImmediateRepeat = true;
     public string fallbackEntry = "";       // entry id used when nothing matches ("" = the normal death)
     public string[] enabledIds = new string[0];   // V61B: non-empty = ONLY these entry ids may be picked by the rotation (the other entries stay in the file for ForceId / -finisherauto / ById)
-    public bool perWeapon = true;           // V62: the rotation position is kept per killer weapon (rotation.weapons), persisted in finisher_rotation.json
-    public RotWeapons weapons = new RotWeapons();
+    public bool perWeapon = true;           // V62: the rotation position is kept per killer weapon (roster.json "weapon" of the killer), persisted in finisher_rotation.json
 }
 
 [Serializable]
@@ -206,7 +224,7 @@ public class FinisherAutoCfg
     public float shotStartDelay = 0.35f;     // shot 1: seconds after the scene starts
     public float shotAfterContact = 0.9f;    // shot 3: seconds after the contact event
     public float shotAfterKill = 0.8f;       // shot 4: seconds after the victim's Die()
-    public float aggression = 1.3f, pressure = 1f, parry = 0f, dodge = 0f;   // Dracula's AI profile (the aggressive steer)
+    public float aggression = 1.3f, pressure = 1f, parry = 0f, dodge = 0f;   // the attacking fighter's AI profile (the aggressive steer)
     public string shotMode = "auto";         // auto | screen | camera
     // V61B contact sheets (finisher_contact_<id>.png + finisher_contact_all.png in the out dir): frames at start / contact / kill / end of hold / after the release
     public int sheetCols = 3, sheetCellW = 640, sheetCombinedW = 960;
@@ -232,7 +250,7 @@ public class FinisherAutoCfg
 public class FinisherRtCfg
 {
     public bool onlyWhenSteer = false;       // true: only attempted when steer mode is active (-steer)
-    public bool allowPlayerVictim = true;    // Pitborn finishing Dracula is allowed
+    public bool allowPlayerVictim = true;    // the enemy finishing the player is allowed
     public bool persistRotation = true;      // finisher_rotation.json in persistentDataPath
     public bool notify = true;               // feed line "Finisher: <id>" in steer mode
     public bool disableMotionBlur = true;    // a global high-priority Volume forces MotionBlur off while a scene runs
@@ -294,7 +312,6 @@ public static class FinisherConfig
         }
         if (data == null) data = new FinisherFile();
         if (data.rotation == null) data.rotation = new FinisherRotation();
-        if (data.rotation.weapons == null) data.rotation.weapons = new RotWeapons();
         if (data.entries == null) data.entries = new FinisherEntry[0];
         if (data.cuts == null) data.cuts = new CutsCfg();
         if (data.cuts.units == null) data.cuts.units = new CutUnit[0];

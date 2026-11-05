@@ -92,8 +92,32 @@ public static class StaminaTable
         public int selfRecoveryTicks = 8;          // the parrier's own recovery (V3 "parryRecovery")
         public float attackerPosture = 25f;        // V3 "posture.parry"
         public float staminaCost = 4f;             // small cost of a successful parry (a plain block costs far more)
+        public float staminaGain = 0f;             // lanePARRY: stamina GIVEN to the parrier (the reward; applied after staminaCost, capped at max)
         public bool parryHeavies = true;           // false: a heavy cannot be parried, only blocked
+        public float attackerPostureHeavyMul = 1f; // lanePARRY: x on the attacker's parry posture when the parried blow was a heavy
+        public WhiffRow whiff = new WhiffRow();
+        public SidestepRow sidestep = new SidestepRow();
+        public AiRow ai = new AiRow();
     }
+    // lanePARRY: a guard TAP that opened a parry window, met no blow and was released early = a whiffed parry -> short recovery (no guard, no attack, no dodge)
+    [Serializable] public class WhiffRow
+    {
+        public bool enabled = false;
+        public string scope = "all";               // "all" | "player" (only a PlayerBrain fighter)
+        public int releaseTicks = 20;              // released at or before this guard age (ticks) = a tap; held longer = a deliberate block, no penalty
+        public int recoveryTicks = 18;             // the whiff recovery (18 = 300 ms)
+        public string clip = "parry";              // animator state played during it ("" = keep the current pose)
+        public int clipTicks = 26;                 // the clip is time-scaled to this many ticks
+    }
+    // lanePARRY: a sidestep's i-frames do not cover these blows (vertical cuts track the step); the roll and the backstep keep full i-frames
+    [Serializable] public class SidestepRow
+    {
+        public bool enabled = false;
+        public string[] hitsThroughDirections = new string[0];   // MoveDef.direction values (move-defs.json "direction"), e.g. "overhead"
+        public string[] hitsThroughMoves = new string[0];        // extra move ids or prefix patterns (heavy*)
+        public bool includeBack = true;            // also for the back sidestep (S double-tap)
+    }
+    [Serializable] public class AiRow { public float parryAdd = 0f, parryMax = 1f; }   // lanePARRY: AIBrain parry chance = min(parryMax, difficulty parry + parryAdd)
 
     static StaminaData sd; static ParryData pd;
     public static StaminaData Get() { if (sd == null) sd = Load<StaminaData>("stamina") ?? new StaminaData(); return sd; }
@@ -156,6 +180,21 @@ public static class StaminaTable
         var s = Get(); return s.enabled && heavy && s.guardBreak.heavyBreakBelow > 0f && staminaAfter <= s.guardBreak.heavyBreakBelow;
     }
     public static int ParryStagger(bool heavy, int v3) { var p = Parry(); return !p.enabled ? v3 : (heavy ? p.attackerStaggerHeavyTicks : p.attackerStaggerTicks); }
+    // lanePARRY: the riposte window the AI should plan with (DuelFighter uses the same value)
+    public static int RiposteWindow(int v3) { var p = Parry(); return p.enabled ? p.riposteWindowTicks : v3; }
+    // lanePARRY: true when this blow ignores a sidestep's i-frames (parry.json sidestep)
+    public static bool SidestepHitsThrough(MoveDef m)
+    {
+        var p = Parry(); var s = p.sidestep; if (!p.enabled || s == null || !s.enabled || m == null) return false;
+        if (s.hitsThroughDirections != null && !string.IsNullOrEmpty(m.direction)) for (int i = 0; i < s.hitsThroughDirections.Length; i++) if (s.hitsThroughDirections[i] == m.direction) return true;
+        if (s.hitsThroughMoves != null && m.id != null) for (int i = 0; i < s.hitsThroughMoves.Length; i++)
+        {
+            string pat = s.hitsThroughMoves[i]; if (string.IsNullOrEmpty(pat)) continue;
+            if (pat.EndsWith("*") ? m.id.StartsWith(pat.Substring(0, pat.Length - 1)) : m.id == pat) return true;
+        }
+        return false;
+    }
+    public static float AiParryChance(float baseChance) { var p = Parry(); if (!p.enabled || p.ai == null) return baseChance; return baseChance >= p.ai.parryMax ? baseChance : Mathf.Clamp01(Mathf.Min(p.ai.parryMax, baseChance + p.ai.parryAdd)); }   // never lowers a chance already above parryMax
 
     public static Color Col(float[] a, float alpha = 1f) { return a != null && a.Length >= 3 ? new Color(a[0], a[1], a[2], alpha) : new Color(1f, 0f, 1f, alpha); }
 }

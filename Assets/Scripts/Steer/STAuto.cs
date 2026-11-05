@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 
 // STEER lane S4: -steerauto verify harness (implies -steer; S1's controller must treat STAuto.Requested like the -steer flag).
-// A scripted "player" steers Dracula for auto.seconds (steer.json "auto" block) and logs every command -> the AI decision that followed -> the outcome.
+// A scripted "player" steers the player for auto.seconds (steer.json "auto" block) and logs every command -> the AI decision that followed -> the outcome.
 //   <exe dir>\steer_auto_log.txt      one line per event, written immediately (a crash still leaves it). STSteer.Log() lines from S1 land in the same file.
 //   <exe dir>\steer_shots\steer_<sec>_<tactic>.png   every auto.shotEvery s (RenderTexture-safe, see ShotMode)
 //   <exe dir>\steer_auto_summary.txt  verdict + counts + worst fps + exceptions
@@ -73,7 +73,7 @@ public class STAuto : MonoBehaviour
     string lastTactic = "none";
     bool logOpen; readonly StringBuilder pending = new StringBuilder();   // lines before the fight start wait here: STSteer.Log() truncates the file on its first call
     System.Random rng;
-    DuelFighter D, P;                      // Dracula, Pitborn
+    DuelFighter D, P;                      // the player, the enemy
     string[] stances, tactics;
     int slot, shotN, cmdN, seedsN = 1, fightIdx, openIdx; float openEnd, fightDur, nextKill; string shotPrefix = "steer_";
     class Rec { public int idx, seed; public float dur, dmgDealt, dmgTaken, dHp, pHp; public string winner, endReason, tactics; public int hitsD, hitsP, parriesD, parriesP, dodgesD, dodgesP, acc, att; }
@@ -94,7 +94,7 @@ public class STAuto : MonoBehaviour
     // counters
     class Stats
     {
-        public float dmgDealt, dmgTaken;                       // by Dracula to the Pitborn / by the Pitborn to Dracula (health deltas)
+        public float dmgDealt, dmgTaken;                       // by the player to the enemy / by the enemy to the player (health deltas)
         public int hitsD, hitsP, blockedByD, blockedByP, parriesD, parriesP, guardBreaksD, guardBreaksP, dodgesD, dodgesP, attacksD, attacksP;
         public Stats Clone() { return (Stats)MemberwiseClone(); }
     }
@@ -273,7 +273,7 @@ public class STAuto : MonoBehaviour
         float dist = Dist();
         if (cur != null && cur.open) { if (dist < cur.distMin) cur.distMin = dist; if (dist > cur.distMax) cur.distMax = dist; }
 
-        // state changes (these are the AI decisions made visible); Dracula lines name the decision when it follows a command
+        // state changes (these are the AI decisions made visible); the player lines name the decision when it follows a command
         string dm = D.CurrentMove != null ? D.CurrentMove.id : "", pm = P.CurrentMove != null ? P.CurrentMove.id : "";
         if (D.state != dStatePrev || (D.state != FState.Loco && dm != dMovePrev))
         {
@@ -348,9 +348,9 @@ public class STAuto : MonoBehaviour
             if (!STAutoApi.Available) why = STAutoApi.Missing();
             else if (!STAutoApi.Active) why = "STSteer.Active is false (the steer controller must start for -steerauto: S1 treats -steerauto as -steer)";
             DuelFighter d = null, p = null;
-            d = STAutoApi.Dracula; p = STAutoApi.Pitborn;
-            if (d == null || p == null) foreach (var f in FindObjectsByType<DuelFighter>()) { if (f.name == "Dracula") d = f; else if (f.name == "Pitborn") p = f; }
-            if (why.Length == 0 && (d == null || p == null)) why = "fighters not found (Dracula " + (d != null) + ", Pitborn " + (p != null) + ")";
+            d = STAutoApi.Player; p = STAutoApi.Enemy;
+            if (d == null || p == null) foreach (var f in FindObjectsByType<DuelFighter>()) { if (f.name == Roster.PlayerObject) d = f; else if (f.name == Roster.EnemyObject) p = f; }
+            if (why.Length == 0 && (d == null || p == null)) why = "fighters not found (" + Roster.PlayerName + " " + (d != null) + ", " + Roster.EnemyName + " " + (p != null) + ")";
             if (why.Length == 0) { D = d; P = p; break; }
             if (Time.realtimeSinceStartup - w0 > C.bootWaitSeconds) { Fail("not ready after " + C.bootWaitSeconds.ToString("F0", IC) + " s: " + why); yield break; }
             if (Time.realtimeSinceStartup - lastNote >= 1f) { lastNote = Time.realtimeSinceStartup; Log("waiting: " + why); }
@@ -404,7 +404,7 @@ public class STAuto : MonoBehaviour
                 if (t >= nextSample) { nextSample += C.sampleEvery; Sample(t); }
                 if (t >= nextSummary) { nextSummary += C.summaryEvery; Summary10(t); }
                 if (t >= nextShot) { nextShot = single ? nextShot + C.shotEvery : float.MaxValue; yield return Shot(t); }
-                if (D.Dead || P.Dead) { endReason = (P.Dead ? "Pitborn" : "Dracula") + " died"; break; }
+                if (D.Dead || P.Dead) { endReason = (P.Dead ? Roster.EnemyName : Roster.PlayerName) + " died"; break; }
                 if (t >= C.seconds) { endReason = C.seconds.ToString("F0", IC) + " s elapsed"; break; }
                 yield return null;
             }
@@ -442,7 +442,7 @@ public class STAuto : MonoBehaviour
     {
         var r = new Rec { idx = fightIdx + 1, seed = seed, dur = fightDur, endReason = endReason, dmgDealt = S.dmgDealt, dmgTaken = S.dmgTaken, dHp = D.health, pHp = P.health,
             hitsD = S.hitsD, hitsP = S.hitsP, parriesD = S.parriesD, parriesP = S.parriesP, dodgesD = S.dodgesD, dodgesP = S.dodgesP };
-        r.winner = P.Dead && !D.Dead ? "Dracula" : D.Dead && !P.Dead ? "Pitborn" : D.Dead && P.Dead ? "both" : "none (time limit)";
+        r.winner = P.Dead && !D.Dead ? Roster.PlayerName : D.Dead && !P.Dead ? Roster.EnemyName : D.Dead && P.Dead ? "both" : "none (time limit)";
         var sb = new StringBuilder();
         foreach (var tn in tactics) { r.acc += accepted[tn]; r.att += attempted[tn]; sumAtt[tn] += attempted[tn]; sumAcc[tn] += accepted[tn]; sb.Append(tn + " " + accepted[tn] + "/" + attempted[tn] + "  "); }
         r.tactics = sb.ToString().TrimEnd();
@@ -461,7 +461,7 @@ public class STAuto : MonoBehaviour
         while (true)
         {
             yield return null;
-            var d = STAutoApi.Dracula; var p = STAutoApi.Pitborn;
+            var d = STAutoApi.Player; var p = STAutoApi.Enemy;
             if (d != null && p != null && d != oldD && p != oldP && !d.Dead && !p.Dead) { D = d; P = p; break; }
             if (Time.realtimeSinceStartup - w0 > C.restartWaitSeconds) { Fail("restart: no fresh living fighters after " + C.restartWaitSeconds.ToString("F0", IC) + " s"); yield break; }
             if (Time.realtimeSinceStartup - lastNote >= 1f) { lastNote = Time.realtimeSinceStartup; Log("waiting for the restarted fight ..."); }
@@ -555,7 +555,7 @@ public class STAuto : MonoBehaviour
         var c = cur; if (c == null || !c.open) return;
         c.open = false;
         var a = c.snap;
-        string dec = (c.tacticStart != null ? "steer ran " + c.tacticStart + "; " : "") + (c.decision ?? "no Dracula action state observed (Loco: movement only)");
+        string dec = (c.tacticStart != null ? "steer ran " + c.tacticStart + "; " : "") + (c.decision ?? "no " + Roster.PlayerName + " action state observed (Loco: movement only)");
         Log("  OUTCOME #" + c.n + " [" + c.text + "] decision: " + dec + " | dist " + c.dist0.ToString("F2", IC) + "->" + Dist().ToString("F2", IC) + " (min " + c.distMin.ToString("F2", IC) + " max " + c.distMax.ToString("F2", IC) + ")"
             + " | dmg dealt " + (S.dmgDealt - a.dmgDealt).ToString("F1", IC) + " taken " + (S.dmgTaken - a.dmgTaken).ToString("F1", IC)
             + " | hits D" + (S.hitsD - a.hitsD) + " P" + (S.hitsP - a.hitsP)
@@ -664,13 +664,13 @@ public class STAuto : MonoBehaviour
         var sb = new StringBuilder();
         sb.AppendLine("VERDICT: " + verdict + "   (exit code " + code + ", " + why + ")");
         sb.AppendLine("date " + DateTime.Now.ToString("s") + "  unity " + Application.unityVersion + "  res " + Screen.width + "x" + Screen.height + "  seed " + C.seed + "  data " + dataSrc);
-        sb.AppendLine("fight: " + dur.ToString("F1", IC) + " s of " + C.seconds.ToString("F0", IC) + " s, ended by " + (fightEnded ? (P != null && P.Dead ? "Pitborn death" : "Dracula death") : "time/other") + ", sim ticks " + ticks + ", contacts " + contactEvents);
-        if (haveFight) sb.AppendLine("hp: Dracula " + dHpStart.ToString("F0", IC) + " -> " + D.health.ToString("F0", IC) + " (min " + dHpMin.ToString("F0", IC) + ")   Pitborn " + pHpStart.ToString("F0", IC) + " -> " + P.health.ToString("F0", IC) + " (min " + pHpMin.ToString("F0", IC) + ")");
+        sb.AppendLine("fight: " + dur.ToString("F1", IC) + " s of " + C.seconds.ToString("F0", IC) + " s, ended by " + (fightEnded ? (P != null && P.Dead ? Roster.EnemyName + " death" : Roster.PlayerName + " death") : "time/other") + ", sim ticks " + ticks + ", contacts " + contactEvents);
+        if (haveFight) sb.AppendLine("hp: " + Roster.PlayerName + " " + dHpStart.ToString("F0", IC) + " -> " + D.health.ToString("F0", IC) + " (min " + dHpMin.ToString("F0", IC) + ")   " + Roster.EnemyName + " " + pHpStart.ToString("F0", IC) + " -> " + P.health.ToString("F0", IC) + " (min " + pHpMin.ToString("F0", IC) + ")");
         sb.AppendLine("commands: " + cmdN + " (stance changes " + stanceChanges + ", tactics accepted " + acceptedAll + ", refused " + refusedAll + ")   shots " + shotN);
         sb.AppendLine("stances used: " + DictText(stanceUsed));
         sb.AppendLine("tactics (accepted/attempted/refused):");
         foreach (var tn in tactics) sb.AppendLine("  " + tn.PadRight(10) + accepted[tn] + "/" + attempted[tn] + "/" + refused[tn] + (accepted[tn] == 0 ? "   <- " + (lastRefusal.ContainsKey(tn) ? lastRefusal[tn] : "never attempted") : ""));
-        sb.AppendLine("totals: damage dealt by Dracula " + S.dmgDealt.ToString("F0", IC) + ", taken " + S.dmgTaken.ToString("F0", IC) + "; hits D" + S.hitsD + "/P" + S.hitsP + "; parries by D" + S.parriesD + "/by P" + S.parriesP
+        sb.AppendLine("totals: damage dealt by " + Roster.PlayerName + " " + S.dmgDealt.ToString("F0", IC) + ", taken " + S.dmgTaken.ToString("F0", IC) + "; hits D" + S.hitsD + "/P" + S.hitsP + "; parries by D" + S.parriesD + "/by P" + S.parriesP
             + "; blocks by D" + S.blockedByD + "/by P" + S.blockedByP + "; guardbreaks on D" + S.guardBreaksD + "/on P" + S.guardBreaksP + "; dodges D" + S.dodgesD + "/P" + S.dodgesP + "; attacks D" + S.attacksD + "/P" + S.attacksP);
         sb.AppendLine("fps: avg " + (allFpsN > 0 ? (allFpsSum / allFpsN).ToString("F1", IC) : "-") + "  1%-low " + p1.ToString("F1", IC) + "  worst frame " + worst.ToString("F1", IC) + "  min(per-frame) " + (allFpsN > 0 ? allFpsMin.ToString("F1", IC) : "-") + "   (screenshot frames excluded; target >= 120 at 1080p)");
         sb.AppendLine("exceptions: steer " + stExceptions + ", foreign " + foreignExceptions);
@@ -689,23 +689,23 @@ public class STAuto : MonoBehaviour
         foreach (var r in recs)
         {
             sumDur += r.dur; sumDealt += r.dmgDealt; sumTaken += r.dmgTaken; sumHD += r.hitsD; sumHP += r.hitsP;
-            if (r.winner == "Dracula") dWins++; else if (r.winner == "Pitborn") pWins++;
+            if (r.winner == Roster.PlayerName) dWins++; else if (r.winner == Roster.EnemyName) pWins++;
             if (r.hitsD <= 0 || r.hitsP <= 0) bothHit = false;
         }
         float avgDur = n > 0 ? sumDur / n : 0f, winRate = n > 0 ? (float)dWins / n : 0f;
         var reasons = new List<string>();
         if (n < seedsN) reasons.Add("only " + n + " of " + seedsN + " fights completed");
         if (n > 0 && (avgDur < C.balanceMinDuration || avgDur > C.balanceMaxDuration)) reasons.Add("average duration " + avgDur.ToString("F1", IC) + " s outside " + C.balanceMinDuration.ToString("F0", IC) + "-" + C.balanceMaxDuration.ToString("F0", IC));
-        if (n > 0 && (winRate < C.balanceMinWinRate || winRate > C.balanceMaxWinRate)) reasons.Add("Dracula win rate " + (winRate * 100f).ToString("F0", IC) + "% outside " + (C.balanceMinWinRate * 100f).ToString("F0", IC) + "-" + (C.balanceMaxWinRate * 100f).ToString("F0", IC) + "%");
+        if (n > 0 && (winRate < C.balanceMinWinRate || winRate > C.balanceMaxWinRate)) reasons.Add(Roster.PlayerName + " win rate " + (winRate * 100f).ToString("F0", IC) + "% outside " + (C.balanceMinWinRate * 100f).ToString("F0", IC) + "-" + (C.balanceMaxWinRate * 100f).ToString("F0", IC) + "%");
         if (!bothHit) reasons.Add("a side landed no hits in at least one fight");
         string verdict = verdictOverride ?? (reasons.Count == 0 ? "PASS" : "FAIL");
         var sb = new StringBuilder();
         sb.AppendLine("VERDICT: " + verdict + "   (exit code " + code + ", " + why + ")");
         sb.AppendLine("date " + DateTime.Now.ToString("s") + "  unity " + Application.unityVersion + "  res " + Screen.width + "x" + Screen.height + "  seeds " + C.seed + ".." + (C.seed + seedsN - 1) + "  fights " + n + "/" + seedsN + "  data " + dataSrc);
-        sb.AppendLine("pass rule: average duration " + C.balanceMinDuration.ToString("F0", IC) + "-" + C.balanceMaxDuration.ToString("F0", IC) + " s AND Dracula win rate " + (C.balanceMinWinRate * 100f).ToString("F0", IC) + "-" + (C.balanceMaxWinRate * 100f).ToString("F0", IC) + "% AND both sides land hits in every fight");
+        sb.AppendLine("pass rule: average duration " + C.balanceMinDuration.ToString("F0", IC) + "-" + C.balanceMaxDuration.ToString("F0", IC) + " s AND " + Roster.PlayerName + " win rate " + (C.balanceMinWinRate * 100f).ToString("F0", IC) + "-" + (C.balanceMaxWinRate * 100f).ToString("F0", IC) + "% AND both sides land hits in every fight");
         foreach (var r in reasons) sb.AppendLine("PROBLEM: " + r);
         sb.AppendLine();
-        sb.AppendLine("per fight (damage dealt = by Dracula to the Pitborn, taken = by Dracula from the Pitborn; tactics = accepted/attempted):");
+        sb.AppendLine("per fight (damage dealt = by " + Roster.PlayerName + " to the " + Roster.EnemyName + ", taken = by " + Roster.PlayerName + " from the " + Roster.EnemyName + "; tactics = accepted/attempted):");
         foreach (var r in recs)
             sb.AppendLine("  #" + r.idx + " seed " + r.seed + "  " + r.dur.ToString("F1", IC) + " s  winner " + r.winner + " (" + r.endReason + ")  hp end D" + r.dHp.ToString("F0", IC) + "/P" + r.pHp.ToString("F0", IC)
                 + "  dmg dealt " + r.dmgDealt.ToString("F0", IC) + " taken " + r.dmgTaken.ToString("F0", IC) + "  hits D" + r.hitsD + "/P" + r.hitsP + "  parries by D" + r.parriesD + "/P" + r.parriesP + "  dodges D" + r.dodgesD + "/P" + r.dodgesP
@@ -714,9 +714,9 @@ public class STAuto : MonoBehaviour
         if (n > 0)
         {
             sb.AppendLine("averages over " + n + " fights:");
-            sb.AppendLine("  duration " + avgDur.ToString("F1", IC) + " s   Dracula wins " + dWins + "/" + n + " (" + (winRate * 100f).ToString("F0", IC) + "%)   Pitborn wins " + pWins + "   no winner " + (n - dWins - pWins));
-            sb.AppendLine("  damage dealt by Dracula " + (sumDealt / n).ToString("F1", IC) + "   damage taken by Dracula " + (sumTaken / n).ToString("F1", IC));
-            sb.AppendLine("  hits landed: Dracula " + (sumHD / n).ToString("F1", IC) + "   Pitborn " + (sumHP / n).ToString("F1", IC));
+            sb.AppendLine("  duration " + avgDur.ToString("F1", IC) + " s   " + Roster.PlayerName + " wins " + dWins + "/" + n + " (" + (winRate * 100f).ToString("F0", IC) + "%)   " + Roster.EnemyName + " wins " + pWins + "   no winner " + (n - dWins - pWins));
+            sb.AppendLine("  damage dealt by " + Roster.PlayerName + " " + (sumDealt / n).ToString("F1", IC) + "   damage taken by " + Roster.PlayerName + " " + (sumTaken / n).ToString("F1", IC));
+            sb.AppendLine("  hits landed: " + Roster.PlayerName + " " + (sumHD / n).ToString("F1", IC) + "   " + Roster.EnemyName + " " + (sumHP / n).ToString("F1", IC));
         }
         sb.AppendLine("tactics, all fights (accepted/attempted):");
         foreach (var tn in tactics) sb.AppendLine("  " + tn.PadRight(10) + sumAcc[tn] + "/" + sumAtt[tn] + (sumAtt[tn] == 0 ? "   <- never attempted" : ""));

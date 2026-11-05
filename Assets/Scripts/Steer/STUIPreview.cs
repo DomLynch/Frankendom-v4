@@ -4,9 +4,9 @@ using System.IO;
 using UnityEngine;
 
 // Steer UI screenshot / preview mode (inert without the flag). Fakes data (stance, cooldowns, HP, feed lines) and shows STUI over the live scene.
-//   Dracula.exe -steershot=<all|bar|cooldown|lowhp> [-screen-width 1920 -screen-height 1080 -screen-fullscreen 0]
+//   <game>.exe -steershot=<all|bar|cooldown|lowhp> [-screen-width 1920 -screen-height 1080 -screen-fullscreen 0]
 //   writes <exe dir>\steershots\<mode>_<W>x<H>.png (about 2 s per shot) and quits.
-//   Dracula.exe -steerpreview   interactive (clickable, no capture, no quit); STUIPreview.On stays true.
+//   <game>.exe -steerpreview   interactive (clickable, no capture, no quit); STUIPreview.On stays true.
 public static class STUIPreview
 {
     public static bool On;
@@ -43,7 +43,7 @@ public static class STUIPreview
             case "cooldown":
                 Stance = STStance.Trickster; Hp0 = 64f; Hp1 = 71f;
                 Cd[0] = 0.92f; Cd[1] = 0.6f; Cd[2] = 0.35f; Cd[3] = 0.15f; Cd[4] = 0.75f; Cd[5] = 0f; En[6] = false;
-                ui.PushFeed("Press! Dracula closes in"); ui.PushFeed("You parried his overhead"); ui.PushFeed("Feint: he bit, riposte window open");
+                ui.PushFeed("Press! " + Roster.PlayerName + " closes in"); ui.PushFeed("You parried his overhead"); ui.PushFeed("Feint: he bit, riposte window open");
                 break;
             case "lowhp":
                 Stance = STStance.Defensive; Hp0 = 22f; Hp1 = 14f; En[6] = true;
@@ -52,7 +52,7 @@ public static class STUIPreview
                 break;
             default:
                 Stance = STStance.Aggressive; Hp0 = 86f; Hp1 = 100f;
-                Cd[1] = 0.3f; ui.PushFeed("You parried his overhead"); ui.PushFeed("Press: Dracula closes in");
+                Cd[1] = 0.3f; ui.PushFeed("You parried his overhead"); ui.PushFeed("Press: " + Roster.PlayerName + " closes in");
                 break;
         }
     }

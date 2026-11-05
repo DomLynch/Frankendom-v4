@@ -1,4 +1,9 @@
 ﻿{
+    "_rimRigsNote":  "lane LOOK fix 2: roster-keyed rim rigs built by HdrpFixes (HDRP_RimRigs) and moved by RimRig at runtime. who = player | enemy | roster id. Spot, shadows off, light layer bit = only that character's renderers (minus rimExclude). lux = illuminance at the aim point in this scene's physical scale (exposure EV 9.4, key 10500 lux); the light is set in candela = lux * distance^2.",
+    "rimRigs":  [
+                    { "name": "Rim_Player", "who": "player", "layerBit": 5, "kelvin": 7000, "lux": 1500, "behind": 2.5, "above": 2.6, "side": 0.6, "aimHeight": 1.4, "spotAngle": 35, "range": 8, "volumetricDimmer": 0 },
+                    { "name": "Rim_Enemy", "who": "enemy", "layerBit": 6, "kelvin": 6800, "lux": 800, "behind": 2.8, "above": 3.0, "side": -0.6, "aimHeight": 1.6, "spotAngle": 55, "range": 9, "volumetricDimmer": 0 }
+                ],
     "props":  [
                   {
                       "name":  "hero_weapon_sword",

@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
 // Reproducible rebuild from CANONICAL only (lane A3 process fix).
 //   MHRebuildAll.RebuildAllFromCanonical()  (batch: -executeMethod MHRebuildAll.RebuildAllFromCanonical -mhcanon <third_party dir>)
-// 1. copies look\dracula.look.json and look\textures_shared\*.png (ONE shared texture folder) into StreamingAssets\MetaHumanHead\{look,textures} and Assets\MetaHumanHead\Textures (only when bytes differ)
+// 1. copies the look file (mhhead_attach.json builder.lookFile) and look\textures_shared\*.png (ONE shared texture folder) into StreamingAssets\MetaHumanHead\{look,textures} and Assets\MetaHumanHead\Textures (only when bytes differ)
 // 2. sets import settings (normals = Normal map, SRMF/masks/WM linear+readable, eyes readable + uncompressed)
 // 3. MOVES every saved HDRP material/asset file in Assets\MetaHumanHead\HDRP to <project>\_agents\bak\hdrp_<time> (no deletes) and regenerates skin, eyes/eyeshell/lash/saliva/teeth, hair/brow materials
 //    (stale-asset bug: the eye/teeth Save() uses GenerateUniqueAssetPath, so re-runs made "MH_HDRP_teeth 7.mat" etc. while the scene kept using the oldest file)
@@ -47,8 +47,9 @@ public static class MHRebuildAll
     {
         var rep = new StringBuilder(); string canon = Arg("-mhcanon", DefaultCanon); string stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
         rep.AppendLine("RebuildAllFromCanonical " + stamp + " canon=" + canon);
-        string lookSrc = Arg("-mhlook", Path.Combine(canon, @"look\dracula.look.json")); rep.AppendLine("  look source " + lookSrc);
-        CopyIfDiff(lookSrc, "Assets/StreamingAssets/MetaHumanHead/look/dracula.look.json", rep);
+        var mhCfg = MHAttachData.Load(); string lookDst = MHIntegrate.LookAsset(mhCfg);
+        string lookSrc = Arg("-mhlook", Path.Combine(canon, mhCfg.builder.lookFile.Replace('/', Path.DirectorySeparatorChar))); rep.AppendLine("  look source " + lookSrc);
+        CopyIfDiff(lookSrc, lookDst, rep);
         string tex = Path.Combine(canon, @"look\textures_shared"); int nt = 0;
         if (Directory.Exists(tex)) foreach (var f in Directory.GetFiles(tex, "*.png")) { string n = Path.GetFileName(f); bool a = CopyIfDiff(f, "Assets/MetaHumanHead/Textures/" + n, rep); bool b = CopyIfDiff(f, "Assets/StreamingAssets/MetaHumanHead/textures/" + n, rep); if (a || b) nt++; }
         else rep.AppendLine("  WARNING no textures_shared folder");
@@ -58,7 +59,7 @@ public static class MHRebuildAll
         if (Directory.Exists(HdrpFolder)) foreach (var f in Directory.GetFiles(HdrpFolder)) { File.Move(f, Path.Combine(bak, Path.GetFileName(f))); moved++; }
         rep.AppendLine("  moved " + moved + " stale HDRP asset files to " + bak);
         AssetDatabase.Refresh();
-        string err; var look = MHLook.Load("Assets/StreamingAssets/MetaHumanHead/look/dracula.look.json", out err); if (look == null) { rep.AppendLine("FAIL look: " + err); Write(rep); throw new Exception("look load failed " + err); }
+        string err; var look = MHLook.Load(lookDst, out err); if (look == null) { rep.AppendLine("FAIL look: " + err); Write(rep); throw new Exception("look load failed " + err); }
         foreach (var t in new[] { typeof(MHEyeHdrp), typeof(MHSkinHdrp), typeof(MHHairHdrp) }) ClearStatics(t, rep);
         MHSkinHdrp.CreateAssets(look, HdrpFolder); AssetDatabase.Refresh();
         MHEyeHdrp.CreateAssets(look, HdrpFolder);

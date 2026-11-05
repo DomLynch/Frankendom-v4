@@ -9,13 +9,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // REAL-TIME BALANCE HARNESS (lane S4): -balanceauto [-seeds:N (default 5)] [-balancetimeout:<s> (default 900)] [-balanceseed:<n>] [-balanceout:<dir>] [-balancestrict] [-balancedata:<json>]
-// N consecutive real-time fights: Dracula is driven by his AIBrain in the playerBot profile exactly like -autoplay (PlayerBrain off), the Pitborn by its AI.
+// N consecutive real-time fights: the player (Roster.Player) is driven by its AIBrain in the playerBot profile exactly like -autoplay (PlayerBrain off), the enemy by its AI.
 // Between fights the scene is reloaded (the same call as GameHUD's Retry / Backspace); this object is DontDestroyOnLoad so the flags survive.
 // No dependency on the Steer or Alpha code (both are optional and may be absent). Output in <exe dir> (or -balanceout):
 //   balance_log.txt       one line per event, written immediately; HP/stamina/distance sample every cfg.sampleEvery (5 s)
 //   balance_summary.txt   per fight: seed, duration, winner, damage dealt/taken by each side, hits by each side, moves by each side (light/slash/stab/heavy/kick/special), parries/blocks/dodges; then averages; VERDICT
 //   balance_shots\balance_f<i>_start.png / _end.png  (only these, to save time)
-// VERDICT PASS = average duration 60-120 s AND Dracula wins 40-70% AND both sides land hits in every fight AND the Pitborn uses >= 4 different moves (all thresholds in balance_auto.json).
+// VERDICT PASS = average duration 60-120 s AND the player wins 40-70% AND both sides land hits in every fight AND the enemy uses >= 4 different moves (all thresholds in balance_auto.json).
 // Exit codes: 0 finished (verdict in the file), 2 exception (stack in the log), 3 timeout.
 // Seeding: AIBrain seeds its LCG from AiDial startSeed ^ hash(name) ^ AIBrain.GlobalSeed ^ seedOffset when it initialises (OnDisable resets it), so per fight the harness sets
 // AIBrain.GlobalSeed = seed, then toggles both brains so they re-init with it. UnityEngine.Random.InitState(seed) is set as well (other systems). Timing (frame rate) is not seeded, so fights are not bit-reproducible.
@@ -30,10 +30,9 @@ public class BalanceAuto : MonoBehaviour
         public int settleFrames = 30;
         public float startShotAt = 1f;
         public float minAvgDuration = 60f, maxAvgDuration = 120f, minWinRate = 0.4f, maxWinRate = 0.7f;
-        public int minPitbornMoves = 4;
+        public int minEnemyMoves = 4;
         public float maxRiposteShare = 0.3f, maxMoveShare = 0.4f;   // V63 WARN thresholds (do not change the verdict)
         public string shotMode = "auto";          // auto = game screen, camera render texture if black | screen | camera
-        public string draculaName = "Dracula", pitbornName = "Pitborn";
     }
 
     // ------------------------------------------------------------ boot
@@ -78,7 +77,7 @@ public class BalanceAuto : MonoBehaviour
         public readonly int[] cat = new int[Cats.Length]; public readonly Dictionary<string, int> moves = new Dictionary<string, int>();
     }
     class Rec { public string dAdapt = "", pAdapt = ""; public int idx, seed; public float dur; public string winner, endReason; public Side d = new Side(), p = new Side(); public float dHp, pHp; public int[] dPost = new int[4], pPost = new int[4]; public float dGain, pGain; public float[] dF = new float[12], pF = new float[12]; public string dFlow = "", pFlow = ""; }   // V64P   // P7: posture counters {breaks suffered, deathblows dealt, deathblows taken, windows missed}
-    Side sd = new Side(), sp = new Side();      // current fight: Dracula, Pitborn
+    Side sd = new Side(), sp = new Side();      // current fight: the player, the enemy
     readonly List<Rec> recs = new List<Rec>();
 
     // ------------------------------------------------------------ lifecycle
@@ -262,7 +261,7 @@ public class BalanceAuto : MonoBehaviour
     bool FindFighters(out DuelFighter d, out DuelFighter p)
     {
         d = p = null;
-        foreach (var f in FindObjectsByType<DuelFighter>()) { if (f.name == C.draculaName) d = f; else if (f.name == C.pitbornName) p = f; }
+        foreach (var f in FindObjectsByType<DuelFighter>()) { if (f.name == Roster.PlayerObject) d = f; else if (f.name == Roster.EnemyObject) p = f; }
         return d != null && p != null;
     }
 
@@ -272,7 +271,7 @@ public class BalanceAuto : MonoBehaviour
         float w0 = Time.realtimeSinceStartup;
         while (!FindFighters(out D, out P))
         {
-            if (Time.realtimeSinceStartup - w0 > C.bootWaitSeconds) { Fail("fighters not found (" + C.draculaName + "/" + C.pitbornName + ") after " + C.bootWaitSeconds.ToString("F0", IC) + " s"); yield break; }
+            if (Time.realtimeSinceStartup - w0 > C.bootWaitSeconds) { Fail("fighters not found (" + Roster.PlayerObject + "/" + Roster.EnemyObject + ") after " + C.bootWaitSeconds.ToString("F0", IC) + " s"); yield break; }
             yield return null;
         }
         for (int fi = 0; fi < seedsN && !exiting; fi++)
@@ -310,7 +309,7 @@ public class BalanceAuto : MonoBehaviour
                 if (!startShot && t >= C.startShotAt) { startShot = true; yield return Shot("balance_f" + (fi + 1) + "_start"); }
                 if (t >= nextSample) { nextSample += C.sampleEvery; Sample(t); }
                 if (D == null || P == null) { Fail("a fighter object vanished during the fight"); yield break; }
-                if (D.Dead || P.Dead) { endReason = (P.Dead ? "Pitborn" : "Dracula") + " died"; break; }
+                if (D.Dead || P.Dead) { endReason = (P.Dead ? Roster.EnemyName : Roster.PlayerName) + " died"; break; }
                 if (t >= C.maxFightSeconds) { endReason = "time limit " + C.maxFightSeconds.ToString("F0", IC) + " s"; break; }
                 yield return null;
             }
@@ -327,7 +326,7 @@ public class BalanceAuto : MonoBehaviour
         Exit(0, seedsN + " fights done", null);
     }
 
-    // Dracula as in -autoplay: PlayerBrain off, AIBrain on with the private "auto" flag (playerBot profile), lock cam range 80; both brains re-seeded
+    // the player as in -autoplay: PlayerBrain off, AIBrain on with the private "auto" flag (playerBot profile), lock cam range 80; both brains re-seeded
     void ForceAutoplay(int seed)
     {
         AIBrain.GlobalSeed = seed;
@@ -336,7 +335,7 @@ public class BalanceAuto : MonoBehaviour
         var pb = D.GetComponent<PlayerBrain>(); if (pb != null) pb.enabled = false;
         D.moveDir = Vector3.zero; D.guardHeld = false;
         var dBrain = D.GetComponent<AIBrain>(); if (dBrain == null) dBrain = D.gameObject.AddComponent<AIBrain>();
-        if (fld != null) fld.SetValue(dBrain, true); else Log("WARNING: AIBrain.auto field not found; Dracula's AI may stay off");
+        if (fld != null) fld.SetValue(dBrain, true); else Log("WARNING: AIBrain.auto field not found; " + Roster.PlayerName + "'s AI may stay off");
         var pBrain = P.GetComponent<AIBrain>();
         // OnDisable resets the brain's init flag, so the toggle makes both re-read GlobalSeed
         dBrain.enabled = false; dBrain.enabled = true;
@@ -346,7 +345,7 @@ public class BalanceAuto : MonoBehaviour
         var rig = FindAnyObjectByType<CameraRig>(); if (rig != null) { rig.lockRange = 80f; rig.enabled = true; }
         FlowBotSetup();   // V64P
         Time.timeScale = 1f;
-        Log("autoplay forced: Dracula AIBrain " + (dBrain.enabled ? "on" : "OFF") + " (playerBot), PlayerBrain " + (pb != null ? "off" : "absent") + ", Pitborn AIBrain " + (pBrain != null && pBrain.enabled ? "on" : "MISSING/OFF")
+        Log("autoplay forced: " + Roster.PlayerName + " AIBrain " + (dBrain.enabled ? "on" : "OFF") + " (playerBot), PlayerBrain " + (pb != null ? "off" : "absent") + ", " + Roster.EnemyName + " AIBrain " + (pBrain != null && pBrain.enabled ? "on" : "MISSING/OFF")
             + ", AIBrain.GlobalSeed " + seed);
     }
 
@@ -363,11 +362,11 @@ public class BalanceAuto : MonoBehaviour
         var r = new Rec { idx = fightIdx + 1, seed = seed, dur = dur, endReason = endReason, d = sd, p = sp, dHp = D.health, pHp = P.health };
         if (D != null) { r.dPost = new[] { D.statPostureBreaks, D.statDeathblows, D.statDeathblowsTaken, D.statDeathblowsMissed }; r.dGain = D.statPostureGained; }
         if (P != null) { r.pPost = new[] { P.statPostureBreaks, P.statDeathblows, P.statDeathblowsTaken, P.statDeathblowsMissed }; r.pGain = P.statPostureGained; }
-        r.winner = P.Dead && !D.Dead ? "Dracula" : D.Dead && !P.Dead ? "Pitborn" : D.Dead && P.Dead ? "both" : "none (time limit)";
+        r.winner = P.Dead && !D.Dead ? Roster.PlayerName : D.Dead && !P.Dead ? Roster.EnemyName : D.Dead && P.Dead ? "both" : "none (time limit)";
         try { var ad = AiAdapt.Of(D); r.dAdapt = ad != null ? ad.Report() : "(adapt off)"; ad = AiAdapt.Of(P); r.pAdapt = ad != null ? ad.Report() : "(adapt off)"; } catch (Exception) { }   // V63
         FlowStats(r); recs.Add(r);   // V64P
         Log("FIGHT RESULT " + r.idx + "/" + seedsN + " seed " + seed + " dur " + dur.ToString("F1", IC) + " winner " + r.winner + " dmg D->P " + sd.dmgDealt.ToString("F0", IC) + " P->D " + sp.dmgDealt.ToString("F0", IC)
-            + " hits D" + sd.hits + "/P" + sp.hits + " pitborn moves " + sp.moves.Count + " posture " + PostureText(r) + " | flow D: " + r.dFlow + " | flow P: " + r.pFlow);
+            + " hits D" + sd.hits + "/P" + sp.hits + " " + Roster.EnemyName.ToLowerInvariant() + " moves " + sp.moves.Count + " posture " + PostureText(r) + " | flow D: " + r.dFlow + " | flow P: " + r.pFlow);
     }
 
     // ------------------------------------------------------------ screenshots (STAuto conventions: screen grab, camera render texture when black)
@@ -473,13 +472,13 @@ public class BalanceAuto : MonoBehaviour
         var sD = new float[12]; var sP = new float[12]; float maxD = 0f, maxP = 0f;
         foreach (var r in recs) { for (int k = 0; k < 12; k++) { sD[k] += r.dF[k]; sP[k] += r.pF[k]; } maxD = Mathf.Max(maxD, r.dF[0]); maxP = Mathf.Max(maxP, r.pF[0]); }
         var fc = FlowTable.Get();
-        sb.AppendLine("  V64P flow layer on the bot " + (fc.enabled && fc.applyToBot ? "ON" : "OFF") + ": Dracula combo max " + maxD.ToString("F0", IC) + " avg " + (sD[1] > 0 ? sD[2] / sD[1] : 0f).ToString("F2", IC) + " (targets: avg >= 1.4, max >= 3)  chain links/fight " + (sD[3] / n).ToString("F1", IC)
+        sb.AppendLine("  V64P flow layer on the bot " + (fc.enabled && fc.applyToBot ? "ON" : "OFF") + ": " + Roster.PlayerName + " combo max " + maxD.ToString("F0", IC) + " avg " + (sD[1] > 0 ? sD[2] / sD[1] : 0f).ToString("F2", IC) + " (targets: avg >= 1.4, max >= 3)  chain links/fight " + (sD[3] / n).ToString("F1", IC)
             + "  cancels/fight dodge " + (sD[4] / n).ToString("F1", IC) + " guard " + (sD[5] / n).ToString("F1", IC) + " attack " + (sD[6] / n).ToString("F1", IC) + "  ripostes/fight key " + (sD[7] / n).ToString("F1", IC) + " (all riposte moves " + (sD[8] / n).ToString("F1", IC) + ")  magnet snaps/fight " + (sD[9] / n).ToString("F1", IC));
-        sb.AppendLine("  V64P Pitborn (unflowed AI): combo max " + maxP.ToString("F0", IC) + " avg " + (sP[1] > 0 ? sP[2] / sP[1] : 0f).ToString("F2", IC) + "  cancels/fight dodge " + (sP[4] / n).ToString("F1", IC) + " guard " + (sP[5] / n).ToString("F1", IC) + "  magnet snaps/fight " + (sP[9] / n).ToString("F1", IC));
-        sb.AppendLine("  V64P poise per fight (targets: absorbs 0.5-3 per side, Pitborn armour hits 1-6): absorbs D " + (sD[10] / n).ToString("F1", IC) + " P " + (sP[10] / n).ToString("F1", IC) + "  armour hits D " + (sD[11] / n).ToString("F1", IC) + " P " + (sP[11] / n).ToString("F1", IC));
+        sb.AppendLine("  V64P " + Roster.EnemyName + " (unflowed AI): combo max " + maxP.ToString("F0", IC) + " avg " + (sP[1] > 0 ? sP[2] / sP[1] : 0f).ToString("F2", IC) + "  cancels/fight dodge " + (sP[4] / n).ToString("F1", IC) + " guard " + (sP[5] / n).ToString("F1", IC) + "  magnet snaps/fight " + (sP[9] / n).ToString("F1", IC));
+        sb.AppendLine("  V64P poise per fight (targets: absorbs 0.5-3 per side, " + Roster.EnemyName + " armour hits 1-6): absorbs D " + (sD[10] / n).ToString("F1", IC) + " P " + (sP[10] / n).ToString("F1", IC) + "  armour hits D " + (sD[11] / n).ToString("F1", IC) + " P " + (sP[11] / n).ToString("F1", IC));
         if (fc.enabled && fc.applyToBot && fc.bot.chain && sD[3] <= 0f) sb.AppendLine("  WARN: flow layer on the bot but no chain link in the whole run (flow.json chain rows / bot.chainOn* too low, or the bot never recovers in reach)");
         if (PoiseTable.Get().enabled && PoiseTable.Get().meter.enabled && (sD[10] / n > 4f || sP[10] / n > 4f)) sb.AppendLine("  WARN: poise absorbs above 4 per fight: the meter fires too often (raise meter.hits or shorten meter.windowTicks)");
-        if (PoiseTable.Get().enabled && PoiseTable.Get().armour.enabled && sP[11] <= 0f) sb.AppendLine("  WARN: the Pitborn never took a hit on hyper-armour in the whole run (armour rows too narrow, or he rarely uses heavies / specials)");
+        if (PoiseTable.Get().enabled && PoiseTable.Get().armour.enabled && sP[11] <= 0f) sb.AppendLine("  WARN: the " + Roster.EnemyName + " never took a hit on hyper-armour in the whole run (armour rows too narrow, or he rarely uses heavies / specials)");
     }
 
     // V65BOT: flow targets line per run (WARN only, the verdict rule is unchanged)
@@ -491,7 +490,7 @@ public class BalanceAuto : MonoBehaviour
         float avg = cStr > 0f ? cSum / cStr : 0f;
         sb.AppendLine("  V65BOT flow targets (WARN only, verdict unchanged): combo avg " + avg.ToString("F2", IC) + " (>= 1.6)   cancels/fight " + (canc / n).ToString("F1", IC) + " (>= 3; dodge+guard+attack cancels, chain links not counted: " + (chains / n).ToString("F1", IC) + "/fight)"
             + "   ripostes by key/fight " + (key / n).ToString("F1", IC) + " vs parries/fight " + (par / n).ToString("F1", IC) + " (key == parries; all riposte moves " + (rmov / n).ToString("F1", IC) + ")   magnet snaps/fight " + (snaps / n).ToString("F1", IC) + " (> 0)");
-        if (avg < 1.6f) sb.AppendLine("  WARN: flow target: Dracula combo avg " + avg.ToString("F2", IC) + " below 1.6 (see the 'bot chain decisions' gates in the per-fight flow D line)");
+        if (avg < 1.6f) sb.AppendLine("  WARN: flow target: " + Roster.PlayerName + " combo avg " + avg.ToString("F2", IC) + " below 1.6 (see the 'bot chain decisions' gates in the per-fight flow D line)");
         if (canc / n < 3f) sb.AppendLine("  WARN: flow target: cancels/fight " + (canc / n).ToString("F1", IC) + " below 3 (bot.cancelChance / cancelHeavyChance / cancelHeavyLeadMax in flow.json)");
         if (par > 0f && key < par * 0.9f) sb.AppendLine("  WARN: flow target: riposte-key presses " + key.ToString("F0", IC) + " below parries " + par.ToString("F0", IC) + " (bot.riposteChance / riposteReactMax / riposteSlack)");
         if (snaps <= 0f) sb.AppendLine("  WARN: flow target: no magnetism snap on the bot in the whole run (attack.magnet.botMaxDistance too low, or the bot swings from outside it)");
@@ -504,29 +503,29 @@ public class BalanceAuto : MonoBehaviour
         foreach (var r in recs)
         {
             sDur += r.dur; sDD += r.d.dmgDealt; sDT += r.d.dmgTaken; sPD += r.p.dmgDealt; sPT += r.p.dmgTaken; sHD += r.d.hits; sHP += r.p.hits; sPM += r.p.moves.Count;
-            if (r.winner == "Dracula") dWins++; else if (r.winner == "Pitborn") pWins++;
+            if (r.winner == Roster.PlayerName) dWins++; else if (r.winner == Roster.EnemyName) pWins++;
             if (r.d.hits <= 0 || r.p.hits <= 0) bothHit = false;
             if (r.p.moves.Count < minPitMoves) minPitMoves = r.p.moves.Count;
         }
-        // distinct Pitborn moves over the whole run (a fight can be short); the per-fight minimum is reported too
+        // distinct enemy moves over the whole run (a fight can be short); the per-fight minimum is reported too
         var allPit = new HashSet<string>(); foreach (var r in recs) foreach (var k in r.p.moves.Keys) allPit.Add(k);
         float avgDur = n > 0 ? sDur / n : 0f, winRate = n > 0 ? (float)dWins / n : 0f;
         var problems = new List<string>();
         if (n < seedsN) problems.Add("only " + n + " of " + seedsN + " fights completed");
         if (n > 0 && (avgDur < C.minAvgDuration || avgDur > C.maxAvgDuration)) problems.Add("average duration " + avgDur.ToString("F1", IC) + " s outside " + C.minAvgDuration.ToString("F0", IC) + "-" + C.maxAvgDuration.ToString("F0", IC) + " s");
-        if (n > 0 && (winRate < C.minWinRate || winRate > C.maxWinRate)) problems.Add("Dracula win rate " + (winRate * 100f).ToString("F0", IC) + "% outside " + (C.minWinRate * 100f).ToString("F0", IC) + "-" + (C.maxWinRate * 100f).ToString("F0", IC) + "%");
+        if (n > 0 && (winRate < C.minWinRate || winRate > C.maxWinRate)) problems.Add(Roster.PlayerName + " win rate " + (winRate * 100f).ToString("F0", IC) + "% outside " + (C.minWinRate * 100f).ToString("F0", IC) + "-" + (C.maxWinRate * 100f).ToString("F0", IC) + "%");
         if (!bothHit) problems.Add("a side landed no hits in at least one fight");
-        if (allPit.Count < C.minPitbornMoves) problems.Add("the Pitborn used only " + allPit.Count + " different moves (need " + C.minPitbornMoves + ")");
+        if (allPit.Count < C.minEnemyMoves) problems.Add("the " + Roster.EnemyName + " used only " + allPit.Count + " different moves (need " + C.minEnemyMoves + ")");
         string verdict = verdictOverride ?? (problems.Count == 0 ? "PASS" : "FAIL");
 
         var sb = new StringBuilder();
         sb.AppendLine("VERDICT: " + verdict + "   (exit code " + code + ", " + why + ")");
         sb.AppendLine("date " + DateTime.Now.ToString("s") + "  unity " + Application.unityVersion + "  res " + Screen.width + "x" + Screen.height + "  seeds " + baseSeed + ".." + (baseSeed + seedsN - 1) + "  fights " + n + "/" + seedsN + "  data " + dataSrc);
-        sb.AppendLine("pass rule: average duration " + C.minAvgDuration.ToString("F0", IC) + "-" + C.maxAvgDuration.ToString("F0", IC) + " s AND Dracula win rate " + (C.minWinRate * 100f).ToString("F0", IC) + "-" + (C.maxWinRate * 100f).ToString("F0", IC)
-            + "% AND both sides land hits in every fight AND the Pitborn uses >= " + C.minPitbornMoves + " different moves");
+        sb.AppendLine("pass rule: average duration " + C.minAvgDuration.ToString("F0", IC) + "-" + C.maxAvgDuration.ToString("F0", IC) + " s AND " + Roster.PlayerName + " win rate " + (C.minWinRate * 100f).ToString("F0", IC) + "-" + (C.maxWinRate * 100f).ToString("F0", IC)
+            + "% AND both sides land hits in every fight AND the " + Roster.EnemyName + " uses >= " + C.minEnemyMoves + " different moves");
         foreach (var p in problems) sb.AppendLine("PROBLEM: " + p);
         sb.AppendLine();
-        sb.AppendLine("per fight (D = Dracula (playerBot AI), P = Pitborn; dmg D>P = damage Dracula dealt):");
+        sb.AppendLine("per fight (D = " + Roster.PlayerName + " (playerBot AI), P = " + Roster.EnemyName + "; dmg D>P = damage " + Roster.PlayerName + " dealt):");
         foreach (var r in recs)
         {
             sb.AppendLine("  #" + r.idx + " seed " + r.seed + "  " + r.dur.ToString("F1", IC) + " s  winner " + r.winner + " (" + r.endReason + ")  hp end D" + r.dHp.ToString("F0", IC) + "/P" + r.pHp.ToString("F0", IC));
@@ -544,21 +543,21 @@ public class BalanceAuto : MonoBehaviour
         if (n > 0)
         {
             sb.AppendLine("averages over " + n + " fights:");
-            sb.AppendLine("  duration " + avgDur.ToString("F1", IC) + " s   Dracula wins " + dWins + "/" + n + " (" + (winRate * 100f).ToString("F0", IC) + "%)   Pitborn wins " + pWins + "   no winner " + (n - dWins - pWins));
-            sb.AppendLine("  damage dealt: Dracula " + (sDD / n).ToString("F1", IC) + "  Pitborn " + (sPD / n).ToString("F1", IC) + "   (taken: Dracula " + (sDT / n).ToString("F1", IC) + "  Pitborn " + (sPT / n).ToString("F1", IC) + ")");
-            sb.AppendLine("  hits landed: Dracula " + (sHD / n).ToString("F1", IC) + "  Pitborn " + (sHP / n).ToString("F1", IC));
+            sb.AppendLine("  duration " + avgDur.ToString("F1", IC) + " s   " + Roster.PlayerName + " wins " + dWins + "/" + n + " (" + (winRate * 100f).ToString("F0", IC) + "%)   " + Roster.EnemyName + " wins " + pWins + "   no winner " + (n - dWins - pWins));
+            sb.AppendLine("  damage dealt: " + Roster.PlayerName + " " + (sDD / n).ToString("F1", IC) + "  " + Roster.EnemyName + " " + (sPD / n).ToString("F1", IC) + "   (taken: " + Roster.PlayerName + " " + (sDT / n).ToString("F1", IC) + "  " + Roster.EnemyName + " " + (sPT / n).ToString("F1", IC) + ")");
+            sb.AppendLine("  hits landed: " + Roster.PlayerName + " " + (sHD / n).ToString("F1", IC) + "  " + Roster.EnemyName + " " + (sHP / n).ToString("F1", IC));
             int[] tD = new int[4], tP = new int[4]; foreach (var r in recs) for (int k = 0; k < 4; k++) { tD[k] += r.dPost[k]; tP[k] += r.pPost[k]; }
             sb.AppendLine("  posture per fight (P6 targets: 1-3 breaks, deathblows/breaks >= 50%, missed 0-1): breaks D " + (tD[0] / (float)n).ToString("F1", IC) + " P " + (tP[0] / (float)n).ToString("F1", IC)
                 + "  deathblows dealt D " + (tD[1] / (float)n).ToString("F1", IC) + " P " + (tP[1] / (float)n).ToString("F1", IC) + "  taken D " + (tD[2] / (float)n).ToString("F1", IC) + " P " + (tP[2] / (float)n).ToString("F1", IC)
                 + "  missed D " + (tD[3] / (float)n).ToString("F1", IC) + " P " + (tP[3] / (float)n).ToString("F1", IC)
                 + "  | totals: breaks " + (tD[0] + tP[0]) + ", deathblows " + (tD[1] + tP[1]) + ", conversion " + ((tD[0] + tP[0]) > 0 ? ((tD[1] + tP[1]) * 100f / (tD[0] + tP[0])).ToString("F0", IC) + "%" : "-"));
-            AppendFlowAverages(sb, n); AppendFlowTargets(sb, n); sb.AppendLine("  Pitborn distinct moves per fight " + (sPM / n).ToString("F1", IC) + " (min " + minPitMoves + "), over the run " + allPit.Count);
-            {   // V63 balance targets: riposte share <= 30% of Pitborn swings, no single move > 40%, parries spread, enrage entered
+            AppendFlowAverages(sb, n); AppendFlowTargets(sb, n); sb.AppendLine("  " + Roster.EnemyName + " distinct moves per fight " + (sPM / n).ToString("F1", IC) + " (min " + minPitMoves + "), over the run " + allPit.Count);
+            {   // V63 balance targets: riposte share <= 30% of the enemy's swings, no single move > 40%, parries spread, enrage entered
                 float ripP = 0, ripD = 0, topPmax = 0, topDmax = 0; int parD = 0, parP = 0, enr = 0, kickD = 0, kickP = 0; string idd;
                 foreach (var r in recs) { ripP += RipShare(r.p); ripD += RipShare(r.d); topPmax = Mathf.Max(topPmax, TopShare(r.p, out idd)); topDmax = Mathf.Max(topDmax, TopShare(r.d, out idd)); parD += r.d.parries; parP += r.p.parries; kickD += MoveN(r.d, "kick"); kickP += MoveN(r.p, "kick"); if (r.pAdapt.Contains("enrage yes")) enr++; }
-                sb.AppendLine("  V63 riposte share of swings: Pitborn " + Pct(ripP / n) + " (target <= " + Pct(C.maxRiposteShare) + ")  Dracula " + Pct(ripD / n) + "   worst single-move share per fight: Pitborn " + Pct(topPmax) + " Dracula " + Pct(topDmax) + " (target <= " + Pct(C.maxMoveShare) + ")");
-                sb.AppendLine("  V63 parries (by) per fight: Dracula " + (parD / (float)n).ToString("F1", IC) + " Pitborn " + (parP / (float)n).ToString("F1", IC) + "   kicks per fight: Dracula " + (kickD / (float)n).ToString("F1", IC) + " Pitborn " + (kickP / (float)n).ToString("F1", IC) + "   Pitborn enrage entered in " + enr + "/" + n + " fights");
-                if (ripP / n > C.maxRiposteShare) sb.AppendLine("  WARN: Pitborn riposte share " + Pct(ripP / n) + " above " + Pct(C.maxRiposteShare));
+                sb.AppendLine("  V63 riposte share of swings: " + Roster.EnemyName + " " + Pct(ripP / n) + " (target <= " + Pct(C.maxRiposteShare) + ")  " + Roster.PlayerName + " " + Pct(ripD / n) + "   worst single-move share per fight: " + Roster.EnemyName + " " + Pct(topPmax) + " " + Roster.PlayerName + " " + Pct(topDmax) + " (target <= " + Pct(C.maxMoveShare) + ")");
+                sb.AppendLine("  V63 parries (by) per fight: " + Roster.PlayerName + " " + (parD / (float)n).ToString("F1", IC) + " " + Roster.EnemyName + " " + (parP / (float)n).ToString("F1", IC) + "   kicks per fight: " + Roster.PlayerName + " " + (kickD / (float)n).ToString("F1", IC) + " " + Roster.EnemyName + " " + (kickP / (float)n).ToString("F1", IC) + "   " + Roster.EnemyName + " enrage entered in " + enr + "/" + n + " fights");
+                if (ripP / n > C.maxRiposteShare) sb.AppendLine("  WARN: " + Roster.EnemyName + " riposte share " + Pct(ripP / n) + " above " + Pct(C.maxRiposteShare));
                 if (topPmax > C.maxMoveShare || topDmax > C.maxMoveShare) sb.AppendLine("  WARN: a single move exceeds " + Pct(C.maxMoveShare) + " of swings in at least one fight");
                 if (parD + parP >= 6 && (parD < (parD + parP) * 0.3f || parP < (parD + parP) * 0.3f)) sb.AppendLine("  WARN: parries lopsided (D " + parD + " / P " + parP + ")");
             }

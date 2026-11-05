@@ -16,7 +16,7 @@
   "roles": [
     { "role": "spark",        "additive": 1, "intensity": 2.0, "softDistance": 0.0, "tint": [1.0, 1.0, 1.0, 1.0] },
     { "role": "dust",         "additive": 0, "intensity": 1.0, "softDistance": 0.0, "tint": [1.0, 1.0, 1.0, 1.0] },
-    { "role": "blood",        "additive": 0, "intensity": 1.0, "softDistance": 0.0, "tint": [1.0, 1.0, 1.0, 1.0] },
-    { "role": "bloodStrands", "additive": 0, "intensity": 1.0, "softDistance": 0.0, "tint": [1.0, 1.0, 1.0, 1.0] }
+    { "role": "blood",        "additive": 0, "intensity": 1.0, "softDistance": 0.15, "tint": [1.0, 1.0, 1.0, 1.0] },
+    { "role": "bloodStrands", "additive": 0, "intensity": 1.0, "softDistance": 0.15, "tint": [1.0, 1.0, 1.0, 1.0] }
   ]
 }

@@ -95,6 +95,33 @@ public static class GoreFx
         return decalMats[i];
     }
 
+    /// <summary>PERF (FxPrewarm): builds the splat textures, the four shared decal materials and the spray material now (they are cached statics, the same objects the finisher would create
+    /// on its first cut) and lists the materials so FxPrewarm can draw each once, sub-pixel small. Nothing here touches the sim or any RNG.</summary>
+    public static void CollectPrewarm(GoreCfg g, List<Material> into)
+    {
+        if (g == null || into == null) return;
+        for (int i = 0; i < 4; i++) { var m = SharedDecalMaterial(g, i); if (m != null) into.Add(m); }
+        if (sprayMat == null) sprayMat = FxMaterials.Particle(null, "bloodStrands");
+        if (sprayMat != null) into.Add(sprayMat);
+    }
+
+    /// <summary>PERF (FxPrewarm): one sub-pixel particle through a throw-away system that is set up like Spray() (same material, Stretch mode), so the stretched-strand pipeline state exists before the first finisher.</summary>
+    public static void PrewarmSpray(Vector3 pos, float size)
+    {
+        if (sprayMat == null) return;
+        var go = new GameObject("FinisherBloodPrewarm"); go.transform.position = pos;
+        var ps = go.AddComponent<ParticleSystem>();
+        ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        var main = ps.main; main.playOnAwake = false; main.loop = false; main.simulationSpace = ParticleSystemSimulationSpace.World; main.maxParticles = 4; main.startLifetime = 0.1f; main.startSpeed = 0f;
+        var em = ps.emission; em.enabled = false; var sh = ps.shape; sh.enabled = false;
+        var r = go.GetComponent<ParticleSystemRenderer>();
+        r.sharedMaterial = sprayMat; r.renderMode = ParticleSystemRenderMode.Stretch; r.lengthScale = 3.2f; r.velocityScale = 0f; r.cameraVelocityScale = 0f; r.maxParticleSize = 0.5f;
+        var ep = new ParticleSystem.EmitParams(); ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = 0.1f; ep.startSize = size; ep.startColor = Color.white;
+        ps.Emit(ep, 1);
+        ps.Play();
+        UnityEngine.Object.Destroy(go, 1f);
+    }
+
     /// <summary>Directional blood spray (stretched strands like BloodBurst). The emitter is a child of `parent` so it follows the body. Returns null if no material.</summary>
     public static ParticleSystem Spray(Transform parent, Vector3 worldPos, Vector3 worldDir, SprayCfg c, float secondsOverride = 0f)
     {

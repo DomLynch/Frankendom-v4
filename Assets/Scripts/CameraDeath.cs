@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 // V61B: fight-end camera. After a plain death (and when a finisher scene hands the camera back) the lock-on CameraRig used to fall into its free-camera pose,
-// which looked over the PLAYER's shoulder and lost the body. This keeps the look-at on the dead fighter's body (victim = the Pitborn after a win, Dracula after a loss).
+// which looked over the PLAYER's shoulder and lost the body. This keeps the look-at on the dead fighter's body (victim = the roster enemy after a win, the player after a loss).
 // CameraRig.LateUpdate calls Shape() right after it computed wantPos / wantLook and uses Weight / Fov when it sets the lens. Data: camera_death.json (StreamingAssets, then Assets/Data).
 // No new UI. enabled=false = the old behaviour exactly.
 public static class CameraDeath

@@ -4,11 +4,11 @@ using UnityEngine;
 
 // V62B: ground contact of BOTH fighters while a finisher scene runs, plus the probe the -finisherauto harness judges.
 //  * lowest sole (Foot / Toe_End bones minus a per-fighter sole offset, data rt.ground.soles) against the real ground under that foot (raycast, fighter layers + pieces skipped), every LateUpdate AFTER the Animator / FootGround.
-//  * correction (rt.ground.correct): a body whose sole sinks below the ground is lifted (the dc_fall / dc_settle "Dracula sunk to the waist" frames); the killer, and the victim once dead, is also lowered when it floats.
+//  * correction (rt.ground.correct): a body whose sole sinks below the ground is lifted (the dc_fall / dc_settle "player sunk to the waist" frames); the killer, and the victim once dead, is also lowered when it floats.
 //    The whole root moves (the paired Mixamo clips have no ground information).
 //  * statistics: raw (before correction) and corrected gap, min / max, while `Judge` is set (killer: from the contact; victim: from Die() + victimJudgeAfterDieS; both: the final hold).
 // The component removes itself when no scene is running (RTFinisher.Busy false), so it never touches normal gameplay. Everything tunable = finishers.json rt.ground.
-[Serializable] public class SoleRow { public string fighter = "Dracula"; public float footM = 0.09f, toeEndM = 0.06f; }   // sole = bone height - offset (world metres)
+[Serializable] public class SoleRow { public string fighter = ""; public float footM = 0.09f, toeEndM = 0.06f; }   // fighter = roster character id; sole = bone height - offset (world metres)
 
 [Serializable]
 public class BodyRow
@@ -43,7 +43,7 @@ public class FinisherGroundCfg
     public float bodyHipsMaxM = 0.75f, bodySunkTolM = 0.02f, bodyFloatTolM = 0.02f, bodyLowerMps = 3.0f;
     public float failBodyAboveM = 0.10f, failBodyBelowM = 0.10f;
     public BodyRow[] bodyBones = BodyRow.Defaults();
-    public SoleRow[] soles = { new SoleRow { fighter = "Dracula", footM = 0.09f, toeEndM = 0.06f }, new SoleRow { fighter = "Pitborn", footM = 0.17f, toeEndM = 0.06f } };
+    public SoleRow[] soles = new SoleRow[0];   // per-character rows keyed by roster id (finishers.json rt.ground.soles); no row = the SoleRow defaults
 }
 
 public struct GroundStat
@@ -88,7 +88,7 @@ public sealed class FinisherGround : MonoBehaviour
         cc = GetComponent<CharacterController>();
         mask = ~0; if (C.ignoreLayers != null) foreach (var l in C.ignoreLayers) mask &= ~(1 << l);
         float foot = 0.09f, toe = 0.06f; string nm = name;
-        if (C.soles != null) foreach (var s in C.soles) if (s != null && !string.IsNullOrEmpty(s.fighter) && nm.IndexOf(s.fighter, StringComparison.OrdinalIgnoreCase) >= 0) { foot = s.footM; toe = s.toeEndM; }
+        if (C.soles != null) foreach (var s in C.soles) if (s != null && !string.IsNullOrEmpty(s.fighter) && nm.IndexOf(Roster.Get(s.fighter).objectName, StringComparison.OrdinalIgnoreCase) >= 0) { foot = s.footM; toe = s.toeEndM; }
         var list = new List<Transform>(); var offs = new List<float>();
         foreach (var t in GetComponentsInChildren<Transform>(true))
         {

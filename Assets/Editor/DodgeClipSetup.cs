@@ -24,7 +24,8 @@ public static class DodgeClipSetup
         string json = File.ReadAllText("Assets/Data/dodge_clips.json");
         var cfg = JsonUtility.FromJson<Cfg>(json);
         if (cfg == null || cfg.bake == null || cfg.bake.Length == 0) { Debug.LogWarning("DodgeClipSetup: no bake entries in dodge_clips.json"); return; }
-        for (int i = 0; i < cfg.bake.Length; i++) Setup(cfg.bake[i]);
+        Roster.Reload();   // bake rows are keyed by roster id; the controller path comes from roster.json when the row names one (the dodge_clips.json path is the fallback)
+        for (int i = 0; i < cfg.bake.Length; i++) { var rc = Roster.Get(cfg.bake[i].character); if (!string.IsNullOrEmpty(rc.controller)) cfg.bake[i].controller = rc.controller; Setup(cfg.bake[i]); }
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
         Debug.Log("DodgeClipSetup: done");

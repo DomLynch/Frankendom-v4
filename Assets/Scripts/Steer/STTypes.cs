@@ -19,7 +19,7 @@ public static class STSteer
     public static event Action<string> OnFeed;                // one-liners for the UI feed
     public static event Action<STTactic> OnTacticStart;       // accepted tactic began running
     public static event Action<STTactic> OnTacticEnd;         // tactic finished (resolved or timed out)
-    public static event Action OnFightReset;                  // new fight (Pitborn revived / scene restarted)
+    public static event Action OnFightReset;                  // new fight (the enemy revived / scene restarted)
 
     // ---- implementation providers (set by STController; null-safe defaults so lanes compile and run without it) ----
     public static Func<STTactic, bool> TacticUser;            // asks the controller to start a tactic
@@ -40,7 +40,7 @@ public static class STSteer
     }
 
     // ---- fighters (set by STController once found) ----
-    public static DuelFighter Dracula, Pitborn;
+    public static DuelFighter Player, Enemy;      // Roster.Player / Roster.Enemy fighters
 
     public static void SetStance(STStance s)
     {
@@ -131,7 +131,7 @@ public static class STSteer
 
     public static void ResetStatics()
     {
-        Active = false; AutoLog = false; Stance = STStance.Neutral; Dracula = Pitborn = null; cfgText = null; logPath = null; logStarted = false;
+        Active = false; AutoLog = false; Stance = STStance.Neutral; Player = Enemy = null; cfgText = null; logPath = null; logStarted = false;
         OnStance = null; OnTactic = null; OnFeed = null; OnTacticStart = null; OnTacticEnd = null; OnFightReset = null;
         TacticUser = null; CooldownProvider = null; EnabledProvider = null; RunningProvider = null; TimeLeftProvider = null; DamageMulProvider = null; PreBrainHandler = null;
     }

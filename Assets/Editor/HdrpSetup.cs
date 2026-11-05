@@ -9,13 +9,14 @@ public static class HdrpSetup {
     PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64, false);
     PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, new[] { GraphicsDeviceType.Direct3D12, GraphicsDeviceType.Direct3D11 });
     PlayerSettings.colorSpace = ColorSpace.Linear;
+    LookData.Reload(); var DR = LookData.Get().dynamicRes;   // lane LOOK: dynamic-res limits + shadow request cap from look.json (defaults 60 / 100 / 256)
     var so = new SerializedObject(asset); var s = so.FindProperty("m_RenderPipelineSettings");
     void B(SerializedProperty p, string n, bool v) { var q = p.FindPropertyRelative(n); if (q == null) Debug.LogWarning("HDRP setting missing: " + n); else q.boolValue = v; }
     B(s, "supportVolumetrics", true); B(s, "supportSSR", true); B(s, "supportSSRTransparent", true); B(s, "supportSSGI", true); B(s, "supportSSAO", true);
     B(s, "supportRayTracing", true); B(s, "supportDecals", true); B(s, "supportSubsurfaceScattering", true); B(s, "supportMotionVectors", true);
     var lm = s.FindPropertyRelative("supportedLitShaderMode"); if (lm != null) lm.intValue = 1; else Debug.LogWarning("HDRP setting missing: supportedLitShaderMode");
-    var hs = s.FindPropertyRelative("hdShadowInitParams"); if (hs != null) { var m = hs.FindPropertyRelative("maxShadowRequests"); if (m != null) m.intValue = 256; B(hs, "supportScreenSpaceShadows", true); }
-    var dr = s.FindPropertyRelative("dynamicResolutionSettings"); if (dr != null) { B(dr, "enabled", true); var mn = dr.FindPropertyRelative("minPercentage"); if (mn != null) mn.floatValue = 60f; var mx = dr.FindPropertyRelative("maxPercentage"); if (mx != null) mx.floatValue = 100f; }
+    var hs = s.FindPropertyRelative("hdShadowInitParams"); if (hs != null) { var m = hs.FindPropertyRelative("maxShadowRequests"); if (m != null) m.intValue = DR.maxShadowRequests; B(hs, "supportScreenSpaceShadows", true); }
+    var dr = s.FindPropertyRelative("dynamicResolutionSettings"); if (dr != null) { B(dr, "enabled", true); var mn = dr.FindPropertyRelative("minPercentage"); if (mn != null) mn.floatValue = DR.minPercentage; var mx = dr.FindPropertyRelative("maxPercentage"); if (mx != null) mx.floatValue = DR.maxPercentage; }
     so.ApplyModifiedProperties(); AssetDatabase.SaveAssets();
     Debug.Log("HDRPSETUP asset created; rayTracing=" + SystemInfo.supportsRayTracing + " gfx=" + SystemInfo.graphicsDeviceType + " dev=" + SystemInfo.graphicsDeviceName);
     ConvertUrpLit(); AssetDatabase.SaveAssets();

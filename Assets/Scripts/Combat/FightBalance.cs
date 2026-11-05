@@ -12,7 +12,7 @@ public static class FightBalance
 {
     [Serializable] public class Row
     {
-        public string key = "";                 // "Dracula" | "Pitborn" (matched on the fighter's / root's name)
+        public string key = "";                 // roster.json character id (matched on the fighter's / root's name)
         public float maxHealth = 0f;            // 0 = keep the scene value
         public float maxStamina = 0f;           // 0 = keep (stamina.json fighters[].regenMul is the regen knob)
         public float damageMul = 1f;            // damage this fighter DEALS (all moves)
@@ -43,6 +43,7 @@ public static class FightBalance
         float k = 1f; var ra = For(a); var rd = For(d);
         if (ra != null) { k *= ra.damageMul; if (m != null && m.id != null && m.id.StartsWith("skill_")) k *= ra.specialDamageMul; }
         if (rd != null) k *= rd.takenMul;
+        k *= StanceLayer.DamageMul(a, d);   // lanePARRY: live stance layer (stances.json), off in steer mode (STStanceMods owns stances there)
         return k;
     }
 

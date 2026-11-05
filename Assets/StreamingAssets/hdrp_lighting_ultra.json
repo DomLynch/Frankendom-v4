@@ -36,7 +36,6 @@
                    "slopeBias":  0.05,
                    "contact":  true
                },
-    "exposureEV":  9.4,
     "hdriExposure":  1.3,
     "fog":  {
                 "meanFreePath":  75,

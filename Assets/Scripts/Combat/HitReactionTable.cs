@@ -37,8 +37,7 @@ public static class HitReactionTable
     public static string CharOf(DuelFighter f)
     {
         if (f == null) return "";
-        string n = f.name; if (n.Contains("Pitborn")) return "Pitborn"; if (n.Contains("Dracula")) return "Dracula";
-        n = f.transform.root.name; return n.Contains("Pitborn") ? "Pitborn" : n.Contains("Dracula") ? "Dracula" : "";
+        return Roster.IdOf(f.transform);   // own name, then root name
     }
 
     static bool Match(string rowVal, string val) { return string.IsNullOrEmpty(rowVal) || rowVal == "*" || rowVal == val; }

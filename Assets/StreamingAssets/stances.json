@@ -1,0 +1,24 @@
+{
+  "_about": "Live STANCES for real-time direct control (lanePARRY), read by StanceLayer.cs. A light modifier layer, off in steer mode (-steer: STStanceMods / steer.json stances own it there). Damage: FightBalance.HitMul multiplies a clean hit by the ATTACKER's dealtMul x the DEFENDER's takenMul; Trickster adds a per-hit seeded roll: pDealt chance of x dealtRollMul when he hits, pTaken chance of x takenRollMul when he is hit (owner: 25 % +30 % / 25 % +30 %). Defence: postureTakenMul scales the posture he takes on a block or a clean hit, blockCostMul the stamina a block costs him. feintCostMul scales the V feint cost (V3 Trickster: cheap feints). Numbers from steer.json stances (Aggressive 1.25 / 1.2, Defensive 0.8 / 0.75, Trickster 0.25 x1.3 / 0.25 x1.3). Not touched: block chip damage, the parry, speeds. Input: nextKeys / prevKeys (3 / 4: 1, 2, Z, X are the specials), mouse wheel (wheelCooldownS between steps), gamepad D-pad: padAxisX / padAxisY name Input Manager axes (Windows XInput D-pad = joystick axis 6 horizontal / 7 vertical; this project's Input Manager has no such axis yet, so add 'DPadX' = Joystick Axis 6 and 'DPadY' = Joystick Axis 7 in Project Settings > Input Manager; an undefined axis switches itself off with one log line) or padNextButtons / padPrevButtons (KeyCode JoystickButtonN, pads that report the D-pad as buttons). aiStance = the AI fighter's fixed stance. HUD: bottom-left label + a short centre toast on a switch.",
+  "enabled": true,
+  "debugLog": false,
+  "seed": 4242,
+  "playerDefault": "Neutral",
+  "aiStance": "Neutral",
+  "keepAcrossRestart": true,
+  "order": [ "Neutral", "Aggressive", "Defensive", "Trickster" ],
+  "stances": [
+    { "id": "Neutral",    "label": "NEUTRAL",    "dealtMul": 1.0,  "takenMul": 1.0,  "postureTakenMul": 1.0,  "blockCostMul": 1.0,  "feintCostMul": 1.0, "pDealt": 0.0,  "dealtRollMul": 1.0, "pTaken": 0.0,  "takenRollMul": 1.0, "color": [ 0.86, 0.84, 0.78 ] },
+    { "id": "Aggressive", "label": "AGGRESSIVE", "dealtMul": 1.25, "takenMul": 1.2,  "postureTakenMul": 1.15, "blockCostMul": 1.15, "feintCostMul": 1.0, "pDealt": 0.0,  "dealtRollMul": 1.0, "pTaken": 0.0,  "takenRollMul": 1.0, "color": [ 0.92, 0.36, 0.26 ] },
+    { "id": "Defensive",  "label": "DEFENSIVE",  "dealtMul": 0.8,  "takenMul": 0.75, "postureTakenMul": 0.8,  "blockCostMul": 0.8,  "feintCostMul": 1.0, "pDealt": 0.0,  "dealtRollMul": 1.0, "pTaken": 0.0,  "takenRollMul": 1.0, "color": [ 0.42, 0.62, 0.90 ] },
+    { "id": "Trickster",  "label": "TRICKSTER",  "dealtMul": 1.0,  "takenMul": 1.0,  "postureTakenMul": 1.0,  "blockCostMul": 1.0,  "feintCostMul": 0.5, "pDealt": 0.25, "dealtRollMul": 1.3, "pTaken": 0.25, "takenRollMul": 1.3, "color": [ 0.78, 0.52, 0.92 ] }
+  ],
+  "input": {
+    "nextKeys": [ "Alpha4" ], "prevKeys": [ "Alpha3" ],
+    "wheel": true, "wheelInvert": false, "wheelCooldownS": 0.15,
+    "padAxisX": "DPadX", "padAxisY": "", "padAxisXNext": true, "padDeadzone": 0.5,
+    "padNextButtons": [], "padPrevButtons": [],
+    "ignoreWhileFrozen": true
+  },
+  "hud": { "enabled": true, "x": 16, "yFromBottom": 64, "w": 300, "h": 22, "fontSize": 13, "prefix": "STANCE  ", "toastSeconds": 0.9, "toastFontSize": 16, "alpha": 0.9, "hint": "[3 / 4, wheel, D-pad]" }
+}

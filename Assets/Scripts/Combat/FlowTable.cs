@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using UnityEngine;
 
-// Dracula MOVESET FLOW data layer (lane V64FLOW). Every number lives in Assets/Data/flow.json (copy in StreamingAssets for the player).
+// Player MOVESET FLOW data layer (lane V64FLOW). Every number lives in Assets/Data/flow.json (copy in StreamingAssets for the player).
 // Lookup order (same as CombatFeel): Resources/flow, Editor Data/flow.json, StreamingAssets/flow.json, Application.dataPath/Data/flow.json.
 // A missing / unparsable file or "enabled": false leaves DuelFighter and PlayerBrain on the exact old behaviour. scope "player" = only a fighter whose PlayerBrain is ENABLED
-// (a human); the AI, the playerBot Dracula of BalanceAuto (PlayerBrain off) and the MoveSheet / PostureProof harnesses are untouched. "all" = every fighter.
+// (a human); the AI, the playerBot player of BalanceAuto (PlayerBrain off) and the MoveSheet / PostureProof harnesses are untouched. "all" = every fighter.
 // Sections: chain (attack-to-attack cancel windows), lock (target lock-on toggle + HUD marker), attack (magnetism snap + limited turn speed), dodge (directional dodge overrides), riposte.
 public static class FlowTable
 {
@@ -77,7 +77,7 @@ public static class FlowTable
     }
 
     static Data data; static bool loaded;
-    public static bool ForceApply;   // proof harness: treat the (PlayerBrain-less) scripted Dracula as the human
+    public static bool ForceApply;   // proof harness: treat the (PlayerBrain-less) scripted player as the human
     public static bool ForceHud;
     public static Data Get() { if (!loaded) Load(); return data; }
     public static void Reload() { loaded = false; Load(); }

@@ -1,0 +1,29 @@
+{
+  "_notes": "Lane LOOK fix 4. Read by Scripts/LookData.cs; HdrpScene.Apply builds every row under the scene root HDRP_Atmosphere (rebuilt each run). fogBoxes = HDRP Local Volumetric Fog (world pos / size in metres, albedo linear rgb, meanFreePath m, fadePos / fadeNeg = 0..1 fraction of the size per axis). The global fog (hdrp_lighting_ultra.json fog, mean free path 75) is unchanged so the far vista keeps its depth; ArenaFog adds the 22 m fog over the fighting area only. The doorway already has DoorHaze (hdrp_lighting_ultra.json) and DoorwayFog_Inside / _Outside (doorway.json); DoorThresholdFog fills the gap at the door face. flickerLights = non-shadow lights (candela, kelvin, range m, volumetricDimmer) animated by AtmosFlicker with the FurnaceFlicker noise schema (all-zero flicker = steady). Gate front face is about z 22.8, floor y 0. v69 VISUAL-QC: ArenaFog and DoorThresholdFog removed (v66 look restored); door lamp candela 1800, volumetricDimmer 0.15.",
+  "fogBoxes": [],
+  "flickerLights": [
+    {
+      "name": "DoorFlickerWarm",
+      "kind": "Point",
+      "pos": [
+        0.0,
+        1.8,
+        23.0
+      ],
+      "candela": 1800,
+      "kelvin": 2200,
+      "range": 10.0,
+      "volumetricDimmer": 0.15,
+      "shadows": false,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.18,
+        "frequency": 2.2,
+        "octaves": 2,
+        "seed": 7.1,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    }
+  ]
+}

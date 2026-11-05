@@ -1,0 +1,14 @@
+{
+  "_about": "Opponent ladder (lane V66HUD), read by GameLoop.cs. 'Next opponent' after a victory moves one row down; Retry stays on the row. A row multiplies the scene's Pitborn (the baked difficulty-7 values): hpMul on max health, damageMul on every blow he lands (DuelFighter.damageScale), difficulty = a row id of difficulty.json whose nine AI knobs replace his brain profile (0 = keep the scene's brain). Past the last row the last row repeats and endlessHpStep / endlessDamageStep are added per extra fight. enabled=false = every fight is the scene as built. Applied applyAfterFrames frames after the scene loads (after fight_balance.json).",
+  "enabled": true,
+  "startIndex": 0,
+  "applyAfterFrames": 10,
+  "endlessHpStep": 0.08,
+  "endlessDamageStep": 0.04,
+  "rows": [
+    { "id": "gate_warden",   "name": "PITBORN", "title": "The Gate Warden",     "hpMul": 1.00, "damageMul": 1.00, "difficulty": 0 },
+    { "id": "pit_veteran",   "name": "PITBORN", "title": "Veteran of the Pit",  "hpMul": 1.12, "damageMul": 1.08, "difficulty": 8 },
+    { "id": "pit_champion",  "name": "PITBORN", "title": "Pit Champion",        "hpMul": 1.25, "damageMul": 1.15, "difficulty": 9 },
+    { "id": "pit_lord",      "name": "PITBORN", "title": "Lord of the Furnace", "hpMul": 1.40, "damageMul": 1.25, "difficulty": 10 }
+  ]
+}

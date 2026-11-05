@@ -42,7 +42,7 @@ public class Duel : MonoBehaviour
         bool heavy = m.charges || m.damage >= 18f;
         string evt;
         Vector3 away = ad.normalized;
-        bool defGuard = d.IsGuarding && Angle(d.transform.forward, -ad) <= a.Rule("guardArc", Mathf.PI / 3f) * Mathf.Rad2Deg;
+        bool defGuard = d.IsGuarding && Angle(d.transform.forward, -ad) <= a.Rule("guardArc", Mathf.PI / 3f) * Mathf.Rad2Deg && DirectionalGuard.SideOk(a, d, m, heavy);   // CTRL v68: the guard side must cover the swing (controls.json guard.guardRequiresSide)
 
         if (defGuard && d.InParryWindow && m.parryable && (!heavy || !StaminaTable.Parry().enabled || StaminaTable.Parry().parryHeavies))
         {

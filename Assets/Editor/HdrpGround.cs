@@ -113,7 +113,7 @@ public static class HdrpGround
             go.transform.position = new Vector3(b.center[0], b.center[1], b.center[2]); go.AddComponent<BoxCollider>().size = new Vector3(b.size[0], b.size[1], b.size[2]); added++;
         }
         // fighters on the ground
-        foreach (var n in new[] { "Dracula", "Pitborn" })
+        foreach (var n in RosterEditor.FighterObjects())
         {
             var g = GameObject.Find(n); if (g == null) continue; var cc = g.GetComponent<CharacterController>(); bool was = cc != null && cc.enabled; if (cc != null) cc.enabled = false;
             var p = g.transform.position; g.transform.position = new Vector3(p.x, F.spawnY, p.z); if (cc != null) cc.enabled = was;

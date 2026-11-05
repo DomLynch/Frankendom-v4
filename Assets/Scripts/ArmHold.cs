@@ -3,7 +3,7 @@ using UnityEngine;
 // Damps the sword-arm swing during locomotion (the blade swings out sideways like a pendulum): in LateUpdate, on top of the Animator pose,
 // each listed arm bone's local rotation is blended toward its own slow running mean (time constant `tau`), which removes (1-keep) of the swing amplitude
 // around the clip's mean pose. Weight per Animator state (short name) comes from data: Assets/Data/arm_hold.json (StreamingAssets in the player).
-// Attack / hit clips are never listed, so they are untouched; the weight eases in/out over `blend` seconds. No scene edit: auto-attaches to Dracula.
+// Attack / hit clips are never listed, so they are untouched; the weight eases in/out over `blend` seconds. No scene edit: auto-attaches to every fighter with an enabled arm_hold.json row (rows keyed by roster id, matched on the roster objectName).
 public class ArmHold : MonoBehaviour
 {
     [System.Serializable] public class BoneRow { public string bone; public float w = 1f; }
@@ -36,7 +36,7 @@ public class ArmHold : MonoBehaviour
         foreach (var a in Object.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None))
         {
             string rn = a.transform.root.name; bool want = false;
-            foreach (var c in D.characters) if (c.enabled && !string.IsNullOrEmpty(c.name) && rn.Contains(c.name)) want = true;
+            foreach (var c in D.characters) if (c.enabled && !string.IsNullOrEmpty(c.name) && rn.Contains(Roster.Get(c.name).objectName)) want = true;
             if (want && a.GetComponent<ArmHold>() == null) a.gameObject.AddComponent<ArmHold>();
         }
     }
@@ -47,7 +47,7 @@ public class ArmHold : MonoBehaviour
     void Init()
     {
         init = true; var D = Load(); string rn = transform.root.name;
-        foreach (var c in D.characters) if (!string.IsNullOrEmpty(c.name) && rn.Contains(c.name)) row = c;
+        foreach (var c in D.characters) if (!string.IsNullOrEmpty(c.name) && rn.Contains(Roster.Get(c.name).objectName)) row = c;
         if (row == null || !row.enabled || row.bones == null) { row = null; return; }
         anim = GetComponentInChildren<Animator>(true); if (anim == null) anim = GetComponentInParent<Animator>();
         var all = GetComponentsInChildren<Transform>(true);
@@ -111,7 +111,8 @@ public class ArmHold : MonoBehaviour
         float dt = Mathf.Max(Time.deltaTime, 1e-4f);
         curW = Mathf.MoveTowards(curW, target, dt / Mathf.Max(0.01f, row.blend));
         float k = 1f - Mathf.Exp(-dt / Mathf.Max(0.05f, row.tau));
-        float angB = row.debug ? ArmAngle() : 0f, zB = row.debug ? ArmAngleZ() : 0f, pB = row.debug ? HandPitch() : 0f;
+        bool dbg = row.debug && PerfFlags.VerboseLogs;   // per-frame diagnostics only when perf.json verboseLogs is on
+        float angB = dbg ? ArmAngle() : 0f, zB = dbg ? ArmAngleZ() : 0f, pB = dbg ? HandPitch() : 0f;
         for (int i = 0; i < bones.Length; i++)
         {
             var b = bones[i]; if (b == null) continue;
@@ -121,7 +122,7 @@ public class ArmHold : MonoBehaviour
             float w = curW * bw[i];
             if (w > 0.001f) b.localRotation = Quaternion.Slerp(cur, avg[i], Mathf.Clamp01(w));
         }
-        if (row.debug)
+        if (dbg)
         {
             float angA = ArmAngle(), zA = ArmAngleZ(), pA = HandPitch(); zMinB = Mathf.Min(zMinB, zB); zMaxB = Mathf.Max(zMaxB, zB); zMinA = Mathf.Min(zMinA, zA); zMaxA = Mathf.Max(zMaxA, zA); pMinB = Mathf.Min(pMinB, pB); pMaxB = Mathf.Max(pMaxB, pB); pMinA = Mathf.Min(pMinA, pA); pMaxA = Mathf.Max(pMaxA, pA); minB = Mathf.Min(minB, angB); maxB = Mathf.Max(maxB, angB); minA = Mathf.Min(minA, angA); maxA = Mathf.Max(maxA, angA);
             if (++frameN % Mathf.Max(1, (int)row.debugEvery) == 0)

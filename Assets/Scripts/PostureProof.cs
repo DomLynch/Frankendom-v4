@@ -6,13 +6,13 @@ using System.Text;
 using UnityEngine;
 
 // POSTURE PROOF HARNESS (lane P7): -postureproof [-out:<dir>] [-proofsecs:<n> (default 90)]
-// Scripts Dracula (PlayerBrain / AIBrain / TouchControls off, direct DuelFighter calls like MoveSheet) against the Pitborn and takes FULL-SCREEN screenshots
+// Scripts the player (PlayerBrain / AIBrain / TouchControls off, direct DuelFighter calls like MoveSheet) against the enemy and takes FULL-SCREEN screenshots
 // (ScreenCapture.CaptureScreenshotAsTexture after 2 frames + end of frame, so the HUD is in frame; run the player at 1920x1080):
-//   (a) parry      : Pitborn swings, Dracula raises the guard just before contact (retries with other leads) -> shot at the Parried event
-//   (b) guard break: heavy into a guarding low-stamina Pitborn -> shot at the GuardBroken event
-//   (c) posture fill: 3 lights on the Pitborn (ONLY here the Pitborn max is lowered in memory to 30; (a) and (b) run on the real posture.json values): after hit 1, hit 2,
+//   (a) parry      : the enemy swings, the player raises the guard just before contact (retries with other leads) -> shot at the Parried event
+//   (b) guard break: heavy into a guarding low-stamina enemy -> shot at the GuardBroken event
+//   (c) posture fill: 3 lights on the enemy (ONLY here the enemy max is lowered in memory to 30; (a) and (b) run on the real posture.json values): after hit 1, hit 2,
 //       at POSTURE BREAK, +30 ticks (deathblow countdown), then the deathblow hit with the flash frames d_flash_before / d_flash_during (~0.05 s) / d_flash_after (~0.3 s)
-//       and a log of the Pitborn renderer colours (shared _BaseColor, property-block value, flash amount) plus the mean screen luma of its bounds, before / during / after,
+//       and a log of the enemy renderer colours (shared _BaseColor, property-block value, flash amount) plus the mean screen luma of its bounds, before / during / after,
 //       so a black tint or a black pose shows as numbers (V61A). Posture, window and stamina of both fighters are reset between the steps.
 // Output (default <exe dir>\posture_proof\): proof_*.png, posture_proof_log.txt, posture_proof_summary.txt, posture_proof_contact.png (3x3 grid of the key frames).
 // Exit codes: 0 finished (PASS or FAIL in the log/summary), 2 exception / setup failure, 3 timeout. PASS = a posture break and a deathblow actually occurred (DuelFighter stat counters).
@@ -119,7 +119,7 @@ public class PostureProof : MonoBehaviour
         Physics.SyncTransforms();
     }
 
-    // Dracula `sep` metres in front of the Pitborn on the line between them, both facing (called only while both are free to move)
+    // the player `sep` metres in front of the enemy on the line between them, both facing (called only while both are free to move)
     void Setup(float sep)
     {
         Vector3 pp = P.transform.position; Vector3 dd = D.transform.position; dd.y = 0f; pp.y = 0f;
@@ -157,11 +157,11 @@ public class PostureProof : MonoBehaviour
         P.posture = 0f; D.posture = 0f; Rest();
         yield return Ticks(3);
         if (P.PostureBroken || P.DeathblowLeft > 0 || D.PostureBroken || D.DeathblowLeft > 0) { P.posture = 0f; D.posture = 0f; yield return Ticks(3); }
-        Log("reset (" + why + "): Pitborn posture " + P.posture.ToString("F1", IC) + "/" + P.PostureMax.ToString("F0", IC) + " broken " + P.PostureBroken + " window " + P.DeathblowLeft
-            + " | Dracula posture " + D.posture.ToString("F1", IC) + " broken " + D.PostureBroken + " window " + D.DeathblowLeft + (P.PostureBroken || P.DeathblowLeft > 0 || D.PostureBroken || D.DeathblowLeft > 0 ? "  RESET INCOMPLETE" : "  clean"));
+        Log("reset (" + why + "): " + Roster.EnemyName + " posture " + P.posture.ToString("F1", IC) + "/" + P.PostureMax.ToString("F0", IC) + " broken " + P.PostureBroken + " window " + P.DeathblowLeft
+            + " | " + Roster.PlayerName + " posture " + D.posture.ToString("F1", IC) + " broken " + D.PostureBroken + " window " + D.DeathblowLeft + (P.PostureBroken || P.DeathblowLeft > 0 || D.PostureBroken || D.DeathblowLeft > 0 ? "  RESET INCOMPLETE" : "  clean"));
     }
 
-    // colour samples of the Pitborn (shared material _BaseColor / _Color, the renderer's property-block value, emissive) + flash amount: a black tint shows here as numbers.
+    // colour samples of the enemy (shared material _BaseColor / _Color, the renderer's property-block value, emissive) + flash amount: a black tint shows here as numbers.
     // Reads sharedMaterials only (no material instances are created).
     void SampleColors(string tag)
     {
@@ -183,12 +183,12 @@ public class PostureProof : MonoBehaviour
                 if (slots <= 6) sb.Append("\n      ").Append(r.name).Append("[").Append(i).Append("] ").Append(m.name).Append(" ").Append(prop).Append(" shared ").Append(Rgb(sh)).Append(" now ").Append(Rgb(cur)).Append(blk ? " (MPB)" : "").Append(" emissive ").Append(Rgb(em));
             }
         }
-        Log("COLORS " + tag + ": Pitborn slots " + slots + " with property block " + withBlock + " mean base luma shared " + (slots > 0 ? sumShared / slots : 0f).ToString("F3", IC) + " now " + (slots > 0 ? sumBlock / slots : 0f).ToString("F3", IC)
+        Log("COLORS " + tag + ": " + Roster.EnemyName + " slots " + slots + " with property block " + withBlock + " mean base luma shared " + (slots > 0 ? sumShared / slots : 0f).ToString("F3", IC) + " now " + (slots > 0 ? sumBlock / slots : 0f).ToString("F3", IC)
             + " | flash active " + HitFlash.IsFlashing(P) + " amount " + HitFlash.Amount(P).ToString("F2", IC) + " (flashes " + HitFlash.FlashCount + " restores " + HitFlash.RestoreCount + ")" + sb);
     }
     static string Rgb(Color c) { return "(" + c.r.ToString("F2", IC) + "," + c.g.ToString("F2", IC) + "," + c.b.ToString("F2", IC) + ")"; }
 
-    // mean luma (0..1) of the screenshot inside the Pitborn's screen-space bounds (0 = black); a lighting/pose darkening shows here even when no material changed
+    // mean luma (0..1) of the screenshot inside the enemy's screen-space bounds (0 = black); a lighting/pose darkening shows here even when no material changed
     float ScreenLuma(Texture2D tex, string tag)
     {
         var cam = Camera.main; if (cam == null || tex == null) return -1f;
@@ -205,7 +205,7 @@ public class PostureProof : MonoBehaviour
         var px = tex.GetPixels32(); double sum = 0; int n = 0;
         for (int y = iy0; y < iy1; y += 3) for (int x = ix0; x < ix1; x += 3) { var c32 = px[y * tex.width + x]; sum += (0.2126 * c32.r + 0.7152 * c32.g + 0.0722 * c32.b) / 255.0; n++; }
         float l = n > 0 ? (float)(sum / n) : -1f; lumas[tag] = l;
-        Log("LUMA " + tag + ": Pitborn screen box " + w + "x" + h + " px mean luma " + l.ToString("F3", IC));
+        Log("LUMA " + tag + ": " + Roster.EnemyName + " screen box " + w + "x" + h + " px mean luma " + l.ToString("F3", IC));
         return l;
     }
 
@@ -215,7 +215,7 @@ public class PostureProof : MonoBehaviour
     IEnumerator Main()
     {
         float w0 = Time.realtimeSinceStartup;
-        while ((D = Find("Dracula")) == null || (P = Find("Pitborn")) == null)
+        while ((D = Find(Roster.PlayerObject)) == null || (P = Find(Roster.EnemyObject)) == null)
         {
             if (Time.realtimeSinceStartup - w0 > 20f) { Log("fighters not found"); Finish(2, "fighters not found"); yield break; }
             yield return null;
@@ -226,14 +226,14 @@ public class PostureProof : MonoBehaviour
         D.opponent = P; P.opponent = D;
         Log("start res " + Screen.width + "x" + Screen.height + " unity " + Application.unityVersion);
 
-        // posture data: the REAL posture.json values are used for (a) and (b). Only the in-memory enable + debug log are forced; (c) alone lowers the Pitborn max (see below).
+        // posture data: the REAL posture.json values are used for (a) and (b). Only the in-memory enable + debug log are forced; (c) alone lowers the enemy max (see below).
         var pd = PostureTable.Get();
         if (!pd.enabled) Log("NOTE posture.json had enabled=false: forced on in memory for the proof");
         pd.enabled = true; pd.debugLog = true;
-        if (pd.fighters != null) foreach (var r in pd.fighters) if (r != null && r.key == "Pitborn") pRow = r;
-        if (pRow == null) { var list = new List<PostureTable.FighterRow>(pd.fighters ?? new PostureTable.FighterRow[0]); pRow = new PostureTable.FighterRow { key = "Pitborn" }; list.Add(pRow); pd.fighters = list.ToArray(); }
+        if (pd.fighters != null) foreach (var r in pd.fighters) if (r != null && r.key == Roster.EnemyId) pRow = r;
+        if (pRow == null) { var list = new List<PostureTable.FighterRow>(pd.fighters ?? new PostureTable.FighterRow[0]); pRow = new PostureTable.FighterRow { key = Roster.EnemyId }; list.Add(pRow); pd.fighters = list.ToArray(); }
         realPitMax = P.PostureMax;
-        Log("real values: Pitborn max " + P.PostureMax.ToString("F0", IC) + ", Dracula max " + D.PostureMax.ToString("F0", IC) + ", hit.light " + pd.hit.light.ToString("F0", IC) + ", parry.attacker " + pd.parry.attacker.ToString("F0", IC) + ", window " + pd.posBreak.windowTicks + " ticks");
+        Log("real values: " + Roster.EnemyName + " max " + P.PostureMax.ToString("F0", IC) + ", " + Roster.PlayerName + " max " + D.PostureMax.ToString("F0", IC) + ", hit.light " + pd.hit.light.ToString("F0", IC) + ", parry.attacker " + pd.parry.attacker.ToString("F0", IC) + ", window " + pd.posBreak.windowTicks + " ticks");
         P.maxHealth = 1000f; P.health = 1000f; D.maxHealth = 1000f; D.health = 1000f;   // nobody dies during the proof (a lethal deathblow would end it)
         Rest(); Setup(2.0f);
         yield return Ticks(60);
@@ -243,38 +243,38 @@ public class PostureProof : MonoBehaviour
         for (int a = 0; a < leads.Length && !parried; a++)
         {
             yield return ResetState("parry attempt " + (a + 1)); Setup(1.7f); yield return Ticks(130);   // parry cooldown + recoveries
-            int pc = EventCount("Parried", "Pitborn") + EventCount("Parried", "Dracula"); int lead = leads[a];
-            P.Press("light"); LogState("parry attempt " + (a + 1) + " Pitborn swings, guard lead " + lead);
+            int pc = EventCount("Parried", Roster.EnemyObject) + EventCount("Parried", Roster.PlayerObject); int lead = leads[a];
+            P.Press("light"); LogState("parry attempt " + (a + 1) + " " + Roster.EnemyName + " swings, guard lead " + lead);
             yield return WaitFor(() => P.state == FState.Windup, 30);
             yield return WaitFor(() => P.state != FState.Windup || P.WindupLeft <= lead, 60);
             D.guardHeld = true;
-            yield return WaitFor(() => EventCount("Parried", "Pitborn") + EventCount("Parried", "Dracula") > pc || P.state == FState.Recovery || P.state == FState.Loco, 60);
-            parried = EventCount("Parried", "Pitborn") + EventCount("Parried", "Dracula") > pc;
+            yield return WaitFor(() => EventCount("Parried", Roster.EnemyObject) + EventCount("Parried", Roster.PlayerObject) > pc || P.state == FState.Recovery || P.state == FState.Loco, 60);
+            parried = EventCount("Parried", Roster.EnemyObject) + EventCount("Parried", Roster.PlayerObject) > pc;
             if (parried) yield return Shot("a_parry_contact");
             D.guardHeld = false; yield return Ticks(10);
         }
         results["parry"] = parried; LogState("parry " + (parried ? "OK" : "NOT ACHIEVED"));
 
-        // ---- (b) guard break: Pitborn guards at 6 stamina, Dracula throws a heavy
+        // ---- (b) guard break: the enemy guards at 6 stamina, the player throws a heavy
         bool gbreak = false;
         for (int a = 0; a < 3 && !gbreak; a++)
         {
             yield return ResetState("guard break attempt " + (a + 1)); Setup(1.7f); yield return Ticks(130);
-            int gc = EventCount("GuardBroken", "Pitborn");
+            int gc = EventCount("GuardBroken", Roster.EnemyObject);
             P.guardHeld = true; yield return Ticks(25);   // past the parry window: a plain block
             P.stamina = 6f; D.stamina = D.maxStamina; D.Press("heavy"); LogState("guard break attempt " + (a + 1));
-            yield return WaitFor(() => { P.stamina = Mathf.Min(P.stamina, 6f); P.guardHeld = true; return EventCount("GuardBroken", "Pitborn") > gc || (D.state == FState.Recovery && D.t > 20); }, 150);
-            gbreak = EventCount("GuardBroken", "Pitborn") > gc;
+            yield return WaitFor(() => { P.stamina = Mathf.Min(P.stamina, 6f); P.guardHeld = true; return EventCount("GuardBroken", Roster.EnemyObject) > gc || (D.state == FState.Recovery && D.t > 20); }, 150);
+            gbreak = EventCount("GuardBroken", Roster.EnemyObject) > gc;
             if (gbreak) yield return Shot("b_guard_break");
             P.guardHeld = false; yield return Ticks(5);
         }
         results["guardbreak"] = gbreak; LogState("guard break " + (gbreak ? "OK" : "NOT ACHIEVED"));
 
         // ---- (c) posture fill with lights, break, deathblow
-        // only here the Pitborn max is lowered (3 lights = break); (a) and (b) ran on the real posture.json values
+        // only here the enemy max is lowered (3 lights = break); (a) and (b) ran on the real posture.json values
         pRow.max = 30f; yield return ResetState("before (c)"); P.health = P.maxHealth; Setup(1.7f); yield return Ticks(200);
-        Log("(c) override: Pitborn max " + realPitMax.ToString("F0", IC) + " -> " + P.PostureMax.ToString("F0", IC) + " (this step only)");
-        Log("posture fill begin: Pitborn posture " + P.posture.ToString("F1", IC) + "/" + P.PostureMax.ToString("F0", IC));
+        Log("(c) override: " + Roster.EnemyName + " max " + realPitMax.ToString("F0", IC) + " -> " + P.PostureMax.ToString("F0", IC) + " (this step only)");
+        Log("posture fill begin: " + Roster.EnemyName + " posture " + P.posture.ToString("F1", IC) + "/" + P.PostureMax.ToString("F0", IC));
         int hits = 0; int b0 = P.statPostureBreaks;
         for (int h = 1; h <= 4 && P.statPostureBreaks == b0; h++)
         {
@@ -296,7 +296,7 @@ public class PostureProof : MonoBehaviour
             int d0 = D.statDeathblows; Rest();
             yield return WaitFor(() => D.state == FState.Loco, 120);
             if (Vector3.Distance(D.transform.position, P.transform.position) > 2.0f) Setup(1.7f);
-            Log("window left " + P.DeathblowLeft + "/" + P.DeathblowTotal + " before the deathblow swing; Pitborn state " + P.state);
+            Log("window left " + P.DeathblowLeft + "/" + P.DeathblowTotal + " before the deathblow swing; " + Roster.EnemyName + " state " + P.state);
             SampleColors("d_flash_before (pre-shot)");
             yield return Shot("d_flash_before", null, true);
             SampleColors("d_flash_before (post-shot)");
@@ -315,7 +315,7 @@ public class PostureProof : MonoBehaviour
                 Log("flash check: restored=" + !HitFlash.IsFlashing(P) + " luma before " + Lu("d_flash_before") + " during " + Lu("d_flash_during") + " after " + Lu("d_flash_after"));
             }
             yield return Ticks(20); yield return Shot("c_window_closed", null, true);
-            Log("window closed: Pitborn broken " + P.PostureBroken + " window " + P.DeathblowLeft + " (the HUD must show no DEATHBLOW label)");
+            Log("window closed: " + Roster.EnemyName + " broken " + P.PostureBroken + " window " + P.DeathblowLeft + " (the HUD must show no DEATHBLOW label)");
         }
         else Log("NO posture break from the light sequence");
         LogState("end");
@@ -335,7 +335,7 @@ public class PostureProof : MonoBehaviour
         sb.AppendLine("posture break occurred: " + brk + "   deathblow occurred: " + db);
         foreach (var kv in results) sb.AppendLine("  step " + kv.Key + ": " + (kv.Value ? "ok" : "not achieved"));
         if (D != null && P != null) { sb.AppendLine("final " + Counters(D)); sb.AppendLine("final " + Counters(P)); }
-        sb.AppendLine("flash frames: Pitborn screen luma before " + Lu("d_flash_before") + " during " + Lu("d_flash_during") + " after " + Lu("d_flash_after") + "; flashes " + HitFlash.FlashCount + " restores " + HitFlash.RestoreCount + " still flashing " + (P != null && HitFlash.IsFlashing(P)));
+        sb.AppendLine("flash frames: " + Roster.EnemyName + " screen luma before " + Lu("d_flash_before") + " during " + Lu("d_flash_during") + " after " + Lu("d_flash_after") + "; flashes " + HitFlash.FlashCount + " restores " + HitFlash.RestoreCount + " still flashing " + (P != null && HitFlash.IsFlashing(P)));
         sb.AppendLine("screenshots: " + string.Join(", ", keyNames.ToArray()));
         sb.AppendLine("events: " + events.Count);
         try { File.AppendAllText(logPath, "\n=== SUMMARY ===\n" + sb); } catch { }

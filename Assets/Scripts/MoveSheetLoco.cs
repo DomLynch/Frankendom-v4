@@ -4,7 +4,7 @@ using UnityEngine;
 // (e.g. -hide:cloak,coat so the legs are visible). Does nothing without both flags. Camera rows are data (a -sheetdata json), not code.
 public class MoveSheetLoco : MonoBehaviour
 {
-    string[] names; string subject = "Dracula";
+    string[] names; string subject => Roster.PlayerObject;   // the sheet subject (the roster player)
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()

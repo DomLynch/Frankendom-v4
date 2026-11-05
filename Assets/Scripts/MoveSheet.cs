@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
-// Proof harness (player side): -sheet:<id> -out:<dir>. Performs ONE move of Dracula (or Pitborn) on a standing opponent and writes
+// Proof harness (player side): -sheet:<id> -out:<dir>. Performs ONE move of the roster player (or enemy) on a standing opponent and writes
 //   <dir>/<id>_side.png   4x3 contact sheet, side camera (perpendicular to the fighters' axis)
 //   <dir>/<id>_34.png     4x3 contact sheet, 3/4 camera (45 degrees)
 //   <dir>/<id>_log.txt    per tile: tick, time, sim state, Animator state name, clip time, torso lean ...
@@ -20,7 +20,7 @@ public class MoveSheet : MonoBehaviour
     // ---------------- data ----------------
     [Serializable] public class Row
     {
-        public string id = "", subject = "Dracula", action = "press", press = "", durationFrom = "", dir = "none";
+        public string id = "", subject = "", action = "press", press = "", durationFrom = "", dir = "none";
         public int durationTicks = 0, tailTicks = 0, side = 0;
         public string then = ""; public int thenTick = 0, thenSide = 0;   // P1: a SECOND press `thenTick` sim ticks after the first (roll / sidestep / backstep / light / ...), to prove cancel windows and the press queue
         public bool guard, run, follow;
@@ -43,7 +43,7 @@ public class MoveSheet : MonoBehaviour
     {
         public float tickHz = 60f, preSeconds = 0.2f;
         public int tiles = 12, cols = 4, tileW = 480, tileH = 270, supersample = 2, settleTicks = 90, timeoutTicks = 1800, markerPx = 3;
-        public string draculaName = "Dracula", pitbornName = "Pitborn";
+        public string playerName = "", enemyName = "";   // scene object names; "" = roster.json (Roster.PlayerObject / EnemyObject)
         public Arena arena = new Arena();
         public int[] groundMaskExcludeLayers = { 8, 9 };
         public bool isolate; public float[] isolateColor = { 0.22f, 0.22f, 0.24f };
@@ -78,7 +78,7 @@ public class MoveSheet : MonoBehaviour
     enum Phase { Init, Run, Finish, Done }
     Phase phase = Phase.Init;
     Data D; Row row; string outDir; int frame;
-    DuelFighter dracula, pitborn, subj, opp; Fighter subjFx;
+    DuelFighter player, enemy, subj, opp; Fighter subjFx;
     Transform hips, neck, wsock; float wYmax;   // weapon socket + far end of the weapon along its shaft (socket-local Y)
     Camera camSide, cam34; RenderTexture rtSide, rt34, rtSmall; Texture2D readTex;
     Color32[] sheetSide, sheet34; int sheetW, sheetH;
@@ -199,9 +199,11 @@ public class MoveSheet : MonoBehaviour
         if (D == null) { Fail("move_sheet.json not found (StreamingAssets, Assets/Data or -sheetdata:)"); return; }
         foreach (var r in D.moves) if (r != null && r.id == moveId) row = r;
         if (row == null) { Fail("no row '" + moveId + "' in move_sheet.json"); return; }
-        dracula = FindFighter(D.draculaName); pitborn = FindFighter(D.pitbornName);
-        if (dracula == null || pitborn == null) { Fail("fighters not found (" + D.draculaName + "/" + D.pitbornName + ")"); return; }
-        subj = row.subject == D.pitbornName ? pitborn : dracula; opp = subj == dracula ? pitborn : dracula;
+        string pName = string.IsNullOrEmpty(D.playerName) ? Roster.PlayerObject : D.playerName, eName = string.IsNullOrEmpty(D.enemyName) ? Roster.EnemyObject : D.enemyName;
+        player = FindFighter(pName); enemy = FindFighter(eName);
+        if (player == null || enemy == null) { Fail("fighters not found (" + pName + "/" + eName + ")"); return; }
+        bool subjEnemy = !string.IsNullOrEmpty(row.subject) && (row.subject == eName || row.subject == Roster.EnemyId);   // subject: character id or object name; "" = the player
+        subj = subjEnemy ? enemy : player; opp = subj == player ? enemy : player;
         subjFx = subj.GetComponent<Fighter>();
         if (subjFx == null || subjFx.anim == null) { Fail("subject has no Fighter.anim"); return; }
         foreach (var c in subjFx.anim.runtimeAnimatorController.animationClips) hashName[Animator.StringToHash(c.name)] = c.name;
@@ -218,9 +220,9 @@ public class MoveSheet : MonoBehaviour
 
         // fixed setup: both fighters standing on the axis (+z), facing each other, `separation` apart
         float z0 = row.startZ != 0f ? row.startZ : D.arena.z;
-        Place(dracula, new Vector3(D.arena.x, 0f, z0), Vector3.forward);
-        Place(pitborn, new Vector3(D.arena.x, 0f, z0 + row.separation), Vector3.back);
-        dracula.stamina = dracula.maxStamina; pitborn.stamina = pitborn.maxStamina;
+        Place(player, new Vector3(D.arena.x, 0f, z0), Vector3.forward);
+        Place(enemy, new Vector3(D.arena.x, 0f, z0 + row.separation), Vector3.back);
+        player.stamina = player.maxStamina; enemy.stamina = enemy.maxStamina;
         axis = Flat(opp.transform.position - subj.transform.position).normalized; subjFwd = axis; groundY = subj.transform.position.y;
 
         // timing in sim ticks
@@ -276,7 +278,7 @@ public class MoveSheet : MonoBehaviour
         if (phase == Phase.Init) { Init(); if (phase != Phase.Run) return; }
         if (phase != Phase.Run) return;
         if (frame > D.timeoutTicks + D.settleTicks + dur + 200) { note += "TIMEOUT (sim did not advance); "; Finish(); return; }
-        if (!pressed) { fixedMid = (dracula.transform.position + pitborn.transform.position) * 0.5f; axis = Flat(opp.transform.position - subj.transform.position).normalized; subjFwd = axis; groundY = subj.transform.position.y; }
+        if (!pressed) { fixedMid = (player.transform.position + enemy.transform.position) * 0.5f; axis = Flat(opp.transform.position - subj.transform.position).normalized; subjFwd = axis; groundY = subj.transform.position.y; }
         if (!pressed && Duel.TickCount + 1 >= B) { pressed = true; DoPress(); }
         if (pressed && !thenDone && !string.IsNullOrEmpty(row.then) && Duel.TickCount >= B + row.thenTick)
         {
@@ -480,7 +482,7 @@ public class MoveSheet : MonoBehaviour
         if (hSmall) hSmall.Release();
     }
 
-    // ================= hand close-up mode (-sheet:handcam_pitborn | handcam_dracula, optional -hand:right|left) =================
+    // ================= hand close-up mode (-sheet:<handcam row id>, optional -hand:right|left) =================
     // Moments (ticks relative to the press): idle = hc.idleAge; midswing = Active start - hc.midBeforeActive; impact = middle of the Active window
     // (read from the subject's MoveTable row of the pressed move). Cameras sit hc.dist from the hand bone (aim point nudged along the weapon shaft by hc.toward):
     // front = from the subject's forward and a bit above, side = from the subject's right, below = under the hand looking up.

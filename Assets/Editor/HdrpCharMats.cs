@@ -9,7 +9,8 @@ using UnityEngine.Rendering.HighDefinition;
 // Fabric Shader Graph (fabric.shader) and feeds it the sheen mask + tint. If that shader does not exist the material stays HDRP/Lit.
 public static class HdrpCharMats
 {
-    [System.Serializable] public class Entry { public string mat, mask, sheenMask, sheen = "off"; public float sheenIntensity = 1f; }
+    // lane LOOK: optional absolute look tweaks per material (baseColor rgb, smoothness remap min / max; missing or -1 = leave)
+    [System.Serializable] public class Entry { public string mat, mask, sheenMask, sheen = "off"; public float sheenIntensity = 1f; public float[] baseColor; public float smoothnessMin = -1f, smoothnessMax = -1f; }
     [System.Serializable] public class Lin { public string path; public int maxSize = 2048; }
     [System.Serializable] public class Fab { public string shader; public float[] sheenColor; public float sheenIntensity = 1f; }
     [System.Serializable] public class Cfg { public Entry[] materials; public Lin[] linearTextures; public Fab fabric; }
@@ -65,10 +66,13 @@ public static class HdrpCharMats
                 {
                     var sm = AssetDatabase.LoadAssetAtPath<Texture2D>(e.sheenMask);
                     if (sm != null && m.HasProperty("_SheenMask")) m.SetTexture("_SheenMask", sm);
-                    float[] c = cfg.fabric.sheenColor; if (c == null || c.Length < 3) c = new[] { 0.35f, 0.02f, 0.04f };
+                    float[] c = cfg.fabric.sheenColor; if (c == null || c.Length < 3) c = LookData.Get().charMats.sheenDefault;   // lane LOOK: default from look.json
                     float k = cfg.fabric.sheenIntensity * e.sheenIntensity;
                     if (m.HasProperty("_SheenColor")) m.SetColor("_SheenColor", new Color(c[0] * k, c[1] * k, c[2] * k, 1f));
                 }
+                if (e.baseColor != null && e.baseColor.Length >= 3 && m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", new Color(e.baseColor[0], e.baseColor[1], e.baseColor[2], 1f));
+                if (e.smoothnessMin >= 0f) SetF(m, "_SmoothnessRemapMin", e.smoothnessMin);
+                if (e.smoothnessMax >= 0f) SetF(m, "_SmoothnessRemapMax", e.smoothnessMax);
                 if (target == lit) HDMaterial.ValidateMaterial(m);
                 EditorUtility.SetDirty(m); n++;
                 Debug.Log("HDRPCHAR " + m.name + " shader=" + m.shader.name + " mask=" + (mask != null) + " sheen=" + wantFabric);

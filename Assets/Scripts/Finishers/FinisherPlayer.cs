@@ -57,17 +57,15 @@ public static class FinisherPlayer
         return null;
     }
 
-    static string WeaponOf(FinisherRotation cfg, int killerSide) { return killerSide == 0 ? cfg.weapons.Dracula : cfg.weapons.Pitborn; }
-
     // entries that may be picked for this blow: enabled, in rotation.enabledIds, side / weapon / direction / move / location filters
     static List<int> EligibleIdx(FinisherFile file, FinisherContext ctx)
     {
         var cfg = file.rotation; var entries = file.entries; var ok = new List<int>(); if (entries == null) return ok;
-        string weapon = WeaponOf(cfg, ctx.killerSide), dir = DirectionOf(ctx.killer, ctx.victim), side = ctx.killerSide == 0 ? "Dracula" : "Pitborn";
+        string weapon = FinisherSides.WeaponOf(ctx.killerSide), dir = DirectionOf(ctx.killer, ctx.victim);
         for (int i = 0; i < entries.Length; i++)
         {
             var e = entries[i]; if (e == null || !e.enabled || !IdAllowed(cfg, e.id)) continue;
-            if (e.attackerSide != "any" && !string.Equals(e.attackerSide, side, StringComparison.OrdinalIgnoreCase)) continue;
+            if (!FinisherSides.Matches(e.attackerSide, ctx.killerSide)) continue;
             if (!In(e.weapons, weapon) || !In(e.directions, dir) || !In(e.moves, ctx.move.ToString()) || !In(e.locations, ctx.loc.ToString())) continue;
             ok.Add(i);
         }
@@ -84,7 +82,7 @@ public static class FinisherPlayer
     {
         var file = FinisherConfig.Get(); var cfg = file.rotation; var entries = file.entries;
         if (entries == null || entries.Length == 0) return null;
-        string weapon = WeaponOf(cfg, ctx.killerSide);
+        string weapon = FinisherSides.WeaponOf(ctx.killerSide);
         var ok = EligibleIdx(file, ctx);
         if (ok.Count == 0)
         {

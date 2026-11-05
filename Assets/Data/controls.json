@@ -1,0 +1,106 @@
+{
+  "enabled": true,
+  "debugLog": false,
+  "scheme": "swipe",
+  "_about": "Player controls (lane CTRL, build v68), read by ControlsTable.cs. scheme 'swipe' = Infinity-Blade style while locked on: LMB / pad RB with no slide = stab, slide left / right at or just before the press = that slash, slide up = overhead; release before attack.holdHeavyMs = light, hold = heavy (charged while held). RMB / Q / pad LB = guard, the slide (mouse) or right stick picks the guard side. Lock off: the mouse turns the camera and attacks use the classic WASD + click rules. scheme 'classic' = the old WASD + click scheme everywhere. enabled false or no file = the exact old behaviour (classic, guard blocks every side). Defaults from Frankendom V3 (18 px slide, 50 deg up cone, 220 ms heavy, 100 ms heavy grace) and V1 (combat 4 m / sticky 6 m / ends 12 m for 3 s, camera ease in 3/s out 1.8/s).",
+  "mouse": {
+    "_about": "axisToPx converts Input.GetAxisRaw('Mouse X'/'Mouse Y') to pixels (InputManager mouse sensitivity is 0.1, so 1 axis unit = 10 px). flickWindowMs = how long before the press a slide still counts (the slide is summed from press - flickWindowMs to the moment the move is decided). deadZonePx = slide shorter than this = no direction (stab / centre guard). guardClampPx = the guard cursor (slide summed since the guard press) is clamped to this length so a flick the other way switches side quickly.",
+    "axisToPx": 10.0,
+    "flickWindowMs": 100.0,
+    "deadZonePx": 18.0,
+    "guardClampPx": 60.0
+  },
+  "pad": {
+    "_about": "Gamepad (old Input Manager). stickX / stickY = Input Manager axis names of the right stick; they are NOT in ProjectSettings yet: run Tools > Controls > Add Right Stick Axes once (Editor/ControlsInputAxes.cs). A missing axis disables the stick (one warning). deadZone 0..1. The attack direction is the strongest stick sample inside the flick window. guardLatch true = the guard side stays after the stick springs back. Keys are KeyCode names: RB = JoystickButton5, LB = JoystickButton4, Y = JoystickButton3, X = JoystickButton2 (A / B / R3 are dodge / riposte / lock elsewhere). Specials go on Y / X because LB + RB are guard + attack and the D-pad is an axis in the old Input Manager.",
+    "enabled": true,
+    "stickX": "RightStickX",
+    "stickY": "RightStickY",
+    "invertY": false,
+    "deadZone": 0.35,
+    "guardLatch": true,
+    "attackKeys": [ "JoystickButton5" ],
+    "guardKeys": [ "JoystickButton4" ],
+    "special1Keys": [ "JoystickButton3" ],
+    "special2Keys": [ "JoystickButton2" ]
+  },
+  "attack": {
+    "_about": "strikeFire 'release' = the light fires when the button is released before holdHeavyMs (the heavy fires at holdHeavyMs and charges while held); 'down' = the light fires on press with the pre-press slide and turns into the heavy of the same direction at holdHeavyMs (inside cancel.json holdToHeavyUntilTick). heavyGraceMs = after the heavy fired, a new slide inside this time re-aims it (only while still in the wind-up). useCounterHeavyHold true = while the foe is in a wind-up the hold threshold is heavyHoldMsInCounterWindow (V1 option). sectors = screen directions of the slide, deg 0 = up, +90 = right, the first sector (file order) whose |angle - deg| <= halfWidthDeg wins; no slide = noSlideDir. map = direction -> move ids, the first id that exists in the MoveTable is used (missing ones are animation gaps, see MANIFEST).",
+    "strikeFire": "release",
+    "holdHeavyMs": 220.0,
+    "heavyGraceMs": 100.0,
+    "useCounterHeavyHold": false,
+    "heavyHoldMsInCounterWindow": 80.0,
+    "noSlideDir": "stab",
+    "sectors": [
+      { "name": "overhead", "deg": 0.0,   "halfWidthDeg": 50.0 },
+      { "name": "stab",     "deg": 180.0, "halfWidthDeg": 40.0 },
+      { "name": "left",     "deg": -90.0, "halfWidthDeg": 90.0 },
+      { "name": "right",    "deg": 90.0,  "halfWidthDeg": 90.0 }
+    ],
+    "map": [
+      { "dir": "stab",     "light": [ "thrust" ],                          "heavy": [ "heavy_thrust", "heavy_overhead" ] },
+      { "dir": "left",     "light": [ "light_left" ],                      "heavy": [ "heavy_left", "heavy_overhead" ] },
+      { "dir": "right",    "light": [ "light_right" ],                     "heavy": [ "heavy_right", "heavy_overhead" ] },
+      { "dir": "overhead", "light": [ "light_overhead", "heavy_overhead" ], "heavy": [ "heavy_overhead" ] }
+    ]
+  },
+  "guard": {
+    "_about": "guardRequiresSide true = Duel.Resolve only counts a block / parry when the defender's guard side covers the swing; classicRequiresSide false = a human who is not swiping right now (scheme classic, or lock off) still blocks every side as before (the AI, the balance bot and a swiping human always need the side) (the parry window numbers are untouched, parry.json / stamina.json). sides = guard sides by slide angle (same convention as attack.sectors), id = DuelFighter.guardSide (1 left, 2 right, 3 top -> guard_left / guard_right / guard_up poses; add low / straight later with new ids). centreName / centreAliases = no side (guardSide 0). deadBandDeg = hysteresis: the side only changes when the new side is matched with halfWidthDeg - deadBandDeg. snap 'latch' = the side stays until another side is slid to; 'live' = a slide back inside the dead zone returns to centre. match = attack direction (MoveDef.direction, attacker frame) -> guard sides that cover it (defender frame, mirrored: the attacker's right cut meets the defender's LEFT guard); '*' = any guard; a direction with no row = any guard. Block ease: the required side counts when it was held at contact or inside the last sideGraceMs (+ heavyBlockWindowBonusMs for a heavy swing, Duel's heavy = charges or damage >= 18) + the blockEase row of the class.",
+    "guardRequiresSide": true,
+    "classicRequiresSide": false,
+    "snap": "latch",
+    "deadBandDeg": 15.0,
+    "centreName": "centre",
+    "centreAliases": [ "straight", "thrust", "low", "none" ],
+    "sides": [
+      { "name": "top",   "id": 3, "deg": 0.0,   "halfWidthDeg": 50.0, "aliases": [ "overhead", "up" ] },
+      { "name": "left",  "id": 1, "deg": -90.0, "halfWidthDeg": 90.0, "aliases": [] },
+      { "name": "right", "id": 2, "deg": 90.0,  "halfWidthDeg": 90.0, "aliases": [] }
+    ],
+    "match": [
+      { "attack": "right",    "guards": [ "left" ] },
+      { "attack": "left",     "guards": [ "right" ] },
+      { "attack": "overhead", "guards": [ "top" ] },
+      { "attack": "thrust",   "guards": [ "centre", "top" ] },
+      { "attack": "low",      "guards": [ "*" ] }
+    ],
+    "sideGraceMs": 0.0,
+    "heavyBlockWindowBonusMs": 150.0,
+    "blockEase": [
+      { "cls": "light", "bonusMs": 0.0 },
+      { "cls": "heavy", "bonusMs": 0.0 }
+    ]
+  },
+  "camera": {
+    "_about": "combatCamera 'locked' = combat auto-enters the lock view (enemy alive within enterRange m, or the duel start when lockAtDuelStart) and auto-leaves it (enemy dead, or farther than exitRange for exitSeconds; inside stickyRange the timer resets). Tab still toggles by hand; a manual unlock holds until the next combat start. 'free' = no auto lock, Tab only (today). easeIn / easeOut = CameraRig lock blend per second (was 3 both ways).",
+    "combatCamera": "locked",
+    "lockAtDuelStart": true,
+    "enterRange": 4.0,
+    "stickyRange": 6.0,
+    "exitRange": 12.0,
+    "exitSeconds": 3.0,
+    "easeIn": 3.0,
+    "easeOut": 1.8
+  },
+  "marker": {
+    "_about": "On-screen direction marker (OnGUI, DirectionalInput). anchor 'crosshair' = screen centre, 'player' = above the player (yOffset m). Attack: a square offset distPx toward the pending direction (stab = on the centre) while the strike is held; guard: a bar on the held side; idle: the direction a press now would take (showIdle). Colours RGBA 0..1.",
+    "enabled": true,
+    "anchor": "crosshair",
+    "yOffset": 2.0,
+    "sizePx": 8.0,
+    "distPx": 24.0,
+    "barLengthPx": 22.0,
+    "barThickPx": 4.0,
+    "showIdle": true,
+    "showLabel": false,
+    "fontSize": 11,
+    "attackColor": [ 0.96, 0.78, 0.30, 0.95 ],
+    "heavyColor": [ 0.95, 0.35, 0.20, 0.95 ],
+    "guardColor": [ 0.55, 0.80, 1.00, 0.95 ],
+    "idleColor": [ 0.96, 0.93, 0.85, 0.35 ]
+  },
+  "bot": {
+    "_about": "FlowBot (balance bot) guard side: when it raises a guard / parry against a swing, sideReadChance = it picks the side that covers the swing, else a wrong side. AIBrain keeps its own read skill (ai profile 'read').",
+    "sideReadChance": 0.8
+  }
+}

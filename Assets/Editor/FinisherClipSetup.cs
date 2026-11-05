@@ -5,7 +5,9 @@ using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
-// FN2: imports the paired Mixamo finisher clips (Assets/Data/finishers.json) and adds them as Animator states to the Dracula / Pitborn controllers.
+// FN2: imports the paired Mixamo finisher clips (Assets/Data/finishers.json) and adds them as Animator states to the character controllers.
+// ROSTER: clipImport.characters rows are keyed by roster id (name); controller and outClipDir come from roster.json (controller, finisherClipFolder), the row's own values are only a fallback.
+// Clip `targets` and entry attackerSide are roles ("player" / "enemy", resolved through Roster) or character ids.
 //   menu Tools > Combat > Add Finisher Clips        batch:  -executeMethod FinisherClipSetup.RunBatch   (only the dev opens the Editor; exit code 0 = unmatched 0 and every pair resolved, 2 otherwise)
 // Modelled on AttackClipSetup (same leaf-name path remap onto the controller's own `referenceState` clip, same state recipe) but the source is the raw Mixamo stand-in GLB, not a baked one, so the retarget that
 // Tools/bake_attack_clips.py does in Python is done here on the curves, with the numbers read from the data:
@@ -45,6 +47,8 @@ public static class FinisherClipSetup
         var root = JsonUtility.FromJson<Root>(File.ReadAllText(DataPath));
         if (root == null || root.clipImport == null) { Debug.LogError("FinisherClipSetup: no clipImport block in " + DataPath); return false; }
         var cfg = new Cfg { sourceDir = root.clipImport.sourceDir, glbDir = root.clipImport.glbDir, characters = root.clipImport.characters, clips = root.clipImport.clips, pairs = root.entries };
+        Roster.Reload();   // editor: pick up roster.json edits since the last domain reload
+        if (cfg.characters != null) foreach (var row in cfg.characters) if (row != null) FromRoster(row);
         if (cfg == null || cfg.clips == null || cfg.characters == null || cfg.clips.Length == 0) { Debug.LogError("FinisherClipSetup: no clips/characters in " + DataPath); return false; }
 
         // 1) copy + import the GLBs
@@ -166,11 +170,24 @@ public static class FinisherClipSetup
     }
     const string HipsKey = "mixamorighips";
 
+    // a target is a role ("player" / "enemy" = that roster side) or a character id
     static bool Targets(ClipCfg c, string character)
     {
         if (c.targets == null) return false;
-        for (int i = 0; i < c.targets.Length; i++) if (c.targets[i] == character) return true;
+        for (int i = 0; i < c.targets.Length; i++)
+        {
+            string t = c.targets[i];
+            if (t == character || (t == "player" && Roster.IsPlayer(character)) || (t == "enemy" && Roster.IsEnemy(character))) return true;
+        }
         return false;
+    }
+
+    // per-character asset paths from roster.json; the finishers.json row keeps only the retarget numbers (its paths are a fallback)
+    static void FromRoster(CharCfg row)
+    {
+        var r = Roster.Get(row.name);
+        if (!string.IsNullOrEmpty(r.controller)) row.controller = r.controller;
+        if (!string.IsNullOrEmpty(r.finisherClipFolder)) row.outClipDir = r.finisherClipFolder;
     }
 
     static AnimationClip LoadSource(string glbPath, out string found)
@@ -371,11 +388,11 @@ public static class FinisherClipSetup
     static bool PairOk(Cfg cfg, EntryCfg p)
     {
         if (string.IsNullOrEmpty(p.attackerClip)) { Debug.Log("FinisherClipSetup: entry '" + p.id + "' has no attackerClip (plain swing), skipped"); return true; }
-        var killers = new List<string>(); if (p.attackerSide == "any" || string.IsNullOrEmpty(p.attackerSide)) { killers.Add("Dracula"); killers.Add("Pitborn"); } else killers.Add(p.attackerSide);
+        var killers = new List<string>(); if (FinisherSides.Matches(p.attackerSide, 0)) killers.Add(Roster.PlayerId); if (FinisherSides.Matches(p.attackerSide, 1)) killers.Add(Roster.EnemyId);
         bool ok = true; string msg = "";
         foreach (var k in killers)
         {
-            string v = k == "Dracula" ? "Pitborn" : "Dracula";
+            string v = Roster.OtherOf(k);
             if (!HasState(cfg, k, p.attackerClip)) { ok = false; msg += " killer state '" + p.attackerClip + "' missing on " + k + ";"; }
             if (!string.IsNullOrEmpty(p.victimClip) && !HasState(cfg, v, p.victimClip)) { ok = false; msg += " victim state '" + p.victimClip + "' missing on " + v + ";"; }
         }

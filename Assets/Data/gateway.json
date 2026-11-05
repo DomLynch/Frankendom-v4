@@ -12,14 +12,14 @@
               },
     "trigger":  {
                     "hpEnabled":  false,
-                    "hpTarget":  "Pitborn",
+                    "hpTarget":  "enemy",
                     "hpFraction":  0.5,
                     "closeHysteresis":  0.2,
                     "pollSeconds":  0.25,
                     "closeOnTargetDeath":  false,
                     "closeDelay":  4.0,
                     "specialEnabled":  false,
-                    "specialActor":  "Pitborn",
+                    "specialActor":  "enemy",
                     "specialMovePrefix":  "skill_"
                 },
     "transition":  {

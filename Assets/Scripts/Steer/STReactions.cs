@@ -9,10 +9,10 @@ using UnityEngine;
 //  - punish whiffs: after a miss or a blocked heavy the other fighter attacks the recovery with probability by skill (and stance), after a human-ish delay.
 //  - no robotic loops: per fighter a short history of swing types; a repeated run / short cycle shifts the AI's light-vs-heavy share (profile.pressure) the other way, plus seeded mix-ups
 //    and slow pressure/patience phases on profile.aggression.
-//  - FEINT bait: Dracula's feint (cancelled wind-up) while the Feint tactic is on: the Pitborn bites with probability reactions.feintBiteChance, starts a counter attack, and Dracula's riposte beats it.
+//  - FEINT bait: the player's feint (cancelled wind-up) while the Feint tactic is on: the enemy bites with probability reactions.feintBiteChance, starts a counter attack, and the player's riposte beats it.
 // Inert unless STSteer.Active. No hooks into existing files: only public members (AIBrain.profile / ai, DuelFighter.Press / PressSidestep / ParrySuccess / Stagger, ContactRelay events).
 [Serializable] public class STRProb { public float guard, parry, roll, sidestep, trade; }
-[Serializable] public class STRMoveRow { public string type = ""; public STRProb dracula = new STRProb(); public STRProb pitborn = new STRProb(); }
+[Serializable] public class STRMoveRow { public string type = ""; public STRProb player = new STRProb(); public STRProb enemy = new STRProb(); }
 [Serializable] public class STRMoveMap { public string move = "", type = "light", label = "cut"; }
 [Serializable] public class STRMul { public string key = ""; public float guard = 1f, parry = 1f, roll = 1f, sidestep = 1f, trade = 1f, punish = 1f; }
 [Serializable]
@@ -29,7 +29,7 @@ public class STRSide
 public class STRCfg
 {
     public bool enabled = true; public int seed = 20261104; public float feintBiteChance = 0.55f, sidestepLeadTicks = 6f, feedMinGapS = 0.5f;
-    public STRSide dracula = new STRSide(), pitborn = new STRSide(); public STRFeint feint = new STRFeint();
+    public STRSide player = new STRSide(), enemy = new STRSide(); public STRFeint feint = new STRFeint();
     public STRMoveRow[] byMove = new STRMoveRow[0]; public STRMoveMap[] moveTypes = new STRMoveMap[0];
     public STRMul[] stanceMul = new STRMul[0]; public STRMul[] tacticMul = new STRMul[0];
 }
@@ -47,7 +47,7 @@ public class STReactions : MonoBehaviour
     class Act { public int tick; public string kind; public int dir; public DuelFighter who; public int serial; }
     class Ctx
     {
-        public DuelFighter df; public AIBrain brain; public STRSide cfg; public bool isDracula;
+        public DuelFighter df; public AIBrain brain; public STRSide cfg; public bool isPlayer;
         public Knob kReaction = new Knob(), kParry = new Knob(), kDodge = new Knob(), kLapse = new Knob(), kGuard = new Knob(), kPressure = new Knob(), kAgg = new Knob();
         public bool hasOv; public float ovReaction, ovParry, ovDodge, ovLapse, ovGuard; public int ovSerial = -1;
         public float pressureDelta, aggMul = 1f, patienceUntil; public List<int> hist = new List<int>();
@@ -88,14 +88,14 @@ public class STReactions : MonoBehaviour
 
     void Bind()
     {
-        var d = STSteer.Dracula; var p = STSteer.Pitborn;
-        if (d == null || p == null) foreach (var f in UnityEngine.Object.FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) { if (f.name.Contains("Pitborn")) p = p ?? f; else if (f.name.Contains("Dracula")) d = d ?? f; }
+        var d = STSteer.Player; var p = STSteer.Enemy;
+        if (d == null || p == null) foreach (var f in UnityEngine.Object.FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) { string fid = Roster.IdOf(f); if (fid == Roster.EnemyId) p = p ?? f; else if (fid == Roster.PlayerId) d = d ?? f; }
         if (d != null && (dra == null || dra.df != d)) dra = MakeCtx(d, true);
         if (p != null && (pit == null || pit.df != p)) pit = MakeCtx(p, false);
     }
     Ctx MakeCtx(DuelFighter f, bool isDra)
     {
-        var c = new Ctx { df = f, brain = f.GetComponent<AIBrain>(), isDracula = isDra, cfg = isDra ? cfg.dracula : cfg.pitborn };
+        var c = new Ctx { df = f, brain = f.GetComponent<AIBrain>(), isPlayer = isDra, cfg = isDra ? cfg.player : cfg.enemy };
         c.patienceUntil = Time.time + 2f; return c;
     }
     Ctx CtxOf(DuelFighter f) { return dra != null && dra.df == f ? dra : (pit != null && pit.df == f ? pit : null); }
@@ -112,7 +112,7 @@ public class STReactions : MonoBehaviour
     int TypeIdx(string t) { return Mathf.Max(0, Array.IndexOf(typeNames, t)); }
     STRProb ProbFor(string type, bool isDra)
     {
-        foreach (var r in cfg.byMove) if (r.type == type) return isDra ? r.dracula : r.pitborn;
+        foreach (var r in cfg.byMove) if (r.type == type) return isDra ? r.player : r.enemy;
         return null;
     }
     STRMul Find(STRMul[] a, string key) { foreach (var m in a) if (m.key == key) return m; return null; }
@@ -134,9 +134,9 @@ public class STReactions : MonoBehaviour
         if (f == pit.df && pitBiteIssued && m.id == cfg.feint.biteMove) { biteAttack = true; biteDone = false; pitBiteIssued = false; pitBiteWanted = false; }
 
         if (!BrainOn(def)) return;
-        var P = ProbFor(map.type, def.isDracula); if (P == null) return;
+        var P = ProbFor(map.type, def.isPlayer); if (P == null) return;
         float skill = def.cfg.skill, g = P.guard * skill, pa = P.parry * skill, ro = P.roll * skill, si = P.sidestep * skill, tr = P.trade;
-        if (def.isDracula)
+        if (def.isPlayer)
         {
             Mul(ref g, ref pa, ref ro, ref si, ref tr, Find(cfg.stanceMul, STSteer.Stance.ToString()));
             var run = STSteer.Running; if (run.HasValue) Mul(ref g, ref pa, ref ro, ref si, ref tr, Find(cfg.tacticMul, run.Value.ToString()));
@@ -160,7 +160,7 @@ public class STReactions : MonoBehaviour
         if (pick == "sidestep") acts.Add(new Act { tick = Mathf.Max(start + delay, contact - Mathf.RoundToInt(cfg.sidestepLeadTicks)), kind = "sidestep", dir = Rand() < 0.5f ? -1 : 1, who = def.df, serial = def.ovSerial });
         else if (pick == "trade") acts.Add(new Act { tick = start + delay, kind = "trade", who = def.df, serial = def.ovSerial });
         ApplyKnobs(def);
-        STSteer.Log("react:" + (def.isDracula ? "dracula" : "pitborn"), map.type + " -> " + pick + " delay " + (delay * 1000 / 60) + " ms", "g" + g.ToString("0.00") + " pa" + pa.ToString("0.00") + " ro" + ro.ToString("0.00") + " si" + si.ToString("0.00") + " tr" + tr.ToString("0.00"));
+        STSteer.Log("react:" + (def.isPlayer ? Roster.PlayerName.ToLowerInvariant() : Roster.EnemyName.ToLowerInvariant()), map.type + " -> " + pick + " delay " + (delay * 1000 / 60) + " ms", "g" + g.ToString("0.00") + " pa" + pa.ToString("0.00") + " ro" + ro.ToString("0.00") + " si" + si.ToString("0.00") + " tr" + tr.ToString("0.00"));
     }
     static void Mul(ref float g, ref float pa, ref float ro, ref float si, ref float tr, STRMul m)
     {
@@ -188,7 +188,7 @@ public class STReactions : MonoBehaviour
         Bind(); var atk = CtxOf(f); var def = atk == dra ? pit : dra; if (atk == null || def == null) return;
         bool heavy = MapOf(m.id).type == "heavy" || MapOf(m.id).type == "special";
         SchedulePunish(def, f, heavy, "whiff");
-        if (def.isDracula && (def.df.state == FState.Roll || def.df.IFrames)) Feed("You dodged his " + MapOf(m.id).label);
+        if (def.isPlayer && (def.df.state == FState.Roll || def.df.IFrames)) Feed("You dodged his " + MapOf(m.id).label);
     }
     void OnEvent(CombatEvent e)
     {
@@ -201,7 +201,7 @@ public class STReactions : MonoBehaviour
     {
         if (!BrainOn(def)) return;
         float p = def.cfg.punish + (heavy ? def.cfg.punishHeavyBonus : 0f);
-        if (def.isDracula)
+        if (def.isPlayer)
         {
             var sm = Find(cfg.stanceMul, STSteer.Stance.ToString()); if (sm != null) p *= sm.punish;
             var run = STSteer.Running; if (run.HasValue) { var tm = Find(cfg.tacticMul, run.Value.ToString()); if (tm != null) p *= tm.punish; }
@@ -209,7 +209,7 @@ public class STReactions : MonoBehaviour
         if (Rand() >= Mathf.Clamp01(p)) return;
         int delay = Mathf.Max(3, Mathf.RoundToInt((def.cfg.punishDelayMs + (Rand() * 2f - 1f) * def.cfg.punishJitterMs) * 0.06f));
         acts.Add(new Act { tick = Duel.TickCount + delay, kind = "punish", who = def.df, serial = -1 });
-        STSteer.Log("react:" + (def.isDracula ? "dracula" : "pitborn"), "punish " + why + " in " + (delay * 1000 / 60) + " ms", "p=" + p.ToString("0.00"));
+        STSteer.Log("react:" + (def.isPlayer ? Roster.PlayerName.ToLowerInvariant() : Roster.EnemyName.ToLowerInvariant()), "punish " + why + " in " + (delay * 1000 / 60) + " ms", "p=" + p.ToString("0.00"));
     }
 
     // ---------------- feint bait ----------------
@@ -225,8 +225,8 @@ public class STReactions : MonoBehaviour
         var d = dra.df; bool tacticOn = Time.time < feintArmUntil || STSteer.IsRunning(STTactic.Feint);
         if (draPrevValid && draPrevState == FState.Windup && draPrevT <= cfg.feint.feintMaxTick && (d.state == FState.Loco || d.state == FState.Guard) && (tacticOn || !cfg.feint.requireTactic))
         {
-            if (Rand() < cfg.feintBiteChance) { pitBiteWanted = true; pitBiteIssued = false; biteArmUntil = Time.time + cfg.feint.armSeconds; nextPressTick = 0; STSteer.Log("feint", "pitborn bites", "p=" + cfg.feintBiteChance); }
-            else { Feed("He saw through your feint"); STSteer.Log("feint", "pitborn ignores", ""); }
+            if (Rand() < cfg.feintBiteChance) { pitBiteWanted = true; pitBiteIssued = false; biteArmUntil = Time.time + cfg.feint.armSeconds; nextPressTick = 0; STSteer.Log("feint", Roster.EnemyName.ToLowerInvariant() + " bites", "p=" + cfg.feintBiteChance); }
+            else { Feed("He saw through your feint"); STSteer.Log("feint", Roster.EnemyName.ToLowerInvariant() + " ignores", ""); }
         }
         draPrevState = d.state; draPrevT = d.t; draPrevValid = true;
 
@@ -319,7 +319,7 @@ public class STReactions : MonoBehaviour
     }
 
     // ---------------- write the knobs into the brains ----------------
-    public void ReapplyDracula() { if (dra != null) ApplyKnobs(dra); }
+    public void ReapplyPlayer() { if (dra != null) ApplyKnobs(dra); }
     void ApplyKnobs(Ctx c)
     {
         if (!BrainOn(c)) return;

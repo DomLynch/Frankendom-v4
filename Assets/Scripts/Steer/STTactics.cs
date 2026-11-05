@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Tactic windows (strategic, ~3 s): each overlays Dracula's AI profile and forces a few AiState fields (mode, next attack, wait, retreat/disengage timers)
+// Tactic windows (strategic, ~3 s): each overlays the player's AI profile and forces a few AiState fields (mode, next attack, wait, retreat/disengage timers)
 // from AIBrain's per-frame pre-hook. The AI's own reactive logic (parry / dodge / block of a noticed swing) keeps running, biased by the overlay.
 // Cooldowns count sim ticks (Duel.TickCount), never Time.time.
 public class STTactics

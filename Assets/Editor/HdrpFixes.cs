@@ -12,7 +12,10 @@ public static class HdrpFixes
     [System.Serializable] public class Water { public float x, y, z, size, metallic, smoothness; public float[] color; public string normalMap; public float normalScale = 1f, normalTiling = 1f; public float[] scroll; }
     // generic placed prop (data layer: hdrp_fixes.json "props"). glb = LOD0 model asset; lods = optional LOD1, LOD2... model assets; lodHeights = LODGroup screen-relative transition heights (one per LOD, last = cull height)
     [System.Serializable] public class Prop { public string name, glb; public string[] lods; public float[] pos, euler, scale, lodHeights; }
-    [System.Serializable] public class Fx { public Prop[] props; public Water water; public MatAdj[] matAdjust; public Box[] boxes; public string[] hide; public string fillLight; public string[] fillExclude; public int fillLayerBit; public string rimLight; public int rimLayerBit; public string[] rimInclude; public string rim2Light; public int rim2LayerBit; public string[] rim2Include; public string keepParticlesUnder; public string rim3Light; public int rim3LayerBit; public string[] rim3Include; public string[] rimExclude; }
+    // lane LOOK fix 2: roster-keyed rim rigs (who = "player" | "enemy" | roster id). Spot light, shadows off, only on that character's renderers (light layer bit), follows it from behind / above (RimRig).
+    // lux = illuminance at the aim point; the light is set in candela = lux * distance^2 (distance from the offsets), colour from kelvin.
+    [System.Serializable] public class RimRigRow { public string name = "", who = "player"; public int layerBit = 5; public float kelvin = 7000f, lux = 2500f, behind = 2.5f, above = 2.6f, side = 0.6f, aimHeight = 1.4f, spotAngle = 50f, range = 8f, volumetricDimmer = 0f; }
+    [System.Serializable] public class Fx { public RimRigRow[] rimRigs; public Prop[] props; public Water water; public MatAdj[] matAdjust; public Box[] boxes; public string[] hide; public string fillLight; public string[] fillExclude; public int fillLayerBit; public string rimLight; public int rimLayerBit; public string[] rimInclude; public string rim2Light; public int rim2LayerBit; public string[] rim2Include; public string keepParticlesUnder; public string rim3Light; public int rim3LayerBit; public string[] rim3Include; public string[] rimExclude; }
     public static void Run()
     {
         var scene = EditorSceneManager.GetActiveScene(); if (scene.path != "Assets/Scenes/HadesSlice.unity") scene = EditorSceneManager.OpenScene("Assets/Scenes/HadesSlice.unity");
@@ -55,6 +58,7 @@ public static class HdrpFixes
             foreach (var l in Object.FindObjectsByType<Light>(FindObjectsSortMode.None)) if (l.name == rs.Item1) { var hd = l.GetComponent<HDAdditionalLightData>(); if (hd != null) hd.lightlayersMask = (UnityEngine.Rendering.HighDefinition.RenderingLayerMask)rb; }
             Debug.Log("HDRPFIXES rim " + rs.Item1 + " renderers=" + rim);
         }
+        BuildRimRigs(F);
         // dark water surface under the walkway: faint cold moonlit sheen so the waterline reads in the shadows (data: water block in hdrp_fixes.json)
         { var old = GameObject.Find("WaterSheen"); if (old != null) Object.DestroyImmediate(old); }
         if (F.water != null && F.water.size > 0f)
@@ -86,6 +90,32 @@ public static class HdrpFixes
             }
         EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene);
         Debug.Log($"HDRPFIXES done renderers+{hit} excluded={skip}");
+    }
+    static void BuildRimRigs(Fx F)
+    {
+        var old = GameObject.Find("HDRP_RimRigs"); if (old != null) Object.DestroyImmediate(old);
+        if (F.rimRigs == null || F.rimRigs.Length == 0) return;
+        var root = new GameObject("HDRP_RimRigs");
+        foreach (var rr in F.rimRigs)
+        {
+            if (rr == null || rr.layerBit < 0 || rr.layerBit > 15) { Debug.LogWarning("HDRPFIXES rimRig skipped (layerBit must be 0..15)"); continue; }
+            string id = RimRig.ResolveId(rr.who); string obj = Roster.Get(id).objectName; uint rb = 1u << rr.layerBit; int hit = 0;
+            foreach (var r in Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None))
+            {
+                string path = r.transform.root.name + "/" + AnimationUtility_GetPath(r.transform); bool inc = obj.Length > 0 && path.Contains(obj);
+                if (inc && F.rimExclude != null) foreach (var x in F.rimExclude) if (!string.IsNullOrEmpty(x) && path.Contains(x)) inc = false;
+                if (inc) { r.renderingLayerMask |= rb; hit++; } else r.renderingLayerMask &= ~rb;
+            }
+            var go = new GameObject(string.IsNullOrEmpty(rr.name) ? "Rim_" + id : rr.name); go.transform.SetParent(root.transform, false);
+            var l = go.AddComponent<Light>(); var hd = go.AddComponent<HDAdditionalLightData>();
+            float d = new Vector3(rr.behind, rr.above - rr.aimHeight, rr.side).magnitude; if (d < 0.1f) d = 0.1f;
+            l.type = LightType.Spot; l.spotAngle = rr.spotAngle; l.range = rr.range; l.lightUnit = LightUnit.Candela; l.intensity = rr.lux * d * d;
+            l.useColorTemperature = false; l.color = Mathf.CorrelatedColorTemperatureToRGB(rr.kelvin);
+            l.shadows = LightShadows.None; hd.EnableShadows(false); hd.volumetricDimmer = rr.volumetricDimmer; hd.lightlayersMask = (UnityEngine.Rendering.HighDefinition.RenderingLayerMask)rb;
+            var rig = go.AddComponent<RimRig>(); rig.who = rr.who; rig.behind = rr.behind; rig.above = rr.above; rig.side = rr.side; rig.aimHeight = rr.aimHeight;
+            var t = GameObject.Find(obj); if (t != null) { var fwd = Vector3.forward; go.transform.position = t.transform.position + fwd * rr.behind + Vector3.up * rr.above; go.transform.rotation = Quaternion.LookRotation((t.transform.position + Vector3.up * rr.aimHeight - go.transform.position).normalized); }
+            Debug.Log("HDRPFIXES rimRig " + go.name + " who=" + rr.who + " id=" + id + " renderers=" + hit + " cd=" + l.intensity.ToString("F0") + " K=" + rr.kelvin);
+        }
     }
     // PropsRoot: rebuilt from F.props every run (replace-if-exists, idempotent). Built before the fill-layer pass so the props get the fill light layer too.
     static void BuildProps(UnityEngine.SceneManagement.Scene scene, Prop[] props)

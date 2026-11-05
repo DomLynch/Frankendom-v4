@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 
 // P2 blood scaling as DATA (Assets/Data/blood.json): how much blood a hit throws by hit weight (light / heavy / kick), hit location (head / torso / arm / legs) and who is hit
-// (flesh Dracula vs armoured Pitborn). Dom's rule: blood is dark, non-glowing droplets on flesh; sparks and flash only on metal / guard contact (victims[].sparks / flash).
+// (flesh vs armoured: roster.json characters[].armoured). Dom's rule: blood is dark, non-glowing droplets on flesh; sparks and flash only on metal / guard contact (victims[].sparks / flash).
 // Consumers: BloodBurst (strand count, speed, lift), CombatVFX (drops, mist, sparks, flash), BloodGround (ground splats).
 // All multipliers are 1 when blood.json is missing, so the V3 numbers stay exactly as they are today.
 public static class BloodTable
@@ -29,10 +29,13 @@ public static class BloodTable
 
     static Mul Find(Mul[] a, string id) { if (a != null && id != null) for (int i = 0; i < a.Length; i++) if (a[i] != null && a[i].id == id) return a[i]; return null; }
 
+    // legacy default when no victims[] row matches: the roster row's armoured flag (metal sparks / flashes, flesh bleeds)
+    static bool Armoured(DuelFighter v) { return v != null && Roster.Get(Roster.IdOfName(v.name)).armoured; }
+
     // weight / location come from HitReactionTable.Last (null = legacy: ev.heavy picks heavy/light, torso)
     public static Scale For(DuelFighter victim, bool heavy, bool kill)
     {
-        var d = Get(); var s = new Scale { count = 1f, drops = 1f, speed = 1f, up = 1f, mist = 1f, ground = 1f, victim = 1f, sparks = victim != null && victim.name.Contains("Pitborn"), flash = victim != null && victim.name.Contains("Pitborn") };
+        var d = Get(); var s = new Scale { count = 1f, drops = 1f, speed = 1f, up = 1f, mist = 1f, ground = 1f, victim = 1f, sparks = Armoured(victim), flash = Armoured(victim) };
         if (!d.enabled) return s;
         var h = HitReactionTable.Last;
         string w = h != null ? h.weight : (heavy ? "heavy" : "light"), loc = h != null ? h.location : "torso";

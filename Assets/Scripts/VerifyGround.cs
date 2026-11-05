@@ -9,12 +9,12 @@ using UnityEngine.Rendering.HighDefinition;
 
 // Acceptance harness (player side): -verifyGround [-verifyOut:<dir>] [-verifydata:<file>].  Lane F.
 //  1. Switches Duel / PlayerBrain / AIBrain / TouchControls / CameraRig (and any Alpha controller) off and walks the fighters one at a time
-//     (Dracula, then the Pitborn) through a grid of lane points (verify_ground.json: xs x zs, plus edgeXs at the middle z).
+//     (the player, then the enemy) through a grid of lane points (verify_ground.json: xs x zs, plus edgeXs at the middle z).
 //     At each point the fighter is teleported (CharacterController off, position, on) and settles for settleSeconds (gravity runs).
 //  2. Per point: <dir>/<fighter>_x<x>_z<z>_side.png (fixed side camera, render-texture readback) and _game.png (the normal game camera, with the OnGUI label).
 //  3. <dir>/verify.csv: root y, foot / toe bone y, sole y (lowest baked skinned vertex under the feet), physics ground hit y (fighter layers + TreadRay ignored),
 //     the VISIBLE top y (upward-facing triangles of readable non-fighter meshes, plus Terrain) and PASS / FAIL / WARN.
-//  4. Then a fightSeconds autoplay fight (brains + Duel + CameraRig back on, Dracula driven by the AI exactly like -autoplay) with fight_<n>.png every shotEvery s.
+//  4. Then a fightSeconds autoplay fight (brains + Duel + CameraRig back on, the player driven by the AI exactly like -autoplay) with fight_<n>.png every shotEvery s.
 //  5. Exit code: 0 no FAIL (WARN allowed), 1 any FAIL, 2 internal error. <dir>/verify_summary.txt has the verdict.
 // All numbers are data: Assets/Data/verify_ground.json (StreamingAssets copy for a player, or -verifydata:<file>). The defaults below only mirror that file.
 [DefaultExecutionOrder(-90)]
@@ -28,7 +28,7 @@ public class VerifyGround : MonoBehaviour
         public float[] zs = { 11.5f, 14.5f, 17.5f, 20.5f, 23f };
         public float[] edgeXs = { -3.1f, 3.1f };
         public float settleSeconds = 1f, tolerance = 0.05f, fightSeconds = 60f, shotEvery = 3f, fightYTol = 0.15f;
-        public string[] fighters = { "Dracula", "Pitborn" };
+        public string[] fighters = new string[0];   // scene object names in test order; empty = { Roster.PlayerObject, Roster.EnemyObject }
         public int[] groundMaskExcludeLayers = { 8, 9 };
         public bool gameLocomotion = false;        // true: DuelFighter stays on (its own gravity AND its +-2.45 m stair clamp); false: harness gravity only, no clamp
         public float castFromY = 6f, dropHeight = 0.3f, groundRayUp = 3f, groundRayLen = 20f;
@@ -49,7 +49,7 @@ public class VerifyGround : MonoBehaviour
         public HeadCfg head = new HeadCfg();
     }
 
-    // Head close-up check (Dracula's original head): data block "head" of verify_ground.json
+    // Head close-up check (the player's original head): data block "head" of verify_ground.json
     [Serializable]
     public class HeadCfg
     {
@@ -199,7 +199,7 @@ public class VerifyGround : MonoBehaviour
     {
         if (string.IsNullOrEmpty(overlay)) return;
         var st = new GUIStyle(GUI.skin.label) { fontSize = Mathf.Max(12, Screen.height / 30), fontStyle = FontStyle.Bold };
-        var r = new Rect(12, Mathf.Max(8, Screen.height * 120f / 1080f), Screen.width - 24, st.fontSize * 3);   // below the HUD name/bars (QC: label drew over DRACULA)
+        var r = new Rect(12, Mathf.Max(8, Screen.height * 120f / 1080f), Screen.width - 24, st.fontSize * 3);   // below the HUD name/bars (QC: label drew over the player name)
         st.normal.textColor = Color.black; GUI.Label(new Rect(r.x + 2, r.y + 2, r.width, r.height), overlay, st);
         st.normal.textColor = new Color(1f, 0.95f, 0.3f); GUI.Label(r, overlay, st);
     }
@@ -210,6 +210,7 @@ public class VerifyGround : MonoBehaviour
     IEnumerator Main()
     {
         string src; D = LoadData(out src);
+        if (D.fighters == null || D.fighters.Length < 2) D.fighters = new[] { Roster.PlayerObject, Roster.EnemyObject };   // test order: player, then enemy
         notes.Add("data: " + src);
         groundMask = ~0; foreach (int l in D.groundMaskExcludeLayers) groundMask &= ~(1 << l);
 
@@ -280,7 +281,7 @@ public class VerifyGround : MonoBehaviour
         overlay = "";
         if (sideCam) sideCam.enabled = false;
 
-        // ---- head close-up check (Dracula's original head) ----
+        // ---- head close-up check (the player's original head) ----
         if (D.head != null && D.head.enabled)
         {
             var dracH = fighters[0]; var pitH = fighters[1];
@@ -481,20 +482,20 @@ public class VerifyGround : MonoBehaviour
         }
         Physics.SyncTransforms();
         foreach (var f in fighters) f.enabled = true;
-        // -autoplay semantics: PlayerBrain stays off, Dracula's AIBrain runs in "auto" mode (the private flag AIBrain.Awake sets from -autoplay), rig lockRange 80
+        // -autoplay semantics: PlayerBrain stays off, the player's AIBrain runs in "auto" mode (the private flag AIBrain.Awake sets from -autoplay), rig lockRange 80
         foreach (var b in switchedOff)
         {
             if (b == null || b is PlayerBrain) continue;
             if (b is AIBrain)
             {
                 var fld = typeof(AIBrain).GetField("auto", BindingFlags.NonPublic | BindingFlags.Instance);
-                if (fld != null) fld.SetValue(b, true); else notes.Add("AIBrain.auto field not found: Dracula AI not forced to auto");
+                if (fld != null) fld.SetValue(b, true); else notes.Add("AIBrain.auto field not found: " + Roster.PlayerName + " AI not forced to auto");
             }
             b.enabled = true;
         }
         foreach (var f in fighters)
         {
-            var ai = f.GetComponent<AIBrain>();   // Dracula's brain was disabled in Awake (no -autoplay) so it is not in switchedOff
+            var ai = f.GetComponent<AIBrain>();   // the player's brain was disabled in Awake (no -autoplay) so it is not in switchedOff
             if (ai != null && !ai.enabled)
             {
                 var fld = typeof(AIBrain).GetField("auto", BindingFlags.NonPublic | BindingFlags.Instance);

@@ -7,10 +7,10 @@ using UnityEngine;
 {
     public int seed = 1337;
     public string defaultStance = "Neutral";
-    public float checkEverySeconds = 0.5f;     // how often the controller re-resolves fighters / re-asserts Dracula's AI
+    public float checkEverySeconds = 0.5f;     // how often the controller re-resolves fighters / re-asserts the player's AI
     public bool feedLines = true;              // S1 emits basic feed lines (parry, guard break, dodge, kill, tactic names)
     public bool feedHits = false;              // also one line per landed hit
-    public float fightResetDeadSeconds = 0.5f; // Pitborn must be dead this long before a revive counts as a new fight
+    public float fightResetDeadSeconds = 0.5f; // the enemy must be dead this long before a revive counts as a new fight
     public bool disablePlayerBrain = true;
 }
 
@@ -28,9 +28,9 @@ using UnityEngine;
 [Serializable] public class STStanceDef
 {
     public string id = "Neutral";
-    public float dealtMul = 1f, takenMul = 1f;     // damage multipliers (Dracula as attacker / as defender)
+    public float dealtMul = 1f, takenMul = 1f;     // damage multipliers (the player as attacker / as defender)
     public STTrickster trickster = new STTrickster();   // per-hit seeded roll (only when enabled)
-    public STOps profile = new STOps();             // AI bias on Dracula's AiProfile
+    public STOps profile = new STOps();             // AI bias on the player's AiProfile
 }
 [Serializable] public class STStancesBlock { public STStanceDef[] list = new STStanceDef[0]; }
 
@@ -39,7 +39,7 @@ using UnityEngine;
     public string id = "Press";
     public float cooldownSeconds = 6f, maxSeconds = 3f;
     public int usesPerFight = 0;              // 0 = unlimited
-    public float foeHealthFracMax = 0f;       // > 0: enabled only when Pitborn health / max <= this
+    public float foeHealthFracMax = 0f;       // > 0: enabled only when the enemy health / max <= this
     public float staminaMin = 0f;             // enabled only above this stamina
     public string forceMode = "";             // Approach | Circle | Retreat | Guard (AiMode), held while the tactic runs
     public bool waitZero = false;             // AiState.wait = 0: attack as soon as legal

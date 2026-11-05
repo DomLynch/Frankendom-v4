@@ -22,7 +22,7 @@
   "enabled": true, "max": 24, "texSize": 64, "seed": 29,
   "lifeSec": 45.0, "fadeSec": 8.0, "yOffset": 0.012, "rayUp": 0.6, "rayDown": 2.2,
   "minRadius": 0.2, "maxRadius": 0.85, "minSize": 0.1, "maxSize": 0.32, "alpha": 0.8, "killSizeMul": 1.5, "behindMul": 0.35,
-  "color": [0.11, 0.008, 0.008],
+  "color": [0.30, 0.02, 0.02],
   "light": 1, "heavy": 2, "kick": 0, "kill": 4
  }
 }

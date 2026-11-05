@@ -48,8 +48,7 @@
         "enabled": true,
         "noiseTexture": "Assets/VFX/furnace_fog_noise_32.asset",
         "volumes": [
-            { "name": "DoorwayFog_Inside", "offsetZ": 4.0, "centerHeight": 2.4, "size": [4.4, 4.6, 8.0], "albedo": [1.0, 0.45, 0.2], "meanFreePath": 5.0, "anisotropy": 0.3, "tiling": [1.0, 1.0, 1.0], "scroll": [0.0, 0.04, -0.05], "fadePos": [0.25, 0.3, 0.25], "fadeNeg": [0.25, 0.05, 0.25] },
-            { "name": "DoorwayFog_Outside", "offsetZ": -1.8, "centerHeight": 1.8, "size": [5.0, 3.6, 3.6], "albedo": [1.0, 0.45, 0.2], "meanFreePath": 6.0, "anisotropy": 0.3, "tiling": [1.2, 1.2, 1.2], "scroll": [0.02, 0.03, -0.08], "fadePos": [0.3, 0.4, 0.3], "fadeNeg": [0.3, 0.05, 0.3] }
+            { "name": "DoorwayFog_Inside", "offsetZ": 4.0, "centerHeight": 2.4, "size": [4.4, 4.6, 8.0], "albedo": [0.45, 0.09, 0.03], "meanFreePath": 9.0, "anisotropy": 0.3, "tiling": [1.0, 1.0, 1.0], "scroll": [0.0, 0.04, -0.05], "fadePos": [0.25, 0.3, 0.25], "fadeNeg": [0.25, 0.05, 0.25] }
         ]
     },
     "light": {
@@ -63,7 +62,7 @@
         "centerHeight": 1.8,
         "shadows": true,
         "shadowResolution": 512,
-        "volumetricDimmer": 0.6,
+        "volumetricDimmer": 0.3,
         "spotAngle": 120,
         "flicker": { "baseValue": 1.0, "amplitude": 0.15, "frequency": 1.0, "octaves": 1, "seed": 4.3, "lacunarity": 2.0, "gain": 0.5 }
     },

@@ -73,6 +73,7 @@ public static class FinisherLook
     {
         try
         {
+            if (LookData.Get().exposure.lockFinisher) return;   // lane LOOK fix 1: look.json exposure.lockFinisher = no finisher-only exposure override (finishers use the gameplay exposure)
             float ev = FinisherConfig.Get().rt.look.darkenEV; if (prof == null || Mathf.Abs(ev) < 1e-4f) return;
             var st = VolumeManager.instance.stack; var cur = st != null ? st.GetComponent<Exposure>() : null;
             if (cur == null || cur.mode.value != ExposureMode.Fixed) { Debug.LogWarning("[FinisherLook] darkenEV set but the scene exposure is not Fixed: ignored"); return; }

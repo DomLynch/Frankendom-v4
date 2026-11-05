@@ -6,7 +6,7 @@ using UnityEngine.Rendering.HighDefinition;
 // Runtime state machine of the Hades-gate gateway: ABYSS (default) <-> RIFT (a window into another world, opened on a boss trigger).
 // Everything tunable lives in Assets/Data/gateway.json (GatewayTable). HdrpGateway (editor builder) creates the objects and fills the wiring fields below.
 //
-// Modes:   Auto  = ABYSS until a trigger latches the RIFT open (Pitborn HP <= trigger.hpFraction, or a special move landed by trigger.specialActor);
+// Modes:   Auto  = ABYSS until a trigger latches the RIFT open (HP of trigger.hpTarget <= trigger.hpFraction, or a special move landed by trigger.specialActor);
 //          Abyss / Rift = forced (gateway.json state.forceState, the command-line arg -gateway:abyss | rift | auto, or debug keys F7 / F8 / F9).
 // 'progress' runs 0..1 over transition.openSeconds (closeSeconds going back); every visual is a function of it:
 //          fog parts (abyss fog thins and shrinks), _Open dissolve from the centre outward, shock ring, flash, realm-light ramp, shards, camera rumble;
@@ -29,12 +29,12 @@ public class GatewayRift : MonoBehaviour
     public Mode mode = Mode.Auto;
     [Range(0f, 1f)] public float progress;
     public bool wantOpen;
-    public float pitbornFraction = 1f;
+    public float targetFraction = 1f;
 
     GatewayTable.Data G;
     Material mat;
     GatewayCameraShake shake; float shakeSearch;
-    Health pitborn; float pollTimer, findTimer;
+    Health targetHealth; float pollTimer, findTimer;
     bool latched, suppressed, specialSeen; float deadFor;
     float dissolveCur;
     float flashAge = 999f, prevProgress = -1f, appliedProgress = -2f;
@@ -67,7 +67,7 @@ public class GatewayRift : MonoBehaviour
         if (G == null || G.trigger == null || !G.trigger.specialEnabled || e.actor == null) return;
         if (e.type != "Hit" || string.IsNullOrEmpty(e.moveId)) return;
         if (!string.IsNullOrEmpty(G.trigger.specialMovePrefix) && !e.moveId.StartsWith(G.trigger.specialMovePrefix, StringComparison.Ordinal)) return;
-        if (!string.IsNullOrEmpty(G.trigger.specialActor) && e.actor.name != G.trigger.specialActor) return;
+        if (!string.IsNullOrEmpty(G.trigger.specialActor) && e.actor.name != ActorObject(G.trigger.specialActor)) return;
         specialSeen = true;
     }
 
@@ -272,32 +272,41 @@ public class GatewayRift : MonoBehaviour
         if (pollTimer <= 0f)
         {
             pollTimer = Mathf.Max(0.05f, T.pollSeconds);
-            ReadPitborn();
+            ReadTarget();
         }
 
         if (!latched)
         {
             if (suppressed) return false;
-            bool hp = T.hpEnabled && pitborn != null && pitbornFraction <= T.hpFraction && !pitborn.Dead;
-            if (hp || specialSeen) { latched = true; Debug.Log("GATEWAY opening: trigger " + (specialSeen ? "special move" : "Pitborn hp " + pitbornFraction.ToString("F2"))); }
+            bool hp = T.hpEnabled && targetHealth != null && targetFraction <= T.hpFraction && !targetHealth.Dead;
+            if (hp || specialSeen) { latched = true; Debug.Log("GATEWAY opening: trigger " + (specialSeen ? "special move" : targetHealth.name + " hp " + targetFraction.ToString("F2"))); }
         }
         else
         {
-            if (T.closeOnTargetDeath && pitborn != null && pitborn.Dead) { deadFor += dt; if (deadFor >= T.closeDelay) { latched = false; suppressed = true; Debug.Log("GATEWAY closing: Pitborn dead"); } }
-            else if (T.hpEnabled && !specialSeen && pitborn != null && pitbornFraction > T.hpFraction + T.closeHysteresis) { latched = false; Debug.Log("GATEWAY closing: Pitborn healed to " + pitbornFraction.ToString("F2")); }
+            if (T.closeOnTargetDeath && targetHealth != null && targetHealth.Dead) { deadFor += dt; if (deadFor >= T.closeDelay) { latched = false; suppressed = true; Debug.Log("GATEWAY closing: " + targetHealth.name + " dead"); } }
+            else if (T.hpEnabled && !specialSeen && targetHealth != null && targetFraction > T.hpFraction + T.closeHysteresis) { latched = false; Debug.Log("GATEWAY closing: " + targetHealth.name + " healed to " + targetFraction.ToString("F2")); }
         }
         return latched;
     }
 
-    void ReadPitborn()
+    // gateway.json trigger.hpTarget / specialActor: "enemy" | "player" (the Roster role, so a character swap needs no edit here) or a character id; "" stays "" (any actor)
+    static string ActorObject(string who)
     {
-        if (pitborn == null)
+        if (string.IsNullOrEmpty(who)) return who;
+        if (who == "enemy") return Roster.EnemyObject;
+        if (who == "player") return Roster.PlayerObject;
+        return Roster.Get(who).objectName;
+    }
+
+    void ReadTarget()
+    {
+        if (targetHealth == null)
         {
             findTimer -= 1f; if (findTimer > 0f && Time.frameCount > 5) return; findTimer = 4f;   // retry every few polls, not every frame
-            foreach (var h in FindObjectsByType<Health>()) if (h.name == G.trigger.hpTarget) { pitborn = h; break; }
-            if (pitborn == null) return;
+            foreach (var h in FindObjectsByType<Health>()) if (h.name == ActorObject(G.trigger.hpTarget)) { targetHealth = h; break; }
+            if (targetHealth == null) return;
         }
-        pitbornFraction = pitborn.max > 0f ? Mathf.Clamp01(pitborn.current / pitborn.max) : 1f;
+        targetFraction = targetHealth.max > 0f ? Mathf.Clamp01(targetHealth.current / targetHealth.max) : 1f;
     }
 
     // ================================================================ opening kick: boom + shake

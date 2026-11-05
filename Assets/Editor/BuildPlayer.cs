@@ -14,7 +14,7 @@ public static class BuildPlayerCmd
         PlayerSettings.runInBackground = true;
         PlayerSettings.defaultScreenWidth = 1920; PlayerSettings.defaultScreenHeight = 1080;
         PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64, false); PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, new[] { UnityEngine.Rendering.GraphicsDeviceType.Direct3D12 });
-        var r = BuildPipeline.BuildPlayer(new[] { "Assets/Scenes/HadesSlice.unity" }, (System.IO.File.Exists("Tools/build_dir.txt") ? System.IO.File.ReadAllText("Tools/build_dir.txt").Trim() : "Builds/HDRP_ultra") + "/HadesSlice.exe", BuildTarget.StandaloneWindows64, BuildOptions.Development);
+        var r = BuildPipeline.BuildPlayer(new[] { "Assets/Scenes/HadesSlice.unity" }, (System.IO.File.Exists("Tools/build_dir.txt") ? System.IO.File.ReadAllText("Tools/build_dir.txt").Trim() : "Builds/HDRP_ultra") + "/HadesSlice.exe", BuildTarget.StandaloneWindows64, BuildCfg.Options());
         Debug.Log("BUILD " + r.summary.result + " " + r.summary.totalSize + " errors=" + r.summary.totalErrors);
     }
 }

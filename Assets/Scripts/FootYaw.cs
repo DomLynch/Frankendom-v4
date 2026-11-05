@@ -121,7 +121,7 @@ public class FootYaw : MonoBehaviour
         }
         else { yL = Side(row.footYaw, 0); yR = Side(row.footYaw, 1); aW = row.armWeight; }
 
-        bool dbg = row.debug || debugLog; float bL = 0, bR = 0;
+        bool dbg = (row.debug || debugLog) && PerfFlags.VerboseLogs; float bL = 0, bR = 0;
         if (dbg) { bL = ToeYaw(lFoot, lToe); bR = ToeYaw(rFoot, rToe); }
         // premultiply in the parent frame: local_new = AngleAxis(deg, axis) * local_old
         float s = row.handedSign == 0f ? -1f : row.handedSign;

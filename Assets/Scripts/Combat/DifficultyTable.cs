@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Ported from Frankendom V3 data/difficulty.json: a thin override layer of nine brain knobs + health/damage scales, ladder 1-10 (10 = V1 level-18 Pitborn untouched).
+// Ported from Frankendom V3 data/difficulty.json: a thin override layer of nine brain knobs + health/damage scales, ladder 1-10 (10 = V1 level-18 enemy untouched).
 [Serializable]
 public class DifficultyRow
 {

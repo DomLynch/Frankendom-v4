@@ -8,7 +8,10 @@ public class CharacterImport : AssetPostprocessor
 
     public static void FixClips()
     {
-        foreach (var g in AssetDatabase.FindAssets("t:Model", new[] { "Assets/Characters/Dracula", "Assets/Characters/Pitborn" }))
+        var folders = new System.Collections.Generic.List<string>();   // roster.json rows: the folder of each combat model
+        foreach (var r in RosterEditor.Characters()) { string f = RosterEditor.Folder(r); if (AssetDatabase.IsValidFolder(f) && !folders.Contains(f)) folders.Add(f); }
+        if (folders.Count == 0) return;
+        foreach (var g in AssetDatabase.FindAssets("t:Model", folders.ToArray()))
         {
             var path = AssetDatabase.GUIDToAssetPath(g);
             var mi = (ModelImporter)AssetImporter.GetAtPath(path);

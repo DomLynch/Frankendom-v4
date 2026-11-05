@@ -119,7 +119,7 @@ public class AiAdapt
     public static AiAdapt Create(AIBrain brain)
     {
         var C = Cfg(); if (C == null || brain == null || brain.df == null) return null;
-        AdaptProfile pick = null; string key = brain.name.Contains("Pitborn") ? "Pitborn" : brain.name.Contains("Dracula") ? "Dracula" : "";
+        AdaptProfile pick = null; string key = Roster.IdOfName(brain.name);
         for (int i = 0; i < C.profiles.Length && pick == null; i++)
         {
             var r = C.profiles[i]; if (r == null) continue;

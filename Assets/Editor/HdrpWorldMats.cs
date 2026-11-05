@@ -38,6 +38,7 @@ public static class HdrpWorldMats
             if (mat != null) PlaceTerrain(cfg.terrain, mat);
         }
         int kit = ApplyKitEmissive(cfg.kitEmissive);
+        HdrpGroundLook.Run();   // lane LOOK fix 3: re-apply the ground breakup after the terrain material / mask were rebuilt
         AssetDatabase.SaveAssets();
         EditorSceneManager.MarkSceneDirty(scene); EditorSceneManager.SaveScene(scene);
         Debug.Log("HDRPWORLD done kitEmissiveMaterials=" + kit);

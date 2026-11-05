@@ -16,8 +16,8 @@ public static class STAutoApi
     public static float Cooldown01(string name) { return STSteer.Cooldown01((STTactic)Enum.Parse(typeof(STTactic), name)); }
     public static bool Enabled(string name) { return STSteer.Enabled((STTactic)Enum.Parse(typeof(STTactic), name)); }
     public static string Running { get { var r = STSteer.Running; return r.HasValue ? r.Value.ToString() : "none"; } }
-    public static DuelFighter Dracula { get { return STSteer.Dracula; } }
-    public static DuelFighter Pitborn { get { return STSteer.Pitborn; } }
+    public static DuelFighter Player { get { return STSteer.Player; } }
+    public static DuelFighter Enemy { get { return STSteer.Enemy; } }
 
     // the harness must see S1's Log() lines in its file: AutoLog is S1's switch (it is set from -steerauto, forced here as well)
     public static void ForceAutoLog() { STSteer.AutoLog = true; }

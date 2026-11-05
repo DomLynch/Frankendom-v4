@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
-// Integration of the MetaHuman Dracula head into HadesSlice (HDRP). Data: Assets/Data/mhhead_attach.json. Batch entry points (never open the interactive Editor for these):
+// Integration of the MetaHuman head (owner = mhhead_attach.json fighterName) into HadesSlice (HDRP). Data: Assets/Data/mhhead_attach.json. Batch entry points (never open the interactive Editor for these):
 //   1) -executeMethod MHIntegrate.Prepare   MH_HDRP define (Standalone), mhrig.dll importer (Win x64 only), hair shader graph into Always Included Shaders. Exits 0.
-//   2) -executeMethod MHIntegrate.Run       (needs step 1 compiled) RebuildAllFromCanonical, diffusion profile registration, HDRP asset SSS on, head object on Dracula's head bone, scene saved.
+//   2) -executeMethod MHIntegrate.Run       (needs step 1 compiled) RebuildAllFromCanonical, diffusion profile registration, HDRP asset SSS on, head object on the fighterName character's head bone, scene saved.
 //   3) -executeMethod MHIntegrate.Verify    read-only check of the saved scene + settings, prints [MHINTEGRATE] PASS/FAIL lines, exit 3 on FAIL.
 // Exit codes: 0 ok, 2 prerequisite missing (define / files), 3 verify FAIL, 4 exception.
 using System;
@@ -77,6 +77,10 @@ public static class MHIntegrate
     }
 
     // ---------------------------------------------------------------- step 2
+    // the look file the head builder reads: StreamingAssets/<builder.dataFolder>/<builder.lookFile> (mhhead_attach.json)
+    public static string LookAsset(MHAttachData cfg) { return "Assets/StreamingAssets/" + cfg.builder.dataFolder + "/" + cfg.builder.lookFile; }
+    public static string LookAsset() { return LookAsset(MHAttachData.Load()); }
+
     public static void Run()
     {
         Rep.Length = 0;
@@ -84,7 +88,7 @@ public static class MHIntegrate
         {
             var cfg = MHAttachData.Load();
             if (!HasDefine()) { L("FAIL define " + Define + " missing: run MHIntegrate.Prepare first (then Run in a new editor start so scripts recompile)"); Done(2, "run"); return; }
-            if (!File.Exists("Assets/StreamingAssets/MetaHumanHead/look/dracula.look.json")) { L("FAIL Assets/StreamingAssets/MetaHumanHead is missing (data copy not done)"); Done(2, "run"); return; }
+            if (!File.Exists(LookAsset(cfg))) { L("FAIL Assets/StreamingAssets/MetaHumanHead is missing (data copy not done)"); Done(2, "run"); return; }
             Backup(cfg.scene);
 
             // canonical folder: MHRebuildAll reads -mhcanon from the command line (default = MHRebuildAll.DefaultCanon); the data file only documents/validates it
@@ -238,7 +242,7 @@ public static class MHIntegrate
             if (r.transform.IsChildOf(mh)) continue;
             foreach (var n in cfg.hideRenderers) if (string.Equals(r.name, n, StringComparison.OrdinalIgnoreCase)) { r.enabled = !cfg.hideOriginalHead; hidden++; L("original renderer '" + r.name + "' (" + r.GetType().Name + ") enabled=" + r.enabled); break; }
         }
-        if (hidden == 0) L("WARNING no original head renderer matched " + string.Join(",", cfg.hideRenderers) + "; check the glb mesh node names (Dracula_combat.glb has node 'head')");
+        if (hidden == 0) L("WARNING no original head renderer matched " + string.Join(",", cfg.hideRenderers) + "; check the glb mesh node names (the owner's <id>_combat.glb has node 'head')");
         L("created/updated '" + cfg.objectName + "' under " + bone.name + " restRot(root->bone)=" + at.rootToBoneRest.eulerAngles.ToString("F1") + " layerSource=" + (src != null ? src.name : "none"));
         return true;
     }

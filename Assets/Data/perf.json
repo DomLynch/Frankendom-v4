@@ -1,0 +1,12 @@
+{
+  "_about": "PerfFlags.cs / FxPrewarm.cs. verboseLogs=false skips per-frame diagnostic Debug.Log lines (ArmHold, FootGround, FootYaw, finisher piece/look chatter); set true for a proof run that needs them. logStackTrace none|scriptOnly|full ('' = leave Unity's default) applies to Log + Warning only. prewarm=true renders every FX material once, sub-pixel small, prewarmDelaySeconds after the scene loads. fxScanPerFrame = renderers FxMaterialGuard checks per frame. prewarmInHarness=false keeps FxPrewarm off in proof/balance/finisher-auto/steer-auto runs.",
+  "verboseLogs": false,
+  "logStackTrace": "none",
+  "prewarm": true,
+  "prewarmDelaySeconds": 0.75,
+  "prewarmFrames": 3,
+  "prewarmDistance": 2.0,
+  "prewarmSize": 2e-05,
+  "fxScanPerFrame": 150,
+  "prewarmInHarness": false
+}

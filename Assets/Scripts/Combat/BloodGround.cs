@@ -42,7 +42,11 @@ public class BloodGround : MonoBehaviour
         quad.colors = new[] { Color.white, Color.white, Color.white, Color.white };
         quad.triangles = new[] { 0, 2, 1, 0, 3, 2 }; quad.RecalculateNormals(); quad.RecalculateBounds();
         tex = new Texture2D[3]; for (int i = 0; i < tex.Length; i++) tex[i] = MakeSplat(Mathf.Max(16, g.texSize), g, i);
+        EnsurePool(g);   // PERF: the pooled splat objects (renderers off) are created now instead of in the frame of the first landed hit
     }
+
+    // materials FxPrewarm draws once (sub-pixel) so the first real splat does not compile its pipeline state
+    public static void CollectPrewarm(System.Collections.Generic.List<Material> into) { if (instance != null && instance.mat != null && into != null) into.Add(instance.mat); }
 
     // Soft dark blobs: one main pool, 3-6 satellites and a few pin drops; premultiplied (rgb * a) because the material blends One / OneMinusSrcAlpha.
     Texture2D MakeSplat(int n, BloodTable.GroundCfg g, int variant)
@@ -66,7 +70,7 @@ public class BloodGround : MonoBehaviour
         t.SetPixels(cols); t.Apply(true, true); return t;
     }
 
-    Splat Next(BloodTable.GroundCfg g)
+    void EnsurePool(BloodTable.GroundCfg g)
     {
         while (pool.Count < Mathf.Max(1, g.max))
         {
@@ -75,6 +79,11 @@ public class BloodGround : MonoBehaviour
             mr.sharedMaterial = mat; mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; mr.receiveShadows = false; mr.enabled = false;
             pool.Add(new Splat { t = go.transform, r = mr });
         }
+    }
+
+    Splat Next(BloodTable.GroundCfg g)
+    {
+        EnsurePool(g);
         var s = pool[next % pool.Count]; next++; return s;
     }
 
@@ -117,6 +126,25 @@ public class BloodGround : MonoBehaviour
             s.t.localScale = new Vector3(s.baseSize, s.baseSize * Between(0.8f, 1.25f), 1f);
             mpb.Clear(); mpb.SetTexture(MainTexId, tex[(int)(Rnd() * tex.Length) % tex.Length]); mpb.SetColor(TintId, Color.white);
             s.r.SetPropertyBlock(mpb); s.r.enabled = true; s.used = true;
+        }
+    }
+
+    // wound drips (WoundSystem): n splats around `feet`, sizeMul scales the usual splat size; same pool, textures, fade and life as hit splats. No instance (blood.json ground off) = nothing.
+    public static void Drip(Vector3 feet, int n, float sizeMul)
+    {
+        if (instance == null || !instance.enabled) return;
+        var g = BloodTable.Get().ground; if (!g.enabled) return;
+        for (int i = 0; i < n; i++)
+        {
+            float a = instance.Rnd() * Mathf.PI * 2f; Vector3 rnd = new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a));
+            Vector3 pos = feet + rnd * instance.Between(0.05f, g.minRadius);
+            if (!instance.Ground(pos, out var gp, out var gn, g)) continue;
+            var s = instance.Next(g);
+            s.born = Time.unscaledTime; s.life = g.lifeSec; s.baseSize = instance.Between(g.minSize, g.maxSize) * sizeMul;
+            s.t.position = gp + gn * g.yOffset; s.t.rotation = Quaternion.LookRotation(-gn, rnd);
+            s.t.localScale = new Vector3(s.baseSize, s.baseSize * instance.Between(0.8f, 1.25f), 1f);
+            instance.mpb.Clear(); instance.mpb.SetTexture(MainTexId, instance.tex[(int)(instance.Rnd() * instance.tex.Length) % instance.tex.Length]); instance.mpb.SetColor(TintId, Color.white);
+            s.r.SetPropertyBlock(instance.mpb); s.r.enabled = true; s.used = true;
         }
     }
 

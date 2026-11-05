@@ -9,7 +9,7 @@ using UnityEngine;
 // Scripts both fighters (PlayerBrain / AIBrain / TouchControls off, direct placement like PostureProof) in front of the REAL lock-on CameraRig and asserts, with a screenshot of each pose:
 //   (1) FRAMING   : separations camera_framing.json proof.seps (1 .. 10 m) at the arena middle and at both side edges: VisibleFraction of BOTH fighters >= proof.steadyMin (0.9) once settled
 //                   (settleFrames), mean luma of the frame between lumaMin and lumaMax (no black / white frame). Lock range is raised to 80 m for the proof.
-//   (2) KNOCKBACK : the Pitborn is moved from knockFromM to knockToM metres in knockFrames frames and back (a hard knockback / a retreat): the minimum VisibleFraction on any frame stays >= transientMin.
+//   (2) KNOCKBACK : the enemy is moved from knockFromM to knockToM metres in knockFrames frames and back (a hard knockback / a retreat): the minimum VisibleFraction on any frame stays >= transientMin.
 //   (3) SHAKE     : every class of camera_impact.json shake is fired alone (peak logged), then a burst of all classes at once: peak offset <= maxPosM and peak roll <= maxRollDeg; amplitudes rise with weight.
 //   (4) SLOW-MO   : a parry dip + a merged crit request (one dip, never stacked, never below minScale), timeScale back to exactly 1 afterwards, unscaledDeltaTime untouched (HUD / UI clocks);
 //                   the watchdog: timeScale forced to 0.5 by the harness is put back to 1 within watchdogS.
@@ -82,7 +82,7 @@ public class CamProof : MonoBehaviour
         Physics.SyncTransforms();
         return ground;
     }
-    // Pitborn at `anchor` (x,z), Dracula `sep` metres away along `axis` (flat); returns false when a fighter has no ground below
+    // the enemy at `anchor` (x,z), the player `sep` metres away along `axis` (flat); returns false when a fighter has no ground below
     bool Setup(Vector3 anchor, Vector3 axis, float sep)
     {
         axis.y = 0f; axis.Normalize();
@@ -111,7 +111,7 @@ public class CamProof : MonoBehaviour
     IEnumerator Main()
     {
         float w0 = Time.realtimeSinceStartup;
-        while ((D = Find("Dracula")) == null || (P = Find("Pitborn")) == null || (rig = FindFirstObjectByType<CameraRig>()) == null)
+        while ((D = Find(Roster.PlayerObject)) == null || (P = Find(Roster.EnemyObject)) == null || (rig = FindFirstObjectByType<CameraRig>()) == null)
         {
             if (Time.realtimeSinceStartup - w0 > 20f) { Log("fighters / CameraRig not found"); Finish(2, "setup"); yield break; }
             yield return null;
@@ -142,7 +142,7 @@ public class CamProof : MonoBehaviour
                 float minV = 1f, dMin = 1f, pMin = 1f;
                 for (int i = 0; i < 12; i++) { yield return null; float vd, vp; float m = Sample(out vd, out vp); minV = Mathf.Min(minV, m); dMin = Mathf.Min(dMin, vd); pMin = Mathf.Min(pMin, vp); }
                 float luma = -1f; yield return Grab(id, l => luma = l);
-                string row = id + ": VisibleFraction Dracula " + dMin.ToString("F2", IC) + " Pitborn " + pMin.ToString("F2", IC) + " (need >= " + pr.steadyMin.ToString("F2", IC) + ")  fov " + rig.GetComponent<Camera>().fieldOfView.ToString("F1", IC)
+                string row = id + ": VisibleFraction " + Roster.PlayerName + " " + dMin.ToString("F2", IC) + " " + Roster.EnemyName + " " + pMin.ToString("F2", IC) + " (need >= " + pr.steadyMin.ToString("F2", IC) + ")  fov " + rig.GetComponent<Camera>().fieldOfView.ToString("F1", IC)
                     + " (widen " + CamFraming.Widen.ToString("F1", IC) + ")  cam dist to look " + Vector3.Distance(rig.transform.position, (D.transform.position + P.transform.position) * 0.5f).ToString("F1", IC) + " m  luma " + luma.ToString("F3", IC);
                 rows.Add(row); Log(row);
                 if (minV < pr.steadyMin) Fail(id + " framing " + minV.ToString("F2", IC));

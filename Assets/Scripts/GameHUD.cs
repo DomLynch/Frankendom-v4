@@ -50,8 +50,8 @@ public class GameHUD : MonoBehaviour
         if (STSteer.Active) return;   // steer mode: STUI draws the bar, hints and banners (FPS/CAM debug above stays)
         if (big == null) big = new GUIStyle(GUI.skin.label) { fontSize = 48, alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold };
         Panel(new Rect(22, 8, 376, 76)); Panel(new Rect(Screen.width - 398, 8, 376, 76));
-        if (player) { Outlined(new Rect(30, 14, 300, 24), "DRACULA"); Bar(new Rect(30, 38, 360, 20), player.current / player.max, new Color(0.7f, 0.05f, 0.08f)); }
-        if (enemy) { Outlined(new Rect(Screen.width - 390, 14, 300, 24), "PITBORN"); Bar(new Rect(Screen.width - 390, 38, 360, 20), enemy.current / enemy.max, new Color(0.8f, 0.45f, 0.1f)); }
+        if (player) { Outlined(new Rect(30, 14, 300, 24), Roster.PlayerName.ToUpperInvariant()); Bar(new Rect(30, 38, 360, 20), player.current / player.max, new Color(0.7f, 0.05f, 0.08f)); }
+        if (enemy) { Outlined(new Rect(Screen.width - 390, 14, 300, 24), Roster.EnemyName.ToUpperInvariant()); Bar(new Rect(Screen.width - 390, 38, 360, 20), enemy.current / enemy.max, new Color(0.8f, 0.45f, 0.1f)); }
         if (pf) CombatHudBars.Draw(new Rect(30, 38, 360, 20), pf, true);
         if (ef) CombatHudBars.Draw(new Rect(Screen.width - 390, 38, 360, 20), ef, false);
         if (pf) { Ring(new Rect(Screen.width - 170, Screen.height - 100, 64, 64), pf.special1Cd / 540f, "1", "S"); Ring(new Rect(Screen.width - 90, Screen.height - 100, 64, 64), pf.special2Cd / 540f, "2", "W"); }

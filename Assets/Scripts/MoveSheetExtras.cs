@@ -7,8 +7,8 @@ using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
 // Lane E proof harness (head / neck): -headsheet:<id> -out:<dir>   (separate from MoveSheet, which is owned by lane D; same style and same determinism).
-//   kind "idle":  both fighters placed, Dracula idles facing the camera; one PNG per camera in the row (<id>_<cam>.png) + optional live game-camera screenshot (<id>_live.png)
-//   kind "orbit": Dracula is locked on Pitborn while Pitborn is teleported around him through 360 degrees; `frames` tiles evenly over the orbit -> <id>_sheet.png (cols x rows)
+//   kind "idle":  both fighters placed, the player idles facing the camera; one PNG per camera in the row (<id>_<cam>.png) + optional live game-camera screenshot (<id>_live.png)
+//   kind "orbit": the player is locked on the enemy while the enemy is teleported around him through 360 degrees; `frames` tiles evenly over the orbit -> <id>_sheet.png (cols x rows)
 // Always writes <id>_log.txt: per sampled tick the head yaw / pitch RELATIVE TO THE TORSO before (raw) and after the HeadClamp, the Animator state and every active particle system.
 // Data: Assets/Data/head_sheet.json (StreamingAssets copy for a player, or -headsheetdata:<file>). Flags: -noclamp (HeadClamp off: shows the raw animation), -isolate not supported.
 [DefaultExecutionOrder(1000)]
@@ -17,9 +17,9 @@ public class HeadSheet : MonoBehaviour
     [Serializable] public class Cam { public string name = "face"; public float dist = 2.5f, height = 1.55f, lookY = 1.45f, fov = 30f, angleDeg = 0f, minAboveGround = 0.6f; public int w = 1280, h = 720; }
     [Serializable] public class Row
     {
-        public string id = "", kind = "idle", opponent = "Pitborn";
+        public string id = "", kind = "idle", opponent = "";   // opponent object name; "" = the roster enemy
         public int settleTicks = -1;   // -1 = Data.settleTicks
-        public float z = 12.6f, x = 0f, oppDist = 7f;                 // idle: Dracula at (x,z), opponent oppDist further along +z
+        public float z = 12.6f, x = 0f, oppDist = 7f;                 // idle: the player at (x,z), opponent oppDist further along +z
         public float radius = 3f, seconds = 12f; public int frames = 6, cols = 3, tileW = 640, tileH = 360;   // orbit
         public int[] captureTicks = { 0 };                             // idle: ticks after the settle time at which every camera is captured
         public bool liveShot = false, hideOpponent = false;   // hideOpponent: the orbiting target is not drawn (it would walk through the camera)
@@ -28,7 +28,7 @@ public class HeadSheet : MonoBehaviour
     [Serializable] public class Data
     {
         public float tickHz = 60f; public int settleTicks = 120, supersample = 2, logEvery = 6, timeoutTicks = 4000;
-        public string draculaName = "Dracula", pitbornName = "Pitborn";
+        public string playerName = "", enemyName = "";   // scene object names; "" = roster.json (Roster.PlayerObject / EnemyObject)
         public int[] groundMaskExcludeLayers = { 8, 9 };
         public float pullMinDist = 1.2f, pullMargin = 0.15f;
         public Row[] rows = new Row[0];
@@ -48,7 +48,7 @@ public class HeadSheet : MonoBehaviour
     public string rowId;
     enum Phase { Init, Run, Done }
     Phase phase = Phase.Init; Data D; Row row; string outDir; int frame, tick0, B, orbitTick, orbitTotal, nextCap;
-    DuelFighter dracula, pitborn; HeadClamp clamp; Transform dracGround; Vector3 start, axisFwd; float groundY;
+    DuelFighter player, enemy; HeadClamp clamp; Transform playerGround; Vector3 start, axisFwd; float groundY;
     readonly List<string> log = new List<string>();
     readonly List<(string name, Camera cam, RenderTexture rt, int w, int h)> cams = new List<(string, Camera, RenderTexture, int, int)>();
     Texture2D sheet; int sheetW, sheetH, doneCaps, wantCaps; Texture2D readTex; RenderTexture small;
@@ -113,18 +113,19 @@ public class HeadSheet : MonoBehaviour
         D = LoadData(); if (D == null) { Fail("head_sheet.json not found"); return; }
         foreach (var r in D.rows) if (r != null && r.id == rowId) row = r;
         if (row == null) { Fail("no row '" + rowId + "' in head_sheet.json"); return; }
-        dracula = Find(D.draculaName); pitborn = Find(row.opponent ?? D.pitbornName);
-        if (dracula == null || pitborn == null) { Fail("fighters not found"); return; }
-        clamp = dracula.GetComponentInChildren<HeadClamp>(true); if (clamp == null) clamp = dracula.GetComponent<HeadClamp>();
-        natural = row.kind == "natural";   // the game exactly as it starts: no teleport, brains stay on, cameras follow Dracula's own pose
+        player = Find(string.IsNullOrEmpty(D.playerName) ? Roster.PlayerObject : D.playerName);
+        enemy = Find(!string.IsNullOrEmpty(row.opponent) ? row.opponent : string.IsNullOrEmpty(D.enemyName) ? Roster.EnemyObject : D.enemyName);
+        if (player == null || enemy == null) { Fail("fighters not found"); return; }
+        clamp = player.GetComponentInChildren<HeadClamp>(true); if (clamp == null) clamp = player.GetComponent<HeadClamp>();
+        natural = row.kind == "natural";   // the game exactly as it starts: no teleport, brains stay on, cameras follow the player's own pose
         if (!natural) foreach (var b in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)) if (b is PlayerBrain || b is AIBrain || b is TouchControls) b.enabled = false;
-        axisFwd = natural ? dracula.transform.forward : Vector3.forward; start = natural ? dracula.transform.position : new Vector3(row.x, 0f, row.z);
+        axisFwd = natural ? player.transform.forward : Vector3.forward; start = natural ? player.transform.position : new Vector3(row.x, 0f, row.z);
         if (natural) { }
-        else Place(dracula, start, axisFwd);
+        else Place(player, start, axisFwd);
         if (natural) { }
-        else if (row.kind == "orbit") Place(pitborn, start + axisFwd * row.radius, -axisFwd, true); else Place(pitborn, start + axisFwd * row.oppDist, -axisFwd);
-        if (row.hideOpponent) foreach (var r in pitborn.GetComponentsInChildren<Renderer>(true)) r.enabled = false;
-        dracula.stamina = dracula.maxStamina; pitborn.stamina = pitborn.maxStamina; groundY = dracula.transform.position.y;
+        else if (row.kind == "orbit") Place(enemy, start + axisFwd * row.radius, -axisFwd, true); else Place(enemy, start + axisFwd * row.oppDist, -axisFwd);
+        if (row.hideOpponent) foreach (var r in enemy.GetComponentsInChildren<Renderer>(true)) r.enabled = false;
+        player.stamina = player.maxStamina; enemy.stamina = enemy.maxStamina; groundY = player.transform.position.y;
         Time.captureFramerate = Mathf.RoundToInt(D.tickHz); QualitySettings.vSyncCount = 0;
         tick0 = Duel.TickCount; B = tick0 + (row.settleTicks >= 0 ? row.settleTicks : D.settleTicks);
         int ss = Mathf.Max(1, D.supersample);
@@ -157,15 +158,15 @@ public class HeadSheet : MonoBehaviour
         if (frame > D.timeoutTicks + D.settleTicks + orbitTotal + 300) { log.Add("# TIMEOUT"); Finish(); return; }
         if (row.kind == "orbit" && Duel.TickCount >= B)
         {
-            // the target moves round Dracula; Dracula (locked on, DuelFighter.faceOpp) turns with it
+            // the target moves round the player; the player (locked on, DuelFighter.faceOpp) turns with it
             orbitTick = Mathf.Min(orbitTotal, Duel.TickCount - B);
-            float th = 360f * orbitTick / orbitTotal * Mathf.Deg2Rad; Vector3 d = dracula.transform.position;
+            float th = 360f * orbitTick / orbitTotal * Mathf.Deg2Rad; Vector3 d = player.transform.position;
             Vector3 p = d + new Vector3(Mathf.Sin(th), 0f, Mathf.Cos(th)) * row.radius; p.y = GroundAt(p.x, p.z, d.y);
-            pitborn.transform.position = p; pitborn.transform.rotation = Quaternion.LookRotation(new Vector3(d.x - p.x, 0f, d.z - p.z));
+            enemy.transform.position = p; enemy.transform.rotation = Quaternion.LookRotation(new Vector3(d.x - p.x, 0f, d.z - p.z));
         }
     }
 
-    Animator Anim() { var f = dracula.GetComponent<Fighter>(); return f != null ? f.anim : null; }
+    Animator Anim() { var f = player.GetComponent<Fighter>(); return f != null ? f.anim : null; }
 
     void LateUpdate()
     {
@@ -193,10 +194,10 @@ public class HeadSheet : MonoBehaviour
         {
             foreach (var ci in an.GetCurrentAnimatorClipInfo(0)) clip += ci.clip != null ? ci.clip.name + ":" + ci.weight.ToString("F2", I) + "," : "?,";
             for (int i = 1; i < an.layerCount; i++) if (an.GetLayerWeight(i) > 0.001f) layers += an.GetLayerName(i) + "=" + an.GetLayerWeight(i).ToString("F2", I) + ";";
-            st = dracula.state.ToString();
+            st = player.state.ToString();
         }
         float th = row.kind == "orbit" ? 360f * Mathf.Min(orbitTotal, age) / orbitTotal : 0f;
-        log.Add(string.Join("\t", new[] { Duel.TickCount.ToString(), (age / D.tickHz).ToString("F2", I), th.ToString("F0", I), dracula.transform.eulerAngles.y.ToString("F0", I), st, clip, layers,
+        log.Add(string.Join("\t", new[] { Duel.TickCount.ToString(), (age / D.tickHz).ToString("F2", I), th.ToString("F0", I), player.transform.eulerAngles.y.ToString("F0", I), st, clip, layers,
             clamp != null ? clamp.rawYaw.ToString("F1", I) : "-", clamp != null ? clamp.rawPitch.ToString("F1", I) : "-", yawN.ToString("F1", I), pitN.ToString("F1", I),
             clamp != null ? clamp.limitYaw.ToString("F0", I) : "-", clamp != null ? clamp.limitPitch.ToString("F0", I) : "-", torso.ToString("F0", I) }));
     }
@@ -205,8 +206,8 @@ public class HeadSheet : MonoBehaviour
     {
         for (int i = 0; i < cams.Count; i++)
         {
-            var c = camDef[i]; Vector3 d = dracula.transform.position; if (row.kind != "orbit" && !natural) d = new Vector3(start.x, groundY, start.z);
-            Vector3 fw = natural ? Vector3.ProjectOnPlane(dracula.transform.forward, Vector3.up).normalized : axisFwd; if (natural) groundY = dracula.transform.position.y;
+            var c = camDef[i]; Vector3 d = player.transform.position; if (row.kind != "orbit" && !natural) d = new Vector3(start.x, groundY, start.z);
+            Vector3 fw = natural ? Vector3.ProjectOnPlane(player.transform.forward, Vector3.up).normalized : axisFwd; if (natural) groundY = player.transform.position.y;
             Vector3 dir = Quaternion.Euler(0f, c.angleDeg, 0f) * fw;
             if (row.kind == "orbit") d = new Vector3(start.x, groundY, start.z);   // fixed camera: relative to the start pose, never follows
             Vector3 look = new Vector3(d.x, d.y + c.lookY, d.z), flat = new Vector3(d.x, 0f, d.z) + dir * c.dist;

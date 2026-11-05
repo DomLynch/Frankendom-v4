@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 // Steer UI (lane S3): dark gothic IMGUI bottom bar for the live-steered duel.
 //   left: 4 stance buttons (1-4), right: 7 tactic buttons (Q W E R T Y G) with radial cooldown pies,
-//   top corners: HP bars (Health of 'Dracula' / 'Pitborn'), above the bar: a 3-line fading feed (STSteer.OnFeed).
+//   top corners: HP bars (Health of Roster.PlayerObject / Roster.EnemyObject; names: namePlayer / nameEnemy, "" = the Roster display name in capitals), above the bar: a 3-line fading feed (STSteer.OnFeed).
 // Icons: PNGs from StreamingAssets\steer_icons (or Assets\Data\steer_icons) when present, else procedural glyphs (STIcons).
 // Everything tunable is in the "ui" block of steer.json (code defaults below). Attaches only with -steer / -steerauto / -steershot
 // (or "steer": true in runtime_flags.json); drawing happens only while STSteer.Active (or the screenshot preview is on).
@@ -21,7 +21,7 @@ public class STUI : MonoBehaviour
         public float refHeight = 1080f, minLayoutWidth = 1400f;
         public string colPanel = "#0C0C0EF2", colPanel2 = "#151517FF", colBorder = "#3A1A1CFF", colCrimson = "#9A2024FF", colEmber = "#E8742CFF",
             colEmberFill = "#7A3416F0", colText = "#F0E8D8FF", colDim = "#9A9384FF", colDisabled = "#7A746AFF", colHover = "#1E1416FF",
-            colHpDracula = "#B01820FF", colHpPitborn = "#D2701CFF", colGhost = "#F0E0C8B0", colKey = "#FFD7A0FF", colBad = "#C0282CFF";
+            colHpPlayer = "#B01820FF", colHpEnemy = "#D2701CFF", colGhost = "#F0E0C8B0", colKey = "#FFD7A0FF", colBad = "#C0282CFF";
         public float barMaxW = 1340f, barH = 136f, barBottom = 14f, pad = 20f, groupGap = 56f, btnGap = 8f;
         public float stanceW = 112f, tactW = 100f, btnH = 102f, discD = 64f, glyph = 50f;
         public float hpW = 460f, hpH = 76f, hpMinPxW = 380f, hpMinPxH = 82f, hpMargin = 22f, hpTop = 8f;
@@ -29,7 +29,7 @@ public class STUI : MonoBehaviour
         public float feedHold = 4.5f, feedFade = 1.5f, flashTime = 0.35f;
         public int pxTitle = 14, pxLabel = 15, pxKey = 15, pxFeed = 22, pxHp = 22, pxBanner = 64;
         public bool freeCursor = true, hideGameHud = true;
-        public string iconDir = "steer_icons", tStance = "STANCE", tTactics = "TACTICS", nameDracula = "DRACULA", namePitborn = "PITBORN",
+        public string iconDir = "steer_icons", tStance = "STANCE", tTactics = "TACTICS", namePlayer = "", nameEnemy = "",
             tWin = "VICTORY", tLose = "YOU DIED", tNext = "NEXT OPPONENT  [Enter]";
         public BtnDef[] stances, tactics;
     }
@@ -193,8 +193,8 @@ public class STUI : MonoBehaviour
         if (now >= resolveT && !STUIPreview.On)
         {
             resolveT = now + 0.5f;
-            if (hpD == null) { var g = GameObject.Find("Dracula"); if (g) hpD = g.GetComponentInChildren<Health>(); }
-            if (hpP == null) { var g = GameObject.Find("Pitborn"); if (g) hpP = g.GetComponentInChildren<Health>(); }
+            if (hpD == null) { var g = GameObject.Find(Roster.PlayerObject); if (g) hpD = g.GetComponentInChildren<Health>(); }
+            if (hpP == null) { var g = GameObject.Find(Roster.EnemyObject); if (g) hpP = g.GetComponentInChildren<Health>(); }
         }
         float dt = Time.unscaledDeltaTime;
         float nd = HpFrac(0), np = HpFrac(1);
@@ -266,9 +266,16 @@ public class STUI : MonoBehaviour
         if (shadow) { float o = Mathf.Max(1f, px / 14f); st.normal.textColor = new Color(0, 0, 0, c.a * 0.9f); GUI.Label(new Rect(r.x + o, r.y + o, r.width, r.height), s, st); }
         st.normal.textColor = c; GUI.Label(r, s, st);
     }
+    // PERF: the fitted size is a pure function of (label, start size, bold, width); CalcSize + a new GUIContent per button per frame was the biggest allocation in OnGUI. Cached per label, recomputed if an input changes.
+    class FitEntry { public int px; public bool bold; public float maxW; public int res; }
+    readonly Dictionary<string, FitEntry> fitCache = new Dictionary<string, FitEntry>();
     int Fit(string s, int px, bool bold, float maxW)
     {
+        FitEntry fe = null;
+        if (s != null && fitCache.TryGetValue(s, out fe) && fe.px == px && fe.bold == bold && fe.maxW == maxW) return fe.res;
+        int start = px;
         while (px > 9) { var st = St(px, bold, TextAnchor.MiddleCenter); if (st.CalcSize(new GUIContent(s)).x <= maxW) break; px--; }
+        if (s != null) { if (fe == null) { fe = new FitEntry(); fitCache[s] = fe; } fe.px = start; fe.bold = bold; fe.maxW = maxW; fe.res = px; }
         return px;
     }
     int P(float refPx) { return Mathf.Max(9, Mathf.RoundToInt(refPx * S)); }
@@ -321,8 +328,8 @@ public class STUI : MonoBehaviour
         Color ember = C(cfg.colEmber), crimson = C(cfg.colCrimson), text = C(cfg.colText), dim = C(cfg.colDim), border = C(cfg.colBorder);
         float now = Time.unscaledTime;
         // --- HP panels ---
-        HpPanel(true, cfg.nameDracula, 0, ghostD, C(cfg.colHpDracula));
-        HpPanel(false, cfg.namePitborn, 1, ghostP, C(cfg.colHpPitborn));
+        HpPanel(true, string.IsNullOrEmpty(cfg.namePlayer) ? Roster.PlayerName.ToUpperInvariant() : cfg.namePlayer, 0, ghostD, C(cfg.colHpPlayer));
+        HpPanel(false, string.IsNullOrEmpty(cfg.nameEnemy) ? Roster.EnemyName.ToUpperInvariant() : cfg.nameEnemy, 1, ghostP, C(cfg.colHpEnemy));
 
         // --- bar panel ---
         Fill(bar, C(cfg.colPanel));

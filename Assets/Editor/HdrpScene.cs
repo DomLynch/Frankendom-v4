@@ -26,9 +26,34 @@ public static class HdrpScene
 
     public static void Run() { Apply("ultra", true); }
 
+    // lane LOOK fix 4: atmosphere.json -> HDRP_Atmosphere (local volumetric fog boxes + non-shadow flicker lights). Rebuilt every run (idempotent).
+    static void BuildAtmosphere()
+    {
+        var old = GameObject.Find("HDRP_Atmosphere"); if (old != null) Object.DestroyImmediate(old);
+        var A = LookData.GetAtmos(); var root = new GameObject("HDRP_Atmosphere"); int nf = 0, nl = 0;
+        if (A.fogBoxes != null) foreach (var b in A.fogBoxes)
+        {
+            if (b == null || b.pos == null || b.size == null) continue;
+            var g = new GameObject(string.IsNullOrEmpty(b.name) ? "AtmosFog" : b.name); g.transform.SetParent(root.transform, false); g.transform.position = LookData.V3(b.pos, Vector3.zero);
+            var lv = g.AddComponent<LocalVolumetricFog>(); lv.parameters.size = LookData.V3(b.size, Vector3.one); lv.parameters.albedo = b.albedo != null && b.albedo.Length >= 3 ? Col(b.albedo) : Color.white;
+            lv.parameters.meanFreePath = b.meanFreePath; lv.parameters.positiveFade = LookData.V3(b.fadePos, new Vector3(0.5f, 0.5f, 0.5f)); lv.parameters.negativeFade = LookData.V3(b.fadeNeg, new Vector3(0.5f, 0.5f, 0.5f)); nf++;
+        }
+        if (A.flickerLights != null) foreach (var r in A.flickerLights)
+        {
+            if (r == null || r.pos == null) continue;
+            var g = new GameObject(string.IsNullOrEmpty(r.name) ? "AtmosLight" : r.name); g.transform.SetParent(root.transform, false); g.transform.position = LookData.V3(r.pos, Vector3.zero);
+            var l = g.AddComponent<Light>(); var hd = g.AddComponent<HDAdditionalLightData>();
+            l.type = LookData.Enum(r.kind, LightType.Point); l.lightUnit = LightUnit.Candela; l.intensity = r.candela; l.range = r.range;
+            l.useColorTemperature = false; l.color = Mathf.CorrelatedColorTemperatureToRGB(r.kelvin);
+            l.shadows = r.shadows ? LightShadows.Soft : LightShadows.None; hd.EnableShadows(r.shadows); hd.volumetricDimmer = r.volumetricDimmer;
+            var fl = g.AddComponent<AtmosFlicker>(); fl.target = l; fl.noise = r.flicker; nl++;
+        }
+        Debug.Log("HDRPSCENE atmosphere fogBoxes=" + nf + " flickerLights=" + nl);
+    }
+
     public static void Apply(string tier, bool saveScene)
     {
-        var P = Load(tier);
+        var P = Load(tier); LookData.Reload(); var LK = LookData.Get();
         var scene = EditorSceneManager.GetActiveScene();
         if (scene.path != "Assets/Scenes/HadesSlice.unity") scene = EditorSceneManager.OpenScene("Assets/Scenes/HadesSlice.unity");
         foreach (var v in Object.FindObjectsByType<Volume>(FindObjectsSortMode.None)) if (v.gameObject.name != "HDRP_Global") Object.DestroyImmediate(v.gameObject);
@@ -36,7 +61,7 @@ public static class HdrpScene
         Directory.CreateDirectory("Assets/HDRP");
         var prof = ScriptableObject.CreateInstance<VolumeProfile>(); AssetDatabase.DeleteAsset("Assets/HDRP/Global.asset"); AssetDatabase.CreateAsset(prof, "Assets/HDRP/Global.asset");
 
-        var ex = prof.Add<Exposure>(); ex.mode.Override(ExposureMode.Fixed); ex.fixedExposure.Override(P.exposureEV);
+        var ex = prof.Add<Exposure>(); LookData.ApplyExposure(ex);   // lane LOOK: look.json exposure is the one exposure (gameplay + finisher); the preset's exposureEV is no longer read
         var env = prof.Add<VisualEnvironment>(); env.skyType.Override((int)SkyType.HDRI); env.cloudType.Override(0); env.skyAmbientMode.Override(SkyAmbientMode.Dynamic);
         var hdri = prof.Add<HDRISky>();
         string cubePath = (P.sky != null && !string.IsNullOrEmpty(P.sky.hdriPath)) ? P.sky.hdriPath : "Assets/Env/skybox_styx.png"; var cube = AssetDatabase.LoadAssetAtPath<Cubemap>(cubePath);
@@ -56,16 +81,16 @@ public static class HdrpScene
         if (P.indirect != null) { var ilc = prof.Add<IndirectLightingController>(); ilc.indirectDiffuseLightingMultiplier.Override(P.indirect.diffuse); ilc.reflectionLightingMultiplier.Override(P.indirect.reflection); }
         var fog = prof.Add<Fog>(); fog.enabled.Override(true); fog.enableVolumetricFog.Override(true);
         fog.meanFreePath.Override(P.fog.meanFreePath); fog.baseHeight.Override(P.fog.baseHeight); fog.maximumHeight.Override(P.fog.maxHeight); fog.albedo.Override(Col(P.fog.albedo));
-        fog.volumetricFogBudget = P.fog.budget; fog.denoisingMode.Override(FogDenoisingMode.Gaussian); fog.anisotropy.Override(P.fog.anisotropy);
-        var tm = prof.Add<Tonemapping>(); tm.mode.Override(TonemappingMode.ACES);
-        var bl = prof.Add<Bloom>(); bl.intensity.Override(P.post.bloomIntensity); bl.threshold.Override(P.post.bloomThreshold); bl.scatter.Override(0.7f);
+        fog.volumetricFogBudget = P.fog.budget; fog.denoisingMode.Override(LookData.Enum(LK.fog.denoise, FogDenoisingMode.Gaussian)); fog.anisotropy.Override(P.fog.anisotropy);
+        var tm = prof.Add<Tonemapping>(); tm.mode.Override(LookData.Enum(LK.post.tonemap, TonemappingMode.ACES));
+        var bl = prof.Add<Bloom>(); bl.intensity.Override(P.post.bloomIntensity); bl.threshold.Override(P.post.bloomThreshold); bl.scatter.Override(LK.post.bloomScatter);
         var ao = prof.Add<ScreenSpaceAmbientOcclusion>(); ao.intensity.Override(P.post.ssaoIntensity);
         var gi = prof.Add<GlobalIllumination>(); gi.enable.Override(true);
         var ssr = prof.Add<ScreenSpaceReflection>(); ssr.enabled.Override(true);
         var mb = prof.Add<MotionBlur>(); mb.intensity.Override(P.post.motionBlur);
         var vg = prof.Add<Vignette>(); vg.intensity.Override(P.post.vignette);
         var ca = prof.Add<ColorAdjustments>(); ca.saturation.Override(P.post.saturation); ca.contrast.Override(P.post.contrast);
-        var fgr = prof.Add<FilmGrain>(); fgr.type.Override(FilmGrainLookup.Medium1); fgr.intensity.Override(P.post.grain);
+        var fgr = prof.Add<FilmGrain>(); fgr.type.Override(LookData.Enum(LK.post.grain, FilmGrainLookup.Medium1)); fgr.intensity.Override(P.post.grain);
         // volumetric clouds (data: preset name + opacity)
         if (P.clouds != null && P.clouds.enable)
         {
@@ -78,6 +103,7 @@ public static class HdrpScene
             var sh = prof.Add<HDShadowSettings>(); sh.cascadeShadowSplitCount.Override(P.shadow.cascades); sh.maxShadowDistance.Override(P.shadow.maxDistance);
             sh.cascadeShadowSplit0.Override(P.shadow.split0); sh.cascadeShadowSplit1.Override(P.shadow.split1); sh.cascadeShadowSplit2.Override(P.shadow.split2);
         }
+        LookData.ApplyContactShadows(prof);   // lane LOOK fix 5: screen-space contact shadows (length from look.json); the key light opts in through shadow.contact
         foreach (var comp in prof.components) AssetDatabase.AddObjectToAsset(comp, prof);
         vol.sharedProfile = prof; EditorUtility.SetDirty(prof); AssetDatabase.SaveAssets();
 
@@ -113,12 +139,14 @@ public static class HdrpScene
         if (P.fogVolumes != null) foreach (var fv in P.fogVolumes)
         {
             var fg = new GameObject(fv.name); fg.transform.SetParent(exRoot.transform); fg.transform.position = new Vector3(fv.pos[0], fv.pos[1], fv.pos[2]);
-            var lv = fg.AddComponent<LocalVolumetricFog>(); lv.parameters.size = new Vector3(fv.size[0], fv.size[1], fv.size[2]); lv.parameters.albedo = Col(fv.color); lv.parameters.meanFreePath = fv.meanFreePath; lv.parameters.positiveFade = new Vector3(0.5f, 0.5f, 0.5f); lv.parameters.negativeFade = new Vector3(0.5f, 0.5f, 0.5f);
+            var lv = fg.AddComponent<LocalVolumetricFog>(); lv.parameters.size = new Vector3(fv.size[0], fv.size[1], fv.size[2]); lv.parameters.albedo = Col(fv.color); lv.parameters.meanFreePath = fv.meanFreePath; var lf = LookData.V3(LK.fog.localFade, new Vector3(0.5f, 0.5f, 0.5f)); lv.parameters.positiveFade = lf; lv.parameters.negativeFade = lf;
         }        if (P.materialTints != null) foreach (var t in P.materialTints)
             foreach (var g in AssetDatabase.FindAssets("t:Material " + t.match)) { var m = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(g)); if (m != null && m.name.Contains(t.match) && m.HasProperty("_BaseColor")) { m.SetColor("_BaseColor", new Color(t.value, t.value, t.value, 1f)); if (t.doubleSided) { m.SetFloat("_DoubleSidedEnable", 1f); HDMaterial.ValidateMaterial(m); } EditorUtility.SetDirty(m); } }        if (P.materialColors != null) foreach (var cr in P.materialColors)
-            foreach (var g in AssetDatabase.FindAssets("t:Material " + cr.material)) { var m = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(g)); if (m != null && m.name == cr.material && m.HasProperty(cr.prop)) { m.SetColor(cr.prop, new Color(cr.color[0], cr.color[1], cr.color[2], cr.color[3])); EditorUtility.SetDirty(m); } }        var cam = Camera.main; if (cam != null) { var cd = cam.GetComponent<HDAdditionalCameraData>() ?? cam.gameObject.AddComponent<HDAdditionalCameraData>(); cd.antialiasing = HDAdditionalCameraData.AntialiasingMode.TemporalAntialiasing; cd.allowDynamicResolution = true; }
+            foreach (var g in AssetDatabase.FindAssets("t:Material " + cr.material)) { var m = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath(g)); if (m != null && m.name == cr.material && m.HasProperty(cr.prop)) { m.SetColor(cr.prop, new Color(cr.color[0], cr.color[1], cr.color[2], cr.color[3])); EditorUtility.SetDirty(m); } }        var cam = Camera.main; if (cam != null) { var cd = cam.GetComponent<HDAdditionalCameraData>() ?? cam.gameObject.AddComponent<HDAdditionalCameraData>(); cd.antialiasing = LookData.Enum(LK.post.antialiasing, HDAdditionalCameraData.AntialiasingMode.TemporalAntialiasing); cd.allowDynamicResolution = true; }
+        BuildAtmosphere();
+        HdrpGroundLook.Run();   // lane LOOK fix 3: ground material breakup (material-only)
         EditorSceneManager.MarkSceneDirty(scene); if (saveScene) EditorSceneManager.SaveScene(scene);
-        Debug.Log("HDRPSCENE applied " + tier + " ev=" + P.exposureEV);
+        Debug.Log("HDRPSCENE applied " + tier + " ev=" + LK.exposure.ev + " (look.json " + LookData.Source + ")");
     }
 }
 

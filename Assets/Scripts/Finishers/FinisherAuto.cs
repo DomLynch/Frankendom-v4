@@ -7,9 +7,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // -finisherauto verify harness for the real-time finishers (RTFinisher / SteerFinisherHost / FinisherPlayer.Run).
-// For EACH enabled entry of finishers.json "entries" (or -finisherlist:id1,id2) it restarts the scene, steers Dracula with the aggressive AI (Dracula's AIBrain on, player brain off),
+// For EACH enabled entry of finishers.json "entries" (or -finisherlist:id1,id2) it restarts the scene, steers the roster player with the aggressive AI (its AIBrain on, player brain off),
 // sets the victim's HP to 1 and lets the killer land a hit. After auto.killWaitSeconds without a kill it forces the lethal blow by calling Duel.Resolve itself (logged "forced").
-// The real Duel.Resolve -> RTFinisher.TryBegin hook is what starts the scene, so the whole chain is exercised. Entries with attackerSide "Pitborn" make Dracula the victim (his AI is switched off).
+// The real Duel.Resolve -> RTFinisher.TryBegin hook is what starts the scene, so the whole chain is exercised. Entries with attackerSide "enemy" (or the enemy id) make the player the victim (its AI is switched off).
 // Per finisher it logs: id, clips used, duration, camera cuts, slow-mo / gore counts, ok / failed + exceptions; takes auto.shotsPerFinisher (4) screenshots.
 //   <out>\finisher_auto_log.txt       one line per event, written immediately
 //   <out>\finisher_shots\NN_<id>_k_<label>.png
@@ -242,8 +242,8 @@ public class FinisherAuto : MonoBehaviour
     bool FindFighters()
     {
         D = P = null;
-        var g = GameObject.Find("Dracula"); if (g != null) D = g.GetComponent<DuelFighter>();
-        g = GameObject.Find("Pitborn"); if (g != null) P = g.GetComponent<DuelFighter>();
+        var g = GameObject.Find(Roster.PlayerObject); if (g != null) D = g.GetComponent<DuelFighter>();
+        g = GameObject.Find(Roster.EnemyObject); if (g != null) P = g.GetComponent<DuelFighter>();
         if (D == null || P == null)
             foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) { if (RTFinisher.SideOf(f) == 1) { if (P == null) P = f; } else if (D == null) D = f; }
         return D != null && P != null;
@@ -259,14 +259,14 @@ public class FinisherAuto : MonoBehaviour
         if (D == null || P == null) { cur.errors.Add("fighters not found"); cur.cause = "no fighters"; Finish(); yield break; }
         yield return null; yield return null;
 
-        int vs = string.Equals(e.attackerSide, "Pitborn", StringComparison.OrdinalIgnoreCase) ? 0 : 1;   // "any" and "Dracula" kill the Pitborn
+        int vs = FinisherSides.OnlySide(e.attackerSide) == 1 ? 0 : 1;   // "any" and "player" kill the enemy; "enemy" kills the player
         V = vs == 0 ? D : P; K = vs == 0 ? P : D;
         cur.killerName = K.name; cur.victimName = V.name;
         if (D.opponent == null) D.opponent = P; if (P.opponent == null) P.opponent = D;
         dPlayer = D.GetComponent<PlayerBrain>(); if (dPlayer != null) dPlayer.enabled = false;
         dBrain = D.GetComponent<AIBrain>(); if (dBrain == null) dBrain = D.gameObject.AddComponent<AIBrain>();
-        if (vs == 1) { if (!dBrain.enabled) dBrain.enabled = true; }                       // Dracula is steered by the aggressive AI
-        else { dBrain.enabled = false; D.moveDir = Vector3.zero; D.guardHeld = false; }    // Dracula is the victim: he stands still, the Pitborn AI does the killing
+        if (vs == 1) { if (!dBrain.enabled) dBrain.enabled = true; }                       // the player is steered by the aggressive AI
+        else { dBrain.enabled = false; D.moveDir = Vector3.zero; D.guardHeld = false; }    // the player is the victim: it stands still, the enemy AI does the killing
         SetVictimHp(1f);
 
         StartCoroutine(GameplayLuma(cur));   // V61C: reference luma of the gameplay camera before the scene
@@ -326,7 +326,7 @@ public class FinisherAuto : MonoBehaviour
     {
         if (K != null && !K.Dead && K.health < K.maxHealth * 0.6f) K.health = K.maxHealth;
         if (V != null && !V.Dead && !RTFinisher.Busy && V.health > 1f) SetVictimHp(1f);
-        if (dBrain != null && dBrain.enabled && dBrain.profile != null)   // aggressive steer on Dracula (Init() re-creates the profile after every enable, so write it every frame)
+        if (dBrain != null && dBrain.enabled && dBrain.profile != null)   // aggressive steer on the player (Init() re-creates the profile after every enable, so write it every frame)
         {
             var p = dBrain.profile; p.aggression = C.aggression; p.pressure = C.pressure; p.parry = C.parry; p.dodge = C.dodge;
         }

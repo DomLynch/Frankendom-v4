@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 // Steer bootstrap. Exists only with -steer / -steerauto / runtime_flags.json "steer": true (otherwise the real-time game is untouched).
-// What it does: finds Dracula + Pitborn, switches Dracula's AIBrain ON (AIBrain.cs disables it without -autoplay) and PlayerBrain OFF, loads steer.json,
+// What it does: finds the player + the enemy, switches the player's AIBrain ON (AIBrain.cs disables it without -autoplay) and PlayerBrain OFF, loads steer.json,
 // wires the STSteer API, re-asserts the setup after a scene reload, tracks fight resets, and turns contact events into feed lines / log lines.
 // Survives scene reloads (DontDestroyOnLoad). Nothing here touches rendering.
 [DefaultExecutionOrder(500)]
@@ -93,17 +93,17 @@ public class STController : MonoBehaviour
         STSteer.Log("fight", why, "reset");
     }
 
-    // ---- find fighters + keep Dracula AI-driven ----
+    // ---- find fighters + keep the player AI-driven ----
     void Resolve()
     {
-        var dr = STSteer.Dracula; var pi = STSteer.Pitborn;
-        if (dr == null) { var g = GameObject.Find("Dracula"); if (g != null) dr = g.GetComponent<DuelFighter>(); }
-        if (pi == null) { var g = GameObject.Find("Pitborn"); if (g != null) pi = g.GetComponent<DuelFighter>(); }
-        STSteer.Dracula = dr; STSteer.Pitborn = pi;
+        var dr = STSteer.Player; var pi = STSteer.Enemy;
+        if (dr == null) { var g = GameObject.Find(Roster.PlayerObject); if (g != null) dr = g.GetComponent<DuelFighter>(); }
+        if (pi == null) { var g = GameObject.Find(Roster.EnemyObject); if (g != null) pi = g.GetComponent<DuelFighter>(); }
+        STSteer.Player = dr; STSteer.Enemy = pi;
         Tactics.d = dr; Tactics.o = pi;
         if (dr == null) return;
         if (brain == null) { brain = dr.GetComponent<AIBrain>(); if (brain == null) brain = dr.gameObject.AddComponent<AIBrain>(); STAiBias.Bind(brain); Tactics.brain = brain; }
-        if (brain != null && !brain.enabled) { brain.enabled = true; Debug.Log("[steer] Dracula AIBrain enabled"); }
+        if (brain != null && !brain.enabled) { brain.enabled = true; Debug.Log("[steer] " + Roster.PlayerName + " AIBrain enabled"); }
         if (Cfg.general.disablePlayerBrain)
         {
             if (pb == null) pb = dr.GetComponent<PlayerBrain>();
@@ -118,17 +118,17 @@ public class STController : MonoBehaviour
     void Update()
     {
         if (Cfg == null) return;
-        if (Time.unscaledTime >= nextCheck || STSteer.Dracula == null || STSteer.Pitborn == null || brain == null)
+        if (Time.unscaledTime >= nextCheck || STSteer.Player == null || STSteer.Enemy == null || brain == null)
         {
             nextCheck = Time.unscaledTime + Mathf.Max(0.1f, Cfg.general.checkEverySeconds);
             Resolve();
         }
-        var o = STSteer.Pitborn;
+        var o = STSteer.Enemy;
         if (o != null)
         {
-            // fight reset: Pitborn dead for a while, then alive again (revive without a scene reload)
-            if (o.Dead) { if (!pitWasDead) { pitWasDead = true; pitDeadAt = Time.unscaledTime; STSteer.Feed("The Pitborn falls"); STSteer.Log("fight", "", "pitborn dead"); } }
-            else if (pitWasDead && Time.unscaledTime - pitDeadAt >= Cfg.general.fightResetDeadSeconds) NewFight("pitborn revived");
+            // fight reset: the enemy dead for a while, then alive again (revive without a scene reload)
+            if (o.Dead) { if (!pitWasDead) { pitWasDead = true; pitDeadAt = Time.unscaledTime; STSteer.Feed("The " + Roster.EnemyName + " falls"); STSteer.Log("fight", "", Roster.EnemyName.ToLowerInvariant() + " dead"); } }
+            else if (pitWasDead && Time.unscaledTime - pitDeadAt >= Cfg.general.fightResetDeadSeconds) NewFight(Roster.EnemyName.ToLowerInvariant() + " revived");
         }
     }
 
@@ -137,7 +137,7 @@ public class STController : MonoBehaviour
     {
         if (b != brain || Cfg == null) return;
         STAiBias.Refresh(Cfg, Cfg.Stance(STSteer.Stance), Tactics.Def);
-        if (STReactions.Instance != null) STReactions.Instance.ReapplyDracula();
+        if (STReactions.Instance != null) STReactions.Instance.ReapplyPlayer();
         Tactics.Pre();
     }
 
@@ -156,7 +156,7 @@ public class STController : MonoBehaviour
     }
     void OnContact(CombatEvent e)
     {
-        var dr = STSteer.Dracula; if (dr == null || (e.actor != dr && e.target != dr)) return;
+        var dr = STSteer.Player; if (dr == null || (e.actor != dr && e.target != dr)) return;
         bool byMe = e.actor == dr;
         float dmg = 0f;
         if (e.target != null)
@@ -183,12 +183,12 @@ public class STController : MonoBehaviour
                 if (feed) STSteer.Feed(byMe ? "You broke his guard" : "He broke your guard");
                 break;
         }
-        STSteer.Log("", Tactics.Describe(), e.type + (byMe ? " by Dracula " : " by Pitborn ") + MoveName(e.moveId) + " dmg=" + dmg.ToString("0.0") + " mul=" + STStanceMods.LastMul.ToString("0.00") + (string.IsNullOrEmpty(STStanceMods.LastNote) ? "" : " (" + STStanceMods.LastNote + ")") + " hpD=" + (STSteer.Dracula != null ? STSteer.Dracula.health.ToString("0") : "?") + " hpP=" + (STSteer.Pitborn != null ? STSteer.Pitborn.health.ToString("0") : "?"));
+        STSteer.Log("", Tactics.Describe(), e.type + (byMe ? " by " + Roster.PlayerName + " " : " by " + Roster.EnemyName + " ") + MoveName(e.moveId) + " dmg=" + dmg.ToString("0.0") + " mul=" + STStanceMods.LastMul.ToString("0.00") + (string.IsNullOrEmpty(STStanceMods.LastNote) ? "" : " (" + STStanceMods.LastNote + ")") + " hpD=" + (STSteer.Player != null ? STSteer.Player.health.ToString("0") : "?") + " hpP=" + (STSteer.Enemy != null ? STSteer.Enemy.health.ToString("0") : "?"));
         STStanceMods.LastNote = "";
     }
     void OnDodge(DuelFighter f, string kind, Vector3 dir)
     {
-        if (f != STSteer.Dracula) return;
+        if (f != STSteer.Player) return;
         Tactics.dodges++;
         if (Cfg.general.feedLines) STSteer.Feed("You " + (kind == "backstep" ? "step back" : kind == "sidestep" ? "sidestep" : "roll"));
         STSteer.Log("", Tactics.Describe(), "dodge " + kind);
@@ -197,7 +197,7 @@ public class STController : MonoBehaviour
     void LateUpdate()
     {
         // keep health samples fresh for damage deltas
-        if (STSteer.Dracula != null) { if (STSteer.Dracula.health > lastHpD) lastHpD = STSteer.Dracula.health; }
-        if (STSteer.Pitborn != null) { if (STSteer.Pitborn.health > lastHpP) lastHpP = STSteer.Pitborn.health; }
+        if (STSteer.Player != null) { if (STSteer.Player.health > lastHpD) lastHpD = STSteer.Player.health; }
+        if (STSteer.Enemy != null) { if (STSteer.Enemy.health > lastHpP) lastHpP = STSteer.Enemy.health; }
     }
 }

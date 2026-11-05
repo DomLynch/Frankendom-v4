@@ -239,7 +239,7 @@ public class FinisherCamera : MonoBehaviour
     void CaptureEv() { exBase = FinisherLook.StackFixedEV(); evCur = FinisherConfig.Get().rt.look != null ? FinisherConfig.Get().rt.look.darkenEV : 0f; evTarget = evCur; exOv = null; evWarned = false; }
     void EvTick(float dt)
     {
-        if (noBlurProf == null) return;
+        if (noBlurProf == null || LookData.Get().exposure.lockFinisher) return;   // lane LOOK fix 1: exposure locked to look.json, no per-shot offset Volume
         var L = FinisherConfig.Get().rt.look; float rate = Mathf.Max(0.1f, L != null ? L.evRate : 4f);
         evCur = Mathf.MoveTowards(evCur, evTarget, rate * dt);
         if (exOv == null && Mathf.Abs(evCur) < 1e-4f && Mathf.Abs(evTarget) < 1e-4f) return;

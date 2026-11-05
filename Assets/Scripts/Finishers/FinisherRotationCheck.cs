@@ -6,9 +6,9 @@ using UnityEngine;
 
 // V62: proof that the finisher rotation (FinisherPlayer.Pick + FinisherRotationStore) does what the design says, without a scene:
 //   1 per weapon: the picks cycle through every ENABLED + eligible id (sequence mode), never the same id twice in a row (while more than one is eligible)
-//   2 the two weapons (Dracula "sword" / Pitborn "maul") keep independent positions even when their kills are interleaved
+//   2 the two weapons (roster player / enemy "weapon") keep independent positions even when their kills are interleaved
 //   3 persisted: finisher_rotation.json is written, and after a simulated restart (memory dropped, file re-read) the next pick continues the cycle
-//   4 mode "random" (data): no immediate repeat. Rotation data = finishers.json rotation.* (enabledIds, mode, noImmediateRepeat, weapons).
+//   4 mode "random" (data): no immediate repeat. Rotation data = finishers.json rotation.* (enabledIds, mode, noImmediateRepeat); weapons = roster.json.
 // It runs on a TEMP file (FinisherRotationStore.PathOverride), never on the player's persistentDataPath file. FinisherAuto calls Run() at the start of every -finisherauto
 // (summary lines "rotation check: PASS/FAIL"); `-finisherrotcheck` alone runs only this and exits.
 public static class FinisherRotationCheck
@@ -22,7 +22,7 @@ public static class FinisherRotationCheck
         {
             FinisherRotationStore.TestMode = true; FinisherRotationStore.PathOverride = tmp; FinisherRotationStore.Clear();
             var file = FinisherConfig.Get(); var rot = file.rotation;
-            sb.AppendLine("rotation data: mode=" + rot.mode + " noImmediateRepeat=" + rot.noImmediateRepeat + " enabledIds=[" + string.Join(",", rot.enabledIds ?? new string[0]) + "] weapons=" + rot.weapons.Dracula + "/" + rot.weapons.Pitborn);
+            sb.AppendLine("rotation data: mode=" + rot.mode + " noImmediateRepeat=" + rot.noImmediateRepeat + " enabledIds=[" + string.Join(",", rot.enabledIds ?? new string[0]) + "] weapons=" + FinisherSides.WeaponOf(0) + "/" + FinisherSides.WeaponOf(1));
             var ctxs = new[] {
                 new FinisherContext { killerSide = 0, victimSide = 1, move = FinisherMove.Heavy, loc = FinisherLoc.Head },
                 new FinisherContext { killerSide = 1, victimSide = 0, move = FinisherMove.Heavy, loc = FinisherLoc.Head } };
@@ -31,7 +31,7 @@ public static class FinisherRotationCheck
             {
                 FinisherPlayer.ResetRotationForTest(); FinisherRotationStore.Clear();
                 elig[s] = FinisherPlayer.EligibleIds(ctxs[s]);
-                string wp = s == 0 ? rot.weapons.Dracula : rot.weapons.Pitborn;
+                string wp = FinisherSides.WeaponOf(s);
                 sb.AppendLine("[" + wp + "] eligible: " + string.Join(", ", elig[s].ToArray()));
                 if (elig[s].Count == 0) { sb.AppendLine("  WARN no enabled entry for this weapon (rotation.enabledIds): its kills are plain deaths until one is enabled"); emptyW++; }
             }
@@ -49,7 +49,7 @@ public static class FinisherRotationCheck
                 }
             for (int s = 0; s < 2; s++)
             {
-                string wp = s == 0 ? rot.weapons.Dracula : rot.weapons.Pitborn; int n = elig[s].Count; if (n == 0) continue;
+                string wp = FinisherSides.WeaponOf(s); int n = elig[s].Count; if (n == 0) continue;
                 sb.AppendLine("[" + wp + "] picks: " + string.Join(" > ", seq[s].ToArray()));
                 bool noRep = true; for (int i = 1; i < seq[s].Count; i++) if (n > 1 && seq[s][i] == seq[s][i - 1]) noRep = false;
                 bool inSet = seq[s].TrueForAll(x => elig[s].Contains(x));
@@ -61,7 +61,7 @@ public static class FinisherRotationCheck
 
             // 3: persisted + restart continues
             bool fileOk = File.Exists(tmp); string raw = fileOk ? File.ReadAllText(tmp) : "";
-            sb.AppendLine("file written: " + fileOk + (fileOk ? " (" + raw.Length + " bytes, rows for " + (raw.Contains("\"weapon\": \"" + rot.weapons.Dracula + "\"") ? rot.weapons.Dracula : "-") + "/" + (raw.Contains("\"weapon\": \"" + rot.weapons.Pitborn + "\"") ? rot.weapons.Pitborn : "-") + ")" : ""));
+            sb.AppendLine("file written: " + fileOk + (fileOk ? " (" + raw.Length + " bytes, rows for " + (raw.Contains("\"weapon\": \"" + FinisherSides.WeaponOf(0) + "\"") ? FinisherSides.WeaponOf(0) : "-") + "/" + (raw.Contains("\"weapon\": \"" + FinisherSides.WeaponOf(1) + "\"") ? FinisherSides.WeaponOf(1) : "-") + ")" : ""));
             if (!fileOk) ok = false;
             for (int s = 0; s < 2; s++)
             {
@@ -71,7 +71,7 @@ public static class FinisherRotationCheck
                 var e = FinisherPlayer.Pick(ctxs[s]); string got = e != null ? e.id : "(null)";
                 string want = rot.mode == "random" ? null : elig[s][(elig[s].IndexOf(last) + 1) % n];
                 bool good = rot.mode == "random" ? (n < 2 || got != last) : got == want;
-                sb.AppendLine("[" + (s == 0 ? rot.weapons.Dracula : rot.weapons.Pitborn) + "] after restart: last=" + last + " next=" + got + (want != null ? " expected=" + want : "") + " -> " + (good ? "ok" : "FAIL"));
+                sb.AppendLine("[" + FinisherSides.WeaponOf(s) + "] after restart: last=" + last + " next=" + got + (want != null ? " expected=" + want : "") + " -> " + (good ? "ok" : "FAIL"));
                 if (!good) ok = false;
             }
         }

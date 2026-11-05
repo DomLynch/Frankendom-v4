@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// AI bias: stance ops, then the running tactic's ops, applied on top of Dracula's base AiProfile (the playerBot row) and written into AIBrain.profile in place every frame.
+// AI bias: stance ops, then the running tactic's ops, applied on top of the player's base AiProfile (the playerBot row) and written into AIBrain.profile in place every frame.
 // AIBrain.Decide reads the profile on every sim tick, so a stance change takes effect on the next decision (<= 1 tick, well inside the 0.5 s spec).
 public static class STAiBias
 {

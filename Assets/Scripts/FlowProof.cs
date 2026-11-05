@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 
 // FLOW PROOF HARNESS (lane V64FLOW): -flowproof [-out:<dir>] [-proofsecs:<n> (default 420)]
-// Scripts Dracula (PlayerBrain / AIBrain / TouchControls off; FlowTable.ForceApply makes the flow layer treat him as the human) against a passive Pitborn through the same DuelFighter / FlowTable
+// Scripts the player (PlayerBrain / AIBrain / TouchControls off; FlowTable.ForceApply makes the flow layer treat him as the human) against a passive enemy through the same DuelFighter / FlowTable
 // entry points PlayerBrain uses, at Time.captureFramerate = 60 (1 frame = 1 sim tick), and logs PASS / FAIL per item:
 //   combo:<name>        each flow.json chain.combos entry: the steps start in order, each link is a chain (flowChains), gaps between starts logged
 //   cancel_attack_dodge a light cancelled into a roll inside the cancel.json window (before the recovery ends)
@@ -17,7 +17,7 @@ using UnityEngine;
 //   dodge_<dir>         forward / back / left / right: i-frame tick range, direction of travel, distance and stamina cost equal the flow.json row
 //   avoid_<dir>         a baseline swing hits; the same swing with the dodge timed into the i-frames does not (health unchanged); a late dodge is hit
 //   riposte_key / riposte_auto   after a parry the dedicated key (and a plain strike press) starts the riposte
-//   ai_unaffected       the Pitborn and a Dracula whose PlayerBrain is off (BalanceAuto bot, MoveSheet) are not touched by the flow layer
+//   ai_unaffected       the enemy and a player whose PlayerBrain is off (BalanceAuto bot, MoveSheet) are not touched by the flow layer
 // Output (default <exe dir>\flow_proof\): flowproof_*.png (full-screen, HUD in frame; run the player at 1920x1080), flow_proof_log.txt, flow_proof_summary.txt, flow_proof_results.json, flow_proof_contact.png (4x3).
 // Exit codes: 0 all PASS, 1 some FAIL, 2 exception / setup failure, 3 timeout. In-memory overrides only; nothing on disk is changed.
 [DefaultExecutionOrder(-60)]
@@ -123,7 +123,7 @@ public class FlowProof : MonoBehaviour
         if (cc) cc.enabled = true;
         Physics.SyncTransforms();
     }
-    // Pitborn at the fixed home spot, Dracula `sep` metres in front of him on the fixed axis, both facing
+    // the enemy at the fixed home spot, the player `sep` metres in front of him on the fixed axis, both facing
     void Setup(float sep)
     {
         Place(D, home - axis0 * sep, axis0); Place(P, home, -axis0);
@@ -171,7 +171,7 @@ public class FlowProof : MonoBehaviour
     IEnumerator Main()
     {
         float w0 = Time.realtimeSinceStartup;
-        while ((D = Find("Dracula")) == null || (P = Find("Pitborn")) == null)
+        while ((D = Find(Roster.PlayerObject)) == null || (P = Find(Roster.EnemyObject)) == null)
         {
             if (Time.realtimeSinceStartup - w0 > 20f) { Log("fighters not found"); Finish(2, "fighters not found"); yield break; }
             yield return null;
@@ -190,7 +190,7 @@ public class FlowProof : MonoBehaviour
             bool dOff = !FlowTable.Applies(D), pOff = !FlowTable.Applies(P);
             FlowTable.ForceApply = true; FlowTable.ForceHud = true;
             bool dOn = FlowTable.Applies(D), pStill = !FlowTable.Applies(P);
-            Check("ai_unaffected", dOff && pOff && dOn && pStill, "Dracula with PlayerBrain off: applies=" + !dOff + " (want false); Pitborn applies=" + !pOff + " (want false); harness force on: Dracula " + dOn + " (want true), Pitborn " + !pStill + " (want false)");
+            Check("ai_unaffected", dOff && pOff && dOn && pStill, Roster.PlayerName + " with PlayerBrain off: applies=" + !dOff + " (want false); " + Roster.EnemyName + " applies=" + !pOff + " (want false); harness force on: " + Roster.PlayerName + " " + dOn + " (want true), " + Roster.EnemyName + " " + !pStill + " (want false)");
         }
         home = P.transform.position; home.y = 0f;
         Vector3 a0 = Flat(P.transform.position - D.transform.position); axis0 = a0.sqrMagnitude < 0.01f ? Vector3.forward : a0.normalized;
@@ -211,7 +211,7 @@ public class FlowProof : MonoBehaviour
                 D.Press(c.steps[i]);
             }
             yield return WaitFor(() => starts.Count >= s0 + c.steps.Length, 170);
-            var mine = new List<AtkStart>(); for (int i = s0; i < starts.Count; i++) if (starts[i].who == "Dracula") mine.Add(starts[i]);
+            var mine = new List<AtkStart>(); for (int i = s0; i < starts.Count; i++) if (starts[i].who == Roster.PlayerObject) mine.Add(starts[i]);
             bool seq = mine.Count == c.steps.Length; var sb = new StringBuilder();
             for (int i = 0; i < mine.Count; i++) { if (i < c.steps.Length && !Matches(c.steps[i], mine[i].move)) seq = false; sb.Append(mine[i].move).Append(i + 1 < mine.Count ? " >" + (mine[i + 1].tick - mine[i].tick) + "t> " : ""); }
             int chains = D.flowChains - ch0; bool chained = chains == c.steps.Length - 1;
@@ -235,17 +235,17 @@ public class FlowProof : MonoBehaviour
         }
         {   // heavy -> light, onHitOnly
             yield return Reset(1.45f);
-            int ch0 = D.flowChains, s0 = CountStarts("Dracula"); int lastRec = -1; bool pressed = false; int g = 0; var row = FlowTable.FindChain("heavy_overhead", "light", 999, true); int eMin = row != null ? row.earliest : 14;
+            int ch0 = D.flowChains, s0 = CountStarts(Roster.PlayerObject); int lastRec = -1; bool pressed = false; int g = 0; var row = FlowTable.FindChain("heavy_overhead", "light", 999, true); int eMin = row != null ? row.earliest : 14;
             D.Press("heavy");
-            while (g++ < 200) { yield return null; if (D.state == FState.Recovery) { lastRec = D.MoveT; if (!pressed) { D.Press("light"); pressed = true; } } if (CountStarts("Dracula") > s0 + 1) break; }
+            while (g++ < 200) { yield return null; if (D.state == FState.Recovery) { lastRec = D.MoveT; if (!pressed) { D.Press("light"); pressed = true; } } if (CountStarts(Roster.PlayerObject) > s0 + 1) break; }
             bool hitDone = true;
             Check("cancel_onhit_hit", D.flowChains == ch0 + 1 && lastRec + 1 >= eMin - 1 && lastRec + 1 <= eMin + 2, "after a landed heavy the light chained at recovery t=" + (lastRec + 1) + " (row earliest " + eMin + "), chain links " + (D.flowChains - ch0) + ", hitDone " + hitDone);
             yield return Reset(1.45f);
-            ch0 = D.flowChains; s0 = CountStarts("Dracula"); lastRec = -1; pressed = false; g = 0;
+            ch0 = D.flowChains; s0 = CountStarts(Roster.PlayerObject); lastRec = -1; pressed = false; g = 0;
             D.Press("heavy");
             yield return WaitFor(() => D.state == FState.Windup, 20);
             Place(P, home + axis0 * 6f, -axis0);   // target gone: the heavy whiffs
-            while (g++ < 240) { yield return null; if (D.state == FState.Recovery) { lastRec = D.MoveT; if (!pressed) { D.Press("light"); pressed = true; } } if (CountStarts("Dracula") > s0 + 1) break; }
+            while (g++ < 240) { yield return null; if (D.state == FState.Recovery) { lastRec = D.MoveT; if (!pressed) { D.Press("light"); pressed = true; } } if (CountStarts(Roster.PlayerObject) > s0 + 1) break; }
             int recLen = D.moves.Get("heavy_overhead").Recovery(false);
             Check("cancel_onhit_whiff", D.flowChains == ch0 && lastRec >= recLen - 2, "after a whiffed heavy the light waited for the recovery end: last recovery t=" + lastRec + " of " + recLen + ", chain links " + (D.flowChains - ch0) + " (want 0)");
         }
@@ -390,11 +390,11 @@ public class FlowProof : MonoBehaviour
                 if (parried <= pc) { yield return Ticks(10); continue; }
                 bool windowOpen = D.RiposteLeft > 0;
                 if (mode == 0) { yield return Shot("riposte_window"); }
-                int s0 = CountStarts("Dracula"); int r0 = D.flowRipostes;
+                int s0 = CountStarts(Roster.PlayerObject); int r0 = D.flowRipostes;
                 if (mode == 0) D.PressRiposte(); else D.Press("light");
-                yield return WaitFor(() => CountStarts("Dracula") > s0, 40);
-                string mv = ""; for (int i = starts.Count - 1; i >= 0; i--) if (starts[i].who == "Dracula") { mv = starts[i].move; break; }
-                got = CountStarts("Dracula") > s0 && mv == "riposte" && (mode == 1 || D.flowRipostes == r0 + 1);
+                yield return WaitFor(() => CountStarts(Roster.PlayerObject) > s0, 40);
+                string mv = ""; for (int i = starts.Count - 1; i >= 0; i--) if (starts[i].who == Roster.PlayerObject) { mv = starts[i].move; break; }
+                got = CountStarts(Roster.PlayerObject) > s0 && mv == "riposte" && (mode == 1 || D.flowRipostes == r0 + 1);
                 note = "parry achieved (attempt " + (a + 1) + "), window open after the parry " + windowOpen + ", move started '" + mv + "', flowRipostes +" + (D.flowRipostes - r0);
             }
             Check(nm, got, got ? note : "no parry achieved or no riposte started " + note);

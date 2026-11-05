@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using UnityEngine;
 
-// Test harness: with -autoplay, captures screenshots, logs fps, asserts the Pitborn death pose, then quits.
+// Test harness: with -autoplay, captures screenshots, logs fps, asserts the enemy death pose, then quits.
 public class AutoShot : MonoBehaviour
 {
     bool on, hero, stand, profile, gaps, props, face, faceLit; float faceT; public static int RecFrame; bool cmp; int cmpHit = -1, cmpInit; string trailMode = "", rimArg = ""; static string evLog = ""; bool rec; int swingN, hitN, hitPending; bool slowmo; float slowUntil; System.Collections.Generic.List<(int frame, string name)> capQ = new System.Collections.Generic.List<(int, string)>(); float lastSwing; int[] burstMask = new int[2]; string hitType; float lastHit; float minSep = 99f; int propFrames; int gapIdx, gapFrames; int standFrames; float t; int frames, frames2; float[] at = { 3f, 7f, 11f, 15f }; int next; float minDt = 9f, maxDt;
@@ -93,7 +93,7 @@ public class AutoShot : MonoBehaviour
             }
             foreach (var h in FindObjectsByType<Health>(FindObjectsSortMode.None)) h.gameObject.SetActive(false);
         }
-        foreach (var h in FindObjectsByType<Health>(FindObjectsSortMode.None)) { if (h.name == "Pitborn") enemy = h; else player = h; }
+        foreach (var h in FindObjectsByType<Health>(FindObjectsSortMode.None)) { if (h.name == Roster.EnemyObject) enemy = h; else player = h; }
         if (enemy) foreach (var tr in enemy.GetComponentsInChildren<Transform>()) if (tr.name == "mixamorig:Hips") enemyHips = tr;
     }
     static string GetPath(Transform t) { string p = t.name; while (t.parent) { t = t.parent; p = t.name + "/" + p; } return p; }
@@ -112,7 +112,7 @@ public class AutoShot : MonoBehaviour
         {
             if (cmpInit == 0) { cmpInit = 1; Time.captureFramerate = 60; UnityEngine.Random.InitState(42);
                 if (trailMode != "") foreach (var wt in FindObjectsByType<WeaponTrail>(FindObjectsSortMode.None)) { wt.ember = trailMode == "ember"; wt.Apply(); }
-                if (rimArg != "") { var rl = GameObject.Find("PitbornRedRim"); if (rl) { var lt = rl.GetComponent<Light>(); float rv = float.Parse(rimArg, System.Globalization.CultureInfo.InvariantCulture); lt.intensity = rv; lt.enabled = rv > 0f; } }
+                if (rimArg != "") { var rl = GameObject.Find(Roster.EnemyObject + "RedRim"); if (rl) { var lt = rl.GetComponent<Light>(); float rv = float.Parse(rimArg, System.Globalization.CultureInfo.InvariantCulture); lt.intensity = rv; lt.enabled = rv > 0f; } }
                 ContactRelay.OnContact += (a3, d3, ty3, hv3, pf3) => { if (cmpHit < 0 && ty3 == "Hit" && hv3) cmpHit = Time.frameCount + 3; }; }
             if (cmpHit >= 0 && Time.frameCount == cmpHit) ScreenCapture.CaptureScreenshot(Path.Combine(dir, "cmp_hit.png"));
             if (Time.frameCount == 300) ScreenCapture.CaptureScreenshot(Path.Combine(dir, "cmp_wide.png"));
@@ -152,7 +152,7 @@ public class AutoShot : MonoBehaviour
             float[] gp = { 1.5f, 2.5f, 4f }; float[] zs = { 12.8f, 16.9f, 19.2f };
             int total = gp.Length * zs.Length;
             if (gapIdx >= total) { Application.Quit(); return; }
-            var dr = GameObject.Find("Dracula"); var pi = GameObject.Find("Pitborn");
+            var dr = GameObject.Find(Roster.PlayerObject); var pi = GameObject.Find(Roster.EnemyObject);
             float z0 = zs[gapIdx / gp.Length], g = gp[gapIdx % gp.Length];
             if (gapFrames == 0)
             {
@@ -170,7 +170,7 @@ public class AutoShot : MonoBehaviour
         if (face)
         {
             faceT += Time.unscaledDeltaTime; var rigF = GetComponent<CameraRig>(); if (rigF) rigF.enabled = false;
-            var mh = GameObject.Find("MetaHumanHead"); var drF = GameObject.Find("Dracula");
+            var mh = GameObject.Find("MetaHumanHead"); var drF = GameObject.Find(Roster.PlayerObject);
             foreach (var fb in System.Environment.GetCommandLineArgs()) if (fb.StartsWith("-facebone:")) { var parts = fb.Substring(10).Split('/'); var ch = GameObject.Find(parts[0]); if (ch != null) { drF = ch; mh = null; foreach (var tt in ch.GetComponentsInChildren<Transform>(true)) if (tt.name == parts[1]) { mh = tt.gameObject; break; } } }
             if (mh && drF) { Vector3 hp = mh.transform.position; Vector3 fo = new Vector3(0f, 0.02f, 0.85f); foreach (var fa in System.Environment.GetCommandLineArgs()) if (fa.StartsWith("-faceoff:")) { var q = fa.Substring(9).Split(','); if (q.Length >= 3) fo = new Vector3(float.Parse(q[0], System.Globalization.CultureInfo.InvariantCulture), float.Parse(q[1], System.Globalization.CultureInfo.InvariantCulture), float.Parse(q[2], System.Globalization.CultureInfo.InvariantCulture)); }
                 transform.position = hp + drF.transform.right * fo.x + Vector3.up * fo.y + drF.transform.forward * fo.z; transform.rotation = Quaternion.LookRotation((hp - transform.position).normalized); GetComponent<Camera>().fieldOfView = 26f; }
@@ -184,7 +184,7 @@ public class AutoShot : MonoBehaviour
             standFrames++;
             if (standFrames < 90)
             {
-                var dr = GameObject.Find("Dracula"); var pi = GameObject.Find("Pitborn");
+                var dr = GameObject.Find(Roster.PlayerObject); var pi = GameObject.Find(Roster.EnemyObject);
                 if (dr && pi) { var args = System.Environment.GetCommandLineArgs(); for (int i = 0; i < args.Length - 1; i++) if (args[i] == "-pitH" && float.TryParse(args[i + 1], out var ph)) pi.transform.localScale = Vector3.one * (ph / 2.1f); dr.GetComponent<CharacterController>().enabled = false; pi.GetComponent<CharacterController>().enabled = false; dr.transform.position = new Vector3(-1.1f, 0.1f, 13.6f); pi.transform.position = new Vector3(1.1f, 0.1f, 13.6f); dr.transform.rotation = Quaternion.Euler(0, 0, 0); pi.transform.rotation = Quaternion.Euler(0, 0, 0); }
             }
             if (standFrames == 140) ScreenCapture.CaptureScreenshot(Path.Combine(dir, "stand.png"));

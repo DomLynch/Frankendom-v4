@@ -12,8 +12,6 @@
   "maxAvgDuration": 120,
   "minWinRate": 0.4,
   "maxWinRate": 0.7,
-  "minPitbornMoves": 4,
-  "shotMode": "screen",
-  "draculaName": "Dracula",
-  "pitbornName": "Pitborn"
+  "minEnemyMoves": 4,
+  "shotMode": "screen"
 }

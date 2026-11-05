@@ -558,13 +558,13 @@
     ]
   },
   "reactions": {
-    "_about": "S2 reactions (replaces 'tells'). Per incoming swing type the defender draws guard / parry attempt / roll / sidestep / trade (swing back) / ignore (remainder). Probabilities = byMove x side.skill x stanceMul x running tacticMul (Dracula only), renormalised if the sum exceeds 1. Executed by the existing AIBrain (knobs parry/dodge/lapse/guard/reaction overridden for that one swing) or by PressSidestep / Press. Delays in ms (60 Hz ticks = ms*0.06), randomised +- jitter. punish = chance to attack the recovery after a whiff (+bonus for a missed or blocked heavy). repeatPenalty/mixup/patienceAmp = anti-pattern layer on profile.pressure / profile.aggression. feintBiteChance: the Pitborn bites on Dracula's feint; a bite is countered by a free parry + riposte window.",
+    "_about": "S2 reactions (replaces 'tells'). Per incoming swing type the defender draws guard / parry attempt / roll / sidestep / trade (swing back) / ignore (remainder). Probabilities = byMove x side.skill x stanceMul x running tacticMul (player side only), renormalised if the sum exceeds 1. Executed by the existing AIBrain (knobs parry/dodge/lapse/guard/reaction overridden for that one swing) or by PressSidestep / Press. Delays in ms (60 Hz ticks = ms*0.06), randomised +- jitter. punish = chance to attack the recovery after a whiff (+bonus for a missed or blocked heavy). repeatPenalty/mixup/patienceAmp = anti-pattern layer on profile.pressure / profile.aggression. feintBiteChance: the enemy bites on the player's feint; a bite is countered by a free parry + riposte window.",
     "enabled": true,
     "seed": 20261104,
     "feintBiteChance": 0.5,
     "sidestepLeadTicks": 6,
     "feedMinGapS": 0.5,
-    "dracula": {
+    "player": {
       "enabled": true,
       "reactionMs": 260,
       "jitterMs": 100,
@@ -581,7 +581,7 @@
       "patienceMaxS": 7,
       "historyLen": 6
     },
-    "pitborn": {
+    "enemy": {
       "enabled": true,
       "reactionMs": 260,
       "jitterMs": 100,
@@ -672,14 +672,14 @@
     "byMove": [
       {
         "type": "light",
-        "dracula": {
+        "player": {
           "guard": 0.3,
           "parry": 0.18,
           "roll": 0.08,
           "sidestep": 0.08,
           "trade": 0.1
         },
-        "pitborn": {
+        "enemy": {
           "guard": 0.3,
           "parry": 0.18,
           "roll": 0.08,
@@ -689,14 +689,14 @@
       },
       {
         "type": "slash",
-        "dracula": {
+        "player": {
           "guard": 0.25,
           "parry": 0.15,
           "roll": 0.18,
           "sidestep": 0.06,
           "trade": 0.1
         },
-        "pitborn": {
+        "enemy": {
           "guard": 0.25,
           "parry": 0.15,
           "roll": 0.18,
@@ -706,14 +706,14 @@
       },
       {
         "type": "stab",
-        "dracula": {
+        "player": {
           "guard": 0.18,
           "parry": 0.2,
           "roll": 0.15,
           "sidestep": 0.2,
           "trade": 0.07
         },
-        "pitborn": {
+        "enemy": {
           "guard": 0.18,
           "parry": 0.2,
           "roll": 0.15,
@@ -723,14 +723,14 @@
       },
       {
         "type": "kick",
-        "dracula": {
+        "player": {
           "guard": 0.05,
           "parry": 0.0,
           "roll": 0.15,
           "sidestep": 0.4,
           "trade": 0.06
         },
-        "pitborn": {
+        "enemy": {
           "guard": 0.05,
           "parry": 0.0,
           "roll": 0.15,
@@ -740,14 +740,14 @@
       },
       {
         "type": "heavy",
-        "dracula": {
+        "player": {
           "guard": 0.15,
           "parry": 0.18,
           "roll": 0.28,
           "sidestep": 0.12,
           "trade": 0.06
         },
-        "pitborn": {
+        "enemy": {
           "guard": 0.15,
           "parry": 0.18,
           "roll": 0.28,
@@ -757,14 +757,14 @@
       },
       {
         "type": "special",
-        "dracula": {
+        "player": {
           "guard": 0.08,
           "parry": 0.08,
           "roll": 0.45,
           "sidestep": 0.1,
           "trade": 0.0
         },
-        "pitborn": {
+        "enemy": {
           "guard": 0.08,
           "parry": 0.08,
           "roll": 0.45,
@@ -890,8 +890,8 @@
     "colDim": "#9A9384FF",
     "colDisabled": "#7A746AFF",
     "colHover": "#1E1416FF",
-    "colHpDracula": "#B01820FF",
-    "colHpPitborn": "#D2701CFF",
+    "colHpPlayer": "#B01820FF",
+    "colHpEnemy": "#D2701CFF",
     "colGhost": "#F0E0C8B0",
     "colKey": "#FFD7A0FF",
     "colBad": "#C0282CFF",
@@ -927,8 +927,8 @@
     "iconDir": "steer_icons",
     "tStance": "STANCE",
     "tTactics": "TACTICS",
-    "nameDracula": "DRACULA",
-    "namePitborn": "PITBORN",
+    "namePlayer": "",
+    "nameEnemy": "",
     "tWin": "VICTORY",
     "tLose": "YOU DIED",
     "tNext": "NEXT OPPONENT  [Enter]",

@@ -192,6 +192,6 @@ public class HeadClamp : MonoBehaviour
         if (w > 0f && neck != null && row.neckShare > 0f) ClampBone(neck, qNeck, tp, y * row.neckShare, p * row.neckShare, out rawY, out rawP, w);
         ClampBone(head, qHead, tp, y, p, out rawYaw, out rawPitch, w);
         Quaternion rel2 = Quaternion.Inverse(tp) * Pose(head, qHead); YawPitch(rel2, out nowYaw, out nowPitch);
-        if (debugLog || row.debug) { if ((Time.frameCount % 60) == 0) Debug.Log("[HeadClamp] raw yaw/pitch=" + rawYaw.ToString("F1") + "/" + rawPitch.ToString("F1") + " now=" + nowYaw.ToString("F1") + "/" + nowPitch.ToString("F1") + " limit=" + y + "/" + p); }
+        if ((debugLog || row.debug) && PerfFlags.VerboseLogs) { if ((Time.frameCount % 60) == 0) Debug.Log("[HeadClamp] raw yaw/pitch=" + rawYaw.ToString("F1") + "/" + rawPitch.ToString("F1") + " now=" + nowYaw.ToString("F1") + "/" + nowPitch.ToString("F1") + " limit=" + y + "/" + p); }
     }
 }

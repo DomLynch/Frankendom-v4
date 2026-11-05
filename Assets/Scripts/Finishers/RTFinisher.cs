@@ -33,7 +33,7 @@ public static class RTFinisher
 
     internal static void Stage(string what, string detail) { if (OnStage != null) { try { OnStage(what, detail); } catch (Exception e) { Debug.LogWarning("[finisher] stage handler: " + e.Message); } } }
 
-    public static int SideOf(DuelFighter f) { return f.name.Contains("Pitborn") || f.transform.root.name.Contains("Pitborn") ? 1 : 0; }
+    public static int SideOf(DuelFighter f) { string en = Roster.EnemyObject; return f.name.Contains(en) || f.transform.root.name.Contains(en) ? 1 : 0; }   // 1 = roster enemy, 0 = roster player (FinisherSides)
     static FinisherMove MoveOf(MoveDef m)
     {
         string id = m != null ? m.id : "";
@@ -70,7 +70,7 @@ public static class RTFinisher
             var ctx = new FinisherContext { killer = a, victim = d, killerSide = ks, victimSide = vs, move = mv, loc = loc, deathblow = deathblow };
             string force = !string.IsNullOrEmpty(ForceId) ? ForceId : Cfg.forceId;
             FinisherEntry e = !string.IsNullOrEmpty(force) ? FinisherPlayer.ById(force) : FinisherPlayer.Pick(ctx);
-            if (e == null) { LastRefusal = !string.IsNullOrEmpty(force) ? "forced id '" + force + "' not found" : "no eligible entry for " + (ks == 0 ? "Dracula" : "Pitborn") + " " + mv + "/" + loc; return false; }
+            if (e == null) { LastRefusal = !string.IsNullOrEmpty(force) ? "forced id '" + force + "' not found" : "no eligible entry for " + FinisherSides.IdOf(ks) + " " + mv + "/" + loc; return false; }
             var runner = FinisherRTRunner.Ensure(); if (runner == null) { LastRefusal = "no runner"; return false; }
 
             // commit: from here the scene owns both fighters

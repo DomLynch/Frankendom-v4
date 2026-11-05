@@ -9,7 +9,6 @@
     "ssgiFullRes":  true,
     "fogQuality":  2,
     "ssao":  true,
-    "exposureEV":  9.4,
     "contactShadows":  true,
     "cascades":  2,
     "hideMHHead":  true

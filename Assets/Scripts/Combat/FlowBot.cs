@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// The human's flow features for the BALANCE BOT (lane V64P, reworked by lane V65BOT). BalanceAuto adds this to Dracula (AIBrain "auto" playerBot profile, PlayerBrain off) when flow.json "applyToBot"
+// The human's flow features for the BALANCE BOT (lane V64P, reworked by lane V65BOT). BalanceAuto adds this to the roster player (AIBrain "auto" playerBot profile, PlayerBrain off) when flow.json "applyToBot"
 // is true and sets DuelFighter.flowBotOn, so FlowTable.Applies() is true for him and the SAME DuelFighterFlow code paths the human uses run: attack-to-attack chain rows (FlowChain), magnetism + turn cap
 // (FlowAttackStart / FlowFace), directional dodge overrides (FlowDodgeBegin), the riposte key (PressRiposte -> FlowRiposteFree) and the cancel table (TryCancel).
 // This component only supplies the key presses a human would make; the AIBrain is untouched and keeps deciding movement, guard, parry and its own attacks. Every number: flow.json "bot".
@@ -101,6 +101,7 @@ public class FlowBot : MonoBehaviour
         if (df.Exhausted || df.stamina <= 0f) { dPStam++; return; }
         if (df.state == FState.Guard && df.InParryWindow) { dPFresh++; return; }   // the guard just went up: the window is already open
         if (!df.FlowParryReady) { dPCd++; return; }
+        if (ControlsTable.SideRequired) DirectionalGuard.BotAim(df, o.CurrentMove, R(), R());   // CTRL v68: aim the guard side (controls.json bot.sideReadChance)
         df.FlowParryRaise(df.state == FState.Guard, B.parryHoldTicks); dPTry++;
     }
 
@@ -188,7 +189,7 @@ public class FlowBot : MonoBehaviour
         if (left > hi || left < lo) return;
         { Vector3 v = df.transform.position - o.transform.position; v.y = 0f; float lim = cancelHeavy ? B.cancelHeavyDist : o.CurrentMove.reach * o.scale + o.radius + df.radius + 0.75f; if (v.magnitude > lim) { dCDist++; cancelTake = false; return; } }   // the swing cannot reach him anyway
         cancelTake = false;
-        if (cancelGuard) { if (!df.FlowDodgeQueued) { df.FlowForceGuard(B.guardHoldTicks); dCGuard++; } else dCQueued++; }
+        if (cancelGuard) { if (!df.FlowDodgeQueued) { if (ControlsTable.SideRequired) DirectionalGuard.BotAim(df, o.CurrentMove, R(), R()); df.FlowForceGuard(B.guardHoldTicks); dCGuard++; } else dCQueued++; }   // CTRL v68: guard side
         else if (df.stamina < B.cancelMinStamina) dCStam++;
         else if (!df.FlowDodgeReady) dCCd++;
         else if (df.FlowDodgeQueued) dCQueued++;

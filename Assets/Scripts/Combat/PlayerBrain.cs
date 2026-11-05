@@ -8,9 +8,11 @@ public class PlayerBrain : MonoBehaviour
 {
     public Transform cam; public CameraRig rig;
     float awayT; DuelFighter df; float strikeDown = -1f; bool heavyFired; float rollDown = -1f;
+    DirectionalInput dirIn;   // CTRL v68: swipe controls (controls.json)
     void Awake()
     {
         df = GetComponent<DuelFighter>();
+        dirIn = GetComponent<DirectionalInput>(); if (dirIn == null) dirIn = gameObject.AddComponent<DirectionalInput>();   // CTRL v68
         foreach (var a in System.Environment.GetCommandLineArgs()) if (a == "-autoplay") enabled = false;
     }
     void Update()
@@ -28,9 +30,12 @@ public class PlayerBrain : MonoBehaviour
         Vector3 right = cam ? Vector3.ProjectOnPlane(cam.right, Vector3.up).normalized : Vector3.right;
         df.moveDir = inp.sqrMagnitude > 0.01f ? (fwd * inp.y + right * inp.x).normalized : Vector3.zero;
         df.run = Input.GetKey(KeyCode.LeftShift);
-        df.guardHeld = Input.GetMouseButton(1) || Input.GetKey(KeyCode.Q);
-        // directional guard: Q + arrow keys = guard side L/R/up (V3 kbm.ts)
-        df.guardSide = Input.GetKey(KeyCode.LeftArrow) ? 1 : Input.GetKey(KeyCode.RightArrow) ? 2 : Input.GetKey(KeyCode.UpArrow) ? 3 : 0;
+        dirIn.Sample(rig, df, cam);   // CTRL v68: mouse / stick history, combat camera auto lock, pad specials; SwipeNow = scheme swipe + locked on
+        df.guardHeld = Input.GetMouseButton(1) || Input.GetKey(KeyCode.Q) || dirIn.PadGuardHeld;
+        // directional guard: Q + arrow keys = guard side L/R/up (V3 kbm.ts); swipe + locked: the mouse slide / right stick picks it (arrows still override)
+        int arrowSide = Input.GetKey(KeyCode.LeftArrow) ? 1 : Input.GetKey(KeyCode.RightArrow) ? 2 : Input.GetKey(KeyCode.UpArrow) ? 3 : 0;
+        int swipeSide = dirIn.SwipeNow ? dirIn.GuardStep(df.guardHeld) : dirIn.GuardStep(false);
+        df.guardSide = arrowSide != 0 ? arrowSide : swipeSide;
         if (Input.GetKeyDown(KeyCode.V)) df.Feint();
         // lock-break: push away from the enemy (>120 deg) for 0.25 s; any attack re-locks
         if (rig && df.opponent && inp.sqrMagnitude > 0.01f && FlowTable.PushAwayBreaks)
@@ -41,8 +46,11 @@ public class PlayerBrain : MonoBehaviour
         else awayT = 0f;
         if (rig && FlowTable.AttackRelocks && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F))) rig.lockEnabled = true;
 
-        bool strike = Input.GetMouseButton(0) || Input.GetKey(KeyCode.F);
-        bool strikeDownNow = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F);
+        bool strike = Input.GetMouseButton(0) || Input.GetKey(KeyCode.F) || dirIn.PadAttackHeld;
+        bool strikeDownNow = Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.F) || dirIn.PadAttackDown;
+        if (dirIn.SwipeNow) { dirIn.StrikeStep(); strikeDown = -1f; firedOnDown = false; heavyFired = false; }   // CTRL v68: swipe strike (tap light / hold heavy, slide = direction); the classic block below is skipped
+        else
+        {
         var fc = CombatFeel.Get(); bool fireOnDown = fc.enabled && fc.input.strikeFire == "down"; float heavyHold = fc.enabled ? fc.input.heavyHoldSeconds : 0.22f;   // cancel.json input: "down" fires the light on key-down (heavy then only by G)
         if (strikeDownNow) { strikeDown = Time.time; heavyFired = false; if (fireOnDown) { FireLight(inp); firedOnDown = true; } else firedOnDown = false; }
         if (strikeDown >= 0f)
@@ -61,6 +69,7 @@ public class PlayerBrain : MonoBehaviour
             }
         }
         else df.heavyHeld = Input.GetKey(KeyCode.G);
+        }
         if (Input.GetKeyDown(KeyCode.G)) df.Press("heavy");
         if (Input.GetKeyDown(KeyCode.T)) df.Press("thrust");
         if (Input.GetKeyDown(KeyCode.C)) df.Press("kick");

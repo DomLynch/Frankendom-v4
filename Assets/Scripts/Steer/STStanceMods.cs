@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Stance damage modifiers. Hooked from Duel.Resolve (clean hit + guard chip): dmg *= STSteer.DamageMul(attacker, defender).
-// Dracula attacking uses the stance's dealtMul, Dracula defending uses takenMul. Trickster rolls per hit with a seeded LCG (separate from the AI stream).
+// the player attacking uses the stance's dealtMul, the player defending uses takenMul. Trickster rolls per hit with a seeded LCG (separate from the AI stream).
 public static class STStanceMods
 {
     static uint rng = 1;
@@ -15,7 +15,7 @@ public static class STStanceMods
 
     public static float Mul(DuelFighter a, DuelFighter d)
     {
-        var dr = STSteer.Dracula;
+        var dr = STSteer.Player;
         if (dr == null || Cfg == null) return 1f;
         bool dealt = a == dr, taken = d == dr;
         if (!dealt && !taken) return 1f;

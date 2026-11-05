@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum FState { Loco, Windup, Active, Recovery, Guard, ParryRecover, Roll, Stagger, Down, Dead }
@@ -115,9 +115,10 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         }
     }
 
+    public string CharacterId { get { return CharKey(); } }   // roster id of this fighter ("" = not in roster.json)
     string CharKey()
     {
-        if (charKey == null) charKey = name.Contains("Pitborn") ? "Pitborn" : name.Contains("Dracula") ? "Dracula" : (transform.root.name.Contains("Pitborn") ? "Pitborn" : transform.root.name.Contains("Dracula") ? "Dracula" : "");
+        if (charKey == null) charKey = Roster.IdOf(transform);   // own name first, then root name (roster.json objectName / id)
         return charKey;
     }
     bool HasState(string n) { return f != null && f.anim != null && !string.IsNullOrEmpty(n) && f.anim.HasState(0, Animator.StringToHash(n)); }
@@ -227,6 +228,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             if (atkFresh) atkFresh = false; else if (!(wasPaused && paused)) atkAge++;   // age = sim ticks played (stands still while the charge is parked)
             AtkSpeedTick();
         }
+        DirTick();   // CTRL v68: guard-side history (DuelFighterDir.cs)
         hp.current = health;
     }
 
@@ -265,9 +267,9 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         }
         if (FlowRiposteFree()) return;   // V64FLOW: dedicated riposte key
         if (riposteTicks > 0 && FlowRiposteAuto() && (pLight > 0 || pHeavy > 0 || pThrust > 0)) { StartMove(AiAdapt.RiposteMove(this, pLight > 0, pHeavy > 0, pThrust > 0, ref riposteTicks), false); return; }   // V63: data ai_adapt.json riposte{}
-        if (pHeavy > 0) { if (HeavyAllowed()) { StartMove("heavy_overhead", false); return; } pLight = Mathf.Max(pLight, pHeavy); pHeavy = 0; }
-        if (pLight > 0) { StartMove(lastLightRight ? "light_left" : "light_right", false); return; }
-        if (pThrust > 0) { StartMove("thrust", false); return; }
+        if (pHeavy > 0) { if (HeavyAllowed()) { StartMove(DirPick("heavy", "heavy_overhead"), false); return; } pLight = Mathf.Max(pLight, pHeavy); pHeavy = 0; }
+        if (pLight > 0) { StartMove(DirPick("light", lastLightRight ? "light_left" : "light_right"), false); return; }   // CTRL v68: DirPick = the directed press (DuelFighterDir.cs)
+        if (pThrust > 0) { StartMove(DirPick("thrust", "thrust"), false); return; }
         if (pKick > 0) { StartMove("kick", false); return; }
     }
 
@@ -321,7 +323,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         rollDir.y = 0f; FlowRollAxis();   // V64FLOW
         BeginDodge(0, ticks, dist, isf, ief, pow, cd, turn);
         string clip = (d.enabled && !string.IsNullOrEmpty(r.clip)) ? r.clip : "roll_forward";
-        if (!HasState(clip)) { clip = "roll_forward"; if (d.enabled) { var o = new DodgeTable.DodgeRow { ticks = ticks, clipTailTicks = 0 }; PlayDodgeClip(clip, o); } else PlayClip(clip, ticks); }   // character without the baked dodge clip (Pitborn): old roll clip
+        if (!HasState(clip)) { clip = "roll_forward"; if (d.enabled) { var o = new DodgeTable.DodgeRow { ticks = ticks, clipTailTicks = 0 }; PlayDodgeClip(clip, o); } else PlayClip(clip, ticks); }   // character without the baked dodge clip (no dodge_clips bake row): old roll clip
         else if (d.enabled) PlayDodgeClip(clip, r); else PlayClip(clip, ticks);
         if (d.debugLog) Debug.Log("[Dodge] " + name + " ROLL dir=" + rollDir + " ticks=" + ticks + " dist=" + dist + " stamina=" + stamina);
         ContactRelay.Action(this, (d.enabled && !string.IsNullOrEmpty(r.fxAction)) ? r.fxAction : "roll");
@@ -466,7 +468,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public void AddPosture(float p) { posture = Mathf.Min(posture + p, PostureMax); postureHold = PostureTable.HoldTicks(CharKey(), (int)R("posture.hold", 60)); if (p > 0f) statPostureGained += p; }
     public void SetKnock(Vector3 v) { knock = v; }
     public bool InParryWindow => state == FState.Guard && parryWindow && guardAge <= ParryWindowTicks() && !(exhausted && StaminaTable.Get().exhausted.noParry);
-    public bool IsGuarding => state == FState.Guard && (!exhausted || guardAge > StaminaTable.Get().guard.raiseDelayExhausted);
+    public bool IsGuarding => state == FState.Guard && guardAge >= WoundSystem.GuardRaiseExtra(this) && (!exhausted || guardAge > StaminaTable.Get().guard.raiseDelayExhausted);
     public bool IFrames => state == FState.Roll && t >= dodgeIS && t <= dodgeIE;   // set per move by BeginDodge (dodge.json iframeStart/End)
     public bool InWindup => state == FState.Windup;
     // ---------------- stamina / guard / parry (P5; data: stamina.json, parry.json via StaminaTable) ----------------
@@ -483,7 +485,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     int ParryRiposteWindow() { var P = StaminaTable.Parry(); return P.enabled ? P.riposteWindowTicks : (int)R("parryStun", 90); }
     void ParryNote() { var P = StaminaTable.Parry(); if (P.enabled) { stamina = Mathf.Max(0f, stamina - P.staminaCost); regenWait = RegenDelay(); } parryOkFlash = StaminaTable.Get().hud.parryFlashTicks; statParries++; }
     float MoveCost(MoveDef m) { return StaminaTable.MoveCost(m); }
-    float SpeedMulExhausted() { return exhausted ? StaminaTable.Get().exhausted.walkMul : 1f; }
+    float SpeedMulExhausted() { return (exhausted ? StaminaTable.Get().exhausted.walkMul : 1f) * WoundSystem.MoveMul(this); }   // lane WOUND: limp (HP stages) and leg-hit slow, 1 when healthy / off
     public float DamageScaleNow => damageScale * (exhausted ? StaminaTable.Get().exhausted.damageMul : 1f);
     bool HeavyAllowed() { var S = StaminaTable.Get(); bool ok = !S.enabled || (!exhausted && stamina >= S.exhausted.heavyMinStamina); if (!ok) statHeavyDowngrades++; return ok; }
     public void NoteBlock() { statBlocks++; }
@@ -503,7 +505,8 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         else
         {
             float mul = StaminaTable.RegenMul(CharKey()); if (state == FState.Guard) mul *= S.regen.guardMul; if (exhausted) mul *= S.regen.exhaustedMul;
-            stamina = Mathf.Min(maxStamina, stamina + S.regen.perSecond * mul / 60f);
+            mul *= WoundSystem.RegenMul(this);   // lane WOUND: heavy breathing when hurt
+            stamina = Mathf.Min(maxStamina * WoundSystem.StaminaCeil(this), stamina + S.regen.perSecond * mul / 60f);
         }
         if (state == FState.Guard && guardAge > S.guard.holdFreeTicks && S.guard.holdDrainPerSecond > 0f) stamina = Mathf.Max(0f, stamina - S.guard.holdDrainPerSecond / 60f);
         if (!exhausted && stamina <= 0f)
@@ -681,7 +684,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         }
         if (guardLayerCur != pose) { guardLayerCur = pose; f.anim.CrossFadeInFixedTime(pose, g.poseFade, guardLayer, 0f); }
         guardLayerW = Mathf.MoveTowards(guardLayerW, 1f, dt / Mathf.Max(0.01f, g.layerBlendIn));
-        f.anim.SetLayerWeight(guardLayer, guardLayerW);
+        f.anim.SetLayerWeight(guardLayer, guardLayerW * WoundSystem.GuardLayerMul(this));   // lane WOUND: the guard arm sags when hurt
     }
 }
 

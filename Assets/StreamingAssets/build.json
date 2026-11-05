@@ -1,0 +1,7 @@
+{
+  "_about": "Player build options (lane V66HUD), read by Assets/Editor/BuildCfg.cs for BuildPlayerCmd.Run. The release candidate is a NON-development build (no 'Development Build' watermark, no dev console, no profiler). Command line wins over this file: -devbuild or -releasebuild on the Unity command line (or the file Tools/build_dev.txt present = -devbuild). Harness flags (-balanceauto, -looptest, ...) and -logFile do not need a development build.",
+  "developmentBuild": false,
+  "allowDebugging": false,
+  "connectProfiler": false,
+  "scenes": [ "Assets/Scenes/HadesSlice.unity" ]
+}

@@ -20,10 +20,10 @@ public static class HitFlashTable
     [Serializable] public class Data
     {
         public bool enabled = true, debugLog = false; public string[] baseColorProps = { "_BaseColor", "_Color" }; public string emissiveProp = "_EmissiveColor"; public float maxSeconds = 0.5f;
-        public Row[] rows = { new Row { match = "Pitborn" } };
+        public Row[] rows = null;   // absent in the file = one default row on the roster enemy (filled in Get)
     }
     static Data d;
-    public static Data Get() { if (d == null) d = Load() ?? new Data(); return d; }
+    public static Data Get() { if (d == null) { d = Load() ?? new Data(); if (d.rows == null) d.rows = new[] { new Row { match = Roster.EnemyId } }; } return d; }
     public static void Reload() { d = null; }
     static Data Load()
     {
