@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 
 // LOOKOPT: look changes waiting for Dom's LOOK OK, each ONE switch in look_options.json (StreamingAssets, then Assets/Data). All defaults = off = today's look.
 //   deathWash / combatCamCap / finisherBlood.wetDecal are read by one-line hooks (GameLoop.DrawEnd, CamFraming.Fit, GoreFx.Splash).
@@ -12,7 +14,11 @@ public static class LookOptions
     [Serializable] public class Floor { public bool on; public float scale = 0.35f; public string[] materials = { "ground_paving_LOD0_plate_top", "ground_paving_LOD1_plate_top", "ground_paving_LOD2_plate_top" }; }
     [Serializable] public class Blood { public bool wetDecal; public float smoothness = 0.8f, depth = 0.12f; }
     [Serializable] public class Cap { public bool on; public float followM = 7.5f; }
-    [Serializable] public class Root { public Wash deathWash = new Wash(); public Spike doorwaySpikeStrip = new Spike(); public Floor floorNormal = new Floor(); public Blood finisherBlood = new Blood(); public Cap combatCamCap = new Cap(); }
+    [Serializable] public class Door { public bool on; public float lightVolumetricDimmer = 0.5f, fogMeanFreePath = 5f; public string lightName = "DoorwayFlickerLight"; public string[] fogNames = { "DoorwayFog_Inside" }; }   // GOOSEBACKLOG v100
+    [Serializable] public class Plate { public bool on; public float plateAlpha = 0f; }
+    [Serializable] public class WoundD { public bool on; public float colorMul = 0.5f, sizeMul = 0.7f; }
+    [Serializable] public class Vig { public bool on; public float intensity = 0.34f; }
+    [Serializable] public class Root { public Door doorwayDepth = new Door(); public Plate endPlate = new Plate(); public WoundD woundMarks = new WoundD(); public Vig sceneVignette = new Vig(); public Wash deathWash = new Wash(); public Spike doorwaySpikeStrip = new Spike(); public Floor floorNormal = new Floor(); public Blood finisherBlood = new Blood(); public Cap combatCamCap = new Cap(); }
 
     static Root cfg;
     public static Root Cfg()
@@ -30,6 +36,10 @@ public static class LookOptions
         if (cfg.floorNormal == null) cfg.floorNormal = new Floor();
         if (cfg.finisherBlood == null) cfg.finisherBlood = new Blood();
         if (cfg.combatCamCap == null) cfg.combatCamCap = new Cap();
+        if (cfg.doorwayDepth == null) cfg.doorwayDepth = new Door();   // GOOSEBACKLOG v100
+        if (cfg.endPlate == null) cfg.endPlate = new Plate();
+        if (cfg.woundMarks == null) cfg.woundMarks = new WoundD();
+        if (cfg.sceneVignette == null) cfg.sceneVignette = new Vig();
         return cfg;
     }
 
@@ -43,6 +53,13 @@ public static class LookOptions
     /// <summary>Max camera-to-look distance for the lock-on pull-back; 0 = no cap.</summary>
     public static float CamCapM() { var c = Cfg().combatCamCap; return c.on && c.followM > 0f ? c.followM : 0f; }
 
+    /// <summary>End-screen backing plate alpha (hud.json plateAlpha unless endPlate is on; its hard top/bottom edge is the 'panel band').</summary>
+    public static float PlateAlpha(float hud) { var p = Cfg().endPlate; return p.on ? p.plateAlpha : hud; }   // GOOSEBACKLOG v100
+    /// <summary>Wound decal _BaseColor multiplier (1 = today).</summary>
+    public static float WoundColorMul() { var w = Cfg().woundMarks; return w.on ? w.colorMul : 1f; }
+    /// <summary>Wound decal length/width multiplier (1 = today).</summary>
+    public static float WoundSizeMul() { var w = Cfg().woundMarks; return w.on ? w.sizeMul : 1f; }
+
     static readonly Dictionary<string, Material> clones = new Dictionary<string, Material>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cfg = null; clones.Clear(); }
@@ -50,7 +67,7 @@ public static class LookOptions
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
-        var c = Cfg(); if (!c.doorwaySpikeStrip.on && !c.floorNormal.on) return;
+        var c = Cfg(); if (!c.doorwaySpikeStrip.on && !c.floorNormal.on && !c.doorwayDepth.on && !c.sceneVignette.on) return;   // GOOSEBACKLOG v100: + doorwayDepth, sceneVignette
         var go = new GameObject("LookOptionsApply"); UnityEngine.Object.DontDestroyOnLoad(go); go.AddComponent<Applier>();
     }
 
@@ -81,6 +98,19 @@ public static class LookOptions
                 for (int k = 0; k < c.doorwaySpikeStrip.hideObjects.Length; k++)
                     if (t.name == c.doorwaySpikeStrip.hideObjects[k] && t.gameObject.activeSelf) { t.gameObject.SetActive(false); Debug.Log("[LookOptions] doorway spike strip hidden: " + t.name); }
             }
+        }
+        if (c.doorwayDepth.on)   // GOOSEBACKLOG v100: faint red haze behind the threshold = depth cue; only the light's volumetric dimmer and the inside fog density change
+        {
+            var d = c.doorwayDepth;
+            var lights = UnityEngine.Object.FindObjectsByType<HDAdditionalLightData>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            for (int i = 0; i < lights.Length; i++) if (lights[i] != null && lights[i].name == d.lightName) { lights[i].volumetricDimmer = d.lightVolumetricDimmer; Debug.Log("[LookOptions] doorway light volumetricDimmer " + d.lightVolumetricDimmer.ToString("F2")); }
+            var fogs = UnityEngine.Object.FindObjectsByType<LocalVolumetricFog>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            for (int i = 0; i < fogs.Length; i++) if (fogs[i] != null && d.fogNames != null && Array.IndexOf(d.fogNames, fogs[i].name) >= 0) { var fp = fogs[i].parameters; fp.meanFreePath = d.fogMeanFreePath; fogs[i].parameters = fp; Debug.Log("[LookOptions] doorway fog meanFreePath " + d.fogMeanFreePath.ToString("F1") + " on " + fogs[i].name); }
+        }
+        if (c.sceneVignette.on)   // GOOSEBACKLOG v100: hdrp_lighting_ultra.json post.vignette 0.48 is baked into the scene Volume at build; override it at runtime
+        {
+            var vols = UnityEngine.Object.FindObjectsByType<Volume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            for (int i = 0; i < vols.Length; i++) { var v = vols[i]; if (v == null || v.sharedProfile == null) continue; Vignette vg; if (v.profile.TryGet(out vg)) { vg.intensity.Override(c.sceneVignette.intensity); Debug.Log("[LookOptions] scene vignette " + c.sceneVignette.intensity.ToString("F2") + " on " + v.name); } }
         }
         if (c.floorNormal.on && c.floorNormal.materials != null)
         {

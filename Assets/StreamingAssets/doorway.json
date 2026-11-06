@@ -61,7 +61,7 @@
         "offsetZ": 1.0,
         "centerHeight": 1.8,
         "shadows": true,
-        "shadowResolution": 512,
+        "shadowResolution": 1024,
         "volumetricDimmer": 0.12,
         "spotAngle": 120,
         "flicker": { "baseValue": 1.0, "amplitude": 0.15, "frequency": 1.0, "octaves": 1, "seed": 4.3, "lacunarity": 2.0, "gain": 0.5 }

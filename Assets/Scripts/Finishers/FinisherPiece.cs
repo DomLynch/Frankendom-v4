@@ -218,6 +218,7 @@ public static class FinisherPieceCheck
         var set = new HashSet<Transform>(root.GetComponentsInChildren<Transform>(true)); int left = 0; bool any = false;
         foreach (var smr in victim.GetComponentsInChildren<SkinnedMeshRenderer>(false))
         {
+            if (!smr.enabled || smr.forceRenderingOff) continue;   // FIXPHYS2 v101: CutLod hides the heavy renderer with enabled=false (GameObject stays active): the 250k Body was counted as 'left' (140085)
             var mesh = smr.sharedMesh; if (mesh == null || !mesh.isReadable) continue;
             var bw = mesh.boneWeights; var bones = smr.bones; int vc = mesh.vertexCount; if (bw.Length != vc || bones == null) continue;
             any = true; var inA = new bool[vc];

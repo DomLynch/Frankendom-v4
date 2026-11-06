@@ -149,7 +149,8 @@ public static class WoundDecals
         if (!decalSrcLogged) { decalSrcLogged = true; Debug.Log("[WoundDecals] decal material from " + (refMat != null ? "Resources/WoundDecalRef" : "Shader.Find (no reference asset: variants may be stripped)")); }   // QC1 v95
         // WOUNDLOOK v96: wet dark-red cut. _BaseColor = json colour (never white: if the _COLORMAP variant is stripped the flat decal is still dark red); colour map is a relative ramp; normal map = groove + lips; mask map = AO / blend / wet smoothness
         var mp = MapSet(kind, dc); var mset = mp[variant % mp.Length];
-        m.SetColor("_BaseColor", new Color(dc.color[0], dc.color[1], dc.color[2], 1f)); m.SetTexture("_BaseColorMap", mset.color);
+        m.SetColor("_BaseColor", new Color(dc.color[0] * LookOptions.WoundColorMul(), dc.color[1] * LookOptions.WoundColorMul(), dc.color[2] * LookOptions.WoundColorMul(), 1f));   // GOOSEBACKLOG v100: woundMarks.colorMul (1 = today)
+        m.SetTexture("_BaseColorMap", mset.color);
         m.SetTexture("_MaskMap", mset.mask);
         if (dc.affectNormal) { m.SetTexture("_NormalMap", mset.normal); m.EnableKeyword("_NORMALMAP"); m.EnableKeyword("_MATERIAL_AFFECTS_NORMAL"); }   // these variants only ship if WoundDecalRef also enables them (editor script)
         m.SetFloat("_AffectAlbedo", 1f); m.SetFloat("_AffectNormal", dc.affectNormal ? 1f : 0f); m.SetFloat("_AffectMetal", 0f); m.SetFloat("_AffectAO", dc.affectAO ? 1f : 0f); m.SetFloat("_AffectSmoothness", 1f); m.SetFloat("_AffectEmission", 0f);
@@ -225,7 +226,7 @@ public static class WoundDecals
         if (kind == "slash") roll += (ev.direction == "left" ? 1f : ev.direction == "right" ? -1f : (Rnd(s) < 0.5f ? 1f : -1f)) * Between(s, 0.4f, 1f) * shape.tiltDeg;
         else roll += Between(s, -1f, 1f) * shape.tiltDeg;
         float mul = Between(s, 1f - row.sizeJitter, 1f + row.sizeJitter) * (ev.heavy ? row.heavySizeMul : 1f) * (ev.counter ? row.counterSizeMul : 1f) * (kill ? row.killSizeMul : 1f) * sc;
-        float len = shape.length * mul, wid = shape.width * mul;
+        float len = shape.length * mul, wid = shape.width * mul * LookOptions.WoundSizeMul();   // GOOSEBACKLOG v100: woundMarks.sizeMul on the stripe width (1 = today)
         int variant = (int)(Rnd(s) * 1000f) % Mathf.Max(1, dc.variants);
 
         var bone = Nearest(s, victim, point);

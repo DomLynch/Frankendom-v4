@@ -1,4 +1,4 @@
-﻿{
+{
     "enabled":  true,
     "debugLog":  false,
     "input":  {
@@ -88,7 +88,7 @@
                   "runDropsGuard":  true,
                   "moveClipFallback":  "guard_idle"
               },
-    "minSeparation":  1.2,
-    "separationPad":  0.15,
+    "minSeparation":  1.5,
+    "separationPad":  0.25,
     "flinchMaxLeanDeg":  12
 }

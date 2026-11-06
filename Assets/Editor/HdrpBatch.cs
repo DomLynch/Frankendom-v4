@@ -59,6 +59,7 @@ public static class HdrpBatch
         Step(c.propsLayout, "PropsLayout", () => PropsLayout.RebuildAndSave());
         Step(c.doorway, "HdrpDoorway", () => HdrpDoorway.Run());
         Step(c.charLayer, "HdrpCharLayer", () => HdrpCharLayer.Run());
+        Step(c.occlusion, "OcclusionCull", () => OcclusionCull.Run());   // OCCL v101: flags + useOcclusionCulling + StaticOcclusionCulling.Compute (Assets/Data/occlusion.json, editor-only); after props+gate+doorway are in the saved scene
         Step(c.deckDiag, "DeckDiag6", () => DeckDiag6());
         BuildPlayerCmd.Run();
     }

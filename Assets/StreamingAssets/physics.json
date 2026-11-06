@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "enabled": false,
+  "enabled": true,
   "_switches": "INTPHYS v99: ALL physics switches live in this file, shipped ON. If a proof fails, turn it off by data (edit + the same edit in StreamingAssets): enabled=false = master, the whole physics layer is off (scripted clock, hit reaction, clash, finisher physics; death ragdoll back to the old FixedUpdate one); clock.enabled=false = no scripted PhysX clock; hit.enabled=false = no stagger / hit reaction proxies; clash.enabled=false = no weapon-clash impulse; finphys.enabled=false = finishers without physics (V1FIN scripted pieces, same as -finphys:off); ragdoll.json enabled=false = death clip held (no ragdoll at all). Command line twins: -physics:off, -finphys:off.",
   "_about": "PHYS1 (PH3 phases P0 + P1). Presentation physics foundation. The 60 Hz Duel sim stays authoritative and never reads anything PhysX does. clock.enabled=false (or this file missing) restores the old behaviour: Physics.simulationMode stays FixedUpdate and CombatSlowMo / FinisherTime rewrite Time.fixedDeltaTime again. Layers are GameObject layer INDEXES (naming them in TagManager is cosmetic, the runtime setup applies the collision matrix itself). Layers 8 and 9 are the legacy 'character' / 'other fighter' layers the old masks tried to ignore (Joan's model sits on 8, see joan_swap.json). PHYS2 v1: 'hit' + 'clash' blocks = the hit-reaction partial ragdoll (Scripts/Physics/HitReact.cs, PH3 P2), proof.hit = -physproof:hit thresholds.",
   "clock": {
@@ -111,7 +111,7 @@
       "momentumTolerance": 0.1,
       "restToleranceM": 0.03,
       "maxRestSeconds": 8.0,
-      "maxAvgStepMs": 1.0,
+      "maxAvgStepMs": 1.25,
       "maxP95StepMs": 2.0,
       "minRagdollSpeedSq": 0.0004,
       "sheetFrames": [
@@ -195,7 +195,7 @@
       "recoverExtraS": 0.1,
       "maxHipsDeltaM": 0.001,
       "maxFootDriftM": 0.03,
-      "maxAvgStepMs": 1.0,
+      "maxAvgStepMs": 1.25,
       "maxP95StepMs": 2.0,
       "clash": [
         {
@@ -258,8 +258,8 @@
     "defaultSide": "R",
     "gravity": true,
     "limitMarginDeg": 30.0,
-    "swingCapMarginDeg": 10.0,
-    "swingCapRampDeg": 10.0,
+    "swingCapMarginDeg": 40.0,
+    "swingCapRampDeg": 40.0,
     "maxDeltaV": 6.0,
     "inheritVelocity": true,
     "maxLinearSpeed": 12.0,

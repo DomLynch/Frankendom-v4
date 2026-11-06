@@ -1,0 +1,44 @@
+{
+  "_about": "OCCL (laneOCCLUSION). EDITOR-ONLY data (not read at runtime, so no StreamingAssets copy; add 'occlusion.json' to Tools/build_config.json build.editorOnlyData). Read by Assets/Editor/OcclusionCull.cs. enabled=false makes the step a no-op that also CLEARS flags and baked data (kill switch: rebuild).",
+  "enabled": true,
+  "scenePath": "Assets/Scenes/HadesSlice.unity",
+  "arenaName": "Arena",
+  "clearFirst": true,
+  "occludee": {
+    "_about": "Every opaque MeshRenderer under these Arena child groups gets StaticEditorFlags.OccludeeStatic. Groups are PropsLayout group names (props_layout_ground.json 'groups'). Props/Boulders (the play area dressing) are included: they are static in the layout.",
+    "groups": ["Props", "Boulders", "WorldNear", "WorldMid", "WorldFar", "WorldOut", "WorldWest", "WorldEast", "WorldBehind", "WorldDetail", "WorldEdge"],
+    "extraRootNames": ["WorldTerrain"],
+    "maxRadiusFromOrigin": 450.0,
+    "_maxRadius": "0 = no limit. Bounds the baked volume (bake time scales with the static bounds / smallestOccluder^3). WorldFar reaches ~330 m."
+  },
+  "occluder": {
+    "_about": "OccluderStatic on (a) every renderer under rootNames (the gate wall) and (b) every prop root whose id matches an assetPatterns regex AND whose LOD0 bounds longest side >= minLongestSide AND thickness (shortest horizontal side) >= minThickness. lod0Only: only the LOD0 child is an occluder (LOD1/2 stay occludee only), so a distant LOD swap does not change the occluder set.",
+    "rootNames": ["HeroGate"],
+    "assetPatterns": ["^worldmid_mid_wall_", "^worldmid_mid_buttress", "^worldmid_mid_tower", "^worldfar_far_ruin_(facade|gatehouse|tower)", "^rock_arch_8", "^worldedge_", "^boulder_"],
+    "minLongestSide": 8.0,
+    "minThickness": 1.0,
+    "lod0Only": true
+  },
+  "skip": {
+    "_about": "Never flagged, never occludee, never occluder. Dynamic things must stay dynamic.",
+    "rootNames": ["DoorwayRoot", "Gateway", "Fighters", "FinisherCams", "Lights", "Fog", "HUD"],
+    "nameContains": ["Doorway", "Trench", "Lava", "Water", "Fog", "Decal", "Blood", "Ember", "Spark"],
+    "skipSkinned": true,
+    "skipParticles": true,
+    "skipTransparentMaterials": true
+  },
+  "compute": {
+    "_about": "Unity StaticOcclusionCulling bake parameters (Unity defaults 5 / 0.25 / 100). smallestHole 0.25 keeps the 4.8 m doorway tunnel open; smallestOccluder 5 means only things >= 5 m occlude. Lower smallestOccluder = tighter culling but a much longer bake.",
+    "smallestOccluder": 5.0,
+    "smallestHole": 0.25,
+    "backfaceThreshold": 100.0,
+    "bake": true
+  },
+  "camera": {
+    "_about": "useOcclusionCulling is set on these cameras. mainCamera=true: Camera.main. offNames: cameras forced OFF (finisher / free / capture cameras that may sit outside the baked view cells or look from inside geometry).",
+    "mainCamera": true,
+    "useOcclusionCulling": true,
+    "offNames": ["FinisherCam", "FreeCam", "ShotCam"]
+  },
+  "report": "TestOut/occlusion_report.txt"
+}

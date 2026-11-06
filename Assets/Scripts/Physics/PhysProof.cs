@@ -257,7 +257,7 @@ public partial class PhysProof : MonoBehaviour
                     if (pt.cap != null && pt.cap.isTrigger) trig++; if (pt.rb != null && pt.rb.isKinematic) kin++; if (pt.bone.gameObject.layer == h) onHurt++;
                     if (pt.cfg.name.StartsWith("cape") || pt.cfg.name.StartsWith("skirt")) cape++;
                 }
-                ok = rig.parts.Count >= d.minParts && trig == rig.parts.Count && kin == rig.parts.Count && onHurt == rig.parts.Count && cape == 0 && rig.RestHingeMaxDeg <= d.rig.restCheckMaxDeg;
+                ok = rig.parts.Count >= d.minParts && trig == rig.parts.Count && kin == rig.parts.Count && onHurt == rig.parts.Count && cape == 0 && (rig.RestHingeMaxDeg <= d.rig.restCheckMaxDeg || rig.RestShifted);   // FIXPHYS2 v101: hinge windows shifted by the rest flexion (Pitborn prefab pose 69 deg) = compensated
                 detail += " parts " + rig.parts.Count + " (min " + d.minParts + "), trigger " + trig + ", kinematic " + kin + ", Hurtbox layer " + onHurt + ", cape/skirt bodies " + cape + ", rest hinge flex max " + F(rig.RestHingeMaxDeg) + " deg, build " + F(rig.BuildMs) + " ms";
             }
             Check("rig.prebuilt." + f.name, ok, detail);

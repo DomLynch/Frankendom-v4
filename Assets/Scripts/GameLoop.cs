@@ -196,9 +196,9 @@ public static class GameLoop
             Fill(new Rect(0, 0, vw, vh), new Color(0f, 0f, 0f, S.dimAlpha * a));
             HudDraw.Tex(new Rect(0, 0, vw, vh), HudDraw.Vignette(), new Color(tint.r, tint.g, tint.b, 0.9f * a));
             HudDraw.Tex(new Rect(0, y0, vw, bh), HudDraw.BandV(), new Color(0f, 0f, 0f, S.bandAlpha * a));
-            if (S.plateAlpha > 0f)   // HUDFIX v92: backing plate (solid middle + feathered sides) so the text never sits straight on the corpse / Joan
+            if (LookOptions.PlateAlpha(S.plateAlpha) > 0f)   // GOOSEBACKLOG v100: endPlate switch (look_options.json), off = hud.json; HUDFIX v92: backing plate (solid middle + feathered sides) so the text never sits straight on the corpse / Joan
             {
-                float pw = S.plateW * 0.5f, pf = Mathf.Max(1f, S.plateFeather); Color pc = new Color(0f, 0f, 0f, S.plateAlpha * a);
+                float pw = S.plateW * 0.5f, pf = Mathf.Max(1f, S.plateFeather); Color pc = new Color(0f, 0f, 0f, LookOptions.PlateAlpha(S.plateAlpha) * a);
                 Fill(new Rect(cx - pw, y0, pw * 2f, bh), pc);
                 HudDraw.TexUV(new Rect(cx - pw - pf, y0, pf, bh), HudDraw.GradH(), new Rect(1f, 0f, -1f, 1f), pc);   // opaque at the plate edge, fades outwards
                 HudDraw.TexUV(new Rect(cx + pw, y0, pf, bh), HudDraw.GradH(), new Rect(0f, 0f, 1f, 1f), pc);

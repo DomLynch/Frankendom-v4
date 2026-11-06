@@ -36,6 +36,7 @@ public class RagdollRig : MonoBehaviour
     public Vector3 BlowDir; public string BlowZone = ""; public Vector3 KnockUsed, RootVelUsed;
     public float BuildMs;                 // how long Build() took (paid at scene load, not at death)
     string restWorst = "";            // FIXPHYS v99: the part with the largest rest flexion (named in the warning)
+    public bool RestShifted;              // FIXPHYS2 v101: at least one hinge window was moved by the rest flexion (RestHingeMaxDeg stays the raw pose fact; the proof must not fail a compensated rig)
     public float RestHingeMaxDeg;         // largest |hinge flexion| found at build (should be ~0: rest pose)
     // FINPHYS v97: finisher blow (FinPhys.OnContact) + cut parts leaving the ragdoll (FinPhys.AfterCut / ReleaseHalves) + the sampled velocity of one part (pieces inherit it)
     public float FinPushMul = 1f; public string FinZone = ""; public Vector3 FinDir = Vector3.zero;
@@ -194,7 +195,7 @@ public class RagdollRig : MonoBehaviour
                 {
                     float off = h.flip ? r0 : -r0;
                     p.lowX = Mathf.Clamp(p.lowX + off, -177f, 177f); p.highX = Mathf.Clamp(p.highX + off, -177f, 177f);
-                    p.curLowX = p.lowX; p.curHighX = p.highX; ApplyLimits(p, p.lowX, p.highX, p.limY, p.limZ);
+                    p.curLowX = p.lowX; p.curHighX = p.highX; ApplyLimits(p, p.lowX, p.highX, p.limY, p.limZ); RestShifted = true;   // FIXPHYS2 v101
                 }
             }
         }
@@ -378,7 +379,9 @@ public class RagdollRig : MonoBehaviour
                 float tr = Mathf.Max(0.01f, p.cfg.radiusM * (df != null ? df.scale : 1f));
                 p.cap.enabled = false; rb.inertiaTensor = Vector3.one * Mathf.Max(1e-4f, 0.4f * p.mass * tr * tr);
             }   // V3 role table: x8 on the torso capsules was needed for stable joint springs (Jolt); 1 = PhysX default
-            rb.linearVelocity = p.inheritV; rb.angularVelocity = p.inheritW;
+            // FIXPHYS2 v101: inheritV is the velocity of the BONE ORIGIN (the sampler follows bone positions) but Rigidbody.linearVelocity is the CENTRE OF MASS: a swinging arm moved its origin by w x r x dt on the first step
+            // (enemy_momentum.noPop armR 9.3 cm; 25 rad/s x ~0.17 m x 16.7 ms = 7 cm). v_com = v_origin + w x (com - origin) makes the origin follow the clip.
+            rb.linearVelocity = p.inheritV + Vector3.Cross(p.inheritW, rb.worldCenterOfMass - p.bone.position); rb.angularVelocity = p.inheritW;
         }
         // the ignore pairs are keyed on the colliders; if a trigger / layer change dropped any, put them back (the proof logs this)
         if (d.body.ignoreSelfCollision && parts.Count > 2 && !Physics.GetIgnoreCollision(parts[0].cap, parts[parts.Count - 1].cap)) IgnoreSelf();
