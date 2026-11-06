@@ -101,3 +101,9 @@ Dom ran out of tokens and is restarting the team on a new account. Each new sess
 ## 6. How Dom restarts each dev
 Open a new session in `C:\Users\dom12\Documents\unity_test_hdrp` and paste:
 "You are the <Strategy | Unity dev | Visual QC | Hades env> dev for Frankendom. Read HANDOVER_ALL.md in this folder, then your role's files in section 4, then the tail of COORDINATION.md, and continue from where we left off."
+
+## 7. Armagedom (separate project, NOT run by Strategy)
+- Owner: its own lead dev session (old id 62453e8b), supervised by Goose. Strategy never managed it, so its full state lives in that lead's own handover, not here.
+- Last known (Goose SUPERVISOR.md, 2026-11-06 ~09:10): release 350 is LIVE, and the lead has stood down. Earlier: 347 live (keep/rollback was pending Dom; rollback script /opt/armagedom-preview-staging/three-20261028-347-ops/rollback347.sh), 350 was held at Dom's gate (PR 566/568, needs a DB backup + Dom OK), then went live.
+- Release plan 345-350 and Goose's notes: C:\Users\dom12\claude-watchdog\HANDOVER.md (section 'ARMAGEDOM RELEASE PLAN'). Goose's live state: C:\Users\dom12\claude-watchdog\SUPERVISOR.md.
+- On restart: open the Armagedom lead in its own repo and tell it to read its own handover plus Goose's HANDOVER.md Armagedom section. Ask it to confirm 350 is healthy first. Deploys need Dom's OK in that chat.
