@@ -334,14 +334,7 @@
       "enabled": true,
       "mul": 1.0,
       "minPrice": 1,
-      "items": [
-        "joan_tunic",
-        "joan_boots",
-        "joan_tabard",
-        "joan_bracers",
-        "cap_joan",
-        "joan_greaves"
-      ],
+      "items": ["joan_tabard", "joan_boots", "cap_joan"],
       "tabKeys": [
         "Q",
         "LeftArrow",
@@ -351,9 +344,9 @@
       "tabSell": "Sell",
       "tabBuy": "Buy",
       "subtitleBuy": "Buy gear with your coins.",
-      "hintMoveTab": "Q / Y  Buy or Sell",
+      "hintMoveTab": "Q / Y  Switch",
       "hintBuy": "E / A  Buy",
-      "bought": "Bought {0} for {1}.",
+      "bought": "Bought {0} for {1}. Open gear (Tab / Start) to wear it.",
       "armedBuy": "Press again to buy {0} for {1}.",
       "detailAsks": "The trader asks {0}",
       "tagOwned": "Owned",
@@ -465,6 +458,8 @@
     "groundRayUpM": 3.0,
     "groundRayDownM": 10.0,
     "groundMask": -1,
+    "fallbackY": 0.0,
+    "waitGroundSeconds": 20.0,
     "searchRoots": [
       "",
       ".."

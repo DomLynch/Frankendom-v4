@@ -65,6 +65,27 @@ public class RagdollRig : MonoBehaviour
     public Part PartByName(string n) { Part p; return byName.TryGetValue(n, out p) ? p : null; }
     public static int LiveCount { get { return live; } }
 
+    // KILLBUG v1: a CLONE (ZoneRuntime Instantiate of the inactive scene template that RagdollDeath.PrebuildAll already built) copies the serialized 'Built = true' but not 'parts' (Part is not
+    // Serializable) nor the sampler ring: Built with zero parts, so the first death threw ArgumentOutOfRangeException at ZonePart() parts[0]. Heal = drop the cloned joints, forget the build, rebuild in Start
+    // (still the rest pose: before the first Animator update). Never true for a rig that was built in place, so zones off is unchanged.
+    bool cloneRebuild;
+    bool Heal()
+    {
+        if (!Built || parts.Count > 0) return false;
+        var js = GetComponentsInChildren<ConfigurableJoint>(true);
+        for (int i = 0; i < js.Length; i++) if (js[i] != null) DestroyImmediate(js[i]);
+        Built = false; BuildFailed = false; ringP = null; ringQ = null; ringHead = -1; ringCount = 0;
+        Debug.Log("[killbug] " + name + ": cloned RagdollRig had no parts (Built copied, lists not); rig rebuilt");
+        return true;
+    }
+    void Awake() { if (Heal()) cloneRebuild = true; }
+    void Start()
+    {
+        if (!cloneRebuild) return; cloneRebuild = false;
+        try { var d = RagdollDeath.Cfg; if (d.enabled && d.rig.prebuild && PhysicsClock.PhysicsOn && !Built) { Build(); LinkAll(); } }
+        catch (Exception ex) { Debug.LogWarning("[killbug] clone rig build failed on " + name + ": " + ex.Message); }
+    }
+
     void OnEnable() { if (!All.Contains(this)) All.Add(this); PhysicsClock.OnStep += OnClockStep; }
     void OnDisable() { All.Remove(this); PhysicsClock.OnStep -= OnClockStep; }
     void OnDestroy() { if (Converted && !Frozen) live = Mathf.Max(0, live - 1); }
@@ -314,6 +335,7 @@ public class RagdollRig : MonoBehaviour
     {
         if (Converted) return true;
         var d = RagdollDeath.Cfg;
+        if (Built && parts.Count == 0) Heal();   // KILLBUG v1: never convert a rig whose lists were not copied
         if (!Built && !Build()) return false;
         for (int i = 0; i < parts.Count; i++) if (parts[i].bone == null || parts[i].rb == null) { Debug.LogWarning("RagdollRig: a bone of " + name + " is gone; keeping the death clip."); return false; }
         if (live >= Mathf.Max(1, d.rig.maxLive)) { Debug.LogWarning("RagdollRig: live ragdoll cap (" + d.rig.maxLive + ") reached; " + name + " keeps its death clip."); return false; }
@@ -515,11 +537,12 @@ public class RagdollRig : MonoBehaviour
         var z = RagdollDeath.Cfg.kill.zoneParts;
         string want = zone == "head" ? z.head : (zone == "legs" ? z.legs : z.torso);
         Part p; if (!string.IsNullOrEmpty(want) && byName.TryGetValue(want, out p)) return p;
-        return parts[0];
+        return parts.Count > 0 ? parts[0] : null;   // KILLBUG v1: Push() ignores null
     }
 
     void ApplyBlow(DuelFighter killer, MoveDef victimMove)
     {
+        if (parts.Count == 0) return;   // KILLBUG v1
         var k = RagdollDeath.Cfg.kill;
         MoveDef m = (killer != null && killer.CurrentMove != null) ? killer.CurrentMove : victimMove;   // Killed() hands over the VICTIM's own move; the blow is the attacker's
         Vector3 dir = Vector3.zero;

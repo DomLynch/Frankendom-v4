@@ -62,7 +62,7 @@ public sealed class ZoneRuntime : MonoBehaviour
         if (sv.player.has && player.maxHealth > 0f) SetHp(Mathf.Max(1f / player.maxHealth, sv.player.hpFrac) * player.maxHealth);
         var sp = ZoneData.Spot(z, spot); Vector3 pos = player.transform.position;
         EnterZone(z, spot, false);
-        if (sp != null && sp.pos.Length >= 2) { Vector3 np = SpotPos(sp, pos); Place(player, np, sp.yaw); }
+        if (sp != null && sp.pos.Length >= 2) { Vector3 np = SpotPos(sp, pos); Place(player, np, sp.yaw); ZoneGround.Begin(player, np); /* CAMPGROUND v1 */ }
         arriveGraceUntil = Time.unscaledTime + T.engage.graceAfterArriveSeconds; lastTick = Duel.TickCount; combatTicks = 0;
         LookSpawns(true); Debug.Log("[Zones] on: zone " + z.id + " spot " + spot);
     }
@@ -204,6 +204,7 @@ public sealed class ZoneRuntime : MonoBehaviour
         ApplyRow(df, br, row);
         if (go.GetComponent<ArenaLimits>() == null && go.GetComponent<CharacterController>() != null) go.AddComponent<ArenaLimits>();
         go.SetActive(true);
+        RagdollDeath.PrebuildOne(go);   // KILLBUG v1: a Resources clone has no rig yet: build it now (rest pose) instead of at death
         var lv = new Live { row = row, creature = cid, gen = gen, go = go, df = df, brain = br, home = home, homeYaw = yaw, zoneId = zone.id };
         { var cr = ChaseTable.Enabled ? ChaseTable.Row(cid) : null; if (cr != null) { lv.chase = go.AddComponent<ChaseAgent>(); lv.chase.Init(df, player, home, row.leash, cr, false); } }   // CHASE v1
         live[row.id] = lv;

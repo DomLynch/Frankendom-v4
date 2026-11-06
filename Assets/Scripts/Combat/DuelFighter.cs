@@ -628,7 +628,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             case FState.Dead: faceOpp = false; break;
         }
         if (PresentationClock.Frozen) { v.x = 0f; v.z = 0f; }   // P1: hit-stop freezes the body with the animation (the legs are frozen too: no ice-skating)
-        vy = cc.isGrounded ? -1f : vy - 20f * dt;
+        vy = (cc.isGrounded || ZoneGroundHold.Active) ? -1f : vy - 20f * dt;   // CAMPGROUND v1: no free fall while a zone arrival waits for its ground ring
         v.y = vy; if (cc.enabled) cc.Move(v * dt);
         // kill-plane recovery (audit: a knockback pushed a fighter off the ground collider and it fell for ever, the camera followed): remember the last grounded position, restore it when far below
         if (cc.enabled && cc.isGrounded && transform.position.y > -0.5f) { lastGroundedPos = transform.position; hasGrounded = true; }

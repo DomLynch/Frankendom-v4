@@ -72,7 +72,8 @@ public static class MarketCfg
         if (d.keys == null) d.keys = new KeysC(); if (d.colors == null) d.colors = new ColorsC(); if (d.layout == null) d.layout = new LayoutC(); if (d.text == null) d.text = new TextC();
         if (d.text.codes == null) d.text.codes = new CodeC[0]; if (d.rules.ops == null) d.rules.ops = new string[0]; if (d.safe.allowPress == null) d.safe.allowPress = new string[0];
         d.currency.cap = Mathf.Max(1, d.currency.cap); d.currency.startCoins = Mathf.Clamp(d.currency.startCoins, 0, d.currency.cap);
-        if (d.rows.Length > 0) d.enabled = ZoneFlag.Allowed(d.enabled);   // INT108 v1: -zones turns the trader on, -nozones off, no flag = the file d.rules.keepRequests = Mathf.Max(1, d.rules.keepRequests); d.rules.minSell = Mathf.Max(1, d.rules.minSell);
+        if (d.rows.Length > 0) d.enabled = ZoneFlag.Allowed(d.enabled);   // INT108 v1: -zones turns the trader on, -nozones off, no flag = the file
+        d.rules.keepRequests = Mathf.Max(1, d.rules.keepRequests); d.rules.minSell = Mathf.Max(1, d.rules.minSell);   // CAMPPLAY v1: was commented out
     }
 
     // ---- the pure rule objects MarketCore.cs works with ----

@@ -193,12 +193,7 @@
       "JoystickButton0",
       "Return"
     ],
-    "close": [
-      "Escape",
-      "JoystickButton1",
-      "Tab",
-      "JoystickButton7"
-    ],
+    "close": ["Escape", "JoystickButton1"],
     "up": [
       "UpArrow",
       "W"

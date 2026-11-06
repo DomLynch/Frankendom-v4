@@ -22,12 +22,13 @@ using UnityEngine.SceneManagement;
 [Serializable] public class SpSky { public string arenaRoot = "Arena", group = "WorldFar"; public float follow = 1f, fromZ = 27f; }
 [Serializable] public class SpKeep { public float monsterMargin = 4f; }
 [Serializable] public class SpBuild { public string terrainName = "WorldTerrain", colliderName = "GroundCollider"; public string[] cloneNames = new string[0]; public bool cloneProbes = true; }
+[Serializable] public class SpArrive { public bool enabled = true; public int holdFrames = 240, noSpanFrames = 900; public float rayUpM = 3f, rayDownM = 10f; public int groundMask = -1; }   // CAMPGROUND v1
 [Serializable] public class SpTest { public float walkSpeed = 3f, startZ = 14f, turnZ = 46f, dwellSeconds = 1.5f, settleSeconds = 3f, baselineSeconds = 8f, worstFrameExtraMs = 12f, meanFactor = 1.15f, softHitchExtraMs = 6f, windowPadSeconds = 0.5f; public int maxSoftHitches = 2; }
 [Serializable] public class SpanTable
 {
     public bool enabled; public int version = 2; public float pollSeconds = 0.25f; public int ringsPerFrame = 1;
     public SpWake wake = new SpWake(); public SpTunnel tunnel = new SpTunnel(); public SpBase zone1 = new SpBase(); public SpZone[] zones = new SpZone[0];
-    public SpSky skyline = new SpSky(); public SpKeep keep = new SpKeep(); public SpBuild build = new SpBuild(); public SpTest test = new SpTest();
+    public SpSky skyline = new SpSky(); public SpKeep keep = new SpKeep(); public SpBuild build = new SpBuild(); public SpTest test = new SpTest(); public SpArrive arrive = new SpArrive();   // CAMPGROUND v1: arrive
     /// <summary>Offset of the first duplicate (the crossing test's route is zone 0 to zone 1).</summary>
     public float FirstOffset { get { return zones.Length > 0 ? zones[0].offsetZ : 0f; } }
     public float MaxOffset { get { float m = 0f; foreach (var z in zones) if (z != null && z.offsetZ > m) m = z.offsetZ; return m; } }
@@ -50,7 +51,7 @@ public static class SpanData
     static void Fix(SpanTable k)
     {
         if (k.wake == null) k.wake = new SpWake(); if (k.tunnel == null) k.tunnel = new SpTunnel(); if (k.zone1 == null) k.zone1 = new SpBase(); if (k.zones == null) k.zones = new SpZone[0];
-        if (k.skyline == null) k.skyline = new SpSky(); if (k.keep == null) k.keep = new SpKeep(); if (k.build == null) k.build = new SpBuild(); if (k.test == null) k.test = new SpTest();
+        if (k.arrive == null) k.arrive = new SpArrive(); if (k.skyline == null) k.skyline = new SpSky(); if (k.keep == null) k.keep = new SpKeep(); if (k.build == null) k.build = new SpBuild(); if (k.test == null) k.test = new SpTest();
         if (k.tunnel.hideNames == null) k.tunnel.hideNames = new string[0]; if (k.zone1.retireGroups == null) k.zone1.retireGroups = new string[0]; if (k.build.cloneNames == null) k.build.cloneNames = new string[0];
         foreach (var z in k.zones) if (z != null) { if (z.gate == null) z.gate = new SpGate(); if (z.terrain == null) z.terrain = new SpTerrain(); if (z.rings == null) z.rings = new SpRing[0]; if (z.hideRows == null) z.hideRows = new string[0]; }
         k.pollSeconds = Mathf.Max(0.05f, k.pollSeconds); k.ringsPerFrame = Mathf.Max(1, k.ringsPerFrame);
@@ -136,6 +137,13 @@ public sealed class ZoneSpan : MonoBehaviour
         for (int i = 0; i < n; i++) { core.min[i] = r[i].lo; core.max[i] = r[i].hi; core.boundary[i] = r[i].boundary; r[i].wasWant = i == 0; }
         rz = r; open = new bool[n]; openEff = new bool[n]; keep = new bool[n]; lastZone = 0; live = true; needBind = false; nextPoll = 0f;
         Debug.Log("[ZoneSpan] bound: " + n + " zones (" + (n - 1) + " built), " + hid + " zone 1 rows hidden, " + tunnelObjs.Count + " tunnel pieces");
+    }
+
+    /// <summary>CAMPGROUND v1: switch the FIRST ring (the one that carries the GroundCollider) of every wanted built zone on at once, ahead of Pace's one-ring-per-frame. Called by ZoneGround for an arrival that is not a walk.</summary>
+    public void WakeNow()
+    {
+        if (!live || player == null) return; Poll();
+        for (int i = 1; i < rz.Length; i++) { if (!core.want[i] || rz[i].units.Count == 0) continue; var u = rz[i].units[0]; if (u != null && !u.gameObject.activeSelf) { u.gameObject.SetActive(true); Fire("on:" + u.name); } }
     }
 
     bool GateOpen(SpZone row)

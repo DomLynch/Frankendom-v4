@@ -141,7 +141,16 @@ public static class ContactRelay
     public static event System.Action<DuelFighter, string> OnAction;
     public static void AttackStarted(DuelFighter f, MoveDef m) { if (OnAttackStarted != null) OnAttackStarted(f, m); }
     public static void AttackMissed(DuelFighter f, MoveDef m) { if (OnAttackMissed != null) OnAttackMissed(f, m); }
-    public static void Killed(DuelFighter f, MoveDef m) { if (OnKilled != null) OnKilled(f, m); }
+    // KILLBUG v1: one subscriber that throws (RagdollDeath on a zone clone) no longer skips the others nor the tail of DuelFighter.Die(); logged, same order, same calls when nothing throws
+    public static void Killed(DuelFighter f, MoveDef m)
+    {
+        if (OnKilled == null) return;
+        foreach (var d in OnKilled.GetInvocationList())
+        {
+            try { ((System.Action<DuelFighter, MoveDef>)d)(f, m); }
+            catch (System.Exception ex) { Debug.LogWarning("[killbug] OnKilled subscriber " + d.Method.DeclaringType + "." + d.Method.Name + " threw on " + (f != null ? f.name : "null") + ": " + ex); }
+        }
+    }
     public static void Action(DuelFighter f, string a) { if (OnAction != null) OnAction(f, a); }
     // Dodge detail for FX/audio/camera consumers (dodge.json): kind = "roll" | "backstep" | "sidestep", dir = world-space travel direction (unit, y = 0)
     public static event System.Action<DuelFighter, string, Vector3> OnDodge;

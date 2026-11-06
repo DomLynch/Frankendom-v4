@@ -154,6 +154,19 @@ public sealed class FinisherRTRunner : MonoBehaviour
             }
         }
         catch (Exception ex) { ok = false; msg = (msg + " release: " + ex.Message).Trim(); Debug.LogWarning("[finisher] release: " + ex); }
+        if (!ok)   // KILLBUG v1: a finisher that threw skipped the end of FinisherPlayer.Run: give back everything it holds (all idempotent), never leave the camera / input / killer state stuck
+        {
+            try
+            {
+                Debug.LogWarning("[finisher] FALLBACK after failure (" + msg + "): camera, time, physics scene, killer state restored");
+                FinisherTime.Restore(); FinPhys.EndScene(); BladeAim.EndAll();
+                var cr = FindFirstObjectByType<CameraRig>(); if (cr != null) cr.Yield = false;
+                if (killer != null && !killer.Dead) { killer.enabled = true; killer.state = FState.Loco; killer.t = 0; var fk = killer.GetComponent<Fighter>(); if (fk != null) { fk.holdLast = false; if (fk.anim != null) { fk.anim.enabled = true; fk.anim.speed = fk.animWeight; } fk.Force("idle", 0.15f); } }
+                if (victim != null && victim.Dead) { var col = victim.GetComponent<Collider>(); if (col != null) col.enabled = false; }   // a corpse never blocks the door
+                host = null;
+            }
+            catch (Exception ex2) { Debug.LogWarning("[finisher] fallback: " + ex2.Message); }
+        }
         host = null;
         RTFinisher.End(ok, msg);
     }

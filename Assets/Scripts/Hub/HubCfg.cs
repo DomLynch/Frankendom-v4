@@ -18,7 +18,7 @@ using UnityEngine;
 [Serializable] public class HubNpcRules { public int maxSimultaneous = 3; }
 [Serializable] public class HubSpawner
 {
-    public float pollSeconds = 0.25f, spawnMarginM = 12f, despawnMarginM = 16f, groundRayUpM = 3f, groundRayDownM = 10f, yawOffsetDeg = 0f;
+    public float pollSeconds = 0.25f, spawnMarginM = 12f, despawnMarginM = 16f, groundRayUpM = 3f, groundRayDownM = 10f, yawOffsetDeg = 0f, fallbackY = 0f, waitGroundSeconds = 20f;   // CAMPGROUND v1: fallbackY, waitGroundSeconds
     public string leaveMode = "destroy"; public int maxLoadsInFlight = 1, framesBetweenLoads = 2, groundMask = -1;
     public bool shadows = false, cullWhenOffscreen = true, logLoads = true; public string[] searchRoots = new string[0]; public string bodyName = "Body";
 }

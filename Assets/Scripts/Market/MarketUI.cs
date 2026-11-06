@@ -48,6 +48,7 @@ public sealed class MarketUI : MonoBehaviour
     {
         if (ReferenceEquals(keyOwner, C.keys)) return; keyOwner = C.keys;
         kInteract = MarketCfg.Keys(C.keys.interact); kConfirm = MarketCfg.Keys(C.keys.confirm); kClose = MarketCfg.Keys(C.keys.close); kUp = MarketCfg.Keys(C.keys.up); kDown = MarketCfg.Keys(C.keys.down);
+        if (kClose.Length == 0) kClose = new[] { KeyCode.Escape };   // CAMPPLAY v1: the panel can always be closed
     }
     void EnsureShop()
     {

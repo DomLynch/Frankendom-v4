@@ -18,6 +18,22 @@ public class GameHUD : MonoBehaviour
     readonly CombatHudBars.Lag lagP = new CombatHudBars.Lag(), lagE = new CombatHudBars.Lag();
     float guardA; float[] cdMax = new float[2]; float[] readyT = new float[2]; bool[] wasReady = new bool[2];
     float lastNow;
+    // HUDBUG v1 (zones): with zones on the scene enemy is an inactive template and every enemy is a clone, so enemy/ef (set by BuildSlice) never moved. Zones off: untouched.
+    Health zEnemyHp; DuelFighter zEnemyDf; float zPlayerLast = -1f, zEnemyLast = -1f; DuelFighter zEnemyLogged;
+    void ZonesBind()
+    {
+        if (!ZoneRuntime.Owns || pf == null && player == null) return;   // steer mode detaches the HUD (pf and player null): leave it
+        var e = GameLoop.Enemy; if (e != zEnemyDf) { zEnemyDf = e; zEnemyHp = e != null ? e.GetComponent<Health>() : null; }
+        ef = zEnemyDf; enemy = zEnemyHp;
+        if (GameLoop.Player != null && GameLoop.Player != pf) { pf = GameLoop.Player; player = pf.GetComponent<Health>(); }
+        ZonesHpLog();
+    }
+    // exact -zones proof: one log line per change of the HUD's two health numbers
+    void ZonesHpLog()
+    {
+        if (player != null && pf != null && Mathf.Abs(pf.health - zPlayerLast) > 0.01f) { if (zPlayerLast >= 0f) Debug.Log("[HudHp] " + pf.name + " " + zPlayerLast.ToString("F1") + " -> " + pf.health.ToString("F1") + " bar " + (player.max > 0f ? player.current / player.max : 0f).ToString("F2") + " tick " + Duel.TickCount); zPlayerLast = pf.health; }
+        if (ef != null) { if (zEnemyLogged != ef) { zEnemyLogged = ef; zEnemyLast = ef.health; Debug.Log("[HudHp] boss bar now follows " + ef.name + " hp " + ef.health.ToString("F1") + " (" + Roster.IdOf(ef.transform) + ")"); } else if (Mathf.Abs(ef.health - zEnemyLast) > 0.01f) { Debug.Log("[HudHp] " + ef.name + " " + zEnemyLast.ToString("F1") + " -> " + ef.health.ToString("F1") + " bar " + (enemy != null && enemy.max > 0f ? enemy.current / enemy.max : 0f).ToString("F2") + " tick " + Duel.TickCount); zEnemyLast = ef.health; } }
+    }
 
     void Start()
     {
@@ -27,6 +43,7 @@ public class GameHUD : MonoBehaviour
 
     void Update()
     {
+        ZonesBind();   // HUDBUG v1
         var H = HudCfg.Get();
         if (toggleKeyName != H.hint.toggleKey) { toggleKeyName = H.hint.toggleKey; System.Enum.TryParse(toggleKeyName, true, out toggleKey); }
         if (H.hint.enabled && InputMap.Down("hints", toggleKey)) { hintPinned = true; hintOn = !hintOn; }
@@ -87,7 +104,7 @@ hp.x, hp.yMax + H.bars.framePad + P.stamina.gap, 0f, pf, true, P.stamina, P.post
         float maxW = vw - 2f * (H.player.x + H.player.hp.w + Bc.sideMargin);
         float w = Mathf.Max(H.layout.bossMinW, Mathf.Min(Bc.w, maxW)), x = (vw - w) * 0.5f, y = Bc.top;
         float nameH = Bc.nameSize * H.layout.nameLine;
-        HudDraw.Caps(x, y, 0f, Roster.EnemyName, "title", Bc.nameSize, Bc.nameSmall, Bc.nameTracking, Ink());
+        HudDraw.Caps(x, y, 0f, ZoneRuntime.Owns ? GameLoop.EnemyName() : Roster.EnemyName, "title", Bc.nameSize, Bc.nameSmall, Bc.nameTracking, Ink());
         float ty = y + nameH;
         if (Bc.showTitle && GameLoop.LadderOn)
         {

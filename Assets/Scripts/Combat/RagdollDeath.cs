@@ -130,6 +130,20 @@ public class RagdollDeath : MonoBehaviour
         RagdollRig.LinkAll();
     }
 
+    /// <summary>KILLBUG v1: the per-object form of PrebuildAll for fighters that appear after the scene load (ZoneRuntime clones). Rest pose, before the first Animator update.</summary>
+    public static void PrebuildOne(GameObject go)
+    {
+        var d = Cfg; if (go == null || d == null || !d.enabled || d.parts.Length == 0 || !d.rig.prebuild || !PhysicsClock.PhysicsOn) return;
+        var f = go.GetComponent<DuelFighter>(); if (f == null || !Matches(f)) return;
+        try
+        {
+            var rig = go.GetComponent<RagdollRig>(); if (rig == null) rig = go.AddComponent<RagdollRig>();
+            if (rig.Built) return;
+            rig.Build(); RagdollRig.LinkAll();
+        }
+        catch (Exception ex) { Debug.LogWarning("[killbug] prebuild " + go.name + ": " + ex.Message); }
+    }
+
     static bool Matches(DuelFighter f)
     {
         var d = Cfg;

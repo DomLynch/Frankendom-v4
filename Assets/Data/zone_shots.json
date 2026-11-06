@@ -1,0 +1,18 @@
+{
+  "_about": "CAMPGROUND v1: -zoneshot:<dir> shots (ZoneShot.cs). 'stand' = zones.json spot the player is teleported to (rings / NPCs / creature wake there as in play); cam / look = zones.json spot + [x,y,z] metre offset (spot ground height from a down ray). Game camera into a RenderTexture, no screen grab. flipY only if a build proves the PNG upside down (sidecar logs top / bottom luma).",
+  "width": 1920,
+  "height": 1080,
+  "msaa": 1,
+  "flipY": false,
+  "quit": true,
+  "startWaitSeconds": 60.0,
+  "groundWaitSeconds": 20.0,
+  "shots": [
+    { "id": "sobek_stand", "zone": "sobek_reach", "stand": "arrive_from_pit",
+      "cam": { "spot": "arrive_from_pit", "off": [2.5, 1.7, 2.0] }, "look": { "spot": "sobek_stand", "off": [0.0, 1.5, 0.0] }, "fov": 38.0, "settleSeconds": 3.0 },
+    { "id": "camp_entry", "zone": "hub_camp", "stand": "gate_prev",
+      "cam": { "spot": "gate_prev", "off": [1.5, 1.7, -2.5] }, "look": { "spot": "hearth", "off": [0.0, 1.2, 0.0] }, "fov": 55.0, "settleSeconds": 3.0 },
+    { "id": "trader", "zone": "hub_camp", "stand": "stall_1",
+      "cam": { "spot": "npc_trader", "off": [3.2, 1.7, -0.6] }, "look": { "spot": "npc_trader", "off": [0.0, 1.4, 0.0] }, "fov": 35.0, "settleSeconds": 2.0, "waitNpcSeconds": 15.0 }
+  ]
+}

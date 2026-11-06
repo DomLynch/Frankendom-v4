@@ -59,7 +59,7 @@ public sealed class HubNpcs : MonoBehaviour
     {
         float now = Time.unscaledTime; if (now < nextPoll) return; nextPoll = now + K.spawner.pollSeconds;
         var p = GameLoop.Player; bool zones = ZoneRuntime.Owns && ZoneSpan.Live && p != null;
-        bool want = res.Step(zones ? p.transform.position.z : 0f, K.area.zMin, K.area.zMax, zones);
+        bool want = res.Step(zones ? p.transform.position.z : 0f, K.area.zMin, K.area.zMax, zones && !ZoneGroundHold.Active);   // CAMPGROUND v1: no NPC while the player's own ground is still being found
         if (want) { if (asleep) Wake(); else if (!loading && !tried && standing.Count == 0) { tried = true; StartCoroutine(SpawnAll(++gen)); } }
         else if (standing.Count > 0 || loading) Leave();
     }
@@ -100,6 +100,7 @@ public sealed class HubNpcs : MonoBehaviour
             while (!task.IsCompleted) yield return null;
             if (myGen != gen || this == null) { Free(n); if (myGen == gen) loading = false; yield break; }   // the player left while this body loaded
             if (task.IsFaulted || !task.Result) { Debug.LogWarning("[Hub] npc " + row.id + " not loaded: " + (task.IsFaulted && task.Exception != null ? task.Exception.GetBaseException().Message : "see the lines above")); Free(n); continue; }
+            { float gw = Time.unscaledTime + K.spawner.waitGroundSeconds; while (!GroundAt(n) && Time.unscaledTime < gw && myGen == gen) yield return null; if (myGen != gen || this == null) { Free(n); if (myGen == gen) loading = false; yield break; } }   // CAMPGROUND v1: wait for the camp's ground ring
             Place(n); Play(n); standing.Add(n);
             if (S.logLoads) Debug.Log("[Hub] npc " + row.id + " standing at " + n.go.transform.position);
             for (int f = 0; f < S.framesBetweenLoads; f++) yield return null;   // one body per few frames: no frame carries all three
@@ -156,18 +157,28 @@ public sealed class HubNpcs : MonoBehaviour
         if (S.cullWhenOffscreen) foreach (var a in go.GetComponentsInChildren<Animation>(true)) a.cullingType = AnimationCullingType.BasedOnRenderers;
     }
 
+    /// <summary>CAMPGROUND v1: true when a down ray at the NPC's spot finds ground (ring on). Same ray as Place.</summary>
+    bool GroundAt(Npc n)
+    {
+        float x, z; if (!HubCfg.SpotXZ(K.zone, n.row.spot, out x, out z)) return true; var S = K.spawner; var p = GameLoop.Player; float py = p != null ? p.transform.position.y : S.fallbackY;
+        int cnt = Physics.RaycastNonAlloc(new Vector3(x, py + S.groundRayUpM, z), Vector3.down, hits, S.groundRayUpM + S.groundRayDownM, S.groundMask, QueryTriggerInteraction.Ignore);
+        for (int i = 0; i < cnt; i++) { var c = hits[i].collider; if (c != null && !(p != null && c.transform.IsChildOf(p.transform))) return true; }
+        return false;
+    }
+
     void Place(Npc n)
     {
         float x, z; var S = K.spawner; var p = GameLoop.Player; float py = p != null ? p.transform.position.y : 0f;
         if (!HubCfg.SpotXZ(K.zone, n.row.spot, out x, out z)) { Debug.LogWarning("[Hub] npc " + n.row.id + ": spot '" + n.row.spot + "' is not in zone '" + K.zone + "', standing at the player's depth"); x = 0f; z = p != null ? p.transform.position.z : 0f; }
-        float y = py;
+        float y = S.fallbackY; bool found = false;   // CAMPGROUND v1: was 'float y = py' = the PLAYER's height, which is the falling player's y when no ground was found
         int cnt = Physics.RaycastNonAlloc(new Vector3(x, py + S.groundRayUpM, z), Vector3.down, hits, S.groundRayUpM + S.groundRayDownM, S.groundMask, QueryTriggerInteraction.Ignore);
         float best = float.MaxValue;
         for (int i = 0; i < cnt; i++)
         {
             var c = hits[i].collider; if (c == null || (p != null && c.transform.IsChildOf(p.transform))) continue;
-            if (hits[i].distance < best) { best = hits[i].distance; y = hits[i].point.y; }
+            if (hits[i].distance < best) { best = hits[i].distance; y = hits[i].point.y; found = true; }
         }
+        if (!found) Debug.LogWarning("[Hub] npc " + n.row.id + ": no ground under x " + x.ToString("F1") + " z " + z.ToString("F1") + " (ray from y " + (py + S.groundRayUpM).ToString("F1") + "), standing at fallbackY " + S.fallbackY.ToString("F2"));   // CAMPGROUND v1
         n.go.transform.SetPositionAndRotation(new Vector3(x, y, z), Quaternion.Euler(0f, n.row.yaw + S.yawOffsetDeg, 0f));
         n.go.SetActive(true);
     }
