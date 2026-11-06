@@ -3,7 +3,7 @@
 Read this before you change anything in `unity_test`. Last updated 2026-11-04 12:05 by Strategy (Claude).
 
 ## Goal (from Dom)
-A 9/10 AAA vertical slice: Dracula vs the Pitborn at the Hades gate, Unity 6 URP, 120 fps at 1080p on this laptop (AMD 8060S iGPU). Frankendom V3 is the baseline to beat, not the ceiling. Keep iterating and improving.
+Updated by Strategy 2026-11-06: a 9/10 AAA duel, Joan vs the Pitborn at the Hades gate, Sobek next. Unity 6 HDRP at max quality, not URP yet. Optimisation is priority 1 (`_agents\laneOPT_PLAN.md`), with no visible quality cut; native 2560x1600 is the target on this laptop (Radeon 8060S), and 1080p and 1440p must work for Steam players. Frankendom V3 is the baseline to beat, not the ceiling. Keep iterating and improving.
 
 ## Who is working here
 | Agent | Role |

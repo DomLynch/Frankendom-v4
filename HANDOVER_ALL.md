@@ -126,3 +126,5 @@ Open a new session in `C:\Users\dom12\Documents\unity_test_hdrp` and paste:
 - DOM DIRECTION: physics should be UNIVERSAL across the fight: guard, blocking, hits, finishers, everything, as in Frankendom V3. Hard rule 3 still stands until Dom says otherwise: presentation only, simhash identical ON/OFF. laneV3PHYS is auditing V3 vs current.
 - DOM DECISION: Ultra goes to renderScale 100 (was 67). Measure 67 vs 100 on v103, then carry 100 in v104 unless unplayable. Goes with always max quality HDRP.
 - DOM ORDER: optimisation is priority 1: _agents\laneOPT_PLAN.md.
+- DOM DIRECTION: (1) real-time zones (V1 model), not instanced; kill Pitborn, gate, minimal load; monsters respawn on a data timer, 5-10 min; start zones stay alive. (2) Max out at native 2560x1600 on this laptop, 1080p/1440p must work for Steam, 4K tested later on his TV. (3) Reuse know-how across DOM games, e.g. Armagedom trading for a market stall; no live sync. Sobek keeps head round 3 for now, polish later.
+- Strategy's latest state: _agents\pool\STRATEGY_RESUME.md.
