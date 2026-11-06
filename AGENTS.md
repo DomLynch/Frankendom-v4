@@ -10,13 +10,13 @@ A 9/10 AAA vertical slice: Dracula vs the Pitborn at the Hades gate, Unity 6 URP
 |---|---|
 | **Unity dev** (Claude session "unity") | Builds the game in `unity_test`: combat port, scene, builds, captures. Owns compile health and builds. |
 | **Strategy** (Claude) | Coordinates every lane, reviews every picture against the art, and sets the shared art direction. Tracker: `C:\Users\dom12\Documents\kits_out\3d\GAP_ANALYSIS.md`. |
-| **Goose** | Auditor and real-time improver (Dom's brief). |
-| **Antigravity / Gemini** | Auditor and real-time improver (Dom's brief). |
+| **Goose** | Dom's strategic and operational advisor. Audits and implements the fixes and changes it finds (Dom, 2026-11-06). |
+| **Antigravity / Gemini** | RETIRED by Dom, 2026-11-06. |
 | Hades env (Claude) | Props and weapons (`kits_out\3d\hades_env`). Copies finished GLBs into `Assets\Env\Props` and `Assets\Characters\Weapons`. |
 | OpenTrident (Claude) | Character rigs and clips (Dracula, Pitborn). |
 | MetaHuman (Claude) | MetaHuman head + RigLogic plugin (`kits_out\3d\metahuman\export\s2_unity\final`). |
 
-**Ownership (Dom, 2026-11-04):** Claude owns this project: the Unity dev builds it and Strategy directs it. Goose and Antigravity are **advisors**. They're complementary and have already added a lot of value. They may make changes directly when a fix is **critical** (broken build, crash, a serious bug, a big quality miss). Otherwise, post a PROPOSE or an audit finding and the Unity dev implements it. Disagreement is fine; we settle it in `COORDINATION.md`, not by overwriting each other.
+**Ownership (Dom, updated 2026-11-06):** the Unity dev builds this project and Strategy directs it. Goose is Dom's strategic and operational advisor and may implement the fixes and changes it finds, not only critical ones, under the same rules as everyone: CLAIM on the board first, no `Assets` writes while a build or gate runs, one heavy GPU job at a time, and look changes still need Dom's own LOOK OK. Disagreement is fine; we settle it in `COORDINATION.md`, not by overwriting each other.
 
 ## Rules (keep the build alive)
 1. **Before editing**, append a line to `COORDINATION.md`: `HH:MM <agent> CLAIM <files> - <what/why>`. When done: `HH:MM <agent> DONE <files> - <result, shot path>`.
