@@ -149,6 +149,8 @@ public sealed class FinisherGround : MonoBehaviour
         // FIXPHYS v99: a victim whose death ragdoll is simulating is never moved by the ground correction: the root move teleports all 18 dynamic bodies (and the clamp lowered a falling corpse into the floor,
         // then lifted it by up to maxMoveM per frame: split_crown ended with the feet 1.31 m up, raw gap -0.91 .. +1.17). PhysX has the floor; the probe still measures and judges.
         var rr = GetComponent<RagdollRig>(); bool phys = !IsKiller && rr != null && rr.Converted && !rr.Frozen;
+        // v100: while the ragdoll simulates it is judged by its REAL capsule colliders: bone height minus the finishers.json body radius is only an estimate for a clip pose, and the thinner PhysX capsules rest ON the floor (the old measure read every ragdoll corpse as sunk 0.13-0.18 m)
+        float colLow = float.MaxValue; if (phys) { for (int ci = 0; ci < rr.parts.Count; ci++) { var cp = rr.parts[ci]; if (cp == null || cp.cap == null || !cp.cap.enabled) continue; var cb = cp.cap.bounds; bool okc; float gyc = GroundY(cb.center, out okc); if (!okc) continue; float gc = cb.min.y - gyc; if (gc < colLow) colLow = gc; } if (colLow != float.MaxValue) { raw = colLow; gap = colLow; } }
         // V64F: victim lowest-body-point clamp (collapsing / lying body): replaces the feet rule for this frame
         bool bodyOn = false, bodyElig = false; float bGap = 0f, bRaw = 0f, bDy = 0f;
         if (!IsKiller && C.bodyClamp && body != null && body.Length > 0)
@@ -162,6 +164,7 @@ public sealed class FinisherGround : MonoBehaviour
                 bool ok; float gy = GroundY(b.position, out ok); if (!ok) continue;
                 float g = (b.position.y - bodyR[i]) - gy; if (g < low) low = g;
             }
+            if (phys && colLow != float.MaxValue) low = colLow;   // v100: the real collider bottoms (see above)
             // Judge windows (after Die) always measure the body; the correction itself only runs while the body is down (hips low) and the scene is past its airborne part
             bodyOn = low != float.MaxValue && (Judge || (okH && hipsH <= C.bodyHipsMaxM * sc));
             if (bodyOn) { bRaw = low; bGap = low; }
