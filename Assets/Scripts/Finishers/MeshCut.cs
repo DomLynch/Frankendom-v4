@@ -648,6 +648,7 @@ public static partial class MeshCut   // V1FIN v94: partial (MeshCutCrown.cs)
     static void Launch(GameObject root, Transform victim, CutUnit unit, CutsCfg cc, Vector3 away, float push, float impulse, System.Random rnd)
     {
         var rb = root.AddComponent<Rigidbody>(); rb.mass = Mathf.Max(0.1f, unit.massKg);
+        if (FinPhys.LaunchPiece(root, victim, unit, away, push)) return;   // FINPHYS v97: V3 physics piece (PieceBody); false = V1FIN's scripted arc / the old launch below
         { var v1 = FinisherConfig.Get().rt.v1; if (v1 != null && v1.enabled && v1.headArc && unit.arc != null && unit.arc.enabled) { SeveredHeadArc.Begin(root, victim, unit.arc, away); return; } if (v1 != null && v1.enabled && v1.headArc && unit.script != null && unit.script.enabled) { OpenedHalf.Begin(root, victim, unit.script, away); return; } }   // V1FIN v94: V1's scripted head arc instead of the Rigidbody (kinematic; FinisherPiece skips its physics)
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         var rends = root.GetComponentsInChildren<MeshRenderer>();
@@ -711,7 +712,7 @@ public static partial class MeshCut   // V1FIN v94: partial (MeshCutCrown.cs)
 
     static void Fallback(Transform victim, Transform root, CutUnit unit, CutResult res)
     {
-        if (root.GetComponent<Rigidbody>() != null) { res.note = "meshes not readable and bone has a rigidbody (ragdoll already built)"; return; }
+        if (root.GetComponent<Rigidbody>() != null && !root.GetComponent<Rigidbody>().isKinematic) { res.note = "meshes not readable and bone has a rigidbody (ragdoll already built)"; return; }
         var smr = victim.GetComponentInChildren<SkinnedMeshRenderer>();
         var go = GameObject.CreatePrimitive(PrimitiveType.Sphere); go.name = "Piece_placeholder_" + unit.id;
         go.transform.position = root.position + Vector3.up * 0.1f; go.transform.localScale = Vector3.one * Mathf.Max(0.1f, unit.colliderRadiusM * 2f);

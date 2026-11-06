@@ -92,7 +92,7 @@ public class BloodGround : MonoBehaviour
     bool Ground(Vector3 p, out Vector3 point, out Vector3 normal, BloodTable.GroundCfg g)
     {
         point = p; normal = Vector3.up;
-        int n = Physics.RaycastNonAlloc(p + Vector3.up * g.rayUp, Vector3.down, hits, g.rayUp + g.rayDown, ~0, QueryTriggerInteraction.Ignore);
+        int n = Physics.RaycastNonAlloc(p + Vector3.up * g.rayUp, Vector3.down, hits, g.rayUp + g.rayDown, PhysMasks.NotPhys, QueryTriggerInteraction.Ignore);
         float best = float.MaxValue; bool found = false;
         for (int i = 0; i < n; i++)
         {

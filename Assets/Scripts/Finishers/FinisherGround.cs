@@ -87,7 +87,7 @@ public sealed class FinisherGround : MonoBehaviour
         if (C == null) C = FinisherConfig.Get().rt.ground;
         if (df == null) df = GetComponent<DuelFighter>();
         cc = GetComponent<CharacterController>();
-        mask = ~0; if (C.ignoreLayers != null) foreach (var l in C.ignoreLayers) mask &= ~(1 << l);
+        mask = PhysMasks.NotPhys; if (C.ignoreLayers != null) foreach (var l in C.ignoreLayers) mask &= ~(1 << l);
         float foot = 0.09f, toe = 0.06f; string nm = name;
         if (C.soles != null) foreach (var s in C.soles) if (s != null && !string.IsNullOrEmpty(s.fighter) && nm.IndexOf(Roster.Get(s.fighter).objectName, StringComparison.OrdinalIgnoreCase) >= 0) { foot = s.footM; toe = s.toeEndM; }
         var list = new List<Transform>(); var offs = new List<float>();
@@ -146,6 +146,9 @@ public sealed class FinisherGround : MonoBehaviour
         }
         if (gap == float.MaxValue) return;
         float raw = gap, dy = 0f;
+        // FIXPHYS v99: a victim whose death ragdoll is simulating is never moved by the ground correction: the root move teleports all 18 dynamic bodies (and the clamp lowered a falling corpse into the floor,
+        // then lifted it by up to maxMoveM per frame: split_crown ended with the feet 1.31 m up, raw gap -0.91 .. +1.17). PhysX has the floor; the probe still measures and judges.
+        var rr = GetComponent<RagdollRig>(); bool phys = !IsKiller && rr != null && rr.Converted && !rr.Frozen;
         // V64F: victim lowest-body-point clamp (collapsing / lying body): replaces the feet rule for this frame
         bool bodyOn = false, bodyElig = false; float bGap = 0f, bRaw = 0f, bDy = 0f;
         if (!IsKiller && C.bodyClamp && body != null && body.Length > 0)
@@ -163,7 +166,7 @@ public sealed class FinisherGround : MonoBehaviour
             bodyOn = low != float.MaxValue && (Judge || (okH && hipsH <= C.bodyHipsMaxM * sc));
             if (bodyOn) { bRaw = low; bGap = low; }
             bodyElig = bodyOn && okH && hipsH <= C.bodyHipsMaxM * sc;
-            if (bodyElig && C.correct)
+            if (bodyElig && C.correct && !phys)
             {
                 if (low < -C.bodySunkTolM) bDy = Mathf.Min(-low, C.maxMoveM);
                 else if (low > C.bodyFloatTolM) bDy = -Mathf.Min(Mathf.Min(low, C.maxMoveM), Mathf.Max(0.002f, C.bodyLowerMps * Time.unscaledDeltaTime));
@@ -171,7 +174,7 @@ public sealed class FinisherGround : MonoBehaviour
             }
         }
         if (bodyElig) { dy = bDy; gap = raw + bDy; }   // the feet gap follows the body move
-        else if (C.correct)
+        else if (C.correct && !phys)
         {
             if (raw < -C.sunkTolM) dy = Mathf.Min(-raw, C.maxMoveM);
             else if (CanLower && raw > C.floatTolM) dy = -Mathf.Min(raw, C.maxMoveM);

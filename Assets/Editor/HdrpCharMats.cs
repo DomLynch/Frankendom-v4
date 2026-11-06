@@ -10,7 +10,7 @@ using UnityEngine.Rendering.HighDefinition;
 public static class HdrpCharMats
 {
     // lane LOOK: optional absolute look tweaks per material (baseColor rgb, smoothness remap min / max; missing or -1 = leave)
-    [System.Serializable] public class Entry { public string mat, mask, sheenMask, sheen = "off"; public float sheenIntensity = 1f; public float[] baseColor; public float smoothnessMin = -1f, smoothnessMax = -1f; }
+    [System.Serializable] public class Entry { public string mat, mask, sheenMask, sheen = "off"; public float sheenIntensity = 1f; public float[] baseColor; public float smoothnessMin = -1f, smoothnessMax = -1f; public int materialId = -1; /* JOANTEX v100: 0 standard, 1 SSS; -1 = leave */ }
     [System.Serializable] public class Lin { public string path; public int maxSize = 2048; }
     [System.Serializable] public class Fab { public string shader; public float[] sheenColor; public float sheenIntensity = 1f; }
     [System.Serializable] public class Cfg { public Entry[] materials; public Lin[] linearTextures; public Fab fabric; }
@@ -73,6 +73,7 @@ public static class HdrpCharMats
                 if (e.baseColor != null && e.baseColor.Length >= 3 && m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", new Color(e.baseColor[0], e.baseColor[1], e.baseColor[2], 1f));
                 if (e.smoothnessMin >= 0f) SetF(m, "_SmoothnessRemapMin", e.smoothnessMin);
                 if (e.smoothnessMax >= 0f) SetF(m, "_SmoothnessRemapMax", e.smoothnessMax);
+                if (e.materialId >= 0) SetF(m, "_MaterialID", e.materialId);   // JOANTEX v100
                 if (target == lit) HDMaterial.ValidateMaterial(m);
                 EditorUtility.SetDirty(m); n++;
                 Debug.Log("HDRPCHAR " + m.name + " shader=" + m.shader.name + " mask=" + (mask != null) + " sheen=" + wantFabric);

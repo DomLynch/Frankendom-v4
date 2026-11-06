@@ -136,7 +136,7 @@ public class MoveSheet : MonoBehaviour
 
     int GroundMask()
     {
-        int m = ~0;
+        int m = PhysMasks.NotPhys;
         if (D.groundMaskExcludeLayers != null) foreach (int l in D.groundMaskExcludeLayers) m &= ~(1 << l);
         return m;
     }
@@ -263,7 +263,7 @@ public class MoveSheet : MonoBehaviour
         if (hdMain != null) hdMain.CopyTo(hd);
         if (D.isolate || Flag("-isolate"))
         {
-            c.cullingMask = 1 << 8;
+            c.cullingMask = FighterLayers.CharacterBit; /*HCKIT1 v93*/
             var col = D.isolateColor != null && D.isolateColor.Length >= 3 ? new Color(D.isolateColor[0], D.isolateColor[1], D.isolateColor[2], 1f) : Color.gray;
             c.clearFlags = CameraClearFlags.SolidColor; c.backgroundColor = col;
             hd.clearColorMode = HDAdditionalCameraData.ClearColorMode.Color; hd.backgroundColorHDR = col;

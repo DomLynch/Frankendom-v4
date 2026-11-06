@@ -4,7 +4,7 @@
   "templateId": "_ClipTemplate",
   "templateController": "Assets/Characters/_ClipTemplate.controller",
   "_templateNote": "HCKIT6 v100: templateId is a neutral id (not a roster row). JoanSwap falls back to the first roster row that is neither newId nor the enemy as the scene clone source (today: Dracula); a roster id here is used as written. templateController = the null-motion controller laneCLIPBUILD creates.",
-  "sourceGlb": "${kitsOut}/3d/joan/assembled/joan_v6c.glb",
+  "sourceGlb": "${kitsOut}/3d/joan/assembled/joan_v6c_nolayers.glb",
   "scene": "Assets/Scenes/HadesSlice.unity",
   "layer": 8,
   "rightHand": "mixamorig:RightHand",
@@ -37,7 +37,7 @@
     {
       "glbMaterial": "Joan_hair",
       "mat": "Assets/Characters/Joan/Mats/joan_hairshell_0.mat",
-      "tex": "joan_head",
+      "tex": "joan_hairshell",
       "smoothness": 0.15
     }
   ]

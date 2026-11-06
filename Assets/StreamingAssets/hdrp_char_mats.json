@@ -1,5 +1,5 @@
 {
-  "_notes": "Fighter materials (Assets/Characters/*/Mats/*.mat are what the scene uses, not the GLB materials). Optional per-material baseColor [r,g,b] (absolute _BaseColor; above 1 brightens the texture, lane LOOK cloak lift) and smoothnessMin / smoothnessMax (absolute mask-map smoothness remap) are applied after the mask. 'extract' + 'copy' are read by Tools/char_tex_install.py (re-extracts the per-part jpgs from the installed GLB and bakes mask PNGs: R metal, G AO, A smoothness). 'materials', 'linearTextures', 'fabric' are read by Assets/Editor/HdrpCharMats.cs. sheen 'fabric' needs a Shader Graph (HDRP Fabric target, Cotton/Wool) whose shader name is fabric.shader; if it does not exist the material stays HDRP/Lit with the mask map and the sheen mask is only imported. Boots stay Lit (sheen off).",
+  "_notes": "Fighter materials (Assets/Characters/*/Mats/*.mat are what the scene uses, not the GLB materials). Optional per-material baseColor [r,g,b] (absolute _BaseColor; above 1 brightens the texture, lane LOOK cloak lift) and smoothnessMin / smoothnessMax (absolute mask-map smoothness remap) are applied after the mask. 'extract' + 'copy' are read by Tools/char_tex_install.py (re-extracts the per-part jpgs from the installed GLB and bakes mask PNGs: R metal, G AO, A smoothness). 'materials', 'linearTextures', 'fabric' are read by Assets/Editor/HdrpCharMats.cs. sheen 'fabric' needs a Shader Graph (HDRP Fabric target, Cotton/Wool) whose shader name is fabric.shader; if it does not exist the material stays HDRP/Lit with the mask map and the sheen mask is only imported. Boots stay Lit (sheen off). JOANTEX v100: Joan body row = standard (materialId 0, no SSS), body mask applied, base lift; materialId is read by HdrpCharMats.cs (-1 = leave).",
   "extract": [
     {
       "glb": "Assets/Characters/Dracula/Dracula_combat.glb",
@@ -39,10 +39,11 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "Dracula"
     },
     {
-      "glb": "Assets/Characters/Joan/Joan_combat.glb",
+      "glb": "_agents/laneNECK/out/joan_v6c_nolayers.glb",
       "texDir": "Assets/Characters/Joan/Tex",
       "groups": [
         {
@@ -67,9 +68,26 @@
               "normal": "joan_head_normal.jpg",
               "mr": "joan_head_mr.jpg"
             }
+          ],
+          "override": {
+            "base": "_agents/laneNECK/out/joan_head_base_v6c_napefix.jpg"
+          }
+        },
+        {
+          "glbMaterial": "Joan_hair",
+          "maskOut": "joan_hairshell_mask.png",
+          "maskSize": 2048,
+          "parts": [
+            {
+              "base": "joan_hairshell_base.jpg",
+              "normal": "joan_hairshell_normal.jpg",
+              "mr": "joan_hairshell_mr.jpg"
+            }
           ]
         }
-      ]
+      ],
+      "id": "Joan",
+      "_note": "V6CTEX: source is the laneNECK nape-patched v6c GLB (PNG textures, converted to the jpg names below). tripo_material matches the suffixed GLB name. Hair = its own group (same atlas images as the head, own files joan_hairshell_*). override = optional repainted head (laneNECK), used only if the file exists."
     },
     {
       "glb": "Assets/Characters/Pitborn/Pitborn_combat.glb",
@@ -87,17 +105,20 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "Pitborn"
     }
   ],
   "copy": [
     {
       "from": "C:/Users/dom12/Documents/kits_out/3d/hades_env/unity_staging/character_fixes/dracula/dracula_coat_sheenmask_qa6.png",
-      "to": "Assets/Characters/Dracula/Tex/dracula_coat_sheenmask.png"
+      "to": "Assets/Characters/Dracula/Tex/dracula_coat_sheenmask.png",
+      "id": "Dracula"
     },
     {
       "from": "C:/Users/dom12/Documents/kits_out/3d/hades_env/unity_staging/character_fixes/dracula/dracula_cloak_sheenmask_qa6.png",
-      "to": "Assets/Characters/Dracula/Tex/dracula_cloak_sheenmask.png"
+      "to": "Assets/Characters/Dracula/Tex/dracula_cloak_sheenmask.png",
+      "id": "Dracula"
     }
   ],
   "linearTextures": [
@@ -119,6 +140,10 @@
     },
     {
       "path": "Assets/Characters/Dracula/Tex/dracula_cloak_sheenmask.png",
+      "maxSize": 2048
+    },
+    {
+      "path": "Assets/Characters/Joan/Tex/joan_body_mask.png",
       "maxSize": 2048
     }
   ],
@@ -168,7 +193,14 @@
     {
       "mat": "Assets/Characters/Joan/Mats/joan_body_0.mat",
       "sheen": "off",
-      "smoothnessMax": 0.35
+      "smoothnessMax": 0.35,
+      "mask": "Assets/Characters/Joan/Tex/joan_body_mask.png",
+      "materialId": 1,
+      "baseColor": [
+        1.0,
+        1.0,
+        1.0
+      ]
     },
     {
       "mat": "Assets/Characters/Joan/Mats/joan_hair_0.mat",
@@ -177,7 +209,7 @@
     },
     {
       "mat": "Assets/Characters/Joan/Mats/joan_hairshell_0.mat",
-      "mask": "Assets/Characters/Joan/Tex/joan_head_mask.png",
+      "mask": "Assets/Characters/Joan/Tex/joan_hairshell_mask.png",
       "sheen": "off",
       "smoothnessMax": 0.2
     }

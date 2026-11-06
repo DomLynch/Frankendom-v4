@@ -163,6 +163,7 @@ public static class FinisherPlayer
         if (OnFinisherStart != null) OnFinisherStart(e.id);
         host.Notify("Finisher: " + e.id);
         host.Prep();
+        FinPhys.BeginScene(e.id, A, V);   // FINPHYS v97: hit reaction off, the entry's physics row
 
         // placement: pair on the lane axis, facing each other (hidden by the hard first cut). distance / pairOffset are stand-in metres scaled by the killer;
         // killerYawDeg turns the killer so its clip's own facing points at the victim, victimYawDeg likewise for the victim.
@@ -249,6 +250,7 @@ public static class FinisherPlayer
                 {
                     contactSeen = true; contactT = T;
                     host.FireEvent(A, V, "Hit", true, loc, A.CurrentMove);
+                    FinPhys.OnContact(A, V, axis);   // FINPHYS v97: the blow's momentum / zone for the death ragdoll (before any Die())
                     if (ProbeEnabled) { Probe(e, A, V, axis, rightV, ks); Clearance(e, A, V, ks); }
                     { float cs = e.contactShake >= 0f ? e.contactShake : rtc.contactShake; if (rig && cs > 0f) host.CameraShake(cs, rtc.contactShakeS); }   // FINFIX v93: json (was a hard-coded 0.03)
                     if (rtc.hpToZeroAtContact && !V.Dead) { V.health = 0f; var hpz = V.GetComponent<Health>(); if (hpz != null) hpz.current = 0f; Debug.Log("[finisher] " + e.id + " contact at T=" + T.ToString("0.00") + " s: victim HP -> 0"); }   // FINFIX v93: the bar drains at the contact, not at Die()
@@ -264,7 +266,7 @@ public static class FinisherPlayer
             }
             if (vClip && vStarted && !dead && e.dieAt != -1f)
             {
-                float at = e.dieAt >= 0f ? e.dieAt : vStart + vLen;
+                float at = FinPhys.DieAt(contactT, e.dieAt >= 0f ? e.dieAt : vStart + vLen);   // FINPHYS v97: the ragdoll beat (row.ragdollAtS after the contact)
                 if (T >= at)
                 {
                     dead = true; V.enabled = true; V.Die();
@@ -329,6 +331,7 @@ public static class FinisherPlayer
         if (clipPath) { A.enabled = true; if (fa != null) { fa.holdLast = false; fa.Force("idle", 0.15f); if (fa.anim) fa.anim.speed = fa.animWeight; } }
         A.state = FState.Loco; A.t = 0;
         BladeAim.EndAll();   // V1CLIPS v98
+        FinPhys.EndScene();   // FINPHYS v97
         host.Cleanup();
         if (rig) host.CameraDone();
     }
@@ -421,7 +424,7 @@ public static class FinisherPlayer
                 if (job != null) { bool wasDone = job.done; res = MeshCut.Commit(job, away, k.strength, 60f * k.strength); Debug.Log("[finisher] cut '" + unit + "' COMMIT at T=" + sceneT.ToString("0.00") + " s took " + sw.ElapsedMilliseconds + " ms (prepared " + (wasDone ? "in time at T=" + readyT.ToString("0.00") : "NOT in time: finished synchronously, cpu " + job.cpuMs.ToString("0") + " ms") + ")"); }
                 else { res = MeshCut.Cut(victim.transform, unit, FinisherConfig.Get().rotation.seed + Mathf.Abs(Hash(unit)) % 1000, away, k.strength, 60f * k.strength); Debug.Log("[finisher] cut '" + unit + "' sync (no precut) took " + sw.ElapsedMilliseconds + " ms"); }
                 budgetHit = res != null && res.budget; if (budgetHit) Debug.LogWarning("[finisher] cut '" + unit + "' budget exceeded: gore-only + plain death (" + res.note + ")");   // CUTLOD v96
-                FinisherPiece.Adopt(res, victim.transform, unit); if (res != null && res.ok) V1Extras.OnCut(victim, attacker, FinisherConfig.Get().cuts != null ? System.Array.Find(FinisherConfig.Get().cuts.units, uu => uu != null && uu.id == unit) : null, away);   // V1CLIPS v98: opened weapon drop / leg topple
+                FinisherPiece.Adopt(res, victim.transform, unit); FinPhys.AfterCut(victim, unit, res); handled = res != null && res.ok; /* FINPHYS v97 (INTPHYS: on live v99 the V1CLIPS trailing // comment swallowed this assignment, restored here) */ if (res != null && res.ok) V1Extras.OnCut(victim, attacker, FinisherConfig.Get().cuts != null ? System.Array.Find(FinisherConfig.Get().cuts.units, uu => uu != null && uu.id == unit) : null, away);   // V1CLIPS v98: opened weapon drop / leg topple
                 handled = res != null && res.ok;   // V62B: the severed piece stays as a physics prop   // ok=false (unknown unit, unreadable mesh, exception inside) -> the head-hide / blood fallback below runs
                 if (res != null && !res.ok) Debug.LogWarning("[finisher] cut '" + unit + "' not done: " + res.note);
             }

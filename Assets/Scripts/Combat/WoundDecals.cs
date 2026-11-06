@@ -20,6 +20,19 @@ public static class WoundDecals
     static Material quadMat; static Mesh quad; static Shader decalShader; static bool shaderLooked, warned, decalSrcLogged;   // QC1 v95
     static readonly int TintId = Shader.PropertyToID("_Tint"), MainTexId = Shader.PropertyToID("_MainTex");
     static MaterialPropertyBlock mpb;
+    // INT100b: called by FinVis on every scene load: drop destroyed entries from the static caches (kept entries are live textures / materials that survive a scene load)
+    internal static void SceneReset()
+    {
+        for (int i = decalMats.Count - 1; i >= 0; i--) if (decalMats[i] == null) decalMats.RemoveAt(i);
+        PruneTex(maskCache); PruneTex(premulCache);
+        var dead = new List<string>(); foreach (var kv in mapCache) if (kv.Value == null) dead.Add(kv.Key); for (int i = 0; i < dead.Count; i++) mapCache.Remove(dead[i]);
+    }
+    static void PruneTex(Dictionary<string, Texture2D[]> c)
+    {
+        var dead = new List<string>();
+        foreach (var kv in c) { bool bad = kv.Value == null; if (!bad) for (int i = 0; i < kv.Value.Length; i++) if (kv.Value[i] == null) { bad = true; break; } if (bad) dead.Add(kv.Key); }
+        for (int i = 0; i < dead.Count; i++) c.Remove(dead[i]);
+    }
 
     static float Rnd(Set s) { unchecked { s.seed += 0x6d2b79f5u; uint t = (s.seed ^ (s.seed >> 15)) * (1u | s.seed); t ^= t + (t ^ (t >> 7)) * (61u | t); return (t ^ (t >> 14)) / 4294967296f; } }
     static float Between(Set s, float lo, float hi) { return lo + (hi - lo) * Rnd(s); }

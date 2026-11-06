@@ -1,0 +1,1288 @@
+{
+  "version": 1,
+  "enabled": false,
+  "_switches": "INTPHYS v99: ALL physics switches live in this file, shipped ON. If a proof fails, turn it off by data (edit + the same edit in StreamingAssets): enabled=false = master, the whole physics layer is off (scripted clock, hit reaction, clash, finisher physics; death ragdoll back to the old FixedUpdate one); clock.enabled=false = no scripted PhysX clock; hit.enabled=false = no stagger / hit reaction proxies; clash.enabled=false = no weapon-clash impulse; finphys.enabled=false = finishers without physics (V1FIN scripted pieces, same as -finphys:off); ragdoll.json enabled=false = death clip held (no ragdoll at all). Command line twins: -physics:off, -finphys:off.",
+  "_about": "PHYS1 (PH3 phases P0 + P1). Presentation physics foundation. The 60 Hz Duel sim stays authoritative and never reads anything PhysX does. clock.enabled=false (or this file missing) restores the old behaviour: Physics.simulationMode stays FixedUpdate and CombatSlowMo / FinisherTime rewrite Time.fixedDeltaTime again. Layers are GameObject layer INDEXES (naming them in TagManager is cosmetic, the runtime setup applies the collision matrix itself). Layers 8 and 9 are the legacy 'character' / 'other fighter' layers the old masks tried to ignore (Joan's model sits on 8, see joan_swap.json). PHYS2 v1: 'hit' + 'clash' blocks = the hit-reaction partial ragdoll (Scripts/Physics/HitReact.cs, PH3 P2), proof.hit = -physproof:hit thresholds.",
+  "clock": {
+    "enabled": true,
+    "hz": 60,
+    "maxStepsPerFrame": 4,
+    "fallbackWhenNoDuel": true,
+    "duelCheckEveryFrames": 30,
+    "statsRing": 512
+  },
+  "world": {
+    "solverIterations": 12,
+    "solverVelocityIterations": 4,
+    "maxAngularVelocity": 50.0,
+    "gravityY": -9.81,
+    "_note": "ProjectSettings had 6 / 1 iterations (too low for a 18-body joint chain with 14:1 mass ratios). defaultSolver* only reaches bodies created after Boot (BeforeSceneLoad), ragdoll bodies also get body.solverIterations from ragdoll.json."
+  },
+  "layers": [
+    {
+      "name": "hurtbox",
+      "index": 10
+    },
+    {
+      "name": "ragdollBody",
+      "index": 11
+    },
+    {
+      "name": "physProp",
+      "index": 12
+    },
+    {
+      "name": "legacyCharacter",
+      "index": 8
+    },
+    {
+      "name": "legacyOtherFighter",
+      "index": 9
+    }
+  ],
+  "matrix": {
+    "queryOnly": [
+      "hurtbox"
+    ],
+    "ignore": [
+      {
+        "a": "ragdollBody",
+        "b": "legacyCharacter"
+      },
+      {
+        "a": "ragdollBody",
+        "b": "legacyOtherFighter"
+      },
+      {
+        "a": "physProp",
+        "b": "legacyCharacter"
+      },
+      {
+        "a": "physProp",
+        "b": "legacyOtherFighter"
+      }
+    ],
+    "_note": "queryOnly layers collide with nothing (raycast / cast targets only). Every other pair keeps the Unity default (collide). The CharacterController layer is not known here, so ragdoll parts vs the fighters' CharacterControllers are ignored per collider pair in RagdollRig."
+  },
+  "groundIgnore": [
+    "legacyCharacter",
+    "legacyOtherFighter",
+    "hurtbox",
+    "ragdollBody",
+    "physProp"
+  ],
+  "proof": {
+    "_fixphys": "FIXPHYS v99: step cost limits 0.5/1.0 -> 1.0/2.0 ms: the EMPTY scene alone costs avg 0.466 / p95 0.739 ms per Physics.Simulate (36 kinematic hurtbox bodies + joints + SyncTransforms), so 0.5 could not pass; hit track.maxDeg 5 -> 6 (idle neck 5.13 deg).",
+    "_about": "-physproof:<clock|masks|death|simhash|all> thresholds (PH3 P1 proof list). Numbers are first guesses: unity-dev calibrates them on the first run, they are data on purpose.",
+    "settleFrames": 30,
+    "timeoutSeconds": 900,
+    "clock": {
+      "frames": 120,
+      "hitStopMs": 250,
+      "slowMoClass": "parry"
+    },
+    "death": {
+      "victimHealth": 1.0,
+      "separationM": 1.7,
+      "approachDegrees": [
+        0.0,
+        120.0,
+        240.0
+      ],
+      "moves": [
+        {
+          "move": "heavy",
+          "zone": "head"
+        },
+        {
+          "move": "thrust",
+          "zone": "torso"
+        },
+        {
+          "move": "kick",
+          "zone": "legs"
+        }
+      ],
+      "killWaitTicks": 150,
+      "observeSeconds": 9.0,
+      "firstWindowSeconds": 0.5,
+      "minTravelAlongBlowM": 0.2,
+      "maxConvertJumpM": 0.02,
+      "momentumTolerance": 0.1,
+      "restToleranceM": 0.03,
+      "maxRestSeconds": 8.0,
+      "maxAvgStepMs": 1.0,
+      "maxP95StepMs": 2.0,
+      "minRagdollSpeedSq": 0.0004,
+      "sheetFrames": [
+        0.0,
+        0.2,
+        0.5,
+        1.0,
+        2.0,
+        5.0
+      ],
+      "sheetCellWidth": 320,
+      "sheetCellHeight": 180,
+      "moveDirX": 0.0,
+      "moveDirZ": 1.0,
+      "run": true,
+      "runUpTicks": 45,
+      "momentumImpulseScale": 0.0,
+      "hingeSlackDeg": 15.0
+    },
+    "simHash": {
+      "seed": 4242,
+      "victimHealth": 40.0,
+      "maxTicks": 5400,
+      "postDeathTicks": 300,
+      "runs": [
+        "off",
+        "on",
+        "off"
+      ],
+      "_note": "runs: off, on, off. on vs the first off is the claim; the second off is the control that shows whether the harness is deterministic on its own (on vs off only counts when off vs off matches). The seed, captureFramerate and timeScale are set before every scene reload."
+    },
+    "hit": {
+      "_about": "-physproof:hit. Synthetic Hit / Blocked events are handed straight to HitReact (nothing else reacts: no hit-stop, blood or camera), the victim idles, the numbers are the deviation (deg) between the SHOWN bone rotation and the animated one. All thresholds are first guesses for unity-dev to calibrate from the first run.",
+      "separationM": 1.7,
+      "settleTicks": 40,
+      "observeExtraS": 0.35,
+      "victims": [
+        "enemy",
+        "player"
+      ],
+      "zones": [
+        "head",
+        "torso",
+        "legs",
+        "arms"
+      ],
+      "minPeakZones": [
+        "head",
+        "torso",
+        "arms"
+      ],
+      "minPeakZones_note": "zones whose class minPeakDeg is enforced. V3 stagger mode (hit.mode stagger) moves only spine / neck / head on screen (blend), so a leg blow shows ~0 there; add legs when hit.mode is zone",
+      "classes": [
+        {
+          "name": "light",
+          "moveId": "light_right",
+          "heavy": false,
+          "counter": false,
+          "minPeakDeg": 0.05,
+          "maxPeakDeg": 8.0
+        },
+        {
+          "name": "heavy",
+          "moveId": "heavy_overhead",
+          "heavy": true,
+          "counter": false,
+          "minPeakDeg": 2.0,
+          "maxPeakDeg": 45.0
+        },
+        {
+          "name": "counter",
+          "moveId": "heavy_counter",
+          "heavy": true,
+          "counter": true,
+          "minPeakDeg": 2.0,
+          "maxPeakDeg": 45.0
+        }
+      ],
+      "heavyOverLightMin": 2.0,
+      "recoverDeg": 1.0,
+      "recoverExtraS": 0.1,
+      "maxHipsDeltaM": 0.001,
+      "maxFootDriftM": 0.03,
+      "maxAvgStepMs": 1.0,
+      "maxP95StepMs": 2.0,
+      "clash": [
+        {
+          "kind": "blocked",
+          "type": "Blocked",
+          "perfect": false,
+          "heavy": false
+        },
+        {
+          "kind": "perfect",
+          "type": "Blocked",
+          "perfect": true,
+          "heavy": false
+        },
+        {
+          "kind": "parried",
+          "type": "Parried",
+          "perfect": false,
+          "heavy": false
+        },
+        {
+          "kind": "broken",
+          "type": "GuardBroken",
+          "perfect": false,
+          "heavy": true
+        }
+      ],
+      "clashMinPeakDeg": 0.5,
+      "clashMaxPeakDeg": 60.0,
+      "track": {
+        "row": "track",
+        "move": "heavy",
+        "separationM": 6.0,
+        "seconds": 1.4,
+        "maxDeg": 6.0,
+        "idleSeconds": 1.0
+      },
+      "sheetZones": [
+        "head",
+        "torso"
+      ],
+      "sheetTicks": [
+        0,
+        4,
+        10,
+        20,
+        40
+      ],
+      "sheetCellWidth": 320,
+      "sheetCellHeight": 180,
+      "sheetCropFraction": 0.5
+    }
+  },
+  "hit": {
+    "_about": "PHYS2 (PH3 phase P2): hit-reaction PARTIAL ragdoll for the LIVING fighters. PRESENTATION ONLY: the 60 Hz Duel sim stays authoritative, nothing here writes sim state, no UnityEngine.Random, no colliders (the proxy bodies are invisible to every physics query). HitReact keeps a collider-less powered copy of the pre-built rig (Scripts/Physics/HitReact.cs): joint drives (spring / damper from ragdoll.json drive + parts gain / damping: body 2 / 0.25, neck + head 1 / 1) chase the animated pose; a landed Hit (ContactRelay) adds a reaction = the V3 dip curve (ease in, hold, recover) on the motors of the row's parts plus V3's impulse at the zone part; per-bone `blend` shares mix the clip's local rotation with the proxy's (Slerp), so the body sways and recovers; parts with share 0 follow their parent's deviation through the hierarchy. Runs in LateUpdate BEFORE FootGround (order -140), so FootGround still plants the feet after the blend. Dead fighters are skipped (RagdollRig takes over). mode: 'stagger' = V3's generic reaction (row 'stagger'); 'zone' = V3 feel-hitreact.json zone rows (head / torso / arms / legs; opt-in in V3 too). Blow class scales the row: light 0.12 impulse / 0.12 dip / 0.2 blend (Dom: tone it down), heavy + counter 1. enabled=false = nothing is created. Keys with $near take the side the blow came from.",
+    "enabled": true,
+    "mode": "stagger",
+    "maxReactions": 4,
+    "frontCos": 0.7071,
+    "defaultSide": "R",
+    "gravity": true,
+    "limitMarginDeg": 30.0,
+    "swingCapMarginDeg": 10.0,
+    "swingCapRampDeg": 10.0,
+    "maxDeltaV": 6.0,
+    "inheritVelocity": true,
+    "maxLinearSpeed": 12.0,
+    "maxAngularSpeed": 25.0,
+    "linearDamping": 0.05,
+    "angularDamping": 0.4,
+    "maxAngularVelocity": 50.0,
+    "solverIterations": 16,
+    "solverVelocityIterations": 4,
+    "inertiaFloor": 0.0001,
+    "flinchLeanScale": 0.7,
+    "springScale": 1.0,
+    "damperScale": 1.0,
+    "roles": [
+      {
+        "part": "hips",
+        "role": "hips",
+        "side": ""
+      },
+      {
+        "part": "spine",
+        "role": "spine",
+        "side": ""
+      },
+      {
+        "part": "spine1",
+        "role": "spine1",
+        "side": ""
+      },
+      {
+        "part": "spine2",
+        "role": "spine2",
+        "side": ""
+      },
+      {
+        "part": "neck",
+        "role": "neck",
+        "side": ""
+      },
+      {
+        "part": "head",
+        "role": "head",
+        "side": ""
+      },
+      {
+        "part": "armL",
+        "role": "arm",
+        "side": "L"
+      },
+      {
+        "part": "forearmL",
+        "role": "forearm",
+        "side": "L"
+      },
+      {
+        "part": "handL",
+        "role": "hand",
+        "side": "L"
+      },
+      {
+        "part": "armR",
+        "role": "arm",
+        "side": "R"
+      },
+      {
+        "part": "forearmR",
+        "role": "forearm",
+        "side": "R"
+      },
+      {
+        "part": "handR",
+        "role": "hand",
+        "side": "R"
+      },
+      {
+        "part": "thighL",
+        "role": "thigh",
+        "side": "L"
+      },
+      {
+        "part": "shinL",
+        "role": "shin",
+        "side": "L"
+      },
+      {
+        "part": "footL",
+        "role": "foot",
+        "side": "L"
+      },
+      {
+        "part": "thighR",
+        "role": "thigh",
+        "side": "R"
+      },
+      {
+        "part": "shinR",
+        "role": "shin",
+        "side": "R"
+      },
+      {
+        "part": "footR",
+        "role": "foot",
+        "side": "R"
+      }
+    ],
+    "zoneParts": [
+      {
+        "key": "head",
+        "value": "head"
+      },
+      {
+        "key": "torso",
+        "value": "spine2"
+      },
+      {
+        "key": "legs",
+        "value": "thigh$near"
+      },
+      {
+        "key": "arms",
+        "value": "spine2"
+      }
+    ],
+    "heavyMoves": [
+      "heavy_overhead",
+      "heavy_riposte",
+      "heavy_counter",
+      "critical",
+      "skill_cleave",
+      "skill_reaping",
+      "skill_pommel",
+      "skill_stomp",
+      "riposte",
+      "slash_riposte"
+    ],
+    "classes": [
+      {
+        "name": "light",
+        "impulse": 0.12,
+        "twist": 0.02,
+        "dip": 0.12,
+        "blend": 0.2,
+        "holdS": 0.3,
+        "backS": 0.4
+      },
+      {
+        "name": "heavy",
+        "impulse": 1,
+        "twist": 1,
+        "dip": 1,
+        "blend": 1,
+        "holdS": 1,
+        "backS": 1
+      },
+      {
+        "name": "counter",
+        "impulse": 1,
+        "twist": 1,
+        "dip": 1,
+        "blend": 1,
+        "holdS": 1,
+        "backS": 1
+      }
+    ],
+    "rows": [
+      {
+        "id": "stagger",
+        "about": "V3 generic stagger: physics.json hit (impulse 30 at head / spine2 / thigh, blend spine 1, neck + head 0.5) + states.stagger (ease 0.05, hold 0.5, up 0.35; motor targets arm 0.9 forearm 0.6 hand 0.12 rest 0.6)",
+        "timing": {
+          "easeInS": 0.05,
+          "holdS": 0.5,
+          "backS": 0.35
+        },
+        "dips": [
+          {
+            "key": "arm",
+            "value": 0.9
+          },
+          {
+            "key": "forearm",
+            "value": 0.6
+          },
+          {
+            "key": "hand",
+            "value": 0.12
+          },
+          {
+            "key": "spine",
+            "value": 0.6
+          },
+          {
+            "key": "spine1",
+            "value": 0.6
+          },
+          {
+            "key": "spine2",
+            "value": 0.6
+          },
+          {
+            "key": "neck",
+            "value": 0.6
+          },
+          {
+            "key": "head",
+            "value": 0.6
+          },
+          {
+            "key": "thigh",
+            "value": 0.6
+          },
+          {
+            "key": "shin",
+            "value": 0.6
+          },
+          {
+            "key": "foot",
+            "value": 0.6
+          }
+        ],
+        "blend": [
+          {
+            "key": "spine",
+            "value": 1
+          },
+          {
+            "key": "spine1",
+            "value": 1
+          },
+          {
+            "key": "spine2",
+            "value": 1
+          },
+          {
+            "key": "neck",
+            "value": 0.5
+          },
+          {
+            "key": "head",
+            "value": 0.5
+          }
+        ],
+        "impulse": 30,
+        "lift": 0,
+        "twist": 0,
+        "split": [
+          {
+            "part": "zone",
+            "share": 1
+          }
+        ],
+        "dirs": []
+      },
+      {
+        "id": "head",
+        "about": "V3 feel-hitreact.json zones.head (opt-in mode zone)",
+        "timing": {
+          "easeInS": 0.04,
+          "holdS": 0.2,
+          "backS": 0.5
+        },
+        "dips": [
+          {
+            "key": "neck",
+            "value": 0.1
+          },
+          {
+            "key": "head",
+            "value": 0.06
+          },
+          {
+            "key": "spine2",
+            "value": 0.45
+          },
+          {
+            "key": "spine1",
+            "value": 0.7
+          }
+        ],
+        "blend": [
+          {
+            "key": "neck",
+            "value": 1
+          },
+          {
+            "key": "head",
+            "value": 1
+          },
+          {
+            "key": "spine2",
+            "value": 0.7
+          },
+          {
+            "key": "spine1",
+            "value": 0.35
+          }
+        ],
+        "impulse": 45,
+        "lift": 3,
+        "twist": 6,
+        "split": [
+          {
+            "part": "head",
+            "share": 1
+          },
+          {
+            "part": "neck",
+            "share": 0.3
+          },
+          {
+            "part": "spine2",
+            "share": 0.25
+          }
+        ],
+        "dirs": [
+          {
+            "dir": "front",
+            "impulse": 1,
+            "dip": 1,
+            "twist": 0
+          },
+          {
+            "dir": "back",
+            "impulse": 0.9,
+            "dip": 1,
+            "twist": 0
+          },
+          {
+            "dir": "left",
+            "impulse": 0.9,
+            "dip": 1,
+            "twist": 1
+          },
+          {
+            "dir": "right",
+            "impulse": 0.9,
+            "dip": 1,
+            "twist": 1
+          }
+        ]
+      },
+      {
+        "id": "torso",
+        "about": "V3 zones.torso",
+        "timing": {
+          "easeInS": 0.06,
+          "holdS": 0.3,
+          "backS": 0.6
+        },
+        "dips": [
+          {
+            "key": "spine",
+            "value": 0.12
+          },
+          {
+            "key": "spine1",
+            "value": 0.12
+          },
+          {
+            "key": "spine2",
+            "value": 0.2
+          },
+          {
+            "key": "neck",
+            "value": 0.35
+          },
+          {
+            "key": "head",
+            "value": 0.35
+          },
+          {
+            "key": "arm$near",
+            "value": 0.5
+          }
+        ],
+        "blend": [
+          {
+            "key": "spine",
+            "value": 1
+          },
+          {
+            "key": "spine1",
+            "value": 1
+          },
+          {
+            "key": "spine2",
+            "value": 1
+          },
+          {
+            "key": "neck",
+            "value": 0.8
+          },
+          {
+            "key": "head",
+            "value": 0.8
+          },
+          {
+            "key": "arm$near",
+            "value": 0.4
+          }
+        ],
+        "impulse": 46,
+        "lift": 3,
+        "twist": 24,
+        "split": [
+          {
+            "part": "spine",
+            "share": 1
+          },
+          {
+            "part": "spine1",
+            "share": 0.5
+          },
+          {
+            "part": "spine2",
+            "share": -0.55
+          },
+          {
+            "part": "head",
+            "share": -0.8
+          }
+        ],
+        "dirs": [
+          {
+            "dir": "front",
+            "impulse": 1,
+            "dip": 1,
+            "twist": 0
+          },
+          {
+            "dir": "back",
+            "impulse": 0.85,
+            "dip": 0.9,
+            "twist": 0
+          },
+          {
+            "dir": "left",
+            "impulse": 1.1,
+            "dip": 1,
+            "twist": 1
+          },
+          {
+            "dir": "right",
+            "impulse": 1.1,
+            "dip": 1,
+            "twist": 1
+          }
+        ]
+      },
+      {
+        "id": "arms",
+        "about": "V3 zones.arms",
+        "timing": {
+          "easeInS": 0.04,
+          "holdS": 0.2,
+          "backS": 0.45
+        },
+        "dips": [
+          {
+            "key": "arm$near",
+            "value": 0.08
+          },
+          {
+            "key": "forearm$near",
+            "value": 0.1
+          },
+          {
+            "key": "hand$near",
+            "value": 0.05
+          },
+          {
+            "key": "spine2",
+            "value": 0.6
+          }
+        ],
+        "blend": [
+          {
+            "key": "arm$near",
+            "value": 1
+          },
+          {
+            "key": "forearm$near",
+            "value": 1
+          },
+          {
+            "key": "hand$near",
+            "value": 1
+          },
+          {
+            "key": "spine2",
+            "value": 0.4
+          }
+        ],
+        "impulse": 20,
+        "lift": 0,
+        "twist": 6,
+        "split": [
+          {
+            "part": "arm$near",
+            "share": 1
+          },
+          {
+            "part": "forearm$near",
+            "share": 0.5
+          },
+          {
+            "part": "spine2",
+            "share": 0.3
+          }
+        ],
+        "dirs": [
+          {
+            "dir": "front",
+            "impulse": 1,
+            "dip": 1,
+            "twist": 0
+          },
+          {
+            "dir": "back",
+            "impulse": 1,
+            "dip": 1,
+            "twist": 0
+          },
+          {
+            "dir": "left",
+            "impulse": 1,
+            "dip": 1,
+            "twist": 1
+          },
+          {
+            "dir": "right",
+            "impulse": 1,
+            "dip": 1,
+            "twist": 1
+          }
+        ]
+      },
+      {
+        "id": "legs",
+        "about": "V3 zones.legs",
+        "timing": {
+          "easeInS": 0.05,
+          "holdS": 0.3,
+          "backS": 0.6
+        },
+        "dips": [
+          {
+            "key": "thigh$near",
+            "value": 0.12
+          },
+          {
+            "key": "shin$near",
+            "value": 0.12
+          },
+          {
+            "key": "foot$near",
+            "value": 0.3
+          },
+          {
+            "key": "spine",
+            "value": 0.55
+          },
+          {
+            "key": "spine1",
+            "value": 0.6
+          }
+        ],
+        "blend": [
+          {
+            "key": "thigh$near",
+            "value": 1
+          },
+          {
+            "key": "shin$near",
+            "value": 1
+          },
+          {
+            "key": "foot$near",
+            "value": 1
+          },
+          {
+            "key": "spine",
+            "value": 0.5
+          },
+          {
+            "key": "spine1",
+            "value": 0.4
+          }
+        ],
+        "impulse": 30,
+        "lift": 0,
+        "twist": 8,
+        "split": [
+          {
+            "part": "thigh$near",
+            "share": 1
+          },
+          {
+            "part": "shin$near",
+            "share": 0.5
+          },
+          {
+            "part": "spine2",
+            "share": -0.35
+          }
+        ],
+        "dirs": [
+          {
+            "dir": "front",
+            "impulse": 1,
+            "dip": 1,
+            "twist": 0
+          },
+          {
+            "dir": "back",
+            "impulse": 1,
+            "dip": 1,
+            "twist": 0
+          },
+          {
+            "dir": "left",
+            "impulse": 1,
+            "dip": 1,
+            "twist": 1
+          },
+          {
+            "dir": "right",
+            "impulse": 1,
+            "dip": 1,
+            "twist": 1
+          }
+        ]
+      },
+      {
+        "id": "track",
+        "about": "PROOF ONLY (-physproof:hit calibration): every limb follows the animation through the powered rig at full strength, no blow; the deviation between the shown pose and the clip is the joint-target conversion error (PH3 P2 calibration: under 5 deg)",
+        "timing": {
+          "easeInS": 0.05,
+          "holdS": 3.0,
+          "backS": 0.1
+        },
+        "dips": [],
+        "blend": [
+          {
+            "key": "spine",
+            "value": 1
+          },
+          {
+            "key": "spine1",
+            "value": 1
+          },
+          {
+            "key": "spine2",
+            "value": 1
+          },
+          {
+            "key": "neck",
+            "value": 1
+          },
+          {
+            "key": "head",
+            "value": 1
+          },
+          {
+            "key": "arm",
+            "value": 1
+          },
+          {
+            "key": "forearm",
+            "value": 1
+          },
+          {
+            "key": "hand",
+            "value": 1
+          },
+          {
+            "key": "thigh",
+            "value": 1
+          },
+          {
+            "key": "shin",
+            "value": 1
+          },
+          {
+            "key": "foot",
+            "value": 1
+          }
+        ],
+        "impulse": 0,
+        "lift": 0,
+        "twist": 0,
+        "split": [],
+        "dirs": []
+      }
+    ]
+  },
+  "clash": {
+    "_about": "PHYS2: block / parry recoil on the arms (V3 feel-clash.json numbers). On a Blocked / Parried / GuardBroken event the ATTACKER (event.actor) gets an impulse on its weapon arm against its own facing (base 7 x weapon ratio x swing x kind.recoil, clamped 1..24, lift 0.8) and the DEFENDER (event.target) one on its guard arm along the blow (x kind.absorbed); the arm / forearm / hand (and spine2 at 0.6) motors dip to kind.dip (scaled by swing / maxStrength, floor minScale) with ease 0.04 / hold 0.12 / up 0.3 (x lightScale for a light swing) and the arms show the proxy's pose (share). Shares and the weapon ratio are ours (V3 leaned bones on its hero), tune in the player. recoil: blocked 0.6, perfect 0.9, parried 1.5, broken 0.4.",
+    "enabled": true,
+    "baseImpulse": 7.0,
+    "lift": 0.8,
+    "minImpulse": 1.0,
+    "maxImpulse": 24.0,
+    "weaponRatio": 1.0,
+    "minScale": 0.25,
+    "maxStrength": 1.92,
+    "swing": {
+      "light": 1.0,
+      "heavy": 1.92,
+      "charged": 1.5
+    },
+    "timing": {
+      "easeInS": 0.04,
+      "holdS": 0.12,
+      "backS": 0.3
+    },
+    "lightScale": 0.7,
+    "kinds": [
+      {
+        "name": "blocked",
+        "recoil": 0.6,
+        "absorbed": 0.7,
+        "dip": 0.5
+      },
+      {
+        "name": "perfect",
+        "recoil": 0.9,
+        "absorbed": 0.85,
+        "dip": 0.6
+      },
+      {
+        "name": "parried",
+        "recoil": 1.5,
+        "absorbed": 0.25,
+        "dip": 0.15
+      },
+      {
+        "name": "broken",
+        "recoil": 0.4,
+        "absorbed": 1.0,
+        "dip": 0.2
+      }
+    ],
+    "attacker": {
+      "impulsePart": "armR",
+      "parts": [
+        {
+          "part": "armR",
+          "weight": 1.0,
+          "share": 1.0
+        },
+        {
+          "part": "forearmR",
+          "weight": 1.0,
+          "share": 1.0
+        },
+        {
+          "part": "handR",
+          "weight": 1.0,
+          "share": 1.0
+        },
+        {
+          "part": "spine2",
+          "weight": 0.6,
+          "share": 0.3
+        }
+      ]
+    },
+    "defender": {
+      "impulsePart": "armL",
+      "parts": [
+        {
+          "part": "armL",
+          "weight": 1.0,
+          "share": 1.0
+        },
+        {
+          "part": "forearmL",
+          "weight": 1.0,
+          "share": 1.0
+        },
+        {
+          "part": "handL",
+          "weight": 1.0,
+          "share": 1.0
+        },
+        {
+          "part": "spine2",
+          "weight": 0.6,
+          "share": 0.3
+        }
+      ]
+    }
+  },
+  "finphys": {
+    "_about": "FINPHYS v97: physics in the finishers (V3 data/physics.json finisherCuts + cut + kill, physics package world.json / states.json / role table). PRESENTATION ONLY; read by FinPhys.cs. enabled=false or -finphys:off = V1FIN + PHYS1 + PHYS2 exactly. Compare: -finphys:head=physics (physics head instead of V1FIN's scripted arc), -finphys:torso_waist=script (V1FIN OpenedHalf instead of the physics upper half), -finphys:body=clip (victim keeps the clip to its end).",
+    "enabled": true,
+    "suppressHitReact": true,
+    "bodyRagdoll": true,
+    "piece": {
+      "kill": {
+        "impulse": 14.0,
+        "lift": 5.0
+      },
+      "friction": 0.8,
+      "restitution": 0.2,
+      "linearDamping": 0.05,
+      "angularDamping": 0.2,
+      "solverIterations": 16,
+      "solverVelocityIterations": 4,
+      "maxDepenetration": 2.0,
+      "maxLaunchMps": 8.0,
+      "minMassKg": 0.3,
+      "detection": "ContinuousDynamic",
+      "highRateS": 2.0,
+      "substeps": 2,
+      "rollCoeff": 0.8,
+      "restSpeed": 0.05,
+      "restAngularSpeed": 0.2,
+      "restTicks": 12,
+      "freezeAfterRestS": 0.5,
+      "maxSeconds": 20.0,
+      "rescueBelowM": 6.0,
+      "capsuleShrink": 1.0,
+      "fallbackRadiusK": 0.38,
+      "fallbackRadiusMinM": 0.07,
+      "fallbackRadiusMaxM": 0.24,
+      "ignoreVictimColliders": true,
+      "_src": "kill: V3 physics.json cut.kill {impulse 14, lift 5} along the killing blow's facing. friction 0.8 / damping 0.05 / 0.2 / restitution 0.2: physics package world.json body + engine.mjs p.restitution ?? 0.2. highRateS 2 x substeps 2: world.json cut_high_rate_ticks 120 at 60 Hz, collision_substeps.cut_or_thrown 2. rollCoeff 0.8: ground-rows rolling resistance. ContinuousDynamic: V3 continuous detection for pieces. solver 16/4: PHYS1 ragdoll.json body (PhysX needs more than Jolt's 6). Pieces STAY (Dom: the head stays; V3 hid them after 12 s): frozen kinematic freezeAfterRestS after they rest. maxLaunchMps is our safety cap on impulse / mass.",
+      "colliderProxy": "capsules",
+      "_proxy": "Strategy 2026-11-05: Joan's head is a 400k-tri mesh and runtime MeshCut on it stalls. FinPhys never reads or cooks a render mesh: colliders are the ragdoll part capsules (colliderProxy capsules) or one sphere from Renderer.bounds (bounds); crown halves use a BoxCollider from bounds. The MeshCut bake itself is V1FIN/FINFIX code (not in this kit): use a low-poly head LOD there."
+    },
+    "crown": {
+      "independent": true,
+      "releaseAtS": 0.384,
+      "part": "head",
+      "massShare": 0.5,
+      "apartMps": 0.4,
+      "upMps": 0.0,
+      "boxShrink": 0.9,
+      "_src": "V3 finisherCuts.halves {apartM 0.14, overS 0.35}: the halves slide apart 0.14 m over 0.35 s = 0.4 m/s each; V3 'independent halves are the package's step 2' = here. releaseAtS = V1FIN CrownCfg.openS (the halves are fully open)."
+    },
+    "rows": [
+      {
+        "id": "decapitation",
+        "v3": "decapitation",
+        "ragdoll": true,
+        "ragdollAtS": 0.0,
+        "zone": "head",
+        "push": 1.0,
+        "note": "V3 rows.decapitation: unit head, atS 0, push 1"
+      },
+      {
+        "id": "split_crown",
+        "v3": "splitCrown",
+        "ragdoll": true,
+        "ragdollAtS": 0.0,
+        "zone": "head",
+        "push": 1.0,
+        "note": "V3 rows.splitCrown: unit head + head_split, atS 0, push 1"
+      },
+      {
+        "id": "split_crown_pit",
+        "v3": "splitCrown",
+        "ragdoll": true,
+        "ragdollAtS": 0.0,
+        "zone": "head",
+        "push": 1.0,
+        "note": "same row, the enemy as killer"
+      },
+      {
+        "id": "run_through",
+        "v3": "runThrough",
+        "ragdoll": true,
+        "ragdollAtS": 0.0,
+        "zone": "torso",
+        "push": 0.25,
+        "note": "V3 rows.runThrough: no cut, push 0.25 (the blade holds him up)"
+      },
+      {
+        "id": "opened",
+        "v3": "opened",
+        "ragdoll": true,
+        "ragdollAtS": 0.0,
+        "zone": "torso",
+        "push": 1.0,
+        "note": "V3 rows.opened: fallback torso_waist (V1's baked waist cut), atS 0, push 1"
+      }
+    ],
+    "units": [
+      {
+        "unit": "head",
+        "v3": "head",
+        "cutPart": "head",
+        "carries": [
+          "head"
+        ],
+        "mode": "arc",
+        "impulse": -1,
+        "lift": -1,
+        "massScale": 1.0,
+        "inheritVelocity": true,
+        "restMaxM": 1.5,
+        "note": "mode arc = V1FIN scripted head (default). physics = V3 rigid head (mass of the head part, kill 14 N s + lift 5). restMaxM = FINFIX rule gore.piece.restMaxM"
+      },
+      {
+        "unit": "head_crown",
+        "v3": "head_split",
+        "cutPart": "",
+        "carries": [],
+        "mode": "off",
+        "impulse": -1,
+        "lift": -1,
+        "massScale": 1.0,
+        "inheritVelocity": true,
+        "restMaxM": -1,
+        "note": "V1FIN crown: the halves ride the head bone; they become bodies in FinPhys.ReleaseHalves (crown block)"
+      },
+      {
+        "unit": "head_split",
+        "v3": "head_split",
+        "cutPart": "",
+        "carries": [],
+        "mode": "off",
+        "impulse": -1,
+        "lift": -1,
+        "massScale": 1.0,
+        "inheritVelocity": true,
+        "restMaxM": -1,
+        "note": "the old body-mesh split (halves stay attached)"
+      },
+      {
+        "unit": "torso_waist",
+        "v3": "torso_waist",
+        "cutPart": "spine",
+        "carries": [
+          "spine",
+          "spine1",
+          "spine2",
+          "neck",
+          "head",
+          "armL",
+          "forearmL",
+          "handL",
+          "armR",
+          "forearmR",
+          "handR"
+        ],
+        "mode": "physics",
+        "impulse": -1,
+        "lift": -1,
+        "massScale": 1.0,
+        "inheritVelocity": true,
+        "restMaxM": -1,
+        "note": "V3 torso_waist: the upper body leaves with everything above the waist; hips + legs stay as the ragdoll. script = V1FIN OpenedHalf"
+      },
+      {
+        "unit": "arm_right",
+        "v3": "arm_right",
+        "cutPart": "armR",
+        "carries": [
+          "armR",
+          "forearmR",
+          "handR"
+        ],
+        "mode": "physics",
+        "impulse": -1,
+        "lift": -1,
+        "massScale": 1.0,
+        "inheritVelocity": true,
+        "restMaxM": -1,
+        "note": "V3 dismember / tap cuts (not in the current rotation)"
+      },
+      {
+        "unit": "arm_left",
+        "v3": "arm_left",
+        "cutPart": "armL",
+        "carries": [
+          "armL",
+          "forearmL",
+          "handL"
+        ],
+        "mode": "physics",
+        "impulse": -1,
+        "lift": -1,
+        "massScale": 1.0,
+        "inheritVelocity": true,
+        "restMaxM": -1,
+        "note": ""
+      },
+      {
+        "unit": "leg_right",
+        "v3": "leg_right",
+        "cutPart": "thighR",
+        "carries": [
+          "thighR",
+          "shinR",
+          "footR"
+        ],
+        "mode": "physics",
+        "impulse": -1,
+        "lift": -1,
+        "massScale": 1.0,
+        "inheritVelocity": true,
+        "restMaxM": -1,
+        "note": ""
+      },
+      {
+        "unit": "leg_left",
+        "v3": "leg_left",
+        "cutPart": "thighL",
+        "carries": [
+          "thighL",
+          "shinL",
+          "footL"
+        ],
+        "mode": "physics",
+        "impulse": -1,
+        "lift": -1,
+        "massScale": 1.0,
+        "inheritVelocity": true,
+        "restMaxM": -1,
+        "note": ""
+      }
+    ]
+  }
+}

@@ -84,6 +84,15 @@ public static class FinVis
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     static void ResetStatics() { tex.Clear(); mats.Clear(); decalShader = litShader = null; shaderLooked = warned = false; dropMat = null; dropMesh = null; stains.Clear(); seeps.Clear(); beats.Clear(); driver = null; stainCursor = serial = landThisFrame = sessionStains = 0; lastRegister = -999f; lateSeeded = false; lateSources.Clear(); }
+    // INT100b: the reload of the duel scene (rematch / balance fights) also drops the pools, seeps, beats and the driver (their scene objects are gone); shader / texture caches are kept (no regeneration hitch)
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    static void HookSceneReset() { UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneReset; UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneReset; }
+    static void OnSceneReset(UnityEngine.SceneManagement.Scene s, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        for (int i = 0; i < stains.Count; i++) if (stains[i] != null && stains[i].go != null) UnityEngine.Object.Destroy(stains[i].go);
+        stains.Clear(); seeps.Clear(); beats.Clear(); driver = null; stainCursor = serial = landThisFrame = sessionStains = 0; lastRegister = -999f; lateSeeded = false; lateSources.Clear();
+        WoundDecals.SceneReset();
+    }
 
     class PoolStain { public GameObject go; public DecalProjector p; public Vector3 pos, normal; public float radius, target, angle, squash, born; public bool live; }
     class Seep { public Transform tr; public float strength, until; public Vector3 lastFloor; public bool has; }

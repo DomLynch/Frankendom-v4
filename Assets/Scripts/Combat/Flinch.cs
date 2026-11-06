@@ -30,6 +30,7 @@ public class Flinch : MonoBehaviour
         if (energy < 0.001f) { energy = 0f; return; }
         float lean = (kill ? LeanKill : Lean) * energy * Mathf.Rad2Deg;
         if (!kill) lean = Mathf.Min(lean, DodgeTable.Get().flinchMaxLeanDeg);   // data cap (Goose QC: <= 12 deg)
+        lean *= HitReact.LeanScale(me);   // PHYS2 v1: the partial hit ragdoll already sways the body; keep less of the visual-pivot lean while it shows (physics.json hit.flinchLeanScale)
         Vector3 axis = Vector3.Cross(Vector3.up, dir).normalized;   // lean back along the blow
         pivot.rotation = Quaternion.AngleAxis(lean, axis) * transform.rotation;
         Vector3 world = dir * Nudge * energy; pivot.position = transform.position + world;

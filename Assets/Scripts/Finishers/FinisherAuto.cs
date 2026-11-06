@@ -41,7 +41,7 @@ public class FinisherAuto : MonoBehaviour
     class Rec
     {
         public string id = "", killerName = "", victimName = "", attackerClip = "", victimClip = "", attackerPlayed = "", victimPlayed = "", msg = "", cause = "";
-        public bool started, ended, endOk, forced, contact, victimDead, timeOk, frozenClear, camOk, done, pass;
+        public bool deadAtEnd, started, ended, endOk, forced, contact, victimDead, timeOk, frozenClear, camOk, done, pass;
         public float tStart, tEnd, tContact = -1f, tKill = -1f, duration, fightSeconds;
         public int shots, slowmo, gore, exceptions;
         public float paced, pacedKill = -1f, refLuma = -1f, clearHead = float.NaN, clearHand = float.NaN; public int stalls; public bool lumaOk = true;   // V61C
@@ -88,7 +88,7 @@ public class FinisherAuto : MonoBehaviour
             Application.logMessageReceived += OnUnityLog;
             RTFinisher.OnStart += OnStart; RTFinisher.OnStage += OnStage; RTFinisher.OnEnd += OnEnd;
             FinisherPlayer.OnGore += OnGore;
-            ContactRelay.OnKilled += OnKilled;
+            ContactRelay.OnKilled += OnKilled; SceneManager.sceneUnloaded += OnUnloadDiag;   // FIXPHYS v99
             Log("finisherauto start " + DateTime.Now.ToString("s") + " unity " + Application.unityVersion + " res " + Screen.width + "x" + Screen.height + " out " + dir);
         }
         catch (Exception e) { Fail("Awake: " + e); }
@@ -100,7 +100,7 @@ public class FinisherAuto : MonoBehaviour
     {
         Application.logMessageReceived -= OnUnityLog;
         RTFinisher.OnStart -= OnStart; RTFinisher.OnStage -= OnStage; RTFinisher.OnEnd -= OnEnd;
-        FinisherPlayer.OnGore -= OnGore; ContactRelay.OnKilled -= OnKilled;
+        FinisherPlayer.OnGore -= OnGore; ContactRelay.OnKilled -= OnKilled; SceneManager.sceneUnloaded -= OnUnloadDiag;   // FIXPHYS v99
         FinisherPlayer.OnPairProbe -= OnPairProbe; FinisherPlayer.ProbeEnabled = false;   // V62
     }
 
@@ -195,7 +195,14 @@ public class FinisherAuto : MonoBehaviour
     {
         if (cur == null) return;
         cur.ended = true; cur.endOk = ok; cur.tEnd = Time.unscaledTime; cur.duration = cur.tEnd - cur.tStart; if (!ok) cur.errors.Add("scene: " + msg); else if (!string.IsNullOrEmpty(msg)) cur.warns.Add(msg);
+        { var hpE = V != null ? V.GetComponent<Health>() : null; cur.deadAtEnd = V != null && V.Dead && (hpE == null || hpE.Dead); }   // FIXPHYS v99: the verdict is taken at the scene end; the sheet frames after it can outlive the scene (an unexplained scene reload destroyed V and failed run_through / opened with 'victim not dead')
         Log("  scene end ok=" + ok + " " + msg + " duration=" + cur.duration.ToString("0.00", IC) + "s");
+    }
+    bool ownReload;
+    void OnUnloadDiag(Scene s)   // FIXPHYS v99: a scene reload nobody asked for (the harness only reloads between entries) names its caller in the log
+    {
+        if (ownReload) { ownReload = false; return; }
+        if (cur != null && cur.started && !cur.done) Log("UNEXPECTED UNLOAD of '" + s.name + "' during " + cur.id + " (GameLoop outcome " + GameLoop.Outcome + ", screen alpha " + GameLoop.ScreenAlpha.ToString("0.00", IC) + ", Busy " + RTFinisher.Busy + ")" + System.Environment.NewLine + new System.Diagnostics.StackTrace(1, false));
     }
     void OnGore(FinisherGoreCall g) { if (cur != null && cur.started) { cur.gore++; Log("  gore " + g.type + " unit=" + g.unit); } }
     void OnKilled(DuelFighter f, MoveDef m) { if (cur != null && cur.started && cur.tKill < 0f && f == V) { cur.tKill = Time.unscaledTime; cur.pacedKill = cur.paced; Log("  victim Die() at +" + (cur.tKill - cur.tStart).ToString("0.00", IC) + "s"); } }
@@ -227,7 +234,7 @@ public class FinisherAuto : MonoBehaviour
         {
             if (i > 0)
             {
-                Log("restart scene");
+                Log("restart scene"); ownReload = true;
                 Time.timeScale = baseScale;
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 yield return null; yield return null;
@@ -369,7 +376,8 @@ public class FinisherAuto : MonoBehaviour
             if (vClip && !vHas) { string w = "victimClip '" + e.victimClip + "' is not an Animator state of " + (V != null ? V.name : "?"); if (e.placeholder) r.warns.Add(w); else r.errors.Add(w); }
 
             var hp = V != null ? V.GetComponent<Health>() : null;
-            r.victimDead = V != null && V.Dead && (hp == null || hp.Dead);
+            r.victimDead = V != null ? (V.Dead && (hp == null || hp.Dead)) : r.deadAtEnd;   // FIXPHYS v99
+            if (V == null) r.warns.Add("the scene was reloaded before the verdict (V destroyed): victimDead taken from the scene end (" + r.deadAtEnd + "); find who reloaded (see the [finisherauto] UNEXPECTED UNLOAD line)");
             r.frozenClear = !Duel.Frozen && !RTFinisher.Busy;   // Busy false = GameHUD / STUI would now show VICTORY / YOU DIED
             r.timeOk = Mathf.Abs(Time.timeScale - baseScale) < 0.02f;
             var cr = FindFirstObjectByType<CameraRig>(); r.camOk = cr == null || !cr.Yield;

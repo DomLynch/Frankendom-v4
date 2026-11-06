@@ -73,7 +73,7 @@ public class FootGround : MonoBehaviour
                 case "mixamorig:RightToeBase": rToe = t; break; case "mixamorig:RightToe_End": rToeEnd = t; break;
             }
         if (hips == null || lUp == null || lLeg == null || lFoot == null || rUp == null || rLeg == null || rFoot == null) { Debug.LogWarning("[FootGround] bones missing on " + rn); row = null; return; }
-        int ig = 0; if (row.ignoreLayers != null) foreach (var l in row.ignoreLayers) ig |= 1 << l; mask = ~ig;
+        int ig = 0; if (row.ignoreLayers != null) foreach (var l in row.ignoreLayers) ig |= 1 << l; mask = ~ig & PhysMasks.NotPhys;
         stHash = new int[row.states != null ? row.states.Length : 0][];
         for (int i = 0; i < stHash.Length; i++)
         { var st = row.states[i].states ?? new string[0]; stHash[i] = new int[st.Length]; for (int j = 0; j < st.Length; j++) stHash[i][j] = Animator.StringToHash(st[j]); }

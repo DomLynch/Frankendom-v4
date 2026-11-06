@@ -223,9 +223,9 @@ public sealed class CrownRig : MonoBehaviour
     public static readonly List<CrownRig> All = new List<CrownRig>();
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { All.Clear(); }
     /// <summary>Rematch hook: every crown puts its head bone back and goes away.</summary>
-    public static void RestoreAll() { for (int i = All.Count - 1; i >= 0; i--) if (All[i] != null) Destroy(All[i].gameObject); All.Clear(); }
+    public static void RestoreAll() { for (int i = All.Count - 1; i >= 0; i--) if (All[i] != null) Destroy(All[i].gameObject); All.Clear(); FinPhys.ClearSpawned(); }   /* FINPHYS v97 */
 
-    Transform head; Transform[] halves; float hinge, age; Quaternion boneToFrame; CrownCfg cu; Vector3 savedScale = Vector3.one; bool hidden; public float Open;
+    bool released; Transform head; Transform[] halves; float hinge, age;   /* FINPHYS v97 */ Quaternion boneToFrame; CrownCfg cu; Vector3 savedScale = Vector3.one; bool hidden; public float Open;
     public void Setup(Transform headBone, Transform[] halfPivots, float hingeY, Quaternion b2f, CrownCfg cfg) { head = headBone; halves = halfPivots; hinge = hingeY; boneToFrame = b2f; cu = cfg; }
     void OnEnable() { All.Add(this); if (head != null && !hidden) { savedScale = head.localScale; hidden = true; } Follow(); Hide(); }
     void OnDestroy() { All.Remove(this); if (hidden && head != null) head.localScale = savedScale; }
@@ -242,6 +242,7 @@ public sealed class CrownRig : MonoBehaviour
         age += FinisherTime.Step(Time.unscaledDeltaTime);
         Follow(); Hide();   // after the Animator: nothing may put the head back while the corpse is on screen
         float t = Mathf.Clamp01((age - cu.openDelayS) / Mathf.Max(1e-4f, cu.openS)); Open = t * t * (3f - 2f * t);
+        if (released || (released = FinPhys.ReleaseHalves(halves, head, age))) return;   // FINPHYS v97: V3 independent halves
         for (int i = 0; i < halves.Length; i++)
         {
             float side = i == 0 ? -1f : 1f;

@@ -485,6 +485,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public void BlockHit(bool heavy) { blockFlash = 10; f.Force("guard_hit", 0.04f); f.anim.speed = 1.4f; }
     public void AddPosture(float p) { posture = Mathf.Min(posture + p, PostureMax); postureHold = PostureTable.HoldTicks(CharKey(), (int)R("posture.hold", 60)); if (p > 0f) statPostureGained += p; }
     public void SetKnock(Vector3 v) { knock = v; }
+    public Vector3 KnockVelocity => knock;   // PHYS1 v1: read-only copy for the death ragdoll (presentation never writes the sim)
     public bool InParryWindow => state == FState.Guard && parryWindow && guardAge <= ParryWindowTicks() && !(exhausted && StaminaTable.Get().exhausted.noParry);
     public bool IsGuarding => state == FState.Guard && guardAge >= WoundSystem.GuardRaiseExtra(this) && (!exhausted || guardAge > StaminaTable.Get().guard.raiseDelayExhausted);
     public bool IFrames => state == FState.Roll && t >= dodgeIS && t <= dodgeIE;   // set per move by BeginDodge (dodge.json iframeStart/End)

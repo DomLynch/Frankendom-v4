@@ -60,12 +60,12 @@ public static class FinisherTime
             lowest = Mathf.Min(lowest, v);
         }
         if (dips.Count == 0) { Restore(); return; }
-        Time.timeScale = baseScale * lowest; Time.fixedDeltaTime = baseFixed * Time.timeScale;
+        Time.timeScale = baseScale * lowest; if (!PhysicsClock.Scripted) Time.fixedDeltaTime = baseFixed * Time.timeScale;   // PHYS1 v1
     }
 
     public static void Restore()
     {
         dips.Clear();
-        if (captured) { Time.timeScale = baseScale; Time.fixedDeltaTime = baseFixed; captured = false; }
+        if (captured) { Time.timeScale = baseScale; if (!PhysicsClock.Scripted) Time.fixedDeltaTime = baseFixed; captured = false; }
     }
 }

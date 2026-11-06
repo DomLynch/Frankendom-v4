@@ -1360,9 +1360,9 @@
         "holdAfter": 1.5,
         "source": "OpenTrident finishers_vps/clips-authored/9100002 (victim) + 9100003 (killer), 2.4 s at 0.75x; tip meets the chest at clip 0.4 s",
         "pairOffset": [
-          -0.081,
-          0.08,
-          0.824
+          -0.062,
+          0.0,
+          0.715
         ],
         "pairOffsetNote": "V1CLIPS v98: right/forward = the v97 -finisherauto probe suggestion with the V1 clips playing (RightHand -> Spine2 along 1.18 m, want 0.55: suggest [-0.081, 0, 0.824]); up 0.08 = lift: the v97 victim raw ground gap was -0.16..0.00 m (sinking), FinisherGround had to move the root"
       },
