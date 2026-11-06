@@ -338,6 +338,76 @@
                                               "dripSizeMul":  0.7
                                           }
                                       ]
+                       },
+                       {
+                         "id": "Sobek",
+                         "maxDecals": 6,
+                         "fadeOutSec": 2.5,
+                         "lifeSec": 40.0,
+                         "opacity": 0.95,
+                         "sizeJitter": 0.2,
+                         "heavySizeMul": 1.3,
+                         "killSizeMul": 1.5,
+                         "counterSizeMul": 1.15,
+                         "depth": 0.4,
+                         "bodyRadius": 0.55,
+                         "lateral": 0.2,
+                         "lateralJitter": 0.08,
+                         "headY": 1.75,
+                         "torsoY": 1.3,
+                         "armY": 1.35,
+                         "legsY": 0.6,
+                         "heightJitter": 0.1,
+                         "slash": {
+                           "tex": "streak",
+                           "length": 0.54,
+                           "width": 0.108,
+                           "baseRollDeg": 0.0,
+                           "tiltDeg": 18.0
+                         },
+                         "stab": {
+                           "tex": "puncture",
+                           "length": 0.162,
+                           "width": 0.162,
+                           "baseRollDeg": 0.0,
+                           "tiltDeg": 180.0
+                         },
+                         "overhead": {
+                           "tex": "streak",
+                           "length": 0.567,
+                           "width": 0.108,
+                           "baseRollDeg": 90.0,
+                           "tiltDeg": 8.0
+                         },
+                         "legSlowSec": 4.0,
+                         "legSlowMul": 0.9,
+                         "staminaCeilPerWound": 0.015,
+                         "staminaCeilMin": 0.75,
+                         "blendSec": 0.6,
+                         "stages": [
+                           {
+                             "id": "hurt",
+                             "hpFrac": 0.5,
+                             "moveMul": 0.95,
+                             "regenMul": 0.9,
+                             "guardLayerMul": 0.92,
+                             "guardRaiseExtraTicks": 3,
+                             "dripEverySec": 0.0,
+                             "dripSplats": 1,
+                             "dripSizeMul": 0.7
+                           },
+                           {
+                             "id": "dying",
+                             "hpFrac": 0.25,
+                             "moveMul": 0.82,
+                             "regenMul": 0.65,
+                             "guardLayerMul": 0.55,
+                             "guardRaiseExtraTicks": 8,
+                             "dripEverySec": 1.8,
+                             "dripSplats": 1,
+                             "dripSizeMul": 0.7
+                           }
+                         ]
                        }
                    ]
 }

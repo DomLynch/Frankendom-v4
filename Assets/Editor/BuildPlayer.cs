@@ -11,7 +11,13 @@ public static class BuildPlayerCmd
         AssetDatabase.Refresh();
         BuildCfg.ApplyPlayerSettings();
         string dir = BuildCfg.OutputDir();   // HCKIT3 v93: -buildDir <folder> (Tools/build_and_gate.ps1 passes it), legacy Tools/build_dir.txt, else build.defaultDir
-        var r = BuildPipeline.BuildPlayer(BuildCfg.Scenes(), dir + "/" + BuildCfg.ExeName(), BuildTarget.StandaloneWindows64, BuildCfg.Options());   // HCKIT3 v93: scene list from build.json (was a literal array here)
+        // FPSD v1: per-pass GPU ms. Core RP's ProfilingSampler only reads GPU time (and only sets MarkerFlags.SampleGPU) when UNITY_USE_RECORDER is defined, and nothing in this project defines it,
+        // so gpuElapsedTime is 0.0 even in a development build. -gpupass (or Tools/build_gpupass.txt) adds it for THIS player build only (BuildPlayerOptions.extraScriptingDefines), no ProjectSettings edit.
+        // Use together with -devbuild and -profilebuild. Without the flag this method builds exactly what it built before.
+        bool gpuPass = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-gpupass") >= 0 || System.IO.File.Exists("Tools/build_gpupass.txt");
+        var bpo = new BuildPlayerOptions { scenes = BuildCfg.Scenes(), locationPathName = dir + "/" + BuildCfg.ExeName(), target = BuildTarget.StandaloneWindows64, options = BuildCfg.Options() };
+        if (gpuPass) { bpo.extraScriptingDefines = new[] { "UNITY_USE_RECORDER" }; Debug.Log("BUILD FPSD: extraScriptingDefines UNITY_USE_RECORDER (per-pass GPU timing build, use with -devbuild)"); }
+        var r = BuildPipeline.BuildPlayer(bpo);   // FPSD v1: was BuildPipeline.BuildPlayer(BuildCfg.Scenes(), path, target, BuildCfg.Options()), same arguments
         Debug.Log("BUILD " + r.summary.result + " " + r.summary.totalSize + " errors=" + r.summary.totalErrors);
         BuildCfg.WriteBuildInfo(dir, r);   // HCKIT3 v93: <dir>/build_info.json (exe, dataDir, version) for the gate
     }

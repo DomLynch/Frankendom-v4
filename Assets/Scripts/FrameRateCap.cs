@@ -23,7 +23,7 @@ public class FrameRateCap : MonoBehaviour
     static bool Harness()
     {
         foreach (var a in Environment.GetCommandLineArgs())
-            if (a.EndsWith("proof", StringComparison.OrdinalIgnoreCase) || a == "-balanceauto" || a == "-looptest" || a == "-verifyGround" || a == "-finisherauto" || a == "-woundshot" || a == "-floorshot" || a.StartsWith("-physproof", StringComparison.OrdinalIgnoreCase) || a == "-autoplay" || a == "-perfharness") return true;
+            if (a.EndsWith("proof", StringComparison.OrdinalIgnoreCase) || a == "-balanceauto" || a == "-looptest" || a == "-verifyGround" || a == "-finisherauto" || a == "-woundshot" || a == "-floorshot" || a.StartsWith("-feetburst:", StringComparison.Ordinal) /* FEETCAP v1 */ || a.StartsWith("-physproof", StringComparison.OrdinalIgnoreCase) || a == "-autoplay" || a == "-perfharness") return true;
         return false;
     }
 

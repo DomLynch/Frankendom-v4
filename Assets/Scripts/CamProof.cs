@@ -155,6 +155,34 @@ public class CamProof : MonoBehaviour
                 if (luma < pr.lumaMin || luma > pr.lumaMax) Fail(id + " black / white frame, luma " + luma.ToString("F3", IC));
             }
 
+        // ---- (1b) OCCLUDE v105: how much of each fighter the OTHER one hides (camera_occlusion.json proof): arena middle at proof.seps, log + csv, fails only when proof.enforce
+        {
+            var oc = CamOcclusion.Cfg();
+            if (oc.enabled && oc.proof.seps.Length > 0)
+            {
+                var ocsv = new StringBuilder("sep_m,player_hidden,foe_hidden,player_radius_m,foe_radius_m,cam_dist_to_look_m\n");
+                foreach (float osep in oc.proof.seps)
+                {
+                    string oid = "mid_sep" + osep.ToString("0.0", IC).Replace('.', 'p');
+                    if (!Setup(anchor0, axis0, osep)) { rows.Add(oid + ": occluded_by_other SKIP (no ground below a fighter at this spot)"); Log("SKIP " + oid + " occlusion, no ground"); continue; }
+                    yield return Frames(Mathf.Max(1, oc.proof.settleFrames));
+                    float ohP = 0f, ohF = 0f, orP = 0f, orF = 0f;
+                    for (int oi = 0; oi < Mathf.Max(1, oc.proof.sampleFrames); oi++)
+                    {
+                        yield return null; float oa, ob;
+                        CamOcclusion.Measure(rig.GetComponent<Camera>().transform.position, D.transform, P.transform, out oa, out ob, out orP, out orF);
+                        ohP = Mathf.Max(ohP, oa); ohF = Mathf.Max(ohF, ob);
+                    }
+                    float odist = Vector3.Distance(rig.transform.position, (D.transform.position + P.transform.position) * 0.5f);
+                    string orow = oid + ": occluded_by_other " + Roster.PlayerName + " " + ohP.ToString("F2", IC) + " " + Roster.EnemyName + " " + ohF.ToString("F2", IC) + " (worst of " + oc.proof.sampleFrames + " frames; body radius " + orP.ToString("F2", IC) + " / " + orF.ToString("F2", IC) + " m; need <= " + oc.proof.hiddenMax.ToString("F2", IC) + " only when enforce=" + oc.proof.enforce + ")  cam dist to look " + odist.ToString("F1", IC) + " m";
+                    rows.Add(orow); Log(orow);
+                    ocsv.Append(osep.ToString("F1", IC) + "," + ohP.ToString("F3", IC) + "," + ohF.ToString("F3", IC) + "," + orP.ToString("F3", IC) + "," + orF.ToString("F3", IC) + "," + odist.ToString("F2", IC) + "\n");
+                    if (oc.proof.enforce && Mathf.Max(ohP, ohF) > oc.proof.hiddenMax) Fail(oid + " occluded_by_other " + Mathf.Max(ohP, ohF).ToString("F2", IC));
+                }
+                try { File.WriteAllText(Path.Combine(dir, oc.proof.csvName), ocsv.ToString()); } catch (Exception oex) { Log("occlusion csv failed: " + oex.Message); }
+            }
+        }
+
         // ---- (2) knockback sweep
         Setup(anchor0, axis0, pr.knockFromM); yield return Frames(pr.settleFrames);
         float tMin = 1f; int tAt = -1;

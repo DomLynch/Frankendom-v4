@@ -1,0 +1,14 @@
+{
+  "_about": "laneOPT5 PerfCpu.cs. DARK: enabled=false means no object is created. skin4 = QualitySettings.skinWeights Unlimited -> FourBones (guarded: refuses/reverts if any skinned mesh has more than maxInfluences per vertex); jobWorkers = JobsUtility.JobWorkerCount (0 = Unity default); vsync0 = vSync off + no target fps, PERF READING ONLY (never in simhash/balance gate runs); stats = periodic [PerfCpu] log line (avg/max ms, gen0 GCs, managed bytes per frame, vsync, refresh). Command line -cpuopt:skin4,jobs=12,vsync0,stats overrides this file (only the listed items on).",
+  "enabled": false,
+  "skin4": false,
+  "maxInfluences": 4,
+  "jobWorkers": 0,
+  "vsync0": false,
+  "stats": false,
+  "statsFirstSec": 5.0,
+  "statsEverySec": 30.0,
+  "recheckSec": 1.0,
+  "applyAfterFrames": 5,
+  "note": ""
+}

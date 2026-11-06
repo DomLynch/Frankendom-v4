@@ -41,6 +41,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     }
     public void Press(string what)
     {
+        if (IsPlayer && MarketSafe.Refuses(what)) return;   // STALL v1: no attack presses in the camp (dodges stay)
         int ttl = CombatFeel.QueueTtl(this, (int)R("bufferTtl", 11));   // P1: while a move / dodge / stagger runs, the press lives until the move can take it (cancel.json queue)
         if (what == "special1" || what == "special2" || what == "light_left" || what == "light_right" || what == "heavy_overhead") { pMove = what == "special1" ? "skill_cleave" : what == "special2" ? "skill_reaping" : what; pMoveTtl = ttl; return; }
         switch (what) { case "sidestep": sideDir = 0; pSide = ttl; break; case "backstep": pBack = ttl; break; case "light": pLight = ttl; break; case "heavy": pHeavy = ttl; break; case "thrust": pThrust = ttl; break; case "kick": pKick = ttl; break; case "roll": pRoll = ttl; break; }
@@ -505,6 +506,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     int ParryRiposteWindow() { var P = StaminaTable.Parry(); return P.enabled ? P.riposteWindowTicks : (int)R("parryStun", 90); }
     void ParryNote() { var P = StaminaTable.Parry(); if (P.enabled) { stamina = Mathf.Clamp(stamina - P.staminaCost + P.staminaGain, 0f, Mathf.Max(stamina, maxStamina)); if (P.staminaCost > 0f) regenWait = RegenDelay(); } parryOkFlash = StaminaTable.Get().hud.parryFlashTicks; statParries++; }   // lanePARRY: staminaGain = the parry reward
     float MoveCost(MoveDef m) { return StaminaTable.MoveCost(m) * StanceLayer.AttackCostMul(this); }   // STANCE2 v81: stances.json attackCostMul
+    public float MoveMulNow => SpeedMulExhausted();   // CHASE v1: the player's effective run speed is the chase speed reference
     float SpeedMulExhausted() { return (exhausted ? StaminaTable.Get().exhausted.walkMul : 1f) * WoundSystem.MoveMul(this) * StanceLayer.MoveSpeedMul(this); }   /* STANCE2 v81: stances.json moveSpeedMul */   // lane WOUND: limp (HP stages) and leg-hit slow, 1 when healthy / off
     public float DamageScaleNow => damageScale * (exhausted ? StaminaTable.Get().exhausted.damageMul : 1f) * WeaponHooks.DamageMul(this); /* WEAPONSWAP v88: weapon damage */
     bool HeavyAllowed() { var S = StaminaTable.Get(); bool ok = !S.enabled || (!exhausted && stamina >= S.exhausted.heavyMinStamina); if (!ok) statHeavyDowngrades++; return ok; }

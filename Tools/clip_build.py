@@ -1,4 +1,4 @@
-"""CLIPBUILD clip_build.py: roster-driven character clip build from the RAW Mixamo originals (HC2 proposal steps 1-3, base set).
+﻿"""CLIPBUILD clip_build.py: roster-driven character clip build from the RAW Mixamo originals (HC2 proposal steps 1-3, base set).
 
   python clip_build.py --roster                 build every roster id (player + enemy) that has a model glb
   python clip_build.py --char Joan [--out DIR]  one character
@@ -236,14 +236,20 @@ def build_clip(cfg, row, rig_z, corr, tuning, cid, cache):
         c = get(row['src']); src_desc = row['src']
     # tuning profile (Joan's = clearance only, zero by default)
     if tuning is not None and row['state'] in tuning.get('clips', []):
-        ab = float(tuning.get('armAbductDeg', 0.0))
+        ab = float(tuning.get('clipAbductDeg', {}).get(row['state'], tuning.get('armAbductDeg', 0.0)))   # SOBEKTUNE v1: per-clip override (data), default = armAbductDeg
         if ab != 0.0:
-            fw = tuning['forwardAxis']
+            fw = tuning.get('clipAxis', {}).get(row['state'], tuning['forwardAxis'])   # SOBEKTUNE v1: per-clip axis (data)
             c.world_rot_op('LeftArm', fw, +ab); c.world_rot_op('RightArm', fw, -ab); notes.append('tuning armAbduct %+g deg' % ab)
     # hips: rig correction + in place + height ratio (same maths as build_joan_combat.py)
     ratio = min(3.0, max(0.33, rig_z / c.hips_rest_z))
     c.rot['mixamorig:Hips'] = L.qmul(corr, c.rot['mixamorig:Hips'])
-    v = np.array([L.qrot(corr, x * ratio) for x in c.hips_t]); v[:, 0] = v[0, 0]; v[:, 1] = v[0, 1]; c.hips_t = v
+    v = np.array([L.qrot(corr, x * ratio) for x in c.hips_t]); v[:, 0] = v[0, 0]; v[:, 1] = v[0, 1]
+    # SOBEKGETUP v1: per-clip hips lift over time (data tuning.hipsLiftM[state] = [[t_s, metres], ...], linear; 0 where the body stands, non-zero while lying/rising) for a body whose limbs reach below the floor in lying/rising clips; rig up axis = hips z (same axis clip_sets hipsYOffsetM uses)
+    lift = (tuning or {}).get('hipsLiftM', {}).get(row['state'])
+    if lift:
+        lt = np.array([k[0] for k in lift], float); lv = np.array([k[1] for k in lift], float)
+        v[:, 2] += np.array([L.sample_v(lt, lv, float(t)) for t in c.times]); notes.append('hipsLift max %.3f m' % float(lv.max()))
+    c.hips_t = v
     return c, src_desc, notes, ratio
 
 

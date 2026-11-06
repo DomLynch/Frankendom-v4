@@ -25,10 +25,11 @@ public class WeaponGrip : MonoBehaviour
     [System.Serializable] public class Root { public Row[] characters = new Row[0]; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    static void Boot()
-    {
+    static void Boot() { Boot(null); }   // ZONES-ATTACH v1 (INT107)
+    public static void AttachTo(GameObject root) { Boot(root); }   // same want-check, one object (ZoneRuntime.SpawnOne for a prefab creature)
+    static void Boot(GameObject root){
         var D = Load(); if (D.characters == null) return;
-        foreach (var a in Object.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        foreach (var a in (root != null ? root.GetComponentsInChildren<Animator>(true) : Object.FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None)))
         {
             string rn = a.transform.root.name; bool want = false;
             { int rrb = RosterResolver.Best(D.characters, rrx => rrx.name, rn); foreach (var c in D.characters) if (c != null && c.enabled && rrb > 0 && RosterResolver.Tier(c.name, rn) == rrb) want = true; }   // HCKIT2 v93

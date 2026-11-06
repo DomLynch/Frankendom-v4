@@ -153,6 +153,31 @@
   "exceptClips": {
    "special_skullcrack": "foreign v3 clip, no raw original",
    "special_whirlwind": "foreign v3 clip, no raw original"
+  },
+  "scaleProfiles": {
+   "_about": "SOBEKTUNE v1: gates for a character whose body is not Joan-sized. Each factor multiplies a Joan-scale limit (footFloorMaxM, armClearanceMeshMinM) for THAT character only; no factor = 1.0. Factors are measured from the bound rigs at rest (SOBEKTUNE measure_scale.py: Sobek / roster player): foot length (Foot->ToeBase) 0.309 / 0.169 = 1.83; hips height 1.267 / 0.990 = 1.28 (mesh clearance follows body bulk, not arm length: arm length is 2.13x but would hide real contact). A scale is not a waiver: the sink side of G-plant uses the same factor and the toes still must not go below 0.05 x 1.83 m. armRestSeparationM (SOBEKTUNE v1) = the arm clearance gate only counts arm verts that are at least this far from the torso at rest: the weight-boundary verts touch the torso in the T-pose (0.002 m) and would fail any pose.",
+   "Sobek": {
+    "footLen": 1.83,
+    "meshClearance": 1.28,
+    "basis": "measure_scale.py Sobek_bound.glb vs Joan_combat.glb, rest pose",
+    "armRestSeparationM": 0.09
+   }
+  },
+  "floorGate": {
+   "clips": [
+    "get_up",
+    "knockdown",
+    "death"
+   ],
+   "toeSinkMaxM": 0.05,
+   "_about": "SOBEKGETUP v1: lying/falling/rising clips. The lowest skinned body-mesh vertex (torso, head, legs; verts dominated by fk_* cloth/tail bones or by Shoulder/Arm/ForeArm/Hand bones are left out: long arms reach under the floor in a push-up and are reported, not gated) never goes more than meshSinkMaxM under the floor (= lowest vertex at rest), and the toe base never sinks more than toeSinkMaxM below its rest height. Joan-scale; a scaleProfile multiplies meshSinkMaxM by hipsHeight and toeSinkMaxM by footLen.",
+   "meshSinkMaxM": 0.05,
+   "excludeBoneContains": [
+    "fk_",
+    "Arm",
+    "Hand",
+    "Shoulder"
+   ]
   }
  },
  "tuning": {
@@ -179,6 +204,63 @@
     "strafe_R"
    ],
    "note": "Joan-owned arm-to-jacket clearance. 0 = raw Mixamo. Raise only with a measured clearance number (see VERIFY). Positive = arms away from the body, Left +/Right - about forward."
+  },
+  "scaled_own": {
+   "owner": "Sobek",
+   "armAbductDeg": 18.0,
+   "clipAbductDeg": {
+    "guard_idle": 30.0,
+    "guard_hit": 30.0,
+    "guard_left": 30.0,
+    "guard_right": 30.0,
+    "guard_up": 30.0
+   },
+   "clipAxis": {
+    "guard_idle": [
+     0,
+     1,
+     0
+    ],
+    "guard_hit": [
+     0,
+     1,
+     0
+    ],
+    "guard_left": [
+     0,
+     1,
+     0
+    ],
+    "guard_right": [
+     0,
+     1,
+     0
+    ],
+    "guard_up": [
+     0,
+     1,
+     0
+    ]
+   },
+   "forwardAxis": [
+    0,
+    0,
+    1
+   ],
+   "clips": [
+    "idle",
+    "walk",
+    "run",
+    "stagger_loop",
+    "strafe_L",
+    "strafe_R",
+    "guard_idle",
+    "guard_hit",
+    "guard_left",
+    "guard_right",
+    "guard_up"
+   ],
+   "note": "SOBEKTUNE v1: Sobek-owned arm spread. Tripo torso is bulky, the human-derived Mixamo arms hang pressed to it. armAbductDeg = locomotion clips (about forward, Left +/Right -, same as player_clearance); guard group = swing the elbows out about the up axis (clipAxis, 30 deg; abduction about forward does not move the guard contact, measured 0.003 m at 45 deg). Values measured with Tools/clip_gates arm gap on arm verts that were >= 0.09 m from the torso at rest (SOBEKTUNE diag_arm.py): idle 0.028, walk 0.024, run 0.025, stagger 0.019, strafe 0.019, guard_idle 0.019 vs limit 0.0154."
   }
  },
  "characters": {
@@ -192,6 +274,11 @@
   },
   "Dracula": {
    "tuning": "crimson_v5"
+  },
+  "Sobek": {
+   "extraRows": [],
+   "tuning": "scaled_own",
+   "note": "SOBEKTUNE v1: Mixamo build with Sobek's own arm-spread profile (tuning scaled_own) and own-scale gates (gates.scaleProfiles.Sobek). Body is not Mixamo-native (Tripo mesh on the 106 rig)."
   }
  },
  "base": [

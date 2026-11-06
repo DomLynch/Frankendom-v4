@@ -35,7 +35,7 @@ public static class LootScreen
     {
         var S = LootCfg.Get().screen;
         if (LootCfg.Get().slots.Length == 0) return false;
-        if (RTFinisher.Busy || GameLoopDriver.Transitioning) return false;
+        if (RTFinisher.Busy || GameLoopDriver.Transitioning || MarketUI.Open) return false;   // STALL v1: not on top of the stall panel
         if (demo || S.openInFight) return true;
         bool live = GameLoop.Player != null && GameLoop.Enemy != null && GameLoop.Outcome == GameLoop.Result.None;
         return !live;

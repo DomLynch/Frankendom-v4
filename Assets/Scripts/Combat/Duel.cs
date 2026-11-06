@@ -48,7 +48,7 @@ public class Duel : MonoBehaviour
     // returns true when the strike made contact (hit, block, parry): the move then stops checking
     public static bool Resolve(DuelFighter a, DuelFighter d, MoveDef m, float chargeMul)
     {
-        if (d.Dead || Frozen) return false;
+        if (d.Dead || Frozen || HubSafe.NoHit(d)) return false;   // laneNPCSPAWN: the player in a safe camp takes no strike (health, posture, stamina stay)
         Vector3 ad = d.transform.position - a.transform.position; ad.y = 0f;
         float dist = ad.magnitude;
         float arc = m.id == "kick" ? a.Rule("kickArc", Mathf.PI / 4f) * Mathf.Rad2Deg : 70f;

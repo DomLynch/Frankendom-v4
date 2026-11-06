@@ -15,7 +15,7 @@ public sealed class LootUI : MonoBehaviour
 {
     public static LootUI Instance;
     /// <summary>True while the equip screen is open (and on the frame it closed): GameLoopDriver must not read Enter / A / B then.</summary>
-    public static bool Blocking { get { return LootScreen.Open || LootScreen.ClosedFrame == Time.frameCount; } }
+    public static bool Blocking { get { return LootScreen.Open || LootScreen.ClosedFrame == Time.frameCount || MarketUI.Blocking; } }   // STALL v1
     /// <summary>True when a pickup is within reach this frame (PlayerBrain may ignore the E roll then; optional hunk).</summary>
     public static bool PickupInReach { get; private set; }
     public static int PickupCount { get { return Instance != null ? Instance.live.Count : 0; } }

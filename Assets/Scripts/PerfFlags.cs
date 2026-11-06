@@ -29,7 +29,7 @@ public static class PerfFlags
     public static PerfCfg C { get { if (cfg == null) Load(); return cfg; } }
     public static bool VerboseLogs { get { return C.verboseLogs; } }
 
-    static readonly string[] HarnessArgs = { "-autoplay", "-balanceauto", "-postureproof", "-flowproof", "-camproof", "-finisherauto", "-steerauto", "-verifyGround", "-latencyprobe", "-record", "-cmp", "-headsheet", "-sheet:", "-steershot=", "-steerpreview" };
+    static readonly string[] HarnessArgs = { "-autoplay", "-balanceauto", "-postureproof", "-flowproof", "-camproof", "-finisherauto", "-steerauto", "-verifyGround", "-latencyprobe", "-record", "-cmp", "-headsheet", "-sheet:", "-feetburst:" /* FEETCAP v1 */, "-steershot=", "-steerpreview" };
     // true when the process was started by one of the automated harnesses (their results must not depend on when a hitch lands)
     public static bool HarnessRun()
     {

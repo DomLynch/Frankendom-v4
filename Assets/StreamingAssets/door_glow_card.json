@@ -1,0 +1,17 @@
+{
+  "_about": "laneFOGLOOK DOORGLOW v1. OFF by default (enabled false; -doorglow:1 or -qset:doorGlow=1 turns it on for an A/B arm). While on, the doorway point light (doorway.json light) leaves the volumetric fog (lightVolumetricDimmer 0, today 0.12) and a camera-facing additive soft card at the light draws the glow instead: no voxel grid, no rings. LOOK change: needs Dom's LOOK OK. Numbers marked ESTIMATE are fitted by eye from _agents/laneGPUAUDIT/ladder/ladB/balance_shots/balance_f1_start.png (radial profile, lobe half value about 30 px = about 0.37 m at the door, 1 m = about 80 px) and are tuned by Visual QC pairs, not measured in Unity.",
+  "enabled": false,
+  "lightName": "DoorwayFlickerLight",
+  "lightVolumetricDimmer": 0.0,
+  "sizeM": 4.4,
+  "coreRadiusM": 0.37,
+  "falloffPower": 2.0,
+  "windowStart": 0.55,
+  "tint": [1.0, 0.30, 0.07],
+  "intensity": 0.06,
+  "refLightIntensity": 20000.0,
+  "softDistanceM": 0.5,
+  "textureSize": 128,
+  "shader": "Furnace/Particle",
+  "fallbackShader": "HDRP/Unlit"
+}

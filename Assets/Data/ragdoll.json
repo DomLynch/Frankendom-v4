@@ -17,6 +17,10 @@
     {
       "contains": "Joan",
       "kg": 66.7
+    },
+    {
+      "contains": "Sobek",
+      "kg": 900.0
     }
   ],
   "defaultMassKg": 80.0,

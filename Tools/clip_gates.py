@@ -20,6 +20,28 @@ try:
 except Exception:
     cKDTree = None
 
+
+class CellTree:   # SOBEKTUNE v1: scipy-free nearest distance (this machine has no scipy: the brute-force fallback took ~18 min per build). Exact for distances <= cell (all gate limits are far below it), a lower bound `cell` beyond.
+    def __init__(s, pts, cell=0.10):
+        s.cell = float(cell); s.pts = np.asarray(pts, float); k = np.floor(s.pts / s.cell).astype(np.int64)
+        s.key = (k[:, 0] * 73856093) ^ (k[:, 1] * 19349663) ^ (k[:, 2] * 83492791)
+        s.order = np.argsort(s.key, kind='stable'); s.skey = s.key[s.order]; s.spts = s.pts[s.order]
+
+    def query(s, A):
+        A = np.asarray(A, float); ka = np.floor(A / s.cell).astype(np.int64); best = np.full(len(A), s.cell)
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                for dz in (-1, 0, 1):
+                    kk = ka + np.array([dx, dy, dz]); key = (kk[:, 0] * 73856093) ^ (kk[:, 1] * 19349663) ^ (kk[:, 2] * 83492791)
+                    lo = np.searchsorted(s.skey, key, 'left'); hi = np.searchsorted(s.skey, key, 'right'); cnt = hi - lo
+                    has = np.where(cnt > 0)[0]
+                    for c0 in range(0, len(has), 4000):
+                        ids = has[c0:c0 + 4000]; n = cnt[ids]; tot = int(n.sum())
+                        if tot == 0: continue
+                        rep = np.repeat(ids, n); off = np.arange(tot) - np.repeat(np.cumsum(n) - n, n); tj = np.repeat(lo[ids], n) + off
+                        d = np.linalg.norm(A[rep] - s.spts[tj], axis=1); np.minimum.at(best, rep, d)
+        return best, None
+
 FINGER = ('Thumb', 'Index', 'Middle', 'Ring', 'Pinky')
 
 
@@ -146,7 +168,7 @@ def _raw(j, b, ai):
 
 class Mesh:
     """body mesh (the skinned primitive that has the most arm+torso weight) prepared for clearance tests"""
-    def __init__(s, rig, j, b, bind_names=None):
+    def __init__(s, rig, j, b, bind_names=None, restSepM=0.0):
         s.rig = rig; skin = j['skins'][0]; s.joints = skin['joints']
         names = [j['nodes'][n].get('name') for n in s.joints]
         best = None
@@ -169,6 +191,10 @@ class Mesh:
             far = np.linalg.norm(s.pos - jp, axis=1) > 0.10; s.sel[sd] = s.sel[sd] & far
         s.J, s.Wt = J, Wt
         s.idx = {k: np.where(v)[0] for k, v in s.sel.items()}
+        if restSepM > 0:   # SOBEKTUNE v1: judge only arm verts that are >= restSepM from the torso at REST. Verts at the arm/torso weight boundary touch the torso at rest (T-pose gap 0.002 m), so they say nothing about a pose.
+            Wr = rig.world(None, 0.0); Tr = s.skinned(Wr, s.idx['T']); tr = cKDTree(Tr) if cKDTree else CellTree(Tr, max(0.12, restSepM * 1.5))
+            for sd in ('L', 'R'):
+                ids = s.idx[sd]; d, _ = tr.query(s.skinned(Wr, ids)); s.idx[sd] = ids[d >= restSepM]
 
     def skinned(s, W, ids):
         out = np.zeros((len(ids), 3)); Ji = s.J[ids]; Wi = s.Wt[ids]; P = s.pos[ids]
@@ -185,7 +211,7 @@ class Mesh:
 
     def gaps(s, W):
         T = s.skinned(W, s.idx['T']); res = {}
-        tree = cKDTree(T) if cKDTree else None
+        tree = cKDTree(T) if cKDTree else CellTree(T, 0.12)   # SOBEKTUNE v1
         for sd in ('L', 'R'):
             A = s.skinned(W, s.idx[sd])
             if tree is not None: d, _ = tree.query(A)
@@ -207,6 +233,9 @@ def sword_clear(M, W, g):
 
 
 # ---------------------------------------------------------------- driver
+def st_floor(g, st): return st in g.get('floorGate', {}).get('clips', [])   # SOBEKGETUP v1
+
+
 def clip_metrics(M, mesh, anim, g, n):
     dur = M.rig.duration(anim) if anim in M.rig.anims else 0.0
     ts = np.linspace(0, dur, n); out = {'knee': -9.0, 'toeL0': None, 'toeR0': None, 'toeLm': [], 'toeRm': [], 'neck': -99.0, 'head': -99.0, 'sword': 9.0, 'armL': 9.0, 'armR': 9.0, 'floorMin': 9.0, 'floorMax': -9.0, 'slide': 0.0}
@@ -219,6 +248,13 @@ def clip_metrics(M, mesh, anim, g, n):
         out['sword'] = min(out['sword'], sword_clear(M, f['W'], g))
         for side in ('Left', 'Right'):
             dy = f['toe'][side + 'Y'] - r['toe'][side + 'Y']; out['floorMin'] = min(out['floorMin'], dy); out['floorMax'] = max(out['floorMax'], dy)
+        # SOBEKGETUP v1: lying/rising clips: lowest skinned body-mesh vertex above the rest-pose mesh floor (verts dominated by the excluded bone prefixes, e.g. cloth/tail fk_*, are left out)
+        if mesh is not None and st_floor(g, anim) and k % 2 == 0:
+            if not hasattr(mesh, '_flIdx'):
+                ex = tuple(g['floorGate'].get('excludeBoneContains', [])); nm = [mesh.rig.nodes[n].get('name', '') for n in mesh.joints]
+                dom = mesh.J[np.arange(len(mesh.J)), np.argmax(mesh.Wt, 1)]; bad_j = [i_ for i_, n_ in enumerate(nm) if any(e_ in n_ for e_ in ex)]
+                mesh._flIdx = np.where(~np.isin(dom, bad_j))[0]; mesh._flG = float(mesh.skinned(M.rest['W'], mesh._flIdx)[:, 1].min())
+            out['meshMin'] = min(out.get('meshMin', 9.0), float(mesh.skinned(f['W'], mesh._flIdx)[:, 1].min()) - mesh._flG)
         if mesh is not None and k % 2 == 0:
             gp = mesh.gaps(f['W']); out['armL'] = min(out['armL'], gp['L']); out['armR'] = min(out['armR'], gp['R'])
     return out
@@ -254,8 +290,10 @@ def run(cfg, roster, reps, proj, outdir, live_override=None):
     g = cfg['gates']; allbad = []; summary = {}
     for rep in reps:
         cid = rep['character']; rc = [c for c in roster['characters'] if c['id'] == cid][0]
+        sp = g.get('scaleProfiles', {}).get(cid, {}); sfoot = float(sp.get('footLen', 1.0)); sarm = float(sp.get('meshClearance', 1.0)); ffm = g['footFloorMaxM'] * sfoot; acm = g['armClearanceMeshMinM'] * sarm   # SOBEKTUNE v1: own-scale limits (data)
+        if sp: print('  %s scaleProfile foot x%.2f (floor limit %.3f m) meshClearance x%.2f (arm gap limit %.4f m)' % (cid, sfoot, ffm, sarm, acm))
         wv = g.get('waiver', {}).get(cid, {}); pm = wv.get('poseMeanDeg', g['poseMeanDeg']); px = wv.get('poseMaxDeg', g['poseMaxDeg'])
-        jn, bn = L.load(rep['output']); rn = L.Rig(jn, bn); Mn = Metrics(rn); meshn = Mesh(rn, jn, bn)
+        jn, bn = L.load(rep['output']); rn = L.Rig(jn, bn); Mn = Metrics(rn); meshn = Mesh(rn, jn, bn, restSepM=float(sp.get('armRestSeparationM', 0.0)))
         livep = live_override or os.path.join(proj, rc['modelGlb'])
         jl, bl = L.load(livep); rl = L.Rig(jl, bl); Ml = Metrics(rl); meshl = Mesh(rl, jl, bl)
         corr = L.qmul(np.array(jn['nodes'][rn.idx['mixamorig:Hips']]['rotation']), L.qinv(np.array([-math.sqrt(.5), 0, 0, math.sqrt(.5)])))
@@ -286,7 +324,7 @@ def run(cfg, roster, reps, proj, outdir, live_override=None):
             exc = g.get('exceptClips', {}).get(st)
             # gates
             tp = cfg.get('tuning', {}).get(rep.get('tuningProfile') or '', {})
-            tol = abs(float(tp.get('armAbductDeg', 0.0))) if st in tp.get('clips', []) else 0.0     # the character's OWN declared tuning is allowed in the pose gate, nothing else
+            tol = abs(float(tp.get('clipAbductDeg', {}).get(st, tp.get('armAbductDeg', 0.0)))) if st in tp.get('clips', []) else 0.0   # SOBEKTUNE v1: per-clip abduction     # the character's OWN declared tuning is allowed in the pose gate, nothing else
             if pose and (pose['mean'] > pm + tol or pose['max'] > px + tol): bad.append('G-pose %s mean %.2f max %.2f (limits %.1f/%.1f)' % (st, pose['mean'], pose['max'], pm, px))
             if st in rep.get('derivedRefLimit', {}): pass
             if mn['knee'] is not None and mn['knee'] > g['kneeMedialMaxM']: bad.append('G-knee %s inward %.3f m > %.3f' % (st, mn['knee'], g['kneeMedialMaxM']))
@@ -294,8 +332,14 @@ def run(cfg, roster, reps, proj, outdir, live_override=None):
             if 'rawToeL' in mn and not exc and st in g['toeGateClips']:
                 dl = abs(float(np.mean(mn['toeLm'])) - mn['rawToeL']); dr = abs(float(np.mean(mn['toeRm'])) - mn['rawToeR'])
                 if dl > g['toeYawTolDeg'] or dr > g['toeYawTolDeg']: bad.append('G-toe %s yaw L %.1f/R %.1f deviates from raw %.1f/%.1f by %.1f/%.1f (> %.0f)' % (st, np.mean(mn['toeLm']), np.mean(mn['toeRm']), mn['rawToeL'], mn['rawToeR'], dl, dr, g['toeYawTolDeg']))
-            if st in g['footPlantClips'] and (mn['floorMin'] < -g['footFloorMaxM'] or mn['floorMax'] > g['footFloorMaxM'] + 0.2): bad.append('G-plant %s toe height range %.3f..%.3f m vs rest' % (st, mn['floorMin'], mn['floorMax']))
-            if mn['armL'] < 9 and min(mn['armL'], mn['armR']) < g['armClearanceMeshMinM'] and st in g['footPlantClips']: bad.append('G-arm %s sleeve-torso gap %.3f/%.3f m < %.3f' % (st, mn['armL'], mn['armR'], g['armClearanceMeshMinM']))
+            if st in g['footPlantClips'] and (mn['floorMin'] < -ffm or mn['floorMax'] > ffm + 0.2 * sfoot): bad.append('G-plant %s toe height range %.3f..%.3f m vs rest' % (st, mn['floorMin'], mn['floorMax']))
+            fg = g.get('floorGate', {})   # SOBEKGETUP v1: hips / toes / hands never go under the floor in lying and rising clips; limits are Joan-scale x the factor of the body part judged (scaleProfiles: hipsHeight, footLen, armLen)
+            if st in fg.get('clips', []):
+                ml_ = fg['meshSinkMaxM'] * float(sp.get('hipsHeight', 1.0)); tl = fg['toeSinkMaxM'] * sfoot
+                if mn.get('meshMin', 0.0) < -ml_: bad.append('G-floor %s body mesh sinks %.3f m under the floor > %.3f' % (st, -mn['meshMin'], ml_))
+                if mn['floorMin'] < -tl: bad.append('G-floor %s toe sinks %.3f m > %.3f' % (st, -mn['floorMin'], tl))
+                print('  G-floor %-12s meshSink %.3f (<=%.3f) toeSink %.3f (<=%.3f)' % (st, max(0, -mn.get('meshMin', 0.0)), ml_, max(0, -mn['floorMin']), tl))
+            if mn['armL'] < 9 and min(mn['armL'], mn['armR']) < acm and st in g['footPlantClips']: bad.append('G-arm %s sleeve-torso gap %.3f/%.3f m < %.4f' % (st, mn['armL'], mn['armR'], acm))
             nx = g.get('neckExempt', {}).get(st)
             if mn['head'] > g['headExtensionMaxDeg'] and not nx: bad.append('G-neck %s head extension %.1f deg > %.0f' % (st, mn['head'], g['headExtensionMaxDeg']))
             if mn['neck'] > g['neckExtensionMaxDeg'] and not nx: bad.append('G-neck %s neck extension %.1f deg > %.0f' % (st, mn['neck'], g['neckExtensionMaxDeg']))

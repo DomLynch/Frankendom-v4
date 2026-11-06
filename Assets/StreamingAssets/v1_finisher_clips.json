@@ -10,6 +10,6 @@
   "clips": [
     { "id": "v1_split_crown_victim", "file": "9100001-finisher-split-crown-victim.glb", "role": "victim", "targets": ["@player", "@enemy"], "rootXZ": "inplace", "maxStepM": 0.0, "hipsRestZ": 1.042749, "hipsYOffsetM": 0.0, "expectedDurationS": 2.4 },
     { "id": "v1_run_through_victim", "file": "9100002-finisher-run-through-victim.glb", "role": "victim", "targets": ["@player", "@enemy"], "rootXZ": "limited", "maxStepM": 0.25, "hipsRestZ": 1.042749, "hipsYOffsetM": 0.0, "expectedDurationS": 2.4 },
-    { "id": "v1_run_through_killer", "file": "9100003-finisher-run-through-killer.glb", "role": "killer", "targets": ["@player", "@enemy"], "rootXZ": "limited", "maxStepM": 0.25, "hipsRestZ": 1.042749, "hipsYOffsetM": 0.0, "expectedDurationS": 2.4 }
+    { "id": "v1_run_through_killer", "file": "9100003-finisher-run-through-killer.glb", "role": "killer", "targets": ["@player", "@enemy", "Sobek"], "rootXZ": "limited", "maxStepM": 0.25, "hipsRestZ": 1.042749, "hipsYOffsetM": 0.0, "expectedDurationS": 2.4 }
   ]
 }

@@ -28,6 +28,7 @@ public partial class DuelFighter
     // a press that names the exact move: it rides the normal light / heavy / thrust buffer (same queue, chain rows, cancels, stamina) and replaces the default pick when that buffer starts a move
     public void PressDirected(string moveId)
     {
+        if (IsPlayer && MarketSafe.Refuses("light")) return;   // STALL v1
         var m = moves != null && !string.IsNullOrEmpty(moveId) ? moves.Get(moveId) : null;
         if (m == null) { Press("light"); return; }
         string type = PressTypeOf(m);

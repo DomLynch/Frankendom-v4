@@ -102,6 +102,7 @@ public class AIBrain : MonoBehaviour
     {
         if (df == null) return;
         if (!inited) Init();
+        if (ChaseTable.Enabled && ChaseAgent.Owns(this)) return;   // CHASE v1: the chase agent drives this body (chase / give up / walk home): no decision, no swing
         if (Duel.Frozen) { df.moveDir = Vector3.zero; df.guardHeld = false; df.run = false; df.heavyHeld = false; return; }   // FN1: nobody decides while a finisher scene runs
         if (STSteer.Active) STSteer.PreBrain(this);   // steer layer hook (inert without -steer)
         var o = df.opponent;
@@ -118,6 +119,16 @@ public class AIBrain : MonoBehaviour
         Apply(last);
     }
 
+    // SOBEKMOVES v1: a fighter named in ai_rows.json unity.weaponReach.characters is measured in its WEAPON reach units (DuelFighter.ReachScale = scale x weapon reachMul), everyone else in scale as before.
+    // Duel.Resolve already reaches move.reach * ReachScale, so this makes the AI's range maths (when to swing, how close to walk, which of the foe's swings reach me) agree with the hit test.
+    static float ReachUnits(AiUnityRows U, DuelFighter f)
+    {
+        var w = U.weaponReach;
+        if (w != null && w.characters != null)
+            for (int i = 0; i < w.characters.Length; i++) if (RosterResolver.NameIs(w.characters[i], f.name)) return f.ReachScale;
+        return f.scale;
+    }
+
     // ---------------- V3 decide() ----------------
     Intent Decide(int n)
     {
@@ -132,7 +143,7 @@ public class AIBrain : MonoBehaviour
         Vector3 dir = dist > 0.01f ? to / dist : transform.forward; dir.y = 0f;
         // Unity geometry: Duel.Resolve reaches reach*scale + both radii + slack, so V3's gap is measured from that edge, in the attacker's reach units
         float gapW = Mathf.Max(0f, dist - (df.radius + o.radius + U.contactSlack));
-        float gap = gapW / Mathf.Max(0.01f, df.scale), gapT = gapW / Mathf.Max(0.01f, o.scale);
+        float gap = gapW / Mathf.Max(0.01f, ReachUnits(U, df)), gapT = gapW / Mathf.Max(0.01f, ReachUnits(U, o));   // SOBEKMOVES v1: was df.scale / o.scale
         bool oMoved = oPrevValid && (o.transform.position - oPrevPos).sqrMagnitude > 0.000001f;
         float oldLastGap = s.lastGap;
         s.lastGap = gap; oPrevPos = o.transform.position; oPrevValid = true;

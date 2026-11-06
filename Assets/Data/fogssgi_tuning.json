@@ -1,0 +1,173 @@
+﻿{
+  "_about": "laneFOGSSGI v1. OFF by default: 'enabled' false and no -fogtune: argument = FogSsgiTuning does nothing. A profile edits scene objects BY NAME at start-up: local fog volumes (enable 0 = component off, fadeStart/fadeEnd = distance fade in m from the camera, -1 = leave, densityMul > 1 = denser: meanFreePath / densityMul) and light volumetricDimmer / volumetricFadeDistance (-1 = leave). Select with 'active' (and enabled true) or with -fogtune:<id> on the command line (the argument wins, enabled is ignored then). Every profile except the *_MEAS one CHANGES THE LOOK and needs Dom's LOOK OK before it is turned on for real. DoorHaze is left out of every cut on purpose: GatewayRift scales its density at runtime. Volume and light names come from hdrp_lighting_ultra.json (fogVolumes / lights / extra). The volume-level knobs (fog depth extent, slices, denoise mode, cutoff, SSGI steps, denoiser switches) are NOT here: they are RuntimeQuality.Flags keys (fogManual fogScreenPct fogSlices fogDepthExtent fogDepthRatio fogDenoise fogAniso fogUniformity fogCutoff fogDirOnly ssgiSteps ssgiDenoise ssgiHalfDenoise ssgiSecondDenoise ssgiRadius ssgiThickness ssgiRayMiss), -1 = leave as authored, set through runtime_flags.json, a quality tier or -qset:.",
+  "enabled": false,
+  "active": "",
+  "profiles": [
+    {
+      "id": "FV_BANK_OFF",
+      "what": "BankHazeL + BankHazeR off (they overlap the bridge and moat strips; additive blend)",
+      "look": "LOOK: the fog strips beside the bridge thin out; overlap seams lose their double density",
+      "volumes": [
+        {
+          "name": "BankHazeL",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        },
+        {
+          "name": "BankHazeR",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        }
+      ],
+      "lights": []
+    },
+    {
+      "id": "FV_MOAT_OFF",
+      "what": "MoatHazeL, MoatHazeR, MoatHazeFront off (36x2.5x60, 36x2.5x60, 60x2.5x20 m, the largest footprints)",
+      "look": "LOOK: ground mist over the moat disappears at the frame edges",
+      "volumes": [
+        {
+          "name": "MoatHazeL",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        },
+        {
+          "name": "MoatHazeR",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        },
+        {
+          "name": "MoatHazeFront",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        }
+      ],
+      "lights": []
+    },
+    {
+      "id": "FV_BRIDGE_OFF",
+      "what": "BridgeHazeL + BridgeHazeR off (6x2.5x28 m each, directly in view)",
+      "look": "LOOK: the mist lying on the bridge sides disappears",
+      "volumes": [
+        {
+          "name": "BridgeHazeL",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        },
+        {
+          "name": "BridgeHazeR",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        }
+      ],
+      "lights": []
+    },
+    {
+      "id": "FV_ALL_OFF_MEAS",
+      "what": "MEASUREMENT ONLY: all 7 non-door lighting volumes off, to see what the local volumes cost together",
+      "look": "measurement only, never ship",
+      "volumes": [
+        {
+          "name": "BankHazeL",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        },
+        {
+          "name": "BankHazeR",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        },
+        {
+          "name": "MoatHazeL",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        },
+        {
+          "name": "MoatHazeR",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        },
+        {
+          "name": "MoatHazeFront",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        },
+        {
+          "name": "BridgeHazeL",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        },
+        {
+          "name": "BridgeHazeR",
+          "enable": 0,
+          "fadeStart": -1,
+          "fadeEnd": -1,
+          "densityMul": 1
+        }
+      ],
+      "lights": []
+    },
+    {
+      "id": "LT_FILL_VOL0",
+      "what": "MoonFill, FillCool, MoonRim stop lighting the fog (volumetricDimmer 0); only Key_ColdSun lights it. Cuts 3 of 4 directional-light evaluations per lit voxel",
+      "look": "LOOK: fog loses its cool fill tint and some back light on the haze",
+      "lights": [
+        {
+          "name": "MoonFill",
+          "volumetricDimmer": 0,
+          "fadeDistance": -1
+        },
+        {
+          "name": "FillCool",
+          "volumetricDimmer": 0,
+          "fadeDistance": -1
+        },
+        {
+          "name": "MoonRim",
+          "volumetricDimmer": 0,
+          "fadeDistance": -1
+        }
+      ],
+      "volumes": []
+    },
+    {
+      "id": "LT_DOORSHADOW_VOL0",
+      "what": "DoorShadowWarm (point light with a cube shadow) stops lighting the fog",
+      "look": "LOOK: the door glow shafts lose their shadowed part",
+      "lights": [
+        {
+          "name": "DoorShadowWarm",
+          "volumetricDimmer": 0,
+          "fadeDistance": -1
+        }
+      ],
+      "volumes": []
+    }
+  ]
+}

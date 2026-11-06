@@ -10,17 +10,18 @@ using UnityEngine;
 public static class LootSave
 {
     [Serializable] public class SlotRow { public string slot = "", item = ""; }
-    [Serializable] public class FileData { public int version = 1; public string[] owned = new string[0]; public SlotRow[] equipped = new SlotRow[0]; }
+    [Serializable] public class FileData { public int version = 2; public string[] owned = new string[0]; public SlotRow[] equipped = new SlotRow[0]; public int coins; public int seq; public MarketSale[] sales = new MarketSale[0]; }   // STALL v1: version 2 adds coins + the sales ledger (a version 1 file loads with 0 coins)
 
     static readonly List<string> owned = new List<string>();
     static readonly List<SlotRow> wanted = new List<SlotRow>();   // as loaded: what to put back on the wearer
     static bool loaded;
+    static readonly MarketLedger ledger = new MarketLedger();   // STALL v1: coins + request ids (MarketCore.cs)
     public static bool Applied;   // the saved selection has been put on a wearer at least once; before that Save() keeps the loaded rows instead of reading an empty slot list
     public static string LastError = "";
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)] static void HookErase() { SaveSlot.OnErase += Erase; }   // REBIND v100: New game forgets the carried items
-    static void Erase() { owned.Clear(); wanted.Clear(); loaded = true; Applied = false; try { if (File.Exists(Path_)) File.Delete(Path_); } catch (Exception e) { LastError = e.Message; } }
+    static void Erase() { owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = true; Applied = false; try { if (File.Exists(Path_)) File.Delete(Path_); } catch (Exception e) { LastError = e.Message; } }
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { owned.Clear(); wanted.Clear(); loaded = false; Applied = false; LastError = ""; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = false; Applied = false; LastError = ""; }
 
     public static string Path_ { get { return Path.Combine(Application.persistentDataPath, LootCfg.Get().save.file); } }
     public static IList<string> Owned { get { EnsureLoaded(); return owned; } }
@@ -37,20 +38,52 @@ public static class LootSave
         Save(); return fresh;
     }
 
+    // STALL v1: coins + the sales ledger live in this file, so a sale (item removed + coins added + request id recorded) is ONE write.
+    static int StartCoins() { var m = MarketCfg.Get(); return m.enabled ? Mathf.Clamp(m.currency.startCoins, 0, m.currency.cap) : 0; }   // INT108 v1: the coins of a new save (data), 0 while the trader is off
+    public static int Coins { get { EnsureLoaded(); return ledger.Coins; } }
+    public static MarketSale FindSale(string requestId) { EnsureLoaded(); return ledger.Find(requestId); }
+    public static string NextRequestId(string item) { EnsureLoaded(); return ledger.NextId(item); }
+    /// <summary>Sell one carried item: remove it, add `price` coins, record the request id, write the file. All or nothing (a failed write rolls the memory back).</summary>
+    public static bool CommitSale(string requestId, string item, int price, int keep, int cap)
+    {
+        EnsureLoaded(); var snap = ledger.Snapshot(); int at = owned.IndexOf(item);
+        if (!ledger.Apply(owned, requestId, item, price, keep, cap)) return false;
+        LastError = ""; Save();
+        if (LastError.Length > 0) { ledger.Restore(snap); if (at >= 0 && !owned.Contains(item)) owned.Insert(Mathf.Min(at, owned.Count), item); return false; }
+        return true;
+    }
+    /// <summary>laneNPCSPAWN: buy one item: add it to the carried list, take the coins, record the request id, write the file. All or nothing (a failed write rolls the memory back).</summary>
+    public static bool CommitBuy(string requestId, string item, int price, int keep)
+    {
+        EnsureLoaded(); var snap = ledger.Snapshot(); if (!ledger.ApplyBuy(owned, requestId, item, price, keep)) return false;
+        LastError = ""; Save();
+        if (LastError.Length > 0) { ledger.Restore(snap); owned.Remove(item); return false; }
+        return true;
+    }
+    /// <summary>A future coin sink (a buy row, a camp upgrade): take coins, all or nothing; a repeated request id takes nothing.</summary>
+    public static bool TrySpend(int amount, string requestId, int keep)
+    {
+        EnsureLoaded(); var snap = ledger.Snapshot(); if (!ledger.TrySpend(amount, requestId, keep)) return false;
+        LastError = ""; Save(); if (LastError.Length > 0) { ledger.Restore(snap); return false; }
+        return true;
+    }
+
     public static void EnsureLoaded()
     {
         if (loaded) return;
-        loaded = true; owned.Clear(); wanted.Clear();
+        loaded = true; owned.Clear(); wanted.Clear(); ledger.Clear(); ledger.Coins = StartCoins();   // INT108 v1: new save
         if (!LootCfg.Get().save.enabled) return;
         try
         {
             string p = Path_; if (!File.Exists(p)) return;
             var f = JsonUtility.FromJson<FileData>(File.ReadAllText(p).TrimStart((char)0xFEFF)); if (f == null) return;
+            ledger.Load(f.coins, f.seq, f.sales, MarketCfg.Get().currency.cap, MarketCfg.Get().rules.keepRequests);   // STALL v1
+            if (f.version < 2) ledger.Coins = StartCoins();   // INT108 v1: a version 1 save has no coins yet
             if (f.owned != null) for (int i = 0; i < f.owned.Length; i++) if (!string.IsNullOrEmpty(f.owned[i]) && !owned.Contains(f.owned[i])) owned.Add(f.owned[i]);
             if (f.equipped != null) for (int i = 0; i < f.equipped.Length; i++) { var r = f.equipped[i]; if (r != null && !string.IsNullOrEmpty(r.slot)) { if (r.item == null) r.item = ""; wanted.Add(r); if (r.item.Length > 0 && !owned.Contains(r.item)) owned.Add(r.item); } }
             if (LootCfg.Get().debugLog) Debug.Log("[LootUI] save loaded: " + owned.Count + " owned, " + wanted.Count + " worn (" + p + ")");
         }
-        catch (Exception e) { LastError = e.Message; Debug.LogWarning("[LootUI] save read failed, starting empty: " + e.Message); owned.Clear(); wanted.Clear(); }
+        catch (Exception e) { LastError = e.Message; Debug.LogWarning("[LootUI] save read failed, starting empty: " + e.Message); owned.Clear(); wanted.Clear(); ledger.Clear(); }
     }
 
     /// <summary>Write owned + the slots' current contents.</summary>
@@ -70,11 +103,11 @@ public static class LootSave
                 }
                 wanted.Clear(); wanted.AddRange(rows);
             }
-            var f = new FileData { owned = owned.ToArray(), equipped = rows.ToArray() };
+            var f = new FileData { owned = owned.ToArray(), equipped = rows.ToArray(), coins = ledger.Coins, seq = ledger.Seq, sales = ledger.Sales.ToArray() };   // STALL v1
             string p = Path_, dir = Path.GetDirectoryName(p); if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
             string tmp = p + ".tmp"; File.WriteAllText(tmp, JsonUtility.ToJson(f, true));
-            if (File.Exists(p)) File.Delete(p);
-            File.Move(tmp, p); LastError = ""; SaveSlot.LootChanged();   // REBIND v100: the save slot keeps a pointer + counts
+            if (File.Exists(p)) File.Replace(tmp, p, null); else File.Move(tmp, p);   // STALL v1: one atomic swap, the coins are in this file (was Delete + Move: a crash between left no file)
+             LastError = ""; SaveSlot.LootChanged();   // REBIND v100: the save slot keeps a pointer + counts
             if (LootCfg.Get().debugLog) Debug.Log("[LootUI] saved " + p);
         }
         catch (Exception e) { LastError = e.Message; Debug.LogWarning("[LootUI] save write failed: " + e.Message); }

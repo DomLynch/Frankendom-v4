@@ -1,0 +1,901 @@
+{
+  "note": "laneSHADOWPROXY. Read by Scripts/ShadowProxy.cs. Master enabled:false = nothing happens. Replaces the shadow caster of a placed prop by an existing lower LOD mesh (ShadowsOnly renderer outside the LODGroup) while the visible LOD chain stays. Per asset: farLod used beyond nearM from the camera, nearLod inside it (0 = the full mesh). Rows come from silhouette.py + make_proxy_data.py (shadow-silhouette error from the GLB data). Runtime A/B without a rebuild: -shadowproxy:on | -shadowproxy:none | -shadowproxy:far (no near swap) | -shadowproxyreport | -shadowproxyab:20.",
+  "enabled": false,
+  "arenaRoot": "Arena",
+  "groups": [
+    "Props",
+    "Boulders",
+    "WorldNear",
+    "WorldMid",
+    "WorldFar",
+    "WorldOut",
+    "WorldWest",
+    "WorldEast",
+    "WorldBehind",
+    "WorldEdge"
+  ],
+  "excludeNameContains": [
+    "ground",
+    "paving",
+    "terrain",
+    "floor",
+    "platform"
+  ],
+  "layoutFiles": [
+    "props_layout_ground.json",
+    "props_layout.json"
+  ],
+  "startDelayFrames": 30,
+  "evalEveryFrames": 6,
+  "hysteresisM": 2.0,
+  "nearEnabled": true,
+  "log": true,
+  "logEveryS": 10.0,
+  "disableWhenArgs": [
+    "-woundshot",
+    "-floorshot",
+    "-shadowdiag",
+    "-camproof"
+  ],
+  "calc": {
+    "sunForward": [
+      0.31,
+      -0.74,
+      0.59
+    ],
+    "pixelM": 0.006,
+    "contactBandM": 0.05,
+    "contactRingM": 0.25,
+    "shadowResolution": 2048,
+    "cascades": 2,
+    "split0": 0.3,
+    "maxDistanceM": 40.0,
+    "fovDeg": 38.6,
+    "aspect": 1.6,
+    "maxErrTexels": 1.0,
+    "contactTolM": 0.02,
+    "gapTolM": 0.01,
+    "nearMarginM": 3.0,
+    "texelNearM": 0.00834,
+    "texelFarM": 0.02594,
+    "nearRangeM": 12.0,
+    "shadowLenPerHeight": 0.901
+  },
+  "assets": [
+    {
+      "key": "props/arch_fragment_9a",
+      "asset": "arch_fragment_9a",
+      "library": "props",
+      "heightUnit": 4.6851,
+      "errUnit": [
+        0.0,
+        0.024,
+        0.03
+      ],
+      "contactUnit": [
+        0.0,
+        0.024,
+        0.03
+      ],
+      "gapUnit": [
+        0.0,
+        0.0014,
+        0.0014
+      ],
+      "tris": [
+        19999,
+        9999,
+        5997
+      ]
+    },
+    {
+      "key": "props/arch_fragment_9b",
+      "asset": "arch_fragment_9b",
+      "library": "props",
+      "heightUnit": 5.4899,
+      "errUnit": [
+        0.0,
+        0.024,
+        0.03
+      ],
+      "contactUnit": [
+        0.0,
+        0.024,
+        0.0311
+      ],
+      "gapUnit": [
+        0.0,
+        0.002,
+        0.0071
+      ],
+      "tris": [
+        19998,
+        9998,
+        5996
+      ]
+    },
+    {
+      "key": "props/bone_fragments_7",
+      "asset": "bone_fragments_7",
+      "library": "props",
+      "heightUnit": 0.2826,
+      "errUnit": [
+        0.0,
+        0.0184,
+        0.0312
+      ],
+      "contactUnit": [
+        0.0,
+        0.0184,
+        0.0312
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        99091,
+        49449,
+        19728
+      ]
+    },
+    {
+      "key": "props/broken_oar_6",
+      "asset": "broken_oar_6",
+      "library": "props",
+      "heightUnit": 0.4437,
+      "errUnit": [
+        0.0,
+        0.006,
+        0.006
+      ],
+      "contactUnit": [
+        0.0,
+        0.006,
+        0.006
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        58152,
+        29076,
+        11630
+      ]
+    },
+    {
+      "key": "props/dead_tree_1a",
+      "asset": "dead_tree_1a",
+      "library": "props",
+      "heightUnit": 7.0447,
+      "errUnit": [
+        0.0,
+        0.0671,
+        0.0902
+      ],
+      "contactUnit": [
+        0.0,
+        0.0349,
+        0.0841
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0001
+      ],
+      "tris": [
+        199998,
+        49997,
+        24996
+      ]
+    },
+    {
+      "key": "props/dead_tree_1b",
+      "asset": "dead_tree_1b",
+      "library": "props",
+      "heightUnit": 6.9998,
+      "errUnit": [
+        0.0,
+        0.0253,
+        0.0513
+      ],
+      "contactUnit": [
+        0.0,
+        0.0157,
+        0.0223
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0016
+      ],
+      "tris": [
+        199999,
+        49999,
+        24999
+      ]
+    },
+    {
+      "key": "props/fallen_pillar_3",
+      "asset": "fallen_pillar_3",
+      "library": "props",
+      "heightUnit": 2.9977,
+      "errUnit": [
+        0.0,
+        0.0107,
+        0.013
+      ],
+      "contactUnit": [
+        0.0,
+        0.012,
+        0.0134
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0015
+      ],
+      "tris": [
+        50000,
+        15000,
+        6000
+      ]
+    },
+    {
+      "key": "props/hero_banner_pole",
+      "asset": "hero_banner_pole",
+      "library": "props",
+      "heightUnit": 3.0194,
+      "errUnit": [
+        0.0,
+        0.012,
+        0.0107
+      ],
+      "contactUnit": [
+        0.0,
+        0.006,
+        0.006
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        54343,
+        19020,
+        6520
+      ]
+    },
+    {
+      "key": "props/hero_barricade_stakes",
+      "asset": "hero_barricade_stakes",
+      "library": "props",
+      "heightUnit": 1.9225,
+      "errUnit": [
+        0.0,
+        0.006,
+        0.0085
+      ],
+      "contactUnit": [
+        0.0,
+        0.006,
+        0.006
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        34396,
+        10318,
+        2750
+      ]
+    },
+    {
+      "key": "props/hero_boulder_A",
+      "asset": "hero_boulder_A",
+      "library": "props",
+      "heightUnit": 1.7082,
+      "errUnit": [
+        0.0,
+        0.006,
+        0.0085
+      ],
+      "contactUnit": [
+        0.0,
+        0.006,
+        0.006
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0002
+      ],
+      "tris": [
+        219816,
+        65944,
+        17584
+      ]
+    },
+    {
+      "key": "props/hero_boulder_A_lite",
+      "asset": "hero_boulder_A_lite",
+      "library": "props",
+      "heightUnit": 1.708,
+      "errUnit": [
+        0.0,
+        0.012,
+        0.018
+      ],
+      "contactUnit": [
+        0.0,
+        0.0085,
+        0.018
+      ],
+      "gapUnit": [
+        0.0,
+        0.0004,
+        0.0
+      ],
+      "tris": [
+        60000,
+        18000,
+        6000
+      ]
+    },
+    {
+      "key": "props/hero_boulder_B",
+      "asset": "hero_boulder_B",
+      "library": "props",
+      "heightUnit": 1.7845,
+      "errUnit": [
+        0.0,
+        0.006,
+        0.0085
+      ],
+      "contactUnit": [
+        0.0,
+        0.006,
+        0.0085
+      ],
+      "gapUnit": [
+        0.0,
+        0.0001,
+        0.0003
+      ],
+      "tris": [
+        223776,
+        67132,
+        17902
+      ]
+    },
+    {
+      "key": "props/hero_boulder_B_lite",
+      "asset": "hero_boulder_B_lite",
+      "library": "props",
+      "heightUnit": 1.7844,
+      "errUnit": [
+        0.0,
+        0.0134,
+        0.0191
+      ],
+      "contactUnit": [
+        0.0,
+        0.0134,
+        0.0215
+      ],
+      "gapUnit": [
+        0.0,
+        0.0007,
+        0.0
+      ],
+      "tris": [
+        60000,
+        18000,
+        6000
+      ]
+    },
+    {
+      "key": "props/hero_boulder_C",
+      "asset": "hero_boulder_C",
+      "library": "props",
+      "heightUnit": 1.4961,
+      "errUnit": [
+        0.0,
+        0.006,
+        0.0123
+      ],
+      "contactUnit": [
+        0.0,
+        0.006,
+        0.012
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        214524,
+        64356,
+        17160
+      ]
+    },
+    {
+      "key": "props/hero_boulder_C_lite",
+      "asset": "hero_boulder_C_lite",
+      "library": "props",
+      "heightUnit": 1.4961,
+      "errUnit": [
+        0.0,
+        0.012,
+        0.021
+      ],
+      "contactUnit": [
+        0.0,
+        0.012,
+        0.0216
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        60000,
+        18000,
+        6000
+      ]
+    },
+    {
+      "key": "props/hero_boulder_D",
+      "asset": "hero_boulder_D",
+      "library": "props",
+      "heightUnit": 1.4554,
+      "errUnit": [
+        0.0,
+        0.0085,
+        0.012
+      ],
+      "contactUnit": [
+        0.0,
+        0.006,
+        0.006
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0003
+      ],
+      "tris": [
+        229040,
+        68712,
+        18322
+      ]
+    },
+    {
+      "key": "props/hero_boulder_D_lite",
+      "asset": "hero_boulder_D_lite",
+      "library": "props",
+      "heightUnit": 1.4563,
+      "errUnit": [
+        0.0,
+        0.0204,
+        0.0229
+      ],
+      "contactUnit": [
+        0.0,
+        0.006,
+        0.0085
+      ],
+      "gapUnit": [
+        0.0,
+        0.0004,
+        0.0
+      ],
+      "tris": [
+        60000,
+        18000,
+        6000
+      ]
+    },
+    {
+      "key": "props/hero_chain_a",
+      "asset": "hero_chain_a",
+      "library": "props",
+      "heightUnit": 1.724,
+      "errUnit": [
+        0.0,
+        0.006,
+        0.006
+      ],
+      "contactUnit": [
+        0.0,
+        0.006,
+        0.006
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0011
+      ],
+      "tris": [
+        13800,
+        4140,
+        1104
+      ]
+    },
+    {
+      "key": "props/hero_column_a",
+      "asset": "hero_column_a",
+      "library": "props",
+      "heightUnit": 1.5101,
+      "errUnit": [
+        0.0,
+        0.0071,
+        0.0085
+      ],
+      "contactUnit": [
+        0.0,
+        0.0073,
+        0.0085
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        42824,
+        12846,
+        3424
+      ]
+    },
+    {
+      "key": "props/hero_column_b",
+      "asset": "hero_column_b",
+      "library": "props",
+      "heightUnit": 2.5865,
+      "errUnit": [
+        0.0,
+        0.006,
+        0.009
+      ],
+      "contactUnit": [
+        0.0,
+        0.006,
+        0.006
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        57064,
+        17118,
+        4564
+      ]
+    },
+    {
+      "key": "props/hero_debris_rubble",
+      "asset": "hero_debris_rubble",
+      "library": "props",
+      "heightUnit": 0.6963,
+      "errUnit": [
+        0.0,
+        0.0085,
+        0.012
+      ],
+      "contactUnit": [
+        0.0,
+        0.0073,
+        0.0094
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0003
+      ],
+      "tris": [
+        19656,
+        7861,
+        2357
+      ]
+    },
+    {
+      "key": "props/hero_skull_pile_a",
+      "asset": "hero_skull_pile_a",
+      "library": "props",
+      "heightUnit": 0.5461,
+      "errUnit": [
+        0.0,
+        0.0255,
+        0.035
+      ],
+      "contactUnit": [
+        0.0,
+        0.0255,
+        0.035
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        59987,
+        17993,
+        5994
+      ]
+    },
+    {
+      "key": "props/hero_weapon_sword",
+      "asset": "hero_weapon_sword",
+      "library": "props",
+      "heightUnit": 0.0784,
+      "errUnit": [
+        0.0,
+        0.006,
+        0.006
+      ],
+      "contactUnit": [
+        0.0,
+        0.006,
+        0.006
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0001
+      ],
+      "tris": [
+        16132,
+        4838,
+        1613
+      ]
+    },
+    {
+      "key": "props/rock_arch_8",
+      "asset": "rock_arch_8",
+      "library": "props",
+      "heightUnit": 5.9688,
+      "errUnit": [
+        0.0,
+        1.142,
+        1.191
+      ],
+      "contactUnit": [
+        0.0,
+        1.0932,
+        0.9764
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        83482,
+        41589,
+        16383
+      ]
+    },
+    {
+      "key": "props/skull_pile_5a",
+      "asset": "skull_pile_5a",
+      "library": "props",
+      "heightUnit": 0.5453,
+      "errUnit": [
+        0.0,
+        0.012,
+        0.0134
+      ],
+      "contactUnit": [
+        0.0,
+        0.012,
+        0.0134
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        99988,
+        49977,
+        19971
+      ]
+    },
+    {
+      "key": "props/standing_ruin_pillar_4",
+      "asset": "standing_ruin_pillar_4",
+      "library": "props",
+      "heightUnit": 4.9951,
+      "errUnit": [
+        0.0,
+        0.012,
+        0.0191
+      ],
+      "contactUnit": [
+        0.0,
+        0.012,
+        0.0216
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0026
+      ],
+      "tris": [
+        39999,
+        14998,
+        5998
+      ]
+    },
+    {
+      "key": "rocks/rock_boulder_A",
+      "asset": "rock_boulder_A",
+      "library": "rocks",
+      "heightUnit": 1.696,
+      "errUnit": [
+        0.0,
+        0.0181,
+        0.0216
+      ],
+      "contactUnit": [
+        0.0,
+        0.0185,
+        0.0241
+      ],
+      "gapUnit": [
+        0.0,
+        0.0001,
+        0.0
+      ],
+      "tris": [
+        18816,
+        9408,
+        2508
+      ]
+    },
+    {
+      "key": "rocks/rock_boulder_B",
+      "asset": "rock_boulder_B",
+      "library": "rocks",
+      "heightUnit": 1.2925,
+      "errUnit": [
+        0.0,
+        0.0085,
+        0.0216
+      ],
+      "contactUnit": [
+        0.0,
+        0.0109,
+        0.0182
+      ],
+      "gapUnit": [
+        0.0,
+        0.0005,
+        0.0004
+      ],
+      "tris": [
+        19841,
+        11901,
+        3171
+      ]
+    },
+    {
+      "key": "rocks/rock_boulder_C",
+      "asset": "rock_boulder_C",
+      "library": "rocks",
+      "heightUnit": 1.7011,
+      "errUnit": [
+        0.0,
+        0.0127,
+        0.0379
+      ],
+      "contactUnit": [
+        0.0,
+        0.0134,
+        0.0323
+      ],
+      "gapUnit": [
+        0.0,
+        0.0011,
+        0.0077
+      ],
+      "tris": [
+        18769,
+        9383,
+        2501
+      ]
+    },
+    {
+      "key": "rocks/rock_boulder_D",
+      "asset": "rock_boulder_D",
+      "library": "rocks",
+      "heightUnit": 1.0749,
+      "errUnit": [
+        0.0,
+        0.012,
+        0.0255
+      ],
+      "contactUnit": [
+        0.0,
+        0.012,
+        0.018
+      ],
+      "gapUnit": [
+        0.0,
+        0.002,
+        0.0
+      ],
+      "tris": [
+        21686,
+        10842,
+        2890
+      ]
+    },
+    {
+      "key": "rocks/rock_boulder_E",
+      "asset": "rock_boulder_E",
+      "library": "rocks",
+      "heightUnit": 0.2907,
+      "errUnit": [
+        0.0,
+        0.0077,
+        0.0085
+      ],
+      "contactUnit": [
+        0.0,
+        0.0077,
+        0.0085
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        12614,
+        6306,
+        3152
+      ]
+    },
+    {
+      "key": "world_far/far_ruin_arches",
+      "asset": "far_ruin_arches",
+      "library": "world_far",
+      "heightUnit": 41.6752,
+      "errUnit": [
+        0.0,
+        4.017,
+        5.0295
+      ],
+      "contactUnit": [
+        0.0,
+        4.1709,
+        3.9885
+      ],
+      "gapUnit": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "tris": [
+        11030,
+        2672,
+        796
+      ]
+    }
+  ],
+  "abOutFile": "shadowproxy_ab.csv",
+  "abPeriodS": 20,
+  "abSettleS": 4
+}

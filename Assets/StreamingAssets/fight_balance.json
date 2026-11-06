@@ -36,6 +36,18 @@
    "specialMaxUses": 0
   },
   {
+    "key": "Sobek",
+    "maxHealth": 480.0,
+    "maxStamina": 0,
+    "damageMul": 0.9,
+    "takenMul": 1.0,
+    "specialDamageMul": 1.0,
+    "specialCooldownTicks": 600000,
+    "specialInitialCooldownTicks": 600000,
+    "specialMaxUses": 0,
+    "note": "SOBEKMOVES (guess): 480 HP, hits x0.9, takes x1.0, specials OFF (cooldown 600000 ticks = the code's own spent value; Sobek has no skill clips, no new animation allowed). sobek_sweep.py: SOBEKDATA's 700/1.2/0.9 put Joan at 3-5 percent in the model, this at about 35 percent against a Pitborn anchor of 28 (model is ~12-28 points low on Joan). Proof: 20-seed run."
+  },
+  {
    "key": "*",
    "maxHealth": 0,
    "maxStamina": 0,

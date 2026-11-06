@@ -16,6 +16,10 @@
    "weapon": "maul"
   },
   {
+    "character": "Sobek",
+    "weapon": "trident"
+  },
+  {
    "character": "*",
    "weapon": "sword"
   }
@@ -34,6 +38,10 @@
    "surface": "armour"
   },
   {
+    "character": "Sobek",
+    "surface": "flesh"
+  },
+  {
    "character": "*",
    "surface": "flesh"
   }
@@ -50,6 +58,10 @@
   {
    "character": "Pitborn",
    "rate": 0.78
+  },
+  {
+    "character": "Sobek",
+    "rate": 0.55
   },
   {
    "character": "*",
@@ -950,6 +962,28 @@
      "chance": 1.0
     }
    ]
+  },
+  {
+    "evt": "attack_start",
+    "layer": "voice",
+    "weapon": "*",
+    "surface": "*",
+    "weight": "heavy",
+    "attacker": "Sobek",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "SOBEKDATA: roar on the heavy windup: the EXISTING cue effort_voice, voicePitch 0.55 (guess) turns it into a growl, so no new audio file is required to ship. Real Sobek audio = sobek_roar / sobek_step / sobek_tail_whoosh / hurt / death, not in audio_manifest yet.",
+    "play": [
+      {
+        "cue": "effort_voice",
+        "gain": 0.3,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "attacker",
+        "chance": 1.0
+      }
+    ]
   }
  ]
 }

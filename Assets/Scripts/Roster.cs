@@ -31,6 +31,7 @@ public static class Roster
 
     static Cfg c;
     public static string Source = "(none)";
+    static string defEnemy = "";                       // LADDER v92: roster.json 'enemy' as loaded; SetEnemy() overrides Cfg.enemy for one run, SetEnemy("") returns to this
     static Cfg C { get { if (c == null) Reload(); return c; } }
 
     public static string PlayerId => C.player;
@@ -53,6 +54,19 @@ public static class Roster
 
     public static bool IsPlayer(string id) { return !string.IsNullOrEmpty(id) && id == PlayerId; }
     public static bool IsEnemy(string id) { return !string.IsNullOrEmpty(id) && id == EnemyId; }
+
+    // LADDER v92: per-fight enemy. The opponents.json ladder row names a roster character; the scene that is loaded next must hold that character's object (EnemySwap builds one scene per enemy).
+    // id empty = back to the roster.json default enemy. An id with no characters[] row (or the player's id) is refused: the previous enemy stays and a warning is logged.
+    public static string DefaultEnemyId { get { if (c == null) Reload(); return defEnemy; } }
+    public static bool Has(string id) { if (string.IsNullOrEmpty(id)) return false; foreach (var r in C.characters) if (r != null && r.id == id) return true; return false; }
+    public static void SetEnemy(string id)
+    {
+        if (string.IsNullOrEmpty(id)) { if (c != null && defEnemy.Length > 0) c.enemy = defEnemy; return; }   // no file load just to reset
+        if (id == C.enemy) return;
+        if (!Has(id)) { Debug.LogWarning("[Roster] SetEnemy('" + id + "'): no such roster row, enemy stays '" + C.enemy + "'"); return; }
+        if (id == C.player) { Debug.LogWarning("[Roster] SetEnemy('" + id + "'): that is the player, enemy stays '" + C.enemy + "'"); return; }
+        C.enemy = id;
+    }
     public static string OtherOf(string id) { return id == PlayerId ? EnemyId : id == EnemyId ? PlayerId : ""; }
 
     // character id of a scene object: matched on its own name, then its root's name, against each row's objectName (then id).
@@ -94,6 +108,7 @@ public static class Roster
         if (string.IsNullOrEmpty(k.player)) k.player = FirstNonEnemy(k);   // NODRAC v93: was FallbackPlayer = "Dracula"
         if (string.IsNullOrEmpty(k.enemy)) k.enemy = FallbackEnemy;
         foreach (var r in k.characters) Fill(r);
+        defEnemy = k.enemy;   // LADDER v92
         c = k;
     }
 

@@ -68,6 +68,7 @@ def pose_vs(Ma, a_anim, Mb, b_anim, n, skip_legs):
 
 def run(cfg, ccfg, roster, proj, cid, reps, outdir):
     g = dict(ccfg['gates']); g.update(cfg.get('gates', {})); n = int(g.get('samplesPerClip', 36))
+    sf = float(cfg.get('scaleProfile', {}).get('footLen', 1.0))   # SOBEKTUNE v1: own-scale foot limit (data: clip_sets_<char>.json scaleProfile.footLen, measured foot length ratio)
     allbad = []; allrev = []; allinh = []; table = []; rig_files = []
     for setname in ('attacks', 'attacks_raw', 'dodges', 'finishers'):
         if setname not in reps: continue
@@ -105,7 +106,7 @@ def run(cfg, ccfg, roster, proj, cid, reps, outdir):
                 ref = tl if (posture and tl) else tr; tol = g['toeYawTolModifiedDeg'] if (info.get('legFix') == 'applied' and not posture) else g['toeYawTolDeg']
                 dl = abs(tn['L'] - ref['L']); dr = abs(tn['R'] - ref['R'])
                 if dl > tol or dr > tol: bad.append('G-toe %s planted-frame yaw L %.1f/R %.1f vs %s %.1f/%.1f (> %.0f)' % (st, tn['L'], tn['R'], 'live' if ref is tl else 'raw', ref['L'], ref['R'], tol))
-            lim('G-plant %s toe %.3f m below the floor line' % (st, mn['floorMin']), mn['floorMin'], ml['floorMin'] if ml else None, mn['floorMin'] < -g['footFloorMaxM'])
+            lim('G-plant %s toe %.3f m below the floor line' % (st, mn['floorMin']), mn['floorMin'], ml['floorMin'] if ml else None, mn['floorMin'] < -g['footFloorMaxM'] * sf)
             lim('G-sword %s blade %.3f m inside the head sphere' % (st, mn['sword']), mn['sword'], ml['sword'] if ml else None, mn['sword'] < g['sword']['minClearanceM'])
             rowd['inherited'] = inh
             rowd['review'] = []

@@ -55,6 +55,7 @@ public class AiState
 
 [Serializable] public class AiFightRow { public float thrustShare = 0.1f, close = 1.15f; }
 [Serializable] public class AiZBias { public string name, cmp; public float offset, push; }
+[Serializable] public class AiWeaponReach { public string[] characters = new string[0]; }   // SOBEKMOVES v1: roster keys (id / @enemy / ...) whose AI gap is measured in weapon reach units; empty = nobody (old behaviour)
 [Serializable]
 public class AiUnityRules
 {
@@ -73,6 +74,7 @@ public class AiUnityRows
     public float specialReach = 3;
     public float zBiasBaseDist = 0.5f, zBiasScaleDist = 2.3f;
     public AiZBias[] zBias = new AiZBias[0];
+    public AiWeaponReach weaponReach = new AiWeaponReach();   // SOBEKMOVES v1 (ai_rows.json unity.weaponReach)
     public AiUnityRules rules = new AiUnityRules();
 }
 

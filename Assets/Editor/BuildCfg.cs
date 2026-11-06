@@ -98,7 +98,7 @@ public static class BuildCfg
         return c;
     }
 
-    public static string[] Scenes() { return Load().scenes; }
+    public static string[] Scenes() { var s = Load().scenes; return (s != null && s.Length == 1) ? EnemySwap.BuildScenes(s[0]) /* LADDER v92 rebased SOBEKDATA v104: base scene + every enemy scene whose .unity EXISTS; no enemy rows = the old one-scene array */ : s; }
 
     /// <summary>The player exe file name (build_config.json build.exeName). RCHYGIENE v100 name kept. Scripts read the same key.</summary>
     public static string ExeName() { return Config().build.exeName; }

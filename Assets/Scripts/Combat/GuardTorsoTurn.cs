@@ -44,11 +44,12 @@ public class GuardTorsoTurn : MonoBehaviour
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    static void Boot()
-    {
+    static void Boot() { Boot(null); }   // ZONES-ATTACH v1 (INT107)
+    public static void AttachTo(GameObject root) { Boot(root); }   // same want-check, one object (ZoneRuntime.SpawnOne for a prefab creature)
+    static void Boot(GameObject root){
         foreach (var arg in System.Environment.GetCommandLineArgs()) if (arg == "-noguardturn") ForceOff = true;
         var D = Load(); if (!D.enabled || D.characters == null || D.spine == null) return;
-        foreach (var df in Object.FindObjectsByType<DuelFighter>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        foreach (var df in (root != null ? root.GetComponentsInChildren<DuelFighter>(true) : Object.FindObjectsByType<DuelFighter>(FindObjectsInactive.Include, FindObjectsSortMode.None)))
         {
             var r = RowFor(Roster.IdOf(df.transform));
             if (r != null && r.enabled && df.GetComponent<GuardTorsoTurn>() == null) df.gameObject.AddComponent<GuardTorsoTurn>();

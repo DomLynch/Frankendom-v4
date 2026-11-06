@@ -1,0 +1,83 @@
+{
+  "note": "laneSHADOWCACHE (SHADOWCACHE v1). Read by Scripts/ShadowCache.cs. ALL OFF: master enabled=false and every switch enabled=false; missing file = off. S0 measure only (changes nothing, logs how often the sun cascades would have to be re-captured), S1 mixed cached sun cascades (static environment cached, fighters every frame; needs HDRP asset allowDirectionalMixedCachedShadows=1), S2 cascade age stagger (needs no asset flag; a stale cascade is stale for fighters too). Runtime A/B on one exe: -shadowcache:S0 | S1 | S2 | none, -noshadowcache:S1, -shadowcachereport. Do not combine S1 with OPT3 G1. Every number is a margin or a cadence, not a measurement: see MANIFEST.md.",
+  "enabled": false,
+  "sunLight": "Key_ColdSun",
+  "startDelayFrames": 90,
+  "log": true,
+  "logEveryS": 10.0,
+  "disableWhenArgs": [
+    "-woundshot",
+    "-floorshot",
+    "-shadowdiag",
+    "-camproof"
+  ],
+  "coverage": {
+    "marginM": 0.25,
+    "fromNear": true,
+    "nearM": 0.3,
+    "sunEpsDeg": 0.05,
+    "maxCameras": 1,
+    "fallbackHoldFrames": 120
+  },
+  "bailout": {
+    "enabled": true,
+    "windowFrames": 90,
+    "maxRecaptureFrac": 0.6,
+    "cooldownS": 4.0
+  },
+  "ab": {
+    "enabled": false,
+    "periodS": 20.0,
+    "settleS": 4.0,
+    "startOn": false,
+    "outFile": "shadowcache_ab.csv"
+  },
+  "S0": {
+    "enabled": false
+  },
+  "S1": {
+    "enabled": false,
+    "requireAssetFlag": true,
+    "arenaRoot": "Arena",
+    "groups": [
+      "Props",
+      "Boulders",
+      "WorldNear",
+      "WorldMid",
+      "WorldFar",
+      "WorldOut",
+      "WorldWest",
+      "WorldEast",
+      "WorldBehind",
+      "WorldEdge"
+    ],
+    "excludeNameContains": [
+      "Shard",
+      "Rift",
+      "Portal",
+      "Orbit",
+      "Gateway",
+      "Ember",
+      "Debris",
+      "Piece",
+      "Shimmer",
+      "Flicker"
+    ],
+    "excludeRoster": true,
+    "excludeAnimators": true,
+    "excludeRigidbodies": true,
+    "auditEveryFrames": 6,
+    "posEpsM": 0.002,
+    "rotEpsDeg": 0.05,
+    "scaleEps": 0.001
+  },
+  "S2": {
+    "enabled": false,
+    "ageFrames": [
+      1,
+      3,
+      3,
+      3
+    ]
+  }
+}

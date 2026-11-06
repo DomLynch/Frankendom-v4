@@ -11,7 +11,8 @@ public class ArenaLimits : MonoBehaviour
     static Row Stair { get { return Load() ?? stairDefaults; } }
     public static float StairHalfWidthX { get { var r = Stair; return r.stairEnabled ? r.stairHalfWidthX : float.MaxValue; } }   // stairEnabled=false = no stair clamp (a new arena)
     public static float StairZMin { get { return Stair.stairZMin; } }
-    public static float StairZMax { get { return Stair.stairZMax; } }
+    public static float ZoneZMax = float.NaN;   // ZONES v1: a zone with a gate sets a longer lane; NaN = off = the old arithmetic exactly
+    public static float StairZMax { get { return float.IsNaN(ZoneZMax) ? Stair.stairZMax : Mathf.Max(Stair.stairZMax, ZoneZMax); } }
     CharacterController cc;
 
     static Row Load()
@@ -42,7 +43,7 @@ public class ArenaLimits : MonoBehaviour
     {
         var r = row; if (r == null || !r.enabled || cc == null || !cc.enabled) return;
         var p = transform.position;
-        float x = Mathf.Clamp(p.x, r.xMin, r.xMax), z = Mathf.Clamp(p.z, r.zMin, r.zMax);
+        float x = Mathf.Clamp(p.x, r.xMin, r.xMax), z = Mathf.Clamp(p.z, r.zMin, float.IsNaN(ZoneZMax) ? r.zMax : ZoneZMax);   // ZONES v1
         if (x != p.x || z != p.z) cc.Move(new Vector3(x - p.x, 0f, z - p.z));
     }
 }

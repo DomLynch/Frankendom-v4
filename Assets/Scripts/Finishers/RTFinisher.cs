@@ -58,6 +58,7 @@ public static class RTFinisher
     // deathblow = a posture-break deathblow (V61B): the scene starts even when the hit did not take the HP to zero; the scene's own Die() is the kill
     public static bool TryBegin(DuelFighter a, DuelFighter d, MoveDef m, bool deathblow)
     {
+        if (ZoneRuntime.FinisherBlocked(d)) return false;   // MULTI v1 (INT107): another enemy is engaged and engage.finisherWithOthers is false: plain death
         try
         {
             if (!Enabled || Busy || a == null || d == null) return false;

@@ -46,7 +46,7 @@ public class AutoShot : MonoBehaviour
             if (nsh) foreach (var l in FindObjectsByType<Light>(FindObjectsSortMode.None)) l.shadows = LightShadows.None;
             if (npost) foreach (var v in FindObjectsByType<UnityEngine.Rendering.Volume>(FindObjectsSortMode.None)) v.enabled = false;
         }
-        foreach (var a in System.Environment.GetCommandLineArgs()) { if (a == "-hero") hero = true; if (a == "-stand") stand = true; if (a == "-facecam") { face = true; stand = true; } if (a == "-profile") profile = true; if (a == "-gaps") gaps = true; }
+        foreach (var a in System.Environment.GetCommandLineArgs()) { if (a == "-hero") hero = true; if (a == "-stand") stand = true; if (a == "-facecam") { face = true; stand = true; } if (a == "-profile" && !System.Array.Exists(System.Environment.GetCommandLineArgs(), x => x.StartsWith("-profiledata:", System.StringComparison.Ordinal))) profile = true; /* unity-dev: OPT4 ProfileMode also uses -profile; with -profiledata: it is the OPT4 mode, not this photo mode */ if (a == "-gaps") gaps = true; }
         if (gaps)
         {
             foreach (var b in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)) if (b is PlayerBrain || b is AIBrain || b is Duel || b is DuelFighter) b.enabled = false;

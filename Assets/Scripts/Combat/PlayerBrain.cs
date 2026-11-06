@@ -31,7 +31,7 @@ public class PlayerBrain : MonoBehaviour
         df.moveDir = inp.sqrMagnitude > 0.01f ? (fwd * inp.y + right * inp.x).normalized : Vector3.zero;
         df.run = InputMap.Held("run", KeyCode.LeftShift);
         dirIn.Sample(rig, df, cam);   // CTRL v68: mouse / stick history, combat camera auto lock, pad specials; SwipeNow = scheme swipe + locked on
-        df.guardHeld = InputMap.Held("guard", KeyCode.Mouse1, KeyCode.Q) || dirIn.PadGuardHeld;
+        df.guardHeld = (InputMap.Held("guard", KeyCode.Mouse1, KeyCode.Q) || dirIn.PadGuardHeld) && !MarketSafe.NoCombat && !HubSafe.GuardRefused;   // STALL v1: no guard in the camp; // laneNPCSPAWN: nor in a hub.json camp
         // directional guard: Q + arrow keys = guard side L/R/up (V3 kbm.ts); swipe + locked: the mouse slide / right stick picks it (arrows still override)
         int arrowSide = InputMap.Held("guardLeft", KeyCode.LeftArrow) ? 1 : InputMap.Held("guardRight", KeyCode.RightArrow) ? 2 : InputMap.Held("guardUp", KeyCode.UpArrow) ? 3 : 0;
         int swipeSide = dirIn.SwipeNow ? dirIn.GuardStep(df.guardHeld) : dirIn.GuardStep(false);
@@ -81,7 +81,7 @@ public class PlayerBrain : MonoBehaviour
         if (dd.enabled && dd.input.mode != "tapHold")
         {
             rollDown = -1f;
-            if (AnyDown(RollKeys(dd)) && !LootUI.PickupInReach) DodgeFromKey(dd);   // kitGEAR/LOOTUI v85: E takes the item instead of rolling
+            if (AnyDown(RollKeys(dd)) && !LootUI.PickupInReach && !MarketUI.InReach) DodgeFromKey(dd);   /* STALL v1: E opens the stall instead */   // kitGEAR/LOOTUI v85: E takes the item instead of rolling
             if (dd.input.doubleTap.enabled) DoubleTap(dd);
         }
         else

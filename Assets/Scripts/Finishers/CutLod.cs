@@ -119,6 +119,7 @@ public static partial class MeshCut
     /// keep = the proxy stays as the visible rest of the mesh after the commit (Run); false = transient bake source (CrownSteps destroys it at the end).</summary>
     static SkinnedMeshRenderer LodPick(CutJob j, SkinnedMeshRenderer smr, HashSet<Transform> set, bool keep)
     {
+        FighterLod.ForceHigh(smr);   // FIGHTERLOD v1: a mid-distance mesh must never reach a cut: the full render mesh back first (holds afterCutHoldS)
         var c = CutLod.C; if (!c.enabled || smr == null || smr.sharedMesh == null) return smr;
         int tris = CutLod.Tris(smr.sharedMesh);
         var row = CutLod.RowFor(j.victimRoot, smr);

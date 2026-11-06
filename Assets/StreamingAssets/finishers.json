@@ -240,6 +240,17 @@
       "overrides": [
         {
           "killer": "Joan",
+          "victim": "Sobek",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "INT106 from SOBEKFIN STAGE0: neck 2.4-2.8 m is above Joan's reach; needs the kneel stagger_loop (STAGE1). Delete this row when the kneel clip + probe exist."
+        },
+        {
+          "killer": "Joan",
           "victim": "*",
           "requireDeathblow": true,
           "pairOffset": [
@@ -534,6 +545,17 @@
       "probeVictimBone": "Head",
       "bladeReach": 0.5,
       "overrides": [
+        {
+          "killer": "Joan",
+          "victim": "Sobek",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "INT106 from SOBEKFIN STAGE0: crown above Joan's chop tip; needs the kneel clip (STAGE1)."
+        },
         {
           "killer": "Joan",
           "victim": "*",
@@ -1527,6 +1549,19 @@
     },
     {
       "id": "run_through",
+      "overrides": [
+        {
+          "killer": "Sobek",
+          "victim": "*",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "INT106: Sobek-as-killer stays off until a -finisherauto probe with the trident (SOBEKWEAPON section 4); pairOffset/bladeReach are human numbers."
+        }
+      ],
       "enabled": true,
       "placeholder": true,
       "weight": 2,
@@ -2743,6 +2778,18 @@
           -0.0,
           0.0
         ]
+      },
+      {
+        "name": "Sobek",
+        "referenceState": "guard_idle",
+        "hipsRestZ": 1.2667,
+        "hipsCorrection": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "note": "SOBEKMOVES: hipsRestZ MEASURED = Hips height of Sobek_combat.glb at rest (fk_probe.py rest: 1.2667 m; was the 1.5 placeholder). hipsCorrection [1,0,0,0] = same Rx180 as every Mixamo-family body."
       }
     ],
     "clips": [
@@ -3209,6 +3256,11 @@
         "id": "*",
         "pairScale": 1.0,
         "note": "default killer: no pair scaling (HCKIT2 v93). Pair scale could be computed from roster heightM later."
+      },
+      {
+        "id": "Sobek",
+        "pairScale": 1.78,
+        "note": "SOBEKMOVES (guess): run_through with Sobek as killer. clipsV1.pairOffset [-0.06,0,0.814] x 1.78 = 1.45 m: Sobek hand 0.76 m ahead of the hips at contact (v1_killer_probe.py, MEASURED) + horizontal hand-to-Spine1 distance for the middle of a 2.2 m shaft (0.9 m) - 0.23 m formula bias (the same formula gives 1.04 vs the live Joan/Pitborn 0.814). Proof: -finisherauto \"suggest\" line, 3 consecutive runs."
       }
     ],
     "deathblowFinishHpFrac": -1.0,
@@ -3244,6 +3296,23 @@
   "bodyBounds": {
     "_about": "HCKIT4 v95: FinisherBody (live body bounds the finisher / death cameras frame). Per roster id (exact id first, then the \"*\" row, then the built-in numbers). centerYM x scale = fallback bounds centre height when the body has no skinned mesh; sizeM = fallback bounds size; maxSizeM = cap of a stray huge skinned bound; all x max(scaleFloor, lossyScale.y); refreshS = renderer list refresh. Today every row has the old literals - set a real height per character here.",
     "rows": [
+      {
+        "character": "Sobek",
+        "centerYM": 1.5,
+        "sizeM": [
+          1.6,
+          3.0,
+          3.0
+        ],
+        "maxSizeM": [
+          4.5,
+          3.8,
+          4.5
+        ],
+        "scaleFloor": 0.5,
+        "refreshS": 0.25,
+        "note": "SOBEKDATA: (guess) the tail extends the bound: cap raised from 3.2 to 4.5 m; measure"
+      },
       {
         "character": "*",
         "centerYM": 0.9,

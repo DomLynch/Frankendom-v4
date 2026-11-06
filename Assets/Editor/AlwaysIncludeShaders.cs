@@ -5,7 +5,7 @@ using UnityEngine;
 // Idempotent; called from HdrpBatch.V51 before the build. Logs "[AlwaysInclude] ...".
 public static class AlwaysIncludeShaders
 {
-    static readonly string[] Names = { "HDRP/Decal", "Furnace/Particle", "Furnace/ClashFlipbook", "Furnace/FlipbookMV", "Furnace/SixWay", "Furnace/GatewayRift" };   // v97: the Furnace/* FX shaders too: ClashFlipbook was missing in the player (ClashFx), the others are only referenced by runtime-created materials
+    static readonly string[] Names = { "HDRP/Decal", "Furnace/Particle", "Furnace/ClashFlipbook", "Furnace/FlipbookMV", "Furnace/SixWay", "Furnace/GatewayRift", "PropVis/Id" };   // v97: the Furnace/* FX shaders too: ClashFlipbook was missing in the player (ClashFx), the others are only referenced by runtime-created materials
 
     public static int RunBatch()
     {

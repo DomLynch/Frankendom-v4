@@ -1,0 +1,11 @@
+{
+  "_about": "OCCLUDE v105 (CamOcclusion.cs). proof = the extra -camproof row 'occluded_by_other' (fraction of each fighter hidden by the other: camera->body-sample segments vs the other fighter's capsule), arena middle at proof.seps; log + camproof_occlusion.csv only (enforce=false never fails the proof). Nothing in camera_framing.json / camera_reframe.json is changed or relaxed. fix = DARK near-range camera slide (CameraRig, lock cam): below nearSepM the camera moves shoulderAddM sideways (heightAddM up) so the player's body stops covering the foe; fix.enabled=false = today's pose. radius = the fighter's CharacterController radius x scale when useController, never below radiusOfHeight x body height. problemHidden = the verdict threshold of _agents/laneOCCLUDE/occlusion_verdict.py.",
+  "enabled": true,
+  "heights": [0.1, 0.3, 0.5, 0.7, 0.9, 1.0],
+  "lateral": [-1.0, 0.0, 1.0],
+  "useController": true,
+  "radiusOfHeight": 0.2,
+  "problemHidden": 0.25,
+  "proof": { "seps": [2.0, 4.0, 6.0, 7.0, 10.0], "settleFrames": 60, "sampleFrames": 6, "enforce": false, "hiddenMax": 0.5, "csvName": "camproof_occlusion.csv" },
+  "fix": { "enabled": false, "nearSepM": 4.0, "blendSpanM": 2.0, "shoulderAddM": 1.0, "heightAddM": 0.0 }
+}

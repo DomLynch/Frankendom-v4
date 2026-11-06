@@ -218,6 +218,22 @@
                       "durationTicks":  120,
                       "separation":  3.2,
                       "follow":  false
+                  },
+                  {
+                    "id": "sobek_swing",
+                    "subject": "Sobek",
+                    "action": "press",
+                    "press": "light",
+                    "durationFrom": "move:light_right",
+                    "separation": 3.6
+                  },
+                  {
+                    "id": "sobek_heavy",
+                    "subject": "Sobek",
+                    "action": "press",
+                    "press": "heavy",
+                    "durationFrom": "move:heavy_overhead",
+                    "separation": 3.6
                   }
               ],
     "handcam":  {

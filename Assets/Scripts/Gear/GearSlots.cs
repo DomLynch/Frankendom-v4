@@ -44,10 +44,11 @@ public class GearSlots : MonoBehaviour, IGearStatSource
 
     // no scene edit needed: after the scene loads, the player fighter and every fighter whose roster row has a loadout get a GearSlots (gear.json enabled only)
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    static void Boot()
-    {
+    static void Boot() { Boot(null); }   // ZONES-ATTACH v1 (INT107)
+    public static void AttachTo(GameObject root) { Boot(root); }   // same want-check, one object (ZoneRuntime.SpawnOne for a prefab creature)
+    static void Boot(GameObject root){
         if (!GearTable.Get().enabled) return;
-        foreach (var f in UnityEngine.Object.FindObjectsByType<DuelFighter>(FindObjectsSortMode.None))
+        foreach (var f in (root != null ? root.GetComponentsInChildren<DuelFighter>(true) : UnityEngine.Object.FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)))
         {
             if (f == null || f.GetComponent<GearSlots>() != null) continue;
             string id = f.CharacterId;

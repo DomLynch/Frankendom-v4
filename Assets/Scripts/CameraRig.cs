@@ -94,6 +94,7 @@ public class CameraRig : MonoBehaviour
             Quaternion yr = Quaternion.Euler(0f, lockYaw, 0f);
             Vector3 fwd = yr * Vector3.forward, right = yr * Vector3.right;
             Vector3 lockPos = new Vector3(P.x, P.y + h, P.z) - fwd * back + right * pose.shoulder;
+            lockPos = CamOcclusion.Shift(lockPos, right, d, lockW);   // OCCLUDE v105: DARK near-range slide so the player stops covering the foe (camera_occlusion.json fix.enabled=false = no-op)
             Vector3 mid = (P + E) * 0.5f;
             Vector3 lockLook = new Vector3(mid.x, mid.y + lk.lookUp + pose.lookYAdd, mid.z) + fwd * lk.lookAhead;   // nudged toward the foe so he sits more central
             lockLook = CamReframe.Look(lockLook, P, FighterScale.Eff(target.lossyScale.y, target), E, FighterScale.Eff(enemy.lossyScale.y, enemy), lockW);   // CAMREFRAME v102: far separation = look-at to the midpoint (camera_reframe.json)

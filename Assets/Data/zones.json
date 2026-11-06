@@ -1,0 +1,417 @@
+{
+  "_about": "ZONES v1 (lane laneZONES), read by Assets/Scripts/Zones/ZoneData.cs. SHIPS DARK: enabled=false means the game is exactly the old duel (scene reload per fight, opponents.json ladder). enabled=true turns the game into walking zones: monsters stand at spawn spots, a fight starts when you walk into a creature's aggro radius, a kill is stored as a real-world respawn time (UTC ms) in the save, and a dead creature simply reads as alive again once that time has passed (computed when someone looks, no server loop, V1/V3 lazy-respawn pattern). Gates carry you to another zone behind a flash, no camera cut. Units: metres, degrees, seconds. A spot pos is [x, z] (ground height is found by a raycast), [] = where the scene already put the object.",
+  "enabled": false,
+  "version": 1,
+  "pollSeconds": 0.5,
+  "start": {
+    "zone": "pit_yard",
+    "spot": "arrive_start"
+  },
+  "clock": {
+    "guardSeconds": 120,
+    "_about": "a saved respawn time further in the future than respawnMaxS + guardSeconds (clock set back) is pulled in to now + respawnMaxS"
+  },
+  "persistence": {
+    "file": "zones_save.json",
+    "version": 1,
+    "saveEverySeconds": 30,
+    "_about": "Application.persistentDataPath. Harness runs (MenuCfg.Harness) never read or write it. Rows use the Supabase zone_spawns field names (zone = instance, generation, respawnAtMs = respawn_at) so a later store is a swap of storage, not of data."
+  },
+  "hp": {
+    "_about": "RECOMMENDED POLICY (Dom decides). onCross: carry = the gate heals nothing. outOfCombat: slow regen on SIM TICKS (not frame time) after delaySeconds with nobody engaged, up to ceilFrac of max in the zone you stand in (danger zones stop short of full; standing within hearthRadius of a hearth service refills fast to full, which is why the start zone stays worth returning to). onDeath: wake at hearth at full hp, loot kept, wounds cleared (scene reload), every monster timer untouched.",
+    "onCross": "carry",
+    "crossFloorFrac": 0.35,
+    "regenDelaySeconds": 6,
+    "regenPerSecondFrac": 0.01,
+    "regenCeilDangerFrac": 0.6,
+    "regenCeilSafeFrac": 1.0,
+    "hearthRadius": 2.5,
+    "hearthRegenPerSecondFrac": 0.08,
+    "onDeath": "hearth_full",
+    "deathHoldSeconds": 3.0
+  },
+  "engage": {
+    "maxEngaged": 2,
+    "retargetMarginM": 1.5,
+    "finisherWithOthers": false,
+    "graceAfterArriveSeconds": 3.0,
+    "corpseSeconds": 25,
+    "spawnMinDistance": 30,
+    "_about": "INT107 (Dom): maxEngaged 2 = Pitborn and Sobek can be on you together (both brains attack the player; target = nearest engaged, switches when another is nearer by retargetMarginM; finisherWithOthers false = plain death while another enemy is engaged). 1 = the duel stays 1 v 1 (the sim and the camera are tuned for it); a camp of 2 is a later Dom decision. spawnMinDistance: a creature whose timer ran out while you stand in its zone appears only when you are at least this far from its spot, or when you arrive through a gate (hidden by the flash); in a small arena that means it appears when you arrive, never in front of you."
+  },
+  "crossing": {
+    "cover": {
+      "color": [
+        1.0,
+        0.84,
+        0.58
+      ],
+      "inSeconds": 0.3,
+      "holdMinSeconds": 0.1,
+      "outSeconds": 0.55,
+      "holdMaxSeconds": 8.0
+    },
+    "allowWhileEngaged": false,
+    "preloadDistance": 14.0,
+    "_about": "cover = the gate's flash: a full-screen ember-white overlay in OnGUI, over the frame where the swap happens. The camera is never cut: it is moved by the same offset and turn as the player. Player input is never locked (no code path locks it). holdMaxSeconds: if an additive zone scene is not ready by then the cover stays up (a heavy hold, never a loading bar)."
+  },
+  "creatures": [
+    {
+      "id": "Pitborn",
+      "source": "scene",
+      "_about": "the enemy object already in the loaded scene is the template (cloned inactive, clones are the spawns)"
+    },
+    {
+      "id": "Sobek",
+      "source": "resources",
+      "scene": "HadesSlice_Sobek",
+      "path": "Creatures/Sobek",
+      "_about": "Resources/Creatures/Sobek.prefab, made by Hades > Zones > Save creature prefabs from his enemy scene (laneSOBEKDATA). Until it exists his spawn row is skipped with one log line."
+    }
+  ],
+  "zones": [
+    {
+      "id": "pit_yard",
+      "name": "The Pit Yard",
+      "safe": false,
+      "start": true,
+      "scene": "",
+      "mode": "inplace",
+      "sceneRoots": [],
+      "limits": {
+        "zMax": 26.0
+      },
+      "spots": [
+        {
+          "id": "arrive_start",
+          "pos": [],
+          "yaw": 0
+        },
+        {
+          "id": "pitborn_stand",
+          "pos": [],
+          "yaw": 180,
+          "note": "empty pos = Pitborn stays where the scene built him"
+        },
+        {
+          "id": "arrive_from_sobek",
+          "pos": [
+            0,
+            21.0
+          ],
+          "yaw": 180,
+          "note": "just inside the gate, facing back into the yard"
+        },
+        {
+          "id": "hearth",
+          "pos": [
+            -2.5,
+            10.0
+          ],
+          "yaw": 0,
+          "note": "PLACEHOLDER, measure in the scene"
+        },
+        {
+          "id": "stall_1",
+          "pos": [
+            2.5,
+            10.0
+          ],
+          "yaw": 0,
+          "note": "PLACEHOLDER, market or trading stall later"
+        },
+        {
+          "id": "gate_sobek",
+          "pos": [
+            0,
+            25.0
+          ],
+          "yaw": 0
+        }
+      ],
+      "spawns": [
+        {
+          "id": "z1_pitborn",
+          "enabled": true,
+          "spot": "pitborn_stand",
+          "picks": [
+            {
+              "creature": "Pitborn",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "gate_warden",
+          "respawnMinS": 300,
+          "respawnMaxS": 420,
+          "aggro": 5.5,
+          "leash": 58.0,
+          "hpMul": 1,
+          "damageMul": 1
+        },
+        {
+          "id": "z1_veteran",
+          "enabled": false,
+          "spot": "pitborn_stand",
+          "picks": [
+            {
+              "creature": "Pitborn",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "pit_veteran",
+          "respawnMinS": 420,
+          "respawnMaxS": 600,
+          "aggro": 7.0,
+          "leash": 24.0,
+          "needs": "a second spot and a second Pitborn instance room; Dom decision: stronger Pitborn rows as roaming camp, or new weaker creatures (see MANIFEST)",
+          "hpMul": 1,
+          "damageMul": 1
+        }
+      ],
+      "services": [
+        {
+          "id": "hearth_1",
+          "kind": "hearth",
+          "spot": "hearth",
+          "enabled": true
+        },
+        {
+          "id": "market_1",
+          "kind": "market",
+          "spot": "stall_1",
+          "enabled": false,
+          "needs": "market stall prop, trader NPC, trade screen (Dom decision), not built"
+        }
+      ],
+      "gates": [
+        {
+          "id": "gate_pit_to_sobek",
+          "spot": "gate_sobek",
+          "radius": 2.0,
+          "toZone": "sobek_reach",
+          "toSpot": "arrive_from_pit",
+          "unlockKilledSpawn": "",
+          "sticky": true,
+          "visual": "GatewayRift"
+        }
+      ]
+    },
+    {
+      "id": "sobek_reach",
+      "name": "The Reach",
+      "safe": false,
+      "start": false,
+      "scene": "",
+      "mode": "inplace",
+      "sceneRoots": [],
+      "limits": {
+        "zMax": 62.0
+      },
+      "spots": [
+        {
+          "id": "arrive_from_pit",
+          "pos": [
+            0,
+            44.0
+          ],
+          "yaw": 0,
+          "note": "ZONE2DUP: resume spot only (a saved game that quit in this zone). Crossing is by walking, no teleport."
+        },
+        {
+          "id": "sobek_stand",
+          "pos": [
+            0,
+            53.0
+          ],
+          "yaw": 0,
+          "note": "ZONE2DUP: the zone 1 Pitborn stand mirrored at z + offsetZ (a duplicate yard); PLACEHOLDER until measured in the built zone."
+        },
+        {
+          "id": "gate_pit",
+          "pos": [
+            0,
+            36.0
+          ],
+          "yaw": 180,
+          "note": "ZONE2DUP: the way back = the doorway tunnel exit (zone entry); walked, not flashed."
+        },
+        {
+          "id": "hearth",
+          "pos": [
+            -2.5,
+            44.0
+          ],
+          "yaw": 0,
+          "note": "none in zone 2: its hearth is the one in the Pit Yard (hp.regenCeilDangerFrac applies here)"
+        },
+        {
+          "id": "arrive_from_sobek",
+          "pos": [
+            0,
+            57.0
+          ],
+          "yaw": 180,
+          "note": "ZONESPAN: just inside the far gate, facing back (arrival from the next zone)"
+        },
+        {
+          "id": "gate_next",
+          "pos": [
+            0,
+            61.0
+          ],
+          "yaw": 0,
+          "note": "ZONESPAN: the far gate (the next zone)"
+        }
+      ],
+      "spawns": [
+        {
+          "id": "z2_sobek",
+          "enabled": true,
+          "spot": "sobek_stand",
+          "picks": [
+            {
+              "creature": "Sobek",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "sobek",
+          "respawnMinS": 360,
+          "respawnMaxS": 600,
+          "aggro": 8.0,
+          "leash": 26.0,
+          "hpMul": 1.0,
+          "damageMul": 1.0,
+          "difficulty": 8
+        }
+      ],
+      "services": [],
+      "gates": [
+        {
+          "id": "gate_sobek_to_pit",
+          "spot": "gate_pit",
+          "radius": 2.0,
+          "toZone": "pit_yard",
+          "toSpot": "arrive_from_sobek",
+          "unlockKilledSpawn": "",
+          "sticky": true,
+          "visual": "none"
+        },
+        {
+          "id": "gate_sobek_to_hub",
+          "spot": "gate_next",
+          "radius": 2.0,
+          "toZone": "hub_camp",
+          "toSpot": "arrive_from_prev",
+          "unlockKilledSpawn": "",
+          "sticky": true,
+          "visual": "GatewayRift"
+        }
+      ]
+    },
+    {
+      "id": "hub_camp",
+      "name": "The Camp",
+      "safe": true,
+      "start": false,
+      "scene": "",
+      "mode": "inplace",
+      "sceneRoots": [],
+      "limits": {
+        "zMax": 94.0
+      },
+      "spots": [
+        {
+          "id": "arrive_from_prev",
+          "pos": [
+            0.0,
+            80.0
+          ],
+          "yaw": 0,
+          "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
+        },
+        {
+          "id": "gate_prev",
+          "pos": [
+            0.0,
+            72.0
+          ],
+          "yaw": 180,
+          "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
+        },
+        {
+          "id": "hearth",
+          "pos": [
+            3.0,
+            87.5
+          ],
+          "yaw": 0,
+          "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
+        },
+        {
+          "id": "stall_1",
+          "pos": [
+            -2.5,
+            89.0
+          ],
+          "yaw": 90,
+          "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
+        },
+        {
+          "id": "npc_trader",
+          "pos": [
+            -3.7,
+            89.5
+          ],
+          "yaw": 90,
+          "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
+        },
+        {
+          "id": "npc_keeper",
+          "pos": [
+            3.0,
+            90.0
+          ],
+          "yaw": 180,
+          "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
+        },
+        {
+          "id": "npc_traveller",
+          "pos": [
+            3.5,
+            93.3
+          ],
+          "yaw": 235,
+          "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
+        }
+      ],
+      "spawns": [],
+      "services": [
+        {
+          "id": "hearth_hub_camp",
+          "kind": "hearth",
+          "spot": "hearth",
+          "enabled": true
+        },
+        {
+          "id": "market_hub_camp",
+          "kind": "market",
+          "spot": "stall_1",
+          "enabled": false,
+          "needs": "sell-only stall rules (laneHUB hub.json stall, laneTRADE IMarketBackend); not switched on by this lane"
+        }
+      ],
+      "gates": [
+        {
+          "id": "gate_hub_prev",
+          "spot": "gate_prev",
+          "radius": 2.0,
+          "toZone": "sobek_reach",
+          "toSpot": "arrive_from_sobek",
+          "unlockKilledSpawn": "",
+          "sticky": true,
+          "visual": "none"
+        }
+      ]
+    }
+  ]
+}

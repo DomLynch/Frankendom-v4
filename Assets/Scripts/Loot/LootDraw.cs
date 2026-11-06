@@ -42,13 +42,13 @@ public static class LootDraw
         Fill(new Rect(r.x, r.y + t, t, r.height - 2f * t), c); Fill(new Rect(r.xMax - t, r.y + t, t, r.height - 2f * t), c);
     }
     public static void Rule(float x, float y, float w, Color c) { Fill(new Rect(x, y, w, 1f), c); }
-    public static void Tex(Rect r, Texture2D t, Color c) { if (t == null) return; var o = GUI.color; GUI.color = Fade(c); GUI.DrawTexture(r, t, ScaleMode.StretchToFill, true); GUI.color = o; }
+    public static void Tex(Rect r, Texture2D t, Color c) { if (t == null) return; if (ResGateProbe.On) ResGateProbe.Box(r); /* RESGATE v1 */ var o = GUI.color; GUI.color = Fade(c); GUI.DrawTexture(r, t, ScaleMode.StretchToFill, true); GUI.color = o; }
 
     /// <summary>Shadowed label.</summary>
     public static void Text(Rect r, string s, string kind, int size, TextAnchor a, bool bold, Color c, bool italic = false, bool wrap = false)
     {
         if (string.IsNullOrEmpty(s) || c.a * Alpha <= 0.003f) return;
-        var st = Style(kind, size, a, bold, italic, wrap); var sh = LootCfg.Col(LootCfg.Get().colors.shadow); float d = Mathf.Max(1f, size / 13f);
+        var st = Style(kind, size, a, bold, italic, wrap); var sh = LootCfg.Col(LootCfg.Get().colors.shadow); float d = Mathf.Max(1f, size / 13f); if (ResGateProbe.On) ResGateProbe.Text(r, s, kind, size, a, bold, wrap); /* RESGATE v1 */
         st.normal.textColor = Fade(new Color(sh.r, sh.g, sh.b, sh.a * c.a)); GUI.Label(new Rect(r.x + d, r.y + d, r.width, r.height), s, st);
         st.normal.textColor = Fade(c); GUI.Label(r, s, st);
     }

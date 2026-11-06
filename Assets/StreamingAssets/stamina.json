@@ -20,6 +20,12 @@
       "maxStamina": 120,
       "regenMul": 0.85,
       "parryWindowTicks": 0
+    },
+    {
+      "key": "Sobek",
+      "maxStamina": 160,
+      "regenMul": 0.8,
+      "parryWindowTicks": 0
     }
   ],
   "regen": {

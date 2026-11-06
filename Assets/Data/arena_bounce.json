@@ -1,0 +1,58 @@
+{
+  "_notes": "APV v1 (laneAPV). Replaces the soft floor bounce that SSGI gives, with SSGI OFF, using a few non-shadow point lights (no ray marching). OFF by default. Lights follow a roster fighter ('player' | 'enemy' | a roster id) or sit fixed ('fixed' + pos). Candela in HDRP physical units, exposure is fixed EV 9.4. ALL numbers are first guesses to tune by eye against the SSGI pairs in _agents/visual_qc/ssgi_out/full_vs_off. volumetricDimmer 0 keeps them out of the fog pass.",
+  "enabled": false,
+  "smooth": 10.0,
+  "rows": [
+    {
+      "name": "BounceFill_Enemy",
+      "follow": "enemy",
+      "offset": [
+        0,
+        0.45,
+        0
+      ],
+      "color": [
+        1.0,
+        0.42,
+        0.2
+      ],
+      "candela": 260,
+      "range": 4.5,
+      "volumetricDimmer": 0.0
+    },
+    {
+      "name": "BounceFill_Player",
+      "follow": "player",
+      "offset": [
+        0,
+        0.45,
+        0
+      ],
+      "color": [
+        1.0,
+        0.55,
+        0.35
+      ],
+      "candela": 120,
+      "range": 3.5,
+      "volumetricDimmer": 0.0
+    },
+    {
+      "name": "BounceFill_Door",
+      "follow": "fixed",
+      "pos": [
+        0,
+        0.7,
+        24.0
+      ],
+      "color": [
+        1.0,
+        0.36,
+        0.08
+      ],
+      "candela": 700,
+      "range": 9.0,
+      "volumetricDimmer": 0.0
+    }
+  ]
+}

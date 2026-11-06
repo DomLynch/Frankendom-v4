@@ -1,0 +1,369 @@
+{
+  "_about": "STALL v1 (lane laneSTALL), STAGED, SHIPS OFF. The camp trader stall: a sell-only stall in the safe camp. Read by Scripts/Market/MarketCfg.cs (StreamingAssets first, then Assets/Data). Everything the player sees or can change is here: coins, prices, keys, layout, text, the camp rectangle, the combat rule. Sizes are px at hud.json referenceHeight (1080) and scale with HudCfg.Scale() (Screen.height / referenceHeight, clamped), the same UI scale as the HUD. Colours: the HUD palette (hud.json colors) is used for ink / dim / gold / frame / crimson / charcoal / shadow; only the panel rows are here. enabled=false = no stall, no prompt, no combat rule: the game is exactly as before.",
+  "_domNote": "COINS HAVE NOTHING TO BUY YET. The stall is sell-only (Dom's brief): gear goes in, coins come out, and no system takes coins. Hooks are ready and OFF: rules.buyEnabled + ops 'buy' + rows with buyValue (a buy tab), sinks[] (camp upgrades, a toll), MarketLedger.TrySpend (future code spends coins with a request id). Decide what coins buy before this ships to players.",
+  "enabled": false,
+  "version": 1,
+  "debugLog": false,
+  "guiDepth": -1090,
+  "currency": {
+    "id": "coins",
+    "name": "Coins",
+    "cap": 999999,
+    "startCoins": 500,
+    "_about": "cap = the most the purse holds; a sale that would pass it is refused (wallet-full). Saved inside loot_save.json (version 2)."
+  },
+  "rules": {
+    "_about": "sellRatio 0.33 = Armagedom's sell / buy ratio. sell = round(buyValue * sellRatio), at least minSell, never above buyValue (a check refuses a row that would pay more than it costs). ops: which orders the backend takes; 'buy' stays refused while buyEnabled is false. confirmSell: the first press arms the line, the second sells (gear is gone for good). listEquipped: worn items are listed greyed ('Worn') instead of hidden. keepRequests: how many request ids are remembered (dedupe).",
+    "sellRatio": 0.33,
+    "minSell": 1,
+    "keepRequests": 200,
+    "ops": [
+      "sell"
+    ],
+    "buyEnabled": false,
+    "confirmSell": true,
+    "listEquipped": true
+  },
+  "rows": [
+    {
+      "item": "joan_tunic",
+      "buyValue": 70,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "joan_helmet",
+      "buyValue": 240,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "joan_bracers",
+      "buyValue": 120,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "joan_greaves",
+      "buyValue": 160,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "joan_tabard",
+      "buyValue": 100,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "joan_boots",
+      "buyValue": 90,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "pitborn_pauldron_joan",
+      "buyValue": 410,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "pitborn_pauldron",
+      "buyValue": 410,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "pauldron_joan",
+      "buyValue": 160,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "vambrace_joan",
+      "buyValue": 160,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "gorget_joan",
+      "buyValue": 160,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "greave_joan",
+      "buyValue": 160,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "pitborn_chest",
+      "buyValue": 530,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "pitborn_maul",
+      "buyValue": 110,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "bascinet_joan",
+      "buyValue": 215,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "cap_joan",
+      "buyValue": 125,
+      "sellable": true,
+      "sellOverride": 0
+    }
+  ],
+  "rowsNote": "One row per sellable item id. buyValue = what the item would cost to buy (round(5 * (6 armor + 5 poise + 1 weight)) to 5, from gear.json; PLACEHOLDER balance). sellOverride > 0 pins the sell price. sellable false = the trader refuses it. An id with no row is not bought. Re-generate with gen_market.py.",
+  "sinks": [
+    {
+      "id": "stall_buy",
+      "kind": "buy",
+      "enabled": false,
+      "needs": "a consumable or a gear row with a buyValue, rules.buyEnabled true, ops += buy, a Buy tab (not drawn today)"
+    },
+    {
+      "id": "camp_upgrade",
+      "kind": "upgrade",
+      "enabled": false,
+      "needs": "a permanent upgrade list (Armagedom has stamina and magazine upgrades); MarketLedger.TrySpend takes the coins"
+    },
+    {
+      "id": "gate_toll",
+      "kind": "toll",
+      "enabled": false,
+      "needs": "a design decision; none planned"
+    }
+  ],
+  "stall": {
+    "id": "hub_trade",
+    "title": "Trader",
+    "anchor": {
+      "zone": "hub_camp",
+      "spot": "stall_1",
+      "x": -2.5,
+      "z": 89.0,
+      "_about": "zones.json spot stall_1 of the camp (laneHUB rows B, camp at world offset 72). With the zone data merged, MarketZoneBridge reads the spot; x / z here are the fallback and what the checker compares. y comes from the player."
+    },
+    "radius": 2.4,
+    "promptRadius": 5.0,
+    "promptHeight": 2.1,
+    "area": {
+      "zMin": 63.0,
+      "zMax": 94.0,
+      "xHalf": 8.0,
+      "enterPad": 0.5,
+      "leavePad": 0.5,
+      "_about": "The camp rectangle in world x / z (zone_plan hub_camp: offset 72, boundaryLocal -4 -> z 68; limits.zMax 94). The stall and the no-fight rule work only inside it. Monsters are held outside by laneZONESPAN destSafe (followers stop 1.5 m before the door face z 63), not by this rectangle."
+    }
+  },
+  "safe": {
+    "_about": "The no-combat rule inside stall.area. refuse: the press ids that stay allowed (dodging and walking stay on); everything else (light, heavy, thrust, kick, specials, directed moves, riposte) and the guard hold are refused, one toast. Weapon lowered = the idle pose: no attack or guard can start, so the fighter stays in idle (no sheath clip is owned; hiding the weapon renderer is a Unity dev decision, laneHUB).",
+    "noCombat": true,
+    "allowPress": [
+      "roll",
+      "backstep",
+      "sidestep"
+    ],
+    "refuseSeconds": 1.4,
+    "tagBig": 20,
+    "tagSmall": 15,
+    "tagTracking": 3.2,
+    "tagTop": 26.0,
+    "subSize": 13,
+    "coinSize": 17,
+    "coinDy": 8.0
+  },
+  "keys": {
+    "_about": "KeyCode names (old Input Manager, like loot_ui.json). interact: E / pad X (same as the loot pickup). confirm: E / pad A. close: Esc / pad B / Tab / pad Start. up / down + the left stick move. The panel ignores the confirm press on the frame it opened.",
+    "interact": [
+      "E",
+      "JoystickButton2"
+    ],
+    "confirm": [
+      "E",
+      "JoystickButton0",
+      "Return"
+    ],
+    "close": [
+      "Escape",
+      "JoystickButton1",
+      "Tab",
+      "JoystickButton7"
+    ],
+    "up": [
+      "UpArrow",
+      "W"
+    ],
+    "down": [
+      "DownArrow",
+      "S"
+    ],
+    "axisY": "Vertical",
+    "stickThreshold": 0.6,
+    "repeatDelayS": 0.35,
+    "repeatS": 0.11
+  },
+  "colors": {
+    "_about": "rows only; the rest is hud.json colors. [r,g,b(,a)] 0..1.",
+    "panel": [
+      0.018,
+      0.018,
+      0.022,
+      0.95
+    ],
+    "rowSelected": [
+      0.11,
+      0.075,
+      0.075,
+      0.95
+    ],
+    "rowArmed": [
+      0.2,
+      0.1,
+      0.07,
+      0.97
+    ],
+    "dimmer": [
+      0.0,
+      0.0,
+      0.0,
+      0.58
+    ],
+    "good": [
+      0.45,
+      0.78,
+      0.38,
+      1.0
+    ],
+    "bad": [
+      0.82,
+      0.22,
+      0.2,
+      1.0
+    ]
+  },
+  "layout": {
+    "_about": "px at the HUD reference height (hud.json referenceHeight). The panel is cut to the screen (margin) on a small window; rows scroll.",
+    "panelW": 880.0,
+    "panelH": 660.0,
+    "margin": 24.0,
+    "pad": 26.0,
+    "headerH": 98.0,
+    "footerH": 34.0,
+    "detailH": 92.0,
+    "rowH": 50.0,
+    "rowGap": 5.0,
+    "rowPadX": 16.0,
+    "frameW": 2.0,
+    "accentBar": 3.0,
+    "ruleH": 2.0,
+    "diamond": 9.0,
+    "titleBig": 34,
+    "titleSmall": 26,
+    "titleTracking": 3.4,
+    "subSize": 14,
+    "coinSize": 22,
+    "rowNameSize": 20,
+    "rowPriceSize": 20,
+    "rowTagSize": 12,
+    "detailNameSize": 20,
+    "detailSize": 15,
+    "hintSize": 14,
+    "messageSize": 17,
+    "labelNameBig": 22,
+    "labelNameSmall": 17,
+    "labelTracking": 3.0,
+    "promptSize": 15,
+    "promptGap": 8.0,
+    "toastBottom": 150.0,
+    "toastSize": 22,
+    "openFadeS": 0.16
+  },
+  "text": {
+    "title": "Trader",
+    "subtitle": "Sell what you carry. What you wear is kept.",
+    "coins": "{0} coins",
+    "price": "{0}",
+    "worn": "Worn",
+    "nothing": "You carry nothing the trader will take.",
+    "prompt": "Trade",
+    "promptKeys": "E / X",
+    "hintMove": "Up / Down  Select",
+    "hintSell": "E / A  Sell",
+    "hintClose": "Esc / B  Close",
+    "safeTag": "SAFE",
+    "safeSub": "No fighting in the camp.",
+    "noFight": "No fighting in the camp.",
+    "sold": "Sold {0} for {1}.",
+    "armed": "Press again to sell {0} for {1}.",
+    "detailPays": "The trader pays {0}",
+    "detailWorn": "Worn: take it off to sell it",
+    "codes": [
+      {
+        "code": "equipped",
+        "text": "Worn gear can not be sold. Take it off first."
+      },
+      {
+        "code": "not-owned",
+        "text": "You no longer carry that."
+      },
+      {
+        "code": "not-sellable",
+        "text": "The trader will not take that."
+      },
+      {
+        "code": "not-for-sale",
+        "text": "Not for sale."
+      },
+      {
+        "code": "wallet-full",
+        "text": "Your purse is full."
+      },
+      {
+        "code": "save-failed",
+        "text": "Could not save. Press again to retry."
+      },
+      {
+        "code": "request-id-required",
+        "text": "Order refused."
+      },
+      {
+        "code": "request-conflict",
+        "text": "Order refused."
+      },
+      {
+        "code": "bad-qty",
+        "text": "Order refused."
+      },
+      {
+        "code": "disabled",
+        "text": "The stall is closed."
+      },
+      {
+        "code": "unknown-op",
+        "text": "Order refused."
+      },
+      {
+        "code": "busy",
+        "text": "One moment."
+      },
+      {
+        "code": "already-owned",
+        "text": "You already own that."
+      },
+      {
+        "code": "no-coins",
+        "text": "Not enough coins."
+      }
+    ]
+  }
+}

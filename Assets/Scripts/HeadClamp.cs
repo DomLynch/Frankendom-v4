@@ -30,10 +30,11 @@ public class HeadClamp : MonoBehaviour
     public static bool ForceOff;   // harness: -noclamp
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    static void Boot()
-    {
+    static void Boot() { Boot(null); }   // ZONES-ATTACH v1 (INT107)
+    public static void AttachTo(GameObject root) { Boot(root); }   // same want-check, one object (ZoneRuntime.SpawnOne for a prefab creature)
+    static void Boot(GameObject root){
         var D = Load(); if (D.characters == null) return;
-        foreach (var a in FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        foreach (var a in (root != null ? root.GetComponentsInChildren<Animator>(true) : FindObjectsByType<Animator>(FindObjectsInactive.Include, FindObjectsSortMode.None)))
         {
             string rn = a.transform.root.name; bool want = false;
             { var rrp = RosterResolver.Pick(D.characters, rrx => rrx.name, rn); if (rrp != null && rrp.enabled) want = true; }   // HCKIT2 v93

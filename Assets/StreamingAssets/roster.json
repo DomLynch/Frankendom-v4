@@ -53,6 +53,24 @@
       "scaleFloor": 1.0,
       "armoured": false,
       "notes": "flesh: bleeds, no sparks. Non-player row since v76 (switch back: roster.json \"player\": \"Dracula\" + Hades > Joan > Apply roster player to scene)"
+    },
+    {
+      "id": "Sobek",
+      "displayName": "Sobek",
+      "objectName": "Sobek",
+      "weapon": "trident",
+      "controller": "Assets/Characters/Sobek.controller",
+      "modelGlb": "Assets/Characters/Sobek/Sobek_combat.glb",
+      "animGlb": "Assets/Characters/Sobek/Sobek_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_Sobek.mask",
+      "finisherClipFolder": "Assets/Characters/Sobek/FinisherClips",
+      "heightM": 3.0,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "SOBEKDATA: reptile body, crocodile head, claws. no templateFor: Pitborn stays the enemy scene template (CharacterSetup picks the first row with templateFor=enemy that is not the new id). heightM 3.0 (guess: measure on the bound mesh, plan range 2.5-3.5). armoured false = bleeds, no sparks (guess, Dom may flip). weapon trident (SOBEKWEAPON): his right hand holds gear item sobek_trident (loadout), WeaponSwap parents it on WeaponSocket_R. His own claws stay (the hand keeps the weapon through the loadout only).",
+      "loadout": [
+        "sobek_trident"
+      ]
     }
   ],
   "scene": "Assets/Scenes/HadesSlice.unity",

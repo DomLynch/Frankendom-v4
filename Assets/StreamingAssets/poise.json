@@ -97,6 +97,62 @@
             "armour": true
           }
         ]
+      },
+      {
+        "key": "Sobek",
+        "moves": [
+          {
+            "move": "skill_jab",
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
+          },
+          {
+            "move": "skill_pommel",
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
+          },
+          {
+            "move": "skill_shove",
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
+          },
+          {
+            "move": "heavy*",
+            "fromTick": 8,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.2,
+            "postureMul": 0.5,
+            "armour": true
+          },
+          {
+            "move": "critical",
+            "fromTick": 8,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.2,
+            "postureMul": 0.5,
+            "armour": true
+          },
+          {
+            "move": "skill_*",
+            "fromTick": 6,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.2,
+            "postureMul": 0.5,
+            "armour": true
+          }
+        ]
       }
     ]
   },
@@ -133,6 +189,15 @@
         "hits": 3,
         "windowTicks": 150,
         "breakOutTicks": 42,
+        "absorbDamageMul": -1,
+        "graceDamageMul": -1
+      },
+      {
+        "key": "Sobek",
+        "enabled": true,
+        "hits": 4,
+        "windowTicks": 180,
+        "breakOutTicks": 48,
         "absorbDamageMul": -1,
         "graceDamageMul": -1
       }

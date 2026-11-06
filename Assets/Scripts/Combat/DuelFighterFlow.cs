@@ -33,6 +33,7 @@ public partial class DuelFighter
     // dedicated riposte key: only does something while the parry riposte window is open (riposteTicks); the press waits out the 8-tick parry recovery
     public void PressRiposte()
     {
+        if (IsPlayer && MarketSafe.Refuses("riposte")) return;   // STALL v1
         if (state == FState.Dead || riposteTicks <= 0 || !FlowTable.Applies(this) || !FlowTable.Get().riposte.enabled) return;
         pRipo = Mathf.Max(2, CombatFeel.QueueTtl(this, (int)R("bufferTtl", 11)));
     }

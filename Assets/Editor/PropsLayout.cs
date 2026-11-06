@@ -35,7 +35,23 @@ public static class PropsLayout
         public Scatter[] scatter;
     }
 
-    public static int LastPlaced, LastEnabled, LastMissing;
+    public static int LastPlaced, LastEnabled, LastMissing, LastCulled;   // PROPVIS v01: LastCulled
+
+    // PROPVIS v01: dark removal data. Assets/Data/prop_cull.json {enabled, activeTiers, tiers:[{id, ids}]}. enabled=false (shipped) = no effect. A separate file on purpose: props_layout.json is overwritten by HdrpGround
+    // (props_layout_ground.json is copied over it on every rebuild) and its 'disabled' lines are rewritten by HdrpApproach, so a flag there would not survive a rebuild.
+    [System.Serializable] public class CullTier { public string id; public string[] ids; }
+    [System.Serializable] public class CullFile { public bool enabled; public string[] activeTiers; public CullTier[] tiers; }
+    public static HashSet<string> LoadCull()
+    {
+        var set = new HashSet<string>();
+        string cp = Path.Combine(Application.dataPath, "Data/prop_cull.json");
+        if (!File.Exists(cp)) return set;
+        var c = JsonUtility.FromJson<CullFile>(File.ReadAllText(cp));
+        if (c == null || !c.enabled || c.tiers == null || c.activeTiers == null) return set;
+        foreach (var t in c.tiers) if (t != null && t.ids != null && System.Array.IndexOf(c.activeTiers, t.id) >= 0) foreach (var i in t.ids) set.Add(i);
+        Debug.Log("[PropsLayout] PROPVIS cull ON: tiers " + string.Join("+", c.activeTiers) + ", " + set.Count + " prop id(s) skipped");
+        return set;
+    }
 
     public static Layout Load(string path = null)
     {
@@ -48,13 +64,15 @@ public static class PropsLayout
     public static int Build(GameObject arena, string path = null)
     {
         var L = Load(path);
-        LastPlaced = LastEnabled = LastMissing = 0;
+        LastPlaced = LastEnabled = LastMissing = LastCulled = 0;
         if (L == null || L.props == null) return 0;
+        var cull = LoadCull();   // PROPVIS v01
         var groupRoots = new Dictionary<string, Transform>();
         foreach (var g in L.groups ?? new string[0]) groupRoots[g] = NewGroup(arena, g);
         foreach (var p in L.props)
         {
             if (p.disabled) continue;
+            if (cull.Contains(p.id)) { LastCulled++; continue; }   // PROPVIS v01
             LastEnabled++;
             string gname = string.IsNullOrEmpty(p.group) ? "Props" : p.group;
             if (!groupRoots.TryGetValue(gname, out var gr)) { gr = NewGroup(arena, gname); groupRoots[gname] = gr; }
@@ -62,7 +80,7 @@ public static class PropsLayout
         }
         int scat = 0; if (L.scatter != null) foreach (var s in L.scatter) if (!s.disabled) scat++;
         if (scat > 0) Debug.LogWarning("[PropsLayout] " + scat + " enabled scatter rule(s) ignored (scatter placement is not implemented in v1)");
-        Debug.Log("[PropsLayout] placed " + LastPlaced + "/" + LastEnabled + " enabled props (" + LastMissing + " missing assets) from " + DataPath);
+        Debug.Log("[PropsLayout] placed " + LastPlaced + "/" + LastEnabled + " enabled props (" + LastCulled + " culled by prop_cull.json, " + LastMissing + " missing assets) from " + DataPath);
         return LastPlaced;
     }
 

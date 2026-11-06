@@ -1,0 +1,16 @@
+{
+  "_about": "lanePROPVIS: config of the -propvis:<dir> harness (PropVis.cs). The mode is OFF unless the player is started with -propvis:<outdir>; this file only holds numbers. enabled=false makes the mode exit at once. id.width/height = size of the ID pass (override: -propvissize:WxH); counts are scaled to the reference output refWidth x refHeight (2560x1600) so 'pixels' always means pixels of the real frame. A 1280x800 id pass = 4 reference pixels per id pixel, so a prop of 20 reference pixels is 5 id pixels (a smaller id pass would hide the tier B band). budgetSec = soft time budget (phases stop and write what they have), timeoutSec = hard stop; the whole run is meant to take under 15 minutes. shot = the normal screenshot per camera (offscreen RT of the real main camera). shadow = visible-surface grid (gridX x gridY points per camera) and the ray-to-sun test against prop bounds; maxCasterM = longest shadow ray, maxDistanceM 0 = read HDShadowSettings.maxShadowDistance from the volume stack; every = shadow on every Nth camera.",
+  "enabled": true,
+  "muteAudio": true,
+  "bootWaitSec": 40,
+  "settleSec": 2.0,
+  "timeoutSec": 840,
+  "budgetSec": 780,
+  "exitGraceSec": 3,
+  "camerasFile": "propvis_cameras.json",
+  "layoutFile": "props_layout.json",
+  "cullFile": "prop_cull.json",
+  "id": { "width": 1280, "height": 800, "refWidth": 2560, "refHeight": 1600, "nearM": 0.1, "farM": 1500, "shader": "PropVis/Id", "hideSkinned": true, "idPngEvery": 12, "residualMax": 0.12 },
+  "shot": { "enabled": true, "width": 960, "height": 600 },
+  "shadow": { "enabled": true, "gridX": 80, "gridY": 50, "maxDistanceM": 0, "maxCasterM": 250, "boundsPadM": 0.05, "every": 1, "minSamples": 1 }
+}

@@ -12,10 +12,20 @@ public static class RuntimeQuality
         // look overrides applied in the player so tuning needs no rebuild (-1 = leave as authored)
         public bool muteInHarness = true; public float exposureEV = -1f, skyExposure = -1f, indirectDiffuse = -1f, indirectSpecular = -1f, hdriExposure = -999f, hdriRotation = -999f; public LightMul[] lightMul; public float[] skyMid; public MatOv[] matOverrides; public bool hideMHHead;
         // TIERS v96: tier keys (quality_tiers.json). -1 = leave as authored. lodBiasMul is read by QualityTiers (CrackFlicker lod), kept here so -qset: and the json round-trip.
-        public int ssaoQuality = -1, bloomQuality = -1, asyncCompute = -1; public float motionBlur = -1f, particleScale = 1f, lodBiasMul = 1f; }
+        public int ssaoQuality = -1, bloomQuality = -1, asyncCompute = -1; public float motionBlur = -1f, particleScale = 1f, lodBiasMul = 1f;
+        // 2KPROFILE v01: companion switches (laneAPV ArenaBounceFill, laneFOGLOOK), tier keys, false = off
+        public bool bounceFill, fogLook;
+        // FOGMERGE v1 (FPSA + FOGSSGI merged, ONE fogSlices): finer fog / SSGI cost knobs, all off by default: -1 leave as authored (fogAniso -2, fogGridWidth 0). Applied by FogSsgiTuning.ApplyVolume and FogGrid below.
+        // fogGridWidth > 0: fog froxel grid held at that many internal px at every output size (FPSA; 268 = the approved 1080p look). Skipped when fogManual / fogBudget / fogDepthRatio is set (those win). fogSlices: 170 when only the grid lock is on; in fogManual 1 the slice count.
+        // fogManual 1 = Manual fog control; fogDenoise 0 none 1 reprojection 2 gaussian 3 both; ssgiRayMiss 0 none 1 sky 2 probes 3 both; fogBudget (existing key) is real again when set (FOGSSGI finding F0).
+        public int fogGridWidth = 0, fogManual = -1, fogSlices = -1, fogDenoise = -1, fogDirOnly = -1, ssgiSteps = -1, ssgiDenoise = -1, ssgiHalfDenoise = -1, ssgiSecondDenoise = -1, ssgiRayMiss = -1;
+        public float fogScreenPct = -1f, fogDepthExtent = -1f, fogDepthRatio = -1f, fogUniformity = -1f, fogCutoff = -1f, fogAniso = -2f, ssgiRadius = -1f, ssgiThickness = -1f; }
     [System.Serializable] public class MatOv { public string match; public float[] color; public float smoothness = -1f, metallic = -1f; }
     [System.Serializable] public class LightMul { public string name; public float mul = 1f; }
     static Flags F; static float scale = 100f;
+    // 2KPROFILE v01: what the active tier says about the companion lanes; their components poll these (one line each, see MANIFEST)
+    public static bool BounceFill { get { return F != null && F.bounceFill; } }
+    public static bool FogLook { get { return F != null && F.fogLook; } }
     public static string FlagsPath = ""; public static bool Fast;
 
     // TIERS v96: harness = any gate / proof / bench run. One list for the V68 mute below, QualityTiers (ignores the saved tier) and GameSettings (ignores saved options).
@@ -91,9 +101,22 @@ public static class RuntimeQuality
     // TIERS v96: re-applies runtime_flags.json + the (new) tier onto fresh Volume.profile clones. Called by QualityTiers.SetTier; look.json exposure is already on the shared profiles.
     public static void Reapply() { if (!System.IO.File.Exists(FlagsPath) && QualityTiers.FlagsJson == null) return; F = System.IO.File.Exists(FlagsPath) ? JsonUtility.FromJson<Flags>(System.IO.File.ReadAllText(FlagsPath)) : new Flags(); QualityTiers.Overlay(F); Apply(FlagsPath, false); }
 
+    // FOGMERGE v1 (from FPSA v1): Balance mode derives the fog grid from the DRS-scaled viewport, so 2560 wide has ~4.3x the voxels of the 1286 wide viewport the Ultra look was approved at (grid 268 x 151 x 170 = 6.9 M).
+    // Manual mode with the screen fraction = gridWidth / internal width gives every output size the approved grid. Only called when fogGridWidth > 0.
+    static void FogGrid(Fog fg, float internalWidth)
+    {
+        float pct = Mathf.Clamp(100f * F.fogGridWidth / Mathf.Max(1f, internalWidth), 100f / 16f, 50f);   // Fog min / max screenResolutionPercentage (6.25 .. 50)
+        fg.quality.Override(ScalableSettingLevelParameter.LevelCount);   // Custom: otherwise the asset's level table (Fog_Budget) wins over the values below
+        foreach (var prm in fg.parameters) if (prm is FogControlParameter fcp) fcp.Override(FogControl.Manual);   // the fogControlMode setter only writes .value; the volume stack ignores a parameter whose overrideState is false
+        fg.screenResolutionPercentage.Override(pct);
+        fg.volumeSliceCount.Override(F.fogSlices > 0 ? F.fogSlices : 170);
+    }
+
     // the part of Boot that depends on the flags (TIERS v96: split out of Boot so a tier switch can run it again; the body is unchanged except where marked)
     static void Apply(string path, bool first)
     {
+        float fogInternalW = 0f;   // FOGMERGE v1: only read when the grid lock is on
+        if (F.fogGridWidth > 0) { var LR0 = LookData.Get().runtime; float sc0 = Mathf.Clamp(F.renderScale, LR0.renderScaleMin, LR0.renderScaleMax); fogInternalW = Screen.width * (sc0 < 99.5f ? sc0 : 100f) * 0.01f; }   // same clamp as the render scale below
         foreach (var v in Object.FindObjectsByType<Volume>(FindObjectsSortMode.None))
         {
             var p = QualityTiers.Fresh(v, first); if (p == null) continue;   // TIERS v96: was v.sharedProfile (edits went into the shared asset)
@@ -106,6 +129,7 @@ public static class RuntimeQuality
             if (p.TryGet(out GlobalIllumination g2)) { g2.fullResolutionSS.Override(F.ssgiFullRes); if (F.ssgiQuality >= 0) g2.quality.Override(F.ssgiQuality); }
             if (p.TryGet(out ScreenSpaceReflection s2) && F.ssrQuality >= 0) s2.quality.Override(F.ssrQuality);
             if (p.TryGet(out Fog f2)) { if (F.fogQuality >= 0) f2.quality.Override(F.fogQuality); if (F.fogBudget >= 0f) { f2.quality.Override(ScalableSettingLevelParameter.LevelCount); f2.volumetricFogBudget = F.fogBudget; } }
+            if (F.fogGridWidth > 0 && F.fogManual < 0 && F.fogBudget < 0f && F.fogDepthRatio < 0f && p.TryGet(out Fog f3) && f3.enableVolumetricFog.value) FogGrid(f3, fogInternalW);   // FOGMERGE v1 grid lock (the FOGSSGI custom keys win over it)
             if (p.TryGet(out VolumetricClouds c2) && F.cloudMode >= 0) c2.cloudSimpleMode.Override((VolumetricClouds.CloudSimpleMode)F.cloudMode);
             if (F.skyExposure >= 0f && p.TryGet(out GradientSky gsk)) gsk.exposure.Override(F.skyExposure);
             if (F.skyMid != null && F.skyMid.Length >= 3 && p.TryGet(out GradientSky gsm)) { var cm = new Color(F.skyMid[0], F.skyMid[1], F.skyMid[2]); gsm.middle.Override(cm); gsm.bottom.Override(cm); }
@@ -121,6 +145,7 @@ public static class RuntimeQuality
             if (F.ssaoQuality >= 0 && p.TryGet(out ScreenSpaceAmbientOcclusion aoq)) aoq.quality.Override(F.ssaoQuality);
             if (F.bloomQuality >= 0 && p.TryGet(out Bloom blq)) blq.quality.Override(F.bloomQuality);
             if (F.motionBlur >= 0f && p.TryGet(out MotionBlur mbo)) mbo.intensity.Override(F.motionBlur);
+            FogSsgiTuning.ApplyVolume(p, F);   // FOGMERGE v1: fog / SSGI detail keys (all -1 = no-op)
         }
         if (first && F.matOverrides != null) foreach (var rr in Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None)) foreach (var mm in rr.materials) foreach (var mo in F.matOverrides) if (mm != null && !string.IsNullOrEmpty(mo.match) && mm.name.Contains(mo.match))
         {

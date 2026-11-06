@@ -1,0 +1,51 @@
+{
+  "note": "FIGHTERLOD v1 (laneFIGHTERLOD). Mid-distance MESH LOD for the skinned fighters, read by FighterLod.cs (HudCfg.ReadData). OFF by default: enabled=false (or -fighterlod:on / off / json on the command line for A/B on one exe). A row = one skinned renderer of one roster character (character = roster.json id, renderer = SkinnedMeshRenderer object name, '' = roster headRenderer, file = StreamingAssets\fighterlod\\*.mid.json made offline by _agents\\laneFIGHTERLOD\tools\\make_fighterlod.py: same skeleton / bindposes / top-4 skin / UV / material slot as the source, normals from the source). The mid mesh is swapped into the SAME SkinnedMeshRenderer. Switch = projected screen-space error of the mid mesh (errModelM in the file x lossyScale x Screen.height / (2 x depth x tan(fov/2))) below enterPx -> mid, above exitPx -> full (hysteresis), minHoldS between swaps; a row can override enterPx/exitPx or use fixed depths (enterM/exitM). ALWAYS the full mesh during a finisher (RTFinisher.Busy), while the finisher camera is active, holdAfterFinisherS afterwards and afterCutHoldS after MeshCut asked for it (CutLod.LodPick -> FighterLod.ForceHigh), so decap / cut_lod see the full mesh exactly as before. Replace Joan's head: make_fighterlod.py on the new GLB's head node + one row here (+ one in cut_lod.json for the cut proxy).",
+  "enabled": false,
+  "tickS": 0.1,
+  "enterPx": 0.35,
+  "exitPx": 0.5,
+  "minHoldS": 1.0,
+  "offDuringFinisher": true,
+  "offWithFinisherCamera": true,
+  "holdAfterFinisherS": 5.0,
+  "afterCutHoldS": 30.0,
+  "rescanS": 1.0,
+  "buildPerTick": 1,
+  "recalcTangents": true,
+  "log": true,
+  "rows": [
+    {
+      "character": "Joan",
+      "renderer": "Joan_Hair",
+      "file": "fighterlod/Joan_Hair_new.mid.json",
+      "enabled": true,
+      "enterPx": 0,
+      "exitPx": 0,
+      "enterM": 0,
+      "exitM": 0,
+      "note": "HEADFILL: mid LOD from Joan_head_new_lod1.glb (tools/glb_to_mid.py, hair node); enterPx/exitPx 0 = file defaults"
+    },
+    {
+      "character": "Joan",
+      "renderer": "Joan_Head",
+      "file": "fighterlod/Joan_Head_new.mid.json",
+      "enabled": true,
+      "enterPx": 0,
+      "exitPx": 0,
+      "enterM": 0,
+      "exitM": 0,
+      "note": "HEADFILL: mid LOD from Joan_head_new_lod1.glb (tools/glb_to_mid.py, head node); enterPx/exitPx 0 = file defaults"
+    },
+    {
+      "character": "Pitborn",
+      "renderer": "Body",
+      "file": "fighterlod/Pitborn_Body.mid.json",
+      "enabled": true,
+      "enterPx": 1.5,
+      "exitPx": 2.0,
+      "enterM": 0,
+      "exitM": 0,
+      "note": "249,999 -> 100,000 tris (198,474 -> 95,454 verts); p95 error 4.6 mm so the px thresholds are looser than the hair row: mid from about 7 m (1600p, fov 38.6), full again inside about 5.3 m. A/B arm B: file fighterlod/Pitborn_Body.mid60.json (60,000 tris, p95 6.0 mm, set enterPx 2.0 exitPx 2.6)"
+    }
+  ]
+}

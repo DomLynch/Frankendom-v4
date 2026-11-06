@@ -299,6 +299,10 @@
       {
         "victim": "Pitborn",
         "max": 3
+      },
+      {
+        "victim": "Sobek",
+        "max": 2
       }
     ],
     "_maxPerKillBy": "WEAPONSWAP v88: per-victim cap; a victim without a row uses maxPerKill. Pitborn drops 3: maul + pauldron pair + chest (Dom's loot design)."
@@ -791,6 +795,38 @@
       },
       "notes": "v2: kettle hat, round elliptical dome + flat even 3.8 cm brim (9 deg droop), 9 mm brass rolled edge, same steel material. 0 overlaps in all actions (min 0.6 mm brim-to-body in Roll, no overlap).",
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+    },
+    {
+      "id": "sobek_trident",
+      "name": "Sobek's trident",
+      "slot": "mainHand",
+      "glb": "Gear/sobek_trident_LOD0.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "SOBEKTUNE v1 (replaces the SOBEKWEAPON ornate stand-in): Strategy picked C14 = frankendom src/assets/source/weapons/trident.glb (dark bronze, 99,646 tris source, never edited, copy in laneSOBEKTUNE\\trident). LOD0 = 18000 tris with a 2K normal and 2K AO (R channel, occlusionTexture) baked from the 99.6k source (Cycles CPU), all textures PNG; LOD1 = 5400 tris (distance LOD: swap by distance is a Unity step, no loader exists yet). Length 2.55 m = 0.85 x Sobek 3.0 m, grip node = origin, butt 0.51 m behind it, tip 2.04 m ahead, nodes grip / tip / head / grip_off / grip_off_low. Extra cost vs the 3,120-tri stand-in: +14880 tris (LOD0), 2 x 2K maps + 2 x 1K maps in memory. | SOBEKMOVES: speedMul 1.08 (a bit quicker than the sword), reachMul 1.7 = median ReachScale for a 2.2 m tip (tools\\reach_table.py; fighter.scale assumed 1), damage/posture 1.0.",
+      "weapon": {
+        "id": "sobek_trident",
+        "twoHanded": false,
+        "damageMul": 1.0,
+        "speedMul": 1.08,
+        "reachMul": 1.7,
+        "postureMul": 1.0,
+        "cueWeapon": "sword",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      }
     }
   ]
 }

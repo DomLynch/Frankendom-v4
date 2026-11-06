@@ -52,7 +52,7 @@ public static class HudDraw
 
     // ---------------- basic fills ----------------
     public static void Fill(Rect r, Color c) { var o = GUI.color; GUI.color = Fade(c); GUI.DrawTexture(r, Texture2D.whiteTexture); GUI.color = o; }
-    public static void Tex(Rect r, Texture2D t, Color c) { if (t == null) return; var o = GUI.color; GUI.color = Fade(c); GUI.DrawTexture(r, t, ScaleMode.StretchToFill, true); GUI.color = o; }
+    public static void Tex(Rect r, Texture2D t, Color c) { if (t == null) return; if (ResGateProbe.On) ResGateProbe.Box(r); /* RESGATE v1 */ var o = GUI.color; GUI.color = Fade(c); GUI.DrawTexture(r, t, ScaleMode.StretchToFill, true); GUI.color = o; }
     public static void TexUV(Rect r, Texture2D t, Rect uv, Color c) { if (t == null) return; var o = GUI.color; GUI.color = Fade(c); GUI.DrawTextureWithTexCoords(r, t, uv, true); GUI.color = o; }
 
     // ---------------- text ----------------
@@ -60,7 +60,7 @@ public static class HudDraw
     public static void Text(Rect r, string s, string kind, int size, TextAnchor a, bool bold, Color c, bool italic = false)
     {
         if (string.IsNullOrEmpty(s) || c.a * Alpha <= 0.003f) return;
-        var st = Style(kind, size, a, bold, italic); var sh = HudCfg.Col(HudCfg.Get().colors.shadow); float d = Mathf.Max(1f, size / 13f);
+        var st = Style(kind, size, a, bold, italic); var sh = HudCfg.Col(HudCfg.Get().colors.shadow); float d = Mathf.Max(1f, size / 13f); if (ResGateProbe.On) ResGateProbe.Text(r, s, kind, size, a, bold); /* RESGATE v1 */
         OutlineLabel(st, r, s, c.a);   // HUDFIX v92
         st.normal.textColor = Fade(new Color(sh.r, sh.g, sh.b, sh.a * c.a)); GUI.Label(new Rect(r.x + d, r.y + d, r.width, r.height), s, st);
         st.normal.textColor = Fade(c); GUI.Label(r, s, st);
@@ -91,7 +91,7 @@ public static class HudDraw
     public static float Caps(float x, float y, float pivot, string text, string kind, int big, int small, float tracking, Color c, bool bold = true, bool shadow = true)
     {
         if (string.IsNullOrEmpty(text)) return 0f;
-        var L = Layout(text, kind, big, small, tracking, bold); if (c.a * Alpha <= 0.003f) return L.width;
+        var L = Layout(text, kind, big, small, tracking, bold); if (c.a * Alpha <= 0.003f) return L.width; if (ResGateProbe.On) ResGateProbe.Caps(x - L.width * pivot, y, L.width, big * HudCfg.Get().layout.lineH, text, big); /* RESGATE v1 */
         float x0 = x - L.width * pivot, h = big * HudCfg.Get().layout.lineH; var sh = HudCfg.Col(HudCfg.Get().colors.shadow); float d = Mathf.Max(1f, big / HudCfg.Get().layout.shadowDiv);
         for (int i = 0; i < L.runs.Length; i++)
         {

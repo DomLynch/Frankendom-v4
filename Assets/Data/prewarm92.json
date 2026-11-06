@@ -71,7 +71,8 @@
   "hitch": {
     "enabled": true,
     "hitchMs": 250.0,
-    "maxLogs": 20,
+    "maxLogs": 500,
     "note": "logs '[Prewarm92] HITCH <ms> ms ...' for any frame longer than hitchMs (unscaled, after the prewarm has started). VERIFY.md greps it."
-  }
+  },
+  "_hitch_note": "HITCH v1: maxLogs 20->500 so hitches after the first 20 are logged; no behaviour change"
 }

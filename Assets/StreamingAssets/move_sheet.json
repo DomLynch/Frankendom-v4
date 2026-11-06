@@ -289,6 +289,24 @@
       "separation": 1.95,
       "hand": "right",
       "dir": "none"
+    },
+    {
+      "id": "sobek_swing",
+      "subject": "Sobek",
+      "action": "press",
+      "press": "light",
+      "durationFrom": "move:light_right",
+      "separation": 3.6,
+      "dir": "none"
+    },
+    {
+      "id": "sobek_heavy",
+      "subject": "Sobek",
+      "action": "press",
+      "press": "heavy",
+      "durationFrom": "move:heavy_overhead",
+      "separation": 3.6,
+      "dir": "none"
     }
   ],
   "handcam": {

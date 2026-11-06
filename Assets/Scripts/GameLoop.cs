@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 public static class GameLoop
 {
     public enum Result { None, Victory, Defeat }
-    [Serializable] public class Row { public string id = ""; public string name = ""; public string title = ""; public float hpMul = 1f, damageMul = 1f; public int difficulty = 0; }
+    [Serializable] public class Row { public string id = ""; public string name = ""; public string title = ""; public float hpMul = 1f, damageMul = 1f; public int difficulty = 0; public bool inLadder = true; }   // INT107: false = a zone-only creature (never the 'next opponent' of the old flow)
     [Serializable] public class Table { public bool enabled = true; public int startIndex = 0, applyAfterFrames = 10; public float endlessHpStep = 0.08f, endlessDamageStep = 0.04f; public Row[] rows = new Row[0]; }
     [Serializable] class DiffFile { public DifficultyRow[] rows = new DifficultyRow[0]; }
 
@@ -31,12 +31,15 @@ public static class GameLoop
     public static bool LadderApplied; public static float BaseEnemyHp, AppliedHpMul = 1f, AppliedDmgMul = 1f; public static int AppliedDifficulty;
     public static DuelFighter Player, Enemy;
     public static string LastError = "";
+    // LADDER v92: the scene that hosts the default-enemy rows (set on the first fight), and "the scene the run started in cannot host the start row: load the right one" (driver Update)
+    public static string BaseScene = ""; public static bool StartReload; static int missLoad = -1, missCount;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     static void ResetStatics()
     {
         FightNumber = 1; OpponentIndex = 0; Attempt = 1; FightsStarted = 0; SceneLoads = 0; Outcome = Result.None; ScreenAlpha = 0f; FadeAlpha = 1f; Landed = Taken = Parries = 0; Finisher = ""; Seconds = 0f;
         Ready = false; LadderApplied = false; BaseEnemyHp = 0f; AppliedHpMul = AppliedDmgMul = 1f; AppliedDifficulty = 0; Player = Enemy = null; table = null; harness = null;
+        BaseScene = ""; StartReload = false; missLoad = -1; missCount = 0; Roster.SetEnemy("");   // LADDER v92 (Roster.SetEnemy("") does not load anything when the roster is not loaded yet)
     }
 
     // ---- harness switches ----
@@ -51,7 +54,7 @@ public static class GameLoop
             if (harness.HasValue) return harness.Value;
             bool h = false;
             foreach (var a in Environment.GetCommandLineArgs())
-                if (a == "-balanceauto" || a == "-shadowdiag" || a == "-autoplay" || a == "-finisherauto" || a == "-postureproof" || a == "-camproof" || a == "-flowproof" || a == "-gaps" || a == "-props" || a == "-record" || a == "-woundshot" /* WOUNDSHOT v84 */ || a == "-floorshot" /* FLOORSHOT v102 */ || a.StartsWith("-sheet:", StringComparison.Ordinal)) h = true;
+                if (a == "-balanceauto" || a == "-shadowdiag" || a == "-autoplay" || a == "-finisherauto" || a == "-postureproof" || a == "-camproof" || a == "-flowproof" || a == "-gaps" || a == "-props" || a == "-record" || a == "-woundshot" /* WOUNDSHOT v84 */ || a == "-floorshot" /* FLOORSHOT v102 */ || a.StartsWith("-sheet:", StringComparison.Ordinal) || a.StartsWith("-feetburst:", StringComparison.Ordinal) /* FEETCAP v1 */ || a.StartsWith("-feetclip:", StringComparison.Ordinal) /* laneWHIRLFIX */) h = true;
             if (LoopTestOn) h = false;
             harness = h; return h;
         }
@@ -83,11 +86,13 @@ public static class GameLoop
         return r;
     }
     public static Row CurrentRow() { float a, b; return RowAt(OpponentIndex, out a, out b); }
-    public static Row NextRow() { float a, b; return RowAt(OpponentIndex + 1, out a, out b); }
+    public static Row NextRow() { float a, b; return RowAt(LadderStep(OpponentIndex), out a, out b); }   // INT107: was OpponentIndex + 1
+    // INT107: next ladder index, skipping rows with inLadder=false (zone-only creatures such as the zone-2 boss; ZoneRuntime still finds them by id). Never skips the last row.
+    public static int LadderStep(int index) { var t = Opponents(); int i = index + 1; while (i < t.rows.Length - 1 && t.rows[i] != null && !t.rows[i].inLadder) i++; return i; }
     static string Cap(string s) { return string.IsNullOrEmpty(s) ? s : char.ToUpperInvariant(s[0]) + s.Substring(1).ToLowerInvariant(); }
     public static string EnemyName() { var r = CurrentRow(); return string.IsNullOrEmpty(r.name) ? Roster.EnemyName.ToUpperInvariant() : r.name; }
 
-    static DifficultyRow DifficultyRowFor(int id)
+    public static DifficultyRow DifficultyRowFor(int id)   // ZONES v1: was private
     {
         var txt = HudCfg.ReadData("difficulty.json"); if (txt == null) return null;
         try { var f = JsonUtility.FromJson<DiffFile>(txt); if (f != null && f.rows != null) foreach (var r in f.rows) if (r != null && r.id == id) return r; } catch { }
@@ -120,12 +125,63 @@ public static class GameLoop
     public static void Next()
     {
         if (Outcome != Result.Victory && !HudCfg.Get().screens.nextOnDefeat) { Retry(); return; }
-        Driver()?.Go(delegate { FightNumber++; OpponentIndex++; Attempt = 1; Reload(); });
+        Driver()?.Go(delegate { FightNumber++; OpponentIndex = LadderStep(OpponentIndex); Attempt = 1; Reload(); });
     }
     static void Reload()
     {
         ResetGlobals();
+        // LADDER v92: which enemy / scene does the current ladder row want? No character / scene columns = roster default enemy + reload of the active scene = exactly the old behaviour (LadderResolve, tested outside Unity)
+        var row = CurrentRow(); string chr, scn; ColumnsAt(OpponentIndex, out chr, out scn);
+        var plan = LadderResolve.Resolve(LadderOn, chr, scn, Roster.DefaultEnemyId, BaseScene, SceneManager.GetActiveScene().name, Cols().scenePattern);
+        if (plan.setEnemy) Roster.SetEnemy(plan.enemy);
+        if (plan.scene.Length > 0)
+        {
+            if (Application.CanStreamedLevelBeLoaded(plan.scene)) { Debug.Log("[GameLoop] row '" + row.id + "' enemy '" + Roster.EnemyId + "' scene '" + plan.scene + "' (" + plan.why + ")"); SceneManager.LoadScene(plan.scene); return; }
+            LastError = "scene '" + plan.scene + "' is not in the build"; Debug.LogError("[GameLoop] " + LastError + " (row '" + row.id + "'): falling back to the default enemy in the active scene");
+            Roster.SetEnemy("");
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    // LADDER v92: the optional ladder columns of opponents.json (row "character" / "scene", top-level "baseScene" / "scenePattern"), parsed beside Table / Row so those two declarations stay untouched
+    [Serializable] class LColRow { public string character = "", scene = ""; }
+    [Serializable] class LColTable { public string baseScene = "", scenePattern = ""; public LColRow[] rows = new LColRow[0]; }
+    static LColTable lcols; static Table lcolsFor;
+    static LColTable Cols()
+    {
+        var t = Opponents();
+        if (lcols != null && lcolsFor == t) return lcols;
+        lcolsFor = t; lcols = new LColTable();
+        var txt = HudCfg.ReadData("opponents.json");
+        if (txt != null) { try { var c = JsonUtility.FromJson<LColTable>(txt); if (c != null) lcols = c; } catch (Exception) { } }
+        if (lcols.rows == null) lcols.rows = new LColRow[0];
+        return lcols;
+    }
+    /// <summary>Ladder columns of the row at an ordinal index (same clamp as RowAt). "" = not set.</summary>
+    public static void ColumnsAt(int index, out string character, out string scene)
+    {
+        var c = Cols(); character = ""; scene = ""; if (c.rows.Length == 0) return;
+        var r = c.rows[Mathf.Clamp(index, 0, c.rows.Length - 1)]; if (r == null) return;
+        character = r.character ?? ""; scene = r.scene ?? "";
+    }
+    /// <summary>LADDER v92: first fight of a run. Remembers the base scene and puts the start row's enemy into Roster; StartReload = this scene cannot host that row.</summary>
+    public static void LadderStart(Scene s)
+    {
+        BaseScene = string.IsNullOrEmpty(Cols().baseScene) ? s.name : LadderResolve.SceneName(Cols().baseScene);
+        if (!LadderOn) return;
+        string chr, scn; ColumnsAt(OpponentIndex, out chr, out scn);
+        var plan = LadderResolve.Resolve(true, chr, scn, Roster.DefaultEnemyId, BaseScene, s.name, Cols().scenePattern);
+        if (plan.setEnemy) Roster.SetEnemy(plan.enemy);
+        StartReload = plan.scene.Length > 0;
+    }
+    public static void ReloadForStart() { Reload(); }
+    /// <summary>LADDER v92: called while the driver cannot find both fighters; one error per scene load after ~5 s that names what is missing (a ladder row asking for a character the loaded scene does not hold).</summary>
+    public static void WarnMissing(DuelFighter player, DuelFighter enemy)
+    {
+        if (missLoad != SceneLoads) { missLoad = SceneLoads; missCount = 0; }
+        if (missCount < 0) return;
+        if (++missCount < 25) return;
+        missCount = -1;
+        Debug.LogError("[GameLoop] no " + (player == null ? "player object '" + Roster.PlayerObject + "' " : "") + (enemy == null ? "enemy object '" + Roster.EnemyObject + "' (roster enemy '" + Roster.EnemyId + "') " : "") + "with a DuelFighter in scene '" + SceneManager.GetActiveScene().name + "': the ladder row asks for a character this scene does not hold (opponents.json character / scene / scenePattern, EnemySwap)");
     }
     /// <summary>Everything that can outlive a scene and still be wrong in the next one.</summary>
     public static void ResetGlobals()
@@ -313,6 +369,7 @@ public sealed class GameLoopDriver : MonoBehaviour
         if (active)
         {
             if (GameLoop.SceneLoads == 1) GameLoop.OpponentIndex = Mathf.Max(0, GameLoop.Opponents().startIndex);
+            if (GameLoop.SceneLoads == 1) GameLoop.LadderStart(s);   // LADDER v92
             if (GameLoop.SceneLoads == 1) SaveSlot.ApplyLadder();   // REBIND v100: resume the saved ladder row
             GameLoop.FightsStarted++;
             SaveSlot.FightStarted(GameLoop.OpponentIndex, GameLoop.FightNumber);   // REBIND v100
@@ -326,7 +383,7 @@ public sealed class GameLoopDriver : MonoBehaviour
         nextFind = Time.unscaledTime + 0.2f;
         DuelFighter d = null, p = null;
         foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) { if (f.name.Contains(Roster.PlayerObject)) d = f; else if (f.name.Contains(Roster.EnemyObject)) p = f; }   // laneHUD2 v83: Roster, not literals
-        if (d != null && p != null) { GameLoop.Player = d; GameLoop.Enemy = p; frames = 0; }
+        if (d != null && p != null) { GameLoop.Player = d; GameLoop.Enemy = p; frames = 0; } else GameLoop.WarnMissing(d, p);   // LADDER v92
     }
 
     void OnContact(DuelFighter a, DuelFighter d, string type, bool heavy, bool perfect)
@@ -342,7 +399,9 @@ public sealed class GameLoopDriver : MonoBehaviour
         float dt = Time.unscaledDeltaTime; var H = HudCfg.Get();
         if (!Mathf.Approximately(GameLoop.FadeAlpha, fadeTarget)) GameLoop.FadeAlpha = Mathf.MoveTowards(GameLoop.FadeAlpha, fadeTarget, dt / Mathf.Max(0.01f, fadeDur));
         if (pending != null && GameLoop.FadeAlpha >= 0.999f) { var p = pending; pending = null; try { p(); } catch (Exception e) { GameLoop.LastError = e.Message; Debug.LogError("[GameLoop] transition failed: " + e); } return; }
+        if (GameLoop.StartReload) { GameLoop.StartReload = false; GameLoop.ReloadForStart(); return; }   // LADDER v92: the scene the run started in cannot host the start row
         if (!active) return;
+        if (ZoneRuntime.Owns) return;   // ZONES v1: zones own the fight (no victory card, no per-fight scene reload); ZoneRuntime sets GameLoop.Player / Enemy / Ready
         if (GameLoop.Player == null || GameLoop.Enemy == null) { if (Time.unscaledTime >= nextFind) FindFighters(); return; }
 
         frames++;

@@ -103,6 +103,40 @@
             ]
         },
         {
+            "name": "Sobek",
+            "enabled": true,
+            "debug": false,
+            "debugEvery": 60,
+            "weight": 1.0,
+            "ankleHeight": 0.3,
+            "rayUp": 0.8,
+            "rayDown": 1.2,
+            "ignoreLayers": [
+                8,
+                9
+            ],
+            "pelvisDownMax": 0.5,
+            "pelvisUpMax": 0.25,
+            "pelvisSmooth": 0.06,
+            "plantSnap": 0.03,
+            "maxLift": 0.4,
+            "levelWeight": 1.0,
+            "toeFlatWeight": 1.0,
+            "stateBlend": 0.1,
+            "states": [
+                {
+                    "states": [
+                        "death",
+                        "knockdown",
+                        "get_up",
+                        "hit_heavy"
+                    ],
+                    "weight": 0.25
+                }
+            ],
+            "note": "SOBEKDATA: (measure) ankleHeight / lift are Pitborn x1.8 for a 3 m body (guess); measure the sole on the bound rig"
+        },
+        {
             "name": "*",
             "enabled": false,
             "debugEvery": 10,

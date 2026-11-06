@@ -1,0 +1,64 @@
+{
+  "_about": "Editor-only data for Assets/Editor/EnemySwap.cs (Hades > Enemy menu), the enemy-side twin of joan_swap.json. One row in 'enemies' = one new opponent: its roster.json row (objectName, modelGlb, animGlb, controller, guardMask, heightM, weapon, armoured) names the files, this row says where the glb comes from and how the scene object is built. EMPTY 'enemies' = every menu logs 'nothing to do' and touches nothing; the game plays exactly as before. Each row builds Assets/Scenes/HadesSlice_<id>.unity = a fresh copy of baseScene whose enemy root is the new character (cloned from the template's root, all scene references re-pointed, template deleted, exactly one active fighter per side). The ladder picks it with opponents.json rows {\"character\": \"<id>\"} (scenePattern \"HadesSlice_{id}\"). Row fields: id (roster id), sourceGlb / sourceAnimGlb (optional, copied to the roster row's modelGlb / animGlb when missing or older), templateId (\"\" = this file's templateId, then the roster's default enemy), scene (\"\" = scenePattern), inPlace (build into baseScene instead, template stays inactive), pruneOthers, keepWeapon (clone the template's weapon socket onto the new right hand), rightHand / middle / socket / socketReach (bone names of the 106-joint rig), glbHeightM (fallback height), hideNodePrefixes (glb nodes to hide, e.g. 'Layer_'), materials[] (glbMaterial name prefix -> Mats/*.mat built from Tex/<tex>_base.<ext> + _normal.jpg). See _agents/laneLADDER/NEW_ENEMY_CHECKLIST.md.",
+  "baseScene": "Assets/Scenes/HadesSlice.unity",
+  "scenePattern": "Assets/Scenes/HadesSlice_{id}.unity",
+  "templateId": "",
+  "enemies": [
+  {
+    "id": "Sobek",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+         {
+          "glbMaterial": "sobek_body",
+          "mat": "Assets/Characters/Sobek/Mats/sobek_body_0.mat",
+          "tex": "sobek_body",
+          "ext": "jpg",
+          "smoothness": 0.25,
+          "alphaClip": 0.0,
+          "doubleSided": false
+         },
+         {
+          "glbMaterial": "sobek_head",
+          "mat": "Assets/Characters/Sobek/Mats/sobek_head_0.mat",
+          "tex": "sobek_head",
+          "ext": "jpg",
+          "smoothness": 0.25,
+          "alphaClip": 0.0,
+          "doubleSided": false
+         }
+        ],
+    "note": "SOBEKDATA: sourceGlb empty: Tools\\clip_build.py writes Assets/Characters/Sobek/Sobek_combat.glb directly. materials empty: HdrpCharMats (hdrp_char_mats.json) skins him.  SOBEKWEAPON: keepWeapon true + socket WeaponSocket_R: the socket (a clone of the template's, LODs of the template weapon hidden by WeaponSwap) carries the trident. Unproven: EnemySwap on this rig."
+  }
+],
+  "_example_row_not_used": {
+    "id": "NewMonster",
+    "sourceGlb": "C:/Users/dom12/Documents/kits_out/3d/newmonster/newmonster_combat.glb",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0,
+    "hideNodePrefixes": [],
+    "materials": [
+      { "glbMaterial": "Body", "mat": "Assets/Characters/NewMonster/Mats/newmonster_body_0.mat", "tex": "newmonster_body", "ext": "jpg", "smoothness": 0.3 }
+    ]
+  }
+}

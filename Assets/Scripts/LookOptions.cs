@@ -19,8 +19,9 @@ public static class LookOptions
     [Serializable] public class Plate { public bool on; public float plateAlpha = 0f; }
     [Serializable] public class WoundD { public bool on; public float colorMul = 0.5f, sizeMul = 0.7f; public int affectNormal = -1, affectAO = -1; public float endAngleFade = -1f; /* // GOOSEBACKLOG2 v102: -1 = keep wounds.json */ }
     [Serializable] public class Vig { public bool on; public float intensity = 0.34f; }
-    [Serializable] public class Root { public Door doorwayDepth = new Door(); public Plate endPlate = new Plate(); public WoundD woundMarks = new WoundD(); public Vig sceneVignette = new Vig(); public Wash deathWash = new Wash(); public Spike doorwaySpikeStrip = new Spike(); public Floor floorNormal = new Floor(); public Blood finisherBlood = new Blood(); public Cap combatCamCap = new Cap(); public ReframeRow camReframe = new ReframeRow(); /* // GOOSEBACKLOG2 v102 */ }
+    [Serializable] public class Root { public Door doorwayDepth = new Door(); public Plate endPlate = new Plate(); public WoundD woundMarks = new WoundD(); public Vig sceneVignette = new Vig(); public Wash deathWash = new Wash(); public Spike doorwaySpikeStrip = new Spike(); public Floor floorNormal = new Floor(); public Blood finisherBlood = new Blood(); public Cap combatCamCap = new Cap(); public ReframeRow camReframe = new ReframeRow(); /* // GOOSEBACKLOG2 v102 */ public PlugFix terrainPlug = new PlugFix(); /* // laneWHIRLFIX */ }
 
+    [Serializable] public class PlugFix { public bool on; public string[] names = { "TerrainCentrePlug" }; public float dropM = 0.05f; }   // laneWHIRLFIX
     static Root cfg;
     public static Root Cfg()
     {
@@ -42,6 +43,7 @@ public static class LookOptions
         if (cfg.endPlate == null) cfg.endPlate = new Plate();
         if (cfg.woundMarks == null) cfg.woundMarks = new WoundD();
         if (cfg.sceneVignette == null) cfg.sceneVignette = new Vig();
+        if (cfg.terrainPlug == null) cfg.terrainPlug = new PlugFix();   // laneWHIRLFIX
         return cfg;
     }
 
@@ -69,13 +71,14 @@ public static class LookOptions
     public static float WoundSizeMul() { var w = Cfg().woundMarks; return w.on ? w.sizeMul : 1f; }
 
     static readonly Dictionary<string, Material> clones = new Dictionary<string, Material>();
+    static readonly Dictionary<Transform, float> plugY0 = new Dictionary<Transform, float>();   // laneWHIRLFIX
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cfg = null; clones.Clear(); }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cfg = null; clones.Clear(); plugY0.Clear(); /* laneWHIRLFIX */ }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
-        var c = Cfg(); if (!c.doorwaySpikeStrip.on && !c.floorNormal.on && !c.doorwayDepth.on && !c.sceneVignette.on) return;   // GOOSEBACKLOG v100: + doorwayDepth, sceneVignette
+        var c = Cfg(); if (!c.doorwaySpikeStrip.on && !c.floorNormal.on && !c.doorwayDepth.on && !c.sceneVignette.on && !c.terrainPlug.on) return;   /* laneWHIRLFIX */   // GOOSEBACKLOG v100: + doorwayDepth, sceneVignette
         var go = new GameObject("LookOptionsApply"); UnityEngine.Object.DontDestroyOnLoad(go); go.AddComponent<Applier>();
     }
 
@@ -111,6 +114,17 @@ public static class LookOptions
                         Debug.Log("[LookOptions] doorway spike strip dimmed to " + c.doorwaySpikeStrip.emberIntensity.ToString("F2") + ": " + t.name);
                     }
                     else if (t.name == c.doorwaySpikeStrip.hideObjects[k] && t.gameObject.activeSelf) { t.gameObject.SetActive(false); Debug.Log("[LookOptions] doorway spike strip hidden: " + t.name); }
+            }
+        }
+        if (c.terrainPlug.on && c.terrainPlug.names != null)   // laneWHIRLFIX: TerrainCentrePlug (HdrpGround.EnsureTerrainCentrePlug) is coplanar with the terrain cap (y 0), same material, other UV and no tangents: it z-fights under TAA jitter = the circling flicker at the feet. Sunk dropM under the cap it still fills a hole but can never win the depth test. Idempotent (absolute y from the first-seen y).
+        {
+            var all = Resources.FindObjectsOfTypeAll<Transform>();
+            for (int i = 0; i < all.Length; i++)
+            {
+                var t = all[i]; if (t == null || !t.gameObject.scene.IsValid() || Array.IndexOf(c.terrainPlug.names, t.name) < 0) continue;
+                float y0; if (!plugY0.TryGetValue(t, out y0)) { y0 = t.position.y; plugY0[t] = y0; }
+                float want = y0 - Mathf.Max(0f, c.terrainPlug.dropM); var p = t.position;
+                if (Mathf.Abs(p.y - want) > 1e-4f) { t.position = new Vector3(p.x, want, p.z); Debug.Log("[LookOptions] terrain plug sunk to y " + want.ToString("F3") + ": " + t.name); }
             }
         }
         if (c.doorwayDepth.on)   // GOOSEBACKLOG v100: faint red haze behind the threshold = depth cue; only the light's volumetric dimmer and the inside fog density change

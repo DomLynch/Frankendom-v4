@@ -8,8 +8,10 @@
   "cover": {
     "_about": "Opaque IMGUI cover drawn from the scene load until the last warm render + holdFramesAfter frames have passed. Player runs only (see inHarness).",
     "enabled": true,
-    "r": 0.0, "g": 0.0, "b": 0.0,
-    "holdFramesAfter": 2
+    "r": 0.0,
+    "g": 0.0,
+    "b": 0.0,
+    "holdFramesAfter": 8
   },
   "holdSim": {
     "_about": "true = Duel.Frozen while the warm renders run, so the fight does not start behind the cover. OFF by default: the harness frame counts and simhash must not move. Turn on only after the A/B of warmRenders alone.",
@@ -18,5 +20,6 @@
   "inHarness": {
     "_about": "Proof / balance / camproof / flowproof runs: the warm renders still happen (render-only, so the first-hitch numbers in their logs are comparable with a player run); the cover and the sim hold never do.",
     "warmRenders": true
-  }
+  },
+  "_hitch_note": "HITCH v1 (suspected): loop.log shows the 1200 ms stall at frame 4, AFTER the 2 warm renders (13+4 ms) and before cover release; cover hold 2->8 frames keeps it black through the stall. Player-only; harness has no cover."
 }

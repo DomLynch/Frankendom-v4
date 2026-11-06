@@ -25,6 +25,11 @@
     {
       "id": "Pitborn",
       "rig": "mixamo106"
+    },
+    {
+      "id": "Sobek",
+      "rig": "mixamo106",
+      "note": "SOBEKDATA: rig profile mixamo106; SOBEKWEAPON: its socket WeaponSocket_R is now used (trident)."
     }
   ],
   "todo": {

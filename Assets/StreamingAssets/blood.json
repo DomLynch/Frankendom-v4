@@ -88,6 +88,12 @@
    "bloodScale": 0.65,
    "sparks": true,
    "flash": true
+  },
+  {
+    "match": "Sobek",
+    "bloodScale": 1.6,
+    "sparks": false,
+    "flash": false
   }
  ],
  "ground": {

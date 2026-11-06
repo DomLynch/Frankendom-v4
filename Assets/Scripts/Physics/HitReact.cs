@@ -112,11 +112,12 @@ public class HitReact : MonoBehaviour
     static void Boot() { SceneManager.sceneLoaded -= OnSceneLoaded; SceneManager.sceneLoaded += OnSceneLoaded; AttachAll(); }
     static void OnSceneLoaded(Scene s, LoadSceneMode m) { AttachAll(); }
 
-    static void AttachAll()
-    {
+    static void AttachAll() { AttachAll(null); }   // ZONES-ATTACH v1 (INT107)
+    public static void AttachTo(GameObject root) { AttachAll(root); }   // same want-check, one object (ZoneRuntime.SpawnOne for a prefab creature)
+    static void AttachAll(GameObject root){
         var c = Cfg;
         if (c == null || !c.hit.enabled || !PhysicsClock.PhysicsOn || !PhysicsClock.Scripted) return;   // INTPHYS v99: master / clock switch off = no proxies
-        var all = FindObjectsByType<DuelFighter>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        var all = (root != null ? root.GetComponentsInChildren<DuelFighter>(true) : FindObjectsByType<DuelFighter>(FindObjectsInactive.Exclude, FindObjectsSortMode.None));
         for (int i = 0; i < all.Length; i++) if (all[i] != null && all[i].GetComponent<HitReact>() == null) all[i].gameObject.AddComponent<HitReact>();
     }
 

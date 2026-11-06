@@ -1,0 +1,44 @@
+{
+ "_notes": "FLOORHUNT v1 measuring harness (never ship). Does NOTHING unless the player is started with -hide:<tok>[,<tok>...]. Tokens are resolved here, so adding one is a data edit. -hide:list logs the table. Props groups come from props_layout.json 'groups' (token props, or props:<GroupName>).",
+ "applyDelaySec": 2.0,
+ "rescanSec": 1.0,
+ "waterNames": ["Styx_Water_HDRP", "Styx_Water"],
+ "woundDecalPrefix": "WoundDecal_",
+ "frameToggles": {
+  "sss": "SubsurfaceScattering",
+  "decals": "Decals",
+  "motionvec": "MotionVectors",
+  "objmotion": "ObjectMotionVectors",
+  "lightlayers": "LightLayers",
+  "shadowmask": "Shadowmask",
+  "opaque": "OpaqueObjects",
+  "transparent": "TransparentObjects",
+  "transprepass": "TransparentPrepass",
+  "transpost": "TransparentPostpass",
+  "refraction": "Refraction",
+  "distortion": "Distortion",
+  "transmission": "Transmission",
+  "waterfs": "Water",
+  "postprocess": "Postprocess",
+  "afterpost": "AfterPostprocess",
+  "aafs": "Antialiasing",
+  "depthprepass": "DepthPrepassWithDeferredRendering"
+ },
+ "aaModes": {
+  "aa_none": "None",
+  "aa_fxaa": "FastApproximateAntialiasing",
+  "aa_taa": "TemporalAntialiasing",
+  "aa_smaa": "SubpixelMorphologicalAntiAliasing"
+ },
+ "tokenHelp": {
+  "water": "SetActive(false) on every WaterSurface and on waterNames",
+  "props": "SetActive(false) on all prop group roots (props_layout.json groups); props:<Group> for one",
+  "fighters": "Renderer.enabled=false on every Fighter's renderers (sim keeps running)",
+  "wounddecals": "DecalProjector.enabled=false where name starts with woundDecalPrefix",
+  "decalsall": "DecalProjector.enabled=false on every projector (near-detail + wound)",
+  "drs_off": "camera and HDAdditionalCameraData allowDynamicResolution=false (STP/DRS path off at renderScale 100)",
+  "aa_*": "HDAdditionalCameraData.antialiasing = mode in aaModes",
+  "frameToggles": "customRenderingSettings=true, field forced false + override-mask bit set; effective value read back from HDCamera.frameSettings and logged",
+  "depthprepass": "only meaningful with Deferred lit mode; HDRP here is ForwardOnly so effective value is logged and expected unchanged"
+ }
+}

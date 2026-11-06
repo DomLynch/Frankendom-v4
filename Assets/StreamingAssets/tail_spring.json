@@ -1,0 +1,143 @@
+{
+ "note": "SOBEKDATA v104: Sobek secondary motion, PRESENTATION ONLY (read by Scripts/TailSpring.cs, LateUpdate after the Animator, render time only: no sim read, no RNG, simhash unchanged). Master switch `enabled` (false = TailSpring is never attached; ships dark, set true after a look). characters[].name = roster id; per row `enabled`. world: solver (maxSubstepS, maxSubsteps, maxFrameS), gravity, teleport snap, fade-in. chain: bones parents-first (names are the EXISTING fk_* / twist joints, re-parented in the Sobek glb only), stiffness 1/s^2, damping 1/s, gravity x world.gravityMps2, maxAngleDeg per bone, rootInfluence..tipInfluence blend along the chain (0 = animated pose), tipAxis/tipLengthM aim a bone that has no listed child. Every number is a (guess) start value to be tuned by eye; tipLengthM values are (measure) on the generated rig. Combat code must not read these bones.",
+ "version": 1,
+ "enabled": false,
+ "world": {
+  "gravityDir": {
+   "x": 0,
+   "y": -1,
+   "z": 0
+  },
+  "gravityMps2": 9.81,
+  "maxSubstepS": 0.0083,
+  "maxSubsteps": 4,
+  "maxFrameS": 0.1,
+  "teleportM": 2.0,
+  "fadeInS": 0.5,
+  "minBoneLenM": 0.001
+ },
+ "characters": [
+  {
+   "name": "Sobek",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 120,
+   "chains": [
+    {
+     "name": "tail",
+     "enabled": true,
+     "bones": [
+      "fk_skirt_b",
+      "fk_cape_01",
+      "fk_cape_02",
+      "fk_cape_03",
+      "fk_hair_back_1",
+      "fk_hair_back_2",
+      "fk_hair_back_3"
+     ],
+     "stiffness": 45.0,
+     "damping": 5.0,
+     "gravity": 0.15,
+     "maxAngleDeg": 18.0,
+     "rootInfluence": 0.3,
+     "tipInfluence": 1.0,
+     "tipAxis": {
+      "x": 0,
+      "y": 1,
+      "z": 0
+     },
+     "tipLengthM": 0.6,
+     "follow": {
+      "_about": "SOBEKTUNE v1: used ONLY by Tools-side tail_bake.py (baked into the clips, presentation only). Runtime TailSpring.cs (JsonUtility) ignores this block. stiffnessRoot/Tip = 1/s^2 pull toward the animated chain point, linear root to tip (Kaiju spring was 45 flat: too stiff to hang); gravityMul x world.gravityMps2; damping 1/s; maxAngleDeg per bone from its animated direction (no clamp = 180); floorM = metres above the floor the tail points may not go below (tail half-thickness, guess); stateStiffnessMul scales both stiffnesses per clip (death/knockdown: tail lets go and lies down); loopStates are simulated prerollPasses extra times so the loop seam is continuous. (guess) all, tuned by eye on the pose sheet. maxRootBendDeg = first bone vs the hips-animated direction; maxJointBendDeg = every later joint vs the previous segment around the animated bend (SOBEKTUNE measured: unlimited bends gave tail p99 stretch 2.0-2.2 and p01 compression 0.49-0.57 in death / get_up, the bind gate is 2.0 / 0.5).",
+      "stiffnessRoot": 150.0,
+      "stiffnessTip": 45.0,
+      "gravityMul": 1.0,
+      "damping": 4.0,
+      "floorM": 0.12,
+      "substepS": 0.01,
+      "constraintIters": 4,
+      "prerollPasses": 2,
+      "loopStates": [
+       "idle",
+       "walk",
+       "run",
+       "guard_idle",
+       "guard_left",
+       "guard_right",
+       "guard_up",
+       "stagger_loop",
+       "strafe_L",
+       "strafe_R"
+      ],
+      "stateStiffnessMul": {
+       "death": 0.06,
+       "knockdown": 0.15,
+       "get_up": 0.5
+      },
+      "maxSpeedMps": 14.0,
+      "maxJointBendDeg": 32.0,
+      "maxRootBendDeg": 70.0
+     }
+    },
+    {
+     "name": "sails",
+     "enabled": true,
+     "bones": [
+      "fk_socket_back",
+      "fk_skirt_f"
+     ],
+     "stiffness": 90.0,
+     "damping": 9.0,
+     "gravity": 0.0,
+     "maxAngleDeg": 10.0,
+     "rootInfluence": 0.6,
+     "tipInfluence": 0.6,
+     "tipAxis": {
+      "x": 0,
+      "y": 1,
+      "z": 0
+     },
+     "tipLengthM": 0.4
+    },
+    {
+     "name": "fin_l",
+     "enabled": true,
+     "bones": [
+      "lowerarm_twist_02_l"
+     ],
+     "stiffness": 80.0,
+     "damping": 9.0,
+     "gravity": 0.0,
+     "maxAngleDeg": 14.0,
+     "rootInfluence": 0.5,
+     "tipInfluence": 0.5,
+     "tipAxis": {
+      "x": 0,
+      "y": 1,
+      "z": 0
+     },
+     "tipLengthM": 0.2
+    },
+    {
+     "name": "fin_r",
+     "enabled": true,
+     "bones": [
+      "lowerarm_twist_02_r"
+     ],
+     "stiffness": 80.0,
+     "damping": 9.0,
+     "gravity": 0.0,
+     "maxAngleDeg": 14.0,
+     "rootInfluence": 0.5,
+     "tipInfluence": 0.5,
+     "tipAxis": {
+      "x": 0,
+      "y": 1,
+      "z": 0
+     },
+     "tipLengthM": 0.2
+    }
+   ]
+  }
+ ]
+}

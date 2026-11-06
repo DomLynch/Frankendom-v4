@@ -12,13 +12,25 @@
             "character": "Joan",
             "renderer": "Joan_Head",
             "anchorBone": "mixamorig:Head",
-            "file": "cutlod/Joan_Head.cutlod.json"
+            "file": "cutlod/Joan_Head_new.cutlod.json"
         },
         {
             "character": "Joan",
             "renderer": "Joan_Hair",
             "anchorBone": "mixamorig:Head",
-            "file": "cutlod/Joan_Hair.cutlod.json"
+            "file": "cutlod/Joan_Hair_new.cutlod.json"
+        },
+        {
+            "character": "Sobek",
+            "renderer": "Sobek_Head",
+            "anchorBone": "mixamorig:Head",
+            "units": [
+                "head",
+                "head_crown",
+                "head_split"
+            ],
+            "file": "cutlod/Sobek_Head.cutlod.json",
+            "note": "laneSOBEKBIND: split head renderer Sobek_Head (150k tris), proxy 12k tris made by make_cutlod.py from Sobek_bound.glb. Body is 250k (< maxTrisNoProxy 300000) so it needs no row."
         }
     ]
 }

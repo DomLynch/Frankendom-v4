@@ -15,7 +15,7 @@ using UnityEngine.Rendering.HighDefinition;
 // (the shared profile asset is never edited). The clone path is UNTESTED; if it misbehaves set game_settings.json graphics.applyAtRuntime=false (applies at the next launch).
 public static class QualityTiers
 {
-    [System.Serializable] public class TierInfo { public string name = "", label = "", note = ""; public int minVramMb = 0, targetFps = 0; }
+    [System.Serializable] public class TierInfo { public string name = "", label = "", note = ""; public int minVramMb = 0, targetFps = 0; public string level = ""; public bool suggest = true; }   // 2KPROFILE v01: level = QualitySettings level (empty = the tier name capitalised), suggest = SuggestedTier() may pick it
     [System.Serializable] class Head { public string defaultTier = "ultra", baseTier = "ultra", prefsKey = "gfx.tier"; public TierInfo[] tiers = new TierInfo[0]; }
     [System.Serializable] class Mul { public float lodBiasMul = 1f; }
     struct PBase { public int max; public float rate, dist; }
@@ -57,7 +57,7 @@ public static class QualityTiers
         tier = (tier ?? DefaultTier).ToLowerInvariant();
         if (!Known(tier)) { Debug.LogWarning("QualityTiers: unknown tier '" + tier + "', using " + DefaultTier); tier = DefaultTier; }
         Current = tier;
-        string level = char.ToUpperInvariant(tier[0]) + tier.Substring(1);
+        string level = LevelOf(tier);   // 2KPROFILE v01: was char.ToUpperInvariant(tier[0]) + tier.Substring(1)
         int idx = System.Array.IndexOf(QualitySettings.names, level);
         if (idx >= 0) { if (idx != QualitySettings.GetQualityLevel()) QualitySettings.SetQualityLevel(idx, true); }
         else Debug.LogWarning("QualityTiers: no QualitySettings level named " + level + " (apply the staged QualitySettings.asset)");
@@ -69,11 +69,18 @@ public static class QualityTiers
             + " gpu=" + SystemInfo.graphicsDeviceName + " api=" + SystemInfo.graphicsDeviceType + " vram=" + SystemInfo.graphicsMemorySize + "MB");
     }
 
+    // 2KPROFILE v01: the QualitySettings level of a tier: its json "level", else the tier name capitalised (low -> Low)
+    static string LevelOf(string tier)
+    {
+        foreach (var ti in Tiers) if (ti != null && string.Equals(ti.name, tier, System.StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(ti.level)) return ti.level;
+        return char.ToUpperInvariant(tier[0]) + tier.Substring(1);
+    }
+
     // highest tier (list order is low -> ultra) whose minVramMb fits this GPU; used for the 'recommended' label and the optional first-run pick
     public static string Suggested()
     {
         string best = null; int vram = SystemInfo.graphicsMemorySize;
-        foreach (var ti in Tiers) if (ti != null && !string.IsNullOrEmpty(ti.name) && vram >= ti.minVramMb) best = ti.name.ToLowerInvariant();
+        foreach (var ti in Tiers) if (ti != null && ti.suggest && !string.IsNullOrEmpty(ti.name) && vram >= ti.minVramMb) best = ti.name.ToLowerInvariant();   // 2KPROFILE v01: opt-in tiers (suggest false) are never suggested
         return best ?? DefaultTier;
     }
 

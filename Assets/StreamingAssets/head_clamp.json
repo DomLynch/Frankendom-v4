@@ -203,6 +203,21 @@
       "maxUpDeg": 90,
       "maxUpKnee": 0.5,
       "look": {"weight": 0.5, "fadeStartDeg": 90, "fadeEndDeg": 120, "followSeconds": 0.15, "targetHeight": 1.5}
+    },
+    {
+      "name": "Sobek",
+      "enabled": false,
+      "yaw": 45,
+      "pitch": 20,
+      "categories": [],
+      "torsoBone": "mixamorig:Spine2",
+      "neckBone": "mixamorig:Neck",
+      "headBone": "mixamorig:Head",
+      "neckShare": 0.5,
+      "knee": 0.8,
+      "maxUpDeg": 90,
+      "maxUpKnee": 0.5,
+      "look": {"weight": 0.5, "fadeStartDeg": 90, "fadeEndDeg": 120, "followSeconds": 0.15, "targetHeight": 1.5}
     }
   ]
 }
