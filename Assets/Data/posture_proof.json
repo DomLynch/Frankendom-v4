@@ -1,0 +1,17 @@
+{
+  "_about": "PostureProof.cs (-postureproof) steps (a) parry and (b) guard break. parryLeadFractions = how late in the enemy windup the player raises the guard, as a fraction of the parry window (parry.json windowTicks, via DuelFighter.ParryWindowTicks); one entry = one attempt. The guard SIDE is not data here: it is read from controls.json guard.match through DirectionalGuard.BestSideFor(the swing being answered). requireParry / requireGuardBreak = the verdict is FAIL (exit failExitCode) when that step did not happen (event AND the DuelFighter counter). All waits are 60 Hz sim ticks.",
+  "requireParry": true,
+  "requireGuardBreak": true,
+  "failExitCode": 1,
+  "parryLeadFractions": [0.5, 0.3, 0.7, 0.2, 0.9, 0.4],
+  "parrySettleTicks": 130,
+  "parryPressWaitTicks": 30,
+  "parryContactWaitTicks": 60,
+  "guardBreakAttempts": 3,
+  "guardBreakSettleTicks": 130,
+  "guardBreakRaiseTicks": 25,
+  "guardBreakStamina": 6,
+  "guardBreakWindupWaitTicks": 30,
+  "guardBreakWaitTicks": 150,
+  "guardBreakRecoveryGiveUpTick": 20
+}

@@ -51,7 +51,7 @@ public static class GameLoop
             if (harness.HasValue) return harness.Value;
             bool h = false;
             foreach (var a in Environment.GetCommandLineArgs())
-                if (a == "-balanceauto" || a == "-shadowdiag" || a == "-autoplay" || a == "-finisherauto" || a == "-postureproof" || a == "-camproof" || a == "-flowproof" || a == "-gaps" || a == "-props" || a == "-record" || a == "-woundshot" /* WOUNDSHOT v84 */ || a.StartsWith("-sheet:", StringComparison.Ordinal)) h = true;
+                if (a == "-balanceauto" || a == "-shadowdiag" || a == "-autoplay" || a == "-finisherauto" || a == "-postureproof" || a == "-camproof" || a == "-flowproof" || a == "-gaps" || a == "-props" || a == "-record" || a == "-woundshot" /* WOUNDSHOT v84 */ || a == "-floorshot" /* FLOORSHOT v102 */ || a.StartsWith("-sheet:", StringComparison.Ordinal)) h = true;
             if (LoopTestOn) h = false;
             harness = h; return h;
         }

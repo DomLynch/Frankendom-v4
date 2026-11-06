@@ -1,4 +1,4 @@
-﻿{
+{
     "_rimRigsNote": "lane LOOK fix 2: roster-keyed rim rigs built by HdrpFixes (HDRP_RimRigs) and moved by RimRig at runtime. who = player | enemy | roster id. Spot, shadows off, light layer bit = only that character's renderers (minus rimExclude). lux = illuminance at the aim point in this scene's physical scale (exposure EV 9.4, key 10500 lux); the light is set in candela = lux * distance^2.",
     "rimRigs": [
         {
@@ -152,7 +152,8 @@
                 0.9,
                 0.9,
                 0.9
-            ]
+            ],
+            "emissiveScale": 0.0
         },
         {
             "match": "maul_start_LOD",

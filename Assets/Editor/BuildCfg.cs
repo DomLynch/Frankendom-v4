@@ -36,7 +36,7 @@ public static class BuildCfg
         // defaults = what HdrpBatch.V51 did before HCKIT3 (true) + the steps it skipped (false)
         public bool controlsInputAxes = true, alwaysIncludeShaders = true, attackClipSetup = true, dodgeClipSetup = true;
         public bool guardLayerSetup = true, woundDecalRef = true, v1FinisherClipSetup = true, finisherClipSetup = false, finisherReadable = false, joanSwap = false;   // INT99 v99: guardLayerSetup + woundDecalRef = what live V51 runs
-        public bool gltfMats = true, worldMats = true, bridgeMats = true, look = true, hdrpShot = true, ground = true, propsLayout = true, doorway = true, charLayer = true, deckDiag = true, occlusion = false;   // OCCL v101: occlusion culling bake (A/B), default off
+        public bool gltfMats = true, worldMats = true, bridgeMats = true, look = true, hdrpShot = true, ground = true, propsLayout = true, doorway = true, charLayer = true, deckDiag = true, occlusion = false, perfMem = false;   // OCCL v101: occlusion culling bake (A/B), default off
         public DeckArea deckDiagArea = new DeckArea();
     }
     [Serializable] public class SwapSec { public string templateId = ""; }

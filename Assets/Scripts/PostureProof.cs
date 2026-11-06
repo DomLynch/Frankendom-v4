@@ -33,6 +33,29 @@ public class PostureProof : MonoBehaviour
         var go = new GameObject("PostureProof"); DontDestroyOnLoad(go); go.AddComponent<PostureProof>();
     }
 
+    // POSTURE v102: posture_proof.json (StreamingAssets / Data) holds the numbers of steps (a) and (b); the defaults here mirror the file
+    [Serializable] public class Cfg
+    {
+        public bool requireParry = true, requireGuardBreak = true; public int failExitCode = 1;
+        public float[] parryLeadFractions = { 0.5f, 0.3f, 0.7f, 0.2f, 0.9f, 0.4f };
+        public int parrySettleTicks = 130, parryPressWaitTicks = 30, parryContactWaitTicks = 60;
+        public int guardBreakAttempts = 3, guardBreakSettleTicks = 130, guardBreakRaiseTicks = 25, guardBreakWindupWaitTicks = 30, guardBreakWaitTicks = 150, guardBreakRecoveryGiveUpTick = 20;
+        public float guardBreakStamina = 6f;
+        static Cfg c;
+        public static Cfg Get()
+        {
+            if (c != null) return c;
+            try
+            {
+                string p = Path.Combine(Application.streamingAssetsPath, "posture_proof.json"); if (!File.Exists(p)) p = Path.Combine(Application.dataPath, "Data/posture_proof.json");
+                if (File.Exists(p)) c = JsonUtility.FromJson<Cfg>(File.ReadAllText(p));
+            }
+            catch (Exception) { }
+            return c ?? (c = new Cfg());
+        }
+    }
+    bool StepsOk() { var C = Cfg.Get(); bool v; return (!C.requireParry || (results.TryGetValue("parry", out v) && v)) && (!C.requireGuardBreak || (results.TryGetValue("guardbreak", out v) && v)); }
+
     string dir, logPath; float t0, timeoutS = 90f; bool exiting; int exitCode; float exitAt;
     DuelFighter D, P;
     PostureTable.FighterRow pRow; float realPitMax;
@@ -209,7 +232,7 @@ public class PostureProof : MonoBehaviour
         return l;
     }
 
-    void Rest() { D.stamina = D.maxStamina; P.stamina = P.maxStamina; D.guardHeld = false; P.guardHeld = false; D.moveDir = Vector3.zero; P.moveDir = Vector3.zero; }
+    void Rest() { D.stamina = D.maxStamina; P.stamina = P.maxStamina; D.guardHeld = false; P.guardHeld = false; D.guardSide = 0; P.guardSide = 0; D.moveDir = Vector3.zero; P.moveDir = Vector3.zero; }
 
     // ---------------------------------------------------------------- script
     IEnumerator Main()
@@ -239,32 +262,39 @@ public class PostureProof : MonoBehaviour
         yield return Ticks(60);
 
         // ---- (a) parry
-        int[] leads = { 5, 3, 7, 2, 9, 4 }; bool parried = false;
-        for (int a = 0; a < leads.Length && !parried; a++)
+        // POSTURE v102: the guard SIDE has to cover the swing (controls.json guard.guardRequiresSide). The proof's fighters are not FlowHuman (PlayerBrain is off), so Duel.Resolve applies DirectionalGuard.SideOk.
+        // v101 never set guardSide (0 = centre): every overhead / left / right swing went through the guard as a plain Hit and a parry or block could not happen.
+        var C = Cfg.Get(); bool parried = false;
+        for (int a = 0; a < C.parryLeadFractions.Length && !parried; a++)
         {
-            yield return ResetState("parry attempt " + (a + 1)); Setup(1.7f); yield return Ticks(130);   // parry cooldown + recoveries
-            int pc = EventCount("Parried", Roster.EnemyObject) + EventCount("Parried", Roster.PlayerObject); int lead = leads[a];
+            yield return ResetState("parry attempt " + (a + 1)); Setup(1.7f); yield return Ticks(C.parrySettleTicks);   // parry cooldown + recoveries
+            int pc = EventCount("Parried", Roster.EnemyObject) + EventCount("Parried", Roster.PlayerObject); int sp0 = D.statParries;
+            int lead = Mathf.Max(1, Mathf.RoundToInt(C.parryLeadFractions[a] * D.ParryWindowTicks()));
             P.Press("light"); LogState("parry attempt " + (a + 1) + " " + Roster.EnemyName + " swings, guard lead " + lead);
-            yield return WaitFor(() => P.state == FState.Windup, 30);
-            yield return WaitFor(() => P.state != FState.Windup || P.WindupLeft <= lead, 60);
+            yield return WaitFor(() => P.state == FState.Windup, C.parryPressWaitTicks);
+            D.guardSide = DirectionalGuard.BestSideFor(P.CurrentMove);   // the side that covers this swing (data: controls.json guard.match)
+            yield return WaitFor(() => P.state != FState.Windup || P.WindupLeft <= lead, C.parryContactWaitTicks);
             D.guardHeld = true;
-            yield return WaitFor(() => EventCount("Parried", Roster.EnemyObject) + EventCount("Parried", Roster.PlayerObject) > pc || P.state == FState.Recovery || P.state == FState.Loco, 60);
-            parried = EventCount("Parried", Roster.EnemyObject) + EventCount("Parried", Roster.PlayerObject) > pc;
+            yield return WaitFor(() => EventCount("Parried", Roster.EnemyObject) + EventCount("Parried", Roster.PlayerObject) > pc || P.state == FState.Recovery || P.state == FState.Loco, C.parryContactWaitTicks);
+            parried = EventCount("Parried", Roster.EnemyObject) + EventCount("Parried", Roster.PlayerObject) > pc && D.statParries > sp0;
+            if (!parried) Log("parry attempt " + (a + 1) + " diag: swing " + (P.CurrentMove != null ? P.CurrentMove.id + " dir " + P.CurrentMove.direction : "none") + " guardSide " + D.guardSide + " (best " + DirectionalGuard.BestSideFor(P.CurrentMove) + ") state " + D.state + " window " + D.ParryWindowTicks() + " windowLeft " + D.ParryWindowLeft + " isGuarding " + D.IsGuarding);
             if (parried) yield return Shot("a_parry_contact");
             D.guardHeld = false; yield return Ticks(10);
         }
         results["parry"] = parried; LogState("parry " + (parried ? "OK" : "NOT ACHIEVED"));
 
-        // ---- (b) guard break: the enemy guards at 6 stamina, the player throws a heavy
+        // ---- (b) guard break: the enemy guards at guardBreakStamina, the player throws a heavy; the enemy's guardSide follows the side that covers that heavy (as in (a))
         bool gbreak = false;
-        for (int a = 0; a < 3 && !gbreak; a++)
+        for (int a = 0; a < C.guardBreakAttempts && !gbreak; a++)
         {
-            yield return ResetState("guard break attempt " + (a + 1)); Setup(1.7f); yield return Ticks(130);
-            int gc = EventCount("GuardBroken", Roster.EnemyObject);
-            P.guardHeld = true; yield return Ticks(25);   // past the parry window: a plain block
-            P.stamina = 6f; D.stamina = D.maxStamina; D.Press("heavy"); LogState("guard break attempt " + (a + 1));
-            yield return WaitFor(() => { P.stamina = Mathf.Min(P.stamina, 6f); P.guardHeld = true; return EventCount("GuardBroken", Roster.EnemyObject) > gc || (D.state == FState.Recovery && D.t > 20); }, 150);
-            gbreak = EventCount("GuardBroken", Roster.EnemyObject) > gc;
+            yield return ResetState("guard break attempt " + (a + 1)); Setup(1.7f); yield return Ticks(C.guardBreakSettleTicks);
+            int gc = EventCount("GuardBroken", Roster.EnemyObject); int gb0 = P.statGuardBreaks;
+            P.guardHeld = true; yield return Ticks(C.guardBreakRaiseTicks);   // past the parry window: a plain block
+            P.stamina = C.guardBreakStamina; D.stamina = D.maxStamina; D.Press("heavy"); LogState("guard break attempt " + (a + 1));
+            yield return WaitFor(() => D.state == FState.Windup, C.guardBreakWindupWaitTicks);
+            yield return WaitFor(() => { P.stamina = Mathf.Min(P.stamina, C.guardBreakStamina); P.guardHeld = true; var cm = D.CurrentMove; if (cm != null) P.guardSide = DirectionalGuard.BestSideFor(cm); return EventCount("GuardBroken", Roster.EnemyObject) > gc || (D.state == FState.Recovery && D.t > C.guardBreakRecoveryGiveUpTick); }, C.guardBreakWaitTicks);
+            gbreak = EventCount("GuardBroken", Roster.EnemyObject) > gc && P.statGuardBreaks > gb0;
+            if (!gbreak) Log("guard break attempt " + (a + 1) + " diag: swing " + (D.CurrentMove != null ? D.CurrentMove.id + " dir " + D.CurrentMove.direction : "none") + " guardSide " + P.guardSide + " state " + P.state + " isGuarding " + P.IsGuarding + " stamina " + P.stamina.ToString("F1", IC));
             if (gbreak) yield return Shot("b_guard_break");
             P.guardHeld = false; yield return Ticks(5);
         }
@@ -319,8 +349,8 @@ public class PostureProof : MonoBehaviour
         }
         else Log("NO posture break from the light sequence");
         LogState("end");
-        bool ok = P.statPostureBreaks > 0 && D.statDeathblows > 0;
-        Finish(0, ok ? "done" : "done, goals missed");
+        bool ok = P.statPostureBreaks > 0 && D.statDeathblows > 0 && StepsOk();   // POSTURE v102: parry + guard break are asserted too
+        Finish(ok ? 0 : Cfg.Get().failExitCode, ok ? "done" : "done, goals missed (parry " + (results.ContainsKey("parry") && results["parry"]) + " guardbreak " + (results.ContainsKey("guardbreak") && results["guardbreak"]) + ")");
     }
 
     string Lu(string k) { float v; return lumas.TryGetValue(k, out v) ? v.ToString("F3", IC) : "n/a"; }
@@ -329,10 +359,10 @@ public class PostureProof : MonoBehaviour
     void WriteSummary(int code, string why)
     {
         bool brk = P != null && P.statPostureBreaks > 0, db = D != null && D.statDeathblows > 0;
-        string verdict = code == 2 ? "ERROR" : code == 3 ? "TIMEOUT" : (brk && db ? "PASS" : "FAIL");
+        string verdict = code == 2 ? "ERROR" : code == 3 ? "TIMEOUT" : (brk && db && StepsOk() ? "PASS" : "FAIL");
         var sb = new StringBuilder();
         sb.AppendLine("VERDICT: " + verdict + "   (exit code " + code + ", " + why + ")");
-        sb.AppendLine("posture break occurred: " + brk + "   deathblow occurred: " + db);
+        sb.AppendLine("posture break occurred: " + brk + "   deathblow occurred: " + db + "   parry+guardbreak asserted: " + StepsOk());
         foreach (var kv in results) sb.AppendLine("  step " + kv.Key + ": " + (kv.Value ? "ok" : "not achieved"));
         if (D != null && P != null) { sb.AppendLine("final " + Counters(D)); sb.AppendLine("final " + Counters(P)); }
         sb.AppendLine("flash frames: " + Roster.EnemyName + " screen luma before " + Lu("d_flash_before") + " during " + Lu("d_flash_during") + " after " + Lu("d_flash_after") + "; flashes " + HitFlash.FlashCount + " restores " + HitFlash.RestoreCount + " still flashing " + (P != null && HitFlash.IsFlashing(P)));
