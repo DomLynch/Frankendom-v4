@@ -19,12 +19,6 @@
             "renderer": "Joan_Hair",
             "anchorBone": "mixamorig:Head",
             "file": "cutlod/Joan_Hair.cutlod.json"
-        },
-        {
-            "character": "Pitborn",
-            "renderer": "Body",
-            "anchorBone": "mixamorig:Spine",
-            "file": "cutlod/Pitborn_Body.cutlod.json"
         }
     ]
 }

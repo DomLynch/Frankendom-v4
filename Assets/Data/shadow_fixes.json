@@ -1,7 +1,9 @@
 {
   "_notes": "laneSHADOW v75. Read by Scripts/ShadowFixes.cs (runtime fixes) and Scripts/ShadowDiag.cs (-shadowdiag). lights: name + shadows:false switches that light's shadows off, updateMode = EveryFrame | OnEnable | OnDemand sets HDAdditionalLightData.shadowUpdateMode. renderers: match = substring of the hierarchy path, mode = Off | On | TwoSided | ShadowsOnly. THE LISTS ARE EMPTY ON PURPOSE (diag-only merge: no look change); the ranked fixes are in shadow_fixes.PROPOSED.json, copy a row into lights[] after the -shadowdiag run names the cause. Skip all fixes with -noshadowfixes. diag: floorRect = x0,x1,z0,z1 of the arena floor that counts (arena_limits.json is x -3.8..3.8, z 8..22; +apron); enemyAnchor/axis/sepM = the v66 wide pose (Dracula x 0 z 14.5, enemy 2.5 m ahead along +z); screenRegion = the floor part of the frame (x0,y0,x1,y1 fractions, y from the bottom); darkLuma / brightenDelta = pixel thresholds; captures = the arms (lightsOff names, allPointSpotOff, keyEveryFrame).",
   "enabled": true,
-  "lights": [],
+  "lights": [
+    { "name": "DoorwayFlickerLight", "shadows": false, "note": "v101b (Dom v100: the floor shadow FLICKERS with a dithered grid + hard straight edges behind Joan = the flickering door light's 512 soft cubemap shadow): its shadows OFF; DoorShadowWarm keeps the steady shadow. Look-gate the doorway." }
+  ],
   "renderers": [],
   "diag": {
     "floorRect": [-6.0, 6.0, 4.0, 24.0],

@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "enabled": true,
+  "enabled": false,
   "_switches": "INTPHYS v99: ALL physics switches live in this file, shipped ON. If a proof fails, turn it off by data (edit + the same edit in StreamingAssets): enabled=false = master, the whole physics layer is off (scripted clock, hit reaction, clash, finisher physics; death ragdoll back to the old FixedUpdate one); clock.enabled=false = no scripted PhysX clock; hit.enabled=false = no stagger / hit reaction proxies; clash.enabled=false = no weapon-clash impulse; finphys.enabled=false = finishers without physics (V1FIN scripted pieces, same as -finphys:off); ragdoll.json enabled=false = death clip held (no ragdoll at all). Command line twins: -physics:off, -finphys:off.",
   "_about": "PHYS1 (PH3 phases P0 + P1). Presentation physics foundation. The 60 Hz Duel sim stays authoritative and never reads anything PhysX does. clock.enabled=false (or this file missing) restores the old behaviour: Physics.simulationMode stays FixedUpdate and CombatSlowMo / FinisherTime rewrite Time.fixedDeltaTime again. Layers are GameObject layer INDEXES (naming them in TagManager is cosmetic, the runtime setup applies the collision matrix itself). Layers 8 and 9 are the legacy 'character' / 'other fighter' layers the old masks tried to ignore (Joan's model sits on 8, see joan_swap.json). PHYS2 v1: 'hit' + 'clash' blocks = the hit-reaction partial ragdoll (Scripts/Physics/HitReact.cs, PH3 P2), proof.hit = -physproof:hit thresholds.",
   "clock": {
-    "enabled": true,
+    "enabled": false,
     "hz": 60,
     "maxStepsPerFrame": 4,
     "fallbackWhenNoDuel": true,
@@ -251,7 +251,7 @@
   },
   "hit": {
     "_about": "PHYS2 (PH3 phase P2): hit-reaction PARTIAL ragdoll for the LIVING fighters. PRESENTATION ONLY: the 60 Hz Duel sim stays authoritative, nothing here writes sim state, no UnityEngine.Random, no colliders (the proxy bodies are invisible to every physics query). HitReact keeps a collider-less powered copy of the pre-built rig (Scripts/Physics/HitReact.cs): joint drives (spring / damper from ragdoll.json drive + parts gain / damping: body 2 / 0.25, neck + head 1 / 1) chase the animated pose; a landed Hit (ContactRelay) adds a reaction = the V3 dip curve (ease in, hold, recover) on the motors of the row's parts plus V3's impulse at the zone part; per-bone `blend` shares mix the clip's local rotation with the proxy's (Slerp), so the body sways and recovers; parts with share 0 follow their parent's deviation through the hierarchy. Runs in LateUpdate BEFORE FootGround (order -140), so FootGround still plants the feet after the blend. Dead fighters are skipped (RagdollRig takes over). mode: 'stagger' = V3's generic reaction (row 'stagger'); 'zone' = V3 feel-hitreact.json zone rows (head / torso / arms / legs; opt-in in V3 too). Blow class scales the row: light 0.12 impulse / 0.12 dip / 0.2 blend (Dom: tone it down), heavy + counter 1. enabled=false = nothing is created. Keys with $near take the side the blow came from.",
-    "enabled": true,
+    "enabled": false,
     "mode": "stagger",
     "maxReactions": 4,
     "frontCos": 0.7071,
@@ -957,7 +957,7 @@
   },
   "clash": {
     "_about": "PHYS2: block / parry recoil on the arms (V3 feel-clash.json numbers). On a Blocked / Parried / GuardBroken event the ATTACKER (event.actor) gets an impulse on its weapon arm against its own facing (base 7 x weapon ratio x swing x kind.recoil, clamped 1..24, lift 0.8) and the DEFENDER (event.target) one on its guard arm along the blow (x kind.absorbed); the arm / forearm / hand (and spine2 at 0.6) motors dip to kind.dip (scaled by swing / maxStrength, floor minScale) with ease 0.04 / hold 0.12 / up 0.3 (x lightScale for a light swing) and the arms show the proxy's pose (share). Shares and the weapon ratio are ours (V3 leaned bones on its hero), tune in the player. recoil: blocked 0.6, perfect 0.9, parried 1.5, broken 0.4.",
-    "enabled": true,
+    "enabled": false,
     "baseImpulse": 7.0,
     "lift": 0.8,
     "minImpulse": 1.0,
@@ -1055,7 +1055,7 @@
   },
   "finphys": {
     "_about": "FINPHYS v97: physics in the finishers (V3 data/physics.json finisherCuts + cut + kill, physics package world.json / states.json / role table). PRESENTATION ONLY; read by FinPhys.cs. enabled=false or -finphys:off = V1FIN + PHYS1 + PHYS2 exactly. Compare: -finphys:head=physics (physics head instead of V1FIN's scripted arc), -finphys:torso_waist=script (V1FIN OpenedHalf instead of the physics upper half), -finphys:body=clip (victim keeps the clip to its end).",
-    "enabled": true,
+    "enabled": false,
     "suppressHitReact": true,
     "bodyRagdoll": true,
     "piece": {

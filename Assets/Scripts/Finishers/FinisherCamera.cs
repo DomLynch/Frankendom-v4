@@ -162,6 +162,9 @@ public class FinisherCamera : MonoBehaviour
         // never inside geometry, never below the floor
         Vector3 safe = Constrain(p, focusPt);
         if ((safe - p).sqrMagnitude > 1e-4f) { p = safe; Vector3 ld = lookPt - p; if (ld.sqrMagnitude > 1e-4f) r = Quaternion.LookRotation(ld, Vector3.up); }
+        // CAMGUARD v102 (Goose QC: cuts went INSIDE Pitborn): the pre-blend Inside() check only sees the raw pose; the blend from the previous pose, the shake and the floor clamp can still leave the camera inside a fighter's bounds. Final guard: push it out along focus->camera.
+        if (col == null) LoadCol();
+        if (col.bodyClearM > 0f && InsideBody(p, col.bodyClearM)) { p = PushOutOfBodies(p, focusPt, col.bodyClearM); Vector3 ld2 = lookPt - p; if (ld2.sqrMagnitude > 1e-4f) r = Quaternion.LookRotation(ld2, Vector3.up); CamGuardPushes++; }
         transform.SetPositionAndRotation(p, r); cam.fieldOfView = fv; LookEnforce(); EvTick(dt);
     }
 
@@ -257,6 +260,15 @@ public class FinisherCamera : MonoBehaviour
     }
     void Update() { FinisherTime.Tick(); }
 
+    public static int CamGuardPushes;   // CAMGUARD v102: frames the final guard had to move the camera (logged by the harness)
+    static bool InsideB(FinisherBody b, Vector3 p, float m) { if (b == null || !b.Valid) return false; var bb = b.Bounds; bb.Expand(m * 2f); return bb.Contains(p); }
+    bool InsideBody(Vector3 p, float m) { return InsideB(tb, p, m) || InsideB(ab, p, m); }
+    Vector3 PushOutOfBodies(Vector3 p, Vector3 from, float m)
+    {
+        Vector3 d = p - from; d.y = 0f; if (d.sqrMagnitude < 1e-4f) { d = -transform.forward; d.y = 0f; } if (d.sqrMagnitude < 1e-4f) d = Vector3.back; d.Normalize();
+        for (int i = 0; i < 40 && InsideBody(p, m); i++) p += d * 0.1f;
+        return p;
+    }
     bool Inside(Vector3 p)
     {
         if (tb.Valid) { var bb = tb.Bounds; bb.Expand(0.5f); if (bb.Contains(p)) return true; }
@@ -288,7 +300,7 @@ public class FinisherCamera : MonoBehaviour
     }
 
     // ---- camera collision + floor (data: camera_collision.json, the same file CameraRig.cs reads) ----
-    [System.Serializable] class ColRow { public bool enabled = true; public float radius = 0.35f, minDistFromTarget = 1.2f, minGroundY = 0f, minHeightAboveGround = 0.6f; public int[] ignoreLayers = { 8, 9 }; }
+    [System.Serializable] class ColRow { public bool enabled = true; public float radius = 0.35f, minDistFromTarget = 1.2f, minGroundY = 0f, minHeightAboveGround = 0.6f, bodyClearM = 0.25f; /* CAMGUARD v102: camera_collision.json bodyClearM = margin around the fighters' bounds the finisher camera is pushed out of (0 = off) */ public int[] ignoreLayers = { 8, 9 }; }
     ColRow col; Vector3 lastGood; bool haveGood;
     static bool Finite(Vector3 v) { return !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z) || float.IsInfinity(v.x) || float.IsInfinity(v.y) || float.IsInfinity(v.z)); }
     void LoadCol()
