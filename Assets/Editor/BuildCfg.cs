@@ -132,6 +132,7 @@ public static class BuildCfg
         UnityEngine.Rendering.GraphicsDeviceType api;
         if (Enum.TryParse(pl.graphicsApi, out api)) { PlayerSettings.SetUseDefaultGraphicsAPIs(BuildTarget.StandaloneWindows64, false); PlayerSettings.SetGraphicsAPIs(BuildTarget.StandaloneWindows64, new[] { api }); }
         else Debug.LogWarning("BuildCfg: player.graphicsApi '" + pl.graphicsApi + "' unknown, graphics APIs left as they are");
+        PlayerSettings.enableFrameTimingStats = Has("-profilebuild") || File.Exists("Tools/build_profile.txt");   // PROFILE: Frame Timing Stats (CPU main / render thread / GPU ms) only in a profile build
         Debug.Log("BUILD IDENTITY: company='" + PlayerSettings.companyName + "' product='" + PlayerSettings.productName + "' version=" + PlayerSettings.bundleVersion + " runInBackground=" + PlayerSettings.runInBackground + " exe=" + c.build.exeName + " api=" + pl.graphicsApi + " (from " + (File.Exists(ConfigPath) ? ConfigPath : "legacy build.json + defaults") + ")");
     }
 

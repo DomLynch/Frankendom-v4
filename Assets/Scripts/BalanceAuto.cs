@@ -32,6 +32,10 @@ public class BalanceAuto : MonoBehaviour
         public float minAvgDuration = 60f, maxAvgDuration = 120f, minWinRate = 0.4f, maxWinRate = 0.7f;
         public int minEnemyMoves = 4;
         public float maxRiposteShare = 0.3f, maxMoveShare = 0.4f;   // V63 WARN thresholds (do not change the verdict)
+        public bool holdEnemyUntilStart = false;   // laneNOHIT v104: true = the enemy AI stays off from scene load until ForceAutoplay switches both brains on together (no free swings during the settle frames)
+        public string noHitRule = "strict";         // laneNOHIT v104: strict = any side with 0 hits in any fight fails the verdict (today); stuck = fail only when that side is STUCK (see noHitMinSwings / noHitMinSeconds), else a WARN line
+        public int noHitMinSwings = 1;              // laneNOHIT v104: stuck rule: a side with 0 hits and fewer swings than this in the fight is a dead AI
+        public float noHitMinSeconds = 30f;         // laneNOHIT v104: stuck rule: a side with 0 hits in a fight that lasted at least this many SIM seconds (ticks / ticksPerSecond) is stuck, whatever its swing count
         public string shotMode = "auto";          // auto = game screen, camera render texture if black | screen | camera
     }
 
@@ -64,7 +68,7 @@ public class BalanceAuto : MonoBehaviour
     int seedsN = 5, fightIdx; int baseSeed;
     DuelFighter D, P;
     float dHpPrev, pHpPrev, dHpStart, pHpStart, dStaminaMin = 999f;
-    int tickStart;
+    int tickStart, lastFightTicks;   // laneNOHIT v104
     bool shotThisFrame;
 
     // exceptions / fps
@@ -73,10 +77,10 @@ public class BalanceAuto : MonoBehaviour
 
     class Side
     {
-        public float dmgDealt, dmgTaken; public int hits, parries, blocks, guardBreaks, dodges, attacks;
+        public float dmgDealt, dmgTaken; public int hits, parries, blocks, guardBreaks, dodges, attacks, firstSwingTick = -1;   // laneNOHIT v104
         public readonly int[] cat = new int[Cats.Length]; public readonly Dictionary<string, int> moves = new Dictionary<string, int>();
     }
-    class Rec { public string dAdapt = "", pAdapt = ""; public int idx, seed; public float dur; public string winner, endReason; public Side d = new Side(), p = new Side(); public float dHp, pHp; public int[] dPost = new int[4], pPost = new int[4]; public float dGain, pGain; public float[] dF = new float[12], pF = new float[12]; public string dFlow = "", pFlow = ""; }   // V64P   // P7: posture counters {breaks suffered, deathblows dealt, deathblows taken, windows missed}
+    class Rec { public string dAdapt = "", pAdapt = ""; public int idx, seed; public float dur; public string winner, endReason; public Side d = new Side(), p = new Side(); public float simSec; public int preTicks; /* // laneNOHIT v104 */ public float dHp, pHp; public int[] dPost = new int[4], pPost = new int[4]; public float dGain, pGain; public float[] dF = new float[12], pF = new float[12]; public string dFlow = "", pFlow = ""; }   // V64P   // P7: posture counters {breaks suffered, deathblows dealt, deathblows taken, windows missed}
     Side sd = new Side(), sp = new Side();      // current fight: the player, the enemy
     readonly List<Rec> recs = new List<Rec>();
 
@@ -121,7 +125,34 @@ public class BalanceAuto : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
-    void OnSceneLoaded(Scene s, LoadSceneMode m) { sceneReloaded = true; }
+    void OnSceneLoaded(Scene s, LoadSceneMode m) { sceneReloaded = true; if (C.holdEnemyUntilStart) HoldEnemy(); }   // laneNOHIT v104
+
+    // laneNOHIT v104: the enemy AI is live from scene load, the player AI only from ForceAutoplay (settleFrames + 10 frames of real time at 30-40 fps), so the enemy got free swings:
+    // 6 of 20 balance20 fights began with Joan below full HP, the enemy never. Keep the enemy brain off until ForceAutoplay toggles both on together (its OnDisable/OnEnable re-inits the seed).
+    void HoldEnemy()
+    {
+        foreach (var f in FindObjectsByType<DuelFighter>())
+        {
+            if (f.name != Roster.EnemyObject) continue;
+            var b = f.GetComponent<AIBrain>(); if (b != null && b.enabled) b.enabled = false;
+            f.moveDir = Vector3.zero; f.guardHeld = false; f.run = false; f.heavyHeld = false;
+        }
+    }
+
+    // laneNOHIT v104: stuck = the side never swung (dead AI) or landed nothing over a fight that ran noHitMinSeconds of sim time. A fast loss with swings in it is overwhelmed, not stuck.
+    bool NoHitStuck(Rec r, out string why)
+    {
+        why = "";
+        Side[] sides = { r.d, r.p }; string[] names = { Roster.PlayerName, Roster.EnemyName };
+        for (int i = 0; i < 2; i++)
+        {
+            if (sides[i].hits > 0) continue;
+            if (sides[i].attacks < C.noHitMinSwings || r.simSec >= C.noHitMinSeconds) return true;
+            why += (why.Length > 0 ? "; " : "") + "fight #" + r.idx + " seed " + r.seed + ": " + names[i] + " landed 0 hits in " + r.simSec.ToString("F1", IC) + " sim s with " + sides[i].attacks + " swing(s) (first at sim "
+                + (sides[i].firstSwingTick < 0 ? "-" : (sides[i].firstSwingTick / Mathf.Max(1f, AiRows.I.unity.ticksPerSecond)).ToString("F1", IC)) + " s), winner " + r.winner + ": overwhelmed, not stuck (noHitRule stuck)";
+        }
+        return false;
+    }
 
     void LoadCfg()
     {
@@ -253,7 +284,7 @@ public class BalanceAuto : MonoBehaviour
     {
         if (!started || exiting || m == null) return;
         Side s = f == D ? sd : f == P ? sp : null; if (s == null) return;
-        s.attacks++; s.cat[CatOf(m.id)]++;
+        s.attacks++; s.cat[CatOf(m.id)]++; if (s.firstSwingTick < 0) s.firstSwingTick = Duel.TickCount - tickStart;   // laneNOHIT v104
         int c; s.moves.TryGetValue(m.id, out c); s.moves[m.id] = c + 1;
     }
 
@@ -293,6 +324,7 @@ public class BalanceAuto : MonoBehaviour
                     if (Time.realtimeSinceStartup - w0 > C.reloadWaitSeconds) { Fail("scene reload: no fresh fighters after " + C.reloadWaitSeconds.ToString("F0", IC) + " s"); yield break; }
                 }
             }
+            if (C.holdEnemyUntilStart) HoldEnemy();   // laneNOHIT v104
             for (int i = 0; i < C.settleFrames; i++) yield return null;   // Awake/Start of every system
             ForceAutoplay(seed);
             for (int i = 0; i < 10; i++) yield return null;
@@ -301,7 +333,7 @@ public class BalanceAuto : MonoBehaviour
             sd = new Side(); sp = new Side(); dStaminaMin = 999f;
             dHpPrev = dHpStart = D.health; pHpPrev = pHpStart = P.health; tickStart = Duel.TickCount;
             fightStart = Time.realtimeSinceStartup; started = true;
-            Log("FIGHT START " + (fi + 1) + "/" + seedsN + " seed " + seed + " hp D" + dHpStart.ToString("F0", IC) + "/P" + pHpStart.ToString("F0", IC) + " dist " + Dist().ToString("F2", IC));
+            Log("FIGHT START " + (fi + 1) + "/" + seedsN + " seed " + seed + " hp D" + dHpStart.ToString("F0", IC) + "/P" + pHpStart.ToString("F0", IC) + " dist " + Dist().ToString("F2", IC) + " pre-start sim ticks " + tickStart);   // laneNOHIT v104
             float nextSample = C.sampleEvery; bool startShot = false; string endReason = "";
             while (!exiting)
             {
@@ -314,7 +346,7 @@ public class BalanceAuto : MonoBehaviour
                 yield return null;
             }
             if (exiting) yield break;
-            float dur = Time.realtimeSinceStartup - fightStart;
+            float dur = Time.realtimeSinceStartup - fightStart; lastFightTicks = Duel.TickCount - tickStart;   // laneNOHIT v104
             Log("FIGHT END " + (fi + 1) + "/" + seedsN + " (" + endReason + ") at " + dur.ToString("F1", IC) + " s");
             float until = Time.realtimeSinceStartup + (D.Dead || P.Dead ? C.endDelay : 0.2f);
             while (Time.realtimeSinceStartup < until && !exiting) yield return null;
@@ -359,7 +391,7 @@ public class BalanceAuto : MonoBehaviour
 
     void AddRecord(int seed, float dur, string endReason)
     {
-        var r = new Rec { idx = fightIdx + 1, seed = seed, dur = dur, endReason = endReason, d = sd, p = sp, dHp = D.health, pHp = P.health };
+        var r = new Rec { idx = fightIdx + 1, seed = seed, dur = dur, endReason = endReason, d = sd, p = sp, dHp = D.health, pHp = P.health, preTicks = tickStart, simSec = lastFightTicks / Mathf.Max(1f, AiRows.I.unity.ticksPerSecond) };   // laneNOHIT v104
         if (D != null) { r.dPost = new[] { D.statPostureBreaks, D.statDeathblows, D.statDeathblowsTaken, D.statDeathblowsMissed }; r.dGain = D.statPostureGained; }
         if (P != null) { r.pPost = new[] { P.statPostureBreaks, P.statDeathblows, P.statDeathblowsTaken, P.statDeathblowsMissed }; r.pGain = P.statPostureGained; }
         r.winner = P.Dead && !D.Dead ? Roster.PlayerName : D.Dead && !P.Dead ? Roster.EnemyName : D.Dead && P.Dead ? "both" : "none (time limit)";
@@ -500,11 +532,16 @@ public class BalanceAuto : MonoBehaviour
     {
         int n = recs.Count;
         float sDur = 0, sDD = 0, sDT = 0, sPD = 0, sPT = 0, sHD = 0, sHP = 0, sPM = 0; int dWins = 0, pWins = 0; bool bothHit = n > 0; int minPitMoves = int.MaxValue;
+        var noHitWarn = new List<string>();   // laneNOHIT v104
         foreach (var r in recs)
         {
             sDur += r.dur; sDD += r.d.dmgDealt; sDT += r.d.dmgTaken; sPD += r.p.dmgDealt; sPT += r.p.dmgTaken; sHD += r.d.hits; sHP += r.p.hits; sPM += r.p.moves.Count;
             if (r.winner == Roster.PlayerName) dWins++; else if (r.winner == Roster.EnemyName) pWins++;
-            if (r.d.hits <= 0 || r.p.hits <= 0) bothHit = false;
+            if (r.d.hits <= 0 || r.p.hits <= 0)   // laneNOHIT v104
+            {
+                string nhWhy = "";
+                if (C.noHitRule != "stuck" || NoHitStuck(r, out nhWhy)) bothHit = false; else noHitWarn.Add(nhWhy);
+            }
             if (r.p.moves.Count < minPitMoves) minPitMoves = r.p.moves.Count;
         }
         // distinct enemy moves over the whole run (a fight can be short); the per-fight minimum is reported too
@@ -524,6 +561,7 @@ public class BalanceAuto : MonoBehaviour
         sb.AppendLine("pass rule: average duration " + C.minAvgDuration.ToString("F0", IC) + "-" + C.maxAvgDuration.ToString("F0", IC) + " s AND " + Roster.PlayerName + " win rate " + (C.minWinRate * 100f).ToString("F0", IC) + "-" + (C.maxWinRate * 100f).ToString("F0", IC)
             + "% AND both sides land hits in every fight AND the " + Roster.EnemyName + " uses >= " + C.minEnemyMoves + " different moves");
         foreach (var p in problems) sb.AppendLine("PROBLEM: " + p);
+        foreach (var w in noHitWarn) sb.AppendLine("WARN: no-hit fight: " + w);   // laneNOHIT v104
         sb.AppendLine();
         sb.AppendLine("per fight (D = " + Roster.PlayerName + " (playerBot AI), P = " + Roster.EnemyName + "; dmg D>P = damage " + Roster.PlayerName + " dealt):");
         foreach (var r in recs)

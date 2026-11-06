@@ -201,9 +201,9 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
         Vector2 c; float hPx; GuardAnchor(G, out c, out hPx);
         float s = HudCfg.Scale();
         bool parry = pf.ParryWindowLeft > 0;
-        Color live = parry ? HudCfg.Col(H.colors.parry) : HudCfg.Col(H.colors.guard);
+        Color live = parry ? HudCfg.Col(H.colors.parry) : HudCfg.Col(H.colors.guard); var AG = ArcFx.GuardOn(); if (AG != null) live = ArcFx.GuardColor(AG, true, parry);   // ARCS v105
         float grow = parry ? 1f + G.parryGrow * (0.5f + 0.5f * Mathf.Sin(now * Mathf.PI * 2f * G.parryPulseHz)) : 1f;
-        float R = G.arcRadiusFrac * hPx, half = R / HudDraw.ArcCentre; var arc = HudDraw.Arc(G.arcDeg, G.thickness);
+        float R = G.arcRadiusFrac * hPx, half = R / HudDraw.ArcCentre; var arc = AG != null ? ArcFx.GuardArc(AG) : HudDraw.Arc(G.arcDeg, G.thickness);   // ARCS v105
         float oa = HudDraw.Alpha;
         var saved = GUI.matrix; GUI.matrix = Matrix4x4.identity;
         // optional faint full ring (ringFrac 0 = off) so the three sides read as one instrument
@@ -213,7 +213,7 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
             var sd = sides[i]; if (sd == null) continue;
             bool active = pf.guardSide == sd.id;
             float hs = active ? half * grow : half; Color col = active ? live : HudCfg.Col(H.colors.guard);
-            float a = (active ? 1f : G.idleAlpha) * guardA;
+            float a = (active ? 1f : G.idleAlpha) * guardA; if (AG != null) { col = ArcFx.GuardColor(AG, active, parry); a = ArcFx.GuardAlpha(AG, active, parry) * guardA; }   // ARCS v105
             float rad = sd.deg * Mathf.Deg2Rad; Vector2 dirv = new Vector2(Mathf.Sin(rad), -Mathf.Cos(rad));   // screen px, y down: deg 0 = up, +90 = right
             float dist = Mathf.Lerp(G.sideDistFrac, G.topDistFrac, Mathf.Abs(dirv.y)) * hPx;                 // apex of the arc, from the body centre
             Vector2 piv = c + dirv * (dist - R);                                                              // centre of the arc's circle (texture centre)

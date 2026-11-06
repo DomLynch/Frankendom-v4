@@ -147,6 +147,7 @@
   "unity": {
     "contactSlack": 0.45,
     "maxCatchUpTicks": 4,
+    "brainsOnTick": false,
     "moveGain": 1.0,
     "runBeyondDist": 6.5,
     "feintUntil": 10,

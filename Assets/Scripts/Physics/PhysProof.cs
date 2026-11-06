@@ -141,9 +141,9 @@ public partial class PhysProof : MonoBehaviour
         for (int i = 0; i < Mathf.Max(1, C.settleFrames); i++) yield return null;
     }
 
-    void ScriptedFighters()
+    void ScriptedFighters(int fps = 60)   // FPSSIM v1: simhash passes the run's fps
     {
-        Time.captureFramerate = 60; QualitySettings.vSyncCount = 0; Time.timeScale = 1f;
+        Time.captureFramerate = fps; QualitySettings.vSyncCount = 0; Time.timeScale = 1f;
         foreach (var b in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)) if (b is PlayerBrain || b is AIBrain || b is TouchControls) b.enabled = false;
         D.opponent = P; P.opponent = D;
         D.moveDir = Vector3.zero; P.moveDir = Vector3.zero; D.guardHeld = false; P.guardHeld = false; D.run = false; P.run = false;
@@ -427,7 +427,7 @@ public partial class PhysProof : MonoBehaviour
 
     IEnumerator SimHashProof()
     {
-        var sc = C.simHash; var runs = new List<RunTrace>();
+        var sc = C.simHash; var runs = new List<RunTrace>(); var alignBad = new List<string>();
         for (int r = 0; r < sc.runs.Length && !exiting; r++)
         {
             string m = sc.runs[r].ToLowerInvariant(); int fps = 60; int at = m.IndexOf('@'); if (at > 0) { int.TryParse(m.Substring(at + 1), out fps); if (fps < 10) fps = 60; }   // PHYSAUDIT: 'off@30' = physics off at a 30 fps display
@@ -436,13 +436,20 @@ public partial class PhysProof : MonoBehaviour
             Time.captureFramerate = fps; QualitySettings.vSyncCount = 0; Time.timeScale = 1f; PresentationClock.Cancel(); CombatSlowMo.Abort();
             AIBrain.GlobalSeed = sc.seed; UnityEngine.Random.InitState(sc.seed);
             yield return Reload();                                   // a fresh scene per run, so the rigs exist (on) or do not (off) from the start
-            ScriptedFighters(); Log("simhash run " + (r + 1) + " physics " + m);
+            ScriptedFighters(fps); Log("simhash run " + (r + 1) + " physics " + m + " display " + fps + " fps");   // FPSSIM v1: the fight runs at the run's fps (ScriptedFighters used to force 60)
+            if (sc.alignTick > 0)   // FPSSIM v1: identical start state in every run: fixed poses, brains off, same absolute sim tick (the settle frames are ~31 / 62 / 12 ticks at 60 / 30 / 144 fps)
+            {
+                Place(D, new Vector3(sc.playerX, 0f, sc.playerZ), Vector3.forward); Place(P, new Vector3(sc.enemyX, 0f, sc.enemyZ), Vector3.back);
+                int ag = 0; while (Duel.TickCount < sc.alignTick && ag++ < sc.alignTick * 4 + 600) yield return null;
+                if (Duel.TickCount != sc.alignTick) alignBad.Add(m + " reached tick " + Duel.TickCount + " (wanted " + sc.alignTick + ")");
+            }
             var tr = new RunTrace { mode = m }; runs.Add(tr);
             yield return RunHashFight(sc, tr);
             Log("simhash run " + (r + 1) + " (" + m + "): " + tr.hashes.Count + " frames, final hash " + tr.final.ToString("X16") + ", deaths " + tr.deaths + ", ragdolls converted " + tr.converted);
             try { File.WriteAllText(Path.Combine(dir, "simhash_run" + (r + 1) + "_" + m + ".txt"), string.Join("\n", tr.lines.ToArray())); } catch { }
         }
         PhysicsClock.PhysicsOn = true;
+        if (sc.alignTick > 0) Check("simhash.alignedStart", alignBad.Count == 0, alignBad.Count == 0 ? "every run started at sim tick " + sc.alignTick + " from the same poses" : string.Join("; ", alignBad.ToArray()));   // FPSSIM v1
         if (runs.Count < 2) { Log("simhash needs at least two runs"); Finish(2, "simhash setup"); yield break; }
         RunTrace A = null, B = null, Ctl = null;                 // A = the physics-on run, B = the first off run, Ctl = the second off run (control)
         Time.captureFramerate = 60;

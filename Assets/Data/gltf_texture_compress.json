@@ -13,9 +13,7 @@
     "_NormalTex"
   ],
   "excludePathContains": [],
-  "includePathContains": [
-    "Assets/Env/Rocks/"
-  ],
+  "includePathContains": [],
   "excludeTextureNameContains": [],
-  "logEach": true
+  "logEach": false
 }

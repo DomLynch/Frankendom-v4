@@ -319,7 +319,7 @@ public class HitFeel : MonoBehaviour
         if (along.sqrMagnitude < 1e-4f) along = Vector3.forward;
         along.Normalize();
         var sp = cfg.sparks;
-        Vector3 anchor = e.target.transform.position + Vector3.up * (sp.anchorHeight * FighterScale.Of(e.target)) - along * sp.anchorBack;
+        Vector3 anchor = e.target.transform.position + Vector3.up * (sp.anchorHeight * FighterScale.Of(e.target)) - along * sp.anchorBack; anchor = ArcFx.ContactPoint(e.actor, e.target, e.type, metal, anchor);   // ARCS v105
         if (sparkReady && row.spark > 0f) Burst(anchor, along, row.spark, e.heavy);
         Flash(anchor, row.flash);
     }

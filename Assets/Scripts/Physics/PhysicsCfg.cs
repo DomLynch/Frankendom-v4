@@ -23,7 +23,7 @@ public class PhysProofDeath
     public float[] sheetFrames = new float[] { 0f, 0.5f, 1f, 2f };
     public int sheetCellWidth = 320, sheetCellHeight = 180;
 }
-[Serializable] public class PhysProofSimHash { public int seed = 1, maxTicks = 5400, postDeathTicks = 300; public float victimHealth = 40f; public string[] runs = new string[] { "on", "off", "off" }; }
+[Serializable] public class PhysProofSimHash { public int seed = 1, maxTicks = 5400, postDeathTicks = 300; public float victimHealth = 40f; public string[] runs = new string[] { "on", "off", "off" }; public int alignTick = 0; public float playerX = 0f, playerZ = 12.6f, enemyX = 0f, enemyZ = 16f; }   // FPSSIM v1: start-state alignment (0 = off)
 [Serializable] public class PhysProofCfg { public int settleFrames = 30; public float timeoutSeconds = 420f; public PhysProofClock clock = new PhysProofClock(); public PhysProofDeath death = new PhysProofDeath(); public PhysProofSimHash simHash = new PhysProofSimHash(); }
 
 [Serializable]

@@ -117,10 +117,10 @@ namespace GLTFast.Editor
                 TextureFormat fmt;
                 if (!TryFormat(fmtName, out fmt)) { tex.Apply(false, true); skipped++; continue; }
 
-                var bytesBefore = (double)UnityEngine.Profiling.Profiler.GetRuntimeMemorySizeLong(tex);
+                var bytesBefore = (double)tex.GetRawTextureData<byte>().Length;   // TEXCHECK v1: stored mip-chain bytes (what the player build ships), not editor runtime memory
                 EditorUtility.CompressTexture(tex, fmt, q);       // keeps mips, sRGB flag, wrap and filter
+                var bytesAfter = (double)tex.GetRawTextureData<byte>().Length;    // TEXCHECK v1: measured while still readable, before Apply
                 tex.Apply(false, true);                           // not readable in the player (glTFast default)
-                var bytesAfter = (double)UnityEngine.Profiling.Profiler.GetRuntimeMemorySizeLong(tex);
                 before += bytesBefore; after += bytesAfter; done++;
                 if (c.logEach) Debug.Log("[GltfTexComp] " + assetPath + " " + tex.name + " " + tex.width + "x" + tex.height + (tex.isDataSRGB ? " sRGB" : " linear") + (isNormal ? " normal" : "") + " -> " + fmt);
             }

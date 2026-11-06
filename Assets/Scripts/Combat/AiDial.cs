@@ -65,6 +65,7 @@ public class AiUnityRows
 {
     public float contactSlack = 0.45f;     // Duel.Resolve reaches reach*scale + radii + 0.45
     public int maxCatchUpTicks = 4;
+    public bool brainsOnTick = false;   // FPSSIM v1: true = AIBrain / FlowBot / AiStance decide once per 60 Hz tick from Duel.Update, ArenaLimits clamps in MoveTick
     public float moveGain = 1f, runBeyondDist = 6.5f, feintUntil = 10, chargeMin = 30, ticksPerSecond = 60;
     public bool useSpecials = false;
     public string[] specialMoves = new string[] { "skill_cleave", "skill_reaping" };

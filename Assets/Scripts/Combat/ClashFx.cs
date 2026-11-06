@@ -197,7 +197,7 @@ public class ClashFx : MonoBehaviour
         sparkPS = MakeSystem("ClashSparks", sparkMat, cfg.sparks.poolSize, cfg.sparks.gravity);
         var sr = sparkPS.GetComponent<ParticleSystemRenderer>();
         sr.renderMode = ParticleSystemRenderMode.Stretch; sr.lengthScale = cfg.sparks.lengthScale; sr.velocityScale = cfg.sparks.velocityScale; sr.cameraVelocityScale = 0f; sr.maxParticleSize = cfg.sparks.maxParticleSize;
-        SetColorOverLife(sparkPS, cfg.sparks.colorHot, cfg.sparks.colorCool, cfg.sparks.coolAt, 0f);
+        SetColorOverLife(sparkPS, ArcFx.SparkHot(cfg.sparks.colorHot), ArcFx.SparkCool(cfg.sparks.colorCool), cfg.sparks.coolAt, 0f);   // ARCS v105
 
         glintPS = MakeSystem("ClashGlint", glintMat, cfg.sparks.glintPool, 0f);
         var gr = glintPS.GetComponent<ParticleSystemRenderer>();
@@ -420,12 +420,12 @@ public class ClashFx : MonoBehaviour
         {
             sparkReadyAt = Time.time + cfg.sparks.cooldown;
             var sp = cfg.sparks;
-            Vector3 anchor = d.transform.position + Vector3.up * (sp.anchorHeight * FighterScale.Of(d)) - along * sp.anchorBack;
-            int n = sp.countBase + Mathf.RoundToInt(Rand() * (sp.countRandomBase + row.spark * sp.countRandomPerStrength));
+            Vector3 anchor = d.transform.position + Vector3.up * (sp.anchorHeight * FighterScale.Of(d)) - along * sp.anchorBack; anchor = ArcFx.ContactPoint(a, d, type, false, anchor);   // ARCS v105
+            int n = sp.countBase + Mathf.RoundToInt(Rand() * (sp.countRandomBase + row.spark * sp.countRandomPerStrength)); n = Mathf.RoundToInt(n * ArcFx.CountMul());   // ARCS v105
             if (sheetSparkR != null)
             {
-                SpawnSheetSparks(anchor, along, row.spark, heavy);
-                n = Mathf.RoundToInt(n * Mathf.Max(0f, cfg.sheets.sparks.proceduralCountScale)); // 0 = the baked sheet replaces the procedural streaks
+                var AS = ArcFx.SparksOn(); if (AS == null || AS.flipbook) SpawnSheetSparks(anchor, along, row.spark, heavy);   // ARCS v105
+                n = Mathf.RoundToInt(n * Mathf.Max(0f, AS == null || AS.flipbook ? cfg.sheets.sparks.proceduralCountScale : AS.proceduralCountScale)); // 0 = the baked sheet replaces the procedural streaks
             }
             int now = n > 0 ? Mathf.Max(1, Mathf.RoundToInt(n * (sp.firstWaveMin + Rand() * sp.firstWaveRange))) : 0;
             if (now > 0) { SpawnSparks(anchor, along, side, row.spark, now); SpawnGlint(anchor, row.spark); }
@@ -461,7 +461,7 @@ public class ClashFx : MonoBehaviour
         for (int j = 0; j < n; j++)
         {
             Vector3 at = anchor + side * ((Rand() - 0.5f) * 2f * sp.anchorJitter);
-            Vector3 dir = along * ((Rand() - sp.alongBias) * sp.alongScale) + side * ((Rand() - 0.5f) * sp.sideSpread) + Vector3.up * (sp.upMin + Rand() * sp.upRange);
+            Vector3 dir = along * ((Rand() - sp.alongBias) * sp.alongScale) + side * ((Rand() - 0.5f) * sp.sideSpread * ArcFx.SideMul()) + Vector3.up * (sp.upMin + Rand() * sp.upRange * ArcFx.UpMul());   // ARCS v105
             if (dir.sqrMagnitude < 1e-6f) dir = Vector3.up;
             dir.Normalize();
             float r1 = Rand(), speed = (sp.speedMin + r1 * Rand() * sp.speedRange) * (sp.speedBase + strength * sp.speedPerStrength);

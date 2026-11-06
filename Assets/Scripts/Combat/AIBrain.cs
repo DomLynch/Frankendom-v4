@@ -97,7 +97,8 @@ public class AIBrain : MonoBehaviour
     static int Rnd(float x) { return (int)Mathf.Floor(x + 0.5f); }   // JS Math.round
     static readonly string[] Sides = new string[] { "left", "right", "overhead", "thrust", "low" };
 
-    void Update()
+    void Update() { if (!Duel.BrainsOnTick) SimStep(); }   // FPSSIM v1: with brainsOnTick Duel.Update calls SimStep once per sim tick
+    public void SimStep()
     {
         if (df == null) return;
         if (!inited) Init();

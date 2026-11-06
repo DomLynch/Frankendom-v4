@@ -1,0 +1,85 @@
+{
+  "_notes": "ROCKSHOT (Visual QC): lit close-up frames for texture-compression A/B. Camera goes distM from the target on the key-light side; frames more than maxBlackFraction black are rejected and the next yaw is tried; no lit frame = exit 4. Targets: 2 rocks from props_layout (worldnear_rock_boulder_B_25 and _D_17) and Joan's torso cloth.",
+  "enabled": true,
+  "requireResolution": true,
+  "muteAudio": true,
+  "forceLod0": true,
+  "width": 1920,
+  "height": 1080,
+  "shotsPerTarget": 2,
+  "bootWaitSec": 30,
+  "settleSec": 1.5,
+  "targetSettleSec": 0.8,
+  "shotIntervalSec": 0.4,
+  "timeoutSec": 300,
+  "exitGraceSec": 3,
+  "maxBlackFraction": 0.5,
+  "blackLuma": 0.04,
+  "minMeanLuma": 0.02,
+  "keyLightName": "Key_ColdSun",
+  "targets": [
+    {
+      "id": "rockB25",
+      "kind": "renderer",
+      "match": "worldnear_rock_boulder_B_25",
+      "distM": 1.0,
+      "upM": 0.15,
+      "aimUpM": 0.0,
+      "fov": 40,
+      "near": 0.03,
+      "yawTryDeg": [
+        0,
+        40,
+        -40,
+        80,
+        -80,
+        140,
+        -140,
+        180
+      ],
+      "who": "Player"
+    },
+    {
+      "id": "rockD17",
+      "kind": "renderer",
+      "match": "worldnear_rock_boulder_D_17",
+      "distM": 1.0,
+      "upM": 0.15,
+      "aimUpM": 0.0,
+      "fov": 40,
+      "near": 0.03,
+      "yawTryDeg": [
+        0,
+        40,
+        -40,
+        80,
+        -80,
+        140,
+        -140,
+        180
+      ],
+      "who": "Player"
+    },
+    {
+      "id": "joanCloth",
+      "kind": "bone",
+      "who": "Player",
+      "match": "Spine2",
+      "distM": 0.9,
+      "upM": 0.0,
+      "aimUpM": 0.0,
+      "fov": 35,
+      "near": 0.03,
+      "yawTryDeg": [
+        0,
+        40,
+        -40,
+        80,
+        -80,
+        140,
+        -140,
+        180
+      ]
+    }
+  ]
+}

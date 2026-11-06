@@ -1,0 +1,165 @@
+{
+  "_about": "PROFILE v104 (laneOPT4). Switch for -profile (ProfileMode.cs). enabled=false ships: with it off, or without -profile, nothing runs. run_profile.py passes a copy with enabled=true through -profiledata. counters[].names are tried in order; '~x' = first marker whose name contains x; the matched name and status per column land in profile_meta.json, the build's full marker list in profile_markers.txt, so a wrong guess is fixed here, not in code. kind: ms (nanosecond marker -> ms), count, bytes. warmup/measure seconds default to the run_res_ab.py window (20 / 45).",
+  "enabled": false,
+  "warmupSeconds": 20.0,
+  "measureSeconds": 45.0,
+  "minWarmupFrames": 120,
+  "maxFrames": 20000,
+  "quitWhenDone": true,
+  "listMarkers": true,
+  "frameTiming": true,
+  "passes": true,
+  "companionArgs": [
+    "-balanceauto",
+    "-perfab",
+    "-perfbench"
+  ],
+  "quitBlockers": [
+    "-balanceauto",
+    "-perfab"
+  ],
+  "outDirName": "profile",
+  "counters": [
+    {
+      "col": "draw_calls",
+      "names": [
+        "Draw Calls Count"
+      ],
+      "kind": "count"
+    },
+    {
+      "col": "batches",
+      "names": [
+        "Batches Count"
+      ],
+      "kind": "count"
+    },
+    {
+      "col": "setpass",
+      "names": [
+        "SetPass Calls Count"
+      ],
+      "kind": "count"
+    },
+    {
+      "col": "triangles",
+      "names": [
+        "Triangles Count"
+      ],
+      "kind": "count"
+    },
+    {
+      "col": "vertices",
+      "names": [
+        "Vertices Count"
+      ],
+      "kind": "count"
+    },
+    {
+      "col": "shadow_casters",
+      "names": [
+        "Shadow Casters Count"
+      ],
+      "kind": "count"
+    },
+    {
+      "col": "skinning_ms",
+      "names": [
+        "Mesh.Skinning",
+        "Gfx.SkinOnCPU",
+        "PostLateUpdate.UpdateAllSkinnedMeshes",
+        "~SkinOnCPU",
+        "~Skinning"
+      ],
+      "kind": "ms"
+    },
+    {
+      "col": "animator_ms",
+      "names": [
+        "Animators.Update",
+        "Animator.Update",
+        "~Animators"
+      ],
+      "kind": "ms"
+    },
+    {
+      "col": "scripts_update_ms",
+      "names": [
+        "Update.ScriptRunBehaviourUpdate",
+        "BehaviourUpdate"
+      ],
+      "kind": "ms"
+    },
+    {
+      "col": "scripts_late_ms",
+      "names": [
+        "PreLateUpdate.ScriptRunBehaviourLateUpdate",
+        "~ScriptRunBehaviourLateUpdate"
+      ],
+      "kind": "ms"
+    },
+    {
+      "col": "scripts_fixed_ms",
+      "names": [
+        "FixedUpdate.ScriptRunBehaviourFixedUpdate",
+        "FixedBehaviourUpdate"
+      ],
+      "kind": "ms"
+    },
+    {
+      "col": "gui_ms",
+      "names": [
+        "GUI.Repaint",
+        "IMGUI.Repaint",
+        "~OnGUI"
+      ],
+      "kind": "ms"
+    },
+    {
+      "col": "physics_ms",
+      "names": [
+        "FixedUpdate.PhysicsFixedUpdate",
+        "Physics.Simulate"
+      ],
+      "kind": "ms"
+    },
+    {
+      "col": "render_submit_ms",
+      "names": [
+        "Camera.Render",
+        "~Camera.Render"
+      ],
+      "kind": "ms"
+    },
+    {
+      "col": "wait_gfx_ms",
+      "names": [
+        "Gfx.WaitForPresentOnGfxThread",
+        "Gfx.PresentFrame",
+        "~WaitForPresent"
+      ],
+      "kind": "ms"
+    },
+    {
+      "col": "playerloop_ms",
+      "names": [
+        "PlayerLoop"
+      ],
+      "kind": "ms"
+    },
+    {
+      "col": "gc_alloc_bytes",
+      "names": [
+        "GC Allocated In Frame"
+      ],
+      "kind": "bytes"
+    },
+    {
+      "col": "gc_alloc_count",
+      "names": [
+        "GC Allocation In Frame Count"
+      ],
+      "kind": "count"
+    }
+  ]
+}

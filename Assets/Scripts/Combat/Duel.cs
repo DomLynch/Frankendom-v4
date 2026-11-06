@@ -13,6 +13,15 @@ public class Duel : MonoBehaviour
     public static void Register(DuelFighter f) { if (!fighters.Contains(f)) fighters.Add(f); }
     public static void Unregister(DuelFighter f) { fighters.Remove(f); }
 
+    // FPSSIM v1: the AI brains decide once per 60 Hz tick (they used to run in Update: once per RENDERED frame with n = ticks since the last frame, so the decision cadence, the RNG draws and
+    // the state each decision saw depended on the display rate). State after tick j -> intent for tick j+1, the same latency as a 60 fps frame. Data: ai_rows.json unity.brainsOnTick (default false).
+    public static bool BrainsOnTick { get { return AiRows.I.unity.brainsOnTick; } }
+    static void SimBrains()
+    {
+        for (int i = 0; i < fighters.Count; i++) { var b = fighters[i].GetComponent<AIBrain>(); if (b != null && b.isActiveAndEnabled) b.SimStep(); }
+        for (int i = 0; i < fighters.Count; i++) { var fb = fighters[i].GetComponent<FlowBot>(); if (fb != null && fb.isActiveAndEnabled) fb.SimStep(); }
+    }
+
     void Awake() { TickCount = 0; Frozen = false; inst = this; }
     void OnDestroy() { fighters.Clear(); Frozen = false; }
 
@@ -24,6 +33,7 @@ public class Duel : MonoBehaviour
             acc -= 1f / 60f; TickCount++;
             for (int i = 0; i < fighters.Count; i++) fighters[i].Tick();
             for (int i = 0; i < fighters.Count; i++) fighters[i].MoveTick();   // PHYSAUDIT: bodies move on the sim tick (after every decision of this tick)
+            if (BrainsOnTick) SimBrains();   // FPSSIM v1
             PhysicsClock.OnSimTick();   // PHYS1 v1: ONE Physics.Simulate per 60 Hz sim tick, after the fighters ticked (hit-stop = no tick = no step)
             if (PresentationClock.Frozen) { acc = 0f; break; }   // a contact this tick requested a stop (V3 main.ts: accumulator = 0)
         }

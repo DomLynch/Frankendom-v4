@@ -36,7 +36,9 @@ public class ArenaLimits : MonoBehaviour
 
     void Awake() { cc = GetComponent<CharacterController>(); }
 
-    void LateUpdate()
+    void LateUpdate() { if (!Duel.BrainsOnTick) Clamp(); }   // FPSSIM v1: with brainsOnTick DuelFighter.MoveTick clamps once per sim tick
+    public static void ClampTick(Component c) { var a = c.GetComponent<ArenaLimits>(); if (a != null) a.Clamp(); }
+    public void Clamp()
     {
         var r = row; if (r == null || !r.enabled || cc == null || !cc.enabled) return;
         var p = transform.position;

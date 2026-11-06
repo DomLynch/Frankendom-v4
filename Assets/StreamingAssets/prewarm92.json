@@ -48,8 +48,7 @@
     "units": [
       "head",
       "head_split",
-      "head_crown",
-      "torso_waist"
+      "head_crown"
     ],
     "allFighters": true,
     "budgetMs": 6.0,

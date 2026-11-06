@@ -7,7 +7,7 @@ public class WeaponTrail : MonoBehaviour
     public DuelFighter owner;
     public bool ember;
     // Dom 2026-11-04: weapon trails removed (cheesy). Code stays behind the -trails launch flag; nothing renders by default.
-    public static readonly bool Enabled = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-trails") >= 0;
+    static readonly bool EnabledFlag = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-trails") >= 0; public static bool Enabled { get { return EnabledFlag || ArcFx.WeaponOn; } }   // ARCS v105: arc_fx.json weapon.on also enables the soft arc
     TrailRenderer tr;
     static Color C(string h) { ColorUtility.TryParseHtmlString(h, out var c); return c; }
     void Awake() { tr = GetComponent<TrailRenderer>(); tr.emitting = false; if (!Enabled) tr.enabled = false; }
@@ -18,7 +18,7 @@ public class WeaponTrail : MonoBehaviour
         var g = new Gradient();
         if (ember) g.SetKeys(new[] { new GradientColorKey(C("#FFD0A0"), 0f), new GradientColorKey(C("#FF4A1A"), 0.4f), new GradientColorKey(C("#7A1200"), 1f) }, new[] { new GradientAlphaKey(0.9f, 0f), new GradientAlphaKey(0.5f, 0.4f), new GradientAlphaKey(0f, 1f) });
         else g.SetKeys(new[] { new GradientColorKey(new Color(0.91f, 0.875f, 0.78f), 0f), new GradientColorKey(new Color(0.91f, 0.875f, 0.78f), 1f) }, new[] { new GradientAlphaKey(0.6f, 0f), new GradientAlphaKey(0f, 1f) });
-        tr.colorGradient = g;
+        tr.colorGradient = g; ArcFx.StyleTrail(tr);   // ARCS v105
     }
     void LateUpdate()
     {

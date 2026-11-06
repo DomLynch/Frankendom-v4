@@ -648,6 +648,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         else if (state == FState.Roll && dodgeKind == 0 && rollDir.sqrMagnitude > 0.01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rollDir), Mathf.Min(1f, dodgeTurn * dt));
         else if (faceOpp && state != FState.Stagger && state != FState.Down) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 10f * dt);
         else if (state == FState.Loco && moveDir.sqrMagnitude > 0.01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 10f * dt);
+        if (Duel.BrainsOnTick) ArenaLimits.ClampTick(this);   // FPSSIM v1: arena rectangle on the sim tick (was ArenaLimits.LateUpdate, per frame)
         faceOppV = faceOpp;
         if (viewInterp == null) { viewInterp = GetComponent<ViewInterp>(); if (viewInterp == null) viewInterp = gameObject.AddComponent<ViewInterp>(); }
         viewInterp.Push(transform.position, snapView); snapView = false;

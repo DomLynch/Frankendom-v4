@@ -15,5 +15,9 @@
   "minEnemyMoves": 4,
   "shotMode": "screen",
   "maxRiposteShare": 0.3,
-  "maxMoveShare": 0.4
+  "maxMoveShare": 0.4,
+  "holdEnemyUntilStart": true,
+  "noHitRule": "strict",
+  "noHitMinSwings": 1,
+  "noHitMinSeconds": 30
 }

@@ -19,10 +19,9 @@
       "decapitation",
       "split_crown",
       "split_crown_pit",
-      "run_through",
-      "opened"
+      "run_through"
     ],
-    "v1finScope": "Dom 2026-11-05: decapitation, split crown (Joan: split_crown, Pitborn as killer: split_crown_pit), run through, opened (waist cut). The others stay defined, enabled=false."
+    "v1finScope": "Dom 2026-11-05: decapitation, split crown (Joan: split_crown, Pitborn as killer: split_crown_pit), run through. The waist cut opened was REMOVED for good by Dom 2026-11-06 (laneNOWAIST v104). The others stay defined, enabled=false."
   },
   "entries": [
     {
@@ -1761,212 +1760,6 @@
       "bladeReach": 0.6,
       "probeKillerBone": "RightHand",
       "probeVictimBone": "Spine2"
-    },
-    {
-      "id": "opened",
-      "enabled": false,
-      "placeholder": true,
-      "weight": 1,
-      "attackerSide": "any",
-      "weapons": [
-        "sword"
-      ],
-      "directions": [],
-      "moves": [],
-      "locations": [],
-      "attackerMove": "light_right",
-      "attackerClip": "",
-      "contactAt": -1,
-      "duration": 4.2,
-      "victimClip": "",
-      "dieAt": -2,
-      "distance": 1.7,
-      "shotDefs": [
-        {
-          "id": "op_wide",
-          "focus": "mid",
-          "angleDeg": 60,
-          "side": 1,
-          "dist": 4.6,
-          "height": 1.4,
-          "lookHeight": 1.0,
-          "lookAhead": 0,
-          "fov": 34,
-          "blend": 0,
-          "gate": true,
-          "darkenEV": 0.0,
-          "gateMinDot": 0.8,
-          "fitTarget": "pair",
-          "bodyHalfWidth": 0.9,
-          "bodyHeight": 2.6,
-          "fitMargin": 1.15,
-          "minDist": 4,
-          "maxDist": 7.5,
-          "track": "body",
-          "frameMargin": 1.2,
-          "frameMaxDist": 9,
-          "lookMin": 0.2,
-          "bodyFollow": 10
-        },
-        {
-          "id": "op_low",
-          "focus": "target",
-          "angleDeg": 85,
-          "side": 1,
-          "dist": 3.0,
-          "height": 0.9,
-          "lookHeight": 1.0,
-          "lookAhead": 0,
-          "fov": 32,
-          "blend": 0.6,
-          "frameBody": true,
-          "frameTop": 0,
-          "frameMargin": 1.2,
-          "frameMaxDist": 9,
-          "lookMin": 0.2,
-          "track": "body",
-          "gate": true,
-          "darkenEV": 0.0,
-          "fitTarget": "pair",
-          "bodyHalfWidth": 0.9,
-          "bodyHeight": 2.6,
-          "fitMargin": 1.15,
-          "minDist": 4,
-          "maxDist": 7.5,
-          "bodyFollow": 10,
-          "gateMinDot": -2
-        },
-        {
-          "id": "v1_front",
-          "focus": "mid",
-          "angleDeg": 0,
-          "side": 1,
-          "dist": 4.4,
-          "height": 1.9,
-          "lookHeight": 1.0,
-          "lookAhead": 0.6,
-          "fov": 34,
-          "blend": 0,
-          "shoulder": 0.95,
-          "slideRampS": 1.7333,
-          "pushIn": 1.6,
-          "pushSeconds": 1.7333,
-          "gate": true,
-          "gateMinDot": 0.8,
-          "darkenEV": 0.0,
-          "track": "body",
-          "fitTarget": "pair",
-          "bodyHalfWidth": 0.9,
-          "bodyHeight": 2.6,
-          "fitMargin": 1.15,
-          "minDist": 4,
-          "maxDist": 7.5,
-          "frameMargin": 1.2,
-          "frameMaxDist": 9,
-          "lookMin": 0.2,
-          "bodyFollow": 10
-        },
-        {
-          "id": "op_v1_reveal",
-          "focus": "mid",
-          "angleDeg": 60,
-          "side": 1,
-          "dist": 5.2,
-          "height": 3.7,
-          "lookHeight": 0.85,
-          "lookAhead": 0,
-          "fov": 34,
-          "blend": 1.76,
-          "gate": true,
-          "gateMinDot": 0.8,
-          "darkenEV": 0.0,
-          "track": "body",
-          "fitTarget": "pair",
-          "bodyHalfWidth": 0.9,
-          "bodyHeight": 2.6,
-          "fitMargin": 1.15,
-          "minDist": 4,
-          "maxDist": 7.5,
-          "frameMargin": 1.2,
-          "frameMaxDist": 9,
-          "lookMin": 0.2,
-          "bodyFollow": 10
-        }
-      ],
-      "shots": [
-        {
-          "t": 0,
-          "rel": "start",
-          "shot": "op_wide",
-          "blend": -1
-        },
-        {
-          "t": 0.1,
-          "rel": "contact",
-          "shot": "op_low",
-          "blend": -1
-        }
-      ],
-      "gore": [
-        {
-          "t": 0.18,
-          "rel": "contact",
-          "type": "cut",
-          "cut": "torso_waist",
-          "strength": 1
-        }
-      ],
-      "slowmo": [],
-      "holdAfter": 1.5,
-      "note": "placeholder swing; waist cut is lane B (MeshCut unit belly_open, falls back to torso_waist) | FINFIX v93: duration=4.0, holdAfter=1.5 | V1FIN v94: V1 opened: waist cut at the spine/hips (unit torso_waist): the upper half slides .5 m and tips over on the V1 schedule; legs = the victim body folding with the shared 9100001 clip; killer = the sim light_right attack",
-      "shotsV1": [
-        {
-          "t": 0,
-          "rel": "start",
-          "shot": "v1_front",
-          "blend": -1
-        },
-        {
-          "t": 0.128,
-          "rel": "contact",
-          "shot": "op_v1_reveal",
-          "blend": 1.28
-        }
-      ],
-      "goreV1": [
-        {
-          "t": 0.18,
-          "rel": "contact",
-          "type": "cut",
-          "cut": "torso_waist",
-          "strength": 1
-        }
-      ],
-      "clipsV1": {
-        "victimClip": "v1_split_crown_victim",
-        "victimClipSpeed": 0.75,
-        "victimClipStart": 0.0,
-        "victimStart": -1.0,
-        "dieAt": -2.0,
-        "source": "OpenTrident finishers_vps/clips-authored/9100001-finisher-split-crown-victim.glb, 2.4 s at 0.75x",
-        "duration": 4.2,
-        "holdAfter": 1.5,
-        "attackerClipSpeed": -1,
-        "attackerClipStart": -1,
-        "contactAt": -1
-      },
-      "attackerClipSpeed": 1,
-      "attackerFade": 0.1,
-      "victimClipSpeed": 1,
-      "victimFade": 0.08,
-      "victimStart": -1,
-      "holdLast": true,
-      "distanceScaleByKiller": true,
-      "contactHoldMs": -1,
-      "contactShake": -1,
-      "bladeReach": 0.6,
-      "probeKillerBone": "RightHand",
-      "probeVictimBone": "Spine2"
     }
   ],
   "cuts": {
@@ -2114,69 +1907,6 @@
         "angularDrag": 0.5,
         "arc": {"sideMps": 1.1, "upMps": 1.8, "spinRadS": 9, "sideSign": 1, "spinSign": 1, "gravity": 12, "bounceMinVy": 1, "bounceVy": 0.28, "bounceXz": 0.68, "rollDecayPerS": 2.1, "restSpeed": 0.05, "radiusK": 0.38, "radiusMinM": 0.07, "radiusMaxM": 0.24, "maxSubstepS": 0.0166667, "restLiftMaxM": 0.4, "restLiftTolM": 0.02},
         "script": {"slideSideM": 0.5, "slideAlongM": 0.12, "slideStartS": 0.144, "slideEndS": 0.96, "fallStartS": 0.64, "fallEndS": 2.112, "fallDeg": 90, "sideSign": 1, "floorM": 0.008, "weapon": {"sockets": ["WeaponSocket_R", "WeaponSocket_L"], "sideM": 0.25, "alongM": -0.35, "startS": 0.384, "endS": 1.984, "sideSign": 1, "floorM": 0.008}, "legs": {"onlyWithoutFinPhys": true, "hipsBone": "Hips", "sideM": -0.35, "alongM": -0.12, "fallDeg": 90, "sideSign": 1, "hipsRestM": 0.12, "startS": 1.152, "endS": 2.688}}
-      },
-      {
-        "id": "torso_waist",
-        "kind": "subtree",
-        "bones": [
-          "spine"
-        ],
-        "parentBones": [
-          "hips"
-        ],
-        "loc": 2,
-        "massKg": 30.0,
-        "colliderRadiusM": 0.0,
-        "jetSeconds": 1.8,
-        "torqueMul": 0.4,
-        "upBias": 0.3,
-        "scatter": 0.2,
-        "angularDrag": 0.8,
-        "lifeSeconds": 0,
-        "extraDecals": 14,
-        "bloodProfile": "opened",
-        "script": {
-          "enabled": true,
-          "slideSideM": 0.5,
-          "slideAlongM": 0.12,
-          "slideStartS": 0.144,
-          "slideEndS": 0.96,
-          "fallStartS": 0.64,
-          "fallEndS": 2.112,
-          "fallDeg": 90.0,
-          "sideSign": 1.0,
-          "floorM": 0.008,
-          "weapon": {
-            "enabled": true,
-            "sockets": [
-              "WeaponSocket_R",
-              "WeaponSocket_L"
-            ],
-            "sideM": 0.25,
-            "alongM": -0.35,
-            "startS": 0.384,
-            "endS": 1.984,
-            "sideSign": 1.0,
-            "floorM": 0.008
-          },
-          "legs": {
-            "enabled": true,
-            "onlyWithoutFinPhys": true,
-            "hipsBone": "Hips",
-            "sideM": -0.35,
-            "alongM": -0.12,
-            "fallDeg": 90.0,
-            "sideSign": 1.0,
-            "hipsRestM": 0.12,
-            "startS": 1.152,
-            "endS": 2.688
-          },
-          "_v1clips": "V1CLIPS v98: opened.ts place(): weapon smooth(.12,.62) -> (.25, -.35) x scale + roll flat; legs smooth(.36,.84) -> (-.35, -.12) x scale + Rz(-90) (seconds = progress x 3.2). legs only run when the V3 physics ragdoll (FINPHYS) is absent / off: it already drops hips + legs"
-        },
-        "openDeg": 14,
-        "splitAxis": "x",
-        "arc": {"sideMps": 1.1, "upMps": 1.8, "spinRadS": 9, "sideSign": 1, "spinSign": 1, "gravity": 12, "bounceMinVy": 1, "bounceVy": 0.28, "bounceXz": 0.68, "rollDecayPerS": 2.1, "restSpeed": 0.05, "radiusK": 0.38, "radiusMinM": 0.07, "radiusMaxM": 0.24, "maxSubstepS": 0.0166667, "restLiftMaxM": 0.4, "restLiftTolM": 0.02},
-        "crown": {"frame": "auto", "openDeg": 10.8858, "openShiftM": 0.008, "openS": 0.384, "hingeMinYM": -0.045, "hideScale": 0.0001, "includeBoneMeshes": true, "capTexSize": 64, "capTint": [200, 175, 165], "capShadeMin": 0.75, "capShadeSpan": 0.25, "capVein": 0.45, "capVeinStep": 0.8, "capColor": [0.2667, 0.0863, 0.0980, 1]}
       },
       {
         "id": "belly_open",
@@ -2973,64 +2703,6 @@
             "fromTop": false
           }
         ]
-      },
-      {
-        "id": "opened",
-        "spray": {
-          "seconds": 7.0,
-          "rate": 78.0,
-          "coneDeg": 15.0,
-          "gravity": 9.8,
-          "speed": [
-            1.5,
-            2.3
-          ],
-          "size": [
-            0.008,
-            0.03
-          ],
-          "life": [
-            2.0,
-            2.0
-          ],
-          "phaseUntilS": [
-            1.7,
-            3.5,
-            7.0
-          ],
-          "phaseRate": [
-            78.0,
-            32.0,
-            14.0
-          ],
-          "phaseSpeed": [
-            2.0,
-            0.3,
-            0.3
-          ]
-        },
-        "sources": [
-          {
-            "site": "waist-legs",
-            "strength": 1.4,
-            "upOffsetM": 0.0,
-            "fwdOffsetM": 0.0,
-            "dirUp": 1.0,
-            "dirFwd": 0.0,
-            "onPiece": false,
-            "fromTop": false
-          },
-          {
-            "site": "waist-torso",
-            "strength": 1.4,
-            "upOffsetM": 0.0,
-            "fwdOffsetM": 0.0,
-            "dirUp": 1.0,
-            "dirFwd": 0.0,
-            "onPiece": true,
-            "fromTop": false
-          }
-        ]
       }
     ]
   },
@@ -3531,7 +3203,7 @@
       {
         "id": "Joan",
         "pairScale": 0.9224,
-        "note": "Joan 1.58 m / Dracula 1.713 m world (laneJOAN R_WORLD). Multiplies pairOffset, distance and bladeReach of every entry (placeholders run_through / opened rely on it alone). DuelFighter.scale of the cloned Joan object stays 1; if it is ever set to the height ratio, set pairScale 1."
+        "note": "Joan 1.58 m / Dracula 1.713 m world (laneJOAN R_WORLD). Multiplies pairOffset, distance and bladeReach of every entry (placeholder run_through relies on it alone). DuelFighter.scale of the cloned Joan object stays 1; if it is ever set to the height ratio, set pairScale 1."
       },
       {
         "id": "*",

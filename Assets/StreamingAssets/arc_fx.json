@@ -1,0 +1,26 @@
+{
+  "_about": "ARCS v105 (laneARCS), read by Scripts/ArcFx.cs (StreamingAssets first, then Assets/Data). Three look changes Goose scored 6/10 on v103 (fight_15, fight_19; v102 fight_9), each ONE switch (false = today's look). HCFIX 2026-11-06: guard.on is TRUE (Dom wants the soft guard arc on; colour and alpha stay here, he may darken them); weapon and sparks stay false until Dom's LOOK OK. ArcFx.cs class defaults equal this file. guard = the pale blue-white crescent arcs round Joan are the GUARD-DIRECTION HUD (hud.json guardDir), not a weapon trail: on = soft-edged tapered arc texture (edgeSoft 0 hard .. 1 all gradient, endFade = fraction of the arc length that fades to the tips), tint / parryTint = [r,g,b,a], alphas replace hud.json guardDir.idleAlpha and the lit alpha 1. weapon = the soft curved weapon arc (AGENTS.md direction): WeaponTrail renders without -trails; timeS = trail lifetime, widthM = ribbon width at its widest, widthCurve = shoulderWidth at the head rising to 1 at shoulderAt then 0 at the tail, colours blend head -> tail with alpha headAlpha -> midAlpha (at midAt) -> 0, role = fx_materials.json role (dust = alpha blend, never additive). sparks = the cartoon fan is the baked UE flipbook (clash_fx.json sheets.sparks) centred on the defender's body: on = flipbook skipped (flipbook false), procedural count x proceduralCountScale x countScale, side / up spread x sideSpreadMul / upRangeMul, origin = the real contact point (contactBlend 0 = attacker's TrailTip, 1 = defender's TrailTip, kept within maxFromBodyM x fighter scale of the old body anchor and inside minHeightM..maxHeightM x scale above the floor; tipNode = fallback node name; clashOnly = flesh hits keep the body anchor; hotColor / coolColor = the procedural streak colour over life instead of clash_fx.json colorHot white / colorCool grey-blue, warm steel-spark orange; [] keeps clash_fx.json).",
+  "guard": {
+    "on": true,
+    "tint": [0.58, 0.56, 0.52, 1.0], "parryTint": [0.78, 0.60, 0.24, 1.0],
+    "arcDeg": 56.0, "thickness": 0.10, "edgeSoft": 0.55, "endFade": 0.5,
+    "idleAlpha": 0.10, "activeAlpha": 0.62, "parryAlpha": 0.70,
+    "textureSize": 256
+  },
+  "weapon": {
+    "on": false,
+    "timeS": 0.16, "minVertexDistanceM": 0.04, "widthM": 0.12, "shoulderAt": 0.15, "shoulderWidth": 0.35, "edgeSoft": 0.9,
+    "headColor": [0.72, 0.74, 0.78, 1.0], "tailColor": [0.30, 0.30, 0.33, 1.0],
+    "headAlpha": 0.26, "midAlpha": 0.12, "midAt": 0.4,
+    "cornerVertices": 4, "capVertices": 2, "profileSize": 64,
+    "role": "dust"
+  },
+  "sparks": {
+    "on": false,
+    "flipbook": false,
+    "proceduralCountScale": 1.0, "countScale": 1.6, "sideSpreadMul": 0.5, "upRangeMul": 0.6,
+    "useContactPoint": true, "contactBlend": 0.5, "maxFromBodyM": 1.3, "minHeightM": 0.35, "maxHeightM": 2.2, "tipRefreshS": 1.0,
+    "hotColor": [1.0, 0.80, 0.45, 1.0], "coolColor": [0.55, 0.28, 0.12, 1.0],
+    "tipNode": "TrailTip", "clashOnly": true
+  }
+}

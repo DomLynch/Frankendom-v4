@@ -74,7 +74,8 @@ public class FlowBot : MonoBehaviour
         return false;
     }
 
-    void Update()
+    void Update() { if (!Duel.BrainsOnTick) SimStep(); }   // FPSSIM v1: with brainsOnTick Duel.Update calls SimStep once per sim tick (after AIBrain.SimStep, as order 20 > 0 did)
+    public void SimStep()
     {
         if (df == null) return;
         var C = FlowTable.Get();

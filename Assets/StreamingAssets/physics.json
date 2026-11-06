@@ -133,6 +133,12 @@
     },
     "simHash": {
       "seed": 4242,
+      "alignTick": 96,
+      "playerX": 0.0,
+      "playerZ": 12.6,
+      "enemyX": 0.0,
+      "enemyZ": 16.0,
+      "_align_note": "FPSSIM: every simhash run starts from these poses at this absolute sim tick (above the 62 settle ticks of the 30 fps run). enemyZ 16.0 is an estimate; any fixed value is valid, it only has to be the same in every run.",
       "victimHealth": 40.0,
       "maxTicks": 5400,
       "postDeathTicks": 300,
@@ -1059,7 +1065,7 @@
     }
   },
   "finphys": {
-    "_about": "FINPHYS v97: physics in the finishers (V3 data/physics.json finisherCuts + cut + kill, physics package world.json / states.json / role table). PRESENTATION ONLY; read by FinPhys.cs. enabled=false or -finphys:off = V1FIN + PHYS1 + PHYS2 exactly. Compare: -finphys:head=physics (physics head instead of V1FIN's scripted arc), -finphys:torso_waist=script (V1FIN OpenedHalf instead of the physics upper half), -finphys:body=clip (victim keeps the clip to its end).",
+    "_about": "FINPHYS v97: physics in the finishers (V3 data/physics.json finisherCuts + cut + kill, physics package world.json / states.json / role table). PRESENTATION ONLY; read by FinPhys.cs. enabled=false or -finphys:off = V1FIN + PHYS1 + PHYS2 exactly. Compare: -finphys:head=physics (physics head instead of V1FIN's scripted arc), -finphys:body=clip (victim keeps the clip to its end).",
     "enabled": false,
     "suppressHitReact": true,
     "bodyRagdoll": true,
@@ -1142,15 +1148,6 @@
         "zone": "torso",
         "push": 0.25,
         "note": "V3 rows.runThrough: no cut, push 0.25 (the blade holds him up)"
-      },
-      {
-        "id": "opened",
-        "v3": "opened",
-        "ragdoll": true,
-        "ragdollAtS": 0.0,
-        "zone": "torso",
-        "push": 1.0,
-        "note": "V3 rows.opened: fallback torso_waist (V1's baked waist cut), atS 0, push 1"
       }
     ],
     "units": [
@@ -1194,31 +1191,6 @@
         "inheritVelocity": true,
         "restMaxM": -1,
         "note": "the old body-mesh split (halves stay attached)"
-      },
-      {
-        "unit": "torso_waist",
-        "v3": "torso_waist",
-        "cutPart": "spine",
-        "carries": [
-          "spine",
-          "spine1",
-          "spine2",
-          "neck",
-          "head",
-          "armL",
-          "forearmL",
-          "handL",
-          "armR",
-          "forearmR",
-          "handR"
-        ],
-        "mode": "physics",
-        "impulse": -1,
-        "lift": -1,
-        "massScale": 1.0,
-        "inheritVelocity": true,
-        "restMaxM": -1,
-        "note": "V3 torso_waist: the upper body leaves with everything above the waist; hips + legs stay as the ragdoll. script = V1FIN OpenedHalf"
       },
       {
         "unit": "arm_right",

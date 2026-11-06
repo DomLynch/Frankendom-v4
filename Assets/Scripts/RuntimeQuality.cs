@@ -131,6 +131,7 @@ public static class RuntimeQuality
         if (F.hideMHHead) { var mhc = MHAttachData.Load(); var mhh = GameObject.Find(mhc.objectName); if (mhh != null) mhh.SetActive(false); var drq = GameObject.Find(mhc.fighterName); if (drq != null) foreach (var smr in drq.GetComponentsInChildren<SkinnedMeshRenderer>(true)) if (smr.name == "head") smr.enabled = true; }
         if (first && F.lightMul != null) foreach (var m in F.lightMul) foreach (var l in Object.FindObjectsByType<Light>(FindObjectsSortMode.None)) if (l.name == m.name) l.intensity *= m.mul;
         if (!F.shadows) foreach (var l in Object.FindObjectsByType<Light>(FindObjectsSortMode.None)) l.shadows = LightShadows.None;
+        if (F.shadowResolution > 0) foreach (var ls in Object.FindObjectsByType<Light>(FindObjectsSortMode.None)) if (ls.type == LightType.Directional && ls.shadows != LightShadows.None) { var hdls = ls.GetComponent<HDAdditionalLightData>(); if (hdls != null) { hdls.SetShadowResolutionOverride(true); hdls.SetShadowResolution(Mathf.Clamp(F.shadowResolution, 64, 8192)); } }   // FIXED22 v1: the flag was declared and never read; 0 = as authored
         var LR = LookData.Get().runtime; scale = Mathf.Clamp(F.renderScale, LR.renderScaleMin, LR.renderScaleMax);
         if (scale < 99.5f)
         {
