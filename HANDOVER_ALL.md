@@ -107,3 +107,12 @@ Open a new session in `C:\Users\dom12\Documents\unity_test_hdrp` and paste:
 - Last known (Goose SUPERVISOR.md, 2026-11-06 ~09:10): release 350 is LIVE, and the lead has stood down. Earlier: 347 live (keep/rollback was pending Dom; rollback script /opt/armagedom-preview-staging/three-20261028-347-ops/rollback347.sh), 350 was held at Dom's gate (PR 566/568, needs a DB backup + Dom OK), then went live.
 - Release plan 345-350 and Goose's notes: C:\Users\dom12\claude-watchdog\HANDOVER.md (section 'ARMAGEDOM RELEASE PLAN'). Goose's live state: C:\Users\dom12\claude-watchdog\SUPERVISOR.md.
 - On restart: open the Armagedom lead in its own repo and tell it to read its own handover plus Goose's HANDOVER.md Armagedom section. Ask it to confirm 350 is healthy first. Deploys need Dom's OK in that chat.
+
+### Armagedom lead's own stand-down report (2026-11-06, pasted by Dom)
+- Laptop: repo arma-dev on main at 0868195, matching GitHub; clean apart from the local .claude/ folder.
+- Parked: the daily-contract code Dom dropped is on branch feat/daily-contract (dd3323e), pushed. NOT merged and NOT for merging.
+- Live: release 350, and the latest health check found no errors. The server credit and leaderboard tables are still empty, because nobody has played a signed-in run online yet.
+- Open PRs: only the two old ones, #490 (shop candidate) and #475 (parked draft). No agents running.
+- Handoff memory: opens with a stand-down note.
+- FIRST on restart: ask Dom for his phone and desktop feedback on 350.
+- Restart prompt: 'You are the Armagedom lead dev. Read your handoff memory and the Armagedom section of HANDOVER_ALL.md, then ask Dom for his 350 feedback.'
