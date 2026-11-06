@@ -40,3 +40,7 @@ A 9/10 AAA vertical slice: Dracula vs the Pitborn at the Hades gate, Unity 6 URP
 - Art target: `C:\Users\dom12\Documents\flux_test\env_hades_gate_1664x928.png`
 - Tracker: `C:\Users\dom12\Documents\kits_out\3d\GAP_ANALYSIS.md`
 - V3 source: `C:\HANDOVER-Macbook\extracted\7-repos\frankendom-v3\src\fight\`
+
+**Unity plugin (Dom, 2026-11-06):** all Unity work uses the Claude Code Unity plugin: `unity:*` skills, starting with `unity:unity-cli` (live Editor control, builds, logs, auth, MCP). URP skills do not apply, this project is HDRP. Project rules still win: one GPU job at a time, no Assets writes during a build or gate, only the Unity dev launches the Editor.
+
+**Max quality (Dom, 2026-11-06):** always max quality HDRP, not URP yet, AAA grade visuals. No visible quality cuts for fps; perf work must be look-neutral or stay dark behind a switch for Dom's LOOK OK.

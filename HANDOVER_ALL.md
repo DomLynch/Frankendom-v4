@@ -116,3 +116,8 @@ Open a new session in `C:\Users\dom12\Documents\unity_test_hdrp` and paste:
 - Handoff memory: opens with a stand-down note.
 - FIRST on restart: ask Dom for his phone and desktop feedback on 350.
 - Restart prompt: 'You are the Armagedom lead dev. Read your handoff memory and the Armagedom section of HANDOVER_ALL.md, then ask Dom for his 350 feedback.'
+
+## 8. Tooling and session updates
+- **Unity plugin (Dom, 2026-11-06):** all Unity work uses the Claude Code Unity plugin: `unity:*` skills, starting with `unity:unity-cli` (live Editor control, builds, logs, auth, MCP). URP skills do not apply, this project is HDRP. Project rules still win: one GPU job at a time, no Assets writes during a build or gate, only the Unity dev launches the Editor.
+- New team ids, sweeps and pool: Strategy memory file frankendom-strategy-restart.md. Goose may implement fixes, Antigravity is retired. Next monster is Sobek (not Kaiju01). Hourly backup is on.
+- **Max quality (Dom, 2026-11-06):** always max quality HDRP, not URP yet, AAA grade visuals. No visible quality cuts for fps; perf work must be look-neutral or stay dark behind a switch for Dom's LOOK OK.
