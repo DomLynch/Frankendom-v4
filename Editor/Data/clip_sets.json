@@ -1,0 +1,619 @@
+{
+ "_about": "CLIPBUILD2 sets: attacks / dodges / finishers for one character, all sources are RAW library clips (attack_clips.json / dodge_clips.json / finishers.json rows, copied by work/make_sets_cfg.py). finishers_live = what the project plays today (Tools/finisher_src_legfix + the C# retarget of FinisherClipSetup), only used as the live column of the gates.",
+ "foreignTokens": [
+  "crimson",
+  "dracula",
+  "pitborn"
+ ],
+ "gates": {
+  "samplesPerClip": 36,
+  "plantedM": 0.03,
+  "inheritTolM": 0.02,
+  "postureMeanDeg": 25.0,
+  "postureMaxDeg": 60.0,
+  "liveDiffMeanDeg": 8.0,
+  "toeYawTolModifiedDeg": 20.0,
+  "poseMeanDeg": 3.0,
+  "poseMaxDeg": 6.0
+ },
+ "sets": {
+  "attacks": {
+   "outFile": "{id}_attacks_v2.glb",
+   "live": "Assets/Characters/{id}/{id}_attacks_v2.glb",
+   "legFixMaxSwivelDeg": 90.0,
+   "legFixNote": "atk_thrust lunge needs 85 deg of knee swivel (pre-fix knee +0.18 m after the posture IK); the live bake reached -0.012 m as well",
+   "postureDefaults": {
+    "_about": "Bake-time posture fix (Tools/attack_posture_fix.py): hips swing cap, hips height floor (m, world), torso lean cap (deg, Hips->Neck chord), feet IK to the ground (swing foot lift cap, one swing foot at a time, stride cap from the hips), blade axis vs hand velocity (deg) and chest-height strike (contactHandY, m).",
+    "hipsMaxTiltDeg": 12.0,
+    "hipsMinY": 0.8,
+    "torsoMaxLeanDeg": 15.0,
+    "ankleLiftCapM": 0.14,
+    "stanceGateM": 0.08,
+    "plantedLiftM": 0.04,
+    "footFlatBlendM": 0.1,
+    "maxStrideM": 0.55,
+    "bladeMaxLeadDeg": 70.0,
+    "bladeWristMaxDeg": 70.0,
+    "bladeWindowS": 0.12,
+    "bladeBlendS": 0.1,
+    "contactHandY": 1.25,
+    "contactHandBlendS": 0.14,
+    "contactHandMaxShiftM": 0.25
+   },
+   "rows": {
+    "Joan": [
+     {
+      "state": "atk_light_R",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122770901-sword-and-shield-slash.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": {
+       "ankleLiftCapM": 0.0295,
+       "maxStrideM": 0.3147,
+       "contactHandY": 1.4262
+      },
+      "contactTime": 0.6
+     },
+     {
+      "state": "atk_light_L",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122900901-sword-and-shield-slash.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": {
+       "maxStrideM": 0.541
+      },
+      "contactTime": 0.4
+     },
+     {
+      "state": "atk_thrust",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/hq023-Rap_Attack_Fwd_1.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": {
+       "ankleLiftCapM": 0.0295,
+       "maxStrideM": 0.3147,
+       "yawAbsolute": true,
+       "footYawMaxDeg": 35.0,
+       "hipsYawMaxDeg": 25.0,
+       "chestYawMaxDeg": 30.0,
+       "contactHandY": 1.4754,
+       "contactHandMaxShiftM": 0.3934,
+       "bladeMaxLeadDeg": 35.0,
+       "bladeWristMaxDeg": 80.0,
+       "bladeAim": [
+        {
+         "t0": 0.14,
+         "t1": 0.34,
+         "blend": 0.06,
+         "axis": [
+          0.0,
+          0.1,
+          0.99
+         ]
+        },
+        {
+         "t0": 0.62,
+         "t1": 0.95,
+         "blend": 0.08,
+         "axis": [
+          0.0,
+          0.2,
+          0.98
+         ]
+        }
+       ],
+       "handClamp": [
+        {
+         "t0": 0.1,
+         "t1": 0.36,
+         "blend": 0.06,
+         "yMax": 1.2787
+        },
+        {
+         "t0": 0.6,
+         "t1": 0.95,
+         "blend": 0.08,
+         "yMax": 1.377
+        }
+       ]
+      },
+      "contactTime": 0.4
+     },
+     {
+      "state": "atk_heavy",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/hq039-Zboro_AttackFwd_2strong.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": {
+       "ankleLiftCapM": 0.0295,
+       "maxStrideM": 0.3147,
+       "contactHandY": 1.6721,
+       "contactHandMaxShiftM": 0.4426,
+       "bladeMaxLeadDeg": 60.0,
+       "bladeWristMaxDeg": 90.0,
+       "bladeAim": [
+        {
+         "t0": 0.3,
+         "t1": 0.6,
+         "blend": 0.08,
+         "axis": [
+          0.0,
+          0.85,
+          -0.5
+         ]
+        },
+        {
+         "t0": 0.67,
+         "t1": 0.75,
+         "blend": 0.04,
+         "axis": [
+          0.0,
+          -0.55,
+          0.83
+         ]
+        },
+        {
+         "t0": 0.8,
+         "t1": 1.05,
+         "blend": 0.06,
+         "axis": [
+          0.0,
+          -0.15,
+          0.98
+         ]
+        }
+       ]
+      },
+      "contactTime": 0.7
+     },
+     {
+      "state": "atk_riposte",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/hq058-Sien_Smalls_AttackCountertempo_102_impact.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": {
+       "ankleLiftCapM": 0.0295,
+       "maxStrideM": 0.3147,
+       "contactHandY": 1.4754,
+       "contactHandMaxShiftM": 0.3934,
+       "bladeMaxLeadDeg": 35.0,
+       "bladeWristMaxDeg": 80.0
+      },
+      "contactTime": 0.57
+     },
+     {
+      "state": "atk_cut_out",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips_flagged_excluded/104990902-stable-sword-outward-slash.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": {
+       "ankleLiftCapM": 0.0295,
+       "maxStrideM": 0.3443,
+       "contactHandY": 1.3278,
+       "yawAbsolute": true,
+       "footYawMaxDeg": 35.0,
+       "hipsYawMaxDeg": 22.0,
+       "chestYawMaxDeg": 28.0
+      },
+      "contactTime": 0.85
+     },
+     {
+      "state": "atk_cut_in",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/104990901-stable-sword-inward-slash.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": {
+       "ankleLiftCapM": 0.0295,
+       "maxStrideM": 0.3443,
+       "contactHandY": 1.3278,
+       "yawAbsolute": true,
+       "footYawMaxDeg": 35.0,
+       "hipsYawMaxDeg": 22.0,
+       "chestYawMaxDeg": 28.0
+      },
+      "contactTime": 1.32
+     }
+    ]
+   }
+  },
+  "attacks_raw": {
+   "outFile": "{id}_attacks_raw.glb",
+   "live": "Assets/Characters/{id}/{id}_attacks_v2.glb",
+   "reviewOnly": true,
+   "note": "review variant: plain retarget of the same sources, NO posture fix (no hips cap, feet IK, blade aim, contact height)",
+   "legFixMaxSwivelDeg": 90.0,
+   "rows": {
+    "Joan": [
+     {
+      "state": "atk_light_R",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122770901-sword-and-shield-slash.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": null,
+      "contactTime": 0.6
+     },
+     {
+      "state": "atk_light_L",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122900901-sword-and-shield-slash.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": null,
+      "contactTime": 0.4
+     },
+     {
+      "state": "atk_thrust",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/hq023-Rap_Attack_Fwd_1.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": null,
+      "contactTime": 0.4
+     },
+     {
+      "state": "atk_heavy",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/hq039-Zboro_AttackFwd_2strong.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": null,
+      "contactTime": 0.7
+     },
+     {
+      "state": "atk_riposte",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/hq058-Sien_Smalls_AttackCountertempo_102_impact.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": null,
+      "contactTime": 0.57
+     },
+     {
+      "state": "atk_cut_out",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips_flagged_excluded/104990902-stable-sword-outward-slash.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": null,
+      "contactTime": 0.85
+     },
+     {
+      "state": "atk_cut_in",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/104990901-stable-sword-inward-slash.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "posture": null,
+      "contactTime": 1.32
+     }
+    ]
+   }
+  },
+  "dodges": {
+   "outFile": "{id}_dodges.glb",
+   "live": "Assets/Characters/{id}/{id}_dodges.glb",
+   "rows": {
+    "Joan": [
+     {
+      "state": "dodge_dive",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/127690904-standing-dive-forward.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0
+     },
+     {
+      "state": "dodge_diveroll",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0
+     },
+     {
+      "state": "dodge_corkscrew",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/120440901-corkscrew-evade.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0
+     }
+    ]
+   }
+  },
+  "finishers": {
+   "outFile": "{id}_finishers.glb",
+   "live": null,
+   "rows": {
+    "Joan": [
+     {
+      "state": "fin_beheading_k",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/finishers/clips/x-la-beheading-of-god-2-k.glb",
+      "role": "killer",
+      "targets": [
+       "player",
+       "enemy"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 2.433,
+      "liveHipsRestZ": 1.042749
+     },
+     {
+      "state": "fin_chop1h_k",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/finishers/clips/x-hs-chop-one-hand-overhead-k.glb",
+      "role": "killer",
+      "targets": [
+       "player"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 1.35,
+      "liveHipsRestZ": 0.832392
+     },
+     {
+      "state": "fin_chop2h_k",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/finishers/clips/x-hs-chop-two-hand-overhead-k.glb",
+      "role": "killer",
+      "targets": [
+       "enemy"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 1.35,
+      "liveHipsRestZ": 0.832392
+     },
+     {
+      "state": "fin_river_light_k",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/finishers/clips/x-nk-river-light-k.glb",
+      "role": "killer",
+      "targets": [
+       "player"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 2.2,
+      "liveHipsRestZ": 1.042749
+     },
+     {
+      "state": "fin_river_light_v",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/finishers/clips/x-nk-river-light-v.glb",
+      "role": "victim",
+      "targets": [
+       "enemy"
+      ],
+      "rootMotion": "keep",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 2.2,
+      "liveHipsRestZ": 1.042749
+     },
+     {
+      "state": "fin_hengdao_k",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/finishers/clips/x-nk-hengdao-heavy-k.glb",
+      "role": "killer",
+      "targets": [
+       "enemy"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 3.333,
+      "liveHipsRestZ": 1.042749
+     },
+     {
+      "state": "fin_hengdao_v",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/finishers/clips/x-nk-hengdao-heavy-v.glb",
+      "role": "victim",
+      "targets": [
+       "player"
+      ],
+      "rootMotion": "keep",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 3.333,
+      "liveHipsRestZ": 1.042749
+     },
+     {
+      "state": "fin_counter_k",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/finishers/clips/x-nw-greatsword-counter-k.glb",
+      "role": "killer",
+      "targets": [
+       "enemy"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 1.933,
+      "liveHipsRestZ": 1.042749
+     },
+     {
+      "state": "fin_counter_v",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/finishers/clips/x-nw-greatsword-counter-v.glb",
+      "role": "victim",
+      "targets": [
+       "player"
+      ],
+      "rootMotion": "keep",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 1.867,
+      "liveHipsRestZ": 1.042749
+     }
+    ]
+   }
+  },
+  "finishers_live": {
+   "outFile": "{id}_finishers.glb",
+   "live": null,
+   "rows": {
+    "Joan": [
+     {
+      "state": "fin_beheading_k",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/Tools/finisher_src_legfix/x-la-beheading-of-god-2-k.glb",
+      "role": "killer",
+      "targets": [
+       "player",
+       "enemy"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 2.433,
+      "hipsRestZ": 1.042749,
+      "liveCorr": [
+       1.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "state": "fin_chop1h_k",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/Tools/finisher_src_legfix/x-hs-chop-one-hand-overhead-k.glb",
+      "role": "killer",
+      "targets": [
+       "player"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 1.35,
+      "hipsRestZ": 0.832392,
+      "liveCorr": [
+       1.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "state": "fin_chop2h_k",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/Tools/finisher_src_legfix/x-hs-chop-two-hand-overhead-k.glb",
+      "role": "killer",
+      "targets": [
+       "enemy"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 1.35,
+      "hipsRestZ": 0.832392,
+      "liveCorr": [
+       1.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "state": "fin_river_light_k",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/Tools/finisher_src_legfix/x-nk-river-light-k.glb",
+      "role": "killer",
+      "targets": [
+       "player"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 2.2,
+      "hipsRestZ": 1.042749,
+      "liveCorr": [
+       1.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "state": "fin_river_light_v",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/Tools/finisher_src_legfix/x-nk-river-light-v.glb",
+      "role": "victim",
+      "targets": [
+       "enemy"
+      ],
+      "rootMotion": "keep",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 2.2,
+      "hipsRestZ": 1.042749,
+      "liveCorr": [
+       1.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "state": "fin_hengdao_k",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/Tools/finisher_src_legfix/x-nk-hengdao-heavy-k.glb",
+      "role": "killer",
+      "targets": [
+       "enemy"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 3.333,
+      "hipsRestZ": 1.042749,
+      "liveCorr": [
+       1.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "state": "fin_hengdao_v",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/Tools/finisher_src_legfix/x-nk-hengdao-heavy-v.glb",
+      "role": "victim",
+      "targets": [
+       "player"
+      ],
+      "rootMotion": "keep",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 3.333,
+      "hipsRestZ": 1.042749,
+      "liveCorr": [
+       1.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "state": "fin_counter_k",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/Tools/finisher_src_legfix/x-nw-greatsword-counter-k.glb",
+      "role": "killer",
+      "targets": [
+       "enemy"
+      ],
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 1.933,
+      "hipsRestZ": 1.042749,
+      "liveCorr": [
+       1.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     {
+      "state": "fin_counter_v",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/Tools/finisher_src_legfix/x-nw-greatsword-counter-v.glb",
+      "role": "victim",
+      "targets": [
+       "player"
+      ],
+      "rootMotion": "keep",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.0,
+      "expectedDurationS": 1.867,
+      "hipsRestZ": 1.042749,
+      "liveCorr": [
+       1.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    ]
+   }
+  }
+ }
+}

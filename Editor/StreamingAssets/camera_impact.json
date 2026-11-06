@@ -1,0 +1,72 @@
+{
+  "contacts": [
+    {"id": "hitLight",     "knock": 0.02, "push": 0,    "drop": 0},
+    {"id": "hitHeavy",     "knock": 0.04, "push": 0,    "drop": 0},
+    {"id": "blockLight",   "knock": 0.02, "push": 0,    "drop": 0},
+    {"id": "blockHeavy",   "knock": 0.02, "push": 0,    "drop": 0},
+    {"id": "parry",        "knock": 0,    "push": 0.07, "drop": 0},
+    {"id": "guardBreak",   "knock": 0.04, "push": 0,    "drop": 0},
+    {"id": "special",      "knock": 0.03, "push": 0.08, "drop": 0},
+    {"id": "kick",         "knock": 0,    "push": 0,    "drop": 0.1}
+  ],
+  "feel": {
+    "knockSettle": 0.12,
+    "specialKickAlong": 0.05,
+    "specialKickDrop": 0.06
+  },
+  "baseKick": [
+    {"id": "guardBroken",  "along": 0.05,  "drop": 0.06,  "side": 0,    "holdFrames": 2, "settle": 0.22},
+    {"id": "hitHeavy",     "along": 0.05,  "drop": 0.06,  "side": 0,    "holdFrames": 2, "settle": 0.22},
+    {"id": "hitLight",     "along": 0.02,  "drop": 0.012, "side": 0,    "holdFrames": 0, "settle": 0.15},
+    {"id": "parried",      "along": 0.01,  "drop": 0.008, "side": 0.02, "holdFrames": 0, "settle": 0.12},
+    {"id": "blockedHeavy", "along": 0.02,  "drop": 0.028, "side": 0,    "holdFrames": 1, "settle": 0.18},
+    {"id": "blockedLight", "along": 0.012, "drop": 0.01,  "side": 0,    "holdFrames": 0, "settle": 0.12},
+    {"id": "blockedPerfect", "along": 0.012, "drop": 0.014, "side": 0,  "holdFrames": 0, "settle": 0.12}
+  ],
+  "moveWeights": [
+    {"id": "light_left",     "mul": 0.7},
+    {"id": "light_right",    "mul": 0.7},
+    {"id": "slash_riposte",  "mul": 0.9},
+    {"id": "thrust",         "mul": 0.9},
+    {"id": "riposte",        "mul": 1.0},
+    {"id": "kick",           "mul": 1.0},
+    {"id": "heavy_overhead", "mul": 1.35},
+    {"id": "heavy_left",     "mul": 1.35},
+    {"id": "heavy_right",    "mul": 1.35},
+    {"id": "heavy_thrust",   "mul": 1.35},
+    {"id": "light_overhead", "mul": 0.7},
+    {"id": "heavy_riposte",  "mul": 1.35},
+    {"id": "heavy_counter",  "mul": 1.35},
+    {"id": "critical",       "mul": 1.5},
+    {"id": "skill_*",        "mul": 1.3}
+  ],
+  "rollTumble": {"angleDeg": 8, "seconds": 0.6, "shift": 0.046, "dip": 0.08},
+  "shake": {
+    "_about": "V65CAM camera shake by hit weight (CamShake.cs). One pulse per contact = damped smooth noise (position m in the camera's right/up, roll deg), x ImpactTable.MoveMul(move). amp m, rollDeg, freq Hz, decay s (envelope exp(-t/decay)). victimMul = the player is struck, attackerMul = the player lands it. Comfort: maxPosM / maxRollDeg soft cap (tanh), maxFreqHz, maxPulses at once; scale 0 = no shake (accessibility). Real time: unaffected by hit-stop / slow-mo.",
+    "enabled": true,
+    "scale": 1.0,
+    "maxPosM": 0.07,
+    "maxRollDeg": 0.9,
+    "maxFreqHz": 14,
+    "maxPulses": 6,
+    "attackS": 0.025,
+    "endAt": 0.02,
+    "victimMul": 1.0,
+    "attackerMul": 0.6,
+    "bystanderMul": 0.4,
+    "useMoveWeight": true,
+    "classes": [
+      {"id": "blockLight", "amp": 0.005, "rollDeg": 0.08, "freq": 12, "decay": 0.08},
+      {"id": "hitLight",   "amp": 0.008, "rollDeg": 0.12, "freq": 11, "decay": 0.10},
+      {"id": "parry",      "amp": 0.010, "rollDeg": 0.15, "freq": 8,  "decay": 0.14},
+      {"id": "blockHeavy", "amp": 0.012, "rollDeg": 0.20, "freq": 10, "decay": 0.12},
+      {"id": "kick",       "amp": 0.014, "rollDeg": 0.20, "freq": 10, "decay": 0.14},
+      {"id": "hitHeavy",   "amp": 0.022, "rollDeg": 0.35, "freq": 9,  "decay": 0.18},
+      {"id": "guardBreak", "amp": 0.028, "rollDeg": 0.45, "freq": 8,  "decay": 0.24},
+      {"id": "special",    "amp": 0.030, "rollDeg": 0.50, "freq": 8,  "decay": 0.26},
+      {"id": "crit",       "amp": 0.030, "rollDeg": 0.50, "freq": 9,  "decay": 0.22},
+      {"id": "deathblow",  "amp": 0.045, "rollDeg": 0.80, "freq": 7,  "decay": 0.35}
+    ]
+  },
+  "simHz": 60
+}

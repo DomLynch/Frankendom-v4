@@ -1,0 +1,1 @@
+﻿{ "_about": "v98 (laneDRILL): frame cap in fps (0 / -1 = uncapped) so menus / the end screen do not render at hundreds of fps (GPU coil whine). Read by Scripts/FrameRateCap.cs; never applied in harness runs. gameplay = fight, victory = end screen (GameLoop.Outcome != None), menu = paused (timeScale 0).", "enabled": true, "gameplay": 120, "victory": 60, "menu": 60 }

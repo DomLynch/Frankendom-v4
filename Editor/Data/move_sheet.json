@@ -1,0 +1,311 @@
+{
+  "_about": "Proof harness for Assets/Scripts/MoveSheet.cs. Start the player with  -sheet:<id> -out:<dir>  (id = a row id below) and it performs that one move on a standing opponent with the AI and keyboard off, at a fixed 60 Hz (Time.captureFramerate = tickHz, so 1 frame = 1 sim tick), and writes <dir>/<id>_side.png, <dir>/<id>_34.png (4x3 contact sheets, tile 480x270, row-major, tile 0 top-left) and <dir>/<id>_log.txt. Tiles are evenly spaced in SIM TICKS from preSeconds before the move starts to the end of the move (move table windup+active+recovery, or the dodge row ticks, plus tailTicks). The 3-pixel bar at the top of every tile: its length = tile index / tiles, its colour = the fighter sim state (green = before the move, orange = windup, red = active, blue = recovery, magenta = roll/dodge, grey = loco/guard, cyan = stagger/down). Optional CLI: -sheetdata:<file> (alternative json), -isolate (render only layer 8 on a flat colour: use when a bridge parapet blocks the side camera).",
+  "tickHz": 60,
+  "tiles": 12,
+  "cols": 4,
+  "tileW": 480,
+  "tileH": 270,
+  "supersample": 2,
+  "preSeconds": 0.03,
+  "settleTicks": 90,
+  "timeoutTicks": 1800,
+  "markerPx": 3,
+  "playerName": "",
+  "enemyName": "",
+  "arena": {
+    "x": 0.0,
+    "z": 12.6
+  },
+  "groundMaskExcludeLayers": [
+    8,
+    9
+  ],
+  "isolate": false,
+  "isolateColor": [
+    0.22,
+    0.22,
+    0.24
+  ],
+  "pullIn": {
+    "enabled": true,
+    "minDist": 2.2,
+    "margin": 0.15
+  },
+  "side": {
+    "dist": 4.5,
+    "height": 1.2,
+    "fov": 35.0,
+    "lookY": 1.0,
+    "sign": 1.0,
+    "angleDeg": 45
+  },
+  "threeQuarter": {
+    "dist": 5.0,
+    "height": 1.8,
+    "fov": 35.0,
+    "lookY": 1.0,
+    "angleDeg": 45.0,
+    "sign": 1.0
+  },
+  "moves": [ { "id": "handcam_pitborn_heavy", "subject": "Pitborn", "action": "handcam", "press": "heavy", "durationFrom": "move:heavy_overhead", "separation": 1.95, "hand": "right", "dir": "none" },
+    {
+      "id": "light",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "light",
+      "durationFrom": "move:light_right",
+      "separation": 1.95,
+      "dir": "none"
+    },
+    {
+      "id": "stab",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "thrust",
+      "durationFrom": "move:thrust",
+      "separation": 1.95,
+      "dir": "none"
+    },
+    {
+      "id": "slash",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "light_left",
+      "durationFrom": "move:light_left",
+      "separation": 1.95,
+      "dir": "none"
+    },
+    {
+      "id": "heavy",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "heavy",
+      "durationFrom": "move:heavy_overhead",
+      "separation": 1.95,
+      "dir": "none"
+    },
+    {
+      "id": "kick",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "kick",
+      "durationFrom": "move:kick",
+      "separation": 2.2,
+      "dir": "none"
+    },
+    {"id": "upgrade_heavy", "subject": "Dracula", "action": "press", "press": "light", "then": "upgrade", "thenTick": 11, "durationFrom": "move:heavy_overhead", "tailTicks": 20, "separation": 2.2, "dir": "none"},
+    {"id": "upgrade_heavy_late", "subject": "Dracula", "action": "press", "press": "light", "then": "upgrade", "thenTick": 22, "durationFrom": "move:light_right", "tailTicks": 0, "separation": 2.2, "dir": "none"},
+    {"id": "cancel_roll_late", "subject": "Dracula", "action": "press", "press": "light", "then": "roll", "thenTick": 30, "durationFrom": "move:light_right", "tailTicks": 44, "separation": 2.2, "follow": true, "dir": "none"},
+    {"id": "cancel_roll_light", "subject": "Dracula", "action": "press", "press": "light", "then": "roll", "thenTick": 12, "durationFrom": "move:light_right", "tailTicks": 44, "separation": 2.2, "follow": true, "dir": "none"},
+    {"id": "queue_chain_light", "subject": "Dracula", "action": "press", "press": "light", "then": "light", "thenTick": 4, "durationFrom": "move:light_right", "tailTicks": 34, "separation": 2.2, "dir": "none"},
+    {"id": "queue_late_roll", "subject": "Dracula", "action": "press", "press": "heavy", "then": "roll", "thenTick": 6, "durationFrom": "move:heavy_overhead", "tailTicks": 50, "separation": 2.2, "follow": true, "dir": "none"},
+    {
+      "id": "roll",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "roll",
+      "durationFrom": "dodge:roll",
+      "tailTicks": 12,
+      "dir": "none",
+      "separation": 3.0,
+      "follow": true
+    },
+    {
+      "id": "roll_left",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "roll",
+      "durationFrom": "dodge:roll",
+      "tailTicks": 12,
+      "dir": "left",
+      "separation": 3.0,
+      "follow": true
+    },
+    {
+      "id": "backstep",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "backstep",
+      "durationFrom": "dodge:backstep",
+      "tailTicks": 30,
+      "separation": 2.2,
+      "follow": true,
+      "dir": "none"
+    },
+    {
+      "id": "sidestep",
+      "subject": "Dracula",
+      "action": "sidestep",
+      "side": -1,
+      "durationFrom": "dodge:sidestep",
+      "tailTicks": 12,
+      "separation": 2.6,
+      "follow": true,
+      "dir": "none"
+    },
+    {
+      "id": "guardwalk",
+      "subject": "Dracula",
+      "action": "hold",
+      "guard": true,
+      "dir": "right",
+      "durationTicks": 120,
+      "separation": 3.2,
+      "follow": true
+    },
+    {
+      "id": "heavy_left",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "heavy",
+      "directed": "heavy_left",
+      "durationFrom": "move:heavy_left",
+      "separation": 1.95,
+      "dir": "none"
+    },
+    {
+      "id": "heavy_right",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "heavy",
+      "directed": "heavy_right",
+      "durationFrom": "move:heavy_right",
+      "separation": 1.95,
+      "dir": "none"
+    },
+    {
+      "id": "heavy_thrust",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "heavy",
+      "directed": "heavy_thrust",
+      "durationFrom": "move:heavy_thrust",
+      "separation": 1.95,
+      "dir": "none"
+    },
+    {
+      "id": "light_overhead",
+      "subject": "Dracula",
+      "action": "press",
+      "press": "light",
+      "directed": "light_overhead",
+      "durationFrom": "move:light_overhead",
+      "separation": 1.95,
+      "dir": "none"
+    },
+    {
+      "id": "guard_left",
+      "subject": "Dracula",
+      "action": "hold",
+      "guard": true,
+      "guardSide": 1,
+      "dir": "none",
+      "durationTicks": 90,
+      "separation": 3.2
+    },
+    {
+      "id": "guard_right",
+      "subject": "Dracula",
+      "action": "hold",
+      "guard": true,
+      "guardSide": 2,
+      "dir": "none",
+      "durationTicks": 90,
+      "separation": 3.2
+    },
+    {
+      "id": "walk",
+      "subject": "Dracula",
+      "action": "hold",
+      "dir": "forward",
+      "durationTicks": 120,
+      "separation": 7.0,
+      "startZ": 8.0,
+      "follow": true
+    },
+    {
+      "id": "run",
+      "subject": "Dracula",
+      "action": "hold",
+      "dir": "forward",
+      "run": true,
+      "durationTicks": 72,
+      "separation": 12.0,
+      "startZ": 5.0,
+      "follow": true
+    },
+    {
+      "id": "pitborn_swing",
+      "subject": "Pitborn",
+      "action": "press",
+      "press": "light",
+      "durationFrom": "move:light_right",
+      "separation": 2.2,
+      "dir": "none"
+    },
+    {
+      "id": "pitborn_heavy",
+      "subject": "Pitborn",
+      "action": "press",
+      "press": "heavy",
+      "durationFrom": "move:heavy_overhead",
+      "separation": 2.2,
+      "dir": "none"
+    },
+    {
+      "id": "pitborn_stab",
+      "subject": "Pitborn",
+      "action": "press",
+      "press": "thrust",
+      "durationFrom": "move:thrust",
+      "separation": 2.2,
+      "dir": "none"
+    },
+    {
+      "id": "pitborn_slash",
+      "subject": "Pitborn",
+      "action": "press",
+      "press": "light_left",
+      "durationFrom": "move:light_left",
+      "separation": 2.2,
+      "dir": "none"
+    },
+    {
+      "id": "handcam_pitborn",
+      "subject": "Pitborn",
+      "action": "handcam",
+      "press": "light",
+      "durationFrom": "move:light_right",
+      "separation": 1.95,
+      "hand": "right",
+      "dir": "none"
+    },
+    {
+      "id": "handcam_dracula",
+      "subject": "Dracula",
+      "action": "handcam",
+      "press": "light",
+      "durationFrom": "move:light_right",
+      "separation": 1.95,
+      "hand": "right",
+      "dir": "none"
+    }
+  ],
+  "handcam": {
+    "hand": "right",
+    "tile": 640,
+    "idleAge": -3,
+    "midBeforeActive": 4,
+    "dist": 0.9,
+    "fov": 32.0,
+    "toward": 0.18,
+    "frontUp": 0.15,
+    "nearClip": 0.05,
+    "lights": true,
+    "lightLumen": 12000.0,
+    "lightRange": 4.0,
+    "pullMinDist": 0.25,
+    "pullMargin": 0.05,
+    "frame": "weapon"
+  }
+}

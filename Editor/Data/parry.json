@@ -1,0 +1,18 @@
+{
+  "_about": "Parry / riposte feel (lanePARRY), read by StaminaTable.Parry() + DuelFighterParry.cs. 60 Hz sim ticks (60 = 1 s). PERFECT PARRY: the blow lands while the guard is <= windowTicks old (10 = 167 ms, Frankendom V3 rule) and the re-raise cooldown was clear. It staggers the attacker attackerStaggerTicks (heavy: attackerStaggerHeavyTicks), adds posture.json parry.attacker posture to him (x attackerPostureHeavyMul on a heavy), relieves posture.json parry.relief from the parrier, costs staminaCost and GIVES staminaGain, and opens a riposte window of riposteWindowTicks after selfRecoveryTicks of own recovery. The riposte (flow.json riposte.move, the 'riposte' thrust: 12-tick wind-up) is GUARANTEED: latest press at riposteWindowTicks + 12 wind-up + 1 = contact by tick 55 < attackerStaggerTicks 60 (heavy 66). Feedback comes from the Parried event: slow_mo.json parry, hit_stop.json parry, cues.json parry, clash_fx.json, camera_impact.json parry. LATE / NORMAL BLOCK: a guard older than the window = a plain block: stamina.json block (12 light / 24 heavy + staminaDamage x 0.3), posture.json block (6 / 14), chip damage (stamina.json block.chipMin). SPAM: cooldownTicks = a guard re-raised within this many ticks of the last raise has no parry window (plain block); whiff = a guard TAP (released at guard age <= releaseTicks) that opened a window and met no blow -> recoveryTicks (18 = 300 ms) of ParryRecover: no guard, attack or dodge; scope all = the AI pays it too. SIDESTEP (double-tap A / D, dodge.json sidestep i-frames 2..10 of 14 ticks, flow.json dodge left/right): the i-frames beat horizontal cuts and thrusts but NOT the blows listed here (move-defs.json direction 'overhead' = heavy_overhead, heavy_riposte, heavy_counter, critical; plus skill_cleave, the skull-crack overhead); the roll and the backstep keep full i-frames. ai: AIBrain parry chance = min(parryMax, difficulty.json parry (+ ai_adapt fx) + parryAdd); a chance already above parryMax is kept. enabled false = V3 rules-defs values (parry 10 / parryCooldown 30 / parryStun 90 / parryRecovery 8).",
+  "enabled": true,
+  "windowTicks": 10,
+  "cooldownTicks": 30,
+  "attackerStaggerTicks": 60,
+  "attackerStaggerHeavyTicks": 66,
+  "riposteWindowTicks": 42,
+  "selfRecoveryTicks": 8,
+  "attackerPosture": 35,
+  "attackerPostureHeavyMul": 1.2,
+  "staminaCost": 0,
+  "staminaGain": 8,
+  "parryHeavies": true,
+  "whiff": { "enabled": true, "scope": "all", "releaseTicks": 20, "recoveryTicks": 18, "clip": "parry", "clipTicks": 26 },
+  "sidestep": { "enabled": true, "hitsThroughDirections": [ "overhead" ], "hitsThroughMoves": [ "skill_cleave" ], "includeBack": true },
+  "ai": { "parryAdd": 0.05, "parryMax": 0.6 }
+}

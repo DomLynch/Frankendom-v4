@@ -1,0 +1,25 @@
+{
+  "_notes": "lanePERF4 v100. EDITOR-ONLY (not copied to StreamingAssets). Read by Editor/PerfMemApply.cs. Every step is a dry run unless the command line has -apply, and each step has its own enabled flag (default false). Steps change SCENE objects or TEXTURE IMPORT SETTINGS only; nothing else.",
+  "scene": "Assets/Scenes/HadesSlice.unity",
+  "E1": {
+    "enabled": false,
+    "names": ["MetaHumanHead"],
+    "note": "Removes the inactive MetaHumanHead object (MHHeadBuilder + MHHeadAttach + keepAlive materials) from the scene so the build stops shipping its textures (about 87 MB) and shader variants. mhhead_attach.json enabled=false: nothing builds the head. Dracula and Joan keep their own heads (Joan: Tripo). VerifyGround and AutoShot -face treat a missing MetaHumanHead as 'not active'. Re-add with Hades > MetaHuman > Integrate if ever wanted."
+  },
+  "E2": {
+    "enabled": true,
+    "rules": [
+      { "match": "ground_paving", "keepLods": 1, "note": "the arena floor: LOD0 4096 textures 299 MB + LOD1 96 MB + LOD2 37 MB. The floor is flat and always near: LOD1/LOD2 never show a different silhouette. The instance is unpacked (PrefabUtility.UnpackPrefabInstance, OutermostRoot) so its LOD1/LOD2 child objects can be deleted; LODGroup keeps LOD0 with the old cull threshold." }
+    ],
+    "terrainDuplicates": {
+      "note": "terrain_ground.glb is the only terrain in the build. terrain_ground_lite / terrain_midground / terrain_midground_lite (about 80 MB each on disk) are not referenced by the scene or the build report (checked in the v92 build report), so they cost import time only: listed, not touched.",
+      "unreferencedGlbs": [ "Assets/Env/World/Terrain/terrain_ground_lite.glb", "Assets/Env/World/Terrain/terrain_midground.glb", "Assets/Env/World/Terrain/terrain_midground_lite.glb" ]
+    }
+  },
+  "E5": {
+    "enabled": false,
+    "plan": "Assets/Data/texture_plan.json",
+    "platform": "Standalone",
+    "note": "Texture import settings of the rows in texture_plan.json (TextureImporter files only). Dry run prints the real runtime memory of each file now; apply sets the override, reimports and prints the real memory after."
+  }
+}

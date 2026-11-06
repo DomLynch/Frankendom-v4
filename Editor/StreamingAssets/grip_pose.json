@@ -1,0 +1,86 @@
+{
+ "defaults": {
+  "name": "",
+  "fingerDeg": 62,
+  "thumbDeg": 35,
+  "thumbWeight": 0.7,
+  "falloff": 1.0,
+  "fingerAxis": [
+   0,
+   0,
+   1
+  ],
+  "thumbAxis": [
+   0,
+   1,
+   0
+  ],
+  "leftHand": false,
+  "leftWeight": 1.0
+ },
+ "characters": [
+  {
+   "name": "Pitborn",
+   "fingerDeg": 78,
+   "thumbDeg": 40,
+   "thumbWeight": 0.8,
+   "falloff": 1.0,
+   "fingerAxis": [
+    0,
+    0,
+    1
+   ],
+   "thumbAxis": [
+    0,
+    1,
+    0
+   ],
+   "leftHand": true,
+   "leftWeight": 1.0,
+   "leftStates": [
+    "atk_heavy"
+   ]
+  },
+  {
+   "name": "Joan",
+   "fingerDeg": 58,
+   "thumbDeg": 35,
+   "thumbWeight": 0.7,
+   "falloff": 0.85,
+   "fingerAxis": [
+    0,
+    0,
+    1
+   ],
+   "thumbAxis": [
+    0,
+    1,
+    0
+   ],
+   "leftHand": false,
+   "leftWeight": 1.0
+  },
+  {
+   "name": "Joan",
+   "weapon": "pitborn_maul",
+   "fingerDeg": 64,
+   "thumbDeg": 35,
+   "thumbWeight": 0.7,
+   "falloff": 0.7,
+   "fingerAxis": [
+    0,
+    0,
+    1
+   ],
+   "thumbAxis": [
+    0,
+    1,
+    0
+   ],
+   "leftHand": true,
+   "leftWeight": 1.0,
+   "leftStates": [],
+   "_about": "laneDROPPIT closed fist for the 5.4 cm maul handle (curl 64 / 45 / 31 deg). WEAPONSWAP v88: leftStates [] = the left fist is closed in every state while TwoHandIK holds the shaft (it opens when the IK weight falls)."
+  }
+ ]
+}

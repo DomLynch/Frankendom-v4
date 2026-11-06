@@ -1,0 +1,1184 @@
+{
+  "version": 1,
+  "about": "Live-steered duel data. Per-lane blocks: steer/stances/tactics/profileClamp (S1), reactions (S2), ui (S3), auto (S4). Lanes edit only their own block. profile ops: set (absolute), mul, add on AiProfile knobs (AiRead.cs:20), applied set->mul->add, then profileClamp. Times: seconds, counted in sim ticks (Duel.TickCount, 60/s).",
+  "steer": {
+    "seed": 1337,
+    "defaultStance": "Neutral",
+    "checkEverySeconds": 0.5,
+    "feedLines": true,
+    "feedHits": false,
+    "fightResetDeadSeconds": 0.5,
+    "disablePlayerBrain": true
+  },
+  "profileClamp": {
+    "list": [
+      {
+        "knob": "aggression",
+        "lo": 0.2,
+        "hi": 1.3
+      },
+      {
+        "knob": "pressure",
+        "lo": 0,
+        "hi": 1
+      },
+      {
+        "knob": "parry",
+        "lo": 0,
+        "hi": 0.85
+      },
+      {
+        "knob": "dodge",
+        "lo": 0,
+        "hi": 1
+      },
+      {
+        "knob": "lapse",
+        "lo": 0,
+        "hi": 0.6
+      },
+      {
+        "knob": "guard",
+        "lo": 0,
+        "hi": 1
+      },
+      {
+        "knob": "circle",
+        "lo": 0,
+        "hi": 1
+      },
+      {
+        "knob": "feint",
+        "lo": 0,
+        "hi": 1
+      },
+      {
+        "knob": "step",
+        "lo": 0,
+        "hi": 0.6
+      },
+      {
+        "knob": "kick",
+        "lo": 0,
+        "hi": 0.4
+      },
+      {
+        "knob": "dash",
+        "lo": 0,
+        "hi": 0.6
+      },
+      {
+        "knob": "disengage",
+        "lo": 0,
+        "hi": 1
+      },
+      {
+        "knob": "interrupt",
+        "lo": 0,
+        "hi": 0.6
+      },
+      {
+        "knob": "discipline",
+        "lo": 0,
+        "hi": 80
+      },
+      {
+        "knob": "read",
+        "lo": -1,
+        "hi": 1
+      },
+      {
+        "knob": "reaction",
+        "lo": 4,
+        "hi": 40
+      },
+      {
+        "knob": "accuracy",
+        "lo": 0,
+        "hi": 1
+      }
+    ]
+  },
+  "stances": {
+    "list": [
+      {
+        "id": "Aggressive",
+        "dealtMul": 1.25,
+        "takenMul": 1.2,
+        "trickster": {
+          "enabled": false,
+          "pDealt": 0.25,
+          "dealtMul": 1.3,
+          "pTaken": 0.25,
+          "takenMul": 1.3
+        },
+        "profile": {
+          "aggression": {
+            "mul": 1.2
+          },
+          "pressure": {
+            "add": 0.1,
+            "mul": 1
+          },
+          "guard": {
+            "set": 0.5,
+            "mul": 1
+          },
+          "parry": {
+            "mul": 0.85
+          },
+          "dodge": {
+            "mul": 0.85
+          },
+          "lapse": {
+            "add": 0.05,
+            "mul": 1
+          },
+          "circle": {
+            "mul": 0.5
+          },
+          "discipline": {
+            "add": -10,
+            "mul": 1
+          },
+          "dash": {
+            "set": 0.25,
+            "mul": 1
+          },
+          "interrupt": {
+            "set": 0.3,
+            "mul": 1
+          },
+          "kick": {
+            "set": 0.1,
+            "mul": 1
+          },
+          "feint": {"mul": 1},
+          "step": {"mul": 1},
+          "disengage": {"mul": 1},
+          "read": {"mul": 1},
+          "reaction": {"mul": 1},
+          "accuracy": {"mul": 1}
+        }
+      },
+      {
+        "id": "Defensive",
+        "dealtMul": 0.8,
+        "takenMul": 0.75,
+        "trickster": {
+          "enabled": false,
+          "pDealt": 0.25,
+          "dealtMul": 1.3,
+          "pTaken": 0.25,
+          "takenMul": 1.3
+        },
+        "profile": {
+          "aggression": {
+            "mul": 0.75
+          },
+          "pressure": {
+            "add": -0.1,
+            "mul": 1
+          },
+          "guard": {
+            "set": 1.0,
+            "mul": 1
+          },
+          "parry": {
+            "mul": 1.3
+          },
+          "dodge": {
+            "mul": 1.1
+          },
+          "lapse": {
+            "mul": 0.75
+          },
+          "circle": {
+            "set": 0.3,
+            "mul": 1
+          },
+          "discipline": {
+            "add": 20,
+            "mul": 1
+          },
+          "disengage": {
+            "set": 0.3,
+            "mul": 1
+          },
+          "step": {
+            "set": 0.1,
+            "mul": 1
+          },
+          "feint": {"mul": 1},
+          "kick": {"mul": 1},
+          "dash": {"mul": 1},
+          "interrupt": {"mul": 1},
+          "read": {"mul": 1},
+          "reaction": {"mul": 1},
+          "accuracy": {"mul": 1}
+        }
+      },
+      {
+        "id": "Neutral",
+        "dealtMul": 1.0,
+        "takenMul": 1.0,
+        "trickster": {
+          "enabled": false,
+          "pDealt": 0.25,
+          "dealtMul": 1.3,
+          "pTaken": 0.25,
+          "takenMul": 1.3
+        },
+        "profile": { "aggression": {"mul": 1}, "pressure": {"mul": 1}, "parry": {"mul": 1}, "dodge": {"mul": 1}, "lapse": {"mul": 1}, "guard": {"mul": 1}, "circle": {"mul": 1}, "feint": {"mul": 1}, "step": {"mul": 1}, "kick": {"mul": 1}, "dash": {"mul": 1}, "disengage": {"mul": 1}, "interrupt": {"mul": 1}, "discipline": {"mul": 1}, "read": {"mul": 1}, "reaction": {"mul": 1}, "accuracy": {"mul": 1} }
+      },
+      {
+        "id": "Trickster",
+        "dealtMul": 1.0,
+        "takenMul": 1.0,
+        "trickster": {
+          "enabled": true,
+          "pDealt": 0.25,
+          "dealtMul": 1.3,
+          "pTaken": 0.25,
+          "takenMul": 1.3
+        },
+        "profile": {
+          "feint": {
+            "set": 0.35,
+            "mul": 1
+          },
+          "dodge": {
+            "mul": 1.3
+          },
+          "step": {
+            "set": 0.3,
+            "mul": 1
+          },
+          "circle": {
+            "set": 1.0,
+            "mul": 1
+          },
+          "kick": {
+            "set": 0.15,
+            "mul": 1
+          },
+          "parry": {
+            "mul": 0.9
+          },
+          "disengage": {
+            "set": 0.2,
+            "mul": 1
+          },
+          "aggression": {"mul": 1},
+          "pressure": {"mul": 1},
+          "lapse": {"mul": 1},
+          "guard": {"mul": 1},
+          "dash": {"mul": 1},
+          "interrupt": {"mul": 1},
+          "discipline": {"mul": 1},
+          "read": {"mul": 1},
+          "reaction": {"mul": 1},
+          "accuracy": {"mul": 1}
+        }
+      }
+    ]
+  },
+  "tactics": {
+    "list": [
+      {
+        "id": "Press",
+        "cooldownSeconds": 8,
+        "maxSeconds": 3,
+        "usesPerFight": 0,
+        "foeHealthFracMax": 0,
+        "staminaMin": 0,
+        "forceMode": "Approach",
+        "waitZero": true,
+        "forceNext": [
+          "Light",
+          "Thrust"
+        ],
+        "forceNextWeights": [
+          0.7,
+          0.3
+        ],
+        "suppressOffence": false,
+        "flipSide": false,
+        "backstepOnStart": false,
+        "sidestepOnStart": false,
+        "retryTicks": 20,
+        "retreatUntilTicks": 0,
+        "disengageTicks": 0,
+        "special": "",
+        "specialReach": 3,
+        "reachInset": 0.25,
+        "profile": {
+          "aggression": {
+            "set": 1.15,
+            "mul": 1
+          },
+          "dash": {
+            "set": 0.5,
+            "mul": 1
+          },
+          "guard": {
+            "set": 0.3,
+            "mul": 1
+          },
+          "parry": {
+            "mul": 0.75
+          },
+          "discipline": {
+            "add": -20,
+            "mul": 1
+          },
+          "pressure": {"mul": 1},
+          "dodge": {"mul": 1},
+          "lapse": {"mul": 1},
+          "circle": {"mul": 1},
+          "feint": {"mul": 1},
+          "step": {"mul": 1},
+          "kick": {"mul": 1},
+          "disengage": {"mul": 1},
+          "interrupt": {"mul": 1},
+          "read": {"mul": 1},
+          "reaction": {"mul": 1},
+          "accuracy": {"mul": 1}
+        }
+      },
+      {
+        "id": "BackOff",
+        "cooldownSeconds": 7,
+        "maxSeconds": 2.5,
+        "usesPerFight": 0,
+        "foeHealthFracMax": 0,
+        "staminaMin": 0,
+        "forceMode": "Retreat",
+        "waitZero": false,
+        "forceNext": [],
+        "forceNextWeights": [],
+        "suppressOffence": true,
+        "flipSide": false,
+        "backstepOnStart": true,
+        "sidestepOnStart": false,
+        "retryTicks": 20,
+        "retreatUntilTicks": 90,
+        "disengageTicks": 70,
+        "special": "",
+        "specialReach": 3,
+        "reachInset": 0.25,
+        "profile": {
+          "disengage": {
+            "set": 1.0,
+            "mul": 1
+          },
+          "guard": {
+            "set": 1.0,
+            "mul": 1
+          },
+          "aggression": {"mul": 1},
+          "pressure": {"mul": 1},
+          "parry": {"mul": 1},
+          "dodge": {"mul": 1},
+          "lapse": {"mul": 1},
+          "circle": {"mul": 1},
+          "feint": {"mul": 1},
+          "step": {"mul": 1},
+          "kick": {"mul": 1},
+          "dash": {"mul": 1},
+          "interrupt": {"mul": 1},
+          "discipline": {"mul": 1},
+          "read": {"mul": 1},
+          "reaction": {"mul": 1},
+          "accuracy": {"mul": 1}
+        }
+      },
+      {
+        "id": "Circle",
+        "cooldownSeconds": 8,
+        "maxSeconds": 3,
+        "usesPerFight": 0,
+        "foeHealthFracMax": 0,
+        "staminaMin": 0,
+        "forceMode": "Circle",
+        "waitZero": false,
+        "forceNext": [],
+        "forceNextWeights": [],
+        "suppressOffence": true,
+        "flipSide": true,
+        "backstepOnStart": false,
+        "sidestepOnStart": true,
+        "retryTicks": 20,
+        "retreatUntilTicks": 0,
+        "disengageTicks": 0,
+        "special": "",
+        "specialReach": 3,
+        "reachInset": 0.25,
+        "profile": {
+          "circle": {
+            "set": 1.0,
+            "mul": 1
+          },
+          "guard": {
+            "set": 1.0,
+            "mul": 1
+          },
+          "aggression": {"mul": 1},
+          "pressure": {"mul": 1},
+          "parry": {"mul": 1},
+          "dodge": {"mul": 1},
+          "lapse": {"mul": 1},
+          "feint": {"mul": 1},
+          "step": {"mul": 1},
+          "kick": {"mul": 1},
+          "dash": {"mul": 1},
+          "disengage": {"mul": 1},
+          "interrupt": {"mul": 1},
+          "discipline": {"mul": 1},
+          "read": {"mul": 1},
+          "reaction": {"mul": 1},
+          "accuracy": {"mul": 1}
+        }
+      },
+      {
+        "id": "GuardUp",
+        "cooldownSeconds": 10,
+        "maxSeconds": 3,
+        "usesPerFight": 0,
+        "foeHealthFracMax": 0,
+        "staminaMin": 0,
+        "forceMode": "Guard",
+        "waitZero": false,
+        "forceNext": [],
+        "forceNextWeights": [],
+        "suppressOffence": true,
+        "flipSide": false,
+        "backstepOnStart": false,
+        "sidestepOnStart": false,
+        "retryTicks": 20,
+        "retreatUntilTicks": 0,
+        "disengageTicks": 0,
+        "special": "",
+        "specialReach": 3,
+        "reachInset": 0.25,
+        "profile": {
+          "guard": {
+            "set": 1.0,
+            "mul": 1
+          },
+          "parry": {
+            "set": 0.5,
+            "mul": 1
+          },
+          "dodge": {
+            "mul": 0.7
+          },
+          "lapse": {
+            "set": 0.0,
+            "mul": 1
+          },
+          "read": {
+            "set": 0.75,
+            "mul": 1
+          },
+          "aggression": {"mul": 1},
+          "pressure": {"mul": 1},
+          "circle": {"mul": 1},
+          "feint": {"mul": 1},
+          "step": {"mul": 1},
+          "kick": {"mul": 1},
+          "dash": {"mul": 1},
+          "disengage": {"mul": 1},
+          "interrupt": {"mul": 1},
+          "discipline": {"mul": 1},
+          "reaction": {"mul": 1},
+          "accuracy": {"mul": 1}
+        }
+      },
+      {
+        "id": "Dodge",
+        "cooldownSeconds": 8,
+        "maxSeconds": 3,
+        "usesPerFight": 0,
+        "foeHealthFracMax": 0,
+        "staminaMin": 0,
+        "forceMode": "",
+        "waitZero": false,
+        "forceNext": [],
+        "forceNextWeights": [],
+        "suppressOffence": true,
+        "flipSide": false,
+        "backstepOnStart": false,
+        "sidestepOnStart": false,
+        "retryTicks": 20,
+        "retreatUntilTicks": 0,
+        "disengageTicks": 0,
+        "special": "",
+        "specialReach": 3,
+        "reachInset": 0.25,
+        "profile": {
+          "dodge": {
+            "set": 0.7,
+            "mul": 1
+          },
+          "parry": {
+            "set": 0.0,
+            "mul": 1
+          },
+          "lapse": {
+            "set": 0.0,
+            "mul": 1
+          },
+          "step": {
+            "set": 0.3,
+            "mul": 1
+          },
+          "reaction": {
+            "mul": 0.9
+          },
+          "aggression": {"mul": 1},
+          "pressure": {"mul": 1},
+          "guard": {"mul": 1},
+          "circle": {"mul": 1},
+          "feint": {"mul": 1},
+          "kick": {"mul": 1},
+          "dash": {"mul": 1},
+          "disengage": {"mul": 1},
+          "interrupt": {"mul": 1},
+          "discipline": {"mul": 1},
+          "read": {"mul": 1},
+          "accuracy": {"mul": 1}
+        }
+      },
+      {
+        "id": "Feint",
+        "cooldownSeconds": 9,
+        "maxSeconds": 3,
+        "usesPerFight": 0,
+        "foeHealthFracMax": 0,
+        "staminaMin": 40,
+        "forceMode": "Approach",
+        "waitZero": true,
+        "forceNext": [
+          "Light",
+          "Heavy"
+        ],
+        "forceNextWeights": [
+          0.5,
+          0.5
+        ],
+        "suppressOffence": false,
+        "flipSide": false,
+        "backstepOnStart": false,
+        "sidestepOnStart": false,
+        "retryTicks": 20,
+        "retreatUntilTicks": 0,
+        "disengageTicks": 0,
+        "special": "",
+        "specialReach": 3,
+        "reachInset": 0.25,
+        "profile": {
+          "aggression": {
+            "set": 0.9,
+            "mul": 1
+          },
+          "feint": {
+            "set": 1.0,
+            "mul": 1
+          },
+          "pressure": {"mul": 1},
+          "parry": {"mul": 1},
+          "dodge": {"mul": 1},
+          "lapse": {"mul": 1},
+          "guard": {"mul": 1},
+          "circle": {"mul": 1},
+          "step": {"mul": 1},
+          "kick": {"mul": 1},
+          "dash": {"mul": 1},
+          "disengage": {"mul": 1},
+          "interrupt": {"mul": 1},
+          "discipline": {"mul": 1},
+          "read": {"mul": 1},
+          "reaction": {"mul": 1},
+          "accuracy": {"mul": 1}
+        }
+      },
+      {
+        "id": "GoForKill",
+        "cooldownSeconds": 0,
+        "maxSeconds": 6,
+        "usesPerFight": 1,
+        "foeHealthFracMax": 0.3,
+        "staminaMin": 0,
+        "forceMode": "Approach",
+        "waitZero": true,
+        "forceNext": [
+          "Heavy",
+          "Light"
+        ],
+        "forceNextWeights": [
+          0.6,
+          0.4
+        ],
+        "suppressOffence": false,
+        "flipSide": false,
+        "backstepOnStart": false,
+        "sidestepOnStart": false,
+        "retryTicks": 20,
+        "retreatUntilTicks": 0,
+        "disengageTicks": 0,
+        "special": "special1",
+        "specialReach": 3,
+        "reachInset": 0.25,
+        "profile": {
+          "aggression": {
+            "set": 1.15,
+            "mul": 1
+          },
+          "pressure": {
+            "set": 0.4,
+            "mul": 1
+          },
+          "discipline": {
+            "set": 0.0,
+            "mul": 1
+          },
+          "guard": {
+            "set": 0.4,
+            "mul": 1
+          },
+          "dash": {
+            "set": 0.5,
+            "mul": 1
+          },
+          "lapse": {
+            "set": 0.5,
+            "mul": 1
+          },
+          "parry": {
+            "set": 0.1,
+            "mul": 1
+          },
+          "dodge": {
+            "set": 0.1,
+            "mul": 1
+          },
+          "circle": {"mul": 1},
+          "feint": {"mul": 1},
+          "step": {"mul": 1},
+          "kick": {"mul": 1},
+          "disengage": {"mul": 1},
+          "interrupt": {"mul": 1},
+          "read": {"mul": 1},
+          "reaction": {"mul": 1},
+          "accuracy": {"mul": 1}
+        }
+      }
+    ]
+  },
+  "reactions": {
+    "_about": "S2 reactions (replaces 'tells'). Per incoming swing type the defender draws guard / parry attempt / roll / sidestep / trade (swing back) / ignore (remainder). Probabilities = byMove x side.skill x stanceMul x running tacticMul (player side only), renormalised if the sum exceeds 1. Executed by the existing AIBrain (knobs parry/dodge/lapse/guard/reaction overridden for that one swing) or by PressSidestep / Press. Delays in ms (60 Hz ticks = ms*0.06), randomised +- jitter. punish = chance to attack the recovery after a whiff (+bonus for a missed or blocked heavy). repeatPenalty/mixup/patienceAmp = anti-pattern layer on profile.pressure / profile.aggression. feintBiteChance: the enemy bites on the player's feint; a bite is countered by a free parry + riposte window.",
+    "enabled": true,
+    "seed": 20261104,
+    "feintBiteChance": 0.5,
+    "sidestepLeadTicks": 6,
+    "feedMinGapS": 0.5,
+    "player": {
+      "enabled": true,
+      "reactionMs": 260,
+      "jitterMs": 100,
+      "skill": 0.95,
+      "punish": 0.45,
+      "punishHeavyBonus": 0.15,
+      "punishDelayMs": 220,
+      "punishJitterMs": 100,
+      "punishHeavyShare": 0.3,
+      "mixup": 0.4,
+      "repeatPenalty": 0.25,
+      "patienceAmp": 0.22,
+      "patienceMinS": 3,
+      "patienceMaxS": 7,
+      "historyLen": 6
+    },
+    "enemy": {
+      "enabled": true,
+      "reactionMs": 260,
+      "jitterMs": 100,
+      "skill": 0.95,
+      "punish": 0.45,
+      "punishHeavyBonus": 0.15,
+      "punishDelayMs": 220,
+      "punishJitterMs": 100,
+      "punishHeavyShare": 0.3,
+      "mixup": 0.4,
+      "repeatPenalty": 0.25,
+      "patienceAmp": 0.22,
+      "patienceMinS": 3,
+      "patienceMaxS": 7,
+      "historyLen": 6
+    },
+    "feint": {
+      "biteMove": "light_right",
+      "armSeconds": 1.6,
+      "maxGapMeters": 3.4,
+      "biteStaggerTicks": 100,
+      "leadTicks": 3,
+      "feintMaxTick": 12,
+      "requireTactic": true
+    },
+    "moveTypes": [
+      {
+        "move": "light_right",
+        "type": "light",
+        "label": "cut"
+      },
+      {
+        "move": "light_left",
+        "type": "slash",
+        "label": "slash"
+      },
+      {
+        "move": "slash_riposte",
+        "type": "slash",
+        "label": "slash"
+      },
+      {
+        "move": "thrust",
+        "type": "stab",
+        "label": "thrust"
+      },
+      {
+        "move": "riposte",
+        "type": "stab",
+        "label": "riposte"
+      },
+      {
+        "move": "kick",
+        "type": "kick",
+        "label": "kick"
+      },
+      {
+        "move": "heavy_overhead",
+        "type": "heavy",
+        "label": "overhead"
+      },
+      {
+        "move": "heavy_riposte",
+        "type": "heavy",
+        "label": "heavy"
+      },
+      {
+        "move": "heavy_counter",
+        "type": "heavy",
+        "label": "heavy"
+      },
+      {
+        "move": "skill_cleave",
+        "type": "special",
+        "label": "special"
+      },
+      {
+        "move": "skill_reaping",
+        "type": "special",
+        "label": "special"
+      },
+      {
+        "move": "critical",
+        "type": "special",
+        "label": "special"
+      }
+    ],
+    "byMove": [
+      {
+        "type": "light",
+        "player": {
+          "guard": 0.3,
+          "parry": 0.18,
+          "roll": 0.08,
+          "sidestep": 0.08,
+          "trade": 0.1
+        },
+        "enemy": {
+          "guard": 0.3,
+          "parry": 0.18,
+          "roll": 0.08,
+          "sidestep": 0.08,
+          "trade": 0.1
+        }
+      },
+      {
+        "type": "slash",
+        "player": {
+          "guard": 0.25,
+          "parry": 0.15,
+          "roll": 0.18,
+          "sidestep": 0.06,
+          "trade": 0.1
+        },
+        "enemy": {
+          "guard": 0.25,
+          "parry": 0.15,
+          "roll": 0.18,
+          "sidestep": 0.06,
+          "trade": 0.1
+        }
+      },
+      {
+        "type": "stab",
+        "player": {
+          "guard": 0.18,
+          "parry": 0.2,
+          "roll": 0.15,
+          "sidestep": 0.2,
+          "trade": 0.07
+        },
+        "enemy": {
+          "guard": 0.18,
+          "parry": 0.2,
+          "roll": 0.15,
+          "sidestep": 0.2,
+          "trade": 0.07
+        }
+      },
+      {
+        "type": "kick",
+        "player": {
+          "guard": 0.05,
+          "parry": 0.0,
+          "roll": 0.15,
+          "sidestep": 0.4,
+          "trade": 0.06
+        },
+        "enemy": {
+          "guard": 0.05,
+          "parry": 0.0,
+          "roll": 0.15,
+          "sidestep": 0.4,
+          "trade": 0.06
+        }
+      },
+      {
+        "type": "heavy",
+        "player": {
+          "guard": 0.15,
+          "parry": 0.18,
+          "roll": 0.28,
+          "sidestep": 0.12,
+          "trade": 0.06
+        },
+        "enemy": {
+          "guard": 0.15,
+          "parry": 0.18,
+          "roll": 0.28,
+          "sidestep": 0.12,
+          "trade": 0.06
+        }
+      },
+      {
+        "type": "special",
+        "player": {
+          "guard": 0.08,
+          "parry": 0.08,
+          "roll": 0.45,
+          "sidestep": 0.1,
+          "trade": 0.0
+        },
+        "enemy": {
+          "guard": 0.08,
+          "parry": 0.08,
+          "roll": 0.45,
+          "sidestep": 0.1,
+          "trade": 0.0
+        }
+      }
+    ],
+    "stanceMul": [
+      {
+        "key": "Aggressive",
+        "guard": 0.85,
+        "parry": 0.85,
+        "roll": 0.95,
+        "sidestep": 0.95,
+        "trade": 1.5,
+        "punish": 1.2
+      },
+      {
+        "key": "Defensive",
+        "guard": 1.25,
+        "parry": 1.25,
+        "roll": 1.05,
+        "sidestep": 1.0,
+        "trade": 0.5,
+        "punish": 0.85
+      },
+      {
+        "key": "Neutral",
+        "guard": 1.0,
+        "parry": 1.0,
+        "roll": 1.0,
+        "sidestep": 1.0,
+        "trade": 1.0,
+        "punish": 1.0
+      },
+      {
+        "key": "Trickster",
+        "guard": 0.9,
+        "parry": 1.0,
+        "roll": 1.2,
+        "sidestep": 1.3,
+        "trade": 1.0,
+        "punish": 1.1
+      }
+    ],
+    "tacticMul": [
+      {
+        "key": "GuardUp",
+        "guard": 1.4,
+        "parry": 1.35,
+        "roll": 0.8,
+        "sidestep": 0.8,
+        "trade": 0.4,
+        "punish": 0.9
+      },
+      {
+        "key": "Dodge",
+        "guard": 0.7,
+        "parry": 0.7,
+        "roll": 1.4,
+        "sidestep": 1.4,
+        "trade": 0.4,
+        "punish": 0.85
+      },
+      {
+        "key": "Press",
+        "guard": 0.85,
+        "parry": 0.85,
+        "roll": 0.8,
+        "sidestep": 0.8,
+        "trade": 1.4,
+        "punish": 1.2
+      },
+      {
+        "key": "BackOff",
+        "guard": 1.0,
+        "parry": 0.9,
+        "roll": 1.2,
+        "sidestep": 1.1,
+        "trade": 0.2,
+        "punish": 0.7
+      },
+      {
+        "key": "Circle",
+        "guard": 0.9,
+        "parry": 0.9,
+        "roll": 1.1,
+        "sidestep": 1.4,
+        "trade": 0.8,
+        "punish": 1.0
+      },
+      {
+        "key": "Feint",
+        "guard": 1.0,
+        "parry": 1.0,
+        "roll": 1.0,
+        "sidestep": 1.0,
+        "trade": 1.0,
+        "punish": 1.0
+      },
+      {
+        "key": "GoForKill",
+        "guard": 0.6,
+        "parry": 0.7,
+        "roll": 0.85,
+        "sidestep": 0.85,
+        "trade": 1.3,
+        "punish": 1.25
+      }
+    ]
+  },
+  "ui": {
+    "refHeight": 1080,
+    "minLayoutWidth": 1400,
+    "colPanel": "#0C0C0EF2",
+    "colPanel2": "#151517FF",
+    "colBorder": "#3A1A1CFF",
+    "colCrimson": "#9A2024FF",
+    "colEmber": "#E8742CFF",
+    "colEmberFill": "#7A3416F0",
+    "colText": "#F0E8D8FF",
+    "colDim": "#9A9384FF",
+    "colDisabled": "#7A746AFF",
+    "colHover": "#1E1416FF",
+    "colHpPlayer": "#B01820FF",
+    "colHpEnemy": "#D2701CFF",
+    "colGhost": "#F0E0C8B0",
+    "colKey": "#FFD7A0FF",
+    "colDisc": "#0F0E0FFF",
+    "colDiscActive": "#471A0DFF",
+    "colRingOff": "#403833FF",
+    "colRingCd": "#733333FF",
+    "colBorderOff": "#332B29FF",
+    "colBorderCd": "#592629FF",
+    "colLockBg": "#0A0808F2",
+    "colLockFg": "#C7B294FF",
+    "discTop": 8,
+    "labelTop": 76,
+    "labelH": 22,
+    "keyChipW": 24,
+    "keyChipH": 22,
+    "keyChipPad": 5,
+    "colBad": "#C0282CFF",
+    "barMaxW": 1340,
+    "barH": 136,
+    "barBottom": 14,
+    "pad": 20,
+    "groupGap": 56,
+    "btnGap": 8,
+    "stanceW": 112,
+    "tactW": 100,
+    "btnH": 102,
+    "discD": 64,
+    "glyph": 50,
+    "hpW": 460,
+    "hpH": 76,
+    "hpMinPxW": 380,
+    "hpMinPxH": 82,
+    "hpMargin": 22,
+    "hpTop": 8,
+    "feedLines": 3,
+    "feedHold": 4.5,
+    "feedFade": 1.5,
+    "flashTime": 0.35,
+    "pxTitle": 14,
+    "pxLabel": 15,
+    "pxKey": 15,
+    "pxFeed": 22,
+    "pxHp": 22,
+    "pxBanner": 64,
+    "freeCursor": true,
+    "hideGameHud": true,
+    "iconDir": "steer_icons",
+    "tStance": "STANCE",
+    "tTactics": "TACTICS",
+    "namePlayer": "",
+    "nameEnemy": "",
+    "tWin": "VICTORY",
+    "tLose": "YOU DIED",
+    "tNext": "NEXT OPPONENT  [Enter]",
+    "stances": [
+      {
+        "id": "Aggressive",
+        "label": "AGGRESSIVE",
+        "key": "1"
+      },
+      {
+        "id": "Defensive",
+        "label": "DEFENSIVE",
+        "key": "2"
+      },
+      {
+        "id": "Neutral",
+        "label": "NEUTRAL",
+        "key": "3"
+      },
+      {
+        "id": "Trickster",
+        "label": "TRICKSTER",
+        "key": "4"
+      }
+    ],
+    "tactics": [
+      {
+        "id": "Press",
+        "label": "PRESS",
+        "key": "Q"
+      },
+      {
+        "id": "BackOff",
+        "label": "BACK OFF",
+        "key": "W"
+      },
+      {
+        "id": "Circle",
+        "label": "CIRCLE",
+        "key": "E"
+      },
+      {
+        "id": "GuardUp",
+        "label": "GUARD UP",
+        "key": "R"
+      },
+      {
+        "id": "Dodge",
+        "label": "DODGE",
+        "key": "T"
+      },
+      {
+        "id": "Feint",
+        "label": "FEINT",
+        "key": "Y"
+      },
+      {
+        "id": "GoForKill",
+        "label": "GO FOR KILL",
+        "key": "G"
+      }
+    ],
+    "icons": { "_about": "HCKIT4 v95: STIcons procedural textures. glyphRes = square size of a stance / tactic glyph, glyphAa = edge softness (x signed distance), roundRes = disc / ring texture size, ringEdgePx / thinRingPx = ring edge widths in texels of roundRes, pieSteps = cooldown pie frames (angle steps), pieRes = pie texture size. The glyph shapes themselves are art and stay in STIcons.cs.", "glyphRes": 128, "glyphAa": 0.75, "roundRes": 128, "ringEdgePx": 5.0, "thinRingPx": 2.2, "pieSteps": 48, "pieRes": 96 }
+  },
+  "auto": {
+    "seconds": 150,
+    "commandEvery": 3,
+    "firstCommandAt": 0.5,
+    "shotEvery": 3,
+    "sampleEvery": 0.25,
+    "summaryEvery": 10,
+    "timeoutSeconds": 200,
+    "endDelay": 2.5,
+    "bootWaitSeconds": 20,
+    "decisionWindow": 1.5,
+    "stanceChance": 0.6,
+    "seed": 1234,
+    "goForKillTryEvery": 5,
+    "shotMode": "screen",
+    "shotWidth": 0,
+    "shotHeight": 0,
+    "logSamples": false,
+    "firstCommands": [
+      {
+        "t": 0.5,
+        "tactic": "Press"
+      },
+      {
+        "t": 3.5,
+        "tactic": "Circle"
+      },
+      {
+        "t": 6.5,
+        "tactic": "GuardUp"
+      },
+      {
+        "t": 9.5,
+        "tactic": "Dodge"
+      },
+      {
+        "t": 12.5,
+        "tactic": "Feint"
+      },
+      {
+        "t": 15.5,
+        "tactic": "BackOff"
+      },
+      {
+        "t": 18.5,
+        "tactic": "GoForKill"
+      }
+    ],
+    "seedsTimeoutSeconds": 900,
+    "balanceMinDuration": 60,
+    "balanceMaxDuration": 120,
+    "balanceMinWinRate": 0.4,
+    "balanceMaxWinRate": 0.7,
+    "restartWaitSeconds": 20
+  }
+}

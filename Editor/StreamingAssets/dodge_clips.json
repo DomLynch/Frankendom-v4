@@ -1,0 +1,106 @@
+{
+  "_about": "Bake list for Tools/bake_dodge_clips.py + Assets/Editor/DodgeClipSetup.cs (menu Tools > Combat > Add Dodge Clips). Same format as attack_clips.json bake; states are referenced by dodge.json roll.clip / sidestep.clip*.",
+  "clipSets": [
+    {
+      "id": "mixamo_sword",
+      "note": "shared default clip set for a Mixamo-106 humanoid with a one-hand weapon (copy of the dodge bake list). A roster row with \"clipSet\": \"mixamo_sword\" and no explicit bake row gets an entry built from its roster row (Assets/Editor/ClipSets.cs, Tools/clip_sets_lib.py); an explicit bake row overrides it.",
+      "referenceState": "guard_idle",
+      "outGlb": "{folder}/{id}_dodges.glb",
+      "outClipDir": "{folder}/DodgeClips",
+      "clips": [
+        {
+          "state": "dodge_dive",
+          "source": "${kitsOut}/3d/combat_clips_unity/top20/clips/127690904-standing-dive-forward.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "dodge_diveroll",
+          "source": "${kitsOut}/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "dodge_corkscrew",
+          "source": "${kitsOut}/3d/combat_clips_unity/top20/clips/120440901-corkscrew-evade.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        }
+      ]
+    }
+  ],
+  "bake": [
+    {
+      "character": "Dracula",
+      "controller": "Assets/Characters/Dracula.controller",
+      "baseGlb": "Assets/Characters/Dracula/Dracula_combat.glb",
+      "outGlb": "Assets/Characters/Dracula/Dracula_dodges.glb",
+      "outClipDir": "Assets/Characters/Dracula/DodgeClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "dodge_dive",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/127690904-standing-dive-forward.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "dodge_diveroll",
+          "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "dodge_corkscrew",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/120440901-corkscrew-evade.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        }
+      ]
+    },
+    {
+      "character": "Joan",
+      "controller": "Assets/Characters/Joan.controller",
+      "baseGlb": "Assets/Characters/Joan/Joan_combat.glb",
+      "outGlb": "Assets/Characters/Joan/Joan_dodges.glb",
+      "outClipDir": "Assets/Characters/Joan/DodgeClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "dodge_dive",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/127690904-standing-dive-forward.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "dodge_diveroll",
+          "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        },
+        {
+          "state": "dodge_corkscrew",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/120440901-corkscrew-evade.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        }
+      ]
+    },
+    {
+      "character": "Pitborn",
+      "controller": "Assets/Characters/Pitborn.controller",
+      "baseGlb": "Assets/Characters/Pitborn/Pitborn_combat.glb",
+      "outGlb": "Assets/Characters/Pitborn/Pitborn_dodges.glb",
+      "outClipDir": "Assets/Characters/Pitborn/DodgeClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "dodge_diveroll",
+          "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        }
+      ]
+    }
+  ]
+}

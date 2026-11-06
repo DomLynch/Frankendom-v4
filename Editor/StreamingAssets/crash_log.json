@@ -1,0 +1,19 @@
+{
+  "_about": "CrashLog.cs / CrashLogCore.cs (lane laneRCHYGIENE, v100): the release crash logger. Writes Application.persistentDataPath/<folder>/session_<stamp>.log. writeLevels = LogType names written at once with their stack trace (Error, Exception, Assert); ringLevels = LogType names kept in the in-memory ring buffer of the last ringLines messages, which is written as a 'context' block before every error and on every heartbeat (so the lines before a crash survive); an identical error is written maxRepeats times and then only counted. Size caps: maxFileKB per session (tailReserveKB extra for the closing summary), maxFiles sessions kept, maxTotalKB for the whole folder. heartbeatS = how often the ring tail is flushed (a native crash leaves the log up to the last heartbeat; running.flag stays behind and the next start sets CrashLog.LastSessionCrashed, which the pause menu shows once when showNotice is true). enabled=false turns everything off. inEditor / inHarness = also log in the Editor / in proof runs (default off; -crashlog on the command line forces it in the Editor).",
+  "enabled": true,
+  "inEditor": false,
+  "inHarness": false,
+  "showNotice": true,
+  "folder": "logs",
+  "writeLevels": ["Error", "Exception", "Assert"],
+  "ringLevels": ["Log", "Warning", "Error", "Exception", "Assert"],
+  "ringLines": 200,
+  "maxMessageChars": 600,
+  "maxStackChars": 1800,
+  "maxRepeats": 3,
+  "maxFiles": 8,
+  "maxFileKB": 512,
+  "maxTotalKB": 4096,
+  "tailReserveKB": 8,
+  "heartbeatS": 5.0
+}

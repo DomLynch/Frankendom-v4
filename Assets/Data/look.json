@@ -4,7 +4,7 @@
   "contactShadows": { "enable": true, "length": 0.05, "opacity": 1.0 },
   "post": { "tonemap": "ACES", "bloomScatter": 0.7, "grain": "Medium1", "antialiasing": "TemporalAntialiasing" },
   "fog": { "denoise": "Gaussian", "localFade": [0.5, 0.5, 0.5] },
-  "dynamicRes": { "minPercentage": 60, "maxPercentage": 100, "maxShadowRequests": 256 },
+  "dynamicRes": { "minPercentage": 20, "maxPercentage": 100, "maxShadowRequests": 256 },
   "runtime": { "renderScaleMin": 25, "renderScaleMax": 100 },
   "gltfMats": { "smoothCapMatch": "boulder", "smoothCap": 0.40, "maskMaxSize": 2048, "alphaCutoffDefault": 0.5 },
   "charMats": { "sheenDefault": [0.35, 0.02, 0.04] },

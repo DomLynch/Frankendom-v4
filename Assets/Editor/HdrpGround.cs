@@ -46,7 +46,7 @@ public static class HdrpGround
                 break;
             }
         }
-        if (changed > 0) File.WriteAllLines(lp, lines);
+        if (changed > 0) SafeIO.WriteAllLines(lp, lines); /* LOCKFIX v103 */
         Debug.Log("HDRPGROUND force-enabled " + changed + " entries tagged " + tag);
     }
 
@@ -62,8 +62,8 @@ public static class HdrpGround
         if (File.Exists(F.layoutSource))
         {
             if (!File.Exists("Tools/props_layout_pre_ground.json") && File.Exists(lp)) File.Copy(lp, "Tools/props_layout_pre_ground.json", false);
-            File.Copy(F.layoutSource, lp, true);
-            if (File.Exists("Assets/StreamingAssets/props_layout.json")) File.Copy(F.layoutSource, "Assets/StreamingAssets/props_layout.json", true);
+            SafeIO.Copy(F.layoutSource, lp, true); /* LOCKFIX v103 */
+            if (File.Exists("Assets/StreamingAssets/props_layout.json")) SafeIO.Copy(F.layoutSource, "Assets/StreamingAssets/props_layout.json", true); /* LOCKFIX v103 */
             ForceEnableTag(lp, "variant_gateApproach_ground");
             Debug.Log("HDRPGROUND layout = " + F.layoutSource);
         }

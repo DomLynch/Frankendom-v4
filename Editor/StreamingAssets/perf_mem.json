@@ -1,0 +1,33 @@
+{
+  "_notes": "lanePERF4 v100. Read by Scripts/PerfMem.cs (runtime) and Editor/PerfMemApply.cs (editor). Every switch is OFF (or today's value) by default, so the shipped look and memory are unchanged until a switch is turned on. Without a rebuild: -permem:E1,E3 (only these ON) | -permem:none | -nopermem:E3 (json minus these). The shadow cuts A1 / A1b / A4 live in perf_fixes.json (lanePERF3, -perffix:); A2 is below; A3 is an HDRP-asset value (asset_variants/make_variant4.py --A3 / --A2).",
+  "enabled": true,
+  "applyAfterFrames": 2,
+
+  "E1": {
+    "enabled": false,
+    "names": ["MetaHumanHead"],
+    "unloadUnused": true,
+    "note": "RUNTIME half: destroys the inactive MetaHumanHead object (MHHeadBuilder + MHHeadAttach, HDRP materials in keepAlive) after the scene load and unloads its textures from RAM/VRAM. The BUILD half (stop shipping about 87 MB of textures + native plugin + shader variants) is Editor/PerfMemApply.cs step E1 (scene edit, the dev runs it). mhhead_attach.json enabled=false today, so the head is never built and Joan uses the Tripo head."
+  },
+  "E3": {
+    "enabled": false,
+    "globalTextureMipmapLimit": 1,
+    "note": "QualitySettings.globalTextureMipmapLimit: 0 = full size (today, Ultra), 1 = drop the top mip of EVERY texture (4096 -> 2048, 2048 -> 1024). Saves RAM + VRAM at once, even for the uncompressed glTFast textures. This IS look-affecting (sharpness at close range): look gate it. Disabled = untouched."
+  },
+  "E4": {
+    "enabled": false,
+    "streamingMipmapsActive": true,
+    "memoryBudgetMB": 512.0,
+    "maxLevelReduction": 2,
+    "addAllCameras": true,
+    "note": "Mip streaming. Only textures whose importer has streamingMipmaps=true take part: the E5 plan sets that on the TextureImporter files; the glTFast sub-asset textures never stream (no importer flag), so on this project the budget only governs the png/exr/jpg groups."
+  },
+  "A2": {
+    "enabled": false,
+    "lightTypes": ["Directional"],
+    "updateMode": "OnEnable",
+    "alwaysDrawDynamic": true,
+    "requestRender": true,
+    "note": "Mixed cached directional shadows: the sun HDAdditionalLightData.shadowUpdateMode OnEnable + alwaysDrawDynamicShadows so static casters (A1b marks them, perf_fixes.json) are cached and only the fighters are redrawn each frame. NEEDS the asset flag hdShadowInitParams.allowDirectionalMixedCachedShadows 0 -> 1 (make_variant4.py --A2): without it HDRP ignores the light setting. A moving sun would show a stale shadow: the sun is static in the duel."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "_about": "lanePERF6 (2026-11-06). DARK lever table: every 'enabled' is false, installing this file changes nothing, the game does not read it (read by apply_perf6.py and perf6_report.py only). Data == StreamingAssets. Only layout levers live here; the other look-neutral switches stay in lanePERF5's perf5_switches.json (P5-SHADOW-GROUND, P5-ASYNC, P5-SHADOW-DOORS). 'evidence' says measured or estimated; no fps gain is claimed anywhere: gains come from the perfab run (perf6_report.py).",
+  "stage": { "liveLayoutMd5": "2aa9d99c20681284e0418b908a383753", "layoutFiles": ["Assets/Data/props_layout_ground.json", "Assets/Data/props_layout.json", "Assets/StreamingAssets/props_layout_ground.json", "Assets/StreamingAssets/props_layout.json"], "needsSceneRebuild": true },
+  "levers": {
+    "P6-B11": {
+      "enabled": false, "rank": 1, "lookNeutral": true, "evidence": "estimated (geometry model, lanePERF env-dev visibility proof; 11 props = 64k LOD2 .. 189k LOD1 tris of ~0.8M WorldBehind in view)",
+      "what": "11 far WorldBehind boulders / fallen pillars (x -12..12, z 43..111, behind the gate) get disabled:true in the layout. No lock, finisher or free cam pose sees them (behind_visibility.json). Variant B of kits_out hades_env perf_variants, re-derived here as a text edit of the live file.",
+      "ids": ["worldbehind_fallen_pillar_3_15", "worldbehind_fallen_pillar_3_18", "worldbehind_rock_boulder_A_61", "worldbehind_rock_boulder_B_61", "worldbehind_rock_boulder_E_58", "worldbehind_rock_boulder_D_59", "worldbehind_rock_boulder_E_59", "worldbehind_rock_boulder_A_66", "worldbehind_rock_boulder_A_67", "worldbehind_rock_boulder_C_67", "worldbehind_rock_boulder_A_70"],
+      "variant": "stage/Data/props_layout_ground.B11.json",
+      "gate": "scene rebuild; verify_ground 34/34; look_gate vs v69 expects none; arena, gate, finisher cams unchanged"
+    },
+    "P6-LODBEHIND": {
+      "enabled": false, "rank": 2, "lookNeutral": false, "lookRisk": "low-medium (far LOD swap sooner on props 34-126 m behind the gate, in fog; needs Dom's LOOK OK)", "evidence": "estimated (bounding-box LOD model, see MANIFEST numbers)",
+      "what": "WorldBehind props use '<profile>_behind' LOD profiles: LOD0->1 and LOD1->2 screen heights x factor, cull height unchanged. Includes B11. Local to the 81 WorldBehind props, so it is a far-group-only version of what P5-LOD does globally.",
+      "factor": 1.5, "groups": ["WorldBehind"],
+      "variant": "stage/Data/props_layout_ground.B11_LODB.json",
+      "gate": "scene rebuild; look_gate on the sides of the gate (the 70 visible WorldBehind props); no pop in the lock cam sweep"
+    }
+  },
+  "harness": {
+    "_about": "perfab_perf6.json arms: not switches, measurements. See MANIFEST.",
+    "command": "powershell -File _agents/lanePERF6/run_perf_after_v103.ps1"
+  },
+  "report": {
+    "vaMinPairs": 3,
+    "vaNoiseMult": 2.0,
+    "vaMinDeltaMs": 0.25,
+    "diagNoiseMult": 2.0,
+    "minFpsGain": 0.8,
+    "resPoints": { "DIAG-RS50": 50.0, "baseline": 67.0, "DIAG-RS100": 100.0 }
+  }
+}

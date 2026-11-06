@@ -1,0 +1,13 @@
+{
+  "_notes": "Import rules for Assets/VFX/Flipbooks/ue_* (read by FurnaceFlipbookImport.cs). compression = TextureImporterCompression name: Uncompressed | Compressed | CompressedHQ | CompressedLQ. EXR colour sheets keep alpha, so BC6H is not available: they import as RGBAHalf (4096 = 128 MB, 2048 = 32 MB). Motion vectors: linear (sRGB off), no mips, Clamp, Uncompressed (block compression wrecks vectors); 16-bit PNG imports as 8 bit, enough (0.063/127 = 0.0005 cell per frame). Sixway sheets (after moving them out of sixway~): linear, no mips, CompressedHQ (BC7).",
+  "rules": [
+    { "match": "ue_hit_sparks_",         "sRGB": false, "mips": false, "alphaIsTransparency": false, "wrap": "Clamp", "maxSize": 4096, "compression": "Uncompressed" },
+    { "match": "ue_dust_puff_color_",    "sRGB": false, "mips": false, "alphaIsTransparency": false, "wrap": "Clamp", "maxSize": 2048, "compression": "Uncompressed" },
+    { "match": "ue_dust_puff_mv_",       "sRGB": false, "mips": false, "alphaIsTransparency": false, "wrap": "Clamp", "maxSize": 2048, "compression": "Uncompressed" },
+    { "match": "ue_ember_burst_color_",  "sRGB": false, "mips": false, "alphaIsTransparency": false, "wrap": "Clamp", "maxSize": 4096, "compression": "Uncompressed" },
+    { "match": "ue_ember_burst_mv_",     "sRGB": false, "mips": false, "alphaIsTransparency": false, "wrap": "Clamp", "maxSize": 2048, "compression": "Uncompressed" },
+    { "match": "_color_8x8.exr",  "sRGB": false, "mips": false, "alphaIsTransparency": false, "wrap": "Clamp", "maxSize": 4096, "compression": "Uncompressed" },
+    { "match": "_mv_8x8.png",     "sRGB": false, "mips": false, "alphaIsTransparency": false, "wrap": "Clamp", "maxSize": 2048, "compression": "Uncompressed" },
+    { "match": "_sixway_",        "sRGB": false, "mips": false, "alphaIsTransparency": false, "wrap": "Clamp", "maxSize": 4096, "compression": "CompressedHQ" }
+  ]
+}

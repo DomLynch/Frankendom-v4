@@ -1,0 +1,206 @@
+{
+  "_about": "NODRAC v93. Inventory of Joan data rows whose VALUES began as a copy of Dracula's row (no asset or name reference: audit HC1 section 4, 'C'). Values are kept; from v93 these rows belong to Joan and are tuned on her own. Not read by the game (JsonUtility ignores it); read by _agents/laneNODRAC/tools/no_dracula_check.py, which checks every path still resolves to a Joan-keyed row. Add a row here when a new Joan row is cloned from another character.",
+  "player": "Joan",
+  "rows": [
+    {
+      "file": "ai_rows.json",
+      "path": "$.unity.zBias[1]",
+      "keyField": "name",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.unity.zBias[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "arm_hold.json",
+      "path": "$.characters[1]",
+      "keyField": "name",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.characters[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "attack_clips.json",
+      "path": "$.rows[20]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "attack_clips.json",
+      "path": "$.rows[21]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[1]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "attack_clips.json",
+      "path": "$.rows[22]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[2]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "attack_clips.json",
+      "path": "$.rows[23]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[3]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "attack_clips.json",
+      "path": "$.rows[24]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[4]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "attack_clips.json",
+      "path": "$.rows[25]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[5]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "attack_clips.json",
+      "path": "$.rows[26]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[16]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "attack_clips.json",
+      "path": "$.rows[27]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[17]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "attack_clips.json",
+      "path": "$.rows[28]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[18]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "attack_clips.json",
+      "path": "$.rows[29]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[19]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "blood.json",
+      "path": "$.victims[1]",
+      "keyField": "match",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.victims[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "cues.json",
+      "path": "$.weapons[1]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.weapons[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "cues.json",
+      "path": "$.surfaces[1]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.surfaces[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "death.json",
+      "path": "$.rows[1]",
+      "keyField": "character",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[3]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "fight_balance.json",
+      "path": "$.fighters[1]",
+      "keyField": "key",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.fighters[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "foot_yaw.json",
+      "path": "$.characters[1]",
+      "keyField": "name",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.characters[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "guard_turn.json",
+      "path": "$.characters[2]",
+      "keyField": "id",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.characters[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "head_clamp.json",
+      "path": "$.characters[1]",
+      "keyField": "name",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.characters[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "hit_flash.json",
+      "path": "$.rows[2]",
+      "keyField": "match",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.rows[1]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "poise.json",
+      "path": "$.armour.fighters[2]",
+      "keyField": "key",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.armour.fighters[1]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "poise.json",
+      "path": "$.meter.fighters[2]",
+      "keyField": "key",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.meter.fighters[1]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "posture.json",
+      "path": "$.fighters[1]",
+      "keyField": "key",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.fighters[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    },
+    {
+      "file": "stamina.json",
+      "path": "$.fighters[1]",
+      "keyField": "key",
+      "keyValue": "Joan",
+      "copiedFromPath": "$.fighters[0]",
+      "status": "values copied from the Dracula row at first; Joan-owned from v93: edit freely, nothing reads the Dracula row for Joan"
+    }
+  ]
+}

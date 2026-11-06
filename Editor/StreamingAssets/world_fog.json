@@ -1,0 +1,18 @@
+{
+  "_notes": "v4 is the single source of truth (see fog.check). Earlier versions used dark thin fog. PLACEHOLDER measured from the raw panorama (sRGB 84) is NOT used; the albedo below is a starting value and must be RE-MEASURED in the player from the sky pixels at the horizon after in-game exposure (Unity dev: screenshot the horizon band, take its mean sRGB, set albedo to ~0.9x of it). Target fog fraction by distance: near band (10-30 m) 5-15 %, mid (30-120 m) 30-50 %, far (120-440 m) 70-90 %.",
+  "fog": {
+    "version": "v4",
+    "albedo_srgb": [196, 206, 221],
+    "albedo_linear": [0.55, 0.62, 0.72],
+    "baseHeight": 0.0,
+    "maximumHeight": 25.0,
+    "meanFreePath": 75.0,
+    "anisotropy": 0.6,
+    "enableVolumetric": true,
+    "check": "v4 (Goose request, relayed as Dom-approved): cool grey-blue fog for aerial perspective, darkness carried by exposure and stone albedo. f(d)=1-exp(-d/75): 20 m 23 %, 75 m 63 %, 250 m 96 %. Live values are mirrored in hdrp_lighting_ultra.json, which is the file HdrpScene reads."
+  },
+  "farBandFade": {"startM": 120, "fullM": 420},
+  "water": {"disable": ["WaterSheen plane (hdrp_fixes.json water block, size 0)", "Ridges + M_Ridge hill ring (hide list)"], "reason": "white glare = WaterSheen reflecting the eclipse; flat black ground = same plane; terrain replaces both, ground base y = -0.95"},
+  "emissive": {"lavaCrackEmissiveIntensityNits": 40, "note": "ground_emissive.png: 70 % of faults dead, hairline..15 cm width, a few pooled glows, faint spill on nearby rock; no emissive anywhere on walkable stone (bridge/stairs/floor GLBs have none)."},
+  "terrainDetail": {"map": "Assets/Env/World/Terrain/Tex/ground_macro_detail.png", "uvSet": "UV1 (TEXCOORD_1 = world metres / 256)", "use": "HDRP Lit Detail Map, Detail UV Mapping = UV1, Detail Albedo Scale 1, Smoothness Scale 1, Normal scale 0 (macro tint of ash drifts and scorched patches; breaks the 64 m tile)"}
+}

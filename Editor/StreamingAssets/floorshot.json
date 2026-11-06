@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "_notes": "FLOORSHOT v102 (-floorshot harness, Assets/Scripts/FloorShot.cs). Camera poses and A/B arms for the flickering grey stipple patch Dom circled on the arena floor behind Joan (dom_floor_shadow_v99_0805.webp, dom_floor_shadow_flicker_v100.png). Every pose / arm is data: add a row, no code. pose = camera relative to the PLAYER fighter (roster player): behindM along -forward, leftM to her left, heightM above her feet, aim point = feet + forward*lookAheadM + up*lookHeightM. The pose numbers below are an ESTIMATE read from Dom's screenshot (low, close, behind Joan, sword side to the right); edit them and re-run if the patch is not in frame. region = screen fractions x0,y0,x1,y1 (y from the bottom) of the floor part of the frame that the flicker metrics use. Arms: lodBias > 0 sets QualitySettings.lodBias (0 = leave); forceLod >= 0 calls LODGroup.ForceLOD on every LODGroup whose hierarchy path contains floorMatch (the runtime equal of perf_mem_build.json E2 keepLods 1; -1 = leave); fadeMode None|CrossFade|SpeedTree sets LODGroup.fadeMode on the floor groups ('' = leave); hideRendererMatch hides enabled renderers whose name contains any entry (blood / wound / gore quads); decalProjectorsOff disables every HDRP DecalProjector (wound decals). No fight is run, so no blood / wound is created in this harness: the hide lists are for scene objects that already exist. Arms are applied on top of the baseline and fully undone before the next arm.",
+  "enabled": true,
+  "requireResolution": true,
+  "muteAudio": true,
+  "width": 1920,
+  "height": 1080,
+  "bootWaitSec": 30,
+  "settleSec": 1.5,
+  "armSettleSec": 0.6,
+  "shotsPerArm": 8,
+  "shotIntervalSec": 0.25,
+  "timeoutSec": 240,
+  "exitGraceSec": 3,
+  "floorMatch": "ground_paving",
+  "region": [0.0, 0.0, 1.0, 0.5],
+  "blockPx": 32,
+  "flickerBlockDiffWarn": 0.012,
+  "poses": [
+    { "id": "dom_low_behind", "behindM": 2.4, "leftM": 0.0, "heightM": 0.75, "lookAheadM": 1.0, "lookHeightM": 0.6, "fov": 50, "near": 0.05 },
+    { "id": "dom_low_behind_left", "behindM": 2.0, "leftM": 0.7, "heightM": 0.55, "lookAheadM": 1.2, "lookHeightM": 0.4, "fov": 50, "near": 0.05 }
+  ],
+  "arms": [
+    { "id": "baseline", "note": "the shipped state: lodBias 2.0, LOD fade as built, all decals", "forceLod": -1 },
+    { "id": "A1_lod0_only", "note": "runtime equal of perf_mem_build.json E2 keepLods 1 on ground_paving", "forceLod": 0 },
+    { "id": "A1b_lod0_nofade", "note": "LOD0 forced and fade mode None", "forceLod": 0, "fadeMode": "None" },
+    { "id": "A2_decals_off", "note": "wound decals and blood/wound/gore quads hidden", "decalProjectorsOff": true, "hideRendererMatch": [ "Blood", "Wound", "Gore" ], "forceLod": -1 },
+    { "id": "A3_lodbias_4", "note": "crack_flicker.json lodBias 2.0 -> 4.0", "lodBias": 4.0, "forceLod": -1 },
+    { "id": "A4_fade_none", "note": "floor LODGroup fadeMode None (rules the LOD dither in or out without dropping LODs)", "fadeMode": "None", "forceLod": -1 },
+    { "id": "A5_fade_crossfade", "note": "floor LODGroup fadeMode CrossFade (forces the dither on: if the patch only appears here, it was a fade the shipped scene did not have)", "fadeMode": "CrossFade", "forceLod": -1 }
+  ]
+}

@@ -51,7 +51,7 @@ public static class HdrpWorldMats
         return t;
     }
 
-    static void WritePng(string path, Texture2D t) { File.WriteAllBytes(path, t.EncodeToPNG()); AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport); }
+    static void WritePng(string path, Texture2D t) { SafeIO.WriteAllBytes(path, t.EncodeToPNG()); /* LOCKFIX v103 */ AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport); }
 
     // texture import settings (idempotent: reimports only when something differs)
     static void Imp(string path, bool srgb, bool normal, int maxSize, int aniso)

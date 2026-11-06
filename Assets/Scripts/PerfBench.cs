@@ -64,6 +64,12 @@ public class PerfBench : MonoBehaviour
         K("gpu_ms_avg", Avg(gpu).ToString("F2", IC)); K("gpu_ms_p95", Pct(g, 0.95f).ToString("F2", IC)); K("cpu_ms_avg", Avg(cpu).ToString("F2", IC));
         K("mem_total_mb", (UnityEngine.Profiling.Profiler.GetTotalAllocatedMemoryLong() / 1048576L).ToString());
         sb.Append("  \"dynres\": " + (UnityEngine.Rendering.DynamicResolutionHandler.instance != null ? "true" : "false") + "\n}\n");
+        // v104a: display refresh, vsync state, actual internal render size, and the raw per-frame ms (so 180 Hz quantisation is visible).
+        var ds = UnityEngine.Rendering.DynamicResolutionHandler.instance; Vector2Int sz = ds != null ? ds.GetScaledSize(new Vector2Int(Screen.width, Screen.height)) : new Vector2Int(Screen.width, Screen.height);
+        K("refresh_hz", Screen.currentResolution.refreshRateRatio.value.ToString("F1", IC)); K("vsync_count", QualitySettings.vSyncCount.ToString()); K("target_fps", Application.targetFrameRate.ToString());
+        K("render_size", "\"" + sz.x + "x" + sz.y + "\""); K("render_scale_pct", ds != null ? ds.GetCurrentScale().ToString("F3", IC) : "-1");
+        var raw = new StringBuilder(); foreach (var v in wall) raw.Append(v.ToString("F2", IC)).Append('\n');
+        File.WriteAllText(Path.Combine(dir, "frames_" + tag + ".csv"), raw.ToString());
         File.WriteAllText(Path.Combine(dir, "perf_" + tag + ".json"), sb.ToString());
         Debug.Log("PERFBENCH " + tag + " fps_avg=" + (1000f / Mathf.Max(0.001f, avgMs)).ToString("F1", IC) + " p99ms=" + p99.ToString("F1", IC) + " gpu_ms=" + Avg(gpu).ToString("F1", IC) + " over500=" + over500);
         if (!Flag("-balanceauto")) Application.Quit(0);

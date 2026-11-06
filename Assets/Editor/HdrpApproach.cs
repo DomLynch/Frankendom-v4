@@ -50,7 +50,7 @@ public static class HdrpApproach
             int c = lines[i].IndexOf(':', k); if (c < 0) continue;
             int e = c + 1; while (e < lines[i].Length && lines[i][e] == ' ') e++;
             int e2 = e; while (e2 < lines[i].Length && (char.IsDigit(lines[i][e2]) || lines[i][e2] == '.' || lines[i][e2] == '-')) e2++;
-            if (e2 > e) { lines[i] = lines[i].Substring(0, e) + v.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture) + lines[i].Substring(e2); File.WriteAllLines(lp, lines); Debug.Log("HDRPAPPROACH constants.platformTop line " + (i + 1) + " = " + v); return; }
+            if (e2 > e) { lines[i] = lines[i].Substring(0, e) + v.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture) + lines[i].Substring(e2); SafeIO.WriteAllLines(lp, lines); /* LOCKFIX v103 */ Debug.Log("HDRPAPPROACH constants.platformTop line " + (i + 1) + " = " + v); return; }
         }
         Debug.Log("HDRPAPPROACH WARNING constants.platformTop not found in the first 400 lines of " + lp);
     }
@@ -72,7 +72,7 @@ public static class HdrpApproach
         {
             var lines = File.ReadAllLines(lp); int changed = 0;
             SetDisabled(lines, F.flatTag, !flat, ref changed); SetDisabled(lines, F.stairsTag, flat, ref changed);
-            if (changed > 0) File.WriteAllLines(lp, lines);
+            if (changed > 0) SafeIO.WriteAllLines(lp, lines); /* LOCKFIX v103 */
             Debug.Log("HDRPAPPROACH layout entries toggled=" + changed);
             SetPlatformTop(lp, flat ? F.platformTop : F.oldPlatformTop);
         }

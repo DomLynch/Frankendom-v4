@@ -65,7 +65,7 @@ public static class HdrpGltfMats
                         if (aoT != null) { var a = Readable(aoT, true); if (a.width == mr.width && a.height == mr.height) ao = a.GetPixels32(); }
                         var mask = new Texture2D(mr.width, mr.height, TextureFormat.RGBA32, false, true); var o = new Color32[px.Length];
                         for (int k = 0; k < px.Length; k++) { byte met = (byte)Mathf.Clamp(px[k].b * metal, 0, 255), sm = (byte)Mathf.Clamp(255 - px[k].g * rough, 0, 255); byte aoc = ao != null ? ao[k].r : px[k].r; o[k] = new Color32(met, aoc, 0, sm); }
-                        mask.SetPixels32(o); mask.Apply(); string mpth = "Assets/HDRP/Masks/" + safe + "_mask.png"; File.WriteAllBytes(mpth, mask.EncodeToPNG()); AssetDatabase.ImportAsset(mpth);
+                        mask.SetPixels32(o); mask.Apply(); string mpth = "Assets/HDRP/Masks/" + safe + "_mask.png"; SafeIO.WriteAllBytes(mpth, mask.EncodeToPNG()); /* LOCKFIX v103 */ AssetDatabase.ImportAsset(mpth);
                         var ti = AssetImporter.GetAtPath(mpth) as TextureImporter; if (ti != null) { ti.sRGBTexture = false; ti.maxTextureSize = GLM.maskMaxSize; ti.textureCompression = TextureImporterCompression.Compressed; ti.SaveAndReimport(); }
                         float smMax = capOn && (safe.ToLowerInvariant().Contains(capKey) || lp.Contains(capKey)) ? GLM.smoothCap : 1.0f;
                         nm.SetTexture("_MaskMap", AssetDatabase.LoadAssetAtPath<Texture2D>(mpth)); nm.SetFloat("_Metallic", 1f); nm.SetFloat("_Smoothness", 1f); nm.SetFloat("_SmoothnessRemapMin", 0f); nm.SetFloat("_SmoothnessRemapMax", smMax); nm.SetFloat("_AORemapMin", 0f); nm.SetFloat("_AORemapMax", 1f);

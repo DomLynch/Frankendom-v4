@@ -1,0 +1,23 @@
+{
+  "_notes": "Lane LOOK look data. Read by Scripts/LookData.cs (StreamingAssets copy first, then Assets/Data). exposure is the ONE scene exposure: HdrpScene bakes it into HDRP_Global, RuntimeQuality re-applies it to every Volume with an Exposure override at player boot (runtime_flags exposureEV is no longer used), and lockFinisher = true stops the finisher camera adding its own exposure override (darkenEV / per-shot offsets are ignored), so gameplay and finisher shots use the same EV. contactShadows: Volume override added to HDRP_Global (the key light opts in via hdrp_lighting_ultra.json shadow.contact). post / fog / dynamicRes / runtime / gltfMats / charMats: values that used to be hard-coded in HdrpScene, HdrpSetup, RuntimeQuality, HdrpGltfMats and HdrpCharMats, with identical defaults (enum names: TonemappingMode, FilmGrainLookup, FogDenoisingMode, HDAdditionalCameraData.AntialiasingMode). ground: material-only tiling breakup applied by Editor/HdrpGroundLook.cs (normalScale absolute, -1 = leave; detailTiling = UV scale of the generated macro detail map, 0 = no detail; detailAlbedo / detailSmoothness = HDRP detail strengths 0..2). Tune detailTiling by eye: paving UV scale is unknown, terrain UV 1 = 64 m.",
+  "exposure": { "mode": "Fixed", "ev": 9.4, "lockFinisher": true },
+  "contactShadows": { "enable": true, "length": 0.05, "opacity": 1.0 },
+  "post": { "tonemap": "ACES", "bloomScatter": 0.7, "grain": "Medium1", "antialiasing": "TemporalAntialiasing" },
+  "fog": { "denoise": "Gaussian", "localFade": [0.5, 0.5, 0.5] },
+  "dynamicRes": { "minPercentage": 60, "maxPercentage": 100, "maxShadowRequests": 256 },
+  "runtime": { "renderScaleMin": 25, "renderScaleMax": 100 },
+  "gltfMats": { "smoothCapMatch": "boulder", "smoothCap": 0.40, "maskMaxSize": 2048, "alphaCutoffDefault": 0.5 },
+  "charMats": { "sheenDefault": [0.35, 0.02, 0.04] },
+  "ground": {
+    "enabled": true,
+    "detailTexture": "Assets/HDRP/World/ground_macro_detail.png",
+    "size": 512, "cells": 4, "octaves": 4, "seed": 11,
+    "albedoVar": 0.25, "roughVar": 0.5,
+    "materials": [
+      { "path": "Assets/HDRP/Mats/ground_paving_LOD0_plate_top.mat", "normalScale": 0.75, "detailTiling": 0.37, "detailAlbedo": 0.25, "detailSmoothness": 0.25, "smoothnessMin": -1, "smoothnessMax": -1 },
+      { "path": "Assets/HDRP/Mats/ground_paving_LOD1_plate_top.mat", "normalScale": 0.75, "detailTiling": 0.37, "detailAlbedo": 0.25, "detailSmoothness": 0.25, "smoothnessMin": -1, "smoothnessMax": -1 },
+      { "path": "Assets/HDRP/Mats/ground_paving_LOD2_plate_top.mat", "normalScale": 0.75, "detailTiling": 0.37, "detailAlbedo": 0.25, "detailSmoothness": 0.25, "smoothnessMin": -1, "smoothnessMax": -1 },
+      { "path": "Assets/HDRP/World/M_WorldTerrain.mat", "normalScale": -1, "detailTiling": 6.7, "detailAlbedo": 1.0, "detailSmoothness": 1.0, "smoothnessMin": -1, "smoothnessMax": -1 }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+    "note": "CUTLOD v96 (laneCUTLOD). Read by CutLod.cs (HudCfg.ReadData). Every runtime cut (MeshCut, MeshCutCrown, severed head) uses a decimated proxy of the heavy render mesh when a row exists; a heavy renderer without a row (> maxTrisNoProxy) is not cut. 'character' = roster.json id; 'renderer' = the heavy SkinnedMeshRenderer object name, '' = that roster row's headRenderer; 'file' = StreamingAssets\\cutlod\\<name>.cutlod.json (made offline: _agents\\laneCUTLOD\tools\\make_cutlod.py). enabled=false = the old path exactly (cuts the render mesh). INT100b: Joan Head+Hair rows (v6c, JOANV6C) + Pitborn Body (PITCUT); totalBudgetMs 2500 -> 900.",
+    "enabled": true,
+    "perFrameMaxMs": 12.0,
+    "totalBudgetMs": 900.0,
+    "syncSliceMs": 20.0,
+    "maxTrisNoProxy": 300000,
+    "watchdogS": 8.0,
+    "log": true,
+    "rows": [
+        {
+            "character": "Joan",
+            "renderer": "Joan_Head",
+            "anchorBone": "mixamorig:Head",
+            "file": "cutlod/Joan_Head.cutlod.json"
+        },
+        {
+            "character": "Joan",
+            "renderer": "Joan_Hair",
+            "anchorBone": "mixamorig:Head",
+            "file": "cutlod/Joan_Hair.cutlod.json"
+        }
+    ]
+}

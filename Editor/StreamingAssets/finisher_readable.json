@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "note": "Models whose skinned meshes the runtime mesh cut (MeshCut) needs readable. glTFast 6.20 has NO mesh Read/Write importer key (only texturesReadable); its meshes are created with new Mesh() + UploadMeshData(false), so they are readable already. FinisherReadable verifies mesh.isReadable per file and sets an importer key only if one of importerKeys exists (future glTFast).",
+  "models": [
+    "Assets/Characters/Dracula/Dracula_combat.glb",
+    "Assets/Characters/Dracula/Dracula_anim.glb",
+    "Assets/Characters/Joan/Joan_combat.glb",
+    "Assets/Characters/Joan/Joan_anim.glb",
+    "Assets/Characters/Pitborn/Pitborn_combat.glb",
+    "Assets/Characters/Pitborn/Pitborn_anim.glb"
+  ],
+  "importerKeys": [
+    "meshReadable",
+    "meshesReadable",
+    "readable",
+    "isReadable"
+  ]
+}

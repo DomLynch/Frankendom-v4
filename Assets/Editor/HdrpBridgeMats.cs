@@ -80,7 +80,7 @@ public static class HdrpBridgeMats
                 o[k] = new Color32(0, ao, 0, sm);
             }
             var mt = new Texture2D(t.width, t.height, TextureFormat.RGBA32, false, true); mt.SetPixels32(o); mt.Apply();
-            File.WriteAllBytes(mask, mt.EncodeToPNG()); File.WriteAllText(stamp, want);
+            SafeIO.WriteAllBytes(mask, mt.EncodeToPNG()); SafeIO.WriteAllText(stamp, want); /* LOCKFIX v103 */
             Object.DestroyImmediate(mt); Object.DestroyImmediate(t);
             AssetDatabase.ImportAsset(mask, ImportAssetOptions.ForceSynchronousImport);
             Debug.Log("HDRPBRIDGE mask map written " + mask);

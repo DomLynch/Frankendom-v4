@@ -521,7 +521,7 @@ public static class HdrpFurnace
         Directory.CreateDirectory(Path.GetDirectoryName(path));
         var tex = new Texture2D(w, h, TextureFormat.RGBA32, false, false);
         tex.SetPixels32(px); tex.Apply(false);
-        File.WriteAllBytes(path, tex.EncodeToPNG());
+        SafeIO.WriteAllBytes(path, tex.EncodeToPNG()); /* LOCKFIX v103 */
         UnityEngine.Object.DestroyImmediate(tex);
     }
 

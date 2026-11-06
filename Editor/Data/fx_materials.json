@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "about": "Runtime particle materials + white-card guard (Scripts/Combat/FxMaterials.cs). CombatVFX/BloodBurst materials are rebuilt on particleShader (tex * vertex colour * tint; additive = One/One, alpha = premultiplied One/OneMinusSrcAlpha) because HDRP/Unlit ignores Shuriken vertex colour and alpha. The guard logs renderers whose material is null or whose shader does not start with an okPrefixes entry, and swaps a null/non-HDRP ParticleSystemRenderer material for an invisible one (keepShaders are exempt from the swap, e.g. the ClashFx Sprites/Default particles).",
+  "enabled": 1,
+  "guard": 1,
+  "convertCombatVfx": 1,
+  "replaceBadParticleMaterials": 1,
+  "fillNullSlots": 1,
+  "particleShader": "Furnace/Particle",
+  "okPrefixes": ["HDRP/", "Shader Graphs/", "Furnace/", "Hidden/"],
+  "keepShaders": ["Sprites/Default"],
+  "scanSeconds": 4.0,
+  "recheckSeconds": 20.0,
+  "logMax": 40,
+  "softDotSize": 32,
+  "roles": [
+    { "role": "spark",        "additive": 1, "intensity": 2.0, "softDistance": 0.0, "tint": [1.0, 1.0, 1.0, 1.0] },
+    { "role": "dust",         "additive": 0, "intensity": 1.0, "softDistance": 0.0, "tint": [1.0, 1.0, 1.0, 1.0] },
+    { "role": "blood",        "additive": 0, "intensity": 1.0, "softDistance": 0.15, "tint": [1.0, 1.0, 1.0, 1.0] },
+    { "role": "bloodStrands", "additive": 0, "intensity": 1.0, "softDistance": 0.15, "tint": [1.0, 1.0, 1.0, 1.0] }
+  ]
+}

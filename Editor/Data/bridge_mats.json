@@ -1,0 +1,54 @@
+﻿{
+    "textureMaxSize":  4096,
+    "aniso":  16,
+    "rows":  [
+                 {
+                     "material":  "Assets/Env/M_PlatformCourses.mat",
+                     "folder":  "Assets/Env/Materials/bridge_stone_v5",
+                     "prefix":  "bridge_stone_v5",
+                     "tiling":  [
+                                    0.5,
+                                    0.5
+                                ],
+                     "offset":  [
+                                    0,
+                                    0
+                                ],
+                     "normalScale":  1.0,
+                     "roughnessScale":  1.0,
+                     "smoothnessRemapMin":  0.0,
+                     "smoothnessRemapMax":  0.25,
+                     "aoStrength":  1.0,
+                     "baseColor":  [
+                                       0.7,
+                                       0.7,
+                                       0.7
+                                   ],
+                     "metallic":  0.0
+                 },
+                 {
+                     "material":  "Assets/Env/M_HillRoad.mat",
+                     "folder":  "Assets/Env/Materials/bridge_stone_v5",
+                     "prefix":  "bridge_stone_v5",
+                     "tiling":  [
+                                    1,
+                                    1
+                                ],
+                     "offset":  [
+                                    0,
+                                    0
+                                ],
+                     "normalScale":  1.0,
+                     "roughnessScale":  1.0,
+                     "smoothnessRemapMin":  0.0,
+                     "smoothnessRemapMax":  0.25,
+                     "aoStrength":  1.0,
+                     "baseColor":  [
+                                       0.7,
+                                       0.7,
+                                       0.7
+                                   ],
+                     "metallic":  0.0
+                 }
+             ]
+}

@@ -1,0 +1,24 @@
+﻿{
+    "enabled": true,
+    "charBit": 7,
+    "characters": [
+        "@lit",
+        "MetaHumanHead"
+    ],
+    "doorLightContains": [
+        "Door",
+        "Gateway_",
+        "Furnace_RectInterior",
+        "Furnace_SpotShaft",
+        "Furnace_ThresholdFill"
+    ],
+    "keepLights": [
+        "Furnace_GateRim",
+        "Rim_Behind",
+        "PitbornRedRim",
+        "Rim_Character"
+    ],
+    "restore": [
+        "@restore"
+    ]
+}

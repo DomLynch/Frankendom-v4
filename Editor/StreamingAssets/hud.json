@@ -1,0 +1,154 @@
+{
+  "_about": "Player HUD + game loop look (lanes V66HUD, laneHUD2 v83), read by GameHUD.cs / CombatHudBars.cs / HudDraw.cs / GameLoop.cs / HudCfg.cs (StreamingAssets first, then Assets/Data). All sizes are px at referenceHeight (1080) and scale with Screen.height (clamped minScale..maxScale). Colours are [r,g,b(,a)] 0..1. Missing file or enabled=false keeps the built-in defaults. No art assets and no TextMeshPro / uGUI package in the project: bars, frames, glyphs and arcs are generated in code (HudDraw), fonts are OS serif faces through Font.CreateDynamicFontFromOSFont. Character names are never here: they come from Roster (roster.json). Stamina / posture cue texts (GUARD BROKEN, PARRY, POSTURE BROKEN, DEATHBLOW) stay in stamina.json / posture.json hud.",
+  "enabled": true,
+  "referenceHeight": 1080,
+  "minScale": 0.6,
+  "maxScale": 3.0,
+  "fonts": {
+    "_about": "First installed face of each list wins (Windows: Palatino Linotype, Book Antiqua, Georgia, Times New Roman ship with the OS). title = names, titles, prompts (drawn as small caps / tracked capitals); serif = body text; ui = debug lines. None found = Unity's default font. osSize = glyph raster size of the dynamic font.",
+    "serif": [ "Palatino Linotype", "Book Antiqua", "Georgia", "Times New Roman" ],
+    "title": [ "Palatino Linotype", "Book Antiqua", "Georgia", "Times New Roman" ],
+    "ui": [ "Palatino Linotype", "Georgia", "Times New Roman" ],
+    "osSize": 40
+  },
+  "colors": {
+    "ink": [0.93, 0.90, 0.84, 1.0],
+    "dim": [0.62, 0.60, 0.56, 0.9],
+    "charcoal": [0.035, 0.035, 0.04, 0.78],
+    "crimson": [0.62, 0.07, 0.09, 1.0],
+    "gold": [0.86, 0.69, 0.30, 1.0],
+    "hpPlayer": [0.66, 0.06, 0.09, 1.0],
+    "hpEnemy": [0.72, 0.36, 0.09, 1.0],
+    "hpLag": [0.96, 0.88, 0.66, 0.80],
+    "hpBack": [0.0, 0.0, 0.0, 0.72],
+    "frame": [0.62, 0.49, 0.26, 0.95],
+    "frameDim": [0.34, 0.29, 0.22, 0.85],
+    "shadow": [0.0, 0.0, 0.0, 0.85],
+    "stamina": [0.36, 0.55, 0.32, 1.0],
+    "staminaLow": [0.80, 0.56, 0.16, 1.0],
+    "staminaExhausted": [0.62, 0.10, 0.08, 1.0],
+    "posture": [0.82, 0.74, 0.34, 1.0],
+    "postureHigh": [0.95, 0.50, 0.12, 1.0],
+    "postureBreak": [0.95, 0.18, 0.12, 1.0],
+    "deathblow": [1.0, 0.92, 0.85, 1.0],
+    "parry": [0.98, 0.82, 0.32, 1.0],
+    "guard": [0.66, 0.74, 0.88, 1.0],
+    "ready": [0.90, 0.74, 0.34, 1.0],
+    "cooling": [0.42, 0.40, 0.40, 1.0]
+  },
+  "bars": {
+    "_about": "Thin tapered bars (a long hexagon: pointed ends), drawn from signed-distance textures at texScale texels per px. frame = outline gap + line + end diamonds + fading lead-in lines (framePad, frameLine, capSize, capLead). ticks = fractions marked on the HP bars. lag = the pale damage trail (HUDFIX v92: holds lagHold s after the last hit, then eases shut: lagEase x the gap per s, never slower than lagMinRate bar fractions per s, forced shut lagMaxS s after the hold). highFrom = posture fraction where the bar starts turning to postureHigh.",
+    "texScale": 2.0, "framePad": 3.5, "frameLine": 1.3, "capSize": 7.0, "capLead": 30.0, "backPad": 1.2, "gloss": 0.10,
+    "ticks": [0.25, 0.5, 0.75], "tickAlpha": 0.38, "tickHeight": 0.62,
+    "lagHold": 0.55, "lagEase": 5.0, "lagMinRate": 0.25, "lagMaxS": 0.9,
+    "lowFraction": 0.30, "exhaustedPulseHz": 3.0, "highFrom": 0.6, "pulseHz": 4.0, "flashAlpha": 0.85
+  },
+  "player": {
+    "_about": "Top-left block: name (serif small caps: first letter nameSize, rest nameSmall, nameTracking px between glyphs), HP bar, stamina and posture bars under it (gap = space above each). The cue text (PARRY, GUARD BROKEN ...) is right-aligned on the name row.",
+    "x": 48, "y": 34, "nameSize": 22, "nameSmall": 16, "nameTracking": 3.0, "nameGap": 9, "cueSize": 15, "cueDy": 3,
+    "showStamina": true, "showPosture": true,
+    "hp": { "w": 440, "h": 12, "taper": 18, "gap": 8 },
+    "stamina": { "w": 330, "h": 6, "taper": 9, "gap": 9 },
+    "posture": { "w": 250, "h": 4, "taper": 7, "gap": 8 }
+  },
+  "boss": {
+    "_about": "Top-centre enemy bar: name (serif small caps), the ladder title under it (opponents.json row title, only while the ladder is on), a wide tapered HP bar, the posture bar centred under it and the DEATHBLOW / POSTURE BROKEN cue under that. w is clamped so it never runs into the player block (sideMargin px gap).",
+    "enabled": true, "w": 720, "top": 30, "sideMargin": 30,
+    "nameSize": 24, "nameSmall": 18, "nameTracking": 3.2, "nameGap": 12, "titleSize": 17, "titleGap": 4, "titleColor": [0.80, 0.76, 0.68, 1.0], "showTitle": true, "cueSize": 17, "cueGap": 8,
+    "showPosture": true, "showStamina": false,
+    "hp": { "h": 14, "taper": 20, "w": 400, "gap": 8 },
+    "stamina": { "w": 420, "h": 5, "taper": 8, "gap": 9 },
+    "posture": { "w": 420, "h": 4, "taper": 7, "gap": 9 }
+  },
+  "stance": {
+    "_about": "Bottom-left stance indicator: caption, a diamond + the stance name in its stances.json colour (small caps), a dim key hint. The switch toast (stance name, lower centre) is drawn here too. enabled = false gives the old StanceLayer label back.",
+    "enabled": true, "x": 48, "bottom": 58, "caption": "STANCE", "captionSize": 16, "nameSize": 24, "nameSmall": 18, "tracking": 2.4, "diamond": 10, "hint": "3 / 4", "hintSize": 16,
+    "toastSize": 24, "toastSmall": 18, "toastY": 0.70
+  },
+  "specials": {
+    "_about": "Bottom-right: the two special-move icons (special 1, special 2 of the player's DuelFighter). Round dark icon, thin ring (gold when ready), glyph (slash, crescent, cross, anything else = diamond), a clockwise pie + seconds while cooling down, a flash ring when ready again. cooldownTicks = the full cooldown the pie is measured against (the larger of this and the biggest value seen is used); ticksPerSecond = sim rate (60 Hz).",
+    "enabled": true, "right": 52, "bottom": 72, "size": 62, "gap": 54, "ringPx": 2.2, "glyphScale": 0.62, "ticksPerSecond": 60, "cooldownTicks": 540, "readyFlashS": 0.55,
+    "keySize": 16, "cdSize": 19, "keyDy": 6, "pieSteps": 48,
+    "items": [ { "key": "1", "glyph": "slash", "label": "Skull Crack" }, { "key": "2", "glyph": "crescent", "label": "Whirlwind" } ]
+  },
+  "guardDir": {
+    "_about": "Guard-direction indicator around the PLAYER (STEERUI v93: anchored to the projected body; sideDistFrac / topDistFrac = arc apex distance from the body centre, arcRadiusFrac = arc curvature, centreFrac = body centre height, all fractions of the on-screen player height; anchorPlayer false = screen centre; ringFrac 0 = no faint ring; radius only for the pre-v93 layout), shown only while the guard is up (and the scene requires a guard side, controls.json guard.guardRequiresSide). One thin tapered arc per guard side of controls.json guard.sides (placed by the side's deg: top 0, left -90, right 90); the held side is lit (gold during the parry window, with a pulse), the others dim; the centre diamond is lit when no side is held. radius = distance of the arcs from the centre, arcDeg = their length, thickness = band width as a fraction of the texture half-size. Replaces the old guard bar of controls.json marker while enabled (the attack marker is unchanged).",
+    "enabled": true, "radius": 64, "arcDeg": 74, "thickness": 0.16, "fadeInS": 0.07, "fadeOutS": 0.2, "idleAlpha": 0.26, "ringAlpha": 0.18, "dotSize": 8, "parryPulseHz": 8, "parryGrow": 0.12,
+    "anchorPlayer": true, "centreFrac": 0.55, "sideDistFrac": 0.38, "topDistFrac": 0.57, "arcRadiusFrac": 0.40, "ringFrac": 0, "fallbackHeightFrac": 0.30, "defaultHeightM": 1.7, "minHeightM": 1.2, "maxHeightM": 2.6, "heightRefreshS": 1.0
+  },
+  "debug": {
+    "_about": "Developer overlays are off in the player. camLine needs this flag true or the -camdebug argument; F3 / -fps show the FPS label.",
+    "camLine": false, "fpsLabelSize": 13
+  },
+  "hint": {
+    "_about": "Controls panel: hidden until F1 (toggleKey) is pressed; F1 again hides it. showSeconds > 0 would also show it that long after the fight starts (delayS after the start); 0 = F1 only. cornerText = a small dim 'F1  Controls' under the stance line for the first cornerSeconds of a fight. Rows are the real keys (PlayerBrain.cs, dodge.json, flow.json, controls.json).",
+    "enabled": true, "toggleKey": "F1", "delayS": 0.9, "showSeconds": 0.0, "fadeSeconds": 0.25,
+    "columns": 2, "colWidth": 330, "rowHeight": 22, "fontSize": 14, "keyWidth": 130, "margin": 48, "bottom": 96, "pad": 14, "panelAlpha": 0.72,
+    "title": "CONTROLS", "titleSize": 17, "footer": "F1 hide", "footerSize": 12, "cornerText": "F1  Controls", "cornerSize": 11, "cornerSeconds": 12.0, "cornerAlpha": 0.5,
+    "rows": [
+      { "k": "WASD", "a": "Move" },
+      { "k": "Shift", "a": "Run" },
+      { "k": "Tab", "a": "Lock target (auto at 4 m)" },
+      { "k": "LMB / F / pad RB", "a": "Strike: tap light, hold heavy" },
+      { "k": "LMB + slide", "a": "Cut left / right / up" },
+      { "k": "T", "a": "Thrust" },
+      { "k": "G", "a": "Heavy" },
+      { "k": "C", "a": "Kick" },
+      { "k": "E / Space", "a": "Dodge (+ direction)" },
+      { "k": "A / D twice", "a": "Side-step" },
+      { "k": "RMB / Q / pad LB", "a": "Guard (tap early: parry)" },
+      { "k": "Slide / arrows", "a": "Guard side: left, right, top" },
+      { "k": "B", "a": "Riposte after a parry" },
+      { "k": "1 / 2 (Z / X)", "a": "Specials (pad Y / X)" },
+      { "k": "3 / 4, wheel", "a": "Stance" },
+      { "k": "Backspace", "a": "Restart fight" },
+      { "k": "F3", "a": "FPS" }
+    ]
+  },
+  "vignette": {
+    "_about": "Damage taken: a red edge pulse. alpha = minAlpha + damageFraction (of max HP) * gain, clamped to maxAlpha, then fades over seconds (unscaled). (Not read by any code at the moment: WoundSystem has the low-HP vignette.)",
+    "enabled": true, "color": [0.55, 0.02, 0.04], "minAlpha": 0.16, "maxAlpha": 0.62, "gain": 3.2, "seconds": 0.5, "edgeFrac": 0.30, "power": 2.0
+  },
+  "lowHp": {
+    "_about": "Subtle heartbeat pulse of the same edge below threshold (fraction of max HP). (Not read by any code at the moment.)",
+    "enabled": true, "threshold": 0.30, "maxAlpha": 0.17, "baseHz": 1.1, "maxHz": 1.8, "color": [0.45, 0.02, 0.04]
+  },
+  "hitTick": {
+    "_about": "Hit confirm: four short ticks around the foe's chest on a landed blow. (Not read by any code at the moment.)",
+    "enabled": true, "seconds": 0.17, "gap": 9, "length": 10, "thickness": 2, "heavyScale": 1.45, "blockedAlpha": 0.45, "chestHeight": 1.25,
+    "color": [0.96, 0.93, 0.85, 1.0], "heavyColor": [0.95, 0.76, 0.30, 1.0]
+  },
+  "screens": {
+    "_about": "VICTORY / YOU DIED (GameLoop.DrawEnd): after delayS the screen fades in over fadeInS: a dark wash (dimAlpha), a vignette tinted victoryTint / defeatTint, a soft band (bandHeight, bandAlpha, bandLift) behind a large tracked serif title (titleSize, titleTracking px between letters, settling in from titleTrackingExtra px wider), an ornament rule (ruleW), an italic subtitle, the stats line (showStats) and small text prompts (promptSize; buttonW + buttonGap = prompt slot width; click or key). The HUD fades by hudFade while it shows. HUDFIX v92 legibility: secondary = colour of the caption / stats / key hints / next preview (was colors.dim), outlinePx + outlineAlpha = dark outline round every end-screen glyph, bigger subtitle / stats / hint sizes, darker dim + band. Strings: {0} in subtitle = the roster enemy's name.",
+    "delayS": 0.9, "fadeInS": 0.9, "dimAlpha": 0.62, "bandHeight": 500, "bandLift": 20, "bandAlpha": 0.92,
+    "titleSize": 96, "titleTracking": 12, "titleTrackingExtra": 22, "titleLift": 10, "ruleW": 420, "subtitleSize": 30, "subtitleItalic": true, "statsSize": 22, "showStats": true,
+    "promptSize": 24, "promptHintSize": 17, "promptY": 34, "promptGap": 70, "hudFade": 1.0,
+    "buttonW": 280, "buttonH": 50, "buttonGap": 40, "buttonSize": 20, "keyHintSize": 12, "nextLabelSize": 19,
+    "statSep": "     ",
+    "nextOnDefeat": false,
+    "secondary": [0.84, 0.81, 0.75, 1.0], "outlinePx": 2.0, "outlineAlpha": 0.9, "plateW": 820, "plateFeather": 140, "plateAlpha": 0.6,
+    "victoryTint": [0.0, 0.0, 0.0, 1.0], "defeatTint": [0.16, 0.0, 0.015, 1.0],
+    "victory": { "title": "VICTORY", "subtitle": "The {0} falls. The gate stands open.", "color": [0.88, 0.71, 0.31, 1.0] },
+    "defeat":  { "title": "YOU DIED", "subtitle": "The dark takes you. Rise again.", "color": [0.74, 0.08, 0.10, 1.0] },
+    "labels": { "time": "Time", "landed": "Hits landed", "taken": "Hits taken", "parries": "Parries", "finisher": "Finisher" },
+    "retryText": "Retry", "nextText": "Next opponent", "nextPreview": "Next: {0}", "fightText": "FIGHT {0}  -  {1}",
+    "retryHint": "Backspace / B", "confirmHint": "Enter / A", "retryHintDefeat": "Enter / Backspace / A"
+  },
+  "fade": { "enabled": true, "inS": 0.7, "outS": 0.45, "color": [0.0, 0.0, 0.0] },
+  "input": {
+    "_about": "confirm = Next opponent after a victory, Retry after a defeat (only while the end screen shows). retry = Retry; midFightRetry = restart during a fight (Backspace as before; Enter no longer restarts mid-fight). Names are UnityEngine.KeyCode.",
+    "confirmKeys": [ "Return", "KeypadEnter", "JoystickButton0" ],
+    "retryKeys": [ "Backspace", "JoystickButton1" ],
+    "midFightRetryKeys": [ "Backspace" ]
+  },
+  "layout": {
+    "_about": "HCKIT6 v100 (HC3 K13): layout factors GameHUD.cs / HudDraw.cs held as literals (line heights = x font size, px gaps, alphas); every value equals the old literal. nameLine = name row height x nameSize (player + boss); title* = boss ladder title; cue* = cue text under the boss bar; caption* / diamond* / hint* / toast* = stance block; corner* = key hint corner text; keys* = the controls panel; iconBack / pieShade / icon* / cd* / flash* / keyLabel* = special icons; guard* = guard-direction centre dot and ring; spaceW (width of a space = x width of 'a'), lineH, shadowDiv, runPad, capsCache = HudDraw small caps.",
+    "nameLine": 1.35, "bossMinW": 300, "titleBox": 1.5, "titleAdvance": 1.4, "cueLift": 2, "cueSmallDelta": 3, "cueTracking": 3,
+    "captionLift": 1.5, "captionW": 200, "captionH": 1.6, "diamondLine": 1.1, "diamondDx": 1, "diamondGap": 8, "hintGap": 16, "hintW": 160, "hintH": 1.6, "hintAlpha": 0.8, "hintDy": 0.2, "toastTracking": 1.5,
+    "cornerFadeS": 1.5, "cornerDy": 1.5, "cornerW": 260, "cornerH": 1.6,
+    "keysPanel": [0.02, 0.02, 0.025], "keysLinePx": 1, "keysTitleTracking": 3, "keysTitleDy": 0.6, "keysTitleLine": 1.7, "keysTitleSmall": 3, "keysRowInk": 0.9, "keysFooterLine": 1.8, "keysFooterBox": 1.6, "keysFooterLift": 2, "keysFooterAdvance": 1.7,
+    "iconBack": [0.025, 0.025, 0.03, 0.86], "pieShade": [0.0, 0.0, 0.0, 0.62], "iconInk": 0.95, "iconCoolAlpha": 0.75, "cdInk": 0.95, "flashBase": 1.1, "flashGrow": 0.35, "keyLabelPad": 20, "keyLabelBox": 1.6, "keyLabelInk": 0.85,
+    "guardDotCentre": 1.25, "guardRingPx": 0.5,
+    "spaceW": 0.55, "lineH": 1.45, "shadowDiv": 14, "runPad": 6, "capsCache": 400
+  }
+}

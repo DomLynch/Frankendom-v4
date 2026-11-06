@@ -1,0 +1,1 @@
+﻿{ "type": "OceanSeaLake", "level": -0.9, "windSpeed": 6.0, "choppiness": 0.35, "repetition": 220.0, "timeMul": 0.6, "foam": 0.4, "smoothness": 0.92, "absorption": 6.0, "scatter": [0.02, 0.03, 0.04] }

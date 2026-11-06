@@ -1,0 +1,85 @@
+﻿{
+    "enabled":  true,
+    "platformTop":  0.0,
+    "oldPlatformTop":  2.0,
+    "legacyLoweredTop":  0.3,
+    "spawnY":  0.02,
+    "platformVisualExtraDrop":  0.03,
+    "layoutSource":  "Assets/Data/props_layout_ground.json",
+    "deleteRoots":  [
+                        "Causeway",
+                        "GatePlatform",
+                        "PlatformRail",
+                        "PlatformColumn",
+                        "PlatformMid",
+                        "PlatformPlinth",
+                        "PlatformCoping",
+                        "PlatformBody",
+                        "SetDressing",
+                        "HadesTrench",
+                        "WorldTrench",
+                        "WaterSheen"
+                    ],
+    "deleteNames":  [
+                        "GateStairs",
+                        "stair_run_4w_7steps",
+                        "steps",
+                        "stepPier",
+                        "TreadRay",
+                        "RampCollider",
+                        "LandingCollider",
+                        "coping",
+                        "wallpanel",
+                        "ApproachState",
+                        "TrenchDarkFog",
+                        "hero_weapon_sword",
+                        "GroundLipCollider",
+                        "worldground_ground_paving_0",
+                        "ground_paving_0",
+                        "ground_paving",
+                        "worldground_ground_paving"
+                    ],
+    "deletePrefixes":  [
+                           "FlatApproach",
+                           "DeckEdgeBlocker",
+                           "TrenchLava",
+                           "TrenchBlocker",
+                           "worldtrench_",
+                           "worldbridge_"
+                       ],
+    "moveNames":  [
+                      "HeroGate",
+                      "DoorChamberShell",
+                      "GatewayRoot",
+                      "GatePlatform",
+                      "PlatformRail"
+                  ],
+    "movePrefixes":  [
+                         "Door",
+                         "Furnace",
+                         "Gateway",
+                         "Embers"
+                     ],
+    "disableNames":  [
+                         "Embers_Rising",
+                         "Embers_Spill",
+                         "Embers_Deep",
+                         "DoorSparks",
+                         "Embers"
+                     ],
+    "addColliders":  [
+                         {
+                             "name":  "GroundCollider",
+                             "center":  [
+                                            0,
+                                            -0.5,
+                                            25
+                                        ],
+                             "size":  [
+                                          80,
+                                          1,
+                                          70
+                                      ]
+                         }
+                     ]
+}

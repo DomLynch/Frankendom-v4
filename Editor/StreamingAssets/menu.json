@@ -1,0 +1,497 @@
+{
+ "_about": "Pause + settings menu (lane laneMENU, v100). Read by MenuCfg.cs. Esc / pad Start opens PAUSE (time stopped). enabled=false removes the menu. harnessArgs = command-line flags of the proof / capture runs: the menu stays off and the saved settings.json is ignored there. Colours come from hud.json colors{}. Tabs: type 'list' rows are gs (a GameSettings.MenuRows id, laneTIERS), resolution, fullscreen, vsync, framecap, mix (one slider per audio_mix.json category with menu=true), slider (key camSens|deadZone or an audio_mix.json category id), toggle (key hints), reset (key audio|gameplay|display); type 'controls' = the read-only key map built from controls.rows + controls.json. Saved to Application.persistentDataPath/settings.json (defaults below fill whatever is missing). The graphics tier and the free camera option are saved by GameSettings (PlayerPrefs), not here.",
+ "enabled": true,
+ "allowOnEndScreen": true,
+ "maxFadeToOpen": 0.5,
+ "unfreezeMaxS": 0.5,
+ "saveDelayS": 0.6,
+ "openWaitS": 0.8,
+ "harnessArgs": [
+  "-balanceauto",
+  "-autoplay",
+  "-finisherauto",
+  "-finisherrotonly",
+  "-postureproof",
+  "-camproof",
+  "-flowproof",
+  "-verifyGround",
+  "-looptest",
+  "-latencyprobe",
+  "-perfbench",
+  "-steerauto",
+  "-steerpreview",
+  "-gaps",
+  "-props",
+  "-record",
+  "-sheet:",
+  "-headsheet",
+  "-cmp",
+  "-stand",
+  "-isolate",
+  "-facecam"
+ ],
+ "input": {
+  "_about": "KeyCode names. openKeys opens; backKeys = one level back (on the pause list = resume); closeKeys = resume from any screen (pad Start). Navigation: arrows / WASD / left stick (Input Manager axes axisX / axisY, empty = off), A = confirm, B = back, Q / E or LB / RB = tabs. Mouse: hover, click, wheel.",
+  "openKeys": [
+   "Escape",
+   "JoystickButton7"
+  ],
+  "closeKeys": [
+   "JoystickButton7"
+  ],
+  "backKeys": [
+   "Escape",
+   "JoystickButton1"
+  ],
+  "confirmKeys": [
+   "Return",
+   "KeypadEnter",
+   "JoystickButton0"
+  ],
+  "upKeys": [
+   "UpArrow",
+   "W"
+  ],
+  "downKeys": [
+   "DownArrow",
+   "S"
+  ],
+  "leftKeys": [
+   "LeftArrow",
+   "A"
+  ],
+  "rightKeys": [
+   "RightArrow",
+   "D"
+  ],
+  "tabPrevKeys": [
+   "Q",
+   "JoystickButton4"
+  ],
+  "tabNextKeys": [
+   "E",
+   "JoystickButton5"
+  ],
+  "axisX": "Horizontal",
+  "axisY": "Vertical",
+  "axisThreshold": 0.6,
+  "repeatDelayS": 0.4,
+  "repeatS": 0.11,
+  "mouseMovePx": 3.0,
+  "mouse": true
+ },
+ "items": [
+  {
+   "id": "resume",
+   "label": "Resume"
+  },
+  {
+   "id": "settings",
+   "label": "Settings"
+  },
+  {
+   "id": "controls",
+   "label": "Controls"
+  },
+  {
+   "id": "restart",
+   "label": "Restart fight",
+   "confirm": "Restart this fight?"
+  },
+  {
+   "id": "newgame",
+   "label": "New game",
+   "confirm": "Erase your progress and start again?"
+  },
+  {
+   "id": "quit",
+   "label": "Quit to desktop",
+   "confirm": "Quit to desktop?"
+  }
+ ],
+ "tabs": [
+  {
+   "id": "graphics",
+   "label": "Graphics",
+   "type": "list",
+   "rows": [
+    {
+     "type": "gs",
+     "id": "graphics.tier",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    },
+    {
+     "type": "resolution",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    },
+    {
+     "type": "fullscreen",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    },
+    {
+     "type": "vsync",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    },
+    {
+     "type": "framecap",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    },
+    {
+     "type": "gs",
+     "id": "camera.freeInCombat",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    },
+    {
+     "type": "reset",
+     "key": "display",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    }
+   ]
+  },
+  {
+   "id": "audio",
+   "label": "Audio",
+   "type": "list",
+   "rows": [
+    {
+     "type": "mix",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    },
+    {
+     "type": "reset",
+     "key": "audio",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    }
+   ]
+  },
+  {
+   "id": "gameplay",
+   "label": "Gameplay",
+   "type": "list",
+   "rows": [
+    {
+     "type": "slider",
+     "key": "camSens",
+     "label": "Camera sensitivity",
+     "hint": "How fast the mouse turns the free camera.",
+     "min": 0.25,
+     "max": 2.5,
+     "step": 0.05,
+     "scale": 1.0,
+     "fmt": "0.00",
+     "suffix": "x"
+    },
+    {
+     "type": "slider",
+     "key": "deadZone",
+     "label": "Swipe dead zone",
+     "hint": "How far the mouse must slide before it counts as a direction. Lower is more sensitive.",
+     "min": 4.0,
+     "max": 60.0,
+     "step": 2.0,
+     "scale": 1.0,
+     "fmt": "0",
+     "suffix": " px"
+    },
+    {
+     "type": "toggle",
+     "key": "hints",
+     "label": "HUD hints",
+     "hint": "The F1 controls panel and the small prompt at the start of a fight.",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    },
+    {
+     "type": "reset",
+     "key": "gameplay",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    }
+   ]
+  },
+  {
+   "id": "controls",
+   "label": "Controls",
+   "type": "controls",
+   "rows": []
+  }
+ ],
+ "vsyncModes": [
+  {
+   "value": 0,
+   "label": "Off"
+  },
+  {
+   "value": 1,
+   "label": "On"
+  },
+  {
+   "value": 2,
+   "label": "Half rate"
+  }
+ ],
+ "fullscreenModes": [
+  {
+   "id": "FullScreenWindow",
+   "label": "Borderless window"
+  },
+  {
+   "id": "ExclusiveFullScreen",
+   "label": "Exclusive fullscreen"
+  },
+  {
+   "id": "Windowed",
+   "label": "Windowed"
+  }
+ ],
+ "frameCaps": [
+  0,
+  30,
+  60,
+  90,
+  120,
+  144,
+  165,
+  240
+ ],
+ "defaults": {
+  "camSens": 1.0,
+  "vsync": 1,
+  "frameCap": 0,
+  "hints": true
+ },
+ "strings": {
+  "pausedTitle": "PAUSED",
+  "settingsTitle": "SETTINGS",
+  "on": "On",
+  "off": "Off",
+  "unlimited": "Unlimited",
+  "arrowL": "<",
+  "arrowR": ">",
+  "yes": "Yes",
+  "no": "No",
+  "footerPause": "Up / Down  Select      Enter / A  Confirm      Esc / Start  Resume",
+  "footerSettings": "Up / Down  Select      Left / Right  Change      Q / E  Tab      Esc / B  Back",
+  "footerControls": "Up / Down  Scroll      Q / E  Tab      Esc / B  Back",
+  "footerConfirm": "Left / Right  Choose      Enter / A  Confirm      Esc / B  Cancel",
+  "tabPrevHint": "Q / LB",
+  "tabNextHint": "E / RB",
+  "resetLabel": "Restore defaults",
+  "resolutionLabel": "Resolution",
+  "fullscreenLabel": "Window mode",
+  "vsyncLabel": "Vertical sync",
+  "frameCapLabel": "Frame cap",
+  "resolutionHint": "The size of the game window. Applied at once.",
+  "fullscreenHint": "Exclusive fullscreen is the fastest; a borderless window switches to other programs more easily.",
+  "vsyncHint": "Locks the frame rate to the refresh rate of the screen. Turn it off to use the frame cap.",
+  "frameCapHint": "Only used while vertical sync is off.",
+  "crashedNotice": "The last session ended unexpectedly. A log was saved."
+ },
+ "controls": {
+  "_about": "Read-only key map. rows mirror hud.json hint.rows (the real keys in PlayerBrain / dodge.json / flow.json); padFrom = comma list of controls.json pad key lists (pad.attackKeys, pad.guardKeys, pad.special1Keys, pad.special2Keys) shown with padNames (JoystickButton n -> name). fromControlsJson appends one row per attack.map direction, the control scheme and the live swipe dead zone.",
+  "fromControlsJson": true,
+  "padNames": [
+   "A",
+   "B",
+   "X",
+   "Y",
+   "LB",
+   "RB",
+   "Back",
+   "Start",
+   "L3",
+   "R3"
+  ],
+  "slideAction": "Slide {0} + attack",
+  "slideKeys": "Light: {0}   Heavy: {1}",
+  "slidePad": "Right stick + RB",
+  "schemeAction": "Control scheme",
+  "deadZoneAction": "Swipe dead zone",
+  "padDeadZoneFmt": "stick {0}%",
+  "colAction": "Action",
+  "colKeys": "Keyboard / mouse",
+  "colPad": "Gamepad",
+  "rows": [
+   {
+    "action": "Move",
+    "keys": "W A S D",
+    "pad": "Left stick"
+   },
+   {
+    "action": "Run",
+    "keys": "Shift"
+   },
+   {
+    "action": "Lock target",
+    "keys": "Tab (auto at 4 m)",
+    "pad": "R3"
+   },
+   {
+    "action": "Strike: tap light, hold heavy",
+    "keys": "LMB / F",
+    "padFrom": "pad.attackKeys"
+   },
+   {
+    "action": "Thrust",
+    "keys": "T"
+   },
+   {
+    "action": "Heavy",
+    "keys": "G"
+   },
+   {
+    "action": "Kick",
+    "keys": "C"
+   },
+   {
+    "action": "Dodge (+ direction)",
+    "keys": "E / Space",
+    "pad": "A"
+   },
+   {
+    "action": "Side-step",
+    "keys": "A / D twice"
+   },
+   {
+    "action": "Guard (tap early: parry)",
+    "keys": "RMB / Q",
+    "padFrom": "pad.guardKeys"
+   },
+   {
+    "action": "Guard side: left, right, top",
+    "keys": "Slide / arrows",
+    "pad": "Right stick"
+   },
+   {
+    "action": "Riposte after a parry",
+    "keys": "B",
+    "pad": "B"
+   },
+   {
+    "action": "Specials",
+    "keys": "1 / 2  (Z / X)",
+    "padFrom": "pad.special1Keys,pad.special2Keys"
+   },
+   {
+    "action": "Stance",
+    "keys": "3 / 4, mouse wheel"
+   },
+   {
+    "action": "Controls panel",
+    "keys": "F1"
+   },
+   {
+    "action": "Restart fight",
+    "keys": "Backspace"
+   },
+   {
+    "action": "Frame rate counter",
+    "keys": "F3"
+   },
+   {
+    "action": "Pause menu",
+    "keys": "Esc",
+    "pad": "Start"
+   }
+  ]
+ },
+ "layout": {
+  "_about": "Pixels at hud.json referenceHeight (1080), scaled by HudCfg.Scale(). Sizes are font sizes.",
+  "dimAlpha": 0.74,
+  "vignetteAlpha": 0.55,
+  "fadeInS": 0.12,
+  "titleSize": 64,
+  "titleSmall": 46,
+  "itemSize": 30,
+  "itemSmall": 22,
+  "tabSize": 22,
+  "tabSmall": 17,
+  "labelSize": 22,
+  "valueSize": 22,
+  "hintSize": 17,
+  "footerSize": 14,
+  "panelTitleSize": 40,
+  "panelTitleSmall": 30,
+  "keySize": 13,
+  "confirmSize": 30,
+  "confirmSmall": 22,
+  "titleTracking": 14.0,
+  "itemTracking": 5.0,
+  "tabTracking": 3.5,
+  "panelTitleTracking": 6.0,
+  "titleY": 0.17,
+  "ruleW": 420.0,
+  "itemsY": 0.36,
+  "itemGap": 64.0,
+  "itemW": 560.0,
+  "panelW": 1040.0,
+  "panelH": 760.0,
+  "colKeys": 0.34,
+  "colPad": 0.72,
+  "panelPad": 40.0,
+  "panelMargin": 40.0,
+  "tabGap": 46.0,
+  "rowH": 46.0,
+  "controlsRowH": 32.0,
+  "rowPad": 18.0,
+  "valueW": 420.0,
+  "sliderW": 250.0,
+  "sliderH": 8.0,
+  "sliderTaper": 8.0,
+  "sliderValueW": 90.0,
+  "arrowW": 28.0,
+  "scrollW": 5.0,
+  "hintGap": 10.0,
+  "hintLines": 2.0,
+  "footerGap": 16.0,
+  "selectAlpha": 0.22,
+  "diamond": 9.0,
+  "frameLine": 1.4,
+  "framePad": 3.0,
+  "confirmW": 640.0,
+  "confirmH": 240.0,
+  "panelColor": [
+   0.035,
+   0.032,
+   0.04,
+   0.93
+  ],
+  "dimColor": [
+   0.01,
+   0.008,
+   0.012,
+   1.0
+  ]
+ }
+}

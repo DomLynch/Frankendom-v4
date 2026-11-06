@@ -1,0 +1,49 @@
+{
+  "_about": "SWINGFIX v103 (Scripts/SwingFix.cs). Every look switch is false = today's frames; flip one only after Dom's LOOK OK. swingSeparation.padM 0 = today's sim; any padM > 0 is a SIM CHANGE (re-run balance and simhash gates).",
+  "swingSeparation": {
+    "padM": 0.0,
+    "states": [
+      "Windup",
+      "Active",
+      "Recovery"
+    ],
+    "_proposedPadM": 0.35,
+    "_about": "Extra metres on dodge.json minSeparation/separationPad while either fighter is in `states`, and on the lunge stop distance (DuelFighter.StepStopDist). Cause: the clamp is root-to-root (capsule radius 0.4) but a swing leans the shoulder and blade 0.3-0.5 m ahead of the root, so the clamp-legal gap of 1.5 m still leaves arm and blade inside the other torso. _proposedPadM is a first guess, not applied: run apply_swingfix.py --apply --swing-pad 0.35, then camproof pairs, balance and simhash."
+  },
+  "finisherPreStagger": {
+    "on": false,
+    "rows": [
+      {
+        "entry": "split_crown",
+        "killer": "Joan",
+        "victim": "*",
+        "clip": "stagger_loop",
+        "atS": 0.0,
+        "fade": 0.15,
+        "speed": 1.0
+      }
+    ],
+    "_about": "Presentation only. Victim state `clip` (must exist in its controller) starts atS seconds into the scene, before the finisher victim clip, so a short killer's overhead chop lands on a hunched head, not a standing chest. An exact killer or victim id beats '*'."
+  },
+  "gripCombatInLoco": {
+    "on": false,
+    "names": [
+      "Joan"
+    ],
+    "states": [
+      "idle",
+      "walk",
+      "run",
+      "strafe_L",
+      "strafe_R"
+    ],
+    "_about": "While on, weapon_grip.json rows of these characters whose `states` list names any of these states are skipped, so locomotion uses the combat grip row (blade follows the forearm). The sword socket is parented to the hand bone: there is no IK."
+  },
+  "faceCast": {
+    "on": false,
+    "lightNames": [
+      "Furnace_LavaUp"
+    ],
+    "_about": "Lights that lose the character light-layer bit at runtime (bit read from hdrp_char_layer.json charBit). Furnace_LavaUp (hdrp_furnace.json: point, 6000 cd, colour 1.0/0.2/0.04, range 10) is in neither doorLightContains nor keepLights, so HdrpCharLayer gave it the character bit."
+  }
+}

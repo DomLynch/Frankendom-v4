@@ -1,0 +1,101 @@
+﻿{
+    "_notes":  "Import rules for Assets/VFX/Gateway/* (read by GatewayImport.cs). First rule whose \u0027match\u0027 is contained in the asset path wins. compression = TextureImporterCompression name. wrapU/wrapV = Repeat|Clamp (equirect: U repeats around the sphere, V clamps at the poles). Real Hades-env panoramas: 8k equirect PNG/EXR, set sRGB false for .exr (linear HDR).",
+    "rules":  [
+                  {
+                      "match":  "rift_blacksun_8k",
+                      "sRGB":  true,
+                      "mips":  true,
+                      "alphaIsTransparency":  false,
+                      "wrapU":  "Repeat",
+                      "wrapV":  "Clamp",
+                      "maxSize":  8192,
+                      "compression":  "CompressedHQ",
+                      "aniso":  4,
+                      "readable":  false
+                  },
+                  {
+                      "match":  "rift_blacksun",
+                      "sRGB":  true,
+                      "mips":  true,
+                      "alphaIsTransparency":  false,
+                      "wrapU":  "Repeat",
+                      "wrapV":  "Clamp",
+                      "maxSize":  2048,
+                      "compression":  "CompressedHQ",
+                      "aniso":  4,
+                      "readable":  false
+                  },
+                  {
+                      "match":  "rift_a_blacksun",
+                      "sRGB":  true,
+                      "mips":  true,
+                      "alphaIsTransparency":  false,
+                      "wrapU":  "Repeat",
+                      "wrapV":  "Clamp",
+                      "maxSize":  2048,
+                      "compression":  "CompressedHQ",
+                      "aniso":  4,
+                      "readable":  false
+                  },
+                  {
+                      "match":  "placeholder_rift_equirect",
+                      "sRGB":  true,
+                      "mips":  true,
+                      "alphaIsTransparency":  false,
+                      "wrapU":  "Repeat",
+                      "wrapV":  "Clamp",
+                      "maxSize":  4096,
+                      "compression":  "CompressedHQ",
+                      "aniso":  4,
+                      "readable":  false
+                  },
+                  {
+                      "match":  "placeholder_rift_clouds",
+                      "sRGB":  true,
+                      "mips":  true,
+                      "alphaIsTransparency":  true,
+                      "wrapU":  "Repeat",
+                      "wrapV":  "Clamp",
+                      "maxSize":  2048,
+                      "compression":  "CompressedHQ",
+                      "aniso":  2,
+                      "readable":  false
+                  },
+                  {
+                      "match":  ".exr",
+                      "sRGB":  false,
+                      "mips":  true,
+                      "alphaIsTransparency":  false,
+                      "wrapU":  "Repeat",
+                      "wrapV":  "Clamp",
+                      "maxSize":  8192,
+                      "compression":  "Uncompressed",
+                      "aniso":  4,
+                      "readable":  false
+                  },
+                  {
+                      "match":  "equirect",
+                      "sRGB":  true,
+                      "mips":  true,
+                      "alphaIsTransparency":  false,
+                      "wrapU":  "Repeat",
+                      "wrapV":  "Clamp",
+                      "maxSize":  8192,
+                      "compression":  "CompressedHQ",
+                      "aniso":  4,
+                      "readable":  false
+                  },
+                  {
+                      "match":  "cloud",
+                      "sRGB":  true,
+                      "mips":  true,
+                      "alphaIsTransparency":  true,
+                      "wrapU":  "Repeat",
+                      "wrapV":  "Clamp",
+                      "maxSize":  2048,
+                      "compression":  "CompressedHQ",
+                      "aniso":  2,
+                      "readable":  false
+                  }
+              ]
+}

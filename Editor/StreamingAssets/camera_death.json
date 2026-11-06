@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "note": "V61B fight-end camera (CameraDeath.cs, called from CameraRig.LateUpdate). After a plain death or after a finisher releases the camera, the look-at stays on the DEAD fighter's body (SkinnedMeshRenderer bounds). distances in metres, height / lookHeight above the body's lowest point x victim scale. enabled=false = the old free-camera pose.",
+  "delaySeconds": 0.25,
+  "blendSeconds": 0.9,
+  "dist": 5.6,
+  "height": 1.7,
+  "lookHeight": 0.7,
+  "sideDeg": 30,
+  "fov": 38,
+  "margin": 1.7,
+  "maxDist": 12,
+  "followRate": 6
+}

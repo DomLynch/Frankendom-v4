@@ -1,0 +1,8 @@
+{
+  "enabled": true,
+  "hzA": 0.27,
+  "hzB": 0.41,
+  "amplitude": 0.1,
+  "lodBias": 2.0,
+  "materials": [ "M_WorldTerrain" ]
+}

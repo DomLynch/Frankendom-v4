@@ -1,0 +1,97 @@
+{
+  "_about": "lanePERF5 (2026-11-06). DARK A/B switch table for the 22.6 fps problem at Ultra. Every 'enabled' is false: installing this file changes nothing. Not read by the game; read by apply_perf5.py (merges the chosen switches into the live data files) and by the A/B runner via 'cli' (one exe serves every arm). Edit a switch ON only after the look gate (python _agents/visual_qc/look_gate.py vNN --expect none) passes that single arm. Order = ranked by expected gain per look risk.",
+  "baseline": { "fps": 22.6, "frameMs": 44.2, "note": "v100/v101 verify, Ultra, 1080p output, renderScale 67, AMD 8060S iGPU. Low preset harness (50 pct scale, SSGI/SSR/SSAO/fog/contact off) runs 47-53 fps = ~20 ms, so the feature stack + 67 pct scale costs ~24 ms of the 44 ms." },
+  "protected": ["renderScale 67", "look.json exposure 9.4", "Key_ColdSun 7000 lux", "ssgi on", "volumetricFog on", "ssr on", "shadows on", "hdrp_lighting_ultra.json post block"],
+  "switches": [
+    {
+      "id": "P5-LOD", "enabled": false, "rank": 1,
+      "what": "QualitySettings.lodBias 2.0 -> 1.4 (crack_flicker.json lodBias; QualityTiers.ApplyLod). Bias 2 forces LOD0 on world props to 2x the distance, in the colour pass AND in 2 shadow cascades.",
+      "set": [ { "file": "crack_flicker.json", "path": "lodBias", "old": 2.0, "new": 1.4 } ],
+      "cli": "-qset:lodBiasMul=0.7",
+      "gainFps": "1.5-3", "lookRisk": "medium", "gate": "look_gate 34 spots; watch far props pop and terrain silhouette (WorldFar 120-420 m is fogged)"
+    },
+    {
+      "id": "P5-SSGI-HALF", "enabled": false, "rank": 2,
+      "what": "SSGI at half resolution (ssgiFullRes true -> false). SSGI stays on at quality 2. Full-res SSGI is the single biggest post pass on an iGPU.",
+      "set": [ { "file": "runtime_flags.json", "path": "ssgiFullRes", "old": true, "new": false } ],
+      "cli": "-qset:ssgiFullRes=0",
+      "gainFps": "2-4", "lookRisk": "medium", "gate": "p5 lift, contrast, character centre box; half-res can show denoise blur on edges"
+    },
+    {
+      "id": "P5-FOG-Q1", "enabled": false, "rank": 3,
+      "what": "Volumetric fog quality 2 (high) -> 1 (medium). Fog stays volumetric; froxel depth slices and tile budget drop.",
+      "set": [ { "file": "runtime_flags.json", "path": "fogQuality", "old": 2, "new": 1 } ],
+      "cli": "-qset:fogQuality=1",
+      "gainFps": "1-3", "lookRisk": "low-medium", "gate": "doorway haze and pink-cloud check (v89 fix), banding in the fog shafts"
+    },
+    {
+      "id": "P5-SHADOW-DOORS", "enabled": false, "rank": 4,
+      "what": "Door point lights (512/1024 soft shadow) cache static casters: perf_fixes A1 + A1b (shadowUpdateMode OnEnable, alwaysDrawDynamic). Fighters still redrawn each frame. Also a candidate fix for Dom's floor patch (door light soft shadow).",
+      "set": [ { "file": "perf_fixes.json", "path": "A1.enabled", "old": false, "new": true }, { "file": "perf_fixes.json", "path": "A1b.enabled", "old": false, "new": true } ],
+      "cli": "-perffix:C1,C3,D1,A1,A1b",
+      "gainFps": "1-2", "lookRisk": "low-medium", "gate": "moving props must not leave frozen shadows; check log 'A1b staticCasters='; floor patch region"
+    },
+    {
+      "id": "P5-SHADOW-GROUND", "enabled": false, "rank": 5,
+      "what": "Floor / terrain / plug stop casting shadows (perf_fixes A4). A floor never shadows anything visible; removes the largest casters from every cascade pass.",
+      "set": [ { "file": "perf_fixes.json", "path": "A4.enabled", "old": false, "new": true } ],
+      "cli": "-perffix:C1,C3,D1,A4",
+      "gainFps": "1-2", "lookRisk": "low", "gate": "no shadow under the paving lip / stairs; verify_ground 34/34"
+    },
+    {
+      "id": "P5-SHADOWDIST", "enabled": false, "rank": 6,
+      "what": "Sun shadow distance 40 -> 30 m (arena is z 8..22, camera ~12 m behind). Cascades stay 2 x 2048.",
+      "set": [ { "file": "runtime_flags.json", "path": "shadowDistance", "old": "(absent = asset 40)", "new": 30 } ],
+      "cli": "-qset:shadowDistance=30",
+      "gainFps": "0.5-1.5", "lookRisk": "low", "gate": "shadows on far props 30-40 m; arena frames unchanged"
+    },
+    {
+      "id": "P5-ASYNC", "enabled": false, "rank": 7,
+      "what": "HDRP async compute family on (asyncCompute 1). No picture change. On AMD can be -1..+3 ms, so A/B only.",
+      "set": [ { "file": "runtime_flags.json", "path": "asyncCompute", "old": "(absent = -1)", "new": 1 } ],
+      "cli": "-qset:asyncCompute=1",
+      "gainFps": "-1 to 2", "lookRisk": "none", "gate": "fps only; keep only if p50 rises in 2 of 3 runs"
+    },
+    {
+      "id": "P5-SSAO-Q0", "enabled": false, "rank": 8,
+      "what": "SSAO quality 1 -> 0 (SSGI already supplies occlusion at ultra).",
+      "set": [ { "file": "runtime_flags.json", "path": "ssaoQuality", "old": "(absent = -1)", "new": 0 } ],
+      "cli": "-qset:ssaoQuality=0",
+      "gainFps": "0.5-1", "lookRisk": "low-medium", "gate": "contact darkening under armour and sword; contrast ratio >= 0.85x"
+    },
+    {
+      "id": "P5-SSR-Q0", "enabled": false, "rank": 9,
+      "what": "SSR quality 1 -> 0. Floor is rough dark stone; reflections barely read.",
+      "set": [ { "file": "runtime_flags.json", "path": "ssrQuality", "old": "(absent = -1)", "new": 0 } ],
+      "cli": "-qset:ssrQuality=0",
+      "gainFps": "0.5-1.5", "lookRisk": "low", "gate": "wet blood / sword spec on floor"
+    },
+    {
+      "id": "P5-OCCLUSION", "enabled": false, "rank": 10, "needsBuild": true,
+      "what": "Bake Unity occlusion culling (laneOCCLUSION, chain.occlusion in Tools/build_config.json; occlusion.json already enabled). Culls the world dressing hidden behind the gate wall and buttresses from colour AND shadow passes. Build-time, so the build is the arm.",
+      "set": [ { "file": "../../Tools/build_config.json", "path": "chain.occlusion", "old": false, "new": true, "buildFile": true } ],
+      "cli": "(none: build arm)",
+      "gainFps": "1-4 (CPU render thread + shadow casters)", "lookRisk": "low", "gate": "no popping when the camera moves; doorway, finisher cams and FinisherCams skip list stay un-culled; fighters never culled"
+    },
+    {
+      "id": "P5-SUN-CACHE", "enabled": false, "rank": 11, "needsBuild": true,
+      "what": "Cached directional shadows for static casters: perf_mem A2 plus HDRP asset allowDirectionalMixedCachedShadows 1 (lanePERF4 asset_variants\\HDRP_Max.A2.asset). Needs P5-SHADOW-DOORS' A1b static casters.",
+      "set": [ { "file": "perf_mem.json", "path": "A2.enabled", "old": false, "new": true } ],
+      "cli": "-perffix:C1,C3,D1,A1b -permem:A2  (+ HDRP_Max.A2.asset baked in the exe)",
+      "gainFps": "1-3", "lookRisk": "medium", "gate": "sun is static; check stale cascade (shadow_fixes key_everyframe arm); acne"
+    },
+    {
+      "id": "P5-CONTACT-OFF", "enabled": false, "rank": 12, "notRecommended": true,
+      "what": "Contact shadows off. Listed only so the arm exists; they carry the sword/armour grounding, so expect a look fail.",
+      "set": [ { "file": "runtime_flags.json", "path": "contactShadows", "old": true, "new": false } ],
+      "cli": "-qset:contactShadows=0",
+      "gainFps": "0.5-1.5", "lookRisk": "high", "gate": "expected FAIL"
+    }
+  ],
+  "bundles": [
+    { "id": "SAFE", "switches": ["P5-SHADOW-GROUND", "P5-SHADOW-DOORS", "P5-SHADOWDIST", "P5-SSR-Q0", "P5-ASYNC"], "expectFps": "+2..5" },
+    { "id": "SAFE+", "switches": ["P5-SHADOW-GROUND", "P5-SHADOW-DOORS", "P5-SHADOWDIST", "P5-SSR-Q0", "P5-ASYNC", "P5-FOG-Q1", "P5-LOD"], "expectFps": "+5..9" },
+    { "id": "FULL", "switches": ["P5-SHADOW-GROUND", "P5-SHADOW-DOORS", "P5-SHADOWDIST", "P5-SSR-Q0", "P5-ASYNC", "P5-FOG-Q1", "P5-LOD", "P5-SSGI-HALF", "P5-OCCLUSION"], "expectFps": "+8..14 (needs build for occlusion)" }
+  ],
+  "abProtocol": "One exe, base arm = all dark. Per arm run the verify harness 3x interleaved (arm order rotated), idle machine, one heavy job at a time. Use p50 of steady frames (drop SLOW frame lines and the screenshot frames; the 52 'SLOW frame' lines in v101 verify startup are the load/prewarm hitches and pull the mean down). Then look_gate.py on the 34 verify frames per arm; keep an arm only if fps gain >= 0.8 AND the gate passes."
+}

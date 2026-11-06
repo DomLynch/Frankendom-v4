@@ -1,0 +1,24 @@
+{
+  "_about": "GuardTorsoTurn.cs (laneGUARD2 v82): how far the torso turns toward the guarded side while a side guard is held (DuelFighter.guardSide 1 left, 2 right; top = no turn). turnDeg = the TOTAL turn: 26 = Frankendom V3 GUARD_TILT 0.45 rad (characters.ts line 495). bakedDeg = the turn the guard_left / guard_right clips already carry in Spine2 (about 10 deg, measured by the A2 audit), so the code adds turnDeg - bakedDeg = 16 deg on top of the clip. Set bakedDeg to 0 if the sheet shows the clip has no turn. blendInSeconds / blendOutSeconds = ease of the extra turn when the guard goes up / drops. spine = bones that share the extra yaw (shares add up to 1; a name not found in the rig is skipped). sides[].dir: -1 turns to the fighter's left, +1 to the right, 0 none; flip a sign here if the MoveSheet shows a side leaning the wrong way. characters = roster ids that get the turn (turnDeg / bakedDeg -1 = the values above, any other value overrides for that character). enabled false or no file = the old look (the clips only).",
+  "enabled": true,
+  "debug": false,
+  "turnDeg": 26.0,
+  "bakedDeg": 10.0,
+  "blendInSeconds": 0.12,
+  "blendOutSeconds": 0.15,
+  "spine": [
+    { "bone": "mixamorig:Spine",  "share": 0.25 },
+    { "bone": "mixamorig:Spine1", "share": 0.35 },
+    { "bone": "mixamorig:Spine2", "share": 0.40 }
+  ],
+  "sides": [
+    { "id": 1, "name": "left",  "dir": -1.0 },
+    { "id": 2, "name": "right", "dir": 1.0 },
+    { "id": 3, "name": "top",   "dir": 0.0 }
+  ],
+  "characters": [
+    { "id": "Dracula", "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0 },
+    { "id": "Pitborn", "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0 },
+    { "id": "Joan",    "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0 }
+  ]
+}

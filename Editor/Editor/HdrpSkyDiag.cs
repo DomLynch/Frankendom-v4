@@ -1,0 +1,5 @@
+﻿using UnityEngine; using UnityEngine.Rendering; using UnityEngine.Rendering.HighDefinition; using System.Text;
+public static class HdrpSkyDiag { public static void Run() { var sb = new StringBuilder();
+ foreach (var c in Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None)) { var hd = c.GetComponent<HDAdditionalCameraData>(); sb.AppendLine(c.name + " en=" + c.enabled + " tag=" + c.tag + " clear=" + (hd != null ? hd.clearColorMode.ToString() : "-") + " bg=" + c.backgroundColor + " cull=" + c.cullingMask + " vlayer=" + (hd != null ? hd.volumeLayerMask.value.ToString() : "-")); }
+ foreach (var v in Object.FindObjectsByType<Volume>(FindObjectsInactive.Include, FindObjectsSortMode.None)) sb.AppendLine("vol " + v.name + " en=" + v.enabled + " global=" + v.isGlobal + " prio=" + v.priority + " weight=" + v.weight + " layer=" + v.gameObject.layer + " profile=" + (v.sharedProfile != null ? v.sharedProfile.name : "null"));
+ System.IO.File.WriteAllText("Shots/_sky_diag.txt", sb.ToString()); } }

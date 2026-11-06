@@ -45,8 +45,8 @@ public static class CombatDataImporter
         ImportDifficulty();
         Directory.CreateDirectory("Assets/Data");
         if (!ProjectPaths.Flag("importV3")) return; /* HCKIT5 v95 K9 guard */
-        File.Copy(Src + "move-defs.json", "Assets/Data/move-defs.json", true);
-        File.Copy(Src + "rules-defs.json", "Assets/Data/rules-defs.json", true);
+        SafeIO.Copy(Src + "move-defs.json", "Assets/Data/move-defs.json", true); /* LOCKFIX v103 */
+        SafeIO.Copy(Src + "rules-defs.json", "Assets/Data/rules-defs.json", true); /* LOCKFIX v103 */
 
         // chamber/vsGuard may be null in the JSON; JsonUtility leaves defaults for those
         var mj = JsonUtility.FromJson<MovesJ>(File.ReadAllText("Assets/Data/move-defs.json"));

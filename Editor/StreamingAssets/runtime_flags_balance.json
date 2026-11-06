@@ -1,0 +1,18 @@
+{
+    "_note":  "Balance/sim harness preset: sim only, low render cost to avoid iGPU TDRs. Use with -fast -flags:<path>. Not for proof sheets.",
+    "clouds":  false,
+    "volumetricFog":  false,
+    "ssgi":  false,
+    "ssr":  false,
+    "contactShadows":  false,
+    "shadows":  true,
+    "ssao":  false,
+    "ssgiFullRes":  false,
+    "ssgiQuality":  0,
+    "ssrQuality":  0,
+    "fogQuality":  0,
+    "cascades":  2,
+    "shadowDistance":  60,
+    "renderScale":  50,
+    "hideMHHead":  true
+}

@@ -121,3 +121,8 @@ Open a new session in `C:\Users\dom12\Documents\unity_test_hdrp` and paste:
 - **Unity plugin (Dom, 2026-11-06):** all Unity work uses the Claude Code Unity plugin: `unity:*` skills, starting with `unity:unity-cli` (live Editor control, builds, logs, auth, MCP). URP skills do not apply, this project is HDRP. Project rules still win: one GPU job at a time, no Assets writes during a build or gate, only the Unity dev launches the Editor.
 - New team ids, sweeps and pool: Strategy memory file frankendom-strategy-restart.md. Goose may implement fixes, Antigravity is retired. Next monster is Sobek (not Kaiju01). Hourly backup is on.
 - **Max quality (Dom, 2026-11-06):** always max quality HDRP, not URP yet, AAA grade visuals. No visible quality cuts for fps; perf work must be look-neutral or stay dark behind a switch for Dom's LOOK OK.
+- DOM DECISION: run_through finisher is REMOVED. Finishers kept: decapitation and split_crown (split_crown_pit, Pitborn's maul version, kept unless Dom says otherwise). Waist cut stays removed.
+- DOM DECISION (replaces the earlier one): run_through STAYS. Finishers: decapitation, split_crown, split_crown_pit, run_through. Only the waist cut is removed. laneNORUNTHRU cancelled, do not apply anything from it.
+- DOM DIRECTION: physics should be UNIVERSAL across the fight: guard, blocking, hits, finishers, everything, as in Frankendom V3. Hard rule 3 still stands until Dom says otherwise: presentation only, simhash identical ON/OFF. laneV3PHYS is auditing V3 vs current.
+- DOM DECISION: Ultra goes to renderScale 100 (was 67). Measure 67 vs 100 on v103, then carry 100 in v104 unless unplayable. Goes with always max quality HDRP.
+- DOM ORDER: optimisation is priority 1: _agents\laneOPT_PLAN.md.

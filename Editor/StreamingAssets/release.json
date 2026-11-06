@@ -1,0 +1,11 @@
+{
+  "_about": "ReleaseCfg.cs (lane laneRCHYGIENE, v100). Release switches the player reads at runtime. keepRunningInBackground=false: a normal player run pauses when the window loses focus (ProjectSettings runInBackground 0); true = never pause (dev machines). backgroundArgs: command-line flags that mark a proof / gate / capture run, which must keep running in the background (a name ending in ':' matches as a prefix; the harness flags in menu.json harnessArgs count too).",
+  "keepRunningInBackground": false,
+  "backgroundArgs": [
+    "-logFile",
+    "-out:",
+    "-fast",
+    "-flags:",
+    "-autoplay"
+  ]
+}

@@ -51,7 +51,7 @@ public static class HdrpGroundLook
         if (!tex.LoadImage(File.ReadAllBytes(p))) { Object.DestroyImmediate(tex); return; }
         var px = tex.GetPixels32(); bool ch = false;
         for (int i = 0; i < px.Length; i++) if (px[i].b != 255) { px[i].b = 255; ch = true; }
-        if (ch) { tex.SetPixels32(px); tex.Apply(); File.WriteAllBytes(p, tex.EncodeToPNG()); AssetDatabase.ImportAsset(p, ImportAssetOptions.ForceSynchronousImport); Debug.Log("HDRPGROUNDLOOK detail mask opened " + p); }
+        if (ch) { tex.SetPixels32(px); tex.Apply(); SafeIO.WriteAllBytes(p, tex.EncodeToPNG()); /* LOCKFIX v103 */ AssetDatabase.ImportAsset(p, ImportAssetOptions.ForceSynchronousImport); Debug.Log("HDRPGROUNDLOOK detail mask opened " + p); }
         Object.DestroyImmediate(tex);
     }
 
@@ -72,7 +72,7 @@ public static class HdrpGroundLook
         tex.SetPixels32(px); tex.Apply(); var bytes = tex.EncodeToPNG(); Object.DestroyImmediate(tex);
         string p = G.detailTexture; Directory.CreateDirectory(Path.GetDirectoryName(p));
         bool write = !File.Exists(p) || !System.Linq.Enumerable.SequenceEqual(File.ReadAllBytes(p), bytes);
-        if (write) { File.WriteAllBytes(p, bytes); AssetDatabase.ImportAsset(p, ImportAssetOptions.ForceSynchronousImport); }
+        if (write) { SafeIO.WriteAllBytes(p, bytes); /* LOCKFIX v103 */ AssetDatabase.ImportAsset(p, ImportAssetOptions.ForceSynchronousImport); }
         var ti = AssetImporter.GetAtPath(p) as TextureImporter;
         if (ti != null && (ti.sRGBTexture || ti.wrapMode != TextureWrapMode.Repeat || ti.textureType != TextureImporterType.Default || !ti.mipmapEnabled))
         { ti.textureType = TextureImporterType.Default; ti.sRGBTexture = false; ti.wrapMode = TextureWrapMode.Repeat; ti.mipmapEnabled = true; ti.textureCompression = TextureImporterCompression.CompressedHQ; ti.anisoLevel = 8; ti.SaveAndReimport(); }

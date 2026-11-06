@@ -1,0 +1,42 @@
+{
+  "_about": "lanePERFAB v102. Read by Scripts/PerfAb.cs (-perfab) and by perfab_report.py. Every number of the A/B run lives here. Arms are built from perf5_switches.json (switchesFile): 'each':'singles' = one arm per switch, 'bundle' = a bundle id, 'switches' = explicit ids. needsBuild switches (occlusion, sun cache asset) cannot toggle in a running player: skipped rows. Poses: the fighters are placed at anchor / axis / sepM (v66 wide pose = shadow_fixes.json diag) in front of the real lock cam; set enabled:true on 'mid' to measure a second pose (+1 pass). The last arm repeats the baseline: the gap between baseline and baseline_end is the drift / noise floor the report subtracts from every gain.",
+  "switchesFile": "perf5_switches.json",
+  "bootFrames": 240,
+  "applySettleFrames": 30,
+  "warmupFrames": 120,
+  "measureFrames": 300,
+  "shotSettleFrames": 3,
+  "timeoutS": 1800,
+  "freezeFlickersForShot": true,
+  "skipNeedsBuild": true,
+  "vsyncOff": true,
+  "healthFill": 1000,
+  "lockRange": 80,
+  "csvName": "perfab_results.csv",
+  "poses": [
+    { "id": "wide", "enabled": true, "anchor": [0.0, 0.0, 17.0], "axis": [0.0, 0.0, 1.0], "sepM": 2.5 },
+    { "id": "mid", "enabled": false, "anchor": [0.0, 0.0, 15.0], "axis": [0.0, 0.0, 1.0], "sepM": 1.8 }
+  ],
+  "arms": [
+    { "enabled": true, "id": "baseline", "switches": [] },
+    { "enabled": true, "each": "singles" },
+    { "enabled": true, "id": "SAFE", "bundle": "SAFE" },
+    { "enabled": true, "id": "SAFE+", "bundle": "SAFE+" },
+    { "enabled": true, "id": "FULL", "bundle": "FULL" },
+    { "enabled": true, "id": "baseline_end", "switches": [], "note": "noise floor: same as baseline, measured last" }
+  ],
+  "report": {
+    "baselineArm": "baseline",
+    "noiseArm": "baseline_end",
+    "minFpsGain": 0.8,
+    "hudTopFrac": 0.10,
+    "hudBottomFrac": 0.93,
+    "maxMeanLumaDeltaPct": 3.0,
+    "maxP5LumaDeltaPct": 8.0,
+    "minContrastRatio": 0.95,
+    "maxContrastRatio": 1.05,
+    "maxChangedPixelFrac": 0.02,
+    "changedPixelDelta": 0.04,
+    "lumaWeights": [0.2126, 0.7152, 0.0722]
+  }
+}

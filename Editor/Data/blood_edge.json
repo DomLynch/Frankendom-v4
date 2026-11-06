@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "source": "frankendom-v3 src/fight/blood-edge.ts + blood-rows.json (blood-edge.*)",
+  "enabled": true,
+  "playerOnly": true,
+  "symmetric": true,
+  "edgeMs": 480,
+  "peakStart": 0.12,
+  "peakEnd": 0.43,
+  "headOn": 0.6,
+  "widthFrac": 0.06,
+  "spanFrac": 0.68,
+  "damageRef": 20,
+  "minScale": 0.55,
+  "guiDepth": -1000,
+  "texW": 48,
+  "texH": 128,
+  "seed": 17,
+  "colorR": 0.14,
+  "colorG": 0.0,
+  "colorB": 0.01,
+  "strips": ["wet-smear", "soft-bleed", "dragged-streak"]
+}

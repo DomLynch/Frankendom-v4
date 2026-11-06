@@ -1,0 +1,12 @@
+﻿{
+    "enabled":  true,
+    "radius":  0.35,
+    "ignoreLayers":  [
+                         8,
+                         9
+                     ],
+    "minDistFromTarget":  1.2,
+    "minGroundY":  0,
+    "minHeightAboveGround":  0.6,
+    "bodyClearM":  0.25
+}

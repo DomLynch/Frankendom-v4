@@ -1,0 +1,13 @@
+{
+  "_about": "Save slot (lane REBIND, v100), read by SaveSlot.cs. ONE slot file in Application.persistentDataPath: ladder progress (which opponents.json row, fight number) + a pointer to the loot / equipment file that laneLOOTUI's LootSave already owns (loot_save.json, name taken from loot_ui.json save.file, not copied). version = the schema this build writes; a file with a HIGHER version is never overwritten (kept as <file>.v<N>.bak, the run starts fresh in memory); a lower version is migrated. Loaded at boot (BeforeSceneLoad), written at once after every change (victory, next opponent, loot change), tmp file + replace. Harness runs (MenuCfg.Harness) never read or write it. resume.ladder false = always start at opponents.json startIndex.",
+  "enabled": true,
+  "debugLog": false,
+  "version": 1,
+  "file": "save_slot1.json",
+  "lootDataFile": "loot_ui.json",
+  "lootFallbackFile": "loot_save.json",
+  "resume": {
+    "ladder": true
+  },
+  "maxClearedRow": 1000
+}

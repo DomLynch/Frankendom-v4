@@ -46,7 +46,7 @@ public static class WoundDecalRef
         if (t == null)
         {
             var src = new Texture2D(4, 4, TextureFormat.RGBA32, false, true); var px = new Color32[16]; for (int i = 0; i < 16; i++) px[i] = new Color32(128, 128, 255, 255); src.SetPixels32(px); src.Apply();
-            File.WriteAllBytes(path, src.EncodeToPNG()); Object.DestroyImmediate(src); AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+            SafeIO.WriteAllBytes(path, src.EncodeToPNG()); /* LOCKFIX v103 */ Object.DestroyImmediate(src); AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
             var ti = AssetImporter.GetAtPath(path) as TextureImporter; if (ti != null) { ti.textureType = TextureImporterType.NormalMap; ti.mipmapEnabled = false; ti.SaveAndReimport(); }
             t = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
         }
@@ -60,7 +60,7 @@ public static class WoundDecalRef
         if (t == null)
         {
             var src = new Texture2D(4, 4, TextureFormat.RGBA32, false, !srgb); var px = new Color32[16]; for (int i = 0; i < 16; i++) px[i] = new Color32(255, 255, 255, 255); src.SetPixels32(px); src.Apply();
-            File.WriteAllBytes(path, src.EncodeToPNG()); Object.DestroyImmediate(src);
+            SafeIO.WriteAllBytes(path, src.EncodeToPNG()); /* LOCKFIX v103 */ Object.DestroyImmediate(src);
             AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
             var ti = AssetImporter.GetAtPath(path) as TextureImporter; if (ti != null) { ti.sRGBTexture = srgb; ti.mipmapEnabled = false; ti.SaveAndReimport(); }
             t = AssetDatabase.LoadAssetAtPath<Texture2D>(path);

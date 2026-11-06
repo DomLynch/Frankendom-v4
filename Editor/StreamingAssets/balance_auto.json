@@ -1,0 +1,19 @@
+{
+  "seed": 1234,
+  "maxFightSeconds": 180,
+  "sampleEvery": 5,
+  "endDelay": 2.5,
+  "bootWaitSeconds": 20,
+  "reloadWaitSeconds": 20,
+  "timeoutSeconds": 1800,
+  "settleFrames": 30,
+  "startShotAt": 1,
+  "minAvgDuration": 60,
+  "maxAvgDuration": 120,
+  "minWinRate": 0.4,
+  "maxWinRate": 0.7,
+  "minEnemyMoves": 4,
+  "shotMode": "screen",
+  "maxRiposteShare": 0.3,
+  "maxMoveShare": 0.4
+}

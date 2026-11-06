@@ -1,0 +1,94 @@
+{
+    "enabled":  true,
+    "debugLog":  false,
+    "input":  {
+                  "mode":  "immediate",
+                  "rollKeys":  [
+                                   "E",
+                                   "Space"
+                               ],
+                  "holdSeconds":  0.15,
+                  "lateralThreshold":  0.5,
+                  "requireLock":  true,
+                  "onKey":  {
+                                "none":  "roll",
+                                "forward":  "roll",
+                                "lateral":  "sidestep",
+                                "back":  "sidestep"
+                            },
+                  "doubleTap":  {
+                                    "enabled":  true,
+                                    "seconds":  0.25,
+                                    "leftKeys":  [
+                                                     "A"
+                                                 ],
+                                    "rightKeys":  [
+                                                      "D"
+                                                  ],
+                                    "backKeys":  [
+                                                     "S"
+                                                 ]
+                                }
+              },
+    "roll":  {
+                 "clip":  "dodge_diveroll",
+                 "ticks":  54,
+                 "distance":  3.2,
+                 "iframeStart":  4,
+                 "iframeEnd":  28,
+                 "stamina":  30,
+                 "cooldownTicks":  0,
+                 "easePower":  1.0,
+                 "clipSpeed":  0,
+                 "blendIn":  0.04,
+                 "clipTailTicks":  0,
+                 "fxAction":  "roll",
+                 "noInputDir":  "back",
+                 "turnRate":  30
+             },
+    "backstep":  {
+                     "clip":  "backstep",
+                     "ticks":  12,
+                     "distance":  1.4,
+                     "iframeStart":  4,
+                     "iframeEnd":  20,
+                     "stamina":  10,
+                     "cooldownTicks":  0,
+                     "easePower":  1.0,
+                     "clipSpeed":  0,
+                 "blendIn":  0.04,
+                     "clipTailTicks":  30,
+                     "fxAction":  "backstep"
+                 },
+    "sidestep":  {
+                     "clip":  "",
+                     "clipLeft":  "strafe_L",
+                     "clipRight":  "strafe_R",
+                     "clipBack":  "backstep",
+                     "ticks":  14,
+                     "distance":  2.0,
+                     "iframeStart":  2,
+                     "iframeEnd":  10,
+                     "stamina":  8,
+                     "cooldownTicks":  18,
+                     "easePower":  2.0,
+                     "clipSpeed":  2.0,
+                 "blendIn":  0.04,
+                     "clipTailTicks":  0,
+                     "fxAction":  "backstep"
+                 },
+    "guard":  {
+                  "speedMul":  0.5,
+                  "staminaDrainPerSecond":  0,
+                  "upperBodyLayer":  true,
+                  "layer":  "GuardUpper",
+                  "layerBlendIn":  0.12,
+                  "poseFade":  0.12,
+                  "legAnimSpeed":  0.55,
+                  "runDropsGuard":  true,
+                  "moveClipFallback":  "guard_idle"
+              },
+    "minSeparation":  1.5,
+    "separationPad":  0.25,
+    "flinchMaxLeanDeg":  12
+}

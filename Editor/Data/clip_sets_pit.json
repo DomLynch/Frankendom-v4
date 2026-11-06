@@ -1,0 +1,79 @@
+{
+ "_about": "lanePITCLIPS: Pitborn's 4 missing attack rows + dodge_diveroll baked from his OWN pack clips (combat_clips_unity role attack_1..5) and a neutral Mixamo library dive roll onto Pitborn_combat.glb's 106-joint tree. Same tool/maths as laneCLIPBUILD2 clip_sets.py (plain retarget + shared leg fix). No Dracula file, no posture rows (Pitborn's live attacks are not posture-baked; maul is two-handed so the sword blade-aim rows do not apply).",
+ "foreignTokens": [
+  "crimson",
+  "dracula",
+  "joan"
+ ],
+ "gates": {
+  "samplesPerClip": 36,
+  "plantedM": 0.03,
+  "inheritTolM": 0.02,
+  "postureMeanDeg": 25.0,
+  "postureMaxDeg": 60.0,
+  "liveDiffMeanDeg": 8.0,
+  "toeYawTolModifiedDeg": 20.0,
+  "poseMeanDeg": 12.0,
+  "poseMaxDeg": 25.0
+ },
+ "sets": {
+  "attacks": {
+   "outFile": "{id}_attacks_v2.glb",
+   "live": "",
+   "legFixMaxSwivelDeg": 90.0,
+   "rows": {
+    "Pitborn": [
+     {
+      "state": "atk_heavy_R",
+      "move": "heavy_right",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122340901-great-sword-slash.glb",
+      "packRole": "attack_1",
+      "rootMotion": "inplace",
+      "maxStep": 0.0
+     },
+     {
+      "state": "atk_heavy_L",
+      "move": "heavy_left",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122360901-great-sword-slash.glb",
+      "packRole": "attack_2",
+      "rootMotion": "inplace",
+      "maxStep": 0.0
+     },
+     {
+      "state": "atk_overhead",
+      "move": "light_overhead",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122370901-great-sword-slash.glb",
+      "packRole": "attack_3",
+      "rootMotion": "inplace",
+      "maxStep": 0.0
+     },
+     {
+      "state": "atk_heavy_thrust",
+      "move": "heavy_thrust",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122640901-great-sword-attack.glb",
+      "packRole": "attack_5",
+      "rootMotion": "inplace",
+      "maxStep": 0.0
+     }
+    ]
+   }
+  },
+  "dodges": {
+   "outFile": "{id}_dodges.glb",
+   "live": "",
+   "legFixMaxSwivelDeg": 90.0,
+   "rows": {
+    "Pitborn": [
+     {
+      "state": "dodge_diveroll",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.015,
+      "note": "hips +0.015 m: library dive roll toes sink 0.063 m (gate 0.05); live roll_forward sinks 0.076"
+     }
+    ]
+   }
+  }
+ }
+}

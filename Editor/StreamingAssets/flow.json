@@ -1,0 +1,95 @@
+{
+  "enabled": true,
+  "debugLog": false,
+  "scope": "player",
+  "applyToBot": true,
+  "_about": "Dracula moveset flow (lane V64FLOW), read by FlowTable.cs. scope 'player' = only a fighter whose PlayerBrain is enabled (a human); the AI, the BalanceAuto bot and the MoveSheet harness are untouched; 'all' = everyone. enabled false or no file = the exact old behaviour. Timings are 60 Hz sim ticks (Recovery tick t: 1 = first tick after the active window; recovery lengths light 22, thrust 21, heavy 31, kick 25).",
+  "chain": {
+    "_about": "Attack-to-attack cancels (player only). A queued attack (the press queue of cancel.json keeps a press alive through the move) starts at the first Recovery tick a row allows. First matching row wins (file order). from = move id | * | prefix pattern like light*; to = light | heavy | thrust | kick; earliest/latest = Recovery tick range (latest 0 = until the recovery ends); onHitOnly = only when the swing connected (hit, block or parry); chained = use the shorter chained wind-up where the move has one (light, heavy). replaceBuiltin true = these rows replace the V3 chain window (move-defs chain.window 18, same range for light>light and light>heavy). maxLinks = chain links per string (0 = no limit). Dodge presses always win over an attack press; dodge cancels stay in cancel.json.",
+    "replaceBuiltin": true,
+    "maxLinks": 5,
+    "rows": [
+      { "from": "light*",         "to": "light",  "earliest": 1,  "latest": 18, "onHitOnly": false, "chained": true  },
+      { "from": "light*",         "to": "heavy",  "earliest": 1,  "latest": 18, "onHitOnly": false, "chained": true  },
+      { "from": "light*",         "to": "thrust", "earliest": 6,  "latest": 20, "onHitOnly": false, "chained": false },
+      { "from": "light*",         "to": "kick",   "earliest": 8,  "latest": 22, "onHitOnly": false, "chained": false },
+      { "from": "thrust",         "to": "light",  "earliest": 6,  "latest": 21, "onHitOnly": false, "chained": true  },
+      { "from": "thrust",         "to": "heavy",  "earliest": 9,  "latest": 21, "onHitOnly": false, "chained": true  },
+      { "from": "thrust",         "to": "kick",   "earliest": 8,  "latest": 21, "onHitOnly": false, "chained": false },
+      { "from": "heavy_overhead", "to": "light",  "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": true  },
+      { "from": "heavy_overhead", "to": "thrust", "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": false },
+      { "from": "heavy_left", "to": "light",  "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": true  },
+      { "from": "heavy_left", "to": "thrust", "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": false },
+      { "from": "heavy_right", "to": "light",  "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": true  },
+      { "from": "heavy_right", "to": "thrust", "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": false },
+      { "from": "heavy_thrust", "to": "light",  "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": true  },
+      { "from": "heavy_thrust", "to": "thrust", "earliest": 14, "latest": 31, "onHitOnly": true,  "chained": false },
+      { "from": "kick",           "to": "light",  "earliest": 6,  "latest": 25, "onHitOnly": false, "chained": true  },
+      { "from": "kick",           "to": "thrust", "earliest": 8,  "latest": 25, "onHitOnly": false, "chained": false },
+      { "from": "kick",           "to": "heavy",  "earliest": 12, "latest": 25, "onHitOnly": true,  "chained": true  }
+    ],
+    "combos": [
+      { "name": "light-light-heavy", "steps": [ "light", "light", "heavy" ] },
+      { "name": "light-thrust",      "steps": [ "light", "thrust" ] },
+      { "name": "light-kick-light",  "steps": [ "light", "kick", "light" ] },
+      { "name": "thrust-heavy",      "steps": [ "thrust", "heavy" ] }
+    ]
+  },
+  "lockOn": {
+    "_about": "Target lock. Tab / middle mouse / gamepad R3 (JoystickButton9) toggles CameraRig.lockEnabled. Locked: the camera and the body face the target, WASD strafes around it (strafe clips), dodges are relative to it. Unlocked: free camera, the body faces the move direction, attacks go along the stick direction. pushAwayBreaks (V3: pushing away from the foe for 0.25 s drops the lock) and attackRelocks (V3: any attack re-locks) are OFF so the toggle is the only switch. guardFacesTarget keeps the guard arc on the target. range = metres; beyond it the body does not face the target. hud: a small square dot on the target chest + LOCK text + a short toast on toggle.",
+    "enabled": true,
+    "startLocked": true,
+    "pushAwayBreaks": false,
+    "attackRelocks": false,
+    "guardFacesTarget": true,
+    "range": 14.0,
+    "keys": [ "Tab", "Mouse2", "JoystickButton9" ],
+    "hud": {
+      "enabled": true, "dot": true, "toast": true, "dotPx": 7.0, "yOffset": 1.15, "fontSize": 11, "toastFontSize": 15, "toastSeconds": 0.9, "toastY": 0.12,
+      "text": "LOCK", "onText": "LOCK ON", "offText": "LOCK OFF", "color": [ 0.96, 0.93, 0.85, 0.92 ]
+    },
+    "breakAngleDeg": 120.0,
+    "breakSeconds": 0.25
+  },
+  "attack": {
+    "_about": "Attack magnetism and turn tracking (player only). magnet: at the start of a swing, if the target is within maxDistance (metres, x fighter scale) and within maxAngleDeg of the swing intent (locked: the target line; unlocked: the held stick direction, else the current facing) the body snaps to the target over snapMs. turn: the body turns toward the swing direction at most windupDegPerSec / activeDegPerSec / recoveryDegPerSec (the active frames are the sticky ones). moves[] overrides per move (id, * or prefix pattern; -1 = inherit). Hit-stop freezes the turn. Without a snap the old V3 tracking was an unlimited exponential slerp (rate 10 per second).",
+    "magnet": { "enabled": true, "maxAngleDeg": 50.0, "maxDistance": 3.2, "snapMs": 90.0, "botMaxDistance": 2.8 },
+    "turn": { "enabled": true, "windupDegPerSec": 480.0, "activeDegPerSec": 80.0, "recoveryDegPerSec": 200.0 },
+    "moves": [
+      { "move": "heavy*",  "maxAngleDeg": 40.0, "snapMs": 120.0, "activeDegPerSec": 60.0, "maxDistance": -1, "windupDegPerSec": -1, "recoveryDegPerSec": -1 },
+      { "move": "thrust",  "maxDistance": 3.6, "maxAngleDeg": -1, "snapMs": -1, "windupDegPerSec": -1, "activeDegPerSec": -1, "recoveryDegPerSec": -1 },
+      { "move": "kick",    "maxAngleDeg": 35.0, "maxDistance": 1.8, "snapMs": 70.0, "windupDegPerSec": -1, "activeDegPerSec": -1, "recoveryDegPerSec": -1 },
+      { "move": "skill_*", "maxAngleDeg": 60.0, "snapMs": 110.0, "maxDistance": -1, "windupDegPerSec": -1, "activeDegPerSec": -1, "recoveryDegPerSec": -1 }
+    ]
+  },
+  "dodge": {
+    "_about": "Directional dodge (player only). PlayerBrain labels each dodge by the held direction relative to the locked target: forward / back / left / right (lock on) or free (lock off). Per direction: iframeStart/iframeEnd = i-frame tick range counted from the dodge's first tick (Duel.Resolve ignores hits while inside it), distance = metres travelled, stamina = cost; -1 = keep dodge.json. Which move plays (roll / sidestep / backstep) stays in dodge.json input.onKey. snapToAxes: a locked forward roll goes exactly at the target. Shipped numbers equal the current dodge.json + stamina.json values (roll 4..28 / 3.2 m / 24, sidestep 2..10 / 2.0 m / 8).",
+    "enabled": true,
+    "snapToAxes": true,
+    "dirs": [
+      { "dir": "forward", "iframeStart": 4, "iframeEnd": 28, "distance": 3.2, "stamina": 24.0 },
+      { "dir": "back",    "iframeStart": 2, "iframeEnd": 10, "distance": 2.0, "stamina": 8.0 },
+      { "dir": "left",    "iframeStart": 2, "iframeEnd": 10, "distance": 2.0, "stamina": 8.0 },
+      { "dir": "right",   "iframeStart": 2, "iframeEnd": 10, "distance": 2.0, "stamina": 8.0 },
+      { "dir": "free",    "iframeStart": 4, "iframeEnd": 28, "distance": 3.2, "stamina": 24.0 }
+    ]
+  },
+  "bot": {
+    "_about": "V64P: the flow layer on the BalanceAuto bot (applyToBot true). FlowBot.cs makes the key presses a human would, the SAME DuelFighterFlow / FlowTable code paths do the rest (chain rows, magnetism, directional dodge i-frames, riposte key, cancel table). chainOnHit / chainOnWhiff = chance to press a follow-up when the recovery starts (x chainDecay per link already chained, maxLinks per string); wLight..wKick = relative weight of the follow-up type (only types with a chain row from that move and in reach); jitterTicks = random delay after the row's earliest tick; cancelChance = per incoming swing seen while in recovery, cancelLead* = ticks of the foe's wind-up left when the cancel is pressed, cancelGuardShare = guard instead of dodge; riposteChance + riposteReact* = take the riposte key after a parry, reaction in ticks; dir* = weights of the dodge direction label. Pitborn is never touched (scope 'player').",
+    "chain": true, "cancel": true, "riposte": true, "dodgeDir": true,
+    "chainOnHit": 0.7, "chainOnWhiff": 0.2, "chainDecay": 0.85, "maxLinks": 5, "minStamina": 14.0, "reachMargin": 0.15, "jitterTicks": 3,
+    "chainReserve": 12.0, "stepInShare": 0.7, "chainDropsDodge": true,
+    "wLight": 1.0, "wHeavy": 0.35, "wThrust": 0.6, "wKick": 0.25,
+    "cancelChance": 0.8, "cancelGuardShare": 0.45, "cancelMinStamina": 12.0, "cancelLeadMin": 3, "cancelLeadMax": 14, "guardHoldTicks": 14,
+    "cancelHeavyChance": 0.85, "cancelHeavyDist": 2.5, "cancelHeavyLeadMin": 3, "cancelHeavyLeadMax": 11, "cancelFoeHeavy": [ "heavy", "critical", "skill_" ],
+    "parry": true, "parryTryChance": 0.75, "parryLeadMin": 3, "parryLeadMax": 9, "parryHoldTicks": 12,
+    "riposteChance": 1.0, "riposteReactMin": 2, "riposteReactMax": 7, "riposteSlack": 0.6,
+    "parrySideRead": 0.70, "cancelSideRead": 0.65, "armourTradeChance": 0.30, "armourLeadMin": 11, "armourLeadMax": 22, "armourMove": "heavy_overhead",   "_balance2": "BALANCE2 v96: parrySideRead / cancelSideRead = chance the bot aims the guard side that covers the swing when it deliberately parries / guard-cancels (-1 = controls.json bot.sideReadChance, which stays the coin flip for the AI own guard); armourTrade* = on a foe wind-up with armourLeadMin..Max ticks left the bot starts armourMove when poise.json gives that move armour at that tick, so the hit is taken through armour and its own blow lands in the foe recovery",
+    "dirLeft": 0.35, "dirRight": 0.35, "dirBack": 0.2, "dirForward": 0.1
+  },
+  "riposte": {
+    "_about": "Riposte after a parry (the 90-tick riposte window of parry.json riposteWindowTicks). auto true = any strike press (F / LMB, G, T) inside the window plays the riposte (V3 / P5 behaviour); keys = a dedicated riposte key (B / gamepad B, JoystickButton1) that also works during the 8-tick parry recovery (the press waits). consume true = one riposte per parry. move = riposte | slash_riposte | heavy_riposte. hint shows the RIPOSTE text while the window is open.",
+    "enabled": true, "auto": true, "consume": false, "hint": true,
+    "keys": [ "B", "JoystickButton1" ], "move": "riposte", "hintText": "RIPOSTE", "fontSize": 16
+  }
+}

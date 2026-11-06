@@ -238,7 +238,7 @@ public static class HdrpDoorway
             px[y * S + x] = new Color32(b, b, b, b);
         }
         var t = new Texture2D(S, S, TextureFormat.RGBA32, false); t.SetPixels32(px);
-        File.WriteAllBytes(G.texture, t.EncodeToPNG()); UnityEngine.Object.DestroyImmediate(t);
+        SafeIO.WriteAllBytes(G.texture, t.EncodeToPNG()); /* LOCKFIX v103 */ UnityEngine.Object.DestroyImmediate(t);
         AssetDatabase.ImportAsset(G.texture, ImportAssetOptions.ForceUpdate);
         var imp = AssetImporter.GetAtPath(G.texture) as TextureImporter;
         if (imp != null) { imp.sRGBTexture = true; imp.mipmapEnabled = true; imp.wrapMode = TextureWrapMode.Repeat; imp.alphaIsTransparency = false; imp.SaveAndReimport(); }

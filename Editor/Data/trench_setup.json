@@ -1,0 +1,131 @@
+{
+  "_notes": "Bridge trench (zone 5). Terrain GLBs carry the slot (floor about y -13, |x|<4.2 bottom, rock walls to |x| 6.5, z 6.5-21). Layout group WorldTrench lines the walls with embedded boulders/ledges and the floor with fallen blocks; trench_lava plane (Assets/Env/World/Trench/trench_lava) fills the floor at y -12.6. Needs Unity-side work below.",
+  "colliders": "invisible box colliders along both deck edges (x = +-4.6, z 5.5..22) wherever there is no parapet, height 1.2 m, so the player cannot fall in",
+  "triplanar": {
+    "sourceMaterial": "Assets/HDRP/World/M_WorldTerrain.mat",
+    "newMaterial": "Assets/HDRP/World/M_WorldTerrainTriplanar.mat",
+    "chunkSuffix": "_b0",
+    "worldTileM": 64.0
+  },
+  "lavaMaterial": {
+    "mesh": "trench_lava_LOD0.glb",
+    "emissiveMap": "world_build/trench/trench_lava_emissive.png (also inside the GLB)",
+    "emissiveIntensityNits": 120,
+    "note": "orange-red, hot cores yellower; pools break the crust"
+  },
+  "lights": [
+    {
+      "type": "point",
+      "pos": [
+        0,
+        -11.2,
+        10.5
+      ],
+      "color": [
+        1.0,
+        0.25,
+        0.08
+      ],
+      "intensityLumens": 40000,
+      "range": 22,
+      "shadows": false
+    },
+    {
+      "type": "point",
+      "pos": [
+        0,
+        -11.2,
+        14.5
+      ],
+      "color": [
+        1.0,
+        0.25,
+        0.08
+      ],
+      "intensityLumens": 50000,
+      "range": 24,
+      "shadows": false
+    },
+    {
+      "type": "point",
+      "pos": [
+        0,
+        -11.2,
+        18.5
+      ],
+      "color": [
+        1.0,
+        0.25,
+        0.08
+      ],
+      "intensityLumens": 40000,
+      "range": 22,
+      "shadows": false
+    },
+    {
+      "type": "point",
+      "pos": [
+        -3.4,
+        -10.0,
+        14.5
+      ],
+      "color": [
+        1.0,
+        0.3,
+        0.1
+      ],
+      "intensityLumens": 22000,
+      "range": 12,
+      "shadows": false,
+      "note": "wall wash left, lifts the glow up the wall"
+    },
+    {
+      "type": "point",
+      "pos": [
+        3.4,
+        -10.0,
+        14.5
+      ],
+      "color": [
+        1.0,
+        0.3,
+        0.1
+      ],
+      "intensityLumens": 22000,
+      "range": 12,
+      "shadows": false,
+      "note": "wall wash right"
+    }
+  ],
+  "glowGradientTarget": "glow reaches about a third of the wall height (y about -9), fading to black by y about -5; raise/lower intensity until the player capture matches. Range values are generous so the falloff, not the cutoff, sets the gradient.",
+  "darkening": "Local Volumetric Fog (box center [0,-6,14], size [14,14,16]) with near-black albedo (sRGB 10) and a vertical gradient: density low at the bottom (glow shows), high toward the top (walls go black near the deck); keeps the gradient glow at the bottom, black near the top. Alternative: a single dark gradient mesh is NOT needed.",
+  "supports": "Bridge kit (world_build/bridge_kit, from the helper) is placed in layout group WorldBridge when it lands; assumed deck underside y about -0.5 (Unity dev: confirm deck TOP/UNDERSIDE y).",
+  "deckBlockers": {
+    "x": 3.3,
+    "z0": 8.5,
+    "z1": 21.5,
+    "yMin": -1.0,
+    "yMax": 3.5,
+    "thickness": 0.3
+  },
+  "fog": {
+    "center": [
+      0,
+      -6,
+      14
+    ],
+    "size": [
+      14,
+      14,
+      16
+    ],
+    "albedo": [
+      0.01,
+      0.01,
+      0.01
+    ],
+    "meanFreePath": 6.0,
+    "blendDistance": 2.0
+  },
+  "editorScript": "Assets/Editor/HdrpTrench.cs (HdrpTrench.Run, menu Hades/World/Apply trench setup, log tag HDRPTRENCH); the \"deckBlockers\", \"lights\", \"fog\", \"triplanar\" keys are read by it, the rest is documentation"
+}

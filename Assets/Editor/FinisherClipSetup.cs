@@ -63,7 +63,7 @@ public static class FinisherClipSetup
             // "Node at index 52 has no name" and import NO clip. FixSceneRoot rewrites the scene root while copying; content (not size) decides whether to rewrite dst.
             byte[] want = FixSceneRoot(File.ReadAllBytes(src), c.file);
             bool changed = !File.Exists(dst) || !BytesEqual(File.ReadAllBytes(dst), want);
-            if (changed) { File.WriteAllBytes(dst, want); copied++; }
+            if (changed) { SafeIO.WriteAllBytes(dst, want); /* LOCKFIX v103 */ copied++; }
             AssetDatabase.ImportAsset(dst, changed ? ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport : ImportAssetOptions.ForceSynchronousImport);
             var imp = AssetImporter.GetAtPath(dst);
             if (imp != null)

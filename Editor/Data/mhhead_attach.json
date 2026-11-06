@@ -1,0 +1,85 @@
+﻿{
+    "_notes":  [
+                   "Data layer for the MetaHuman Dracula head integration (read by Assets/Editor/MHIntegrate.cs at integration time and by Assets/MetaHumanHead/Scripts/Game/MHHeadAttach.cs + MHHeadLod.cs at runtime).",
+                   "BuildPlayer.cs copies this file to StreamingAssets, so the player reads the same values. Tune here, no code or scene change needed (except fighterName/boneNames/builder, which are applied by re-running MHIntegrate.Run).",
+                   "attach.localPosition is metres, in the head-bone frame as it is at the character\u0027s rest pose (x right, y up, z forward); it is an EXTRA offset on top of the automatic alignment of the MetaHuman \u0027alignJoint\u0027 to the body head bone.",
+                   "attach.localEuler is degrees, applied in the same rest frame (0,0,0 = MetaHuman face looks along the character\u0027s forward). attach.localScale is the WORLD size multiplier of the head (1 = metric MetaHuman size); with compensateParentScale the bone\u0027s lossy scale is divided out.",
+                   "lod.switchDistancesM = [lod0Max, lod1Max] in metres from the game camera to the head: below the first value LOD0 (0 = LOD0 never used; close-up cutscenes only), below the second LOD1, else LOD2. Game camera is 4-6 m, README: LOD1 up to 4 m, LOD2 beyond. hysteresisM prevents flicker at a threshold."
+               ],
+    "enabled":  false,
+    "canonFolder":  "C:/Users/dom12/Documents/kits_out/3d/metahuman/third_party",
+    "scene":  "Assets/Scenes/HadesSlice.unity",
+    "fighterName":  "@player",
+    "boneNames":  [
+                      "mixamorig:Head",
+                      "Head"
+                  ],
+    "objectName":  "MetaHumanHead",
+    "builder":  {
+                    "dataFolder":  "MetaHumanHead",
+                    "lookFile":  "look/dracula.look.json",
+                    "lod":  1,
+                    "useJobs":  true,
+                    "buildHairCards":  true
+                },
+    "attach":  {
+                   "alignJoint":  "head",
+                   "localPosition":  [
+                                         0,
+                                         0.04,
+                                         -0.08
+                                     ],
+                   "localEuler":  [
+                                      0.0,
+                                      -90.0,
+                                      0.0
+                                  ],
+                   "localScale":  [
+                                      1.0,
+                                      1.0,
+                                      1.0
+                                  ],
+                   "compensateParentScale":  true
+               },
+    "hideOriginalHead":  false,
+    "hideRenderers":  [
+                          "head"
+                      ],
+    "inheritRenderingLayers":  true,
+    "inheritLayer":  true,
+    "layerSourceRenderer":  "head",
+    "lod":  {
+                "switchDistancesM":  [
+                                         0.0,
+                                         4.0
+                                     ],
+                "hysteresisM":  0.25,
+                "prewarm":  [
+                                1,
+                                2
+                            ],
+                "checkIntervalS":  0.1
+            },
+    "maskOffBits":  [
+                        4
+                    ],
+    "matFloats":  [
+                      {
+                          "match":  "MH_Skin",
+                          "name":  "_SmoothnessRemapMax",
+                          "value":  0.42
+                      },
+                      {
+                          "match":  "MH_Skin",
+                          "name":  "_SmoothnessRemapMin",
+                          "value":  0.2
+                      }
+                  ],
+    "trim":  {
+                 "belowM":  0.08,
+                 "rendererPrefixes":  [
+                                          "head_lod"
+                                      ],
+                 "enabled":  true
+             }
+}

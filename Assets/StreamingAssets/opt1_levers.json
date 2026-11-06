@@ -1,0 +1,97 @@
+{
+  "_about": "laneOPT1 (2026-11-06): pipeline-level levers for fps at max quality. DARK: nothing in the game reads this file (documentation + test map for apply_opt1.py). Every arm is ONE change, installed only by `python -I _agents\\laneOPT1\\apply_opt1.py --apply <ARM>` (dry run is the default), and every arm except OPT1-DRSMIN needs a player rebuild (they edit ProjectSettings, the HDRP asset or Packages, none of which the player reads from StreamingAssets). evidence: M = measured from a file that exists (setting, source, log), I = inferred, E = estimate. No fps gain is claimed anywhere: the 'expect' text is what the test is designed to show, not a result.",
+  "enabled": false,
+  "arms": [
+    {
+      "id": "OPT1-VSYNC",
+      "kind": "measurement-fix",
+      "enabled": false,
+      "look": "neutral for players (FrameRateCap already sets vSyncCount 0 + a 120 fps cap in gameplay)",
+      "change": "QualitySettings.asset vSyncCount 1 -> 0 on all four levels",
+      "evidence": "M: vSyncCount 1 on every level; FrameRateCap.Harness() skips -balanceauto/-verifyGround/proofs, and no harness sets vSyncCount 0 (only CamProof, FlowProof, PhysProof, PostureProof, ShadowDiag, MoveSheet do); measured results 44.1/45.3 and 22.6/22.7 fps are within 1 percent of 180/4 and 180/8 on a 180 Hz panel. I: every balance/verify/PERF number so far is quantised to 5.56 ms steps, so the 22-24 ms floor and 'fixed cost' are UNPROVEN until a vsync-off run exists.",
+      "test": "re-run balance (5 seeds) and verify with this arm: if fps jumps off the 180/n steps the floor was partly an artifact; PERFAB/PERF6 noise thresholds (0.25 ms) are meaningless under vsync"
+    },
+    {
+      "id": "OPT1-DRSMIN",
+      "kind": "measurement-fix",
+      "enabled": false,
+      "look": "neutral (only lets renderScale below 60 take effect)",
+      "change": "HDRP_Max.asset dynamicResolutionSettings.minPercentage 60 -> 20, look.json dynamicRes.minPercentage 60 -> 20 (HdrpSetup bakes the asset from look.json)",
+      "evidence": "M: DynamicResolutionHandler.cs line 456 clamps a ReturnsPercentage scaler to [minPercentage, maxPercentage]; HDRP_Max.asset minPercentage 60. So -renderscale:25 and the harness's renderScale 50 both render at 60 percent.",
+      "test": "run_res_ab.py rs25 vs rs100 on a build that has this arm; before it, rs25 == rs60"
+    },
+    {
+      "id": "OPT1-SKIN",
+      "kind": "cpu",
+      "enabled": false,
+      "look": "neutral (same skinning maths on the GPU; float rounding only)",
+      "change": "ProjectSettings.asset gpuSkinning 0 -> 1, meshDeformation 0 -> 2 (GPU batched; the Unity URP template ships 1 / 2)",
+      "evidence": "M: settings are 0/0 here; template 1/2. M: skinned vertices per frame Joan 269542 + Pitborn 198474 = 468016 (GLB accessor counts). I: CPU skinning + per-frame vertex upload of that many vertices is resolution independent.",
+      "test": "two builds identical except this arm, same seed: PerfBench cpu_ms/wall p50,p95 + simhash equal + look_gate"
+    },
+    {
+      "id": "OPT1-SKINW",
+      "kind": "cpu",
+      "enabled": false,
+      "look": "neutral where every vertex has <= 4 influences",
+      "change": "QualitySettings.asset skinWeights 255 -> 4 on High and Ultra (Low 2, Medium 4 untouched)",
+      "evidence": "M: High/Ultra are 255 (unlimited); M: no JOINTS_1 attribute in Joan/Pitborn/Dracula _combat.glb, so the source meshes carry at most 4 influences.",
+      "test": "same A/B as OPT1-SKIN; run on top of it"
+    },
+    {
+      "id": "OPT1-GRD",
+      "kind": "cpu-draw",
+      "enabled": false,
+      "look": "neutral (GPU Resident Drawer, no occlusion culling)",
+      "change": "HDRP_Max.asset gpuResidentDrawerSettings.mode 0 -> 1 (instanced drawing). MANUAL prerequisite, not scripted: Project Settings > Graphics > BatchRendererGroup Variants = Keep All (GPUResidentDrawer.Validator.cs)",
+      "evidence": "M: mode is 0 today; 2150 renderers (verify summary). I: SRP-batcher draw submission for the static world may be the resolution-independent cost; skinned characters stay on the old path. The YAML number of Keep All could not be verified from files, hence manual.",
+      "test": "build A/B; profile mode draw-call count; rs25 vs rs100 says whether CPU-bound at all"
+    },
+    {
+      "id": "OPT1-ATLAS",
+      "kind": "gpu-small",
+      "enabled": false,
+      "look": "neutral while only one 512 point shadow exists",
+      "change": "HDRP_Max.asset punctualLightShadowAtlas.shadowAtlasResolution 4096 -> 2048",
+      "evidence": "M: atlas 4096 x 32-bit = 64 MB; PERF6: one 512 point shadow left (DoorShadowWarm). 6 cube faces x 512^2 = 1.5 MP < 2048^2 = 4.2 MP. I: saves the atlas clear + memory; time unknown, small.",
+      "test": "build A/B; look_gate; confirm no shadow rescale (HDRP debug / shadowdiag)"
+    },
+    {
+      "id": "OPT1-FSR2",
+      "kind": "upscaler",
+      "enabled": false,
+      "look": "CHANGES the look (different temporal upscaler): needs Dom's LOOK OK",
+      "change": "Packages/manifest.json + com.unity.modules.amd 1.0.0; HDRP_Max.asset advancedUpscalerNames [STP] -> [FSR2, STP] (FSR2 first, STP when FSR2 is not detected)",
+      "evidence": "M: STP is the only entry today; FSR2Pass.SetupFeature needs ENABLE_AMD_MODULE (module not in manifest) and AMDUnityPlugin.dll (absent from Builds/HDRP_v103, present in the editor's player variation folder). I: whether FSR2 initialises and is faster/sharper than STP on the 8060S is untested.",
+      "test": "A/B at 2560x1600 renderScale 59 / 67: fps + look_gate + side-by-side stills; log line 'FSR2' and no 'Cannot instantiate AMD device'"
+    },
+    {
+      "id": "OPT1-LITBOTH",
+      "kind": "test-only",
+      "enabled": false,
+      "look": "CHANGES the look until proven equal: test arm",
+      "change": "HDRP_Max.asset supportedLitShaderMode 1 (ForwardOnly) -> 3 (Both); camera default frame settings already have bit 0 set (Deferred)",
+      "evidence": "M: ForwardOnly = 1 << 0 (RenderPipelineSettings.cs); HDRP default is DeferredOnly. I: forward is probably right for a bandwidth-bound iGPU; sign of the change unknown.",
+      "test": "build A/B only if the profile shows the GBuffer/forward main pass is large"
+    },
+    {
+      "id": "OPT1-VULKAN",
+      "kind": "test-only",
+      "enabled": false,
+      "look": "neutral if it renders the same",
+      "change": "ProjectSettings.asset m_APIs 12000000i (D3D12) -> 1200000015000000i (D3D12 + Vulkan); run the same exe with -force-vulkan",
+      "evidence": "M: D3D12 only today. I: no evidence either API is faster on this driver (32.0.22032.6002).",
+      "test": "same exe, same flags, -force-d3d12 vs -force-vulkan"
+    }
+  ],
+  "not_ours": {
+    "async_compute": "lanePERF5 P5-ASYNC (-qset:asyncCompute=1, runtime flag, no rebuild)",
+    "shadow_depth_16": "lanePERF4 A3",
+    "sun_shadow_cache": "lanePERF4 A2",
+    "textures": "laneOPT2",
+    "culling_lod_batching": "laneOPT3",
+    "profiling": "laneOPT4",
+    "cpu_scripts_gc_physics": "laneOPT5",
+    "ssgi_fog_ssr_ssao_sizes": "lanePERF6 DIAG arms"
+  }
+}

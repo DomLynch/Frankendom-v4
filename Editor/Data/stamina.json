@@ -1,0 +1,172 @@
+{
+  "enabled": true,
+  "debugLog": false,
+  "defaultMax": 100,
+  "fighters": [
+    {
+      "key": "Dracula",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "Joan",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "Pitborn",
+      "maxStamina": 120,
+      "regenMul": 0.85,
+      "parryWindowTicks": 0
+    }
+  ],
+  "regen": {
+    "delayTicks": 50,
+    "perSecond": 22,
+    "guardMul": 0.0,
+    "exhaustedDelayTicks": 100,
+    "exhaustedMul": 0.8
+  },
+  "costs": [
+    {
+      "id": "light_right",
+      "cost": 12
+    },
+    {
+      "id": "light_left",
+      "cost": 12
+    },
+    {
+      "id": "slash_riposte",
+      "cost": 0
+    },
+    {
+      "id": "thrust",
+      "cost": 14
+    },
+    {
+      "id": "heavy_overhead",
+      "cost": 30
+    },
+    {
+      "id": "heavy_left",
+      "cost": 30
+    },
+    {
+      "id": "heavy_right",
+      "cost": 30
+    },
+    {
+      "id": "heavy_thrust",
+      "cost": 30
+    },
+    {
+      "id": "light_overhead",
+      "cost": 12
+    },
+    {
+      "id": "kick",
+      "cost": 18
+    },
+    {
+      "id": "riposte",
+      "cost": 0
+    },
+    {
+      "id": "heavy_riposte",
+      "cost": 0
+    },
+    {
+      "id": "heavy_counter",
+      "cost": 0
+    },
+    {
+      "id": "critical",
+      "cost": 0
+    }
+  ],
+  "dodge": {
+    "roll": 24,
+    "backstep": 10,
+    "sidestep": 8
+  },
+  "guard": {
+    "holdFreeTicks": 30,
+    "holdDrainPerSecond": 4,
+    "allowAtZero": true,
+    "raiseDelayExhausted": 8
+  },
+  "exhausted": {
+    "recoverAt": 25,
+    "walkMul": 0.85,
+    "damageMul": 0.75,
+    "heavyMinStamina": 18,
+    "noParry": true,
+    "blockCostMul": 1.3,
+    "chipMul": 2.0
+  },
+  "block": {
+    "baseLight": 12,
+    "baseHeavy": 24,
+    "staminaDamageMul": 0.3,
+    "chipMin": 0.08
+  },
+  "guardBreak": {
+    "heavyBreakBelow": 20,
+    "staggerTicks": 54,
+    "staminaAfter": 0,
+    "flashTicks": 24
+  },
+  "hud": {
+    "enabled": true,
+    "barHeight": 6,
+    "gap": 4,
+    "borderPx": 1,
+    "postureHeight": 3,
+    "postureShowAbove": 12,
+    "showForEnemy": true,
+    "staminaColor": [
+      0.3,
+      0.55,
+      0.3
+    ],
+    "lowColor": [
+      0.78,
+      0.55,
+      0.16
+    ],
+    "exhaustedColor": [
+      0.6,
+      0.1,
+      0.08
+    ],
+    "guardColor": [
+      0.62,
+      0.66,
+      0.74
+    ],
+    "parryColor": [
+      0.98,
+      0.8,
+      0.28
+    ],
+    "breakColor": [
+      0.95,
+      0.18,
+      0.12
+    ],
+    "postureColor": [
+      0.8,
+      0.72,
+      0.3
+    ],
+    "lowFraction": 0.3,
+    "exhaustedPulseHz": 3,
+    "parryFlashTicks": 20,
+    "labelFontSize": 11,
+    "breakText": "GUARD BROKEN",
+    "parryText": "PARRY"
+  }
+}

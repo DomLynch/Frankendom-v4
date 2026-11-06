@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "enabled": true,
+  "enforceZeroHp": true,
+  "debugLog": false,
+  "_about": "DEATHFIX v92 (DeathTable.cs, DuelFighter.Die). The Mixamo death clip (4.4 s, the same take on Joan / Pitborn / Dracula) keeps the hips at standing height until ~1.1 s (hips z 0.95 at 0..1.2 s, 0.80 at 1.6, 0.48 at 2.0, 0.12 from 2.8 s: measured from Pitborn_combat.glb / Joan_combat.glb / Dracula_combat.glb), so a fighter at 0 HP stood for ~1.5 s. startSeconds skips that lead-in (the knees buckle right after the killing blow); downStartSeconds = the clip's floor pose for a fighter killed while knocked down (FState.Down) so it does not pop upright. Rows keyed by roster id; character '' = default. enforceZeroHp: Duel.Update kills any fighter at 0 HP that is not Dead (finisher scenes excluded).",
+  "rows": [
+    {
+      "character": "",
+      "clip": "death",
+      "startSeconds": 1.1,
+      "speed": 1.0,
+      "fade": 0.1,
+      "downEnabled": true,
+      "downStartSeconds": 2.8,
+      "downFade": 0.25,
+      "note": "default row (any character without its own row)"
+    },
+    {
+      "character": "Joan",
+      "clip": "death",
+      "startSeconds": 1.1,
+      "speed": 1.0,
+      "fade": 0.1,
+      "downEnabled": true,
+      "downStartSeconds": 2.8,
+      "downFade": 0.25,
+      "note": "Joan"
+    },
+    {
+      "character": "Pitborn",
+      "clip": "death",
+      "startSeconds": 1.1,
+      "speed": 1.0,
+      "fade": 0.1,
+      "downEnabled": true,
+      "downStartSeconds": 2.8,
+      "downFade": 0.25,
+      "note": "Pitborn (animWeight 0.92 still multiplies the speed)"
+    },
+    {
+      "character": "Dracula",
+      "clip": "death",
+      "startSeconds": 1.1,
+      "speed": 1.0,
+      "fade": 0.1,
+      "downEnabled": true,
+      "downStartSeconds": 2.8,
+      "downFade": 0.25,
+      "note": "Dracula (not in the current duel)"
+    }
+  ]
+}

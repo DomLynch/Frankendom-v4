@@ -1,0 +1,50 @@
+{
+ "enabled": true,
+ "note": "B1 first guess (v59 baseline: 28 s fights, Dracula 0/5, hits D4.2/P8.8, specials 5-8 each). Sim ticks: 60 = 1 s. Edit and rerun -balanceauto -seeds:5, no rebuild.",
+ "fighters": [
+  {
+   "key": "Dracula",
+   "maxHealth": 520,
+   "maxStamina": 0,
+   "damageMul": 1.1,
+   "takenMul": 1.0,
+   "specialDamageMul": 0.65,
+   "specialCooldownTicks": 1500,
+   "specialInitialCooldownTicks": 900,
+   "specialMaxUses": 0
+  },
+  {
+   "key": "Joan",
+   "maxHealth": 520,
+   "maxStamina": 0,
+   "damageMul": 1.0,
+   "takenMul": 1.0,
+   "specialDamageMul": 0.65,
+   "specialCooldownTicks": 1500,
+   "specialInitialCooldownTicks": 900,
+   "specialMaxUses": 0
+  },
+  {
+   "key": "Pitborn",
+   "maxHealth": 520,
+   "maxStamina": 0,
+   "damageMul": 1.1,
+   "takenMul": 1.0,
+   "specialDamageMul": 1.0,
+   "specialCooldownTicks": 1500,
+   "specialInitialCooldownTicks": 300,
+   "specialMaxUses": 0
+  },
+  {
+   "key": "*",
+   "maxHealth": 0,
+   "maxStamina": 0,
+   "damageMul": 1.0,
+   "takenMul": 1.0,
+   "specialDamageMul": 1.0,
+   "specialCooldownTicks": 0,
+   "specialInitialCooldownTicks": -1,
+   "specialMaxUses": 0
+  }
+ ]
+}

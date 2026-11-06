@@ -1,0 +1,16 @@
+{
+  "_about": "Player build options (lane V66HUD), read by Assets/Editor/BuildCfg.cs for BuildPlayerCmd.Run. The release candidate is a NON-development build (no 'Development Build' watermark, no dev console, no profiler). Command line wins over this file: -devbuild or -releasebuild on the Unity command line (or the file Tools/build_dev.txt present = -devbuild). Harness flags (-balanceauto, -looptest, ...) and -logFile do not need a development build. RCHYGIENE v100: the release identity and player settings below are pushed into PlayerSettings by BuildCfg.ApplyPlayerSettings() right before BuildPlayerCmd.Run builds (empty string / -1 = leave the ProjectSettings value alone). companyName / productName are PLACEHOLDERS for Dom to confirm: they set the persistentDataPath (LocalLow\\<company>\\<product>), the registry key of the PlayerPrefs and the window title; changing them once resets the player's saved settings.json and graphics tier. exeName stays HadesSlice.exe because every gate script looks for it; rename them together. bundleVersion = Application.version (shown in the crash log header). runInBackground 0 = a release player pauses when its window loses focus (proof / gate runs keep running: release.json). showUnitySplash 0 hides the Unity splash (Unity 6 allows it on every licence; check the licence terms). iconPath = a Texture2D asset path for the default app icon (none exists yet: the slot is wired, the file is missing).",
+  "developmentBuild": false,
+  "allowDebugging": false,
+  "connectProfiler": false,
+  "scenes": [
+    "Assets/Scenes/HadesSlice.unity"
+  ],
+  "companyName": "",
+  "productName": "",
+  "bundleVersion": "0.100.0",
+  "exeName": "HadesSlice.exe",
+  "iconPath": "",
+  "runInBackground": 0,
+  "showUnitySplash": -1
+}

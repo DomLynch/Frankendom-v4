@@ -145,7 +145,7 @@ public static class BuildCfg
         {
             string n = Path.GetFileName(f);
             if (skip.Contains(n)) { skipped.Add(n); continue; }
-            File.Copy(f, "Assets/StreamingAssets/" + n, true); copied++;
+            SafeIO.Copy(f, "Assets/StreamingAssets/" + n, true); /* LOCKFIX v103 */ copied++;
         }
         var stale = new System.Collections.Generic.List<string>();
         foreach (var f in Directory.GetFiles("Assets/StreamingAssets", "*.json"))
