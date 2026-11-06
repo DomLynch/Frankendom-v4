@@ -13,6 +13,7 @@ public static class CamFraming
     public class ProofRow
     {
         public float steadyMin = 0.9f;        // VisibleFraction of BOTH fighters, steady state (-camproof)
+        public float playerScreenHMin = 0.22f, reframeSteadyMin = 0.5f;   // GOOSEBACKLOG2 v102: player viewport height gate and relaxed steadyMin, both used ONLY while look_options.json camReframe.on
         public float transientMin = 0.66f;    // while a fighter is being knocked across the arena
         public float lumaMin = 0.02f, lumaMax = 0.95f;   // black / white frame guard (mean luma of the picture's middle band)
         public float[] seps = { 1.0f, 2.0f, 4.0f, 7.0f, 10.0f };
@@ -94,8 +95,12 @@ public static class CamFraming
             total = Mathf.Min(r.maxExtraDist, total + add);
         }
         float cap = LookOptions.CamCapM();   // LOOKOPT v95: combatCamCap switch (look_options.json); 0 = off = today's pull-back
+        var rf = LookOptions.Reframe(); float rw = 0f;   // GOOSEBACKLOG2 v102: camReframe switch (Goose 08:30): cap the distance, raise the camera a few degrees instead of pulling back
+        if (rf.on) { if (rf.maxDistM > 0f && (cap <= 0f || rf.maxDistM < cap)) cap = rf.maxDistM; rw = Mathf.Clamp01((Vector2.Distance(new Vector2(pa.x, pa.z), new Vector2(pb.x, pb.z)) - rf.startSepM) / Mathf.Max(0.01f, rf.spanSepM)); }
         if (cap > 0f) total = Mathf.Min(total, Mathf.Max(0f, cap - dir.magnitude));   // camera at most cap m from the look-at, never closer than the base pose
-        return pos - dn * total;
+        Vector3 res = pos - dn * total;
+        if (rw > 0f && rf.maxPitchDeg > 0f) { Vector3 rgt = Vector3.Cross(Vector3.up, dn); if (rgt.sqrMagnitude > 1e-6f) res = look + Quaternion.AngleAxis(rw * rf.maxPitchDeg, rgt.normalized) * (res - look); }   // GOOSEBACKLOG2 v102: orbit up about the look-at
+        return res;
     }
 
     /// <summary>Vertical FOV for this frame: the base FOV, opened up (smoothly released) when a fighter is still out of the safe area at the final pose.</summary>
@@ -114,6 +119,7 @@ public static class CamFraming
         float need = ratio > 1.001f ? Mathf.Min(r.fovMax, 2f * Mathf.Atan(tv * ratio) * Mathf.Rad2Deg) - baseFov : 0f;
         need = Mathf.Max(0f, need);
         widen = need > widen ? need : Mathf.MoveTowards(widen, need, r.fovReleaseDegPerS * dt);
-        return Mathf.Min(r.fovMax, baseFov + widen);
+        var rfo = LookOptions.Reframe(); float fmax = rfo.on && rfo.fovMaxDeg > 0f ? Mathf.Min(r.fovMax, rfo.fovMaxDeg) : r.fovMax;   // GOOSEBACKLOG2 v102: no FOV widening beyond fovMaxDeg while camReframe is on
+        return Mathf.Min(fmax, baseFov + widen);
     }
 }

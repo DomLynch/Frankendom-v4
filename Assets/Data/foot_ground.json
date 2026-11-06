@@ -104,7 +104,21 @@
         },
         {
             "name": "*",
-            "enabled": false
+            "enabled": false,
+            "debugEvery": 10,
+            "weight": 1,
+            "ankleHeight": 0.10,
+            "rayUp": 0.6,
+            "rayDown": 0.9,
+            "ignoreLayers": [8, 9],
+            "pelvisDownMax": 0.25,
+            "pelvisUpMax": 0.10,
+            "pelvisSmooth": 0.06,
+            "plantSnap": 0.02,
+            "maxLift": 0.16,
+            "levelWeight": 1,
+            "toeFlatWeight": 1,
+            "stateBlend": 0.1
         }
     ]
 }

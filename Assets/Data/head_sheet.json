@@ -48,7 +48,14 @@
                     "w": 1280,
                     "h": 720
                 }
-            ]
+            ],
+            "settleTicks": -1,
+            "radius": 3,
+            "seconds": 12,
+            "frames": 6,
+            "cols": 3,
+            "tileW": 640,
+            "tileH": 360
         },
         {
             "id": "natural_start",
@@ -77,7 +84,15 @@
                     "w": 1280,
                     "h": 720
                 }
-            ]
+            ],
+            "z": 12.6,
+            "oppDist": 7,
+            "radius": 3,
+            "seconds": 12,
+            "frames": 6,
+            "cols": 3,
+            "tileW": 640,
+            "tileH": 360
         },
         {
             "id": "turn360",
@@ -99,9 +114,14 @@
                     "lookY": 1.15,
                     "fov": 34,
                     "angleDeg": 30,
-                    "minAboveGround": 0.6
+                    "minAboveGround": 0.6,
+                    "w": 1280,
+                    "h": 720
                 }
-            ]
+            ],
+            "settleTicks": -1,
+            "oppDist": 7,
+            "captureTicks": [0]
         }
     ]
 }

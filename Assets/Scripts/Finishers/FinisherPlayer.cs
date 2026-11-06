@@ -204,7 +204,7 @@ public static class FinisherPlayer
         var slows = new List<FinisherSlowKey>(e.slowmo ?? new FinisherSlowKey[0]);
         var gores = new List<FinisherGoreKey>(v1on && v1c.timing && e.goreV1 != null && e.goreV1.Length > 0 ? e.goreV1 : (e.gore ?? new FinisherGoreKey[0]));   // V1FIN v94: V1's gore timing
         bool[] shotDone = new bool[shots.Count], slowDone = new bool[slows.Count], goreDone = new bool[gores.Count];
-        bool contactSeen = false, vStarted = false, dead = false, anyGore = false;   // CUTLOD v96: anyGore = a gore key (the cut commit) has fired
+        bool contactSeen = false, vStarted = false, dead = false, anyGore = false, preDone = false;   // SWINGFIX v103: preDone   // CUTLOD v96: anyGore = a gore key (the cut commit) has fired
         float T = 0f, contactT = planned, vStart = 0f, wall0 = Time.unscaledTime;
 
         if (clipPath) { fa.holdLast = false; fa.ForceExact(e.attackerClip, e.attackerFade, e.attackerClipStart); fa.anim.speed = e.attackerClipSpeed * fa.animWeight; }
@@ -259,6 +259,11 @@ public static class FinisherPlayer
                 }
             }
             // victim clip
+            if (vClip && !vStarted && !preDone)   // SWINGFIX v103: optional stagger before the finisher clip (dark, swingfix.json finisherPreStagger)
+            {
+                var prs = SwingFix.PreStagger(e.id, FinisherSides.IdOf(ctx.killerSide), FinisherSides.IdOf(ctx.victimSide));
+                if (prs != null && T >= prs.atS && HasState(fv, prs.clip)) { preDone = true; fv.holdLast = false; fv.ForceExact(prs.clip, prs.fade, 0f); fv.anim.speed = prs.speed * fv.animWeight; }
+            }
             if (vClip && !vStarted)
             {
                 float vs = e.victimStart >= 0f ? e.victimStart : (contactSeen ? contactT : planned);

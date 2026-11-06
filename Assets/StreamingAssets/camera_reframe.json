@@ -1,0 +1,11 @@
+{
+  "_about": "CAMREFRAME v102: approved V3 lock-cam reframe for far separations (CamReframe.cs, hooks in CameraRig). Fighters further apart than midpointFromSepM: look-at goes to their midpoint, the camera is pulled in toward maxDistM from the look-at as far as BOTH fighters stay in the CamFraming safe area (framing never relaxed), orbit tilted by pitchDeg (negative = lower; |pitchDeg| <= pitchLimitDeg). Finisher and death cameras untouched. enabled=false = today's pose. proof = the extra -camproof row.",
+  "enabled": true,
+  "maxDistM": 6.5,
+  "midpointFromSepM": 6.0,
+  "blendSpanM": 1.0,
+  "pitchDeg": -4.0,
+  "pitchLimitDeg": 4.0,
+  "bisectIters": 18,
+  "proof": { "farSepM": 6.0, "playerScreenHMin": 0.22, "fullSepM": 7.0, "playerScreenHMinFar": 0.15, "farSepFullM": 10.0, "rowName": "joan_screen_h" }
+}

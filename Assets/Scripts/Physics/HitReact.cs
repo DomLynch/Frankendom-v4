@@ -51,7 +51,7 @@ public class ClashCfg
 }
 [Serializable] public class HitProofClass { public string name = "", moveId = ""; public bool heavy, counter; public float minPeakDeg, maxPeakDeg = 90f; }
 [Serializable] public class HitProofClash { public string kind = "", type = ""; public bool perfect, heavy; }
-[Serializable] public class HitProofTrack { public string row = "track", move = "heavy"; public float separationM = 6f, seconds = 1.4f, maxDeg = 5f, idleSeconds = 1f; }
+[Serializable] public class HitProofTrack { public string row = "track", move = "heavy"; public float separationM = 6f, seconds = 1.4f, maxDeg = 5f, idleSeconds = 1f; public string[] attackParts = new string[0]; }   // PHYSAUDIT: attackParts = parts the shipped rows blend (empty = all)
 [Serializable]
 public class HitProofCfg
 {

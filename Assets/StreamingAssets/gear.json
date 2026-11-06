@@ -282,7 +282,10 @@
         "metallic": 0.0,
         "sheen": 0.35
       }
-    }
+    },
+    "baseColorTextures": ["baseColorTexture", "_BaseColorMap", "_MainTex"],
+    "normalTextures": ["normalTexture", "_NormalMap", "_BumpMap"],
+    "baseColorProps": ["baseColorFactor", "_BaseColor", "_Color"]
   },
   "drop": {
     "enabled": true,
@@ -360,7 +363,8 @@
       },
       "dropFrom": [],
       "dropChance": 0,
-      "notes": "Joan base layer (ch13 chef_base glb node Layer_Tunic, material Heraldry). Already on the wearer: equipping shows it. Zones are a first guess, tune after one render."
+      "notes": "Joan base layer (ch13 chef_base glb node Layer_Tunic, material Heraldry). Already on the wearer: equipping shows it. Zones are a first guess, tune after one render.",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "joan_helmet",
@@ -378,7 +382,8 @@
       },
       "dropFrom": [],
       "dropChance": 0,
-      "notes": "Joan base layer (Layer_Helmet, material Steel). Not in the default loadout (bare headed); a closed helm hides the whole head zone."
+      "notes": "Joan base layer (Layer_Helmet, material Steel). Not in the default loadout (bare headed); a closed helm hides the whole head zone.",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "joan_bracers",
@@ -397,7 +402,8 @@
       },
       "dropFrom": [],
       "dropChance": 0,
-      "notes": "Joan base layer (Layer_Bracers, material Leather)."
+      "notes": "Joan base layer (Layer_Bracers, material Leather).",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "joan_greaves",
@@ -418,7 +424,8 @@
       },
       "dropFrom": [],
       "dropChance": 0,
-      "notes": "Joan base layer (Layer_Greaves, material Steel)."
+      "notes": "Joan base layer (Layer_Greaves, material Steel).",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "joan_tabard",
@@ -446,7 +453,8 @@
           "sheen": 0.5
         }
       },
-      "notes": "GEAR2. kits_out/3d/gear/joan_tabard/joan_tabard.glb (laneTABARD, 11k tris, 14 bones of the 106 rig, material 'Tabard', double sided, KHR sheen) -> StreamingAssets/Gear/joan_tabard.glb (apply_gear2.ps1). Red wool: metallic 0, smoothness 0.2, normal 0.8, sheen 0.5 (needs the sheen shader, else plain Lit). hidesLayers Layer_Tunic: the sleeved shirt layer goes while the tabard is worn (same chest slot, so equipping it replaces joan_tunic anyway). coversZones empty ON PURPOSE: open sides + split hem, masking torso/pelvis would leave holes at the sides. To wear it: Joan roster loadout joan_tabard instead of joan_tunic."
+      "notes": "GEAR2. kits_out/3d/gear/joan_tabard/joan_tabard.glb (laneTABARD, 11k tris, 14 bones of the 106 rig, material 'Tabard', double sided, KHR sheen) -> StreamingAssets/Gear/joan_tabard.glb (apply_gear2.ps1). Red wool: metallic 0, smoothness 0.2, normal 0.8, sheen 0.5 (needs the sheen shader, else plain Lit). hidesLayers Layer_Tunic: the sleeved shirt layer goes while the tabard is worn (same chest slot, so equipping it replaces joan_tunic anyway). coversZones empty ON PURPOSE: open sides + split hem, masking torso/pelvis would leave holes at the sides. To wear it: Joan roster loadout joan_tabard instead of joan_tunic.",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "joan_boots",
@@ -478,7 +486,8 @@
           "normalScale": 1.0
         }
       },
-      "notes": "GEAR2 PLACEHOLDER PATH: kits_out/3d/gear/joan_boots/joan_boots.glb is being made (laneBOOTS); file name, material names and zones are guesses. Missing file = stats only, one warning, no masking, the legs show bare. Same legs slot as joan_greaves (boots replace the greaves layer; hidesLayers Layer_Greaves keeps it off even if greaves sit in another slot later). coversZones feet + shins: masked ONLY after the glb loaded, so a missing asset never leaves a hole. Material rows: '*' = leather; a metal part named Steel / a leather part named Leather pick up materials.byName (exact names beat '*'). Rename/add rows when the glb exists (python _agents/laneGEAR2/tools/glb_materials.py <glb> prints the names)."
+      "notes": "GEAR2 PLACEHOLDER PATH: kits_out/3d/gear/joan_boots/joan_boots.glb is being made (laneBOOTS); file name, material names and zones are guesses. Missing file = stats only, one warning, no masking, the legs show bare. Same legs slot as joan_greaves (boots replace the greaves layer; hidesLayers Layer_Greaves keeps it off even if greaves sit in another slot later). coversZones feet + shins: masked ONLY after the glb loaded, so a missing asset never leaves a hole. Material rows: '*' = leather; a metal part named Steel / a leather part named Leather pick up materials.byName (exact names beat '*'). Rename/add rows when the glb exists (python _agents/laneGEAR2/tools/glb_materials.py <glb> prints the names).",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "pitborn_pauldron_joan",
@@ -507,7 +516,8 @@
           "normalScale": 1.0
         }
       },
-      "notes": "GEAR2. Pair: pitborn_pauldron_joan_R.glb (glb) + _L.glb (glbMirror), laneDROP1b refit to Joan (dome on RightShoulder, lames on RightArm, 1.75 cm offset), one material 'pitborn_pauldron.001' (dark steel + gold): metallic 0.85, smoothness 0.5. kits_out/3d/gear/pitborn_pauldron/ -> StreamingAssets/Gear/. coversZones empty on purpose: it is a 5 mm plate standing 1.75 cm off the body, a mask under it would show holes with the arm raised. Known: cross-body slash frames 6-16 still clip on the R side (GEAR_ITEM.md). Slot arms: replaces the leather bracers. Replaces pitborn_pauldron as THE first drop (dropChance 1.0)."
+      "notes": "GEAR2. Pair: pitborn_pauldron_joan_R.glb (glb) + _L.glb (glbMirror), laneDROP1b refit to Joan (dome on RightShoulder, lames on RightArm, 1.75 cm offset), one material 'pitborn_pauldron.001' (dark steel + gold): metallic 0.85, smoothness 0.5. kits_out/3d/gear/pitborn_pauldron/ -> StreamingAssets/Gear/. coversZones empty on purpose: it is a 5 mm plate standing 1.75 cm off the body, a mask under it would show holes with the arm raised. Known: cross-body slash frames 6-16 still clip on the R side (GEAR_ITEM.md). Slot arms: replaces the leather bracers. Replaces pitborn_pauldron as THE first drop (dropChance 1.0).",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "pitborn_pauldron",
@@ -534,7 +544,8 @@
           "normalScale": 1.0
         }
       },
-      "notes": "glb = StreamingAssets/Gear/pitborn_pauldron.glb (female fit, kept so existing loot_save.json entries still resolve). SUPERSEDED by pitborn_pauldron_joan (R+L, refit to Joan): no longer drops. Right plate only, fitted to mh-female-01, NOT to the chef body: expect clipping and a gap."
+      "notes": "glb = StreamingAssets/Gear/pitborn_pauldron.glb (female fit, kept so existing loot_save.json entries still resolve). SUPERSEDED by pitborn_pauldron_joan (R+L, refit to Joan): no longer drops. Right plate only, fitted to mh-female-01, NOT to the chef body: expect clipping and a gap.",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "pauldron_joan",
@@ -562,7 +573,8 @@
           "normalScale": 1.0
         }
       },
-      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 3/10 (dome oversized, reaches toward the neck, intersects the body in all poses): NOT READY, kept out of the drop table. Same arms slot as the vambrace and as pitborn_pauldron_joan: only one of the three can be worn (a separate shoulders slot would let pauldron + vambrace combine, see MANIFEST). coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3)."
+      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 3/10 (dome oversized, reaches toward the neck, intersects the body in all poses): NOT READY, kept out of the drop table. Same arms slot as the vambrace and as pitborn_pauldron_joan: only one of the three can be worn (a separate shoulders slot would let pauldron + vambrace combine, see MANIFEST). coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3).",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "vambrace_joan",
@@ -592,7 +604,8 @@
           "normalScale": 1.0
         }
       },
-      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 6/10: rest clearance 0.9-1.1 cm, intersects in elbow-110, Run12, Heavy24 and a few attack frames; straps are leather in the same atlas (one material, so the metallic row is a compromise: the metallic-roughness map is not converted). coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3)."
+      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 6/10: rest clearance 0.9-1.1 cm, intersects in elbow-110, Run12, Heavy24 and a few attack frames; straps are leather in the same atlas (one material, so the metallic row is a compromise: the metallic-roughness map is not converted). coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3).",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "gorget_joan",
@@ -619,7 +632,8 @@
           "normalScale": 1.0
         }
       },
-      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 4/10: 29 verts inside the body at rest, bulky. ONE symmetric piece: the file keeps the runner's _R name, gorget_joan_L.glb is not used. Chest slot = replaces the tabard / tunic while worn. coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3)."
+      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 4/10: 29 verts inside the body at rest, bulky. ONE symmetric piece: the file keeps the runner's _R name, gorget_joan_L.glb is not used. Chest slot = replaces the tabard / tunic while worn. coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3).",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "greave_joan",
@@ -649,7 +663,8 @@
           "normalScale": 1.0
         }
       },
-      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 6/10: R rest clearance 0.55 cm (below the 1 cm target), L intersects in walk / attack / knee-80 frames, flat shin plate. Legs slot = replaces joan_boots / joan_greaves. coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3)."
+      "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 6/10: R rest clearance 0.55 cm (below the 1 cm target), L intersects in walk / attack / knee-80 frames, flat shin plate. Legs slot = replaces joan_boots / joan_greaves. coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3).",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "pitborn_chest",
@@ -669,7 +684,8 @@
         "Pitborn"
       ],
       "dropChance": 1.0,
-      "notes": "v87 PLACEHOLDER (Dom): Pitborn's chest piece drop. The glb does not exist yet, the art comes later: a missing glb = stats only, no visual, no exception. Drops with the pauldrons and the maul on the first win."
+      "notes": "v87 PLACEHOLDER (Dom): Pitborn's chest piece drop. The glb does not exist yet, the art comes later: a missing glb = stats only, no visual, no exception. Drops with the pauldrons and the maul on the first win.",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "pitborn_maul",
@@ -741,7 +757,8 @@
           "smoothness": 0.62
         }
       },
-      "notes": "v2: smooth pointed bascinet (analytic ogive skull over a low-order scalp fit, straight brow edge, flared raised neck guard), 4.2 mm plate, 9 mm brass rolled edge, steel #4a4a4e metallic 0.85 roughness 0.34-0.46 brushed, subtle hammering (max tilt ~4 deg). 0 intersecting tris vs head in rest/turn/tilt/neck poses; 0 overlaps with body/tunic in all 11 gameplay actions (min 7.9 mm to tunic in Death); only Stress_OverheadRoll clips. Old files in _work/v1."
+      "notes": "v2: smooth pointed bascinet (analytic ogive skull over a low-order scalp fit, straight brow edge, flared raised neck guard), 4.2 mm plate, 9 mm brass rolled edge, steel #4a4a4e metallic 0.85 roughness 0.34-0.46 brushed, subtle hammering (max tilt ~4 deg). 0 intersecting tris vs head in rest/turn/tilt/neck poses; 0 overlaps with body/tunic in all 11 gameplay actions (min 7.9 mm to tunic in Death); only Stress_OverheadRoll clips. Old files in _work/v1.",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
       "id": "cap_joan",
@@ -772,7 +789,8 @@
           "smoothness": 0.62
         }
       },
-      "notes": "v2: kettle hat, round elliptical dome + flat even 3.8 cm brim (9 deg droop), 9 mm brass rolled edge, same steel material. 0 overlaps in all actions (min 0.6 mm brim-to-body in Roll, no overlap)."
+      "notes": "v2: kettle hat, round elliptical dome + flat even 3.8 cm brim (9 deg droop), 9 mm brass rolled edge, same steel material. 0 overlaps in all actions (min 0.6 mm brim-to-body in Roll, no overlap).",
+      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     }
   ]
 }

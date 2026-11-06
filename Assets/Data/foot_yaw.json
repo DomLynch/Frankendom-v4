@@ -18,7 +18,8 @@
             0
         ],
         "armWeight": 1,
-        "categories": []
+        "categories": [],
+        "debugEvery": 30
     },
     "characters": [
         {

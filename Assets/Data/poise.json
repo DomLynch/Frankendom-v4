@@ -10,15 +10,27 @@
         "moves": [
           {
             "move": "skill_jab",
-            "armour": false
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
           },
           {
             "move": "skill_pommel",
-            "armour": false
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
           },
           {
             "move": "skill_shove",
-            "armour": false
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
           },
           {
             "move": "heavy*",
@@ -26,7 +38,8 @@
             "recoveryTicks": 0,
             "damageMul": 1.0,
             "knockMul": 0.2,
-            "postureMul": 0.5
+            "postureMul": 0.5,
+            "armour": true
           },
           {
             "move": "critical",
@@ -34,7 +47,8 @@
             "recoveryTicks": 0,
             "damageMul": 1.0,
             "knockMul": 0.2,
-            "postureMul": 0.5
+            "postureMul": 0.5,
+            "armour": true
           },
           {
             "move": "skill_*",
@@ -42,7 +56,8 @@
             "recoveryTicks": 0,
             "damageMul": 1.0,
             "knockMul": 0.2,
-            "postureMul": 0.5
+            "postureMul": 0.5,
+            "armour": true
           }
         ]
       },
@@ -55,7 +70,8 @@
             "recoveryTicks": 0,
             "damageMul": 1.0,
             "knockMul": 0.2,
-            "postureMul": 0.5
+            "postureMul": 0.5,
+            "armour": true
           }
         ]
       },
@@ -68,7 +84,8 @@
             "recoveryTicks": 0,
             "damageMul": 1.0,
             "knockMul": 0.3,
-            "postureMul": 0.6
+            "postureMul": 0.6,
+            "armour": true
           },
           {
             "move": "skill_*",
@@ -76,7 +93,8 @@
             "recoveryTicks": 0,
             "damageMul": 1.0,
             "knockMul": 0.2,
-            "postureMul": 0.5
+            "postureMul": 0.5,
+            "armour": true
           }
         ]
       }
@@ -96,21 +114,27 @@
         "enabled": true,
         "hits": 3,
         "windowTicks": 180,
-        "breakOutTicks": 48
+        "breakOutTicks": 48,
+        "absorbDamageMul": -1,
+        "graceDamageMul": -1
       },
       {
         "key": "Dracula",
         "enabled": true,
         "hits": 3,
         "windowTicks": 150,
-        "breakOutTicks": 42
+        "breakOutTicks": 42,
+        "absorbDamageMul": -1,
+        "graceDamageMul": -1
       },
       {
         "key": "Joan",
         "enabled": true,
         "hits": 3,
         "windowTicks": 150,
-        "breakOutTicks": 42
+        "breakOutTicks": 42,
+        "absorbDamageMul": -1,
+        "graceDamageMul": -1
       }
     ]
   },

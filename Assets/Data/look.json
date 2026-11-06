@@ -14,10 +14,10 @@
     "size": 512, "cells": 4, "octaves": 4, "seed": 11,
     "albedoVar": 0.25, "roughVar": 0.5,
     "materials": [
-      { "path": "Assets/HDRP/Mats/ground_paving_LOD0_plate_top.mat", "normalScale": 0.75, "detailTiling": 0.37, "detailAlbedo": 0.25, "detailSmoothness": 0.25 },
-      { "path": "Assets/HDRP/Mats/ground_paving_LOD1_plate_top.mat", "normalScale": 0.75, "detailTiling": 0.37, "detailAlbedo": 0.25, "detailSmoothness": 0.25 },
-      { "path": "Assets/HDRP/Mats/ground_paving_LOD2_plate_top.mat", "normalScale": 0.75, "detailTiling": 0.37, "detailAlbedo": 0.25, "detailSmoothness": 0.25 },
-      { "path": "Assets/HDRP/World/M_WorldTerrain.mat", "normalScale": -1, "detailTiling": 6.7, "detailAlbedo": 1.0, "detailSmoothness": 1.0 }
+      { "path": "Assets/HDRP/Mats/ground_paving_LOD0_plate_top.mat", "normalScale": 0.75, "detailTiling": 0.37, "detailAlbedo": 0.25, "detailSmoothness": 0.25, "smoothnessMin": -1, "smoothnessMax": -1 },
+      { "path": "Assets/HDRP/Mats/ground_paving_LOD1_plate_top.mat", "normalScale": 0.75, "detailTiling": 0.37, "detailAlbedo": 0.25, "detailSmoothness": 0.25, "smoothnessMin": -1, "smoothnessMax": -1 },
+      { "path": "Assets/HDRP/Mats/ground_paving_LOD2_plate_top.mat", "normalScale": 0.75, "detailTiling": 0.37, "detailAlbedo": 0.25, "detailSmoothness": 0.25, "smoothnessMin": -1, "smoothnessMax": -1 },
+      { "path": "Assets/HDRP/World/M_WorldTerrain.mat", "normalScale": -1, "detailTiling": 6.7, "detailAlbedo": 1.0, "detailSmoothness": 1.0, "smoothnessMin": -1, "smoothnessMax": -1 }
     ]
   }
 }

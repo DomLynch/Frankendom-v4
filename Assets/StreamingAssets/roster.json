@@ -54,5 +54,7 @@
       "armoured": false,
       "notes": "flesh: bleeds, no sparks. Non-player row since v76 (switch back: roster.json \"player\": \"Dracula\" + Hades > Joan > Apply roster player to scene)"
     }
-  ]
+  ],
+  "scene": "Assets/Scenes/HadesSlice.unity",
+  "controllerTemplate": "Assets/Characters/_ClipTemplate.controller"
 }

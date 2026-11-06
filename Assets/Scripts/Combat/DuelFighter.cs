@@ -192,13 +192,14 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     {
         if (!atkOn) return 1.5f;
         float d = AttackClipTable.Get().defaults.stepStopDist;
-        return d > 0f ? d : DodgeTable.Get().minSeparation + 0.05f;   // never lunge into the separation clamp (that pushed the opponent / skated)
+        return (d > 0f ? d : DodgeTable.Get().minSeparation + 0.05f) + SwingFix.PadM();   // SWINGFIX v103: lunge stops where the padded clamp starts   // never lunge into the separation clamp (that pushed the opponent / skated)
     }
 
     // ---------------- tick (deterministic, 60 Hz) ----------------
     public void Tick()
     {
         if (state == FState.Dead) return;
+        WoundSystem.SimTick(this);   // FIXPHYS3 v102: damage-state multipliers advance per sim tick, never per frame
         StaminaTick();
         PostureTick();
         if (parryCd > 0) parryCd--;
@@ -594,9 +595,11 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public void SpendStamina(float s) { stamina -= s; regenWait = RegenDelay(); }
 
     // ---------------- presentation (per frame) ----------------
-    void Update()
+    // PHYSAUDIT: body motion is SIM state. It ran in Update with Time.deltaTime (one cc.Move per rendered frame), so frame rate and hit-stop/physics frame-time wobble changed positions.
+    // Now ONE move per 60 Hz sim tick (Duel.Update calls MoveTick for each fighter after all Ticks); the view interpolates separately (ViewInterp). No Time.* inside.
+    public void MoveTick()
     {
-        float dt = Time.deltaTime;
+        const float dt = 1f / 60f;
         Vector3 v = Vector3.zero;
         Vector3 toOpp = opponent ? opponent.transform.position - transform.position : transform.forward; toOpp.y = 0f;
         float dist = toOpp.magnitude; Vector3 dir = dist > 0.01f ? toOpp / dist : transform.forward;
@@ -609,7 +612,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             {
                 // distance travelled follows 1-(1-x)^power over the move (power 1 = constant speed); sim time, so hit-stop freezes it
                 float durS = dodgeTicks / 60f, a0 = Mathf.Clamp01(dodgeAge / durS);
-                dodgeAge += PresentationClock.SimDelta(dt);
+                dodgeAge += dt;
                 float a1 = Mathf.Clamp01(dodgeAge / durS);
                 float step = (Mathf.Pow(1f - a0, dodgePow) - Mathf.Pow(1f - a1, dodgePow)) * dodgeDist * scale;
                 v = rollDir * (step / Mathf.Max(dt, 1e-4f));
@@ -619,7 +622,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             case FState.Windup:
                 if (!PresentationClock.Frozen && t >= R("stepInFrom", 3) && move != null && dist > StepStopDist()) { float si = StepInFor(); if (si > 0f) v = FlowStepDir(dir) * (si * scale / Mathf.Max(0.1f, (Tk(move.Windup(chained)) - 3) / 60f)); }   // stepIn: data (attack_clips.json) or the move's value
                 break;
-            case FState.Stagger: case FState.Down: if (!PresentationClock.Frozen) { v = knock; knock *= Mathf.Pow(0.88f, dt * 60f); } faceOpp = false; break;   // P1: no knock slide while the animation is frozen (hit-stop)
+            case FState.Stagger: case FState.Down: if (!PresentationClock.Frozen) { v = knock; knock *= 0.88f; } faceOpp = false; break;   // P1: no knock slide while the animation is frozen (hit-stop)
             case FState.Dead: faceOpp = false; break;
         }
         if (PresentationClock.Frozen) { v.x = 0f; v.z = 0f; }   // P1: hit-stop freezes the body with the animation (the legs are frozen too: no ice-skating)
@@ -629,7 +632,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         if (cc.enabled && cc.isGrounded && transform.position.y > -0.5f) { lastGroundedPos = transform.position; hasGrounded = true; }
         if (hasGrounded && transform.position.y < lastGroundedPos.y - 2f)
         {
-            cc.enabled = false; transform.position = lastGroundedPos + Vector3.up * 0.05f; cc.enabled = true; Physics.SyncTransforms(); vy = -1f; knock = Vector3.zero;
+            cc.enabled = false; transform.position = lastGroundedPos + Vector3.up * 0.05f; cc.enabled = true; Physics.SyncTransforms(); vy = -1f; knock = Vector3.zero; snapView = true;
             Debug.Log("[DuelFighter] " + name + " fell out of the world: restored to " + lastGroundedPos);
         }
         float lim = ArenaLimits.StairHalfWidthX; /*HCKIT1 v93*/   // keep both fighters inside the stair width (no climbing onto the balustrade)
@@ -638,14 +641,24 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         // never overlap the opponent: keep a minimum horizontal separation (radii + 0.25 m), each fighter yields half of the overlap, in every state
         if (cc.enabled && opponent && state != FState.Dead && !opponent.Dead)
         {
-            Vector3 oq = opponent.transform.position - transform.position; oq.y = 0f; float dq = oq.magnitude, minSep = Mathf.Max(DodgeTable.Get().minSeparation, radius + opponent.radius + DodgeTable.Get().separationPad);
+            Vector3 oq = opponent.transform.position - transform.position; oq.y = 0f; float dq = oq.magnitude, minSep = Mathf.Max(DodgeTable.Get().minSeparation, radius + opponent.radius + DodgeTable.Get().separationPad) + SwingFix.ExtraSep(this, opponent);   // SWINGFIX v103: swing-phase pad (0 = off)
             if (dq < minSep) cc.Move((dq > 0.001f ? -oq / dq : -transform.forward) * ((minSep - dq) * 0.5f));
         }
         if (FlowFace(dt, dir, dist, faceOpp)) { }   // V64FLOW
         else if (state == FState.Roll && dodgeKind == 0 && rollDir.sqrMagnitude > 0.01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rollDir), Mathf.Min(1f, dodgeTurn * dt));
         else if (faceOpp && state != FState.Stagger && state != FState.Down) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 10f * dt);
         else if (state == FState.Loco && moveDir.sqrMagnitude > 0.01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDir), 10f * dt);
+        faceOppV = faceOpp;
+        if (viewInterp == null) { viewInterp = GetComponent<ViewInterp>(); if (viewInterp == null) viewInterp = gameObject.AddComponent<ViewInterp>(); }
+        viewInterp.Push(transform.position, snapView); snapView = false;
+    }
+    bool faceOppV, snapView; ViewInterp viewInterp;
+    public Vector3 ViewPosition { get { return viewInterp != null ? viewInterp.ViewPos : transform.position; } }   // for the camera / HUD (never the sim)
 
+    void Update()
+    {
+        float dt = Time.deltaTime;   // presentation only (animation weights, guard layer)
+        bool faceOpp = faceOppV;
         string upperPose = null;   // guard pose for the masked upper-body layer; null = layer off
         if (state == FState.Loco || (state == FState.Guard && blockFlash == 0))
         {

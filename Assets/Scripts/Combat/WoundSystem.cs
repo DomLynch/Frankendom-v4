@@ -13,7 +13,7 @@ public class WoundSystem : MonoBehaviour
     class St
     {
         public DuelFighter f; public WoundDecals.Set decals = new WoundDecals.Set();
-        public int wounds; public float legUntil = -1f, dripT, moveMul = 1f, regenMul = 1f, layerMul = 1f; public int raiseExtra; public string stage = "";
+        public int wounds, legUntilTick = -1; public bool decalsDirty; public float dripT, moveMul = 1f, regenMul = 1f, layerMul = 1f; public int raiseExtra; public string stage = "";
     }
 
     static WoundSystem instance;
@@ -36,7 +36,7 @@ public class WoundSystem : MonoBehaviour
     public static float MoveMul(DuelFighter f)
     {
         var s = Find(f); if (s == null || f.Dead || !WoundTable.Get().states) return 1f;
-        var r = WoundTable.For(f.CharacterId); return s.moveMul * (Time.time < s.legUntil ? r.legSlowMul : 1f);
+        var r = WoundTable.For(f.CharacterId); return s.moveMul * (Duel.TickCount < s.legUntilTick ? r.legSlowMul : 1f);
     }
     public static float RegenMul(DuelFighter f) { var s = Find(f); return s == null || f.Dead || !WoundTable.Get().states ? 1f : s.regenMul; }
     public static int GuardRaiseExtra(DuelFighter f) { var s = Find(f); return s == null || f.Dead || !WoundTable.Get().states ? 0 : s.raiseExtra; }
@@ -62,7 +62,7 @@ public class WoundSystem : MonoBehaviour
         var f = e.target; var s = Get(f); var row = WoundTable.For(f.CharacterId);
         s.wounds++;
         string loc = !string.IsNullOrEmpty(e.hitLocation) ? e.hitLocation : e.location;
-        if (loc == "legs" && row.legSlowSec > 0f) s.legUntil = Time.time + row.legSlowSec;
+        if (loc == "legs" && row.legSlowSec > 0f) s.legUntilTick = Duel.TickCount + Mathf.CeilToInt(row.legSlowSec / SimTickSec);
         if (!D.decals) return;
         var d = WoundDecals.Spawn(s.decals, f, e, row, D.decal, f.Dead);
         int ev = WoundDecals.Enforce(s.decals, row.maxDecals, Time.unscaledTime);
@@ -71,7 +71,26 @@ public class WoundSystem : MonoBehaviour
 
     void ResetAll()
     {
-        foreach (var kv in states) { WoundDecals.Clear(kv.Value.decals); kv.Value.wounds = 0; kv.Value.legUntil = -1f; kv.Value.dripT = 0f; }
+        foreach (var kv in states) { WoundDecals.Clear(kv.Value.decals); kv.Value.wounds = 0; kv.Value.legUntilTick = -1; kv.Value.dripT = 0f; }
+    }
+
+
+    // FIXPHYS3 v102: the SIM side of the damage state. DuelFighter.Tick calls this once per 60 Hz tick (before StaminaTick), so regenMul / moveMul / layerMul / raiseExtra,
+    // the wound-count reset and the leg slow are functions of the tick number and the fighter's health only. Before, WoundSystem.Update eased them per FRAME with Time.deltaTime:
+    // the stamina regen of the tick right after a hit depended on whether Update had run one more frame before Duel's tick (physproof v101: 83.3389 vs 83.34908 = one blend step 1/60/0.6 x 22/60).
+    // Update() below now only READS this state (view: decals, drips, vignette).
+    const float SimTickSec = 1f / 60f;
+    public static void SimTick(DuelFighter f)
+    {
+        var D = WoundTable.Get(); if (instance == null || !D.enabled || f == null) return;
+        var s = instance.Get(f); var row = WoundTable.For(f.CharacterId);
+        if (f.health >= f.maxHealth - 0.01f && s.wounds > 0) { s.decalsDirty = true; s.wounds = 0; s.legUntilTick = -1; }   // a refilled fighter loses its wounds (Update clears the decals)
+        float frac = f.maxHealth > 0f ? f.health / f.maxHealth : 1f;
+        var st = D.states ? StageFor(row, frac) : null;
+        float tMove = st != null ? st.moveMul : 1f, tRegen = st != null ? st.regenMul : 1f, tLayer = st != null ? st.guardLayerMul : 1f; int tRaise = st != null ? st.guardRaiseExtraTicks : 0;
+        float step = SimTickSec / Mathf.Max(0.05f, row.blendSec);
+        s.moveMul = Mathf.MoveTowards(s.moveMul, tMove, step); s.regenMul = Mathf.MoveTowards(s.regenMul, tRegen, step); s.layerMul = Mathf.MoveTowards(s.layerMul, tLayer, step);
+        s.raiseExtra = tRaise;
     }
 
     // ---------------- per frame ----------------
@@ -100,14 +119,12 @@ public class WoundSystem : MonoBehaviour
             var s = kv.Value; var f = kv.Key; if (f == null) continue;
             var row = WoundTable.For(f.CharacterId);
             // a refilled fighter (new fight / heal to full) loses its wounds
-            if (f.health >= f.maxHealth - 0.01f && s.wounds > 0) { WoundDecals.Clear(s.decals); s.wounds = 0; s.legUntil = -1f; }
+            if (s.decalsDirty) { WoundDecals.Clear(s.decals); s.decalsDirty = false; }   // FIXPHYS3 v102: the wound reset itself is in SimTick
             WoundDecals.Tick(s.decals, row, now);
             float frac = f.maxHealth > 0f ? f.health / f.maxHealth : 1f;
             var st = D.states ? StageFor(row, frac) : null;
-            float tMove = st != null ? st.moveMul : 1f, tRegen = st != null ? st.regenMul : 1f, tLayer = st != null ? st.guardLayerMul : 1f; int tRaise = st != null ? st.guardRaiseExtraTicks : 0;
-            float step = dt / Mathf.Max(0.05f, row.blendSec);
-            s.moveMul = Mathf.MoveTowards(s.moveMul, tMove, step); s.regenMul = Mathf.MoveTowards(s.regenMul, tRegen, step); s.layerMul = Mathf.MoveTowards(s.layerMul, tLayer, step);
-            s.raiseExtra = tRaise; string sid = st != null ? st.id : "";
+            // FIXPHYS3 v102: the multipliers are eased in SimTick (60 Hz); this loop only reads them
+            string sid = st != null ? st.id : "";
             if (sid != s.stage) { if (D.debugLog) Debug.Log("[Wound] " + f.name + " stage '" + s.stage + "' -> '" + sid + "' at " + (frac * 100f).ToString("F0") + "% hp"); s.stage = sid; s.dripT = 0f; }
             if (st != null && st.dripEverySec > 0f && !f.Dead && !RTFinisher.Busy)
             {

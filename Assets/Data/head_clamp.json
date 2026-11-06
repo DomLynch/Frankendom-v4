@@ -2,7 +2,17 @@
   "_about": "HeadClamp.cs (lane E): limits the head (and, at neckShare x the limits, the neck) relative to the TORSO bone in LateUpdate after the Animator. yaw / pitch = degrees of the head's forward axis vs the torso (Spine2). knee: soft limit (nothing changes below knee x limit). Categories are matched by Animator state short name (first match wins; during a transition the limits and the on/off weight are blended by the transition time); off=true leaves the animation alone (hit reactions, death, get-up own the head). look: optional look-at toward the opponent (weight 0..1 of the angle to the target), faded to 0 when the target is between fadeStartDeg and fadeEndDeg off the body's forward. Data for a character is picked by 'name' contained in the root object name. Copy to StreamingAssets for the player (BuildPlayer does). maxUpDeg / maxUpKnee (JOANHEAD): cap on the head's absolute pitch in the root frame (degrees up from level, 90 = off; soft: unchanged below maxUpKnee x cap), the excess is taken off the neck (neckShare) and the head; faded by the category on/off weight. Fixes the Mixamo idle / walk chin-up (idle +17 deg, walk +9 deg). Harness flag -noclamp turns the clamp off to see the raw animation.",
   "defaults": {
     "name": "",
-    "enabled": false
+    "enabled": false,
+    "torsoBone": "mixamorig:Spine2",
+    "neckBone": "mixamorig:Neck",
+    "headBone": "mixamorig:Head",
+    "yaw": 45,
+    "pitch": 20,
+    "neckShare": 0.5,
+    "knee": 0.8,
+    "maxUpDeg": 90,
+    "maxUpKnee": 0.5,
+    "look": {"weight": 0.5, "fadeStartDeg": 90, "fadeEndDeg": 120, "followSeconds": 0.15, "targetHeight": 1.5}
   },
   "characters": [
     {
@@ -32,7 +42,9 @@
             "knockdown",
             "death",
             "get_up"
-          ]
+          ],
+          "yaw": 45,
+          "pitch": 20
         },
         {
           "id": "hit",
@@ -86,7 +98,9 @@
             "atk_riposte"
           ]
         }
-      ]
+      ],
+      "maxUpDeg": 90,
+      "maxUpKnee": 0.5
     },
     {
       "name": "Joan",
@@ -117,7 +131,9 @@
             "knockdown",
             "death",
             "get_up"
-          ]
+          ],
+          "yaw": 45,
+          "pitch": 20
         },
         {
           "id": "hit",
@@ -178,7 +194,15 @@
       "enabled": false,
       "yaw": 45,
       "pitch": 20,
-      "categories": []
+      "categories": [],
+      "torsoBone": "mixamorig:Spine2",
+      "neckBone": "mixamorig:Neck",
+      "headBone": "mixamorig:Head",
+      "neckShare": 0.5,
+      "knee": 0.8,
+      "maxUpDeg": 90,
+      "maxUpKnee": 0.5,
+      "look": {"weight": 0.5, "fadeStartDeg": 90, "fadeEndDeg": 120, "followSeconds": 0.15, "targetHeight": 1.5}
     }
   ]
 }

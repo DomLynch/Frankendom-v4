@@ -152,8 +152,8 @@ public static class WoundDecals
         m.SetColor("_BaseColor", new Color(dc.color[0] * LookOptions.WoundColorMul(), dc.color[1] * LookOptions.WoundColorMul(), dc.color[2] * LookOptions.WoundColorMul(), 1f));   // GOOSEBACKLOG v100: woundMarks.colorMul (1 = today)
         m.SetTexture("_BaseColorMap", mset.color);
         m.SetTexture("_MaskMap", mset.mask);
-        if (dc.affectNormal) { m.SetTexture("_NormalMap", mset.normal); m.EnableKeyword("_NORMALMAP"); m.EnableKeyword("_MATERIAL_AFFECTS_NORMAL"); }   // these variants only ship if WoundDecalRef also enables them (editor script)
-        m.SetFloat("_AffectAlbedo", 1f); m.SetFloat("_AffectNormal", dc.affectNormal ? 1f : 0f); m.SetFloat("_AffectMetal", 0f); m.SetFloat("_AffectAO", dc.affectAO ? 1f : 0f); m.SetFloat("_AffectSmoothness", 1f); m.SetFloat("_AffectEmission", 0f);
+        if (LookOptions.WoundAffectNormal(dc.affectNormal)) { m.SetTexture("_NormalMap", mset.normal); m.EnableKeyword("_NORMALMAP"); m.EnableKeyword("_MATERIAL_AFFECTS_NORMAL"); }   // these variants only ship if WoundDecalRef also enables them (editor script)
+        m.SetFloat("_AffectAlbedo", 1f); m.SetFloat("_AffectNormal", LookOptions.WoundAffectNormal(dc.affectNormal) ? 1f : 0f); m.SetFloat("_AffectMetal", 0f); m.SetFloat("_AffectAO", LookOptions.WoundAffectAO(dc.affectAO) ? 1f : 0f); m.SetFloat("_AffectSmoothness", 1f); m.SetFloat("_AffectEmission", 0f);
         m.SetFloat("_DecalBlend", Mathf.Clamp01(dc.decalBlend)); m.SetFloat("_DecalMaskMapBlueScale", Mathf.Clamp01(dc.maskBlueScale));
         m.SetFloat("_NormalBlendSrc", 0f); m.SetFloat("_MaskBlendSrc", 1f);
         if (m.HasProperty("_SmoothnessRemapMin")) m.SetFloat("_SmoothnessRemapMin", 0f);
@@ -239,7 +239,7 @@ public static class WoundDecals
             go.transform.SetPositionAndRotation(onSurface ? point : point - a2v * row.depth * 0.35f * sc, rot);
             var p = go.AddComponent<DecalProjector>();
             p.material = mat; p.size = new Vector3(len, wid, row.depth * sc); p.pivot = Vector3.zero; p.fadeFactor = d.baseOpacity;
-            p.drawDistance = dc.drawDistance; p.fadeScale = dc.fadeScale; p.startAngleFade = dc.startAngleFade; p.endAngleFade = dc.endAngleFade;
+            p.drawDistance = dc.drawDistance; p.fadeScale = dc.fadeScale; p.startAngleFade = dc.startAngleFade; p.endAngleFade = LookOptions.WoundEndAngle(dc.endAngleFade); // GOOSEBACKLOG2 v102
             d.proj = p;
         }
         else if (dc.quadFallback)

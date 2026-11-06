@@ -116,8 +116,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "spine",
@@ -138,8 +140,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "spine1",
@@ -160,8 +164,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "spine2",
@@ -182,8 +188,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "neck",
@@ -204,8 +212,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "head",
@@ -225,8 +235,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "armL",
@@ -247,8 +259,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "forearmL",
@@ -266,12 +280,13 @@
       "damping": 0.25,
       "hinge": {
         "enabled": true,
-        "min": -30,
-        "max": 150,
+        "min": -17.1,
+        "max": 156.9,
         "offAxisDeg": 10,
         "bend": 1,
         "flip": true
-      }
+      },
+      "inertiaMul": 1
     },
     {
       "name": "handL",
@@ -292,8 +307,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "armR",
@@ -314,8 +331,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "forearmR",
@@ -333,12 +352,13 @@
       "damping": 0.25,
       "hinge": {
         "enabled": true,
-        "min": -30,
-        "max": 150,
+        "min": -30.0,
+        "max": 159.4,
         "offAxisDeg": 10,
         "bend": 1,
         "flip": true
-      }
+      },
+      "inertiaMul": 1
     },
     {
       "name": "handR",
@@ -359,8 +379,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "thighL",
@@ -381,8 +403,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "shinL",
@@ -401,11 +425,12 @@
       "hinge": {
         "enabled": true,
         "min": -3.2,
-        "max": 136.8,
+        "max": 165.0,
         "offAxisDeg": 10,
         "bend": -1,
         "flip": true
-      }
+      },
+      "inertiaMul": 1
     },
     {
       "name": "footL",
@@ -426,8 +451,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "thighR",
@@ -448,8 +475,10 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     },
     {
       "name": "shinR",
@@ -468,11 +497,12 @@
       "hinge": {
         "enabled": true,
         "min": -3.2,
-        "max": 136.8,
+        "max": 171.8,
         "offAxisDeg": 10,
         "bend": -1,
         "flip": true
-      }
+      },
+      "inertiaMul": 1
     },
     {
       "name": "footR",
@@ -493,16 +523,29 @@
         "min": 0,
         "max": 0,
         "offAxisDeg": 10,
-        "bend": 1
-      }
+        "bend": 1,
+        "flip": true
+      },
+      "inertiaMul": 1
     }
   ],
+  "hingeRom": {
+    "_about": "PHYSFLINCH v1: ragdoll hinge windows (parts[].hinge.min / .max, absolute flexion degrees, 0 = straight) are the RANGE OF MOTION of the shipped clips + marginDeg, computed by Tools-free script _agents/lanePHYSFLINCH/tools/phys_hinge_rom.py (python phys_hinge_rom.py --write-data <overlay>). Not the rest pose. hyperFloorDeg = how far a joint may bend the wrong way whatever a twisted-grip clip does; planeMinCos = a bend counts as hyper-extension only when its plane is the hinge plane.",
+    "enabled": true,
+    "marginDeg": 6.0,
+    "sampleHz": 30.0,
+    "planeMinCos": 0.5,
+    "parts": ["forearmL", "forearmR", "shinL", "shinR"],
+    "hyperFloorDeg": {"forearmL": -30.0, "forearmR": -30.0, "shinL": -3.2, "shinR": -3.2},
+    "clipGlobs": ["Assets/Characters/*/*_anim.glb", "Assets/Characters/*/*_attacks_v2.glb", "Assets/Characters/*/*_dodges.glb", "Assets/Characters/Joan/Joan_finishers.glb"]
+  },
   "rig": {
     "prebuild": true,
     "hurtboxTrigger": true,
     "maxLive": 3,
     "sampleFrames": 6,
-    "restCheckMaxDeg": 25.0
+    "restCheckMaxDeg": 25.0,
+    "restShiftMinDeg": 1.0
   },
   "inherit": {
     "windowFrames": 3,
@@ -512,7 +555,11 @@
     "angularScale": 1.0,
     "maxSpeed": 12.0,
     "maxAngularSpeed": 25.0,
-    "knockReplacesRoot": true
+    "knockReplacesRoot": true,
+    "chainVelocity": true,
+    "chainBlend": 1.0,
+    "chord": true,
+    "reanchor": true
   },
   "limits": {
     "convertMarginDeg": 8.0,

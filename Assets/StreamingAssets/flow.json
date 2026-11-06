@@ -56,10 +56,10 @@
     "magnet": { "enabled": true, "maxAngleDeg": 50.0, "maxDistance": 3.2, "snapMs": 90.0, "botMaxDistance": 2.8 },
     "turn": { "enabled": true, "windupDegPerSec": 480.0, "activeDegPerSec": 80.0, "recoveryDegPerSec": 200.0 },
     "moves": [
-      { "move": "heavy*",  "maxAngleDeg": 40.0, "snapMs": 120.0, "activeDegPerSec": 60.0 },
-      { "move": "thrust",  "maxDistance": 3.6 },
-      { "move": "kick",    "maxAngleDeg": 35.0, "maxDistance": 1.8, "snapMs": 70.0 },
-      { "move": "skill_*", "maxAngleDeg": 60.0, "snapMs": 110.0 }
+      { "move": "heavy*",  "maxAngleDeg": 40.0, "snapMs": 120.0, "activeDegPerSec": 60.0, "maxDistance": -1, "windupDegPerSec": -1, "recoveryDegPerSec": -1 },
+      { "move": "thrust",  "maxDistance": 3.6, "maxAngleDeg": -1, "snapMs": -1, "windupDegPerSec": -1, "activeDegPerSec": -1, "recoveryDegPerSec": -1 },
+      { "move": "kick",    "maxAngleDeg": 35.0, "maxDistance": 1.8, "snapMs": 70.0, "windupDegPerSec": -1, "activeDegPerSec": -1, "recoveryDegPerSec": -1 },
+      { "move": "skill_*", "maxAngleDeg": 60.0, "snapMs": 110.0, "maxDistance": -1, "windupDegPerSec": -1, "activeDegPerSec": -1, "recoveryDegPerSec": -1 }
     ]
   },
   "dodge": {

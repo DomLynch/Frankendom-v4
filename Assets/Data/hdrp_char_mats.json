@@ -160,18 +160,30 @@
     {
       "mat": "Assets/Characters/Dracula/Mats/dracula_boot_l_0.mat",
       "mask": "Assets/Characters/Dracula/Tex/dracula_atlas_mask.png",
-      "sheen": "off"
+      "sheen": "off",
+      "sheenIntensity": 1,
+      "smoothnessMin": -1,
+      "smoothnessMax": -1,
+      "materialId": -1
     },
     {
       "mat": "Assets/Characters/Dracula/Mats/dracula_boot_r_0.mat",
       "mask": "Assets/Characters/Dracula/Tex/dracula_atlas_mask.png",
-      "sheen": "off"
+      "sheen": "off",
+      "sheenIntensity": 1,
+      "smoothnessMin": -1,
+      "smoothnessMax": -1,
+      "materialId": -1
     },
     {
       "mat": "Assets/Characters/Dracula/Mats/dracula_coat_0.mat",
       "mask": "Assets/Characters/Dracula/Tex/dracula_atlas_mask.png",
       "sheenMask": "Assets/Characters/Dracula/Tex/dracula_coat_sheenmask.png",
-      "sheen": "fabric"
+      "sheen": "fabric",
+      "sheenIntensity": 1,
+      "smoothnessMin": -1,
+      "smoothnessMax": -1,
+      "materialId": -1
     },
     {
       "mat": "Assets/Characters/Dracula/Mats/dracula_cloak_0.mat",
@@ -183,12 +195,19 @@
         1.0,
         1.0
       ],
-      "smoothnessMin": 0.2
+      "smoothnessMin": 0.2,
+      "sheenIntensity": 1,
+      "smoothnessMax": -1,
+      "materialId": -1
     },
     {
       "mat": "Assets/Characters/Pitborn/Mats/pitborn_Body_0.mat",
       "mask": "Assets/Characters/Pitborn/Tex/pitborn_Body_mask.png",
-      "sheen": "off"
+      "sheen": "off",
+      "sheenIntensity": 1,
+      "smoothnessMin": -1,
+      "smoothnessMax": -1,
+      "materialId": -1
     },
     {
       "mat": "Assets/Characters/Joan/Mats/joan_body_0.mat",
@@ -200,18 +219,26 @@
         1.0,
         1.0,
         1.0
-      ]
+      ],
+      "sheenIntensity": 1,
+      "smoothnessMin": -1
     },
     {
       "mat": "Assets/Characters/Joan/Mats/joan_hair_0.mat",
       "sheen": "off",
-      "smoothnessMax": 0.35
+      "smoothnessMax": 0.35,
+      "sheenIntensity": 1,
+      "smoothnessMin": -1,
+      "materialId": -1
     },
     {
       "mat": "Assets/Characters/Joan/Mats/joan_hairshell_0.mat",
       "mask": "Assets/Characters/Joan/Tex/joan_hairshell_mask.png",
       "sheen": "off",
-      "smoothnessMax": 0.2
+      "smoothnessMax": 0.2,
+      "sheenIntensity": 1,
+      "smoothnessMin": -1,
+      "materialId": -1
     }
   ]
 }

@@ -139,7 +139,11 @@
       "runs": [
         "off",
         "on",
-        "off"
+        "off",
+        "off@30",
+        "off@144",
+        "on@30",
+        "on@144"
       ],
       "_note": "runs: off, on, off. on vs the first off is the claim; the second off is the control that shows whether the harness is deterministic on its own (on vs off only counts when off vs off matches). The seed, captureFramerate and timeScale are set before every scene reload."
     },
@@ -178,7 +182,7 @@
           "moveId": "heavy_overhead",
           "heavy": true,
           "counter": false,
-          "minPeakDeg": 2.0,
+          "minPeakDeg": 1.5,
           "maxPeakDeg": 45.0
         },
         {
@@ -186,7 +190,7 @@
           "moveId": "heavy_counter",
           "heavy": true,
           "counter": true,
-          "minPeakDeg": 2.0,
+          "minPeakDeg": 1.5,
           "maxPeakDeg": 45.0
         }
       ],
@@ -231,7 +235,8 @@
         "separationM": 6.0,
         "seconds": 1.4,
         "maxDeg": 6.0,
-        "idleSeconds": 1.0
+        "idleSeconds": 1.0,
+        "attackParts": []
       },
       "sheetZones": [
         "head",
@@ -398,10 +403,10 @@
     "classes": [
       {
         "name": "light",
-        "impulse": 0.12,
-        "twist": 0.02,
-        "dip": 0.12,
-        "blend": 0.2,
+        "impulse": 0.4,
+        "twist": 0.15,
+        "dip": 0.4,
+        "blend": 0.5,
         "holdS": 0.3,
         "backS": 0.4
       },

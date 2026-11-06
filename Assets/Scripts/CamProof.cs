@@ -91,6 +91,8 @@ public class CamProof : MonoBehaviour
         return a && b;
     }
 
+    /// <summary>// GOOSEBACKLOG2 v102: viewport height of a fighter (feet to head, camera_framing.json feetH/headH x fighter scale).</summary>
+    float ScreenH(Transform t) { var c = rig.GetComponent<Camera>(); var fr = CamFraming.Cfg(); float s = FighterScale.Eff(t.lossyScale.y, t); return Mathf.Abs(c.WorldToViewportPoint(t.position + Vector3.up * fr.headH * s).y - c.WorldToViewportPoint(t.position + Vector3.up * fr.feetH * s).y); }
     float Sample(out float vd, out float vp) { vd = rig.VisibleFraction(D.transform); vp = rig.VisibleFraction(P.transform); return Mathf.Min(vd, vp); }
 
     IEnumerator Grab(string name, Action<float> lumaOut)
@@ -145,7 +147,11 @@ public class CamProof : MonoBehaviour
                 string row = id + ": VisibleFraction " + Roster.PlayerName + " " + dMin.ToString("F2", IC) + " " + Roster.EnemyName + " " + pMin.ToString("F2", IC) + " (need >= " + pr.steadyMin.ToString("F2", IC) + ")  fov " + rig.GetComponent<Camera>().fieldOfView.ToString("F1", IC)
                     + " (widen " + CamFraming.Widen.ToString("F1", IC) + ")  cam dist to look " + Vector3.Distance(rig.transform.position, (D.transform.position + P.transform.position) * 0.5f).ToString("F1", IC) + " m  luma " + luma.ToString("F3", IC);
                 rows.Add(row); Log(row);
-                if (minV < pr.steadyMin) Fail(id + " framing " + minV.ToString("F2", IC));
+                bool rfOn = LookOptions.Reframe().on; float need = rfOn ? pr.reframeSteadyMin : pr.steadyMin;   // GOOSEBACKLOG2 v102
+                float psh = ScreenH(D.transform); string shRow = id + ": player_screen_h " + psh.ToString("F3", IC) + " (need >= " + pr.playerScreenHMin.ToString("F2", IC) + " while camReframe is on; on=" + rfOn + ")"; rows.Add(shRow); Log(shRow);
+                if (rfOn && psh < pr.playerScreenHMin) Fail(id + " player_screen_h " + psh.ToString("F3", IC));
+                if (minV < need) Fail(id + " framing " + minV.ToString("F2", IC));
+                { var rfc = CamReframe.Cfg(); if (rfc.enabled && sep > rfc.proof.farSepM) { float jh = CamReframe.ScreenH(rig.GetComponent<Camera>(), D.transform); string jr = id + ": " + rfc.proof.rowName + " " + jh.ToString("F3", IC) + " (need >= " + CamReframe.ProofMin(sep).ToString("F2", IC) + ")"; rows.Add(jr); Log(jr); if (jh < CamReframe.ProofMin(sep)) Fail(id + " " + rfc.proof.rowName + " " + jh.ToString("F3", IC)); } }   // CAMREFRAME v102: new gate row, far separations only (7 and 10 m in proof.seps)
                 if (luma < pr.lumaMin || luma > pr.lumaMax) Fail(id + " black / white frame, luma " + luma.ToString("F3", IC));
             }
 

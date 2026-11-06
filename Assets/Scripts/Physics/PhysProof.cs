@@ -423,17 +423,17 @@ public partial class PhysProof : MonoBehaviour
     static ulong Mix(ulong h, ulong v) { unchecked { for (int i = 0; i < 8; i++) { h ^= (v >> (i * 8)) & 0xFFUL; h *= 1099511628211UL; } } return h; }
     static ulong Bits(float f) { return unchecked((ulong)(uint)BitConverter.SingleToInt32Bits(f)); }
 
-    class RunTrace { public string mode; public List<int> tickIds = new List<int>(); public List<ulong> hashes = new List<ulong>(); public List<string> lines = new List<string>(); public int deaths, converted, ticks; public ulong final = 14695981039346656037UL; }
+    class RunTrace { public string mode; public List<int> tickIds = new List<int>(); public List<ulong> hashes = new List<ulong>(); public List<string> lines = new List<string>(); public List<float[]> vals = new List<float[]>(); public string[] fields; public int deaths, converted, ticks; public ulong final = 14695981039346656037UL; }
 
     IEnumerator SimHashProof()
     {
         var sc = C.simHash; var runs = new List<RunTrace>();
         for (int r = 0; r < sc.runs.Length && !exiting; r++)
         {
-            string m = sc.runs[r].ToLowerInvariant();
-            PhysicsClock.PhysicsOn = m == "on";
+            string m = sc.runs[r].ToLowerInvariant(); int fps = 60; int at = m.IndexOf('@'); if (at > 0) { int.TryParse(m.Substring(at + 1), out fps); if (fps < 10) fps = 60; }   // PHYSAUDIT: 'off@30' = physics off at a 30 fps display
+            PhysicsClock.PhysicsOn = m.StartsWith("on");
             // identical preconditions for every run, set BEFORE the reload so the settle frames are the same too
-            Time.captureFramerate = 60; QualitySettings.vSyncCount = 0; Time.timeScale = 1f; PresentationClock.Cancel(); CombatSlowMo.Abort();
+            Time.captureFramerate = fps; QualitySettings.vSyncCount = 0; Time.timeScale = 1f; PresentationClock.Cancel(); CombatSlowMo.Abort();
             AIBrain.GlobalSeed = sc.seed; UnityEngine.Random.InitState(sc.seed);
             yield return Reload();                                   // a fresh scene per run, so the rigs exist (on) or do not (off) from the start
             ScriptedFighters(); Log("simhash run " + (r + 1) + " physics " + m);
@@ -445,14 +445,36 @@ public partial class PhysProof : MonoBehaviour
         PhysicsClock.PhysicsOn = true;
         if (runs.Count < 2) { Log("simhash needs at least two runs"); Finish(2, "simhash setup"); yield break; }
         RunTrace A = null, B = null, Ctl = null;                 // A = the physics-on run, B = the first off run, Ctl = the second off run (control)
+        Time.captureFramerate = 60;
         foreach (var t in runs) { if (t.mode == "on" && A == null) A = t; else if (t.mode == "off" && B == null) B = t; else if (t.mode == "off" && Ctl == null) Ctl = t; }
         if (A == null || B == null) { Log("simhash needs one 'on' and one 'off' run (physics.json proof.simHash.runs)"); Finish(2, "simhash setup"); yield break; }
         int dAB = FirstDiff(A, B), dBC = Ctl != null ? FirstDiff(B, Ctl) : -1;
+        { string fd = FieldDiff(A, B); Check("simhash.traces.onVsOff", fd == null, fd ?? "per-tick hp / posture / stamina / x / z identical on every common tick"); }   // PHYSAUDIT: names the exact tick + field
+        if (Ctl != null) { string fc = FieldDiff(B, Ctl); Check("simhash.traces.control", fc == null, fc ?? "off vs off identical per tick"); }
+        foreach (var t in runs) if (t.mode.StartsWith("off@") || t.mode.StartsWith("on@")) { string ff2 = FieldDiff(B, t); Check("simhash.frameRate." + t.mode, ff2 == null, ff2 ?? "sim identical to the 60 fps off run (display frame rate and physics on/off do not reach the sim)"); }   // INT103: on@N too
         bool anyDeath = A.deaths > 0, convertedOn = A.converted > 0;
         Check("simhash.deathHappened", anyDeath && convertedOn, "physics-on run: deaths " + A.deaths + ", ragdolls converted " + A.converted + " (a fight with no kill proves nothing about the ragdoll)");
         if (dAB < 0) Check("simhash.onEqualsOff", true, "on vs off: " + A.hashes.Count + " frames byte-identical, hash " + A.final.ToString("X16") + (dBC >= 0 ? " (note: the control off vs off differs at frame " + dBC + ": the harness is not fully deterministic on its own)" : ", control " + (Ctl != null ? "off vs off identical" : "not run")));
         else if (dBC < 0 && Ctl != null) Check("simhash.onEqualsOff", false, "on vs off DIFFER at frame " + dAB + " while the control (off vs off) is identical: PHYSICS LEAKED INTO THE SIM. " + Describe(A, B, dAB));
         else { Log("simhash INCONCLUSIVE: on vs off differ at frame " + dAB + (Ctl != null ? " and the control also differs at frame " + dBC + ". " + Describe(B, Ctl, dBC) : " and there is no control run")); checks.Add("INCONCLUSIVE simhash: the harness is not deterministic on its own (off vs off differ)"); Finish(4, "simhash inconclusive"); }
+    }
+
+    // PHYSAUDIT: per-tick, per-field comparison of two traces over the ticks both sampled; null = identical, else the first differing tick + field and a per-field count
+    string FieldDiff(RunTrace a, RunTrace b)
+    {
+        if (a.fields == null || b.fields == null) return "no numeric trace recorded";
+        var bt = new Dictionary<int, int>(); for (int i = 0; i < b.tickIds.Count; i++) bt[b.tickIds[i]] = i;
+        var cnt = new int[a.fields.Length]; int firstTick = -1, firstField = -1; float fa = 0f, fb = 0f; int common = 0;
+        for (int i = 0; i < a.tickIds.Count; i++)
+        {
+            int j; if (!bt.TryGetValue(a.tickIds[i], out j)) continue; common++;
+            for (int k = 0; k < a.fields.Length && k < b.fields.Length; k++)
+                if (Bits(a.vals[i][k]) != Bits(b.vals[j][k])) { cnt[k]++; if (firstTick < 0) { firstTick = a.tickIds[i]; firstField = k; fa = a.vals[i][k]; fb = b.vals[j][k]; } }
+        }
+        if (firstTick < 0) return null;
+        var sb = new StringBuilder("first divergence at tick " + firstTick + " field " + a.fields[firstField] + ": [" + a.mode + "] " + fa.ToString("R", IC) + " vs [" + b.mode + "] " + fb.ToString("R", IC) + " (" + common + " common ticks). Ticks differing per field:");
+        for (int k = 0; k < cnt.Length; k++) if (cnt[k] > 0) sb.Append(' ').Append(a.fields[k]).Append('=').Append(cnt[k]);
+        return sb.ToString();
     }
 
     int FirstDiff(RunTrace a, RunTrace b)   // FIXPHYS v99: compared by sim tick, not by frame index; a tick one run did not sample (2 ticks in one frame) is skipped for both
@@ -502,6 +524,7 @@ public partial class PhysProof : MonoBehaviour
                 sb.Append(" | ").Append(f.name).Append(" hp ").Append(f.health.ToString("R", IC)).Append(" post ").Append(f.posture.ToString("R", IC)).Append(" st ").Append(f.stamina.ToString("R", IC)).Append(" x ").Append(p.x.ToString("R", IC)).Append(" z ").Append(p.z.ToString("R", IC)).Append(" ").Append(f.state).Append(" t").Append(f.t);
             }
             for (; evSeen < events.Count; evSeen++) { string e = events[evSeen]; sb.Append(" ev ").Append(e); for (int k = 0; k < e.Length; k++) h = Mix(h, e[k]); }
+            { var fv = new float[fighters.Length * 5]; var fn = new string[fv.Length]; for (int q = 0; q < fighters.Length; q++) { var ff = fighters[q]; var pp = ff.transform.position; int o = q * 5; fv[o] = ff.health; fv[o + 1] = ff.posture; fv[o + 2] = ff.stamina; fv[o + 3] = pp.x; fv[o + 4] = pp.z; fn[o] = ff.name + ".hp"; fn[o + 1] = ff.name + ".posture"; fn[o + 2] = ff.name + ".stamina"; fn[o + 3] = ff.name + ".x"; fn[o + 4] = ff.name + ".z"; } tr.vals.Add(fv); tr.fields = fn; }   // PHYSAUDIT
             tr.tickIds.Add(lastRec); tr.hashes.Add(h); tr.lines.Add(sb.ToString()); tr.final = Mix(tr.final, h); tr.ticks = Duel.TickCount;
             if (deadAt < 0 && (D.Dead || P.Dead)) { deadAt = frame; deadTick = lastRec; tr.deaths = (D.Dead ? 1 : 0) + (P.Dead ? 1 : 0); }
             if (deadTick >= 0 && lastRec - deadTick >= sc.postDeathTicks) break;

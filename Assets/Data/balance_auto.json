@@ -13,5 +13,7 @@
   "minWinRate": 0.4,
   "maxWinRate": 0.7,
   "minEnemyMoves": 4,
-  "shotMode": "screen"
+  "shotMode": "screen",
+  "maxRiposteShare": 0.3,
+  "maxMoveShare": 0.4
 }

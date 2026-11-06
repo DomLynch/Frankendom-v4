@@ -108,7 +108,8 @@ public partial class PhysProof
             yield return null;
             float n = hr.NowMaxDeg; if (float.IsNaN(n)) nan = true;
             for (int i = 0; i < worst.Length; i++) worst[i] = Mathf.Max(worst[i], hr.DevNowDeg[i]);
-            if (n > atkMax) { atkMax = n; atkPart = hr.PeakPartName; }
+            if (tk.attackParts != null && tk.attackParts.Length > 0) { n = 0f; for (int i = 0; i < worst.Length; i++) if (Array.IndexOf(tk.attackParts, hr.PartName(i)) >= 0 && hr.DevNowDeg[i] > n) { n = hr.DevNowDeg[i]; if (n > atkMax) { atkMax = n; atkPart = hr.PartName(i); } } }   // PHYSAUDIT: gate only the parts the shipped rows blend; the rest still print in 'worst parts'
+            else if (n > atkMax) { atkMax = n; atkPart = hr.PeakPartName; }
         }
         var top = new StringBuilder(); for (int k = 0; k < 3; k++) { int bi = -1; float bv = -1f; for (int i = 0; i < worst.Length; i++) if (worst[i] > bv) { bv = worst[i]; bi = i; } if (bi < 0) break; top.Append(' ').Append(hr.PartName(bi)).Append('=').Append(bv.ToString("F1", IC)); worst[bi] = -2f; }
         Check("hit.track." + vname + ".attack", !nan && atkMax <= tk.maxDeg, "while '" + tk.move + "' plays: max deviation " + F(atkMax) + " deg (part " + atkPart + "), worst parts:" + top + ", limit " + F(tk.maxDeg) + " deg");

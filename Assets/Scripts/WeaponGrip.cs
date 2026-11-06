@@ -82,6 +82,7 @@ public class WeaponGrip : MonoBehaviour
         {
             string cw = c.weapon ?? "";
             if (hasW ? cw != curWeapon : cw.Length != 0) continue;
+            if (SwingFix.DropGripRow(c.name, c.states)) continue;   // SWINGFIX v103: dark, swingfix.json gripCombatInLoco
             rows.Add(c); if (c.states == null || c.states.Length == 0 || row == null) row = c;
         }
     }

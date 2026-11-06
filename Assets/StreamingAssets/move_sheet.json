@@ -36,7 +36,8 @@
     "height": 1.2,
     "fov": 35.0,
     "lookY": 1.0,
-    "sign": 1.0
+    "sign": 1.0,
+    "angleDeg": 45
   },
   "threeQuarter": {
     "dist": 5.0,
@@ -46,14 +47,15 @@
     "angleDeg": 45.0,
     "sign": 1.0
   },
-  "moves": [ { "id": "handcam_pitborn_heavy", "subject": "Pitborn", "action": "handcam", "press": "heavy", "durationFrom": "move:heavy_overhead", "separation": 1.95, "hand": "right" },
+  "moves": [ { "id": "handcam_pitborn_heavy", "subject": "Pitborn", "action": "handcam", "press": "heavy", "durationFrom": "move:heavy_overhead", "separation": 1.95, "hand": "right", "dir": "none" },
     {
       "id": "light",
       "subject": "Dracula",
       "action": "press",
       "press": "light",
       "durationFrom": "move:light_right",
-      "separation": 1.95
+      "separation": 1.95,
+      "dir": "none"
     },
     {
       "id": "stab",
@@ -61,7 +63,8 @@
       "action": "press",
       "press": "thrust",
       "durationFrom": "move:thrust",
-      "separation": 1.95
+      "separation": 1.95,
+      "dir": "none"
     },
     {
       "id": "slash",
@@ -69,7 +72,8 @@
       "action": "press",
       "press": "light_left",
       "durationFrom": "move:light_left",
-      "separation": 1.95
+      "separation": 1.95,
+      "dir": "none"
     },
     {
       "id": "heavy",
@@ -77,7 +81,8 @@
       "action": "press",
       "press": "heavy",
       "durationFrom": "move:heavy_overhead",
-      "separation": 1.95
+      "separation": 1.95,
+      "dir": "none"
     },
     {
       "id": "kick",
@@ -85,14 +90,15 @@
       "action": "press",
       "press": "kick",
       "durationFrom": "move:kick",
-      "separation": 2.2
+      "separation": 2.2,
+      "dir": "none"
     },
-    {"id": "upgrade_heavy", "subject": "Dracula", "action": "press", "press": "light", "then": "upgrade", "thenTick": 11, "durationFrom": "move:heavy_overhead", "tailTicks": 20, "separation": 2.2},
-    {"id": "upgrade_heavy_late", "subject": "Dracula", "action": "press", "press": "light", "then": "upgrade", "thenTick": 22, "durationFrom": "move:light_right", "tailTicks": 0, "separation": 2.2},
-    {"id": "cancel_roll_late", "subject": "Dracula", "action": "press", "press": "light", "then": "roll", "thenTick": 30, "durationFrom": "move:light_right", "tailTicks": 44, "separation": 2.2, "follow": true},
-    {"id": "cancel_roll_light", "subject": "Dracula", "action": "press", "press": "light", "then": "roll", "thenTick": 12, "durationFrom": "move:light_right", "tailTicks": 44, "separation": 2.2, "follow": true},
-    {"id": "queue_chain_light", "subject": "Dracula", "action": "press", "press": "light", "then": "light", "thenTick": 4, "durationFrom": "move:light_right", "tailTicks": 34, "separation": 2.2},
-    {"id": "queue_late_roll", "subject": "Dracula", "action": "press", "press": "heavy", "then": "roll", "thenTick": 6, "durationFrom": "move:heavy_overhead", "tailTicks": 50, "separation": 2.2, "follow": true},
+    {"id": "upgrade_heavy", "subject": "Dracula", "action": "press", "press": "light", "then": "upgrade", "thenTick": 11, "durationFrom": "move:heavy_overhead", "tailTicks": 20, "separation": 2.2, "dir": "none"},
+    {"id": "upgrade_heavy_late", "subject": "Dracula", "action": "press", "press": "light", "then": "upgrade", "thenTick": 22, "durationFrom": "move:light_right", "tailTicks": 0, "separation": 2.2, "dir": "none"},
+    {"id": "cancel_roll_late", "subject": "Dracula", "action": "press", "press": "light", "then": "roll", "thenTick": 30, "durationFrom": "move:light_right", "tailTicks": 44, "separation": 2.2, "follow": true, "dir": "none"},
+    {"id": "cancel_roll_light", "subject": "Dracula", "action": "press", "press": "light", "then": "roll", "thenTick": 12, "durationFrom": "move:light_right", "tailTicks": 44, "separation": 2.2, "follow": true, "dir": "none"},
+    {"id": "queue_chain_light", "subject": "Dracula", "action": "press", "press": "light", "then": "light", "thenTick": 4, "durationFrom": "move:light_right", "tailTicks": 34, "separation": 2.2, "dir": "none"},
+    {"id": "queue_late_roll", "subject": "Dracula", "action": "press", "press": "heavy", "then": "roll", "thenTick": 6, "durationFrom": "move:heavy_overhead", "tailTicks": 50, "separation": 2.2, "follow": true, "dir": "none"},
     {
       "id": "roll",
       "subject": "Dracula",
@@ -123,7 +129,8 @@
       "durationFrom": "dodge:backstep",
       "tailTicks": 30,
       "separation": 2.2,
-      "follow": true
+      "follow": true,
+      "dir": "none"
     },
     {
       "id": "sidestep",
@@ -133,7 +140,8 @@
       "durationFrom": "dodge:sidestep",
       "tailTicks": 12,
       "separation": 2.6,
-      "follow": true
+      "follow": true,
+      "dir": "none"
     },
     {
       "id": "guardwalk",
@@ -152,7 +160,8 @@
       "press": "heavy",
       "directed": "heavy_left",
       "durationFrom": "move:heavy_left",
-      "separation": 1.95
+      "separation": 1.95,
+      "dir": "none"
     },
     {
       "id": "heavy_right",
@@ -161,7 +170,8 @@
       "press": "heavy",
       "directed": "heavy_right",
       "durationFrom": "move:heavy_right",
-      "separation": 1.95
+      "separation": 1.95,
+      "dir": "none"
     },
     {
       "id": "heavy_thrust",
@@ -170,7 +180,8 @@
       "press": "heavy",
       "directed": "heavy_thrust",
       "durationFrom": "move:heavy_thrust",
-      "separation": 1.95
+      "separation": 1.95,
+      "dir": "none"
     },
     {
       "id": "light_overhead",
@@ -179,7 +190,8 @@
       "press": "light",
       "directed": "light_overhead",
       "durationFrom": "move:light_overhead",
-      "separation": 1.95
+      "separation": 1.95,
+      "dir": "none"
     },
     {
       "id": "guard_left",
@@ -228,7 +240,8 @@
       "action": "press",
       "press": "light",
       "durationFrom": "move:light_right",
-      "separation": 2.2
+      "separation": 2.2,
+      "dir": "none"
     },
     {
       "id": "pitborn_heavy",
@@ -236,7 +249,8 @@
       "action": "press",
       "press": "heavy",
       "durationFrom": "move:heavy_overhead",
-      "separation": 2.2
+      "separation": 2.2,
+      "dir": "none"
     },
     {
       "id": "pitborn_stab",
@@ -244,7 +258,8 @@
       "action": "press",
       "press": "thrust",
       "durationFrom": "move:thrust",
-      "separation": 2.2
+      "separation": 2.2,
+      "dir": "none"
     },
     {
       "id": "pitborn_slash",
@@ -252,7 +267,8 @@
       "action": "press",
       "press": "light_left",
       "durationFrom": "move:light_left",
-      "separation": 2.2
+      "separation": 2.2,
+      "dir": "none"
     },
     {
       "id": "handcam_pitborn",
@@ -261,7 +277,8 @@
       "press": "light",
       "durationFrom": "move:light_right",
       "separation": 1.95,
-      "hand": "right"
+      "hand": "right",
+      "dir": "none"
     },
     {
       "id": "handcam_dracula",
@@ -270,7 +287,8 @@
       "press": "light",
       "durationFrom": "move:light_right",
       "separation": 1.95,
-      "hand": "right"
+      "hand": "right",
+      "dir": "none"
     }
   ],
   "handcam": {

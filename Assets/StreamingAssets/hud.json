@@ -47,7 +47,7 @@
     "_about": "Top-left block: name (serif small caps: first letter nameSize, rest nameSmall, nameTracking px between glyphs), HP bar, stamina and posture bars under it (gap = space above each). The cue text (PARRY, GUARD BROKEN ...) is right-aligned on the name row.",
     "x": 48, "y": 34, "nameSize": 22, "nameSmall": 16, "nameTracking": 3.0, "nameGap": 9, "cueSize": 15, "cueDy": 3,
     "showStamina": true, "showPosture": true,
-    "hp": { "w": 440, "h": 12, "taper": 18 },
+    "hp": { "w": 440, "h": 12, "taper": 18, "gap": 8 },
     "stamina": { "w": 330, "h": 6, "taper": 9, "gap": 9 },
     "posture": { "w": 250, "h": 4, "taper": 7, "gap": 8 }
   },
@@ -56,7 +56,7 @@
     "enabled": true, "w": 720, "top": 30, "sideMargin": 30,
     "nameSize": 24, "nameSmall": 18, "nameTracking": 3.2, "nameGap": 12, "titleSize": 17, "titleGap": 4, "titleColor": [0.80, 0.76, 0.68, 1.0], "showTitle": true, "cueSize": 17, "cueGap": 8,
     "showPosture": true, "showStamina": false,
-    "hp": { "h": 14, "taper": 20 },
+    "hp": { "h": 14, "taper": 20, "w": 400, "gap": 8 },
     "stamina": { "w": 420, "h": 5, "taper": 8, "gap": 9 },
     "posture": { "w": 420, "h": 4, "taper": 7, "gap": 9 }
   },

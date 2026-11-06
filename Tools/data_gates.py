@@ -439,29 +439,43 @@ def gate_F(R, data, sa, args, ros):
 def gate_G(R, data, sa, args, ros):
     before = PROJECT / 'Assets' / 'Data'
     if not args.overlay: R.add('G', 'INFO', 'summary', 'needs --overlay (compares live rows with live+overlay rows)'); return
-    bros = Roster(before); nchg = 0
-    def own(rows, field, r_, cid):
+    bros = Roster(before); nchg = 0; nadd = 0   # HCKIT7 v103: --added-keys-ok
+    def own_rows(rows, field, r_, cid):
         out = []
         for r in rows or []:
             if not isinstance(r, dict): continue
             k = r.get(field)
             if isinstance(k, str) and k and k != STAR and r_.resolve(k) == cid:
-                c = dict(r); c[field] = '<key>'; out.append(json.dumps(c, sort_keys=True))
-        return sorted(out)
+                c = dict(r); c[field] = '<key>'; out.append(c)
+        return out
+    def own(rows, field, r_, cid): return sorted(json.dumps(c, sort_keys=True) for c in own_rows(rows, field, r_, cid))
+    def project(a, b):   # HCKIT7 v103: the part of row `a` (after) that `b` (before) already had: keys only `a` carries are dropped
+        if isinstance(a, dict) and isinstance(b, dict): return {k: project(v, b[k]) for k, v in a.items() if k in b}
+        if isinstance(a, list) and isinstance(b, list) and len(a) == len(b): return [project(x, y) for x, y in zip(a, b)]
+        return a
+    def count_added(a, b):
+        if isinstance(a, dict) and isinstance(b, dict): return sum(1 for k in a if k not in b) + sum(count_added(v, b[k]) for k, v in a.items() if k in b)
+        if isinstance(a, list) and isinstance(b, list) and len(a) == len(b): return sum(count_added(x, y) for x, y in zip(a, b))
+        return 0
     for f, path, field, kind in KEYED:
         b, a = jload(before / f), jload(data / f)
         if b is None or a is None: continue
         for cid in ros.ids:
             ob, oa = own(rows_at(b, path), field, bros, cid), own(rows_at(a, path), field, ros, cid)
+            if ob != oa and getattr(args, 'added_keys_ok', False):   # same rows, same values, only extra keys (a missing key made explicit with its code default)
+                rb, ra = own_rows(rows_at(b, path), field, bros, cid), own_rows(rows_at(a, path), field, ros, cid)
+                if len(rb) == len(ra) and all(project(y, x) == x for x, y in zip(rb, ra)):
+                    n = sum(count_added(y, x) for x, y in zip(rb, ra)); nadd += n
+                    R.add('G', 'INFO', '%s:%s [%s]' % (f, path, cid), '%d key(s) added to existing rows, no value changed' % n); continue
             if ob != oa:
                 nchg += 1
                 what = 'GAINS %d row(s)' % (len(oa) - len(ob)) if len(oa) > len(ob) else 'LOSES %d row(s)' % (len(ob) - len(oa)) if len(oa) < len(ob) else 'own row CONTENT changed'
                 R.add('G', 'FAIL', '%s:%s [%s]' % (f, path, cid), '%s through the merge (a role token or key rename must never change which rows a character has)' % what)
-    R.add('G', 'PASS' if nchg == 0 else 'INFO', 'summary', 'own-row sets per roster id compared across %d keyed arrays: %d changed' % (len(KEYED), nchg))
+    R.add('G', 'PASS' if nchg == 0 else 'INFO', 'summary', 'own-row sets per roster id compared across %d keyed arrays: %d changed%s' % (len(KEYED), nchg, ('; %d key(s) added with unchanged values (--added-keys-ok)' % nadd) if nadd else ''))
 
 # -------------------------------------------------------------------------------- main
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('--gates', default='ABCDEFG'); ap.add_argument('--data'); ap.add_argument('--sa'); ap.add_argument('--overlay')
+    ap = argparse.ArgumentParser(); ap.add_argument('--gates', default='ABCDEFG'); ap.add_argument('--data'); ap.add_argument('--sa'); ap.add_argument('--overlay'); ap.add_argument('--added-keys-ok', action='store_true', help='gate G: a row that only gained keys (values of its old keys equal) is not a content change (HCKIT7)')
     ap.add_argument('--fix', action='store_true'); ap.add_argument('--strict', action='store_true'); ap.add_argument('--json'); ap.add_argument('--quiet', action='store_true', help='hide PASS and INFO lines')
     args = ap.parse_args(); R = Res()
     data, sa, tmp = setup(args); ros = Roster(data)

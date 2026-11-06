@@ -117,27 +117,55 @@
    "rows": [
     {
      "type": "gs",
-     "id": "graphics.tier"
+     "id": "graphics.tier",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
     },
     {
-     "type": "resolution"
+     "type": "resolution",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
     },
     {
-     "type": "fullscreen"
+     "type": "fullscreen",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
     },
     {
-     "type": "vsync"
+     "type": "vsync",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
     },
     {
-     "type": "framecap"
+     "type": "framecap",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
     },
     {
      "type": "gs",
-     "id": "camera.freeInCombat"
+     "id": "camera.freeInCombat",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
     },
     {
      "type": "reset",
-     "key": "display"
+     "key": "display",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
     }
    ]
   },
@@ -147,11 +175,19 @@
    "type": "list",
    "rows": [
     {
-     "type": "mix"
+     "type": "mix",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
     },
     {
      "type": "reset",
-     "key": "audio"
+     "key": "audio",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
     }
    ]
   },
@@ -188,11 +224,19 @@
      "type": "toggle",
      "key": "hints",
      "label": "HUD hints",
-     "hint": "The F1 controls panel and the small prompt at the start of a fight."
+     "hint": "The F1 controls panel and the small prompt at the start of a fight.",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
     },
     {
      "type": "reset",
-     "key": "gameplay"
+     "key": "gameplay",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
     }
    ]
   },

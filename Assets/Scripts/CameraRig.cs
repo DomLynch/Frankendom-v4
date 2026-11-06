@@ -96,6 +96,7 @@ public class CameraRig : MonoBehaviour
             Vector3 lockPos = new Vector3(P.x, P.y + h, P.z) - fwd * back + right * pose.shoulder;
             Vector3 mid = (P + E) * 0.5f;
             Vector3 lockLook = new Vector3(mid.x, mid.y + lk.lookUp + pose.lookYAdd, mid.z) + fwd * lk.lookAhead;   // nudged toward the foe so he sits more central
+            lockLook = CamReframe.Look(lockLook, P, FighterScale.Eff(target.lossyScale.y, target), E, FighterScale.Eff(enemy.lossyScale.y, enemy), lockW);   // CAMREFRAME v102: far separation = look-at to the midpoint (camera_reframe.json)
             lockPos.x = Mathf.Clamp(lockPos.x, -lk.xClamp, lk.xClamp);
             Vector3 wantPos = Vector3.Lerp(freePos, lockPos, lockW), wantLook = Vector3.Lerp(freeLook, lockLook, lockW);
             CameraDeath.Shape(target, enemy, enemyHp, ref wantPos, ref wantLook, camPos);   // V61B: after a death keep the look-at on the dead fighter's body (camera_death.json)
@@ -107,6 +108,7 @@ public class CameraRig : MonoBehaviour
         else { camPos = freePos; lookAt = freeLook; CamFraming.Clear(); }
 
         var drawPos = enemy ? CamFraming.Fit(camPos, lookAt, lockW, cam.aspect) : camPos;   // V65CAM: pushed straight back along the view ray until both fighters fit
+        if (enemy) drawPos = CamReframe.Pos(drawPos, lookAt, lockW, cam.aspect);   // CAMREFRAME v102: pulled in toward maxDistM while both still fit, pitch <= 4 deg
         if (!colLoaded) LoadCol();
         if (col.enabled)   // camera collision: spherecast from the look target to the camera, never ignoring walls/gate (fighter layers ignored), data camera_collision.json
         {

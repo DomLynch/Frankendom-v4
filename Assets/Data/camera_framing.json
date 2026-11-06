@@ -9,7 +9,7 @@
   "minLockW": 0.5, "maxDeathWeight": 0.01,
   "fovWiden": true, "fovMax": 60, "fovReleaseDegPerS": 6,
   "proof": {
-    "steadyMin": 0.9, "transientMin": 0.66, "lumaMin": 0.02, "lumaMax": 0.95,
+    "steadyMin": 0.9, "playerScreenHMin": 0.22, "reframeSteadyMin": 0.5, "transientMin": 0.66, "lumaMin": 0.02, "lumaMax": 0.95,
     "seps": [1.0, 2.0, 4.0, 7.0, 10.0],
     "settleFrames": 90,
     "knockFromM": 2.0, "knockToM": 9.0, "knockFrames": 24

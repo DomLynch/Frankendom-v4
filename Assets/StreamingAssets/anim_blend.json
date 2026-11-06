@@ -15,7 +15,10 @@
     "rollOut": 120
   },
   "settleMs": {
-    "roll": 120
+    "roll": 120,
+    "attack": -1,
+    "special": -1,
+    "hurt": -1
   },
   "stateKinds": [
     { "state": "light_attack_R", "kind": "attack" },

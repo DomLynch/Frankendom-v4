@@ -8,10 +8,12 @@ public class Duel : MonoBehaviour
     public static int TickCount;
     public static bool Frozen;   // FN1: true while a finisher scene runs: no brain decides, no new hit resolves (reset on scene load)
     float acc;
+    static Duel inst;
+    public static float Alpha { get { return inst == null || PresentationClock.Frozen ? 1f : Mathf.Clamp01(inst.acc * 60f); } }   // PHYSAUDIT: 0..1 inside the current tick, ViewInterp only (never read by the sim)
     public static void Register(DuelFighter f) { if (!fighters.Contains(f)) fighters.Add(f); }
     public static void Unregister(DuelFighter f) { fighters.Remove(f); }
 
-    void Awake() { TickCount = 0; Frozen = false; }
+    void Awake() { TickCount = 0; Frozen = false; inst = this; }
     void OnDestroy() { fighters.Clear(); Frozen = false; }
 
     void Update()
@@ -21,6 +23,7 @@ public class Duel : MonoBehaviour
         {
             acc -= 1f / 60f; TickCount++;
             for (int i = 0; i < fighters.Count; i++) fighters[i].Tick();
+            for (int i = 0; i < fighters.Count; i++) fighters[i].MoveTick();   // PHYSAUDIT: bodies move on the sim tick (after every decision of this tick)
             PhysicsClock.OnSimTick();   // PHYS1 v1: ONE Physics.Simulate per 60 Hz sim tick, after the fighters ticked (hit-stop = no tick = no step)
             if (PresentationClock.Frozen) { acc = 0f; break; }   // a contact this tick requested a stop (V3 main.ts: accumulator = 0)
         }

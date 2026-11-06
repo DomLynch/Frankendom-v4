@@ -191,7 +191,7 @@ public class RagdollRig : MonoBehaviour
                 if (Mathf.Abs(r0) > RestHingeMaxDeg) { RestHingeMaxDeg = Mathf.Abs(r0); restWorst = p.cfg.name; }
                 // FIXPHYS v99: a model whose prefab pose is not straight (Pitborn: 69 deg) had its hinge window measured from THAT pose, i.e. shifted by the rest flexion: the death pose violated the window
                 // (enemy_momentum.noPop 9.4 cm armR, hingeRange forearmR 118 / shinR 155 deg). Shift the window back so the flexion limits stay [hinge.min, hinge.max] in absolute degrees.
-                if (Mathf.Abs(r0) > d.rig.restCheckMaxDeg)
+                if (Mathf.Abs(r0) > (d.rig.restShiftMinDeg >= 0f ? d.rig.restShiftMinDeg : d.rig.restCheckMaxDeg))   // PHYSFLINCH v1
                 {
                     float off = h.flip ? r0 : -r0;
                     p.lowX = Mathf.Clamp(p.lowX + off, -177f, 177f); p.highX = Mathf.Clamp(p.highX + off, -177f, 177f);
@@ -338,6 +338,7 @@ public class RagdollRig : MonoBehaviour
             if (float.IsNaN(aw.x) || float.IsNaN(aw.y) || float.IsNaN(aw.z)) aw = Vector3.zero;
             parts[i].inheritV = total; parts[i].inheritW = aw;
         }
+        if (inh.chainVelocity) ChainInherit(inh);   // PHYSFLINCH v1: child bodies take the rigid velocity of their parent body at the joint anchor (the arms hang on spine2 with an un-bodied clavicle between: sampled bone velocities disagreed with the joint)
         KnockUsed = knock; RootVelUsed = rootVel;
 
         // 2) the Animator stops; the bones keep the pose they have now
@@ -381,7 +382,10 @@ public class RagdollRig : MonoBehaviour
             }   // V3 role table: x8 on the torso capsules was needed for stable joint springs (Jolt); 1 = PhysX default
             // FIXPHYS2 v101: inheritV is the velocity of the BONE ORIGIN (the sampler follows bone positions) but Rigidbody.linearVelocity is the CENTRE OF MASS: a swinging arm moved its origin by w x r x dt on the first step
             // (enemy_momentum.noPop armR 9.3 cm; 25 rad/s x ~0.17 m x 16.7 ms = 7 cm). v_com = v_origin + w x (com - origin) makes the origin follow the clip.
-            rb.linearVelocity = p.inheritV + Vector3.Cross(p.inheritW, rb.worldCenterOfMass - p.bone.position); rb.angularVelocity = p.inheritW;
+            { Vector3 cOff = rb.worldCenterOfMass - p.bone.position, cv = Vector3.Cross(p.inheritW, cOff);   // PHYSFLINCH v1
+              if (d.inherit.chord && p.inheritW.sqrMagnitude > 1e-8f)   // the origin follows the chord of the rotation over the step, not its tangent (a 25 rad/s arm: 1.5 cm)
+              { float sdt = Mathf.Max(1e-4f, PhysicsClock.Scripted ? PhysicsClock.StepDt : Time.fixedDeltaTime), wm = p.inheritW.magnitude; cv = (Quaternion.AngleAxis(wm * sdt * Mathf.Rad2Deg, p.inheritW / wm) * cOff - cOff) / sdt; }
+              rb.linearVelocity = p.inheritV + cv; rb.angularVelocity = p.inheritW; }
         }
         // the ignore pairs are keyed on the colliders; if a trigger / layer change dropped any, put them back (the proof logs this)
         if (d.body.ignoreSelfCollision && parts.Count > 2 && !Physics.GetIgnoreCollision(parts[0].cap, parts[parts.Count - 1].cap)) IgnoreSelf();
@@ -391,6 +395,7 @@ public class RagdollRig : MonoBehaviour
         for (int i = 1; i < parts.Count; i++)
         {
             var p = parts[i]; if (p.joint == null) continue;
+            if (inh.reanchor) ReAnchor(p);   // PHYSFLINCH v1
             WidenLimits(p, d.limits.convertMarginDeg);
             SetTargetToCurrentPose(p);
         }
@@ -398,6 +403,31 @@ public class RagdollRig : MonoBehaviour
         ApplyDrives(0f); TightenLimits(0f);
         ApplyBlow(killer, move); for (int fc = 0; fc < finCuts.Count; fc++) ApplyCut(finCuts[fc]);   /* FINPHYS v97 */
         return true;
+    }
+
+    // // PHYSFLINCH v1: the velocity of every body, parent first (ragdoll.json lists parents before children). A child's anchor is held to its parent body by a locked joint, so its origin must start with the parent
+    // body's velocity AT THAT POINT: v_parent_origin + w_parent x (anchor - parent origin). The sampled bone velocity differs from that wherever a bone without a body sits between the two (clavicle), by a few m/s
+    // for a swinging arm = the 9 cm first-step jump of enemy_momentum.noPop. chainBlend 1 = fully rigid, 0 = the sampled value (old).
+    void ChainInherit(RagdollDeath.InheritCfg inh)
+    {
+        float k = Mathf.Clamp01(inh.chainBlend);
+        for (int i = 1; i < parts.Count; i++)
+        {
+            var p = parts[i]; var par = p.parent; if (par == null || par.bone == null || p.bone == null) continue;
+            Vector3 vc = par.inheritV + Vector3.Cross(par.inheritW, p.bone.position - par.bone.position);
+            if (float.IsNaN(vc.x) || float.IsNaN(vc.y) || float.IsNaN(vc.z)) continue;
+            Vector3 v = Vector3.Lerp(p.inheritV, vc, k);
+            float sp = v.magnitude; if (sp > inh.maxSpeed && sp > 1e-5f) v *= inh.maxSpeed / sp;
+            p.inheritV = v;
+        }
+    }
+
+    // // PHYSFLINCH v1: the joints were anchored in the REST pose; the death starts in a clip pose where the un-bodied bones between two parts have moved, so projection would snap the child to the rest offset. Re-measure in the death pose.
+    void ReAnchor(Part p)
+    {
+        var j = p.joint; var par = p.parent ?? (parts.Count > 0 ? parts[0] : null); if (j == null || par == null || par.bone == null || p.bone == null) return;
+        j.autoConfigureConnectedAnchor = false; j.anchor = Vector3.zero;
+        j.connectedAnchor = par.bone.InverseTransformPoint(p.bone.position);
     }
 
     // rotation of a part relative to its PARENT PART's bone (not the transform parent: Mixamo has a shoulder / clavicle bone between spine2 and the arm that has no body)

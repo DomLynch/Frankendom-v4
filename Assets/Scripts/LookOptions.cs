@@ -10,15 +10,16 @@ using UnityEngine.Rendering.HighDefinition;
 public static class LookOptions
 {
     [Serializable] public class Wash { public bool on; public float[] tint = { 0.06f, 0.025f, 0.025f, 1f }; }
-    [Serializable] public class Spike { public bool on; public string[] hideObjects = { "DoorwayEmberGlow" }; }
-    [Serializable] public class Floor { public bool on; public float scale = 0.35f; public string[] materials = { "ground_paving_LOD0_plate_top", "ground_paving_LOD1_plate_top", "ground_paving_LOD2_plate_top" }; }
+    [Serializable] public class Spike { public bool on; public string[] hideObjects = { "DoorwayEmberGlow" }; public float emberIntensity = 0f; /* // GOOSEBACKLOG2 v102: > 0 = dim the glow material _Intensity instead of hiding the object */ }
+    [Serializable] public class Floor { public bool on; public float scale = 0.35f, detailNormalScale = -1f, smoothnessMax = -1f; /* // GOOSEBACKLOG2 v102: -1 = leave the material value */ public string[] materials = { "ground_paving_LOD0_plate_top", "ground_paving_LOD1_plate_top", "ground_paving_LOD2_plate_top" }; }
     [Serializable] public class Blood { public bool wetDecal; public float smoothness = 0.8f, depth = 0.12f; }
     [Serializable] public class Cap { public bool on; public float followM = 7.5f; }
+    [Serializable] public class ReframeRow { public bool on; public float maxDistM = 6.5f, startSepM = 4f, spanSepM = 6f, maxPitchDeg = 4f, fovMaxDeg = 0f; }   // GOOSEBACKLOG2 v102: far-separation framing, Goose 08:30
     [Serializable] public class Door { public bool on; public float lightVolumetricDimmer = 0.5f, fogMeanFreePath = 5f; public string lightName = "DoorwayFlickerLight"; public string[] fogNames = { "DoorwayFog_Inside" }; }   // GOOSEBACKLOG v100
     [Serializable] public class Plate { public bool on; public float plateAlpha = 0f; }
-    [Serializable] public class WoundD { public bool on; public float colorMul = 0.5f, sizeMul = 0.7f; }
+    [Serializable] public class WoundD { public bool on; public float colorMul = 0.5f, sizeMul = 0.7f; public int affectNormal = -1, affectAO = -1; public float endAngleFade = -1f; /* // GOOSEBACKLOG2 v102: -1 = keep wounds.json */ }
     [Serializable] public class Vig { public bool on; public float intensity = 0.34f; }
-    [Serializable] public class Root { public Door doorwayDepth = new Door(); public Plate endPlate = new Plate(); public WoundD woundMarks = new WoundD(); public Vig sceneVignette = new Vig(); public Wash deathWash = new Wash(); public Spike doorwaySpikeStrip = new Spike(); public Floor floorNormal = new Floor(); public Blood finisherBlood = new Blood(); public Cap combatCamCap = new Cap(); }
+    [Serializable] public class Root { public Door doorwayDepth = new Door(); public Plate endPlate = new Plate(); public WoundD woundMarks = new WoundD(); public Vig sceneVignette = new Vig(); public Wash deathWash = new Wash(); public Spike doorwaySpikeStrip = new Spike(); public Floor floorNormal = new Floor(); public Blood finisherBlood = new Blood(); public Cap combatCamCap = new Cap(); public ReframeRow camReframe = new ReframeRow(); /* // GOOSEBACKLOG2 v102 */ }
 
     static Root cfg;
     public static Root Cfg()
@@ -36,6 +37,7 @@ public static class LookOptions
         if (cfg.floorNormal == null) cfg.floorNormal = new Floor();
         if (cfg.finisherBlood == null) cfg.finisherBlood = new Blood();
         if (cfg.combatCamCap == null) cfg.combatCamCap = new Cap();
+        if (cfg.camReframe == null) cfg.camReframe = new ReframeRow();   // GOOSEBACKLOG2 v102
         if (cfg.doorwayDepth == null) cfg.doorwayDepth = new Door();   // GOOSEBACKLOG v100
         if (cfg.endPlate == null) cfg.endPlate = new Plate();
         if (cfg.woundMarks == null) cfg.woundMarks = new WoundD();
@@ -51,6 +53,8 @@ public static class LookOptions
     }
 
     /// <summary>Max camera-to-look distance for the lock-on pull-back; 0 = no cap.</summary>
+    /// <summary>// GOOSEBACKLOG2 v102: far-separation lock-cam framing (look_options.json camReframe); on=false returns the switch row untouched, callers test .on.</summary>
+    public static ReframeRow Reframe() { return Cfg().camReframe; }
     public static float CamCapM() { var c = Cfg().combatCamCap; return c.on && c.followM > 0f ? c.followM : 0f; }
 
     /// <summary>End-screen backing plate alpha (hud.json plateAlpha unless endPlate is on; its hard top/bottom edge is the 'panel band').</summary>
@@ -58,6 +62,10 @@ public static class LookOptions
     /// <summary>Wound decal _BaseColor multiplier (1 = today).</summary>
     public static float WoundColorMul() { var w = Cfg().woundMarks; return w.on ? w.colorMul : 1f; }
     /// <summary>Wound decal length/width multiplier (1 = today).</summary>
+    /// <summary>// GOOSEBACKLOG2 v102: decal Affect Normal / AO / end angle fade while woundMarks is on (-1 = wounds.json value). Goose 08:10: BaseColor only, angle fade 60..80.</summary>
+    public static bool WoundAffectNormal(bool def) { var w = Cfg().woundMarks; return w.on && w.affectNormal >= 0 ? w.affectNormal > 0 : def; }
+    public static bool WoundAffectAO(bool def) { var w = Cfg().woundMarks; return w.on && w.affectAO >= 0 ? w.affectAO > 0 : def; }
+    public static float WoundEndAngle(float def) { var w = Cfg().woundMarks; return w.on && w.endAngleFade >= 0f ? w.endAngleFade : def; }
     public static float WoundSizeMul() { var w = Cfg().woundMarks; return w.on ? w.sizeMul : 1f; }
 
     static readonly Dictionary<string, Material> clones = new Dictionary<string, Material>();
@@ -96,7 +104,13 @@ public static class LookOptions
             {
                 var t = all[i]; if (t == null || !t.gameObject.scene.IsValid()) continue;   // scene objects only, no prefab assets
                 for (int k = 0; k < c.doorwaySpikeStrip.hideObjects.Length; k++)
-                    if (t.name == c.doorwaySpikeStrip.hideObjects[k] && t.gameObject.activeSelf) { t.gameObject.SetActive(false); Debug.Log("[LookOptions] doorway spike strip hidden: " + t.name); }
+                    if (t.name == c.doorwaySpikeStrip.hideObjects[k] && c.doorwaySpikeStrip.emberIntensity > 0f)   // GOOSEBACKLOG2 v102: dim ember, no hide (MaterialPropertyBlock, idempotent)
+                    {
+                        var rr = t.GetComponentsInChildren<Renderer>(true); var mb = new MaterialPropertyBlock();
+                        for (int q = 0; q < rr.Length; q++) { if (rr[q] == null) continue; rr[q].GetPropertyBlock(mb); mb.SetFloat("_Intensity", c.doorwaySpikeStrip.emberIntensity); rr[q].SetPropertyBlock(mb); }
+                        Debug.Log("[LookOptions] doorway spike strip dimmed to " + c.doorwaySpikeStrip.emberIntensity.ToString("F2") + ": " + t.name);
+                    }
+                    else if (t.name == c.doorwaySpikeStrip.hideObjects[k] && t.gameObject.activeSelf) { t.gameObject.SetActive(false); Debug.Log("[LookOptions] doorway spike strip hidden: " + t.name); }
             }
         }
         if (c.doorwayDepth.on)   // GOOSEBACKLOG v100: faint red haze behind the threshold = depth cue; only the light's volumetric dimmer and the inside fog density change
@@ -125,6 +139,8 @@ public static class LookOptions
                     Material cl;   // one private copy per material, so the asset (and the editor project) keeps its 0.75
                     if (!clones.TryGetValue(Base(m.name), out cl) || cl == null) { cl = new Material(m) { name = Base(m.name) + " (lookopt)" }; clones[Base(m.name)] = cl; }
                     if (Mathf.Abs(cl.GetFloat("_NormalScale") - c.floorNormal.scale) > 1e-4f) cl.SetFloat("_NormalScale", c.floorNormal.scale);
+                    if (c.floorNormal.detailNormalScale >= 0f && cl.HasProperty("_DetailNormalScale")) cl.SetFloat("_DetailNormalScale", c.floorNormal.detailNormalScale);   // GOOSEBACKLOG2 v102
+                    if (c.floorNormal.smoothnessMax >= 0f && cl.HasProperty("_SmoothnessRemapMax")) cl.SetFloat("_SmoothnessRemapMax", c.floorNormal.smoothnessMax);   // GOOSEBACKLOG2 v102
                     if (ms[j] != cl) { ms[j] = cl; ch = true; n++; }
                 }
                 if (ch) r.sharedMaterials = ms;

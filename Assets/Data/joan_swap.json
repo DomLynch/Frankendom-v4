@@ -21,7 +21,8 @@
       "glbMaterial": "Ch13_body",
       "mat": "Assets/Characters/Joan/Mats/joan_body_0.mat",
       "tex": "joan_body",
-      "smoothness": 0.25
+      "smoothness": 0.25,
+      "ext": "jpg"
     },
     {
       "glbMaterial": "tripo_material",
@@ -32,13 +33,15 @@
         0.93,
         1.0,
         1.03
-      ]
+      ],
+      "ext": "jpg"
     },
     {
       "glbMaterial": "Joan_hair",
       "mat": "Assets/Characters/Joan/Mats/joan_hairshell_0.mat",
       "tex": "joan_hairshell",
-      "smoothness": 0.15
+      "smoothness": 0.15,
+      "ext": "jpg"
     }
   ]
 }

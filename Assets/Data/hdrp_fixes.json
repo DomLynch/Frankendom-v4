@@ -144,7 +144,11 @@
                 0.47
             ],
             "metallicMax": 0.45,
-            "smoothnessMax": 0.32
+            "smoothnessMax": 0.32,
+            "normalScale": -1,
+            "smoothnessMin": -1,
+            "aoStrength": -1,
+            "emissiveScale": -1
         },
         {
             "match": "sword_start_LOD",
@@ -153,7 +157,12 @@
                 0.9,
                 0.9
             ],
-            "emissiveScale": 0.0
+            "emissiveScale": 0.0,
+            "normalScale": -1,
+            "metallicMax": -1,
+            "smoothnessMax": -1,
+            "smoothnessMin": -1,
+            "aoStrength": -1
         },
         {
             "match": "maul_start_LOD",
@@ -165,12 +174,19 @@
             "metallicMax": 0.7,
             "smoothnessMax": 0.5,
             "aoStrength": 1.0,
-            "emissiveScale": 0.0
+            "emissiveScale": 0.0,
+            "normalScale": -1,
+            "smoothnessMin": -1
         },
         {
             "match": "rock_boulder",
             "normalScale": 1.0,
-            "tiling": 2.5
+            "tiling": 2.5,
+            "metallicMax": -1,
+            "smoothnessMax": -1,
+            "smoothnessMin": -1,
+            "aoStrength": -1,
+            "emissiveScale": -1
         },
         {
             "match": "post_capped",
@@ -178,7 +194,13 @@
                 0.5,
                 0.5,
                 0.5
-            ]
+            ],
+            "normalScale": -1,
+            "metallicMax": -1,
+            "smoothnessMax": -1,
+            "smoothnessMin": -1,
+            "aoStrength": -1,
+            "emissiveScale": -1
         },
         {
             "match": "gate_LOD0",
@@ -186,7 +208,13 @@
                 0.88,
                 0.87,
                 0.86
-            ]
+            ],
+            "normalScale": -1,
+            "metallicMax": -1,
+            "smoothnessMax": -1,
+            "smoothnessMin": -1,
+            "aoStrength": -1,
+            "emissiveScale": -1
         },
         {
             "match": "arch_fragment_9",
@@ -194,7 +222,13 @@
                 0.88,
                 0.87,
                 0.86
-            ]
+            ],
+            "normalScale": -1,
+            "metallicMax": -1,
+            "smoothnessMax": -1,
+            "smoothnessMin": -1,
+            "aoStrength": -1,
+            "emissiveScale": -1
         },
         {
             "match": "fallen_pillar_3",
@@ -202,7 +236,13 @@
                 0.88,
                 0.87,
                 0.86
-            ]
+            ],
+            "normalScale": -1,
+            "metallicMax": -1,
+            "smoothnessMax": -1,
+            "smoothnessMin": -1,
+            "aoStrength": -1,
+            "emissiveScale": -1
         },
         {
             "match": "rock_arch_8",
@@ -210,11 +250,22 @@
                 0.88,
                 0.87,
                 0.86
-            ]
+            ],
+            "normalScale": -1,
+            "metallicMax": -1,
+            "smoothnessMax": -1,
+            "smoothnessMin": -1,
+            "aoStrength": -1,
+            "emissiveScale": -1
         },
         {
             "match": "basalt_weathered",
-            "smoothnessMax": 0.25
+            "smoothnessMax": 0.25,
+            "normalScale": -1,
+            "metallicMax": -1,
+            "smoothnessMin": -1,
+            "aoStrength": -1,
+            "emissiveScale": -1
         }
     ],
     "boxes": []

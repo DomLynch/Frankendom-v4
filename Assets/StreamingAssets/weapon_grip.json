@@ -17,7 +17,8 @@
     -120
    ],
    "slide": 0.0,
-   "debugLog": false
+   "debugLog": false,
+   "blendSeconds": 0.1
   },
   {
    "name": "Pitborn",
@@ -57,7 +58,8 @@
     20
    ],
    "slide": 0.05,
-   "debugLog": false
+   "debugLog": false,
+   "blendSeconds": 0.1
   },
   {
    "name": "Joan",
@@ -75,7 +77,8 @@
     20.51
    ],
    "slide": -0.0346,
-   "debugLog": false
+   "debugLog": false,
+   "blendSeconds": 0.1
   },
   {
    "name": "Joan",
@@ -105,7 +108,12 @@
   },
   {
    "name": "*",
-   "enabled": false
+   "enabled": false,
+   "hand": "RightHand",
+   "socket": "WeaponSocket_R",
+   "socketOffset": [0, 0, 0],
+   "socketEuler": [0, 0, 0],
+   "blendSeconds": 0.1
   },
   {
    "name": "Joan",
@@ -125,7 +133,8 @@
    ],
    "slide": -0.0437,
    "debugLog": false,
-   "_fit": "laneDROPPIT v2 (Blender fit on joan_v6b with the game's socket maths, shaft radius 2.68 cm). Used while the pitborn_maul visual is on the socket (WeaponSwap.IdOf)."
+   "_fit": "laneDROPPIT v2 (Blender fit on joan_v6b with the game's socket maths, shaft radius 2.68 cm). Used while the pitborn_maul visual is on the socket (WeaponSwap.IdOf).",
+   "blendSeconds": 0.1
   }
  ]
 }

@@ -22,12 +22,12 @@
     { "id": "dom_low_behind_left", "behindM": 2.0, "leftM": 0.7, "heightM": 0.55, "lookAheadM": 1.2, "lookHeightM": 0.4, "fov": 50, "near": 0.05 }
   ],
   "arms": [
-    { "id": "baseline", "note": "the shipped state: lodBias 2.0, LOD fade as built, all decals" },
+    { "id": "baseline", "note": "the shipped state: lodBias 2.0, LOD fade as built, all decals", "forceLod": -1 },
     { "id": "A1_lod0_only", "note": "runtime equal of perf_mem_build.json E2 keepLods 1 on ground_paving", "forceLod": 0 },
     { "id": "A1b_lod0_nofade", "note": "LOD0 forced and fade mode None", "forceLod": 0, "fadeMode": "None" },
-    { "id": "A2_decals_off", "note": "wound decals and blood/wound/gore quads hidden", "decalProjectorsOff": true, "hideRendererMatch": [ "Blood", "Wound", "Gore" ] },
-    { "id": "A3_lodbias_4", "note": "crack_flicker.json lodBias 2.0 -> 4.0", "lodBias": 4.0 },
-    { "id": "A4_fade_none", "note": "floor LODGroup fadeMode None (rules the LOD dither in or out without dropping LODs)", "fadeMode": "None" },
-    { "id": "A5_fade_crossfade", "note": "floor LODGroup fadeMode CrossFade (forces the dither on: if the patch only appears here, it was a fade the shipped scene did not have)", "fadeMode": "CrossFade" }
+    { "id": "A2_decals_off", "note": "wound decals and blood/wound/gore quads hidden", "decalProjectorsOff": true, "hideRendererMatch": [ "Blood", "Wound", "Gore" ], "forceLod": -1 },
+    { "id": "A3_lodbias_4", "note": "crack_flicker.json lodBias 2.0 -> 4.0", "lodBias": 4.0, "forceLod": -1 },
+    { "id": "A4_fade_none", "note": "floor LODGroup fadeMode None (rules the LOD dither in or out without dropping LODs)", "fadeMode": "None", "forceLod": -1 },
+    { "id": "A5_fade_crossfade", "note": "floor LODGroup fadeMode CrossFade (forces the dither on: if the patch only appears here, it was a fade the shipped scene did not have)", "fadeMode": "CrossFade", "forceLod": -1 }
   ]
 }
