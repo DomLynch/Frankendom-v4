@@ -49,3 +49,6 @@
 /SERSDOM12*
 crashlytics-build.properties
 sysinfo.txt
+
+_agents/strategy_feetrec/runs/
+_agents/laneFEETREAD/
