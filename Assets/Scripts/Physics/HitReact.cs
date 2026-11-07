@@ -61,10 +61,10 @@ public class HitProofCfg
     public HitProofClass[] classes = new HitProofClass[0]; public HitProofClash[] clash = new HitProofClash[0]; public HitProofTrack track = new HitProofTrack(); public int[] sheetTicks = new int[] { 0, 10, 20 };
 }
 [Serializable] public class HitProofWrap { public HitProofCfg hit = new HitProofCfg(); }
-[Serializable] public class HitFile { public HitCfg hit = new HitCfg(); public ClashCfg clash = new ClashCfg(); public HitProofWrap proof = new HitProofWrap(); }
+[Serializable] public class HitFile { public HitCfg hit = new HitCfg(); public ClashCfg clash = new ClashCfg(); public HitProofWrap proof = new HitProofWrap(); public SwingCfg swing = new SwingCfg(); /* PHYSSWING v1 */ }
 
 [DefaultExecutionOrder(-140)]
-public class HitReact : MonoBehaviour
+public partial class HitReact : MonoBehaviour   // PHYSSWING v1: partial (Scripts/Physics/HitReactSwing.cs)
 {
     // ---------------- config loading (own parse of physics.json: unknown keys are ignored by JsonUtility, so PhysicsCfg stays as PHYS1 wrote it) ----------------
     static HitFile file;
@@ -88,6 +88,7 @@ public class HitReact : MonoBehaviour
             var r = JsonUtility.FromJson<HitFile>(json);
             if (r == null) return d;
             if (r.hit == null) r.hit = new HitCfg(); if (r.clash == null) r.clash = new ClashCfg(); if (r.proof == null) r.proof = new HitProofWrap(); if (r.proof.hit == null) r.proof.hit = new HitProofCfg();
+            if (r.swing == null) r.swing = new SwingCfg(); SwingCfg.Fix(r.swing);   // PHYSSWING v1
             var h = r.hit;
             if (h.roles == null) h.roles = new HitRoleRow[0]; if (h.zoneParts == null) h.zoneParts = new HitPair[0]; if (h.heavyMoves == null) h.heavyMoves = new string[0]; if (h.classes == null) h.classes = new HitClassRow[0]; if (h.rows == null) h.rows = new HitRow[0];
             for (int i = 0; i < h.rows.Length; i++)
@@ -116,7 +117,7 @@ public class HitReact : MonoBehaviour
     public static void AttachTo(GameObject root) { AttachAll(root); }   // same want-check, one object (ZoneRuntime.SpawnOne for a prefab creature)
     static void AttachAll(GameObject root){
         var c = Cfg;
-        if (c == null || !c.hit.enabled || !PhysicsClock.PhysicsOn || !PhysicsClock.Scripted) return;   // INTPHYS v99: master / clock switch off = no proxies
+        if (c == null || !(c.hit.enabled || c.swing.enabled) || !PhysicsClock.PhysicsOn || !PhysicsClock.Scripted) return;   /* PHYSSWING v1: swing sub-switch also attaches the proxy */   // INTPHYS v99: master / clock switch off = no proxies
         var all = (root != null ? root.GetComponentsInChildren<DuelFighter>(true) : FindObjectsByType<DuelFighter>(FindObjectsInactive.Exclude, FindObjectsSortMode.None));
         for (int i = 0; i < all.Length; i++) if (all[i] != null && all[i].GetComponent<HitReact>() == null) all[i].gameObject.AddComponent<HitReact>();
     }
@@ -143,14 +144,14 @@ public class HitReact : MonoBehaviour
             return 0f;
         }
     }
-    struct Pending { public int i; public Vector3 imp; }
+    struct Pending { public int i; public Vector3 imp; public Vector3 at; public bool hasAt; }   // PHYSWEAPON v106
 
     // ---------------- state ----------------
     DuelFighter df; RagdollRig rig;
     bool ready, active, hadPrev, warned;
     public bool Ready { get { return ready; } }
     public bool ProxiesActive { get { return active; } }
-    public int ActiveCount { get { return reactions.Count; } }
+    public int ActiveCount { get { return reactions.Count - SwingCounted; } }   // PHYSSWING v1: the persistent situation row is not a hit reaction
     public float DepthMax { get; private set; }
     public float BuildMs { get; private set; }
     public float LastDuration { get; private set; }
@@ -252,6 +253,7 @@ public class HitReact : MonoBehaviour
             toJoint[i] = Quaternion.LookRotation(fwd, up);
             jt[i] = j;
         }
+        SwingBuild();   // PHYSSWING v1
         BuildMs = (float)((System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency);
         ready = true;
     }
@@ -269,7 +271,7 @@ public class HitReact : MonoBehaviour
         try
         {
             if (!ready || !Live()) return;
-            if (e.type == "Hit") { if (e.target == df) TriggerHit(e); }
+            if (e.type == "Hit") { if (e.target == df && Cfg.hit.enabled) TriggerHit(e); }   // PHYSSWING v1: a swing-only attach starts no hit reaction
             else if (e.type == "Blocked" || e.type == "Parried" || e.type == "GuardBroken") { if (e.actor == df || e.target == df) TriggerClash(e); }
         }
         catch (Exception ex) { if (!warned) { warned = true; Debug.LogError("[HitReact] event failed (further errors muted): " + ex); } }
@@ -356,6 +358,7 @@ public class HitReact : MonoBehaviour
     public void TriggerHit(CombatEvent e)
     {
         if (!ready || !Live()) return;
+        if (!Cfg.hit.enabled) return;   // PHYSKNOCK v1: a knock-only attach (hit.enabled false) must not start stagger reactions
         var h = Cfg.hit;
         string loc = string.IsNullOrEmpty(e.location) ? "torso" : e.location;
         HitRow row = h.mode == "zone" ? (RowById(loc) ?? RowById("stagger")) : RowById("stagger");
@@ -407,6 +410,7 @@ public class HitReact : MonoBehaviour
         }
     }
 
+    void PushAt(int i, Vector3 imp, Vector3 at) { float m = mass[i] * Mathf.Max(0.1f, Cfg.hit.maxDeltaV); if (imp.sqrMagnitude > m * m) imp = imp.normalized * m; if (float.IsNaN(imp.x) || float.IsNaN(imp.y) || float.IsNaN(imp.z) || float.IsNaN(at.x) || float.IsNaN(at.y) || float.IsNaN(at.z)) return; if (active && !rb[i].isKinematic) rb[i].AddForceAtPosition(imp, at, ForceMode.Impulse); else pending.Add(new Pending { i = i, imp = imp, at = at, hasAt = true }); }   // PHYSWEAPON v106   // hc:ok same min-deltaV guard as Push
     void AddReaction(Reaction r)
     {
         int cap = Mathf.Max(1, Cfg.hit.maxReactions);
@@ -453,7 +457,7 @@ public class HitReact : MonoBehaviour
         float mag = Mathf.Clamp(c.baseImpulse * c.weaponRatio * strength * (attacker ? k.recoil : k.absorbed), c.minImpulse, c.maxImpulse);
         if ((attacker ? k.recoil : k.absorbed) <= 0f) mag = 0f;
         int ip = ResolvePart(side.impulsePart, 'R');
-        if (ip >= 0 && mag > 0f) Push(ip, (attacker ? -dir : dir) * mag + Vector3.up * c.lift);   // the weapon arm is thrown back, the guard arm driven back along the blow
+        if (ip >= 0 && mag > 0f) { Vector3 cimp = (attacker ? -dir : dir) * mag + Vector3.up * c.lift, cpt; if (PhysWeapon.ClashPoint(e, rb[ip], out cpt)) PushAt(ip, cimp, cpt); else Push(ip, cimp); /*PHYSWEAPON v106*/ }   // the weapon arm is thrown back, the guard arm driven back along the blow
     }
 
     // ---------------- per frame ----------------
@@ -474,6 +478,8 @@ public class HitReact : MonoBehaviour
         float dt = PresentationClock.SimDelta(Time.deltaTime);
         Record();
         for (int k = reactions.Count - 1; k >= 0; k--) { var r = reactions[k]; r.t += dt; if (r.t >= r.Total) reactions.RemoveAt(k); }
+        SwingTick(dt);   // PHYSSWING v1: situation row + lead sampling
+        KnockTick(dt);   // PHYSKNOCK v1: knockdown / get-up blend, a pure function of the sim tick (returns at once when knock.enabled is false)
         if (reactions.Count == 0)
         {
             if (active) Park();
@@ -533,9 +539,9 @@ public class HitReact : MonoBehaviour
             }
             rb[i].linearVelocity = v; rb[i].angularVelocity = w; rb[i].WakeUp();
         }
-        for (int k = 0; k < pending.Count; k++) { var p = pending[k]; if (p.i > 0 && !rb[p.i].isKinematic) rb[p.i].AddForce(p.imp, ForceMode.Impulse); }
+        for (int k = 0; k < pending.Count; k++) { var p = pending[k]; if (p.i > 0 && !rb[p.i].isKinematic) { if (p.hasAt) rb[p.i].AddForceAtPosition(p.imp, p.at, ForceMode.Impulse); else rb[p.i].AddForce(p.imp, ForceMode.Impulse); /*PHYSWEAPON v106*/ } }
         pending.Clear();
-        active = true;
+        active = true; SwingActivated();   // PHYSSWING v1
     }
 
     void Park()
@@ -553,7 +559,7 @@ public class HitReact : MonoBehaviour
         {
             var j = jt[i]; if (j == null) continue;
             j.connectedAnchor = Quaternion.Inverse(animRot[pi[i]]) * (animPos[i] - animPos[pi[i]]);
-            j.targetRotation = Quaternion.Inverse(toJoint[i]) * Quaternion.Inverse(animRel[i]) * restLocal[i] * toJoint[i];
+            j.targetRotation = Quaternion.Inverse(toJoint[i]) * Quaternion.Inverse(SwingRel(i)) * restLocal[i] * toJoint[i];   // PHYSSWING v1: SwingRel = animRel unless the lead is on
         }
     }
 
@@ -564,7 +570,7 @@ public class HitReact : MonoBehaviour
         for (int k = 0; k < reactions.Count; k++)
         {
             var r = reactions[k]; float dep = r.Depth(); if (dep <= 0f) continue;
-            if (dep > dm) dm = dep;
+            if (dep > dm && r != swingR) dm = dep;   // PHYSSWING v1: the situation row does not count as a hit depth (Flinch lean)
             for (int i = 0; i < n; i++)
             {
                 float s = Mathf.Clamp(1f - (1f - r.dip[i]) * r.dipMul * dep, 0.01f, 1f);
@@ -577,11 +583,12 @@ public class HitReact : MonoBehaviour
         // swingCapMarginDeg < 0 switches it off. A part with share 0 follows its parent through the hierarchy, i.e. shows the clip.
         { var hc = Cfg.hit; float cm = hc.swingCapMarginDeg, rw = Mathf.Max(0.01f, hc.swingCapRampDeg);
           if (cm >= 0f) for (int i = 1; i < n; i++) { if (share[i] <= 0f || jt[i] == null) continue; float sw = Quaternion.Angle(restLocal[i], animRel[i]); share[i] *= Mathf.Clamp01((swingCap[i] - cm - sw) / rw); } }
+        SwingReach();   // PHYSSWING v1: limit-aware share
         DepthMax = dm;
         for (int i = 1; i < n; i++)
         {
             var j = jt[i]; if (j == null) continue;
-            var drive = new JointDrive { positionSpring = springBase[i] * strength[i], positionDamper = damperBase[i], maximumForce = float.MaxValue };
+            var drive = new JointDrive { positionSpring = springBase[i] * strength[i], positionDamper = damperBase[i] * SwingDamp(i), maximumForce = float.MaxValue };
             j.slerpDrive = drive;
         }
     }
@@ -592,10 +599,10 @@ public class HitReact : MonoBehaviour
         for (int i = 1; i < n; i++)
         {
             float s = share[i]; if (s <= 1e-4f) continue;
-            Quaternion phys = Quaternion.Inverse(rb[pi[i]].rotation) * rb[i].rotation;
+            Quaternion phys = PhysRel(i);   // PHYSSWING v1
             if (float.IsNaN(phys.x) || float.IsNaN(phys.y) || float.IsNaN(phys.z) || float.IsNaN(phys.w)) { Debug.LogWarning("[HitReact] NaN in the proxy of " + pname[i] + " on " + name + "; reaction dropped."); return false; }
-            Quaternion rel = Quaternion.Slerp(animRel[i], phys, Mathf.Min(1f, s));
-            parts[i].bone.rotation = parts[pi[i]].bone.rotation * rel;
+            Quaternion rel = Quaternion.Slerp(animRel[i], phys, SwingShare(i, phys, Mathf.Min(1f, s)));   // PHYSSWING v1
+            rel = KnockRel(i, rel); parts[i].bone.rotation = parts[pi[i]].bone.rotation * rel;   // PHYSKNOCK v1: floor guard + deviation cap + rate limit (returns rel at once when no knock shows)
         }
         return true;
     }

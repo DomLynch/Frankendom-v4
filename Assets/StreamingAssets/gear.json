@@ -875,6 +875,55 @@
         "ikBlendSeconds": 0.15
       }
     },
-  {"id": "joan_shield", "name": "Gothic round shield", "slot": "offHand", "glb": "Gear/shield_joan_LOD0.glb", "resource": "", "part": "", "coversZones": [], "hidesLayers": [], "stats": {"armor": 0, "poise": 0, "weight": 2.5}, "dropFrom": [], "dropChance": 0, "notes": "SHIELD v1 (laneSHIELD): the owner's round shield (Downloads medieval shield 3d model.glb, Tripo, 1.93M tris 3x4096 maps) decimated to LOD0 30000 tris / 2048 maps (LOD1 8000 / 1024 ships as shield_joan_LOD1.glb, no loader swaps it yet; a LOD2 of 2000 tris was made and NOT shipped: its normal map breaks up). 0.60 m round, origin = the grip bar, +Z = the face, +Y up. Left hand: shield_mount.json rows (socket, per-state tuck / hide), grip pose = row curl. shield{} = the cover rule: guard side 'left' (the shield arm) ALSO covers overhead and thrust swings as a block (never a parry); blocks with that guard put 10 percent less posture on her; a block only the shield covered costs 25 percent more stamina. Nothing else changes: parry window, other guard sides, damage, reach. weight 2.5 only matters when her whole kit passes weightFree 6 (stamina regen). Remove the item from roster.json loadout = exactly today's fight.", "materials": {"*": {"smoothness": 0.3, "metallic": 0.12, "normalScale": 1.0}}, "shield": {"id": "joan_shield", "sideGuard": "left", "cover": [{"guard": "left", "attacks": ["overhead", "thrust"]}], "blockStaminaMul": 1.25, "blockPostureMul": 0.9, "cueEvent": "block_shield"}, "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}}
+  {"id": "joan_shield", "name": "Gothic round shield", "slot": "offHand", "glb": "Gear/shield_joan_LOD0.glb", "resource": "", "part": "", "coversZones": [], "hidesLayers": [], "stats": {"armor": 0, "poise": 0, "weight": 2.5}, "dropFrom": [], "dropChance": 0, "notes": "SHIELD v1 (laneSHIELD): the owner's round shield (Downloads medieval shield 3d model.glb, Tripo, 1.93M tris 3x4096 maps) decimated to LOD0 30000 tris / 2048 maps (LOD1 8000 / 1024 ships as shield_joan_LOD1.glb, no loader swaps it yet; a LOD2 of 2000 tris was made and NOT shipped: its normal map breaks up). 0.60 m round, origin = the grip bar, +Z = the face, +Y up. Left hand: shield_mount.json rows (socket, per-state tuck / hide), grip pose = row curl. shield{} = the cover rule: guard side 'left' (the shield arm) ALSO covers overhead and thrust swings as a block (never a parry); blocks with that guard put 10 percent less posture on her; a block only the shield covered costs 25 percent more stamina. Nothing else changes: parry window, other guard sides, damage, reach. weight 2.5 only matters when her whole kit passes weightFree 6 (stamina regen). Remove the item from roster.json loadout = exactly today's fight.", "materials": {"*": {"smoothness": 0.3, "metallic": 0.12, "normalScale": 1.0}}, "shield": {"id": "joan_shield", "sideGuard": "left", "cover": [{"guard": "left", "attacks": ["overhead", "thrust"]}], "blockStaminaMul": 1.25, "blockPostureMul": 0.9, "cueEvent": "block_shield"}, "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}},
+    {
+      "id": "cuirass_joan",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Old iron cuirass",
+      "slot": "chest",
+      "glb": "Gear/cuirass_joan.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 6,
+        "poise": 4,
+        "weight": 5
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "materials": {
+        "*": {
+          "smoothness": 0.45,
+          "metallic": 0.6,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "FITKIT: Joan starting chest armour (Dom: ships ON). One glb, 13835 tris, 1 material, 2048 maps, rigid on Hips/Spine/Spine1/Spine2 (4 bones). OVERLAY mask policy: coversZones empty, nothing of her jacket is hidden, so no see-through gap. GearMaterials keeps base colour + normal and applies this row metallic/smoothness (the glb metal-rough map is not used by the loader).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "rig": "psyche-106",
+      "tris": 13835,
+      "tier": "starting",
+      "doubleSided": false,
+      "source": "Dom Tripo piece \"medieval armor 3d model.glb\" fitted by laneFITKIT fit_piece.py (rigid plate on Spine2 + 3 fauld lames on Spine1/Spine/Hips, soft hinge in the breastplate)"
+    }
 ]
 }

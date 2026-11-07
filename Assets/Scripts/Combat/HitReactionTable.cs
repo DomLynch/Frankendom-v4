@@ -18,7 +18,7 @@ public static class HitReactionTable
     [Serializable] public class WeightRules { public string[] kickMoves = new string[] { "kick" }; public float heavyMinDamage = 18f; public bool heavyIfCharges = true, escalateOnCounter = true, escalateOnRear = false; }
     // moves[]: id (exact, or "*"), swingDirection (MoveDef.direction: overhead|thrust|left|right|low, or ""), location (head|torso|arm|legs), height (m, used when location empty), side (attacker-frame swing side: left|right|"")
     [Serializable] public class MoveRow { public string id = "", swingDirection = "", location = "", side = ""; public float height = 0f; }
-    [Serializable] public class Row { public string character = "*", location = "*", direction = "*", weight = "*", state = "", prefer = "", fallback = "", note = ""; public float staggerScale = 1f; public bool knockdown = false; }
+    [Serializable] public class Row { public string character = "*", location = "*", direction = "*", weight = "*", state = "", prefer = "", fallback = "", note = ""; public float staggerScale = 1f; public bool knockdown = false; public float startS = 0f; /* PITMAULFIX v1: seconds into the hit clip where the reaction starts (0 = from the first frame) */ }
     [Serializable] public class Data
     {
         public int version = 1; public bool enabled = true, allowKnockdown = false, logPicks = false;
@@ -26,7 +26,7 @@ public static class HitReactionTable
         public string defaultState = "hit_light_front";
         public MoveRow[] moves = new MoveRow[0]; public Row[] rows = new Row[0];
     }
-    public class Result { public string location, direction, weight, state, character, moveId; public DuelFighter attacker; public float staggerScale = 1f; public bool knockdown; public Row row; }
+    public class Result { public string location, direction, weight, state, character, moveId; public DuelFighter attacker; public float staggerScale = 1f; public bool knockdown; public Row row; public float startS; /* PITMAULFIX v1 */ }
 
     public static Result Last;   // the clean hit being resolved right now (set by Duel.Resolve before Fire, null for block / parry / guard break)
     static Data data;
@@ -127,7 +127,7 @@ public static class HitReactionTable
             if (best.knockdown && !d.allowKnockdown) state = FirstThatExists(victim, best.fallback, best.state, d.defaultState);
             else state = FirstThatExists(victim, best.prefer, best.state, best.fallback, d.defaultState);
         }
-        res.state = state;
+        res.state = state; if (best != null && state == best.state && best.startS > 0f) res.startS = best.startS;   // PITMAULFIX v1: the row's own clip only (a `prefer` clip keeps its first frame)
         if (d.logPicks) Debug.Log($"[HitReaction] {res.character} {res.location}/{res.direction}/{res.weight} <- {(attacker ? attacker.name : "?")} {(m != null ? m.id : "?")} -> {res.state} x{res.staggerScale:F2}{(res.knockdown ? " KNOCKDOWN" : "")}");
         return res;
     }

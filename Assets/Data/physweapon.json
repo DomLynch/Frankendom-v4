@@ -1,0 +1,275 @@
+{
+  "physweapon": {
+    "_about": "PHYSWEAPON v106 (lanePHYSWEAPON), read by Scripts/Physics/PhysWeapon.cs. PRESENTATION ONLY: nothing here is read by the 60 Hz sim; the simhash must be identical ON and OFF. Master 'enabled' and every sub-switch ship FALSE (dark = today's behaviour, no object created, no event subscribed). Needs the physics master + clock ON (same gate as finphys). Flip with apply_physweapon.py --enable clash|pin|severed|debris|props (only after Dom's LOOK OK). Command line: -physweapon:off, -physweapon:probe (logs where the weapon tips sit, once). weapons[]: the weapon as a capsule socket -> TrailTip + extendM (radiusM), plus an optional head sphere at TrailTip (headRadiusM): numbers MEASURED from the weapon glb vertex data (see MANIFEST section 3), not guessed; the default sword's extendM is UNVERIFIED in the engine until the probe runs. clash: sparks = ClashFx / HitFeel spark origin at the real contact point (needs the two apply hunks; enable only ONE of this and arc_fx sparks.on), sparkMaxFromBodyM = never farther than this from the old body anchor; blend = fallback blend of the two tips when the blades do not touch; maxGapM = surfaces closer than this count as a true touch; leverMaxM = the impulse point is never farther than this from the arm part's centre of mass (torque limit). pin: run_through blade stays in the body: entries = finishers.json ids; part = ragdoll.json part the blade holds; spring/damper/maxForceN = joint drive; released when the blade withdraws releaseDistM or after maxHoldS. severed: tunes by unit id (head, torso_waist, crown = the split halves): spin about the blow, centre-of-mass drop, bounce/friction/damping; headPhysics = head unit mode physics instead of V1FIN's scripted arc. debris: pooled floor chips (rows by event type; finisher = at a finisher contact). props: scene objects by exact name that become bodies when a contact lands within radiusM (never statically batched or bigger than maxSizeM).",
+    "enabled": true,
+    "weapons": [
+      {
+        "id": "maul",
+        "match": "maul",
+        "extendM": 0.2,
+        "radiusM": 0.04,
+        "headRadiusM": 0.26,
+        "note": "maul_start_LOD0.glb vertex data: shaft radius 0.04 (y -0.3..0.3), head y 0.30..0.70 (centre 0.50 = the glb tip node y 0.522), head half-width x 0.26 z -0.19..0.29. pitborn_maul_joan_LOD0.glb: head y 0.40..0.70 centre 0.55 = its tip/head node 0.548. TrailTip is at the head centre; extendM 0.20 = head half height."
+      },
+      {
+        "id": "sword",
+        "match": "sword",
+        "extendM": 0.38,
+        "radiusM": 0.045,
+        "headRadiusM": 0.0,
+        "note": "sword_start_LOD0.glb: blade to y 0.996 = the glb tip node; BuildSlice put TrailTip at tipY 0.6147 (62 percent of the blade), so extendM 0.38 reaches the glb tip. UNVERIFIED in the engine (the scene is binary): run -physweapon:probe; set 0 if TrailTip already sits at the point."
+      }
+    ],
+    "fallback": {
+      "id": "default",
+      "match": "",
+      "extendM": 0.0,
+      "radiusM": 0.045,
+      "headRadiusM": 0.0,
+      "note": "any other weapon: socket to TrailTip"
+    },
+    "clash": {
+      "on": true,
+      "sparks": true,
+      "sparkMaxFromBodyM": 1.3,
+      "blend": 0.5,
+      "maxGapM": 0.45,
+      "leverMaxM": 0.35,
+      "leverScale": 0.6,
+      "minHeightM": 0.3,
+      "maxHeightM": 2.3,
+      "socketNode": "WeaponSocket_R",
+      "tipNode": "TrailTip",
+      "refreshS": 2.0
+    },
+    "pin": {
+      "on": true,
+      "entries": [
+        "run_through"
+      ],
+      "part": "spine1",
+      "startTimeoutS": 1.5,
+      "maxHoldS": 1.4,
+      "releaseDistM": 0.45,
+      "woundDepthM": 0.12,
+      "spring": 4000.0,
+      "damper": 200.0,
+      "maxForceN": 1500.0
+    },
+    "severed": {
+      "on": true,
+      "headPhysics": false,
+      "tunes": [
+        {
+          "unit": "head",
+          "spinDegPerS": 260.0,
+          "comDropM": 0.03,
+          "bounciness": 0.32,
+          "friction": 0.7,
+          "linearDamping": 0.05,
+          "angularDamping": 0.35,
+          "maxAngularDegPerS": 900.0,
+          "spinAxis": "cross"
+        },
+        {
+          "unit": "crown",
+          "spinDegPerS": 140.0,
+          "comDropM": 0.015,
+          "bounciness": 0.12,
+          "friction": 0.8,
+          "linearDamping": 0.08,
+          "angularDamping": 0.4,
+          "maxAngularDegPerS": 700.0,
+          "spinAxis": "outward"
+        }
+      ],
+      "fallbackFriction": 0.8,
+      "fallbackBounciness": 0.2
+    },
+    "debris": {
+      "on": true,
+      "maxLive": 24,
+      "lifeS": 4.5,
+      "shrinkS": 0.6,
+      "minSizeM": 0.015,
+      "maxSizeM": 0.05,
+      "massKg": 0.05,
+      "smoothness": 0.2,
+      "restSpeed": 0.05,
+      "freezeAfterRestS": 0.4,
+      "color": [
+        0.16,
+        0.145,
+        0.125
+      ],
+      "castShadows": true,
+      "shader": "HDRP/Lit",
+      "finisher": {
+        "type": "finisher",
+        "heavyOnly": false,
+        "count": 14,
+        "minMps": 1.5,
+        "maxMps": 4.2,
+        "upMps": 2.8,
+        "spreadM": 0.5
+      },
+      "rows": [
+        {
+          "type": "GuardBroken",
+          "heavyOnly": false,
+          "count": 10,
+          "minMps": 1.2,
+          "maxMps": 3.4,
+          "upMps": 2.2,
+          "spreadM": 0.35
+        },
+        {
+          "type": "Hit",
+          "heavyOnly": true,
+          "count": 6,
+          "minMps": 1.0,
+          "maxMps": 3.0,
+          "upMps": 2.0,
+          "spreadM": 0.3
+        },
+        {
+          "type": "Blocked",
+          "heavyOnly": true,
+          "count": 5,
+          "minMps": 0.9,
+          "maxMps": 2.6,
+          "upMps": 1.8,
+          "spreadM": 0.3
+        }
+      ],
+      "chipVerts": [
+        0.5,
+        0.02,
+        0.05,
+        -0.45,
+        0.0,
+        -0.08,
+        0.04,
+        0.32,
+        0.0,
+        -0.02,
+        -0.26,
+        0.06,
+        0.05,
+        0.04,
+        0.42,
+        -0.06,
+        -0.02,
+        -0.38
+      ],
+      "colliderSize": [
+        0.7,
+        0.5,
+        0.7
+      ],
+      "linearDamping": 0.05,
+      "angularDamping": 0.15,
+      "groundProbeUpM": 1.5,
+      "groundProbeLenM": 4.0,
+      "spawnLiftM": 0.03,
+      "dirBias": 0.4,
+      "strengthFloor": 0.6,
+      "upJitterMin": 0.5,
+      "spinRadPerS": 30.0,
+      "restAngSpeed": 0.5,
+      "killY": -3.0,
+      "lightStrength": 0.6
+    },
+    "props": {
+      "on": false,
+      "maxSizeM": 1.6,
+      "restSpeed": 0.06,
+      "freezeAfterRestS": 0.6,
+      "maxSeconds": 12.0,
+      "onTypes": [
+        "Hit",
+        "GuardBroken",
+        "Blocked"
+      ],
+      "rows": [
+        {
+          "name": "hero_weapon_shield",
+          "massKg": 6.0,
+          "radiusM": 3.0,
+          "minMps": 1.2,
+          "maxMps": 3.0,
+          "upMps": 1.2,
+          "spinDegPerS": 180.0,
+          "heavyOnly": true
+        },
+        {
+          "name": "hero_weapon_sword",
+          "massKg": 1.8,
+          "radiusM": 3.0,
+          "minMps": 1.5,
+          "maxMps": 3.5,
+          "upMps": 1.5,
+          "spinDegPerS": 260.0,
+          "heavyOnly": true
+        },
+        {
+          "name": "hero_weapon_halberd",
+          "massKg": 3.5,
+          "radiusM": 3.0,
+          "minMps": 1.2,
+          "maxMps": 3.0,
+          "upMps": 1.2,
+          "spinDegPerS": 200.0,
+          "heavyOnly": true
+        },
+        {
+          "name": "bone_fragments_7_1",
+          "massKg": 1.5,
+          "radiusM": 3.0,
+          "minMps": 1.5,
+          "maxMps": 3.5,
+          "upMps": 1.6,
+          "spinDegPerS": 300.0,
+          "heavyOnly": true
+        },
+        {
+          "name": "hero_debris_rubble",
+          "massKg": 8.0,
+          "radiusM": 3.0,
+          "minMps": 1.0,
+          "maxMps": 2.6,
+          "upMps": 1.2,
+          "spinDegPerS": 160.0,
+          "heavyOnly": true
+        },
+        {
+          "name": "hero_chain_b",
+          "massKg": 3.0,
+          "radiusM": 3.0,
+          "minMps": 1.2,
+          "maxMps": 3.0,
+          "upMps": 1.2,
+          "spinDegPerS": 200.0,
+          "heavyOnly": true
+        },
+        {
+          "name": "hero_skull_pile_c",
+          "massKg": 5.0,
+          "radiusM": 3.0,
+          "minMps": 1.2,
+          "maxMps": 3.0,
+          "upMps": 1.4,
+          "spinDegPerS": 220.0,
+          "heavyOnly": true
+        }
+      ],
+      "restAngSpeed": 0.25,
+      "killY": -3.0,
+      "lightStrength": 0.6,
+      "strengthFloor": 0.6,
+      "bodyLinearDamping": 0.05,
+      "bodyAngularDamping": 0.2,
+      "solverIterations": 12
+    }
+  }
+}

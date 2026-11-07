@@ -11,7 +11,7 @@ public static class BellyBite
     [Serializable] public class Mouth { public bool enabled = true; public float openAtWindupFrac = 0.35f, openFull = 1f, clench = 1f, clenchTicks = 8, relaxTicks = 20; public string openShape = "mouth_open", clenchShape = "mouth_clench"; }
     // BELLYGRAB v1: the paired grab scene (finishers.json entry belly_bite, survive = true). enabled=false (or no block) = the headless grab of BELLYBITE exactly.
     [Serializable] public class MouthKey { public float t, open, clench; }
-    [Serializable] public class SceneCfg { public bool enabled = false; public string entryId = "belly_bite"; public bool forceEnable = false, reRoot = true, getUpPose = true; public float endKnock = 0f; public MouthKey[] mouthKeys; }
+    [Serializable] public class SceneCfg { public bool enabled = false; public string entryId = "belly_bite"; public bool forceEnable = false, reRoot = true, getUpPose = true; public float endKnock = 0f; public bool requireClips; /* BELLYLETHAL v1: data key required (true) */ public MouthKey[] mouthKeys; }
     [Serializable] public class Data
     {
         public bool enabled = false;               // MASTER SWITCH
@@ -61,9 +61,19 @@ public static class BellyBite
     static bool TryScene(DuelFighter a, DuelFighter v)
     {
         var c = Cfg; var sc = c != null ? c.scene : null; if (sc == null || !sc.enabled || string.IsNullOrEmpty(sc.entryId)) return false;
-        if (RTFinisher.Busy || FinisherPlayer.ById(sc.entryId) == null) return false;
-        string wasId = RTFinisher.ForceId; bool wasF = RTFinisher.ForceEnable; RTFinisher.ForceId = sc.entryId; RTFinisher.ForceEnable = sc.forceEnable;
+        if (RTFinisher.Busy) return false;
+        var ent = FinisherPlayer.ById(sc.entryId); if (ent == null) return false;
+        if (sc.requireClips && !ClipsReady(ent, a, v)) return false;   // BELLYLETHAL v1: without the baked clips the scene is two frozen idles for 5 s: the headless grab runs instead
+        string wasId = RTFinisher.ForceId; bool wasF = RTFinisher.ForceEnable; RTFinisher.ForceId = sc.entryId; RTFinisher.ForceEnable = sc.forceEnable || ProofFlag;   // BELLYLETHAL v1: -bellyscene = proof flag (scene also inside -balanceauto)
         bool ok = false; try { ok = RTFinisher.TryBegin(a, v, a.CurrentMove); } catch (Exception e) { Debug.LogWarning("[bellygrab] scene refused: " + e.Message); } finally { RTFinisher.ForceId = wasId; RTFinisher.ForceEnable = wasF; }
+        return ok;
+    }
+    static readonly bool ProofFlag = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-bellyscene") >= 0;   // BELLYLETHAL v1: off without the flag
+    static bool warnedClips;
+    static bool ClipsReady(FinisherEntry ent, DuelFighter a, DuelFighter v)
+    {
+        bool ok = (string.IsNullOrEmpty(ent.attackerClip) || FinisherPlayer.HasState(a.GetComponent<Fighter>(), ent.attackerClip)) && (string.IsNullOrEmpty(ent.victimClip) || FinisherPlayer.HasState(v.GetComponent<Fighter>(), ent.victimClip));
+        if (!ok && !warnedClips) { warnedClips = true; Debug.LogWarning("[bellygrab] scene skipped: animator state " + ent.attackerClip + " / " + ent.victimClip + " missing (run Tools/Combat/Add Finisher Clips); headless grab used"); }
         return ok;
     }
     public static void SceneBegin(DuelFighter a)
@@ -87,7 +97,9 @@ public static class BellyBite
         if (!On || a == null || v == null) return;
         var sc = Cfg.scene; bool pose = sc != null && sc.enabled && sc.getUpPose;
         if (pose && sc.reRoot) { var hp = FindHips(v.transform); if (hp != null) { Vector3 q = hp.position; q.y = v.transform.position.y; FinisherPlayer.Teleport(v, q, v.transform.forward); } }
+        float hp0 = v.health;   // BELLYLETHAL v1: proof line
         Land(a, v, pose, sc != null ? sc.endKnock : -1f);
+        Debug.Log("[bellygrab] scene ended: " + v.name + " hp " + hp0.ToString("0.0") + " -> " + v.health.ToString("0.0") + " dead=" + v.Dead + " state=" + v.state);   // BELLYLETHAL v1
     }
     static void Land(DuelFighter a, DuelFighter v, bool lying = false, float endKnock = -1f)
     {   // BELLYGRAB v1: lying = the scene already threw her (animation), endKnock >= 0 replaces throwKnock
@@ -119,7 +131,7 @@ public static class BellyBite
 // Drives the two morph targets of the belly mouth from the grab move's own phase (no clip channel needed). Added lazily to a fighter whose mesh carries the shapes.
 public sealed class BellyMouthDriver : MonoBehaviour
 {
-    DuelFighter df; SkinnedMeshRenderer smr; int iOpen = -1, iClench = -1; bool searched;
+    DuelFighter df; SkinnedMeshRenderer smr; int iOpen = -1, iClench = -1; bool searched; float lodHoldT;   // BELLYLOOK v1
     public static float Override = -1f;   // presentation scene (stage 2): >= 0 forces mouth_open to this 0..1 and clench 0
     void Awake() { df = GetComponentInParent<DuelFighter>(); }
     void Find()
@@ -148,6 +160,7 @@ public sealed class BellyMouthDriver : MonoBehaviour
         if (BellyBite.SceneOn && !RTFinisher.Busy) BellyBite.SceneOn = false;   // BELLYGRAB v1: a scene that died without EndScene cannot hold the mouth
         if (BellyBite.SceneOn) { o = BellyBite.SceneOpen; k = BellyBite.SceneClench; }   // BELLYGRAB v1: the scene keys (belly_bite.json scene.mouthKeys)
         smr.SetBlendShapeWeight(iOpen, 100f * o * c.mouth.openFull); if (iClench >= 0) smr.SetBlendShapeWeight(iClench, 100f * k * c.mouth.clench);
+        if ((o > 0f || k > 0f) && Time.unscaledTime >= lodHoldT) { lodHoldT = Time.unscaledTime + 1f; FighterLod.ForceHigh(smr); }   // BELLYLOOK v1: the LOD1 proxy has no mouth morph, so hold the full mesh while the mouth moves (no-op while FighterLod is off)
     }
     void Zero() { if (iOpen >= 0) smr.SetBlendShapeWeight(iOpen, 0f); if (iClench >= 0) smr.SetBlendShapeWeight(iClench, 0f); }
 }

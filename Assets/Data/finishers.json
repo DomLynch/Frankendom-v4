@@ -24,7 +24,7 @@
     "v1finScope": "Dom 2026-11-05: decapitation, split crown (Joan: split_crown, Pitborn as killer: split_crown_pit), run through. The waist cut opened was REMOVED for good by Dom 2026-11-06 (laneNOWAIST v104). The others stay defined, enabled=false."
   },
   "entries": [
-  {"id":"belly_bite","enabled":false,"placeholder":false,"weight":0,"survive":true,"attackerSide":"enemy","weapons":[],"directions":[],"moves":[],"locations":[],"attackerMove":"heavy_thrust","attackerClip":"fin_belly_bite_k","contactAt":0.62,"duration":4.6,"victimClip":"fin_belly_bite_v","victimStart":0.0,"victimClipStart":0.0,"victimClipSpeed":1.0,"victimFade":0.1,"attackerClipSpeed":1.0,"attackerFade":0.1,"attackerClipStart":0.0,"dieAt":-1.0,"holdAfter":0.3,"holdLast":false,"distance":1.0,"pairOffset":[-0.5,0.0,0.95],"killerYawDeg":0.0,"victimYawDeg":0.0,"distanceScaleByKiller":true,"shotDefs":[{"id":"bg_wide","focus":"mid","angleDeg":40,"side":-1,"dist":4.8,"height":1.7,"lookHeight":1.2,"lookAhead":0,"fov":34,"blend":0,"gate":true,"darkenEV":0.0,"gateMinDot":0.8,"fitTarget":"pair","bodyHalfWidth":1.0,"bodyHeight":2.6,"fitMargin":1.15,"minDist":4,"maxDist":7.0,"track":"body","frameMargin":1.2,"frameMaxDist":9,"lookMin":0.2,"bodyFollow":10},{"id":"bg_grab","focus":"mid","angleDeg":62,"side":1,"dist":3.4,"height":1.5,"lookHeight":1.2,"lookAhead":0,"fov":30,"blend":0.25,"gate":true,"darkenEV":0.0,"gateMinDot":0.8,"fitTarget":"pair","bodyHalfWidth":1.0,"bodyHeight":2.6,"fitMargin":1.15,"minDist":4,"maxDist":7.0,"track":"body","frameMargin":1.2,"frameMaxDist":9,"lookMin":0.2,"bodyFollow":10,"shake":0.04},{"id":"bg_mouth","focus":"mid","angleDeg":25,"side":-1,"dist":3.2,"height":1.45,"lookHeight":1.15,"lookAhead":0,"fov":30,"blend":0.5,"gate":true,"darkenEV":0.0,"gateMinDot":0.8,"fitTarget":"pair","bodyHalfWidth":1.0,"bodyHeight":2.6,"fitMargin":1.15,"minDist":4,"maxDist":7.0,"track":"body","frameMargin":1.2,"frameMaxDist":9,"lookMin":0.2,"bodyFollow":10,"shake":0.03},{"id":"bg_throw","focus":"mid","angleDeg":70,"side":1,"dist":5.2,"height":1.9,"lookHeight":1.0,"lookAhead":0,"fov":38,"blend":0.3,"gate":true,"darkenEV":0.0,"gateMinDot":0.8,"fitTarget":"pair","bodyHalfWidth":1.0,"bodyHeight":2.6,"fitMargin":1.15,"minDist":4,"maxDist":7.0,"track":"body","frameMargin":1.2,"frameMaxDist":9,"lookMin":0.2,"bodyFollow":10},{"id":"bg_settle","focus":"mid","angleDeg":115,"side":-1,"dist":4.8,"height":1.5,"lookHeight":0.4,"lookAhead":0,"fov":34,"blend":0.8,"gate":true,"darkenEV":0.0,"gateMinDot":0.8,"fitTarget":"pair","bodyHalfWidth":1.0,"bodyHeight":2.6,"fitMargin":1.15,"minDist":4,"maxDist":7.0,"track":"body","frameMargin":1.2,"frameMaxDist":9,"lookMin":0.2,"bodyFollow":10}],"shots":[{"t":0.0,"rel":"start","shot":"bg_wide","blend":-1},{"t":0.35,"rel":"start","shot":"bg_grab","blend":0.25},{"t":1.35,"rel":"start","shot":"bg_mouth","blend":0.5},{"t":3.05,"rel":"start","shot":"bg_throw","blend":0.3},{"t":3.9,"rel":"start","shot":"bg_settle","blend":0.8}],"gore":[],"slowmo":[],"shotsV1":[],"goreV1":[],"contactHoldMs":-1,"contactShake":0.03,"probeKillerBone":"LeftHand","probeVictimBone":"Hips","bladeReach":0.6,"clipsV1":{"victimClip":"","victimClipSpeed":1.0,"victimClipStart":0.0,"victimStart":-1.0,"dieAt":-1.0,"source":"BELLYGRAB v1: unused, the entry plays its own baked clips","attackerClipSpeed":-1,"attackerClipStart":-1,"contactAt":-1,"duration":-1,"holdAfter":-1},"note":"BELLYGRAB v1: non-lethal belly-mouth grab scene (survive = true): Pitborn's free left hand seizes Joan, lifts her to the belly mouth, 3 chomps (mouth keys in belly_bite.json scene.mouthKeys), throws her; she lands on the get_up pose (BellyBite.EndScene). Clips baked on the real rigs (laneBELLYGRAB author.py). pairOffset x is Unity-right negative: Joan stands on his LEFT. Started by BellyBite.TryScene only (weight 0, enabled false: never picked by the rotation)."},
+{"id":"belly_bite","enabled":false,"placeholder":false,"weight":0,"survive":true,"attackerSide":"enemy","weapons":[],"directions":[],"moves":[],"locations":[],"attackerMove":"heavy_thrust","attackerClip":"fin_belly_bite_k","contactAt":0.62,"duration":4.6,"victimClip":"fin_belly_bite_v","victimStart":0.0,"victimClipStart":0.0,"victimClipSpeed":1.0,"victimFade":0.1,"attackerClipSpeed":1.0,"attackerFade":0.1,"attackerClipStart":0.0,"dieAt":-1.0,"holdAfter":0.3,"holdLast":false,"distance":1.0,"pairOffset":[-0.5,0.0,0.95],"killerYawDeg":0.0,"victimYawDeg":0.0,"distanceScaleByKiller":true,"shotDefs":[{"id":"bg_wide","focus":"mid","angleDeg":100,"side":1,"dist":4.8,"height":1.9,"lookHeight":1.2,"lookAhead":0,"fov":36,"blend":0,"gate":false,"darkenEV":0.0,"gateMinDot":0.8,"fitTarget":"pair","bodyHalfWidth":1.9,"bodyHeight":3.4,"fitMargin":1.2,"minDist":6.5,"maxDist":9.5,"track":"body","frameMargin":1.2,"frameMaxDist":9,"lookMin":0.2,"bodyFollow":10,"fit":true,"bodyClearM":0.7,"nearClip":0.12,"shoulder":0},{"id":"bg_grab","focus":"mid","angleDeg":112,"side":1,"dist":3.4,"height":1.7,"lookHeight":1.3,"lookAhead":0,"fov":32,"blend":0.25,"gate":false,"darkenEV":0.0,"gateMinDot":0.8,"fitTarget":"pair","bodyHalfWidth":1.9,"bodyHeight":3.4,"fitMargin":1.2,"minDist":5.5,"maxDist":8.5,"track":"body","frameMargin":1.2,"frameMaxDist":9,"lookMin":0.2,"bodyFollow":10,"shake":0.04,"fit":true,"bodyClearM":0.7,"nearClip":0.12,"shoulder":0},{"id":"bg_mouth","focus":"mid","angleDeg":95,"side":1,"dist":3.2,"height":1.6,"lookHeight":1.2,"lookAhead":0,"fov":32,"blend":0.5,"gate":false,"darkenEV":0.0,"gateMinDot":0.8,"fitTarget":"pair","bodyHalfWidth":1.9,"bodyHeight":3.4,"fitMargin":1.2,"minDist":4.8,"maxDist":7.5,"track":"body","frameMargin":1.2,"frameMaxDist":9,"lookMin":0.2,"bodyFollow":10,"shake":0.03,"fit":true,"bodyClearM":0.7,"nearClip":0.12,"shoulder":0},{"id":"bg_throw","focus":"mid","angleDeg":115,"side":-1,"dist":5.2,"height":1.9,"lookHeight":1.0,"lookAhead":0,"fov":38,"blend":0.3,"gate":false,"darkenEV":0.0,"gateMinDot":0.8,"fitTarget":"pair","bodyHalfWidth":1.9,"bodyHeight":3.4,"fitMargin":1.2,"minDist":6.0,"maxDist":9.5,"track":"body","frameMargin":1.2,"frameMaxDist":9,"lookMin":0.2,"bodyFollow":10,"fit":true,"bodyClearM":0.7,"nearClip":0.12,"shoulder":0},{"id":"bg_settle","focus":"mid","angleDeg":135,"side":1,"dist":4.8,"height":1.5,"lookHeight":0.6,"lookAhead":0,"fov":34,"blend":0.8,"gate":false,"darkenEV":0.0,"gateMinDot":0.8,"fitTarget":"pair","bodyHalfWidth":1.9,"bodyHeight":3.4,"fitMargin":1.2,"minDist":5.5,"maxDist":8.5,"track":"body","frameMargin":1.2,"frameMaxDist":9,"lookMin":0.2,"bodyFollow":10,"fit":true,"bodyClearM":0.7,"nearClip":0.12,"shoulder":0}],"shots":[{"t":0.0,"rel":"start","shot":"bg_wide","blend":-1},{"t":0.35,"rel":"start","shot":"bg_grab","blend":0.25},{"t":1.35,"rel":"start","shot":"bg_mouth","blend":0.5},{"t":3.05,"rel":"start","shot":"bg_throw","blend":0.3},{"t":3.9,"rel":"start","shot":"bg_settle","blend":0.8}],"gore":[],"slowmo":[],"shotsV1":[],"goreV1":[],"contactHoldMs":-1,"contactShake":0.03,"probeKillerBone":"LeftHand","probeVictimBone":"Hips","bladeReach":0.6,"clipsV1":{"victimClip":"","victimClipSpeed":1.0,"victimClipStart":0.0,"victimStart":-1.0,"dieAt":-1.0,"source":"BELLYGRAB v1: unused, the entry plays its own baked clips","attackerClipSpeed":-1,"attackerClipStart":-1,"contactAt":-1,"duration":-1,"holdAfter":-1},"note":"BELLYGRAB v1: non-lethal belly-mouth grab scene (survive = true): Pitborn's free left hand seizes Joan, lifts her to the belly mouth, 3 chomps (mouth keys in belly_bite.json scene.mouthKeys), throws her; she lands on the get_up pose (BellyBite.EndScene). Clips baked on the real rigs (laneBELLYGRAB author.py). pairOffset x is Unity-right negative: Joan stands on his LEFT. Started by BellyBite.TryScene only (weight 0, enabled false: never picked by the rotation)."},
     {
       "id": "decapitation",
       "enabled": true,
@@ -220,13 +220,13 @@
           "strength": 1
         }
       ],
-      "slowmo": [],
-      "holdAfter": 1.5,
+      "slowmo": [{"t": 0.0, "rel": "contact", "scale": 0.45, "duration": 0.28, "easeIn": 0.04, "easeOut": 0.18, "curve": []}],
+      "holdAfter": 0.6,
       "note": "wind-up 0..0.95, downward slash peaks 34.7 m/s at 1.10 s (right hand), head-off effect at contact; victim plays its own death clip 0.3 s later (stagger 0..1.7 s of that clip, down 2.6-3.1 s) | JOANFIN v77: v75 gate FAIL (capsule overlap killer LeftLeg>LeftFoot x victim Spine2>Neck 0.94 s, worst -0.12 m). Model (tools/pairsim.py: killer clip end pose vs the Pitborn death-clip final pose): dz 1.16 -> -0.00 m, dz 1.20 + victimYawDeg 20 -> +0.30 m (the fallen torso lies across the killer left foot; turning the victim 20 deg swings the body off it). dz +0.04 keeps hand->neck 0.89 m < blade 1.0 m. | FINFIX v93: attackerClipStart=0.0, attackerClipSpeed=1.0, contactAt=1.1, victimStart=1.4, victimClipSpeed=0.75, victimClipStart=0.5, dieAt=4.4, duration=4.6, holdAfter=1.5 | V1FIN v94: V1 decapitation: head pops 0.16 s after the blade (5% of the 2.4 s victim clip at 0.75x), front-hold camera slides 0.8 m over 1.73 s, no cuts; killer clip stays fin_beheading_k (V1 has none)",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.12,
       "attackerClipStart": 0.0,
-      "victimClipSpeed": 0.75,
+      "victimClipSpeed": 1.0,
       "victimFade": 0.1,
       "victimStart": 1.4,
       "holdLast": true,
@@ -287,7 +287,7 @@
       ],
       "clipsV1": {
         "victimClip": "v1_split_crown_victim",
-        "victimClipSpeed": 0.75,
+        "victimClipSpeed": 1.0,
         "victimClipStart": 0.0,
         "victimStart": -1.0,
         "dieAt": -2.0,
@@ -525,13 +525,13 @@
           "strength": 1
         }
       ],
-      "slowmo": [],
-      "holdAfter": 1.5,
+      "slowmo": [{"t": 0.0, "rel": "contact", "scale": 0.45, "duration": 0.28, "easeIn": 0.04, "easeOut": 0.18, "curve": []}],
+      "holdAfter": 0.6,
       "note": "one-hand overhead chop: hand peaks 1.6 m at 0.2 s, comes down 0.5 s; crown split effect at contact, body drops straight down (death) | FINFIX v93: attackerClipStart=0.0, attackerClipSpeed=1.0, contactAt=0.48, victimStart=0.78, victimClipSpeed=0.75, victimClipStart=0.5, dieAt=4.0, duration=4.2, holdAfter=1.5 | V1FIN v94: V1 split crown: head-only split (unit head_crown), opens over 0.384 s, late 45 deg reveal from 4.2 m at +1.44 s over 1.76 s; killer clip stays fin_chop1h_k (V1: the existing heavy attack)",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
-      "victimClipSpeed": 0.75,
+      "victimClipSpeed": 1.0,
       "victimFade": 0.1,
       "victimStart": 0.78,
       "holdLast": true,
@@ -600,7 +600,7 @@
       ],
       "clipsV1": {
         "victimClip": "v1_split_crown_victim",
-        "victimClipSpeed": 0.75,
+        "victimClipSpeed": 1.0,
         "victimClipStart": 0.0,
         "victimStart": -1.0,
         "dieAt": -2.0,
@@ -850,13 +850,13 @@
           "strength": 1
         }
       ],
-      "slowmo": [],
-      "holdAfter": 1.5,
+      "slowmo": [{"t": 0.0, "rel": "contact", "scale": 0.45, "duration": 0.28, "easeIn": 0.04, "easeOut": 0.18, "curve": []}],
+      "holdAfter": 0.6,
       "note": "two-hand overhead chop, same timing as the one-hand clip | FINFIX v93: attackerClipStart=0.0, attackerClipSpeed=1.0, contactAt=0.48, victimStart=0.78, victimClipSpeed=0.75, victimClipStart=0.5, dieAt=4.0, duration=4.2, holdAfter=1.5 | V1FIN v94: V1 split crown: head-only split (unit head_crown), opens over 0.384 s, late 45 deg reveal from 4.2 m at +1.44 s over 1.76 s; killer clip stays fin_chop2h_k (V1: the existing heavy attack)",
       "attackerClipSpeed": 1.0,
       "attackerFade": 0.1,
       "attackerClipStart": 0.0,
-      "victimClipSpeed": 0.75,
+      "victimClipSpeed": 1.0,
       "victimFade": 0.1,
       "victimStart": 0.78,
       "holdLast": true,
@@ -895,7 +895,7 @@
       ],
       "clipsV1": {
         "victimClip": "v1_split_crown_victim",
-        "victimClipSpeed": 0.75,
+        "victimClipSpeed": 1.0,
         "victimClipStart": 0.0,
         "victimStart": -1.0,
         "dieAt": -2.0,
@@ -1766,8 +1766,8 @@
           "strength": 1
         }
       ],
-      "slowmo": [],
-      "holdAfter": 1.5,
+      "slowmo": [{"t": 0.0, "rel": "contact", "scale": 0.45, "duration": 0.28, "easeIn": 0.04, "easeOut": 0.18, "curve": []}],
+      "holdAfter": 0.6,
       "note": "placeholder clips; real: paired Death_RunThrough 2.4 s + Fin_RunThrough, blade stays in, victim arches then kneels. top20 hq-rapier-thrust-torso if missing | FINFIX v93: duration=4.2, holdAfter=1.5 | V1FIN v94: V1 run through: needs the imported V1 clips (states v1_run_through_victim / _killer); without them the thrust placeholder runs with the V1 chest-entry + back-exit blood | V1CLIPS v98: bladeAim (blade through the chest), clipsV1.pairOffset, rt_v1_reveal camera back / up / look 1.0",
       "shotsV1": [
         {
@@ -1794,7 +1794,7 @@
       ],
       "clipsV1": {
         "victimClip": "v1_run_through_victim",
-        "victimClipSpeed": 0.75,
+        "victimClipSpeed": 1.0,
         "victimClipStart": 0.0,
         "victimStart": 0.0,
         "dieAt": -2.0,
@@ -3347,7 +3347,8 @@
     "maxStepS": 0.05,
     "contactShake": 0.08,
     "contactShakeS": 0.25,
-    "contactHoldMs": 130.0,
+    "contactHoldMs": 80.0,
+    "realtime": {"enabled": true, "pairOnlyFreeze": true, "firstBlendS": 0.45, "placeSlideS": 0.3, "spike": {"preS": 2.0, "postS": 2.0, "maxScenes": 6, "timeoutS": 900.0, "hitchMs": 100.0, "slowBelow": 0.99, "maxSlowS": 0.7, "maxHitStopMs": 90.0, "cutJumpM": 1.5, "minOthersMovedM": 0.05}},
     "hpToZeroAtContact": true,
     "precut": {
       "enabled": true,

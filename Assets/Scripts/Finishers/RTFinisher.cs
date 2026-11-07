@@ -107,7 +107,7 @@ public static class RTFinisher
 public sealed class FinisherRTRunner : MonoBehaviour
 {
     static FinisherRTRunner inst;
-    RTFinisherHost host; DuelFighter killer, victim;
+    RTFinisherHost host; DuelFighter killer, victim; FinisherEntry entry;   // BELLYLETHAL v1: entry
 
     public static FinisherRTRunner Ensure()
     {
@@ -117,7 +117,7 @@ public sealed class FinisherRTRunner : MonoBehaviour
 
     public void Launch(FinisherEntry e, FinisherContext ctx)
     {
-        killer = ctx.killer; victim = ctx.victim; host = new RTFinisherHost(ctx.killer, ctx.victim, ctx.killerSide, ctx.victimSide);
+        entry = e; killer = ctx.killer; victim = ctx.victim; host = new RTFinisherHost(ctx.killer, ctx.victim, ctx.killerSide, ctx.victimSide);
         StartCoroutine(Drive(e, ctx));
     }
 
@@ -145,12 +145,13 @@ public sealed class FinisherRTRunner : MonoBehaviour
         try
         {
             if (host != null) host.Abort();
-            if (killer != null) { if (!killer.enabled) killer.enabled = true; killer.moveDir = Vector3.zero; killer.guardHeld = false; killer.opponent = null; }
+            if (killer != null) { if (!killer.enabled) killer.enabled = true; killer.moveDir = Vector3.zero; killer.guardHeld = false; if (!(entry != null && entry.survive)) killer.opponent = null; /* BELLYLETHAL v1 */ }
             if (victim != null)
             {
                 if (!victim.enabled) victim.enabled = true;
-                if (!victim.Dead) { victim.Die(); msg = (msg + " victim not dead at the end, plain Die()").Trim(); }
-                victim.opponent = null;
+                bool survive = entry != null && entry.survive;   // BELLYLETHAL v1: a survive scene (belly_bite) ends with the victim ALIVE: no plain Die(), the fight goes on (opponents re-linked)
+                if (survive) { if (killer != null && !killer.Dead) killer.opponent = victim; victim.opponent = killer; if (!ok && !victim.Dead) { victim.health = Mathf.Max(1f, victim.health); victim.KnockDown(); } }
+                else { if (!victim.Dead) { victim.Die(); msg = (msg + " victim not dead at the end, plain Die()").Trim(); } victim.opponent = null; }
             }
         }
         catch (Exception ex) { ok = false; msg = (msg + " release: " + ex.Message).Trim(); Debug.LogWarning("[finisher] release: " + ex); }

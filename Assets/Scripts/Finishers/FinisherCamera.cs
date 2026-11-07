@@ -22,6 +22,7 @@ public class FinisherCamera : MonoBehaviour
     float flipLock;
     // V62B: gate-facing azimuth + per-shot exposure offset
     float gateRot; bool gateMir, gateNoMir; VolumeProfile noBlurProf; Exposure exOv; float exBase = float.NaN, evCur, evTarget; bool evWarned;
+    float oldNear = -1f;   // BELLYLETHAL v1
     public string ShotId { get { return shot != null ? shot.id : ""; } }
 
     public static FinisherCamera Ensure()
@@ -40,7 +41,7 @@ public class FinisherCamera : MonoBehaviour
     {
         if (cam == null) cam = GetComponent<Camera>();
         if (cam == null) return;
-        if (!Active) oldFov = cam.fieldOfView;
+        if (!Active) { oldFov = cam.fieldOfView; oldNear = cam.nearClipPlane; }   // BELLYLETHAL v1: oldNear
         actor = killerT; target = victimT; tb.Set(victimT); ab.Set(killerT);
         Active = true; enabled = true;
         FinisherVignette.Begin(); SetNoBlur(true); LookBegin();
@@ -52,7 +53,7 @@ public class FinisherCamera : MonoBehaviour
     {
         if (!Active) return;
         Active = false; enabled = false; FinisherTime.Restore(); SetNoBlur(false); LookEnd(); FinisherVignette.End(); shot = null;
-        if (cam) cam.fieldOfView = oldFov;
+        if (cam) { cam.fieldOfView = oldFov; if (oldNear > 0f) cam.nearClipPlane = oldNear; }   // BELLYLETHAL v1
     }
 
     public void Cut(string shotId, Transform actorT, Transform targetT, float blendOverride = -1f, FinisherShot[] localDefs = null)
@@ -67,6 +68,7 @@ public class FinisherCamera : MonoBehaviour
     {
         if (!Active || cam == null || s == null) return;
         fromPos = transform.position; fromRot = transform.rotation; fromFov = cam.fieldOfView;   // blend from where the camera is right now
+        if (s.nearClip > 0f) cam.nearClipPlane = s.nearClip; else if (oldNear > 0f) cam.nearClipPlane = oldNear;   // BELLYLETHAL v1
         shot = s; shotStart = Time.unscaledTime; shotAge = 0f; actor = actorT ? actorT : actor; target = targetT ? targetT : target; tb.Set(target); ab.Set(actor); flipLock = 0f;
         sideUsed = s.side == 0f ? (sideFlip = -sideFlip) : Mathf.Sign(s.side);
         blendDur = blendOverride >= 0f ? blendOverride : s.blend; blendT = blendDur <= 0f ? 1f : 0f;
@@ -164,7 +166,8 @@ public class FinisherCamera : MonoBehaviour
         if ((safe - p).sqrMagnitude > 1e-4f) { p = safe; Vector3 ld = lookPt - p; if (ld.sqrMagnitude > 1e-4f) r = Quaternion.LookRotation(ld, Vector3.up); }
         // CAMGUARD v102 (Goose QC: cuts went INSIDE Pitborn): the pre-blend Inside() check only sees the raw pose; the blend from the previous pose, the shake and the floor clamp can still leave the camera inside a fighter's bounds. Final guard: push it out along focus->camera.
         if (col == null) LoadCol();
-        if (col.bodyClearM > 0f && InsideBody(p, col.bodyClearM)) { p = PushOutOfBodies(p, focusPt, col.bodyClearM); Vector3 ld2 = lookPt - p; if (ld2.sqrMagnitude > 1e-4f) r = Quaternion.LookRotation(ld2, Vector3.up); CamGuardPushes++; }
+        float bcm = shot.bodyClearM > 0f ? shot.bodyClearM : col.bodyClearM;   // BELLYLETHAL v1
+        if (bcm > 0f && InsideBody(p, bcm)) { p = PushOutOfBodies(p, focusPt, bcm); Vector3 ld2 = lookPt - p; if (ld2.sqrMagnitude > 1e-4f) r = Quaternion.LookRotation(ld2, Vector3.up); CamGuardPushes++; }
         transform.SetPositionAndRotation(p, r); cam.fieldOfView = fv; LookEnforce(); EvTick(dt);
     }
 

@@ -1,7 +1,7 @@
 {
  "version": 1,
  "enabled": true,
- "debugLog": true,
+ "debugLog": false,
  "_about": "Attack clip table (clips helper, Nov 4). One row per (character, move): which Animator state plays and WHERE in that clip the blade connects. DuelFighter plays the clip in two segments so the contact lands on the move's own hit tick (windup + contactActiveFrac * active) and the end of the sim move lands on endTime: segment 1 = startTime..contactTime over the wind-up ticks (speed auto = (contact-start)/windupSeconds, or windupSpeed when > 0), segment 2 = contactTime..endTime over active+recovery (speed auto, or recoverySpeed when > 0). Times are SECONDS in the clip (source clip seconds). holdClipTime > 0 (charging heavy only): segment 1 runs startTime..holdClipTime up to the move's chamber tick, then freezes there while the key is held, then holdClipTime..contactTime. clip = new baked state (Tools/bake_attack_clips.py + Tools > Combat > Add Attack Clips); fallbackClip + fb* = the old state in the controller, used when the new state is missing. character: Dracula | Pitborn | '' (any). rootMotion: 'inplace' = hips XZ travel baked out, the body travels by code stepIn (metres, useStepIn true, capped by maxStep when > 0); 'limited' = the bake keeps the clip's hips XZ travel scaled to at most maxStep metres (use stepIn 0 with it). Moves without a row (kick, specials, heavy_riposte...) keep the old whole-clip squash. Times for old clips measured by right-hand speed (peak) on the baked rig; new clips from the source GLBs (see source/note).",
  "defaults": {
   "contactActiveFrac": 0.15,
@@ -723,7 +723,7 @@
    "clip": "maul_back_L",
    "startTime": 0.0,
    "contactTime": 0.5,
-   "endTime": 1.05,
+   "endTime": 1.133,
    "holdClipTime": 0.34,
    "fallbackClip": "atk_heavy_L",
    "fbStartTime": 0.2,
@@ -749,8 +749,8 @@
    "enabled": true,
    "clip": "maul_swipe_L",
    "startTime": 0.0,
-   "contactTime": 0.383,
-   "endTime": 1.1,
+   "contactTime": 0.733,
+   "endTime": 1.45,
    "holdClipTime": 0.0,
    "fallbackClip": "light_attack_L",
    "fbStartTime": 0.0,

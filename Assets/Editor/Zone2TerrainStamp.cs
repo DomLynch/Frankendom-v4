@@ -16,15 +16,16 @@ using UnityEngine;
 // No .asset files, nothing in the GLB import. Pristine meshes: the mesh asset itself, else the prefab source of the MeshFilter, else the GLB sub-asset of the same name (path from world_mats.json terrain.glb).
 public static class Zone2TerrainStamp
 {
-    [Serializable] class TB { public string mode = ""; public float xHalf = 32f, zFromLocal = -4f, zToLocal = 44f, blendM = 6f, yBias = 0f; }
+    [Serializable] class TB { public string mode = ""; public float xHalf = 32f, zFromLocal = -4f, zToLocal = 44f, blendM = 6f, yBias = 0f; public float uvScale = 1f; /* UVSCALE v1 */ }
     [Serializable] class ZB { public string id = ""; public float offsetZ; public TB terrain = new TB(); }
     [Serializable] class SB { public ZB[] zones = new ZB[0]; public SBuild build = new SBuild(); }
-    [Serializable] class SBuild { public string terrainName = "WorldTerrain"; }
+    [Serializable] class SBuild { public string terrainName = "WorldTerrain"; public string stampAssetDir = ""; /* STAMPASSET v1 */ }
     [Serializable] class WM { public WMT terrain = new WMT(); }
     [Serializable] class WMT { public string glb = "Assets/Env/World/Terrain/terrain_ground.glb"; }
 
     class Item { public MeshFilter mf; public Mesh pristine; public Mesh stamped; }
-    static List<Item> all = new List<Item>();   // every terrain chunk with a pristine mesh (scene-only meshes are not in here)
+    static List<Item> all = new List<Item>(); static string stampAssetDir = "";   /* STAMPASSET v1: "" = embedded meshes (old behaviour) */
+      // every terrain chunk with a pristine mesh (scene-only meshes are not in here)
 
     [MenuItem("Hades/Zones/Stamp zone terrain (re-apply)")]
     public static void Run() { var K = SpanData.Get(); Apply(K); UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene()); }
@@ -39,11 +40,23 @@ public static class Zone2TerrainStamp
 
     static Mesh Pristine(MeshFilter mf, Dictionary<string, Mesh> glbByName)
     {
-        var m = mf.sharedMesh; if (m != null && AssetDatabase.Contains(m)) return m;
+        var m = mf.sharedMesh; if (m != null && m.name.EndsWith("_stamp")) { Mesh g0; if (glbByName.TryGetValue(m.name.Substring(0, m.name.Length - 6), out g0)) return g0; }   /* STAMPASSET v1: a stamped asset is never the pristine mesh */
+        if (m != null && AssetDatabase.Contains(m)) return m;
         var src = PrefabUtility.GetCorrespondingObjectFromSource(mf); if (src != null && src.sharedMesh != null && AssetDatabase.Contains(src.sharedMesh)) return src.sharedMesh;
         if (m != null && m.name.EndsWith("_stamp")) { Mesh g; if (glbByName.TryGetValue(m.name.Substring(0, m.name.Length - 6), out g)) return g; }
         return null;
     }
+
+    /* STAMPASSET v1: write the stamped mesh to <stampAssetDir>/<name>.asset and return the ASSET (a prefab override / scene then serialises a normal asset reference) */
+    static Mesh Persist(Mesh m)
+    {
+        if (string.IsNullOrEmpty(stampAssetDir) || m == null || AssetDatabase.Contains(m)) return m;
+        string dir = stampAssetDir.Replace('\\', '/').TrimEnd('/'); Directory.CreateDirectory(Path.Combine(Directory.GetParent(Application.dataPath).FullName, dir));
+        string path = dir + "/" + m.name + ".asset"; var ex = AssetDatabase.LoadAssetAtPath<Mesh>(path);
+        if (ex != null) { EditorUtility.CopySerialized(m, ex); EditorUtility.SetDirty(ex); UnityEngine.Object.DestroyImmediate(m); return ex; }
+        AssetDatabase.CreateAsset(m, path); return AssetDatabase.LoadAssetAtPath<Mesh>(path);
+    }
+    static void DestroyStamp(Mesh m) { if (m != null && !AssetDatabase.Contains(m)) UnityEngine.Object.DestroyImmediate(m); }
 
     static void Assign(MeshFilter mf, Mesh m)
     {
@@ -54,12 +67,13 @@ public static class Zone2TerrainStamp
 
     public static bool Prepare(SpanTable K)
     {
-        foreach (var it in all) if (it.stamped != null) UnityEngine.Object.DestroyImmediate(it.stamped);
+        foreach (var it in all) if (it.stamped != null) DestroyStamp(it.stamped);
         all = new List<Item>();
         try
         {
             string path = Path.Combine(Application.dataPath, "Data/zone_span.json"); if (!File.Exists(path)) { Debug.LogWarning("[TerrainStamp] no zone_span.json: nothing prepared"); return false; }
             var S = JsonUtility.FromJson<SB>(File.ReadAllText(path).TrimStart('﻿'));
+            stampAssetDir = S.build != null && S.build.stampAssetDir != null ? S.build.stampAssetDir : "";   /* STAMPASSET v1 */
             var rows = new List<ZB>(); foreach (var z in S.zones) if (z != null && z.terrain != null && z.terrain.mode == "stamp") rows.Add(z);
             if (rows.Count == 0) { Debug.Log("[TerrainStamp] no stamp rows: terrain will be the pristine GLB"); }
             var terr = GameObject.Find(S.build.terrainName != null && S.build.terrainName.Length > 0 ? S.build.terrainName : "WorldTerrain");
@@ -86,6 +100,8 @@ public static class Zone2TerrainStamp
             foreach (var r in rows) ws.Add(new TerrainStampCore.Win { id = r.id, offsetZ = r.offsetZ, xHalf = r.terrain.xHalf, zFrom = r.terrain.zFromLocal, zTo = r.terrain.zToLocal, blend = r.terrain.blendM, yBias = r.terrain.yBias });
             var R = TerrainStampCore.Compute(chunks, ws, 0.995f, 5f);
             if (!R.ok) { Debug.LogError("[TerrainStamp] validation failed (" + R.error + "): stamp NOT done, crop fallback, scene untouched"); all.Clear(); return false; }
+            var uvPiv = new Vector2[rows.Count];   // UVSCALE v1: per window, the uv of the terrain vertex nearest the window centre
+            for (int wi = 0; wi < rows.Count; wi++) { float zc = ws[wi].offsetZ + 0.5f * (ws[wi].zFrom + ws[wi].zTo), best = float.MaxValue; for (int ci = 0; ci < all.Count; ci++) { var cuv = all[ci].pristine.uv; if (cuv == null || cuv.Length != chunks[ci].x.Length) continue; for (int i = 0; i < cuv.Length; i++) { float dx = chunks[ci].x[i], dz = chunks[ci].z[i] - zc, d = dx * dx + dz * dz; if (d < best) { best = d; uvPiv[wi] = cuv[i]; } } } }
             // build the new meshes in memory (nothing assigned yet)
             for (int ci = 0; ci < all.Count; ci++)
             {
@@ -99,12 +115,15 @@ public static class Zone2TerrainStamp
                     if (hasN && (R.nx[ci][i] != 0f || R.ny[ci][i] != 0f || R.nz[ci][i] != 0f)) nr[i] = T.InverseTransformDirection(new Vector3(R.nx[ci][i], R.ny[ci][i], R.nz[ci][i]));
                 }
                 mesh.vertices = v; if (hasN) mesh.normals = nr; mesh.RecalculateBounds(); it.stamped = mesh;
+                { var uv = it.pristine.uv; bool uvCh = false;   // UVSCALE v1: ground texture cells match the paving plate (zone_span terrain.uvScale, 1 or absent = off)
+                  if (uv != null && uv.Length == v.Length) for (int wi = 0; wi < rows.Count; wi++) { float k = rows[wi].terrain.uvScale; if (k <= 1.0001f) continue; for (int i = 0; i < uv.Length; i++) { float wgt = TerrainStampCore.Weight(ws[wi], chunks[ci].x[i], chunks[ci].z[i] - ws[wi].offsetZ); if (wgt <= 0f) continue; uv[i] = uvPiv[wi] + (uv[i] - uvPiv[wi]) * (1f + (k - 1f) * wgt); uvCh = true; }  }
+                  if (uvCh) mesh.uv = uv; }
             }
             foreach (var kv in R.movedPerWin) Debug.Log("[TerrainStamp] prepared zone '" + kv.Key + "': " + kv.Value + " original terrain vertices moved (source coverage " + (R.coverage[kv.Key] * 100f).ToString("0.0") + "%)");
             Debug.Log("[TerrainStamp] prepared: " + R.chunksChanged + " of " + all.Count + " terrain chunks (" + skipped + " scene-only skipped), " + R.vertsRewritten + " vertices rewritten, max move " + R.maxDelta.ToString("0.00") + " m. Triangles and draw calls added: 0.");
             return true;
         }
-        catch (Exception e) { Debug.LogError("[TerrainStamp] Prepare failed (" + e.Message + "): stamp NOT done, crop fallback, scene untouched"); foreach (var it in all) if (it.stamped != null) UnityEngine.Object.DestroyImmediate(it.stamped); all.Clear(); return false; }
+        catch (Exception e) { Debug.LogError("[TerrainStamp] Prepare failed (" + e.Message + "): stamp NOT done, crop fallback, scene untouched"); foreach (var it in all) if (it.stamped != null) DestroyStamp(it.stamped); all.Clear(); return false; }
     }
 
     /// <summary>Assign the prepared meshes (a chunk without a stamped mesh gets its pristine GLB mesh back). Never throws; false = nothing trustworthy was done, caller reverts.</summary>
@@ -113,7 +132,8 @@ public static class Zone2TerrainStamp
         try
         {
             foreach (var it in all) if (it.mf == null) { Debug.LogError("[TerrainStamp] a terrain MeshFilter vanished before commit"); return false; }
-            foreach (var it in all) Assign(it.mf, it.stamped != null ? it.stamped : it.pristine);
+            foreach (var it in all) { if (it.stamped != null) it.stamped = Persist(it.stamped); Assign(it.mf, it.stamped != null ? it.stamped : it.pristine); }   /* STAMPASSET v1 */
+            if (!string.IsNullOrEmpty(stampAssetDir)) AssetDatabase.SaveAssets();   /* STAMPASSET v1 */
             int n = 0; foreach (var it in all) if (it.stamped != null) n++; Debug.Log("[TerrainStamp] committed: " + n + " chunk meshes stamped"); return true;
         }
         catch (Exception e) { Debug.LogError("[TerrainStamp] Commit failed (" + e.Message + ")"); return false; }
@@ -130,7 +150,7 @@ public static class Zone2TerrainStamp
                 var byName = new Dictionary<string, Mesh>(); foreach (var o in AssetDatabase.LoadAllAssetsAtPath("Assets/Env/World/Terrain/terrain_ground.glb")) { var m = o as Mesh; if (m != null && !byName.ContainsKey(m.name)) byName[m.name] = m; }
                 foreach (var mf in terr.GetComponentsInChildren<MeshFilter>(true)) { if (mf.sharedMesh == null) continue; var pr = Pristine(mf, byName); if (pr != null) all.Add(new Item { mf = mf, pristine = pr }); }
             }
-            foreach (var it in all) { Assign(it.mf, it.pristine); if (it.stamped != null) { UnityEngine.Object.DestroyImmediate(it.stamped); it.stamped = null; } }
+            foreach (var it in all) { Assign(it.mf, it.pristine); if (it.stamped != null) { DestroyStamp(it.stamped); it.stamped = null; } }
             Debug.Log("[TerrainStamp] terrain is the pristine GLB (" + all.Count + " chunks)");
         }
         catch (Exception e) { Debug.LogError("[TerrainStamp] Revert failed: " + e.Message); }

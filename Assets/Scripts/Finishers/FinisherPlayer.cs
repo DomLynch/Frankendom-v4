@@ -176,8 +176,8 @@ public static class FinisherPlayer
         if (e.pairOffset != null && e.pairOffset.Length >= 3) { dx = e.pairOffset[0] * ks; dz = Mathf.Max(0.6f, e.pairOffset[2] * ks); }
         Vector3 pa = new Vector3(mid.x, A.transform.position.y, mid.z) - axis * (dz * 0.5f) - rightV * (dx * 0.5f);
         Vector3 pv = pa + axis * dz + rightV * dx; pv.y = V.transform.position.y + (e.pairOffset != null && e.pairOffset.Length >= 3 ? e.pairOffset[1] * ks : 0f);   // V1CLIPS v98: pairOffset[1] = lift
-        Teleport(A, pa, Quaternion.Euler(0f, e.killerYawDeg, 0f) * axis);
-        Teleport(V, pv, Quaternion.Euler(0f, e.victimYawDeg, 0f) * -axis);
+        var rtR = FinisherConfig.Get().rt.realtime; float slideS = rtR != null && rtR.enabled && !string.IsNullOrEmpty(e.attackerClip) && !string.IsNullOrEmpty(e.victimClip) ? Mathf.Max(0f, rtR.placeSlideS) : 0f, slideT = 0f; Vector3 aFace = Quaternion.Euler(0f, e.killerYawDeg, 0f) * axis, vFace = Quaternion.Euler(0f, e.victimYawDeg, 0f) * -axis, a0 = A.transform.position, v0 = V.transform.position; Quaternion aq0 = A.transform.rotation, vq0 = V.transform.rotation; /* FINREALTIME v1 H8a: real-time placement */ if (slideS <= 0f) Teleport(A, pa, aFace);
+        if (slideS <= 0f) Teleport(V, pv, vFace); /* FINREALTIME v1 H8b */
         A.opponent = null; V.opponent = null; A.guardHeld = false; V.guardHeld = false; A.moveDir = V.moveDir = Vector3.zero;
         // V62B: ground contact of both bodies during the scene (lift a sunk body, lower a floating one, stats for -finisherauto); removes itself when the scene is over
         FinisherGround.ResetStats(); var gA = FinisherGround.Attach(A, true); var gV = FinisherGround.Attach(V, false); var gcfg = FinisherConfig.Get().rt.ground; float dieT = -1f;
@@ -215,8 +215,8 @@ public static class FinisherPlayer
         if (rig)
         {
             bool any = false;
-            for (int i = 0; i < shots.Count; i++) if (shots[i].t <= 0f && shots[i].rel != "contact") { host.CameraCut(shots[i].shot, A.transform, V.transform, 0f, e.shotDefs); shotDone[i] = true; any = true; break; }
-            if (!any) host.CameraCut(FinisherConfig.Get().rt.fallbackShot, A.transform, V.transform, 0f, e.shotDefs);
+            for (int i = 0; i < shots.Count; i++) if (shots[i].t <= 0f && shots[i].rel != "contact") { host.CameraCut(shots[i].shot, A.transform, V.transform, (rtR != null && rtR.enabled && rtR.firstBlendS >= 0f ? rtR.firstBlendS : 0f) /* FINREALTIME v1 H8d: soft first shot */, e.shotDefs); shotDone[i] = true; any = true; break; }
+            if (!any) host.CameraCut(FinisherConfig.Get().rt.fallbackShot, A.transform, V.transform, (rtR != null && rtR.enabled && rtR.firstBlendS >= 0f ? rtR.firstBlendS : 0f) /* FINREALTIME v1 H8d: soft first shot */, e.shotDefs);
         }
 
         // FINFIX v93: the mesh cut of the first cut-type gore key is BUILT in slices from the scene start (under the wind-up) and only APPLIED at its key (a few ms), so the contact frame does not stall.
@@ -235,7 +235,7 @@ public static class FinisherPlayer
         {
             float dt = FinisherTime.Step(Time.deltaTime);   // FINFIX v93: clamped step - one long frame cannot skip a beat
             T += dt;
-            host.TimeTick();
+            host.TimeTick(); if (slideS > 0f && slideT < slideS) { slideT = Mathf.Min(slideS, slideT + dt); float sk = slideT / slideS; sk = sk * sk * (3f - 2f * sk); Teleport(A, Vector3.Lerp(a0, pa, sk), Quaternion.Slerp(aq0, Quaternion.LookRotation(aFace.normalized, Vector3.up), sk) * Vector3.forward); Teleport(V, Vector3.Lerp(v0, pv, sk), Quaternion.Slerp(vq0, Quaternion.LookRotation(vFace.normalized, Vector3.up), sk) * Vector3.forward); } /* FINREALTIME v1 H8c: placement slide */
             if (jobIdx >= 0 && !cutJobs[jobIdx].done && T >= pre.startAt)
             {
                 float toContact = (contactSeen ? 0f : planned - T);

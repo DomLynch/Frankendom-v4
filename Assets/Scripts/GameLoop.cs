@@ -61,6 +61,8 @@ public static class GameLoop
     }
     public static bool FadeOn { get { return HudCfg.Get().fade.enabled && !HarnessOn; } }
     public static bool LadderOn { get { return Opponents().enabled && !HarnessOn; } }
+    /// <summary>SEAMLESS v1: zones mode and hud.json screens.zonesNoEndScreen. ZoneSave.Active = zones.json/-zones on and no harness flag = exactly when ZoneRuntime is created, so this is true from frame 0 (ZoneRuntime.Owns is not: it is false in the gaps of a scene load).</summary>
+    public static bool ZonesNoEnd { get { return ZoneSave.Active && HudCfg.Get().screens.zonesNoEndScreen; } }
 
     // HARNESSPICK v1 (laneHARNESSPICK): -opponent:<rosterId> picks the enemy of a HARNESS run (-balanceauto, and -perfbench which rides on it). Absent flag, or no harness = none of this runs.
     // The enemy scene is the one the ladder / zones use: zones.json creatures[].scene (Sobek: HadesSlice_Sobek, built by EnemySwap); an empty scene = the base scene (Pitborn). Roster.SetEnemy is set before the first scene
@@ -270,7 +272,7 @@ public static class GameLoop
     // Every size, colour and string is hud.json screens{} / colors{} / fonts{}. The prompts are clickable; keys are GameLoopDriver.Update.
     public static void DrawEnd(float vw, float vh)
     {
-        float a = ScreenAlpha; if (a <= 0.001f || Outcome == Result.None) return;
+        float a = ScreenAlpha; if (a <= 0.001f || Outcome == Result.None || ZonesNoEnd) return;   // SEAMLESS v1: the one drawer of the end card stands down in zones
         var H = HudCfg.Get(); var S = H.screens; var C = H.colors; bool win = Outcome == Result.Victory;
         var E = win ? S.victory : S.defeat; Color accent = HudCfg.Col(E.color); Color tint = LookOptions.DeathTint(win, HudCfg.Col(win ? S.victoryTint : S.defeatTint));   // LOOKOPT v95: deathWash switch (look_options.json), off = hud.json tint
         bool rep = Event.current.type == EventType.Repaint; float e = a * a * (3f - 2f * a);
@@ -363,6 +365,7 @@ public sealed class GameLoopDriver : MonoBehaviour
 
     Action pending; float fadeTarget, fadeDur = 0.5f;
     bool active, ended, cursorFreed, subscribed; int frames, lastBeginFrame = -1; float nextFind, endT;
+    object zlog;   // SEAMLESS v1: the fighter whose "no end screen" proof line was written last
     object keyOwner; KeyCode[] kConfirm, kRetry, kMid;
 
     void Awake() { Instance = this; }
@@ -393,7 +396,7 @@ public sealed class GameLoopDriver : MonoBehaviour
         if (lastBeginFrame == Time.frameCount) return;   // OnEnable and sceneLoaded of the same load
         lastBeginFrame = Time.frameCount; GameLoop.SceneLoads++;
         GameLoop.ResetGlobals();
-        pending = null; ended = false; cursorFreed = false; frames = 0; nextFind = 0f;
+        pending = null; ended = false; cursorFreed = false; frames = 0; nextFind = 0f; zlog = null;
         GameLoop.Outcome = GameLoop.Result.None; GameLoop.ScreenAlpha = 0f; GameLoop.Landed = GameLoop.Taken = GameLoop.Parries = 0; GameLoop.Finisher = ""; GameLoop.Seconds = 0f;
         GameLoop.Ready = false; GameLoop.LadderApplied = false; GameLoop.Player = GameLoop.Enemy = null;
         active = FindFirstObjectByType<DuelFighter>() != null;
@@ -432,7 +435,7 @@ public sealed class GameLoopDriver : MonoBehaviour
         if (pending != null && GameLoop.FadeAlpha >= 0.999f) { var p = pending; pending = null; try { p(); } catch (Exception e) { GameLoop.LastError = e.Message; Debug.LogError("[GameLoop] transition failed: " + e); } return; }
         if (GameLoop.StartReload) { GameLoop.StartReload = false; GameLoop.ReloadForStart(); return; }   // LADDER v92: the scene the run started in cannot host the start row
         if (!active) return;
-        if (ZoneRuntime.Owns) return;   // ZONES v1: zones own the fight (no victory card, no per-fight scene reload); ZoneRuntime sets GameLoop.Player / Enemy / Ready
+        if (ZoneRuntime.Owns || GameLoop.ZonesNoEnd) { if (GameLoop.ZonesNoEnd) ZonesQuiet(); return; }   // ZONES v1: zones own the fight (no victory card, no per-fight scene reload); ZoneRuntime sets GameLoop.Player / Enemy / Ready. SEAMLESS v1: also when ZoneRuntime is not (yet) bound
         if (GameLoop.Player == null || GameLoop.Enemy == null) { if (Time.unscaledTime >= nextFind) FindFighters(); return; }
 
         frames++;
@@ -464,6 +467,17 @@ public sealed class GameLoopDriver : MonoBehaviour
         {
             if (HudCfg.AnyDown(kRetry)) GameLoop.Retry();
             else if (HudCfg.AnyDown(kConfirm)) { if (GameLoop.Outcome == GameLoop.Result.Victory) GameLoop.Next(); else GameLoop.Retry(); }
+        }
+    }
+
+    // SEAMLESS v1: zones mode. No Outcome, no ScreenAlpha, no Retry / Next keys (they sit below the return in Update). One proof line per fighter that goes down.
+    void ZonesQuiet()
+    {
+        if (GameLoop.Outcome != GameLoop.Result.None || GameLoop.ScreenAlpha > 0f) { GameLoop.Outcome = GameLoop.Result.None; GameLoop.ScreenAlpha = 0f; }
+        if (GameLoop.Player != null && GameLoop.Enemy != null)
+        {
+            var down = GameLoop.Player.Dead ? GameLoop.Player : GameLoop.Enemy.Dead ? GameLoop.Enemy : null;
+            if (down != null && !ReferenceEquals(zlog, down)) { zlog = down; Debug.Log("[GameLoop] zones: no end screen (" + (down == GameLoop.Player ? "player" : "foe " + down.name) + " down), the world goes on"); }
         }
     }
 

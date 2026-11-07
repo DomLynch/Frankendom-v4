@@ -1,0 +1,7 @@
+{
+  "_about": "PAVINGLOWER v1 (env-dev). SHIPS OFF: enabled=false = the scene exactly as today. enabled=true (or -pavinglower:1) moves every ground_paving root object down by dropM metres at load so the plate lies under the terrain/plug plane y 0 and stops contesting it at the fighters' feet. -pavingdrop:<m> overrides dropM. Look change (at most 5 mm at the pokes): Dom's own LOOK OK before it is true in a build he plays. Keep the Assets/Data and StreamingAssets copies byte-identical.",
+  "enabled": false,
+  "dropM": 0.02,
+  "nameContains": "ground_paving",
+  "retryFrames": 600
+}

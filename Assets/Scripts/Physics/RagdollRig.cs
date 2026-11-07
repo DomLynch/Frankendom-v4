@@ -341,6 +341,7 @@ public class RagdollRig : MonoBehaviour
         for (int i = 0; i < parts.Count; i++) if (parts[i].bone == null || parts[i].rb == null) { Debug.LogWarning("RagdollRig: a bone of " + name + " is gone; keeping the death clip."); return false; }
         if (live >= Mathf.Max(1, d.rig.maxLive)) { Debug.LogWarning("RagdollRig: live ragdoll cap (" + d.rig.maxLive + ") reached; " + name + " keeps its death clip."); return false; }
 
+        Snap();   // REVIVE v1
         // 1) velocities BEFORE the Animator stops: bone velocity relative to the root (the clip) + the root's own motion, the sim knock replaces the root's horizontal part
         var inh = d.inherit;
         Vector3 knock = df != null ? df.KnockVelocity : Vector3.zero;
@@ -370,7 +371,7 @@ public class RagdollRig : MonoBehaviour
         if (off != null && off.Length > 0)
         {
             var bs = GetComponentsInChildren<Behaviour>(true);
-            for (int i = 0; i < bs.Length; i++) { if (bs[i] == null || bs[i] == this) continue; string tn = bs[i].GetType().Name; for (int k = 0; k < off.Length; k++) if (tn == off[k]) { bs[i].enabled = false; break; } }   // IK / clamps that write bones in LateUpdate (FootGround moves the hips) would fight the bodies
+            for (int i = 0; i < bs.Length; i++) { if (bs[i] == null || bs[i] == this) continue; string tn = bs[i].GetType().Name; for (int k = 0; k < off.Length; k++) if (tn == off[k]) { if (bs[i].enabled) offList.Add(bs[i]); bs[i].enabled = false; break; } }   // IK / clamps that write bones in LateUpdate (FootGround moves the hips) would fight the bodies
         }
         if (d.body.updateSkinnedWhenOffscreen)      // only now: a living fighter keeps the cheap bounds, the ragdolled body can leave its bind-pose bounds
         {
@@ -610,6 +611,77 @@ public class RagdollRig : MonoBehaviour
         if (Frozen) return;
         Frozen = true; live = Mathf.Max(0, live - 1);
         for (int i = 0; i < parts.Count; i++) if (parts[i].rb != null) parts[i].rb.isKinematic = true;
+    }
+
+    // REVIVE v1 (laneSEAMLESS): put the rig back to what Build() made, so the fighter can stand up and die again. Snapshot taken once, at the start of the first Convert.
+    sealed class JointSnap
+    {
+        public Vector3 anchor, axis, secondaryAxis, connectedAnchor, targetAngularVelocity; public bool auto, worldSpace, swap, coll, pre; public Quaternion target;
+        public ConfigurableJointMotion mx, my, mz, ax, ay, az; public SoftJointLimit lowX, highX, limY, limZ; public SoftJointLimitSpring spX, spYZ; public JointDrive dX, dYZ, dS;
+        public RotationDriveMode mode; public JointProjectionMode proj; public float projD, projA;
+    }
+    sealed class PartSnap { public JointSnap j; public int layer; public bool trig, capOn, kin, grav; public float curLowX, curHighX, curY, curZ; public Vector3 lp; public Quaternion lr; }
+    PartSnap[] snaps; readonly List<Behaviour> offList = new List<Behaviour>(); public string RestoreWhy = "";
+    public bool CanRestore { get { return snaps != null && finCuts.Count == 0; } }
+
+    void Snap()
+    {
+        if (snaps != null && snaps.Length == parts.Count) return;
+        snaps = new PartSnap[parts.Count];
+        for (int i = 0; i < parts.Count; i++)
+        {
+            var p = parts[i]; var s = new PartSnap();
+            s.layer = p.bone != null ? p.bone.gameObject.layer : 0; s.lp = p.bone != null ? p.bone.localPosition : Vector3.zero; s.lr = p.bone != null ? p.bone.localRotation : Quaternion.identity;
+            s.trig = p.cap != null && p.cap.isTrigger; s.capOn = p.cap != null && p.cap.enabled; s.kin = p.rb == null || p.rb.isKinematic; s.grav = p.rb != null && p.rb.useGravity;
+            s.curLowX = p.curLowX; s.curHighX = p.curHighX; s.curY = p.curY; s.curZ = p.curZ;
+            var j = p.joint;
+            if (j != null)
+            {
+                var q = new JointSnap();
+                q.anchor = j.anchor; q.axis = j.axis; q.secondaryAxis = j.secondaryAxis; q.connectedAnchor = j.connectedAnchor; q.targetAngularVelocity = j.targetAngularVelocity; q.auto = j.autoConfigureConnectedAnchor;
+                q.worldSpace = j.configuredInWorldSpace; q.swap = j.swapBodies; q.coll = j.enableCollision; q.pre = j.enablePreprocessing; q.target = j.targetRotation;
+                q.mx = j.xMotion; q.my = j.yMotion; q.mz = j.zMotion; q.ax = j.angularXMotion; q.ay = j.angularYMotion; q.az = j.angularZMotion;
+                q.lowX = j.lowAngularXLimit; q.highX = j.highAngularXLimit; q.limY = j.angularYLimit; q.limZ = j.angularZLimit; q.spX = j.angularXLimitSpring; q.spYZ = j.angularYZLimitSpring;
+                q.dX = j.angularXDrive; q.dYZ = j.angularYZDrive; q.dS = j.slerpDrive; q.mode = j.rotationDriveMode; q.proj = j.projectionMode; q.projD = j.projectionDistance; q.projA = j.projectionAngle;
+                s.j = q;
+            }
+            snaps[i] = s;
+        }
+    }
+
+    /// <summary>REVIVE v1: undo Convert(): bodies kinematic again, capsules triggers on the hurtbox layer, joints as built, behaviours Convert switched off back on, Animator on. False (and RestoreWhy) = the rig cannot be put back; nothing is half-done then except velocities zeroed.</summary>
+    public bool Restore()
+    {
+        if (!Converted) return true;
+        if (snaps == null || snaps.Length != parts.Count) { RestoreWhy = "no snapshot (converted before the kit)"; return false; }
+        if (finCuts.Count > 0) { RestoreWhy = "a finisher cut the body"; return false; }
+        for (int i = 0; i < parts.Count; i++) if (parts[i].bone == null || parts[i].rb == null) { RestoreWhy = "a bone is gone"; return false; }
+        for (int i = 0; i < parts.Count; i++)
+        {
+            var p = parts[i]; var s = snaps[i];
+            if (!p.rb.isKinematic) { p.rb.linearVelocity = Vector3.zero; p.rb.angularVelocity = Vector3.zero; }
+            p.rb.isKinematic = s.kin; p.rb.useGravity = s.grav;
+            p.bone.gameObject.layer = s.layer;
+            if (p.cap != null) { p.cap.isTrigger = s.trig; p.cap.enabled = s.capOn; }
+            p.curLowX = s.curLowX; p.curHighX = s.curHighX; p.curY = s.curY; p.curZ = s.curZ;
+            var j = p.joint; var q = s.j;
+            if (j != null && q != null)
+            {
+                j.autoConfigureConnectedAnchor = q.auto; j.configuredInWorldSpace = q.worldSpace; j.swapBodies = q.swap;
+                j.anchor = q.anchor; j.axis = q.axis; j.secondaryAxis = q.secondaryAxis; j.connectedAnchor = q.connectedAnchor;
+                j.xMotion = q.mx; j.yMotion = q.my; j.zMotion = q.mz; j.angularXMotion = q.ax; j.angularYMotion = q.ay; j.angularZMotion = q.az;
+                j.lowAngularXLimit = q.lowX; j.highAngularXLimit = q.highX; j.angularYLimit = q.limY; j.angularZLimit = q.limZ; j.angularXLimitSpring = q.spX; j.angularYZLimitSpring = q.spYZ;
+                j.angularXDrive = q.dX; j.angularYZDrive = q.dYZ; j.slerpDrive = q.dS; j.rotationDriveMode = q.mode; j.targetRotation = q.target; j.targetAngularVelocity = q.targetAngularVelocity;
+                j.projectionMode = q.proj; j.projectionDistance = q.projD; j.projectionAngle = q.projA; j.enableCollision = q.coll; j.enablePreprocessing = q.pre;
+            }
+            p.bone.localPosition = s.lp; p.bone.localRotation = s.lr;
+        }
+        if (!Frozen) live = Mathf.Max(0, live - 1);
+        Converted = false; Frozen = false; SimTime = 0f; slowTicks = 0; ringHead = -1; ringCount = 0;
+        for (int i = 0; i < offList.Count; i++) if (offList[i] != null) offList[i].enabled = true;
+        offList.Clear();
+        if (fighter != null && fighter.anim != null) fighter.anim.enabled = true;
+        RestoreWhy = ""; return true;
     }
 
     // ---------------- proof helpers ----------------

@@ -421,7 +421,8 @@ public class ClashFx : MonoBehaviour
         {
             sparkReadyAt = Time.time + cfg.sparks.cooldown;
             var sp = cfg.sparks;
-            Vector3 anchor = d.transform.position + Vector3.up * (sp.anchorHeight * FighterScale.Of(d)) - along * sp.anchorBack; anchor = ArcFx.ContactPoint(a, d, type, false, anchor);   // ARCS v105
+            Vector3 anchor = d.transform.position + Vector3.up * (sp.anchorHeight * FighterScale.Of(d)) - along * sp.anchorBack;
+        anchor = PhysWeapon.SparkAnchor(a, d, type, false, anchor); /*PHYSWEAPON v106*/ anchor = ArcFx.ContactPoint(a, d, type, false, anchor);   // ARCS v105
             int n = sp.countBase + Mathf.RoundToInt(Rand() * (sp.countRandomBase + row.spark * sp.countRandomPerStrength)); n = Mathf.RoundToInt(n * ArcFx.CountMul());   // ARCS v105
             if (sheetSparkR != null)
             {

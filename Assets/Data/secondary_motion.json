@@ -1,0 +1,325 @@
+{
+  "note": "PHYSCLOTH v1: secondary motion (hair, skirt / tabard flaps, cape, tail, fins, hanging gear), PRESENTATION ONLY, read by Scripts/Physics/SecondaryMotion.cs (LateUpdate after the Animator, render time only: no sim read, no RNG, no PhysX, simhash identical on/off). MASTER SWITCH is in physics.json: \"secondary\": { \"enabled\": false } (ships OFF); QA twins -secondary:on / -secondary:off. characters[].name = roster id (Sobek has no roster row yet, so his row is inert); row enabled; per chain: enabled, skinned (true ONLY when a mesh has vertex weight on these joints; false = the chain is skipped), bones parents first, stiffness 1/s^2, damping 1/s, gravity x world.gravityMps2, maxAngleDeg per bone, rootInfluence..tipInfluence along the chain (0 = animated pose only), tipAxis (bone-local aim axis, +Y on this rig) and tipLengthM (model metres) for a bone with no listed child. No new joint names: the shared 106 rig is gated by name (clip_gates G-rig, clip_sets_gates). Combat code must never read these bones.",
+  "version": 1,
+  "world": {
+    "gravityDir": {
+      "x": 0,
+      "y": -1,
+      "z": 0
+    },
+    "gravityMps2": 9.81,
+    "maxSubstepS": 0.0083,
+    "maxSubsteps": 4,
+    "maxFrameS": 0.1,
+    "teleportM": 2.0,
+    "fadeInS": 0.5,
+    "minBoneLenM": 0.001,
+    "writtenEpsDeg": 0.01,
+    "maxStiffnessFrac": 0.5,
+    "setupRetries": 20,
+    "setupRetryS": 0.5
+  },
+  "characters": [
+    {
+      "name": "Joan",
+      "enabled": true,
+      "debug": false,
+      "debugEvery": 120,
+      "chains": [
+        {
+          "name": "hair_back",
+          "kind": "hair",
+          "enabled": true,
+          "skinned": false,
+          "bones": [
+            "fk_hair_back_1",
+            "fk_hair_back_2",
+            "fk_hair_back_3"
+          ],
+          "stiffness": 70.0,
+          "damping": 8.0,
+          "gravity": 0.25,
+          "maxAngleDeg": 10.0,
+          "rootInfluence": 0.25,
+          "tipInfluence": 1.0,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.088,
+          "note": "Joan_Hair is its own mesh but 100% weighted to Head (measured): the 3 hair joints exist and carry NO vertex weight, so this chain moves nothing until the hair is re-skinned (tools\\hair_reskin.py draft -> out\\Joan_Hair_chain_draft.glb, needs Dom's LOOK OK). Set skinned true only with that glb. Segment lengths 0.086/0.088 m (measured), the hair shell is only 0.23 m tall and ends at the nape, so amplitude is centimetres. Gravity small: it is cropped hair, not a ponytail."
+        },
+        {
+          "name": "tabard_front",
+          "kind": "skirt",
+          "enabled": true,
+          "skinned": true,
+          "bones": [
+            "fk_skirt_f"
+          ],
+          "stiffness": 55.0,
+          "damping": 6.0,
+          "gravity": 0.0,
+          "maxAngleDeg": 18.0,
+          "rootInfluence": 1.0,
+          "tipInfluence": 1.0,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.18,
+          "note": "Only gear\\joan_tabard.glb carries weight on fk_skirt_f (190 vertex weights, 262 vertices >= 0.30, measured); invisible until the tabard is equipped. One leaf joint under Hips = a hinge flap, no ripple. The owned vertices hang 0.09 m below the joint and reach 0.18 m from it (measured) -> tipLengthM 0.18."
+        },
+        {
+          "name": "tabard_back",
+          "kind": "skirt",
+          "enabled": true,
+          "skinned": true,
+          "bones": [
+            "fk_skirt_b"
+          ],
+          "stiffness": 55.0,
+          "damping": 6.0,
+          "gravity": 0.0,
+          "maxAngleDeg": 18.0,
+          "rootInfluence": 1.0,
+          "tipInfluence": 1.0,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.18,
+          "note": "Same as tabard_front for fk_skirt_b (156 vertex weights, 217 vertices >= 0.30, 0.185 m reach, measured)."
+        },
+        {
+          "name": "cape",
+          "kind": "cape",
+          "enabled": true,
+          "skinned": false,
+          "bones": [
+            "fk_cape_01",
+            "fk_cape_02",
+            "fk_cape_03"
+          ],
+          "stiffness": 30.0,
+          "damping": 4.0,
+          "gravity": 0.6,
+          "maxAngleDeg": 28.0,
+          "rootInfluence": 0.3,
+          "tipInfluence": 1.0,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.196,
+          "note": "fk_cape_01..03 hang from Spine2 (0.196 m segments, measured) but NO shipped mesh is weighted to them (Layer_Tunic, tabard, Steel: none). Joan has no cape. Row kept so a cape asset can switch on by data."
+        }
+      ]
+    },
+    {
+      "name": "Pitborn",
+      "enabled": true,
+      "debug": false,
+      "debugEvery": 120,
+      "chains": [
+        {
+          "name": "cape",
+          "kind": "cape",
+          "enabled": true,
+          "skinned": false,
+          "bones": [
+            "fk_cape_01",
+            "fk_cape_02",
+            "fk_cape_03"
+          ],
+          "stiffness": 30.0,
+          "damping": 4.0,
+          "gravity": 0.6,
+          "maxAngleDeg": 28.0,
+          "rootInfluence": 0.3,
+          "tipInfluence": 1.0,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.196,
+          "note": "Pitborn_combat.glb is ONE mesh (Body, 250k tris) with zero weight on every fk_ and twist-chain joint (measured); his gear is baked into it and the rig has the same fk_cape_01..03 joints. Nothing can move until a cloth / rag / chain part is built and skinned to these joints in the bind_pit route. Row ready for that part."
+        },
+        {
+          "name": "loin_front",
+          "kind": "skirt",
+          "enabled": true,
+          "skinned": false,
+          "bones": [
+            "fk_skirt_f"
+          ],
+          "stiffness": 55.0,
+          "damping": 6.0,
+          "gravity": 0.0,
+          "maxAngleDeg": 18.0,
+          "rootInfluence": 1.0,
+          "tipInfluence": 1.0,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.18,
+          "note": "Same as cape: needs a modelled tasset / loincloth skinned to fk_skirt_f."
+        },
+        {
+          "name": "loin_back",
+          "kind": "skirt",
+          "enabled": true,
+          "skinned": false,
+          "bones": [
+            "fk_skirt_b"
+          ],
+          "stiffness": 55.0,
+          "damping": 6.0,
+          "gravity": 0.0,
+          "maxAngleDeg": 18.0,
+          "rootInfluence": 1.0,
+          "tipInfluence": 1.0,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.18,
+          "note": "Same as cape: needs a modelled part skinned to fk_skirt_b."
+        },
+        {
+          "name": "hanging_gear",
+          "kind": "gear",
+          "enabled": true,
+          "skinned": false,
+          "bones": [
+            "fk_socket_back"
+          ],
+          "stiffness": 80.0,
+          "damping": 8.0,
+          "gravity": 0.4,
+          "maxAngleDeg": 14.0,
+          "rootInfluence": 1.0,
+          "tipInfluence": 1.0,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.25,
+          "note": "Leaf joint under Spine2 (back socket). Candidate for a dangling strap / chain on the maul harness once such a part exists."
+        }
+      ]
+    },
+    {
+      "name": "Sobek",
+      "enabled": false,
+      "debug": false,
+      "debugEvery": 120,
+      "chains": [
+        {
+          "name": "tail",
+          "kind": "tail",
+          "enabled": true,
+          "skinned": false,
+          "bones": [
+            "fk_skirt_b",
+            "fk_cape_01",
+            "fk_cape_02",
+            "fk_cape_03",
+            "fk_hair_back_1",
+            "fk_hair_back_2",
+            "fk_hair_back_3"
+          ],
+          "stiffness": 45.0,
+          "damping": 5.0,
+          "gravity": 0.15,
+          "maxAngleDeg": 18.0,
+          "rootInfluence": 0.3,
+          "tipInfluence": 1.0,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.6,
+          "note": "Sobek is NOT bound yet, so this row is data only and the whole row is enabled false. Plan (Sobek prep plan, rig decision 2): 7 chain bones from joints already in the 106 rig, re-parented in the Sobek glb only (names unchanged): fk_skirt_b -> fk_cape_01..03 -> fk_hair_back_1..3, tail fin weighted to fk_hair_back_3. Start values carried over from the earlier tail-spring kit (guess)."
+        },
+        {
+          "name": "dorsal_sails",
+          "kind": "fin",
+          "enabled": true,
+          "skinned": false,
+          "bones": [
+            "fk_socket_back",
+            "fk_skirt_f"
+          ],
+          "stiffness": 90.0,
+          "damping": 9.0,
+          "gravity": 0.0,
+          "maxAngleDeg": 10.0,
+          "rootInfluence": 0.6,
+          "tipInfluence": 0.6,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.4,
+          "note": "Dorsal sails on two leaf joints (Sobek prep plan, rig decision 2). Only meaningful if the Sobek mesh has sails; design is ours and unmeasured."
+        },
+        {
+          "name": "fin_l",
+          "kind": "fin",
+          "enabled": true,
+          "skinned": false,
+          "bones": [
+            "lowerarm_twist_02_l"
+          ],
+          "stiffness": 80.0,
+          "damping": 9.0,
+          "gravity": 0.0,
+          "maxAngleDeg": 14.0,
+          "rootInfluence": 0.5,
+          "tipInfluence": 0.5,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.2,
+          "note": "Forearm fin, left (twist joint, already used by the arm sleeve skin on the human rigs)."
+        },
+        {
+          "name": "fin_r",
+          "kind": "fin",
+          "enabled": true,
+          "skinned": false,
+          "bones": [
+            "lowerarm_twist_02_r"
+          ],
+          "stiffness": 80.0,
+          "damping": 9.0,
+          "gravity": 0.0,
+          "maxAngleDeg": 14.0,
+          "rootInfluence": 0.5,
+          "tipInfluence": 0.5,
+          "tipAxis": {
+            "x": 0,
+            "y": 1,
+            "z": 0
+          },
+          "tipLengthM": 0.2,
+          "note": "Forearm fin, right."
+        }
+      ]
+    }
+  ]
+}

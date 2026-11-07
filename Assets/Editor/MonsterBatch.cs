@@ -41,6 +41,7 @@ public static class MonsterBatch
         AttackClipSetup.Run();   // v109c CLAWMOTION: bakes the claw_* states (and the new rows) into the controllers
         DodgeClipSetup.Run();
         AssetDatabase.SaveAssets();
+        try { FinisherClipSetup.Run(); } catch (System.Exception e) { Debug.LogWarning("[MonsterBatch] FinisherClipSetup (BELLYLETHAL pair clips): " + e.Message); }
         bool fin = V1FinisherClipSetup.RunChecked();
         Debug.Log("[MonsterBatch] V1 finisher clips ok=" + fin);
         AssetDatabase.SaveAssets();

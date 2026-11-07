@@ -62,6 +62,9 @@ public static class CutLod
         return null;
     }
 
+    /// <summary>FINREALTIME v1 H10 (Prewarm92 step cutLod): reads + parses every proxy file of cut_lod.json now, so the first finisher does not read and JsonUtility-parse 0.5 MB mid-scene.</summary>
+    public static void WarmFiles() { var c = C; if (!c.enabled || c.rows == null) return; for (int i = 0; i < c.rows.Length; i++) if (c.rows[i] != null && !string.IsNullOrEmpty(c.rows[i].file)) Load(c.rows[i]); }
+
     public static ProxyFile Load(Row r)
     {
         ProxyFile m; if (files.TryGetValue(r.file, out m)) return m;

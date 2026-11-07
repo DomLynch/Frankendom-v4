@@ -101,6 +101,14 @@
     {
       "id": "s5b_trader", "name": "Trader: open, buy, sell, close; coins change", "kind": "trade", "timeoutS": 150,
       "tapSettleFrames": 6, "maxDownPresses": 14, "ground": true, "closeTries": 3
+    },
+    {
+      "id": "s6_joan_death", "name": "Joan dies: she stands up in the same zone at the respawn spot, no scene reload, no end screen", "kind": "die", "timeoutS": 40,
+      "zone": "sobek_reach", "spot": "arrive_from_pit", "settleS": 3
+    },
+    {
+      "id": "s6b_joan_death_engaged", "name": "Joan dies while Pitborn fights her: she stands up at the arrive spot, Pitborn goes back to his spawn at full hp, no scene reload", "kind": "die", "timeoutS": 40,
+      "spawn": "z1_pitborn", "zone": "pit_yard", "spot": "arrive_start", "followWaitS": 40, "finisherWaitS": 30, "settleS": 3
     }
   ]
 }

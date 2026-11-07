@@ -404,9 +404,43 @@ public sealed class ZoneRouteBot : MonoBehaviour
             case "walk": return WalkStep(s);
             case "skip_past": return SkipStep(s);
             case "trade": return TradeStep(s);
+            case "die": return DieStep(s);   // REVIVE v1
         }
         return Unknown(s);
     }
+    // REVIVE v1: force one death of the player (the same Die() the sim calls at 0 hp) and require the in-world respawn: a '[Zones] revive: player is up' line, alive again, at the data spot, no scene reload.
+    IEnumerator DieStep(ZrStep s)
+    {
+        int mark = LogMark(); var me = Me();
+        if (me == null || me.Dead) { Chk("player_alive_before", false, "the player is missing or already dead"); yield break; }
+        DuelFighter foe = null;
+        if (s.spawn.Length > 0)   // wait until that creature is fighting her, so the death also proves the creature reset
+        {
+            float tw = Time.realtimeSinceStartup;
+            while (Time.realtimeSinceStartup - tw < s.followWaitS) { foe = FindEnemy(s.spawn); if (foe != null && Engaged(foe, me)) break; foe = null; me = Me(); if (me == null || me.Dead) break; yield return null; }
+            Chk("foe_engaged", foe != null, foe != null ? s.spawn + " is fighting the player" : s.spawn + " never engaged within " + F2(s.followWaitS) + " s");
+            if (foe == null) yield break;
+        }
+        float t0 = Time.realtimeSinceStartup; Ev("forcing the player's death at " + me.transform.position.ToString("F1"));
+        me.Die();
+        while (Time.realtimeSinceStartup - t0 < s.timeoutS && !LogHas("[Zones] revive: player is up", mark) && !LogHas("falling back to the scene reload", mark)) yield return null;
+        bool up = LogHas("[Zones] revive: player is up", mark);
+        Chk("revive_logged", up, up ? LogFirst("[Zones] revive: player is up", mark) : "no '[Zones] revive: player is up' line within " + F2(s.timeoutS) + " s" + (LogHas("falling back to the scene reload", mark) ? ": " + LogFirst("falling back to the scene reload", mark) : ""));
+        yield return null; var me2 = Me();
+        Chk("player_alive_again", me2 != null && !me2.Dead && me2.health > 0f, me2 != null ? "state " + me2.state + ", hp " + F2(me2.health) + "/" + F2(me2.maxHealth) : "no player");
+        Chk("no_scene_reload", !LogHas("[Zones] on:", mark), LogHas("[Zones] on:", mark) ? "scene was rebound: " + LogFirst("[Zones] on:", mark) : "no '[Zones] on:' (no rebind) after the death");
+        Vector3 w;
+        if (me2 != null && s.zone.Length > 0 && SpotWorld(s.zone, s.spot, out w)) Chk("at_respawn_spot", Flat(me2.transform.position, w) <= C.nav.arriveM + 1f, "player " + me2.transform.position.ToString("F1") + " vs " + s.zone + "/" + s.spot + " " + w.ToString("F1"));
+        if (foe != null)
+        {
+            float tf = Time.realtimeSinceStartup; while (Time.realtimeSinceStartup - tf < s.finisherWaitS && !LogHas("[Zones] reset:", mark)) yield return null;
+            Chk("foe_reset_logged", LogHas("[Zones] reset:", mark), LogHas("[Zones] reset:", mark) ? LogFirst("[Zones] reset:", mark) : "no '[Zones] reset:' line within " + F2(s.finisherWaitS) + " s of the revive (hp.respawn.foeResetDelayS)");
+        }
+        Chk("end_screen_absent", GameLoop.Outcome == GameLoop.Result.None && GameLoop.ScreenAlpha <= 0.001f, "Outcome " + GameLoop.Outcome + ", ScreenAlpha " + F2(GameLoop.ScreenAlpha));
+        float tr = Time.realtimeSinceStartup; while (Time.realtimeSinceStartup - tr < s.settleS) yield return null;
+        var me3 = Me(); Chk("still_alive_after_settle", me3 != null && !me3.Dead, me3 != null ? "state " + me3.state : "no player");
+    }
+
     IEnumerator Unknown(ZrStep s) { Chk("known_kind", false, "step kind '" + s.kind + "' does not exist"); yield break; }
 
     // ------------------------------------------------------------------ ready + input self test

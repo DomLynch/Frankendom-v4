@@ -1,5 +1,5 @@
 {
- "_about": "SHIELD v1 (ShieldMount.cs): where the offHand shield sits on Joan's left hand. Same maths as weapon_grip.json: socketOffset = metres in the HAND-bone frame, socketEuler = degrees on the socket (origin = the grip bar, +Z = the shield face, +Y = up). Rows are matched by character (Roster name / id / *) and item; a row with states applies in those Animator states (blended over blendSeconds), the row without states is the default. visible 0 = stow: the shield shrinks into the fist and the fingers open (used where the left hand is needed on the sword or the clip drives the arm through the shield: dodge_corkscrew, dodge_diveroll, get_up, atk_riposte, atk_thrust, hit_heavy, every finisher). hideDuringFinishers also hides it while a finisher scene runs (their clips are not Animator states). hideWithTwoHanded: a two-handed mainHand weapon (TwoHandIK) hides it. scale = world scale of the glb (authored in metres, 0.60 m round). curl closes the left fingers on the grip bar (GripPose axes, absolute) while it shows. Rows fitted and swept in Blender on Joan_combat.glb + her clip glbs with the game's socket maths (_agents/laneSHIELD/work/shield_fit.py). POSE v1 (laneSHIELDPOSE): guard / parry rows re-fitted (shield held forward on the shield side at chest height, rim below the eyes), per-state rows for guard_up, guard_hit, parry; tuck_* rows keep the shield visible (no shrink) in states that no longer need the stow.",
+ "_about": "SHIELD v1 (ShieldMount.cs): where the offHand shield sits on Joan's left hand. Same maths as weapon_grip.json: socketOffset = metres in the HAND-bone frame, socketEuler = degrees on the socket (origin = the grip bar, +Z = the shield face, +Y = up). Rows are matched by character (Roster name / id / *) and item; a row with states applies in those Animator states (blended over blendSeconds), the row without states is the default. visible 0 = stow: the shield shrinks into the fist and the fingers open (used where the left hand is needed on the sword or the clip drives the arm through the shield: dodge_corkscrew, dodge_diveroll, get_up, atk_riposte, atk_thrust, hit_heavy, every finisher). hideDuringFinishers also hides it while a finisher scene runs (their clips are not Animator states). hideWithTwoHanded: a two-handed mainHand weapon (TwoHandIK) hides it. scale = world scale of the glb (authored in metres, 0.60 m round). curl closes the left fingers on the grip bar (GripPose axes, absolute) while it shows. Rows fitted and swept in Blender on Joan_combat.glb + her clip glbs with the game's socket maths (_agents/laneSHIELD/work/shield_fit.py). POSE v1 (laneSHIELDPOSE): guard / parry rows re-fitted (shield held forward on the shield side at chest height, rim below the eyes), per-state rows for guard_up, guard_hit, parry; tuck_* rows keep the shield visible (no shrink) in states that no longer need the stow. SHIELDGUARD v1-v3 (ShieldMount.ArmIK): rows with arm.weight > 0 give Joan a real sword-and-board hold while their states play: the left arm is solved (two-bone IK, TwoBoneIK) so the shield is carried at arm.shieldPos (metres from the chest bone, in the fighter's axes: x right, y up, z toward the foe) with arm.shieldEuler (degrees), face to the foe, rim under the eyes; socketOffset / socketEuler are the grip (fist on the bar, bar rolled to the guard); arm.pole = which way the elbow points; forearmTwist = share of the wrist roll the forearm takes; weight 0 = the animated arm untouched (every other row). v3: one row per guard pose (guard_up raises the shield above the head and tips the face up, guard_left / guard_right turn it about 30 deg to the threat side, parry punches the shield arm.punchM metres toward the foe in punchOutS and back in punchBackS from the moment the state starts). Fitted offline in Blender / numpy on Joan's clips (_agents/laneSHIELDGUARD/work/search3.py).",
  "enabled": true,
  "debugLog": false,
  "hideWithTwoHanded": true,
@@ -40,7 +40,34 @@
     0,
     1,
     0
-   ]
+   ],
+   "arm": {
+    "weight": 0.0,
+    "shieldPos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shieldEuler": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "pole": [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    "blendSeconds": 0.08,
+    "reachFadeM": 0.15,
+    "forearmTwist": 0.5,
+    "punchM": 0.0,
+    "punchOutS": 0.1,
+    "punchBackS": 0.25,
+    "chest": "mixamorig:Spine2",
+    "arm": "mixamorig:LeftArm",
+    "forearm": "mixamorig:LeftForeArm"
+   }
   },
   {
    "id": "guard",
@@ -49,22 +76,20 @@
    "hand": "LeftHand",
    "socket": "ShieldSocket_L",
    "socketOffset": [
-    0.2951,
-    -0.1122,
-    -0.1023
+    -0.041,
+    0.008,
+    -0.024
    ],
    "socketEuler": [
-    -163.5145,
-    -160.2797,
-    -110.8669
+    -13.1722,
+    -147.427,
+    -21.6582
    ],
    "scale": 1.0,
    "blendSeconds": 0.08,
    "visible": 1.0,
    "states": [
-    "guard_idle",
-    "guard_left",
-    "guard_right"
+    "guard_idle"
    ],
    "curl": true,
    "fingerDeg": 72,
@@ -80,7 +105,34 @@
     0,
     1,
     0
-   ]
+   ],
+   "arm": {
+    "weight": 1.0,
+    "shieldPos": [
+     -0.2,
+     -0.019,
+     0.195
+    ],
+    "shieldEuler": [
+     7.507,
+     15.0,
+     0.0
+    ],
+    "pole": [
+     0.3,
+     -1.0,
+     -0.3
+    ],
+    "blendSeconds": 0.08,
+    "reachFadeM": 0.15,
+    "forearmTwist": 0.5,
+    "punchM": 0.0,
+    "punchOutS": 0.1,
+    "punchBackS": 0.25,
+    "chest": "mixamorig:Spine2",
+    "arm": "mixamorig:LeftArm",
+    "forearm": "mixamorig:LeftForeArm"
+   }
   },
   {
    "id": "guard_up",
@@ -89,14 +141,14 @@
    "hand": "LeftHand",
    "socket": "ShieldSocket_L",
    "socketOffset": [
-    0.1964,
-    -0.0697,
-    -0.3426
+    -0.041,
+    0.008,
+    -0.024
    ],
    "socketEuler": [
-    -171.9398,
-    -125.6355,
-    -100.9161
+    -13.1722,
+    -147.427,
+    -21.6582
    ],
    "scale": 1.0,
    "blendSeconds": 0.08,
@@ -118,7 +170,164 @@
     0,
     1,
     0
-   ]
+   ],
+   "arm": {
+    "weight": 1.0,
+    "shieldPos": [
+     -0.2964,
+     0.1434,
+     0.0651
+    ],
+    "shieldEuler": [
+     -19.88,
+     -8.0,
+     0.0
+    ],
+    "pole": [
+     0.3,
+     -1.0,
+     -0.3
+    ],
+    "blendSeconds": 0.08,
+    "reachFadeM": 0.15,
+    "forearmTwist": 0.5,
+    "punchM": 0.0,
+    "punchOutS": 0.1,
+    "punchBackS": 0.25,
+    "chest": "mixamorig:Spine2",
+    "arm": "mixamorig:LeftArm",
+    "forearm": "mixamorig:LeftForeArm"
+   }
+  },
+  {
+   "id": "guard_left",
+   "name": "Joan",
+   "item": "joan_shield",
+   "hand": "LeftHand",
+   "socket": "ShieldSocket_L",
+   "socketOffset": [
+    -0.041,
+    0.008,
+    -0.024
+   ],
+   "socketEuler": [
+    -13.1722,
+    -147.427,
+    -21.6582
+   ],
+   "scale": 1.0,
+   "blendSeconds": 0.08,
+   "visible": 1.0,
+   "states": [
+    "guard_left"
+   ],
+   "curl": true,
+   "fingerDeg": 72,
+   "thumbDeg": 35,
+   "thumbWeight": 0.7,
+   "falloff": 0.85,
+   "fingerAxis": [
+    0,
+    0,
+    1
+   ],
+   "thumbAxis": [
+    0,
+    1,
+    0
+   ],
+   "arm": {
+    "weight": 1.0,
+    "shieldPos": [
+     -0.3003,
+     -0.0155,
+     -0.0269
+    ],
+    "shieldEuler": [
+     -1.395,
+     -26.0,
+     0.0
+    ],
+    "pole": [
+     0.3,
+     -1.0,
+     -0.3
+    ],
+    "blendSeconds": 0.08,
+    "reachFadeM": 0.15,
+    "forearmTwist": 0.5,
+    "punchM": 0.0,
+    "punchOutS": 0.1,
+    "punchBackS": 0.25,
+    "chest": "mixamorig:Spine2",
+    "arm": "mixamorig:LeftArm",
+    "forearm": "mixamorig:LeftForeArm"
+   }
+  },
+  {
+   "id": "guard_right",
+   "name": "Joan",
+   "item": "joan_shield",
+   "hand": "LeftHand",
+   "socket": "ShieldSocket_L",
+   "socketOffset": [
+    -0.041,
+    0.008,
+    -0.024
+   ],
+   "socketEuler": [
+    -13.1722,
+    -147.427,
+    -21.6582
+   ],
+   "scale": 1.0,
+   "blendSeconds": 0.08,
+   "visible": 1.0,
+   "states": [
+    "guard_right"
+   ],
+   "curl": true,
+   "fingerDeg": 72,
+   "thumbDeg": 35,
+   "thumbWeight": 0.7,
+   "falloff": 0.85,
+   "fingerAxis": [
+    0,
+    0,
+    1
+   ],
+   "thumbAxis": [
+    0,
+    1,
+    0
+   ],
+   "arm": {
+    "weight": 1.0,
+    "shieldPos": [
+     -0.2,
+     -0.02,
+     0.2147
+    ],
+    "shieldEuler": [
+     0.0,
+     26.0,
+     0.0
+    ],
+    "pole": [
+     0.3,
+     -1.0,
+     -0.3
+    ],
+    "blendSeconds": 0.08,
+    "reachFadeM": 0.15,
+    "forearmTwist": 0.5,
+    "punchM": 0.0,
+    "punchOutS": 0.1,
+    "punchBackS": 0.25,
+    "chest": "mixamorig:Spine2",
+    "arm": "mixamorig:LeftArm",
+    "forearm": "mixamorig:LeftForeArm"
+   }
   },
   {
    "id": "guard_hit",
@@ -127,17 +336,17 @@
    "hand": "LeftHand",
    "socket": "ShieldSocket_L",
    "socketOffset": [
-    0.1217,
-    -0.1976,
-    -0.1153
+    -0.041,
+    0.008,
+    -0.024
    ],
    "socketEuler": [
-    161.982,
-    -159.5364,
-    135.5148
+    -13.1722,
+    -147.427,
+    -21.6582
    ],
    "scale": 1.0,
-   "blendSeconds": 0.08,
+   "blendSeconds": 0.06,
    "visible": 1.0,
    "states": [
     "guard_hit"
@@ -156,7 +365,34 @@
     0,
     1,
     0
-   ]
+   ],
+   "arm": {
+    "weight": 1.0,
+    "shieldPos": [
+     -0.232,
+     -0.046,
+     0.315
+    ],
+    "shieldEuler": [
+     15.0,
+     -15.0,
+     0.0
+    ],
+    "pole": [
+     0.3,
+     -1.0,
+     -0.3
+    ],
+    "blendSeconds": 0.08,
+    "reachFadeM": 0.15,
+    "forearmTwist": 0.5,
+    "punchM": 0.0,
+    "punchOutS": 0.1,
+    "punchBackS": 0.25,
+    "chest": "mixamorig:Spine2",
+    "arm": "mixamorig:LeftArm",
+    "forearm": "mixamorig:LeftForeArm"
+   }
   },
   {
    "id": "parry",
@@ -165,14 +401,14 @@
    "hand": "LeftHand",
    "socket": "ShieldSocket_L",
    "socketOffset": [
-    -0.1097,
-    -0.055,
-    0.0191
+    -0.041,
+    0.008,
+    -0.024
    ],
    "socketEuler": [
-    -66.2032,
-    -63.7571,
-    89.7938
+    -13.1722,
+    -147.427,
+    -21.6582
    ],
    "scale": 1.0,
    "blendSeconds": 0.06,
@@ -194,7 +430,34 @@
     0,
     1,
     0
-   ]
+   ],
+   "arm": {
+    "weight": 1.0,
+    "shieldPos": [
+     -0.2366,
+     -0.0183,
+     0.1389
+    ],
+    "shieldEuler": [
+     11.076,
+     -9.669,
+     0.0
+    ],
+    "pole": [
+     0.3,
+     -1.0,
+     -0.3
+    ],
+    "blendSeconds": 0.04,
+    "reachFadeM": 0.15,
+    "forearmTwist": 0.5,
+    "punchM": 0.3,
+    "punchOutS": 0.1,
+    "punchBackS": 0.25,
+    "chest": "mixamorig:Spine2",
+    "arm": "mixamorig:LeftArm",
+    "forearm": "mixamorig:LeftForeArm"
+   }
   },
   {
    "id": "tuck_atk_thrust",
@@ -232,7 +495,34 @@
     0,
     1,
     0
-   ]
+   ],
+   "arm": {
+    "weight": 0.0,
+    "shieldPos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shieldEuler": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "pole": [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    "blendSeconds": 0.08,
+    "reachFadeM": 0.15,
+    "forearmTwist": 0.5,
+    "punchM": 0.0,
+    "punchOutS": 0.1,
+    "punchBackS": 0.25,
+    "chest": "mixamorig:Spine2",
+    "arm": "mixamorig:LeftArm",
+    "forearm": "mixamorig:LeftForeArm"
+   }
   },
   {
    "id": "tuck_atk_riposte",
@@ -270,7 +560,34 @@
     0,
     1,
     0
-   ]
+   ],
+   "arm": {
+    "weight": 0.0,
+    "shieldPos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shieldEuler": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "pole": [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    "blendSeconds": 0.08,
+    "reachFadeM": 0.15,
+    "forearmTwist": 0.5,
+    "punchM": 0.0,
+    "punchOutS": 0.1,
+    "punchBackS": 0.25,
+    "chest": "mixamorig:Spine2",
+    "arm": "mixamorig:LeftArm",
+    "forearm": "mixamorig:LeftForeArm"
+   }
   },
   {
    "id": "tuck_get_up",
@@ -308,7 +625,34 @@
     0,
     1,
     0
-   ]
+   ],
+   "arm": {
+    "weight": 0.0,
+    "shieldPos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shieldEuler": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "pole": [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    "blendSeconds": 0.08,
+    "reachFadeM": 0.15,
+    "forearmTwist": 0.5,
+    "punchM": 0.0,
+    "punchOutS": 0.1,
+    "punchBackS": 0.25,
+    "chest": "mixamorig:Spine2",
+    "arm": "mixamorig:LeftArm",
+    "forearm": "mixamorig:LeftForeArm"
+   }
   },
   {
    "id": "stow",
@@ -357,7 +701,34 @@
     0,
     1,
     0
-   ]
+   ],
+   "arm": {
+    "weight": 0.0,
+    "shieldPos": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shieldEuler": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "pole": [
+     0.0,
+     -1.0,
+     0.0
+    ],
+    "blendSeconds": 0.08,
+    "reachFadeM": 0.15,
+    "forearmTwist": 0.5,
+    "punchM": 0.0,
+    "punchOutS": 0.1,
+    "punchBackS": 0.25,
+    "chest": "mixamorig:Spine2",
+    "arm": "mixamorig:LeftArm",
+    "forearm": "mixamorig:LeftForeArm"
+   }
   }
  ]
 }

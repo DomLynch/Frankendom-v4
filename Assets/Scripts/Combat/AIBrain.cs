@@ -104,7 +104,7 @@ public class AIBrain : MonoBehaviour
         if (df == null) return;
         if (!inited) Init();
         if (ChaseTable.Enabled && ChaseAgent.Owns(this)) return;   // CHASE v1: the chase agent drives this body (chase / give up / walk home): no decision, no swing
-        if (Duel.Frozen) { df.moveDir = Vector3.zero; df.guardHeld = false; df.run = false; df.heavyHeld = false; return; }   // FN1: nobody decides while a finisher scene runs
+        if (Duel.FrozenFor(df) /* FINREALTIME v1 H3 */) { df.moveDir = Vector3.zero; df.guardHeld = false; df.run = false; df.heavyHeld = false; return; }   // FN1: nobody decides while a finisher scene runs
         if (STSteer.Active) STSteer.PreBrain(this);   // steer layer hook (inert without -steer)
         var o = df.opponent;
         if (df.Dead || o == null || o.Dead) { df.moveDir = Vector3.zero; df.guardHeld = false; df.run = false; df.heavyHeld = false; return; }

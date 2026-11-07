@@ -114,7 +114,7 @@
       "kickMax": 1,
       "kickWindow": 1800,
       "kickGap": 300,
-      "maxShare": 0.38,
+      "maxShare": 0.3,
       "lightMaxShare": 0.32,
       "minSample": 8,
       "alts": [
@@ -150,9 +150,9 @@
       ],
       "enrage": {
         "enabled": true,
-        "hpFrac": 0.5,
+        "hpFrac": 0.6,
         "speedMul": 1.2,
-        "waitMul": 0.8,
+        "waitMul": 0.7,
         "reactionMul": 0.9,
         "comboAdd": 0.15,
         "punishAdd": 0.1,
@@ -166,7 +166,7 @@
           "dash": 0.1
         }
       },
-      "note": "SOBEKMOVES (guess): keep-distance poker. thrust-first combos (poke, poke, sweep/lunge), whiff punish dashes in from 2.4 m, no more than 38 percent thrust (balance_auto maxMoveShare 0.4), kick at most once per 30 s, enrage at 40 percent HP: faster tempo, no speed change. Proof: -balanceauto move counts per fight (>= 4 distinct moves, no move > 40 percent). SOBEKAI v1: Sobek claws AI: see _agents/laneSOBEKAI/MANIFEST.md (combo / punish / dash / share / enrage keys)."
+      "note": "SOBEKMOVES (guess): keep-distance poker. thrust-first combos (poke, poke, sweep/lunge), whiff punish dashes in from 2.4 m, no more than 38 percent thrust (balance_auto maxMoveShare 0.4), kick at most once per 30 s, enrage at 40 percent HP: faster tempo, no speed change. Proof: -balanceauto move counts per fight (>= 4 distinct moves, no move > 40 percent). SOBEKAI v1: Sobek claws AI: see _agents/laneSOBEKAI/MANIFEST.md (combo / punish / dash / share / enrage keys). SOBEKBAL v1: Joan won 5/5 on v109f; see _agents/laneSOBEKBAL/MANIFEST.md (maxShare .38 -> .30, enrage hpFrac .5 -> .6, waitMul .8 -> .7)."
     },
     {
       "id": "enemy_d1_3",

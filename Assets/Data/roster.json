@@ -21,7 +21,7 @@
       "headRenderer": "Joan_Head",
       "armoured": false,
       "notes": "flesh: bleeds, no sparks. Mixamo ch13 chef 106-joint body + Joan face (joan_chef_outfit_v1.glb)",
-      "loadout": ["joan_shield"]
+      "loadout": ["joan_shield", "cuirass_joan"]
     },
     {
       "id": "Pitborn",

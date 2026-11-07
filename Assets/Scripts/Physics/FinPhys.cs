@@ -146,7 +146,7 @@ public static class FinPhys
         if (u == null) return "off";
         var a = Arg("-finphys:" + u.unit + "=");
         if (a != null) { int e = a.IndexOf('='); if (e > 0 && e + 1 < a.Length) return a.Substring(e + 1); }
-        return string.IsNullOrEmpty(u.mode) ? "physics" : u.mode;
+        return PhysWeapon.ModeOverride(u.unit, string.IsNullOrEmpty(u.mode) ? "physics" : u.mode); /*PHYSWEAPON v106*/
     }
     static bool BodyRagdoll(FinRow r) { return r != null && r.ragdoll && Cfg.bodyRagdoll && Arg("-finphys:body=clip") == null; }
 
@@ -157,7 +157,7 @@ public static class FinPhys
         if (!SceneActive) return;
         Debug.Log("[finphys] scene '" + entryId + "' " + (sceneRow == null ? "(no row: V1FIN as is, hit reaction off)" : "row ragdoll=" + BodyRagdoll(sceneRow) + " at +" + sceneRow.ragdollAtS.ToString("0.00") + " s zone " + sceneRow.zone + " push " + sceneRow.push.ToString("0.00")));
     }
-    public static void EndScene() { SceneActive = false; sceneRow = null; }
+    public static void EndScene() { SceneActive = false; sceneRow = null; PhysWeapon.OnFinisherEnd(); /*PHYSWEAPON v106*/ }
 
     /// <summary>Seconds (scene clock) when the victim's Die() runs: the earlier of the entry's own time and contact + row.ragdollAtS. The conversion follows Die() through the Killed event (RagdollDeath).</summary>
     public static float DieAt(float contactT, float own)
@@ -172,7 +172,7 @@ public static class FinPhys
         if (!SceneActive || victim == null) return;
         var rig = victim.GetComponent<RagdollRig>(); if (rig == null) return;
         axis.y = 0f; if (axis.sqrMagnitude > 1e-6f) rig.FinDir = axis.normalized;
-        if (sceneRow != null) { rig.FinPushMul = sceneRow.push; rig.FinZone = sceneRow.zone; BodiesCued++; }
+        if (sceneRow != null) { rig.FinPushMul = sceneRow.push; rig.FinZone = sceneRow.zone; BodiesCued++; } PhysWeapon.OnFinisherContact(SceneId, killer, victim, axis); /*PHYSWEAPON v106*/
         Debug.Log("[finphys] contact: blow dir " + rig.FinDir.ToString("0.00") + " zone " + (string.IsNullOrEmpty(rig.FinZone) ? "(move rule)" : rig.FinZone) + " push x" + rig.FinPushMul.ToString("0.00") + " (rig built " + rig.Built + ", converted " + rig.Converted + ")");
     }
 
@@ -255,7 +255,7 @@ public static class FinPhys
             go.layer = PhysMasks.PropLayer;
             ConfigureBody(rb, p, headMass * Mathf.Max(0.05f, c.massShare));
             rb.linearVelocity = v0 + outward * c.apartMps + Vector3.up * c.upMps; rb.angularVelocity = w0;
-            bodies[i] = rb; cols[i] = bc; Spawned.Add(go);
+            bodies[i] = rb; cols[i] = bc; Spawned.Add(go); PhysWeapon.TuneSevered(rb, "crown", outward, i); /*PHYSWEAPON v106*/
         }
         try { Physics.IgnoreCollision(cols[0], cols[1], true); } catch (Exception) { }
         for (int i = 0; i < cols.Length; i++) IgnoreVictim(new[] { cols[i] }, df != null ? df.transform : headBone.root);
@@ -312,7 +312,7 @@ public sealed class PieceBody : MonoBehaviour
         away.y = 0f; if (away.sqrMagnitude < 1e-4f) away = victim != null ? -victim.forward : Vector3.forward; away.Normalize();
         float imp = (u.impulse >= 0f ? u.impulse : p.kill.impulse) * Mathf.Max(0f, push), lift = (u.lift >= 0f ? u.lift : p.kill.lift) * Mathf.Max(0f, push);
         Vector3 dv = (away * imp + Vector3.up * lift) / rb.mass; float dvm = dv.magnitude; if (dvm > p.maxLaunchMps && dvm > 1e-5f) dv *= p.maxLaunchMps / dvm;
-        rb.linearVelocity = v0 + dv; rb.angularVelocity = w0; LaunchSpeed = rb.linearVelocity.magnitude;
+        rb.linearVelocity = v0 + dv; rb.angularVelocity = w0; LaunchSpeed = rb.linearVelocity.magnitude; PhysWeapon.TuneSevered(rb, unit.id, away, 0); /*PHYSWEAPON v106*/
         if (p.ignoreVictimColliders) FinPhys.IgnoreVictim(added.ToArray(), victim);
         restMax = u.restMaxM > 0f ? u.restMaxM : -1f;
         Info = "mass " + rb.mass.ToString("0.0") + " kg, " + caps + " capsules, push " + imp.ToString("0.0") + " N s + lift " + lift.ToString("0.0") + " -> dv " + dv.magnitude.ToString("0.00") + " m/s, v0 " + v0.magnitude.ToString("0.00") + " m/s";

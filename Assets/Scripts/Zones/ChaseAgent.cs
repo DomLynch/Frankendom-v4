@@ -66,7 +66,7 @@ public sealed class ChaseAgent : MonoBehaviour
     {
         if (row == null || df == null || player == null || df.Dead) return;
         int now = Duel.TickCount, n = now - lastTick; if (n < 0) n = 0; lastTick = now;
-        if (Duel.Frozen) { if (Owning) { df.moveDir = Vector3.zero; df.run = false; } return; }
+        if (Duel.FrozenFor(df) /* FINREALTIME v1 H5 */) { if (Owning) { df.moveDir = Vector3.zero; df.run = false; } return; }
         bool free = df.state == FState.Loco || df.state == FState.Guard;
         if (n > 0 && free)
         {

@@ -6,7 +6,7 @@
   "hitstop": {
     "_about": "ms = lerp(minMs, maxMs, clamp01((damage - dmgLo) / (dmgHi - dmgLo))), damage = health the victim lost on this contact (1 when dmgHi <= dmgLo, so minMs..maxMs collapse to maxMs; use minMs = maxMs for a fixed stop). Dracula/Pitborn move damage: light 14, thrust 11, riposte 24, heavy_overhead 18, heavy_counter 20, heavy_riposte 30, critical 40 (x damage mults). PresentationClock keeps the longest request, so hit_stop.json (the old floor) never adds on top. Not requested while a finisher owns the clock; x duringSlowMoMul while CombatSlowMo runs. slow_mo.json delayS (parry 0.10, deathblow 0.12, crit 0.08) makes the dip start after the freeze.",
     "enabled": 1,
-    "maxMs": 140,
+    "maxMs": 80.0,
     "unknownDamageT": 0.5,
     "duringSlowMoMul": 0.5,
     "minRequestMs": 8,

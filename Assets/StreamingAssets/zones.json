@@ -1,6 +1,6 @@
 {
   "_about": "ZONES v1 (lane laneZONES), read by Assets/Scripts/Zones/ZoneData.cs. SHIPS DARK: enabled=false means the game is exactly the old duel (scene reload per fight, opponents.json ladder). enabled=true turns the game into walking zones: monsters stand at spawn spots, a fight starts when you walk into a creature's aggro radius, a kill is stored as a real-world respawn time (UTC ms) in the save, and a dead creature simply reads as alive again once that time has passed (computed when someone looks, no server loop, V1/V3 lazy-respawn pattern). Gates carry you to another zone behind a flash, no camera cut. Units: metres, degrees, seconds. A spot pos is [x, z] (ground height is found by a raycast), [] = where the scene already put the object.",
-  "enabled": false,
+  "enabled": true,
   "version": 1,
   "pollSeconds": 0.5,
   "start": {
@@ -28,7 +28,24 @@
     "hearthRadius": 2.5,
     "hearthRegenPerSecondFrac": 0.08,
     "onDeath": "hearth_full",
-    "deathHoldSeconds": 3.0
+    "deathHoldSeconds": 3.0,
+    "respawn": {
+      "_about": "REVIVE v1 (laneSEAMLESS): Joan's in-world respawn, no scene reload. enabled false = old death (3 s black + GameLoop.Retry). delayS = lying time before she stands up; rule arrive = the zone's arrive spot (rows below), hearth = the zone's hearth service spot; hpFrac = share of max hp; coverS / coverMax = the dark dip before she stands up (alpha max); foeReset spawn = the creatures that were fighting her go back to their spawn at full hp after foeResetDelayS (keep = they stay); fallbackAfterS = if the revive cannot happen (finisher still running, ragdoll cannot be put back) the old reload runs after this.",
+      "enabled": true,
+      "delayS": 4.0,
+      "rule": "arrive",
+      "arrive": [
+        { "zone": "pit_yard", "spot": "arrive_start" },
+        { "zone": "sobek_reach", "spot": "arrive_from_pit" },
+        { "zone": "hub_camp", "spot": "arrive_from_prev" }
+      ],
+      "hpFrac": 1.0,
+      "coverS": 0.5,
+      "coverMax": 1.0,
+      "foeReset": "spawn",
+      "foeResetDelayS": 8.0,
+      "fallbackAfterS": 12.0
+    }
   },
   "engage": {
     "maxEngaged": 2,

@@ -17,7 +17,7 @@ public class PlayerBrain : MonoBehaviour
     }
     void Update()
     {
-        if (df.Dead || Duel.Frozen) { df.moveDir = Vector3.zero; df.guardHeld = false; return; }   // FN1: Frozen = a finisher scene runs
+        if (df.Dead || Duel.FrozenFor(df) /* FINREALTIME v1 H4 */) { df.moveDir = Vector3.zero; df.guardHeld = false; return; }   // FN1: Frozen = a finisher scene runs
         if (TouchControls.Active)
         {
             // a touch screen laptop flips TouchControls.Active on the first touch and it never cleared: keyboard keys then did nothing (no roll, no guard). Real key input on desktop switches it back off.

@@ -1,0 +1,20 @@
+{
+  "note": "laneFPSNEXT v1. Read by Scripts/FpsNext.cs. Master and every switch are false = the game is unchanged. The numbers are the PROPOSED values that apply when a switch is on (nothing here is measured): N1 colour and post buffers RGBA16F -> R11G11B10 (HDRP_Max.asset lines 251 and 367, today 74 = RGBA16F; HDRP's own default is R11G11B10), N3 sun shadow depth 32 -> 16 bit (line 321) and punctual atlas 4096 -> 2048 (line 326); decal rows 0 = leave (today atlas 4096, draw distance 1000, lines 356-358). N2 fog temporal is not in this file: apply_fpsnext.py --on N2 edits quality_tiers.json (ultra2k fogQuality) and runtime_flags.json (fogDenoise). Switch on for one A/B arm with -fpsnext:N1 -fpsnext:N3 (comma list) and rows with -fnset:key=value. apply_fpsnext.py --off --apply restores every file byte for byte.",
+  "enabled": false,
+  "applyAfterFrames": 120,
+  "recheckEveryFrames": 60,
+  "log": true,
+  "disableWhenArgs": ["-woundshot", "-floorshot", "-shadowdiag", "-camproof"],
+  "N1": {
+    "enabled": false,
+    "colorBufferFormat": "R11G11B10",
+    "postBufferFormat": "R11G11B10"
+  },
+  "N3": {
+    "enabled": false,
+    "directionalShadowsDepthBits": 16,
+    "punctualAtlasResolution": 2048,
+    "decalAtlasSize": 0,
+    "decalDrawDistance": 0
+  }
+}

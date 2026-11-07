@@ -26,7 +26,7 @@ public static class AiStance
     {
         if (!Enabled || f == null || f.Dead) return;
         var A = StanceLayer.Get().ai; var o = f.opponent;
-        if (o == null || o.Dead || Duel.Frozen) return;
+        if (o == null || o.Dead || Duel.FrozenFor(f) /* FINREALTIME v1 H6 */) return;
         if (f.IsPlayer && !A.forAutoplayPlayer) return;
         int now = Duel.TickCount;
         St s;

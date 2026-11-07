@@ -163,6 +163,20 @@ public static class FinVis
         catch (Exception e) { Debug.LogWarning("[FinVis] warm: " + e.Message); }
     }
 
+    /// <summary>FINREALTIME v1 H11 (Prewarm92 step finVis): the materials Warm() builds, handed out so Prewarm92 can project them once sub-pixel (the first pool / body / drip decal otherwise builds its HDRP decal pipeline state in the finisher).</summary>
+    public static void CollectPrewarm(List<Material> into)
+    {
+        var c = Cfg(); if (c == null || !c.v2 || into == null) return;
+        try
+        {
+            if (c.pools.enabled) { foreach (var f in c.pools.poolFiles) { var m = FileMat(f, c.pools.smoothness, c.pools.tint, true); if (m != null) into.Add(m); } foreach (var f in c.pools.splashFiles) { var m = FileMat(f, c.pools.smoothness, c.pools.tint, true); if (m != null) into.Add(m); } }
+            if (c.body.enabled) foreach (var f in c.body.files) { var m = FileMat(f, c.body.smoothness, null, true); if (m != null) into.Add(m); }
+            if (c.reveal.enabled) foreach (var f in c.reveal.dripFiles) { var m = FileMat(f, c.body.smoothness, null, true); if (m != null) into.Add(m); }
+            if (c.droplets.enabled) { var dm = DropMat(); if (dm != null) into.Add(dm); }
+        }
+        catch (Exception e) { Debug.LogWarning("[FinVis] collect: " + e.Message); }
+    }
+
     static Mesh DropMesh()
     {
         if (dropMesh != null) return dropMesh;

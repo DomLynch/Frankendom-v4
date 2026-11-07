@@ -53,9 +53,21 @@ public static class ShieldHooks
     public static string CueEvent(DuelFighter d) { var s = Of(d); return s != null ? s.cueEvent : ""; }
 }
 
+// SHIELDGUARD v1: the shield ARM. A row with arm.weight > 0 puts the left arm in a real sword-and-board hold while its states play: the shield (grip = the row's socketOffset / socketEuler)
+// is carried at shieldPos / shieldEuler (metres / degrees, in the FIGHTER's axes x right, y up, z toward the foe, measured from the chest bone), the forearm comes across the body, the elbow bends toward `pole`.
+[Serializable]
+public class ShieldArmCfg
+{
+    public float weight = 0f;                                  // 0 = no arm override (the animated arm is untouched)
+    public float[] shieldPos = { 0f, 0f, 0f }, shieldEuler = { 0f, 0f, 0f }, pole = { 0f, -1f, 0f };
+    public float blendSeconds = 0.1f, reachFadeM = 0.15f, forearmTwist = 0.5f;   // pose ease / the IK fades out when the shield point is further than the arm reaches / share of the wrist roll the forearm takes
+    public float punchM = 0f, punchOutS = 0.1f, punchBackS = 0.25f;   // SHIELDGUARD v3: a punch-out of the shield toward the foe (metres along the fighter's z) when the row's state starts: out in punchOutS, back in punchBackS (0 = none)
+    public string chest = "mixamorig:Spine2", arm = "mixamorig:LeftArm", forearm = "mixamorig:LeftForeArm";
+}
 [Serializable]
 public class ShieldMountRow
 {
+    public ShieldArmCfg arm = new ShieldArmCfg();   // SHIELDGUARD v1
     public string name = "", item = "";                  // character (Roster name / id / "*") and the gear item id ("" = any shield)
     public string hand = "LeftHand", socket = "ShieldSocket_L";
     public float[] socketOffset = { 0f, 0f, 0f }, socketEuler = { 0f, 0f, 0f };   // metres in the hand frame / degrees on the socket
@@ -67,6 +79,7 @@ public class ShieldMountRow
 }
 [Serializable] public class ShieldMountFile { public bool enabled = true, debugLog = false; public bool hideWithTwoHanded = true, hideDuringFinishers = true; public float curlSeconds = 0.1f; /* DATALAYER b8 */ public ShieldMountRow[] rows = new ShieldMountRow[0]; }
 
+[DefaultExecutionOrder(65)]   // SHIELDGUARD v1: after TwoHandIK (60) / HeadClamp (50) / GuardTorsoTurn (40): the chest and hand are final when the arm is solved
 public class ShieldMount : MonoBehaviour, IGearShieldSource
 {
     static ShieldMountFile data;
@@ -112,6 +125,10 @@ public class ShieldMount : MonoBehaviour, IGearShieldSource
     Transform[][] lchains; Quaternion[][] lrest;
     Vector3 curOff; Quaternion curRot = Quaternion.identity; float curVis, curScale = 1f; bool curInit; float curl;
     List<Renderer> rends = new List<Renderer>();
+    // SHIELDGUARD v1: arm override state
+    Transform armChest, armArm, armFore; DuelFighter armFighter; bool armBonesTried; float armW, armWEff; Vector3 armPos, armPole; Quaternion armRot = Quaternion.identity;
+    ShieldMountRow armLastRow; float armRowT;   // SHIELDGUARD v3: seconds since the picked row changed (drives the punch)
+    public float ArmWeight { get { return armWEff; } }
     public GearTable.ShieldDef Shield { get { return def; } }
 
     void OnEnable() { if (wantLoad && inst == null) StartLoad(); }
@@ -131,7 +148,7 @@ public class ShieldMount : MonoBehaviour, IGearShieldSource
         serial++; wantLoad = false;
         if (inst != null) { inst.gameObject.SetActive(false); Destroy(inst.gameObject); }
         if (socket != null) Destroy(socket.gameObject);
-        inst = null; socket = null; hand = null; item = null; def = null; rows.Clear(); row = null; rends.Clear(); curInit = false; lchains = null;
+        inst = null; socket = null; hand = null; item = null; def = null; rows.Clear(); row = null; rends.Clear(); curInit = false; lchains = null; armChest = armArm = armFore = null; armBonesTried = false; armW = armWEff = 0f; armLastRow = null; /* SHIELDGUARD v1 */
     }
 
     static Transform FindNamed(Transform top, string n)
@@ -204,6 +221,7 @@ public class ShieldMount : MonoBehaviour, IGearShieldSource
         if (!curInit) { curInit = true; curOff = tOff; curRot = tRot; curVis = tVis; curScale = tr.scale; }
         float k = 1f - Mathf.Exp(-Time.deltaTime / Mathf.Max(0.005f, tr.blendSeconds));
         curOff = Vector3.Lerp(curOff, tOff, k); curRot = Quaternion.Slerp(curRot, tRot, k); curVis = Mathf.Lerp(curVis, tVis, k); curScale = Mathf.Lerp(curScale, tr.scale, k);
+        ArmIK(tr, tVis);   // SHIELDGUARD v1: the shield arm (before the socket reads the hand)
         float hs = Mathf.Max(0.0001f, hand.lossyScale.x);
         socket.localPosition = curOff / hs; socket.localRotation = curRot;
         float s = Mathf.Max(0.0001f, curScale * Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(curVis)) / hs);   // hide / show = the shield shrinks into the fist over blendSeconds (no pop)
@@ -218,6 +236,45 @@ public class ShieldMount : MonoBehaviour, IGearShieldSource
         float want = show && tr.curl ? Mathf.Clamp01(curVis) : 0f;
         curl = Mathf.MoveTowards(curl, want, Time.deltaTime / Mathf.Max(0.0001f, Load().curlSeconds)); /* DATALAYER b8 */
         if (curl > 0f && lchains != null) Curl(tr, curl);
+    }
+    // SHIELDGUARD v1: left-arm two-bone solve (TwoBoneIK, the same pure maths as TwoHandIK) that carries the shield at the row's arm pose.
+    // hand rotation Hr = shield rotation * inverse(grip rotation), wrist target = shield point - Hr * grip offset, so the shield lands exactly on armPos / armEuler.
+    void ArmIK(ShieldMountRow tr, float tVis)
+    {
+        var C = tr.arm; if (C == null) C = new ShieldArmCfg();
+        if (!armBonesTried) { armBonesTried = true; Transform sk = gs != null ? gs.Skeleton : transform; armChest = FindNamed(sk, C.chest); armArm = FindNamed(sk, C.arm); armFore = FindNamed(sk, C.forearm); armFighter = GetComponentInParent<DuelFighter>(); }
+        if (armChest == null || armArm == null || armFore == null) { armWEff = 0f; return; }
+        float tgt = C.weight > 0f && !Flag("-shield:armoff") ? C.weight * Mathf.Clamp01(tVis) : 0f;   // hc:ok QA command-line flag name
+        if (armFighter != null && armFighter.Dead) tgt = 0f;
+        Vector3 tPos = V(C.shieldPos), tPole = V(C.pole); Quaternion tRot = Quaternion.Euler(V(C.shieldEuler));
+        if (tr != armLastRow) { armLastRow = tr; armRowT = 0f; } else armRowT += Time.deltaTime;   // SHIELDGUARD v3: the punch clock restarts whenever the state's row changes
+        if (C.punchM > 0f)
+        {
+            float ph = armRowT < C.punchOutS ? armRowT / Mathf.Max(0.005f, C.punchOutS) : 1f - (armRowT - C.punchOutS) / Mathf.Max(0.005f, C.punchBackS);   // hc:ok epsilon: floor on the phase time
+            tPos += Vector3.forward * (C.punchM * Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(ph)));
+        }
+        if (armW <= 0.001f && tgt > 0f) { armPos = tPos; armRot = tRot; armPole = tPole; }   // coming from no override: start on the target (no sweep through the body)   // hc:ok epsilon: arm weight is zero
+        else if (tgt > 0f) { float ka = 1f - Mathf.Exp(-Time.deltaTime / Mathf.Max(0.005f, C.blendSeconds)); armPos = Vector3.Lerp(armPos, tPos, ka); armRot = Quaternion.Slerp(armRot, tRot, ka); armPole = Vector3.Lerp(armPole, tPole, ka); }   // hc:ok epsilon: floor on the blend time
+        armW = Mathf.MoveTowards(armW, tgt, Time.deltaTime / Mathf.Max(0.005f, C.blendSeconds));   // hc:ok epsilon: floor on the blend time
+        armWEff = 0f;
+        if (armW <= 0.001f) return;   // hc:ok epsilon: arm weight is zero
+        Quaternion fr = (armFighter != null ? armFighter.transform : transform).rotation;   // the fighter's axes (facing the foe)
+        Vector3 Sp = armChest.position + fr * armPos; Quaternion Sr = fr * armRot;
+        Quaternion Hr = Sr * Quaternion.Inverse(curRot); Vector3 Hp = Sp - Hr * curOff;      // grip rotation / offset = the smoothed socket row (hand frame, metres)
+        Vector3 R = armArm.position, M = armFore.position, E = hand.position, pole = fr * armPole;
+        Vector3 nM, nE; float gap;
+        if (!TwoBoneIK.Solve(R, M, E, Hp, pole, out nM, out nE, out gap)) return;
+        armWEff = armW * (1f - Mathf.Clamp01(C.reachFadeM > 1e-4f ? gap / C.reachFadeM : (gap > 0f ? 1f : 0f)));   // hc:ok epsilon: division guard
+        if (armWEff <= 0.001f) return;   // hc:ok epsilon: effective weight is zero
+        Quaternion a0 = armArm.localRotation, f0 = armFore.localRotation, h0 = hand.localRotation;
+        armArm.rotation = Quaternion.FromToRotation(M - R, nM - R) * armArm.rotation;                                    // elbow onto nM
+        armFore.rotation = Quaternion.FromToRotation(hand.position - armFore.position, nE - armFore.position) * armFore.rotation;   // wrist onto nE
+        Vector3 ax = (nE - armFore.position).normalized; Quaternion q = Hr * Quaternion.Inverse(armFore.rotation); if (q.w < 0f) { q.x = -q.x; q.y = -q.y; q.z = -q.z; q.w = -q.w; }
+        float twist = 2f * Mathf.Atan2(Vector3.Dot(new Vector3(q.x, q.y, q.z), ax), q.w) * Mathf.Rad2Deg;                // the roll of the hand about the forearm: the forearm takes its share   // hc:ok quaternion angle = 2 atan2, not a tunable
+        armFore.rotation = Quaternion.AngleAxis(twist * C.forearmTwist, ax) * armFore.rotation;
+        hand.rotation = Hr;
+        armArm.localRotation = Quaternion.Slerp(a0, armArm.localRotation, armWEff); armFore.localRotation = Quaternion.Slerp(f0, armFore.localRotation, armWEff); hand.localRotation = Quaternion.Slerp(h0, hand.localRotation, armWEff);
+        if ((Flag("-shield:log") || Load().debugLog) && diagN < 40 && diagT < Time.unscaledTime) Debug.Log("[Shield] arm row " + tr.id + " w " + armWEff.ToString("F2") + " reachGap " + (gap * 100f).ToString("F1") + "cm twist " + twist.ToString("F0"));   // hc:ok debug log, cm conversion
     }
     void Curl(ShieldMountRow r, float w)
     {

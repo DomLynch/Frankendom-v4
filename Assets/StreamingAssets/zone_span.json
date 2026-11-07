@@ -59,7 +59,8 @@
         "zFromLocal": -6.0,
         "zToLocal": 44.0,
         "blendM": 6.0,
-        "yBias": 0.0
+        "yBias": 0.0,
+        "uvScale": 5.5
       },
       "rings": [
         {
@@ -136,7 +137,8 @@
         "zFromLocal": -6.0,
         "zToLocal": 44.0,
         "blendM": 6.0,
-        "yBias": 0.0
+        "yBias": 0.0,
+        "uvScale": 5.5
       },
       "rings": [
         {
@@ -180,6 +182,7 @@
   },
   "build": {
     "terrainName": "WorldTerrain",
+    "stampAssetDir": "Assets/Env/World/Terrain/Stamped",
     "cloneNames": [
       "GroundFog0",
       "GroundFog1",

@@ -114,7 +114,7 @@ public sealed class ZoneRuntime : MonoBehaviour
     void Update()
     {
         if (!on || player == null) return;
-        float dt = Time.unscaledDeltaTime; Hud();
+        float dt = Time.unscaledDeltaTime; Hud(); FoeResetStep();   // REVIVE v1
         switch (phase)
         {
             case Phase.CoverIn: phaseT += dt; cover = Mathf.Clamp01(phaseT / Mathf.Max(0.01f, T.crossing.cover.inSeconds)); if (cover >= 1f) { phase = Phase.Hold; holdT = 0f; coverColor = ColorOf(T.crossing.cover.color); } break;
@@ -389,14 +389,82 @@ public sealed class ZoneRuntime : MonoBehaviour
     }
 
     // ------------------------------------------------------------------ player down: wake at the hearth (existing scene reload, then Rebind places us)
-    void BeginDown() { if (phase == Phase.Down) return; phase = Phase.Down; phaseT = 0f; downHandled = false; coverColor = Color.black; }
+    void BeginDown() { if (phase == Phase.Down) return; phase = Phase.Down; phaseT = 0f; downHandled = false; coverColor = Color.black; RespawnBegin(); /* REVIVE v1 */ }
     void DownStep(float dt)
     {
+        if (RespawnStep(dt)) return;   // REVIVE v1: in-world respawn (no reload); false = off or gave up, the old path below runs
         phaseT += dt; float hold = Mathf.Max(0.5f, T.hp.deathHoldSeconds); cover = Mathf.Clamp01((phaseT - hold * 0.4f) / (hold * 0.6f));
         if (phaseT < hold || downHandled) return; downHandled = true;
         var hz = ZoneData.HearthZone(); var hs = hz != null ? ZoneData.Service(hz, "hearth") : null;
         if (hz != null) ZoneSave.SetPlayer(hz.id, hs != null ? hs.spot : T.start.spot, T.hp.onDeath == "hearth_full" ? 1f : Mathf.Max(0.1f, player.health / Mathf.Max(1f, player.maxHealth)));
         ZoneSave.Flush(true); GameLoop.Retry();   // loot is already saved by LootSave; every monster timer stays in the zone file
+    }
+
+    // ------------------------------------------------------------------ REVIVE v1 (laneSEAMLESS): Joan's in-world respawn (zones.json hp.respawn). No fade, no reload, no card: a dark dip, then she stands up.
+    bool reviveAsked, reviveGaveUp; float reviveAskedAt, foeResetAt = -1f; string reviveWhere = ""; readonly List<string> foeKeys = new List<string>();
+    ZRespawn RespCfg { get { return T != null && T.hp != null ? T.hp.respawn : null; } }
+    void RespawnBegin()
+    {
+        reviveAsked = false; reviveGaveUp = false; foeResetAt = -1f; foeKeys.Clear();
+        var R = RespCfg; if (R == null || !R.enabled || player == null) return;
+        foreach (var kv in live)   // whoever was fighting her stops (no new swing at the corpse, no re-engage the moment she stands up); the home ones go back after foeResetDelayS
+        {
+            var l = kv.Value; if (l.df == null || l.killed || !l.engaged || l.df.Dead) continue;
+            foeKeys.Add(kv.Key); l.engaged = false; if (l.brain != null) l.brain.enabled = false; l.df.opponent = null; l.df.moveDir = Vector3.zero; if (l.chase != null) l.chase.GiveUp();
+        }
+        player.opponent = null;
+        if (R.foeReset == "spawn" && foeKeys.Count > 0) foeResetAt = Time.unscaledTime + Mathf.Max(R.delayS, R.foeResetDelayS);
+        Debug.Log("[Zones] player down in " + (zone != null ? zone.id : "?") + ": in-world respawn in " + R.delayS.ToString("F1") + " s (rule " + R.rule + "), " + foeKeys.Count + " creature(s) to reset" + (foeResetAt >= 0f ? " in " + Mathf.Max(R.delayS, R.foeResetDelayS).ToString("F1") + " s" : ""));
+    }
+    void RespawnGiveUp(string why) { reviveGaveUp = true; reviveAsked = false; Debug.LogWarning("[Zones] revive: " + why + ": falling back to the scene reload (old death path)"); }
+    /// <summary>True = the in-world respawn owns this frame of the Down phase. False = respawn off / gave up: the old DownStep (black, GameLoop.Retry) runs.</summary>
+    bool RespawnStep(float dt)
+    {
+        var R = RespCfg; if (R == null || !R.enabled || reviveGaveUp) return false;
+        float hold = Mathf.Max(0.1f, R.delayS), cs = Mathf.Max(0.05f, R.coverS);   // hc:ok divide-by-zero guards; the values are hp.respawn.delayS / coverS
+        if (!reviveAsked)
+        {
+            cover = Mathf.Clamp01((phaseT - (hold - cs)) / cs) * Mathf.Clamp01(R.coverMax);   // the dip: dark only for the last coverS before she stands up
+            if (phaseT < hold) return true;
+            if (RTFinisher.Busy || Duel.Frozen) { if (phaseT < hold + R.fallbackAfterS) return true; RespawnGiveUp("a finisher scene is still running after " + R.fallbackAfterS.ToString("F0") + " s"); return false; }
+            string why; if (!ReviveTo(R, out why)) { RespawnGiveUp(why); return false; }
+            reviveAsked = true; reviveAskedAt = phaseT; return true;
+        }
+        if (!player.Dead) { RespawnDone(R); return true; }
+        if (player.ReviveFailed) { RespawnGiveUp("the fighter could not stand up (see the [Revive] warning)"); return false; }
+        if (phaseT > reviveAskedAt + R.fallbackAfterS) { RespawnGiveUp("no sim tick stood her up within " + R.fallbackAfterS.ToString("F0") + " s"); return false; }
+        cover = Mathf.Clamp01(R.coverMax); return true;
+    }
+    bool ReviveTo(ZRespawn R, out string why)
+    {
+        why = ""; string spotId = "";
+        if (R.rule == "hearth") { var hs = ZoneData.Service(zone, "hearth"); if (hs != null) spotId = hs.spot; }
+        if (spotId.Length == 0 && R.arrive != null) foreach (var a in R.arrive) if (a != null && a.zone == zone.id) { spotId = a.spot; break; }
+        var sp = spotId.Length > 0 ? ZoneData.Spot(zone, spotId) : null;
+        if (sp == null || sp.pos.Length < 2) { why = "zone " + zone.id + " has no respawn spot (rule " + R.rule + ", row hp.respawn.arrive)"; return false; }
+        var rr = player.GetComponent<RagdollRig>(); if (rr != null && rr.Converted && !rr.CanRestore) { why = "the ragdoll cannot be put back (" + (rr.RestoreWhy.Length > 0 ? rr.RestoreWhy : "no snapshot or a finisher cut the body") + ")"; return false; }
+        Vector3 np = SpotPos(sp, player.transform.position);
+        Place(player, np, sp.yaw); ZoneGround.Begin(player, np); Physics.SyncTransforms();
+        player.RequestRevive(R.hpFrac); reviveWhere = zone.id + " / " + spotId; return true;
+    }
+    void RespawnDone(ZRespawn R)
+    {
+        reviveAsked = false; phase = Phase.CoverOut; phaseT = 0f; coverColor = Color.black; downHandled = false;
+        arriveGraceUntil = Time.unscaledTime + T.engage.graceAfterArriveSeconds; player.opponent = null; combatTicks = 0; lastTick = Duel.TickCount; crossGate = null;
+        Debug.Log("[Zones] revive: player is up at " + reviveWhere + ", hp " + player.health.ToString("F0") + "/" + player.maxHealth.ToString("F0") + ", no scene reload");
+        SaveNow();
+    }
+    void FoeResetStep()
+    {
+        if (foeResetAt < 0f || Time.unscaledTime < foeResetAt) return;
+        foeResetAt = -1f; int n = 0; string ids = "";
+        foreach (var key in foeKeys)
+        {
+            Live l; if (!live.TryGetValue(key, out l) || l.killed) continue;
+            ids += (ids.Length > 0 ? ", " : "") + key; Vanish(l); live.Remove(key); n++;   // gone; its record is untouched = alive at home, LookSpawns brings it back at its spawn spot with full hp as soon as nobody sees the spot
+        }
+        foeKeys.Clear();
+        if (n > 0) { Debug.Log("[Zones] reset: " + n + " creature(s) back to their spawn at full hp (" + ids + ")"); if (phase == Phase.Play) LookSpawns(false); }
     }
 
     // ------------------------------------------------------------------ gates

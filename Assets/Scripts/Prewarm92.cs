@@ -21,7 +21,7 @@ using Debug = UnityEngine.Debug;
 // Log lines: "[Prewarm92] step <name> <ms> ms", "[Prewarm92] done total <s> s ..." and "[Prewarm92] HITCH <ms> ms ...".
 public class Prewarm92 : MonoBehaviour
 {
-    [Serializable] public class StepsC { public bool cleave = true, woundDecals = true, lootMaterials = true, lootFonts = true, volumes = true, clips = true, ragdollStub = true, goreFx = true, cutDry = true; }   // FINFIX v93: + goreFx, cutDry
+    [Serializable] public class StepsC { public bool cleave = true, woundDecals = true, lootMaterials = true, lootFonts = true, volumes = true, clips = true, ragdollStub = true, goreFx = true, cutDry = true, cutLod = false, finVis = false; }   /* FINREALTIME v1 H9a: + cutLod, finVis (prewarm92.json steps) */   // FINFIX v93: + goreFx, cutDry
     [Serializable] public class GoreFxC { public float distance = 80f, seconds = 0.15f; }   // FINFIX v93: real-config neck + wound sprays at this distance in front of the camera (sub-pixel strands), destroyed with the draw frames
     [Serializable] public class CutDryC { public string[] units = { "head", "head_split" }; public bool allFighters = true; public float budgetMs = 6f; public int checkEvery = 512, maxFrames = 900; }   // FINFIX v93: dry run of the staged mesh cut on the real fighters
     [Serializable] public class VolC { public int frames = 3; public float vignetteIntensity = 0.5f, priority = 9000f; }
@@ -117,6 +117,8 @@ public class Prewarm92 : MonoBehaviour
         if (S.ragdollStub && (c.ragdollStubAlways || RagdollDeath.Cfg.enabled)) { step("ragdollStub", () => MakeRagdollStub(Camera.main != null ? Camera.main.transform.position : Vector3.zero)); yield return Frames(c.framesBetweenSteps); }
         if (S.lootFonts && LootCfg.Get().enabled) { step("lootFonts", LootFonts); fontsArmed = true; yield return Frames(c.framesBetweenSteps); }
         if (S.goreFx && FinisherConfig.EnableGore) { step("goreFx", () => GoreFxWarm(cam)); yield return Frames(c.framesBetweenSteps); }   // FINFIX v93
+        if (S.cutLod && FinisherConfig.EnableGore) { step("cutLod", CutLod.WarmFiles); yield return Frames(c.framesBetweenSteps); }   // FINREALTIME v1 H9b
+        if (S.finVis && FinisherConfig.EnableGore) { step("finVis", () => FinVis.CollectPrewarm(shared)); yield return Frames(c.framesBetweenSteps); }   // FINREALTIME v1 H9c
 
         // ---- draw: sub-pixel meshes in front of the camera, decal projectors, the volume at weight 0 ----
         var quad = GoreFx.Quad(); GameObject decalGo = null; int frames = Mathf.Max(c.drawFrames, Mathf.Max(c.volumes.frames, c.ragdollStub.frames)); float maxDraw = 0f;

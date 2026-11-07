@@ -79,7 +79,7 @@ public class FlowBot : MonoBehaviour
     {
         if (df == null) return;
         var C = FlowTable.Get();
-        if (!C.enabled || !df.flowBotOn || !FlowTable.Applies(df) || Duel.Frozen || df.Dead) return;
+        if (!C.enabled || !df.flowBotOn || !FlowTable.Applies(df) || Duel.FrozenFor(df) /* FINREALTIME v1 H7 */ || df.Dead) return;
         var o = df.opponent; if (o == null || o.Dead) return;
         int tick = Duel.TickCount; if (tick == lastTick) return; lastTick = tick;
         var B = C.bot;

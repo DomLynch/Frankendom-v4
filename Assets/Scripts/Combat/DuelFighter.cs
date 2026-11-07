@@ -202,7 +202,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     // ---------------- tick (deterministic, 60 Hz) ----------------
     public void Tick()
     {
-        if (state == FState.Dead) return;
+        if (state == FState.Dead) { if (reviveReq) ReviveTick(); return; }   // REVIVE v1: a queued respawn stands the fighter up at the top of a sim tick (DuelFighterRevive.cs)
         WoundSystem.SimTick(this);   // FIXPHYS3 v102: damage-state multipliers advance per sim tick, never per frame
         StaminaTick();
         PostureTick();
@@ -452,11 +452,12 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     }
 
     // ---------------- reactions (called by Duel.Resolve) ----------------
-    public void Stagger(int ticks, string clip)
+    public void Stagger(int ticks, string clip, float startS = 0f)   // PITMAULFIX v1: startS
     {
         if (state == FState.Dead) return;
         atkOn = false; fadeOutLen = 0f; state = FState.Stagger; t = 0; staggerTicks = Mathf.Max((int)R("stagger.minTicks", 8), ticks); /* DATALAYER b10 */ pLight = pHeavy = pThrust = pKick = 0;
-        PlayClip(clip, 0, R("blend.staggerS", 0.05f)); /* DATALAYER b10 */
+        if (startS > 0f && f != null && f.anim != null) { f.holdLast = false; paused = false; f.ForceExact(clip, R("blend.staggerS", 0.05f), startS); f.anim.speed = f.animWeight; }   // PITMAULFIX v1: react from startS into the clip
+        else PlayClip(clip, 0, R("blend.staggerS", 0.05f)); /* DATALAYER b10 */
     }
     public void KnockDown()
     {

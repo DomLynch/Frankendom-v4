@@ -172,12 +172,15 @@ public partial class PhysProof : MonoBehaviour
         Log("start mode=" + mode + " res " + Screen.width + "x" + Screen.height + " unity " + Application.unityVersion + " scripted=" + PhysicsClock.Scripted + " simulationMode=" + Physics.simulationMode + " fixedDeltaTime=" + F(Time.fixedDeltaTime)
             + " solver " + Physics.defaultSolverIterations + "/" + Physics.defaultSolverVelocityIterations);
         bool all = mode == "all";
+        if (mode == "knock") { yield return KnockProof(); if (!exiting) Finish(failed == 0 ? 0 : 1, failed == 0 ? "all checks passed" : failed + " check(s) failed"); yield break; }   // PHYSKNOCK v1: -physproof:knock alone (Physics/PhysProofKnock.cs)
         if (all || mode == "clock") yield return ClockProof();
         if (all || mode == "masks") yield return MasksProof();
         if (all || mode == "death") yield return DeathProof();
+        if (all || mode == "swing") yield return SwingProof();   // PHYSSWING v1: -physproof:swing (Physics/PhysProofSwing.cs); skipped when physics.json swing.enabled=false
         if (all || mode == "hit") yield return HitProof();   // PHYS2 v1: -physproof:hit (Physics/PhysProofHit.cs)
+        if (all) yield return KnockProof();   // PHYSKNOCK v1: part of -physproof:all, before the sim-hash gate
         if (all || mode == "simhash") { yield return SimHashProof(); if (exiting) yield break; }
-        if (!all && mode != "clock" && mode != "masks" && mode != "death" && mode != "hit" && mode != "simhash") { Log("unknown mode '" + mode + "' (clock | masks | death | hit | simhash | all)"); Finish(2, "unknown mode"); yield break; }
+        if (!all && mode != "clock" && mode != "masks" && mode != "death" && mode != "hit" && mode != "swing" && mode != "simhash") { Log("unknown mode '" + mode + "' (clock | masks | death | hit | swing | simhash | all)"); Finish(2, "unknown mode"); yield break; }
         Finish(failed == 0 ? 0 : 1, failed == 0 ? "all checks passed" : failed + " check(s) failed");
     }
 

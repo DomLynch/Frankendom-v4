@@ -1040,6 +1040,16 @@
           "part": "spine2",
           "weight": 0.6,
           "share": 0.3
+        },
+        {
+          "part": "spine1",
+          "weight": 0.4,
+          "share": 0.2
+        },
+        {
+          "part": "spine",
+          "weight": 0.25,
+          "share": 0.15
         }
       ]
     },
@@ -1065,8 +1075,978 @@
           "part": "spine2",
           "weight": 0.6,
           "share": 0.3
+        },
+        {
+          "part": "spine1",
+          "weight": 0.4,
+          "share": 0.2
+        },
+        {
+          "part": "spine",
+          "weight": 0.25,
+          "share": 0.15
         }
       ]
+    }
+  },
+  "swing": {
+    "_about": "PHYSSWING v1 (lane PHYSSWING, 2026-11-06): sub-switch for PHYSICS ON SWINGS AND LOCOMOTION FOLLOW-THROUGH, guard hold and block recoil, both fighters. PRESENTATION ONLY: read by Scripts/Physics/HitReactSwing.cs (partial HitReact); nothing writes sim state; simhash must be identical ON/OFF at 30/60/144 fps. enabled=false (shipped) = HitReact exactly as before. Needs master enabled + clock.enabled + hit.enabled or this one (the collider-less proxy rig of PHYS2 is the body). Per fighter ONE persistent low-priority reaction follows what the fighter does (situations, first row whose FState list and clip-hips speed (m/s) match wins, rows crossfade over easeS); a hit or block reaction stacks on top (lowest strength and highest share win per part). dips = spring strength 0..1 (lower = looser = more lag), damps = damper multiplier (>1 calms the ring: the drive per kg is a fast stiff spring, so the follow-through rows lower the spring AND scale the damper to reach a 6..10 Hz, zeta 0.4..0.6 response), blend = share of the proxy pose shown (0 = clip). Every number is a first guess for the first player run (UNMEASURED); tune by data. Legs are never blended (FootGround plants the feet), hips never (root).",
+    "enabled": true,
+    "interpolate": false,
+    "easeS": 0.12,
+    "speedSmoothS": 0.12,
+    "maxDeviationDeg": 50.0,
+    "lead": {
+      "_about": "Joint target = the clip pose extrapolated by (damper/spring + latencyTicks x 1/60 s) at the clip's own angular velocity (sampled per Physics step), capped at maxDeg. This cancels the velocity lag of the drive (model: swing_reach.py, peak 28 -> 5 deg on the heavy swing). latencyTicks 1 = the target waits one step for Physics.Simulate (use 2 with interpolate=true). The proof sweeps leadSweepTicks and prints the deviation of each.",
+      "enabled": true,
+      "gain": 1.0,
+      "latencyTicks": 1.0,
+      "maxDeg": 40.0,
+      "minRateDegS": 20.0
+    },
+    "reach": {
+      "_about": "Limit-aware share. A part whose CLIP pose is outside its proxy joint limit (hinge window from ragdoll.json + hit.limitMarginDeg; swing / twist cone for the rest) fades its share to 0 and relaxes its spring (to minStrength) instead of fighting the limit: that was the v101 swing-track FAIL (clip forearmR flexion -116.8 / -109 deg vs a -30 floor, tools/swing_reach.json). fade = 1 - (excessDeg + startInsideDeg) / rampDeg.",
+      "enabled": true,
+      "offAxis": true,
+      "startInsideDeg": 4.0,
+      "rampDeg": 20.0,
+      "minStrength": 0.2
+    },
+    "situations": [
+      {
+        "id": "windup",
+        "about": "weight shifts back: torso and head lag the draw, arms trail",
+        "states": [
+          "Windup"
+        ],
+        "minSpeed": 0.0,
+        "maxSpeed": 99.0,
+        "easeS": 0.08,
+        "dips": [
+          {
+            "key": "spine",
+            "value": 0.5
+          },
+          {
+            "key": "spine1",
+            "value": 0.45
+          },
+          {
+            "key": "spine2",
+            "value": 0.4
+          },
+          {
+            "key": "neck",
+            "value": 0.4
+          },
+          {
+            "key": "head",
+            "value": 0.3
+          },
+          {
+            "key": "arm",
+            "value": 0.35
+          },
+          {
+            "key": "forearm",
+            "value": 0.1
+          },
+          {
+            "key": "hand",
+            "value": 0.06
+          }
+        ],
+        "damps": [
+          {
+            "key": "spine",
+            "value": 1.6
+          },
+          {
+            "key": "spine1",
+            "value": 1.8
+          },
+          {
+            "key": "spine2",
+            "value": 2.2
+          },
+          {
+            "key": "neck",
+            "value": 2.0
+          },
+          {
+            "key": "head",
+            "value": 2.0
+          },
+          {
+            "key": "arm",
+            "value": 1.0
+          },
+          {
+            "key": "forearm",
+            "value": 0.2
+          },
+          {
+            "key": "hand",
+            "value": 0.12
+          }
+        ],
+        "blend": [
+          {
+            "key": "spine",
+            "value": 0.6
+          },
+          {
+            "key": "spine1",
+            "value": 0.7
+          },
+          {
+            "key": "spine2",
+            "value": 0.8
+          },
+          {
+            "key": "neck",
+            "value": 0.7
+          },
+          {
+            "key": "head",
+            "value": 0.8
+          },
+          {
+            "key": "arm",
+            "value": 0.6
+          },
+          {
+            "key": "forearm",
+            "value": 0.7
+          },
+          {
+            "key": "hand",
+            "value": 0.7
+          }
+        ]
+      },
+      {
+        "id": "strike",
+        "about": "the blow: forearm and hand lag the clip at full speed, torso rotation trails",
+        "states": [
+          "Active"
+        ],
+        "minSpeed": 0.0,
+        "maxSpeed": 99.0,
+        "easeS": 0.04,
+        "dips": [
+          {
+            "key": "spine",
+            "value": 0.4
+          },
+          {
+            "key": "spine1",
+            "value": 0.35
+          },
+          {
+            "key": "spine2",
+            "value": 0.3
+          },
+          {
+            "key": "neck",
+            "value": 0.3
+          },
+          {
+            "key": "head",
+            "value": 0.25
+          },
+          {
+            "key": "arm",
+            "value": 0.25
+          },
+          {
+            "key": "forearm",
+            "value": 0.06
+          },
+          {
+            "key": "hand",
+            "value": 0.04
+          }
+        ],
+        "damps": [
+          {
+            "key": "spine",
+            "value": 1.5
+          },
+          {
+            "key": "spine1",
+            "value": 1.7
+          },
+          {
+            "key": "spine2",
+            "value": 2.0
+          },
+          {
+            "key": "neck",
+            "value": 1.8
+          },
+          {
+            "key": "head",
+            "value": 1.8
+          },
+          {
+            "key": "arm",
+            "value": 0.8
+          },
+          {
+            "key": "forearm",
+            "value": 0.15
+          },
+          {
+            "key": "hand",
+            "value": 0.1
+          }
+        ],
+        "blend": [
+          {
+            "key": "spine",
+            "value": 0.7
+          },
+          {
+            "key": "spine1",
+            "value": 0.8
+          },
+          {
+            "key": "spine2",
+            "value": 0.9
+          },
+          {
+            "key": "neck",
+            "value": 0.8
+          },
+          {
+            "key": "head",
+            "value": 0.9
+          },
+          {
+            "key": "arm",
+            "value": 0.75
+          },
+          {
+            "key": "forearm",
+            "value": 0.85
+          },
+          {
+            "key": "hand",
+            "value": 0.85
+          }
+        ]
+      },
+      {
+        "id": "recover",
+        "about": "follow-through: arms overshoot and settle after the blow",
+        "states": [
+          "Recovery",
+          "ParryRecover"
+        ],
+        "minSpeed": 0.0,
+        "maxSpeed": 99.0,
+        "easeS": 0.06,
+        "dips": [
+          {
+            "key": "spine",
+            "value": 0.4
+          },
+          {
+            "key": "spine1",
+            "value": 0.35
+          },
+          {
+            "key": "spine2",
+            "value": 0.3
+          },
+          {
+            "key": "neck",
+            "value": 0.3
+          },
+          {
+            "key": "head",
+            "value": 0.25
+          },
+          {
+            "key": "arm",
+            "value": 0.2
+          },
+          {
+            "key": "forearm",
+            "value": 0.05
+          },
+          {
+            "key": "hand",
+            "value": 0.03
+          }
+        ],
+        "damps": [
+          {
+            "key": "spine",
+            "value": 1.4
+          },
+          {
+            "key": "spine1",
+            "value": 1.6
+          },
+          {
+            "key": "spine2",
+            "value": 1.8
+          },
+          {
+            "key": "neck",
+            "value": 1.6
+          },
+          {
+            "key": "head",
+            "value": 1.6
+          },
+          {
+            "key": "arm",
+            "value": 0.6
+          },
+          {
+            "key": "forearm",
+            "value": 0.1
+          },
+          {
+            "key": "hand",
+            "value": 0.07
+          }
+        ],
+        "blend": [
+          {
+            "key": "spine",
+            "value": 0.8
+          },
+          {
+            "key": "spine1",
+            "value": 0.8
+          },
+          {
+            "key": "spine2",
+            "value": 0.9
+          },
+          {
+            "key": "neck",
+            "value": 0.8
+          },
+          {
+            "key": "head",
+            "value": 0.9
+          },
+          {
+            "key": "arm",
+            "value": 0.8
+          },
+          {
+            "key": "forearm",
+            "value": 0.9
+          },
+          {
+            "key": "hand",
+            "value": 0.9
+          }
+        ]
+      },
+      {
+        "id": "guard",
+        "about": "guard hold: stiffer, small share, the raise settles and the held arms give a little",
+        "states": [
+          "Guard"
+        ],
+        "minSpeed": 0.0,
+        "maxSpeed": 99.0,
+        "easeS": 0.1,
+        "dips": [
+          {
+            "key": "spine",
+            "value": 0.8
+          },
+          {
+            "key": "spine1",
+            "value": 0.7
+          },
+          {
+            "key": "spine2",
+            "value": 0.6
+          },
+          {
+            "key": "neck",
+            "value": 0.6
+          },
+          {
+            "key": "head",
+            "value": 0.5
+          },
+          {
+            "key": "arm",
+            "value": 0.6
+          },
+          {
+            "key": "forearm",
+            "value": 0.25
+          },
+          {
+            "key": "hand",
+            "value": 0.15
+          }
+        ],
+        "damps": [
+          {
+            "key": "spine",
+            "value": 1.2
+          },
+          {
+            "key": "spine1",
+            "value": 1.3
+          },
+          {
+            "key": "spine2",
+            "value": 1.4
+          },
+          {
+            "key": "neck",
+            "value": 1.4
+          },
+          {
+            "key": "head",
+            "value": 1.4
+          },
+          {
+            "key": "arm",
+            "value": 1.2
+          },
+          {
+            "key": "forearm",
+            "value": 0.3
+          },
+          {
+            "key": "hand",
+            "value": 0.2
+          }
+        ],
+        "blend": [
+          {
+            "key": "spine",
+            "value": 0.3
+          },
+          {
+            "key": "spine1",
+            "value": 0.35
+          },
+          {
+            "key": "spine2",
+            "value": 0.4
+          },
+          {
+            "key": "neck",
+            "value": 0.3
+          },
+          {
+            "key": "head",
+            "value": 0.3
+          },
+          {
+            "key": "arm",
+            "value": 0.5
+          },
+          {
+            "key": "forearm",
+            "value": 0.6
+          },
+          {
+            "key": "hand",
+            "value": 0.6
+          }
+        ]
+      },
+      {
+        "id": "roll",
+        "about": "momentum: torso, head and arms trail the roll",
+        "states": [
+          "Roll"
+        ],
+        "minSpeed": 0.0,
+        "maxSpeed": 99.0,
+        "easeS": 0.05,
+        "dips": [
+          {
+            "key": "spine",
+            "value": 0.35
+          },
+          {
+            "key": "spine1",
+            "value": 0.3
+          },
+          {
+            "key": "spine2",
+            "value": 0.28
+          },
+          {
+            "key": "neck",
+            "value": 0.28
+          },
+          {
+            "key": "head",
+            "value": 0.25
+          },
+          {
+            "key": "arm",
+            "value": 0.25
+          },
+          {
+            "key": "forearm",
+            "value": 0.06
+          },
+          {
+            "key": "hand",
+            "value": 0.04
+          }
+        ],
+        "damps": [
+          {
+            "key": "spine",
+            "value": 1.5
+          },
+          {
+            "key": "spine1",
+            "value": 1.7
+          },
+          {
+            "key": "spine2",
+            "value": 2.0
+          },
+          {
+            "key": "neck",
+            "value": 1.8
+          },
+          {
+            "key": "head",
+            "value": 1.8
+          },
+          {
+            "key": "arm",
+            "value": 0.8
+          },
+          {
+            "key": "forearm",
+            "value": 0.15
+          },
+          {
+            "key": "hand",
+            "value": 0.1
+          }
+        ],
+        "blend": [
+          {
+            "key": "spine",
+            "value": 0.7
+          },
+          {
+            "key": "spine1",
+            "value": 0.8
+          },
+          {
+            "key": "spine2",
+            "value": 0.8
+          },
+          {
+            "key": "neck",
+            "value": 0.8
+          },
+          {
+            "key": "head",
+            "value": 0.8
+          },
+          {
+            "key": "arm",
+            "value": 0.8
+          },
+          {
+            "key": "forearm",
+            "value": 0.8
+          },
+          {
+            "key": "hand",
+            "value": 0.8
+          }
+        ]
+      },
+      {
+        "id": "loco",
+        "about": "walk / run / strafe weight shift (clip hips speed >= 0.4 m/s); standing idle has no row on purpose (no proxy cost, no change to the idle look)",
+        "states": [
+          "Loco"
+        ],
+        "minSpeed": 0.4,
+        "maxSpeed": 99.0,
+        "easeS": 0.12,
+        "dips": [
+          {
+            "key": "spine",
+            "value": 0.6
+          },
+          {
+            "key": "spine1",
+            "value": 0.5
+          },
+          {
+            "key": "spine2",
+            "value": 0.45
+          },
+          {
+            "key": "neck",
+            "value": 0.4
+          },
+          {
+            "key": "head",
+            "value": 0.35
+          },
+          {
+            "key": "arm",
+            "value": 0.35
+          },
+          {
+            "key": "forearm",
+            "value": 0.08
+          },
+          {
+            "key": "hand",
+            "value": 0.05
+          }
+        ],
+        "damps": [
+          {
+            "key": "spine",
+            "value": 1.6
+          },
+          {
+            "key": "spine1",
+            "value": 1.8
+          },
+          {
+            "key": "spine2",
+            "value": 2.2
+          },
+          {
+            "key": "neck",
+            "value": 2.0
+          },
+          {
+            "key": "head",
+            "value": 2.0
+          },
+          {
+            "key": "arm",
+            "value": 1.0
+          },
+          {
+            "key": "forearm",
+            "value": 0.2
+          },
+          {
+            "key": "hand",
+            "value": 0.12
+          }
+        ],
+        "blend": [
+          {
+            "key": "spine",
+            "value": 0.5
+          },
+          {
+            "key": "spine1",
+            "value": 0.6
+          },
+          {
+            "key": "spine2",
+            "value": 0.7
+          },
+          {
+            "key": "neck",
+            "value": 0.7
+          },
+          {
+            "key": "head",
+            "value": 0.7
+          },
+          {
+            "key": "arm",
+            "value": 0.4
+          },
+          {
+            "key": "forearm",
+            "value": 0.5
+          },
+          {
+            "key": "hand",
+            "value": 0.5
+          }
+        ]
+      }
+    ],
+    "proof": {
+      "_about": "-physproof:swing (PhysProofSwing.cs). track: the v101 gate again with the swing fixes ON, limit 6 deg from proof.hit.track.maxDeg (NOT relaxed); reach: at most maxFadedPct of the frames may fade a part. Rows: one case per situation (driver hold | move | press | guard), expect = situation ids of which at least one must be selected, band = peak shown-vs-clip deviation. min > 0 fails 'nothing happens'. Bands are first guesses: calibrate from the first run.",
+      "separationM": 6.0,
+      "settleSeconds": 0.6,
+      "maxFadedPct": 35.0,
+      "maxHipsDeltaM": 0.001,
+      "maxFootDriftM": 0.03,
+      "maxAvgStepMs": 1.25,
+      "maxP95StepMs": 2.0,
+      "trackMove": "heavy",
+      "trackSeconds": 1.4,
+      "leadSweepTicks": [
+        0.0,
+        1.0,
+        2.0
+      ],
+      "situations": [
+        {
+          "id": "loco_walk",
+          "driver": "move",
+          "move": "",
+          "expect": [
+            "loco"
+          ],
+          "seconds": 1.2,
+          "minPeakDeg": 0.3,
+          "maxPeakDeg": 30.0
+        },
+        {
+          "id": "swing_heavy",
+          "driver": "press",
+          "move": "heavy",
+          "expect": [
+            "windup",
+            "strike",
+            "recover"
+          ],
+          "seconds": 1.8,
+          "minPeakDeg": 0.3,
+          "maxPeakDeg": 40.0
+        },
+        {
+          "id": "swing_light",
+          "driver": "press",
+          "move": "light",
+          "expect": [
+            "windup",
+            "strike",
+            "recover"
+          ],
+          "seconds": 1.2,
+          "minPeakDeg": 0.3,
+          "maxPeakDeg": 35.0
+        },
+        {
+          "id": "guard_hold",
+          "driver": "guard",
+          "move": "",
+          "expect": [
+            "guard"
+          ],
+          "seconds": 0.9,
+          "minPeakDeg": 0.0,
+          "maxPeakDeg": 25.0
+        },
+        {
+          "id": "roll",
+          "driver": "press",
+          "move": "roll",
+          "expect": [
+            "roll"
+          ],
+          "seconds": 1.0,
+          "minPeakDeg": 0.3,
+          "maxPeakDeg": 40.0
+        }
+      ]
+    }
+  },
+  "knock": {
+    "_about": "PHYSKNOCK v1 (lanePHYSKNOCK, 2026-11-06): knockdown + get-up as a PRESENTATION-ONLY ragdoll blend on the HitReact proxy rig (Scripts/Physics/HitReactKnock.cs). The 60 Hz sim owns when (DuelFighter.state Down, its tick t, rules posture.stun), where (knock slide, hips) and what; this block only shapes how the pose is drawn. While Down, one reaction 'row' is held at depth d(sim tick): rise smoothstep over timeline.riseTicks, 1 while he lies, smoothstep back to 0 from the tick the getUpClip starts (else releaseFromTickDefault) to stun - releaseEndMarginTicks. Row dips = motor strength at depth 1 (limbs go slack, gravity + the fall impulse swing them), row blend = how much of the proxy pose is shown per part (the rest is the clip). limits: per-part deviation cap and rate limit (both directions) = no pop; floor: fade toward the clip where the collider-less proxy would sink under the ground. DARK: enabled=false = nothing attaches, nothing runs. Needs physics.json enabled + clock.enabled (same gate as hit). Every number is a FIRST GUESS to calibrate from the first -physproof:knock run.",
+    "enabled": true,
+    "zonePart": "spine2",
+    "minDirSpeedMps": 0.05,
+    "row": {
+      "id": "knockdown",
+      "about": "knockdown fall + lie + get-up; timing here is unused (the sim tick drives the depth), dips/blend/impulse/split are the look",
+      "timing": {
+        "easeInS": 0.2,
+        "holdS": 0.9,
+        "backS": 0.6
+      },
+      "dips": [
+        {
+          "key": "arm",
+          "value": 0.04
+        },
+        {
+          "key": "forearm",
+          "value": 0.03
+        },
+        {
+          "key": "hand",
+          "value": 0.02
+        },
+        {
+          "key": "spine",
+          "value": 0.2
+        },
+        {
+          "key": "spine1",
+          "value": 0.15
+        },
+        {
+          "key": "spine2",
+          "value": 0.12
+        },
+        {
+          "key": "neck",
+          "value": 0.15
+        },
+        {
+          "key": "head",
+          "value": 0.12
+        },
+        {
+          "key": "thigh",
+          "value": 0.1
+        },
+        {
+          "key": "shin",
+          "value": 0.08
+        },
+        {
+          "key": "foot",
+          "value": 0.05
+        }
+      ],
+      "blend": [
+        {
+          "key": "spine",
+          "value": 0.5
+        },
+        {
+          "key": "spine1",
+          "value": 0.7
+        },
+        {
+          "key": "spine2",
+          "value": 0.8
+        },
+        {
+          "key": "neck",
+          "value": 1
+        },
+        {
+          "key": "head",
+          "value": 1
+        },
+        {
+          "key": "arm",
+          "value": 1
+        },
+        {
+          "key": "forearm",
+          "value": 1
+        },
+        {
+          "key": "hand",
+          "value": 1
+        },
+        {
+          "key": "thigh",
+          "value": 0.6
+        },
+        {
+          "key": "shin",
+          "value": 0.6
+        },
+        {
+          "key": "foot",
+          "value": 0.3
+        }
+      ],
+      "impulse": 60,
+      "lift": 0,
+      "twist": 0,
+      "split": [
+        {
+          "part": "zone",
+          "share": 1
+        },
+        {
+          "part": "head",
+          "share": 0.5
+        },
+        {
+          "part": "arm$near",
+          "share": 0.35
+        },
+        {
+          "part": "arm$far",
+          "share": 0.35
+        }
+      ],
+      "dirs": []
+    },
+    "style": {
+      "name": "knock",
+      "impulse": 1,
+      "twist": 1,
+      "dip": 1,
+      "blend": 1,
+      "holdS": 1,
+      "backS": 1
+    },
+    "timeline": {
+      "riseTicks": 14,
+      "getUpClip": "get_up",
+      "releaseFromTickDefault": 54,
+      "releaseEndMarginTicks": 3,
+      "exitTicks": 12,
+      "stunRule": "posture.stun",
+      "stunDefault": 90
+    },
+    "limits": {
+      "maxDevDeg": 75,
+      "slewDegPerS": 540,
+      "minSlewAngDeg": 0.05
+    },
+    "floor": {
+      "clearM": 0.02,
+      "maxSagM": 0.25,
+      "rampM": 0.1,
+      "groundOffsetM": 0
+    },
+    "proof": {
+      "separationM": 1.7,
+      "knockSpeedMps": 2.5,
+      "observeExtraS": 0.35,
+      "settleSeconds": 0.8,
+      "maxStartDepth": 0.1,
+      "maxPopDegPerS": 1800,
+      "slewTolDegPerS": 1,
+      "exitMaxDeg": 1,
+      "minPeakDeg": 1,
+      "maxPeakDeg": 90,
+      "maxHipsDeltaM": 0.001,
+      "maxAvgStepMs": 1.25,
+      "maxP95StepMs": 2,
+      "fps": [
+        60,
+        30,
+        144
+      ],
+      "victims": [
+        "enemy",
+        "player"
+      ],
+      "exitFrames": 3
     }
   },
   "finphys": {
@@ -1266,5 +2246,9 @@
         "note": ""
       }
     ]
+  },
+  "secondary": {
+    "enabled": false,
+    "_about": "PHYSCLOTH v1 sub-switch: secondary motion (hair / skirt / cape / tail / fin / gear spring chains on the existing 106 joints, Scripts/Physics/SecondaryMotion.cs, rows in secondary_motion.json). PRESENTATION ONLY (LateUpdate, render time, no sim read, simhash identical on/off). Independent of the master and of the PhysX clock. false = SecondaryMotion is never attached. QA: -secondary:on / -secondary:off. Edit here AND in StreamingAssets."
   }
 }

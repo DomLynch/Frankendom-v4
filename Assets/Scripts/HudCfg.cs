@@ -97,6 +97,7 @@ public static class HudCfg
         public LabelsC labels = new LabelsC();
         public string retryText = "Retry", nextText = "Next opponent", nextPreview = "Next: {0}", fightText = "FIGHT {0}  -  {1}";
         public string retryHint = "Backspace / B", confirmHint = "Enter / A", retryHintDefeat = "Enter / Backspace / A";
+        public bool zonesNoEndScreen = false;   // SEAMLESS v1: true = in a zones run (GameLoop.ZonesNoEnd) the VICTORY / YOU DIED card, its Next / Retry prompts and the end fade never exist
     }
     [Serializable] public class FadeC { public bool enabled = true; public float inS = 0.7f, outS = 0.45f; public float[] color = { 0f, 0f, 0f }; }
     [Serializable] public class InputC

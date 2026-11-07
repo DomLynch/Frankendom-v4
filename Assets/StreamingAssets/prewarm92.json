@@ -14,6 +14,8 @@
     "clips": true,
     "ragdollStub": true,
     "goreFx": true,
+    "cutLod": true,
+    "finVis": true,
     "cutDry": false
   },
   "volumes": {
@@ -70,7 +72,7 @@
   },
   "hitch": {
     "enabled": true,
-    "hitchMs": 250.0,
+    "hitchMs": 100.0,
     "maxLogs": 500,
     "note": "logs '[Prewarm92] HITCH <ms> ms ...' for any frame longer than hitchMs (unscaled, after the prewarm has started). VERIFY.md greps it."
   },

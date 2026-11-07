@@ -126,6 +126,7 @@
     "promptSize": 24, "promptHintSize": 17, "promptY": 34, "promptGap": 70, "hudFade": 1.0,
     "buttonW": 280, "buttonH": 50, "buttonGap": 40, "buttonSize": 20, "keyHintSize": 12, "nextLabelSize": 19,
     "statSep": "     ",
+    "zonesNoEndScreen": true,
     "nextOnDefeat": false,
     "secondary": [0.84, 0.81, 0.75, 1.0], "outlinePx": 2.0, "outlineAlpha": 0.9, "plateW": 820, "plateFeather": 140, "plateAlpha": 0.6,
     "victoryTint": [0.0, 0.0, 0.0, 1.0], "defeatTint": [0.16, 0.0, 0.015, 1.0],

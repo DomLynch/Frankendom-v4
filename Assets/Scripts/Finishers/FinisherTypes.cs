@@ -53,6 +53,8 @@ public class FinisherShot
     // V62B: camera side + exposure per shot (data)
     public bool gate = true;            // true: the camera is placed so it looks TOWARD the gate (rt.look.gatePoint); the azimuth is rotated (nearest angle, mirrored side first) until the view direction is within rt.look.gateMinDot of the gate direction
     public float gateMinDot = -2f;      // V62C: per-shot minimum cosine between the view direction and the gate direction (-2 = rt.look.gateMinDot); the wide / fall / settle shots use 0.8
+    public float bodyClearM = 0f;       // BELLYLETHAL v1: > 0 replaces camera_collision.json bodyClearM for this shot (margin around BOTH fighters' bounds)
+    public float nearClip = 0f;         // BELLYLETHAL v1: > 0 sets the camera near plane (m) while this shot plays; 0 = untouched
     public float darkenEV = 0f;         // extra stops this shot is darker (+) / brighter (-) than the gameplay exposure, on top of rt.look.darkenEV (Fixed exposure only; blended at rt.look.evRate stops / s)
     // V1FIN v94 (V1 finisherSidePose / decapitation front-hold): the shoulder slide and the look turn are RAMPED over slideRampS (V1 finishPush: 1.3 / 0.75 s) instead of being there from the first frame;
     // pieceUnit != "" = the look-at moves toward the midpoint of the victim's body and that unit's severed piece (V1: 'the look centres between corpse and head'), by pieceTurn (0..1) x the ramp
@@ -427,6 +429,7 @@ public class FinisherRtCfg
     public FinisherPairCfg pair = new FinisherPairCfg();               // V64F: interpenetration probe of the two fighters (FinisherPairProbe.cs)
     public VictimLookCfg victimLook = new VictimLookCfg();             // V64F: victim material luma probe + stuck-flash guard (FinisherVictimLook.cs)
     public FinisherGroundCfg ground = new FinisherGroundCfg();   // V62B: foot-to-ground probe + correction during a scene (FinisherGround.cs)
+    public RealtimeCfg realtime = new RealtimeCfg();   // FINREALTIME v1 H1: real-time finisher switches (RealtimeCfg at the end of this file)
 }
 
 // FINFIX v93: MeshCut.Prepare is time-sliced from the scene start; the cut is applied at its gore key (a cheap swap). Not finished by then = it is finished synchronously (logged).
@@ -513,4 +516,27 @@ public static class FinisherConfig
         if (data.rt == null) data.rt = new FinisherRtCfg();
         if (data.rt.auto == null) data.rt.auto = new FinisherAutoCfg();
     }
+}
+
+// FINREALTIME v1 H1b (laneFINREALTIME): real-time finisher switches. Absent / enabled false = today's finishers exactly. Written by kit\apply_finrealtime.py (finishers.json rt.realtime).
+[Serializable]
+public class RealtimeCfg
+{
+    public bool enabled = false;             // master: false = the FINFIX v93 / FINAUDIT behaviour exactly
+    public bool pairOnlyFreeze = false;      // true: only the killer and the victim stop deciding / hitting during a scene; every other fighter keeps running (Duel.FrozenFor)
+    public float firstBlendS = -1f;          // >= 0: the first shot eases in from the gameplay camera over this long instead of a hard cut (-1 = the old hard cut)
+    public float placeSlideS = 0f;           // > 0: the pair slides into the scene's placement over this long instead of snapping there (0 = the old Teleport)
+    public FinisherRealtimeSpike spike = new FinisherRealtimeSpike();   // FinSpike.cs (-finspike) limits
+}
+
+[Serializable]
+public class FinisherRealtimeSpike
+{
+    public float preS = 2f, postS = 2f;      // windows before the start / after the end of a scene whose worst frame is reported
+    public int maxScenes = 6; public float timeoutS = 900f;   // the run quits after this many finisher scenes or seconds
+    public float hitchMs = 100f;             // a frame longer than this inside a scene counts as a hitch frame
+    public float slowBelow = 0.99f, maxSlowS = 0.7f;           // Time.timeScale below slowBelow for more than maxSlowS unscaled seconds = not real time
+    public float maxHitStopMs = 90f;         // longest PresentationClock freeze allowed
+    public float cutJumpM = 1.5f;            // camera movement in one frame above this = a hard cut
+    public float minOthersMovedM = 0.05f;    // other fighters must have moved at least this far during the scene (when there are any)
 }

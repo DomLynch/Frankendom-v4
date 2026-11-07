@@ -11,7 +11,7 @@
     { "id": "blockHeavy", "frames": 0, "ms": 30 },
     { "id": "parry",      "frames": 0, "ms": 40 },
     { "id": "guardBreak", "frames": 0, "ms": 70 },
-    { "id": "special",    "frames": 6, "ms": 0 },
+    { "id": "special",    "frames": 4, "ms": 0 },
     { "id": "kick",       "frames": 0, "ms": 60 }
   ],
   "moves": [
@@ -27,6 +27,6 @@
     { "id": "light_overhead",   "frames": 0, "ms": 50 },
     { "id": "heavy_riposte",    "frames": 0, "ms": 80 },
     { "id": "heavy_counter",    "frames": 0, "ms": 80 },
-    { "id": "critical",         "frames": 0, "ms": 90 }
+    { "id": "critical",         "frames": 0, "ms": 80.0 }
   ]
 }

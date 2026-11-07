@@ -106,7 +106,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "today's light flinch"
+   "note": "today's light flinch",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -130,7 +131,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "today's heavy stagger"
+   "note": "today's heavy stagger",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -154,7 +156,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "kick lands low/gut"
+   "note": "kick lands low/gut",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -166,7 +169,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "128670943/44/45 standing-react-small"
+   "note": "128670943/44/45 standing-react-small",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -178,7 +182,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "128670943/44/45 standing-react-small"
+   "note": "128670943/44/45 standing-react-small",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -190,7 +195,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "128670943/44/45 standing-react-small"
+   "note": "128670943/44/45 standing-react-small",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -202,7 +208,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "128670943/44/45 standing-react-small"
+   "note": "128670943/44/45 standing-react-small",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -214,7 +221,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "128670943/44/45 standing-react-small"
+   "note": "128670943/44/45 standing-react-small",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -226,7 +234,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "128670943/44/45 standing-react-small"
+   "note": "128670943/44/45 standing-react-small",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -238,7 +247,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "128670943/44/45 standing-react-small"
+   "note": "128670943/44/45 standing-react-small",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -250,7 +260,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "128670943/44/45 standing-react-small"
+   "note": "128670943/44/45 standing-react-small",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -262,7 +273,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "128670943/44/45 standing-react-small"
+   "note": "128670943/44/45 standing-react-small",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -274,7 +286,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+   "note": "127690964 / 128650922 / 128650923 standing-react-large",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -286,7 +299,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+   "note": "127690964 / 128650922 / 128650923 standing-react-large",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -298,7 +312,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+   "note": "127690964 / 128650922 / 128650923 standing-react-large",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -310,7 +325,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+   "note": "127690964 / 128650922 / 128650923 standing-react-large",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -322,7 +338,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+   "note": "127690964 / 128650922 / 128650923 standing-react-large",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -334,7 +351,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+   "note": "127690964 / 128650922 / 128650923 standing-react-large",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -346,7 +364,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+   "note": "127690964 / 128650922 / 128650923 standing-react-large",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -358,7 +377,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+   "note": "127690964 / 128650922 / 128650923 standing-react-large",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -370,7 +390,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "127690964 / 128650922 / 128650923 standing-react-large"
+   "note": "127690964 / 128650922 / 128650923 standing-react-large",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -382,7 +403,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "128650924 standing-react-large-gut: belly blow"
+   "note": "128650924 standing-react-large-gut: belly blow",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -394,7 +416,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "keep big-hit-to-head (Dracula) / big-side-hit (Pitborn)"
+   "note": "keep big-hit-to-head (Dracula) / big-side-hit (Pitborn)",
+   "startS": 0.045
   },
   {
    "character": "*",
@@ -418,7 +441,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "no leg clip yet (see handoff): gut react"
+   "note": "no leg clip yet (see handoff): gut react",
+   "startS": 0.037
   },
   {
    "character": "*",
@@ -442,7 +466,8 @@
    "fallback": "",
    "staggerScale": 1.0,
    "knockdown": false,
-   "note": "lanePITSHOVE: a shove (weights.kickMoves: shove_L, so blood.json 'kick' = little blood, no ground splat; the kick itself is a legs move and keeps its rows) staggers Joan with her existing hit_heavy state (she doubles over and back, out\\shove_L_react_compare.png); prefer = hit_shoved is used automatically once a clip with that exact state name is imported (library 102430901-shove-reaction is a candidate)"
+   "note": "lanePITSHOVE: a shove (weights.kickMoves: shove_L, so blood.json 'kick' = little blood, no ground splat; the kick itself is a legs move and keeps its rows) staggers Joan with her existing hit_heavy state (she doubles over and back, out\\shove_L_react_compare.png); prefer = hit_shoved is used automatically once a clip with that exact state name is imported (library 102430901-shove-reaction is a candidate)",
+   "startS": 0.045
   }
  ]
 }
