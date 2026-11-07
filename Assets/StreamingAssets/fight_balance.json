@@ -57,6 +57,18 @@
    "specialCooldownTicks": 0,
    "specialInitialCooldownTicks": -1,
    "specialMaxUses": 0
+  },
+  {
+    "key": "Grendel",
+    "maxHealth": 520.0,
+    "maxStamina": 0,
+    "damageMul": 0.9,
+    "takenMul": 1.0,
+    "specialDamageMul": 1.0,
+    "specialCooldownTicks": 600000,
+    "specialInitialCooldownTicks": 600000,
+    "specialMaxUses": 0,
+    "note": "laneMONSTER3 (Grendel): 480 -> 520 HP base (x opponents hpMul 1.25 = 650 vs Sobek 480 x 1.15 = 552: +18 percent), hits x0.9 like Sobek (x damageMul 1.95 vs 1.8: +8 percent). One step above Sobek on purpose; specials OFF like Sobek. Proof: 20-seed run, section 'proofs' of the MANIFEST."
   }
  ]
 }

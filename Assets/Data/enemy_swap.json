@@ -40,6 +40,34 @@
          }
         ],
     "note": "SOBEKDATA: sourceGlb empty: Tools\\clip_build.py writes Assets/Characters/Sobek/Sobek_combat.glb directly. materials empty: HdrpCharMats (hdrp_char_mats.json) skins him.  SOBEKWEAPON: keepWeapon true + socket WeaponSocket_R: the socket (a clone of the template's, LODs of the template weapon hidden by WeaponSwap) carries the trident. Unproven: EnemySwap on this rig."
+  },
+  {
+    "id": "Grendel",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "grendel_body",
+        "mat": "Assets/Characters/Grendel/Mats/grendel_body_0.mat",
+        "tex": "grendel_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "laneMONSTER3 (Grendel): sourceGlb empty: Tools/clip_build.py output is installed as Assets/Characters/Grendel/Grendel_combat.glb by this kit. keepWeapon true + WeaponSocket_R (clone of the template socket; its LODs hidden by WeaponSwap.UnarmedOn until the blade glbs exist)."
   }
 ],
   "_example_row_not_used": {

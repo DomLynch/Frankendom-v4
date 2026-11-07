@@ -190,6 +190,12 @@ def resolve_src(cfg, spec):
     return os.path.normpath(p)
 
 
+def char_rows(cfg, spec):
+    """MONSTER3 v1: base rows with the character's own replaceRows (state -> row) swapped in, plus extraRows. Key absent = old behaviour."""
+    rep = spec.get('replaceRows', {})
+    return [rep.get(r['state'], r) for r in cfg['base']] + spec.get('extraRows', [])
+
+
 def check_config(cfg, roster, ids):
     errs = []
     owners = {k: tuning_owner(cfg, roster, k) for k in cfg.get('tuning', {})}   # HCKIT6 v100
@@ -200,7 +206,7 @@ def check_config(cfg, roster, ids):
         if tun is not None:
             if tun not in owners: errs.append('%s: unknown tuning profile %s' % (cid, tun))
             elif owners[tun] != cid: errs.append('%s: tuning profile "%s" belongs to %s (refused: another character\'s profile)' % (cid, tun, owners[tun]))
-        for row in cfg['base'] + spec.get('extraRows', []):
+        for row in char_rows(cfg, spec):  # MONSTER3 v1
             if is_pack_src(row.get('src', '')) and cid not in pack_hook(cfg).get('allowedFor', []): errs.append('%s/%s: source pack %s is only for %s' % (cid, row['state'], PACK_KEY, pack_hook(cfg).get('allowedFor'))); continue   # HCKIT6 v100
             srcs = [row['src']] if 'src' in row else []
             if 'derive' in row and 'from' in row['derive']: srcs.append(row['derive']['from'])
@@ -229,6 +235,11 @@ def build_clip(cfg, row, rig_z, corr, tuning, cid, cache):
         if 'frames' in d: c.subrange(d['frames'][0], d['frames'][1]); notes.append('frames %d-%d of %s' % (d['frames'][0], d['frames'][1], d['from']))
         if 'hold' in d:
             h = d['hold']; hold_clip(c, h['frameA'], h['frameB'], h['periodS'], h['fps']); notes.append('hold ease frames %d<->%d' % (h['frameA'], h['frameB']))
+        if d.get('recentre') and c.hips_t is not None: c.hips_t[:, :2] -= c.hips_t[0, :2].copy(); notes.append('recentre')   # MONSTER3 v1: first-frame hips ground position = origin (a window cut mid-travel keeps no offset). Key absent = untouched.
+        if d.get('mirror'):   # MONSTER3 v1: left-right mirror of the raw clip (swap Left/Right bones, quaternion (x,-y,-z,w), hips x flipped). Key absent = untouched.
+            c.rot = {n.replace('Left', '@@').replace('Right', 'Left').replace('@@', 'Right'): np.stack([v[:, 0], -v[:, 1], -v[:, 2], v[:, 3]], 1) for n, v in c.rot.items()}
+            if c.hips_t is not None: c.hips_t = c.hips_t * np.array([-1.0, 1.0, 1.0])
+            notes.append('mirror')
         for op in d.get('worldRot', []):
             c.world_rot_op(op['bone'], op['axis'], op['deg']); notes.append('worldRot %s %s %+g' % (op['bone'], op['axis'], op['deg']))
         src_desc = d['from']
@@ -392,7 +403,7 @@ def build_character(cfg, roster, cid, outdir, proj, args):
     q_rig = np.array(hips['rotation']); rig_z = hips['translation'][2]
     q_mix = np.array([-math.sqrt(.5), 0, 0, math.sqrt(.5)]); corr = L.qmul(q_rig, L.qinv(q_mix))
     print('%s: body %s hips z %.5f corr %s ' % (cid, os.path.basename(body), rig_z, np.round(corr, 4)))
-    rows = cfg['base'] + spec.get('extraRows', [])
+    rows = char_rows(cfg, spec)  # MONSTER3 v1
     stamp = input_hash(cfg, spec, tuning, rows, j, b)
     if args.install: out = os.path.normpath(os.path.join(proj, rc['modelGlb'])); animout = os.path.normpath(os.path.join(proj, rc['animGlb'])) if rc.get('animGlb') else None
     else: out = os.path.join(outdir, '%s_combat.glb' % cid); animout = out.replace('_combat.glb', '_anim.glb')

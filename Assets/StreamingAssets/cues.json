@@ -22,6 +22,10 @@
   {
    "character": "*",
    "weapon": "sword"
+  },
+  {
+    "character": "Grendel",
+    "weapon": "dual_blades"
   }
  ],
  "surfaces": [
@@ -44,6 +48,10 @@
   {
    "character": "*",
    "surface": "flesh"
+  },
+  {
+    "character": "Grendel",
+    "surface": "flesh"
   }
  ],
  "voicePitch": [
@@ -66,6 +74,10 @@
   {
    "character": "*",
    "rate": 1.0
+  },
+  {
+    "character": "Grendel",
+    "rate": 0.6
   }
  ],
  "rows": [
@@ -1203,6 +1215,170 @@
         "gain": 0.55,
         "delay": 0.0,
         "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "attack_start",
+    "layer": "voice",
+    "weapon": "*",
+    "surface": "*",
+    "weight": "heavy",
+    "attacker": "Grendel",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER3 (Grendel): cloned from the Sobek voice row",
+    "play": [
+      {
+        "cue": "effort_voice",
+        "gain": 0.3,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "attacker",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "hit",
+    "layer": "impact",
+    "weapon": "dual_blades",
+    "surface": "flesh",
+    "weight": "light",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER3 (Grendel): steel on flesh / armour for the bone swords (clone of the sword row)",
+    "play": [
+      {
+        "cue": "hit_flesh",
+        "gain": 0.3,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "flesh_cut",
+        "gain": 0.12,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "hit",
+    "layer": "impact",
+    "weapon": "dual_blades",
+    "surface": "flesh",
+    "weight": "heavy",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER3 (Grendel): steel on flesh / armour for the bone swords (clone of the sword row)",
+    "play": [
+      {
+        "cue": "hit_heavy",
+        "gain": 0.3,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "flesh_cut",
+        "gain": 0.18,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "hit",
+    "layer": "impact",
+    "weapon": "dual_blades",
+    "surface": "armour",
+    "weight": "light",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER3 (Grendel): steel on flesh / armour for the bone swords (clone of the sword row)",
+    "play": [
+      {
+        "cue": "block",
+        "gain": 0.4,
+        "delay": 0,
+        "rate": 1.15,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "hit_flesh",
+        "gain": 0.16,
+        "delay": 0.01,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "hit",
+    "layer": "impact",
+    "weapon": "dual_blades",
+    "surface": "armour",
+    "weight": "heavy",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER3 (Grendel): steel on flesh / armour for the bone swords (clone of the sword row)",
+    "play": [
+      {
+        "cue": "block",
+        "gain": 0.4,
+        "delay": 0,
+        "rate": 1.15,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "hit_flesh",
+        "gain": 0.16,
+        "delay": 0.01,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "block",
+    "layer": "impact",
+    "weapon": "dual_blades",
+    "surface": "*",
+    "weight": "*",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER3 (Grendel): steel on flesh / armour for the bone swords (clone of the sword row)",
+    "play": [
+      {
+        "cue": "block",
+        "gain": 1.0,
+        "delay": 0,
+        "rate": 1.05,
         "who": "",
         "chance": 1.0
       }

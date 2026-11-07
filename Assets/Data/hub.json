@@ -418,7 +418,7 @@
   "_npcspawn": "laneNPCSPAWN v1 added: area, safe.combat.allowPress, spawner, npcs[].runtime, indicator.hudTag geometry + refuseToast, stall.buy. Readers: HubCfg.cs (all keys), HubNpcs.cs (spawner, npcs, indicator), HubSafe.cs (area, safe.combat), HubTrade.cs + MarketBuy.cs (stall.buy). Gen: _agents/laneNPCSPAWN/gen_hub_json.py. enabled stays false: nothing here is read until it is true.",
   "area": {
     "zMin": 63.0,
-    "zMax": 94.0,
+    "zMax": 98.0,
     "xHalf": 8.0,
     "_about": "the camp rectangle (world x / z), copied from market.json stall.area by gen_hub_json.py; hub_check.py keeps them equal. Safe-zone test = inside it. Monsters are held out by laneZONESPAN destSafe."
   },

@@ -292,6 +292,12 @@ def rig_audit(cfg, proj, outglb):
     return rows, bad
 
 
+def _char_rows(cfg, cid):
+    """MONSTER3 v1: the character's rows = base with its replaceRows swapped in + extraRows (same rule as clip_build.char_rows). Key absent = base."""
+    spec = cfg.get('characters', {}).get(cid, {}); rep = spec.get('replaceRows', {})
+    return [rep.get(r['state'], r) for r in cfg['base']] + spec.get('extraRows', [])
+
+
 def run(cfg, roster, reps, proj, outdir, live_override=None):
     g = cfg['gates']; allbad = []; summary = {}
     for rep in reps:
@@ -310,7 +316,7 @@ def run(cfg, roster, reps, proj, outdir, live_override=None):
             mn['knee'] = knee_for(jn, bn, st); ml['knee'] = knee_for(jl, bl, st)
             # pose vs raw (or vs ref for derived rows)
             refspec = None
-            row_cfg = [x for x in cfg['base'] if x['state'] == st][0]
+            row_cfg = [x for x in _char_rows(cfg, cid) if x['state'] == st][0]  # MONSTER3 v1: own replaceRows / extraRows
             if 'src' in row_cfg and not row_cfg.get('foreign'): refspec = row_cfg['src']
             elif row_cfg.get('ref'): refspec = row_cfg['ref']
             pose = None; poseL = None

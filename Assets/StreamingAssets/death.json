@@ -59,6 +59,17 @@
       "downStartSeconds": 2.8,
       "downFade": 0.25,
       "note": "SOBEKDATA: Pitborn timings (guess); re-time after the Sobek death clip is viewed (tail must not clip the floor)"
+    },
+    {
+      "character": "Grendel",
+      "clip": "death",
+      "startSeconds": 1.1,
+      "speed": 1.0,
+      "fade": 0.1,
+      "downEnabled": true,
+      "downStartSeconds": 2.8,
+      "downFade": 0.25,
+      "note": "laneMONSTER3 (Grendel): library dying clip, Sobek timings (re-time after a look)."
     }
   ]
 }

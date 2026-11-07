@@ -78,6 +78,29 @@
       "animMin": 0.8,
       "animMax": 1.25,
       "_note": "CHASEGAP v1 (stop = AI close-in line farApproachGap, start = longest hit + 0.1 m, out = start + Pitborn delta; rules in _agents/laneCHASEGAP/stage/chasegap_rules.json; was 2.704 / 3.64 / 5.2). PLACEHOLDER, balance lane / Dom. Sobek has no speed row anywhere yet: he inherits DuelFighter 2.2 / 5.5 until his roster row sets them SOBEKAI v1: claws: stop / start / out / slow recomputed for claw reach and Joan 3.4 m (was trident)."
+    },
+    {
+      "id": "Grendel",
+      "speedMulOfPlayerRun": 0.95,
+      "startGap": 3.52,
+      "stopGap": 2.02,
+      "slowZoneM": 1.3,
+      "accelMps2": 10.0,
+      "giveUpGap": 16.0,
+      "outOfReachGap": 4.92,
+      "giveUpOutOfReachS": 9.0,
+      "giveUpPauseS": 0.8,
+      "homeSpeedMulOfWalk": 1.0,
+      "homeArriveDist": 0.4,
+      "resetOnHome": true,
+      "followThroughGate": false,
+      "followGateMaxGap": 12.0,
+      "followArriveBehindM": 2.7,
+      "runClipFromMps": 3.3,
+      "walkClipBelowMps": 2.7,
+      "animMin": 0.8,
+      "animMax": 1.25,
+      "_note": "laneMONSTER3 (Grendel): stop = longest light stand-off (1.62 m, dw_check) + 0.4 m, start = stop + 1.5, out = start + 1.4; speed 0.95 of Joan's run (Sobek 0.92). Directional clips + stride-matched speed rows come from laneMONSTERLOCO (walk_back, run_back, strafe_run_L/R exist in his glb)."
     }
   ]
 }
