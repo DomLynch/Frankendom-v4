@@ -16,6 +16,7 @@ public class AIBrain : MonoBehaviour
     public AiState ai;                     // V3 AiState (mode, plan, habits...)
     public AiAdapt adapt;                  // V63 adaptation layer (combos, whiff punish, timing mixups, enrage, habit counters); null = off
     public string lastScores = "";         // debug: last offence scores
+    public ShoveTable.AiState shove;       // SHOVE v1 (lanePITSHOVE): per-brain shove state, created only when shove.json gives this character a row
 
     class Intent
     {
@@ -147,6 +148,8 @@ public class AIBrain : MonoBehaviour
         bool oMoved = oPrevValid && (o.transform.position - oPrevPos).sqrMagnitude > 0.000001f;
         float oldLastGap = s.lastGap;
         s.lastGap = gap; oPrevPos = o.transform.position; oPrevValid = true;
+        ShoveTable.Row shv = ShoveTable.Active ? ShoveTable.RowFor(df) : null;   // SHOVE v1: null (master off, or no row for this character) = none of the shove code runs
+        if (shv != null) { if (shove == null) shove = new ShoveTable.AiState(); ShoveTable.Track(shove, shv, df, dist, tick, n, seedOffset); }
 
         float rollCost = df.Rule("rollCost", U.rules.rollCost);
         float safeStart = df.Rule("safeStart", U.rules.safeStart), safeEnd = df.Rule("safeEnd", U.rules.safeEnd);
@@ -191,6 +194,7 @@ public class AIBrain : MonoBehaviour
             return df.stamina >= rollCost && !(p.step > 0f && clears && s.Roll() < p.step) ? AiPlan.Dodge : AiPlan.Evade;
         }
 
+        if (canAct && !exhausted && BellyBite.AiWants(df, o, gap, tick)) { intent.action = BellyBite.Cfg.moveId; return intent; }   // BELLYBITE v1: Pitborn belly grab (master switch + ai.enabled in belly_bite.json)
         // Special moves (off unless unity.useSpecials): cast whenever ready and in reach
         if (U.useSpecials && canAct && !exhausted && U.specialMoves != null)
         {
@@ -383,6 +387,11 @@ public class AIBrain : MonoBehaviour
             return Done();
         }
 
+        if (shv != null && canAct && !exhausted && !(threat && shv.requireNoThreat))   // SHOVE v1: the free-hand shove when crowded (ShoveTable.Pick: data range, crowd time, cooldown, chance)
+        {
+            string shoveId = ShoveTable.Pick(shove, shv, df, o, dist, op, tick);
+            if (shoveId != null) { intent.action = shoveId; return intent; }
+        }
         // ---- offence: utility scores over what the opponent is committed to ----
         if ((canAct || chainOpen) && !exhausted)
         {

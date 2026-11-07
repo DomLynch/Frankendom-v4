@@ -18,6 +18,7 @@ public class CameraRig : MonoBehaviour
     public float framingOk = 1f;   // test-only (read by diagnostics)
     public float lockRange = 12f;
     float lockW; Vector3 camPos, lookAt; bool snapped; float lockYaw;
+    float colLen, colClearT, fovDeathW; bool colLenInit, freePitchInit, hadEnemy; Vector3 fcRes, fcResLook; readonly RaycastHit[] fcHits = new RaycastHit[16];   // FREECAM v1: free camera collision smoothing, one-time start pitch, fight-end catch-up (position + lens)
     // CAMZONE v1: read-only view for the -camtrace recorder and the numbers of the last lock frame (float stores only, the pose is unchanged)
     public float LockW { get { return lockW; } } public Vector3 LookAt { get { return lookAt; } } public float dbgGap, dbgBaseH, dbgBack, dbgColWanted; public bool dbgLockOn, dbgColHit; public Collider dbgColCollider;
     [System.Serializable] class FreeRow { public float yawLimitDeg = 55f, pitchMinDeg = -5f, pitchMaxDeg = 45f; }
@@ -25,7 +26,9 @@ public class CameraRig : MonoBehaviour
     void LoadFree() { freeLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_free.json", Application.dataPath + "/Data/camera_free.json" }) { if (!System.IO.File.Exists(p)) continue; try { free = JsonUtility.FromJson<FreeRow>(System.IO.File.ReadAllText(p)); } catch { } break; } }
     [System.Serializable] class ColRow { public bool enabled = false; public float radius = 0.35f, minDistFromTarget = 1.2f, minGroundY = 0f, minHeightAboveGround = 0.6f; public int[] ignoreLayers = { 8, 9 }; }
     // V68: lock-on pose multipliers as data (camera_pose.json, StreamingAssets first). 1/1/0 = the V3 pose as before.
-    [System.Serializable] class CamPoseRow { public float backMul = 1f, heightMul = 1f, lookYAdd = 0f, shoulder = 1f; public LockCamRow lockCam = new LockCamRow(); public CamZone.Row zone = new CamZone.Row(); /* CAMZONE v1 */ } /*HCKIT1 v93*/
+    [System.Serializable] class CamPoseRow { public float backMul = 1f, heightMul = 1f, lookYAdd = 0f, shoulder = 1f; public LockCamRow lockCam = new LockCamRow(); public CamZone.Row zone = new CamZone.Row(); /* CAMZONE v1 */ public FreeCamRow freeCam = new FreeCamRow(); /* FREECAM v1 */ } /*HCKIT1 v93*/
+    /* FREECAM v1: the free (lock-off) camera as data, camera_pose.json "freeCam". enabled=false = the public fields above (distance 3.3 / height 1.6 / shoulder 0.5) and the old instant collision, exactly as before. */
+    [System.Serializable] class FreeCamRow { public bool enabled = false, ignoreSelf = true; public float distance = 3.3f, height = 1.6f, shoulder = 0.5f, startPitchDeg = 8f, colReleaseMPerS = 3f, colHoldS = 0.35f, catchRate = 2.5f, fovEaseS = 1.2f; public float fovEaseMinS = 0.05f; /* DATALAYER b8 */ }
     /* K3: the V3 closed-form constants (every default = the literal that used to be inline; camera_pose.json lockCam ships the same numbers) */
     [System.Serializable] class FoeRow { public float refHeightM = 1.8f, scaleToM = 2.1f, back = 2.4f, height = 1.6f; public bool useRosterHeight = true; }   /* foe = how much taller than refHeightM; scaleToM = metres per scale unit; roster heightM > 0 wins */
     [System.Serializable] class LockCamRow { public float backMin = 4.2f, backPerM = 0.62f, backAdd = 2.8f, backOuter = 1.3f, heightMin = 3.2f, heightPerM = 1.3f, heightScale = 0.67f, heightOuter = 1.3f, blendRate = 8f, gapMin = 0.8f, lookUp = 0.8f, lookAhead = 0.3f, xClamp = 11.5f, fovFree = 50f, fovLock = 38.6f; public FoeRow foe = new FoeRow(); public Vector3 fallbackPos = new Vector3(0f, 3f, 5f), fallbackLook = new Vector3(0f, 1f, 15f); }
@@ -38,12 +41,32 @@ public class CameraRig : MonoBehaviour
         if (fo.useRosterHeight) { if (foeTr != enemy) { foeTr = enemy; foeRosterH = Roster.Get(Roster.IdOf(enemy)).heightM; } if (foeRosterH > 0f) m = foeRosterH; }
         return Mathf.Max(0f, (m - fo.refHeightM) / fo.refHeightM);
     }
-    void LoadPoseFile() { poseLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_pose.json", Application.dataPath + "/Data/camera_pose.json" }) { if (!System.IO.File.Exists(p)) continue; try { var r = JsonUtility.FromJson<CamPoseRow>(System.IO.File.ReadAllText(p)); if (r != null) { if (r.lockCam == null) r.lockCam = new LockCamRow(); if (r.zone == null) r.zone = new CamZone.Row(); /* CAMZONE v1 */ if (r.lockCam.foe == null) r.lockCam.foe = new FoeRow(); pose = r; } } catch { } break; } }
+    void LoadPoseFile() { poseLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_pose.json", Application.dataPath + "/Data/camera_pose.json" }) { if (!System.IO.File.Exists(p)) continue; try { var r = JsonUtility.FromJson<CamPoseRow>(System.IO.File.ReadAllText(p)); if (r != null) { if (r.lockCam == null) r.lockCam = new LockCamRow(); if (r.zone == null) r.zone = new CamZone.Row(); /* CAMZONE v1 */ if (r.freeCam == null) r.freeCam = new FreeCamRow(); /* FREECAM v1 */ if (r.lockCam.foe == null) r.lockCam.foe = new FoeRow(); pose = r; } } catch { } break; } }
     ColRow col = new ColRow(); bool colLoaded, goodSet; Vector3 lastGoodPos = new Vector3(0f, 3f, 5f), lastGoodLook = new Vector3(0f, 1f, 15f), lastGoodFwd = Vector3.forward;
     static bool IsFinite(Vector3 v) { return !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z) || float.IsInfinity(v.x) || float.IsInfinity(v.y) || float.IsInfinity(v.z)); }
     void LoadCol() { colLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_collision.json", Application.dataPath + "/Data/camera_collision.json" }) { if (!System.IO.File.Exists(p)) continue; try { col = JsonUtility.FromJson<ColRow>(System.IO.File.ReadAllText(p)); } catch { } break; } if (col == null) col = new ColRow(); }
     Camera cam; CameraImpact impact;
     public void Recenter() { if (target) yaw = target.eulerAngles.y; }
+    // FREECAM v1: the free camera collision. Same cast as before (sphere from the look-at to the camera, same mask, same minDistFromTarget) except: the player's own colliders are skipped (ignoreSelf),
+    // a hit pulls the camera in AT ONCE (never through a wall), and it is released slowly (colReleaseMPerS) and only after colHoldS without a hit, so a post or a prop edge cannot make it pop in and out.
+    Vector3 FreeCol(Vector3 from, Vector3 dirv, float len, int mask, Vector3 drawPos)
+    {
+        var fc = pose.freeCam; Vector3 dn = dirv / len; float want = len, best = float.MaxValue;
+        int n = Physics.SphereCastNonAlloc(from, col.radius, dn, fcHits, len, mask, QueryTriggerInteraction.Ignore);
+        for (int i = 0; i < n; i++)
+        {
+            var c = fcHits[i].collider; if (c == null) continue;
+            if (fc.ignoreSelf && target != null && c.transform.IsChildOf(target)) continue;
+            if (fcHits[i].distance < best) { best = fcHits[i].distance; dbgColCollider = c; }
+        }
+        if (best < float.MaxValue) { want = Mathf.Min(len, Mathf.Max(col.minDistFromTarget, best)); dbgColHit = true; } else dbgColCollider = null;
+        float dt = Time.deltaTime;
+        if (!colLenInit) { colLen = want; colLenInit = true; colClearT = 0f; }
+        else if (want <= colLen) { colLen = want; colClearT = 0f; }
+        else { colClearT += dt; if (colClearT >= fc.colHoldS) colLen = Mathf.MoveTowards(colLen, want, fc.colReleaseMPerS * dt); }
+        colLen = Mathf.Min(colLen, len);
+        return colLen < len - 0.0001f ? from + dn * colLen : drawPos;
+    }
     void Awake() { cam = GetComponent<Camera>(); impact = GetComponent<CameraImpact>(); if (!impact) impact = gameObject.AddComponent<CameraImpact>(); foreach (var a in System.Environment.GetCommandLineArgs()) if (a == "-autoplay") lockRange = 80f; }
     void Start() { if (Application.isPlaying && !Application.isBatchMode) { Cursor.lockState = CursorLockMode.Locked; Cursor.visible = false; } }
 
@@ -79,12 +102,15 @@ public class CameraRig : MonoBehaviour
             yaw += Input.GetAxis("Mouse X") * sensitivity * MenuSettings.CamSens; /* MENU v100: Settings > Gameplay > camera sensitivity */ yaw = Mathf.Clamp(Mathf.DeltaAngle(0f, yaw), -free.yawLimitDeg, free.yawLimitDeg);
             pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * sensitivity * MenuSettings.CamSens, free.pitchMinDeg, CamZone.PitchMax(pose.zone, free.pitchMaxDeg)); /* MENU v100 */ /* CAMZONE v1 */
         }
+        var fcr = pose.freeCam; bool fcOn = fcr.enabled && lockW <= 0.001f;   // FREECAM v1: the free camera only; while any lock weight is left, the collision path below is the old one
+        if (fcr.enabled && !freePitchInit) { freePitchInit = true; pitch = Mathf.Clamp(fcr.startPitchDeg, free.pitchMinDeg, CamZone.PitchMax(pose.zone, free.pitchMaxDeg)); }   // FREECAM v1: the scene starts at 2 deg, the zone free pitch after a lock is 8: one value
         var rot = Quaternion.Euler(pitch, yaw, 0f);
-        Vector3 focus = target.position + Vector3.up * height + rot * Vector3.right * shoulder;
-        Vector3 freePos = focus - rot * Vector3.forward * distance, freeLook = focus;
+        Vector3 focus = target.position + Vector3.up * (fcr.enabled ? fcr.height : height) + rot * Vector3.right * (fcr.enabled ? fcr.shoulder : shoulder);   // FREECAM v1
+        Vector3 freePos = focus - rot * Vector3.forward * (fcr.enabled ? fcr.distance : distance), freeLook = focus;
 
         if (enemy)
         {
+            hadEnemy = true;   // FREECAM v1
             Vector3 P = target.position, E = enemy.position;
             P.y = Mathf.Max(P.y, col.minGroundY); E.y = Mathf.Max(E.y, col.minGroundY);   // a fighter that fell out of the world must not drag the camera down with it (audit E)
             Vector3 flat = E - P; flat.y = 0f; float d = Mathf.Max(pose.lockCam.gapMin, CamZone.CapGap(pose.zone, flat.magnitude));  /* CAMZONE v1 */
@@ -110,7 +136,16 @@ public class CameraRig : MonoBehaviour
             else { camPos = Vector3.Lerp(camPos, wantPos, blend); lookAt = Vector3.Lerp(lookAt, wantLook, blend); }
             if (lockW > 0.5f) { yaw = lockYaw; pitch = CamZone.FreePitch(pose.zone, pitch); /* CAMZONE v1 */ }   // keep the free camera continuous when the lock breaks
         }
-        else { camPos = freePos; lookAt = freeLook; CamFraming.Clear(); }
+        else
+        {
+            if (fcr.enabled && snapped)   // FREECAM v1: the fight ended (CamZone released rig.enemy / the death camera let go): the camera eases from where it was to the free pose (the offset decays, no lag while walking), it no longer jumps
+            {
+                if (hadEnemy) { fcRes = camPos - freePos; fcResLook = lookAt - freeLook; hadEnemy = false; }
+                float kdec = Mathf.Exp(-fcr.catchRate * dt); fcRes *= kdec; fcResLook *= kdec; camPos = freePos + fcRes; lookAt = freeLook + fcResLook;
+            }
+            else { camPos = freePos; lookAt = freeLook; }
+            CamFraming.Clear();
+        }
 
         var drawPos = enemy ? CamFraming.Fit(camPos, lookAt, lockW, cam.aspect) : camPos;   // V65CAM: pushed straight back along the view ray until both fighters fit
         if (enemy) drawPos = CamReframe.Pos(drawPos, lookAt, lockW, cam.aspect);   // CAMREFRAME v102: pulled in toward maxDistM while both still fit, pitch <= 4 deg
@@ -121,7 +156,9 @@ public class CameraRig : MonoBehaviour
             if (len > 0.01f)
             {
                 int mask = PhysMasks.NotPhys; foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
-                if (Physics.SphereCast(from, col.radius, dirv / len, out var ch, len, mask, QueryTriggerInteraction.Ignore))
+                if (!fcOn) colLenInit = false;   // FREECAM v1: the smoothed length restarts from the live cast when the free camera begins
+                if (fcOn) drawPos = FreeCol(from, dirv, len, mask, drawPos);   // FREECAM v1
+                else if (Physics.SphereCast(from, col.radius, dirv / len, out var ch, len, mask, QueryTriggerInteraction.Ignore))
                     { drawPos = from + dirv / len * Mathf.Max(col.minDistFromTarget, ch.distance); dbgColHit = true; dbgColCollider = ch.collider; /* CAMZONE v1 */ }
             }
         }
@@ -129,7 +166,9 @@ public class CameraRig : MonoBehaviour
         transform.position = drawPos;
         var lookDir = lookAt - transform.position; if (lookDir.sqrMagnitude < 1e-6f) lookDir = lastGoodFwd;
         transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
-        cam.fieldOfView = CamFraming.WidenFov(transform, Mathf.Lerp(Mathf.Lerp(pose.lockCam.fovFree, pose.lockCam.fovLock, lockW), CameraDeath.Fov, CameraDeath.Weight), lockW, cam.aspect);   // V65CAM: opens up only if collision still crops a fighter
+        float dw = CameraDeath.Weight;   // FREECAM v1: CameraDeath.Shape only runs while rig.enemy is set, so once CamZone released the corpse its weight (FOV 38) stayed 1 in the free camera for good: it now eases out over fovEaseS
+        if (fcr.enabled) { if (!enemy) { fovDeathW = Mathf.MoveTowards(fovDeathW, 0f, dt / Mathf.Max(fcr.fovEaseMinS, fcr.fovEaseS) /* DATALAYER b8 */); dw = fovDeathW; } else fovDeathW = dw; }
+        cam.fieldOfView = CamFraming.WidenFov(transform, Mathf.Lerp(Mathf.Lerp(pose.lockCam.fovFree, pose.lockCam.fovLock, lockW), CameraDeath.Fov, dw), lockW, cam.aspect);   // V65CAM: opens up only if collision still crops a fighter
         if (impact) impact.Apply(transform); CamShake.Apply(transform);   // V65CAM: weight-scaled shake (camera_impact.json shake) on top;   // contact kick + roll tumble on top of the pose, on unscaled time (CameraImpact.cs)
         // hard floor for EVERY camera mode (impact shake / roll dip / crit / low-HP cuts included): never below ground + minHeight, never NaN
         {

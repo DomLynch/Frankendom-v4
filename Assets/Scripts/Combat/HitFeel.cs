@@ -39,7 +39,7 @@ public static class HitFeelTable
         public float speedMin = 3f, speedRange = 6f, speedPerStrength = 0.35f;
         public float lifeMin = 0.18f, lifeRange = 0.27f, gravity = 1.2f;
         public float sizeMin = 0.03f, sizeRange = 0.03f, lengthScale = 2.2f, velocityScale = 0.09f, maxParticleSize = 0.5f;
-        public float glintLife = 0.07f, glintSize = 0.3f, glintSizePerStrength = 0.25f, glintIntensity = 8f;
+        public float glintLife = 0.07f, glintSize = 0.3f, glintSizePerStrength = 0.25f, glintIntensity = 8f; public float glintTowardCamM = 0.1f, colorAlphaMid = 0.85f, colorAlphaMidAt = 0.5f; /* DATALAYER b12 */
         public float refDistance = 4f, maxGrow = 2.2f;      // readability: size x clamp(cameraDistance / refDistance, 1, maxGrow)
     }
     [Serializable]
@@ -54,6 +54,10 @@ public static class HitFeelTable
         public float lengthScale = 1.6f, velocityScale = 0f, softDistance = -1f, sizeScale = 1f, countScale = 1f;   // softDistance < 0 = leave the fx_materials.json role value
         public Color startColor = new Color(0.412f, 0.059f, 0.051f, 1f), endColor = new Color(0.125f, 0.02f, 0.016f, 1f);
         public Color dropColor = new Color(0.145f, 0.008f, 0.008f, 1f), mistColor = new Color(0.22f, 0.015f, 0.015f, 0.95f);
+        // HCAUDIT1 v104: the finisher blood spray (GoreFx.Spray) - its gradient / stretch / budget used to be literals in GoreFx.cs (the v69 look); defaults = those literals
+        public Color sprayStartColor = new Color(0.412f, 0.059f, 0.051f, 1f), sprayEndColor = new Color(0.125f, 0.02f, 0.016f, 1f);
+        public float sprayAlphaMid = 0.9f, sprayAlphaMidAt = 0.7f, sprayTaper = 0.05f, sprayLengthScale = 3.2f, sprayMaxParticleSize = 0.5f, sprayConeRadius = 0.01f, sprayCleanupPadS = 2f;
+        public int sprayMaxParticles = 600;
     }
     [Serializable]
     public class Data
@@ -110,7 +114,7 @@ public class HitFeel : MonoBehaviour
     public static void PrewarmEmit(Vector3 pos, float size)
     {
         if (instance == null || !instance.sparkReady) return;
-        var ep = new ParticleSystem.EmitParams(); ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = 0.1f; ep.startSize = size; ep.startColor = (Color32)Color.white;
+        var ep = new ParticleSystem.EmitParams(); ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = HitVfxCfg.Get().prewarmLifeS; ep.startSize = size; /* DATALAYER b12 */ ep.startColor = (Color32)Color.white;
         instance.sparkPS.Emit(ep, 1); instance.glintPS.Emit(ep, 1);
     }
     public static void CollectPrewarm(List<Material> into)
@@ -195,7 +199,7 @@ public class HitFeel : MonoBehaviour
     {
         var col = ps.colorOverLifetime; col.enabled = true; var g = new Gradient();
         g.SetKeys(new[] { new GradientColorKey(hot, 0f), new GradientColorKey(cool, Mathf.Clamp(coolAt, 0.01f, 0.99f)), new GradientColorKey(cool, 1f) },
-                  new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0.85f, 0.5f), new GradientAlphaKey(0f, 1f) });
+                  new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(HitFeelTable.Get().sparks.colorAlphaMid, HitFeelTable.Get().sparks.colorAlphaMidAt), new GradientAlphaKey(0f, 1f) }); /* DATALAYER b12 */
         col.color = g;
     }
 
@@ -372,7 +376,7 @@ public class HitFeel : MonoBehaviour
             sparkPS.Emit(ep, 1);
         }
         var gp = new ParticleSystem.EmitParams();
-        gp.position = anchor + toCam * 0.1f; gp.velocity = Vector3.zero; gp.startLifetime = sp.glintLife; gp.startSize = (sp.glintSize + strength * sp.glintSizePerStrength) * grow; gp.startColor = (Color32)Color.white;
+        gp.position = anchor + toCam * sp.glintTowardCamM; /* DATALAYER b12 */ gp.velocity = Vector3.zero; gp.startLifetime = sp.glintLife; gp.startSize = (sp.glintSize + strength * sp.glintSizePerStrength) * grow; gp.startColor = (Color32)Color.white;
         glintPS.Emit(gp, 1);
         Bursts++;
     }

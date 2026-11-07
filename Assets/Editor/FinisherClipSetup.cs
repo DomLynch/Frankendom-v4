@@ -21,7 +21,7 @@ using UnityEngine;
 public static class FinisherClipSetup
 {
     [Serializable] class CharCfg { public string name, controller, referenceState, outClipDir, bakedGlb; /* CLIPBUILD2 v1: bakedGlb = clips already baked onto this character's own skeleton (Tools/clip_sets.py) */ public float hipsRestZ = 1f; public float[] hipsCorrection; }
-    [Serializable] class ClipCfg { public string id, file, role, rootXZ = "inplace"; public string[] targets; public float maxStepM, hipsRestZ = 1f, hipsYOffsetM, expectedDurationS; }
+    [Serializable] class ClipCfg { public string id, file, role, rootXZ = "inplace"; public string bakedGlb; /* BELLYGRAB v1: per-clip baked glb (character rows without their own bakedGlb) */ public string[] targets; public float maxStepM, hipsRestZ = 1f, hipsYOffsetM, expectedDurationS; }
     [Serializable] class EntryCfg { public string id, attackerSide = "any", attackerClip, victimClip; public bool enabled; }
     [Serializable] class ImportCfg { public string sourceDir, glbDir; public CharCfg[] characters; public ClipCfg[] clips; }
     [Serializable] class Root { public ImportCfg clipImport; public EntryCfg[] entries; }
@@ -256,11 +256,12 @@ public static class FinisherClipSetup
             var cc = cfg.clips[i];
             if (!Targets(cc, ch.name)) continue;
             // CLIPBUILD2 v1: the clip is already baked onto this character's own 106-joint skeleton (Joan_finishers.glb, Tools/clip_sets.py): copy the curves (path remap only), no Hips retarget here.
-            if (!string.IsNullOrEmpty(ch.bakedGlb))
+            string bakedPath = !string.IsNullOrEmpty(ch.bakedGlb) ? ch.bakedGlb : cc.bakedGlb;   // BELLYGRAB v1
+            if (!string.IsNullOrEmpty(bakedPath))
             {
                 AnimationClip bs = null;
-                foreach (var bo in AssetDatabase.LoadAllAssetsAtPath(ch.bakedGlb)) { var bac = bo as AnimationClip; if (bac != null && bac.name == cc.id) { bs = bac; break; } }
-                if (bs == null) { Debug.LogWarning("FinisherClipSetup: " + ch.name + " clip '" + cc.id + "': not in baked glb " + ch.bakedGlb); totalUnmatched++; continue; }
+                foreach (var bo in AssetDatabase.LoadAllAssetsAtPath(bakedPath)) { var bac = bo as AnimationClip; if (bac != null && bac.name == cc.id) { bs = bac; break; } }
+                if (bs == null) { Debug.LogWarning("FinisherClipSetup: " + ch.name + " clip '" + cc.id + "': not in baked glb " + bakedPath); totalUnmatched++; continue; }
                 string bpath = ch.outClipDir + "/" + cc.id + ".anim";
                 var bdst = AssetDatabase.LoadAssetAtPath<AnimationClip>(bpath); bool bNew = bdst == null;
                 if (bNew) bdst = new AnimationClip(); else bdst.ClearCurves();

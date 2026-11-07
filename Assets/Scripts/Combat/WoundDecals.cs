@@ -217,7 +217,7 @@ public static class WoundDecals
         Vector3 a2v = victim.transform.position - ev.actor.transform.position; a2v.y = 0f; a2v = a2v.sqrMagnitude > 1e-4f ? a2v.normalized : victim.transform.forward;
         Vector3 right = Vector3.Cross(Vector3.up, a2v);   // attacker-facing frame, +right = victim's left from the attacker's view; side is mirrored by hitDirection below
         float side = ev.direction == "left" ? -1f : ev.direction == "right" ? 1f : Between(s, -1f, 1f) * 0.4f;
-        Vector3 point = victim.transform.position + Vector3.up * h * sc - a2v * row.bodyRadius * sc + right * (side * row.lateral + Between(s, -row.lateralJitter, row.lateralJitter)) * sc;
+        Vector3 point = victim.transform.position + Vector3.up * h * sc - a2v * (loc == "head" && row.headRadiusM > 0f ? row.headRadiusM : row.bodyRadius) * sc /* KITHIT v1 */ + right * (side * row.lateral + Between(s, -row.lateralJitter, row.lateralJitter)) * sc;
         // v69 (B1 tier a): put the mark on the victim's real surface, not on a guessed body radius: ray along the swing against the victim's colliders; no hit = the old guessed point
         bool onSurface = false;
         { var cols = victim.GetComponentsInChildren<Collider>(); float best = float.MaxValue; var ray = new Ray(point - a2v * 1.0f * sc, a2v);

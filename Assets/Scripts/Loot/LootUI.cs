@@ -135,7 +135,7 @@ public sealed class LootUI : MonoBehaviour
         {
             var d = queue[i]; GearItem it;
             if (!LootBridge.Catalog.TryGet(d.id, out it)) { Debug.LogWarning("[LootUI] unknown item id '" + d.id + "' (not in gear.json / loot_ui.json fallbackItems): no marker."); continue; }
-            Vector3 p = d.pos; int n = 0;
+            Vector3 p = WeaponDrop.PillarAt(d.id, d.pos); int n = 0;   // WEAPONDROP v1: the pillar of a listed loot item stands on the dropped weapon
             while (Crowded(p) && n < 12) { float ang = (n + live.Count) * 2.399963f; p = d.pos + new Vector3(Mathf.Cos(ang), 0f, Mathf.Sin(ang)) * P.spread * (1f + n / 6); n++; }
             var pk = LootPickup.Spawn(d.id, it, Ground(p)); live.Add(pk);
             Debug.Log("[LootUI] marker '" + d.id + "' at " + pk.Anchor.ToString("F2"));
@@ -182,6 +182,7 @@ public sealed class LootUI : MonoBehaviour
     void Collect(LootPickup p)
     {
         var T = LootCfg.Get().text; live.Remove(p); near = null; PickupInReach = false;
+        WeaponDrop.OnLootCollected(p.itemId);   // WEAPONDROP v1: the dropped weapon for this item goes away with the pickup
         p.Collect(); bool fresh = LootSave.Add(p.itemId);
         toastItem = p.item; toastName = p.item != null ? p.item.name : LootCfg.Pretty(p.itemId); toastSub = T.acquiredSub; toastAt = Time.unscaledTime;
         Debug.Log("[LootUI] picked up '" + p.itemId + "'" + (fresh ? "" : " (already carried)") + " -> " + LootSave.Path_);

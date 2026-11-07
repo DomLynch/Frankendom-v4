@@ -290,7 +290,7 @@
           "leash": 26.0,
           "hpMul": 1.0,
           "damageMul": 1.0,
-          "difficulty": 8
+          "difficulty": 11
         }
       ],
       "services": [],
@@ -386,10 +386,10 @@
         {
           "id": "npc_traveller",
           "pos": [
-            3.5,
-            93.3
+            -2.6,
+            82.5
           ],
-          "yaw": 235,
+          "yaw": 90,
           "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
         }
       ],

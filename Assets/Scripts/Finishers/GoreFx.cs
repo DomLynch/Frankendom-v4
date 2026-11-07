@@ -117,7 +117,7 @@ public static class GoreFx
         var main = ps.main; main.playOnAwake = false; main.loop = false; main.simulationSpace = ParticleSystemSimulationSpace.World; main.maxParticles = 4; main.startLifetime = 0.1f; main.startSpeed = 0f;
         var em = ps.emission; em.enabled = false; var sh = ps.shape; sh.enabled = false;
         var r = go.GetComponent<ParticleSystemRenderer>();
-        r.sharedMaterial = sprayMat; r.renderMode = ParticleSystemRenderMode.Stretch; r.lengthScale = 3.2f; r.velocityScale = 0f; r.cameraVelocityScale = 0f; r.maxParticleSize = 0.5f;
+        r.sharedMaterial = sprayMat; r.renderMode = ParticleSystemRenderMode.Stretch; r.lengthScale = HitFeelTable.Get().blood.sprayLengthScale; r.velocityScale = 0f; r.cameraVelocityScale = 0f; r.maxParticleSize = HitFeelTable.Get().blood.sprayMaxParticleSize; /* HCAUDIT1 v104 */
         var ep = new ParticleSystem.EmitParams(); ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = 0.1f; ep.startSize = size; ep.startColor = Color.white;
         ps.Emit(ep, 1);
         ps.Play();
@@ -139,12 +139,12 @@ public static class GoreFx
         var ps = go.AddComponent<ParticleSystem>();
         ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         var main = ps.main; main.playOnAwake = false; main.loop = false; main.duration = secs; main.simulationSpace = ParticleSystemSimulationSpace.World;
-        main.gravityModifier = c.gravity / 9.81f; main.maxParticles = 600;
+        main.gravityModifier = c.gravity / 9.81f; main.maxParticles = HitFeelTable.Get().blood.sprayMaxParticles; /* HCAUDIT1 v104 */
         main.startLifetime = new ParticleSystem.MinMaxCurve(c.life[0], c.life[1]);
         main.startSpeed = new ParticleSystem.MinMaxCurve(c.speed[0], c.speed[1]);
         main.startSize = new ParticleSystem.MinMaxCurve(c.size[0], c.size[1]);
         var em = ps.emission; em.enabled = true;
-        var decay = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(1f, 0.05f));   // jet tapers to drips
+        var decay = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(1f, HitFeelTable.Get().blood.sprayTaper) /* HCAUDIT1 v104 */);   // jet tapers to drips
         if (phased)
         {
             // V1FIN v94: STEPPED rate (and speed) per phase, normalised over the system duration: rate_i from the end of phase i-1 to phaseUntilS[i]
@@ -163,16 +163,16 @@ public static class GoreFx
         }
         else
         em.rateOverTime = new ParticleSystem.MinMaxCurve(c.rate, decay);
-        var sh = ps.shape; sh.enabled = true; sh.shapeType = ParticleSystemShapeType.Cone; sh.angle = c.coneDeg; sh.radius = 0.01f;
+        var sh = ps.shape; sh.enabled = true; sh.shapeType = ParticleSystemShapeType.Cone; sh.angle = c.coneDeg; sh.radius = HitFeelTable.Get().blood.sprayConeRadius; /* HCAUDIT1 v104 */
         var col = ps.colorOverLifetime; col.enabled = true; var g = new Gradient();
-        g.SetKeys(new[] { new GradientColorKey(new Color(0.412f, 0.059f, 0.051f), 0f), new GradientColorKey(new Color(0.125f, 0.02f, 0.016f), 1f) },
-                  new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0.9f, 0.7f), new GradientAlphaKey(0f, 1f) });
+        g.SetKeys(new[] { new GradientColorKey(HitFeelTable.Get().blood.sprayStartColor, 0f), new GradientColorKey(HitFeelTable.Get().blood.sprayEndColor, 1f) }, /* HCAUDIT1 v104 */
+                  new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(HitFeelTable.Get().blood.sprayAlphaMid, HitFeelTable.Get().blood.sprayAlphaMidAt), new GradientAlphaKey(0f, 1f) }); /* HCAUDIT1 v104 */
         col.color = g;
         var r = go.GetComponent<ParticleSystemRenderer>();
-        r.sharedMaterial = sprayMat; r.renderMode = ParticleSystemRenderMode.Stretch; r.lengthScale = 3.2f; r.velocityScale = 0f; r.cameraVelocityScale = 0f; r.maxParticleSize = 0.5f;
+        r.sharedMaterial = sprayMat; r.renderMode = ParticleSystemRenderMode.Stretch; r.lengthScale = HitFeelTable.Get().blood.sprayLengthScale; r.velocityScale = 0f; r.cameraVelocityScale = 0f; r.maxParticleSize = HitFeelTable.Get().blood.sprayMaxParticleSize; /* HCAUDIT1 v104 */
         ps.Play();
         FinVis.OnSpray(go, ps, c, secs);   // FINVIS v1: lit droplets + the wound seep (no-op when finisherVfx.v2 is off)
-        UnityEngine.Object.Destroy(go, secs + c.life[1] + 2f);
+        UnityEngine.Object.Destroy(go, secs + c.life[1] + HitFeelTable.Get().blood.sprayCleanupPadS /* HCAUDIT1 v104 */);
         return ps;
     }
 

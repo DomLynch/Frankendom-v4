@@ -24,7 +24,7 @@ public static class LootSave
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = false; Applied = false; LastError = ""; startPaid = false; }
 
-    public static string Path_ { get { return Path.Combine(Application.persistentDataPath, LootCfg.Get().save.file); } }
+    public static string Path_ { get { return Path.Combine(SavePaths.Dir, LootCfg.Get().save.file); } }
     public static IList<string> Owned { get { EnsureLoaded(); return owned; } }
     public static IList<SlotRow> Wanted { get { EnsureLoaded(); return wanted; } }
     /// <summary>Mark an item as carried without writing the file (the caller saves). True when it was new.</summary>

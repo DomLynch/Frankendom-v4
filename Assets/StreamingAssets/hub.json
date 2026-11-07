@@ -218,7 +218,7 @@
       "role": "traveller",
       "title": "Traveller",
       "spot": "npc_traveller",
-      "yaw": 235,
+      "yaw": 90,
       "clip": "Idle",
       "phaseSeconds": 2.6,
       "interact": {

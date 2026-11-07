@@ -60,7 +60,7 @@ public class PlayerBrain : MonoBehaviour
             if (strike && firedOnDown && !heavyFired && Time.time - strikeDown >= fc.input.holdToHeavyMs / 1000f)   // hold-to-heavy upgrade (cancel.json input.holdToHeavyMs)
             {
                 if (df.UpgradeToHeavy(fc.input.holdToHeavyUntilTick)) heavyFired = true;
-                else if (df.state == FState.Active || df.state == FState.Recovery || Time.time - strikeDown > 0.6f) heavyFired = true;   // too late for this light: stop trying
+                else if (df.state == FState.Active || df.state == FState.Recovery || Time.time - strikeDown > fc.input.holdToHeavyGiveUpS /* HCAUDIT1 v104 */) heavyFired = true;   // too late for this light: stop trying
             }
             if (!strike)
             {
@@ -102,9 +102,10 @@ public class PlayerBrain : MonoBehaviour
     bool firedOnDown;
     void FireLight(Vector2 inp)
     {
-        if (inp.y > 0.5f && Mathf.Abs(inp.x) < 0.5f) df.Press("thrust");
-        else if (inp.x < -0.5f) df.Press("light_left");
-        else if (inp.x > 0.5f) df.Press("light_right");
+        float th = CombatFeel.Get().input.stickLight; /* HCAUDIT1 v104 */
+        if (inp.y > th && Mathf.Abs(inp.x) < th) df.Press("thrust");
+        else if (inp.x < -th) df.Press("light_left");
+        else if (inp.x > th) df.Press("light_right");
         else df.Press("light");
     }
     // latency probe (flag only): label the physical key-down the sim / animator start is measured from

@@ -19,10 +19,10 @@ public static class Zone2Build
     {
         var sc = EditorSceneManager.GetActiveScene();
         if (!sc.path.EndsWith("HadesSlice.unity")) sc = EditorSceneManager.OpenScene("Assets/Scenes/HadesSlice.unity");
-        SpanData.Reload(); var K = SpanData.Get();
+        SpanData.Reload(); var K = SpanData.Get(); bool stampOk = Zone2TerrainStamp.Apply(K); /* TERRAINSTAMP v2 */
         foreach (var row in K.zones)
         {
-            if (row == null) continue; float D = row.offsetZ;
+            if (row == null) continue; float D = row.offsetZ; if (row.terrain.mode == "stamp" && !stampOk) { row.terrain.mode = "crop"; row.terrain.yBias = -0.02f; Debug.LogWarning("[Zone2Build] stamp not available: zone " + row.id + " uses the crop path"); } /* TERRAINSTAMP v2 */
             string lay = Path.Combine(Application.dataPath, "Data/" + row.layout);
             if (!File.Exists(lay)) { Debug.LogError("[Zone2Build] zone '" + row.id + "': missing " + lay + " (run gen_zone2.py / apply_zonespan.py --apply)"); continue; }
             var old = GameObject.Find(row.root); if (old != null) Object.DestroyImmediate(old);

@@ -65,13 +65,13 @@ public class FootGround : MonoBehaviour
         if (row == null || !row.enabled) { row = null; return; }
         anim = GetComponentInChildren<Animator>(true); if (anim == null) anim = GetComponentInParent<Animator>();
         foreach (var t in GetComponentsInChildren<Transform>(true))
-            switch (t.name)
+            switch (Roster.BoneRole(Roster.BonePrefix(this), t.name)) /* HCAUDIT1 v104 */
             {
-                case "mixamorig:Hips": hips = t; break;
-                case "mixamorig:LeftUpLeg": lUp = t; break; case "mixamorig:LeftLeg": lLeg = t; break; case "mixamorig:LeftFoot": lFoot = t; break;
-                case "mixamorig:LeftToeBase": lToe = t; break; case "mixamorig:LeftToe_End": lToeEnd = t; break;
-                case "mixamorig:RightUpLeg": rUp = t; break; case "mixamorig:RightLeg": rLeg = t; break; case "mixamorig:RightFoot": rFoot = t; break;
-                case "mixamorig:RightToeBase": rToe = t; break; case "mixamorig:RightToe_End": rToeEnd = t; break;
+                case "Hips": hips = t; break;
+                case "LeftUpLeg": lUp = t; break; case "LeftLeg": lLeg = t; break; case "LeftFoot": lFoot = t; break;
+                case "LeftToeBase": lToe = t; break; case "LeftToe_End": lToeEnd = t; break;
+                case "RightUpLeg": rUp = t; break; case "RightLeg": rLeg = t; break; case "RightFoot": rFoot = t; break;
+                case "RightToeBase": rToe = t; break; case "RightToe_End": rToeEnd = t; break;
             }
         if (hips == null || lUp == null || lLeg == null || lFoot == null || rUp == null || rLeg == null || rFoot == null) { Debug.LogWarning("[FootGround] bones missing on " + rn); row = null; return; }
         int ig = 0; if (row.ignoreLayers != null) foreach (var l in row.ignoreLayers) ig |= 1 << l; mask = ~ig & PhysMasks.NotPhys;

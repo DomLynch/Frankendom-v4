@@ -104,6 +104,7 @@ KEYED = [
     ('grip_pose.json', 'characters', 'name', 'char'),
     ('head_clamp.json', 'characters', 'name', 'char'),
     ('weapon_grip.json', 'characters', 'name', 'char'),
+    ('weapon_drop.json', 'characters', 'character', 'char'),   # WEAPONDROP v1
     ('guard_turn.json', 'characters', 'id', 'char'),
     ('hit_flash.json', 'rows', 'match', 'char'),
     ('poise.json', 'armour.fighters', 'key', 'char'),
@@ -191,6 +192,7 @@ COVER = [
     ('hit_flash.json', 'rows', 'match', ('star',), 'WARN', 'no row = no hit flash'),
     ('arm_hold.json', 'characters', 'name', ('star',), 'WARN', 'no row = feature off'),
     ('weapon_grip.json', 'characters', 'name', ('star',), 'WARN', 'no row = no socket re-pose'),
+    ('weapon_drop.json', 'characters', 'character', ('star',), 'WARN', 'no row = nothing drops (today)'),   # WEAPONDROP v1
     ('foot_ground.json', 'characters', 'name', ('star',), 'WARN', 'no row = no foot IK'),
     ('foot_yaw.json', 'characters', 'name', ('defaults',), 'WARN', 'defaults row'),
     ('grip_pose.json', 'characters', 'name', ('defaults',), 'WARN', 'defaults row'),
@@ -435,6 +437,9 @@ def gate_F(R, data, sa, args, ros):
     if R.count('F', 'FAIL') == 0 and R.count('F', 'WARN') == 0: R.add('F', 'PASS', 'summary', 'no duplicate fact disagrees')
 
 
+# laneBELLYBITE v1: rows that are NEW ON PURPOSE (file, roster id, row 'move'): gate G reports them as INFO instead of 'GAINS n row(s)'. Add a line here with a comment, do not weaken the gate.
+INTENDED_NEW_ROWS = {('attack_clips.json', 'Pitborn', 'belly_grab')}   # Pitborn belly-mouth grab (laneBELLYBITE): a move only Pitborn has
+
 # -------------------------------------------------------------------------------- gate G (only with --overlay): no character gains or loses a row
 def gate_G(R, data, sa, args, ros):
     before = PROJECT / 'Assets' / 'Data'
@@ -467,6 +472,8 @@ def gate_G(R, data, sa, args, ros):
                 if len(rb) == len(ra) and all(project(y, x) == x for x, y in zip(rb, ra)):
                     n = sum(count_added(y, x) for x, y in zip(rb, ra)); nadd += n
                     R.add('G', 'INFO', '%s:%s [%s]' % (f, path, cid), '%d key(s) added to existing rows, no value changed' % n); continue
+            if len(oa) > len(ob) and all(ob.count(x) <= oa.count(x) for x in ob) and all((f, cid, json.loads(x).get('move')) in INTENDED_NEW_ROWS for x in oa if x not in ob):   # laneBELLYBITE v1: a row added ON PURPOSE is not drift
+                R.add('G', 'INFO', '%s:%s [%s]' % (f, path, cid), '%d new row(s), whitelisted in INTENDED_NEW_ROWS' % (len(oa) - len(ob))); continue
             if ob != oa:
                 nchg += 1
                 what = 'GAINS %d row(s)' % (len(oa) - len(ob)) if len(oa) > len(ob) else 'LOSES %d row(s)' % (len(ob) - len(oa)) if len(oa) < len(ob) else 'own row CONTENT changed'

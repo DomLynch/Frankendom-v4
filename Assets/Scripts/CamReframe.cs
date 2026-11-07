@@ -54,7 +54,7 @@ public static class CamReframe
     static bool Fits(Vector3 c, Vector3 look, float lockW, float aspect)
     {
         var f = CamFraming.Cfg(); Vector3 d = look - c; if (d.sqrMagnitude < 1e-6f) return false;
-        float fov = Mathf.Lerp(50f, 38.6f, lockW);   // same lens model as CamFraming.Fit
+        float fov = Mathf.Lerp(f.fovFree, f.fovLock, lockW); /* DATALAYER b7 */   // same lens model as CamFraming.Fit
         float tv = Mathf.Tan(fov * 0.5f * Mathf.Deg2Rad), th = tv * Mathf.Max(0.5f, aspect);
         float xlo = 2f * (f.safeMinX + f.marginX) - 1f, xhi = 2f * (f.safeMaxX - f.marginX) - 1f, ylo = 2f * (f.safeMinY + f.marginY) - 1f, yhi = 2f * (f.safeMaxY - f.marginY) - 1f;
         Quaternion inv = Quaternion.Inverse(Quaternion.LookRotation(d.normalized, Vector3.up));
@@ -62,7 +62,7 @@ public static class CamReframe
         {
             Vector3 w = k < 3 ? pa : pb; float s = k < 3 ? sa : sb; float h = (k % 3 == 0 ? f.feetH : (k % 3 == 1 ? f.waistH : f.headH)) * s;
             Vector3 v = inv * (w + Vector3.up * h - c);
-            if (v.z < 0.2f) return false;
+            if (v.z < f.behindZ) return false; /* DATALAYER b7 */
             float nx = v.x / (v.z * th), ny = v.y / (v.z * tv);
             if (nx > xhi || nx < xlo || ny > yhi || ny < ylo) return false;
         }

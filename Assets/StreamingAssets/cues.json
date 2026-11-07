@@ -1135,6 +1135,78 @@
         "chance": 1.0
       }
     ]
+  },
+  {
+    "evt": "attack_start",
+    "layer": "impact",
+    "weapon": "*",
+    "surface": "*",
+    "weight": "*",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [
+      "shove_L"
+    ],
+    "disabled": false,
+    "note": "lanePITSHOVE: the shove telegraph: a heavy-ish air push, existing cue whoosh_heavy at a low gain",
+    "play": [
+      {
+        "cue": "whoosh_heavy",
+        "gain": 0.1,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "hit",
+    "layer": "impact",
+    "weapon": "*",
+    "surface": "*",
+    "weight": "*",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [
+      "shove_L"
+    ],
+    "disabled": false,
+    "note": "lanePITSHOVE: a palm shove lands as a dull thump (existing hit_kick), no blade / bone cue",
+    "play": [
+      {
+        "cue": "hit_kick",
+        "gain": 0.34,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "block",
+    "layer": "impact",
+    "weapon": "*",
+    "surface": "*",
+    "weight": "*",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [
+      "shove_L"
+    ],
+    "disabled": false,
+    "note": "lanePITSHOVE: a blocked shove: the existing block cue, softer than a blade on steel",
+    "play": [
+      {
+        "cue": "block",
+        "gain": 0.55,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
   }
 ]
 }

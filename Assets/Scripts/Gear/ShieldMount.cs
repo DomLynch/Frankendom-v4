@@ -65,7 +65,7 @@ public class ShieldMountRow
     public float fingerDeg = 72f, thumbDeg = 35f, thumbWeight = 0.7f, falloff = 0.85f; public float[] fingerAxis = { 0f, 0f, 1f }, thumbAxis = { 0f, 1f, 0f };
     public string id = "";
 }
-[Serializable] public class ShieldMountFile { public bool enabled = true, debugLog = false; public bool hideWithTwoHanded = true, hideDuringFinishers = true; public ShieldMountRow[] rows = new ShieldMountRow[0]; }
+[Serializable] public class ShieldMountFile { public bool enabled = true, debugLog = false; public bool hideWithTwoHanded = true, hideDuringFinishers = true; public float curlSeconds = 0.1f; /* DATALAYER b8 */ public ShieldMountRow[] rows = new ShieldMountRow[0]; }
 
 public class ShieldMount : MonoBehaviour, IGearShieldSource
 {
@@ -216,7 +216,7 @@ public class ShieldMount : MonoBehaviour, IGearShieldSource
         }
         bool show = curVis > 0.02f; for (int i = 0; i < rends.Count; i++) if (rends[i] != null && rends[i].enabled != show) rends[i].enabled = show;
         float want = show && tr.curl ? Mathf.Clamp01(curVis) : 0f;
-        curl = Mathf.MoveTowards(curl, want, Time.deltaTime / 0.1f);
+        curl = Mathf.MoveTowards(curl, want, Time.deltaTime / Mathf.Max(0.0001f, Load().curlSeconds)); /* DATALAYER b8 */
         if (curl > 0f && lchains != null) Curl(tr, curl);
     }
     void Curl(ShieldMountRow r, float w)

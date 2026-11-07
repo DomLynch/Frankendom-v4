@@ -94,6 +94,7 @@ public class FinisherEntry
     public float victimClipStart = 0f;      // FINFIX v93: second INSIDE the victim clip where it starts (skips a standing lead-in, e.g. the Mixamo death clip's first ~0.5 s)
     public float dieAt = -2f;               // seconds when DuelFighter.Die() runs (ragdoll hook): -2 = at the contact when no victimClip, else at the clip end; -1 = never
     public bool holdLast = true;
+    public bool survive;   // BELLYBITE v1: the scene does not kill: no HP-to-zero at contact, no Die(); BellyBite.EndScene applies the sim damage and knock-down at the end (data row finishers.json belly_bite)
     // placement (centre distance of the pair and who faces whom)
     public float distance = 1.7f;
     public float victimYawDeg = 0f;         // victim yaw relative to "facing the attacker"

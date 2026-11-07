@@ -33,6 +33,7 @@
     "lifeMin": 0.09, "lifeRange": 0.11, "gravity": 1.2,
     "sizeMin": 0.012, "sizeRange": 0.010, "lengthScale": 1.0, "velocityScale": 0.035, "maxParticleSize": 0.5,
     "glintLife": 0.04, "glintSize": 0.10, "glintSizePerStrength": 0.08,
+    "glintTowardCamM": 0.1, "colorAlphaMid": 0.85, "colorAlphaMidAt": 0.5,
     "refDistance": 4.0, "maxGrow": 2.2
   },
   "flash": {
@@ -60,6 +61,11 @@
     "startColor": { "r": 0.35, "g": 0.02, "b": 0.02, "a": 1.0 },
     "endColor":   { "r": 0.14, "g": 0.01, "b": 0.01, "a": 1.0 },
     "dropColor":  { "r": 0.22, "g": 0.012, "b": 0.012, "a": 1.0 },
-    "mistColor":  { "r": 0.30, "g": 0.02, "b": 0.02, "a": 0.9 }
+    "mistColor":  { "r": 0.30, "g": 0.02, "b": 0.02, "a": 0.9 },
+    "_aboutSpray": "HCAUDIT1 v104: the FINISHER blood spray (GoreFx.Spray) - separate from startColor/endColor above (those feed the hit burst). Values = the v69 literals GoreFx.cs had.",
+    "sprayStartColor": { "r": 0.412, "g": 0.059, "b": 0.051, "a": 1.0 },
+    "sprayEndColor":   { "r": 0.125, "g": 0.02, "b": 0.016, "a": 1.0 },
+    "sprayAlphaMid": 0.9, "sprayAlphaMidAt": 0.7, "sprayTaper": 0.05, "sprayLengthScale": 3.2, "sprayMaxParticleSize": 0.5,
+    "sprayConeRadius": 0.01, "sprayCleanupPadS": 2.0, "sprayMaxParticles": 600
   }
 }

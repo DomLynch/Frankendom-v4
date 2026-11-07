@@ -1,0 +1,36 @@
+{
+  "note": "laneSHADOWCACHE v2 (SHADOWSAVER v1). Read by Scripts/ShadowSaver.cs. ALL OFF and every number is a row; defaults equal today (0 = leave the scene's own value / select nothing). P2 small casters stop casting; P3 cascade trim overrides HDShadowSettings through a runtime Volume; SH matched-frame capture feeds the pixel gate. P1 punctual cache lives in perf_fixes.json A1+A1b and S1 mixed sun cache in shadow_cache.json: apply_shadowsaver.py --on flips those flags. Today's live values: sun 2 cascades, split0 0.3, max distance 40, 2048 map (runtime_flags.json cascades 2, quality_tiers.json ultra2k shadowDistance 40, Assets/HDRP/Global.asset HDShadowSettings). No saving here is measured: see MANIFEST.md.",
+  "enabled": false,
+  "startDelayFrames": 90,
+  "log": true,
+  "logEveryS": 10.0,
+  "disableWhenArgs": ["-woundshot", "-floorshot", "-shadowdiag", "-camproof"],
+  "P2": {
+    "enabled": false,
+    "maxExtentM": 0.0,
+    "minScreenPx": 0.0,
+    "hysteresis": 1.25,
+    "evalEveryFrames": 30,
+    "excludePathContains": ["Shard", "Rift", "Portal", "Orbit", "Gateway", "Ember", "Debris", "Piece", "Shimmer", "Flicker"],
+    "excludeRoster": true,
+    "excludeRigidbodies": true,
+    "excludeAnimators": true
+  },
+  "P3": {
+    "enabled": false,
+    "cascades": 0,
+    "split0": 0.0,
+    "split1": 0.0,
+    "split2": 0.0,
+    "maxDistance": 0.0,
+    "volumePriority": 1000
+  },
+  "SH": {
+    "enabled": false,
+    "ticks": [1800, 2400, 3000],
+    "settleFrames": 16,
+    "holdFrames": 4,
+    "quitWhenDone": true,
+    "namePattern": "ss_{tag}_t{target}_a{actual}.png"
+  }
+}

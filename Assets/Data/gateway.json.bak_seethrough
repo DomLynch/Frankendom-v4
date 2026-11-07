@@ -1,0 +1,635 @@
+{
+    "_notes":  "Hades-gate GATEWAY: ABYSS by default, RIFT (window into another world) on a boss trigger. Read by GatewayRift.cs (runtime), HdrpGateway.cs (scene builder), HdrpFurnace.cs (skip flags). Units: metres, degrees, seconds. Light \u0027value\u0027 is in the row\u0027s unit (Candela or Lumen, exposure is fixed EV10 so ~1230 nits reads as display 1.0). Edit and press Play (editor reads Assets/Data; BuildPlayer copies to StreamingAssets). Rows under portal.floats/colors/vectors map 1:1 to Furnace/GatewayRift properties. Geometry: gate opening x -2..2, floor y 1.9, top y 6.9, front face z 27, camera looks +Z from z\u003c20. state.forceState = auto|abyss|rift; the player also honours the arg -gateway:abyss|rift|auto (arg wins). Debug keys: F7 abyss, F8 rift, F9 auto.",
+    "root":  "GatewayRoot",
+    "scenePath":  "Assets/Scenes/HadesSlice.unity",
+    "materialFolder":  "Assets/VFX/Materials",
+    "state":  {
+                  "forceState":  "abyss",
+                  "cmdlineArg":  "-gateway:",
+                  "instantWhenForced":  true,
+                  "debugKeys":  false,
+                  "abyssReveal":  0
+              },
+    "trigger":  {
+                    "hpEnabled":  false,
+                    "hpTarget":  "enemy",
+                    "hpFraction":  0.5,
+                    "closeHysteresis":  0.2,
+                    "pollSeconds":  0.25,
+                    "closeOnTargetDeath":  false,
+                    "closeDelay":  4.0,
+                    "specialEnabled":  false,
+                    "specialActor":  "enemy",
+                    "specialMovePrefix":  "skill_"
+                },
+    "transition":  {
+                       "openSeconds":  2.8,
+                       "closeSeconds":  1.8,
+                       "dissolveStart":  0.12,
+                       "dissolveEnd":  1.0,
+                       "fogPartEnd":  0.55,
+                       "shockStart":  0.15,
+                       "flashAt":  0.35,
+                       "flashSeconds":  0.6,
+                       "boomAt":  0.0,
+                       "spillRampStart":  0.2,
+                       "shardsStart":  0.3
+                   },
+    "furnace":  {
+                    "skipFog":  true,
+                    "skipShimmer":  true,
+                    "chamberEmissiveAbyss":  0.0,
+                    "chamberEmissiveRift":  0.0,
+                    "lightScaleAbyss":  0.18,
+                    "lightScaleRift":  0.15,
+                    "emberAbyssScale":  0,
+                    "emberRiftScale":  0,
+                    "emberNames":  [
+                                       "Embers_Rising",
+                                       "Embers_Spill",
+                                       "Embers_Deep"
+                                   ]
+                },
+    "portal":  {
+                   "name":  "GatewayPortal",
+                   "shader":  "Furnace/GatewayRift",
+                   "panorama":  "Assets/VFX/Gateway/rift_blacksun_8k.png",
+                   "clouds":  "Assets/VFX/Gateway/rift_blacksun_bg2.png",
+                   "cubemap":  "",
+                   "useCube":  false,
+                   "pos":  [
+                               0,
+                               4.4,
+                               26.94
+                           ],
+                   "euler":  [
+                                 0,
+                                 0,
+                                 0
+                             ],
+                   "frameHalf":  [
+                                     2.02,
+                                     2.52
+                                 ],
+                   "margin":  1.08,
+                   "queueOffset":  1,
+                   "floats":  [
+                                  {
+                                      "n":  "_Intensity",
+                                      "v":  2
+                                  },
+                                  {
+                                      "n":  "_ExposureWeight",
+                                      "v":  0.0
+                                  },
+                                  {
+                                      "n":  "_StarBoost",
+                                      "v":  1.6
+                                  },
+                                  {
+                                      "n":  "_CornerRadius",
+                                      "v":  0.14
+                                  },
+                                  {
+                                      "n":  "_EdgeSoft",
+                                      "v":  0.05
+                                  },
+                                  {
+                                      "n":  "_EdgeDarken",
+                                      "v":  0.75
+                                  },
+                                  {
+                                      "n":  "_InnerFade",
+                                      "v":  1.1
+                                  },
+                                  {
+                                      "n":  "_SpinSpeed",
+                                      "v":  0.5
+                                  },
+                                  {
+                                      "n":  "_Spread",
+                                      "v":  4.5
+                                  },
+                                  {
+                                      "n":  "_Reflect",
+                                      "v":  0.0
+                                  },
+                                  {
+                                      "n":  "_L0Radius",
+                                      "v":  10000
+                                  },
+                                  {
+                                      "n":  "_L1Radius",
+                                      "v":  60
+                                  },
+                                  {
+                                      "n":  "_L1Intensity",
+                                      "v":  0.25
+                                  },
+                                  {
+                                      "n":  "_L1Drift",
+                                      "v":  1.2
+                                  },
+                                  {
+                                      "n":  "_L2Radius",
+                                      "v":  14
+                                  },
+                                  {
+                                      "n":  "_L2Intensity",
+                                      "v":  0.15
+                                  },
+                                  {
+                                      "n":  "_L2Scale",
+                                      "v":  3.2
+                                  },
+                                  {
+                                      "n":  "_L2Speed",
+                                      "v":  0.06
+                                  },
+                                  {
+                                      "n":  "_DissolveNoise",
+                                      "v":  0.5
+                                  },
+                                  {
+                                      "n":  "_DissolveScale",
+                                      "v":  1.4
+                                  },
+                                  {
+                                      "n":  "_DissolveSoft",
+                                      "v":  0.14
+                                  },
+                                  {
+                                      "n":  "_RimWidth",
+                                      "v":  0.02
+                                  },
+                                  {
+                                      "n":  "_VeinScale",
+                                      "v":  2.4
+                                  },
+                                  {
+                                      "n":  "_VeinSpeed",
+                                      "v":  0.9
+                                  },
+                                  {
+                                      "n":  "_VeinSharp",
+                                      "v":  10
+                                  },
+                                  {
+                                      "n":  "_VeinReach",
+                                      "v":  0
+                                  },
+                                  {
+                                      "n":  "_VeinOutReach",
+                                      "v":  0
+                                  },
+                                  {
+                                      "n":  "_VeinCrackle",
+                                      "v":  0
+                                  },
+                                  {
+                                      "n":  "_HaloWidth",
+                                      "v":  0.1
+                                  },
+                                  {
+                                      "n":  "_RippleAmp",
+                                      "v":  0.003
+                                  },
+                                  {
+                                      "n":  "_RippleFreq",
+                                      "v":  9
+                                  },
+                                  {
+                                      "n":  "_RippleSpeed",
+                                      "v":  3.5
+                                  },
+                                  {
+                                      "n":  "_ChromaAmt",
+                                      "v":  0.1
+                                  },
+                                  {
+                                      "n":  "_RefractMix",
+                                      "v":  1.0
+                                  }
+                              ],
+                   "colors":  [
+                                  {
+                                      "n":  "_Tint",
+                                      "c":  [
+                                                1,
+                                                1,
+                                                1,
+                                                1
+                                            ]
+                                  },
+                                  {
+                                      "n":  "_L1Tint",
+                                      "c":  [
+                                                1,
+                                                0.75,
+                                                0.65,
+                                                1
+                                            ]
+                                  },
+                                  {
+                                      "n":  "_L2Color",
+                                      "c":  [
+                                                1,
+                                                0.12,
+                                                0.04,
+                                                1
+                                            ]
+                                  },
+                                  {
+                                      "n":  "_RimColor",
+                                      "c":  [
+                                                3,
+                                                0.55,
+                                                0.18,
+                                                1
+                                            ]
+                                  },
+                                  {
+                                      "n":  "_VeinColor",
+                                      "c":  [
+                                                2.4,
+                                                0.35,
+                                                0.1,
+                                                1
+                                            ]
+                                  },
+                                  {
+                                      "n":  "_HaloColor",
+                                      "c":  [
+                                                0.9,
+                                                0.12,
+                                                0.04,
+                                                1
+                                            ]
+                                  }
+                              ],
+                   "vectors":  [
+                                   {
+                                       "n":  "_Rot",
+                                       "v":  [
+                                                 0,
+                                                 -42,
+                                                 0,
+                                                 0
+                                             ]
+                                   }
+                               ]
+               },
+    "fog":  {
+                "noise":  {
+                              "path":  "Assets/VFX/gateway_fog_noise_32.asset",
+                              "size":  32,
+                              "frequency":  4,
+                              "octaves":  3,
+                              "seed":  23
+                          },
+                "abyss":  {
+                              "name":  "Fog_Abyss",
+                              "blending":  "Additive",
+                              "priority":  0,
+                              "pos":  [
+                                          0,
+                                          4.4,
+                                          34.2
+                                      ],
+                              "size":  [
+                                           3.9,
+                                           4.9,
+                                           11.6
+                                       ],
+                              "albedo":  [
+                                             0.04,
+                                             0.008,
+                                             0.005
+                                         ],
+                              "meanFreePath":  2.6,
+                              "anisotropy":  0.0,
+                              "riftMeanFreePath":  80.0,
+                              "riftSizeScale":  [
+                                                    0.4,
+                                                    1.0,
+                                                    0.5
+                                                ],
+                              "tiling":  [
+                                             1.0,
+                                             1.0,
+                                             1.0
+                                         ],
+                              "scroll":  [
+                                             0.004,
+                                             0.006,
+                                             -0.003
+                                         ],
+                              "fadePos":  [
+                                              0.15,
+                                              0.15,
+                                              0.2
+                                          ],
+                              "fadeNeg":  [
+                                              0.15,
+                                              0.15,
+                                              0.2
+                                          ]
+                          },
+                "wisp":  {
+                             "name":  "Fog_Wisp",
+                             "blending":  "Additive",
+                             "priority":  0,
+                             "pos":  [
+                                         0,
+                                         2.35,
+                                         25.6
+                                     ],
+                             "size":  [
+                                          4.6,
+                                          1.1,
+                                          3.4
+                                      ],
+                             "albedo":  [
+                                            0.12,
+                                            0.05,
+                                            0.04
+                                        ],
+                             "meanFreePath":  3.5,
+                             "anisotropy":  0.0,
+                             "riftMeanFreePath":  6.0,
+                             "riftAlbedo":  [
+                                                0.55,
+                                                0.55,
+                                                0.55
+                                            ],
+                             "tiling":  [
+                                            1.2,
+                                            1.2,
+                                            1.2
+                                        ],
+                             "scroll":  [
+                                            0.02,
+                                            0.01,
+                                            -0.05
+                                        ],
+                             "fadePos":  [
+                                             0.4,
+                                             0.5,
+                                             0.4
+                                         ],
+                             "fadeNeg":  [
+                                             0.4,
+                                             0.2,
+                                             0.4
+                                         ]
+                         },
+                "external":  [
+                                 {
+                                     "name":  "DoorHaze",
+                                     "abyss":  0.25,
+                                     "rift":  0.0
+                                 }
+                             ]
+            },
+    "lights":  {
+                   "depth":  {
+                                 "name":  "Gateway_DepthRed",
+                                 "kind":  "Point",
+                                 "unit":  "Candela",
+                                 "value":  1200,
+                                 "pos":  [
+                                             0,
+                                             3.3,
+                                             38.6
+                                         ],
+                                 "euler":  [
+                                               0,
+                                               0,
+                                               0
+                                           ],
+                                 "color":  [
+                                               1.0,
+                                               0.07,
+                                               0.03
+                                           ],
+                                 "size":  [
+                                              0,
+                                              0
+                                          ],
+                                 "range":  8,
+                                 "spotAngle":  0,
+                                 "innerPercent":  0,
+                                 "volumetricDimmer":  1.0,
+                                 "pulseAmp":  0.18,
+                                 "pulseHz":  0.15
+                             },
+                   "spillRect":  {
+                                     "name":  "Gateway_SpillRect",
+                                     "kind":  "Rectangle",
+                                     "unit":  "Lumen",
+                                     "value":  2400,
+                                     "pos":  [
+                                                 0,
+                                                 4.4,
+                                                 26.6
+                                             ],
+                                     "euler":  [
+                                                   0,
+                                                   180,
+                                                   0
+                                               ],
+                                     "color":  [
+                                                   1,
+                                                   0.16,
+                                                   0.05
+                                               ],
+                                     "size":  [
+                                                  3.8,
+                                                  4.8
+                                              ],
+                                     "range":  8,
+                                     "spotAngle":  0,
+                                     "innerPercent":  0,
+                                     "volumetricDimmer":  0.6,
+                                     "pulseAmp":  0,
+                                     "pulseHz":  0
+                                 },
+                   "spillSpot":  {
+                                     "name":  "Gateway_SpillSpot",
+                                     "kind":  "Spot",
+                                     "unit":  "Candela",
+                                     "value":  3600,
+                                     "pos":  [
+                                                 0,
+                                                 4.4,
+                                                 26.4
+                                             ],
+                                     "euler":  [
+                                                   4,
+                                                   180,
+                                                   0
+                                               ],
+                                     "color":  [
+                                                   1,
+                                                   0.16,
+                                                   0.05
+                                               ],
+                                     "size":  [
+                                                  0,
+                                                  0
+                                              ],
+                                     "range":  8,
+                                     "spotAngle":  48,
+                                     "innerPercent":  60,
+                                     "volumetricDimmer":  0.6,
+                                     "pulseAmp":  0,
+                                     "pulseHz":  0
+                                 },
+                   "flash":  {
+                                 "name":  "Gateway_Flash",
+                                 "kind":  "Point",
+                                 "unit":  "Candela",
+                                 "value":  80000,
+                                 "pos":  [
+                                             0,
+                                             4.4,
+                                             25.5
+                                         ],
+                                 "euler":  [
+                                               0,
+                                               0,
+                                               0
+                                           ],
+                                 "color":  [
+                                               1,
+                                               0.45,
+                                               0.25
+                                           ],
+                                 "size":  [
+                                              0,
+                                              0
+                                          ],
+                                 "range":  8,
+                                 "spotAngle":  0,
+                                 "innerPercent":  0,
+                                 "volumetricDimmer":  1.0,
+                                 "pulseAmp":  0,
+                                 "pulseHz":  0
+                             },
+                   "external":  [
+                                    {
+                                        "name":  "DoorWarmLight",
+                                        "abyss":  0.3,
+                                        "rift":  0.0
+                                    },
+                                    {
+                                        "name":  "DoorSpill",
+                                        "abyss":  0.3,
+                                        "rift":  0.0
+                                    },
+                                    {
+                                        "name":  "DoorRectLight",
+                                        "abyss":  0.0,
+                                        "rift":  0.0
+                                    }
+                                ]
+               },
+    "spill":  {
+                  "colorSource":  "panorama",
+                  "color":  [
+                                0.4,
+                                0.35,
+                                1.0
+                            ],
+                  "saturation":  1.25,
+                  "minValue":  0.0
+              },
+    "shards":  {
+                   "count":  0,
+                   "seed":  5,
+                   "meshPaths":  [
+                                     "Assets/Env/Props/rift_shards/shard_1_LOD0.glb",
+                                     "Assets/Env/Props/rift_shards/shard_2_LOD0.glb",
+                                     "Assets/Env/Props/rift_shards/shard_3_LOD0.glb",
+                                     "Assets/Env/Props/rift_shards/shard_4_LOD0.glb",
+                                     "Assets/Env/Props/rift_shards/shard_5_LOD0.glb",
+                                     "Assets/Env/Props/rift_shards/shard_6_LOD0.glb",
+                                     "Assets/Env/Props/rift_shards/shard_7_LOD0.glb",
+                                     "Assets/Env/Props/rift_shards/shard_8_LOD0.glb",
+                                     "Assets/Env/Props/rift_shards/shard_9_LOD0.glb",
+                                     "Assets/Env/Props/rift_shards/shard_10_LOD0.glb"
+                                 ],
+                   "sizeRange":  [
+                                     0.18,
+                                     0.55
+                                 ],
+                   "speedRange":  [
+                                      3.0,
+                                      9.0
+                                  ],
+                   "tumbleRange":  [
+                                       10.0,
+                                       40.0
+                                   ],
+                   "zWobble":  [
+                                   0.25,
+                                   0.12
+                               ],
+                   "radialRange":  [
+                                       0.1,
+                                       0.9
+                                   ],
+                   "marginOut":  0.35,
+                   "introSeconds":  2.0,
+                   "introRadiusBoost":  1.8,
+                   "baseColor":  [
+                                     0.012,
+                                     0.012,
+                                     0.018
+                                 ],
+                   "smoothness":  0.93,
+                   "metallic":  0.0,
+                   "emissive":  [
+                                    150,
+                                    8,
+                                    2
+                                ]
+               },
+    "shake":  {
+                  "kickAmp":  0.09,
+                  "kickRollDeg":  1.2,
+                  "kickSeconds":  1.2,
+                  "kickHz":  24,
+                  "rumbleAmp":  0.018,
+                  "rumbleRollDeg":  0.25
+              },
+    "boom":  {
+                 "cue":  "gateway_open",
+                 "cueGain":  1.0,
+                 "procedural":  false,
+                 "gain":  0.9,
+                 "seconds":  2.8,
+                 "f0":  62,
+                 "f1":  26,
+                 "noiseGain":  0.45,
+                 "spatialBlend":  0
+             },
+    "palette":  {
+                    "enabled":  true,
+                    "note":  "lights outside the whitelist may not be blue/purple dominant: they are shifted to crimson (hue 0-30 deg), intensity kept",
+                    "whitelist":  [
+                                      "MoonRim",
+                                      "MoonFill",
+                                      "FillCool",
+                                      "Key_ColdSun",
+                                      "Rim_Character",
+                                      "Rim_Behind",
+                                      "PitbornRedRim"
+                                  ],
+                    "crimson":  [
+                                    1,
+                                    0.16,
+                                    0.05
+                                ]
+                }
+}

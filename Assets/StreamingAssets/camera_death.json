@@ -6,6 +6,7 @@
   "dist": 5.6,
   "height": 1.7,
   "lookHeight": 0.7,
+  "padM": 0.1, "fallbackAspect": 1.7778,
   "sideDeg": 30,
   "fov": 38,
   "margin": 1.7,

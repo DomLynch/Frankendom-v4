@@ -65,7 +65,7 @@ public class WeaponGrip : MonoBehaviour
         if (all.Count == 0) { enabled = false; return; }
         Select();
         var r0 = all[0];
-        foreach (var t in GetComponentsInChildren<Transform>(true)) if (t.name == "mixamorig:" + r0.hand) { hand = t; break; }
+        string bpre = Roster.BonePrefix(this); foreach (var t in GetComponentsInChildren<Transform>(true)) if (t.name == bpre + r0.hand) { hand = t; break; } /* HCAUDIT1 v104 */
         if (hand == null) { enabled = false; return; }
         foreach (var t in hand.GetComponentsInChildren<Transform>(true)) if (t.name == r0.socket) { socket = t; break; }
         if (socket == null) { enabled = false; return; }

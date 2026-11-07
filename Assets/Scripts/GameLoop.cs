@@ -62,6 +62,36 @@ public static class GameLoop
     public static bool FadeOn { get { return HudCfg.Get().fade.enabled && !HarnessOn; } }
     public static bool LadderOn { get { return Opponents().enabled && !HarnessOn; } }
 
+    // HARNESSPICK v1 (laneHARNESSPICK): -opponent:<rosterId> picks the enemy of a HARNESS run (-balanceauto, and -perfbench which rides on it). Absent flag, or no harness = none of this runs.
+    // The enemy scene is the one the ladder / zones use: zones.json creatures[].scene (Sobek: HadesSlice_Sobek, built by EnemySwap); an empty scene = the base scene (Pitborn). Roster.SetEnemy is set before the first scene
+    // loads, so BalanceAuto waits for the picked enemy's object; the first scene is swapped by the ladder's own StartReload path. hp / damage / AI difficulty = the first opponents.json row whose `character` is the id
+    // (what the zone spawn row 'ladderRow' reads), applied by ApplyLadder exactly as in a ladder fight.
+    static string pick;
+    public static string PickId
+    {
+        get
+        {
+            if (pick != null) return pick;
+            pick = ""; string want = "";
+            foreach (var a in Environment.GetCommandLineArgs()) if (a.StartsWith("-opponent:", StringComparison.Ordinal)) want = a.Substring(10).Trim();
+            if (want.Length == 0 || !HarnessOn) return pick;
+            foreach (var r in Roster.All) if (r != null && string.Equals(r.id, want, StringComparison.OrdinalIgnoreCase) && r.id != Roster.PlayerId) pick = r.id;
+            if (pick.Length == 0) Debug.LogWarning("[Harness] -opponent:" + want + " is not an enemy roster id: ignored, the scene's own enemy fights");
+            return pick;
+        }
+    }
+    public static bool PickOn { get { return PickId.Length > 0; } }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void PickBoot() { if (!PickOn) return; Roster.SetEnemy(PickId); Debug.Log("[Harness] opponent " + PickId); }
+    static void PickColumns(out string chr, out string scn) { chr = PickId; var z = ZoneData.Creature(chr); scn = z != null && z.scene != null ? z.scene : ""; }
+    static Row PickRow(out float hm, out float dm)
+    {
+        hm = 1f; dm = 1f; var c = Cols(); var t = Opponents();
+        for (int i = 0; i < c.rows.Length && i < t.rows.Length; i++)
+            if (c.rows[i] != null && t.rows[i] != null && string.Equals(c.rows[i].character, PickId, StringComparison.OrdinalIgnoreCase)) { hm = t.rows[i].hpMul; dm = t.rows[i].damageMul; return t.rows[i]; }
+        return new Row { id = "pick:" + PickId };
+    }
+
     // ---- opponents ----
     static Table table;
     public static Table Opponents()
@@ -103,8 +133,8 @@ public static class GameLoop
     public static void ApplyLadder(DuelFighter enemy)
     {
         LadderApplied = true; AppliedHpMul = 1f; AppliedDmgMul = 1f; AppliedDifficulty = 0; BaseEnemyHp = enemy != null ? enemy.maxHealth : 0f;
-        if (enemy == null || !LadderOn) return;
-        float hm, dm; var row = RowAt(OpponentIndex, out hm, out dm);
+        if (enemy == null || (!LadderOn && !PickOn)) return;   // HARNESSPICK v1
+        float hm, dm; var row = LadderOn ? RowAt(OpponentIndex, out hm, out dm) : PickRow(out hm, out dm);
         if (Mathf.Abs(hm - 1f) > 0.0005f)
         {
             enemy.maxHealth *= hm; enemy.health = enemy.maxHealth;
@@ -131,8 +161,8 @@ public static class GameLoop
     {
         ResetGlobals();
         // LADDER v92: which enemy / scene does the current ladder row want? No character / scene columns = roster default enemy + reload of the active scene = exactly the old behaviour (LadderResolve, tested outside Unity)
-        var row = CurrentRow(); string chr, scn; ColumnsAt(OpponentIndex, out chr, out scn);
-        var plan = LadderResolve.Resolve(LadderOn, chr, scn, Roster.DefaultEnemyId, BaseScene, SceneManager.GetActiveScene().name, Cols().scenePattern);
+        var row = CurrentRow(); string chr, scn; if (PickOn) PickColumns(out chr, out scn); else ColumnsAt(OpponentIndex, out chr, out scn);   // HARNESSPICK v1
+        var plan = LadderResolve.Resolve(LadderOn || PickOn, chr, scn, Roster.DefaultEnemyId, BaseScene, SceneManager.GetActiveScene().name, Cols().scenePattern);
         if (plan.setEnemy) Roster.SetEnemy(plan.enemy);
         if (plan.scene.Length > 0)
         {
@@ -167,11 +197,12 @@ public static class GameLoop
     public static void LadderStart(Scene s)
     {
         BaseScene = string.IsNullOrEmpty(Cols().baseScene) ? s.name : LadderResolve.SceneName(Cols().baseScene);
-        if (!LadderOn) return;
-        string chr, scn; ColumnsAt(OpponentIndex, out chr, out scn);
+        if (!LadderOn && !PickOn) return;   // HARNESSPICK v1
+        string chr, scn; if (PickOn) PickColumns(out chr, out scn); else ColumnsAt(OpponentIndex, out chr, out scn);
         var plan = LadderResolve.Resolve(true, chr, scn, Roster.DefaultEnemyId, BaseScene, s.name, Cols().scenePattern);
         if (plan.setEnemy) Roster.SetEnemy(plan.enemy);
         StartReload = plan.scene.Length > 0;
+        if (PickOn) { Debug.Log("[Harness] opponent " + PickId + " scene '" + (plan.scene.Length > 0 ? plan.scene : s.name) + "' (" + plan.why + ")"); if (plan.scene.Length == 0 && PickId != Roster.DefaultEnemyId) Debug.LogWarning("[Harness] opponent " + PickId + ": zones.json creatures[] has no scene for it, the enemy object may be missing in " + s.name); }
     }
     public static void ReloadForStart() { Reload(); }
     /// <summary>LADDER v92: called while the driver cannot find both fighters; one error per scene load after ~5 s that names what is missing (a ladder row asking for a character the loaded scene does not hold).</summary>

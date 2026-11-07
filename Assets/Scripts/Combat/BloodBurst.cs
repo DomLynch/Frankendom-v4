@@ -36,7 +36,7 @@ public class BloodBurst : MonoBehaviour
     public void PrewarmEmit(Vector3 pos, float size)
     {
         if (ps == null) return;
-        var ep = new ParticleSystem.EmitParams(); ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = 0.1f; ep.startSize = size; ep.startColor = Color.white;
+        var ep = new ParticleSystem.EmitParams(); ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = HitVfxCfg.Get().prewarmLifeS; ep.startSize = size; /* DATALAYER b12 */ ep.startColor = Color.white;
         ps.Emit(ep, 1);
     }
 

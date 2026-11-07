@@ -4,7 +4,7 @@ using UnityEngine;
 
 // PHYS1 v1: Assets/Data/physics.json (copy in StreamingAssets). World solver numbers, the physics clock, named layers + collision matrix and the -physproof thresholds.
 // Missing / unreadable file = Defaults() below (clock OFF), so a build without the file behaves exactly like before. No gameplay number lives in code.
-[Serializable] public class PhysClockCfg { public bool enabled; public int hz = 60, maxStepsPerFrame = 4, duelCheckEveryFrames = 30, statsRing = 512; public bool fallbackWhenNoDuel = true; }
+[Serializable] public class PhysClockCfg { public bool enabled; public int hz = 60, maxStepsPerFrame = 4, duelCheckEveryFrames = 30, statsRing = 512; public float maxCatchupS = 0.1f; /* DATALAYER b11 */ public bool fallbackWhenNoDuel = true; }
 [Serializable] public class PhysWorldCfg { public int solverIterations = 6, solverVelocityIterations = 1; public float maxAngularVelocity = 50f, gravityY = -9.81f; }
 [Serializable] public class PhysLayerRow { public string name = ""; public int index; }
 [Serializable] public class PhysPairRow { public string a = "", b = ""; }
@@ -36,6 +36,7 @@ public class PhysicsCfg
     public PhysLayerRow[] layers = new PhysLayerRow[0];
     public PhysMatrixCfg matrix = new PhysMatrixCfg();
     public string[] groundIgnore = new string[0];
+    public string[] ccExclude = new string[] { "ragdollBody" };   // PHYSON v1: layer NAMES the fighters' CharacterControllers ignore (ccExclude in physics.json); absent = ragdollBody only = today
     public PhysProofCfg proof = new PhysProofCfg();
 
     static PhysicsCfg cur;

@@ -1,0 +1,179 @@
+{
+  "note": "WEAPONDROP v1 (WeaponDrop.cs). The weapon of a dead fighter leaves the hand delayS after the kill and falls as a real body (compound collider, mass, centre of mass), rests, loses its body, stays or is collected with the loot. One row per roster character (and optional weapon id); no row, enabled false or no file = today. Units: metres, seconds, kg, rad/s. Presentation only: the sim never reads it.",
+  "enabled": true,
+  "log": true,
+  "bestLodOnly": true,
+  "pollS": 0.5,
+  "sockets": [
+    "WeaponSocket_R",
+    "WeaponSocket_L"
+  ],
+  "keepChildren": [
+    "TrailTip"
+  ],
+  "body": {
+    "friction": 0.8,
+    "restitution": 0.15,
+    "linearDamping": 0.05,
+    "angularDamping": 0.3,
+    "maxDepenetration": 2.0,
+    "maxAngularSpeed": 30.0,
+    "restSpeed": 0.06,
+    "restAngularSpeed": 0.25,
+    "restSeconds": 0.3,
+    "maxFallSeconds": 8.0,
+    "rescueBelowM": 4.0,
+    "floorGapM": 0.004,
+    "settleSeconds": 0.25,
+    "groundRayUpM": 1.0,
+    "groundRayDownM": 12.0,
+    "handSmooth": 0.5,
+    "solverIterations": 12,
+    "solverVelocityIterations": 4,
+    "detection": "ContinuousDynamic"
+  },
+  "shapes": [
+    {
+      "weapon": "maul",
+      "type": "headed",
+      "axis": "y",
+      "note": "Pitborn's maul_start glb (mesh bounds y -0.30..0.70): shaft radius 0.04 up to y 0.30, head box y 0.30..0.70 (0.52 x 0.40 x 0.48), numbers from lanePHYSWEAPON section 3. headFrom 0.6 = 0.30 of the 1.0 m. headShrink 0.95 keeps the box inside the mesh so it does not float.",
+      "headFrom": 0.6,
+      "shaftRadiusM": 0.04,
+      "boxShrink": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "headShrink": [
+        0.95,
+        0.95,
+        0.95
+      ]
+    },
+    {
+      "weapon": "sword",
+      "type": "box",
+      "axis": "y",
+      "note": "sword_start glb (blade to y 0.996, guard 0.16 wide): one box, narrowed to the blade across and thin in depth. UNVERIFIED, no armed sword enemy in the build today.",
+      "headFrom": 0.6,
+      "shaftRadiusM": 0.03,
+      "boxShrink": [
+        0.45,
+        1.0,
+        0.3
+      ],
+      "headShrink": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "weapon": "",
+      "type": "box",
+      "axis": "y",
+      "note": "fallback for a weapon without a shape: one box of the mesh bounds",
+      "headFrom": 0.6,
+      "shaftRadiusM": 0.03,
+      "boxShrink": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "headShrink": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "characters": [
+    {
+      "character": "Pitborn",
+      "weapon": "",
+      "note": "The maul leaves the hand 0.35 s after the kill (the hand loosens as the knees go), keeps 60 percent of the hand's speed, a 0.6 m/s kick away from the killer and a 4 rad/s tumble; 7 kg (gear.json weight 7), 80 percent of the mass in the head. Its loot item pitborn_maul is anchored on the weapon and takes it away when picked up. maxLifeS 280 is under the shortest zone respawn, vanishOnRespawn removes it the moment a new Pitborn is alive.",
+      "enabled": true,
+      "duringFinisher": true,
+      "vanishOnRespawn": true,
+      "delayS": 0.35,
+      "inheritVelocity": 0.6,
+      "maxInheritMps": 8.0,
+      "kickMps": 0.6,
+      "liftMps": 0.4,
+      "spinRadS": 4.0,
+      "spinYawRadS": 0.5,
+      "massKg": 7.0,
+      "headMassShare": 0.8,
+      "maxLifeS": 280.0,
+      "lingerAfterOwnerS": 20.0,
+      "sinkS": 1.5,
+      "lootItems": [
+        "pitborn_maul"
+      ]
+    },
+    {
+      "character": "Sobek",
+      "weapon": "",
+      "note": "Claws: nothing in the hand to drop (WeaponSwap.Unarmed is also checked in code).",
+      "enabled": false,
+      "duringFinisher": true,
+      "vanishOnRespawn": true,
+      "delayS": 0.35,
+      "inheritVelocity": 0.6,
+      "maxInheritMps": 8.0,
+      "kickMps": 0.6,
+      "liftMps": 0.4,
+      "spinRadS": 4.0,
+      "spinYawRadS": 0.5,
+      "massKg": 7.0,
+      "headMassShare": 0.8,
+      "maxLifeS": 280.0,
+      "lingerAfterOwnerS": 20.0,
+      "sinkS": 1.5,
+      "lootItems": []
+    },
+    {
+      "character": "Joan",
+      "weapon": "",
+      "note": "The player: a death reloads the scene (Retry). Flip enabled to let her sword fall before the card. Sword shape UNVERIFIED.",
+      "enabled": false,
+      "duringFinisher": true,
+      "vanishOnRespawn": true,
+      "delayS": 0.35,
+      "inheritVelocity": 0.6,
+      "maxInheritMps": 8.0,
+      "kickMps": 0.6,
+      "liftMps": 0.4,
+      "spinRadS": 4.0,
+      "spinYawRadS": 0.5,
+      "massKg": 1.5,
+      "headMassShare": 0.8,
+      "maxLifeS": 280.0,
+      "lingerAfterOwnerS": 20.0,
+      "sinkS": 1.5,
+      "lootItems": []
+    },
+    {
+      "character": "Dracula",
+      "weapon": "",
+      "note": "Sword enemy of the old build, off until a sword drop is wanted and the sword shape is checked in game.",
+      "enabled": false,
+      "duringFinisher": true,
+      "vanishOnRespawn": true,
+      "delayS": 0.35,
+      "inheritVelocity": 0.6,
+      "maxInheritMps": 8.0,
+      "kickMps": 0.6,
+      "liftMps": 0.4,
+      "spinRadS": 4.0,
+      "spinYawRadS": 0.5,
+      "massKg": 1.5,
+      "headMassShare": 0.8,
+      "maxLifeS": 280.0,
+      "lingerAfterOwnerS": 20.0,
+      "sinkS": 1.5,
+      "lootItems": []
+    }
+  ]
+}

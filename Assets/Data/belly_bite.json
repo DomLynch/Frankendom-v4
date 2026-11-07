@@ -1,0 +1,132 @@
+{
+  "_about": "laneBELLYBITE v1: Pitborn belly-mouth grab-and-bite. MASTER SWITCH enabled=false = today (absent file = today). ai.enabled separately gates the AI use. Sim rows: damage, nonLethal, knockDown, throwKnock; move timing lives in move-defs.json row belly_grab (windup 36 / active 4 / recovery 52 ticks).",
+  "enabled": true,
+  "character": "Pitborn",
+  "moveId": "belly_grab",
+  "damage": 22.0,
+  "throwKnock": 5.0,
+  "nonLethal": true,
+  "knockDown": true,
+  "blockable": false,
+  "parryable": true,
+  "dodgeable": true,
+  "ai": {
+    "enabled": true,
+    "minGap": 1.2,
+    "maxGap": 2.6,
+    "cooldownTicks": 420,
+    "firstTick": 600,
+    "chance": 0.25,
+    "maxPlayerHpFrac": 1.0
+  },
+  "mouth": {
+    "enabled": true,
+    "openAtWindupFrac": 0.35,
+    "openFull": 0.7,
+    "clench": 1.0,
+    "clenchTicks": 8,
+    "relaxTicks": 20,
+    "openShape": "mouth_open",
+    "clenchShape": "mouth_clench"
+  },
+  "scene": {
+    "enabled": true,
+    "entryId": "belly_bite",
+    "forceEnable": false,
+    "reRoot": true,
+    "getUpPose": true,
+    "endKnock": 0.0,
+    "mouthKeys": [
+      {
+        "t": 0.0,
+        "open": 0.0,
+        "clench": 0.0
+      },
+      {
+        "t": 0.5,
+        "open": 0.0,
+        "clench": 0.0
+      },
+      {
+        "t": 1.2,
+        "open": 0.8,
+        "clench": 0.0
+      },
+      {
+        "t": 1.5,
+        "open": 1.0,
+        "clench": 0.0
+      },
+      {
+        "t": 1.62,
+        "open": 1.0,
+        "clench": 0.0
+      },
+      {
+        "t": 1.74,
+        "open": 0.0,
+        "clench": 1.0
+      },
+      {
+        "t": 1.82,
+        "open": 0.0,
+        "clench": 1.0
+      },
+      {
+        "t": 2.02,
+        "open": 1.0,
+        "clench": 0.0
+      },
+      {
+        "t": 2.18,
+        "open": 1.0,
+        "clench": 0.0
+      },
+      {
+        "t": 2.3,
+        "open": 0.0,
+        "clench": 1.0
+      },
+      {
+        "t": 2.38,
+        "open": 0.0,
+        "clench": 1.0
+      },
+      {
+        "t": 2.58,
+        "open": 1.0,
+        "clench": 0.0
+      },
+      {
+        "t": 2.74,
+        "open": 1.0,
+        "clench": 0.0
+      },
+      {
+        "t": 2.86,
+        "open": 0.0,
+        "clench": 1.0
+      },
+      {
+        "t": 2.94,
+        "open": 0.0,
+        "clench": 1.0
+      },
+      {
+        "t": 3.14,
+        "open": 1.0,
+        "clench": 0.0
+      },
+      {
+        "t": 3.36,
+        "open": 1.0,
+        "clench": 0.0
+      },
+      {
+        "t": 3.6,
+        "open": 0.0,
+        "clench": 0.0
+      }
+    ]
+  }
+}

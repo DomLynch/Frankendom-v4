@@ -27,7 +27,7 @@ public class Duel : MonoBehaviour
 
     void Update()
     {
-        acc += Mathf.Min(PresentationClock.SimDelta(Time.deltaTime), 0.1f);   // hit-stop: no accumulation while the presentation clock is frozen
+        acc += Mathf.Min(PresentationClock.SimDelta(Time.deltaTime), PhysicsCfg.Get().clock.maxCatchupS); /* DATALAYER b11 */   // hit-stop: no accumulation while the presentation clock is frozen
         while (acc >= 1f / 60f)
         {
             acc -= 1f / 60f; TickCount++;
@@ -51,13 +51,14 @@ public class Duel : MonoBehaviour
         if (d.Dead || Frozen || HubSafe.NoHit(d)) return false;   // laneNPCSPAWN: the player in a safe camp takes no strike (health, posture, stamina stay)
         Vector3 ad = d.transform.position - a.transform.position; ad.y = 0f;
         float dist = ad.magnitude;
-        float arc = m.id == "kick" ? a.Rule("kickArc", Mathf.PI / 4f) * Mathf.Rad2Deg : 70f;
+        float arc = m.id == "kick" ? a.Rule("kickArc", Mathf.PI / 4f) * Mathf.Rad2Deg : a.HitArcDeg; /* DATALAYER b11 */
         if (dist > m.reach * a.ReachScale /* WEAPONSWAP v88: weapon reach */ + a.radius + d.radius + 0.45f) return false;
         if (Angle(a.transform.forward, ad) > arc) return false;
         if (d.IFrames && !d.SidestepIgnoresIFrames(m)) return false;   // rolled through it (lanePARRY: a sidestep does not beat an overhead, parry.json sidestep)
         HitReactionTable.Last = null;   // P2: set again below only for a clean hit
+        if (BellyBite.Handles(a, m)) { var bgR = BellyBite.Resolve(a, d); if (bgR == BellyBite.Result.Landed) { Fire(a, d, "Hit", true, false); return true; } if (bgR == BellyBite.Result.Scene) return true; /* BELLYGRAB v1 */ }   // BELLYBITE v1: unblockable grab (data belly_bite.json, master switch off = never true)
 
-        bool heavy = m.charges || m.damage >= 18f;
+        bool heavy = m.charges || m.damage >= a.HeavyDamage; /* DATALAYER b11 */
         string evt;
         Vector3 away = ad.normalized;
         bool defGuardArc = d.IsGuarding && Angle(d.transform.forward, -ad) <= a.Rule("guardArc", Mathf.PI / 3f) * Mathf.Rad2Deg * StanceLayer.GuardArcMul(d) /* STANCE2 v81 */; bool defGuard = defGuardArc && DirectionalGuard.SideOk(a, d, m, heavy); bool shieldCov = !defGuard && defGuardArc && ShieldHooks.Covers(d, m, heavy); if (shieldCov) defGuard = true; /* SHIELD v1: the wearer's shield cover rows (gear.json items[].shield) count a swing the guard side alone would not stop as a BLOCK; never a parry */    // CTRL v68: the guard side must cover the swing (controls.json guard.guardRequiresSide)
@@ -98,9 +99,11 @@ public class Duel : MonoBehaviour
         if (FightBalance.Active) dmg *= FightBalance.HitMul(a, d, m);   // B1: fight_balance.json
         float stg = m.stagger * chargeMul * (rear ? a.Rule("rear.stagger", 1.25f) : 1f) * (counter ? a.Rule("counter.stagger", 1.5f) : 1f);
         var pv = PoiseTable.Evaluate(a, d, m, db); dmg *= pv.damageMul * GearHooks.DamageTakenMul(d); d.health -= dmg; /* kitGEAR v79: armour stat */   // V64P: hyper-armour, poise meter, riposte damage multiplier (poise.json)
+        if (ShoveTable.NoKill(m) && d.health <= 0f) d.health = 1f;   // SHOVE v1: a shove (shove.json nonLethal) never kills: health stays at 1 at the least
         if (dbLethal && d.health > 0f) d.health = 0f;   // STANCE2 v81: after the last damage multiplier (stance taken, balance, poise, gear armour)
         if (db) d.ConsumeDeathblow(a); else d.AddPosture(pv.ClampPosture(d, StanceLayer.PostureDealtMul(a, d, true) /* STANCE2 v81: attacker postureDealtMul x Trickster proc; the defender half is the PostureTakenMul(d) factor of this line */ * PostureTable.HitGain(m) * WeaponHooks.PostureDealtMul(a) /* WEAPONSWAP v88 */ * (rear ? a.Rule("rear.posture", 1.5f) : 1f) * StanceLayer.PostureTakenMul(d) * GearHooks.PostureTakenMul(d)));   /* kitGEAR v79: poise stat */   // lanePARRY: stance posture resist
         d.SetKnock(away * m.knockback * a.scale * 0.9f * pv.knockMul);
+        if (ShoveTable.IsMove(m.id)) ShoveTable.ApplyKnock(a, d, m, stg, hr, pv.knockMul);   // SHOVE v1: the knock velocity that puts the foe at shove.json pushToM (replaces the line above for a shove id only)
         if (db && d.health > 0f && RTFinisher.DeathblowFinishes && RTFinisher.TryBegin(a, d, m, true)) return true;   // V61B: a posture-break deathblow ALWAYS starts a finisher (finishers.json rt.deathblowFinishes), lethal or not; the scene's Die() is the kill
         if (d.health <= 0f)
         {
@@ -123,7 +126,7 @@ public class Duel : MonoBehaviour
     static void Fire(DuelFighter a, DuelFighter d, string type, bool heavy, bool perfect)
     {
         ContactRelay.Raise(a, d, type, heavy, perfect);
-        ContactRelay.RaiseEvent(new CombatEvent { type = type, actor = a, target = d, moveId = a.CurrentMove != null ? a.CurrentMove.id : "", heavy = heavy, perfect = perfect, counter = lastCounter, rear = lastRear, location = LocationOf(a.CurrentMove, d), direction = DirectionOf(a.CurrentMove), weight = HitReactionTable.Last != null ? HitReactionTable.Last.weight : "", hitLocation = HitReactionTable.Last != null ? HitReactionTable.Last.location : "", hitDirection = HitReactionTable.Last != null ? HitReactionTable.Last.direction : "", point = d.transform.position + Vector3.up * (1.1f * FighterScale.Of(d)), tick = TickCount });
+        ContactRelay.RaiseEvent(new CombatEvent { type = type, actor = a, target = d, moveId = a.CurrentMove != null ? a.CurrentMove.id : "", heavy = heavy, perfect = perfect, counter = lastCounter, rear = lastRear, location = LocationOf(a.CurrentMove, d), direction = DirectionOf(a.CurrentMove), weight = HitReactionTable.Last != null ? HitReactionTable.Last.weight : "", hitLocation = HitReactionTable.Last != null ? HitReactionTable.Last.location : "", hitDirection = HitReactionTable.Last != null ? HitReactionTable.Last.direction : "", point = HitAnchor.Point(a, d) /* KITHIT v1 */, tick = TickCount });
     }
 }
 

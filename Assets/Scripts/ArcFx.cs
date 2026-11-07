@@ -28,6 +28,8 @@ public static class ArcFx
         public float[] headColor = { 0.72f, 0.74f, 0.78f, 1f }, tailColor = { 0.3f, 0.3f, 0.33f, 1f };
         public float headAlpha = 0.26f, midAlpha = 0.12f, midAt = 0.4f;
         public int cornerVertices = 4, capVertices = 2, profileSize = 64;
+        public string[] emberColors = { "#FFD0A0", "#FF4A1A", "#7A1200" }; public float[] emberAt = { 0f, 0.4f, 1f }, emberAlpha = { 0.9f, 0.5f, 0f }; /* DATALAYER b12 */ // WeaponTrail ember palette (maul)
+        public float[] plainColor = { 0.91f, 0.875f, 0.78f }, plainAlpha = { 0.6f, 0f }; /* DATALAYER b12 */ // WeaponTrail plain (sword) colour and head / tail alpha
         public string role = "dust";   // fx_materials.json role of the alpha-blend material (dust = non-additive)
     }
     [Serializable]

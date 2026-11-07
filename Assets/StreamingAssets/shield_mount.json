@@ -4,6 +4,7 @@
  "debugLog": false,
  "hideWithTwoHanded": true,
  "hideDuringFinishers": true,
+ "curlSeconds": 0.1,
  "rows": [
   {
    "id": "carry",
@@ -333,6 +334,7 @@
     "dodge_diveroll",
     "hit_heavy",
     "fin_beheading_k",
+    "fin_belly_bite_v",
     "fin_chop1h_k",
     "fin_counter_v",
     "fin_hengdao_v",

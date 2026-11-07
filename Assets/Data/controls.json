@@ -103,6 +103,22 @@
     "_about": "FlowBot (balance bot) guard side: when it raises a guard / parry against a swing, sideReadChance = it picks the side that covers the swing, else a wrong side. AIBrain keeps its own read skill (ai profile 'read').",
     "sideReadChance": 0.53
   },
+  "touch": {
+    "_about": "HCAUDIT1 v104: TouchControls (phone) layout. centreX/centreY = STRIKE centre as a screen fraction (y up); radiusFrac x min(w,h) = one button radius; *R values are in button radii; buttons = ring around STRIKE (deg, label, action = DuelFighter.Press id or guard=hold); colours r,g,b,a.",
+    "centreX": 0.84, "centreY": 0.2, "radiusFrac": 0.075, "joyZoneX": 0.4,
+    "strikeHitR": 1.3, "strikeDrawR": 1.1, "buttonRingR": 2.0, "buttonDrawR": 0.75, "btnPreviewRingR": 1.85,
+    "joyRangeR": 2.2, "joyDrawR": 1.2, "joyKnobR": 0.6, "joyDeadZone": 0.2, "runAt": 0.85,
+    "holdHeavyS": 0.22, "holdMoveR": 0.4, "swipeR": 0.6,
+    "fontSize": 14, "strikeLabel": "STRIKE",
+    "strikeColor": [0.8, 0.2, 0.15, 0.45], "buttonColor": [0.3, 0.3, 0.35, 0.45], "joyBaseColor": [1.0, 1.0, 1.0, 0.12], "joyKnobColor": [1.0, 1.0, 1.0, 0.35],
+    "buttons": [
+      { "label": "SKULL", "deg": 135, "action": "special1" },
+      { "label": "WIND",  "deg": 45,  "action": "special2" },
+      { "label": "GUARD", "deg": 225, "action": "guard" },
+      { "label": "ROLL",  "deg": 315, "action": "roll" },
+      { "label": "KICK",  "deg": 180, "action": "kick" }
+    ]
+  },
   "touchRelease": { "_about": "HCKIT4 v95: keys whose HOLD hands the player back to the keyboard after a touch (PlayerBrain: TouchControls.Active stays on until a real key is pressed). Key names = UnityEngine.KeyCode. Per-action rebinding is laneREBIND (settings.json keys); this list is the stock set (move, run-roll, guard, strike).", "keys": ["W", "A", "S", "D", "Space", "E", "Q", "F"] },
   "bindings": {
     "_about": "Rebindable keys (lane REBIND, v100), read by InputMap.cs. Each action: keys = keyboard / mouse defaults (one entry per slot, 'slots' slots are shown; the player's changes live in settings.json 'keys', only for actions that differ), pad = gamepad buttons the map itself reads (fixed), padFrom = a controls.json pad list shown as the gamepad column (DirectionalInput reads those), padText = free text for sticks, overlap = actions that may share a key without a conflict warning (the arrow keys move AND pick the guard side). reserved = keys that cannot be assigned (menu / system keys). moveAxisX / moveAxisY = the Input Manager axes the default move keys + left stick come through. fixedRows = keys that are not rebindable, listed in the Controls tab. These rows SUPERSEDE the key lists in dodge.json input.rollKeys, flow.json lockOn.keys / riposte.keys, stances.json input.nextKeys / prevKeys, hud.json hint.toggleKey while this block is enabled (the old lists are the fallback when it is off or an action is missing). enabled false or no block = the old hard-coded keys.",

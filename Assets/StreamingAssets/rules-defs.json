@@ -1,5 +1,17 @@
 {
   "rules": [
+    {"id": "hit.arcDeg", "n": 70},
+    {"id": "hit.heavyDamage", "n": 18},
+    {"id": "blend.toIdleS", "n": 0.1},
+    {"id": "blend.attackSquashS", "n": 0.06},
+    {"id": "blend.staggerS", "n": 0.05},
+    {"id": "blend.deathS", "n": 0.08},
+    {"id": "blend.locoS", "n": 0.15},
+    {"id": "dodge.turnRate", "n": 12},
+    {"id": "stagger.minTicks", "n": 8},
+    {"id": "face.rangeM", "n": 14},
+    {"id": "strafe.ratio", "n": 0.9},
+    {"id": "special.cooldownTicks", "n": 540},
     {"id": "health", "n": 150},
     {"id": "draw", "n": 42},
     {"id": "roll", "n": 36},

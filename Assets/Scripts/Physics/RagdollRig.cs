@@ -255,7 +255,8 @@ public class RagdollRig : MonoBehaviour
         {
             var cc = fs[i] != null ? fs[i].GetComponent<CharacterController>() : null; if (cc == null) continue;
             ccs.Add(cc);
-            cc.excludeLayers = cc.excludeLayers.value | (1 << rl);   // layer based, so it survives the cc.enabled toggles (teleports, FinisherGround) that drop per-collider IgnoreCollision pairs
+            int exMask = cc.excludeLayers.value | (1 << rl); var exNames = PhysicsCfg.Get().ccExclude; if (exNames != null) for (int xi = 0; xi < exNames.Length; xi++) exMask |= PhysMasks.Bit(exNames[xi]);   // PHYSON v1: the sim moves with cc.Move, so finisher pieces (physProp) must not block it either
+            cc.excludeLayers = exMask;   // layer based, so it survives the cc.enabled toggles (teleports, FinisherGround) that drop per-collider IgnoreCollision pairs
         }
         for (int r = 0; r < All.Count; r++)
         {

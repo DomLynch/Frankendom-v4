@@ -69,61 +69,53 @@
       "bot": false,
       "minDiff": 1,
       "maxDiff": 99,
-      "comboChance": 0.3,
+      "comboChance": 0.5,
       "combos": [
         {
-          "id": "poke2",
+          "id": "ll",
           "steps": [
-            "thrust",
-            "thrust"
+            "light",
+            "light"
           ],
           "weight": 1.0
         },
         {
-          "id": "poke_sweep",
+          "id": "lh",
           "steps": [
-            "thrust",
+            "light",
             "heavy"
           ],
           "weight": 0.8
         },
         {
-          "id": "poke_poke_lunge",
+          "id": "llh",
           "steps": [
-            "thrust",
-            "thrust",
+            "light",
+            "light",
             "heavy"
           ],
           "weight": 0.5
-        },
-        {
-          "id": "sweep_jab",
-          "steps": [
-            "heavy",
-            "light"
-          ],
-          "weight": 0.3
         }
       ],
-      "punishChance": 0.7,
+      "punishChance": 0.85,
       "punishReact": 4,
       "punishMinRemain": 6,
       "punishApproachMin": 10,
-      "punishDashGap": 2.496,
+      "punishDashGap": 1.45,
       "punishHeavyRemain": 34,
-      "delayChance": 0.25,
+      "delayChance": 0.12,
       "delayMin": 6,
       "delayMax": 20,
-      "earlyChance": 0.15,
+      "earlyChance": 0.22,
       "earlyMul": 0.55,
-      "lateChance": 0.2,
+      "lateChance": 0.12,
       "lateMul": 1.6,
       "riposteTake": 0.7,
       "kickMax": 1,
       "kickWindow": 1800,
       "kickGap": 300,
       "maxShare": 0.38,
-      "lightMaxShare": 0.45,
+      "lightMaxShare": 0.32,
       "minSample": 8,
       "alts": [
         {
@@ -158,8 +150,8 @@
       ],
       "enrage": {
         "enabled": true,
-        "hpFrac": 0.4,
-        "speedMul": 1.0,
+        "hpFrac": 0.5,
+        "speedMul": 1.2,
         "waitMul": 0.8,
         "reactionMul": 0.9,
         "comboAdd": 0.15,
@@ -174,7 +166,7 @@
           "dash": 0.1
         }
       },
-      "note": "SOBEKMOVES (guess): keep-distance poker. thrust-first combos (poke, poke, sweep/lunge), whiff punish dashes in from 2.4 m, no more than 38 percent thrust (balance_auto maxMoveShare 0.4), kick at most once per 30 s, enrage at 40 percent HP: faster tempo, no speed change. Proof: -balanceauto move counts per fight (>= 4 distinct moves, no move > 40 percent)."
+      "note": "SOBEKMOVES (guess): keep-distance poker. thrust-first combos (poke, poke, sweep/lunge), whiff punish dashes in from 2.4 m, no more than 38 percent thrust (balance_auto maxMoveShare 0.4), kick at most once per 30 s, enrage at 40 percent HP: faster tempo, no speed change. Proof: -balanceauto move counts per fight (>= 4 distinct moves, no move > 40 percent). SOBEKAI v1: Sobek claws AI: see _agents/laneSOBEKAI/MANIFEST.md (combo / punish / dash / share / enrage keys)."
     },
     {
       "id": "enemy_d1_3",

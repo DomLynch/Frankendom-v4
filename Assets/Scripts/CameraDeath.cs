@@ -21,6 +21,7 @@ public static class CameraDeath
         public float margin = 1.3f;           // >1 = air around the body
         public float maxDist = 8f;
         public float followRate = 6f;         // smoothing of the body bounds
+        public float padM = 0.1f, fallbackAspect = 1.7778f; /* DATALAYER b7 */ // air above / beside the body in the fit; aspect used when there is no main camera
     }
     static Row cfg; static readonly FinisherBody body = new FinisherBody();
     static float age; static bool dirSet; static Vector3 dir = Vector3.back;
@@ -65,10 +66,10 @@ public static class CameraDeath
         float w = c.blendSeconds <= 0f ? 1f : Mathf.Clamp01((age - c.delaySeconds) / c.blendSeconds); w = w * w * (3f - 2f * w);
         Weight = w;
 
-        float lookY = Mathf.Clamp(bb.min.y + c.lookHeight * sc, bb.min.y + 0.1f, Mathf.Max(bb.min.y + 0.1f, bb.max.y));
-        var cam = Camera.main; float asp = cam != null && cam.aspect > 0.1f ? cam.aspect : 1.7778f;
+        float lookY = Mathf.Clamp(bb.min.y + c.lookHeight * sc, bb.min.y + c.padM, Mathf.Max(bb.min.y + c.padM, bb.max.y)); /* DATALAYER b7 */
+        var cam = Camera.main; float asp = cam != null && cam.aspect > 0.1f ? cam.aspect : c.fallbackAspect; /* DATALAYER b7 */
         float tanV = Mathf.Tan(Mathf.Clamp(c.fov, 10f, 90f) * 0.5f * Mathf.Deg2Rad), tanH = tanV * asp;
-        float halfV = Mathf.Max(lookY - bb.min.y, bb.max.y - lookY) + 0.1f, halfH = Mathf.Max(bb.extents.x, bb.extents.z) + 0.1f;
+        float halfV = Mathf.Max(lookY - bb.min.y, bb.max.y - lookY) + c.padM, halfH = Mathf.Max(bb.extents.x, bb.extents.z) + c.padM; /* DATALAYER b7 */
         float need = Mathf.Max(halfV / tanV, halfH / tanH) * c.margin;
         float dist = Mathf.Min(Mathf.Max(c.dist, need), Mathf.Max(c.dist, c.maxDist));
         Vector3 pos = center + dir * dist; pos.y = bb.min.y + c.height * sc;

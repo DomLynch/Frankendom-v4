@@ -58,14 +58,14 @@ public class FootYaw : MonoBehaviour
         if (anim == null) { anim = GetComponentInChildren<Animator>(true); if (anim == null) anim = GetComponentInParent<Animator>(); }
         foreach (var t in GetComponentsInChildren<Transform>(true))
         {
-            switch (t.name)
+            switch (Roster.BoneRole(Roster.BonePrefix(this), t.name)) /* HCAUDIT1 v104 */
             {
-                case "mixamorig:LeftFoot": lFoot = t; break;
-                case "mixamorig:RightFoot": rFoot = t; break;
-                case "mixamorig:LeftToeBase": lToe = t; break;
-                case "mixamorig:RightToeBase": rToe = t; break;
-                case "mixamorig:LeftArm": lArm = t; break;
-                case "mixamorig:RightArm": rArm = t; break;
+                case "LeftFoot": lFoot = t; break;
+                case "RightFoot": rFoot = t; break;
+                case "LeftToeBase": lToe = t; break;
+                case "RightToeBase": rToe = t; break;
+                case "LeftArm": lArm = t; break;
+                case "RightArm": rArm = t; break;
             }
         }
         // shin axis = Leg->Foot offset in the Leg frame (the Foot's local position)

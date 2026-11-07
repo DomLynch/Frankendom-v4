@@ -16,8 +16,9 @@ public class WeaponTrail : MonoBehaviour
     {
         if (tr == null) tr = GetComponent<TrailRenderer>();
         var g = new Gradient();
-        if (ember) g.SetKeys(new[] { new GradientColorKey(C("#FFD0A0"), 0f), new GradientColorKey(C("#FF4A1A"), 0.4f), new GradientColorKey(C("#7A1200"), 1f) }, new[] { new GradientAlphaKey(0.9f, 0f), new GradientAlphaKey(0.5f, 0.4f), new GradientAlphaKey(0f, 1f) });
-        else g.SetKeys(new[] { new GradientColorKey(new Color(0.91f, 0.875f, 0.78f), 0f), new GradientColorKey(new Color(0.91f, 0.875f, 0.78f), 1f) }, new[] { new GradientAlphaKey(0.6f, 0f), new GradientAlphaKey(0f, 1f) });
+        var wc = ArcFx.Cfg().weapon; /* DATALAYER b12 */
+        if (ember) g.SetKeys(new[] { new GradientColorKey(C(wc.emberColors[0]), wc.emberAt[0]), new GradientColorKey(C(wc.emberColors[1]), wc.emberAt[1]), new GradientColorKey(C(wc.emberColors[2]), wc.emberAt[2]) }, new[] { new GradientAlphaKey(wc.emberAlpha[0], wc.emberAt[0]), new GradientAlphaKey(wc.emberAlpha[1], wc.emberAt[1]), new GradientAlphaKey(wc.emberAlpha[2], wc.emberAt[2]) }); /* DATALAYER b12 */
+        else { var pc = new Color(wc.plainColor[0], wc.plainColor[1], wc.plainColor[2]); g.SetKeys(new[] { new GradientColorKey(pc, 0f), new GradientColorKey(pc, 1f) }, new[] { new GradientAlphaKey(wc.plainAlpha[0], 0f), new GradientAlphaKey(wc.plainAlpha[1], 1f) }); } /* DATALAYER b12 */
         tr.colorGradient = g; ArcFx.StyleTrail(tr);   // ARCS v105
     }
     void LateUpdate()

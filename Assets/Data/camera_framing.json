@@ -2,6 +2,7 @@
   "_about": "V65CAM: keep BOTH fighters in the safe area of the lock-on camera (CamFraming.cs, called from CameraRig). Safe area = the viewport rectangle CameraRig.VisibleFraction tests, shrunk by marginX / marginY. The camera moves straight back along its view ray by the exact distance needed (max maxExtraDist m); what camera collision pulls back in is caught by opening the FOV up to fovMax (released at fovReleaseDegPerS). enabled=false = the V3 pose as before. proof = thresholds of the -camproof harness (CamProof.cs).",
   "enabled": true,
   "scaleFloor": 1.0,
+  "fovFree": 50.0, "fovLock": 38.6, "behindZ": 0.2, "behindRatio": 4.0, "behindPad": 0.5,
   "safeMinX": 0.05, "safeMaxX": 0.95, "safeMinY": 0.03, "safeMaxY": 0.97,
   "marginX": 0.03, "marginY": 0.02,
   "feetH": 0.1, "waistH": 0.9, "headH": 1.7,

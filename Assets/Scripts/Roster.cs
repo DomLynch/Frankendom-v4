@@ -10,16 +10,18 @@ using UnityEngine;
     public string id = "";
     public string displayName = "";         // HUD / log name
     public string objectName = "";          // scene GameObject name (root of the fighter)
-    public string weapon = "";              // "sword" | "maul" ... (Assets/Characters/Weapons/<weapon>_start)
+    public string weapon = ""; public string[] specials = { "skill_cleave", "skill_reaping" }; /* DATALAYER b6 */ // special slot 1 / slot 2 move ids of this character (moves table ids); default = today's two specials              // "sword" | "maul" ... (Assets/Characters/Weapons/<weapon>_start)
     public string controller = "";          // AnimatorController asset path
     public string modelGlb = "";            // combat model asset path
     public string animGlb = "";             // animation source glb asset path
     public string guardMask = "";           // upper-body guard AvatarMask asset path
     public string finisherClipFolder = "";  // baked finisher clips folder
+    public float hitFwdM = 0f, hitHeightM = 0f;   // KITHIT v1: hit point offset toward the attacker (m) / height override (m); 0 = today
     public float heightM = 0f;              // 0 = keep the scene / GameConfig size
     public bool armoured = false;           // metal: blood.json default sparks / flash when no victims[] row matches
     public string headRenderer = "";        // WOUNDSHOT v84: exact name of the head mesh object (VerifyGround HEAD check, wound close-ups); "" = verify_ground.json head.rendererName
     public float scaleFloor = 0f;           /*HCKIT1 v93 K2: floor for metre anchors, Max(scaleFloor, DuelFighter.scale); 0 = camera_framing.json scaleFloor (1) */
+    public string bonePrefix = "mixamorig:";   /* HCAUDIT1 v104: skeleton bone-name prefix of this character ("" = bones carry no prefix); code asks Roster.BonePrefix / BoneName / BoneRole */
     public string notes = "";
 }
 
@@ -78,6 +80,10 @@ public static class Roster
         return IdOfName(t.root.name);
     }
     public static string IdOf(Component comp) { return comp == null ? "" : IdOf(comp.transform); }
+    // HCAUDIT1 v104: bone names. The prefix is roster data (roster.json bonePrefix, "mixamorig:" for the 106-joint Mixamo rig); code names only the role ("RightHand").
+    public static string BonePrefix(Component who) { var r = Get(IdOf(who)); return r.bonePrefix ?? ""; }
+    public static string BoneName(Component who, string role) { return BonePrefix(who) + role; }
+    public static string BoneRole(string prefix, string boneName) { prefix = prefix ?? ""; return boneName != null && boneName.StartsWith(prefix, StringComparison.Ordinal) ? boneName.Substring(prefix.Length) : ""; }   // "" = not a bone of this rig
     public static string IdOfName(string n)
     {
         if (string.IsNullOrEmpty(n)) return "";

@@ -12,7 +12,7 @@ public class Fighter : MonoBehaviour
     Renderer[] rs;
     // v109d: -statelog prints every attack / claw / skill state a fighter is sent to ("[AnimState] Sobek -> claw_swipe_R"): the camtrace only has the coarse FState. Off without the flag.
     static readonly bool StateLog = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-statelog") >= 0;
-    void LogState(string state) { if (StateLog && state != null && (state.StartsWith("atk_") || state.StartsWith("claw_") || state.StartsWith("skill") || state.StartsWith("fin_") || state.StartsWith("kick") || state.StartsWith("riposte"))) Debug.Log("[AnimState] " + name + " -> " + state + " t " + Time.time.ToString("F2")); }
+    void LogState(string state) { if (StateLog && state != null && (state.StartsWith("atk_") || state.StartsWith("claw_") || state.StartsWith("skill") || state.StartsWith("fin_") || state.StartsWith("kick") || state.StartsWith("riposte") || state.StartsWith("maul_") || state.StartsWith("shove"))) Debug.Log("[AnimState] " + name + " -> " + state + " t " + Time.time.ToString("F2")); }
     public void Play(string state, float fade = 0.15f)
     {
         if (cur == state || anim == null) return;
@@ -72,7 +72,7 @@ public class Fighter : MonoBehaviour
         if (!model) return;
         if (toeL == null)
         {
-            foreach (var t in model.GetComponentsInChildren<Transform>()) { if (t.name == "mixamorig:LeftToe_End") toeL = t; else if (t.name == "mixamorig:RightToe_End") toeR = t; }
+            { string bpre = Roster.BonePrefix(this); foreach (var t in model.GetComponentsInChildren<Transform>()) { if (t.name == bpre + "LeftToe_End") toeL = t; else if (t.name == bpre + "RightToe_End") toeR = t; } } /* HCAUDIT1 v104 */
             hp = GetComponent<Health>();
             if (toeL == null || toeR == null) return;
         }

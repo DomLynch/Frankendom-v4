@@ -13,6 +13,8 @@
     "headColor": [0.72, 0.74, 0.78, 1.0], "tailColor": [0.30, 0.30, 0.33, 1.0],
     "headAlpha": 0.26, "midAlpha": 0.12, "midAt": 0.4,
     "cornerVertices": 4, "capVertices": 2, "profileSize": 64,
+    "emberColors": ["#FFD0A0", "#FF4A1A", "#7A1200"], "emberAt": [0.0, 0.4, 1.0], "emberAlpha": [0.9, 0.5, 0.0],
+    "plainColor": [0.91, 0.875, 0.78], "plainAlpha": [0.6, 0.0],
     "role": "dust"
   },
   "sparks": {

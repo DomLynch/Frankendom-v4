@@ -47,7 +47,7 @@ public static class GearAttach
     public static Report Bind(GameObject inst, Transform pieceRoot, Dictionary<string, Transform> map, GearTable.Item item, string slotId, string partFilter = null)
     {
         var rep = new Report(); if (inst == null) return rep;
-        Transform hips = Find(map, "mixamorig:Hips") ?? Find(map, "Hips");
+        Transform hips = Find(map, Roster.BoneName(pieceRoot, "Hips")) ?? Find(map, "Hips"); /* HCAUDIT1 v104 */
         string part = partFilter ?? item.part;
         bool all = string.IsNullOrEmpty(part);
         var skinned = new List<SkinnedMeshRenderer>(inst.GetComponentsInChildren<SkinnedMeshRenderer>(true));

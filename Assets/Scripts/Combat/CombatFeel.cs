@@ -7,7 +7,7 @@ using UnityEngine;
 // A missing / unparsable file or "enabled": false leaves DuelFighter and PlayerBrain on the old behaviour exactly.
 public static class CombatFeel
 {
-    [Serializable] public class InputCfg { public string strikeFire = "down"; public float heavyHoldSeconds = 0.22f, holdToHeavyMs = 180f; public int holdToHeavyUntilTick = 16; }   // strikeFire: "release" (V3: a tap fires on key-up) | "down" (light fires on key-down, heavy only by G / T)
+    [Serializable] public class InputCfg { public string strikeFire = "down"; public float heavyHoldSeconds = 0.22f, holdToHeavyMs = 180f; public int holdToHeavyUntilTick = 16; public float holdToHeavyGiveUpS = 0.6f, stickLight = 0.5f; /* HCAUDIT1 v104 */ }   // strikeFire: "release" (V3: a tap fires on key-up) | "down" (light fires on key-down, heavy only by G / T)
     [Serializable] public class QueueCfg { public bool enabled = true; public int extraTicks = 11; public int maxTicks = 40; public string[] states = new string[0]; }
     [Serializable] public class Row { public string move = "*"; public string to; public int earliest = -1; public bool onHitOnly; }   // earliest = Recovery tick t (1 = first tick after the active window); -1 = never
     [Serializable]

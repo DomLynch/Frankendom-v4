@@ -28,6 +28,8 @@ public static class CamFraming
         public float marginX = 0.03f, marginY = 0.02f;   // extra inside margin (viewport fraction) so the pose has headroom
         public float feetH = 0.1f, waistH = 0.9f, headH = 1.7f;   // metres x max(1, fighter scale)
         public float maxExtraDist = 14f;
+        public float fovFree = 50f, fovLock = 38.6f; /* DATALAYER b7 */ // lens model: vertical FOV with no lock (lockW 0) and at full lock (lockW 1); CamReframe.Fit reads the same two numbers
+        public float behindZ = 0.2f, behindRatio = 4f, behindPad = 0.5f; /* DATALAYER b7 */ // AddFor: a point nearer than behindZ (or behind the lens) pushes the camera back by behindZ - z + behindPad and counts as ratio behindRatio
         public float minLockW = 0.5f, maxDeathWeight = 0.01f;
         public bool fovWiden = true; public float fovMax = 60f, fovReleaseDegPerS = 6f;
         public ProofRow proof = new ProofRow();
@@ -64,7 +66,7 @@ public static class CamFraming
     static float AddFor(Vector3 v, float th, float tv, float xlo, float xhi, float ylo, float yhi, out float ratio)
     {
         ratio = 1f;
-        if (v.z < 0.2f) { ratio = 4f; return 0.2f - v.z + 0.5f; }
+        { var bc = Cfg(); if (v.z < bc.behindZ) { ratio = bc.behindRatio; return bc.behindZ - v.z + bc.behindPad; } } /* DATALAYER b7 */
         float nx = v.x / (v.z * th), ny = v.y / (v.z * tv), add = 0f;
         if (nx > xhi) { float k = nx / xhi; ratio = Mathf.Max(ratio, k); add = Mathf.Max(add, v.z * (k - 1f)); }
         else if (nx < xlo) { float k = nx / xlo; ratio = Mathf.Max(ratio, k); add = Mathf.Max(add, v.z * (k - 1f)); }
@@ -78,7 +80,7 @@ public static class CamFraming
     {
         if (!Live(lockW)) return pos;
         var r = Cfg(); Vector3 dir = look - pos; if (dir.sqrMagnitude < 1e-6f) return pos;
-        Vector3 dn = dir.normalized; float fov = Mathf.Lerp(50f, 38.6f, lockW);
+        Vector3 dn = dir.normalized; float fov = Mathf.Lerp(r.fovFree, r.fovLock, lockW); /* DATALAYER b7 */
         float tv = Mathf.Tan(fov * 0.5f * Mathf.Deg2Rad), th = tv * Mathf.Max(0.5f, aspect);
         float xlo, xhi, ylo, yhi; Bounds(r, out xlo, out xhi, out ylo, out yhi);
         Quaternion inv = Quaternion.Inverse(Quaternion.LookRotation(dn, Vector3.up));

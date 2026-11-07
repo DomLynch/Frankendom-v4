@@ -15,7 +15,8 @@
  },
  "weights": {
   "kickMoves": [
-   "kick"
+   "kick",
+   "shove_L"
   ],
   "heavyMinDamage": 18,
   "heavyIfCharges": true,
@@ -24,6 +25,11 @@
  },
  "defaultState": "hit_light_front",
  "moves": [
+  {
+   "id": "shove_L",
+   "location": "torso",
+   "side": ""
+  },
   {
    "id": "kick",
    "location": "legs",
@@ -425,6 +431,18 @@
    "staggerScale": 1.0,
    "knockdown": true,
    "note": "sweep / stomp: knockdown ONLY when allowKnockdown=true (changes the sim: Down state)"
+  },
+  {
+   "character": "*",
+   "location": "torso",
+   "direction": "*",
+   "weight": "kick",
+   "state": "hit_heavy",
+   "prefer": "hit_shoved",
+   "fallback": "",
+   "staggerScale": 1.0,
+   "knockdown": false,
+   "note": "lanePITSHOVE: a shove (weights.kickMoves: shove_L, so blood.json 'kick' = little blood, no ground splat; the kick itself is a legs move and keeps its rows) staggers Joan with her existing hit_heavy state (she doubles over and back, out\\shove_L_react_compare.png); prefer = hit_shoved is used automatically once a clip with that exact state name is imported (library 102430901-shove-reaction is a candidate)"
   }
  ]
 }

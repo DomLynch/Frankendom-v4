@@ -27,6 +27,8 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
 
 
     float R(string k, float d) { return rules ? rules.N(k, d) : d; }
+    string[] specialIds; /* DATALAYER b6 */
+    public string SpecialId(int slot) { if (specialIds == null) { var rc = Roster.Get(Roster.IdOf(this)); specialIds = rc != null && rc.specials != null && rc.specials.Length >= 2 ? rc.specials : new[] { "skill_cleave", "skill_reaping" }; } return specialIds[slot]; } /* DATALAYER b6 */
     public bool Dead => state == FState.Dead;
     public MoveDef CurrentMove => move;
     public int WindupLeft => state == FState.Windup && move != null ? Tk(move.Windup(chained)) - t : 99;
@@ -37,13 +39,14 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         if (state != FState.Windup || move == null) return;
         float fCost = R("feintCost", 10) * StanceLayer.FeintCostMul(this);   // lanePARRY: stance feint cost (stances.json)
         if (t > 10 || stamina < fCost) return;
-        stamina -= fCost; regenWait = RegenDelay(); ToLoco(); PlayClip("idle", 0, 0.1f); f.holdLast = false;
+        stamina -= fCost; regenWait = RegenDelay(); ToLoco(); PlayClip("idle", 0, R("blend.toIdleS", 0.1f)); /* DATALAYER b10 */ f.holdLast = false;
     }
     public void Press(string what)
     {
         if (IsPlayer && MarketSafe.Refuses(what)) return;   // STALL v1: no attack presses in the camp (dodges stay)
         int ttl = CombatFeel.QueueTtl(this, (int)R("bufferTtl", 11));   // P1: while a move / dodge / stagger runs, the press lives until the move can take it (cancel.json queue)
-        if (what == "special1" || what == "special2" || what == "light_left" || what == "light_right" || what == "heavy_overhead") { pMove = what == "special1" ? "skill_cleave" : what == "special2" ? "skill_reaping" : what; pMoveTtl = ttl; return; }
+        if (ShoveTable.IsMove(what)) { pMove = what; pMoveTtl = ttl; return; }   // SHOVE v1: a shove.json move id is queued like a special; TickFree starts it (no special cooldown, no stamina refund)
+        if (what == "special1" || what == "special2" || BellyBite.IsPress(what) /* BELLYBITE v1 */ || what == "light_left" || what == "light_right" || what == "heavy_overhead") { pMove = what == "special1" ? SpecialId(0) : what == "special2" ? SpecialId(1) : what; /* DATALAYER b6 */ pMoveTtl = ttl; return; }
         switch (what) { case "sidestep": sideDir = 0; pSide = ttl; break; case "backstep": pBack = ttl; break; case "light": pLight = ttl; break; case "heavy": pHeavy = ttl; break; case "thrust": pThrust = ttl; break; case "kick": pKick = ttl; break; case "roll": pRoll = ttl; break; }
     }
 
@@ -255,12 +258,13 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         }
         else if (state == FState.Guard) { state = FState.Loco; t = 0; if (ParryWhiffOnDrop()) return; }   // lanePARRY: a whiffed parry tap
 
+        if (pMove != null && ShoveTable.IsMove(pMove)) { string shoveId = pMove; pMove = null; StartMove(shoveId, false); return; }   // SHOVE v1
         if (pMove != null)
         {
             string id = pMove; pMove = null;
-            if (id == "skill_cleave" && special1Cd > 0) { }
-            else if (id == "skill_reaping" && special2Cd > 0) { }
-            else { if (id == "skill_cleave") special1Cd = 540; else if (id == "skill_reaping") special2Cd = 540; stamina += moves.Get(id) != null ? moves.Get(id).stamina : 0; StartMove(id, false); return; }
+            if (id == SpecialId(0) && special1Cd > 0) { } /* DATALAYER b6 */
+            else if (id == SpecialId(1) && special2Cd > 0) { } /* DATALAYER b6 */
+            else { if (id == SpecialId(0)) special1Cd = (int)R("special.cooldownTicks", 540); else if (id == SpecialId(1)) special2Cd = (int)R("special.cooldownTicks", 540); /* DATALAYER b6 */ stamina += moves.Get(id) != null ? moves.Get(id).stamina : 0; StartMove(id, false); return; }
         }
         if (dodgeCd <= 0)
         {
@@ -340,7 +344,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         if (d.enabled) { ticks = r.ticks; isf = r.iframeStart; ief = r.iframeEnd; dist = r.distance; cost = BackstepCost(); pow = r.easePower; cd = r.cooldownTicks; }
         stamina = Mathf.Max(0f, stamina - cost); regenWait = RegenDelay();
         rollDir = -OppFlat();   // straight away from the opponent (the old -transform.forward is the same while he is faced); the body keeps facing him
-        BeginDodge(1, ticks, dist, isf, ief, pow, cd, 12f);
+        BeginDodge(1, ticks, dist, isf, ief, pow, cd, R("dodge.turnRate", 12f)); /* DATALAYER b10 */
         string clip = (d.enabled && !string.IsNullOrEmpty(r.clip)) ? r.clip : "backstep";
         if (d.enabled) PlayDodgeClip(clip, r); else PlayClip(clip, ticks + 30);
         if (d.debugLog) Debug.Log("[Dodge] " + name + " BACKSTEP ticks=" + ticks + " stamina=" + stamina);
@@ -359,7 +363,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         else { rollDir = -toO; clip = r.clipBack; }
         if (string.IsNullOrEmpty(clip)) clip = r.clip;
         stamina = Mathf.Max(0f, stamina - SidestepCost()); regenWait = RegenDelay();
-        BeginDodge(2, r.ticks, r.distance, r.iframeStart, r.iframeEnd, r.easePower, r.cooldownTicks, 12f);
+        BeginDodge(2, r.ticks, r.distance, r.iframeStart, r.iframeEnd, r.easePower, r.cooldownTicks, R("dodge.turnRate", 12f)); /* DATALAYER b10 */
         PlayDodgeClip(clip, r);
         if (d.debugLog) Debug.Log("[Dodge] " + name + " SIDESTEP dir=" + sideDir + " clip=" + clip + " stamina=" + stamina);
         ContactRelay.Action(this, string.IsNullOrEmpty(r.fxAction) ? "backstep" : r.fxAction);
@@ -376,7 +380,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         int total = Tk(m.Windup(isChained)) + Tk(m.Active(isChained)) + Tk(m.Recovery(isChained));
         var arow = AttackClipTable.Get().enabled ? AttackClipTable.Find(CharKey(), id) : null;
         fadeOutLen = 0f;
-        if (!BeginAttackClip(arow, m, isChained)) PlayClip(ClipFor(id), total, 0.06f);   // no row / state: old whole-clip squash
+        if (!BeginAttackClip(arow, m, isChained)) PlayClip(ClipFor(id), total, R("blend.attackSquashS", 0.06f)) /* DATALAYER b10 */;   // no row / state: old whole-clip squash
         FlowAttackStart(m);   // V64FLOW
         ContactRelay.AttackStarted(this, m);
         LatencyProbe.Started(this, "attack", id);
@@ -434,7 +438,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         bool queued = pMove != null || pHeavy > 0 || pLight > 0 || pThrust > 0 || pKick > 0;
         if (!queued && guardHeld && stamina > 0f && Can(mid, "guard", out e)) { statCancelGuard++; ToLoco(); TickFree(); return true; }   // V64P   // TickFree enters Guard
         bool atk;
-        if (pMove != null) atk = Can(mid, "special", out e) && (pMove == "skill_cleave" ? special1Cd <= 0 : pMove == "skill_reaping" ? special2Cd <= 0 : true);
+        if (pMove != null) atk = Can(mid, "special", out e) && (pMove == SpecialId(0) ? special1Cd <= 0 : pMove == SpecialId(1) ? special2Cd <= 0 : true) /* DATALAYER b6 */;
         else atk = (pHeavy > 0 && Can(mid, "heavy", out e)) || (pLight > 0 && Can(mid, "light", out e)) || (pThrust > 0 && Can(mid, "thrust", out e)) || (pKick > 0 && Can(mid, "kick", out e));
         if (atk) { statCancelAtk++; ToLoco(); TickFree(); return true; }   // V64P   // TickFree starts the buffered move (riposte / heavy / light / thrust / kick / special)
         return false;
@@ -451,8 +455,8 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public void Stagger(int ticks, string clip)
     {
         if (state == FState.Dead) return;
-        atkOn = false; fadeOutLen = 0f; state = FState.Stagger; t = 0; staggerTicks = Mathf.Max(8, ticks); pLight = pHeavy = pThrust = pKick = 0;
-        PlayClip(clip, 0, 0.05f);
+        atkOn = false; fadeOutLen = 0f; state = FState.Stagger; t = 0; staggerTicks = Mathf.Max((int)R("stagger.minTicks", 8), ticks); /* DATALAYER b10 */ pLight = pHeavy = pThrust = pKick = 0;
+        PlayClip(clip, 0, R("blend.staggerS", 0.05f)); /* DATALAYER b10 */
     }
     public void KnockDown()
     {
@@ -473,7 +477,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     void DeathPlay(FState from)
     {
         var r = DeathTable.Find(CharKey());
-        if (r == null || f == null || f.anim == null) { PlayClip("death", 0, 0.08f); return; }
+        if (r == null || f == null || f.anim == null) { PlayClip("death", 0, R("blend.deathS", 0.08f)); return; /* DATALAYER b10 */ }
         string clip = HasState(r.clip) ? r.clip : "death";
         bool down = from == FState.Down && r.downEnabled;
         float start = down ? r.downStartSeconds : r.startSeconds, fade = down ? r.downFade : r.fade;
@@ -594,6 +598,14 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         EndPostureBreak(true);
     }
     public float Rule(string k, float d) { return R(k, d); }
+    float cFaceRange = float.NaN, cStrafeRatio = float.NaN, cLocoBlend = float.NaN; /* DATALAYER b10 */
+    float Rf(ref float c, string k, float d) { if (!float.IsNaN(c)) return c; if (!rules) return d; return c = rules.N(k, d); } /* DATALAYER b10 */ // read once per fighter, never cached while rules is unbound
+    float FaceRangeM { get { return Rf(ref cFaceRange, "face.rangeM", 14f); } } /* DATALAYER b10 */
+    float StrafeRatio { get { return Rf(ref cStrafeRatio, "strafe.ratio", 0.9f); } } /* DATALAYER b10 */
+    float cHitArc = float.NaN, cHeavyDmg = float.NaN; /* DATALAYER b11 */
+    public float HitArcDeg { get { return Rf(ref cHitArc, "hit.arcDeg", 70f); } } /* DATALAYER b11 */
+    public float HeavyDamage { get { return Rf(ref cHeavyDmg, "hit.heavyDamage", 18f); } } /* DATALAYER b11 */
+    float LocoBlendS { get { return Rf(ref cLocoBlend, "blend.locoS", 0.15f); } } /* DATALAYER b10 */
     public void SpendStamina(float s) { stamina -= s; regenWait = RegenDelay(); }
 
     // ---------------- presentation (per frame) ----------------
@@ -605,7 +617,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         Vector3 v = Vector3.zero;
         Vector3 toOpp = opponent ? opponent.transform.position - transform.position : transform.forward; toOpp.y = 0f;
         float dist = toOpp.magnitude; Vector3 dir = dist > 0.01f ? toOpp / dist : transform.forward;
-        bool faceOpp = opponent && !opponent.Dead && dist < FlowFaceRange(14f) && FlowLockOk();   // V64FLOW
+        bool faceOpp = opponent && !opponent.Dead && dist < FlowFaceRange(FaceRangeM) /* DATALAYER b10 */ && FlowLockOk();   // V64FLOW
         switch (state)
         {
             case FState.Loco: v = moveDir * (run ? runSpeed : walkSpeed) * SpeedMulExhausted(); break;
@@ -677,7 +689,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             else
             {
                 Vector3 lm = transform.InverseTransformDirection(moveDir);
-                bool strafe = faceOpp && Mathf.Abs(lm.x) > Mathf.Abs(lm.z) * 0.9f && !runNow;
+                bool strafe = faceOpp && Mathf.Abs(lm.x) > Mathf.Abs(lm.z) * StrafeRatio && !runNow /* DATALAYER b10 */;
                 clip = strafe ? (lm.x < 0 ? "strafe_L" : "strafe_R") : (runNow ? "run" : "walk");
             }
             if (guarding && !moving) clip = pose;
@@ -692,7 +704,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
                 if (Time.time > fadeOutUntil) fadeOutLen = 0f;
                 else if (f.Current != clip) { f.PlayExact(clip, fadeOutLen); fadeOutLen = 0f; }   // first locomotion clip after an attack: the row's blendOut
             }
-            else f.Play(clip, 0.15f);
+            else f.Play(clip, LocoBlendS); /* DATALAYER b10 */
         }
         UpdateGuardLayer(upperPose, dt);
     }

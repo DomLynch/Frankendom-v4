@@ -58,7 +58,7 @@ public class ArmHold : MonoBehaviour
             bw[i] = row.bones[i].w;
             foreach (var t in all) if (t.name == row.bones[i].bone) { bones[i] = t; break; }
         }
-        foreach (var t in all) { if (t.name == "mixamorig:RightArm") shoulder = t; if (t.name == "mixamorig:RightHand") hand = t; }
+        { string bpre = Roster.BonePrefix(this); foreach (var t in all) { if (t.name == bpre + "RightArm") shoulder = t; if (t.name == bpre + "RightHand") hand = t; } } /* HCAUDIT1 v104 */
         stHash = new int[row.states != null ? row.states.Length : 0][];
         for (int i = 0; i < stHash.Length; i++)
         {

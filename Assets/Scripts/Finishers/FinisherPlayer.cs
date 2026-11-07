@@ -164,6 +164,7 @@ public static class FinisherPlayer
         host.Notify("Finisher: " + e.id);
         host.Prep();
         FinPhys.BeginScene(e.id, A, V);   // FINPHYS v97: hit reaction off, the entry's physics row
+        if (e.survive) BellyBite.SceneBegin(A);   // BELLYGRAB v1: mouth keys
 
         // placement: pair on the lane axis, facing each other (hidden by the hard first cut). distance / pairOffset are stand-in metres scaled by the killer;
         // killerYawDeg turns the killer so its clip's own facing points at the victim, victimYawDeg likewise for the victim.
@@ -253,9 +254,9 @@ public static class FinisherPlayer
                     FinPhys.OnContact(A, V, axis);   // FINPHYS v97: the blow's momentum / zone for the death ragdoll (before any Die())
                     if (ProbeEnabled) { Probe(e, A, V, axis, rightV, ks); Clearance(e, A, V, ks); }
                     { float cs = e.contactShake >= 0f ? e.contactShake : rtc.contactShake; if (rig && cs > 0f) host.CameraShake(cs, rtc.contactShakeS); }   // FINFIX v93: json (was a hard-coded 0.03)
-                    if (rtc.hpToZeroAtContact && !V.Dead) { V.health = 0f; var hpz = V.GetComponent<Health>(); if (hpz != null) hpz.current = 0f; Debug.Log("[finisher] " + e.id + " contact at T=" + T.ToString("0.00") + " s: victim HP -> 0"); }   // FINFIX v93: the bar drains at the contact, not at Die()
+                    if (rtc.hpToZeroAtContact && !e.survive /* BELLYBITE v1 */ && !V.Dead) { V.health = 0f; var hpz = V.GetComponent<Health>(); if (hpz != null) hpz.current = 0f; Debug.Log("[finisher] " + e.id + " contact at T=" + T.ToString("0.00") + " s: victim HP -> 0"); }   // FINFIX v93: the bar drains at the contact, not at Die()
                     { float hm = e.contactHoldMs >= 0f ? e.contactHoldMs : rtc.contactHoldMs; if (hm > 0f) { held = true; holdLeft = hm / 1000f; if (fa != null && fa.anim != null) { savedA = fa.anim.speed; fa.anim.speed = 0f; } if (fv != null && fv.anim != null) { savedV = fv.anim.speed; fv.anim.speed = 0f; } } }   // FINFIX v93
-                    if (!vClip && e.dieAt <= -1.5f && !dead) { V.Die(); dead = true; }
+                    if (!vClip && e.dieAt <= -1.5f && !e.survive /* BELLYBITE v1 */ && !dead) { V.Die(); dead = true; }
                 }
             }
             // victim clip
@@ -269,7 +270,7 @@ public static class FinisherPlayer
                 float vs = e.victimStart >= 0f ? e.victimStart : (contactSeen ? contactT : planned);
                 if (T >= vs && (e.victimStart >= 0f || contactSeen)) { vStarted = true; fv.holdLast = false; fv.ForceExact(e.victimClip, e.victimFade, Mathf.Max(0f, e.victimClipStart)); fv.anim.speed = held ? 0f : e.victimClipSpeed * fv.animWeight; if (held) savedV = e.victimClipSpeed * fv.animWeight; vStart = T; }
             }
-            if (vClip && vStarted && !dead && e.dieAt != -1f)
+            if (vClip && vStarted && !dead && !e.survive /* BELLYBITE v1 */ && e.dieAt != -1f)
             {
                 float at = FinPhys.DieAt(contactT, e.dieAt >= 0f ? e.dieAt : vStart + vLen);   // FINPHYS v97: the ragdoll beat (row.ragdollAtS after the contact)
                 if (T >= at)
@@ -280,6 +281,7 @@ public static class FinisherPlayer
             }
             if (dead && dieT < 0f) dieT = T;
             FinisherPairProbe.Sample(dt);
+            if (e.survive) BellyBite.SceneTick(T);   // BELLYGRAB v1
             if (held) { holdLeft -= dt; if (holdLeft <= 0f) { held = false; if (fa != null && fa.anim != null) fa.anim.speed = savedA; if (fv != null && fv.anim != null) fv.anim.speed = savedV; } }   // FINFIX v93: end of the contact hold
             {   // FINFIX v93: the animators follow the clamped scene clock - a frame longer than rt.maxStepS advances them by the same clamped step (the contact stays on the slash, a 7 s hitch moves nothing)
                 float raw = Mathf.Max(1e-4f, Time.deltaTime), ratio = Mathf.Clamp01(dt / raw);
@@ -326,7 +328,7 @@ public static class FinisherPlayer
         }
         if (held) { held = false; if (fa != null && fa.anim != null) fa.anim.speed = savedA; if (fv != null && fv.anim != null) fv.anim.speed = savedV; }
         for (int i = 0; i < cutJobs.Length; i++) if (cutJobs[i] != null && !cutJobs[i].committed) cutJobs[i].Discard();   // FINFIX v93: a prepared cut that never fired is thrown away
-        if (!dead) { V.enabled = true; V.Die(); }
+        if (e.survive) { V.enabled = true; BellyBite.EndScene(A, V); /* BELLYBITE v1 */ } else if (!dead) { V.enabled = true; V.Die(); }
         // hold the last frame (unscaled), then give control back
         host.TimeRestore();
         float hold = Mathf.Max(0f, e.holdAfter);

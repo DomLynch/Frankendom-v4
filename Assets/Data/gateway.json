@@ -25,8 +25,8 @@
     "transition":  {
                        "openSeconds":  2.8,
                        "closeSeconds":  1.8,
-                       "dissolveStart":  0.12,
-                       "dissolveEnd":  1.0,
+                       "dissolveStart":  9,
+                       "dissolveEnd":  10,
                        "fogPartEnd":  0.55,
                        "shockStart":  0.15,
                        "flashAt":  0.35,

@@ -38,7 +38,7 @@ public static class SaveSlot
     }
     /// <summary>The slot is in use: data enabled and not a harness run.</summary>
     public static bool Active { get { return Cfg().enabled && !MenuCfg.Harness; } }
-    public static string FilePath { get { return Path.Combine(Application.persistentDataPath, Cfg().file); } }
+    public static string FilePath { get { return Path.Combine(SavePaths.Dir, Cfg().file); } }
     public static FileData Data { get { EnsureLoaded(); return data; } }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)] static void Boot() { if (Active) EnsureLoaded(); }
@@ -136,7 +136,7 @@ public static class SaveSlot
         var L = data.loot; L.file = LootFileName(); L.lootVersion = 0; L.owned = 0; L.worn = 0;
         try
         {
-            string p = Path.Combine(Application.persistentDataPath, L.file); if (!File.Exists(p)) return;
+            string p = Path.Combine(SavePaths.Dir, L.file); if (!File.Exists(p)) return;
             var lp = JsonUtility.FromJson<LootPeek>(File.ReadAllText(p).TrimStart((char)0xFEFF)); if (lp == null) return;
             L.lootVersion = lp.version; L.owned = lp.owned != null ? lp.owned.Length : 0;
             if (lp.equipped != null) foreach (var r in lp.equipped) if (r != null && !string.IsNullOrEmpty(r.item)) L.worn++;

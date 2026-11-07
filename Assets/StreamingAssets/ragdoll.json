@@ -539,9 +539,24 @@
     "marginDeg": 6.0,
     "sampleHz": 30.0,
     "planeMinCos": 0.5,
-    "parts": ["forearmL", "forearmR", "shinL", "shinR"],
-    "hyperFloorDeg": {"forearmL": -30.0, "forearmR": -30.0, "shinL": -3.2, "shinR": -3.2},
-    "clipGlobs": ["Assets/Characters/*/*_anim.glb", "Assets/Characters/*/*_attacks_v2.glb", "Assets/Characters/*/*_dodges.glb", "Assets/Characters/Joan/Joan_finishers.glb"]
+    "parts": [
+      "forearmL",
+      "forearmR",
+      "shinL",
+      "shinR"
+    ],
+    "hyperFloorDeg": {
+      "forearmL": -30.0,
+      "forearmR": -30.0,
+      "shinL": -3.2,
+      "shinR": -3.2
+    },
+    "clipGlobs": [
+      "Assets/Characters/*/*_anim.glb",
+      "Assets/Characters/*/*_attacks_v2.glb",
+      "Assets/Characters/*/*_dodges.glb",
+      "Assets/Characters/Joan/Joan_finishers.glb"
+    ]
   },
   "rig": {
     "prebuild": true,

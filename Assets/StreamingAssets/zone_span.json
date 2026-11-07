@@ -54,11 +54,12 @@
         "destSafe": false
       },
       "terrain": {
-        "mode": "crop",
-        "xHalf": 40.0,
-        "zFromLocal": -1.5,
-        "zToLocal": 100.0,
-        "yBias": -0.02
+        "mode": "stamp",
+        "xHalf": 32.0,
+        "zFromLocal": -6.0,
+        "zToLocal": 44.0,
+        "blendM": 6.0,
+        "yBias": 0.0
       },
       "rings": [
         {
@@ -130,11 +131,12 @@
         "destSafe": true
       },
       "terrain": {
-        "mode": "crop",
-        "xHalf": 40.0,
-        "zFromLocal": -1.5,
-        "zToLocal": 100.0,
-        "yBias": -0.02
+        "mode": "stamp",
+        "xHalf": 32.0,
+        "zFromLocal": -6.0,
+        "zToLocal": 44.0,
+        "blendM": 6.0,
+        "yBias": 0.0
       },
       "rings": [
         {

@@ -110,7 +110,7 @@ public static class PhysicsClock
         if (Time.frameCount - duelTickFrame <= 2) { duelPresent = true; acc = 0f; return; }   // the Duel ticked a moment ago: it owns the stepping
         if (frameN++ % Mathf.Max(1, c.clock.duelCheckEveryFrames) == 0) { var du = UnityEngine.Object.FindFirstObjectByType<Duel>(); duelPresent = du != null && du.enabled; }   // a Duel that AutoShot switched off does not tick, so the fallback must step
         if (duelPresent) { acc = 0f; return; }
-        acc += Mathf.Min(PresentationClock.SimDelta(dt), 0.1f);
+        acc += Mathf.Min(PresentationClock.SimDelta(dt), c.clock.maxCatchupS); /* DATALAYER b11 */
         int n = 0, max = Mathf.Max(1, c.clock.maxStepsPerFrame);
         while (acc >= StepDt && n < max) { acc -= StepDt; StepOnce(); n++; }
         if (n >= max) acc = 0f;

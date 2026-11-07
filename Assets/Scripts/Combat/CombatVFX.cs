@@ -69,7 +69,7 @@ public class CombatVFX : MonoBehaviour
     void OnContact(DuelFighter a, DuelFighter d, string type, bool heavy, bool perfect)
     {
         var x = HitVfxCfg.Get();   // HCKIT4 v95 K10a: heights, counts and cones from hit_vfx.json
-        Vector3 pos = d.transform.position + Vector3.up * (x.hitHeightM * FighterScale.Of(d));
+        Vector3 pos = HitAnchor.Point(a, d, x.hitHeightM);   /* KITHIT v1 */
         Vector3 dir = (d.transform.position - a.transform.position); dir.y = x.hitDirY; dir.Normalize();
         switch (type)
         {

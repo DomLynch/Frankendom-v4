@@ -19,7 +19,7 @@ public static class WoundTable
         public float fadeOutSec = 2.5f, lifeSec = 0f;     // fade length of an evicted decal; lifeSec > 0 = decals also fade out that long after landing (0 = stay for the fight)
         public float opacity = 0.95f, sizeJitter = 0.2f, heavySizeMul = 1.3f, killSizeMul = 1.5f, counterSizeMul = 1.15f;
         public float depth = 0.5f, bodyRadius = 0.2f, lateral = 0.14f, lateralJitter = 0.06f;   // projector box depth (m), distance from body axis to the surface the blow lands on, sideways offset for left/right swings
-        public float headY = 1.55f, torsoY = 1.15f, armY = 1.2f, legsY = 0.5f, heightJitter = 0.08f;   // hit heights (m at scale 1)
+        public float headY = 1.55f, torsoY = 1.15f, armY = 1.2f, legsY = 0.5f, heightJitter = 0.08f, headRadiusM = 0f;   /* KITHIT v1: head hits use this as bodyRadius when > 0 (0 = bodyRadius) */ // hit heights (m at scale 1)
         public Shape slash = new Shape { tex = "streak", length = 0.34f, width = 0.07f, baseRollDeg = 0f, tiltDeg = 18f };
         public Shape stab = new Shape { tex = "puncture", length = 0.1f, width = 0.1f, baseRollDeg = 0f, tiltDeg = 180f };
         public Shape overhead = new Shape { tex = "streak", length = 0.36f, width = 0.07f, baseRollDeg = 90f, tiltDeg = 8f };

@@ -27,7 +27,7 @@ public static class ClashFxTable
         public float sizeMin, sizeRange, lengthScale, velocityScale, maxParticleSize, gravity, opacity;
         public Color colorHot, colorCool; public float coolAt;
         public int textureSize; public float textureEdgePower;
-        public int glintPool; public float glintLife, glintSize, glintSizePerStrength; public Color glintColor;
+        public int glintPool; public float glintLife, glintSize, glintSizePerStrength; public Color glintColor; public float colorAlphaMid = 0.9f, colorAlphaMidAt = 0.5f; /* DATALAYER b12 */
     }
     [Serializable] public class Block { public float countBase, countPerStrength, radius, speedBase, speedPerStrength, liftBase, liftPerStrength, sizeBase, sizePerStrength, footBack, footSide; }
     [Serializable] public class Plant { public int count; public float radius, speed, lift, size; }
@@ -71,7 +71,7 @@ public static class ClashFxTable
     public class Data
     {
         public Sheets sheets = new Sheets();
-        public int version, enabled;
+        public int version, enabled; public int renderQueue = 3006; /* DATALAYER b12 */
         public string[] shaders = new string[0];
         public float fighterRefreshSeconds;
         public Sparks sparks = new Sparks();
@@ -160,7 +160,7 @@ public class ClashFx : MonoBehaviour
     {
         if (ps == null) return;
         var ep = new ParticleSystem.EmitParams();
-        ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = 0.1f; ep.startSize = size; ep.startColor = (Color32)Color.white;
+        ep.position = pos; ep.velocity = Vector3.zero; ep.startLifetime = HitVfxCfg.Get().prewarmLifeS; ep.startSize = size; ep.startColor = (Color32)Color.white; /* DATALAYER b12 */
         ps.Emit(ep, 1);
     }
 
@@ -237,7 +237,7 @@ public class ClashFx : MonoBehaviour
         m.SetFloat("_Intensity", intensity); m.SetFloat("_ExposureWeight", 0f); m.SetFloat("_SoftDistance", soft);
         m.SetColor("_Tint", tint);
         m.SetFloat("_SrcBlend", 1f); m.SetFloat("_DstBlend", additive ? 1f : 10f); // BlendMode.One = 1, OneMinusSrcAlpha = 10
-        m.renderQueue = 3006;
+        m.renderQueue = ClashFxTable.Get().renderQueue; /* DATALAYER b12 */
         return m;
     }
 
@@ -389,7 +389,7 @@ public class ClashFx : MonoBehaviour
         var ck = new[] { new GradientColorKey(hot, 0f), new GradientColorKey(cool, Mathf.Clamp(coolAt, 0.01f, 0.99f)), new GradientColorKey(cool, 1f) };
         GradientAlphaKey[] ak;
         if (fadeIn > 0f) ak = new[] { new GradientAlphaKey(0f, 0f), new GradientAlphaKey(1f, fadeIn), new GradientAlphaKey(0f, 1f) };
-        else ak = new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(0.9f, 0.5f), new GradientAlphaKey(0f, 1f) };
+        else ak = new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(ClashFxTable.Get().sparks.colorAlphaMid, ClashFxTable.Get().sparks.colorAlphaMidAt), new GradientAlphaKey(0f, 1f) }; /* DATALAYER b12 */
         g.SetKeys(ck, ak);
         col.color = g;
     }

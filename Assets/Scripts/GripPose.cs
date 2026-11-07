@@ -23,8 +23,8 @@ public class GripPose : MonoBehaviour
     }
     Transform[][] Chains(string side)
     {
-        string[] fingers = { "Index", "Middle", "Ring", "Pinky" }; var all = GetComponentsInChildren<Transform>(true); var c = new Transform[5][];
-        for (int f = 0; f < 5; f++) { string nm = f < 4 ? fingers[f] : "Thumb"; var list = new System.Collections.Generic.List<Transform>(); for (int j = 1; j <= 3; j++) foreach (var t in all) if (t.name == "mixamorig:" + side + "Hand" + nm + j) { list.Add(t); break; } c[f] = list.ToArray(); }
+        string bpre = Roster.BonePrefix(this); /* HCAUDIT1 v104 */ string[] fingers = { "Index", "Middle", "Ring", "Pinky" }; var all = GetComponentsInChildren<Transform>(true); var c = new Transform[5][];
+        for (int f = 0; f < 5; f++) { string nm = f < 4 ? fingers[f] : "Thumb"; var list = new System.Collections.Generic.List<Transform>(); for (int j = 1; j <= 3; j++) foreach (var t in all) if (t.name == bpre + side + "Hand" + nm + j /* HCAUDIT1 v104 */) { list.Add(t); break; } c[f] = list.ToArray(); }
         return c;
     }
     // WEAPONSWAP v88: the row for this character + the weapon on the socket: its own weapon row wins, else the last weapon-less row (the old rule), else the defaults

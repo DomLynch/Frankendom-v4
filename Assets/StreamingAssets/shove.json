@@ -1,0 +1,30 @@
+{
+  "_about": "lanePITSHOVE: Pitborn's free-LEFT-hand shove (ShoveTable.cs, AIBrain hook, Duel.Resolve hook). MASTER 'enabled' false = today's fight bit for bit (no row read, no RNG draw, no new branch taken; the move row in move-defs.json is only a lookup entry). rows[] = who may use it and when: the AI of the named character (roster id / object name, RosterResolver) starts it only when ALL hold: the move is legal now (idle or guarding, stamina >= minStamina, not exhausted), the foe is in foePhases, no noticed swing is being answered (requireNoThreat), the foe has been within crowdM of him for crowdTicks sim ticks in a row (he is being crowded) and is now between triggerMinM and triggerMaxM (centre to centre, metres, the unit of DodgeTable.minSeparation 1.5), the cooldown is over, and a roll of its OWN seeded stream (not the AI's s.Roll: no existing draw moves) succeeds (chance; a failed roll is retried after retryTicks, not every tick). moves[] of a row = the pick table (weighted); moves[] at the top = per-move sim numbers: pushToM = the centre distance the clean hit pushes the foe out to (a knock velocity is derived from the stagger length and knockDecay, clamped to minPushM..maxPushM of travel), nonLethal = this move never kills (health is set back to 1 when it would reach 0), location = the hit_reactions.json location key. Damage, stagger, knockback fallback, reach, windup / active / recovery, direction (thrust: guard sides centre / top and the shield's left guard cover it, controls.json guard.match + gear.json joan_shield.shield.cover) and stamina are the MOVE ROW in move-defs.json. knockDecay = the per-tick factor of DuelFighter.MoveTick's knock slide (0.88 today; if laneDATALAYER b2 moves it to rules-defs, set the same value here). Command line: -shove:off (force off), -shove:on (force on for character rows), -shove:log.",
+  "enabled": true,
+  "debugLog": false,
+  "knockDecay": 0.88,
+  "minSlideTicks": 8,
+  "rows": [
+    {
+      "character": "Pitborn",
+      "enabled": true,
+      "triggerMinM": 1.5,
+      "triggerMaxM": 3.0,
+      "crowdM": 3.0,
+      "crowdTicks": 15,
+      "cooldownTicks": 360,
+      "initialCooldownTicks": 180,
+      "chance": 0.7,
+      "retryTicks": 20,
+      "minStamina": 30,
+      "requireNoThreat": true,
+      "foePhases": ["Ready", "Guard", "Hurt", "Attack"],
+      "moves": [
+        { "id": "shove_L", "weight": 1 }
+      ]
+    }
+  ],
+  "moves": [
+    { "id": "shove_L", "pushToM": 2.6, "minPushM": 0.5, "maxPushM": 1.4, "nonLethal": true, "location": "shove" }
+  ]
+}

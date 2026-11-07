@@ -195,6 +195,230 @@
       "headCloseUp": true,
       "closeM": 2.6,
       "headY": 1.95
+    },
+    {
+      "id": "freecam_camp_cur",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.5,
+          2.059,
+          -3.268
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.5,
+          1.6,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose cur from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
+    },
+    {
+      "id": "freecam_camp_A",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.6,
+          2.221,
+          -4.06
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.6,
+          1.65,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose A from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
+    },
+    {
+      "id": "freecam_camp_B",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.7,
+          2.376,
+          -4.456
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.7,
+          1.75,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose B from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
+    },
+    {
+      "id": "freecam_camp_C",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.8,
+          2.518,
+          -4.753
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.8,
+          1.85,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose C from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
+    },
+    {
+      "id": "freecam_sobek_cur",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.5,
+          2.059,
+          -3.268
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.5,
+          1.6,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose cur from behind Joan, Sobek 9 m ahead"
+    },
+    {
+      "id": "freecam_sobek_A",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.6,
+          2.221,
+          -4.06
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.6,
+          1.65,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose A from behind Joan, Sobek 9 m ahead"
+    },
+    {
+      "id": "freecam_sobek_B",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.7,
+          2.376,
+          -4.456
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.7,
+          1.75,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose B from behind Joan, Sobek 9 m ahead"
     }
   ],
   "renders": 5,

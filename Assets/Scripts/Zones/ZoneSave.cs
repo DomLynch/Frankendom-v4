@@ -20,7 +20,7 @@ public interface IZoneStore
 
 public sealed class LocalFileStore : IZoneStore
 {
-    public string Path_ { get { return Path.Combine(Application.persistentDataPath, ZoneData.Get().persistence.file); } }
+    public string Path_ { get { return Path.Combine(SavePaths.Dir, ZoneData.Get().persistence.file); } }
     public ZoneFile Load()
     {
         string p = Path_;

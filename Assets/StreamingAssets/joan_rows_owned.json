@@ -20,7 +20,7 @@
     },
     {
       "file": "attack_clips.json",
-      "path": "$.rows[28]",
+      "path": "$.rows[38]",
       "keyField": "character",
       "keyValue": "Joan",
       "copiedFromPath": "$.rows[0]",
@@ -28,7 +28,7 @@
     },
     {
       "file": "attack_clips.json",
-      "path": "$.rows[29]",
+      "path": "$.rows[39]",
       "keyField": "character",
       "keyValue": "Joan",
       "copiedFromPath": "$.rows[1]",
@@ -36,7 +36,7 @@
     },
     {
       "file": "attack_clips.json",
-      "path": "$.rows[30]",
+      "path": "$.rows[40]",
       "keyField": "character",
       "keyValue": "Joan",
       "copiedFromPath": "$.rows[2]",
@@ -44,7 +44,7 @@
     },
     {
       "file": "attack_clips.json",
-      "path": "$.rows[31]",
+      "path": "$.rows[41]",
       "keyField": "character",
       "keyValue": "Joan",
       "copiedFromPath": "$.rows[3]",
@@ -52,7 +52,7 @@
     },
     {
       "file": "attack_clips.json",
-      "path": "$.rows[32]",
+      "path": "$.rows[42]",
       "keyField": "character",
       "keyValue": "Joan",
       "copiedFromPath": "$.rows[4]",
@@ -60,7 +60,7 @@
     },
     {
       "file": "attack_clips.json",
-      "path": "$.rows[33]",
+      "path": "$.rows[43]",
       "keyField": "character",
       "keyValue": "Joan",
       "copiedFromPath": "$.rows[5]",
@@ -68,7 +68,7 @@
     },
     {
       "file": "attack_clips.json",
-      "path": "$.rows[34]",
+      "path": "$.rows[44]",
       "keyField": "character",
       "keyValue": "Joan",
       "copiedFromPath": "$.rows[16]",
@@ -76,7 +76,7 @@
     },
     {
       "file": "attack_clips.json",
-      "path": "$.rows[35]",
+      "path": "$.rows[45]",
       "keyField": "character",
       "keyValue": "Joan",
       "copiedFromPath": "$.rows[17]",
@@ -84,7 +84,7 @@
     },
     {
       "file": "attack_clips.json",
-      "path": "$.rows[36]",
+      "path": "$.rows[46]",
       "keyField": "character",
       "keyValue": "Joan",
       "copiedFromPath": "$.rows[18]",
@@ -92,7 +92,7 @@
     },
     {
       "file": "attack_clips.json",
-      "path": "$.rows[37]",
+      "path": "$.rows[47]",
       "keyField": "character",
       "keyValue": "Joan",
       "copiedFromPath": "$.rows[19]",
