@@ -127,6 +127,11 @@ def build_set(cfg, ccfg, roster, proj, cid, setname, outdir, live_emul=False):
             if live_emul: corr_o = np.array(r['liveCorr']) if r.get('liveCorr') else None
             c, ratio, tb, ta = retarget_plain(src, corr, rig_z, mode, ms, float(r.get('hipsYOffsetM', 0.0)), r.get('hipsRestZ') if live_emul else None, corr_o, (float(r['hipsRollScale']), r.get('rollAxis', [0, 1, 0])) if r.get('hipsRollScale') is not None else None)
             info.update({'ratio': round(float(ratio), 4), 'rootMotion': mode, 'hipsTravelBeforeM': round(tb, 3), 'hipsTravelAfterM': round(ta, 3), 'posture': False})
+        hp_ = S.get('headPitch')     # MONSTERPOLISH v1 (data sets.<set>.headPitch; absent = unchanged)
+        if hp_:
+            if 'brig' not in pf_cache: pf_cache['brig'] = L.Rig(j, b)
+            rp_ = CB.head_pitch_limit(pf_cache['brig'], c.rot, c.times, hp_, r['state'])
+            if rp_: info['headPitch'] = rp_
         info['frames'] = int(len(c.times)); info['durationS'] = round(float(c.times[-1]), 4); info['channels'] = len(c.rot) + 1
         clips.append((r['state'], c)); rep.append(info)
     CB.write_clips(j, b, n2i, clips)

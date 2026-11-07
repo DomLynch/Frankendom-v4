@@ -31,6 +31,7 @@ public static class GearTable
         public float dropChance = 0f;
         public Stats stats = new Stats();
         public WeaponDef weapon = new WeaponDef();   // WEAPONSWAP v88: set (weapon.id) on mainHand weapon items
+        public ShieldDef shield = new ShieldDef();   // SHIELD v1: set (shield.id) on offHand shield items (ShieldMount.cs)
         public bool HasVisualSource { get { return layer.Length > 0 || glb.Length > 0 || resource.Length > 0; } }
         public bool IsPair { get { return glbMirror.Length > 0; } }
     }
@@ -44,7 +45,24 @@ public static class GearTable
         public string cueWeapon = "";                  // cues.json weapon key while it is held ("" = the roster weapon's)
         public string gripNode = "grip", tipNode = "tip", offHandNode = "grip_off";   // glb nodes: grip (socket origin), tip (swing-trail tip), off-hand target on the shaft axis
         public float ikWeight = 1f, ikBlendSeconds = 0.15f;   // two-hand IK weight (0..1) and the seconds it takes to blend in / out
-        public void Fix() { if (id == null) id = ""; if (cueWeapon == null) cueWeapon = ""; if (gripNode == null) gripNode = ""; if (tipNode == null) tipNode = ""; if (offHandNode == null) offHandNode = ""; }
+        public bool unarmed = false;                   // SOBEKCLAWS: no weapon glb, the wearer's own claws are the weapon (WeaponSwap hides the template weapon, the swing trail follows tipBone + tipOffsetM)
+        public string tipBone = ""; public float[] tipOffsetM = new float[0];   // unarmed: the claw tip = this bone + this offset in metres in the bone frame (like weapon_grip socketOffset: divided by the bone's lossy scale)
+        public void Fix() { if (tipBone == null) tipBone = ""; if (tipOffsetM == null) tipOffsetM = new float[0]; if (id == null) id = ""; if (cueWeapon == null) cueWeapon = ""; if (gripNode == null) gripNode = ""; if (tipNode == null) tipNode = ""; if (offHandNode == null) offHandNode = ""; }
+    }
+    // SHIELD v1: items[].shield = the shield block of an offHand item (ShieldMount.cs, ShieldHooks). Absent / id "" = not a shield = no rule at all (today's guard).
+    // cover rows: while the wearer holds guard side `guard` (guard side names of controls.json guard.sides + centre), a swing whose MoveDef.direction is in `attacks` counts as COVERED even if controls.json guard.match says
+    // that guard does not cover it. Covered-by-shield is a block only: never a parry, no parry window, no extra reward. The other guard sides keep exactly today's cover.
+    [Serializable] public class ShieldCover { public string guard = ""; public string[] attacks = new string[0]; }
+    [Serializable]
+    public class ShieldDef
+    {
+        public string id = "";                          // "" = not a shield item
+        public string sideGuard = "";                   // the guard side the shield arm raises (blockPostureMul applies to blocks made with it)
+        public ShieldCover[] cover = new ShieldCover[0];  // extra cover rows
+        public float blockStaminaMul = 1f;               // x the block stamina cost of a block ONLY the shield covered (the price of the wider cover)
+        public float blockPostureMul = 1f;               // x the posture a block with the shield-side guard puts on the wearer (< 1 = the shield takes the blow)
+        public string cueEvent = "block_shield";         // cues.json evt played on top of the normal block cue for a shield-covered block ("" = none)
+        public void Fix() { if (id == null) id = ""; if (sideGuard == null) sideGuard = ""; if (cover == null) cover = new ShieldCover[0]; if (cueEvent == null) cueEvent = ""; }
     }
     [Serializable]
     public class WeaponIkCfg   // TwoHandIK.cs (gear.json weaponSwap.ik)
@@ -311,6 +329,6 @@ public static class GearTable
         if (it.layer == null) it.layer = ""; if (it.part == null) it.part = ""; if (it.notes == null) it.notes = "";
         if (it.glbMirror == null) it.glbMirror = ""; if (it.partMirror == null) it.partMirror = ""; if (it.materialRows == null) it.materialRows = new Dictionary<string, MatRow>(StringComparer.OrdinalIgnoreCase);
         if (it.coversZones == null) it.coversZones = new string[0]; if (it.hidesLayers == null) it.hidesLayers = new string[0]; if (it.dropFrom == null) it.dropFrom = new string[0];
-        if (it.stats == null) it.stats = new Stats(); if (it.weapon == null) it.weapon = new WeaponDef(); it.weapon.Fix(); /* WEAPONSWAP v88 */
+        if (it.stats == null) it.stats = new Stats(); if (it.weapon == null) it.weapon = new WeaponDef(); it.weapon.Fix(); /* WEAPONSWAP v88 */ if (it.shield == null) it.shield = new ShieldDef(); it.shield.Fix(); /* SHIELD v1 */
     }
 }

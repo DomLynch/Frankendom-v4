@@ -100,7 +100,8 @@ def run(cfg, ccfg, roster, proj, cid, reps, outdir):
                 else: bad.append(msg)
             if posture:      # declared modification (Joan's own posture rows): the rebuilt clip must reproduce the live bake, deviation from raw is reported
                 if pnl and pnl['mean'] > g['liveDiffMeanDeg']: bad.append('G-pose %s differs from the live bake by mean %.1f deg (> %.0f)' % (st, pnl['mean'], g['liveDiffMeanDeg']))
-            elif pn['mean'] > g['poseMeanDeg'] or pn['max'] > g['poseMaxDeg']: bad.append('G-pose %s mean %.2f max %.2f vs raw (limits %.1f/%.1f)' % (st, pn['mean'], pn['max'], g['poseMeanDeg'], g['poseMaxDeg']))
+            elif pn['mean'] > float(g.get('authored', {}).get(st, {}).get('poseMeanDeg', g['poseMeanDeg'])) or pn['max'] > float(g.get('authored', {}).get(st, {}).get('poseMaxDeg', g['poseMaxDeg'])):   # MONSTERPOLISH v1: per-state authored waiver (data gates.authored.<state>, the head pitch limit is an intended edit)
+                am_ = g.get('authored', {}).get(st, {}); bad.append('G-pose %s mean %.2f max %.2f vs raw (limits %.1f/%.1f)' % (st, pn['mean'], pn['max'], float(am_.get('poseMeanDeg', g['poseMeanDeg'])), float(am_.get('poseMaxDeg', g['poseMaxDeg']))))
             lim('G-knee %s inward %.3f m > %.3f' % (st, mn['knee'], g['kneeMedialMaxM']), mn['knee'], ml['knee'] if ml else None, mn['knee'] is not None and mn['knee'] > g['kneeMedialMaxM'])
             if tn and tr:
                 ref = tl if (posture and tl) else tr; tol = g['toeYawTolModifiedDeg'] if (info.get('legFix') == 'applied' and not posture) else g['toeYawTolDeg']

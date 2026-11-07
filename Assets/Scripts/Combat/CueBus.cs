@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Audio cue layer ported from Frankendom V3 (src/audio/manifest.ts + src/fight/sound/cues.ts + audio-rules-defs.json):
@@ -95,7 +95,7 @@ public class CueBus : MonoBehaviour
         bool kick = a.CurrentMove != null && CombatClass.IsKick(a.CurrentMove.id);   // HCKIT4 v95
         {   // P2: cues.json (weapon x surface x weight); falls through to the built-in mapping below when the table is off
             var hr = type == "Hit" ? HitReactionTable.Last : null;
-            string evt = type == "Hit" ? "hit" : type == "GuardBroken" ? "guard_break" : type == "Parried" ? "parry" : type == "Blocked" ? (perfect ? "block_perfect" : "block") : "";
+            string evt = type == "Hit" ? "hit" : type == "GuardBroken" ? "guard_break" : type == "Parried" ? "parry" : type == "Blocked" ? (perfect ? "block_perfect" : "block") : type == "ShieldBlocked" ? ShieldHooks.CueEvent(d) /* SHIELD v1 */ : "";
             if (evt != "" && CueTable.Dispatch(this, evt, a, d, hr != null ? hr.weight : (kick ? "kick" : heavy ? "heavy" : "light"), a.CurrentMove != null ? a.CurrentMove.id : "")) return;
         }
         switch (type)   // HCKIT4 v95 K9

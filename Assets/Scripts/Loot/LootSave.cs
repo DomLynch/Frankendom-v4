@@ -118,16 +118,28 @@ public static class LootSave
     /// <summary>Put the saved selection back on the wearer (after a scene load / when a new IGearSlots registers). Items the catalog no longer knows are skipped.</summary>
     public static int Apply()
     {
-        EnsureLoaded(); var slots = LootBridge.Slots; var to = slots as IGearSlotsTo; int n = 0; Applied = true;
+        EnsureLoaded(); var slots = LootBridge.Slots; var to = slots as IGearSlotsTo; int n = 0; Applied = true; bool newlyOwned = false;
         for (int i = 0; i < wanted.Count; i++)
         {
             var r = wanted[i];
-            if (r.item.Length == 0) { if (slots.GetEquipped(r.slot).Length > 0) slots.Unequip(r.slot); continue; }   // taken off last time
+            if (r.item.Length == 0)   // taken off last time ...
+            {
+                string cur = slots.GetEquipped(r.slot);
+                if (cur.Length > 0)
+                {
+                    // v109c SHIELDFIX: ... unless the worn item is a roster loadout item this save never knew (Dom's save is from before the shield existed: every slot '' = nothing was ever offered). Keep it on and own it;
+                    // an item the save DOES own that is now off was really taken off: respected.
+                    if (!owned.Contains(cur)) { owned.Add(cur); newlyOwned = true; Debug.Log("[LootUI] save row '" + r.slot + "' is empty but '" + cur + "' is a loadout item the save never knew: kept on and now owned"); }
+                    else slots.Unequip(r.slot);
+                }
+                continue;
+            }
             GearItem it; if (!LootBridge.Catalog.TryGet(r.item, out it)) continue;
             if (slots.GetEquipped(r.slot) == r.item) { n++; continue; }
             bool ok = to != null ? to.EquipTo(r.item, r.slot) : slots.Equip(r.item);
             if (ok) n++;
         }
+        if (newlyOwned) Save();   // v109c SHIELDFIX: write the new owned item + the real rows, once, after the whole selection is back on
         return n;
     }
 }

@@ -261,6 +261,90 @@ def build_clip(cfg, row, rig_z, corr, tuning, cid, cache):
     return c, src_desc, notes, ratio
 
 
+# ---------------------------------------------------------------- MONSTERPOLISH v1: head pitch limit (data, per clip)
+def head_pitch_limit(rig, rot, times, spec, state):
+    """spec (data, tuning.<profile>.headPitch): {"axisWorldRest": [x,y,z] snout axis in the model frame at rest, "bones": {"Neck": w, "Head": w} (weights sum 1, parents first),
+    "smoothS": s, "clips": {state: {"minDeg": d}}}. For a state listed in spec.clips the head axis pitch (deg above horizontal, y up) is raised to minDeg on every frame it is below it:
+    the shortfall is dilated and smoothed in time (no pops), then spread over the listed bones as a world rotation about the horizontal axis normal to the head heading.
+    Returns a report dict, or None when the state has no row (clip untouched = old behaviour). The rig is the body rest rig (names, rest rotations)."""
+    row = (spec.get('clips') or {}).get(state)
+    if not row: return None
+    lim = float(row['minDeg']) if 'minDeg' in row else 0.0; bones = spec['bones']; names = ['mixamorig:' + k for k in bones]
+    head = 'mixamorig:Head'; ax = np.array(spec['axisWorldRest'], float); ax /= np.linalg.norm(ax)
+    chain = []; i = rig.idx[head]
+    while i is not None: chain.append(i); i = rig.parent.get(i)
+    chain = chain[::-1]; cn = [rig.nodes[k].get('name') for k in chain]
+    def wrot(f, upto=None, rotd=None):
+        R = np.eye(3); out = {}
+        for k, nm in zip(chain, cn):
+            q = (rotd or rot)[nm][f] if nm in (rotd or rot) else rig.rq[k]
+            R = R @ L.q2m(q); out[nm] = R
+            if nm == upto: break
+        return out
+    Rrest = np.eye(3)
+    for k in chain: Rrest = Rrest @ L.q2m(rig.rq[k])
+    a_loc = Rrest.T @ ax
+    N = len(times); pitch = np.zeros(N); K = []
+    last_k = None
+    for f in range(N):
+        a = wrot(f)[head] @ a_loc; pitch[f] = math.degrees(math.asin(max(-1.0, min(1.0, a[1]))))
+        h = np.array([a[0], 0.0, a[2]]); hn = np.linalg.norm(h)
+        if hn > 0.25: last_k = np.cross(h / hn, [0.0, 1.0, 0.0])
+        K.append(last_k if last_k is not None else np.cross(np.array([ax[0], 0, ax[2]]) / max(1e-6, np.hypot(ax[0], ax[2])), [0.0, 1.0, 0.0]))
+    if row.get('minDegKeys'):     # [[t_s, deg], ...] linear: a limit that changes over the clip (data)
+        kk = row['minDegKeys']; limv = np.interp(times, [k[0] for k in kk], [k[1] for k in kk]); lim = float(limv.min())
+    else: limv = np.full(N, lim)
+    need = np.maximum(0.0, limv - pitch)
+    dt = float(np.median(np.diff(times))) if N > 1 else 1.0; sm = float(spec.get('smoothS', 0.12)); wn = max(1, int(round(sm / dt)))
+    pad = np.pad(need, wn, mode='edge'); dil = np.array([pad[i:i + 2 * wn + 1].max() for i in range(N)])
+    g = np.exp(-0.5 * (np.arange(-3 * wn, 3 * wn + 1) / max(1.0, wn)) ** 2); g /= g.sum(); d = np.convolve(np.pad(dil, 3 * wn, mode='edge'), g, mode='valid')[:N]
+    d = np.maximum(d, 0.0)
+    if d.max() < 0.05: return {'state': state, 'minDeg': lim, 'pitchMinBefore': round(float(pitch.min()), 1), 'pitchMinAfter': round(float(pitch.min()), 1), 'maxCorrDeg': 0.0}
+    new = {nm: rot[nm].copy() for nm in names}
+    for f in range(N):
+        if d[f] < 1e-4: continue
+        k = K[f] / max(1e-9, np.linalg.norm(K[f]))
+        for nm, w in zip(names, bones.values()):
+            ci = cn.index(nm); Pw = np.eye(3)
+            for kk, n2 in zip(chain[:ci], cn[:ci]): Pw = Pw @ L.q2m(new[n2][f] if n2 in new else (rot[n2][f] if n2 in rot else rig.rq[kk]))
+            D = rotm(k, float(d[f]) * float(w)); loc = L.q2m(new[nm][f]); q = m2q(Pw.T @ D @ Pw @ loc)
+            if np.dot(q, new[nm][f]) < 0: q = -q
+            new[nm][f] = q
+    after = np.zeros(N)
+    for f in range(N):
+        R = np.eye(3)
+        for kk, nm in zip(chain, cn): R = R @ L.q2m(new[nm][f] if nm in new else rot[nm][f] if nm in rot else rig.rq[kk])
+        a = R @ a_loc; after[f] = math.degrees(math.asin(max(-1.0, min(1.0, a[1]))))
+    for nm in names: rot[nm] = new[nm]
+    return {'state': state, 'minDeg': lim, 'pitchMinBefore': round(float(pitch.min()), 1), 'pitchMinAfter': round(float(after.min()), 1), 'maxCorrDeg': round(float(d.max()), 1)}
+
+
+def pose_blend(clips, spec):
+    """MONSTERPOLISH v1: data tuning.<profile>.poseBlend = {state: {"toState": s2, "toTimeS": t, "t0": a, "t1": b, "power": p, "liftM": [[t, m], ...]}}.
+    From t0 to t1 (clip seconds) every rotation of `state` is slerped from its own pose toward the pose of clip s2 at toTimeS, weight w = ((t-t0)/(t1-t0))^power, then held at 1: a collapse onto the lying pose
+    instead of the library fall. Hips translation is blended the same way. liftM is an extra hips lift (m, rig up axis = z) added after the blend (solved so no vertex is under the floor).
+    Duration, frame count and times of `state` are unchanged. Returns {state: report}."""
+    by = dict(clips); rep = {}
+    for st, row in spec.items():
+        if st not in by or row['toState'] not in by: continue
+        c = by[st]; tg = by[row['toState']]; tt = float(row.get('toTimeS', 0.0)); t0, t1, p = float(row['t0']), float(row['t1']), float(row.get('power', 1.0))
+        u = np.clip((c.times - t0) / max(1e-6, t1 - t0), 0.0, 1.0); w = u ** p
+        if row.get('smooth'): w = w * w * (3 - 2 * w)
+        for nm in c.rot:
+            if nm not in tg.rot: continue
+            q1 = np.asarray(L.sample_q(tg.times, tg.rot[nm], tt), float); q1 = q1 / np.linalg.norm(q1)
+            for i in range(len(c.times)):
+                if w[i] > 0: c.rot[nm][i] = L.slerp(c.rot[nm][i], q1, float(w[i]))
+        h1 = np.asarray(L.sample_v(tg.times, tg.hips_t, tt), float)
+        for i in range(len(c.times)): c.hips_t[i] = c.hips_t[i] * (1 - w[i]) + h1 * w[i]
+        lf = row.get('liftM')
+        if lf:
+            lt = np.array([k[0] for k in lf], float); lv = np.array([k[1] for k in lf], float)
+            c.hips_t[:, 2] += np.array([L.sample_v(lt, lv, float(t)) for t in c.times])
+        rep[st] = {'toState': row['toState'], 't0': t0, 't1': t1, 'power': p, 'liftMax': round(float(max([k[1] for k in lf])), 3) if lf else 0.0}
+    return rep
+
+
 def write_clips(j, b, name2idx, clips):
     j['animations'] = []
     for state, c in clips:
@@ -323,6 +407,19 @@ def build_character(cfg, roster, cid, outdir, proj, args):
         c, src_desc, notes, ratio = build_clip(cfg, row, rig_z, corr, tuning, cid, cache)
         clips.append((row['state'], c))
         rows_rep.append({'state': row['state'], 'src': src_desc, 'foreign': row.get('foreign'), 'ops': notes, 'frames': int(len(c.times)), 'durationS': float(c.times[-1]), 'hipsRatio': round(ratio, 4)})
+    hp = (tuning or {}).get('headPitch'); pb = (tuning or {}).get('poseBlend')     # MONSTERPOLISH v1 (data; absent = unchanged)
+    if hp or pb:
+        brig = L.Rig(j, b) if hp else None
+        def _hp():
+            for r_, (state, c) in zip(rows_rep, clips):
+                rp_ = head_pitch_limit(brig, c.rot, c.times, hp, state) if hp else None
+                if rp_: r_['headPitch'] = rp_; r_['ops'].append('headPitch min %+g deg (corr max %.1f)' % (rp_['minDeg'], rp_['maxCorrDeg']))
+        _hp()
+        if pb:
+            pr = pose_blend(clips, pb)
+            for r_, (state, c) in zip(rows_rep, clips):
+                if state in pr: r_['poseBlend'] = pr[state]; r_['ops'].append('poseBlend -> %s t %.2f..%.2f' % (pr[state]['toState'], pr[state]['t0'], pr[state]['t1']))
+            if hp: _hp()
     write_clips(j, b, name2idx, clips)
     # leg fix
     lf = cfg['tools']['legFix']; leg_fix.set_cap(lf['maxSwivelDeg'])

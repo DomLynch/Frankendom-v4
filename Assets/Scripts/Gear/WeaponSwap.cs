@@ -83,11 +83,12 @@ public class WeaponSwap : MonoBehaviour, IGearWeaponSource
     int serial; bool wantLoad; Transform root;
     Transform socket, instance, offNode, tipNode, trail, trailParent; Vector3 trailPos, trailScale; Quaternion trailRot;
     readonly List<GameObject> hidden = new List<GameObject>();
-    TwoHandIK ik; bool shown;
+    TwoHandIK ik; bool shown; Transform clawNode;   // SOBEKCLAWS: clawNode = the ClawTip made for an unarmed weapon
 
     public WeaponStats Weapon { get { return stats; } }                  // null = the default sword (WeaponHooks maps that to neutral)
     public bool VisualShown { get { return shown; } }
     public string WeaponId { get { return shown && def != null ? def.id : ""; } }
+    public bool Unarmed { get { return shown && def != null && def.unarmed; } }   // SOBEKCLAWS: the claws are the weapon (no glb on the socket)
     public bool TwoHanded { get { return shown && def != null && def.twoHanded; } }
     public float IkWeight { get { return def != null ? def.ikWeight : 0f; } }
     public float IkBlendSeconds { get { return def != null ? Mathf.Max(0.01f, def.ikBlendSeconds) : 0.15f; } }
@@ -107,7 +108,37 @@ public class WeaponSwap : MonoBehaviour, IGearWeaponSource
         stats = new WeaponStats { id = def.id, damageMul = def.damageMul, speedMul = def.speedMul, reachMul = def.reachMul, postureMul = def.postureMul, twoHanded = def.twoHanded };
         string cid = gs != null ? gs.CharacterId : ""; if (cid.Length > 0 && def.cueWeapon.Length > 0) cueByCharacter[cid] = def.cueWeapon;
         GearTable.Log(name + " weapon " + def.id + ": damage x" + def.damageMul + " speed x" + def.speedMul + " reach x" + def.reachMul + " posture x" + def.postureMul + (def.twoHanded ? " two-handed" : ""));
+        if (def.unarmed) { UnarmedOn(); return; }   // SOBEKCLAWS
         wantLoad = true; StartLoad();
+    }
+
+    // SOBEKCLAWS: an item with weapon.unarmed has no glb. The template weapon on the socket goes dark exactly as a swapped-in weapon does (keepChildren stay), a ClawTip node is made on weapon.tipBone
+    // at weapon.tipOffsetM (metres in the bone frame) and the swing trail follows it. Nothing loads, so there is nothing to warn about; Clear() puts everything back.
+    void UnarmedOn()
+    {
+        var C = GearTable.Get().weaponSwap; Transform sk = gs != null ? gs.Skeleton : transform;
+        if (root == null) root = transform.root;
+        Transform sock = FindNamed(sk, C.socket, false);
+        hidden.Clear();
+        if (sock != null)
+            for (int i = 0; i < sock.childCount; i++)
+            {
+                var ch = sock.GetChild(i); if (InList(C.keepChildren, ch.name)) continue;
+                if (ch.gameObject.activeSelf) { ch.gameObject.SetActive(false); hidden.Add(ch.gameObject); }
+            }
+        Transform bone = FindNamed(sk, def.tipBone, false);
+        if (bone == null) GearTable.Warn("unarmed weapon '" + def.id + "': no bone '" + def.tipBone + "' on " + name + " (no ClawTip node, the trail stays on the socket)");
+        else
+        {
+            float hs = Mathf.Max(0.0001f, bone.lossyScale.x); var o = def.tipOffsetM;
+            clawNode = new GameObject("ClawTip").transform; clawNode.SetParent(bone, false);
+            clawNode.localPosition = o != null && o.Length >= 3 ? new Vector3(o[0], o[1], o[2]) / hs : Vector3.zero; clawNode.localRotation = Quaternion.identity; clawNode.localScale = Vector3.one;
+            tipNode = clawNode;
+            trail = sock != null ? FindNamed(sock, C.trailNode, true) : null;
+            if (trail != null) { trailParent = trail.parent; trailPos = trail.localPosition; trailRot = trail.localRotation; trailScale = trail.localScale; trail.SetParent(clawNode, false); trail.localPosition = Vector3.zero; trail.localRotation = Quaternion.identity; trail.localScale = Vector3.one; }
+        }
+        socket = sock; shown = true; idByRoot[root] = def.id;   // from this frame WeaponGrip / GripPose pick the rows of weapon id "claws" (none = the socket as the scene has it)
+        GearTable.Log("weapon " + def.id + " on " + name + ": unarmed, template weapon hidden (" + hidden.Count + " children)" + (tipNode != null ? ", claw tip node '" + tipNode.name + "'" : ""));
     }
 
     void StartLoad() { if (!isActiveAndEnabled || item == null) return; wantLoad = false; StartCoroutine(Load(serial, item)); }
@@ -117,6 +148,7 @@ public class WeaponSwap : MonoBehaviour, IGearWeaponSource
     {
         serial++; wantLoad = false;
         if (trail != null && trailParent != null && trail.parent != trailParent) { trail.SetParent(trailParent, false); trail.localPosition = trailPos; trail.localRotation = trailRot; trail.localScale = trailScale; }
+        if (clawNode != null) { Destroy(clawNode.gameObject); clawNode = null; }   // SOBEKCLAWS
         if (instance != null) { instance.gameObject.SetActive(false); Destroy(instance.gameObject); }   // GearPiece.OnDestroy disposes the glTFast import and the HDRP/Lit copies
         for (int i = 0; i < hidden.Count; i++) if (hidden[i] != null) hidden[i].SetActive(true);
         hidden.Clear();

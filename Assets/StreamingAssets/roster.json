@@ -19,7 +19,7 @@
       "headRenderer": "Joan_Head",
       "armoured": false,
       "notes": "flesh: bleeds, no sparks. Mixamo ch13 chef 106-joint body + Joan face (joan_chef_outfit_v1.glb)",
-      "loadout": []
+      "loadout": ["joan_shield"]
     },
     {
       "id": "Pitborn",
@@ -58,7 +58,7 @@
       "id": "Sobek",
       "displayName": "Sobek",
       "objectName": "Sobek",
-      "weapon": "trident",
+      "weapon": "claws",
       "controller": "Assets/Characters/Sobek.controller",
       "modelGlb": "Assets/Characters/Sobek/Sobek_combat.glb",
       "animGlb": "Assets/Characters/Sobek/Sobek_anim.glb",
@@ -69,7 +69,7 @@
       "armoured": false,
       "notes": "SOBEK130 v1 (Dom v108b: +30%, heightM 2.4 -> 3.12; the SOBEKSIZE rows x1.3, see _agents/laneSOBEK130/MANIFEST.md). SOBEKSIZE v1 (Dom v107: 20% smaller, heightM 3.0 -> 2.4; every metre row follows, see _agents/laneSOBEKSIZE/MANIFEST.md). SOBEKDATA: reptile body, crocodile head, claws. no templateFor: Pitborn stays the enemy scene template (CharacterSetup picks the first row with templateFor=enemy that is not the new id). heightM 3.0 (guess: measure on the bound mesh, plan range 2.5-3.5). armoured false = bleeds, no sparks (guess, Dom may flip). weapon trident (SOBEKWEAPON): his right hand holds gear item sobek_trident (loadout), WeaponSwap parents it on WeaponSocket_R. His own claws stay (the hand keeps the weapon through the loadout only).",
       "loadout": [
-        "sobek_trident"
+        "sobek_claws"
       ]
     }
   ],

@@ -349,7 +349,7 @@
   },
   "items": [
     {
-      "id": "joan_tunic",
+      "id": "joan_tunic", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Heraldic tunic",
       "slot": "chest",
       "layer": "Layer_Tunic",
@@ -371,7 +371,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "joan_helmet",
+      "id": "joan_helmet", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Steel helm",
       "slot": "head",
       "layer": "Layer_Helmet",
@@ -390,7 +390,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "joan_bracers",
+      "id": "joan_bracers", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Leather bracers",
       "slot": "arms",
       "layer": "Layer_Bracers",
@@ -410,7 +410,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "joan_greaves",
+      "id": "joan_greaves", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Steel greaves",
       "slot": "legs",
       "layer": "Layer_Greaves",
@@ -432,7 +432,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "joan_tabard",
+      "id": "joan_tabard", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Heraldic tabard",
       "slot": "chest",
       "glb": "Gear/joan_tabard.glb",
@@ -461,7 +461,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "joan_boots",
+      "id": "joan_boots", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Leather boots",
       "slot": "legs",
       "glb": "Gear/joan_boots.glb",
@@ -494,7 +494,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "pitborn_pauldron_joan",
+      "id": "pitborn_pauldron_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Pitborn pauldrons",
       "slot": "arms",
       "glb": "Gear/pitborn_pauldron_joan_R.glb",
@@ -524,7 +524,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "pitborn_pauldron",
+      "id": "pitborn_pauldron", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Pitborn pauldron",
       "slot": "arms",
       "glb": "Gear/pitborn_pauldron.glb",
@@ -552,7 +552,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "pauldron_joan",
+      "id": "pauldron_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Steel pauldron (dome + 3 lames)",
       "slot": "arms",
       "glb": "Gear/pauldron_joan_R.glb",
@@ -581,7 +581,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "vambrace_joan",
+      "id": "vambrace_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Steel vambrace with straps",
       "slot": "arms",
       "glb": "Gear/vambrace_joan_R.glb",
@@ -612,7 +612,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "gorget_joan",
+      "id": "gorget_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Steel gorget (collar + 4 lames)",
       "slot": "chest",
       "glb": "Gear/gorget_joan_R.glb",
@@ -640,7 +640,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "greave_joan",
+      "id": "greave_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Steel greave (shin plate + knee cop)",
       "slot": "legs",
       "glb": "Gear/greave_joan_R.glb",
@@ -671,7 +671,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "pitborn_chest",
+      "id": "pitborn_chest", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Pitborn cuirass",
       "slot": "chest",
       "glb": "Gear/pitborn_chest_joan.glb",
@@ -692,7 +692,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "pitborn_maul",
+      "id": "pitborn_maul", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Pitborn's maul",
       "slot": "mainHand",
       "glb": "Gear/pitborn_maul_joan_LOD0.glb",
@@ -733,7 +733,7 @@
       }
     },
     {
-      "id": "bascinet_joan",
+      "id": "bascinet_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Steel bascinet (open face, aventail edge)",
       "slot": "head",
       "glb": "Gear/bascinet_joan.glb",
@@ -765,7 +765,7 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "cap_joan",
+      "id": "cap_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Steel kettle cap",
       "slot": "head",
       "glb": "Gear/cap_joan.glb",
@@ -797,7 +797,54 @@
       "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
     },
     {
-      "id": "sobek_trident",
+      "id": "sobek_claws",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Sobek's claws",
+      "slot": "mainHand",
+      "glb": "",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "SOBEKCLAWS v1 (Dom 2026-11-07: 'remove the trident for now, stick with claws'): Sobek is UNARMED. No glb: WeaponSwap hides the template weapon on WeaponSocket_R and puts the swing trail on a ClawTip node (weapon.tipBone + tipOffsetM, measured: centroid of the 12 farthest right-hand vertices, wrist -> tip 0.425 m). reachMul 0.55 replaces the trident's 1.768 (the claw tip is 1.4-2.1 m ahead of the hips at contact, the hit limit was 4.3-4.9 m); damage / speed / posture are the trident's numbers so range is the only sim change. cueWeapon claws = cues.json rows. SWITCH BACK: roster.json Sobek weapon 'trident' + loadout ['sobek_trident'] and the cues.json weapons row Sobek 'trident' (python apply_sobekclaws.py --weapon trident); the trident item and its grip rows stay untouched.",
+      "weapon": {
+        "id": "claws",
+        "unarmed": true,
+        "tipBone": "mixamorig:RightHand",
+        "tipOffsetM": [
+          0.1391,
+          0.3918,
+          -0.0859
+        ],
+        "twoHanded": false,
+        "damageMul": 1.0,
+        "speedMul": 1.08,
+        "reachMul": 0.55,
+        "postureMul": 1.0,
+        "cueWeapon": "claws",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      }
+    },
+    {
+      "id": "sobek_trident", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
       "name": "Sobek's trident",
       "slot": "mainHand",
       "glb": "Gear/sobek_trident_LOD0.glb",
@@ -827,6 +874,7 @@
         "ikWeight": 1.0,
         "ikBlendSeconds": 0.15
       }
-    }
-  ]
+    },
+  {"id": "joan_shield", "name": "Gothic round shield", "slot": "offHand", "glb": "Gear/shield_joan_LOD0.glb", "resource": "", "part": "", "coversZones": [], "hidesLayers": [], "stats": {"armor": 0, "poise": 0, "weight": 2.5}, "dropFrom": [], "dropChance": 0, "notes": "SHIELD v1 (laneSHIELD): the owner's round shield (Downloads medieval shield 3d model.glb, Tripo, 1.93M tris 3x4096 maps) decimated to LOD0 30000 tris / 2048 maps (LOD1 8000 / 1024 ships as shield_joan_LOD1.glb, no loader swaps it yet; a LOD2 of 2000 tris was made and NOT shipped: its normal map breaks up). 0.60 m round, origin = the grip bar, +Z = the face, +Y up. Left hand: shield_mount.json rows (socket, per-state tuck / hide), grip pose = row curl. shield{} = the cover rule: guard side 'left' (the shield arm) ALSO covers overhead and thrust swings as a block (never a parry); blocks with that guard put 10 percent less posture on her; a block only the shield covered costs 25 percent more stamina. Nothing else changes: parry window, other guard sides, damage, reach. weight 2.5 only matters when her whole kit passes weightFree 6 (stamina regen). Remove the item from roster.json loadout = exactly today's fight.", "materials": {"*": {"smoothness": 0.3, "metallic": 0.12, "normalScale": 1.0}}, "shield": {"id": "joan_shield", "sideGuard": "left", "cover": [{"guard": "left", "attacks": ["overhead", "thrust"]}], "blockStaminaMul": 1.25, "blockPostureMul": 0.9, "cueEvent": "block_shield"}, "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}}
+]
 }

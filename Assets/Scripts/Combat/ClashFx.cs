@@ -13,7 +13,7 @@ using UnityEngine;
 
 public static class ClashFxTable
 {
-    [Serializable] public class Row { public string type = ""; public int heavy = -1, perfect = -1; public string targetContains = ""; public float spark, dust; public string feet = "rear"; }
+    [Serializable] public class Row { public string type = ""; public int heavy = -1, perfect = -1; public string targetContains = ""; public string attackerWeapon = ""; /* SOBEKCLAWS */ public float spark, dust; public string feet = "rear"; }
     [Serializable] public class ActionRow { public string action = ""; public float dust; public string feet = "both"; }
     [Serializable]
     public class Sparks
@@ -406,6 +406,7 @@ public class ClashFx : MonoBehaviour
             if (r.heavy >= 0 && (r.heavy == 1) != heavy) continue;
             if (r.perfect >= 0 && (r.perfect == 1) != perfect) continue;
             if (!RosterResolver.NameFilter(r.targetContains, d.name)) continue;   // HCKIT2 v93
+            if (!string.IsNullOrEmpty(r.attackerWeapon) && WeaponHooks.Of(a).id != r.attackerWeapon) continue;   // SOBEKCLAWS
             row = r; break;
         }
         if (row == null) return;

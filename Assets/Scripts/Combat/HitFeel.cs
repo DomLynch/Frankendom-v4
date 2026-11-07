@@ -27,7 +27,7 @@ public static class HitFeelTable
         public float minRequestMs = 8f;
         public StopTier[] tiers = new StopTier[0];
     }
-    [Serializable] public class Row { public string type = ""; public int heavy = -1, perfect = -1, metal = -1; public float spark, flash; }
+    [Serializable] public class Row { public string type = ""; public int heavy = -1, perfect = -1, metal = -1; public float spark, flash; public string attackerWeapon = ""; /* SOBEKCLAWS: "" = any attacker weapon (WeaponHooks id); first match wins, so keyed rows go first */ }
     [Serializable]
     public class Sparks
     {
@@ -265,6 +265,7 @@ public class HitFeel : MonoBehaviour
             if (r.heavy >= 0 && (r.heavy == 1) != e.heavy) continue;
             if (r.perfect >= 0 && (r.perfect == 1) != e.perfect) continue;
             if (r.metal >= 0 && (r.metal == 1) != metal) continue;
+            if (!string.IsNullOrEmpty(r.attackerWeapon) && (e.actor == null || WeaponHooks.Of(e.actor).id != r.attackerWeapon)) continue;   // SOBEKCLAWS
             return r;
         }
         return null;

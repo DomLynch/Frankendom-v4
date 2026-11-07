@@ -331,7 +331,9 @@ def run(cfg, roster, reps, proj, outdir, live_override=None):
             # gates
             tp = cfg.get('tuning', {}).get(rep.get('tuningProfile') or '', {})
             tol = abs(float(tp.get('clipAbductDeg', {}).get(st, tp.get('armAbductDeg', 0.0)))) if st in tp.get('clips', []) else 0.0   # SOBEKTUNE v1: per-clip abduction     # the character's OWN declared tuning is allowed in the pose gate, nothing else
-            if pose and (pose['mean'] > pm + tol or pose['max'] > px + tol): bad.append('G-pose %s mean %.2f max %.2f (limits %.1f/%.1f)' % (st, pose['mean'], pose['max'], pm, px))
+            au_ = wv.get('authored', {}).get(st, {}); pm_s = float(au_.get('poseMeanDeg', pm)); px_s = float(au_.get('poseMaxDeg', px))   # MONSTERPOLISH v1: an AUTHORED clip edit (head pitch limit, pose blend) declared per state in data gates.waiver.<id>.authored, shown in the report
+            if au_: print('  G-pose %-18s authored waiver: limits %.1f/%.1f (%s)' % (st, pm_s, px_s, au_.get('why', '')))
+            if pose and (pose['mean'] > pm_s + tol or pose['max'] > px_s + tol): bad.append('G-pose %s mean %.2f max %.2f (limits %.1f/%.1f)' % (st, pose['mean'], pose['max'], pm_s, px_s))
             if st in rep.get('derivedRefLimit', {}): pass
             kmax_ = float(wv.get('kneeMedialMaxM', g['kneeMedialMaxM']))   # SOBEKNEW v1: per-character waiver value (data gates.waiver.<id>), absent = old behaviour
             if mn['knee'] is not None and mn['knee'] > kmax_: bad.append('G-knee %s inward %.3f m > %.3f' % (st, mn['knee'], kmax_))

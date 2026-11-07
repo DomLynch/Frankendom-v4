@@ -41,6 +41,11 @@
     "seconds": 0.04, "lumen": 4500, "range": 4.5, "falloffPower": 1.5, "towardCamera": 0.3, "kelvin": 2200
   },
   "rows": [
+    { "type": "Parried", "heavy": -1, "perfect": -1, "metal": -1, "spark": 0.5, "flash": 0.6, "attackerWeapon": "claws" },
+    { "type": "GuardBroken", "heavy": -1, "perfect": -1, "metal": -1, "spark": 0.6, "flash": 0.6, "attackerWeapon": "claws" },
+    { "type": "Blocked", "heavy": 1, "perfect": -1, "metal": -1, "spark": 0.4, "flash": 0.45, "attackerWeapon": "claws" },
+    { "type": "Blocked", "heavy": -1, "perfect": 1, "metal": -1, "spark": 0.35, "flash": 0.4, "attackerWeapon": "claws" },
+    { "type": "Blocked", "heavy": -1, "perfect": -1, "metal": -1, "spark": 0.25, "flash": 0.3, "attackerWeapon": "claws" },
     { "type": "Parried",     "heavy": -1, "perfect": -1, "metal": -1, "spark": 1.0,  "flash": 1.0 },
     { "type": "GuardBroken", "heavy": -1, "perfect": -1, "metal": -1, "spark": 1.2,  "flash": 1.0 },
     { "type": "Blocked",     "heavy": 1,  "perfect": -1, "metal": -1, "spark": 0.8,  "flash": 0.8 },

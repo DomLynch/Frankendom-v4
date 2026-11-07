@@ -1,0 +1,139 @@
+{
+ "_about": "SHIELD v1 (ShieldMount.cs): where the offHand shield sits on Joan's left hand. Same maths as weapon_grip.json: socketOffset = metres in the HAND-bone frame, socketEuler = degrees on the socket (origin = the grip bar, +Z = the shield face, +Y = up). Rows are matched by character (Roster name / id / *) and item; a row with states applies in those Animator states (blended over blendSeconds), the row without states is the default. visible 0 = stow: the shield shrinks into the fist and the fingers open (used where the left hand is needed on the sword or the clip drives the arm through the shield: dodge_corkscrew, dodge_diveroll, get_up, atk_riposte, atk_thrust, hit_heavy, every finisher). hideDuringFinishers also hides it while a finisher scene runs (their clips are not Animator states). hideWithTwoHanded: a two-handed mainHand weapon (TwoHandIK) hides it. scale = world scale of the glb (authored in metres, 0.60 m round). curl closes the left fingers on the grip bar (GripPose axes, absolute) while it shows. Rows fitted and swept in Blender on Joan_combat.glb + her clip glbs with the game's socket maths (_agents/laneSHIELD/work/shield_fit.py).",
+ "enabled": true,
+ "debugLog": false,
+ "hideWithTwoHanded": true,
+ "hideDuringFinishers": true,
+ "rows": [
+  {
+   "id": "carry",
+   "name": "Joan",
+   "item": "joan_shield",
+   "hand": "LeftHand",
+   "socket": "ShieldSocket_L",
+   "socketOffset": [
+    -0.041,
+    0.008,
+    -0.024
+   ],
+   "socketEuler": [
+    -18.488,
+    -149.904,
+    -12.605
+   ],
+   "scale": 1.0,
+   "blendSeconds": 0.12,
+   "visible": 1.0,
+   "states": [],
+   "curl": true,
+   "fingerDeg": 72,
+   "thumbDeg": 35,
+   "thumbWeight": 0.7,
+   "falloff": 0.85,
+   "fingerAxis": [
+    0,
+    0,
+    1
+   ],
+   "thumbAxis": [
+    0,
+    1,
+    0
+   ]
+  },
+  {
+   "id": "guard",
+   "name": "Joan",
+   "item": "joan_shield",
+   "hand": "LeftHand",
+   "socket": "ShieldSocket_L",
+   "socketOffset": [
+    -0.0885,
+    0.0535,
+    0.0096
+   ],
+   "socketEuler": [
+    14.8962,
+    12.4477,
+    -174.0472
+   ],
+   "scale": 1.0,
+   "blendSeconds": 0.08,
+   "visible": 1.0,
+   "states": [
+    "guard_idle",
+    "guard_left",
+    "guard_right",
+    "guard_up",
+    "guard_hit",
+    "parry"
+   ],
+   "curl": true,
+   "fingerDeg": 72,
+   "thumbDeg": 35,
+   "thumbWeight": 0.7,
+   "falloff": 0.85,
+   "fingerAxis": [
+    0,
+    0,
+    1
+   ],
+   "thumbAxis": [
+    0,
+    1,
+    0
+   ]
+  },
+  {
+   "id": "stow",
+   "name": "Joan",
+   "item": "joan_shield",
+   "hand": "LeftHand",
+   "socket": "ShieldSocket_L",
+   "socketOffset": [
+    -0.041,
+    0.008,
+    -0.024
+   ],
+   "socketEuler": [
+    -18.488,
+    -149.904,
+    -12.605
+   ],
+   "scale": 1.0,
+   "blendSeconds": 0.15,
+   "visible": 0.0,
+   "states": [
+    "dodge_corkscrew",
+    "dodge_diveroll",
+    "get_up",
+    "atk_riposte",
+    "atk_thrust",
+    "hit_heavy",
+    "fin_beheading_k",
+    "fin_chop1h_k",
+    "fin_counter_v",
+    "fin_hengdao_v",
+    "fin_river_light_k",
+    "v1_run_through_killer",
+    "v1_run_through_victim",
+    "v1_split_crown_victim"
+   ],
+   "curl": false,
+   "fingerDeg": 72,
+   "thumbDeg": 35,
+   "thumbWeight": 0.7,
+   "falloff": 0.85,
+   "fingerAxis": [
+    0,
+    0,
+    1
+   ],
+   "thumbAxis": [
+    0,
+    1,
+    0
+   ]
+  }
+ ]
+}

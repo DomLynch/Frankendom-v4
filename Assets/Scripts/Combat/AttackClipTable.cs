@@ -13,6 +13,7 @@ public static class AttackClipTable
     {
         public string character, move;          // character "" = any; move = MoveDef id
         public bool enabled;
+        public string weapon;                   // SOBEKCLAWS: "" = any; set = only while this character's roster weapon is this one, and then it wins over the weapon-less row of the same character
         public string clip;                     // Animator state (new baked clip), seconds below are in that clip
         public float startTime, contactTime, endTime, holdClipTime;
         public string fallbackClip;             // old state used when `clip` is not in the controller
@@ -47,15 +48,16 @@ public static class AttackClipTable
     {
         var d = Get();
         if (!d.enabled || d.rows == null || string.IsNullOrEmpty(move)) return null;
-        Row any = null;
+        Row any = null, exact = null; string wk = ""; if (!string.IsNullOrEmpty(character)) { var rc = Roster.Get(character); if (rc != null && rc.weapon != null) wk = rc.weapon; }   // SOBEKCLAWS
         for (int i = 0; i < d.rows.Length; i++)
         {
             var r = d.rows[i];
             if (r == null || !r.enabled || r.move != move) continue;
-            if (!string.IsNullOrEmpty(character) && r.character == character) return r;
+            if (!string.IsNullOrEmpty(r.weapon) && r.weapon != wk) continue;   // SOBEKCLAWS: a weapon row only applies to that weapon
+            if (!string.IsNullOrEmpty(character) && r.character == character) { if (!string.IsNullOrEmpty(r.weapon)) return r; if (exact == null) exact = r; continue; }
             if (string.IsNullOrEmpty(r.character) || r.character == "*") any = r;
         }
-        return any;
+        return exact ?? any;
     }
 
     static void Load()

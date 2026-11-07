@@ -178,6 +178,56 @@
       "heavy": -1,
       "perfect": -1,
       "targetContains": "",
+      "attackerWeapon": "claws",
+      "spark": 0.5,
+      "dust": 0.0,
+      "feet": "rear"
+    },
+    {
+      "type": "GuardBroken",
+      "heavy": -1,
+      "perfect": -1,
+      "targetContains": "",
+      "attackerWeapon": "claws",
+      "spark": 0.45,
+      "dust": 1.0,
+      "feet": "both"
+    },
+    {
+      "type": "Blocked",
+      "heavy": 1,
+      "perfect": -1,
+      "targetContains": "",
+      "attackerWeapon": "claws",
+      "spark": 0.4,
+      "dust": 0.6,
+      "feet": "rear"
+    },
+    {
+      "type": "Blocked",
+      "heavy": -1,
+      "perfect": 1,
+      "targetContains": "",
+      "attackerWeapon": "claws",
+      "spark": 0.35,
+      "dust": 0.25,
+      "feet": "rear"
+    },
+    {
+      "type": "Blocked",
+      "heavy": -1,
+      "perfect": -1,
+      "targetContains": "",
+      "attackerWeapon": "claws",
+      "spark": 0.2,
+      "dust": 0.4,
+      "feet": "rear"
+    },
+    {
+      "type": "Parried",
+      "heavy": -1,
+      "perfect": -1,
+      "targetContains": "",
       "spark": 0.9,
       "dust": 0.0,
       "feet": "rear"
@@ -235,8 +285,9 @@
       "spark": 0.0,
       "dust": 1.0,
       "feet": "rear"
-    }
-  ],
+    },
+  {"type": "ShieldBlocked", "heavy": -1, "perfect": -1, "targetContains": "", "spark": 0.9, "dust": 0.0, "feet": "rear"}
+],
   "actions": [
     {
       "action": "roll",

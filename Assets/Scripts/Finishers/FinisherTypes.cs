@@ -123,6 +123,7 @@ public class FinisherEntry
 public class FinisherOverride
 {
     public string killer = "*", victim = "*";
+    public string weapon = "";              // SOBEKCLAWS: "" = any weapon; set = only while the killer's roster weapon is this (the row then beats the weapon-less rows of the same killer / victim)
     public bool unavailable = false;        // true: this entry is never picked for that pair (the rotation takes the next one, or a plain death)
     public bool requireDeathblow = false;   // true: only picked when the blow was a posture-break deathblow (the victim is hunched / staggering, head and neck low enough for a short killer)
     public float[] pairOffset = new float[0];
@@ -131,7 +132,7 @@ public class FinisherOverride
     public string note = "";
 }
 // JOANFIN v77: rt.killers row: per roster id scale of the pair distance / offsets / bladeReach (stand-in metres are Dracula-sized; 1 = no change). Multiplies DuelFighter.scale.
-[Serializable] public class FinisherKillerRow { public string id = ""; public float pairScale = 1f; public string note = ""; }
+[Serializable] public class FinisherKillerRow { public string id = ""; public string weapon = ""; public float pairScale = 1f; public string note = ""; }   // SOBEKCLAWS: weapon "" = any
 [Serializable] public class SprayCfg { public float seconds = 1.0f, rate = 90f, coneDeg = 16f, gravity = 8f; public float[] speed = { 2.5f, 4.5f }, size = { 0.03f, 0.06f }, life = { 0.5f, 0.9f }; public float[] phaseUntilS, phaseRate, phaseSpeed; /* V1FIN v94: non-empty = stepped emission (phaseRate[i] per second until phaseUntilS[i]; phaseSpeed[i] = the start speed then) */ }
 // V1FIN v94: V1 src/finisher-blood.ts as data. One profile per anatomy (decapitation, splitCrown, runThrough, opened): the sources and the emission phases (burst 78/s x strength for 1.7 s, 32/s to 3.5 s, 14/s to 7 s).
 [Serializable] public class V1BloodSource { public string site = ""; public float strength = 1f; public float upOffsetM = 0f, fwdOffsetM = 0f; public float dirUp = 1f, dirFwd = 0f; public bool onPiece = false; public bool fromTop = false; }
@@ -311,7 +312,8 @@ public static class FinisherPair
         foreach (var o in e.overrides)
         {
             if (o == null || !Is(o.killer, killerId) || !Is(o.victim, victimId)) continue;
-            int s = (Exact(o.killer, killerId) ? 2 : 0) + (Exact(o.victim, victimId) ? 1 : 0);
+            if (!string.IsNullOrEmpty(o.weapon) && !string.Equals(o.weapon, KillerWeapon(killerId), StringComparison.OrdinalIgnoreCase)) continue;   // SOBEKCLAWS
+            int s = (Exact(o.killer, killerId) ? 2 : 0) + (Exact(o.victim, victimId) ? 1 : 0) + (string.IsNullOrEmpty(o.weapon) ? 0 : 4);
             if (s > bs) { bs = s; best = o; }
         }
         return best;
@@ -321,10 +323,13 @@ public static class FinisherPair
         var o = Find(e, killerId, victimId); if (o == null) return true;
         return !o.unavailable && (!o.requireDeathblow || deathblow);
     }
+    static string KillerWeapon(string killerId) { var rc = Roster.Get(killerId); return rc != null && rc.weapon != null ? rc.weapon : ""; }   // SOBEKCLAWS
     public static float KillerScale(string killerId)
     {
         var rows = FinisherConfig.Get().rt.killers; if (rows == null) return 1f;
-        foreach (var r in rows) if (r != null && string.Equals(r.id, killerId, StringComparison.OrdinalIgnoreCase)) return Mathf.Max(0.3f, r.pairScale);
+        string kw = KillerWeapon(killerId);   // SOBEKCLAWS: a row with "weapon" applies only while the killer holds that weapon and wins over the weapon-less row
+        foreach (var rw in rows) if (rw != null && !string.IsNullOrEmpty(rw.weapon) && string.Equals(rw.weapon, kw, StringComparison.OrdinalIgnoreCase) && string.Equals(rw.id, killerId, StringComparison.OrdinalIgnoreCase)) return Mathf.Max(0.3f, rw.pairScale);
+        foreach (var r in rows) if (r != null && string.IsNullOrEmpty(r.weapon) && string.Equals(r.id, killerId, StringComparison.OrdinalIgnoreCase)) return Mathf.Max(0.3f, r.pairScale);
         foreach (var r2 in rows) if (r2 != null && r2.id == "*") return Mathf.Max(0.3f, r2.pairScale);   // HCKIT2 v93 "*" default killer
         return 1f;
     }

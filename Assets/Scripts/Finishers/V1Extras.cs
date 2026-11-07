@@ -33,6 +33,17 @@ public class BladeAimCfg
     public float startS = -0.35f, rampS = 0.25f, holdS = 2.6f;             // aim ramps 0 -> 1 over rampS from (rel + startS), holds holdS after the ramp, then lets go (V1: min(1, finishClock / .25))
     public float stepMaxM = 0f;                                            // > 0: the killer is slid along the lane by up to this to give the arm reach (V1 anchor step); 0 = off (pairOffset gives the reach)
     public OffHandCfg offHand = new OffHandCfg();
+    public ClawCfg claw;                                                   // SOBEKCLAWS: used instead of a weapon mesh while the killer is unarmed (WeaponSwap.Unarmed); null = never
+}
+
+// SOBEKCLAWS: the "blade" of an unarmed killer = the hand bone -> the claw tip (tipM, metres in the hand frame like weapon.tipOffsetM). segFrom / segTo / stepMaxM replace the entry's while the claws aim; no off hand re-solve.
+[Serializable]
+public class ClawCfg
+{
+    public bool enabled = false;
+    public float[] tipM = new float[0];
+    public float segFrom = 0.6f, segTo = 1f, stepMaxM = 0f;
+    public string note = "";
 }
 
 [Serializable]
@@ -123,7 +134,7 @@ public sealed class BladeAim : MonoBehaviour
     static readonly List<BladeAim> all = new List<BladeAim>();
     public static void EndAll() { for (int i = all.Count - 1; i >= 0; i--) if (all[i] != null) Destroy(all[i]); all.Clear(); }
 
-    BladeAimCfg c; DuelFighter victim; Transform arm, hand, vBone, o0, o1, o2, blade; Vector3 hiltL, tipL; bool resolved, failed, hiltIsA; float age, from, end; Vector3 applied; CharacterController cc; bool logged; PoseGuard gArm, g0, g1;
+    BladeAimCfg c; DuelFighter victim; Transform arm, hand, vBone, o0, o1, o2, blade; Vector3 hiltL, tipL; bool resolved, failed, hiltIsA; float age, from, end; float segMid, stepMax; Vector3 applied; CharacterController cc; bool logged; PoseGuard gArm, g0, g1;
 
     public static BladeAim Begin(DuelFighter killer, DuelFighter victim, BladeAimCfg cfg, float contactPlanned)
     {
@@ -144,8 +155,16 @@ public sealed class BladeAim : MonoBehaviour
 
     bool Resolve()
     {
+        segMid = 0.5f * (c.segFrom + c.segTo); stepMax = c.stepMaxM;   // SOBEKCLAWS
         arm = V1Extras.FindSuffix(transform, c.armBone); hand = V1Extras.FindSuffix(transform, c.handBone); vBone = V1Extras.FindSuffix(victim.transform, c.victimBone);
         if (arm == null || hand == null || vBone == null) { Debug.LogWarning("[finisher] bladeAim: bone not found (arm " + (arm != null) + ", hand " + (hand != null) + ", victim bone " + (vBone != null) + ")"); return false; }
+        var cl = c.claw; var wsw = GetComponent<WeaponSwap>();   // SOBEKCLAWS: an unarmed killer aims with the claws (the template weapon on the socket is hidden but its mesh is still there, so this check comes first)
+        if (cl != null && cl.enabled && cl.tipM != null && cl.tipM.Length >= 3 && wsw != null && wsw.Unarmed)
+        {
+            blade = hand; float hs = Mathf.Max(0.0001f, hand.lossyScale.x); hiltL = Vector3.zero; tipL = new Vector3(cl.tipM[0], cl.tipM[1], cl.tipM[2]) / hs; hiltIsA = true;
+            segMid = 0.5f * (cl.segFrom + cl.segTo); stepMax = cl.stepMaxM;
+            return true;   // no off hand: one claw goes in
+        }
         MeshFilter mf = null;
         foreach (var sn in c.weaponSockets) { var s = V1Extras.FindExact(transform, sn); if (s != null) { mf = s.GetComponentInChildren<MeshFilter>(true); if (mf != null && mf.sharedMesh != null) break; mf = null; } }
         if (mf == null) { Debug.LogWarning("[finisher] bladeAim: no weapon mesh under " + string.Join("/", c.weaponSockets)); return false; }
@@ -169,15 +188,15 @@ public sealed class BladeAim : MonoBehaviour
         if (!resolved) { resolved = true; if (!Resolve()) { failed = true; return; } gArm = new PoseGuard(arm); g0 = o0 != null ? new PoseGuard(o0) : null; g1 = o1 != null ? new PoseGuard(o1) : null; }
         if (victim == null || vBone == null || blade == null) return;
         float a = Mathf.Clamp01((age - from) / Mathf.Max(1e-3f, c.rampS)); if (age > from + c.rampS) a = 1f;
-        Vector3 target = vBone.position, shoulder = arm.position, embedded = BladePoint(0.5f * (c.segFrom + c.segTo));
-        if (c.stepMaxM > 0f)
+        Vector3 target = vBone.position, shoulder = arm.position, embedded = BladePoint(segMid);
+        if (stepMax > 0f)
         {
             Vector3 fwd = target - shoulder; fwd.y = 0f;
             if (fwd.sqrMagnitude > 1e-6f)
             {
                 fwd.Normalize(); Vector3 to0 = target - shoulder, from0 = embedded - shoulder;
                 float b = Vector3.Dot(to0, fwd), disc = b * b - (to0.sqrMagnitude - from0.sqrMagnitude);   // solve |to - step * fwd| = |from| (V1 aimBladeAt)
-                if (disc >= 0f) { float step = Mathf.Clamp(b - Mathf.Sqrt(disc), -c.stepMaxM, c.stepMaxM) * a; applied = fwd * step; Shift(applied); shoulder = arm.position; embedded = BladePoint(0.5f * (c.segFrom + c.segTo)); }
+                if (disc >= 0f) { float step = Mathf.Clamp(b - Mathf.Sqrt(disc), -stepMax, stepMax) * a; applied = fwd * step; Shift(applied); shoulder = arm.position; embedded = BladePoint(segMid); }
             }
         }
         Vector3 v0 = embedded - shoulder, v1 = target - shoulder;

@@ -15,7 +15,39 @@
   "toeYawTolModifiedDeg": 20.0,
   "poseMeanDeg": 12.0,
   "poseMaxDeg": 25.0,
-  "toeYawTolLiveRefDeg": 12.0
+  "toeYawTolLiveRefDeg": 12.0,
+  "authored": {
+   "atk_heavy_R": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_heavy_L": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_overhead": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_heavy_thrust": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_thrust": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_riposte": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   }
+  }
  },
  "sets": {
   "attacks": {
@@ -97,6 +129,38 @@
     "contactHandBlendS": 0.14,
     "contactHandMaxShiftM": 0.4175,
     "_about": "laneSOBEKMOVES: Joan postureDefaults with the length rows scaled by the MEASURED Sobek factors (hips x1.28: hipsMinY, maxStrideM; foot x1.83: ankleLiftCapM, plantedLiftM, stanceGateM; hand height x1.476: contactHandY, contactHandMaxShiftM). Angles are not scaled. | laneSOBEKNEW rescaled to the new body: hips x1.567 (was 1.28), foot x2.153 (was 1.83), hand x1.67 (was 1.476), rows multiplied by the ratio."
+   },
+   "headPitch": {
+    "axisWorldRest": [
+     0.002,
+     -0.197,
+     0.98
+    ],
+    "bones": {
+     "Neck": 0.3,
+     "Head": 0.7
+    },
+    "smoothS": 0.12,
+    "clips": {
+     "atk_heavy_R": {
+      "minDeg": -15
+     },
+     "atk_heavy_L": {
+      "minDeg": -15
+     },
+     "atk_overhead": {
+      "minDeg": -15
+     },
+     "atk_heavy_thrust": {
+      "minDeg": -15
+     },
+     "atk_thrust": {
+      "minDeg": -15
+     },
+     "atk_riposte": {
+      "minDeg": -15
+     }
+    }
    }
   },
   "dodges": {

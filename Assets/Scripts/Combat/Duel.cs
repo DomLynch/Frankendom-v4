@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Fixed 60 Hz deterministic fight clock + hit resolution (ported from V3 duel.ts stepDuel rules: guard arc, parry window, posture, rear/counter bonuses).
@@ -60,9 +60,9 @@ public class Duel : MonoBehaviour
         bool heavy = m.charges || m.damage >= 18f;
         string evt;
         Vector3 away = ad.normalized;
-        bool defGuard = d.IsGuarding && Angle(d.transform.forward, -ad) <= a.Rule("guardArc", Mathf.PI / 3f) * Mathf.Rad2Deg * StanceLayer.GuardArcMul(d) /* STANCE2 v81 */ && DirectionalGuard.SideOk(a, d, m, heavy);   // CTRL v68: the guard side must cover the swing (controls.json guard.guardRequiresSide)
+        bool defGuardArc = d.IsGuarding && Angle(d.transform.forward, -ad) <= a.Rule("guardArc", Mathf.PI / 3f) * Mathf.Rad2Deg * StanceLayer.GuardArcMul(d) /* STANCE2 v81 */; bool defGuard = defGuardArc && DirectionalGuard.SideOk(a, d, m, heavy); bool shieldCov = !defGuard && defGuardArc && ShieldHooks.Covers(d, m, heavy); if (shieldCov) defGuard = true; /* SHIELD v1: the wearer's shield cover rows (gear.json items[].shield) count a swing the guard side alone would not stop as a BLOCK; never a parry */    // CTRL v68: the guard side must cover the swing (controls.json guard.guardRequiresSide)
 
-        if (defGuard && d.InParryWindow && m.parryable && (!heavy || !StaminaTable.Parry().enabled || StaminaTable.Parry().parryHeavies))
+        if (defGuard && !shieldCov /* SHIELD v1 */ && d.InParryWindow && m.parryable && (!heavy || !StaminaTable.Parry().enabled || StaminaTable.Parry().parryHeavies))
         {
             d.ParrySuccess();
             a.Stagger(StaminaTable.ParryStagger(heavy, (int)a.Rule("parryStun", 90)), "stagger_loop"); a.AddPosture(a.ParryAttackerPosture(heavy));   /* lanePARRY: DuelFighterParry.cs */ if (PostureTable.Get().enabled) d.RelievePosture(PostureTable.Get().parry.relief); bool pbk = a.TryPostureBreak(d);
@@ -75,15 +75,15 @@ public class Duel : MonoBehaviour
         }
         if (defGuard)
         {
-            d.SpendStamina(StaminaTable.BlockCost(m, heavy, d.Exhausted, a.Rule("blockCost", 25f)) * StanceLayer.BlockCostMul(d));   // lanePARRY: stance block cost (stances.json)
-            d.AddPosture(PostureTable.BlockGain(m, heavy) * WeaponHooks.PostureDealtMul(a) /* WEAPONSWAP v88 */ * StanceLayer.PostureMul(a, d, false) /* STANCE2 v81 */); if (PostureTable.Get().enabled && PostureTable.Get().block.attackerBlocked > 0f) a.AddPosture(PostureTable.Get().block.attackerBlocked); bool pbb = d.TryPostureBreak(a);
+            d.SpendStamina(StaminaTable.BlockCost(m, heavy, d.Exhausted, a.Rule("blockCost", 25f)) * StanceLayer.BlockCostMul(d) * (shieldCov ? ShieldHooks.ExtraCostMul(d) : 1f) /* SHIELD v1 */);   // lanePARRY: stance block cost (stances.json)
+            d.AddPosture(PostureTable.BlockGain(m, heavy) * ShieldHooks.BlockPostureMul(d) /* SHIELD v1 */ * WeaponHooks.PostureDealtMul(a) /* WEAPONSWAP v88 */ * StanceLayer.PostureMul(a, d, false) /* STANCE2 v81 */); if (PostureTable.Get().enabled && PostureTable.Get().block.attackerBlocked > 0f) a.AddPosture(PostureTable.Get().block.attackerBlocked); bool pbb = d.TryPostureBreak(a);
             d.health = Mathf.Max(1f, d.health - m.damage * StanceLayer.BlockChipMul(d) /* STANCE2 v81 */ * StaminaTable.ChipFrac(m, d.Exhausted) * (STSteer.Active ? STSteer.DamageMul(a, d) : 1f) * GearHooks.DamageTakenMul(d));   /* kitGEAR v79: armour stat on block chip */
             if (pbb) { Fire(a, d, "GuardBroken", true, false); }
             else if (StaminaTable.BreaksGuard(d.stamina, m, heavy))
             {
                 d.GuardBreakStun(); Fire(a, d, "GuardBroken", true, false);
             }
-            else { d.NoteBlock(); d.BlockHit(heavy); d.SetKnock(away * m.knockback * a.scale * 0.5f); Fire(a, d, "Blocked", heavy, d.InParryWindow); }
+            else { d.NoteBlock(); d.BlockHit(heavy); d.SetKnock(away * m.knockback * a.scale * 0.5f); Fire(a, d, "Blocked", heavy, d.InParryWindow); if (shieldCov) ContactRelay.Raise(a, d, "ShieldBlocked", heavy, false); /* SHIELD v1: shield cue + sparks (cues.json block_shield, clash_fx.json ShieldBlocked) */ }
             return true;
         }
 

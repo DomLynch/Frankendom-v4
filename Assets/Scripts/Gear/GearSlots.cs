@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // GEAR SLOTS (lane GEAR v79). One per wearer (add it to the fighter root; it finds the skeleton through Fighter.anim). Data: Assets/Data/gear.json, loadout: roster.json row "loadout".
 //  Equip(itemId[, slotId]) / Unequip(slotId): by id, from code, the loot pickup or a UI. Equipping always works logically (stats apply, events fire);
@@ -45,6 +46,10 @@ public class GearSlots : MonoBehaviour, IGearStatSource
     // no scene edit needed: after the scene loads, the player fighter and every fighter whose roster row has a loadout get a GearSlots (gear.json enabled only)
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot() { Boot(null); }   // ZONES-ATTACH v1 (INT107)
+    // v109b4 SHIELDFIX: AfterSceneLoad runs ONCE per session, so after GameLoop.Reload (Retry, zone start/restart, next fight) the NEW player had no GearSlots: no loadout, no shield.
+    // Every Single scene load re-runs the same want-check (fighters that already have GearSlots are skipped).
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void HookReset() { SceneManager.sceneLoaded -= OnSceneLoadedBoot; SceneManager.sceneLoaded += OnSceneLoadedBoot; }
+    static void OnSceneLoadedBoot(Scene sc, LoadSceneMode m) { if (m == LoadSceneMode.Single) Boot(null); }
     public static void AttachTo(GameObject root) { Boot(root); }   // same want-check, one object (ZoneRuntime.SpawnOne for a prefab creature)
     static void Boot(GameObject root){
         if (!GearTable.Get().enabled) return;
@@ -110,6 +115,7 @@ public class GearSlots : MonoBehaviour, IGearStatSource
     {
         SlotState s; if (!slots.TryGetValue(sid, out s)) return;
         slots.Remove(sid);
+        if (Array.IndexOf(Environment.GetCommandLineArgs(), "-shield:log") >= 0 && s.item != null && s.item.shield != null) Debug.Log("[Shield] GearSlots.RemoveSlot " + name + " slot " + sid + " item " + s.item.id + " STACK " + Environment.StackTrace.Replace("\n", " | "));
         if (s.layerMode) { if (s.layerRenderer != null) s.layerRenderer.gameObject.SetActive(false); }
         else { foreach (var p in s.pieces) if (p != null) Destroy(p); foreach (var g in s.owned) if (g != null) Destroy(g); s.pieces.Clear(); s.owned.Clear(); }
         if (OnUnequipped != null) OnUnequipped(this, s.item, sid);

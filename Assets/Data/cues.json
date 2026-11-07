@@ -17,7 +17,7 @@
   },
   {
     "character": "Sobek",
-    "weapon": "trident"
+    "weapon": "claws"
   },
   {
    "character": "*",
@@ -984,6 +984,157 @@
         "chance": 1.0
       }
     ]
+  },
+  {"evt": "block_shield", "layer": "impact", "weapon": "*", "surface": "*", "weight": "*", "attacker": "*", "defender": "*", "moves": [], "disabled": false, "note": "SHIELD v1: a swing only the shield cover stopped: the normal block cue already played, this rings on top (existing cue, lower rate = a heavier plate)", "play": [{"cue": "block_perfect", "gain": 0.6, "delay": 0.0, "rate": 0.85, "who": "", "chance": 1.0}]},
+  {
+    "evt": "hit",
+    "layer": "impact",
+    "weapon": "claws",
+    "surface": "flesh",
+    "weight": "light",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "SOBEKCLAWS: claw rake, no steel cut",
+    "play": [
+      {
+        "cue": "hit_flesh",
+        "gain": 0.3,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "flesh_tear",
+        "gain": 0.14,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "hit",
+    "layer": "impact",
+    "weapon": "claws",
+    "surface": "flesh",
+    "weight": "heavy",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "SOBEKCLAWS",
+    "play": [
+      {
+        "cue": "hit_heavy",
+        "gain": 0.3,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "flesh_tear",
+        "gain": 0.22,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "hit",
+    "layer": "impact",
+    "weapon": "claws",
+    "surface": "armour",
+    "weight": "*",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "SOBEKCLAWS: claws on armour = a scrape, softer than the sword row",
+    "play": [
+      {
+        "cue": "block",
+        "gain": 0.3,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "hit_flesh",
+        "gain": 0.16,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "block",
+    "layer": "impact",
+    "weapon": "claws",
+    "surface": "*",
+    "weight": "*",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "SOBEKCLAWS: Joan steel against claws: block cue softer than steel on steel (1.0)",
+    "play": [
+      {
+        "cue": "block",
+        "gain": 0.65,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "hit_flesh",
+        "gain": 0.12,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "kill",
+    "layer": "impact",
+    "weapon": "claws",
+    "surface": "*",
+    "weight": "*",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "SOBEKCLAWS: kill by claw (the stab rows still win for thrust)",
+    "play": [
+      {
+        "cue": "flesh_tear",
+        "gain": 0.45,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "bone_crack",
+        "gain": 0.15,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
   }
- ]
+]
 }
