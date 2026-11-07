@@ -11,7 +11,7 @@ using UnityEngine.Rendering.HighDefinition;
 // which EncodeToPNG writes upright; zone_shots.json "flipY" turns it over if a build proves otherwise, and the sidecar logs the mean luma of the top / bottom tenth for a one-look check. Never boots without the flag.
 // Quits when done (data quit). UNPROVEN IN UNITY (Camera.Render under HDRP from a coroutine is the part to watch).
 [Serializable] public class ZsOff { public string spot = ""; public float[] off = new float[3]; }
-[Serializable] public class ZsShot { public string id = "", zone = "", stand = ""; public ZsOff cam = new ZsOff(), look = new ZsOff(); public float fov = 40f, settleSeconds = 2f, waitNpcSeconds = 0f; public bool aimFighters; public float sideM = 9f, camY = 1.6f, lookY = 1.3f, midBias = 0f; }
+[Serializable] public class ZsShot { public string id = "", zone = "", stand = ""; public ZsOff cam = new ZsOff(), look = new ZsOff(); public float fov = 40f, settleSeconds = 2f, waitNpcSeconds = 0f; public bool aimFighters; public float sideM = 9f, camY = 1.6f, lookY = 1.3f, midBias = 0f; public bool headCloseUp; public float closeM = 2.4f, headY = 1.95f; }
 [Serializable] public class ZsCfg { public int width = 1920, height = 1080, msaa = 1, renders = 5; public bool freeze = true, noMotionBlur = true, noTaa = true; public bool flipY, quit = true; public float startWaitSeconds = 60f, groundWaitSeconds = 20f; public ZsShot[] shots = new ZsShot[0]; }
 
 public sealed class ZoneShot : MonoBehaviour
@@ -76,6 +76,7 @@ public sealed class ZoneShot : MonoBehaviour
         Vector3 from, at;
         if (!SpotWorld(s.zone, s.cam.spot, s.cam.off, out from) || !SpotWorld(s.zone, s.look.spot, s.look.off, out at)) { Debug.LogWarning("[ZoneShot] " + s.id + ": camera / look spot missing"); fail++; yield break; }
         var foe = GameLoop.Enemy; if (s.aimFighters && foe != null && foe.gameObject != null) { var a = player.transform.position; var b = foe.transform.position; var mid = (a + b) * 0.5f + Vector3.up * s.lookY; var side = Vector3.Cross((b - a).normalized, Vector3.up).normalized; at = mid; from = (a + b) * 0.5f + side * s.sideM + Vector3.up * s.camY; }   // v109: aim at the LIVE fighters (zoneshot v2)
+        if (s.headCloseUp && foe != null && foe.gameObject != null) { var fp = foe.transform.position; var toP = player.transform.position - fp; toP.y = 0f; if (toP.sqrMagnitude < 0.01f) toP = Vector3.back; toP.Normalize(); var rt2 = Vector3.Cross(Vector3.up, toP); at = fp + Vector3.up * s.headY; from = fp + toP * s.closeM + rt2 * 0.8f + Vector3.up * (s.headY - 0.1f); }   // v109d: live head close-up (HEADSWAP look)
         var cam = Camera.main; var keepPos = cam.transform.position; var keepRot = cam.transform.rotation; float keepFov = cam.fieldOfView; var keepRt = cam.targetTexture;
         var rt = new RenderTexture(C.width, C.height, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB) { antiAliasing = Mathf.Max(1, C.msaa) };
         Texture2D tex = null;

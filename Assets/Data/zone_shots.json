@@ -34,7 +34,10 @@
       "sideM": 9.0,
       "camY": 1.6,
       "lookY": 1.3,
-      "midBias": 0.0
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
     },
     {
       "id": "camp_entry",
@@ -62,7 +65,10 @@
       "sideM": 9.0,
       "camY": 1.6,
       "lookY": 1.3,
-      "midBias": 0.0
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
     },
     {
       "id": "trader",
@@ -91,7 +97,10 @@
       "sideM": 9.0,
       "camY": 1.6,
       "lookY": 1.3,
-      "midBias": 0.0
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
     },
     {
       "id": "sobek_side_a",
@@ -119,7 +128,10 @@
       "sideM": 9.0,
       "camY": 1.6,
       "lookY": 1.3,
-      "midBias": 0.0
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
     },
     {
       "id": "sobek_side_b",
@@ -147,7 +159,42 @@
       "sideM": -9.0,
       "camY": 1.6,
       "lookY": 1.3,
-      "midBias": 0.0
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "pitborn_head_close",
+      "zone": "pit_yard",
+      "stand": "hearth",
+      "cam": {
+        "spot": "hearth",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 8.0,
+      "waitNpcSeconds": 0.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": true,
+      "closeM": 2.6,
+      "headY": 1.95
     }
   ],
   "renders": 5,

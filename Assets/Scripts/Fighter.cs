@@ -10,31 +10,34 @@ public class Fighter : MonoBehaviour
     public bool holdLast;
     public float animWeight = 1f;   // heaviness multiplier on Animator speed (the enemy 0.92)
     Renderer[] rs;
+    // v109d: -statelog prints every attack / claw / skill state a fighter is sent to ("[AnimState] Sobek -> claw_swipe_R"): the camtrace only has the coarse FState. Off without the flag.
+    static readonly bool StateLog = System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-statelog") >= 0;
+    void LogState(string state) { if (StateLog && state != null && (state.StartsWith("atk_") || state.StartsWith("claw_") || state.StartsWith("skill") || state.StartsWith("fin_") || state.StartsWith("kick") || state.StartsWith("riposte"))) Debug.Log("[AnimState] " + name + " -> " + state + " t " + Time.time.ToString("F2")); }
     public void Play(string state, float fade = 0.15f)
     {
         if (cur == state || anim == null) return;
         float d = AnimBlend.Fade(cur, state, fade);   // data-driven (anim_blend.json); returns `fade` unchanged when the table is off
-        cur = state;
+        cur = state; LogState(state);
         anim.CrossFadeInFixedTime(state, d);
     }
     public void Force(string state, float fade = 0.08f)
     {
         if (anim == null) { cur = state; return; }
         float d = AnimBlend.Fade(cur, state, fade);
-        cur = state;
+        cur = state; LogState(state);
         anim.CrossFadeInFixedTime(state, d, 0, 0f);
     }
     // explicit-fade variants (attack_clips.json): the caller states the crossfade seconds and the clip start in seconds, AnimBlend is not consulted
     public void ForceExact(string state, float fade, float startSeconds = 0f)
     {
-        cur = state;
+        cur = state; LogState(state);
         if (anim == null) return;
         anim.CrossFadeInFixedTime(state, Mathf.Max(0f, fade), 0, Mathf.Max(0f, startSeconds));
     }
     public void PlayExact(string state, float fade)
     {
         if (cur == state || anim == null) return;
-        cur = state;
+        cur = state; LogState(state);
         anim.CrossFadeInFixedTime(state, Mathf.Max(0f, fade));
     }
     public string Current => cur;
