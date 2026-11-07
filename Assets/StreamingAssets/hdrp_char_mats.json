@@ -101,6 +101,18 @@
        "mr": "pitborn_Body_mr.jpg"
       }
      ]
+    },
+    {
+     "glbMaterial": "pitborn_head",
+     "maskOut": "pitborn_head_mask.png",
+     "maskSize": 2048,
+     "parts": [
+      {
+       "base": "pitborn_head_base.jpg",
+       "normal": "pitborn_head_normal.jpg",
+       "mr": "pitborn_head_mr.jpg"
+      }
+     ]
     }
    ],
    "id": "Pitborn"
@@ -173,6 +185,10 @@
   },
   {
    "path": "Assets/Characters/Joan/Tex/joan_body_mask.png",
+   "maxSize": 2048
+  },
+  {
+   "path": "Assets/Characters/Pitborn/Tex/pitborn_head_mask.png",
    "maxSize": 2048
   }
  ],
@@ -305,6 +321,15 @@
     1.0,
     1.0
    ]
+  },
+  {
+   "mat": "Assets/Characters/Pitborn/Mats/pitborn_head_0.mat",
+   "mask": "Assets/Characters/Pitborn/Tex/pitborn_head_mask.png",
+   "sheen": "off",
+   "sheenIntensity": 1,
+   "smoothnessMin": -1,
+   "smoothnessMax": -1,
+   "materialId": -1
   }
  ]
 }
