@@ -69,7 +69,7 @@ public static class FightBalance
     {
         class St { public int p1, p2, uses1, uses2; }
         readonly Dictionary<DuelFighter, St> st = new Dictionary<DuelFighter, St>();
-        int frames = 99;
+        int frames = 99, lateScan;   // SOBEKBAL v1
 
         void OnEnable() { SceneManager.sceneLoaded += OnLoaded; BeginFight(); }
         void OnDisable() { SceneManager.sceneLoaded -= OnLoaded; }
@@ -79,6 +79,7 @@ public static class FightBalance
         void Update()
         {
             if (frames < 8) { frames++; ApplyNew(); }
+            else if ((++lateScan & 31) == 0) ApplyNew();   // SOBEKBAL v1: clones spawned later (zone respawns, gate arrivals) get their rows too; known fighters are skipped by st
         }
 
         void ApplyNew()

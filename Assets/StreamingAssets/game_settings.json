@@ -12,7 +12,7 @@
     "freeInCombat": false
   },
   "menu": [
-    { "id": "graphics.tier", "label": "Graphics", "kind": "choice", "source": "graphics.tiers", "hint": "Ultra is the full look. Lower tiers trade effects for frame rate on 8-16 GB graphics cards." },
+    { "id": "graphics.tier", "label": "Graphics", "kind": "choice", "source": "graphics.tiers", "hint": "Ultra Native is the default: it draws at your window's own resolution with SSGI off. Ultra (scaled) is the older 67% look with full SSGI. Lower tiers trade effects for frame rate on 8-16 GB graphics cards." },
     { "id": "camera.freeInCombat", "label": "Free camera in combat", "kind": "toggle", "hint": "Off: the camera locks on to the enemy when the duel starts. On: you steer the camera yourself." }
   ]
 }

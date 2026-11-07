@@ -646,6 +646,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             Vector3 oq = opponent.transform.position - transform.position; oq.y = 0f; float dq = oq.magnitude, minSep = Mathf.Max(DodgeTable.Get().minSeparation, radius + opponent.radius + DodgeTable.Get().separationPad) + SwingFix.ExtraSep(this, opponent);   // SWINGFIX v103: swing-phase pad (0 = off)
             if (dq < minSep) cc.Move((dq > 0.001f ? -oq / dq : -transform.forward) * ((minSep - dq) * 0.5f));
         }
+        if (cc.enabled && state != FState.Dead && FoeSep.On) FoeSep.Separate(this, cc);   // FOESEP v1: the rear of two enemies on one target side-steps round it (zones, two fighting enemies only)
         if (FlowFace(dt, dir, dist, faceOpp)) { }   // V64FLOW
         else if (state == FState.Roll && dodgeKind == 0 && rollDir.sqrMagnitude > 0.01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rollDir), Mathf.Min(1f, dodgeTurn * dt));
         else if (faceOpp && state != FState.Stagger && state != FState.Down) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 10f * dt);

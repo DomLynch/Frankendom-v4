@@ -42,11 +42,13 @@ using UnityEngine;
 [Serializable] public class ZCover { public float[] color = new float[] { 1f, 0.84f, 0.58f }; public float inSeconds = 0.3f, holdMinSeconds = 0.1f, outSeconds = 0.55f, holdMaxSeconds = 8f; }
 [Serializable] public class ZCrossing { public ZCover cover = new ZCover(); public bool allowWhileEngaged = false; public float preloadDistance = 14f; }
 
+// TWOFIGHT v1 (laneTWOFIGHT): zones.json "twoFight" = the switches of the two-enemy rules (all rows in data; defaults here = the shipped rows)
+[Serializable] public class ZTwoFight { public bool skipGivingUp = true, healTarget = true, noEngageInFinisher = true, killerExempt = true, safeZoneGiveUp = true, resetBarOnSwitch = true; }
 [Serializable] public class ZoneTable
 {
     public bool enabled = false; public int version = 1; public float pollSeconds = 0.5f;
     public ZStart start = new ZStart(); public ZClock clock = new ZClock(); public ZPersist persistence = new ZPersist(); public ZHp hp = new ZHp();
-    public ZEngage engage = new ZEngage(); public ZCrossing crossing = new ZCrossing();
+    public ZEngage engage = new ZEngage(); public ZCrossing crossing = new ZCrossing(); public ZTwoFight twoFight = new ZTwoFight();   /* TWOFIGHT v1 */
     public ZCreature[] creatures = new ZCreature[0]; public ZZone[] zones = new ZZone[0];
 }
 
@@ -74,7 +76,7 @@ public static class ZoneData
         if (k.zones == null) k.zones = new ZZone[0]; if (k.creatures == null) k.creatures = new ZCreature[0];
         if (k.start == null) k.start = new ZStart(); if (k.clock == null) k.clock = new ZClock(); if (k.persistence == null) k.persistence = new ZPersist();
         if (k.hp == null) k.hp = new ZHp(); if (k.engage == null) k.engage = new ZEngage(); if (k.crossing == null) k.crossing = new ZCrossing(); if (k.crossing.cover == null) k.crossing.cover = new ZCover();
-        k.pollSeconds = Mathf.Max(0.1f, k.pollSeconds); k.engage.maxEngaged = Mathf.Max(1, k.engage.maxEngaged);
+        if (k.twoFight == null) k.twoFight = new ZTwoFight(); /* TWOFIGHT v1 */ k.pollSeconds = Mathf.Max(0.1f, k.pollSeconds); k.engage.maxEngaged = Mathf.Max(1, k.engage.maxEngaged);
         foreach (var z in k.zones)
         {
             if (z == null) continue;

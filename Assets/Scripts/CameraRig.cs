@@ -18,12 +18,14 @@ public class CameraRig : MonoBehaviour
     public float framingOk = 1f;   // test-only (read by diagnostics)
     public float lockRange = 12f;
     float lockW; Vector3 camPos, lookAt; bool snapped; float lockYaw;
+    // CAMZONE v1: read-only view for the -camtrace recorder and the numbers of the last lock frame (float stores only, the pose is unchanged)
+    public float LockW { get { return lockW; } } public Vector3 LookAt { get { return lookAt; } } public float dbgGap, dbgBaseH, dbgBack, dbgColWanted; public bool dbgLockOn, dbgColHit; public Collider dbgColCollider;
     [System.Serializable] class FreeRow { public float yawLimitDeg = 55f, pitchMinDeg = -5f, pitchMaxDeg = 45f; }
     FreeRow free = new FreeRow(); bool freeLoaded;
     void LoadFree() { freeLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_free.json", Application.dataPath + "/Data/camera_free.json" }) { if (!System.IO.File.Exists(p)) continue; try { free = JsonUtility.FromJson<FreeRow>(System.IO.File.ReadAllText(p)); } catch { } break; } }
     [System.Serializable] class ColRow { public bool enabled = false; public float radius = 0.35f, minDistFromTarget = 1.2f, minGroundY = 0f, minHeightAboveGround = 0.6f; public int[] ignoreLayers = { 8, 9 }; }
     // V68: lock-on pose multipliers as data (camera_pose.json, StreamingAssets first). 1/1/0 = the V3 pose as before.
-    [System.Serializable] class CamPoseRow { public float backMul = 1f, heightMul = 1f, lookYAdd = 0f, shoulder = 1f; public LockCamRow lockCam = new LockCamRow(); } /*HCKIT1 v93*/
+    [System.Serializable] class CamPoseRow { public float backMul = 1f, heightMul = 1f, lookYAdd = 0f, shoulder = 1f; public LockCamRow lockCam = new LockCamRow(); public CamZone.Row zone = new CamZone.Row(); /* CAMZONE v1 */ } /*HCKIT1 v93*/
     /* K3: the V3 closed-form constants (every default = the literal that used to be inline; camera_pose.json lockCam ships the same numbers) */
     [System.Serializable] class FoeRow { public float refHeightM = 1.8f, scaleToM = 2.1f, back = 2.4f, height = 1.6f; public bool useRosterHeight = true; }   /* foe = how much taller than refHeightM; scaleToM = metres per scale unit; roster heightM > 0 wins */
     [System.Serializable] class LockCamRow { public float backMin = 4.2f, backPerM = 0.62f, backAdd = 2.8f, backOuter = 1.3f, heightMin = 3.2f, heightPerM = 1.3f, heightScale = 0.67f, heightOuter = 1.3f, blendRate = 8f, gapMin = 0.8f, lookUp = 0.8f, lookAhead = 0.3f, xClamp = 11.5f, fovFree = 50f, fovLock = 38.6f; public FoeRow foe = new FoeRow(); public Vector3 fallbackPos = new Vector3(0f, 3f, 5f), fallbackLook = new Vector3(0f, 1f, 15f); }
@@ -36,7 +38,7 @@ public class CameraRig : MonoBehaviour
         if (fo.useRosterHeight) { if (foeTr != enemy) { foeTr = enemy; foeRosterH = Roster.Get(Roster.IdOf(enemy)).heightM; } if (foeRosterH > 0f) m = foeRosterH; }
         return Mathf.Max(0f, (m - fo.refHeightM) / fo.refHeightM);
     }
-    void LoadPoseFile() { poseLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_pose.json", Application.dataPath + "/Data/camera_pose.json" }) { if (!System.IO.File.Exists(p)) continue; try { var r = JsonUtility.FromJson<CamPoseRow>(System.IO.File.ReadAllText(p)); if (r != null) { if (r.lockCam == null) r.lockCam = new LockCamRow(); if (r.lockCam.foe == null) r.lockCam.foe = new FoeRow(); pose = r; } } catch { } break; } }
+    void LoadPoseFile() { poseLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_pose.json", Application.dataPath + "/Data/camera_pose.json" }) { if (!System.IO.File.Exists(p)) continue; try { var r = JsonUtility.FromJson<CamPoseRow>(System.IO.File.ReadAllText(p)); if (r != null) { if (r.lockCam == null) r.lockCam = new LockCamRow(); if (r.zone == null) r.zone = new CamZone.Row(); /* CAMZONE v1 */ if (r.lockCam.foe == null) r.lockCam.foe = new FoeRow(); pose = r; } } catch { } break; } }
     ColRow col = new ColRow(); bool colLoaded, goodSet; Vector3 lastGoodPos = new Vector3(0f, 3f, 5f), lastGoodLook = new Vector3(0f, 1f, 15f), lastGoodFwd = Vector3.forward;
     static bool IsFinite(Vector3 v) { return !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z) || float.IsInfinity(v.x) || float.IsInfinity(v.y) || float.IsInfinity(v.z)); }
     void LoadCol() { colLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_collision.json", Application.dataPath + "/Data/camera_collision.json" }) { if (!System.IO.File.Exists(p)) continue; try { col = JsonUtility.FromJson<ColRow>(System.IO.File.ReadAllText(p)); } catch { } break; } if (col == null) col = new ColRow(); }
@@ -62,10 +64,12 @@ public class CameraRig : MonoBehaviour
 
     void LateUpdate()
     {
+        if (yielded && CamZone.YieldStuck(pose.zone, Time.unscaledDeltaTime)) Yield = false;   // CAMZONE v1: zones only, a finisher yield that never released
         if (!target || yielded) return;
         if (!colLoaded) LoadCol();
         float dt = Time.deltaTime; if (!poseLoaded) LoadPose();
-        bool lockOn = lockEnabled && enemy && enemyHp && !enemyHp.Dead && Vector3.Distance(target.position, enemy.position) < lockRange;
+        if (CamZone.Active(pose.zone)) CamZone.Pick(pose.zone, this, target);   // CAMZONE v1: zones only: the lock target must be fighting Joan and near, else the nearest fighting one, else the free camera
+        bool lockOn = lockEnabled && enemy && enemyHp && !enemyHp.Dead && Vector3.Distance(target.position, enemy.position) < lockRange; dbgLockOn = lockOn;  /* CAMZONE v1 */
         lockW = Mathf.MoveTowards(lockW, lockOn ? 1f : 0f, dt * DirectionalInput.LockEase(lockOn));   // CTRL v68: controls.json camera.easeIn / easeOut (3 / 3 without the file)
 
         // free camera (lock-on off): mouse yaw/pitch over the right shoulder
@@ -73,7 +77,7 @@ public class CameraRig : MonoBehaviour
         if (!DirectionalInput.MouseReserved && !MenuUI.Open /* MENU v100: the pause menu owns the mouse */)   // CTRL v68: locked-on swipe scheme = the mouse is the attack / guard direction, not the camera
         {
             yaw += Input.GetAxis("Mouse X") * sensitivity * MenuSettings.CamSens; /* MENU v100: Settings > Gameplay > camera sensitivity */ yaw = Mathf.Clamp(Mathf.DeltaAngle(0f, yaw), -free.yawLimitDeg, free.yawLimitDeg);
-            pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * sensitivity * MenuSettings.CamSens, free.pitchMinDeg, free.pitchMaxDeg); /* MENU v100 */
+            pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * sensitivity * MenuSettings.CamSens, free.pitchMinDeg, CamZone.PitchMax(pose.zone, free.pitchMaxDeg)); /* MENU v100 */ /* CAMZONE v1 */
         }
         var rot = Quaternion.Euler(pitch, yaw, 0f);
         Vector3 focus = target.position + Vector3.up * height + rot * Vector3.right * shoulder;
@@ -83,28 +87,28 @@ public class CameraRig : MonoBehaviour
         {
             Vector3 P = target.position, E = enemy.position;
             P.y = Mathf.Max(P.y, col.minGroundY); E.y = Mathf.Max(E.y, col.minGroundY);   // a fighter that fell out of the world must not drag the camera down with it (audit E)
-            Vector3 flat = E - P; flat.y = 0f; float d = Mathf.Max(pose.lockCam.gapMin, flat.magnitude);
+            Vector3 flat = E - P; flat.y = 0f; float d = Mathf.Max(pose.lockCam.gapMin, CamZone.CapGap(pose.zone, flat.magnitude));  /* CAMZONE v1 */
             float tgtYaw = Mathf.Atan2(flat.x, flat.z) * Mathf.Rad2Deg;          // camera behind the player, facing the enemy
             float blend = 1f - Mathf.Exp(-pose.lockCam.blendRate * dt);
-            if (!snapped) lockYaw = tgtYaw; else lockYaw += Mathf.DeltaAngle(lockYaw, tgtYaw) * blend;
+            if (!snapped) lockYaw = tgtYaw; else if (CamZone.SnapYaw(pose.zone, lockW)) lockYaw = tgtYaw; else lockYaw += CamZone.YawStep(pose.zone, Mathf.DeltaAngle(lockYaw, tgtYaw) * blend, dt);  /* CAMZONE v1 */
             var lk = pose.lockCam; float foe = FoeTall();   // how much taller than a man (the enemy 2.5 m = 0.39)
             if (!poseLoaded) LoadPose();
             float back = (Mathf.Max(lk.backMin, lk.backPerM * d + lk.backAdd) + foe * lk.foe.back) * lk.backOuter * pose.backMul;
             float h = (Mathf.Max(lk.heightMin, lk.heightPerM * d) * lk.heightScale + foe * lk.foe.height) * lk.heightOuter * pose.heightMul;
-            Quaternion yr = Quaternion.Euler(0f, lockYaw, 0f);
+            dbgGap = d; dbgBaseH = h; dbgBack = back;  /* CAMZONE v1 */ Quaternion yr = Quaternion.Euler(0f, lockYaw, 0f);
             Vector3 fwd = yr * Vector3.forward, right = yr * Vector3.right;
             Vector3 lockPos = new Vector3(P.x, P.y + h, P.z) - fwd * back + right * pose.shoulder;
             lockPos = CamOcclusion.Shift(lockPos, right, d, lockW);   // OCCLUDE v105: DARK near-range slide so the player stops covering the foe (camera_occlusion.json fix.enabled=false = no-op)
             Vector3 mid = (P + E) * 0.5f;
             Vector3 lockLook = new Vector3(mid.x, mid.y + lk.lookUp + pose.lookYAdd, mid.z) + fwd * lk.lookAhead;   // nudged toward the foe so he sits more central
             lockLook = CamReframe.Look(lockLook, P, FighterScale.Eff(target.lossyScale.y, target), E, FighterScale.Eff(enemy.lossyScale.y, enemy), lockW);   // CAMREFRAME v102: far separation = look-at to the midpoint (camera_reframe.json)
-            lockPos.x = Mathf.Clamp(lockPos.x, -lk.xClamp, lk.xClamp);
+            lockPos.x = Mathf.Clamp(lockPos.x, -CamZone.XClamp(pose.zone, lk.xClamp), CamZone.XClamp(pose.zone, lk.xClamp));  /* CAMZONE v1 */
             Vector3 wantPos = Vector3.Lerp(freePos, lockPos, lockW), wantLook = Vector3.Lerp(freeLook, lockLook, lockW);
             CameraDeath.Shape(target, enemy, enemyHp, ref wantPos, ref wantLook, camPos);   // V61B: after a death keep the look-at on the dead fighter's body (camera_death.json)
             CamFraming.Begin(P, FighterScale.Eff(target.lossyScale.y, target), E, FighterScale.Eff(enemy.lossyScale.y, enemy));   // V65CAM: both fighters stay in the safe area (camera_framing.json)
             if (!snapped) { camPos = wantPos; lookAt = wantLook; snapped = true; }
             else { camPos = Vector3.Lerp(camPos, wantPos, blend); lookAt = Vector3.Lerp(lookAt, wantLook, blend); }
-            if (lockW > 0.5f) yaw = lockYaw;   // keep the free camera continuous when the lock breaks
+            if (lockW > 0.5f) { yaw = lockYaw; pitch = CamZone.FreePitch(pose.zone, pitch); /* CAMZONE v1 */ }   // keep the free camera continuous when the lock breaks
         }
         else { camPos = freePos; lookAt = freeLook; CamFraming.Clear(); }
 
@@ -113,12 +117,12 @@ public class CameraRig : MonoBehaviour
         if (!colLoaded) LoadCol();
         if (col.enabled)   // camera collision: spherecast from the look target to the camera, never ignoring walls/gate (fighter layers ignored), data camera_collision.json
         {
-            Vector3 from = lookAt, dirv = drawPos - from; float len = dirv.magnitude;
+            Vector3 from = lookAt, dirv = drawPos - from; float len = dirv.magnitude; dbgColHit = false; dbgColWanted = len; dbgColCollider = null;  /* CAMZONE v1 */
             if (len > 0.01f)
             {
                 int mask = PhysMasks.NotPhys; foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
                 if (Physics.SphereCast(from, col.radius, dirv / len, out var ch, len, mask, QueryTriggerInteraction.Ignore))
-                    drawPos = from + dirv / len * Mathf.Max(col.minDistFromTarget, ch.distance);
+                    { drawPos = from + dirv / len * Mathf.Max(col.minDistFromTarget, ch.distance); dbgColHit = true; dbgColCollider = ch.collider; /* CAMZONE v1 */ }
             }
         }
         if (!IsFinite(drawPos) || !IsFinite(lookAt)) { drawPos = lastGoodPos; lookAt = lastGoodLook; camPos = lastGoodPos; }

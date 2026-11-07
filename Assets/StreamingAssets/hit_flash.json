@@ -10,7 +10,7 @@
   "rows": [
     {
       "match": "Pitborn",
-      "enabled": true,
+      "enabled": false,
       "onlyDeathblow": true,
       "onlyHeavy": false,
       "skipOnKill": true,

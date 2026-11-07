@@ -57,6 +57,8 @@ public sealed class ChaseAgent : MonoBehaviour
     }
     /// <summary>Back to Fight (a fresh engage).</summary>
     public void Restart() { st = new ChaseState(); lastTick = Duel.TickCount; }
+    /// <summary>TWOFIGHT v1: drop aggro now (the player stands in a safe zone): the same Pause state a gap give-up reaches, then Home, then Done. False when it already gave up.</summary>
+    public bool GiveUp() { if (st.mode == ChaseMode.Pause || st.mode == ChaseMode.Home || st.mode == ChaseMode.Done) return false; st.mode = ChaseMode.Pause; st.pauseTicks = 0; st.speed = 0f; return true; }
 
     static float Flat(Vector3 a, Vector3 b) { a.y = 0f; b.y = 0f; return (a - b).magnitude; }
 
@@ -79,6 +81,7 @@ public sealed class ChaseAgent : MonoBehaviour
             {
                 Vector3 to = (st.mode == ChaseMode.Chase ? player.transform.position : home) - df.transform.position; to.y = 0f;
                 Vector3 dir = to.sqrMagnitude > 1e-6f ? to.normalized : transform.forward;
+                if (st.mode == ChaseMode.Chase) dir = FoeSep.ChaseHeading(df, player, dir);   // FOESEP v1: arrive on a flank; the gap hand-over is unchanged
                 runClip = ChaseCore.UseRun(runClip, v, row.runClipFromMps, row.walkClipBelowMps);
                 float nominal = runClip ? df.runSpeed : df.walkSpeed;
                 df.run = runClip; df.moveDir = dir * Mathf.Min(1f, nominal > 0f ? v / nominal : 0f);   // |moveDir| x run/walkSpeed = v in MoveTick; wound / exhaust multipliers can only slow it further

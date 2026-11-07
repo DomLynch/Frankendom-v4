@@ -1,5 +1,5 @@
 {
-  "_about": "HUB v1 + CAMPSET v1 (laneHUB rules file, edited copy by laneCAMPSET). SHIPS OFF. Placement B (after Sobek), zone offset 72; rows in props_layout_hub.json are the zone-local camp rows + 72. NPC bodies are STAND-INS from owned Joan variants, not final characters. Original text: HUB v1 (lane laneHUB), STAGED, SHIPS OFF. Designs from Armagedom's Central Hub reused as DATA ONLY (no code, no art copied): a safe camp zone with a few idle NPCs, a hearth, one sell-only stall. zones.json carries the zone ROW (hub_camp, safe:true, spawns [], hearth + market services, gates); this file carries everything else about the camp: the safe-zone rule, the NPC rows, the layout reference, the stall row, what is saved. Units: metres, degrees, seconds; x,z are in the zone lane (x -3.8..3.8, z 8..26 with the zMax override). enabled=false means nothing here is read. NEW READERS NEEDED (none exist yet): HubCfg.cs (loads this file), a safe-rule hook in ZoneRuntime, an NPC spawner. check_hub.py lists the keys a reader must claim.",
+  "_about": "HUB v1 + CAMPSET v1 (laneHUB rules file, edited copy by laneCAMPSET). SHIPS OFF. Placement B (after Sobek), zone offset 72; rows in props_layout_hub.json are the zone-local camp rows + 72. NPC bodies are the camp characters Dom chose on 2026-11-06 (Arissa, Akai, Erika: 106-joint rig, embedded Idle, 512 px textures), loaded from StreamingAssets/Npc. Original text: HUB v1 (lane laneHUB), STAGED, SHIPS OFF. Designs from Armagedom's Central Hub reused as DATA ONLY (no code, no art copied): a safe camp zone with a few idle NPCs, a hearth, one sell-only stall. zones.json carries the zone ROW (hub_camp, safe:true, spawns [], hearth + market services, gates); this file carries everything else about the camp: the safe-zone rule, the NPC rows, the layout reference, the stall row, what is saved. Units: metres, degrees, seconds; x,z are in the zone lane (x -3.8..3.8, z 8..26 with the zMax override). enabled=false means nothing here is read. NEW READERS NEEDED (none exist yet): HubCfg.cs (loads this file), a safe-rule hook in ZoneRuntime, an NPC spawner. check_hub.py lists the keys a reader must claim.",
   "enabled": false,
   "version": 1,
   "zone": "hub_camp",
@@ -133,7 +133,7 @@
       "title": "Trader",
       "spot": "npc_trader",
       "yaw": 90,
-      "clip": "idle_a",
+      "clip": "Idle",
       "phaseSeconds": 0.0,
       "interact": {
         "kind": "shop",
@@ -141,35 +141,33 @@
         "radius": 3.0
       },
       "body": {
-        "status": "standin_owned",
-        "standIn": {
-          "body": "kits_out\\3d\\joan-fix-f\\bound.glb",
-          "rig": "psyche-106",
-          "tris": 80000,
-          "clip": "Documents\\mixamo_clips\\113410901-idle.glb",
-          "hideNodes": []
-        },
-        "trisLod": [
-          80000,
-          null,
-          null
-        ],
-        "lookNote": "placeholder brief: broad, patient, apron over a travel coat, buys salvage. Look is Dom's call.",
-        "final": "needs Dom: factory chain (GPU) or MPFB (CPU) character"
+        "status": "camp_character",
+        "bodyId": "arissa",
+        "character": "Arissa",
+        "source": "kits_out\\3d\\camp_npcs\\arissa.glb (copy of the VPS file, read-only)",
+        "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Armature root)",
+        "clipsInGlb": 12,
+        "idle": "Idle, 4.0 s, embedded in the glb",
+        "tris": 10411,
+        "textures": "3 x 512x512 PNG (diffuse, normal, specular)",
+        "lookNote": "chosen by Dom: Arissa. The old brief (broad, patient, apron over a travel coat) is superseded; she carries a weapon mesh and a cloak of her own.",
+        "final": "Dom chose this character (2026-11-06). 512 px phone-tier textures are the placeholder level for the camp; upgrade path: the 52-joint originals with bigger textures on the VPS (laneCAMPNPC MANIFEST section 6)."
       },
-      "clipFile": "Documents\\mixamo_clips\\113410901-idle.glb",
       "runtime": {
-        "glb": "Npc/npc_trader.glb",
-        "sources": [
-          "kits_out/3d/joan-fix-f/bound.glb"
+        "glb": "Npc/camp_arissa.glb",
+        "sources": [],
+        "hideNodes": [
+          "Layer_Tunic",
+          "Layer_Helmet",
+          "Layer_Bracers",
+          "Layer_Greaves",
+          "Layer_Sword",
+          "Layer_Scabbard"
         ],
-        "hideNodes": [],
         "scale": 1.0,
-        "clipGlb": "Npc/113410901-idle.glb",
-        "clipSources": [
-          "mixamo_clips/113410901-idle.glb"
-        ],
-        "clipName": ""
+        "clipGlb": "",
+        "clipSources": [],
+        "clipName": "Idle"
       },
       "enabled": true
     },
@@ -179,42 +177,34 @@
       "title": "Keeper",
       "spot": "npc_keeper",
       "yaw": 180,
-      "clip": "idle_b",
-      "phaseSeconds": 2.5,
+      "clip": "Idle",
+      "phaseSeconds": 1.3,
       "interact": {
         "kind": "none"
       },
       "body": {
-        "status": "standin_owned",
-        "standIn": {
-          "body": "kits_out\\3d\\joan\\chef_joan\\joan_chef_v4.glb",
-          "rig": "psyche-106",
-          "tris": 64225,
-          "clip": "Idle (inside the GLB)",
-          "hideNodes": [
-            "Layer_Sword",
-            "Layer_Scabbard",
-            "Layer_Helmet"
-          ]
-        },
-        "trisLod": [
-          64225,
-          null,
-          null
-        ],
-        "lookNote": "stands by the hearth, one hand to the fire; flavour only (the hearth heals by standing near it)",
-        "final": "needs Dom: factory chain (GPU) or MPFB (CPU) character"
+        "status": "camp_character",
+        "bodyId": "akai",
+        "character": "Akai E Espiritu",
+        "source": "kits_out\\3d\\camp_npcs\\akai.glb (copy of the VPS file, read-only)",
+        "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Armature root)",
+        "clipsInGlb": 12,
+        "idle": "Idle, 4.0 s, embedded in the glb",
+        "tris": 14500,
+        "textures": "1 x 512x512 PNG (diffuse)",
+        "lookNote": "chosen by Dom: Akai. Stands by the hearth facing the fire (yaw 180 at the hearth spot); flavour only, the hearth heals by standing near it.",
+        "final": "Dom chose this character (2026-11-06). 512 px phone-tier textures are the placeholder level for the camp; upgrade path: the 52-joint originals with bigger textures on the VPS (laneCAMPNPC MANIFEST section 6)."
       },
-      "clipFile": "Idle (inside the GLB)",
       "runtime": {
-        "glb": "Npc/npc_keeper.glb",
-        "sources": [
-          "kits_out/3d/joan/chef_joan/joan_chef_v4.glb"
-        ],
+        "glb": "Npc/camp_akai.glb",
+        "sources": [],
         "hideNodes": [
+          "Layer_Tunic",
+          "Layer_Helmet",
+          "Layer_Bracers",
+          "Layer_Greaves",
           "Layer_Sword",
-          "Layer_Scabbard",
-          "Layer_Helmet"
+          "Layer_Scabbard"
         ],
         "scale": 1.0,
         "clipGlb": "",
@@ -229,41 +219,39 @@
       "title": "Traveller",
       "spot": "npc_traveller",
       "yaw": 235,
-      "clip": "idle_c",
-      "phaseSeconds": 5.0,
+      "clip": "Idle",
+      "phaseSeconds": 2.6,
       "interact": {
         "kind": "none"
       },
       "body": {
-        "status": "standin_owned",
-        "standIn": {
-          "body": "kits_out\\3d\\joan-fix-m\\bound.blend -> exported by this lane to assets\\Npc\\npc_traveller_m.glb",
-          "rig": "psyche-106",
-          "tris": 80000,
-          "clip": "Documents\\mixamo_clips\\113410901-idle.glb",
-          "hideNodes": []
-        },
-        "trisLod": [
-          80000,
-          null,
-          null
-        ],
-        "lookNote": "leans on the tent pole, hood up, watching the gate",
-        "final": "needs Dom: factory chain (GPU) or MPFB (CPU) character"
+        "status": "camp_character",
+        "bodyId": "erika",
+        "character": "Erika Archer",
+        "source": "kits_out\\3d\\camp_npcs\\erika.glb (copy of the VPS file, read-only)",
+        "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Armature root)",
+        "clipsInGlb": 12,
+        "idle": "Idle, 4.0 s, embedded in the glb",
+        "tris": 21867,
+        "textures": "5 x 512x512 PNG (clothes, body, eyelash, 2 normals)",
+        "lookNote": "chosen by Dom: Erika, the third (\"if u have 3 u can add this one\"). The eyelash card (Erika_Archer_Clothes_Mesh, material eyelash_MAT, alphaMode BLEND) is hidden: GearMaterials makes opaque HDRP/Lit, so the card would show as a solid patch.",
+        "final": "Dom chose this character (2026-11-06). 512 px phone-tier textures are the placeholder level for the camp; upgrade path: the 52-joint originals with bigger textures on the VPS (laneCAMPNPC MANIFEST section 6)."
       },
-      "clipFile": "Documents\\mixamo_clips\\113410901-idle.glb",
       "runtime": {
-        "glb": "Npc/npc_traveller.glb",
-        "sources": [
-          "_agents/laneCAMPSET/assets/Npc/npc_traveller_m.glb"
+        "glb": "Npc/camp_erika.glb",
+        "sources": [],
+        "hideNodes": [
+          "Layer_Tunic",
+          "Layer_Helmet",
+          "Layer_Bracers",
+          "Layer_Sword",
+          "Layer_Scabbard",
+          "Erika_Archer_Clothes_Mesh"
         ],
-        "hideNodes": [],
         "scale": 1.0,
-        "clipGlb": "Npc/113410901-idle.glb",
-        "clipSources": [
-          "mixamo_clips/113410901-idle.glb"
-        ],
-        "clipName": ""
+        "clipGlb": "",
+        "clipSources": [],
+        "clipName": "Idle"
       },
       "enabled": true
     }
@@ -271,17 +259,9 @@
   "npcRules": {
     "_about": "Alpha: idle only, no dialogue trees, no schedule, no pathing, no health, not targetable. Armagedom's hub NPCs are the same ('not entities: no health, collision, targeting, trade, healing, quest or save state', one Mixamo idle each with a phase offset so they do not move in unison).",
     "clips": {
-      "idle_a": {
-        "source": "Mixamo breathing idle",
-        "status": "needs_creating"
-      },
-      "idle_b": {
-        "source": "Mixamo standing idle",
-        "status": "needs_creating"
-      },
-      "idle_c": {
-        "source": "Mixamo leaning idle",
-        "status": "needs_creating"
+      "Idle": {
+        "source": "embedded in each camp character glb (12 clips each, Idle 4.0 s, same rig and clip names as the fighters)",
+        "status": "in_glb"
       }
     },
     "rig": "psyche-106",
@@ -291,7 +271,7 @@
     ],
     "maxSimultaneous": 3,
     "interactAction": "Interact",
-    "_standIn": "CAMPSET: idle_a/idle_b/idle_c all map to the owned Mixamo idle 113410901-idle.glb (or Idle inside joan_chef_v4.glb); phase offsets 0, 2.5, 5 s keep them out of step. No new clip was made."
+    "_idle": "CAMPNPC: every NPC plays the Idle inside its own glb (runtime.clipName). Idle is 4.0 s; phaseSeconds 0 / 1.3 / 2.6 keep the three out of step (HubClip.StartTime wraps by the clip length)."
   },
   "stall": {
     "id": "hub_trade",
@@ -344,7 +324,7 @@
       "tabSell": "Sell",
       "tabBuy": "Buy",
       "subtitleBuy": "Buy gear with your coins.",
-      "hintMoveTab": "Q / Y  Switch",
+      "hintMoveTab": "Q / Y  Swap",
       "hintBuy": "E / A  Buy",
       "bought": "Bought {0} for {1}. Open gear (Tab / Start) to wear it.",
       "armedBuy": "Press again to buy {0} for {1}.",
@@ -447,7 +427,8 @@
     "pollSeconds": 0.25,
     "spawnMarginM": 12.0,
     "despawnMarginM": 16.0,
-    "leaveMode": "destroy",
+    "holdWhileEngaged": true,
+    "leaveMode": "sleep",
     "maxLoadsInFlight": 1,
     "framesBetweenLoads": 2,
     "shadows": false,
@@ -460,6 +441,15 @@
     "groundMask": -1,
     "fallbackY": 0.0,
     "waitGroundSeconds": 20.0,
+    "convertMaterials": true,
+    "probeBone": "mixamorig:Hips",
+    "probeSeconds": 1.2,
+    "preload": {
+      "enabled": true,
+      "startDelaySeconds": 0.3,
+      "_about": "CAMPNPC v1: when the zones are live (+ this delay, so it lands inside the ZoneHitch warm cover) the three bodies are instantiated hidden and unplaced from the glTFast imports GlbPreload parsed during the intro (perf_fixes.json C3.files). Arriving at the camp is then a ground ray + SetActive. needs leaveMode sleep (destroy would pay the load again on every visit). enabled false = the old walk-in load."
+    },
+    "_probe": "convertMaterials: glTFast shader-graph materials -> HDRP/Lit (GearMaterials, gear.json materials). probeBone / probeSeconds: after the idle starts the bone must have moved, else a warning names the NPC (T-pose check).",
     "searchRoots": [
       "",
       ".."

@@ -1,0 +1,11 @@
+{
+  "_about": "TRADEFIN v1, read by Scripts/Zones/CampBackdrop.cs (StreamingAssets first). The 3 camp backdrop cards are emissive-only; the converted material has _EmissiveColor 1 = 1 nit, which at the fixed exposure (look.json ev 9.4, about 1 / (1.2 * 2^9.4) = 0.0012 of white per nit) is black. emissiveNits is set on private copies of the materials whose name contains one of match, under the scene object rootName (the camp zone root). Rough scale at EV 9.4: 400 nits = 0.5 linear before fog; the global fog (mean free path 75 m) passes about 0.3 to 0.4 of it at the 70 to 90 m the cards stand. Tune by looking, this is a placeholder level. enabled false = the cards stay as built (black). Only used when the zones are on.",
+  "enabled": true,
+  "log": true,
+  "rootName": "HubZone",
+  "match": ["M_Camp_backdrop"],
+  "emissiveNits": 400.0,
+  "cards": [{"match": "M_Camp_backdrop_a", "gain": 1.4}, {"match": "M_Camp_backdrop_b", "gain": 1.0}, {"match": "M_Camp_backdrop_c", "gain": 1.0}],
+  "cap": {"enabled": true, "halfWidthM": 31.84, "fromYM": 99.9, "heightM": 240.0},
+  "waitFrames": 20
+}

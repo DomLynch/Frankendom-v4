@@ -44,7 +44,7 @@ public static class Zone2Build
             foreach (var r in row.rings) { var g = root.transform.Find(r.group); if (g != null) g.gameObject.SetActive(false); }
             Debug.Log("[Zone2Build] " + row.root + " (" + row.id + ") built: " + placed + " rows placed (" + missing + " missing assets), " + cloned + " objects cloned, rings inactive. Offset z " + D);
         }
-        EditorSceneManager.MarkSceneDirty(sc); if (save) EditorSceneManager.SaveScene(sc);
+        sc = EditorSceneManager.GetActiveScene(); /* v108b: Refresh() re-opens the scene, the old handle is stale and the last zone's work was never saved */ EditorSceneManager.MarkSceneDirty(sc); if (save) EditorSceneManager.SaveScene(sc);
     }
 
     static bool IsInZoneRoot(Transform t, SpanTable K) { foreach (var z in K.zones) { var r = GameObject.Find(z.root); if (r != null && t.IsChildOf(r.transform)) return true; } return false; }

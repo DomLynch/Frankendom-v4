@@ -15,7 +15,8 @@ public class GameHUD : MonoBehaviour
     public DuelFighter pf, ef;
 
     bool showFps, hintOn, hintPinned; float fpsAcc, fpsShown; int fpsN; float hintA, startT; KeyCode toggleKey = KeyCode.F1; string toggleKeyName = "";
-    readonly CombatHudBars.Lag lagP = new CombatHudBars.Lag(), lagE = new CombatHudBars.Lag();
+    readonly CombatHudBars.Lag lagP = new CombatHudBars.Lag(); CombatHudBars.Lag lagE = new CombatHudBars.Lag(), lagS = new CombatHudBars.Lag();   // TWOFIGHT v1: lagE restarts on a target switch, lagS = the second bar
+    DuelFighter zSecondDf; Health zSecondHp; string zSecondName = ""; float bossBottom;   // TWOFIGHT v1
     float guardA; float[] cdMax = new float[2]; float[] readyT = new float[2]; bool[] wasReady = new bool[2];
     float lastNow;
     // HUDBUG v1 (zones): with zones on the scene enemy is an inactive template and every enemy is a clone, so enemy/ef (set by BuildSlice) never moved. Zones off: untouched.
@@ -23,7 +24,7 @@ public class GameHUD : MonoBehaviour
     void ZonesBind()
     {
         if (!ZoneRuntime.Owns || pf == null && player == null) return;   // steer mode detaches the HUD (pf and player null): leave it
-        var e = GameLoop.Enemy; if (e != zEnemyDf) { zEnemyDf = e; zEnemyHp = e != null ? e.GetComponent<Health>() : null; }
+        var e = GameLoop.Enemy; if (e != zEnemyDf) { zEnemyDf = e; if (ZoneData.Get().twoFight.resetBarOnSwitch) lagE = new CombatHudBars.Lag(); /* TWOFIGHT v1: a switch from a full bar to a hurt one drew the whole difference as a fresh damage trail */ zEnemyHp = e != null ? e.GetComponent<Health>() : null; }
         ef = zEnemyDf; enemy = zEnemyHp;
         if (GameLoop.Player != null && GameLoop.Player != pf) { pf = GameLoop.Player; player = pf.GetComponent<Health>(); }
         ZonesHpLog();
@@ -71,7 +72,7 @@ public class GameHUD : MonoBehaviour
         try
         {
             DrawPlayer(H, vw, now, dt);
-            DrawBoss(H, vw, now, dt);
+            DrawBoss(H, vw, now, dt); DrawSecond(H, vw, now, dt);   // TWOFIGHT v1
             DrawStance(H, vw, vh);
             DrawHint(H, vw, vh, dt);
             DrawSpecials(H, vw, vh, now);
@@ -118,7 +119,26 @@ hp.x, hp.yMax + H.bars.framePad + P.stamina.gap, 0f, pf, true, P.stamina, P.post
         string cue = null; Color cc = Color.white; bool big = false; float after = hp.yMax + H.bars.framePad;
         if (ef != null && !ef.Dead) after = CombatHudBars.Draw(   // kitV76 (Goose v75): no stamina / posture strips at 0 HP
 hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.stamina, Bc.posture, Bc.showStamina, Bc.showPosture, out cue, out cc, out big);
+        bossBottom = after;   // TWOFIGHT v1
         if (cue != null) HudDraw.Caps(hp.center.x, after + Bc.cueGap - H.layout.cueLift, 0.5f, cue, "title", Bc.cueSize, Mathf.Max(8, Bc.cueSize - (int)H.layout.cueSmallDelta), H.layout.cueTracking, cc);
+    }
+
+    // ---------------- second enemy (TWOFIGHT v1; hud.json boss.second, dark until enabled) ----------------
+    // With two enemies on the player the boss bar shows only the target. This draws the other one small under it: name from Roster, bar from its Health. No allocation per frame (name cached per fighter).
+    void DrawSecond(HudCfg.Data H, float vw, float now, float dt)
+    {
+        var Bc = H.boss; var K = Bc.second; if (K == null || !K.enabled || !ZoneRuntime.Owns || !Bc.enabled || (enemy == null && ef == null) || bossBottom <= 0f) return;
+        var o = ZoneRuntime.SecondFoe(ef); if (o == null) { zSecondDf = null; return; }
+        if (o != zSecondDf) { zSecondDf = o; zSecondHp = o.GetComponent<Health>(); zSecondName = Roster.Get(Roster.IdOf(o.transform)).displayName.ToUpperInvariant(); lagS = new CombatHudBars.Lag(); }
+        if (zSecondHp == null) return;
+        float maxW = vw - 2f * (H.player.x + H.player.hp.w + Bc.sideMargin);
+        float w = Mathf.Max(H.layout.bossMinW, Mathf.Min(Bc.w, maxW)) * K.widthScale, x = (vw - w) * 0.5f, y = bossBottom + K.gap;
+        int ns = Mathf.Max(8, Mathf.RoundToInt(Bc.nameSize * K.nameScale)), nsm = Mathf.Max(8, Mathf.RoundToInt(Bc.nameSmall * K.nameScale));
+        HudDraw.Caps(x, y, 0f, zSecondName, "title", ns, nsm, Bc.nameTracking, Ink());
+        float f = zSecondHp.max > 0f ? Mathf.Clamp01(zSecondHp.current / zSecondHp.max) : 0f;
+        lagS.Step(f, now, dt);
+        var hp = new Rect(x, y + ns * H.layout.nameLine + Bc.nameGap * K.nameScale, w, Bc.hp.h * K.heightScale);
+        CombatHudBars.Bar(hp, Bc.hp.taper * K.heightScale, f, lagS.v, HudCfg.Col(H.colors.hpEnemy), true, K.ticks);
     }
 
     // ---------------- stance (bottom-left) ----------------

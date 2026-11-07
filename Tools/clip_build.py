@@ -240,6 +240,14 @@ def build_clip(cfg, row, rig_z, corr, tuning, cid, cache):
         if ab != 0.0:
             fw = tuning.get('clipAxis', {}).get(row['state'], tuning['forwardAxis'])   # SOBEKTUNE v1: per-clip axis (data)
             c.world_rot_op('LeftArm', fw, +ab); c.world_rot_op('RightArm', fw, -ab); notes.append('tuning armAbduct %+g deg' % ab)
+    # PITNEW v1: hipsRollScale[state] = k scales the pelvis roll (about the model forward axis) toward the rest pose; absent = unchanged
+    hrs = (tuning or {}).get('hipsRollScale', {}).get(row['state'])
+    if hrs is not None and float(hrs) != 1.0:
+        qm = np.array([-math.sqrt(.5), 0, 0, math.sqrt(.5)]); ax_ = np.array((tuning or {}).get('rollAxis', [0, 0, 1]), float)
+        w_ = L.qmul(c.rot['mixamorig:Hips'], L.qinv(qm)); ang = 2 * np.arctan2(w_[:, :3] @ ax_, w_[:, 3])     # twist angle about the axis (N,)
+        tw = np.concatenate([ax_[None, :] * np.sin(ang / 2)[:, None], np.cos(ang / 2)[:, None]], 1)
+        sw = L.qmul(w_, L.qinv(tw)); tw2 = np.concatenate([ax_[None, :] * np.sin(float(hrs) * ang / 2)[:, None], np.cos(float(hrs) * ang / 2)[:, None]], 1)
+        c.rot['mixamorig:Hips'] = L.qmul(L.qmul(sw, tw2), qm); notes.append('hipsRollScale %.2f (roll %.1f..%.1f deg)' % (float(hrs), float(np.degrees(ang).min()), float(np.degrees(ang).max())))
     # hips: rig correction + in place + height ratio (same maths as build_joan_combat.py)
     ratio = min(3.0, max(0.33, rig_z / c.hips_rest_z))
     c.rot['mixamorig:Hips'] = L.qmul(corr, c.rot['mixamorig:Hips'])

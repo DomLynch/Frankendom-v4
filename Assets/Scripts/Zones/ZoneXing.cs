@@ -14,7 +14,7 @@ using UnityEngine;
 [Serializable] public class XingReport
 {
     public string result = "", stamp = ""; public float offsetZ, startZ, turnZ; public int baselineFrames, totalFrames; public bool gateForced;
-    public float worstFrameExtraMs, meanFactor, softHitchExtraMs; public int maxSoftHitches; public XingLeg outbound = new XingLeg(), inbound = new XingLeg(); public string note = "";
+    public float worstFrameExtraMs, meanFactor, softHitchExtraMs; public int maxSoftHitches; public string worstFrames = ""; /* ZONEHITCH v1 */ public XingLeg outbound = new XingLeg(), inbound = new XingLeg(); public string note = "";
 }
 
 public sealed class ZoneXing : MonoBehaviour
@@ -41,8 +41,8 @@ public sealed class ZoneXing : MonoBehaviour
         var go = new GameObject("ZoneXing"); DontDestroyOnLoad(go); inst = go.AddComponent<ZoneXing>(); inst.outDir = string.IsNullOrEmpty(od) ? Application.persistentDataPath : od; inst.force = fo; inst.quit = qu;
     }
 
-    void OnEnable() { ZoneSpan.OnEvent += OnSpan; }
-    void OnDisable() { ZoneSpan.OnEvent -= OnSpan; }
+    void OnEnable() { ZoneSpan.OnEvent += OnSpan; ZoneHitch.OnNote += OnSpan; }  /* ZONEHITCH v1 */
+    void OnDisable() { ZoneSpan.OnEvent -= OnSpan; ZoneHitch.OnNote -= OnSpan; }  /* ZONEHITCH v1 */
     void OnSpan(string e) { events.Add(new KeyValuePair<float, string>(Time.unscaledTime, e)); pending += e + ";"; }
 
     void Update()
@@ -55,7 +55,8 @@ public sealed class ZoneXing : MonoBehaviour
         if (player == null || cc == null) { Find(); }
         if (ph == Ph.Wait)
         {
-            waited += dt; if (player != null && ZoneSpan.Live) { if (force) K.ForceOpenAll(); Enter(Ph.Settle); }
+            waited += dt; if (player != null && ZoneSpan.Live && !ZoneHitch.Warming) {  /* ZONEHITCH v1: the warm renders finish before the baseline */ if (force) K.ForceOpenAll(); Enter(Ph.Settle); }
+            else if (waited > 10f && (int)waited % 10 == 0 && (int)(waited - dt) % 10 != 0) Debug.Log("[ZoneXing] waiting " + (int)waited + " s: player " + (player != null) + ", span live " + ZoneSpan.Live + ", warming " + ZoneHitch.Warming);
             else if (waited > 60f) { Debug.LogError("[ZoneXing] FAIL: the span never bound in 60 s (Zone2 not built? zones.json off? see [ZoneSpan] lines)"); ph = Ph.Done; if (quit) Application.Quit(1); }
             return;
         }
@@ -72,7 +73,7 @@ public sealed class ZoneXing : MonoBehaviour
         }
     }
 
-    void Enter(Ph p) { ph = p; phT = 0f; if (p == Ph.Baseline) baseStart = ms.Count; events.Add(new KeyValuePair<float, string>(Time.unscaledTime, "phase:" + p)); pending += "phase:" + p + ";"; }
+    void Enter(Ph p) { Debug.Log("[ZoneXing] phase " + p + " (player " + (player != null) + ", span live " + ZoneSpan.Live + ", warming " + ZoneHitch.Warming + ")"); ph = p; phT = 0f; if (p == Ph.Baseline) baseStart = ms.Count; events.Add(new KeyValuePair<float, string>(Time.unscaledTime, "phase:" + p)); pending += "phase:" + p + ";"; }
     void Find()
     {
         foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)) if (f.name.Contains(Roster.PlayerObject)) { player = f; cc = f.GetComponent<CharacterController>(); break; }
@@ -108,6 +109,17 @@ public sealed class ZoneXing : MonoBehaviour
         for (int i = 0; i < tt.Count; i++) if (tt[i] >= L.startS && tt[i] <= L.endS) win.Add(ms[i]);
         L.v = XingStats.Eval(baseline, win.ToArray(), K.test.worstFrameExtraMs, K.test.meanFactor, K.test.softHitchExtraMs, K.test.maxSoftHitches); return L;
     }
+    // ZONEHITCH v1: the k slowest frames after the first 3: z, phase, cpu / gpu ms, and every marker from 6 frames before to 3 after (a wake, a ring, an ms: step note = zone code; none = not zone code)
+    string WorstFrames(int k)
+    {
+        var idx = new List<int>(); for (int i = 3; i < ms.Count; i++) idx.Add(i); idx.Sort((a, b) => ms[b].CompareTo(ms[a])); var sb = new StringBuilder(); var ic = CultureInfo.InvariantCulture;
+        for (int j = 0; j < idx.Count && j < k; j++)
+        {
+            int i = idx[j]; string near = ""; for (int q = Mathf.Max(0, i - 6); q <= Mathf.Min(ms.Count - 1, i + 3); q++) if (ev[q].Length > 0) near += (q - i).ToString("+0;-0;0", ic) + ":" + ev[q] + " ";
+            sb.Append("f").Append(i).Append(" ").Append(ms[i].ToString("F0", ic)).Append("ms z").Append(zz[i].ToString("F1", ic)).Append(" ").Append(phn[i]).Append(" cpu").Append(cpu[i].ToString("F0", ic)).Append("/gpu").Append(gpu[i].ToString("F0", ic)).Append(" near[").Append(near.Trim()).Append("] | ");
+        }
+        return sb.ToString();
+    }
     float LegStart(string phase) { foreach (var kv in events) if (kv.Value == phase) return kv.Key; return float.MaxValue; }
 
     void Finish()
@@ -118,7 +130,7 @@ public sealed class ZoneXing : MonoBehaviour
         var rep = new XingReport { stamp = stamp, offsetZ = K.FirstOffset, startZ = K.test.startZ, turnZ = K.test.turnZ, baselineFrames = baseline.Length, totalFrames = ms.Count, gateForced = K.AnyForced,
             worstFrameExtraMs = K.test.worstFrameExtraMs, meanFactor = K.test.meanFactor, softHitchExtraMs = K.test.softHitchExtraMs, maxSoftHitches = K.test.maxSoftHitches };
         rep.outbound = Leg("outbound", "wake2", new[] { "on:", "off:", "enter:", "tunnel:" }, baseline); rep.inbound = Leg("inbound", "wake1", new[] { "on:", "off:", "enter:" }, baseline);
-        rep.result = rep.outbound.v.pass && rep.inbound.v.pass ? "PASS" : "FAIL"; if (manual) rep.note = "manual walk";
+        rep.worstFrames = WorstFrames(6); rep.result = rep.outbound.v.pass && rep.inbound.v.pass ? "PASS" : "FAIL"; if (manual) rep.note = "manual walk";
         try
         {
             Directory.CreateDirectory(outDir); var sb = new StringBuilder("frame,t,ms,z,phase,cpuMs,gpuMs,events\n");

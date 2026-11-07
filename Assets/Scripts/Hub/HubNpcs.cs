@@ -21,10 +21,11 @@ public sealed class HubNpcs : MonoBehaviour
     /// <summary>Number of NPC bodies standing right now (for a log line or a test).</summary>
     public static int Standing { get { return Inst == null ? 0 : Inst.standing.Count; } }
 
-    sealed class Npc { public HubNpcRow row; public GameObject go; public GltfHold body, clip; }
+    sealed class Npc { public HubNpcRow row; public GameObject go; public GltfHold body, clip; public List<Material> mats; public bool placed; public Transform probe; public Vector3 probePos; public Quaternion probeRot; public float probeAt; }   // CAMPNPC v1: mats = the HDRP/Lit copies (destroyed with the body), placed = ground found and positioned, probe* = the "does the idle move" check
     sealed class GltfHold { public GLTFast.GltfImport imp; }
 
     HubData K; HubResident res; float nextPoll; int gen; bool loading, asleep, tried; GameObject root;
+    bool preloaded, hiddenLoad; float liveSince = -1f, wakeSince = -1f;   // CAMPNPC v1: preloaded = the hidden load ran this scene; hiddenLoad = it is running; wakeSince = when the player arrived and the ground was first asked
     readonly List<Npc> standing = new List<Npc>();
     static readonly RaycastHit[] hits = new RaycastHit[12];
 
@@ -45,7 +46,7 @@ public sealed class HubNpcs : MonoBehaviour
     void OnEnable() { SceneManager.sceneLoaded += OnLoaded; }
     void OnDisable() { SceneManager.sceneLoaded -= OnLoaded; }
     void OnDestroy() { Clear(); if (Inst == this) Inst = null; }
-    void OnLoaded(Scene s, LoadSceneMode m) { if (m == LoadSceneMode.Single) { Clear(); res.Reset(); } }
+    void OnLoaded(Scene s, LoadSceneMode m) { if (m == LoadSceneMode.Single) { Clear(); res.Reset(); preloaded = false; liveSince = -1f; } }   // CAMPNPC v1
 
     /// <summary>The standing NPC with this id (a hub.json npcs[].id), or null.</summary>
     public static GameObject TryGet(string id)
@@ -59,22 +60,81 @@ public sealed class HubNpcs : MonoBehaviour
     {
         float now = Time.unscaledTime; if (now < nextPoll) return; nextPoll = now + K.spawner.pollSeconds;
         var p = GameLoop.Player; bool zones = ZoneRuntime.Owns && ZoneSpan.Live && p != null;
+        PreloadStep(zones, now, p); ProbeTick(now);   // CAMPNPC v1
         bool want = res.Step(zones ? p.transform.position.z : 0f, K.area.zMin, K.area.zMax, zones && !ZoneGroundHold.Active);   // CAMPGROUND v1: no NPC while the player's own ground is still being found
-        if (want) { if (asleep) Wake(); else if (!loading && !tried && standing.Count == 0) { tried = true; StartCoroutine(SpawnAll(++gen)); } }
-        else if (standing.Count > 0 || loading) Leave();
+        if (want) { if (asleep) Wake(); else if (!loading && !tried && standing.Count == 0 && !(K.spawner.holdWhileEngaged && p != null && p.opponent != null && !p.opponent.Dead)) { tried = true;  /* TRADEFIN v1: no 3 x 25 MB glb import in a fight */ StartCoroutine(SpawnAll(++gen)); } }
+        else if ((standing.Count > 0 && !asleep) || (loading && !hiddenLoad)) Leave();   // CAMPNPC v1: a sleeping camp / a hidden load is the normal state while the player is away
     }
 
     // ------------------------------------------------------------------ leave / wake
     void Leave()
     {
-        gen++; tried = false;   // cancels a spawn that is still loading; the next visit tries again
+        gen++; tried = false; wakeSince = -1f;   // cancels a spawn that is still loading; the next visit tries again   (CAMPNPC v1: wakeSince)
         if (K.spawner.leaveMode == "sleep" && standing.Count > 0 && !loading) { foreach (var n in standing) if (n.go != null) n.go.SetActive(false); asleep = true; return; }
         Clear();
     }
-    void Wake() { asleep = false; foreach (var n in standing) if (n.go != null) { n.go.SetActive(true); Play(n); } }
+    // CAMPNPC v1: the player is here. An NPC that was loaded hidden is placed now (ground ray; the camp ring may still be waking: wait spawner.waitGroundSeconds, then the fallback), one that already stood is switched on.
+    void Wake()
+    {
+        float now = Time.unscaledTime; if (wakeSince < 0f) wakeSince = now;
+        if (now - wakeSince < K.spawner.waitGroundSeconds) foreach (var n in standing) if (n.go != null && !n.placed && !GroundAt(n)) return;   // next poll
+        wakeSince = -1f; asleep = false;
+        foreach (var n in standing) if (n.go != null) { if (!n.placed) { Place(n); n.placed = true; } else n.go.SetActive(true); Play(n); }
+    }
+
+    // CAMPNPC v1: zones live (+ preload.startDelaySeconds, so it lands inside the ZoneHitch warm cover) and the player is not in a fight: load every NPC now, inactive and unplaced.
+    void PreloadStep(bool zones, float now, DuelFighter p)
+    {
+        var Pl = K.spawner.preload; if (!zones) { liveSince = -1f; return; }
+        if (!Pl.enabled || preloaded || loading || tried || standing.Count > 0) return;
+        if (liveSince < 0f) liveSince = now;
+        if (now - liveSince < Pl.startDelaySeconds) return;
+        if (K.spawner.holdWhileEngaged && p != null && p.opponent != null && !p.opponent.Dead) return;
+        preloaded = true; tried = true; StartCoroutine(SpawnAll(++gen, true));
+    }
+
+    // CAMPNPC v1: a body whose idle does not reach its skeleton stands in its pose (the T-pose of v108b). Say so once, with the bone that was watched.
+    void ProbeTick(float now)
+    {
+        foreach (var n in standing)
+        {
+            if (n.probe == null || now < n.probeAt) continue;
+            if (n.go == null || !n.go.activeInHierarchy) { n.probe = null; continue; }
+            bool seen = false; foreach (var r in n.go.GetComponentsInChildren<Renderer>(false)) if (r.isVisible) { seen = true; break; }
+            if (!seen) { n.probePos = n.probe.localPosition; n.probeRot = n.probe.localRotation; n.probeAt = now + K.spawner.probeSeconds; continue; }   // animation is culled while no renderer is seen: judge it only after it was on screen for probeSeconds
+            bool moved = (n.probe.localPosition - n.probePos).sqrMagnitude > 1e-6f || Quaternion.Angle(n.probe.localRotation, n.probeRot) > 0.2f;
+            string msg = "[Hub] npc " + n.row.id + " idle check after " + K.spawner.probeSeconds.ToString("0.0") + " s: bone '" + K.spawner.probeBone + "' " + (moved ? "moves, the clip drives the skeleton" : "did NOT move: the clip is not driving this body (T-pose)");
+            if (moved) { if (K.spawner.logLoads) Debug.Log(msg); } else Debug.LogWarning(msg);
+            n.probe = null;
+        }
+    }
+
+    void NoteClip(Npc n, Animation an, AnimationState st, float t0)
+    {
+        var S = K.spawner; int states = 0; foreach (AnimationState s in an) states++;
+        if (S.logLoads) Debug.Log("[Hub] npc " + n.row.id + " plays clip '" + st.name + "' (" + st.length.ToString("0.00") + " s, from " + t0.ToString("0.00") + " s; " + states + " clips on '" + an.gameObject.name + "', playing " + an.IsPlaying(st.name) + ")");
+        n.probe = null; if (S.probeBone.Length == 0) return;
+        var b = FindDeep(n.go.transform, S.probeBone); if (b == null) { Debug.LogWarning("[Hub] npc " + n.row.id + ": probe bone '" + S.probeBone + "' not found, idle not checked"); return; }
+        n.probe = b; n.probePos = b.localPosition; n.probeRot = b.localRotation; n.probeAt = Time.unscaledTime + S.probeSeconds;
+    }
+
+    static bool OnWithin(Transform t, Transform stop) { for (; t != null; t = t.parent) { if (!t.gameObject.activeSelf) return false; if (t == stop) return true; } return true; }   // every node from t up to stop is switched on (own flag, not the parent's)
+    static int TriCount(GameObject go)
+    {
+        int t = 0; if (go == null) return 0;
+        foreach (var r in go.GetComponentsInChildren<Renderer>(true))
+        {
+            if (!OnWithin(r.transform, go.transform)) continue;   // includeInactive: the whole NPC may be switched off while it is hidden
+            Mesh m = null; var sk = r as SkinnedMeshRenderer; if (sk != null) m = sk.sharedMesh; else { var mf = r.GetComponent<MeshFilter>(); if (mf != null) m = mf.sharedMesh; }
+            if (m != null) for (int i = 0; i < m.subMeshCount; i++) t += (int)(m.GetIndexCount(i) / 3);
+        }
+        return t;
+    }
+    int TotalTris() { int t = 0; foreach (var n in standing) t += TriCount(n.go); return t; }
 
     void Clear()
     {
+        gen++; hiddenLoad = false; wakeSince = -1f;   // CAMPNPC v1: a spawn that is still loading must see that the camp was cleared (scene load, destroy)
         foreach (var n in standing) Free(n);
         standing.Clear(); asleep = false; loading = false; tried = false;
         if (root != null) Destroy(root); root = null;
@@ -85,27 +145,30 @@ public sealed class HubNpcs : MonoBehaviour
         if (n.go != null) Destroy(n.go);
         if (n.body != null && n.body.imp != null) { try { n.body.imp.Dispose(); } catch (Exception) { } }
         if (n.clip != null && n.clip.imp != null) { try { n.clip.imp.Dispose(); } catch (Exception) { } }
+        if (n.mats != null) { foreach (var m in n.mats) if (m != null) Destroy(m); n.mats = null; }   // CAMPNPC v1
     }
 
     // ------------------------------------------------------------------ spawn
-    IEnumerator SpawnAll(int myGen)
+    IEnumerator SpawnAll(int myGen, bool hidden = false)
     {
-        loading = true; var S = K.spawner;
+        loading = true; hiddenLoad = hidden; var S = K.spawner;   // CAMPNPC v1: hidden = load + instantiate, keep inactive and unplaced
         var en = new bool[K.npcs.Length]; for (int i = 0; i < en.Length; i++) en[i] = K.npcs[i] != null && K.npcs[i].enabled;
         var order = HubClip.Pick(en, K.npcRules.maxSimultaneous);
         if (root == null) { root = new GameObject("HubNpcs_Live"); root.transform.SetParent(transform, false); }
         for (int oi = 0; oi < order.Count; oi++)
         {
-            var row = K.npcs[order[oi]]; Npc n = new Npc { row = row }; var task = LoadOne(row, n, root.transform);
+            var row = K.npcs[order[oi]]; Npc n = new Npc { row = row }; float lt0 = Time.realtimeSinceStartup; var task = LoadOne(row, n, root.transform);   // CAMPNPC v1: lt0
             while (!task.IsCompleted) yield return null;
             if (myGen != gen || this == null) { Free(n); if (myGen == gen) loading = false; yield break; }   // the player left while this body loaded
             if (task.IsFaulted || !task.Result) { Debug.LogWarning("[Hub] npc " + row.id + " not loaded: " + (task.IsFaulted && task.Exception != null ? task.Exception.GetBaseException().Message : "see the lines above")); Free(n); continue; }
-            { float gw = Time.unscaledTime + K.spawner.waitGroundSeconds; while (!GroundAt(n) && Time.unscaledTime < gw && myGen == gen) yield return null; if (myGen != gen || this == null) { Free(n); if (myGen == gen) loading = false; yield break; } }   // CAMPGROUND v1: wait for the camp's ground ring
-            Place(n); Play(n); standing.Add(n);
-            if (S.logLoads) Debug.Log("[Hub] npc " + row.id + " standing at " + n.go.transform.position);
+            if (!hidden) { float gw = Time.unscaledTime + K.spawner.waitGroundSeconds; while (!GroundAt(n) && Time.unscaledTime < gw && myGen == gen) yield return null; if (myGen != gen || this == null) { Free(n); if (myGen == gen) loading = false; yield break; } }   // CAMPGROUND v1: wait for the camp's ground ring
+            if (hidden) standing.Add(n); else { Place(n); n.placed = true; Play(n); standing.Add(n); }   // CAMPNPC v1
+            if (S.logLoads) Debug.Log("[Hub] npc " + row.id + (hidden ? " loaded hidden (" : " standing at " + n.go.transform.position + " (") + ((Time.realtimeSinceStartup - lt0) * 1000f).ToString("0") + " ms wall, " + TriCount(n.go) + " tris)");   // CAMPNPC v1
             for (int f = 0; f < S.framesBetweenLoads; f++) yield return null;   // one body per few frames: no frame carries all three
+            if (myGen != gen || this == null) yield break;   // TRADEFIN v1: Leave() / Clear() ran in that wait (root is gone, loading already false); the next iteration used root.transform = NullReferenceException
         }
-        loading = false;
+        loading = false; hiddenLoad = false;
+        if (hidden) { tried = false; asleep = standing.Count > 0; if (S.logLoads) Debug.Log("[Hub] camp NPCs preloaded hidden: " + standing.Count + " of " + order.Count + ", " + TotalTris() + " tris"); }   // CAMPNPC v1: the next poll with the player here wakes them
     }
 
     async Task<bool> LoadOne(HubNpcRow row, Npc n, Transform parent)
@@ -114,8 +177,11 @@ public sealed class HubNpcs : MonoBehaviour
         if (bodyFile == null) { Debug.LogWarning("[Hub] npc " + row.id + ": body GLB not found (runtime.glb / sources in hub.json)"); return false; }
         n.go = new GameObject("npc_" + row.id); n.go.transform.SetParent(parent, false); n.go.SetActive(false);   // off until placed: no frame shows it at the origin
         var body = new GameObject(S.bodyName); body.transform.SetParent(n.go.transform, false);
-        n.body = new GltfHold { imp = new GLTFast.GltfImport() };
-        if (!await n.body.imp.LoadFile(bodyFile)) return false;
+        var pre = GlbPreload.Take(bodyFile); GLTFast.GltfImport got = null;   // CAMPNPC v1: parsed during the intro (perf_fixes.json C3.files); only the instantiate is left
+        if (pre != null) { try { got = await pre; } catch (Exception) { got = null; } }
+        if (S.logLoads) Debug.Log("[Hub] npc " + row.id + (got != null ? ": parsed import taken from GlbPreload" : ": no preloaded import, parsing now (a hitch)"));
+        if (got != null) n.body = new GltfHold { imp = got };
+        else { n.body = new GltfHold { imp = new GLTFast.GltfImport() }; if (!await n.body.imp.LoadFile(bodyFile)) return false; }
         if (!await n.body.imp.InstantiateMainSceneAsync(body.transform)) return false;
         if (row.runtime.clipGlb.Length > 0 || row.runtime.clipSources.Length > 0)
         {
@@ -141,6 +207,7 @@ public sealed class HubNpcs : MonoBehaviour
         }
         foreach (var h in row.runtime.hideNodes) { var t = FindDeep(body.transform, h); if (t != null) t.gameObject.SetActive(false); }
         Cheapen(n.go, S);
+        if (S.convertMaterials) { var rl = new List<Renderer>(); foreach (var r in body.GetComponentsInChildren<Renderer>(true)) if (OnWithin(r.transform, body.transform)) rl.Add(r); n.mats = GearMaterials.Convert(rl); }   // CAMPNPC v1: glTFast shader-graph materials -> HDRP/Lit like the gear (base colour + normal map; hideNodes skipped; n.go is switched off here, so includeInactive + own-flag test)
         if (row.runtime.scale > 0f && Mathf.Abs(row.runtime.scale - 1f) > 1e-4f) body.transform.localScale = Vector3.one * row.runtime.scale;
         return true;
     }
@@ -183,14 +250,15 @@ public sealed class HubNpcs : MonoBehaviour
         n.go.SetActive(true);
     }
 
-    static void Play(Npc n)
+    void Play(Npc n)   // CAMPNPC v1: was static (NoteClip needs the config)
     {
-        var an = n.go.GetComponentInChildren<Animation>(true); if (an == null) return;
+        var an = n.go.GetComponentInChildren<Animation>(true); if (an == null) { Debug.LogWarning("[Hub] npc " + n.row.id + ": no Animation component (no clip loaded), the body stays in its pose");  /* TRADEFIN v1 */ return; }
         an.wrapMode = WrapMode.Loop;
         AnimationState st = an["idle"];
         if (st == null) foreach (AnimationState s in an) { if (n.row.runtime.clipName.Length == 0 || s.name == n.row.runtime.clipName) { st = s; break; } }   // a body that carries its own idle
-        if (st == null) return;
-        st.wrapMode = WrapMode.Loop; st.time = HubClip.StartTime(n.row.phaseSeconds, st.length); an.Play(st.name);
+        if (st == null) { Debug.LogWarning("[Hub] npc " + n.row.id + ": clip state not found (clipName '" + n.row.runtime.clipName + "')");  /* TRADEFIN v1 */ return; }
+        st.wrapMode = WrapMode.Loop; float t0 = HubClip.StartTime(n.row.phaseSeconds, st.length); st.time = t0; an.Play(st.name); st.time = t0;   // CAMPNPC v1: the time again after Play (a clip that started by itself would sit at 0, every NPC in step)
+        NoteClip(n, an, st, t0);
     }
 
     // ------------------------------------------------------------------ files

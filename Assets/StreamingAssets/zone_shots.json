@@ -8,11 +8,150 @@
   "startWaitSeconds": 60.0,
   "groundWaitSeconds": 20.0,
   "shots": [
-    { "id": "sobek_stand", "zone": "sobek_reach", "stand": "arrive_from_pit",
-      "cam": { "spot": "arrive_from_pit", "off": [2.5, 1.7, 2.0] }, "look": { "spot": "sobek_stand", "off": [0.0, 1.5, 0.0] }, "fov": 38.0, "settleSeconds": 3.0 },
-    { "id": "camp_entry", "zone": "hub_camp", "stand": "gate_prev",
-      "cam": { "spot": "gate_prev", "off": [1.5, 1.7, -2.5] }, "look": { "spot": "hearth", "off": [0.0, 1.2, 0.0] }, "fov": 55.0, "settleSeconds": 3.0 },
-    { "id": "trader", "zone": "hub_camp", "stand": "stall_1",
-      "cam": { "spot": "npc_trader", "off": [3.2, 1.7, -0.6] }, "look": { "spot": "npc_trader", "off": [0.0, 1.4, 0.0] }, "fov": 35.0, "settleSeconds": 2.0, "waitNpcSeconds": 15.0 }
-  ]
+    {
+      "id": "sobek_stand",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          2.5,
+          1.7,
+          2.0
+        ]
+      },
+      "look": {
+        "spot": "sobek_stand",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0
+    },
+    {
+      "id": "camp_entry",
+      "zone": "hub_camp",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "gate_prev",
+        "off": [
+          1.5,
+          1.7,
+          -2.5
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0
+    },
+    {
+      "id": "trader",
+      "zone": "hub_camp",
+      "stand": "stall_1",
+      "cam": {
+        "spot": "npc_trader",
+        "off": [
+          3.2,
+          1.7,
+          -0.6
+        ]
+      },
+      "look": {
+        "spot": "npc_trader",
+        "off": [
+          0.0,
+          1.4,
+          0.0
+        ]
+      },
+      "fov": 35.0,
+      "settleSeconds": 2.0,
+      "waitNpcSeconds": 15.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0
+    },
+    {
+      "id": "sobek_side_a",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "sobek_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "sobek_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 6.0,
+      "aimFighters": true,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0
+    },
+    {
+      "id": "sobek_side_b",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "sobek_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "sobek_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 10.0,
+      "aimFighters": true,
+      "sideM": -9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0
+    }
+  ],
+  "renders": 5,
+  "freeze": true,
+  "noMotionBlur": true,
+  "noTaa": true
 }

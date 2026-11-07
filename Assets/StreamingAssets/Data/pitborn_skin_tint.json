@@ -1,0 +1,21 @@
+{
+ "_note": "lanePITGREEN. Skin-only muted dark green mixed into Pitborn's current skin colour. Only these numbers change the look; the script reads them. Mix keeps each pixel's brightness (value) and only moves its hue toward the target, so saturation stays low.",
+ "character": "Pitborn",
+ "source_base": "Assets/Characters/Pitborn/Tex/pitborn_Body_base.jpg",
+ "source_mr": "Assets/Characters/Pitborn/Tex/pitborn_Body_mr.jpg",
+ "backup_base": "Assets/Characters/Pitborn/Tex/pitborn_Body_base.orig.jpg",
+ "target_rgb_srgb": [0.20, 0.28, 0.15],
+ "_owner": "Dom chose 25% (stronger) via Strategy, 2026-11-06; to change the amount edit the number below or applied_strength.",
+ "strengths": {"light": 0.08, "medium": 0.15, "stronger": 0.25},
+ "recommended": "stronger",
+ "applied_strength": "stronger",
+ "skin_mask": {
+  "_note": "Skin = the low-saturation warm grey-brown patches of the atlas. Red cloth (high saturation), gold trim and metal (mr blue channel) are excluded. Soft edges.",
+  "sat_max": 0.40, "sat_feather": 0.05,
+  "hue_deg_max": 40, "hue_deg_min": 340, "hue_feather_deg": 6,
+  "metal_max": 0.30, "metal_feather": 0.10,
+  "value_min": 0.12, "value_max": 0.62,
+  "blur_px_at_1k": 1.0
+ },
+ "jpeg_quality": 95
+}

@@ -29,12 +29,12 @@ public static class HdrpShot
             for (int i = 0; i < 30; i++) cam.Render();   // let TAA / volumetrics / exposure settle
             RenderTexture.active = rt; var t = new Texture2D(1920, 1080, TextureFormat.RGBAHalf, false); t.ReadPixels(new Rect(0, 0, 1920, 1080), 0, 0);
             var px = t.GetPixels(); var t8 = new Texture2D(1920, 1080, TextureFormat.RGB24, false); for (int i = 0; i < px.Length; i++) px[i] = new Color(Mathf.Clamp01(px[i].r), Mathf.Clamp01(px[i].g), Mathf.Clamp01(px[i].b), 1f); t8.SetPixels(px);
-            File.WriteAllBytes("Shots/" + v.Item1 + ".png", t8.EncodeToPNG());
+            File.WriteAllBytes("Shots/" + v.Item1 + ".png", t8.EncodeToPNG()); File.WriteAllText("Shots/" + v.Item1 + ".png.editmode.json", "{\"capture\":\"editmode\",\"tier\":\"none\",\"note\":\"GATE2K: HdrpShot.cs, scene opened in the Editor, cam.Render x30. QualityTiers / RuntimeQuality / runtime_flags never ran. Not a player frame, not a look gate, not a baseline.\"}");   // GATE2K
             cam.targetTexture = null; RenderTexture.active = null; rt.Release();
         }
         // leave the scene exactly as found: the rig must run in the player (a saved disabled CameraRig gave Dom a far wide camera)
         foreach (var mb in cam.GetComponents<MonoBehaviour>()) if (mb != null && mb.GetType().Name == "CameraRig") mb.enabled = true;
         cam.transform.SetPositionAndRotation(camPos0, camRot0); cam.fieldOfView = fov0; cam.targetTexture = null;
-        Debug.Log("HDRPSHOT done");
+        Debug.Log("HDRPSHOT done (EDIT-MODE shots: not player frames, not a look gate or baseline; sidecar .editmode.json written)");   // GATE2K
     }
 }

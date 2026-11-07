@@ -11,6 +11,8 @@
       "_gap_about": "metres between bodies. Beyond startGap the chase agent drives the body (AI paused: no swing, no decision). Back inside stopGap the AI takes over again (hysteresis, no flicker).",
       "slowZoneM": 1.5,
       "_slow_about": "the last metres before stopGap the speed ramps down to 0 so control hands back without a pop",
+      "handoverSlackM": 0.08,
+      "_slack_about": "FOESEP v1: the chase hands back to the AI at gap <= stopGap + this. The ramp reaches stopGap only asymptotically, so v108c stalled in Chase at 2.62 (stop 2.6) and 3.91 (stop 3.87) while Joan stood still (laneCHASEGAP creep finding). Rows inherit it from this row. 0 = v108c.",
       "accelMps2": 10.0,
       "giveUpGap": 16.0,
       "outOfReachGap": 5.0,
@@ -50,19 +52,19 @@
       "followArriveBehindM": 3.0,
       "runClipFromMps": 3.3,
       "walkClipBelowMps": 2.7,
-      "animMin": 0.8,
-      "animMax": 1.25,
+      "animMin": 1.0,
+      "animMax": 1.6,
       "_note": "Dom: he follows through the gate"
     },
     {
       "id": "Sobek",
       "speedMulOfPlayerRun": 0.92,
-      "startGap": 3.5,
-      "stopGap": 2.6,
-      "slowZoneM": 1.5,
+      "startGap": 5.031,
+      "stopGap": 3.87,
+      "slowZoneM": 1.56,
       "accelMps2": 10.0,
       "giveUpGap": 16.0,
-      "outOfReachGap": 5.0,
+      "outOfReachGap": 6.531,
       "giveUpOutOfReachS": 9.0,
       "giveUpPauseS": 0.8,
       "homeSpeedMulOfWalk": 1.0,
@@ -70,12 +72,12 @@
       "resetOnHome": true,
       "followThroughGate": false,
       "followGateMaxGap": 12.0,
-      "followArriveBehindM": 3.0,
+      "followArriveBehindM": 3.12,
       "runClipFromMps": 3.3,
       "walkClipBelowMps": 2.7,
       "animMin": 0.8,
       "animMax": 1.25,
-      "_note": "PLACEHOLDER, balance lane / Dom. Sobek has no speed row anywhere yet: he inherits DuelFighter 2.2 / 5.5 until his roster row sets them"
+      "_note": "CHASEGAP v1 (stop = AI close-in line farApproachGap, start = longest hit + 0.1 m, out = start + Pitborn delta; rules in _agents/laneCHASEGAP/stage/chasegap_rules.json; was 2.704 / 3.64 / 5.2). PLACEHOLDER, balance lane / Dom. Sobek has no speed row anywhere yet: he inherits DuelFighter 2.2 / 5.5 until his roster row sets them"
     }
   ]
 }

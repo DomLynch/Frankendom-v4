@@ -19,13 +19,13 @@
  "characters": [
   {
    "name": "Sobek",
-   "enabled": true,
+   "enabled": false,
    "debug": false,
    "debugEvery": 120,
    "chains": [
     {
      "name": "tail",
-     "enabled": true,
+     "enabled": false,
      "bones": [
       "fk_skirt_b",
       "fk_cape_01",
@@ -81,7 +81,7 @@
     },
     {
      "name": "sails",
-     "enabled": true,
+     "enabled": false,
      "bones": [
       "fk_socket_back",
       "fk_skirt_f"
@@ -101,7 +101,7 @@
     },
     {
      "name": "fin_l",
-     "enabled": true,
+     "enabled": false,
      "bones": [
       "lowerarm_twist_02_l"
      ],
@@ -120,7 +120,7 @@
     },
     {
      "name": "fin_r",
-     "enabled": true,
+     "enabled": false,
      "bones": [
       "lowerarm_twist_02_r"
      ],
@@ -137,7 +137,8 @@
      },
      "tipLengthM": 0.2
     }
-   ]
+   ],
+   "noTailNote": "SOBEKNEW: the new body has no tail; the fk_* tail joints are parked unweighted on the rump. Off."
   }
  ]
 }

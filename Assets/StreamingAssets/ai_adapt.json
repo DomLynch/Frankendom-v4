@@ -109,7 +109,7 @@
       "punishReact": 4,
       "punishMinRemain": 6,
       "punishApproachMin": 10,
-      "punishDashGap": 2.4,
+      "punishDashGap": 2.496,
       "punishHeavyRemain": 34,
       "delayChance": 0.25,
       "delayMin": 6,

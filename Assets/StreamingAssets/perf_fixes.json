@@ -52,7 +52,11 @@
     "enabled": true,
     "inHarness": false,
     "fromGearJson": true,
-    "files": [],
+    "files": [
+      "Npc/camp_arissa.glb",
+      "Npc/camp_akai.glb",
+      "Npc/camp_erika.glb"
+    ],
     "startDelayFrames": 30,
     "framesBetweenFiles": 20,
     "maxTotalMb": 128.0,

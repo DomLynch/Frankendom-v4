@@ -16,11 +16,13 @@ using UnityEngine;
     public HubInteract interact = new HubInteract(); public HubRuntime runtime = new HubRuntime();
 }
 [Serializable] public class HubNpcRules { public int maxSimultaneous = 3; }
+[Serializable] public class HubPreload { public bool enabled = false; public float startDelaySeconds = 0.3f; }   // CAMPNPC v1
 [Serializable] public class HubSpawner
 {
     public float pollSeconds = 0.25f, spawnMarginM = 12f, despawnMarginM = 16f, groundRayUpM = 3f, groundRayDownM = 10f, yawOffsetDeg = 0f, fallbackY = 0f, waitGroundSeconds = 20f;   // CAMPGROUND v1: fallbackY, waitGroundSeconds
     public string leaveMode = "destroy"; public int maxLoadsInFlight = 1, framesBetweenLoads = 2, groundMask = -1;
-    public bool shadows = false, cullWhenOffscreen = true, logLoads = true; public string[] searchRoots = new string[0]; public string bodyName = "Body";
+    public bool shadows = false, cullWhenOffscreen = true, logLoads = true, holdWhileEngaged = true;  /* TRADEFIN v1 */ public string[] searchRoots = new string[0]; public string bodyName = "Body";
+    public bool convertMaterials = true; public string probeBone = ""; public float probeSeconds = 1.2f; public HubPreload preload = new HubPreload();   // CAMPNPC v1
 }
 [Serializable] public class HubTagRow { public bool enabled = false; public float[] colour = { 0.78f, 0.66f, 0.35f, 1f }; public float top = 26f, tracking = 3.2f; public int big = 20, small = 15; }
 [Serializable] public class HubToastRow { public float seconds = 1.2f, bottom = 150f; public int size = 24; }
@@ -66,6 +68,7 @@ public static class HubCfg
         if (k.npcRules == null) k.npcRules = new HubNpcRules();
         if (k.spawner == null) k.spawner = new HubSpawner();
         if (k.spawner.searchRoots == null) k.spawner.searchRoots = new string[0];
+        if (k.spawner.preload == null) k.spawner.preload = new HubPreload(); if (k.spawner.probeBone == null) k.spawner.probeBone = "";   // CAMPNPC v1
         if (k.indicator == null) k.indicator = new HubIndicator();
         if (k.indicator.hudTag == null) k.indicator.hudTag = new HubTagRow();
         if (k.indicator.refuseToast == null) k.indicator.refuseToast = new HubToastRow();

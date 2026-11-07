@@ -47,7 +47,7 @@ public static class LootCfg
     [Serializable]
     public class PickupC
     {
-        public bool requireVictory = true, autoPickup = false; public float radius = 1.7f, promptRadius = 3.2f, spawnDelayS = 1.4f, spread = 1.1f, fallbackAfterS = 0.8f, toastS = 3.2f, toastFadeS = 0.6f, toastBottom = 150f;
+        public bool requireVictory = true, autoPickup = false; public float radius = 1.7f, promptRadius = 3.2f, spawnDelayS = 1.4f, zoneDropDelayS = 1.4f, spread = 1.1f, fallbackAfterS = 0.8f, toastS = 3.2f, toastFadeS = 0.6f, toastBottom = 150f;
         public int toastSize = 22, toastSubSize = 13; public bool fallbackDrops = true; public string[] fallbackItems = new string[0]; /*HCKIT1 v93*/
     }
     [Serializable]

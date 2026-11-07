@@ -136,7 +136,7 @@ public sealed class ZoneSpan : MonoBehaviour
         core = new SpanChain(n) { ahead = K.wake.ahead, behind = K.wake.behind, hyst = K.wake.hysteresis };
         for (int i = 0; i < n; i++) { core.min[i] = r[i].lo; core.max[i] = r[i].hi; core.boundary[i] = r[i].boundary; r[i].wasWant = i == 0; }
         rz = r; open = new bool[n]; openEff = new bool[n]; keep = new bool[n]; lastZone = 0; live = true; needBind = false; nextPoll = 0f;
-        Debug.Log("[ZoneSpan] bound: " + n + " zones (" + (n - 1) + " built), " + hid + " zone 1 rows hidden, " + tunnelObjs.Count + " tunnel pieces");
+        Debug.Log("[ZoneSpan] bound: " + n + " zones (" + (n - 1) + " built), " + hid + " zone 1 rows hidden, " + tunnelObjs.Count + " tunnel pieces"); ZoneHitch.Bound(this, skyline, WarmUnits());  /* ZONEHITCH v1 */
     }
 
     /// <summary>CAMPGROUND v1: switch the FIRST ring (the one that carries the GroundCollider) of every wanted built zone on at once, ahead of Pace's one-ring-per-frame. Called by ZoneGround for an arrival that is not a walk.</summary>
@@ -145,6 +145,9 @@ public sealed class ZoneSpan : MonoBehaviour
         if (!live || player == null) return; Poll();
         for (int i = 1; i < rz.Length; i++) { if (!core.want[i] || rz[i].units.Count == 0) continue; var u = rz[i].units[0]; if (u != null && !u.gameObject.activeSelf) { u.gameObject.SetActive(true); Fire("on:" + u.name); } }
     }
+
+    // ZONEHITCH v1: the ring groups of the later zones that are switched off right now (the warm renders them once, then preps them for the staged wake)
+    List<Transform> WarmUnits() { var l = new List<Transform>(); for (int i = 1; i < rz.Length; i++) foreach (var u in rz[i].units) if (u != null && !u.gameObject.activeSelf) l.Add(u); return l; }
 
     bool GateOpen(SpZone row)
     {
@@ -163,16 +166,16 @@ public sealed class ZoneSpan : MonoBehaviour
     void Update()
     {
         if (!ZoneRuntime.Owns) return;
-        if (needBind) { Bind(); return; }
+        if (needBind) { long zb = ZoneHitch.Mark(); Bind(); ZoneHitch.Lap("span.bind", ref zb); return; }  /* ZONEHITCH v1 */
         if (!live || player == null) { if (live && player == null) { live = false; needBind = true; bindTries = 0; } return; }
         float now = Time.unscaledTime;
-        if (now >= nextPoll) { nextPoll = now + K.pollSeconds; Poll(); }
-        Pace(); Skyline();
+        long zh = ZoneHitch.Mark(); if (now >= nextPoll) { nextPoll = now + K.pollSeconds; Poll(); ZoneHitch.Lap("span.poll", ref zh); }  /* ZONEHITCH v1 */
+        Pace(); ZoneHitch.Lap("span.pace", ref zh); Skyline(); ZoneHitch.Lap("span.skyline", ref zh);  /* ZONEHITCH v1 */
     }
 
     void Poll()
     {
-        int n = rz.Length; float z = player.transform.position.z; var zr = ZoneRuntime.Inst; float m = K.keep.monsterMargin;
+        int n = rz.Length; float z = player.transform.position.z; var zr = ZoneRuntime.Inst; ZoneHitch.PlayerZ = z;  /* ZONEHITCH v1 */ float m = K.keep.monsterMargin;
         // laneCHASE rule, same as the flash gate: while a creature is engaged that cannot follow, the way through stays shut. NOT for a gate whose destination is safe (destSafe): there the followers stop at the door and the player may pass.
         bool blocked = zr != null && zr.SpanGateBlocked(); bool reach = true;
         open[0] = true; openEff[0] = true; keep[0] = false;
@@ -189,7 +192,7 @@ public sealed class ZoneSpan : MonoBehaviour
         for (int i = 0; i < n; i++)
         {
             bool w = core.want[i];
-            if (w && !rz[i].wasWant) { Fire("wake" + (i + 1)); if (zr != null) zr.SpanWarm(rz[i].zoneId); }
+            if (w && !rz[i].wasWant) { Fire("wake" + (i + 1)); if (zr != null) { long zw = ZoneHitch.Mark(); zr.SpanWarm(rz[i].zoneId); ZoneHitch.Lap("span.warm " + rz[i].zoneId, ref zw); } }  /* ZONEHITCH v1 */
             if (!w && rz[i].wasWant && zr != null) zr.SpanDespawn(rz[i].zoneId);
             rz[i].wasWant = w;
         }
@@ -223,17 +226,18 @@ public sealed class ZoneSpan : MonoBehaviour
     }
 
     /// <summary>Switch at most ringsPerFrame units on and as many off per frame (zone 0 first, nearest ring first), so no frame carries a whole zone.</summary>
-    void Pace()
+    void Pace()   // ZONEHITCH v1: a ring group with rows left to switch is one unit of the per-frame budget; with spread.rowsPerFrame > 0 it is switched in row batches (ZoneHitch.Step), 0 = the whole ring at once as in v107
     {
-        int on = 0, off = 0, per = K.ringsPerFrame;
+        int on = 0, off = 0, per = K.ringsPerFrame; long zh = ZoneHitch.Mark();
         for (int i = 0; i < rz.Length; i++)
         {
             bool want = core.want[i];
             foreach (var u in rz[i].units)
             {
-                if (u == null || u.gameObject.activeSelf == want) continue;
+                if (u == null || !ZoneHitch.Pending(u, want)) continue;
                 if (want) { if (on >= per) continue; on++; } else { if (off >= per) continue; off++; }
-                u.gameObject.SetActive(want); Fire((want ? "on:" : "off:") + u.name);
+                bool was = u.gameObject.activeSelf; ZoneHitch.Step(u, want); ZoneHitch.Lap("ring " + (want ? "on " : "off ") + u.name, ref zh);
+                if (u.gameObject.activeSelf != was) Fire((want ? "on:" : "off:") + u.name);
             }
         }
     }

@@ -58,7 +58,8 @@
     "showPosture": true, "showStamina": false,
     "hp": { "h": 14, "taper": 20, "w": 400, "gap": 8 },
     "stamina": { "w": 420, "h": 5, "taper": 8, "gap": 9 },
-    "posture": { "w": 420, "h": 4, "taper": 7, "gap": 9 }
+    "posture": { "w": 420, "h": 4, "taper": 7, "gap": 9 },
+    "second": { "_about": "laneTWOFIGHT v1: with two enemies on the player, a small second bar (name + hp) under the boss block for the enemy that is not the target (GameHUD.DrawSecond). enabled false = nothing is drawn; a look change, needs Dom's LOOK OK to turn on. widthScale / heightScale / nameScale multiply the boss values, gap = px under the boss block.", "enabled": false, "gap": 10, "widthScale": 0.55, "heightScale": 0.6, "nameScale": 0.7, "ticks": false }
   },
   "stance": {
     "_about": "Bottom-left stance indicator: caption, a diamond + the stance name in its stances.json colour (small caps), a dim key hint. The switch toast (stance name, lower centre) is drawn here too. enabled = false gives the old StanceLayer label back.",

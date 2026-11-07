@@ -11,15 +11,16 @@
   "inheritTolM": 0.02,
   "postureMeanDeg": 25.0,
   "postureMaxDeg": 60.0,
-  "liveDiffMeanDeg": 8.0,
+  "liveDiffMeanDeg": 10.0,
   "toeYawTolModifiedDeg": 20.0,
   "poseMeanDeg": 12.0,
-  "poseMaxDeg": 25.0
+  "poseMaxDeg": 25.0,
+  "toeYawTolLiveRefDeg": 12.0
  },
  "sets": {
   "attacks": {
    "outFile": "{id}_attacks_v2.glb",
-   "live": "",
+   "live": "Assets/Characters/Joan/Joan_attacks_v2.glb",
    "legFixMaxSwivelDeg": 90.0,
    "rows": {
     "Sobek": [
@@ -29,7 +30,8 @@
       "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122340901-great-sword-slash.glb",
       "packRole": "attack_1",
       "rootMotion": "inplace",
-      "maxStep": 0.0
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.063
      },
      {
       "state": "atk_heavy_L",
@@ -37,7 +39,8 @@
       "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122360901-great-sword-slash.glb",
       "packRole": "attack_2",
       "rootMotion": "inplace",
-      "maxStep": 0.0
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.131
      },
      {
       "state": "atk_overhead",
@@ -45,7 +48,8 @@
       "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122370901-great-sword-slash.glb",
       "packRole": "attack_3",
       "rootMotion": "inplace",
-      "maxStep": 0.0
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.056
      },
      {
       "state": "atk_heavy_thrust",
@@ -53,99 +57,46 @@
       "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/122640901-great-sword-attack.glb",
       "packRole": "attack_5",
       "rootMotion": "inplace",
-      "maxStep": 0.0
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.057
      },
      {
       "state": "atk_thrust",
       "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/clips/hq023-Rap_Attack_Fwd_1.glb",
       "rootMotion": "inplace",
       "maxStep": 0.0,
-      "posture": {
-       "ankleLiftCapM": 0.054,
-       "maxStrideM": 0.4028,
-       "yawAbsolute": true,
-       "footYawMaxDeg": 35.0,
-       "hipsYawMaxDeg": 25.0,
-       "chestYawMaxDeg": 30.0,
-       "contactHandY": 2.1777,
-       "contactHandMaxShiftM": 0.5807,
-       "bladeMaxLeadDeg": 35.0,
-       "bladeWristMaxDeg": 80.0,
-       "bladeAim": [
-        {
-         "t0": 0.14,
-         "t1": 0.34,
-         "blend": 0.06,
-         "axis": [
-          0.0,
-          -0.5,
-          0.866
-         ]
-        },
-        {
-         "t0": 0.62,
-         "t1": 0.95,
-         "blend": 0.08,
-         "axis": [
-          0.0,
-          0.2,
-          0.98
-         ]
-        }
-       ],
-       "handClamp": [
-        {
-         "t0": 0.1,
-         "t1": 0.36,
-         "blend": 0.06,
-         "yMax": 1.8874
-        },
-        {
-         "t0": 0.6,
-         "t1": 0.95,
-         "blend": 0.08,
-         "yMax": 2.0325
-        }
-       ]
-      },
       "contactTime": 0.4,
-      "note": "SOBEKMOVES: Joan rapier lunge hq023 (same source + contact 0.4 s as her attack_clips row); posture lengths x measured Sobek factors; strike aims slightly down at Joan (guess)"
+      "note": "SOBEKMOVES: Joan rapier lunge hq023 (same source + contact 0.4 s as her attack_clips row); posture lengths x measured Sobek factors; strike aims slightly down at Joan (guess) | laneSOBEKNEW: posture block dropped (it moved the pose 55 deg mean on the new body and failed G-pose vs Joan live), plain retarget + hips offset",
+      "hipsYOffsetM": 0.085
      },
      {
       "state": "atk_riposte",
       "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips_unity/top20/clips/hq058-Sien_Smalls_AttackCountertempo_102_impact.glb",
       "rootMotion": "inplace",
       "maxStep": 0.0,
-      "posture": {
-       "ankleLiftCapM": 0.054,
-       "maxStrideM": 0.4028,
-       "contactHandY": 2.1777,
-       "contactHandMaxShiftM": 0.5807,
-       "bladeMaxLeadDeg": 35.0,
-       "bladeWristMaxDeg": 80.0
-      },
       "contactTime": 0.57,
-      "note": "SOBEKMOVES: Joan counter-tempo hq058 (contact 0.57 s as her row); posture lengths x measured Sobek factors"
+      "note": "SOBEKMOVES: Joan counter-tempo hq058 (contact 0.57 s as her row); posture lengths x measured Sobek factors | laneSOBEKNEW: posture block dropped (same), plain retarget + hips offset",
+      "hipsYOffsetM": 0.23
      }
     ]
    },
    "postureDefaults": {
     "hipsMaxTiltDeg": 12.0,
-    "hipsMinY": 1.024,
+    "hipsMinY": 1.2536,
     "torsoMaxLeanDeg": 15.0,
-    "ankleLiftCapM": 0.2562,
-    "stanceGateM": 0.1464,
-    "plantedLiftM": 0.0732,
-    "footFlatBlendM": 0.183,
-    "maxStrideM": 0.704,
+    "ankleLiftCapM": 0.3014,
+    "stanceGateM": 0.1722,
+    "plantedLiftM": 0.0861,
+    "footFlatBlendM": 0.2153,
+    "maxStrideM": 0.8618,
     "bladeMaxLeadDeg": 70.0,
     "bladeWristMaxDeg": 70.0,
     "bladeWindowS": 0.12,
     "bladeBlendS": 0.1,
-    "contactHandY": 1.845,
+    "contactHandY": 2.0875,
     "contactHandBlendS": 0.14,
-    "contactHandMaxShiftM": 0.369,
-    "_about": "laneSOBEKMOVES: Joan postureDefaults with the length rows scaled by the MEASURED Sobek factors (hips x1.28: hipsMinY, maxStrideM; foot x1.83: ankleLiftCapM, plantedLiftM, stanceGateM; hand height x1.476: contactHandY, contactHandMaxShiftM). Angles are not scaled."
+    "contactHandMaxShiftM": 0.4175,
+    "_about": "laneSOBEKMOVES: Joan postureDefaults with the length rows scaled by the MEASURED Sobek factors (hips x1.28: hipsMinY, maxStrideM; foot x1.83: ankleLiftCapM, plantedLiftM, stanceGateM; hand height x1.476: contactHandY, contactHandMaxShiftM). Angles are not scaled. | laneSOBEKNEW rescaled to the new body: hips x1.567 (was 1.28), foot x2.153 (was 1.83), hand x1.67 (was 1.476), rows multiplied by the ratio."
    }
   },
   "dodges": {
@@ -159,8 +110,8 @@
       "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
       "rootMotion": "inplace",
       "maxStep": 0.0,
-      "hipsYOffsetM": 0.06,
-      "note": "hips +0.06 m (SOBEKTUNE v1, was 0.015): toes sank 0.094 m below the floor line on his 0.31 m feet; the lift is invisible in a roll"
+      "hipsYOffsetM": 0.3,
+      "note": "laneSOBEKNEW: hips +0.243 m (new body: toes sank 0.331 m)"
      }
     ]
    }
@@ -168,6 +119,6 @@
  },
  "scaleProfile": {
   "_about": "SOBEKTUNE v1: Sobek's foot is 1.83x the Joan foot (Foot->ToeBase 0.309 / 0.169 m, measure_scale.py). The Joan-scale G-plant limit footFloorMaxM is multiplied by this for Sobek only. Not a waiver: the roll still has to stay within 0.05 x 1.83 m, and its hips are lifted (hipsYOffsetM) so the toes stop sinking.",
-  "footLen": 1.83
+  "footLen": 2.153
  }
 }

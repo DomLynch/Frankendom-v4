@@ -16,7 +16,7 @@ using UnityEngine.Rendering.HighDefinition;
 public static class QualityTiers
 {
     [System.Serializable] public class TierInfo { public string name = "", label = "", note = ""; public int minVramMb = 0, targetFps = 0; public string level = ""; public bool suggest = true; }   // 2KPROFILE v01: level = QualitySettings level (empty = the tier name capitalised), suggest = SuggestedTier() may pick it
-    [System.Serializable] class Head { public string defaultTier = "ultra", baseTier = "ultra", prefsKey = "gfx.tier"; public TierInfo[] tiers = new TierInfo[0]; }
+    [System.Serializable] class Head { public string defaultTier = "ultra", baseTier = "ultra", prefsKey = "gfx.tier", harnessTier = ""; public TierInfo[] tiers = new TierInfo[0]; }
     [System.Serializable] class Mul { public float lodBiasMul = 1f; }
     struct PBase { public int max; public float rate, dist; }
 
@@ -29,6 +29,7 @@ public static class QualityTiers
 
     public static TierInfo[] Tiers { get { return head.tiers ?? new TierInfo[0]; } }
     public static string DefaultTier { get { return string.IsNullOrEmpty(head.defaultTier) ? "ultra" : head.defaultTier.ToLowerInvariant(); } }
+    public static string HarnessTier { get { return string.IsNullOrEmpty(head.harnessTier) ? DefaultTier : head.harnessTier.ToLowerInvariant(); } }   // GO100 v1: harness runs (gates / benches / proofs) keep this tier when defaultTier moves to the shipped native tier
 
     static string Arg(string prefix) { foreach (var a in System.Environment.GetCommandLineArgs()) if (a.StartsWith(prefix, System.StringComparison.Ordinal)) return a.Substring(prefix.Length); return null; }
 
@@ -43,7 +44,7 @@ public static class QualityTiers
             string p = Application.streamingAssetsPath + "/quality_tiers.json";
             if (File.Exists(p)) { raw = File.ReadAllText(p); var h = JsonUtility.FromJson<Head>(raw); if (h != null) head = h; if (string.IsNullOrEmpty(head.prefsKey)) head.prefsKey = "gfx.tier"; }
             string t = Arg("-quality:");
-            if (t == null) t = RuntimeQuality.IsHarness() ? DefaultTier : PlayerPrefs.GetString(head.prefsKey, "");   // gates / benches never depend on a saved player choice
+            if (t == null) t = RuntimeQuality.IsHarness() ? HarnessTier : PlayerPrefs.GetString(head.prefsKey, "");   // gates / benches never depend on a saved player choice
             if (string.IsNullOrEmpty(t)) t = GameSettings.FirstRunTier(DefaultTier);
             Select(t);
         }

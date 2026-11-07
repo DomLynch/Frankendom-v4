@@ -1,0 +1,106 @@
+{
+  "_about": "ROUTEBOT v1 (laneROUTEBOT): -routebot:<dir> (with -zones). A scripted player walks the zone route in a real build and writes <dir>\\routebot.json (per step PASS / FAIL with checks and evidence) plus upright PNG frames in <dir>\\frames. Read by Scripts/Zones/ZoneRouteBot.cs (StreamingAssets first, then Assets\\Data). Without the flag nothing here is read. Every number below is a tunable; none is in code. Spots are zones.json spots (zone + spot id), spawns are zones.json spawn ids, names come from opponents.json. UNPROVEN IN UNITY.",
+  "version": 1,
+  "quit": true,
+  "globalTimeoutS": 1500,
+  "startWaitS": 90,
+  "readyExtraFrames": 30,
+  "input": {
+    "_about": "Keys are sent to the game window with the Windows SendInput API (the same path a keyboard uses: the legacy Input class, InputMap, PlayerBrain and MarketUI all read them). Only while the window is focused (Application.isFocused), all keys are released when focus is lost. Key names = UnityEngine.KeyCode; an action that InputMap knows (moveForward ... strike, guard, run) uses the player's own binding first, these are the fallbacks. tapFrames = frames a tapped key stays down (at least 2); tapMaxS caps it in seconds so a slow frame never turns a light into a heavy (heavyHoldMs 220). selfTest: before step 1 the bot holds selfTestKey and the game's own Input.GetKey must see it within selfTestFrames, else the run stops with the reason (window not focused, or keys not delivered).",
+    "scanCodes": true,
+    "requireFocus": true,
+    "focusWaitS": 30,
+    "tapFrames": 3,
+    "tapMaxS": 0.12,
+    "gapFrames": 4,
+    "deadzone": 0.38,
+    "selfTestKey": "LeftShift",
+    "selfTestFrames": 40,
+    "forward": "W", "back": "S", "left": "A", "right": "D", "run": "LeftShift", "strike": "F", "guard": "Q"
+  },
+  "capture": {
+    "_about": "mode 'screen' = ScreenCapture.CaptureScreenshotAsTexture at the end of the frame (what the player sees, HUD included); 'camera' = Camera.main rendered into a RenderTexture (no HUD, as ZoneShot). flipY turns the PNG over if a build proves it upside down (every frame also logs the mean luma of its top and bottom tenth: lumaTop / lumaBottom). settleFrames = frames waited before the grab.",
+    "enabled": true,
+    "mode": "screen",
+    "flipY": false,
+    "width": 1920,
+    "height": 1080,
+    "settleFrames": 2,
+    "folder": "frames"
+  },
+  "nav": {
+    "arriveM": 1.0,
+    "runBeyondM": 7.0,
+    "stuckSeconds": 5.0,
+    "stuckMoveM": 0.25,
+    "groundTolM": 0.35
+  },
+  "combat": {
+    "_about": "The bot fights with real keys: it walks toward the foe (camera-relative, the way PlayerBrain turns keys into a direction), stops at approachGapM, taps strike every strikeIntervalS while the gap (body to body) is below attackGapM and stamina is above staminaMinFrac. guard: holds the guard key while the foe winds up inside guardGapM (centre guard only, no side, so it is off by default). assistHpFloorFrac: the player's health is put back to this fraction when it drops below it (counted, listed in the report as assists) so one bad exchange does not end the proof; 0 = no assist, the bot can die and the step fails.",
+    "attackGapM": 2.6,
+    "approachGapM": 2.2,
+    "strikeIntervalS": 0.55,
+    "staminaMinFrac": 0.2,
+    "guard": { "enabled": false, "gapM": 3.4 },
+    "assistHpFloorFrac": 0.45,
+    "hudMaxDeviation": 0.03,
+    "barEndMaxFrac": 0.12,
+    "camMaxDistM": 22.0,
+    "camSampleS": 0.2,
+    "spawnWaitS": 25
+  },
+  "stepDefaults": {
+    "_about": "A step row lists only what differs: 0 / absent = the value here. timeoutS = the step budget (a step that runs past it FAILS and the run moves on); minBarDropFrac = how far the boss bar must fall; settleS = seconds the death is watched after the kill; finisherWaitS = extra wait for a finisher to release the camera; camMinFollowFrac = camera z must move this fraction of the player's z move; dwellS = seconds standing after a door; pushUntilGapM = stop pushing toward the second enemy at this gap; followWaitS = how long the chaser is watched; throughMarginM = metres beyond the door boundary that count as through; tapSettleFrames / maxDownPresses / closeTries = trader key pacing.",
+    "timeoutS": 60,
+    "minBarDropFrac": 0.5,
+    "settleS": 4,
+    "finisherWaitS": 15,
+    "camMinFollowFrac": 0.6,
+    "dwellS": 2,
+    "pushUntilGapM": 7,
+    "followWaitS": 20,
+    "throughMarginM": 1,
+    "tapSettleFrames": 6,
+    "maxDownPresses": 12,
+    "closeTries": 3
+  },
+  "failOnLogTypes": ["Exception"],
+  "badLogs": ["is not built", "gave up binding", "crossing gave up", "zones.json has errors", "zone is empty", "Creatures/Sobek"],
+  "flashLog": "[Zones] crossing ",
+  "logPrefixes": ["[Zones]", "[ZoneSpan]", "[HudHp]", "[Chase]", "[Market]", "[Hub]", "[ZoneGround]", "[Loot"],
+  "steps": [
+    {
+      "id": "s0_prepare", "name": "Fresh start: Pitborn and Sobek alive, wake at pit_yard", "kind": "restart", "timeoutS": 120,
+      "zone": "pit_yard", "spot": "arrive_start", "revive": ["z1_pitborn", "z2_sobek"], "spawn": "z1_pitborn"
+    },
+    {
+      "id": "s1_kill_pitborn", "name": "Kill Pitborn with real inputs: health bar falls, death completes with no exception", "kind": "kill", "timeoutS": 200,
+      "spawn": "z1_pitborn", "expectName": "PITBORN", "assist": true, "minBarDropFrac": 0.5, "settleS": 6, "finisherWaitS": 20
+    },
+    {
+      "id": "s2_door1", "name": "Walk door 1 into sobek_reach: camera follows", "kind": "walk", "timeoutS": 90,
+      "toZone": "sobek_reach", "toSpot": "arrive_from_pit", "camMinFollowFrac": 0.6, "dwellS": 2.5
+    },
+    {
+      "id": "s3a_second_pass", "name": "Second pass: back to pit_yard with Pitborn alive", "kind": "restart", "timeoutS": 120,
+      "zone": "pit_yard", "spot": "arrive_start", "revive": ["z1_pitborn"], "spawn": "z1_pitborn"
+    },
+    {
+      "id": "s3_skip_fight", "name": "Walk past a live Pitborn: he chases through the door, then fights with Sobek (maxEngaged 2) or gives up at the data distance", "kind": "skip_past", "timeoutS": 240,
+      "spawn": "z1_pitborn", "otherSpawn": "z2_sobek", "doorGate": "gate_pit_to_sobek", "toZone": "sobek_reach", "toSpot": "arrive_from_pit", "slow": true, "assist": true,
+      "pushZone": "sobek_reach", "pushSpot": "sobek_stand", "pushUntilGapM": 7.0, "followWaitS": 25, "throughMarginM": 1.0, "camMinFollowFrac": 0.5
+    },
+    {
+      "id": "s4_kill_sobek", "name": "Kill Sobek: HUD name reads Sobek, his health falls", "kind": "kill", "timeoutS": 420,
+      "spawn": "z2_sobek", "expectName": "SOBEK", "pushZone": "sobek_reach", "pushSpot": "sobek_stand", "assist": true, "minBarDropFrac": 0.5, "settleS": 6, "finisherWaitS": 25
+    },
+    {
+      "id": "s5a_door2", "name": "Walk door 2 into hub_camp: camera follows, Joan stands on the ground", "kind": "walk", "timeoutS": 120,
+      "toZone": "hub_camp", "toSpot": "arrive_from_prev", "camMinFollowFrac": 0.6, "dwellS": 2.5, "ground": true
+    },
+    {
+      "id": "s5b_trader", "name": "Trader: open, buy, sell, close; coins change", "kind": "trade", "timeoutS": 150,
+      "tapSettleFrames": 6, "maxDownPresses": 14, "ground": true, "closeTries": 3
+    }
+  ]
+}

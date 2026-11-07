@@ -1,0 +1,173 @@
+{
+  "_about": "CAMZONE v1 (laneCAMZONE): -camtrace:<dir> recorder (ZoneCamTrace.cs), -camscene scripted Joan (ZoneCamScene.cs), and the pass rule read by _agents/laneCAMZONE/check_camtrace.py. Without the flags nothing here is read. Every number is a tunable. frames.width 0 = native (2560x1600), the height follows the aspect. frames.hz = pictures per second (each costs a capture + encode on the main thread, measured in the csv column capMsPrev). passRule is judged only on frames with at least engagedMin enemies fighting Joan (height, pitch, locked gap, lock on a non-fighter) except frozen and yaw rate, which are judged on every frame. Limits are set from _agents/laneCAMZONE/camzone_model.py: v108b draws 6.3-8.6 m high at 27-29 deg for a 9-12 m gap, the fix 5.1-5.8 m at 21-23 deg.",
+  "enabled": true,
+  "csv": {
+    "name": "camtrace.csv",
+    "flushEveryS": 2.0,
+    "scanEveryS": 0.1,
+    "decimals": 2,
+    "engagedSlots": 3
+  },
+  "frames": {
+    "enabled": true,
+    "hz": 6.0,
+    "format": "jpg",
+    "jpgQuality": 88,
+    "width": 1600,
+    "mode": "texture",
+    "folder": "frames",
+    "flipY": false,
+    "autoOrient": true,
+    "calibFrames": 4,
+    "markerPx": 48,
+    "markerRgb": [
+      1.0,
+      0.0,
+      1.0
+    ],
+    "startAfterS": 0.0,
+    "maxFrames": 6000,
+    "maxPending": 24,
+    "whileEngagedOnly": false
+  },
+  "passRule": {
+    "engagedMin": 2,
+    "lockMinW": 0.5,
+    "maxCamHeightM": 6.0,
+    "maxPitchDeg": 26.0,
+    "maxLockedGapM": 9.5,
+    "lockNotFightingS": 0.5,
+    "frozenWindowS": 1.0,
+    "frozenPlayerMoveM": 3.0,
+    "frozenCamMoveM": 0.15,
+    "yawRateMaxDegPerS": 200.0,
+    "yawRateWindowS": 0.1,
+    "hitchMs": 250.0
+  },
+  "scene": {
+    "enabled": true,
+    "quit": true,
+    "globalTimeoutS": 240.0,
+    "startWaitS": 90.0,
+    "readyExtraFrames": 30,
+    "hpFloorFrac": 0.5,
+    "approachGapM": 2.2,
+    "attackGapM": 2.6,
+    "strikeIntervalS": 0.55,
+    "staminaMinFrac": 0.2,
+    "steps": [
+      {
+        "id": "s0_ready",
+        "kind": "ready",
+        "run": true,
+        "timeoutS": 60,
+        "arriveM": 1.5
+      },
+      {
+        "id": "s1_restart",
+        "kind": "restart",
+        "zone": "pit_yard",
+        "spot": "arrive_start",
+        "revive": [
+          "z1_pitborn",
+          "z2_sobek"
+        ],
+        "run": true,
+        "timeoutS": 60,
+        "arriveM": 1.5
+      },
+      {
+        "id": "s2_run_past_pitborn",
+        "kind": "walk",
+        "zone": "pit_yard",
+        "spot": "gate_sobek",
+        "run": true,
+        "timeoutS": 40,
+        "arriveM": 2.0
+      },
+      {
+        "id": "s3_into_sobek_zone",
+        "kind": "walk",
+        "zone": "sobek_reach",
+        "spot": "arrive_from_pit",
+        "run": true,
+        "timeoutS": 30,
+        "arriveM": 2.0
+      },
+      {
+        "id": "s4_meet_sobek",
+        "kind": "walk",
+        "zone": "sobek_reach",
+        "spot": "sobek_stand",
+        "run": false,
+        "timeoutS": 30,
+        "arriveM": 2.0,
+        "untilEngaged": 2
+      },
+      {
+        "id": "s5_fight_two",
+        "kind": "fight",
+        "seconds": 14,
+        "run": true,
+        "timeoutS": 60,
+        "arriveM": 1.5
+      },
+      {
+        "id": "s6_run_away_a",
+        "kind": "flee",
+        "zone": "sobek_reach",
+        "spot": "gate_pit",
+        "run": true,
+        "timeoutS": 8,
+        "arriveM": 1.5
+      },
+      {
+        "id": "s6_run_away_b",
+        "kind": "flee",
+        "pos": [
+          14.0,
+          58.0
+        ],
+        "run": true,
+        "timeoutS": 8,
+        "arriveM": 1.5
+      },
+      {
+        "id": "s6_run_away_c",
+        "kind": "flee",
+        "pos": [
+          -14.0,
+          40.0
+        ],
+        "run": true,
+        "timeoutS": 8,
+        "arriveM": 1.5
+      },
+      {
+        "id": "s7_stand",
+        "kind": "hold",
+        "seconds": 3,
+        "run": true,
+        "timeoutS": 60,
+        "arriveM": 1.5
+      },
+      {
+        "id": "s8_come_back",
+        "kind": "walk",
+        "zone": "sobek_reach",
+        "spot": "sobek_stand",
+        "run": true,
+        "timeoutS": 30,
+        "arriveM": 3.0
+      },
+      {
+        "id": "s9_fight_again",
+        "kind": "fight",
+        "seconds": 10,
+        "run": true,
+        "timeoutS": 60,
+        "arriveM": 1.5
+      }
+    ]
+  }
+}

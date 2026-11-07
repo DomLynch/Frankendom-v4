@@ -1,0 +1,32 @@
+{
+  "_about": "CAMPFIX v1, read by Scripts/Zones/CampLights.cs (StreamingAssets first). NON-SHADOW point lights in world metres (no shadow option exists). A row is on only while the zones are live and the player is within activeRadiusM of it. layerMask 65535 = every light layer, so the runtime camp NPCs (Default layer only) and the player's rim-layer renderers are both lit. Candela at the fixed exposure EV 9.4 (look.json): about 1 / (1.2 x 2^9.4) = 0.0012 of white per nit; 3500 cd at 1.4 m is 1800 lux = about 0.02 of white on Arissa's dark leather (albedo about 0.04) and about 0.15 on skin. ARITHMETIC, NOT SEEN: tune by eye. Position: hangs from the awning frame 0.8 m in front of the trader (-3.7, 89.5), above the counter (x -2.65, top 1.05 m); kelvin 2200 = the door lamp (atmosphere.json DoorFlickerWarm), so no new colour in the palette. flicker = the FurnaceFlicker noise schema, small amplitude (a lantern, not a brazier). enabled false = no light, no code path.",
+  "enabled": true,
+  "log": true,
+  "waitFrames": 20,
+  "pollSeconds": 0.25,
+  "rows": [
+    {
+      "name": "CampLantern_Trader",
+      "pos": [
+        -2.9,
+        1.75,
+        89.5
+      ],
+      "kelvin": 2200.0,
+      "candela": 3500.0,
+      "range": 5.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 16.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    }
+  ]
+}

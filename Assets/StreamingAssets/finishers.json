@@ -2771,7 +2771,7 @@
       {
         "name": "Pitborn",
         "referenceState": "guard_idle",
-        "hipsRestZ": 0.975189,
+        "hipsRestZ": 0.81859,
         "hipsCorrection": [
           1.0,
           0.0,
@@ -2782,7 +2782,7 @@
       {
         "name": "Sobek",
         "referenceState": "guard_idle",
-        "hipsRestZ": 1.2667,
+        "hipsRestZ": 1.5516,
         "hipsCorrection": [
           1.0,
           0.0,
@@ -3059,8 +3059,13 @@
         },
         {
           "fighter": "Pitborn",
-          "footM": 0.17,
-          "toeEndM": 0.06
+          "footM": 0.2,
+          "toeEndM": 0.08
+        },
+        {
+          "fighter": "Sobek",
+          "footM": 0.3314,
+          "toeEndM": 0.0166
         }
       ],
       "bodyClamp": true,
@@ -3259,7 +3264,7 @@
       },
       {
         "id": "Sobek",
-        "pairScale": 1.78,
+        "pairScale": 1.8512,
         "note": "SOBEKMOVES (guess): run_through with Sobek as killer. clipsV1.pairOffset [-0.06,0,0.814] x 1.78 = 1.45 m: Sobek hand 0.76 m ahead of the hips at contact (v1_killer_probe.py, MEASURED) + horizontal hand-to-Spine1 distance for the middle of a 2.2 m shaft (0.9 m) - 0.23 m formula bias (the same formula gives 1.04 vs the live Joan/Pitborn 0.814). Proof: -finisherauto \"suggest\" line, 3 consecutive runs."
       }
     ],
@@ -3298,17 +3303,9 @@
     "rows": [
       {
         "character": "Sobek",
-        "centerYM": 1.5,
-        "sizeM": [
-          1.6,
-          3.0,
-          3.0
-        ],
-        "maxSizeM": [
-          4.5,
-          3.8,
-          4.5
-        ],
+        "centerYM": 1.56,
+        "sizeM": [1.664, 3.12, 3.12],
+        "maxSizeM": [4.68, 3.952, 4.68],
         "scaleFloor": 0.5,
         "refreshS": 0.25,
         "note": "SOBEKDATA: (guess) the tail extends the bound: cap raised from 3.2 to 4.5 m; measure"
@@ -3347,17 +3344,9 @@
       },
       {
         "character": "Pitborn",
-        "centerYM": 0.9,
-        "sizeM": [
-          0.8,
-          1.8,
-          0.8
-        ],
-        "maxSizeM": [
-          3.2,
-          3.4,
-          3.2
-        ],
+        "centerYM": 1.05,
+        "sizeM": [1.5, 2.1, 1.5],
+        "maxSizeM": [3.6, 3.4, 3.6],
         "scaleFloor": 0.5,
         "refreshS": 0.25
       },

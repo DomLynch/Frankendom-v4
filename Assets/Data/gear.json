@@ -818,7 +818,7 @@
         "twoHanded": false,
         "damageMul": 1.0,
         "speedMul": 1.08,
-        "reachMul": 1.7,
+        "reachMul": 1.768,
         "postureMul": 1.0,
         "cueWeapon": "sword",
         "gripNode": "grip",

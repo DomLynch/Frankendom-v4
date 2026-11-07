@@ -44,3 +44,5 @@ Updated by Strategy 2026-11-06: a 9/10 AAA duel, Joan vs the Pitborn at the Hade
 **Unity plugin (Dom, 2026-11-06):** all Unity work uses the Claude Code Unity plugin: `unity:*` skills, starting with `unity:unity-cli` (live Editor control, builds, logs, auth, MCP). URP skills do not apply, this project is HDRP. Project rules still win: one GPU job at a time, no Assets writes during a build or gate, only the Unity dev launches the Editor.
 
 **Max quality (Dom, 2026-11-06):** always max quality HDRP, not URP yet, AAA grade visuals. No visible quality cuts for fps; perf work must be look-neutral or stay dark behind a switch for Dom's LOOK OK.
+
+**Blender (Dom, 2026-11-06):** use Blender headless (`blender --background --python`, exe C:\Program Files\Blender Foundation\Blender 5.2\blender.exe) for renders, previews and mesh work, and the Claude Code Blender plugin and extension (`mcp__Blender__*` tools, Blender running with the MCP add-on) when a live session helps. Project rules still apply: one heavy GPU job at a time, CPU renders when others are running, no `Assets` writes outside the owner.

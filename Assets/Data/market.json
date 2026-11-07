@@ -153,7 +153,7 @@
       "z": 89.0,
       "_about": "zones.json spot stall_1 of the camp (laneHUB rows B, camp at world offset 72). With the zone data merged, MarketZoneBridge reads the spot; x / z here are the fallback and what the checker compares. y comes from the player."
     },
-    "radius": 2.4,
+    "radius": 3.0,
     "promptRadius": 5.0,
     "promptHeight": 2.1,
     "area": {
@@ -292,7 +292,7 @@
     "nothing": "You carry nothing the trader will take.",
     "prompt": "Trade",
     "promptKeys": "E / X",
-    "hintMove": "Up / Down  Select",
+    "hintMove": "Up / Down",
     "hintSell": "E / A  Sell",
     "hintClose": "Esc / B  Close",
     "safeTag": "SAFE",

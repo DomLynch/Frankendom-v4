@@ -168,7 +168,7 @@ def _raw(j, b, ai):
 
 class Mesh:
     """body mesh (the skinned primitive that has the most arm+torso weight) prepared for clearance tests"""
-    def __init__(s, rig, j, b, bind_names=None, restSepM=0.0):
+    def __init__(s, rig, j, b, bind_names=None, restSepM=0.0, withHead=False):
         s.rig = rig; skin = j['skins'][0]; s.joints = skin['joints']
         names = [j['nodes'][n].get('name') for n in s.joints]
         best = None
@@ -179,6 +179,12 @@ class Mesh:
                 if 'body' in mat.lower(): best = p
         if best is None: raise RuntimeError('no skinned body primitive (material containing "body") in the glb')
         at = best['attributes']; s.pos = _raw(j, b, at['POSITION']); J = _raw(j, b, at['JOINTS_0']).astype(int); Wt = _raw(j, b, at['WEIGHTS_0'])
+        if withHead:   # SOBEKNEW v1: a character whose head is its own primitive (material *head*) and is big enough to meet the floor in lying clips: judge it too (data: scaleProfiles.<id>.floorIncludesHead)
+            for m_ in j['meshes']:
+                for p_ in m_['primitives']:
+                    mt_ = str(j['materials'][p_['material']]['name']).lower() if 'material' in p_ else ''
+                    if 'JOINTS_0' in p_['attributes'] and 'head' in mt_ and 'body' not in mt_:
+                        a_ = p_['attributes']; s.pos = np.concatenate([s.pos, _raw(j, b, a_['POSITION'])]); J = np.concatenate([J, _raw(j, b, a_['JOINTS_0']).astype(int)]); Wt = np.concatenate([Wt, _raw(j, b, a_['WEIGHTS_0'])])
         s.ibm = _raw(j, b, skin['inverseBindMatrices']).reshape(-1, 4, 4).transpose(0, 2, 1)   # glTF is column-major
         dom = J[np.arange(len(J)), np.argmax(Wt, 1)]
         def grp(shorts):
@@ -293,7 +299,7 @@ def run(cfg, roster, reps, proj, outdir, live_override=None):
         sp = g.get('scaleProfiles', {}).get(cid, {}); sfoot = float(sp.get('footLen', 1.0)); sarm = float(sp.get('meshClearance', 1.0)); ffm = g['footFloorMaxM'] * sfoot; acm = g['armClearanceMeshMinM'] * sarm   # SOBEKTUNE v1: own-scale limits (data)
         if sp: print('  %s scaleProfile foot x%.2f (floor limit %.3f m) meshClearance x%.2f (arm gap limit %.4f m)' % (cid, sfoot, ffm, sarm, acm))
         wv = g.get('waiver', {}).get(cid, {}); pm = wv.get('poseMeanDeg', g['poseMeanDeg']); px = wv.get('poseMaxDeg', g['poseMaxDeg'])
-        jn, bn = L.load(rep['output']); rn = L.Rig(jn, bn); Mn = Metrics(rn); meshn = Mesh(rn, jn, bn, restSepM=float(sp.get('armRestSeparationM', 0.0)))
+        jn, bn = L.load(rep['output']); rn = L.Rig(jn, bn); Mn = Metrics(rn); meshn = Mesh(rn, jn, bn, restSepM=float(sp.get('armRestSeparationM', 0.0)), withHead=bool(sp.get('floorIncludesHead', False)))
         livep = live_override or os.path.join(proj, rc['modelGlb'])
         jl, bl = L.load(livep); rl = L.Rig(jl, bl); Ml = Metrics(rl); meshl = Mesh(rl, jl, bl)
         corr = L.qmul(np.array(jn['nodes'][rn.idx['mixamorig:Hips']]['rotation']), L.qinv(np.array([-math.sqrt(.5), 0, 0, math.sqrt(.5)])))
@@ -327,7 +333,8 @@ def run(cfg, roster, reps, proj, outdir, live_override=None):
             tol = abs(float(tp.get('clipAbductDeg', {}).get(st, tp.get('armAbductDeg', 0.0)))) if st in tp.get('clips', []) else 0.0   # SOBEKTUNE v1: per-clip abduction     # the character's OWN declared tuning is allowed in the pose gate, nothing else
             if pose and (pose['mean'] > pm + tol or pose['max'] > px + tol): bad.append('G-pose %s mean %.2f max %.2f (limits %.1f/%.1f)' % (st, pose['mean'], pose['max'], pm, px))
             if st in rep.get('derivedRefLimit', {}): pass
-            if mn['knee'] is not None and mn['knee'] > g['kneeMedialMaxM']: bad.append('G-knee %s inward %.3f m > %.3f' % (st, mn['knee'], g['kneeMedialMaxM']))
+            kmax_ = float(wv.get('kneeMedialMaxM', g['kneeMedialMaxM']))   # SOBEKNEW v1: per-character waiver value (data gates.waiver.<id>), absent = old behaviour
+            if mn['knee'] is not None and mn['knee'] > kmax_: bad.append('G-knee %s inward %.3f m > %.3f' % (st, mn['knee'], kmax_))
             if rowd['swivel'] > g['swivelFailDeg'] and st in g['footPlantClips']: bad.append('G-swivel %s leg fix needed %.1f deg > %.0f (source suspect)' % (st, rowd['swivel'], g['swivelFailDeg']))
             if 'rawToeL' in mn and not exc and st in g['toeGateClips']:
                 dl = abs(float(np.mean(mn['toeLm'])) - mn['rawToeL']); dr = abs(float(np.mean(mn['toeRm'])) - mn['rawToeR'])
@@ -339,11 +346,12 @@ def run(cfg, roster, reps, proj, outdir, live_override=None):
                 if mn.get('meshMin', 0.0) < -ml_: bad.append('G-floor %s body mesh sinks %.3f m under the floor > %.3f' % (st, -mn['meshMin'], ml_))
                 if mn['floorMin'] < -tl: bad.append('G-floor %s toe sinks %.3f m > %.3f' % (st, -mn['floorMin'], tl))
                 print('  G-floor %-12s meshSink %.3f (<=%.3f) toeSink %.3f (<=%.3f)' % (st, max(0, -mn.get('meshMin', 0.0)), ml_, max(0, -mn['floorMin']), tl))
-            if mn['armL'] < 9 and min(mn['armL'], mn['armR']) < acm and st in g['footPlantClips']: bad.append('G-arm %s sleeve-torso gap %.3f/%.3f m < %.4f' % (st, mn['armL'], mn['armR'], acm))
+            acm_ = float(wv.get('armClearanceMeshMinM', acm))   # SOBEKNEW v1
+            if mn['armL'] < 9 and min(mn['armL'], mn['armR']) < acm_ and st in g['footPlantClips']: bad.append('G-arm %s sleeve-torso gap %.3f/%.3f m < %.4f' % (st, mn['armL'], mn['armR'], acm_))
             nx = g.get('neckExempt', {}).get(st)
             if mn['head'] > g['headExtensionMaxDeg'] and not nx: bad.append('G-neck %s head extension %.1f deg > %.0f' % (st, mn['head'], g['headExtensionMaxDeg']))
             if mn['neck'] > g['neckExtensionMaxDeg'] and not nx: bad.append('G-neck %s neck extension %.1f deg > %.0f' % (st, mn['neck'], g['neckExtensionMaxDeg']))
-            if mn['sword'] < g['sword']['minClearanceM']: bad.append('G-sword %s blade segment %.3f m inside the head sphere' % (st, mn['sword']))
+            if mn['sword'] < float(wv.get('swordMinClearanceM', g['sword']['minClearanceM'])): bad.append('G-sword %s blade segment %.3f m inside the head sphere' % (st, mn['sword']))   # SOBEKNEW v1
             rows.append(rowd)
             print('  %-20s pose %s knee %+.3f(live %+.3f) toe %+5.1f/%+5.1f (live %+5.1f/%+5.1f) neck %5.1f head %5.1f(live %5.1f) sword %+.2f(live %+.2f) arm %.3f/%.3f(live %.3f/%.3f)' % (
                 st, ('%.1f/%.1f' % (pose['mean'], pose['max'])) if pose else '  n/a  ', mn['knee'], ml['knee'], mn['toeL0'], mn['toeR0'], ml['toeL0'], ml['toeR0'], mn['neck'], mn['head'], ml['head'], mn['sword'], ml['sword'],

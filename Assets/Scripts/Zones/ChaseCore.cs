@@ -8,6 +8,7 @@ using System;
     public float speedMulOfPlayerRun, startGap, stopGap, slowZoneM, accelMps2, giveUpGap, outOfReachGap, giveUpOutOfReachS, giveUpPauseS;
     public float homeSpeedMulOfWalk, homeArriveDist, followGateMaxGap, followArriveBehindM, runClipFromMps, walkClipBelowMps, animMin, animMax;
     public bool resetOnHome, followThroughGate;
+    public float handoverSlackM;   // FOESEP v1: hand back to the AI at gap <= stopGap + this (the speed ramp reaches stopGap only asymptotically: v108c stalled at 2.62 / 3.91 m)
 }
 
 public enum ChaseMode { Fight, Chase, Pause, Home, Done }
@@ -28,7 +29,7 @@ public static class ChaseCore
         }
         if (s.mode == ChaseMode.Chase)
         {
-            if (gap <= r.stopGap) { s.mode = ChaseMode.Fight; s.speed = 0f; s.outTicks = 0; return 0f; }
+            if (gap <= r.stopGap + r.handoverSlackM) { s.mode = ChaseMode.Fight; s.speed = 0f; s.outTicks = 0; return 0f; }
             s.outTicks = gap > r.outOfReachGap ? s.outTicks + n : 0;
             if (gap > r.giveUpGap || s.outTicks / 60f > r.giveUpOutOfReachS || (leash > 0f && homeDist > leash)) { s.mode = ChaseMode.Pause; s.pauseTicks = 0; s.speed = 0f; return 0f; }
             float ramp = r.slowZoneM > 0f ? Math.Max(0f, Math.Min(1f, (gap - r.stopGap) / r.slowZoneM)) : 1f;

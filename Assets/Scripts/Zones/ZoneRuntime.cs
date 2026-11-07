@@ -24,7 +24,7 @@ public sealed class ZoneRuntime : MonoBehaviour
     readonly HashSet<string> warned = new HashSet<string>(), noPrefab = new HashSet<string>();
     readonly Dictionary<string, AsyncOperation> loading = new Dictionary<string, AsyncOperation>();
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Inst = null; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Inst = null; FoeId = ""; }   /* TWOFIGHT v1 */
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
@@ -86,7 +86,14 @@ public sealed class ZoneRuntime : MonoBehaviour
         zone = z; if (spot.Length > 0) lastSpot = spot; ArenaLimits.ZoneZMax = z.limits != null ? z.limits.zMax : float.NaN; arriveGraceUntil = 0f; UpdateRift(true); LookSpawns(false); return true;
     }
     public void SpanRestoreLimits() { if (zone != null) ArenaLimits.ZoneZMax = zone.limits != null ? zone.limits.zMax : float.NaN; }
-    public void SpanWarm(string zoneId) { var z = ZoneData.Zone(zoneId); if (!on || z == null || z == zone || phase != Phase.Play) return; var keep = zone; zone = z; LookSpawns(true); zone = keep; }
+    public void SpanWarm(string zoneId) { var z = ZoneData.Zone(zoneId); if (!on || z == null || z == zone || phase != Phase.Play) return; var keep = zone; zone = z; long zs = ZoneHitch.Mark(); LookSpawns(true); ZoneHitch.Lap("spanWarm.lookSpawns " + zoneId, ref zs); zone = keep; }
+    // ZONEHITCH v1: load (and keep) every Resources prefab a zone spawn row can pick, before the player walks there; returns those prefab assets (ZoneHitch draws their materials once). Never instantiates, never touches `live`.
+    public List<GameObject> SpanPreload()
+    {
+        var r = new List<GameObject>(); if (T == null || T.zones == null) return r;
+        foreach (var q in T.zones) { if (q == null || q.spawns == null) continue; foreach (var s in q.spawns) { if (s == null || !s.enabled || s.picks == null) continue; foreach (var p in s.picks) { if (p == null) continue; var c = ZoneData.Creature(p.creature); if (c == null || c.source != "resources") continue; var g = Template(p.creature); if (g != null && !r.Contains(g)) r.Add(g); } } }
+        return r;
+    }
     public int SpanDespawn(string zoneId)   // idle creatures of that zone only: never an engaged one, never a corpse
     {
         List<string> rm = null;
@@ -176,7 +183,7 @@ public sealed class ZoneRuntime : MonoBehaviour
     {
         GameObject g; if (templates.TryGetValue(creature, out g) && g != null) return g;
         var c = ZoneData.Creature(creature);
-        if (c != null && c.source == "resources" && c.path.Length > 0 && !noPrefab.Contains(creature)) { g = Resources.Load<GameObject>(c.path); if (g != null) { templates[creature] = g; return g; } noPrefab.Add(creature); }
+        if (c != null && c.source == "resources" && c.path.Length > 0 && !noPrefab.Contains(creature)) { long zt = ZoneHitch.Mark(); g = Resources.Load<GameObject>(c.path); ZoneHitch.Lap("template.load " + creature, ref zt); if (g != null)  /* ZONEHITCH v1 */ { templates[creature] = g; return g; } noPrefab.Add(creature); }
         return null;
     }
 
@@ -188,6 +195,7 @@ public sealed class ZoneRuntime : MonoBehaviour
     }
     void SpawnOne(ZSpawn row, int gen)
     {
+        long zh = ZoneHitch.Mark();  /* ZONEHITCH v1 */
         var w = new int[row.picks.Length];
         for (int i = 0; i < w.Length; i++) w[i] = (row.picks[i] != null && Template(row.picks[i].creature) != null) ? Mathf.Max(0, row.picks[i].weight) : 0;
         int idx = ZoneCore.PickCreature(zone.id, row.id, gen, w);
@@ -196,18 +204,19 @@ public sealed class ZoneRuntime : MonoBehaviour
         bool hasPos = sp != null && sp.pos.Length >= 2;
         if (!hasPos && (tpl.scene.IsValid() == false)) { Warn(row.id, "[Zones] spawn " + row.id + ": spot has no pos and the creature is not a scene object, skipped"); return; }
         Vector3 home = hasPos ? SpotPos(sp, tpl.transform.position) : tpl.transform.position; float yaw = sp != null ? sp.yaw : 0f;
-        var go = Instantiate(tpl, home, Quaternion.Euler(0f, yaw, 0f)); go.name = Roster.Get(cid).objectName + "#" + row.id;
+        var go = Instantiate(tpl, home, Quaternion.Euler(0f, yaw, 0f)); go.name = Roster.Get(cid).objectName + "#" + row.id; ZoneHitch.Lap("spawn.instantiate " + cid, ref zh);  /* ZONEHITCH v1 */
         var df = go.GetComponent<DuelFighter>(); var br = go.GetComponent<AIBrain>();
         if (df == null) { Destroy(go); Warn(row.id, "[Zones] spawn " + row.id + ": clone has no DuelFighter"); return; }
         if (br != null) br.enabled = false;   // dormant until the player walks into its aggro radius
-        { var zc = ZoneData.Creature(cid); if (zc != null && zc.source == "resources") AttachRuntime(go); }   // ZONES-ATTACH v1: a prefab saved in the editor has none of the AfterSceneLoad attachments
+        { var zc = ZoneData.Creature(cid); if (zc != null && zc.source == "resources") AttachRuntime(go); } ZoneHitch.Lap("spawn.attachers", ref zh);  /* ZONEHITCH v1 */   // ZONES-ATTACH v1: a prefab saved in the editor has none of the AfterSceneLoad attachments
         ApplyRow(df, br, row);
         if (go.GetComponent<ArenaLimits>() == null && go.GetComponent<CharacterController>() != null) go.AddComponent<ArenaLimits>();
         go.SetActive(true);
         RagdollDeath.PrebuildOne(go);   // KILLBUG v1: a Resources clone has no rig yet: build it now (rest pose) instead of at death
-        var lv = new Live { row = row, creature = cid, gen = gen, go = go, df = df, brain = br, home = home, homeYaw = yaw, zoneId = zone.id };
+        ZoneHitch.Lap("spawn.apply+activate", ref zh); var lv = new Live { row = row,  /* ZONEHITCH v1 */
+         creature = cid, gen = gen, go = go, df = df, brain = br, home = home, homeYaw = yaw, zoneId = zone.id };
         { var cr = ChaseTable.Enabled ? ChaseTable.Row(cid) : null; if (cr != null) { lv.chase = go.AddComponent<ChaseAgent>(); lv.chase.Init(df, player, home, row.leash, cr, false); } }   // CHASE v1
-        live[row.id] = lv;
+        ZoneHitch.Lap("spawn.chase", ref zh); live[row.id] = lv;  /* ZONEHITCH v1 */
         if (GameLoop.Enemy == null) GameLoop.Enemy = df;
     }
 
@@ -224,17 +233,46 @@ public sealed class ZoneRuntime : MonoBehaviour
     // ------------------------------------------------------------------ fights begin when you approach
     // MULTI v1 (INT107, Dom 08:19): with engage.maxEngaged > 1 the player's TARGET (hits, lock camera, HUD bar and name, finisher victim) is the nearest engaged enemy; it switches only when another is nearer
     // by engage.retargetMarginM, or the target is gone / dead. No lock-switch input exists in CameraRig / PlayerBrain, so none is invented. With one engaged enemy this is the old behaviour exactly.
-    bool TargetOk(DuelFighter f) { if (f == null || f.Dead) return false; var q = Find(f); return q != null && q.engaged && !q.killed; }
+    bool TargetOk(DuelFighter f) { if (f == null || f.Dead) return false; var q = Find(f); return q != null && Fighting(q); }   // TWOFIGHT v1: Fighting() = engaged, alive and not walking home
     bool OthersEngaged(DuelFighter v) { foreach (var q in live.Values) if (q.engaged && !q.killed && q.df != null && !q.df.Dead && q.df != v) return true; return false; }
     public static bool FinisherBlocked(DuelFighter victim) { return Inst != null && !Inst.T.engage.finisherWithOthers && Inst.OthersEngaged(victim); }   // RTFinisher.TryBegin: plain death while another enemy is still on you
+    // TWOFIGHT v1 (laneTWOFIGHT): the two-enemy rules. Every switch is a row of zones.json twoFight; zones off = none of this runs.
+    /// <summary>Creature id of the player's target. RTFinisher.SideOf and FinisherSides.IdOf read it: Roster.EnemyId is the scene's default enemy (Pitborn), so Sobek was "the player's side" and no finisher could start on or by him.</summary>
+    public static string FoeId = "";
+    /// <summary>Engaged, alive and not walking home: an enemy that gave up (ChaseAgent Pause / Home, its own opponent already null) is neither a target nor a combatant.</summary>
+    bool Fighting(Live q) { return q.engaged && !q.killed && !(T.twoFight.skipGivingUp && q.chase != null && q.chase.GivingUpNow); }
+    bool OthersEngagedNot(DuelFighter v, DuelFighter killer) { foreach (var q in live.Values) if (q.engaged && !q.killed && q.df != null && !q.df.Dead && q.df != v && q.df != killer) return true; return false; }
+    /// <summary>RTFinisher.TryBegin: for a finisher ON the player, the enemy that lands the blow is not "another enemy"; for an enemy victim the existing rule.</summary>
+    public static bool FinisherBlocked(DuelFighter killer, DuelFighter victim)
+    {
+        if (Inst == null) return false;
+        if (!Inst.T.twoFight.killerExempt || victim != Inst.player) return FinisherBlocked(victim);
+        return !Inst.T.engage.finisherWithOthers && Inst.OthersEngagedNot(victim, killer);
+    }
+    /// <summary>FOESEP v1: the other fighting enemy beside `self`; null when self is not a fighting live enemy or it is alone. No allocation (struct enumerator over 2-3 entries).</summary>
+    public static DuelFighter PeerOf(DuelFighter self)
+    {
+        if (Inst == null || !Inst.on || self == null) return null;
+        bool mine = false; DuelFighter other = null;
+        foreach (var q in Inst.live.Values) { if (q.df == null || q.df.Dead) continue; if (q.df == self) { mine = Inst.Fighting(q); continue; } if (other == null && Inst.Fighting(q)) other = q.df; }
+        return mine ? other : null;
+    }
+    /// <summary>The second enemy that is fighting (not `target`), for the HUD; null when there is none.</summary>
+    public static DuelFighter SecondFoe(DuelFighter target) { if (Inst == null || !Inst.on) return null; foreach (var q in Inst.live.Values) if (q.df != null && q.df != target && !q.df.Dead && Inst.Fighting(q)) return q.df; return null; }
+    /// <summary>hub.json safe.monsters.chasers.atThreshold = stopAndGoHome: while the player is in a safe zone every engaged chaser drops aggro and walks home (nothing in code read that row; they stood at the door and kept the HUD bar and the regen lock).</summary>
+    void SafeZoneGiveUp()
+    {
+        if (zone == null || !(zone.safe || HubSafe.PlayerInside())) return;
+        foreach (var l in live.Values) if (l.engaged && !l.killed && l.df != null && !l.df.Dead && l.chase != null && l.chase.GiveUp()) Debug.Log("[Zones] safe zone: " + l.row.id + " drops aggro and walks home");
+    }
     void Retarget(bool force)
     {
         Live cur = TargetOk(player.opponent) ? Find(player.opponent) : null, best = null; float bd = float.MaxValue, cd = cur != null ? Flat(player.transform.position, cur.df.transform.position) : float.MaxValue;
-        foreach (var q in live.Values) { if (q.df == null || !q.engaged || q.killed || q.df.Dead) continue; float d = Flat(player.transform.position, q.df.transform.position); if (d < bd) { bd = d; best = q; } }
+        foreach (var q in live.Values) { if (q.df == null || q.df.Dead || !Fighting(q)) continue; float d = Flat(player.transform.position, q.df.transform.position);   /* TWOFIGHT v1 */ if (d < bd) { bd = d; best = q; } }
         if (best == null) return;
         if (cur != null && best != cur && bd + T.engage.retargetMarginM > cd) best = cur;
         if (best.df == player.opponent && !force) return;
-        player.opponent = best.df; GameLoop.Enemy = best.df;
+        player.opponent = best.df; GameLoop.Enemy = best.df; FoeId = best.creature;   // TWOFIGHT v1
         var rg = FindFirstObjectByType<CameraRig>(); if (rg != null) { rg.enemy = best.df.transform; rg.enemyHp = best.df.GetComponent<Health>(); }
         var orw = GameLoop.Opponents().rows; if (best.row.ladderRow.Length > 0 && orw != null) for (int i = 0; i < orw.Length; i++) if (orw[i] != null && orw[i].id == best.row.ladderRow) { GameLoop.OpponentIndex = i; break; }
     }
@@ -242,6 +280,9 @@ public sealed class ZoneRuntime : MonoBehaviour
     void Engagement()
     {
         if (phase != Phase.Play) return;
+        if (T.twoFight.noEngageInFinisher && RTFinisher.Busy) return;   // TWOFIGHT v1: nobody new engages (and the target is not re-picked) while a finisher scene owns both fighters: Engage() during the scene set player.opponent, then RTFinisher.Release nulled it
+        if (T.twoFight.healTarget && EngagedCount() > 0 && !TargetOk(player.opponent)) Retarget(true);   // TWOFIGHT v1: a target that is missing, dead or gave up while another enemy is engaged (Release / ChaseAgent clear player.opponent; the old retarget only ran with 2+ engaged)
+        if (T.twoFight.safeZoneGiveUp) SafeZoneGiveUp();   // TWOFIGHT v1
         Vector3 pp = player.transform.position;
         foreach (var l in live.Values)
         {

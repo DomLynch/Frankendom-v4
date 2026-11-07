@@ -85,9 +85,9 @@
   },
   {
    "match": "Pitborn",
-   "bloodScale": 0.65,
-   "sparks": true,
-   "flash": true
+   "bloodScale": 1.0,
+   "sparks": false,
+   "flash": false
   },
   {
     "match": "Sobek",

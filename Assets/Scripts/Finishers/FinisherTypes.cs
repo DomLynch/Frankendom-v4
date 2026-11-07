@@ -281,7 +281,7 @@ public class CapMaterialCfg
 // Roster sides of a finisher: side 0 = the roster player, side 1 = the roster enemy. The killer weapon comes from roster.json ("weapon" of that character row).
 public static class FinisherSides
 {
-    public static string IdOf(int side) { return side == 0 ? Roster.PlayerId : Roster.EnemyId; }
+    public static string IdOf(int side) { return side == 0 ? Roster.PlayerId : (ZoneRuntime.FoeId.Length > 0 ? ZoneRuntime.FoeId : Roster.EnemyId); }   // TWOFIGHT v1: in a zone run the enemy side is the player's current target
     public static string WeaponOf(int side) { return Roster.Get(IdOf(side)).weapon; }
     // finishers.json attackerSide: "any" / "" = both sides, "player" / "enemy" = that roster side, anything else = a character id (old files named the character)
     public static bool Matches(string attackerSide, int side)

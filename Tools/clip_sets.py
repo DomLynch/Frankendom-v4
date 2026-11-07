@@ -59,8 +59,18 @@ def root_motion(c, mode, max_step):
     return travel, float(np.max(np.linalg.norm(v[:, :2] - h0, axis=1)))
 
 
-def retarget_plain(path, corr, rig_z, mode, max_step, hips_y=0.0, ratio_from=None, corr_override=None):
+def roll_scale_hips(q, k, axis):
+    """PITNEW v1: scale the roll (rotation about `axis` in the source world frame) of a Hips rotation track toward the rest pose (same maths as clip_build PITNEW v1)"""
+    qm = np.array([-math.sqrt(.5), 0, 0, math.sqrt(.5)]); ax_ = np.array(axis, float)
+    w_ = L.qmul(q, L.qinv(qm)); ang = 2 * np.arctan2(w_[:, :3] @ ax_, w_[:, 3])
+    tw = np.concatenate([ax_[None, :] * np.sin(ang / 2)[:, None], np.cos(ang / 2)[:, None]], 1)
+    sw = L.qmul(w_, L.qinv(tw)); tw2 = np.concatenate([ax_[None, :] * np.sin(k * ang / 2)[:, None], np.cos(k * ang / 2)[:, None]], 1)
+    return L.qmul(L.qmul(sw, tw2), qm)
+
+
+def retarget_plain(path, corr, rig_z, mode, max_step, hips_y=0.0, ratio_from=None, corr_override=None, roll=None):
     c = CB.Clip(path)
+    if roll is not None: c.rot['mixamorig:Hips'] = roll_scale_hips(c.rot['mixamorig:Hips'], float(roll[0]), roll[1])    # PITNEW v1
     z = ratio_from if ratio_from else c.hips_rest_z
     ratio = min(3.0, max(0.33, rig_z / z))
     cc = corr_override if corr_override is not None else corr
@@ -115,7 +125,7 @@ def build_set(cfg, ccfg, roster, proj, cid, setname, outdir, live_emul=False):
         else:
             corr_o = None
             if live_emul: corr_o = np.array(r['liveCorr']) if r.get('liveCorr') else None
-            c, ratio, tb, ta = retarget_plain(src, corr, rig_z, mode, ms, float(r.get('hipsYOffsetM', 0.0)), r.get('hipsRestZ') if live_emul else None, corr_o)
+            c, ratio, tb, ta = retarget_plain(src, corr, rig_z, mode, ms, float(r.get('hipsYOffsetM', 0.0)), r.get('hipsRestZ') if live_emul else None, corr_o, (float(r['hipsRollScale']), r.get('rollAxis', [0, 1, 0])) if r.get('hipsRollScale') is not None else None)
             info.update({'ratio': round(float(ratio), 4), 'rootMotion': mode, 'hipsTravelBeforeM': round(tb, 3), 'hipsTravelAfterM': round(ta, 3), 'posture': False})
         info['frames'] = int(len(c.times)); info['durationS'] = round(float(c.times[-1]), 4); info['channels'] = len(c.rot) + 1
         clips.append((r['state'], c)); rep.append(info)

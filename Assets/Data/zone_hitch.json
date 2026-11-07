@@ -1,0 +1,34 @@
+{
+  "_about": "ZONEHITCH v1 (laneZONEHITCH), read by Assets/Scripts/Zones/ZoneHitch.cs. Only runs when the zone span is bound (zones on). log = one-frame timing of every zone step + a FRAME line for any frame over frameMs (names the culprit in the player log and the zonexing json/csv). spread.rowsPerFrame = ring rows switched per frame (0 = whole ring at once, the v107 behaviour). warm = behind an opaque cover once the span is bound: load the creature prefabs, draw their materials, render each ring once with a small temporary camera, touch the skyline. Flags: -zonehitch:off (all off, paired proof baseline), -zonehitch:log (timing only). UNPROVEN IN UNITY.",
+  "enabled": true,
+  "log": {
+    "enabled": true,
+    "toXing": true,
+    "stepMs": 6.0,
+    "frameMs": 120.0,
+    "maxLines": 300,
+    "_about": "stepMs: a step at or over this is logged and sent to the zonexing marker column as ms:<step>=<ms>. frameMs: a frame at or over this gets a FRAME line (zone-code ms vs outside zone code, z, GC, texture streaming, memory)."
+  },
+  "spread": {
+    "rowsPerFrame": 16,
+    "_about": "A ring group (40-114 rows) is woken or retired 16 rows per frame instead of in one SetActive (v107: 93-361 ms frames at ring switches). 0 = off."
+  },
+  "warm": {
+    "enabled": true,
+    "prefabs": true,
+    "materials": true,
+    "rings": true,
+    "skyline": true,
+    "cover": true,
+    "startDelaySeconds": 0.25,
+    "camHeightM": 4.0,
+    "camBackM": 16.0,
+    "camFov": 60.0,
+    "camFar": 400.0,
+    "framesBetween": 1,
+    "rtWidth": 320,
+    "rtHeight": 200,
+    "maxFrames": 600,
+    "_about": "Pays the first-use cost of the later zones before the player walks there. cover = opaque black IMGUI cover while it runs (player runs only). rt = the small render target of the temporary camera."
+  }
+}

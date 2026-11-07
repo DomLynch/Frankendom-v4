@@ -353,7 +353,7 @@ public class AIBrain : MonoBehaviour
         if (s.decision <= 0f)
         {
             float r = s.Roll();
-            s.decision = D.guardHoldBase + Mathf.Floor(r * D.guardHoldSpread); s.side = (s.seed & 1u) != 0u ? 1 : -1;
+            s.decision = D.guardHoldBase + Mathf.Floor(r * D.guardHoldSpread); s.side = (s.seed & 1u) != 0u ? 1 : -1; { int fs = FoeSep.CircleSide(df, o); if (fs != 0) s.side = fs; }   /* FOESEP v1 */
             s.mode = (low || shaky) ? (gap < D.lowRetreatGap || df.stamina < rollCost ? AiMode.Retreat : AiMode.Circle)
                 : gap > D.farApproachGap ? AiMode.Approach : gap < 1f ? AiMode.Retreat : (r < D.guardRollShare * guardShare ? AiMode.Guard : AiMode.Circle);
         }
@@ -520,6 +520,7 @@ public class AIBrain : MonoBehaviour
                     if (zb.cmp == "gt" ? z > lim : z < lim) v += new Vector3(0f, 0f, zb.push);
                 }
             }
+            v += FoeSep.BrainOrbit(df, o);   // FOESEP v1: flank the other enemy (zero for one enemy)
             df.moveDir = Vector3.ClampMagnitude(v, 1f);
             df.run = it.run || (it.closing && to.magnitude > U.runBeyondDist);
         }

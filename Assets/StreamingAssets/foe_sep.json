@@ -1,0 +1,39 @@
+{
+  "_about": "laneFOESEP v1 (UNPROVEN in Unity): two enemies on Joan at once keep apart from each other and take different sides of her. Read by FoeSep.cs; zones only (needs two fighting enemies, so the single duel and zones-off never read it). enabled false = the v108c behaviour.",
+  "enabled": true,
+  "separate": {
+    "_about": "minimum distance between the two enemy bodies = max(minM, halfWidth(a) + halfWidth(b) + padM). The rear one (farther from Joan; inside yieldMarginM the name order decides) side-steps along the tangent round Joan, at most maxStepM per 60 Hz tick (0.03 = 1.8 m/s), so it never changes his distance to Joan to first order. radialShare 0 = purely tangential; above 0 mixes in straight-away-from-the-peer motion (can push him out of her reach).",
+    "padM": 0.5,
+    "minM": 1.6,
+    "maxStepM": 0.03,
+    "yieldMarginM": 0.3,
+    "radialShare": 0.0
+  },
+  "spread": {
+    "_about": "flank: while the two enemies stand closer than minAngleDeg as seen from Joan, the rear one gets a tangential move input (orbitGain, in moveDir units, fading to 0 over rampDeg) away from the other. inBrain = added in AIBrain.Apply, inChase = bends the chase heading (the gap hand-over is unchanged), aiSide = the AI circle side follows it. rangeM = only while the pair is closer than this.",
+    "minAngleDeg": 50.0,
+    "rampDeg": 20.0,
+    "orbitGain": 0.45,
+    "rangeM": 8.0,
+    "aiSide": true,
+    "inBrain": true,
+    "inChase": true
+  },
+  "bodies": [
+    {
+      "id": "*",
+      "halfWidthM": 0.0,
+      "_about": "0 = the fighter's own DuelFighter.radius (prefab collider radius; Pitborn 0.595, Sobek 0.595 today)"
+    },
+    {
+      "id": "Pitborn",
+      "halfWidthM": 0.72,
+      "_about": "seed = today's radius. lanePITNEW is wider: set the new half width here (metres, centre to the side), no code change"
+    },
+    {
+      "id": "Sobek",
+      "halfWidthM": 0.6,
+      "_about": "seed = today's radius. laneSOBEKNEW is thin with a big head: the width is the body, put the head extra into padM or the row; no code change"
+    }
+  ]
+}

@@ -39,6 +39,15 @@
     "spawnMinDistance": 30,
     "_about": "INT107 (Dom): maxEngaged 2 = Pitborn and Sobek can be on you together (both brains attack the player; target = nearest engaged, switches when another is nearer by retargetMarginM; finisherWithOthers false = plain death while another enemy is engaged). 1 = the duel stays 1 v 1 (the sim and the camera are tuned for it); a camp of 2 is a later Dom decision. spawnMinDistance: a creature whose timer ran out while you stand in its zone appears only when you are at least this far from its spot, or when you arrive through a gate (hidden by the flash); in a small arena that means it appears when you arrive, never in front of you."
   },
+  "twoFight": {
+    "_about": "laneTWOFIGHT v1 (UNPROVEN in Unity): the rules for two enemies on the player at once. skipGivingUp: an enemy that gave up (chase Pause / Home) is neither a target nor a combatant when the target is picked. healTarget: the target is re-picked at once when it is missing, dead or gave up while another enemy is engaged (a finisher ends with player.opponent null). noEngageInFinisher: nobody new engages while a finisher scene runs. killerExempt: an enemy's finisher on the player is blocked only by ANOTHER engaged enemy, not by the killer itself. safeZoneGiveUp: engaged chasers drop aggro and walk home while the player is inside a safe zone (the row hub.json safe.monsters.chasers.atThreshold stopAndGoHome that no code read). resetBarOnSwitch: the boss bar damage trail restarts when the target changes. false = the v108 behaviour of that rule.",
+    "skipGivingUp": true,
+    "healTarget": true,
+    "noEngageInFinisher": true,
+    "killerExempt": true,
+    "safeZoneGiveUp": true,
+    "resetBarOnSwitch": true
+  },
   "crossing": {
     "cover": {
       "color": [

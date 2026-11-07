@@ -11,7 +11,7 @@ using UnityEngine;
 public class HeadClamp : MonoBehaviour
 {
     [System.Serializable] public class Limit { public string id; public string[] states; public float yaw = 45f, pitch = 20f; public bool off; }
-    [System.Serializable] public class Look { public bool enabled; public float weight = 0.5f, fadeStartDeg = 90f, fadeEndDeg = 120f, followSeconds = 0.15f, targetHeight = 1.5f; }
+    [System.Serializable] public class Look { public bool enabled; public float weight = 0.5f, fadeStartDeg = 90f, fadeEndDeg = 120f, followSeconds = 0.15f, targetHeight = 1.5f; public float yawWeight = -1f, pitchWeight = -1f, maxDownDeg = 0f; public bool offInFinisher = true; /* SOBEKSIZE v1: yawWeight / pitchWeight < 0 = use weight; maxDownDeg > 0 caps the downward tilt (deg); offInFinisher = no look while RTFinisher.Busy or dead */ }
     [System.Serializable] public class Row
     {
         public string name; public bool enabled = true; public bool debug;
@@ -200,7 +200,11 @@ public class HeadClamp : MonoBehaviour
             float fade = 1f - Mathf.InverseLerp(row.look.fadeStartDeg, Mathf.Max(row.look.fadeStartDeg + 1f, row.look.fadeEndDeg), off);
             Vector3 local = Quaternion.Inverse(root.rotation * tp) * to.normalized; float ty, tpp; YawPitch(Quaternion.LookRotation(local), out ty, out tpp);
             float k = row.look.followSeconds > 0f ? 1f - Mathf.Exp(-Time.deltaTime / row.look.followSeconds) : 1f;
-            lookYaw = Mathf.Lerp(lookYaw, ty * row.look.weight * fade, k); lookPitch = Mathf.Lerp(lookPitch, tpp * row.look.weight * fade, k);
+            // SOBEKSIZE v1: per-axis weight, a downward cap in degrees, and the clamp category on/off weight (Sobek row: knockdown / death / get_up / hit_heavy / stagger_loop) + the finisher / dead gate fade the look out
+            float lw = fade * on * ((row.look.offInFinisher && (RTFinisher.Busy || (me != null && me.Dead))) ? 0f : 1f);
+            float yw = row.look.yawWeight >= 0f ? row.look.yawWeight : row.look.weight, pw = row.look.pitchWeight >= 0f ? row.look.pitchWeight : row.look.weight;
+            float wantP = tpp * pw; if (row.look.maxDownDeg > 0f) wantP = Mathf.Max(wantP, -row.look.maxDownDeg);
+            lookYaw = Mathf.Lerp(lookYaw, ty * yw * lw, k); lookPitch = Mathf.Lerp(lookPitch, wantP * lw, k);
             Quaternion rel = Quaternion.Inverse(tp) * Pose(head, qHead); float ry, rp; YawPitch(rel, out ry, out rp);
             // add the look turn on top of the animated head pose (about the torso up / right axes)
             Quaternion add = Quaternion.AngleAxis(lookYaw, Vector3.up) * Quaternion.AngleAxis(-lookPitch, Vector3.right);

@@ -33,7 +33,7 @@ public static class RTFinisher
 
     internal static void Stage(string what, string detail) { if (OnStage != null) { try { OnStage(what, detail); } catch (Exception e) { Debug.LogWarning("[finisher] stage handler: " + e.Message); } } }
 
-    public static int SideOf(DuelFighter f) { string en = Roster.EnemyObject; return f.name.Contains(en) || f.transform.root.name.Contains(en) ? 1 : 0; }   // 1 = roster enemy, 0 = roster player (FinisherSides)
+    public static int SideOf(DuelFighter f) { string en = ZoneRuntime.FoeId.Length > 0 ? Roster.Get(ZoneRuntime.FoeId).objectName /* TWOFIGHT v1: zone target (Sobek), not the scene default */ : Roster.EnemyObject; return f.name.Contains(en) || f.transform.root.name.Contains(en) ? 1 : 0; }   // 1 = roster enemy, 0 = roster player (FinisherSides)
     static FinisherMove MoveOf(MoveDef m)
     {
         string id = m != null ? m.id : "";
@@ -58,7 +58,7 @@ public static class RTFinisher
     // deathblow = a posture-break deathblow (V61B): the scene starts even when the hit did not take the HP to zero; the scene's own Die() is the kill
     public static bool TryBegin(DuelFighter a, DuelFighter d, MoveDef m, bool deathblow)
     {
-        if (ZoneRuntime.FinisherBlocked(d)) return false;   // MULTI v1 (INT107): another enemy is engaged and engage.finisherWithOthers is false: plain death
+        if (ZoneRuntime.FinisherBlocked(a, d)) return false;   /* TWOFIGHT v1: the killer is not "another enemy" when the victim is the player */   // MULTI v1 (INT107): another enemy is engaged and engage.finisherWithOthers is false: plain death
         try
         {
             if (!Enabled || Busy || a == null || d == null) return false;

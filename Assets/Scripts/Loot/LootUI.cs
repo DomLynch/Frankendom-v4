@@ -27,6 +27,7 @@ public sealed class LootUI : MonoBehaviour
     string toastName = "", toastSub = ""; float toastAt = -99f; GearItem toastItem;
     LootPickup near; float nearDist; KeyCode[] kPickup; object keyOwner; static bool? demoFlag;
     static readonly RaycastHit[] hits = new RaycastHit[24];
+    float zoneDropAt = -1f;   // TRADEFIN v1: zones never set GameLoop.Outcome (GameLoopDriver stands down), so a kill drop is timed from its own event
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Instance = null; PickupInReach = false; demoFlag = null; }
 
@@ -64,13 +65,14 @@ public sealed class LootUI : MonoBehaviour
     {
         LootScreen.ForceClose();
         for (int i = 0; i < live.Count; i++) if (live[i] != null) Destroy(live[i].gameObject);
-        live.Clear(); queue.Clear(); victorySeen = spawnedVictory = fallbackDone = demoDone = applyDone = false; frames = 0; sceneStart = Time.unscaledTime; near = null; PickupInReach = false;
+        live.Clear(); queue.Clear(); zoneDropAt = -1f; victorySeen = spawnedVictory = fallbackDone = demoDone = applyDone = false; frames = 0; sceneStart = Time.unscaledTime; near = null; PickupInReach = false;
     }
 
     void OnDropped(string itemId, Vector3 pos)
     {
         if (string.IsNullOrEmpty(itemId)) return;
         queue.Add(new Drop { id = itemId, pos = pos });
+        if (ZoneRuntime.Owns && zoneDropAt < 0f) zoneDropAt = Time.unscaledTime;   // TRADEFIN v1
         if (LootCfg.Get().debugLog) Debug.Log("[LootUI] drop queued " + itemId + " at " + pos);
     }
 
@@ -98,11 +100,12 @@ public sealed class LootUI : MonoBehaviour
         bool ready;
         if (demo) ready = now - sceneStart >= C.demo.spawnAfterS;
         else if (!P.requireVictory) ready = true;
+        else if (ZoneRuntime.Owns && P.zoneDropDelayS >= 0f) { if (RTFinisher.Busy && zoneDropAt >= 0f) zoneDropAt = now; ready = zoneDropAt >= 0f && now - zoneDropAt >= P.zoneDropDelayS; }   // TRADEFIN v1: the delay counts from the end of the finisher scene
         else ready = victorySeen && now - victoryT >= P.spawnDelayS;
 
         if (ready)
         {
-            if (queue.Count > 0) { SpawnQueued(); spawnedVictory = true; }
+            if (queue.Count > 0) { SpawnQueued(); spawnedVictory = true; zoneDropAt = -1f; }  /* TRADEFIN v1 */
             else if (demo) { if (!demoDone) { demoDone = true; DropDemo(C, pl); spawnedVictory = true; } }
             else if (!fallbackDone && victorySeen && !LootBridge.HasDropSource && P.fallbackDrops && now - victoryT >= P.spawnDelayS + P.fallbackAfterS)
             {
@@ -259,7 +262,7 @@ public sealed class LootUI : MonoBehaviour
     void DrawEquipHint(LootCfg.Data C, float vw, float vh)
     {
         var S = C.screen; if (!S.showEquipHint || LootSave.Owned.Count == 0) return;
-        if (GameLoop.Outcome == GameLoop.Result.None && !DemoOn()) return;
+        if (GameLoop.Outcome == GameLoop.Result.None && !DemoOn() && !ZoneRuntime.Owns) return;   // TRADEFIN v1
         if (!LootScreen.CanOpen(DemoOn())) return;
         LootDraw.Text(new Rect(0f, vh - S.equipHintBottom, vw, S.equipHintSize * 1.6f), C.text.equipHint.ToUpperInvariant(), "serif", S.equipHintSize, TextAnchor.UpperCenter, false, LootCfg.Col(C.colors.dim));
     }
