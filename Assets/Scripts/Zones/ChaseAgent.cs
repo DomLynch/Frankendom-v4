@@ -88,7 +88,7 @@ public sealed class ChaseAgent : MonoBehaviour
             }
             else { df.moveDir = Vector3.zero; df.run = false; }
         }
-        if (Owning && anim != null && df.moveDir.sqrMagnitude > 0.0001f)   // presentation only: after DuelFighter.Update wrote anim.speed this frame
+        if (Owning && anim != null && df.moveDir.sqrMagnitude > 0.0001f && !(LocoDir.Enabled && df.locoDir.Applied) /* LOCODIR v1: LocoDir owns the leg speed of a row character */)   // presentation only: after DuelFighter.Update wrote anim.speed this frame
         {
             float nominal = df.run ? df.runSpeed : df.walkSpeed, v = df.moveDir.magnitude * nominal;
             anim.speed *= ChaseCore.AnimSpeed(v, nominal, row.animMin, row.animMax);

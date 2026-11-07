@@ -670,6 +670,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         viewInterp.Push(transform.position, snapView); snapView = false;
     }
     bool faceOppV, snapView; ViewInterp viewInterp;
+    public readonly LocoDir.Meter locoDir = new LocoDir.Meter();   // LOCODIR v1: per-fighter velocity meter / clip pick / speed match (loco_dir.json; off or no row = today)
     public Vector3 ViewPosition { get { return viewInterp != null ? viewInterp.ViewPos : transform.position; } }   // for the camera / HUD (never the sim)
 
     void Update()
@@ -693,6 +694,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
                 bool strafe = faceOpp && Mathf.Abs(lm.x) > Mathf.Abs(lm.z) * StrafeRatio && !runNow /* DATALAYER b10 */;
                 clip = strafe ? (lm.x < 0 ? "strafe_L" : "strafe_R") : (runNow ? "run" : "walk");
             }
+            if (moving && LocoDir.Enabled) clip = locoDir.Choose(this, transform, moveDir, faceOpp, runNow, guarding, clip, Time.time, dt);   // LOCODIR v1: clip by the real direction of travel with this character's states (row in loco_dir.json; no row / empty state / guard-walk = clip unchanged)
             if (guarding && !moving) clip = pose;
             if (guarding && moving)
             {
@@ -706,6 +708,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
                 else if (f.Current != clip) { f.PlayExact(clip, fadeOutLen); fadeOutLen = 0f; }   // first locomotion clip after an attack: the row's blendOut
             }
             else f.Play(clip, LocoBlendS); /* DATALAYER b10 */
+            if (LocoDir.Enabled) f.anim.speed = locoDir.Speed(f.anim.speed, dt, f.anim.transform, scale);   // LOCODIR v1: Animator speed = body speed / (stride x model scale), rate limited; no row / guard-walk / no stride = speed unchanged
         }
         UpdateGuardLayer(upperPose, dt);
     }

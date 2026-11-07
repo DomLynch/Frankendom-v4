@@ -87,6 +87,30 @@
       ]
     },
     {
+      "character": "Joan",
+      "controller": "Assets/Characters/Joan.controller",
+      "baseGlb": "Assets/Characters/Joan/Joan_combat.glb",
+      "outGlb": "Assets/Characters/Joan/Joan_loco_baked.glb",
+      "outClipDir": "Assets/Characters/Joan/LocoClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "loco_walk",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/_work/lib/124540901-walk.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_run",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/_work/lib/111290901-run.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        }
+      ]
+    },
+    {
       "character": "Pitborn",
       "controller": "Assets/Characters/Pitborn.controller",
       "baseGlb": "Assets/Characters/Pitborn/Pitborn_combat.glb",
@@ -98,7 +122,36 @@
           "state": "dodge_diveroll",
           "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
           "rootMotion": "inplace",
-          "maxStep": 0.0
+          "maxStep": 0.0,
+          "loop": false
+        },
+        {
+          "state": "loco_walk_back",
+          "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/122210901-great-sword-walk.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_strafe_L",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480901-walk-strafe-left.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_strafe_R",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480902-walk-strafe-right.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_walk",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/_work/lib/124540901-walk.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
         }
       ]
     },
@@ -114,7 +167,43 @@
           "state": "dodge_diveroll",
           "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
           "rootMotion": "inplace",
-          "maxStep": 0.0
+          "maxStep": 0.0,
+          "loop": false
+        },
+        {
+          "state": "loco_walk_back",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116150902-walking-backwards.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_strafe_L",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480901-walk-strafe-left.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_strafe_R",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480902-walk-strafe-right.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_walk",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/_work/lib/124540901-walk.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_run",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/_work/lib/111290901-run.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
         }
       ]
     }

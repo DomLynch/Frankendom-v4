@@ -902,12 +902,22 @@
       "dropChance": 0.0,
       "materials": {
         "*": {
-          "smoothness": 0.45,
-          "metallic": 0.6,
+          "smoothness": 0.31,
+          "metallic": 0.06,
+          "normalScale": 1.0
+        },
+        "iron_edge": {
+          "smoothness": 0.31,
+          "metallic": 0.06,
+          "normalScale": 1.0
+        },
+        "leather": {
+          "smoothness": 0.31,
+          "metallic": 0.04,
           "normalScale": 1.0
         }
       },
-      "notes": "FITKIT: Joan starting chest armour (Dom: ships ON). One glb, 13835 tris, 1 material, 2048 maps, rigid on Hips/Spine/Spine1/Spine2 (4 bones). OVERLAY mask policy: coversZones empty, nothing of her jacket is hidden, so no see-through gap. GearMaterials keeps base colour + normal and applies this row metallic/smoothness (the glb metal-rough map is not used by the loader).",
+      "notes": "FITKIT: Joan starting chest armour (Dom: ships ON). One glb, 13831 tris, 3 materials (iron, iron_edge sheen, leather straps: own rows), 2048 maps, baked normal map, rigid on Hips/Spine/Spine1/Spine2 (4 bones). OVERLAY mask policy: coversZones empty, nothing of her jacket is hidden, so no see-through gap. GearMaterials applies the row per material name: * = iron (metallic 0.4, smoothness 0.55), iron_edge = plate edges and raised detail (smoothness 0.75), leather = straps (metallic 0).",
       "weapon": {
         "damageMul": 1,
         "speedMul": 1,
@@ -920,10 +930,143 @@
         "ikBlendSeconds": 0.15
       },
       "rig": "psyche-106",
-      "tris": 13835,
+      "tris": 13831,
       "tier": "starting",
       "doubleSided": false,
       "source": "Dom Tripo piece \"medieval armor 3d model.glb\" fitted by laneFITKIT fit_piece.py (rigid plate on Spine2 + 3 fauld lames on Spine1/Spine/Hips, soft hinge in the breastplate)"
+    },
+    {
+      "id": "arms_joan",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Iron gauntlet arms",
+      "slot": "arms",
+      "glb": "Gear/arms_joan_R.glb",
+      "glbMirror": "Gear/arms_joan_L.glb",
+      "resource": "",
+      "part": "",
+      "partMirror": "",
+      "coversZones": [
+        "upperArmL",
+        "upperArmR",
+        "forearmL",
+        "forearmR",
+        "handL",
+        "handR"
+      ],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 4,
+        "poise": 2,
+        "weight": 3
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "materials": {
+        "*": {
+          "smoothness": 0.34,
+          "metallic": 0.04,
+          "normalScale": 1.0
+        },
+        "iron_edge": {
+          "smoothness": 0.34,
+          "metallic": 0.04,
+          "normalScale": 1.0
+        },
+        "leather": {
+          "smoothness": 0.34,
+          "metallic": 0.04,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "FITKIT: Joan starting arm armour (Dom: ships ON). A PAIR (glb = right, glbMirror = left), 11604 tris in all, 2 materials (iron + leather straps, own rows), 2048 maps, baked normal map per side, rigid on Joan arm / forearm / hand / finger bones (19 bones), 4 mm rim lip on the cuff. coversZones = the sleeve zones the fit kept after its hole check (the plate covers them).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "rig": "psyche-106",
+      "tris": 11604,
+      "tier": "starting",
+      "doubleSided": false,
+      "source": "Dom Tripo piece \"medieval armored gauntlet 3d model.glb\" fitted by laneFITKIT fit_piece.py (rigid plates: pauldron + rerebrace UpperArm, couter + vambrace ForeArm, gauntlet back plate Hand, finger plates on the finger bones)"
+    },
+    {
+      "id": "legarmour_joan",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Old iron leg harness",
+      "slot": "legs",
+      "glb": "Gear/legs_joan_R.glb",
+      "glbMirror": "Gear/legs_joan_L.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [
+        "thighL",
+        "thighR",
+        "shinL",
+        "shinR",
+        "footL",
+        "footR"
+      ],
+      "hidesLayers": [
+        "Layer_Greaves"
+      ],
+      "stats": {
+        "armor": 5,
+        "poise": 3,
+        "weight": 4
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "materials": {
+        "*": {
+          "smoothness": 0.4,
+          "metallic": 0.45,
+          "normalScale": 1.0
+        },
+        "leather": {
+          "smoothness": 0.3,
+          "metallic": 0.0,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "LEGFIT: Joan starting leg armour (Dom: ships ON). Pair: glb = right leg, glbMirror = left leg, 6877 tris each (13665 pair), iron + leather materials (own rows), FULL 4096 original base + metal-rough, per-side baked 4096 normal, rigid iron on UpLeg/Leg/Foot/ToeBase, leather+cloth blend knee/ankle/hip/toe. coversZones = both thighs, shins and feet (the game hides her trousers and heels only when BOTH glbs loaded); pelvis stays visible.",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "partMirror": "",
+      "rig": "psyche-106",
+      "tris": 13665,
+      "tier": "starting",
+      "doubleSided": false,
+      "source": "Dom Tripo piece \"medieval leg armor 3d model.glb\" fitted by laneLEGFIT (rigid cuisse+cop on UpLeg, greave on Leg, boot on Foot/Toe, cloth/leather blends only)"
     }
 ]
 }

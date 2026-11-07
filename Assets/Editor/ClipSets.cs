@@ -14,7 +14,7 @@ public static class ClipSets
 {
     public static string Only = "";
 
-    [Serializable] class Clip { public string state = ""; }
+    [Serializable] class Clip { public string state = ""; public bool loop; }   // LOCODIR v1: loop survives ExpandJson (DodgeClipSetup reads it; false = every other clip unchanged)
     [Serializable] class Entry { public string character = "", controller = "", baseGlb = "", outGlb = "", outClipDir = "", referenceState = ""; public Clip[] clips = new Clip[0]; }
     [Serializable] class Set { public string id = "", referenceState = "guard_idle", outGlb = "", outClipDir = ""; public Clip[] clips = new Clip[0]; }
     [Serializable] class Doc { public Entry[] bake = new Entry[0]; public Set[] clipSets = new Set[0]; }

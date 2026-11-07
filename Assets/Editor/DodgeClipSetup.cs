@@ -14,7 +14,7 @@ using UnityEngine;
 // Tools/_backup_laneB_dodgesetup/. DuelFighter only needs the state names (dodge_clips.json rows); without these states it falls back to the old clips.
 public static class DodgeClipSetup
 {
-    [Serializable] class BakeClip { public string state; }
+    [Serializable] class BakeClip { public string state; public bool loop; }   // LOCODIR v1: per-clip loop flag (dodge_clips.json "loop", default false)
     [Serializable] class BakeEntry { public string character, controller, outGlb, outClipDir, referenceState; public BakeClip[] clips; }
     [Serializable] class Cfg { public BakeEntry[] bake; }
 
@@ -112,7 +112,7 @@ public static class DodgeClipSetup
                 AnimationUtility.SetEditorCurve(dstClip, nb, curve);
             }
             var set = AnimationUtility.GetAnimationClipSettings(s);
-            set.loopTime = false; set.loopBlend = false;
+            set.loopTime = e.clips[i].loop; set.loopBlend = e.clips[i].loop;   // LOCODIR v1: loop only for rows that say so (loco_* clips); default false = as before
             AnimationUtility.SetAnimationClipSettings(dstClip, set);
             if (isNew) AssetDatabase.CreateAsset(dstClip, apath); else EditorUtility.SetDirty(dstClip);
 

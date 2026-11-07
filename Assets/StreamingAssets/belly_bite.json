@@ -30,7 +30,7 @@
     "clenchShape": "mouth_clench"
   },
   "scene": {
-    "enabled": false,
+    "enabled": true,
     "entryId": "belly_bite",
     "forceEnable": false,
     "reRoot": true,

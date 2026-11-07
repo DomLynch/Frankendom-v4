@@ -176,6 +176,41 @@
       "maxStep": 0.0,
       "hipsYOffsetM": 0.3,
       "note": "laneSOBEKNEW: hips +0.243 m (new body: toes sank 0.331 m)"
+     },
+     {
+      "state": "loco_walk_back",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116150902-walking-backwards.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "note": "LOCOMONSTER (LOCODIR v1): library walk clip for a loco_dir.json gait, in place, no posture / hips offset. NOTE: the SHIPPED Sobek_dodges.glb additionally has this lane ground lift + foot-lock bake (tools in _agents/laneMONSTERLOCO/tools), so a rebuild with this python tool alone is NOT byte-identical to the shipped glb"
+     },
+     {
+      "state": "loco_strafe_L",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480901-walk-strafe-left.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "note": "LOCOMONSTER (LOCODIR v1): library walk clip for a loco_dir.json gait, in place, no posture / hips offset. NOTE: the SHIPPED Sobek_dodges.glb additionally has this lane ground lift + foot-lock bake (tools in _agents/laneMONSTERLOCO/tools), so a rebuild with this python tool alone is NOT byte-identical to the shipped glb"
+     },
+     {
+      "state": "loco_strafe_R",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480902-walk-strafe-right.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "note": "LOCOMONSTER (LOCODIR v1): library walk clip for a loco_dir.json gait, in place, no posture / hips offset. NOTE: the SHIPPED Sobek_dodges.glb additionally has this lane ground lift + foot-lock bake (tools in _agents/laneMONSTERLOCO/tools), so a rebuild with this python tool alone is NOT byte-identical to the shipped glb"
+     },
+     {
+      "state": "loco_walk",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/_work/lib/124540901-walk.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "note": "LOCOMONSTER (LOCODIR v1): the baked glb clip = the character own live walk / run plus a horizontal foot-lock (hips offset in the clip, no runtime IK; tools/walkrun.py in _agents/laneMONSTERLOCO/tools). The src is only the origin of the motion, so a rebuild with this python tool alone is NOT byte-identical to the shipped Sobek_dodges.glb"
+     },
+     {
+      "state": "loco_run",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/_work/lib/111290901-run.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "note": "LOCOMONSTER (LOCODIR v1): the baked glb clip = the character own live walk / run plus a horizontal foot-lock (hips offset in the clip, no runtime IK; tools/walkrun.py in _agents/laneMONSTERLOCO/tools). The src is only the origin of the motion, so a rebuild with this python tool alone is NOT byte-identical to the shipped Sobek_dodges.glb"
      }
     ]
    }

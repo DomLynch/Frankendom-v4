@@ -14,7 +14,7 @@ Updated by Strategy 2026-11-06: a 9/10 AAA duel, Joan vs the Pitborn at the Hade
 | **Antigravity / Gemini** | RETIRED by Dom, 2026-11-06. |
 | Hades env (Claude) | Props and weapons (`kits_out\3d\hades_env`). Copies finished GLBs into `Assets\Env\Props` and `Assets\Characters\Weapons`. |
 | OpenTrident (Claude) | Character rigs and clips (Dracula, Pitborn). |
-| MetaHuman (Claude) | MetaHuman head + RigLogic plugin (`kits_out\3d\metahuman\export\s2_unity\final`). |
+| MetaHuman (Claude) | DISCONTINUED by Dom, 2026-11-07. Do not use MetaHuman or open Unreal Engine; this project is Unity only. |
 
 **Ownership (Dom, updated 2026-11-06):** the Unity dev builds this project and Strategy directs it. Goose is Dom's strategic and operational advisor and may implement the fixes and changes it finds, not only critical ones, under the same rules as everyone: CLAIM on the board first, no `Assets` writes while a build or gate runs, one heavy GPU job at a time, and look changes still need Dom's own LOOK OK. Disagreement is fine; we settle it in `COORDINATION.md`, not by overwriting each other.
 

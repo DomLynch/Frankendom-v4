@@ -1,0 +1,141 @@
+{
+  "enabled": true,
+  "debug": false,
+  "sampleS": 0.1,
+  "maxChangePerS": 3.0,
+  "idleBelowMps": 0.05,
+  "pick": {
+    "forwardMaxDeg": 48,
+    "backMinDeg": 132,
+    "hysteresisDeg": 8
+  },
+  "characters": [
+    {
+      "id": "Sobek",
+      "enabled": true,
+      "modelScaleSource": "anim",
+      "gaits": {
+        "walk": {
+          "state": "loco_walk",
+          "stride": 2.79,
+          "cycleS": 1.0,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "run": {
+          "state": "loco_run",
+          "stride": 5.68,
+          "cycleS": 0.733,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "back": {
+          "state": "loco_walk_back",
+          "stride": 1.774,
+          "cycleS": 1.4,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "strafeL": {
+          "state": "loco_strafe_L",
+          "stride": 0.802,
+          "cycleS": 1.467,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "strafeR": {
+          "state": "loco_strafe_R",
+          "stride": 0.831,
+          "cycleS": 1.467,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        }
+      }
+    },
+    {
+      "id": "Pitborn",
+      "enabled": true,
+      "modelScaleSource": "anim",
+      "gaits": {
+        "walk": {
+          "state": "loco_walk",
+          "stride": 1.43,
+          "cycleS": 1.0,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "run": {
+          "state": "run",
+          "stride": 2.249,
+          "cycleS": 0.733,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "back": {
+          "state": "loco_walk_back",
+          "stride": 1.037,
+          "cycleS": 1.3,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "strafeL": {
+          "state": "loco_strafe_L",
+          "stride": 0.603,
+          "cycleS": 1.467,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "strafeR": {
+          "state": "loco_strafe_R",
+          "stride": 0.608,
+          "cycleS": 1.467,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        }
+      }
+    },
+    {
+      "id": "Joan",
+      "enabled": true,
+      "modelScaleSource": "anim",
+      "gaits": {
+        "walk": {
+          "state": "loco_walk",
+          "stride": 1.52,
+          "cycleS": 1.0,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "run": {
+          "state": "loco_run",
+          "stride": 3.21,
+          "cycleS": 0.733,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "back": {
+          "state": "",
+          "stride": 0,
+          "cycleS": 1,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "strafeL": {
+          "state": "",
+          "stride": 0,
+          "cycleS": 1,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "strafeR": {
+          "state": "",
+          "stride": 0,
+          "cycleS": 1,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        }
+      }
+    }
+  ],
+  "_about_pitborn": "Pitborn strides measured by laneMONSTERLOCO (Blender skinned feet, contact tolerance 4 cm / stance 3 cm for his toes-down foot, model scale assumed 1.0: scene scale unread). LocoDir multiplies by the live model scale."
+}

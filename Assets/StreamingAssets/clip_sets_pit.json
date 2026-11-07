@@ -71,6 +71,34 @@
       "maxStep": 0.0,
       "hipsYOffsetM": 0.015,
       "note": "hips +0.015 m: library dive roll toes sink 0.063 m (gate 0.05); live roll_forward sinks 0.076"
+     },
+     {
+      "state": "loco_walk_back",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/122210901-great-sword-walk.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "note": "LOCOMONSTER (LOCODIR v1): library walk clip for a loco_dir.json gait, in place, no posture / hips offset. NOTE: the SHIPPED Pitborn_dodges.glb additionally has this lane ground lift + foot-lock bake (tools in _agents/laneMONSTERLOCO/tools), so a rebuild with this python tool alone is NOT byte-identical to the shipped glb"
+     },
+     {
+      "state": "loco_strafe_L",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480901-walk-strafe-left.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "note": "LOCOMONSTER (LOCODIR v1): library walk clip for a loco_dir.json gait, in place, no posture / hips offset. NOTE: the SHIPPED Pitborn_dodges.glb additionally has this lane ground lift + foot-lock bake (tools in _agents/laneMONSTERLOCO/tools), so a rebuild with this python tool alone is NOT byte-identical to the shipped glb"
+     },
+     {
+      "state": "loco_strafe_R",
+      "src": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480902-walk-strafe-right.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "note": "LOCOMONSTER (LOCODIR v1): library walk clip for a loco_dir.json gait, in place, no posture / hips offset. NOTE: the SHIPPED Pitborn_dodges.glb additionally has this lane ground lift + foot-lock bake (tools in _agents/laneMONSTERLOCO/tools), so a rebuild with this python tool alone is NOT byte-identical to the shipped glb"
+     },
+     {
+      "state": "loco_walk",
+      "src": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/_work/lib/124540901-walk.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "note": "LOCOMONSTER (LOCODIR v1): the baked glb clip = the character own live walk / run plus a horizontal foot-lock (hips offset in the clip, no runtime IK; tools/walkrun.py in _agents/laneMONSTERLOCO/tools). The src is only the origin of the motion, so a rebuild with this python tool alone is NOT byte-identical to the shipped Pitborn_dodges.glb"
      }
     ]
    }

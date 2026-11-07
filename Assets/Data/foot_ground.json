@@ -108,18 +108,18 @@
             "debug": false,
             "debugEvery": 60,
             "weight": 1.0,
-            "ankleHeight": 0.333,
-            "rayUp": 0.832,
-            "rayDown": 1.248,
+            "ankleHeight": 0.27,
+            "rayUp": 0.674,
+            "rayDown": 1.01,
             "ignoreLayers": [
                 8,
                 9
             ],
-            "pelvisDownMax": 0.52,
-            "pelvisUpMax": 0.26,
+            "pelvisDownMax": 0.42,
+            "pelvisUpMax": 0.21,
             "pelvisSmooth": 0.06,
-            "plantSnap": 0.0312,
-            "maxLift": 0.416,
+            "plantSnap": 0.0253,
+            "maxLift": 0.337,
             "levelWeight": 1.0,
             "toeFlatWeight": 1.0,
             "stateBlend": 0.1,
@@ -134,7 +134,7 @@
                     "weight": 0.25
                 }
             ],
-            "note": "SOBEKDATA: (measure) ankleHeight / lift are Pitborn x1.8 for a 3 m body (guess); measure the sole on the bound rig"
+            "note": "LOCOMONSTER v1: measured, verify in Unity. ankleHeight 0.27 = world ankle-to-sole at model scale 0.7125 (3.12 m / Unity bounds 4.378 m); the SOBEKDATA guess 0.333 lifted the pelvis about 6 cm (a float). The other limits are the old values x 0.27/0.333. Independent of loco_dir.json (--off does not touch it)."
         },
         {
             "name": "*",
