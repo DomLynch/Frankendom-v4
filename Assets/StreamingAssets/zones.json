@@ -126,6 +126,7 @@
       "hintSize": 18,
       "titleY": 0.3,
       "lineGap": 1.5,
+      "titleGapMul": 1.6,
       "color": [
         0.93,
         0.88,

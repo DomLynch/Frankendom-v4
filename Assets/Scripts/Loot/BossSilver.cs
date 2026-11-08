@@ -10,7 +10,7 @@ public static class BossSilver
 {
     [Serializable] public class Row { public string id = ""; public int silver = 0; }
     [Serializable] public class TextC { public string toast = "+{0} silver"; }
-    [Serializable] public class Cfg { public bool enabled = false; public Row[] rows = new Row[0]; public TextC text = new TextC(); public float toastSeconds = 3f; public int toastSize = 24; public float toastBottom = 190f; public float[] color = new float[0]; }
+    [Serializable] public class Cfg { public bool enabled = false; public Row[] rows = new Row[0]; public TextC text = new TextC(); public float toastSeconds = 3f, toastFadeInS = 0.25f, toastFadeOutS = 0.5f, toastLineH = 1.6f; public int toastSize = 24; public float toastBottom = 190f; public float[] color = new float[0]; }
 
     static Cfg c; static readonly System.Collections.Generic.HashSet<DuelFighter> paid = new System.Collections.Generic.HashSet<DuelFighter>();
     public static string LastToast = ""; static float toastT0 = -99f;
@@ -29,7 +29,7 @@ public static class BossSilver
     }
     public static int SilverFor(string id) { var k = Get(); if (string.IsNullOrEmpty(id)) return 0; foreach (var r in k.rows) if (r != null && r.id == id) return Mathf.Max(0, r.silver); return 0; }
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { c = null; paid.Clear(); LastToast = ""; toastT0 = -99f; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { c = null; paid.Clear(); LastToast = ""; toastT0 = -99f; }   // hc:ok unset-time sentinel
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
@@ -54,8 +54,8 @@ public static class BossSilver
     internal static bool ToastActive(out string text, out float alpha)
     {
         text = LastToast; alpha = 0f; if (text.Length == 0) return false;
-        float t = Time.unscaledTime - toastT0, d = Mathf.Max(0.5f, Get().toastSeconds); if (t < 0f || t > d) return false;
-        alpha = Mathf.Clamp01(Mathf.Min(t / 0.25f, (d - t) / 0.5f)); return true;
+        var k0 = Get(); float t = Time.unscaledTime - toastT0, d = Mathf.Max(0.5f, k0.toastSeconds); if (t < 0f || t > d) return false;
+        alpha = Mathf.Clamp01(Mathf.Min(t / Mathf.Max(0.001f, k0.toastFadeInS), (d - t) / Mathf.Max(0.001f, k0.toastFadeOutS))); return true;
     }
 }
 
@@ -65,8 +65,8 @@ public sealed class BossSilverToast : MonoBehaviour
     void OnGUI()
     {
         string text; float a; if (!BossSilver.ToastActive(out text, out a)) return;
-        var k = BossSilver.Get(); GUI.depth = -9000;
+        var k = BossSilver.Get(); GUI.depth = -9000;   // hc:ok IMGUI draw order
         var col = HudCfg.Col(k.color, a);
-        HudDraw.Text(new Rect(0f, Screen.height - k.toastBottom, Screen.width, k.toastSize * 1.6f), text, "serif", k.toastSize, TextAnchor.UpperCenter, false, col);
+        HudDraw.Text(new Rect(0f, Screen.height - k.toastBottom, Screen.width, k.toastSize * k.toastLineH), text, "serif", k.toastSize, TextAnchor.UpperCenter, false, col);
     }
 }

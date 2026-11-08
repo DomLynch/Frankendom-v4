@@ -37,7 +37,7 @@ public static class SaveSlot
         return cfg;
     }
     /// <summary>The slot is in use: data enabled and not a harness run.</summary>
-    public static bool Active { get { return Cfg().enabled && !MenuCfg.Harness; } }
+    public static bool Active { get { return Cfg().enabled && !MenuCfg.Harness && !RunMode.RealSaveBlocked /* FIXSAVE v1: a harness run that did not redirect its saves never touches the real slot */; } }
     public static string FilePath { get { return Path.Combine(SavePaths.Dir, Cfg().file); } }
     public static FileData Data { get { EnsureLoaded(); return data; } }
 
@@ -49,6 +49,7 @@ public static class SaveSlot
         if (loaded) return; loaded = true; data = new FileData();
         if (!Active) return;
         string p = FilePath;
+        SafeFile.Recover(p);   // FIXSAVE v1: an interrupted old Delete + Move left only the .tmp
         try
         {
             if (!File.Exists(p)) return;
@@ -70,7 +71,7 @@ public static class SaveSlot
         catch (Exception e)
         {
             LastError = e.Message; Debug.LogWarning("[SaveSlot] save unreadable (" + e.Message + "), starting a fresh slot");
-            try { string bad = p + ".bad"; if (File.Exists(bad)) File.Delete(bad); File.Move(p, bad); } catch { }
+            SafeFile.Quarantine(p, "bad", "unreadable (" + e.Message + ")", true);   // FIXSAVE v1: timestamped, last 3 kept (was one .bad that the next bad file deleted)
             data = new FileData();
         }
     }
@@ -152,9 +153,7 @@ public static class SaveSlot
         {
             PeekLoot(); data.version = Cfg().version; data.savedUtc = DateTime.UtcNow.ToString("o");
             string p = FilePath, dir = Path.GetDirectoryName(p); if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
-            string tmp = p + ".tmp"; File.WriteAllText(tmp, JsonUtility.ToJson(data, true));
-            if (File.Exists(p)) File.Delete(p);
-            File.Move(tmp, p); LastError = "";
+            SafeFile.AtomicWrite(p, JsonUtility.ToJson(data, true)); LastError = "";   // FIXSAVE v1: tmp + File.Replace (+ .bak), was Delete then Move: a crash between left no slot file
             if (Cfg().debugLog) Debug.Log("[SaveSlot] saved " + p + " row " + data.ladder.row + " fight " + data.ladder.fightNumber);
         }
         catch (Exception e) { LastError = e.Message; Debug.LogWarning("[SaveSlot] save failed: " + e.Message); }
@@ -166,7 +165,7 @@ public static class SaveSlot
         GameLoop.OpponentIndex = Mathf.Max(0, GameLoop.Opponents().startIndex); GameLoop.FightNumber = 1;   // the run restarts even when the slot is switched off
         if (!Active) return; EnsureLoaded();
         data = new FileData(); applied = true;
-        try { string p = FilePath; if (File.Exists(p)) File.Delete(p); } catch (Exception e) { LastError = e.Message; }
+        try { string p = FilePath; if (File.Exists(p)) { SafeFile.Quarantine(p, "erased", "was erased by New game"); File.Delete(p); } } catch (Exception e) { LastError = e.Message; }   // FIXSAVE v1: last 3 erased slots stay as .erased.<stamp>
         try { if (OnErase != null) OnErase(); } catch (Exception e) { Debug.LogWarning("[SaveSlot] erase hook failed: " + e.Message); }
         if (Cfg().debugLog) Debug.Log("[SaveSlot] slot erased");
     }

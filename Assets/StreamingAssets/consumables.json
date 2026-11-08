@@ -24,7 +24,7 @@
     "widthPx": 380.0,
     "barH": 3.0,
     "toastSeconds": 1.6,
-    "toastGapPx": 6.0,
+    "toastGapPx": 6.0, "lineH": 1.5, "barFrac": 0.6, "barGapPx": 2.0, "toastFadeInS": 0.1, "toastFadeOutS": 0.4,
     "nameSize": 18,
     "hintSize": 12,
     "toastSize": 17

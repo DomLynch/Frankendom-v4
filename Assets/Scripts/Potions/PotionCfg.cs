@@ -20,7 +20,7 @@ public static class PotionCfg
         public bool refuseWhenFull = true, blockInFinisher = true, blockInMenus = true;
         public string[] blockStates = { "Dead", "Down", "Stagger", "Roll", "Windup", "Active" };   // FState names the player can not drink in
     }
-    [Serializable] public class HudC { public bool enabled = true; public float leftPx = 36f, bottomPx = 170f, widthPx = 380f, barH = 3f, toastSeconds = 1.6f, toastGapPx = 6f; public int nameSize = 18, hintSize = 12, toastSize = 17; }
+    [Serializable] public class HudC { public bool enabled = true; public float leftPx = 36f, bottomPx = 170f, widthPx = 380f, barH = 3f, toastSeconds = 1.6f, toastGapPx = 6f, lineH = 1.5f, barFrac = 0.6f, barGapPx = 2f, toastFadeInS = 0.1f, toastFadeOutS = 0.4f; public int nameSize = 18, hintSize = 12, toastSize = 17; }
     [Serializable]
     public class TextC
     {

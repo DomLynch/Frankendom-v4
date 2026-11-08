@@ -16,5 +16,5 @@ public static class DataPath
 #endif
     }
     public static string Find(string file) { foreach (var p in Candidates(file)) if (File.Exists(p)) return p; return null; }
-    public static string ReadText(string file) { string p = Find(file); if (p == null) return null; try { return File.ReadAllText(p); } catch { return null; } }
+    public static string ReadText(string file) { string p = Find(file); if (p == null) return null; try { return File.ReadAllText(p); } catch (System.Exception e) { SafeFile.WarnOnce("read:" + p, "[DataPath] " + file + " exists but could not be read (" + e.GetType().Name + ": " + e.Message + "): callers fall back to their defaults. " + p); return null; } }   // FIXSAVE v1: was a silent catch
 }

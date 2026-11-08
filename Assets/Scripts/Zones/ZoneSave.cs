@@ -40,7 +40,7 @@ public sealed class LocalFileStore : IZoneStore
         catch (Exception e)
         {
             ZoneSave.LastError = e.Message; Debug.LogWarning("[ZoneSave] unreadable (" + e.Message + "), starting fresh");
-            try { string bad = p + ".bad"; if (File.Exists(bad)) File.Delete(bad); File.Move(p, bad); } catch { }
+            SafeFile.Quarantine(p, "bad", "unreadable (" + e.Message + ")", true);   // FIXSAVE v1: timestamped, last 3 kept
             return new ZoneFile();
         }
     }
@@ -50,8 +50,7 @@ public sealed class LocalFileStore : IZoneStore
         try
         {
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(p));
-            File.WriteAllText(tmp, JsonUtility.ToJson(f, true));
-            if (File.Exists(p)) File.Replace(tmp, p, null); else File.Move(tmp, p);   // tmp file then replace: a crash never leaves half a file
+            SafeFile.AtomicWrite(p, JsonUtility.ToJson(f, true));   // FIXSAVE v1: tmp file then File.Replace, previous good copy kept as .bak
         }
         catch (Exception e) { ZoneSave.LastError = e.Message; Debug.LogWarning("[ZoneSave] write failed: " + e.Message); }
     }

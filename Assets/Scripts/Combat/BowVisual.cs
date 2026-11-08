@@ -94,7 +94,7 @@ public class BowHud : MonoBehaviour
                 HudDraw.Fill(new Rect(x + g, y + g + b - t, b, t), c); HudDraw.Fill(new Rect(x + g + b - t, y + g, t, b), c);
             }
         }
-        string chip = bow ? (BowCfg.Get().quiverOn ? "BOW  " + ammo : "BOW") : "SWORD";
-        HudDraw.Text(new Rect(Screen.width - H.chipRightPx - H.chipWidthPx, Screen.height - H.chipBottomPx, H.chipWidthPx, H.chipFontPx * 1.6f), chip, "serif", H.chipFontPx, TextAnchor.MiddleRight, false, c);
+        string chip = bow ? (BowCfg.Get().quiverOn ? H.chipBow + H.chipAmmoSep + ammo : H.chipBow) : H.chipSword;
+        HudDraw.Text(new Rect(Screen.width - H.chipRightPx - H.chipWidthPx, Screen.height - H.chipBottomPx, H.chipWidthPx, H.chipFontPx * H.chipLineH), chip, "serif", H.chipFontPx, TextAnchor.MiddleRight, false, c);
     }
 }

@@ -188,11 +188,11 @@ public sealed class MountRider : MonoBehaviour
     public void PlaceHorse()
     {
         if (horse == null || df == null || !mounted) return; var p = df.transform.position; float sc = MountData.HorseScale();
-        if (df.moveDir.sqrMagnitude > 0.01f) { float want = Mathf.Atan2(df.moveDir.x, df.moveDir.z) * Mathf.Rad2Deg; horseYaw = Mathf.MoveTowardsAngle(horseYaw, want, K.turnDegPerS * Time.deltaTime); }
+        if (df.moveDir.sqrMagnitude > 0.01f) { float want = Mathf.Atan2(df.moveDir.x, df.moveDir.z) * Mathf.Rad2Deg; horseYaw = Mathf.MoveTowardsAngle(horseYaw, want, K.turnDegPerS * Time.deltaTime); }   // hc:ok 0.01 = move threshold / divide guard
         var rot = Quaternion.Euler(0f, horseYaw + K.horse.yawOffsetDeg, 0f);
         horse.transform.SetPositionAndRotation(p + rot * Vector3.forward * (K.horse.seatBackM * sc), rot);   // glb pivot = hooves, centre of the barrel; the saddle sits seatBackM behind it
         if (hBody != null) { hBody.localPosition = Vector3.up * bob; hBody.localRotation = Quaternion.Euler(pitch, 0f, roll); }
-        if (fi != null && fi.model != null) fi.model.localPosition = baseModelPos + Vector3.up * (K.horse.seatRaiseM * sc / Mathf.Max(0.01f, df.transform.lossyScale.y) + bob);
+        if (fi != null && fi.model != null) fi.model.localPosition = baseModelPos + Vector3.up * (K.horse.seatRaiseM * sc / Mathf.Max(0.01f, df.transform.lossyScale.y) + bob);   // hc:ok 0.01 = move threshold / divide guard
     }
 }
 

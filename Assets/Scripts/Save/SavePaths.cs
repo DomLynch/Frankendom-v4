@@ -7,7 +7,9 @@ using UnityEngine;
 // (those fall back to <persistentDataPath>/harness_save). NOT on Application.isBatchMode. A normal launch returns persistentDataPath unchanged.
 public static class SavePaths
 {
-    static string dir; static bool done;
+    static string dir; static bool done, redirected;   // FIXSAVE v1: redirected = the dir is NOT the player's real persistentDataPath
+    /// <summary>FIXSAVE v1: true when -savePath (or the harness_save fallback) moved the save files away from the real persistentDataPath. RunMode.RealSaveBlocked reads this.</summary>
+    public static bool Redirected { get { string d0 = Dir; return redirected; } }
     public static string Dir
     {
         get
@@ -29,8 +31,8 @@ public static class SavePaths
                 if (!string.IsNullOrEmpty(d)) { Directory.CreateDirectory(d); Debug.Log("[SavePaths] save dir redirected to " + d); }
             }
             catch (Exception e) { Debug.LogWarning("[SavePaths] " + e.Message); d = null; }
-            dir = string.IsNullOrEmpty(d) ? Application.persistentDataPath : d; done = true; return dir;
+            redirected = !string.IsNullOrEmpty(d); /* FIXSAVE v1 */ dir = string.IsNullOrEmpty(d) ? Application.persistentDataPath : d; done = true; return dir;
         }
     }
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void Reset() { done = false; dir = null; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void Reset() { done = false; dir = null; redirected = false; }
 }

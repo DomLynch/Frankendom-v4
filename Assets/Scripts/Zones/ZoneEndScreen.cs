@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable] public class EndScreenRow
 {
     public string id = "", title = "", hint = "", campZone = "", campSpot = ""; public string[] lines = new string[0], continueKeys = new string[0], campKeys = new string[0];
-    public float fadeInS = 1.5f, minShowS = 1f, backdropAlpha = 0.8f, titleY = 0.3f, lineGap = 1.5f, nudgeBackM = 8f; public int titleSize = 46, lineSize = 22, hintSize = 18;
+    public float fadeInS = 1.5f, minShowS = 1f, backdropAlpha = 0.8f, titleY = 0.3f, lineGap = 1.5f, titleGapMul = 1.6f, nudgeBackM = 8f; public int titleSize = 46, lineSize = 22, hintSize = 18;
     public float[] color = new float[0], dimColor = new float[0]; public bool onlyWhenNoEnemyAlive = true;
 }
 
@@ -30,13 +30,13 @@ public static class ZoneEndScreen
     public static void Draw()
     {
         if (row == null) return;
-        float a = Mathf.Clamp01((Time.unscaledTime - t0) / Mathf.Max(0.01f, row.fadeInS)), vw = Screen.width, vh = Screen.height;
-        GUI.depth = -10001;
-        GameLoop.Fill(new Rect(0f, 0f, vw, vh), new Color(0f, 0f, 0f, row.backdropAlpha * a));
+        float a = Mathf.Clamp01((Time.unscaledTime - t0) / Mathf.Max(0.01f, row.fadeInS)), vw = Screen.width, vh = Screen.height;   // hc:ok 0.01 = divide guard
+        GUI.depth = -10001;   // hc:ok IMGUI draw order
+        var veil = Color.black; veil.a = row.backdropAlpha * a; GameLoop.Fill(new Rect(0f, 0f, vw, vh), veil);
         Color ink = HudCfg.Col(row.color, a), dim = HudCfg.Col(row.dimColor, a);
         float y = vh * row.titleY;
         HudDraw.Caps(vw * 0.5f, y, 0.5f, row.title, "title", row.titleSize, row.titleSize, 0f, ink);
-        y += row.titleSize * row.lineGap * 1.6f;
+        y += row.titleSize * row.lineGap * row.titleGapMul;
         foreach (var l in row.lines) { HudDraw.Text(new Rect(0f, y, vw, row.lineSize * row.lineGap), l, "serif", row.lineSize, TextAnchor.UpperCenter, false, ink); y += row.lineSize * row.lineGap; }
         y += row.lineSize * row.lineGap;
         HudDraw.Text(new Rect(0f, y, vw, row.hintSize * row.lineGap), row.hint, "serif", row.hintSize, TextAnchor.UpperCenter, false, dim);

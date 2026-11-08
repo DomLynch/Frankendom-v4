@@ -8,7 +8,7 @@
       "z": 0
     },
     "gravityMps2": 9.81,
-    "maxSubstepS": 0.0083,
+    "solverStepS": 0.0083,
     "maxSubsteps": 4,
     "maxFrameS": 0.1,
     "teleportM": 2.0,

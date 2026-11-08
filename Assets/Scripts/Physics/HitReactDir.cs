@@ -15,7 +15,7 @@ using UnityEngine;
 public class HdCfg
 {
     public bool enabled, log; public float easeS = 0.06f, holdS = 0.14f, backS = 0.22f, maxDeg = 25f, refMassKg = 66.7f, massExponent = 0.25f, minMassMul = 0.35f, maxMassMul = 1f, maxPunchMul = 1.5f, flipLateral = 1f, minComponent = 0.02f;
-    public HdMove[] moves = new HdMove[0]; public HdPart[] parts = new HdPart[0]; public HdClass[] classes = new HdClass[0]; public HdFighter[] fighters = new HdFighter[0];
+    public Vector3 leftBlow = new Vector3(1f, 0f, 0.2f), rightBlow = new Vector3(-1f, 0f, 0.2f); public HdMove[] moves = new HdMove[0]; public HdPart[] parts = new HdPart[0]; public HdClass[] classes = new HdClass[0]; public HdFighter[] fighters = new HdFighter[0];
     public static void Fix(HdCfg c)
     {
         if (c.moves == null) c.moves = new HdMove[0]; if (c.parts == null) c.parts = new HdPart[0]; if (c.classes == null) c.classes = new HdClass[0]; if (c.fighters == null) c.fighters = new HdFighter[0];
@@ -27,8 +27,8 @@ public class HdCfg
         for (int i = 0; i < moves.Length; i++) { var m = moves[i]; if (m != null && m.id.Length > 0 && m.id == id && m.character.Length > 0 && m.character == attackerId) return new Vector3(m.x, m.y, m.z); }
         for (int i = 0; i < moves.Length; i++) { var m = moves[i]; if (m != null && m.id.Length > 0 && m.id == id && m.character.Length == 0) return new Vector3(m.x, m.y, m.z); }
         for (int i = 0; i < moves.Length; i++) { var m = moves[i]; if (m != null && m.contains.Length > 0 && id.IndexOf(m.contains, StringComparison.Ordinal) >= 0) return new Vector3(m.x, m.y, m.z); }
-        if (e.direction == "left") return new Vector3(1f, 0f, 0.2f);
-        if (e.direction == "right") return new Vector3(-1f, 0f, 0.2f);
+        if (e.direction == "left") return leftBlow;
+        if (e.direction == "right") return rightBlow;
         return new Vector3(0f, 0f, 1f);
     }
     public HdClass Class(string name) { for (int i = 0; i < classes.Length; i++) if (classes[i] != null && classes[i].name == name) return classes[i]; return null; }

@@ -1,0 +1,13 @@
+{
+ "_about": "laneFIXSAVE v1: RunMode.cs. Command-line flags that mark a proof / capture / QA run for SAVE SAFETY only (LootSave refuses to write the real loot_save.json under any of them unless -savePath is given). flags = exact match, prefixes = starts-with, both case-insensitive. Add new harness flags here. This is a superset of menu.json harnessArgs and GameLoop.HarnessOn (those are still ORed in by code); -zones alone is normal play and is NOT listed.",
+ "batchModeIsHarness": true,
+ "flags": [
+  "-balanceauto", "-autoplay", "-finisherauto", "-finisherrotonly", "-postureproof", "-camproof", "-flowproof", "-verifyGround", "-looptest", "-latencyprobe",
+  "-perfbench", "-perfharness", "-steerauto", "-steerpreview", "-steer", "-gaps", "-props", "-record", "-headsheet", "-cmp", "-stand", "-isolate", "-facecam",
+  "-shadowdiag", "-woundshot", "-floorshot", "-camscene", "-monsterqa", "-fps", "-hero"
+ ],
+ "prefixes": [
+  "-sheet:", "-feetburst:", "-feetclip:", "-physproof", "-lumatest", "-out:", "-camtrace:", "-zoneshot:", "-steershot=", "-routebot:", "-profile", "-benchout:",
+  "-verifyOut:", "-finisherout:", "-balanceout:", "-resgate", "-floorout:", "-woundout:", "-steerout:", "-loopout:", "-latencyout:", "-walkProbeOut:", "-alphacensus:", "-fpsnext:", "-propvis:"
+ ]
+}

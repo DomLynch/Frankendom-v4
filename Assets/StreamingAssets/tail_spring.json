@@ -1,5 +1,5 @@
 {
- "note": "SOBEKDATA v104: Sobek secondary motion, PRESENTATION ONLY (read by Scripts/TailSpring.cs, LateUpdate after the Animator, render time only: no sim read, no RNG, simhash unchanged). Master switch `enabled` (false = TailSpring is never attached; ships dark, set true after a look). characters[].name = roster id; per row `enabled`. world: solver (maxSubstepS, maxSubsteps, maxFrameS), gravity, teleport snap, fade-in. chain: bones parents-first (names are the EXISTING fk_* / twist joints, re-parented in the Sobek glb only), stiffness 1/s^2, damping 1/s, gravity x world.gravityMps2, maxAngleDeg per bone, rootInfluence..tipInfluence blend along the chain (0 = animated pose), tipAxis/tipLengthM aim a bone that has no listed child. Every number is a (guess) start value to be tuned by eye; tipLengthM values are (measure) on the generated rig. Combat code must not read these bones.",
+ "note": "SOBEKDATA v104: Sobek secondary motion, PRESENTATION ONLY (read by Scripts/TailSpring.cs, LateUpdate after the Animator, render time only: no sim read, no RNG, simhash unchanged). Master switch `enabled` (false = TailSpring is never attached; ships dark, set true after a look). characters[].name = roster id; per row `enabled`. world: solver (solverStepS, maxSubsteps, maxFrameS), gravity, teleport snap, fade-in. chain: bones parents-first (names are the EXISTING fk_* / twist joints, re-parented in the Sobek glb only), stiffness 1/s^2, damping 1/s, gravity x world.gravityMps2, maxAngleDeg per bone, rootInfluence..tipInfluence blend along the chain (0 = animated pose), tipAxis/tipLengthM aim a bone that has no listed child. Every number is a (guess) start value to be tuned by eye; tipLengthM values are (measure) on the generated rig. Combat code must not read these bones.",
  "version": 1,
  "enabled": false,
  "world": {
@@ -9,7 +9,7 @@
    "z": 0
   },
   "gravityMps2": 9.81,
-  "maxSubstepS": 0.0083,
+  "solverStepS": 0.0083,
   "maxSubsteps": 4,
   "maxFrameS": 0.1,
   "teleportM": 2.0,

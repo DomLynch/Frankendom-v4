@@ -44,6 +44,7 @@
       "enabled": true, "log": false,
       "easeS": 0.06, "holdS": 0.14, "backS": 0.22, "maxDeg": 25.0,
       "refMassKg": 66.7, "massExponent": 0.25, "minMassMul": 0.35, "maxMassMul": 1.0, "maxPunchMul": 1.5, "flipLateral": 1.0, "minComponent": 0.02,
+      "leftBlow": { "x": 1.0, "y": 0.0, "z": 0.2 }, "rightBlow": { "x": -1.0, "y": 0.0, "z": 0.2 },
       "moves": [
         { "id": "light_right",    "x": -1.0, "y": 0.0,  "z": 0.2 },
         { "id": "light_left",     "x":  1.0, "y": 0.0,  "z": 0.2 },

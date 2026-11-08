@@ -34,7 +34,7 @@ public class TailSpring : MonoBehaviour
     public class World
     {
         public Vector3 gravityDir = new Vector3(0f, -1f, 0f); public float gravityMps2 = 9.81f;
-        public float maxSubstepS = 0.0083f;             // solver step (render time)
+        public float solverStepS = 0.0083f;             // solver step (render time)
         public int maxSubsteps = 4;                     // per frame
         public float maxFrameS = 0.1f;                  // a longer frame is clamped to this (hitch, load)
         public float teleportM = 2f;                    // tip farther than this from its animated place = snap (respawn, scene reset)
@@ -105,7 +105,7 @@ public class TailSpring : MonoBehaviour
         float dt = Mathf.Min(Time.deltaTime, Mathf.Max(0.001f, W.maxFrameS));
         if (dt <= 0f) return;
         age += dt; float fade = W.fadeInS > 0f ? Mathf.Clamp01(age / W.fadeInS) : 1f;
-        int steps = Mathf.Clamp(Mathf.CeilToInt(dt / Mathf.Max(1e-4f, W.maxSubstepS)), 1, Mathf.Max(1, W.maxSubsteps)); float h = dt / steps;
+        int steps = Mathf.Clamp(Mathf.CeilToInt(dt / Mathf.Max(1e-4f, W.solverStepS)), 1, Mathf.Max(1, W.maxSubsteps)); float h = dt / steps;
         Vector3 g = W.gravityDir.sqrMagnitude > 1e-6f ? W.gravityDir.normalized * W.gravityMps2 : Vector3.zero;
         float maxDev = 0f;
         for (int i = 0; i < nodes.Length; i++)

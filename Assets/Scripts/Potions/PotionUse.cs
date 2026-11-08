@@ -25,7 +25,7 @@ public sealed class PotionUse : MonoBehaviour
     readonly Dictionary<string, int> readyAt = new Dictionary<string, int>();   // potion id -> sim tick it can be drunk again
     int lastTick; bool pressUse, pressCycle;
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Instance = null; OnUsed = null; Selected = ""; ToastText = ""; ToastAt = -99f; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Instance = null; OnUsed = null; Selected = ""; ToastText = ""; ToastAt = -99f; }   // hc:ok unset-time sentinel
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
@@ -103,7 +103,7 @@ public sealed class PotionUse : MonoBehaviour
         if (p == null || PotionStore.Qty(id) < 1) return Refuse(C, T.refuseNone);
         int t; if (readyAt.TryGetValue(id, out t) && now < t) return Refuse(C, T.refuseCooldown);
         bool hp = p.kind == "heal";
-        if (R.refuseWhenFull && (hp ? f.health >= f.maxHealth - 0.01f : f.stamina >= f.maxStamina - 0.01f)) return Refuse(C, T.refuseFull);
+        if (R.refuseWhenFull && (hp ? f.health >= f.maxHealth - 0.01f : f.stamina >= f.maxStamina - 0.01f)) return Refuse(C, T.refuseFull);   // hc:ok 0.01 = float-equality guard on full health / stamina
 
         float amount = hp ? p.healFlat + p.healFracOfMax * f.maxHealth : p.restoreFracOfMax * f.maxStamina;
         if (amount <= 0f) return Refuse(C, T.refuseBusy);

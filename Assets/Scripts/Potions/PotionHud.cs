@@ -33,20 +33,20 @@ public sealed class PotionHud : MonoBehaviour
         string line; Color col;
         if (id.Length > 0) { var p = PotionCfg.Find(id); line = string.Format(T.chip, KeyLabel(), p.name.Length > 0 ? p.name : id, PotionStore.Qty(id)); col = ink; }
         else { line = string.Format(T.chipNone, KeyLabel()); col = dim; }
-        HudDraw.Text(new Rect(H.leftPx, y, H.widthPx, H.nameSize * 1.5f), line, "serif", H.nameSize, TextAnchor.UpperLeft, true, col);
+        HudDraw.Text(new Rect(H.leftPx, y, H.widthPx, H.nameSize * H.lineH), line, "serif", H.nameSize, TextAnchor.UpperLeft, true, col);
         if (id.Length > 0)
         {
-            float cd = PotionUse.CooldownLeft01(id), bw = H.widthPx * 0.6f, by = y + H.nameSize * 1.5f + 2f;
+            float cd = PotionUse.CooldownLeft01(id), bw = H.widthPx * H.barFrac, by = y + H.nameSize * H.lineH + H.barGapPx;
             HudDraw.Fill(new Rect(H.leftPx, by, bw, H.barH), HudCfg.Col(K.frameDim));
             if (cd > 0f) HudDraw.Fill(new Rect(H.leftPx, by, bw * (1f - cd), H.barH), dim); else HudDraw.Fill(new Rect(H.leftPx, by, bw, H.barH), gold);
             if (PotionUse.KindsCarried() > 1 && PotionCfg.CycleKeys().Length > 0)
-                HudDraw.Text(new Rect(H.leftPx, by + H.barH + 2f, H.widthPx, H.hintSize * 1.5f), string.Format(T.cycleHint, PotionCfg.CycleKeys()[0].ToString()), "serif", H.hintSize, TextAnchor.UpperLeft, false, dim);
+                HudDraw.Text(new Rect(H.leftPx, by + H.barH + H.barGapPx, H.widthPx, H.hintSize * H.lineH), string.Format(T.cycleHint, PotionCfg.CycleKeys()[0].ToString()), "serif", H.hintSize, TextAnchor.UpperLeft, false, dim);
         }
         float age = Time.unscaledTime - PotionUse.ToastAt;
         if (PotionUse.ToastText.Length > 0 && age >= 0f && age <= H.toastSeconds)
         {
-            HudDraw.Alpha = Mathf.Clamp01(Mathf.Min(age / 0.1f, (H.toastSeconds - age) / 0.4f));
-            HudDraw.Text(new Rect(H.leftPx, y - H.toastSize * 1.5f - H.toastGapPx, H.widthPx, H.toastSize * 1.5f), PotionUse.ToastText, "serif", H.toastSize, TextAnchor.UpperLeft, true, gold);
+            HudDraw.Alpha = Mathf.Clamp01(Mathf.Min(age / Mathf.Max(0.001f, H.toastFadeInS), (H.toastSeconds - age) / Mathf.Max(0.001f, H.toastFadeOutS)));
+            HudDraw.Text(new Rect(H.leftPx, y - H.toastSize * H.lineH - H.toastGapPx, H.widthPx, H.toastSize * H.lineH), PotionUse.ToastText, "serif", H.toastSize, TextAnchor.UpperLeft, true, gold);
             HudDraw.Alpha = 1f;
         }
         GUI.matrix = m;

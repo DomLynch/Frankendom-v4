@@ -27,6 +27,9 @@
     "toast": "+{0} silver"
   },
   "toastSeconds": 3.0,
+  "toastFadeInS": 0.25,
+  "toastFadeOutS": 0.5,
+  "toastLineH": 1.6,
   "toastSize": 24,
   "toastBottom": 190.0,
   "color": [

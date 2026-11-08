@@ -75,7 +75,7 @@
   },
   "hud": {
     "_about": "OnGUI from BowHud (own host, not GameHUD): auto-aim brackets on the target while the bow is up, a mode chip (SWORD / BOW + arrows left when quiverOn) above the special icons.",
-    "enabled": true, "bracketPx": 30, "thickPx": 2, "gapPx": 10, "colour": "#e8d9a8", "chipRightPx": 52, "chipBottomPx": 150, "chipFontPx": 16, "chipWidthPx": 140
+    "enabled": true, "bracketPx": 30, "thickPx": 2, "gapPx": 10, "colour": "#e8d9a8", "chipRightPx": 52, "chipBottomPx": 150, "chipFontPx": 16, "chipWidthPx": 140, "chipLineH": 1.6, "chipBow": "BOW", "chipSword": "SWORD", "chipAmmoSep": "  "
   },
   "aiAnswer": { "_about": "RESERVED, not read by C# in v1 (V3 missileAnswer 15/15/0). The enemy brain reacts to the shooter's Active frames like any attack; a seeded roll would move AiState.Roll and the balance baseline. Do not wire without a rebaseline.", "dodgePct": 15, "guardPct": 15, "runPct": 0 }
 }

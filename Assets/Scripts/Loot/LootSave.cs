@@ -19,10 +19,16 @@ public static class LootSave
     static readonly MarketLedger ledger = new MarketLedger();   // STALL v1: coins + request ids (MarketCore.cs)
     public static bool Applied;   // the saved selection has been put on a wearer at least once; before that Save() keeps the loaded rows instead of reading an empty slot list
     public static string LastError = "";
+    // FIXSAVE v1: save safety. CurrentVersion = what this build writes (FileData default). overwriteUnsafe = the file could not be read AND could not be copied aside: Save() will not overwrite it blind.
+    static bool overwriteUnsafe; static readonly int CurrentVersion = new FileData().version;
+    /// <summary>A harness run without -savePath: loot_save.json is never written or deleted (the state stays in memory, commits still succeed). Logged once.</summary>
+    static bool Blocked() { if (!RunMode.RealSaveBlocked) return false; SafeFile.WarnOnce("lootblock", "[LootUI] harness run without -savePath: the real loot_save.json is NOT written (state stays in memory). Pass -savePath <dir> to keep a save."); return true; }
+    /// <summary>Keep a timestamped copy (loot_save.json.bad.&lt;stamp&gt;, last 3) before a reset can overwrite a file this build cannot use as it is.</summary>
+    static void Keep(string p, string why) { if (Blocked()) return; if (File.Exists(p) && SafeFile.Quarantine(p, "bad", why) == null) { overwriteUnsafe = true; SafeFile.WarnOnce("lootunsafe", "[LootUI] " + why + " and no copy could be made: loot_save.json will not be overwritten this session"); } }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)] static void HookErase() { SaveSlot.OnErase += Erase; }   // REBIND v100: New game forgets the carried items
-    static void Erase() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = true; Applied = false; startPaid = MarketCfg.Get().enabled; ledger.Coins = StartCoins(); try { if (File.Exists(Path_)) File.Delete(Path_); } catch (Exception e) { LastError = e.Message; } }
+    static void Erase() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = true; Applied = false; overwriteUnsafe = false; startPaid = MarketCfg.Get().enabled; ledger.Coins = StartCoins(); try { if (File.Exists(Path_)) { if (Blocked()) return; SafeFile.Quarantine(Path_, "erased", "was erased by New game"); File.Delete(Path_); } } catch (Exception e) { LastError = e.Message; } }   // FIXSAVE v1: harness guard + the last 3 erased saves stay as .erased.<stamp>
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = false; Applied = false; LastError = ""; startPaid = false; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = false; Applied = false; LastError = ""; startPaid = false; overwriteUnsafe = false; }
 
     public static string Path_ { get { return Path.Combine(SavePaths.Dir, LootCfg.Get().save.file); } }
     public static IList<string> Owned { get { EnsureLoaded(); return owned; } }
@@ -106,8 +112,9 @@ public static class LootSave
         if (!LootCfg.Get().save.enabled) return;
         try
         {
-            string p = Path_; if (!File.Exists(p)) return;
-            var f = JsonUtility.FromJson<FileData>(File.ReadAllText(p).TrimStart((char)0xFEFF)); if (f == null) return;
+            string p = Path_; if (!Blocked()) SafeFile.Recover(p); /* FIXSAVE v1: an interrupted old Delete + Move */ if (!File.Exists(p)) return;
+            var f = JsonUtility.FromJson<FileData>(File.ReadAllText(p).TrimStart((char)0xFEFF)); if (f == null) { Keep(p, "is empty or unreadable"); return; }   // FIXSAVE v1: was a silent reset
+            if (f.version > CurrentVersion) Keep(p, "is version " + f.version + " (this build writes " + CurrentVersion + ", a newer game saved it)");   // FIXSAVE v1: loads what it can, as before, but the original is kept
             ledger.Load(f.coins, f.seq, f.sales, MarketCfg.Get().currency.cap, MarketCfg.Get().rules.keepRequests); PotionStore.Load(f.stacks); /* POTIONS v1: a file without stacks = none */   // STALL v1
             if (f.version < 2) { ledger.Coins = StartCoins(); startPaid = MarketCfg.Get().enabled; } else startPaid = f.startPaid;   // INT108 v1: a version 1 save has no coins yet   // CAMPPLAY v1
             if (f.owned != null) for (int i = 0; i < f.owned.Length; i++) if (!string.IsNullOrEmpty(f.owned[i]) && !owned.Contains(f.owned[i])) owned.Add(f.owned[i]);
@@ -115,13 +122,15 @@ public static class LootSave
             if (!startPaid && MarketCfg.Get().enabled && ledger.Coins == 0 && ledger.Sales.Count == 0) { ledger.Coins = StartCoins(); startPaid = true; }   // CAMPPLAY v1: a save made with the trader off still gets the start coins once (written at the next Save)
             if (LootCfg.Get().debugLog) Debug.Log("[LootUI] save loaded: " + owned.Count + " owned, " + wanted.Count + " worn (" + p + ")");
         }
-        catch (Exception e) { LastError = e.Message; Debug.LogWarning("[LootUI] save read failed, starting empty: " + e.Message); PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); wanted.Clear(); ledger.Clear(); }
+        catch (Exception e) { LastError = e.Message; Keep(Path_, "could not be read (" + e.Message + ")"); /* FIXSAVE v1 */ Debug.LogWarning("[LootUI] save read failed, starting empty: " + e.Message); PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); wanted.Clear(); ledger.Clear(); }
     }
 
     /// <summary>Write owned + the slots' current contents.</summary>
     public static void Save()
     {
         EnsureLoaded(); if (!LootCfg.Get().save.enabled) return;
+        if (Blocked()) { LastError = ""; return; }   // FIXSAVE v1: harness without -savePath: memory only
+        if (overwriteUnsafe) { LastError = "save file unreadable and not copied aside: not overwritten"; return; }   // FIXSAVE v1
         try
         {
             var slots = LootBridge.Slots; var rows = new List<SlotRow>(); var defs = LootCfg.Get().slots;
@@ -137,8 +146,7 @@ public static class LootSave
             }
             var f = new FileData { owned = owned.ToArray(), equipped = rows.ToArray(), coins = ledger.Coins, seq = ledger.Seq, sales = ledger.Sales.ToArray(), startPaid = startPaid, stacks = PotionStore.ToRows() /* POTIONS v1 */ };   // STALL v1   // CAMPPLAY v1
             string p = Path_, dir = Path.GetDirectoryName(p); if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
-            string tmp = p + ".tmp"; File.WriteAllText(tmp, JsonUtility.ToJson(f, true));
-            if (File.Exists(p)) File.Replace(tmp, p, null); else File.Move(tmp, p);   // STALL v1: one atomic swap, the coins are in this file (was Delete + Move: a crash between left no file)
+            SafeFile.AtomicWrite(p, JsonUtility.ToJson(f, true));   // STALL v1: one atomic swap, the coins are in this file; FIXSAVE v1: same swap in SafeFile, previous good copy kept as .bak
              LastError = ""; SaveSlot.LootChanged();   // REBIND v100: the save slot keeps a pointer + counts
             if (LootCfg.Get().debugLog) Debug.Log("[LootUI] saved " + p);
         }
