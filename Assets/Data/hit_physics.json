@@ -39,6 +39,48 @@
         { "id": "Grendel", "mul": 0.5 }
       ]
     },
+    "hitDir": {
+      "_about": "HITDIR v1: blow direction -> small directional partial reaction (HitReactDir.cs). enabled=false = current behaviour. Blow vector is ATTACKER-local (x right, y up, z forward) per move id (character row, then id, then contains). Turned into the victim frame: lat > 0 = blow travels toward the victim's right. Part rows = DEGREES per unit of lateral / vertical (down = nod) / depth (into the chest = head back); yaw about up, roll about forward (negative rollLat = lean WITH the blow), side toward|away relative to the side the blow travels toward. All angles x class mul x fighter mul x mass mul x attacker punch, each component capped at maxDeg. flipLateral -1 mirrors everything if the proof shows the wrong side. Timing = ease + hold + back seconds x class timeMul.",
+      "enabled": true, "log": false,
+      "easeS": 0.06, "holdS": 0.14, "backS": 0.22, "maxDeg": 25.0,
+      "refMassKg": 66.7, "massExponent": 0.25, "minMassMul": 0.35, "maxMassMul": 1.0, "maxPunchMul": 1.5, "flipLateral": 1.0, "minComponent": 0.02,
+      "moves": [
+        { "id": "light_right",    "x": -1.0, "y": 0.0,  "z": 0.2 },
+        { "id": "light_left",     "x":  1.0, "y": 0.0,  "z": 0.2 },
+        { "id": "heavy_right",    "x": -1.0, "y": -0.2, "z": 0.2 },
+        { "id": "heavy_left",     "x":  1.0, "y": -0.2, "z": 0.2 },
+        { "id": "slash_riposte",  "x": -1.0, "y": 0.0,  "z": 0.2 },
+        { "id": "light_overhead", "x":  0.0, "y": -1.0, "z": 0.4 },
+        { "id": "heavy_overhead", "x":  0.0, "y": -1.0, "z": 0.4 },
+        { "id": "thrust",         "x":  0.0, "y": 0.0,  "z": 1.0 },
+        { "id": "heavy_thrust",   "x":  0.0, "y": 0.0,  "z": 1.0 },
+        { "id": "riposte",        "x":  0.0, "y": 0.0,  "z": 1.0 },
+        { "id": "kick",           "x":  0.0, "y": 0.4,  "z": 1.0 },
+        { "contains": "overhead",  "x":  0.0, "y": -1.0, "z": 0.4 },
+        { "contains": "thrust",    "x":  0.0, "y": 0.0,  "z": 1.0 },
+        { "contains": "left",      "x":  1.0, "y": 0.0,  "z": 0.2 },
+        { "contains": "right",     "x": -1.0, "y": 0.0,  "z": 0.2 }
+      ],
+      "parts": [
+        { "part": "spine",   "yawLat": 3.0,  "rollLat": -2.5, "pitchVert": 1.0,  "pitchDepth": 2.0, "blend": 1.0 },
+        { "part": "spine1",  "yawLat": 4.0,  "rollLat": -3.0, "pitchVert": 1.5,  "pitchDepth": 3.0, "blend": 1.0 },
+        { "part": "spine2",  "yawLat": 6.0,  "rollLat": -3.5, "pitchVert": 2.5,  "pitchDepth": 4.0, "blend": 1.0 },
+        { "part": "neck",    "yawLat": 6.0,  "rollLat": -2.0, "pitchVert": 4.0,  "pitchDepth": 4.0, "blend": 1.0 },
+        { "part": "head",    "yawLat": 14.0, "rollLat": -4.0, "pitchVert": 10.0, "pitchDepth": 10.0, "blend": 1.0 },
+        { "part": "arm",     "side": "toward", "rollLat": 12.0, "pitchDepth": 4.0, "blend": 1.0 },
+        { "part": "forearm", "side": "toward", "rollLat": 6.0,  "pitchDepth": 6.0, "blend": 1.0 },
+        { "part": "arm",     "side": "away",   "rollLat": 5.0, "blend": 1.0 }
+      ],
+      "classes": [
+        { "name": "light",   "mul": 0.6,  "timeMul": 0.8 },
+        { "name": "heavy",   "mul": 1.0,  "timeMul": 1.0 },
+        { "name": "counter", "mul": 1.15, "timeMul": 1.0 }
+      ],
+      "fighters": [
+        { "id": "*", "mul": 1.0 }, { "id": "Joan", "mul": 1.0 }, { "id": "Pitborn", "mul": 1.0 }, { "id": "Sobek", "mul": 1.3 },
+        { "id": "Grendel", "mul": 1.3 }, { "id": "Humbaba", "mul": 1.3 }, { "id": "Erlking", "mul": 1.5 }
+      ]
+    },
     "zoneRows": true,
     "refMassKg": 66.7,
     "massExponent": 0.5,

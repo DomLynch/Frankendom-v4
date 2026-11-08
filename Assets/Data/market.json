@@ -532,9 +532,7 @@
         "enterPad": 0.5,
         "leavePad": 0.5
       },
-      "items": [
-        "mount_horse"
-      ]
+      "items": ["mount_horse", "potion_health_minor", "potion_health", "potion_stamina"]
     }
   ]
 }

@@ -1898,3 +1898,6 @@ eal_c_sheet.png (front/side/back x idle, guard, attack, roll, overhead, sword in
 16:3x pool-laneUPREP READY _agents\laneUPREP\MANIFEST.md v109u dry run CLEAN: live tree already has market+silver+potions+horse data; only horse C# (MountRider + CameraRig/HubCfg/HubNpcs splices) pending; Roslyn 0 errors; scratch only
 
 19:30 pool-laneCOMBATDIR READY _agents\laneCOMBATDIR\MANIFEST.md directions all defined, guard side-aware (controls.json guard.match), stances wired but Aggressive/Defensive/Trickster differ from V3 rows79; stances.json preset + 5 C# splices staged, dry-run, nothing live
+
+17:4x pool-laneFIXSAVE READY _agents\laneFIXSAVE\MANIFEST.md save safety kit: SaveSlot atomic swap, corrupt/newer/erased saves kept as .bad (last 3), DataPath.ReadText logs once, RunMode (one harness definition) + LootSave refuses the real save under a harness flag without -savePath, monster_qa always -savePath. kit\apply_fixsave.py dry-run default, --apply, --off byte-identical (rehearsed); Roslyn 0 errors; 36 unit tests pass. Nothing live.
+17:25 pool-FIXGATES READY _agents\laneFIXGATES\MANIFEST.md hc_gate FAIL 10 -> PASS on scratch via kit\apply_kit.ps1 (dry-run default, -Off), maxSubstepS twin renamed solverStepS, json_keys_gate.py (WARN level) + delete_clutter.ps1 (dry-run, -Go to Recycle Bin, 161 files) for Dom; live tree untouched

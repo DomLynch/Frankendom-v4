@@ -42,7 +42,8 @@ public static class BossSilver
     static void OnKilled(DuelFighter victim, MoveDef m)
     {
         if (victim == null || !Get().enabled || !MarketCfg.Get().enabled) return;
-        var killer = victim.opponent; if (killer == null || killer == victim) return;
+        // the player's kill: any victim that is not the player (victim.opponent can already be cleared when OnKilled fires: the sandbox kill run on v109v2 paid nothing with the old opponent check)
+        if (victim == GameLoop.Player) return;
         if (!paid.Add(victim)) return;   // one kill, one payment (the finisher path and Die() can both fire)
         string id = victim.CharacterId; int amount = SilverFor(id); if (amount <= 0) return;
         string req = "boss-" + id + "-" + Duel.TickCount + "-" + System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(victim);

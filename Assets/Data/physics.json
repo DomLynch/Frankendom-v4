@@ -181,6 +181,22 @@
       "minPeakZones_note": "zones whose class minPeakDeg is enforced. V3 stagger mode (hit.mode stagger) moves only spine / neck / head on screen (blend), so a leg blow shows ~0 there; add legs when hit.mode is zone",
       "classes": [
         {
+          "name": "slashL",
+          "moveId": "light_left",
+          "heavy": false,
+          "counter": false,
+          "minPeakDeg": 0.05,
+          "maxPeakDeg": 12.0
+        },
+        {
+          "name": "slashR",
+          "moveId": "light_right",
+          "heavy": false,
+          "counter": false,
+          "minPeakDeg": 0.05,
+          "maxPeakDeg": 12.0
+        },
+        {
           "name": "light",
           "moveId": "light_right",
           "heavy": false,

@@ -364,7 +364,7 @@ public partial class HitReact : MonoBehaviour   // PHYSSWING v1: partial (Script
         HitRow row = (h.mode == "zone" || (HitPhysics.On && HitPhysics.Cfg.zoneRows)) ? (RowById(loc) ?? RowById("stagger")) : RowById("stagger");   // HITPHYS v1: per-zone rows when hit_physics.json is on
         if (row == null) return;
         string cn = ClassName(e);
-        { Vector3 hbd = BlowDir(e.actor); var hcl = PhysTune(e, row, ClassByName(cn), cn, hbd); StartRow(row, hcl, hbd, ZoneSpec(loc)); PhysAfter(e, hbd); }   // HITPHYS v1: per hit type x fighter (HitReactPhys.cs); identical to StartRow(row, ClassByName(cn), BlowDir(e.actor), ZoneSpec(loc)) when off
+        { Vector3 hbd = BlowDir(e.actor); var hcl = PhysTune(e, row, ClassByName(cn), cn, hbd); StartRow(row, hcl, hbd, ZoneSpec(loc)); PhysAfter(e, hbd); HitDirStart(e); /* HITDIR v1 */ }   // HITPHYS v1: per hit type x fighter (HitReactPhys.cs); identical to StartRow(row, ClassByName(cn), BlowDir(e.actor), ZoneSpec(loc)) when off
         LastClass = cn;
     }
 
@@ -560,7 +560,7 @@ public partial class HitReact : MonoBehaviour   // PHYSSWING v1: partial (Script
         {
             var j = jt[i]; if (j == null) continue;
             j.connectedAnchor = Quaternion.Inverse(animRot[pi[i]]) * (animPos[i] - animPos[pi[i]]);
-            j.targetRotation = Quaternion.Inverse(toJoint[i]) * Quaternion.Inverse(SwingRel(i)) * restLocal[i] * toJoint[i];   // PHYSSWING v1: SwingRel = animRel unless the lead is on
+            j.targetRotation = Quaternion.Inverse(toJoint[i]) * Quaternion.Inverse(HitDirRel(i, SwingRel(i))) * restLocal[i] * toJoint[i];   // PHYSSWING v1: SwingRel = animRel unless the lead is on
         }
     }
 

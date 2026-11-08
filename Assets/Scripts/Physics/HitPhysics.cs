@@ -36,7 +36,7 @@ public class HpCfg
     public float refMassKg = 66.7f, massExponent = 0.75f, blendExponent = 0.5f, minMassScale = 0.05f, maxMassScale = 1.6f, blendFloor = 0.05f, blendMax = 0.5f, durMinS = 0.15f, durMaxS = 0.35f, maxImpulseMul = 3f, dipMax = 1.5f;
     public string defaultType = "slash", defaultFighter = "*";
     public HpType[] types = new HpType[0]; public HpMove[] moves = new HpMove[0]; public HpContains[] moveContains = new HpContains[0];
-    public HpClass[] classes = new HpClass[0]; public HpFighter[] fighters = new HpFighter[0]; public HpClashKind[] clash = new HpClashKind[0]; public KbCfg knockback = new KbCfg();   // KNOCKBACK v1 (HitKnockback.cs)
+    public HpClass[] classes = new HpClass[0]; public HpFighter[] fighters = new HpFighter[0]; public HpClashKind[] clash = new HpClashKind[0]; public HdCfg hitDir = new HdCfg(); /* HITDIR v1 (HitReactDir.cs) */ public KbCfg knockback = new KbCfg();   // KNOCKBACK v1 (HitKnockback.cs)
 }
 [Serializable] class HpFile { public HpCfg hitPhysics = new HpCfg(); }
 
@@ -67,6 +67,7 @@ public static class HitPhysics
             if (c.fighters != null) for (int i = 0; i < c.fighters.Length; i++) if (c.fighters[i] != null && c.fighters[i].forceOverrides == null) c.fighters[i].forceOverrides = new string[0];
             if (c.types == null) c.types = new HpType[0]; if (c.moves == null) c.moves = new HpMove[0]; if (c.moveContains == null) c.moveContains = new HpContains[0];
             if (c.knockback == null) c.knockback = new KbCfg();   // KNOCKBACK v1
+            if (c.hitDir == null) c.hitDir = new HdCfg(); HdCfg.Fix(c.hitDir);   // HITDIR v1
             if (c.classes == null) c.classes = new HpClass[0]; if (c.fighters == null) c.fighters = new HpFighter[0]; if (c.clash == null) c.clash = new HpClashKind[0];
             for (int i = 0; i < c.types.Length; i++) { if (c.types[i] == null) c.types[i] = new HpType(); if (c.types[i].extra == null) c.types[i].extra = new HpSplit[0]; }
             return c;
