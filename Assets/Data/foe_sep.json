@@ -34,11 +34,6 @@
       "id": "Sobek",
       "halfWidthM": 0.6,
       "_about": "seed = today's radius. laneSOBEKNEW is thin with a big head: the width is the body, put the head extra into padM or the row; no code change"
-    },
-    {
-      "id": "Grendel",
-      "halfWidthM": 0.6,
-      "_about": "laneMONSTER3 (Grendel): body half width (shoulder plates 0.74 m, hips narrower)."
     }
   ]
 }

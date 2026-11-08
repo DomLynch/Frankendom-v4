@@ -31,14 +31,6 @@
       "decayPerSecond": 9,
       "deathblowMinHealthFrac": 0.5,
       "note": "SOBEKMOVES (guess): posture bar 90 (Pitborn 75, SOBEKDATA 140). 140 gave 5 percent Joan in the model (she never reaches the deathblow). Proof: breaks per fight both ways ~1."
-    },
-    {
-      "key": "Grendel",
-      "max": 100,
-      "holdTicks": 0,
-      "decayPerSecond": 9,
-      "deathblowMinHealthFrac": 0.5,
-      "note": "laneMONSTER3 (Grendel): posture bar 100 (Sobek 90, Pitborn 75)."
     }
   ],
   "hit": {

@@ -30,11 +30,6 @@
       "id": "Sobek",
       "rig": "mixamo106",
       "note": "SOBEKDATA: rig profile mixamo106; SOBEKWEAPON: its socket WeaponSocket_R is now used (trident)."
-    },
-    {
-      "id": "Grendel",
-      "rig": "mixamo106",
-      "note": "laneMONSTER3 (Grendel): rig profile mixamo106, sockets WeaponSocket_R and WeaponSocket_L (left socket: see MANIFEST, code gap)."
     }
   ],
   "todo": {

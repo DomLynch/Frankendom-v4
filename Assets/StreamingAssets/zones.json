@@ -93,13 +93,6 @@
       "scene": "HadesSlice_Sobek",
       "path": "Creatures/Sobek",
       "_about": "Resources/Creatures/Sobek.prefab, made by Hades > Zones > Save creature prefabs from his enemy scene (laneSOBEKDATA). Until it exists his spawn row is skipped with one log line."
-    },
-    {
-      "id": "Grendel",
-      "source": "resources",
-      "scene": "HadesSlice_Grendel",
-      "path": "Creatures/Grendel",
-      "_about": "laneMONSTER3 (Grendel): Resources/Creatures/Grendel.prefab, made by Hades > Zones > Save creature prefabs (MonsterBatch / ZoneCreaturePrefab.SaveAll) from his enemy scene."
     }
   ],
   "zones": [
@@ -350,7 +343,7 @@
       "mode": "inplace",
       "sceneRoots": [],
       "limits": {
-        "zMax": 98.0
+        "zMax": 94.0
       },
       "spots": [
         {
@@ -415,24 +408,6 @@
           ],
           "yaw": 90,
           "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
-        },
-        {
-          "id": "gate_next",
-          "pos": [
-            0.0,
-            97.0
-          ],
-          "yaw": 0,
-          "note": "laneMONSTER3 (Grendel): the far door of the camp (into zone 4)"
-        },
-        {
-          "id": "arrive_from_next",
-          "pos": [
-            0.0,
-            93.0
-          ],
-          "yaw": 180,
-          "note": "laneMONSTER3 (Grendel): arrival from zone 4, facing back into the camp"
         }
       ],
       "spawns": [],
@@ -458,91 +433,6 @@
           "radius": 2.0,
           "toZone": "sobek_reach",
           "toSpot": "arrive_from_sobek",
-          "unlockKilledSpawn": "",
-          "sticky": true,
-          "visual": "none"
-        },
-        {
-          "id": "gate_hub_to_grendel",
-          "spot": "gate_next",
-          "radius": 2.0,
-          "toZone": "grendel",
-          "toSpot": "arrive_from_prev",
-          "unlockKilledSpawn": "",
-          "sticky": true,
-          "visual": "GatewayRift"
-        }
-      ]
-    },
-    {
-      "id": "grendel",
-      "name": "The Mere",
-      "safe": false,
-      "start": false,
-      "scene": "",
-      "mode": "inplace",
-      "sceneRoots": [],
-      "limits": {
-        "zMax": 130.0
-      },
-      "spots": [
-        {
-          "id": "arrive_from_prev",
-          "pos": [
-            0.0,
-            116.0
-          ],
-          "yaw": 0,
-          "note": "laneMONSTER3 (Grendel): resume spot (a saved game that quit in this zone) and PLAY_GRENDEL.bat; crossing is by walking through the camp door."
-        },
-        {
-          "id": "grendel_stand",
-          "pos": [
-            0.0,
-            125.0
-          ],
-          "yaw": 0,
-          "note": "laneMONSTER3 (Grendel): his stand, local z 17 like the zone 2 stand; PLACEHOLDER until measured in the built zone."
-        },
-        {
-          "id": "gate_prev",
-          "pos": [
-            0.0,
-            108.0
-          ],
-          "yaw": 180,
-          "note": "laneMONSTER3 (Grendel): the way back to the camp = the zone entry; walked."
-        }
-      ],
-      "spawns": [
-        {
-          "id": "z4_grendel",
-          "enabled": true,
-          "spot": "grendel_stand",
-          "picks": [
-            {
-              "creature": "Grendel",
-              "weight": 1
-            }
-          ],
-          "ladderRow": "grendel",
-          "respawnMinS": 480,
-          "respawnMaxS": 720,
-          "aggro": 8.0,
-          "leash": 26.0,
-          "hpMul": 1.0,
-          "damageMul": 1.0,
-          "difficulty": 12
-        }
-      ],
-      "services": [],
-      "gates": [
-        {
-          "id": "gate_grendel_to_hub",
-          "spot": "gate_prev",
-          "radius": 2.0,
-          "toZone": "hub_camp",
-          "toSpot": "arrive_from_next",
           "unlockKilledSpawn": "",
           "sticky": true,
           "visual": "none"

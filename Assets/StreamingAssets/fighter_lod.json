@@ -46,17 +46,6 @@
       "enterM": 0,
       "exitM": 0,
       "note": "249,999 -> 100,000 tris (198,474 -> 95,454 verts); p95 error 4.6 mm so the px thresholds are looser than the hair row: mid from about 7 m (1600p, fov 38.6), full again inside about 5.3 m. A/B arm B: file fighterlod/Pitborn_Body.mid60.json (60,000 tris, p95 6.0 mm, set enterPx 2.0 exitPx 2.6)"
-    },
-    {
-      "character": "Grendel",
-      "renderer": "Grendel_Body",
-      "file": "fighterlod/Grendel_Body.mid.json",
-      "enabled": true,
-      "enterPx": 1.5,
-      "exitPx": 2.0,
-      "enterM": 0,
-      "exitM": 0,
-      "note": "laneMONSTER3 (Grendel): LOD1 100,000 tris from the 400,000 LOD0 (make_fighterlod.py, p95 error 4.8 mm, silhouette IoU 0.997); LOD2 = fighterlod/Grendel_Body.low.json 40,000 tris (p95 5.9 mm, IoU 0.992) ships beside it, no row swaps to it today (FighterLod has one mid mesh per renderer). The master switch fighter_lod.json enabled stays false (Dom's LOOK OK)."
     }
   ]
 }

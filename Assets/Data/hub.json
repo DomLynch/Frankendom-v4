@@ -184,19 +184,19 @@
       },
       "body": {
         "status": "camp_character",
-        "bodyId": "akai",
-        "character": "Akai E Espiritu",
-        "source": "kits_out\\3d\\camp_npcs\\akai.glb (copy of the VPS file, read-only)",
+        "bodyId": "goblin",
+        "character": "Goblin D Shareyko",
+        "source": "OpenTrident site\\models\\temp1\\mx-goblin-d-shareyko-full-phone-mixamorig.glb (read-only copy, VENDORS v1)",
         "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Armature root)",
         "clipsInGlb": 12,
-        "idle": "Idle, 4.0 s, embedded in the glb",
-        "tris": 14500,
-        "textures": "1 x 512x512 PNG (diffuse)",
-        "lookNote": "chosen by Dom: Akai. Stands by the hearth facing the fire (yaw 180 at the hearth spot); flavour only, the hearth heals by standing near it.",
-        "final": "Dom chose this character (2026-11-06). 512 px phone-tier textures are the placeholder level for the camp; upgrade path: the 52-joint originals with bigger textures on the VPS (laneCAMPNPC MANIFEST section 6)."
+        "idle": "Idle, embedded in the glb",
+        "tris": 16463,
+        "textures": "3 x PNG (see the glb)",
+        "lookNote": "VENDORS v1 (Strategy pick): the grizzled hooded keeper by the hearth, furs and horns, facing the fire (yaw 180). Flavour only, the hearth heals by standing near it. Measured top 1.93-1.99 m native, runtime.scale 0.74 = 1.45 m (hunched) next to Joan 1.58 m.",
+        "final": "Mixamo Goblin D Shareyko on the 106 rig."
       },
       "runtime": {
-        "glb": "Npc/camp_akai.glb",
+        "glb": "Npc/camp_goblin.glb",
         "sources": [],
         "hideNodes": [
           "Layer_Tunic",
@@ -206,7 +206,7 @@
           "Layer_Sword",
           "Layer_Scabbard"
         ],
-        "scale": 1.0,
+        "scale": 0.74,
         "clipGlb": "",
         "clipSources": [],
         "clipName": "Idle"
@@ -226,29 +226,30 @@
       },
       "body": {
         "status": "camp_character",
-        "bodyId": "erika",
-        "character": "Erika Archer",
-        "source": "kits_out\\3d\\camp_npcs\\erika.glb (copy of the VPS file, read-only)",
+        "bodyId": "kachujin",
+        "character": "Kachujin G Rosales",
+        "source": "OpenTrident site\\models\\temp1\\mx-kachujin-g-rosales-full-phone-mixamorig.glb (read-only copy, VENDORS v1)",
         "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Armature root)",
         "clipsInGlb": 12,
-        "idle": "Idle, 4.0 s, embedded in the glb",
-        "tris": 21867,
-        "textures": "5 x 512x512 PNG (clothes, body, eyelash, 2 normals)",
-        "lookNote": "chosen by Dom: Erika, the third (\"if u have 3 u can add this one\"). The eyelash card (Erika_Archer_Clothes_Mesh, material eyelash_MAT, alphaMode BLEND) is hidden: GearMaterials makes opaque HDRP/Lit, so the card would show as a solid patch.",
-        "final": "Dom chose this character (2026-11-06). 512 px phone-tier textures are the placeholder level for the camp; upgrade path: the 52-joint originals with bigger textures on the VPS (laneCAMPNPC MANIFEST section 6)."
+        "idle": "Idle, embedded in the glb",
+        "tris": 17356,
+        "textures": "4 x PNG (see the glb)",
+        "lookNote": "VENDORS v1 (Strategy pick): the woman trader in a red robe at the west tent. Measured top 1.97 m native (hair bun), runtime.scale 0.84 = 1.66 m. Her material kachujin_MAT_ (403 tris) is alphaMode BLEND: GearMaterials makes it opaque, look at it once in the build.",
+        "final": "Mixamo Kachujin G Rosales on the 106 rig."
       },
       "runtime": {
-        "glb": "Npc/camp_erika.glb",
+        "glb": "Npc/camp_kachujin.glb",
         "sources": [],
         "hideNodes": [
           "Layer_Tunic",
           "Layer_Helmet",
           "Layer_Bracers",
+          "Layer_Greaves",
           "Layer_Sword",
           "Layer_Scabbard",
-          "Erika_Archer_Clothes_Mesh"
+          "Layer_Cape"
         ],
-        "scale": 1.0,
+        "scale": 0.84,
         "clipGlb": "",
         "clipSources": [],
         "clipName": "Idle"
@@ -418,7 +419,7 @@
   "_npcspawn": "laneNPCSPAWN v1 added: area, safe.combat.allowPress, spawner, npcs[].runtime, indicator.hudTag geometry + refuseToast, stall.buy. Readers: HubCfg.cs (all keys), HubNpcs.cs (spawner, npcs, indicator), HubSafe.cs (area, safe.combat), HubTrade.cs + MarketBuy.cs (stall.buy). Gen: _agents/laneNPCSPAWN/gen_hub_json.py. enabled stays false: nothing here is read until it is true.",
   "area": {
     "zMin": 63.0,
-    "zMax": 98.0,
+    "zMax": 94.0,
     "xHalf": 8.0,
     "_about": "the camp rectangle (world x / z), copied from market.json stall.area by gen_hub_json.py; hub_check.py keeps them equal. Safe-zone test = inside it. Monsters are held out by laneZONESPAN destSafe."
   },

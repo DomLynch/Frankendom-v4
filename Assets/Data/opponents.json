@@ -10,7 +10,6 @@
     { "id": "sobek", "character": "Sobek", "name": "SOBEK", "title": "The River Tyrant", "hpMul": 1.15, "damageMul": 1.8, "difficulty": 11, "inLadder": false },
     { "id": "pit_veteran", "character": "Pitborn",   "name": "PITBORN", "title": "Veteran of the Pit",  "hpMul": 1.12, "damageMul": 1.08, "difficulty": 8, "inLadder": true },
     { "id": "pit_champion", "character": "Pitborn",  "name": "PITBORN", "title": "Pit Champion",        "hpMul": 1.25, "damageMul": 1.15, "difficulty": 9, "inLadder": true },
-    { "id": "pit_lord", "character": "Pitborn",      "name": "PITBORN", "title": "Lord of the Furnace", "hpMul": 1.40, "damageMul": 1.25, "difficulty": 10, "inLadder": true },
-    {"id": "grendel", "character": "Grendel", "name": "GRENDEL", "title": "The Bone Reaver", "hpMul": 1.25, "damageMul": 1.95, "difficulty": 12, "inLadder": false}
+    { "id": "pit_lord", "character": "Pitborn",      "name": "PITBORN", "title": "Lord of the Furnace", "hpMul": 1.40, "damageMul": 1.25, "difficulty": 10, "inLadder": true }
   ]
 }

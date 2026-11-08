@@ -199,8 +199,7 @@
     },
     "weaponReach": {
      "characters": [
-      "Sobek",
-      "Grendel"
+      "Sobek"
      ],
      "note": "SOBEKMOVES: AIBrain measures the gap of these fighters in their weapon reach units (DuelFighter.ReachScale) instead of their scale, so the poker stands off and pokes from his real reach, and his opponent bot judges his swings by that reach. Inert without the AIBrain hunk (stage/code/AIBrain_weaponReach.diff)."
     }

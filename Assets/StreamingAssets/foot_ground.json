@@ -75,19 +75,19 @@
             "debug": false,
             "debugEvery": 60,
             "weight": 1.0,
-            "ankleHeight": 0.2,
+            "ankleHeight": 0.22,
             "rayUp": 0.8,
             "rayDown": 1.2,
             "ignoreLayers": [
                 8,
                 9
             ],
-            "pelvisDownMax": 0.35,
-            "pelvisUpMax": 0.15,
+            "pelvisDownMax": 0.385,
+            "pelvisUpMax": 0.165,
             "pelvisSmooth": 0.06,
-            "plantSnap": 0.03,
-            "maxLift": 0.24,
-            "levelWeight": 1.0,
+            "plantSnap": 0.033,
+            "maxLift": 0.264,
+            "levelWeight": 0.0,
             "toeFlatWeight": 1.0,
             "stateBlend": 0.1,
             "states": [
@@ -153,40 +153,6 @@
             "levelWeight": 1,
             "toeFlatWeight": 1,
             "stateBlend": 0.1
-        },
-        {
-          "name": "Grendel",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.222,
-          "rayUp": 0.72,
-          "rayDown": 1.08,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.45,
-          "pelvisUpMax": 0.225,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.027,
-          "maxLift": 0.36,
-          "levelWeight": 0.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ],
-          "note": "laneMONSTER3 (Grendel): ankleHeight 0.222 = Foot joint height of the bound rig (0.066 raw x 3.893); lengths = Sobek x 0.865."
         }
     ]
 }

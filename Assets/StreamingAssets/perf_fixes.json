@@ -54,8 +54,8 @@
     "fromGearJson": true,
     "files": [
       "Npc/camp_arissa.glb",
-      "Npc/camp_akai.glb",
-      "Npc/camp_erika.glb"
+      "Npc/camp_goblin.glb",
+      "Npc/camp_kachujin.glb"
     ],
     "startDelayFrames": 30,
     "framesBetweenFiles": 20,

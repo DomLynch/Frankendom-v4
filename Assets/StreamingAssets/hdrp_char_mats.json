@@ -148,26 +148,6 @@
     }
    ],
    "_note": "laneSOBEKBIND: two distinct glb material names (HEADAUDIT item 7). Mat file names sobek_body_0 / sobek_head_0 follow the Joan/Pitborn <glbMaterial lowercased>_0 pattern: UNVERIFIED until the Unity import runs."
-  },
-  {
-    "id": "Grendel",
-    "glb": "Assets/Characters/Grendel/Grendel_combat.glb",
-    "texDir": "Assets/Characters/Grendel/Tex",
-    "groups": [
-      {
-        "glbMaterial": "grendel_body",
-        "maskOut": "grendel_body_mask.png",
-        "maskSize": 2048,
-        "parts": [
-          {
-            "base": "grendel_body_base.jpg",
-            "normal": "grendel_body_normal.jpg",
-            "mr": "grendel_body_mr.jpg"
-          }
-        ]
-      }
-    ],
-    "_note": "laneMONSTER3 (Grendel): ONE material (single mesh Grendel_Body). Dom's rule (2026-11-07): his supplied textures ship as designed at full 4K: base colour and metal-rough are his source files byte for byte, the normal is his normal UDN-composited with the bake of the decimation (4K). The earlier bone-vs-flesh separation (data/demon_material.json) stays staged as an OPTION in Tex_alt_separated (not installed)."
   }
  ],
  "copy": [
@@ -350,20 +330,6 @@
    "smoothnessMin": -1,
    "smoothnessMax": -1,
    "materialId": -1
-  },
-  {
-    "mat": "Assets/Characters/Grendel/Mats/grendel_body_0.mat",
-    "mask": "Assets/Characters/Grendel/Tex/grendel_body_mask.png",
-    "sheen": "off",
-    "sheenIntensity": 1,
-    "smoothnessMin": -1,
-    "smoothnessMax": 0.35,
-    "materialId": 1,
-    "baseColor": [
-      1.0,
-      1.0,
-      1.0
-    ]
   }
  ]
 }

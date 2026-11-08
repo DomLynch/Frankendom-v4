@@ -21,10 +21,6 @@
     {
       "contains": "Sobek",
       "kg": 900.0
-    },
-    {
-      "contains": "Grendel",
-      "kg": 700.0
     }
   ],
   "defaultMassKg": 80.0,

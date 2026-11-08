@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HadesSlice_Sobek.unity
     guid: 05bb7307f86a3d840ba2a3e7243b77b1
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_Grendel.unity
+    guid: 0b97056c2d66947499b0abdf220c8b90
   m_configObjects: {}

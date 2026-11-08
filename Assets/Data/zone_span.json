@@ -167,51 +167,6 @@
         "worldbehind_rock_boulder_A_66",
         "worldbehind_rock_boulder_C_67"
       ]
-    },
-    {
-      "id": "grendel",
-      "root": "Zone4",
-      "layout": "props_layout_grendel.json",
-      "offsetZ": 108.0,
-      "laneZMin": 8.0,
-      "laneZMax": 22.0,
-      "colliderCenterLocal": 8.5,
-      "colliderSizeZ": 70.0,
-      "safe": false,
-      "gateSet": false,
-      "gate": {
-        "id": "gate_hub_to_grendel",
-        "backId": "gate_grendel_to_hub",
-        "frontLocal": 27.0,
-        "boundaryLocal": -4.0,
-        "followStopBehind": 1.5,
-        "forceOpen": false,
-        "destSafe": false
-      },
-      "terrain": {
-        "mode": "stamp",
-        "xHalf": 32.0,
-        "zFromLocal": -6.0,
-        "zToLocal": 44.0,
-        "blendM": 6.0,
-        "yBias": 0.0,
-        "uvScale": 5.5
-      },
-      "rings": [
-        {
-          "group": "Z4Ring0",
-          "rows": 32
-        },
-        {
-          "group": "Z4Ring1",
-          "rows": 103
-        },
-        {
-          "group": "Z4Ring2",
-          "rows": 7
-        }
-      ],
-      "hideRows": []
     }
   ],
   "skyline": {

@@ -30,7 +30,7 @@
       "templateFor": "enemy",
       "displayName": "Pitborn",
       "objectName": "Pitborn",
-      "weapon": "maul",
+      "weapon": "claws",
       "controller": "Assets/Characters/Pitborn.controller",
       "modelGlb": "Assets/Characters/Pitborn/Pitborn_combat.glb",
       "animGlb": "Assets/Characters/Pitborn/Pitborn_anim.glb",
@@ -40,7 +40,10 @@
       "hitFwdM": 0.85,
       "scaleFloor": 1.0,
       "armoured": false,
-      "notes": "armoured: sparks and flash on hits"
+      "notes": "armoured: sparks and flash on hits",
+      "loadout": [
+        "pitborn_claws"
+      ]
     },
     {
       "id": "Dracula",
@@ -80,31 +83,6 @@
       "notes": "SOBEK130 v1 (Dom v108b: +30%, heightM 2.4 -> 3.12; the SOBEKSIZE rows x1.3, see _agents/laneSOBEK130/MANIFEST.md). SOBEKSIZE v1 (Dom v107: 20% smaller, heightM 3.0 -> 2.4; every metre row follows, see _agents/laneSOBEKSIZE/MANIFEST.md). SOBEKDATA: reptile body, crocodile head, claws. no templateFor: Pitborn stays the enemy scene template (CharacterSetup picks the first row with templateFor=enemy that is not the new id). heightM 3.0 (guess: measure on the bound mesh, plan range 2.5-3.5). armoured false = bleeds, no sparks (guess, Dom may flip). weapon trident (SOBEKWEAPON): his right hand holds gear item sobek_trident (loadout), WeaponSwap parents it on WeaponSocket_R. His own claws stay (the hand keeps the weapon through the loadout only).",
       "loadout": [
         "sobek_claws"
-      ]
-    },
-    {
-      "id": "Grendel",
-      "specials": [
-        "skill_cleave",
-        "skill_reaping"
-      ],
-      "bonePrefix": "mixamorig:",
-      "displayName": "Grendel",
-      "objectName": "Grendel",
-      "weapon": "dual_blades",
-      "controller": "Assets/Characters/Grendel.controller",
-      "modelGlb": "Assets/Characters/Grendel/Grendel_combat.glb",
-      "animGlb": "Assets/Characters/Grendel/Grendel_anim.glb",
-      "guardMask": "Assets/Characters/GuardUpper_Grendel.mask",
-      "finisherClipFolder": "Assets/Characters/Grendel/FinisherClips",
-      "heightM": 2.7,
-      "hitFwdM": 0.3,
-      "scaleFloor": 1.0,
-      "armoured": false,
-      "notes": "laneMONSTER3 (Grendel): Dom's demonic creature model, monster 3 of 100+ (zone 4 after the camp). Upright biped on the mixamo 106 rig, one mesh (400k tris), dual-wields two curved bone swords (items grendel_blade_R / _L, glbs come later). heightM 2.70 (horn tips). Name picked by Dom.",
-      "loadout": [
-        "grendel_blade_R",
-        "grendel_blade_L"
       ]
     }
   ],
