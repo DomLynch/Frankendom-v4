@@ -6973,130 +6973,6 @@
         "src": "lib:125740901-jog-strafe-right"
       },
       {
-        "state": "claw_swipe_L",
-        "derive": {
-          "from": "lib:102320908-mutant-swiping",
-          "frames": [
-            18,
-            36
-          ],
-          "recentre": true,
-          "worldRot": [
-            {
-              "bone": "Hips",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": 30.0
-            },
-            {
-              "bone": "LeftUpLeg",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": -30.0
-            },
-            {
-              "bone": "RightUpLeg",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": -30.0
-            }
-          ]
-        },
-        "note": "laneMONSTER5: OpenTrident Mixamo library clip 102320908-mutant-swiping frames 18-36 (source 20 fps), lean 30.0 deg"
-      },
-      {
-        "state": "claw_swipe_R",
-        "derive": {
-          "from": "lib:102320908-mutant-swiping",
-          "frames": [
-            18,
-            36
-          ],
-          "recentre": true,
-          "mirror": true,
-          "worldRot": [
-            {
-              "bone": "Hips",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": 40.0
-            },
-            {
-              "bone": "LeftUpLeg",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": -40.0
-            },
-            {
-              "bone": "RightUpLeg",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": -40.0
-            }
-          ]
-        },
-        "note": "laneMONSTER5: OpenTrident Mixamo library clip 102320908-mutant-swiping frames 18-36 (source 20 fps) mirrored, lean 40.0 deg"
-      },
-      {
-        "state": "claw_slam",
-        "derive": {
-          "from": "lib:128160901-dual-weapon-combo",
-          "frames": [
-            0,
-            36
-          ],
-          "recentre": true,
-          "worldRot": [
-            {
-              "bone": "Hips",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": 35.0
-            },
-            {
-              "bone": "LeftUpLeg",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": -35.0
-            },
-            {
-              "bone": "RightUpLeg",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": -35.0
-            }
-          ]
-        },
-        "note": "laneMONSTER5: OpenTrident Mixamo library clip 128160901-dual-weapon-combo frames 0-36 (source 20 fps), lean 35.0 deg"
-      },
-      {
         "state": "maw_bite",
         "derive": {
           "from": "lib:102700901-double-dagger-stab",
@@ -7136,6 +7012,294 @@
           ]
         },
         "note": "laneMONSTER5: OpenTrident Mixamo library clip 102700901-double-dagger-stab frames 10-50 (source 20 fps), lean 60.0 deg"
+      },
+      {
+        "state": "hcl_swipe_R",
+        "derive": {
+          "from": "lib:121360901-zombie-attack",
+          "frames": [
+            9,
+            31
+          ],
+          "recentre": true,
+          "worldRot": [
+            {
+              "bone": "Hips",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": 15.0
+            },
+            {
+              "bone": "LeftUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -15.0
+            },
+            {
+              "bone": "RightUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -15.0
+            }
+          ]
+        },
+        "note": "laneCLAWS56 (Humbaba): claws, OpenTrident Mixamo library clip 121360901-zombie-attack frames 9-31 (20 fps), Hips lean 15.0 deg (claw_opt56.py, claw tip on Joan chest)"
+      },
+      {
+        "state": "hcl_swipe_L",
+        "derive": {
+          "from": "lib:102320908-mutant-swiping",
+          "frames": [
+            14,
+            36
+          ],
+          "recentre": true,
+          "worldRot": [
+            {
+              "bone": "Hips",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": 25.0
+            },
+            {
+              "bone": "LeftUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -25.0
+            },
+            {
+              "bone": "RightUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -25.0
+            }
+          ]
+        },
+        "note": "laneCLAWS56 (Humbaba): claws, OpenTrident Mixamo library clip 102320908-mutant-swiping frames 14-36 (20 fps), Hips lean 25.0 deg (claw_opt56.py, claw tip on Joan chest)"
+      },
+      {
+        "state": "hcl_hook_R",
+        "derive": {
+          "from": "lib:128650913-standing-melee-attack-horizontal",
+          "frames": [
+            7,
+            29
+          ],
+          "recentre": true,
+          "worldRot": [
+            {
+              "bone": "Hips",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": 20.0
+            },
+            {
+              "bone": "LeftUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -20.0
+            },
+            {
+              "bone": "RightUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -20.0
+            }
+          ]
+        },
+        "note": "laneCLAWS56 (Humbaba): claws, OpenTrident Mixamo library clip 128650913-standing-melee-attack-horizontal frames 7-29 (20 fps), Hips lean 20.0 deg (claw_opt56.py, claw tip on Joan chest)"
+      },
+      {
+        "state": "hcl_hook_L",
+        "derive": {
+          "from": "lib:128650913-standing-melee-attack-horizontal",
+          "frames": [
+            7,
+            29
+          ],
+          "recentre": true,
+          "mirror": true,
+          "worldRot": [
+            {
+              "bone": "Hips",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": 20.0
+            },
+            {
+              "bone": "LeftUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -20.0
+            },
+            {
+              "bone": "RightUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -20.0
+            }
+          ]
+        },
+        "note": "laneCLAWS56 (Humbaba): claws, OpenTrident Mixamo library clip 128650913-standing-melee-attack-horizontal mirrored frames 7-29 (20 fps), Hips lean 20.0 deg (claw_opt56.py, claw tip on Joan chest)"
+      },
+      {
+        "state": "hcl_slam",
+        "derive": {
+          "from": "lib:128650912-standing-melee-attack-downward",
+          "frames": [
+            5,
+            27
+          ],
+          "recentre": true,
+          "worldRot": [
+            {
+              "bone": "Hips",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": 2.5
+            },
+            {
+              "bone": "LeftUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -2.5
+            },
+            {
+              "bone": "RightUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -2.5
+            }
+          ]
+        },
+        "note": "laneCLAWS56 (Humbaba): claws, OpenTrident Mixamo library clip 128650912-standing-melee-attack-downward frames 5-27 (20 fps), Hips lean 2.5 deg (claw_opt56.py, claw tip on Joan chest)"
+      },
+      {
+        "state": "hcl_stab",
+        "derive": {
+          "from": "lib:102700901-double-dagger-stab",
+          "frames": [
+            0,
+            19
+          ],
+          "recentre": true,
+          "worldRot": [
+            {
+              "bone": "Hips",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": 15.0
+            },
+            {
+              "bone": "LeftUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -15.0
+            },
+            {
+              "bone": "RightUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -15.0
+            }
+          ]
+        },
+        "note": "laneCLAWS56 (Humbaba): claws, OpenTrident Mixamo library clip 102700901-double-dagger-stab frames 0-19 (20 fps), Hips lean 15.0 deg (claw_opt56.py, claw tip on Joan chest)"
+      },
+      {
+        "state": "hcl_counter",
+        "derive": {
+          "from": "lib:118370901-right-hook",
+          "frames": [
+            0,
+            16
+          ],
+          "recentre": true,
+          "worldRot": [
+            {
+              "bone": "Hips",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": 30.0
+            },
+            {
+              "bone": "LeftUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -30.0
+            },
+            {
+              "bone": "RightUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -30.0
+            }
+          ]
+        },
+        "note": "laneCLAWS56 (Humbaba): claws, OpenTrident Mixamo library clip 118370901-right-hook frames 0-16 (20 fps), Hips lean 30.0 deg (claw_opt56.py, claw tip on Joan chest)"
       }
     ],
     "replaceRows": {
@@ -7149,7 +7313,7 @@
       }
     },
     "tuning": "monster5_own",
-    "note": "laneMONSTER5 (Humbaba): base 30 states + walk_back / run_back / strafe_run_L / strafe_run_R + the claw / maw attack states claw_swipe_L / claw_swipe_R / claw_slam / maw_bite (derive rows, library clips, data/h5_attacks.json). Built by Tools/clip_build.py; the lane's measured lifts are in the tuning row."
+    "note": "laneMONSTER5 (Humbaba): base 30 states + walk_back / run_back / strafe_run_L / strafe_run_R + the claw / maw attack states claw_swipe_L / claw_swipe_R / claw_slam / maw_bite (derive rows, library clips, data/h5_attacks.json). Built by Tools/clip_build.py; the lane's measured lifts are in the tuning row. | laneCLAWS56 (Humbaba): old attack states ['claw_swipe_L', 'claw_swipe_R', 'claw_slam'] dropped, 7 leaned claw states hcl_* added (Dom: no weapons on monsters)."
   },
   "Erlking": {
     "extraRows": [
@@ -7170,12 +7334,12 @@
         "src": "lib:125740901-jog-strafe-right"
       },
       {
-        "state": "ek_overhead",
+        "state": "ecl_swipe_R",
         "derive": {
-          "from": "lib:122350901-great-sword-slash",
+          "from": "lib:121360901-zombie-attack",
           "frames": [
-            4,
-            32
+            9,
+            31
           ],
           "recentre": true,
           "worldRot": [
@@ -7186,7 +7350,7 @@
                 0,
                 0
               ],
-              "deg": 8.0
+              "deg": 25.0
             },
             {
               "bone": "LeftUpLeg",
@@ -7195,7 +7359,7 @@
                 0,
                 0
               ],
-              "deg": -8.0
+              "deg": -25.0
             },
             {
               "bone": "RightUpLeg",
@@ -7204,17 +7368,22 @@
                 0,
                 0
               ],
-              "deg": -8.0
+              "deg": -25.0
             }
           ]
         },
-        "note": "laneMONSTER6 (Erlking): standing two-handed OVERHEAD slam: great-sword slash frames 4-32 (20 fps source), lean 8 deg"
+        "note": "laneCLAWS56 (Erlking): claws, OpenTrident Mixamo library clip 121360901-zombie-attack frames 9-31 (20 fps), Hips lean 25.0 deg (claw_opt56.py, claw tip on Joan chest)"
       },
       {
-        "state": "ek_combo",
+        "state": "ecl_swipe_L",
         "derive": {
-          "from": "lib:122350901-great-sword-slash",
+          "from": "lib:121360901-zombie-attack",
+          "frames": [
+            9,
+            31
+          ],
           "recentre": true,
+          "mirror": true,
           "worldRot": [
             {
               "bone": "Hips",
@@ -7223,7 +7392,7 @@
                 0,
                 0
               ],
-              "deg": 8.0
+              "deg": 25.0
             },
             {
               "bone": "LeftUpLeg",
@@ -7232,7 +7401,7 @@
                 0,
                 0
               ],
-              "deg": -8.0
+              "deg": -25.0
             },
             {
               "bone": "RightUpLeg",
@@ -7241,19 +7410,19 @@
                 0,
                 0
               ],
-              "deg": -8.0
+              "deg": -25.0
             }
           ]
         },
-        "note": "laneMONSTER6 (Erlking): two-hit COMBO: great-sword slash 122350 whole (two swings, 3.5 s)"
+        "note": "laneCLAWS56 (Erlking): claws, OpenTrident Mixamo library clip 121360901-zombie-attack mirrored frames 9-31 (20 fps), Hips lean 25.0 deg (claw_opt56.py, claw tip on Joan chest)"
       },
       {
-        "state": "ek_sweep_R",
+        "state": "ecl_hook_R",
         "derive": {
-          "from": "lib:122470901-great-sword-slash",
+          "from": "lib:128650913-standing-melee-attack-horizontal",
           "frames": [
-            2,
-            32
+            7,
+            29
           ],
           "recentre": true,
           "worldRot": [
@@ -7264,7 +7433,7 @@
                 0,
                 0
               ],
-              "deg": 6.0
+              "deg": 27.5
             },
             {
               "bone": "LeftUpLeg",
@@ -7273,7 +7442,7 @@
                 0,
                 0
               ],
-              "deg": -6.0
+              "deg": -27.5
             },
             {
               "bone": "RightUpLeg",
@@ -7282,16 +7451,62 @@
                 0,
                 0
               ],
-              "deg": -6.0
+              "deg": -27.5
             }
           ]
         },
-        "note": "laneMONSTER6 (Erlking): horizontal SWEEP, low great-sword slash (data\\erlking_tune.json sweep)"
+        "note": "laneCLAWS56 (Erlking): claws, OpenTrident Mixamo library clip 128650913-standing-melee-attack-horizontal frames 7-29 (20 fps), Hips lean 27.5 deg (claw_opt56.py, claw tip on Joan chest)"
       },
       {
-        "state": "ek_spin",
+        "state": "ecl_hook_L",
         "derive": {
-          "from": "lib:122550901-great-sword-high-spin-attack",
+          "from": "lib:128650913-standing-melee-attack-horizontal",
+          "frames": [
+            7,
+            29
+          ],
+          "recentre": true,
+          "mirror": true,
+          "worldRot": [
+            {
+              "bone": "Hips",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": 27.5
+            },
+            {
+              "bone": "LeftUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -27.5
+            },
+            {
+              "bone": "RightUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -27.5
+            }
+          ]
+        },
+        "note": "laneCLAWS56 (Erlking): claws, OpenTrident Mixamo library clip 128650913-standing-melee-attack-horizontal mirrored frames 7-29 (20 fps), Hips lean 27.5 deg (claw_opt56.py, claw tip on Joan chest)"
+      },
+      {
+        "state": "ecl_slam",
+        "derive": {
+          "from": "lib:128650912-standing-melee-attack-downward",
+          "frames": [
+            5,
+            27
+          ],
           "recentre": true,
           "worldRot": [
             {
@@ -7301,7 +7516,7 @@
                 0,
                 0
               ],
-              "deg": 16.0
+              "deg": 15.0
             },
             {
               "bone": "LeftUpLeg",
@@ -7310,7 +7525,7 @@
                 0,
                 0
               ],
-              "deg": -16.0
+              "deg": -15.0
             },
             {
               "bone": "RightUpLeg",
@@ -7319,16 +7534,20 @@
                 0,
                 0
               ],
-              "deg": -16.0
+              "deg": -15.0
             }
           ]
         },
-        "note": "laneMONSTER6 (Erlking): high spin attack (heavy)"
+        "note": "laneCLAWS56 (Erlking): claws, OpenTrident Mixamo library clip 128650912-standing-melee-attack-downward frames 5-27 (20 fps), Hips lean 15.0 deg (claw_opt56.py, claw tip on Joan chest)"
       },
       {
-        "state": "ek_charge",
+        "state": "ecl_stab",
         "derive": {
-          "from": "lib:122540901-great-sword-slide-attack",
+          "from": "lib:102700901-double-dagger-stab",
+          "frames": [
+            0,
+            18
+          ],
           "recentre": true,
           "worldRot": [
             {
@@ -7338,7 +7557,7 @@
                 0,
                 0
               ],
-              "deg": 10.0
+              "deg": 30.0
             },
             {
               "bone": "LeftUpLeg",
@@ -7347,7 +7566,7 @@
                 0,
                 0
               ],
-              "deg": -10.0
+              "deg": -30.0
             },
             {
               "bone": "RightUpLeg",
@@ -7356,37 +7575,52 @@
                 0,
                 0
               ],
-              "deg": -10.0
-            },
-            {
-              "bone": "Neck",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": 22.0
-            },
-            {
-              "bone": "Head",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": 14.0
+              "deg": -30.0
             }
           ]
         },
-        "note": "laneMONSTER6 (Erlking): CHARGE: great-sword slide attack (a lunge with the head and axe low); neck / head pitched down for the antlers"
+        "note": "laneCLAWS56 (Erlking): claws, OpenTrident Mixamo library clip 102700901-double-dagger-stab frames 0-18 (20 fps), Hips lean 30.0 deg (claw_opt56.py, claw tip on Joan chest)"
       },
       {
-        "state": "ek_stomp",
+        "state": "ecl_counter",
         "derive": {
-          "from": "lib:123300901-stomp",
-          "recentre": true
+          "from": "lib:115480901-bash",
+          "frames": [
+            21,
+            43
+          ],
+          "recentre": true,
+          "worldRot": [
+            {
+              "bone": "Hips",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": 25.0
+            },
+            {
+              "bone": "LeftUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -25.0
+            },
+            {
+              "bone": "RightUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -25.0
+            }
+          ]
         },
-        "note": "laneMONSTER6 (Erlking): STOMP (library clip, same as the kick state)"
+        "note": "laneCLAWS56 (Erlking): claws, OpenTrident Mixamo library clip 115480901-bash frames 21-43 (20 fps), Hips lean 25.0 deg (claw_opt56.py, claw tip on Joan chest)"
       }
     ],
     "replaceRows": {
@@ -7560,7 +7794,7 @@
       }
     },
     "tuning": "mon6_own",
-    "note": "laneMONSTER6 (Erlking): base 30 states with REAL Mixamo great-sword clips (idle / guard / walk / run / strafe / hit react / death / stomp on kick) + walk_back / run_back / strafe_run_L / strafe_run_R + the 7 great-axe states ek_* (overhead slam, two-hit combo, sweep R / L, high spin, charge, stomp), OpenTrident library, lean + neck recipes in data."
+    "note": "laneMONSTER6 (Erlking): base 30 states with REAL Mixamo great-sword clips (idle / guard / walk / run / strafe / hit react / death / stomp on kick) + walk_back / run_back / strafe_run_L / strafe_run_R + the 7 great-axe states ek_* (overhead slam, two-hit combo, sweep R / L, high spin, charge, stomp), OpenTrident library, lean + neck recipes in data. | laneCLAWS56 (Erlking): old attack states ['ek_overhead', 'ek_combo', 'ek_sweep_R', 'ek_spin', 'ek_charge', 'ek_stomp'] dropped, 7 leaned claw states ecl_* added (Dom: no weapons on monsters)."
   }
  },
  "base": [

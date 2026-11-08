@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 public static class GameLoop
 {
     public enum Result { None, Victory, Defeat }
-    [Serializable] public class Row { public string id = ""; public string name = ""; public string title = ""; public float hpMul = 1f, damageMul = 1f; public int difficulty = 0; public bool inLadder = true; }   // INT107: false = a zone-only creature (never the 'next opponent' of the old flow)
+    [Serializable] public class Row { public string id = ""; public string name = ""; public string title = ""; public float hpMul = 1f, damageMul = 1f; public int difficulty = 0; public bool inLadder = true; public string character = ""; /* BOSSNAME v1 */ }   // INT107: false = a zone-only creature (never the 'next opponent' of the old flow)
     [Serializable] public class Table { public bool enabled = true; public int startIndex = 0, applyAfterFrames = 10; public float endlessHpStep = 0.08f, endlessDamageStep = 0.04f; public Row[] rows = new Row[0]; }
     [Serializable] class DiffFile { public DifficultyRow[] rows = new DifficultyRow[0]; }
 

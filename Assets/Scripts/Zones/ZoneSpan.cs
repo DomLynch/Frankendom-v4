@@ -21,7 +21,7 @@ using UnityEngine.SceneManagement;
 }
 [Serializable] public class SpSky { public string arenaRoot = "Arena", group = "WorldFar"; public float follow = 1f, fromZ = 27f; }
 [Serializable] public class SpKeep { public float monsterMargin = 4f; }
-[Serializable] public class SpBuild { public string terrainName = "WorldTerrain", colliderName = "GroundCollider"; public string[] cloneNames = new string[0]; public bool cloneProbes = true; }
+[Serializable] public class SpBuild { public string terrainName = "WorldTerrain", colliderName = "GroundCollider"; public string[] cloneNames = new string[0]; public bool cloneProbes = true; public float colliderWidthM = 80f, colliderThicknessM = 1f; /*ROBUST v1: ground collider box, top stays y 0*/ }
 [Serializable] public class SpArrive { public bool enabled = true; public int holdFrames = 240, noSpanFrames = 900; public float rayUpM = 3f, rayDownM = 10f; public int groundMask = -1; }   // CAMPGROUND v1
 [Serializable] public class SpTest { public float walkSpeed = 3f, startZ = 14f, turnZ = 46f, dwellSeconds = 1.5f, settleSeconds = 3f, baselineSeconds = 8f, worstFrameExtraMs = 12f, meanFactor = 1.15f, softHitchExtraMs = 6f, windowPadSeconds = 0.5f; public int maxSoftHitches = 2; }
 [Serializable] public class SpanTable
@@ -151,7 +151,7 @@ public sealed class ZoneSpan : MonoBehaviour
 
     bool GateOpen(SpZone row)
     {
-        if (row.gate.forceOpen) return true;
+        if (row.gate.forceOpen || ZoneData.Get().crossing.freePassage) return true;   // ALPHAFLOW v1
         foreach (var z in ZoneData.Get().zones) if (z != null) foreach (var g in z.gates) if (g != null && g.id == row.gate.id)
         {
             if (g.unlockKilledSpawn.Length == 0) return true;

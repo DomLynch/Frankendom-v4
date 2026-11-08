@@ -102,7 +102,7 @@ public sealed class ZoneRuntime : MonoBehaviour
         return rm == null ? 0 : rm.Count;
     }
     /// <summary>The same rule the flash gate uses (laneCHASE): shut while a creature is engaged that cannot follow.</summary>
-    public bool SpanGateBlocked() { return on && phase == Phase.Play && !T.crossing.allowWhileEngaged && EngagedCount() > 0 && !AllEngagedFollow(); }
+    public bool SpanGateBlocked() { return on && phase == Phase.Play && !T.crossing.allowWhileEngaged && !T.crossing.freePassage /* ALPHAFLOW v1 */ && EngagedCount() > 0 && !AllEngagedFollow(); }
     static void SetRoots(string[] names, bool active)
     {
         var sc = SceneManager.GetActiveScene(); var roots = sc.GetRootGameObjects();
@@ -127,6 +127,7 @@ public sealed class ZoneRuntime : MonoBehaviour
             if (player.Dead) { BeginDown(); }
             else { Engagement(); KillWatch(); TickRegen(); if (phase == Phase.Play) CheckGates(); }
         }
+        if (ZoneEndScreen.Active) EndScreenStep();   // ENDALPHA v1
         if (Time.unscaledTime >= nextPoll) { nextPoll = Time.unscaledTime + T.pollSeconds; Poll(); }
         if (Time.unscaledTime >= nextSave) { nextSave = Time.unscaledTime + Mathf.Max(5f, T.persistence.saveEverySeconds); SaveNow(); }
     }
@@ -471,6 +472,7 @@ public sealed class ZoneRuntime : MonoBehaviour
     // ------------------------------------------------------------------ gates
     bool GateOpen(ZGate g)
     {
+        if (g.endScreen.Length > 0) return true;   // ENDALPHA v1: the end gate is always open, it shows a screen instead of crossing
         if (g.unlockKilledSpawn.Length == 0) return true;
         if (g.sticky) return ZoneSave.GateUnlocked(g.id);
         ZZone uz; var s = ZoneData.FindSpawn(g.unlockKilledSpawn, out uz); if (s == null) return false;
@@ -483,14 +485,31 @@ public sealed class ZoneRuntime : MonoBehaviour
         if (!force && want == riftOpen) return; riftOpen = want;
         rift.SetMode(want ? GatewayRift.Mode.Rift : GatewayRift.Mode.Abyss);
     }
+    // ENDALPHA v1
+    void BeginEndScreen(ZGate g)
+    {
+        var r = ZoneEndScreen.Find(T.endScreens, g.endScreen);
+        if (r == null) { Debug.LogWarning("[Zones] gate " + g.id + ": endScreen '" + g.endScreen + "' not in zones.json endScreens"); return; }
+        if (r.onlyWhenNoEnemyAlive && EngagedCount() > 0) return;
+        ZoneEndScreen.Begin(r); Debug.Log("[Zones] end screen " + r.id);
+    }
+    void EndScreenStep()
+    {
+        var res = ZoneEndScreen.Poll(); if (res == ZoneEndScreen.Result.None) return;
+        var r = ZoneEndScreen.Row; ZoneEndScreen.End();
+        var to = res == ZoneEndScreen.Result.Camp ? ZoneData.Zone(r.campZone) : null;
+        if (to != null) { crossGate = new ZGate { id = "endscreen_camp", toZone = r.campZone, toSpot = r.campSpot }; phase = Phase.CoverIn; phaseT = 0f; coverColor = ColorOf(T.crossing.cover.color); StartLoad(to); return; }
+        Vector3 p = player.transform.position; p.z -= r.nudgeBackM; Place(player, p, player.transform.eulerAngles.y); ZoneGround.Begin(player, p);   // Continue (or camp zone missing): step back out of the gate radius, never stuck
+    }
     void CheckGates()
     {
-        if (zone == null) return; if (!T.crossing.allowWhileEngaged && EngagedCount() > 0 && !AllEngagedFollow()) return;   // CHASE v1
+        if (zone == null) return; if (!T.crossing.allowWhileEngaged && !T.crossing.freePassage /* ALPHAFLOW v1 */ && EngagedCount() > 0 && !AllEngagedFollow()) return;   // CHASE v1
         foreach (var g in zone.gates)
         {
             if (g == null || !GateOpen(g)) continue; var sp = ZoneData.Spot(zone, g.spot); if (sp == null || sp.pos.Length < 2) continue;
             if (ZoneSpan.Handles(g.id)) continue;   // ZONE2DUP v1: walked through the doorway, not flashed
             if (Flat(player.transform.position, SpotPos(sp, player.transform.position)) > g.radius) continue;
+            if (g.endScreen.Length > 0) { if (!ZoneEndScreen.Active) BeginEndScreen(g); return; }   // ENDALPHA v1
             phase = Phase.CoverIn; phaseT = 0f; crossGate = g; coverColor = ColorOf(T.crossing.cover.color); StartLoad(ZoneData.Zone(g.toZone)); Debug.Log("[Zones] crossing " + g.id); return;
         }
     }
@@ -564,6 +583,13 @@ public sealed class ZoneRuntime : MonoBehaviour
         if (Physics.Raycast(o, Vector3.down, out hit, 8f, ~0, QueryTriggerInteraction.Ignore)) return new Vector3(s.pos[0], hit.point.y, s.pos[1]);
         return new Vector3(s.pos[0], refPos.y, s.pos[1]);
     }
+    /// <summary>ROBUST v1: a fighter that keeps falling at the same spot is put on the zone's last arrive spot (data: zones.json spots). False = zones off / not the player / no spot.</summary>
+    public static bool RescuePlayer(DuelFighter f)
+    {
+        var z = Inst; if (z == null || !z.on || z.zone == null || f != z.player) return false;
+        var sp = ZoneData.Spot(z.zone, z.lastSpot.Length > 0 ? z.lastSpot : z.T.start.spot); if (sp == null || sp.pos == null || sp.pos.Length < 2) return false;
+        Place(f, SpotPos(sp, f.transform.position), sp.yaw); return true;
+    }
     static void Place(DuelFighter f, Vector3 p, float yaw)
     {
         var cc = f.GetComponent<CharacterController>(); bool en = cc != null && cc.enabled; if (en) cc.enabled = false;
@@ -572,6 +598,7 @@ public sealed class ZoneRuntime : MonoBehaviour
 
     void OnGUI()
     {
+        ZoneEndScreen.Draw();   // ENDALPHA v1
         if (!on || cover <= 0.002f) return;
         GUI.depth = -10000; var c = coverColor; c.a = cover;
         GameLoop.Fill(new Rect(0f, 0f, Screen.width, Screen.height), c);

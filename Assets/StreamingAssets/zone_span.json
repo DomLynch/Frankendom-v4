@@ -7,8 +7,8 @@
   "pollSeconds": 0.25,
   "ringsPerFrame": 1,
   "wake": {
-    "ahead": 14.0,
-    "behind": 14.0,
+    "ahead": 22.0,
+    "behind": 22.0,
     "hysteresis": 2.0,
     "_about": "a zone is wanted while the player is inside its lane z-range (laneZMin..laneZMax + offsetZ) widened by ahead (far end) and behind (near end); it is dropped hysteresis metres later. Neighbouring wanted ranges overlap only in the doorway walk."
   },
@@ -50,7 +50,7 @@
         "frontLocal": 27.0,
         "boundaryLocal": -4.0,
         "followStopBehind": 1.5,
-        "forceOpen": false,
+        "forceOpen": true,
         "destSafe": false
       },
       "terrain": {
@@ -128,7 +128,7 @@
         "frontLocal": 27.0,
         "boundaryLocal": -4.0,
         "followStopBehind": 1.5,
-        "forceOpen": false,
+        "forceOpen": true,
         "destSafe": true
       },
       "terrain": {
@@ -185,7 +185,7 @@
         "frontLocal": 27.0,
         "boundaryLocal": -4.0,
         "followStopBehind": 1.5,
-        "forceOpen": false,
+        "forceOpen": true,
         "destSafe": false
       },
       "terrain": {
@@ -230,7 +230,7 @@
         "frontLocal": 60.0,
         "boundaryLocal": -4.0,
         "followStopBehind": 1.5,
-        "forceOpen": false,
+        "forceOpen": true,
         "destSafe": false
       },
       "terrain": {
@@ -277,7 +277,7 @@
         "frontLocal": 58.0,
         "boundaryLocal": -4.0,
         "followStopBehind": 1.5,
-        "forceOpen": false,
+        "forceOpen": true,
         "destSafe": false
       },
       "terrain": {
@@ -326,7 +326,7 @@
         "frontLocal": 62.0,
         "boundaryLocal": -4.0,
         "followStopBehind": 1.5,
-        "forceOpen": false,
+        "forceOpen": true,
         "destSafe": true
       },
       "terrain": {
@@ -385,7 +385,7 @@
       "GroundFog8"
     ],
     "cloneProbes": true,
-    "colliderName": "GroundCollider",
+    "colliderName": "GroundCollider", "colliderWidthM": 80.0, "colliderThicknessM": 1.0,
     "_about": "Editor step only (Zone2Build), per zone row: fog objects and every ReflectionProbe are Instantiate-d (same assets) and moved by offsetZ; the terrain follows the row's terrain block (crop = only the triangles in its window, not the whole 880 m mesh); a GroundCollider of colliderSizeZ (per row) at offsetZ + colliderCenterLocal (4 m before the previous door face to 8 m past the lane end)."
   },
   "test": {

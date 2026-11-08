@@ -99,6 +99,9 @@ hp.x, hp.yMax + H.bars.framePad + P.stamina.gap, 0f, pf, true, P.stamina, P.post
     }
 
     // ---------------- boss bar (top-centre) ----------------
+    // BOSSNAME v1: the boss the bar follows decides the name; an opponents row only supplies name/title when its character is that fighter
+    static bool RowIsFoe(GameLoop.Row r, DuelFighter f) { string id = f != null ? Roster.IdOf(f.transform) : ""; return id.Length == 0 || string.IsNullOrEmpty(r.character) || string.Equals(r.character, id, System.StringComparison.OrdinalIgnoreCase); }
+    static string BossName(DuelFighter f, GameLoop.Row r) { string id = f != null ? Roster.IdOf(f.transform) : ""; if (id.Length > 0 && !RowIsFoe(r, f)) return Roster.Get(id).displayName.ToUpperInvariant(); return string.IsNullOrEmpty(r.name) ? Roster.EnemyName.ToUpperInvariant() : r.name; }
     void DrawBoss(HudCfg.Data H, float vw, float now, float dt)
     {
         var Bc = H.boss; if (!Bc.enabled || (enemy == null && ef == null)) return;
@@ -106,14 +109,14 @@ hp.x, hp.yMax + H.bars.framePad + P.stamina.gap, 0f, pf, true, P.stamina, P.post
         float w = Mathf.Max(H.layout.bossMinW, Mathf.Min(Bc.w, maxW)), x = (vw - w) * 0.5f, y = Bc.top;
         float nameH = Bc.nameSize * H.layout.nameLine;
         // HUDALIGN v1: subtitle inline + bar at Joan's bar height (hud.json boss.subtitle / boss.align; defaults = the old layout)
-        string title = Bc.showTitle && GameLoop.LadderOn ? GameLoop.CurrentRow().title : null; bool hasTitle = !string.IsNullOrEmpty(title), inl = hasTitle && Bc.subtitle.inline;
+        string title = Bc.showTitle && GameLoop.LadderOn ? GameLoop.CurrentRow().title : null; bool tgt = Bc.nameFrom == "target"; var crow = GameLoop.CurrentRow(); if (tgt && !RowIsFoe(crow, ef)) title = null;   /* BOSSNAME v1 */ bool hasTitle = !string.IsNullOrEmpty(title), inl = hasTitle && Bc.subtitle.inline;
         float below = hasTitle && !inl ? Bc.titleSize * H.layout.titleAdvance + Bc.titleGap : 0f, barY = -1f;
         if (Bc.align.enabled)
         {
             var P = H.player; barY = P.y + P.nameSize * H.layout.nameLine + P.nameGap + (P.hp.h - Bc.hp.h) * Bc.align.barPivot + Bc.align.barDy;
             y = Bc.align.nameBaseline && below <= 0f ? P.y + (P.nameSize - Bc.nameSize) * H.layout.lineH + Bc.subtitle.descent * (Bc.nameSmall - P.nameSmall) : barY - nameH - below - Bc.nameGap;
         }
-        float nameW = HudDraw.Caps(x, y, 0f, ZoneRuntime.Owns ? GameLoop.EnemyName() : Roster.EnemyName, "title", Bc.nameSize, Bc.nameSmall, Bc.nameTracking, Ink());
+        float nameW = HudDraw.Caps(x, y, 0f, tgt ? BossName(ef, crow) : ZoneRuntime.Owns ? GameLoop.EnemyName() : Roster.EnemyName, "title", Bc.nameSize, Bc.nameSmall, Bc.nameTracking, Ink());
         float ty = y + nameH;
         if (hasTitle)
         {

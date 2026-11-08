@@ -105,12 +105,12 @@
     {
       "id": "Humbaba",
       "speedMulOfPlayerRun": 0.9,
-      "startGap": 4.1,
-      "stopGap": 2.6,
+      "startGap": 3.76,
+      "stopGap": 2.26,
       "slowZoneM": 1.3,
       "accelMps2": 10.0,
       "giveUpGap": 16.0,
-      "outOfReachGap": 5.5,
+      "outOfReachGap": 5.16,
       "giveUpOutOfReachS": 9.0,
       "giveUpPauseS": 0.8,
       "homeSpeedMulOfWalk": 1.0,
@@ -123,17 +123,17 @@
       "walkClipBelowMps": 2.7,
       "animMin": 0.8,
       "animMax": 1.25,
-      "_note": "laneMONSTER5 (Humbaba): stop = longest stand-off (2.20 m = lunge bite maw reach 2.35 - 0.15 m, measured on the FK pose, n2p_poses.py) + 0.4 m, start = stop + 1.5, out = start + 1.4. ESTIMATE until the real clips exist (step 4)."
+      "_note": "laneMONSTER5 (Humbaba): stop = longest stand-off (2.20 m = lunge bite maw reach 2.35 - 0.15 m, measured on the FK pose, n2p_poses.py) + 0.4 m, start = stop + 1.5, out = start + 1.4. ESTIMATE until the real clips exist (step 4). | laneCLAWS56 (Humbaba): stop = the biggest claw stand-off 2.26 m (claw_check56), start = stop + 1.5, out = stop + 2.9; light hit limit 2.71 = stop + 0.45."
     },
     {
       "id": "Erlking",
       "speedMulOfPlayerRun": 0.88,
-      "startGap": 4.45,
-      "stopGap": 2.95,
+      "startGap": 4.36,
+      "stopGap": 2.86,
       "slowZoneM": 1.3,
       "accelMps2": 10.0,
       "giveUpGap": 16.0,
-      "outOfReachGap": 5.85,
+      "outOfReachGap": 5.76,
       "giveUpOutOfReachS": 9.0,
       "giveUpPauseS": 0.8,
       "homeSpeedMulOfWalk": 1.0,
@@ -146,7 +146,7 @@
       "walkClipBelowMps": 2.7,
       "animMin": 0.8,
       "animMax": 1.25,
-      "_note": "laneMONSTER6 (Erlking): stop = longest attack stand-off (2.55 m, contact6.py) + 0.4 m, start = stop + 1.5, out = start + 1.4; speed 0.88 of Joan's run (Sobek 0.92). Directional clips / stride-matched speed rows are laneMONSTERLOCO's (walk_back, run_back, strafe_run rows exist as states)."
+      "_note": "laneMONSTER6 (Erlking): stop = longest attack stand-off (2.55 m, contact6.py) + 0.4 m, start = stop + 1.5, out = start + 1.4; speed 0.88 of Joan's run (Sobek 0.92). Directional clips / stride-matched speed rows are laneMONSTERLOCO's (walk_back, run_back, strafe_run rows exist as states). | laneCLAWS56 (Erlking): stop = the biggest claw stand-off 2.86 m (claw_check56), start = stop + 1.5, out = stop + 2.9; light hit limit 3.30 = stop + 0.45."
     }
   ]
 }

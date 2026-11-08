@@ -39,8 +39,8 @@ public static class Zone2Build
             if (K.build.cloneProbes)
                 foreach (var p in Object.FindObjectsByType<ReflectionProbe>(FindObjectsInactive.Include, FindObjectsSortMode.None))
                 { if (IsInZoneRoot(p.transform, K)) continue; Clone(p.gameObject, ring0, D, tn); cloned++; }
-            var col = new GameObject(K.build.colliderName + "_" + row.root); col.transform.SetParent(ring0, false); col.transform.position = new Vector3(0f, -0.5f, D + row.colliderCenterLocal);
-            col.AddComponent<BoxCollider>().size = new Vector3(80f, 1f, row.colliderSizeZ);
+            var col = new GameObject(K.build.colliderName + "_" + row.root); col.transform.SetParent(ring0, false); col.transform.position = new Vector3(0f, -0.5f * K.build.colliderThicknessM, D + row.colliderCenterLocal);   // ROBUST v1: width / thickness from zone_span.json build (defaults 80 / 1 = today)
+            col.AddComponent<BoxCollider>().size = new Vector3(K.build.colliderWidthM, K.build.colliderThicknessM, row.colliderSizeZ);
             foreach (var r in row.rings) { var g = root.transform.Find(r.group); if (g != null) g.gameObject.SetActive(false); }
             Debug.Log("[Zone2Build] " + row.root + " (" + row.id + ") built: " + placed + " rows placed (" + missing + " missing assets), " + cloned + " objects cloned, rings inactive. Offset z " + D);
         }

@@ -276,7 +276,7 @@
     "limitMarginDeg": 30.0,
     "swingCapMarginDeg": 40.0,
     "swingCapRampDeg": 40.0,
-    "maxDeltaV": 6.0,
+    "maxDeltaV": 10.0,
     "inheritVelocity": true,
     "maxLinearSpeed": 12.0,
     "maxAngularSpeed": 25.0,

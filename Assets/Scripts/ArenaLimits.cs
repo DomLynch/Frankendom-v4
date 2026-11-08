@@ -6,11 +6,17 @@ using UnityEngine;
 [DefaultExecutionOrder(600)]
 public class ArenaLimits : MonoBehaviour
 {
-    [System.Serializable] class Row { public bool enabled = true; public float xMin = -3.8f, xMax = 3.8f, zMin = 8f, zMax = 22f; public bool stairEnabled = true; public float stairHalfWidthX = 2.45f, stairZMin = 4f, stairZMax = 22.5f; /*HCKIT1 v93*/ }
+    [System.Serializable] class Row { public bool enabled = true; public float xMin = -3.8f, xMax = 3.8f, zMin = 8f, zMax = 22f; public bool stairEnabled = true; public float stairHalfWidthX = 2.45f, stairZMin = 4f, stairZMax = 22.5f; /*HCKIT1 v93*/ public float fallGravity = 20f, groundedMinY = -0.5f, fallDropM = 2f, restoreUpM = 0.05f, restoreWindowS = 6f; public int maxRestores = 0; /*ROBUST v1: fall recovery, defaults = the old literals, maxRestores 0 = off*/ }
     static Row row; static bool loaded; static readonly Row stairDefaults = new Row();   /*HCKIT1 v93 K1: the stair lane DuelFighter.Tick clamps to (arena_limits.json stair*); missing file = the old literals 2.45 / 4 / 22.5 */
     static Row Stair { get { return Load() ?? stairDefaults; } }
     public static float StairHalfWidthX { get { var r = Stair; return r.stairEnabled ? r.stairHalfWidthX : float.MaxValue; } }   // stairEnabled=false = no stair clamp (a new arena)
     public static float StairZMin { get { return Stair.stairZMin; } }
+    public static float FallGravity { get { return Stair.fallGravity; } }   // ROBUST v1 (arena_limits.json)
+    public static float GroundedMinY { get { return Stair.groundedMinY; } }
+    public static float FallDropM { get { return Stair.fallDropM; } }
+    public static float RestoreUpM { get { return Stair.restoreUpM; } }
+    public static float RestoreWindowS { get { return Stair.restoreWindowS; } }
+    public static int MaxRestores { get { return Stair.maxRestores; } }
     public static float ZoneZMax = float.NaN;   // ZONES v1: a zone with a gate sets a longer lane; NaN = off = the old arithmetic exactly
     public static float StairZMax { get { return float.IsNaN(ZoneZMax) ? Stair.stairZMax : Mathf.Max(Stair.stairZMax, ZoneZMax); } }
     CharacterController cc;

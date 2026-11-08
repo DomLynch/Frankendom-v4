@@ -40,7 +40,8 @@
         { "zone": "hub_camp", "spot": "arrive_from_prev" },
         { "zone": "z5_humbaba", "spot": "arrive_from_prev" },
         { "zone": "z6_erlking", "spot": "arrive_from_prev" },
-        { "zone": "z7_market2", "spot": "arrive_from_prev" }
+        { "zone": "z7_market2", "spot": "arrive_from_prev" },
+        { "zone": "grendel", "spot": "arrive_from_prev" }
       ],
       "hpFrac": 1.0,
       "coverS": 0.5,
@@ -80,10 +81,24 @@
       "outSeconds": 0.55,
       "holdMaxSeconds": 8.0
     },
-    "allowWhileEngaged": false,
+    "allowWhileEngaged": true, "freePassage": true,
     "preloadDistance": 14.0,
     "_about": "cover = the gate's flash: a full-screen ember-white overlay in OnGUI, over the frame where the swap happens. The camera is never cut: it is moved by the same offset and turn as the player. Player input is never locked (no code path locks it). holdMaxSeconds: if an additive zone scene is not ready by then the cover stays up (a heavy hold, never a loading bar)."
   },
+  "endScreens": [
+    {
+      "id": "alpha_end",
+      "title": "THANK YOU FOR PLAYING THE ALPHA",
+      "lines": ["You have walked every zone this build has.", "Your gear and progress are saved.", "Turn back and explore: the zones are yours to revisit.", "More is coming. Tell us what you thought."],
+      "hint": "Enter: go back and explore      Esc: back to camp",
+      "fadeInS": 1.6, "minShowS": 1.0, "backdropAlpha": 0.82,
+      "titleSize": 46, "lineSize": 22, "hintSize": 18, "titleY": 0.30, "lineGap": 1.5,
+      "color": [0.93, 0.88, 0.78], "dimColor": [0.62, 0.58, 0.5],
+      "continueKeys": ["Return", "KeypadEnter", "Space"], "campKeys": ["Escape"],
+      "nudgeBackM": 8.0, "campZone": "hub_camp", "campSpot": "hearth",
+      "onlyWhenNoEnemyAlive": true
+    }
+  ],
   "creatures": [
     {
       "id": "Pitborn",
@@ -588,7 +603,7 @@
           "radius": 2.0,
           "toZone": "z5_humbaba",
           "toSpot": "arrive_from_prev",
-          "unlockKilledSpawn": "z4_grendel",
+          "unlockKilledSpawn": "",
           "sticky": true,
           "visual": "none"
         }
@@ -702,7 +717,7 @@
           "radius": 2.0,
           "toZone": "z6_erlking",
           "toSpot": "arrive_from_prev",
-          "unlockKilledSpawn": "z5_humbaba",
+          "unlockKilledSpawn": "",
           "sticky": true,
           "visual": "none"
         }
@@ -815,7 +830,7 @@
           "radius": 2.0,
           "toZone": "z7_market2",
           "toSpot": "arrive_from_prev",
-          "unlockKilledSpawn": "z6_erlking",
+          "unlockKilledSpawn": "",
           "sticky": true,
           "visual": "none"
         }
@@ -977,6 +992,7 @@
           "unlockKilledSpawn": "z7_beyond_warden",
           "sticky": true,
           "visual": "none",
+          "endScreen": "alpha_end",
           "note": "LOCKED FOR THE ALPHA: GateOpen() = ZoneSave.GateUnlocked(id), set only when z7_beyond_warden is killed; that spawn is disabled, so the gate never opens. Data only, no code."
         }
       ]

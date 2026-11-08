@@ -3,8 +3,9 @@
   "enabled": true,
   "version": 1,
   "rows": [
-    { "zone": "z4_grendel", "enabled": true, "shape": "rect", "zFrom": 104.0, "zTo": 167.0, "laneX": 0.0, "laneHalfX": 2.45, "centre": [0.0, 132.0], "half": [12.0, 15.0], "note": "env-dev zone 4 v2: open fight ground in front of the hall, x +-12, local z 9..39 (24 x 30 m); Grendel stand local 26 = world 134" },
-    { "zone": "z5_humbaba", "enabled": true, "shape": "disc", "zFrom": 173.0, "zTo": 234.0, "laneX": 0.0, "laneHalfX": 2.45, "centre": [0.0, 209.0], "radius": 15.0, "note": "laneZONE5: 30 m clearing centred local z 32 (world 209), Humbaba stand local 34" },
-    { "zone": "z6_erlking", "enabled": true, "shape": "disc", "zFrom": 240.0, "zTo": 305.0, "laneX": 0.0, "laneHalfX": 2.45, "centre": [0.0, 282.0], "radius": 15.0, "note": "laneZONE6: stone ring r 17.5 centred local z 38 (world 282), play disc r 15 inside the inner stone faces (about 15.6), Erlking stand local 42" }
+    { "zone": "z4_grendel", "enabled": true, "shape": "rect", "zFrom": 98.0, "zTo": 170.0, "laneX": 0.0, "laneHalfX": 6.0, "centre": [0.0, 132.0], "half": [12.0, 15.0], "note": "env-dev zone 4 v2: open fight ground in front of the hall, x +-12, local z 9..39 (24 x 30 m); Grendel stand local 26 = world 134" },
+    { "zone": "z5_humbaba", "enabled": true, "shape": "disc", "zFrom": 170.0, "zTo": 237.0, "laneX": 0.0, "laneHalfX": 6.0, "centre": [0.0, 209.0], "radius": 15.0, "note": "laneZONE5: 30 m clearing centred local z 32 (world 209), Humbaba stand local 34" },
+    { "zone": "z6_erlking", "enabled": true, "shape": "disc", "zFrom": 237.0, "zTo": 305.0, "laneX": 0.0, "laneHalfX": 6.0, "centre": [0.0, 282.0], "radius": 15.0, "note": "laneZONE6: stone ring r 17.5 centred local z 38 (world 282), play disc r 15 inside the inner stone faces (about 15.6), Erlking stand local 42" },
+    {"zone": "z7_market2", "enabled": true, "shape": "rect", "zFrom": 305.0, "zTo": 362.0, "laneX": 0.0, "laneHalfX": 6.0, "centre": [0.0, 334.0], "half": [14.0, 28.0], "note": "laneWALKAUDIT: zone 7 had NO play area row, so the market was the old 2.45 m stair lane (and x +-3.8): a 28 m x 56 m walkable rectangle, GroundCollider_Zone7 is x +-40, z 299-379, props in the market sit inside it; the z362 alpha-end wall (ZoneZMax) still closes the far end."}
   ]
 }

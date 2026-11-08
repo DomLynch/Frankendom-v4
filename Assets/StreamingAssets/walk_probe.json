@@ -1,0 +1,7 @@
+{
+  "_about": "WALKPROBE v1 (laneWALKAUDIT), read by Assets/Scripts/Zones/WalkProbe.cs. enabled=false: the probe does not exist unless the launch flag -walkProbe is given. Grid in world metres; one run, startAfterS after scene load, while the player stands in the zone to test (rings that are off show as RING_OFF_HOLE). Output: walk_probe.csv in outDir (or -walkProbeOut:<dir>, default persistentDataPath) + [WalkProbe] lines in the player log. walkY = the walking plane (GroundCollider top y 0), walkTolM = tolerated floor deviation, capsule* = the fighter capsule for the blocked-forward cast, stepM = how far forward each cell tests.",
+  "enabled": false, "startAfterS": 25.0, "rayFromY": 60.0, "rayLenM": 120.0, "walkY": 0.0, "walkTolM": 0.15,
+  "xMin": -45.0, "xMax": 45.0, "xStep": 3.0, "zMin": 98.0, "zMax": 380.0, "zStep": 3.0,
+  "capsuleRadius": 0.35, "capsuleBottomY": 0.4, "capsuleTopY": 1.6, "stepM": 2.0,
+  "groundNamePrefix": "GroundCollider", "outDir": "", "quitWhenDone": false
+}

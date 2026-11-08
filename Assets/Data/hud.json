@@ -53,7 +53,7 @@
   },
   "boss": {
     "_about": "Top-centre enemy bar: name (serif small caps), the ladder title under it (opponents.json row title, only while the ladder is on), a wide tapered HP bar, the posture bar centred under it and the DEATHBLOW / POSTURE BROKEN cue under that. w is clamped so it never runs into the player block (sideMargin px gap).",
-    "enabled": true, "w": 720, "top": 30, "sideMargin": 30,
+    "nameFrom": "target", "enabled": true, "w": 720, "top": 30, "sideMargin": 30,
     "nameSize": 24, "nameSmall": 18, "nameTracking": 3.2, "nameGap": 12, "titleSize": 17, "titleGap": 4, "titleColor": [0.80, 0.76, 0.68, 1.0], "showTitle": true, "cueSize": 17, "cueGap": 8,
     "showPosture": true, "showStamina": false,
     "hp": { "h": 14, "taper": 20, "w": 400, "gap": 8 },

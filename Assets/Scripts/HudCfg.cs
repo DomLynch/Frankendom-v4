@@ -41,6 +41,7 @@ public static class HudCfg
     }
     [Serializable] public class BossC
     {
+        public string nameFrom = "ladder";   // BOSSNAME v1: "ladder" = today, "target" = the fighter the bar follows
         public bool enabled = true; public float w = 720f, top = 30f, sideMargin = 30f; public int nameSize = 24, nameSmall = 18, titleSize = 15, cueSize = 17; public float[] titleColor = null; /*HUDPOLISH: null = colors.dim*/ public float nameTracking = 3.2f, nameGap = 9f, titleGap = 3f, cueGap = 8f;
         public bool showTitle = true, showPosture = true, showStamina = false; public SecondC second = new SecondC(); public SubtitleC subtitle = new SubtitleC(); public AlignC align = new AlignC();   // TWOFIGHT v1; HUDALIGN v1
         public BarC hp = new BarC { h = 14f, taper = 20f }, stamina = new BarC { w = 420f, h = 5f, taper = 8f, gap = 9f }, posture = new BarC { w = 420f, h = 4f, taper = 7f, gap = 9f };
