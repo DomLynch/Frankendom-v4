@@ -108,7 +108,7 @@ public static class AiRows
         try
         {
             string[] paths = new string[] { Path.Combine(Application.dataPath, "Data/ai_rows.json"), Path.Combine(Application.streamingAssetsPath, "ai_rows.json") };
-            for (int i = 0; i < paths.Length && text == null; i++) if (File.Exists(paths[i])) text = File.ReadAllText(paths[i]);
+            for (int i = 0; i < paths.Length && text == null; i++) if (File.Exists(paths[i])) text = DataPath.ReadFile(paths[i]);
             if (text == null) { var ta = Resources.Load<TextAsset>("ai_rows"); if (ta != null) text = ta.text; }
         }
         catch (Exception e) { Debug.LogWarning("[AI] ai_rows.json read failed: " + e.Message); }

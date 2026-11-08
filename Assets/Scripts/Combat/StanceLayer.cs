@@ -92,7 +92,7 @@ public static class StanceLayer
         {
             string p = Path.Combine(Application.streamingAssetsPath, "stances.json");
             if (!File.Exists(p)) p = Path.Combine(Application.dataPath, "Data/stances.json");
-            if (File.Exists(p)) C = JsonUtility.FromJson<Cfg>(File.ReadAllText(p));
+            if (File.Exists(p)) C = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p));
         }
         catch (Exception e) { Debug.LogWarning("[Stance] load failed, layer off: " + e.Message); C = null; }
         if (C == null) C = new Cfg { enabled = false };

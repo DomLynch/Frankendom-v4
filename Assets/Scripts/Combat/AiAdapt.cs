@@ -67,7 +67,7 @@ public class AiAdapt
         try
         {
             string[] paths = { Path.Combine(Application.dataPath, "Data/ai_adapt.json"), Path.Combine(Application.streamingAssetsPath, "ai_adapt.json") };
-            for (int i = 0; i < paths.Length && text == null; i++) if (File.Exists(paths[i])) text = File.ReadAllText(paths[i]);
+            for (int i = 0; i < paths.Length && text == null; i++) if (File.Exists(paths[i])) text = DataPath.ReadFile(paths[i]);
             if (text == null) { var ta = Resources.Load<TextAsset>("ai_adapt"); if (ta != null) text = ta.text; }
         }
         catch (Exception e) { Debug.LogWarning("[AiAdapt] read failed: " + e.Message); }

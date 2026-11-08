@@ -115,7 +115,7 @@ public class ResGate : MonoBehaviour
             try
             {
                 if (!File.Exists(p)) continue;
-                var c = JsonUtility.FromJson<Cfg>(File.ReadAllText(p).TrimStart((char)0xFEFF)); if (c == null) continue;
+                var c = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p).TrimStart((char)0xFEFF)); if (c == null) continue;
                 C = c; if (C.sizes == null) C.sizes = new SizeRow[0]; if (C.states == null) C.states = new StateRow[0]; if (C.offscreen == null) C.offscreen = new OffRow(); return true;
             }
             catch (Exception e) { Debug.LogWarning("[resgate] " + p + ": " + e.Message); }

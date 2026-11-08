@@ -42,7 +42,7 @@ public static class CamFraming
         foreach (var p in new[] { Application.streamingAssetsPath + "/camera_framing.json", Application.dataPath + "/Data/camera_framing.json" })
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<Row>(System.IO.File.ReadAllText(p)); if (r != null) { cfg = r; if (cfg.proof == null) cfg.proof = new ProofRow(); } } catch (Exception e) { Debug.LogWarning("[CamFraming] " + p + ": " + e.Message); }
+            try { var r = JsonUtility.FromJson<Row>(DataPath.ReadFile(p)); if (r != null) { cfg = r; if (cfg.proof == null) cfg.proof = new ProofRow(); } } catch (Exception e) { Debug.LogWarning("[CamFraming] " + p + ": " + e.Message); }
             break;
         }
         return cfg;

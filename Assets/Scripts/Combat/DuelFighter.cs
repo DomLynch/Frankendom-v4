@@ -621,8 +621,8 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         bool faceOpp = opponent && !opponent.Dead && dist < FlowFaceRange(FaceRangeM) /* DATALAYER b10 */ && FlowLockOk();   // V64FLOW
         switch (state)
         {
-            case FState.Loco: v = moveDir * (run ? runSpeed : walkSpeed) * SpeedMulExhausted(); break;
-            case FState.Guard: { var dg = DodgeTable.Get(); v = moveDir * walkSpeed * (dg.enabled ? dg.guard.speedMul : R("guardSpeed", 0.35f) * 1.6f) * SpeedMulExhausted(); break; }   // run is off while guarding (the branch never reads `run`)
+            case FState.Loco: v = moveDir * (run ? runSpeed * MountRider.SpeedMul(this, true) : walkSpeed * MountRider.SpeedMul(this, false)) * SpeedMulExhausted(); break;   // FIX2 v1: the mount multiplier is applied here, on the sim tick (was: MountRider.Update wrote walkSpeed / runSpeed). 1.0 when not mounted
+            case FState.Guard: { var dg = DodgeTable.Get(); v = moveDir * (walkSpeed * MountRider.SpeedMul(this, false)) * (dg.enabled ? dg.guard.speedMul : R("guardSpeed", 0.35f) * 1.6f) * SpeedMulExhausted(); break; }   // run is off while guarding (the branch never reads `run`)
             case FState.Roll:
             {
                 // distance travelled follows 1-(1-x)^power over the move (power 1 = constant speed); sim time, so hit-stop freezes it

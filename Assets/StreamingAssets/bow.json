@@ -251,6 +251,7 @@
   "arrow": {
     "_about": "Presentation only (no sim): V1 arrow model 0.95 m x 0.028 m, head/fin colours, shaders tried in order (first that exists), chest height m of the aim point and of the release point.",
     "lengthM": 0.95,
+    "tintMix": 0.35,
     "radiusM": 0.014,
     "shaft": "#8a6a43",
     "head": "#8d9399",

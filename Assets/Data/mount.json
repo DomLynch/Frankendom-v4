@@ -35,6 +35,10 @@
   },
   "dismount": {
     "onStrike": true,
+    "strikeAction": "strike",
+    "heavyAction": "heavy",
+    "strikeKeys": ["Mouse0", "F"],
+    "heavyKeys": ["G"],
     "onOpponent": true,
     "inHub": true,
     "onMenu": false,

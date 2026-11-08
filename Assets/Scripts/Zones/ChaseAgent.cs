@@ -71,7 +71,7 @@ public sealed class ChaseAgent : MonoBehaviour
         if (n > 0 && free)
         {
             float gap = Flat(df.transform.position, player.transform.position), hd = Flat(df.transform.position, home);
-            float pr = player.runSpeed * player.MoveMulNow;
+            float pr = player.runSpeed * MountRider.SpeedMul(player, true) * player.MoveMulNow;   // FIX2 v1: the mounted run speed is no longer in the field
             float v = ChaseCore.Step(ref st, row, n, gap, hd, foreign ? 0f : leash, pr, df.walkSpeed);
             if (st.mode == ChaseMode.Pause || st.mode == ChaseMode.Home)   // gave up: it stops facing and fighting you
             {

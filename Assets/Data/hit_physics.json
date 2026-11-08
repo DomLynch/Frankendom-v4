@@ -8,6 +8,7 @@
       "skipShove": true,
       "clampArena": true,
       "clampWalls": true,
+      "simSafe": false,
       "clampGround": true,
       "log": false,
       "refKnockbackMps": 4.0,

@@ -40,7 +40,7 @@ public static class GameSettings
         try
         {
             string p = Application.streamingAssetsPath + "/game_settings.json";
-            if (File.Exists(p)) { var d = JsonUtility.FromJson<Data>(File.ReadAllText(p)); if (d != null) D = d; }
+            if (File.Exists(p)) { var d = JsonUtility.FromJson<Data>(DataPath.ReadFile(p)); if (d != null) D = d; }
         }
         catch (Exception ex) { Debug.LogWarning("GameSettings: read failed: " + ex.Message); }
         if (D.graphics == null) D.graphics = new GfxCfg(); if (D.camera == null) D.camera = new CamCfg(); if (D.menu == null) D.menu = new MenuEntry[0]; if (string.IsNullOrEmpty(D.prefsPrefix)) D.prefsPrefix = "gs.";

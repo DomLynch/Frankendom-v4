@@ -31,7 +31,7 @@ public class GuardTorsoTurn : MonoBehaviour
         foreach (var p in new[] { Application.streamingAssetsPath + "/guard_turn.json", Application.dataPath + "/Data/guard_turn.json" })
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null) data = r; } catch { }
+            try { var r = JsonUtility.FromJson<Root>(DataPath.ReadFile(p)); if (r != null) data = r; } catch { }
             break;
         }
         return data;

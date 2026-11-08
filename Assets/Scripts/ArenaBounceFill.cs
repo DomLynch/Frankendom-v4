@@ -20,7 +20,7 @@ public class ArenaBounceFill : MonoBehaviour
         foreach (var p in new[] { Application.streamingAssetsPath + "/arena_bounce.json", Application.dataPath + "/Data/arena_bounce.json" })
         {
             if (!File.Exists(p)) continue;
-            try { root = JsonUtility.FromJson<Root>(File.ReadAllText(p)); break; } catch (Exception e) { Debug.LogWarning("ArenaBounceFill: " + e.Message); }
+            try { root = JsonUtility.FromJson<Root>(DataPath.ReadFile(p)); break; } catch (Exception e) { Debug.LogWarning("ArenaBounceFill: " + e.Message); }
         }
         if (root == null || !root.enabled || root.rows == null || root.rows.Length == 0) return;
         if (FindFirstObjectByType<ArenaBounceFill>() != null) return;

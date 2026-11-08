@@ -177,7 +177,7 @@ public class STAuto : MonoBehaviour
             try
             {
                 if (!File.Exists(p)) continue;
-                var r = JsonUtility.FromJson<Root>(File.ReadAllText(p).TrimStart('﻿'));
+                var r = JsonUtility.FromJson<Root>(DataPath.ReadFile(p).TrimStart('﻿'));
                 if (r != null && r.auto != null) { C = r.auto; dataSrc = p; return; }
                 dataSrc = p + " (no \"auto\" block: defaults)";
             }

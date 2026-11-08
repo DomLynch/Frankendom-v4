@@ -7,7 +7,15 @@
     "Assets/Characters/Joan/Joan_combat.glb",
     "Assets/Characters/Joan/Joan_anim.glb",
     "Assets/Characters/Pitborn/Pitborn_combat.glb",
-    "Assets/Characters/Pitborn/Pitborn_anim.glb"
+    "Assets/Characters/Pitborn/Pitborn_anim.glb",
+    "Assets/Characters/Grendel/Grendel_combat.glb",
+    "Assets/Characters/Grendel/Grendel_anim.glb",
+    "Assets/Characters/Humbaba/Humbaba_combat.glb",
+    "Assets/Characters/Humbaba/Humbaba_anim.glb",
+    "Assets/Characters/Erlking/Erlking_combat.glb",
+    "Assets/Characters/Erlking/Erlking_anim.glb",
+    "Assets/Characters/Sobek/Sobek_combat.glb",
+    "Assets/Characters/Sobek/Sobek_anim.glb"
   ],
   "importerKeys": [
     "meshReadable",

@@ -33,7 +33,7 @@ public class ZoneRowGround : MonoBehaviour
             foreach (var p in new[] { System.IO.Path.Combine(Application.streamingAssetsPath, FileName), System.IO.Path.Combine(Application.dataPath, DataDir, FileName) })
             {
                 if (!System.IO.File.Exists(p)) continue;
-                try { cfg = JsonUtility.FromJson<Cfg>(System.IO.File.ReadAllText(p)); } catch (Exception e) { Debug.LogWarning("[ZoneRowGround] " + p + ": " + e.Message); }
+                try { cfg = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p)); } catch (Exception e) { Debug.LogWarning("[ZoneRowGround] " + p + ": " + e.Message); }
                 break;
             }
             if (cfg == null || cfg.zones == null || cfg.zones.Length == 0) return;

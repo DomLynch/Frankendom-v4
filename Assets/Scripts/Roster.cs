@@ -106,7 +106,7 @@ public static class Roster
         {
             string p = Path.Combine(Application.streamingAssetsPath, "roster.json");
             if (!File.Exists(p)) p = Path.Combine(Application.dataPath, "Data/roster.json");
-            if (File.Exists(p)) { k = JsonUtility.FromJson<Cfg>(File.ReadAllText(p)); Source = p; }
+            if (File.Exists(p)) { k = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p)); Source = p; }
         }
         catch (Exception e) { Debug.LogWarning("[Roster] load failed, fallback pair used: " + e.Message); k = null; }
         if (k == null) k = new Cfg();

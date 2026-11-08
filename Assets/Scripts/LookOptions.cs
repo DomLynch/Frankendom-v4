@@ -30,7 +30,7 @@ public static class LookOptions
         foreach (var p in new[] { System.IO.Path.Combine(Application.streamingAssetsPath, "look_options.json"), System.IO.Path.Combine(Application.dataPath, "Data/look_options.json") })
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null) cfg = r; } catch (Exception e) { Debug.LogWarning("[LookOptions] " + p + ": " + e.Message); }
+            try { var r = JsonUtility.FromJson<Root>(DataPath.ReadFile(p)); if (r != null) cfg = r; } catch (Exception e) { Debug.LogWarning("[LookOptions] " + p + ": " + e.Message); }
             break;
         }
         if (cfg.deathWash == null) cfg.deathWash = new Wash();

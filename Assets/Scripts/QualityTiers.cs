@@ -42,7 +42,7 @@ public static class QualityTiers
         try
         {
             string p = Application.streamingAssetsPath + "/quality_tiers.json";
-            if (File.Exists(p)) { raw = File.ReadAllText(p); var h = JsonUtility.FromJson<Head>(raw); if (h != null) head = h; if (string.IsNullOrEmpty(head.prefsKey)) head.prefsKey = "gfx.tier"; }
+            if (File.Exists(p)) { raw = DataPath.ReadFile(p); var h = JsonUtility.FromJson<Head>(raw); if (h != null) head = h; if (string.IsNullOrEmpty(head.prefsKey)) head.prefsKey = "gfx.tier"; }
             string t = Arg("-quality:");
             if (t == null) t = RuntimeQuality.IsHarness() ? HarnessTier : PlayerPrefs.GetString(head.prefsKey, "");   // gates / benches never depend on a saved player choice
             if (string.IsNullOrEmpty(t)) t = GameSettings.FirstRunTier(DefaultTier);

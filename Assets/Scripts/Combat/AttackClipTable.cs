@@ -69,10 +69,10 @@ public static class AttackClipTable
             var ta = Resources.Load<TextAsset>("attack_clips");
             if (ta != null) json = ta.text;
 #if UNITY_EDITOR
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/attack_clips.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/attack_clips.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
 #endif
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "attack_clips.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/attack_clips.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "attack_clips.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/attack_clips.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
         }
         catch (Exception ex) { Debug.LogWarning("AttackClipTable: read failed: " + ex.Message); }
         if (string.IsNullOrEmpty(json)) { Debug.LogWarning("AttackClipTable: attack_clips.json not found; old clip squash in use."); return; }

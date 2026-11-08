@@ -90,7 +90,7 @@ public class RockShot : MonoBehaviour
             try
             {
                 if (!File.Exists(p)) continue;
-                var c = JsonUtility.FromJson<Cfg>(File.ReadAllText(p).TrimStart('﻿'));
+                var c = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p).TrimStart('﻿'));
                 if (c != null) { C = c; dataSrc = p; if (C.targets == null || C.targets.Length == 0) C.targets = new[] { new Target() }; return; }
             }
             catch (Exception e) { Debug.LogWarning("[rockshot] cannot read " + p + ": " + e.Message); dataSrc = p + " (unreadable: defaults)"; }

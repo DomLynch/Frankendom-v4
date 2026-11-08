@@ -17,7 +17,7 @@ using UnityEngine;
 [Serializable] public class MtSpeed { public float walkMul = 1.6f, runMul = 2.2f; }
 [Serializable] public class MtStamina { public float max = 100f, gallopDrainPerS = 14f, regenPerS = 22f, minToGallop = 15f; }
 [Serializable] public class MtSummon { public float cooldownS = 3f; }
-[Serializable] public class MtDismount { public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true; }
+[Serializable] public class MtDismount { public string strikeAction = "strike", heavyAction = "heavy"; public string[] strikeKeys = { "Mouse0", "F" }, heavyKeys = { "G" }; /* FIX2 v1: were literals in Update */ public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true; }
 [Serializable] public class MtZ { public string id = ""; public float zFrom, zTo; }
 [Serializable] public class MtCam { public float backMul = 1f, heightMul = 1f; }
 [Serializable] public class MtGait
@@ -64,8 +64,10 @@ public static class MountData
 [DefaultExecutionOrder(-100)]   // after PlayerBrain (-200) set df.run / moveDir, before DuelFighter reads them
 public sealed class MountRider : MonoBehaviour
 {
-    public static MountRider Inst;
+    public static MountRider Inst; float nextBind;   // FIX2 v1: nextBind throttles the player search
     public static bool Mounted { get { return Inst != null && Inst.mounted; } }
+    /// <summary>FIX2 v1: the ride's speed multiplier, read by DuelFighter.MoveTick (and ChaseAgent for the player) ON THE SIM TICK. walkSpeed / runSpeed fields are no longer written from Update, so the speed a tick sees never depends on frame timing. 1 when not mounted or for any other fighter.</summary>
+    public static float SpeedMul(DuelFighter f, bool run) { var i = Inst; if (i == null || !i.mounted || i.K == null || f != i.df) return 1f; return run ? i.K.speed.runMul : i.K.speed.walkMul; }
     /// <summary>For a CameraRig hook: 1 on foot, mount.json camera.* while mounted.</summary>
     public static float CamBackMul { get { return Mounted ? MountData.Get().camera.backMul : 1f; } }
     public static float CamHeightMul { get { return Mounted ? MountData.Get().camera.heightMul : 1f; } }
@@ -91,6 +93,7 @@ public sealed class MountRider : MonoBehaviour
     bool Bind()
     {
         if (df != null) return true;
+        if (Time.unscaledTime < nextBind) return false; nextBind = Time.unscaledTime + 0.5f;   // FIX2 v1: was FindObjectsByType every frame while no player exists
         foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)) if (f.name.Contains(Roster.PlayerObject)) { df = f; fi = f.GetComponent<Fighter>(); break; }
         return df != null;
     }
@@ -117,7 +120,7 @@ public sealed class MountRider : MonoBehaviour
         string why = Refuse(); bool key = InputMap.Down(K.summonAction, KeyCodeOf(K.summonKey));
         if (mounted)
         {
-            if (why != null || key || (K.dismount.onStrike && (InputMap.Down("strike", KeyCode.Mouse0, KeyCode.F) || InputMap.Down("heavy", KeyCode.G)))) { Dismount(why ?? "key"); return; }
+            if (why != null || key || (K.dismount.onStrike && StrikeDown())) { Dismount(why ?? "key"); return; }
             // horse stamina: the run key is a gallop. Empty = no gallop until minToGallop is back.
             if (df.run) { if (exhausted || stam <= 0f) df.run = false; else { stam -= K.stamina.gallopDrainPerS * dt; if (stam <= 0f) { stam = 0f; exhausted = true; df.run = false; } } }
             else { stam = Mathf.Min(K.stamina.max, stam + K.stamina.regenPerS * dt); if (exhausted && stam >= K.stamina.minToGallop) exhausted = false; }
@@ -130,6 +133,12 @@ public sealed class MountRider : MonoBehaviour
             nextSummon = Time.time + K.summon.cooldownS; Mount();
         }
     }
+
+    // FIX2 v1: the strike / heavy actions and their fallback keys are mount.json dismount.* (defaults = the old literals)
+    KeyCode[] strikeK, heavyK;
+    static KeyCode[] KeysOf(string[] names) { var l = new List<KeyCode>(); if (names != null) foreach (var n in names) { try { l.Add((KeyCode)Enum.Parse(typeof(KeyCode), n, true)); } catch (Exception) { } } return l.ToArray(); }
+    static bool DownKeys(string id, KeyCode[] k) { if (k.Length >= 2) return InputMap.Down(id, k[0], k[1]); if (k.Length == 1) return InputMap.Down(id, k[0]); return InputMap.Down(id, KeyCode.None); }
+    bool StrikeDown() { var D = K.dismount; if (strikeK == null) { strikeK = KeysOf(D.strikeKeys); heavyK = KeysOf(D.heavyKeys); } return DownKeys(D.strikeAction, strikeK) || DownKeys(D.heavyAction, heavyK); }
 
     static KeyCode KeyCodeOf(string s) { try { return (KeyCode)Enum.Parse(typeof(KeyCode), s, true); } catch (Exception) { return KeyCode.H; } }
 
@@ -156,7 +165,7 @@ public sealed class MountRider : MonoBehaviour
     void Mount()
     {
         mounted = true; exhausted = false; baseWalk = df.walkSpeed; baseRun = df.runSpeed; phase = 0f; ampBlend = 0f; haveLast = false; bob = 0f; pitch = 0f; roll = 0f;
-        df.walkSpeed = baseWalk * K.speed.walkMul; df.runSpeed = baseRun * K.speed.runMul;
+        /* FIX2 v1: the multiplier is MountRider.SpeedMul on the sim tick, no field write */
         if (fi != null && fi.model != null) { baseModelPos = fi.model.localPosition; modelSaved = true; }
         horseYaw = df.transform.eulerAngles.y; horse.SetActive(true);
         PlaceHorse(); if (K.debugLog) Debug.Log("[Mount] mounted " + K.horse.id);
@@ -164,7 +173,7 @@ public sealed class MountRider : MonoBehaviour
 
     void Dismount(string why)
     {
-        mounted = false; df.walkSpeed = baseWalk; df.runSpeed = baseRun;
+        mounted = false; /* FIX2 v1: nothing to restore, the fields were never written */
         if (modelSaved && fi != null && fi.model != null) fi.model.localPosition = baseModelPos;
         if (horse != null) horse.SetActive(false);
         if (K.debugLog) Debug.Log("[Mount] dismounted: " + why);

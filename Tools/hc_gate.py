@@ -5,6 +5,7 @@ Per non-trivial numeric literal it decides:
   rdef    = default argument of R()/Rule()/Get..("key", 1.0) (data lookup with fallback)
   code    = literal inside an executable statement = HARD-CODED
 CODE literals are also tagged: colour constructors, clip-name call sites, path strings, character-name strings.
+FIX2 v1: a bare run is a gate (report + PASS/FAIL line + exit 1 on FAIL); --report = report only.
 Usage: hc_scan.py [--root DIR] [--json out.json] [--top N] [--write-baseline f] [--check f]
 Exit 1 from --check when any non-harness file has MORE literals in a hot category than the baseline (new file = baseline 0)."""
 import re, os, sys, json, collections, argparse
@@ -21,7 +22,10 @@ ap.add_argument('--vs', help='diff mode: compare --root (a staged tree) with thi
 ap.add_argument('--accept', nargs=3, metavar=('FILE', 'CATEGORY', 'REASON'), help='record a reviewed exception in the baseline (counts above the baseline for that file and category are then allowed, with the reason)')
 ap.add_argument('--baseline-file', dest='baseline_file', default=_DEF_BASE)
 ap.add_argument('--quiet', action='store_true', help='with --check: print only the failures and the verdict')
+ap.add_argument('--report', action='store_true', help='FIX2 v1: report only (the old bare run): no verdict, exit 0')
 a = ap.parse_args()
+# FIX2 v1: a bare run (no mode flag) is now a real gate: the report, then 'hardcode gate: PASS' / 'FAIL n' and exit 1 on FAIL, against the default baseline. --report keeps the old report-only run.
+if not (a.check or a.vs or a.write_baseline or a.ratchet or a.accept or a.json or a.report) and os.path.exists(_DEF_BASE): a.check = _DEF_BASE
 if a.quiet:
     import io
     sys.stdout = io.StringIO()

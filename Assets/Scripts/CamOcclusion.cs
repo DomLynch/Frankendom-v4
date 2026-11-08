@@ -48,7 +48,7 @@ public static class CamOcclusion
             if (!System.IO.File.Exists(p)) continue;
             try
             {
-                var r = JsonUtility.FromJson<Row>(System.IO.File.ReadAllText(p));
+                var r = JsonUtility.FromJson<Row>(DataPath.ReadFile(p));
                 if (r != null)
                 {
                     cfg = r; if (cfg.proof == null) cfg.proof = new ProofRow(); if (cfg.fix == null) cfg.fix = new FixRow();

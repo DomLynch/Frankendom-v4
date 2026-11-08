@@ -54,10 +54,10 @@ public static class DeathTable
             var ta = Resources.Load<TextAsset>("death");
             if (ta != null) json = ta.text;
 #if UNITY_EDITOR
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/death.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/death.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
 #endif
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "death.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/death.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "death.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/death.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
         }
         catch (Exception ex) { Debug.LogWarning("DeathTable: read failed: " + ex.Message); }
         if (string.IsNullOrEmpty(json)) { Debug.LogWarning("DeathTable: death.json not found; old plain death in use."); return; }

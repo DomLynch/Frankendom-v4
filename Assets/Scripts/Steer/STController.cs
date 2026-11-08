@@ -25,7 +25,7 @@ public class STController : MonoBehaviour
         try
         {
             string p = Application.streamingAssetsPath + "/runtime_flags.json";
-            if (System.IO.File.Exists(p)) return JsonUtility.FromJson<FlagProbe>(System.IO.File.ReadAllText(p)).steer;
+            if (System.IO.File.Exists(p)) return JsonUtility.FromJson<FlagProbe>(DataPath.ReadFile(p)).steer;
         }
         catch (Exception e) { Debug.LogWarning("[steer] runtime_flags.json unreadable: " + e.Message); }
         return false;

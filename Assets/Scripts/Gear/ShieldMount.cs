@@ -89,7 +89,7 @@ public class ShieldMount : MonoBehaviour, IGearShieldSource
         foreach (var p in DataPath.Candidates("shield_mount.json"))
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<ShieldMountFile>(System.IO.File.ReadAllText(p)); if (r != null && r.rows != null) data = r; } catch (Exception) { }
+            try { var r = JsonUtility.FromJson<ShieldMountFile>(DataPath.ReadFile(p)); if (r != null && r.rows != null) data = r; } catch (Exception) { }
             break;
         }
         return data;

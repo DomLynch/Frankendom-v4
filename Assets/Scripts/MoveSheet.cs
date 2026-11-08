@@ -105,7 +105,7 @@ public class MoveSheet : MonoBehaviour
         paths.Add(Path.Combine(Application.dataPath, "Data/move_sheet.json"));
         foreach (var p in paths)
         {
-            try { if (File.Exists(p)) { var d = JsonUtility.FromJson<Data>(File.ReadAllText(p)); if (d != null) return d; } }
+            try { if (File.Exists(p)) { var d = JsonUtility.FromJson<Data>(DataPath.ReadFile(p)); if (d != null) return d; } }
             catch (Exception ex) { Debug.LogError("MoveSheet: cannot read " + p + ": " + ex.Message); }
         }
         return null;

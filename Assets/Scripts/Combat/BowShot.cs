@@ -73,7 +73,7 @@ public class BowArrowView : MonoBehaviour
     {
         s = shot; lane = laneIndex; count = laneCount; var C = BowCfg.Get().arrow;
         Shader sh = null; for (int i = 0; i < C.shaders.Length && sh == null; i++) sh = Shader.Find(C.shaders[i]);
-        Material mat = sh != null ? new Material(sh) : null; if (mat != null) { mat.color = Color.Lerp(BowCfg.Col(C.shaft, Color.gray), tint, 0.35f); }
+        Material mat = sh != null ? new Material(sh) : null; if (mat != null) { mat.color = Color.Lerp(BowCfg.Col(C.shaft, Color.gray), tint, C.tintMix /* FIX2 v1: bow.json arrow.tintMix */); }
         var g = GameObject.CreatePrimitive(PrimitiveType.Cylinder); Destroy(g.GetComponent<Collider>()); g.name = "Shaft"; shaft = g.transform; shaft.SetParent(transform, false);
         shaft.localRotation = Quaternion.Euler(90f, 0f, 0f); shaft.localScale = new Vector3(C.radiusM * 2f, C.lengthM * 0.5f, C.radiusM * 2f);   // cylinder is 2 m tall on Y, turned onto Z
         var r = g.GetComponent<Renderer>(); if (mat != null) r.sharedMaterial = mat; r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;

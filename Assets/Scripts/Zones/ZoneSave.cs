@@ -31,7 +31,7 @@ public sealed class LocalFileStore : IZoneStore
             if (f == null) throw new Exception("empty");
             if (f.version > ZoneData.Get().persistence.version)
             {
-                string bak = p + ".v" + f.version + ".bak"; if (!File.Exists(bak)) File.Copy(p, bak);
+                string bak = p + ".v" + f.version + ".bak"; if (!RunMode.RealSaveBlocked /* FIX2 v1 */ && !File.Exists(bak)) File.Copy(p, bak);
                 Debug.LogWarning("[ZoneSave] file is version " + f.version + ", this build writes " + ZoneData.Get().persistence.version + ": backed up to " + bak + ", starting fresh");
                 return new ZoneFile();
             }
@@ -40,12 +40,13 @@ public sealed class LocalFileStore : IZoneStore
         catch (Exception e)
         {
             ZoneSave.LastError = e.Message; Debug.LogWarning("[ZoneSave] unreadable (" + e.Message + "), starting fresh");
-            SafeFile.Quarantine(p, "bad", "unreadable (" + e.Message + ")", true);   // FIXSAVE v1: timestamped, last 3 kept
+            if (!RunMode.RealSaveBlocked) /* FIX2 v1: the quarantine MOVES the real file */ SafeFile.Quarantine(p, "bad", "unreadable (" + e.Message + ")", true);   // FIXSAVE v1: timestamped, last 3 kept
             return new ZoneFile();
         }
     }
     public void Save(ZoneFile f)
     {
+        if (RunMode.RealSaveBlocked) return;   // FIX2 v1: second guard at the file layer (any caller, also a custom IZoneStore chain)
         string p = Path_, tmp = p + ".tmp";
         try
         {
@@ -83,7 +84,7 @@ public static class ZoneSave
     public static void SetPlayer(string zone, string spot, float hpFrac) { var p = Data.player; p.zone = zone; p.spot = spot; p.hpFrac = Mathf.Clamp01(hpFrac); p.has = true; dirty = true; }
     public static void Flush(bool force = false)
     {
-        if (!Active || (!dirty && !force)) return;
+        if (!Active || RunMode.RealSaveBlocked || (!dirty && !force)) return;   // FIX2 v1: a harness run that did not redirect its saves (no -savePath) never writes the real zones_save.json; the state stays in memory like LootSave
         Data.savedUtc = DateTime.UtcNow.ToString("o"); Store.Save(Data); dirty = false;
     }
 }

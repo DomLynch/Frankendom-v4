@@ -45,7 +45,7 @@ public static class LookData
         foreach (var p in new[] { Path.Combine(Application.streamingAssetsPath, file), Path.Combine(Application.dataPath, "Data/" + file) })
         {
             if (!File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<T>(File.ReadAllText(p)); if (r != null) { src = p; return r; } }
+            try { var r = JsonUtility.FromJson<T>(DataPath.ReadFile(p)); if (r != null) { src = p; return r; } }
             catch (Exception e) { Debug.LogWarning("[LookData] " + p + ": " + e.Message); }
         }
         return null;

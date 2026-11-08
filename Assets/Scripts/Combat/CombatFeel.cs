@@ -76,10 +76,10 @@ public static class CombatFeel
             var ta = Resources.Load<TextAsset>("cancel");
             if (ta != null) json = ta.text;
 #if UNITY_EDITOR
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/cancel.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/cancel.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
 #endif
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "cancel.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/cancel.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "cancel.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/cancel.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
         }
         catch (Exception ex) { Debug.LogWarning("CombatFeel: read failed: " + ex.Message); }
         if (string.IsNullOrEmpty(json)) { data.enabled = false; return; }   // no file: old behaviour

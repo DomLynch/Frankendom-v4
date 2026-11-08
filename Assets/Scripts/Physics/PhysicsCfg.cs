@@ -55,7 +55,7 @@ public class PhysicsCfg
         string[] paths = { Path.Combine(Application.streamingAssetsPath, "physics.json"), Path.Combine(Application.dataPath, "Data/physics.json") };
         for (int i = 0; i < paths.Length && json == null; i++)
         {
-            try { if (File.Exists(paths[i])) json = File.ReadAllText(paths[i]).TrimStart('﻿'); }
+            try { if (File.Exists(paths[i])) json = DataPath.ReadFile(paths[i]).TrimStart('﻿'); }
             catch (Exception ex) { Debug.LogWarning("[PhysicsCfg] cannot read " + paths[i] + ": " + ex.Message); }
         }
         var d = new PhysicsCfg();   // class defaults = clock disabled, no layers

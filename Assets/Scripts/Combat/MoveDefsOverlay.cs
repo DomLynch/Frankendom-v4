@@ -29,7 +29,7 @@ public static class MoveDefsOverlay
             foreach (var p in new[] { Application.streamingAssetsPath + "/move-defs.json", Application.dataPath + "/Data/move-defs.json" })
             {
                 if (!File.Exists(p)) continue;
-                var mj = JsonUtility.FromJson<MovesJ>(File.ReadAllText(p));
+                var mj = JsonUtility.FromJson<MovesJ>(DataPath.ReadFile(p));
                 if (mj == null || mj.moves == null) return;
                 string added = "";
                 foreach (var m in mj.moves)

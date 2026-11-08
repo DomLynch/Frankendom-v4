@@ -26,6 +26,11 @@ public static class V1FinisherClipSetup
 
     const string DataPath = "Assets/Data/v1_finisher_clips.json";
     static int unmatched, states, clipsBuilt, bad;
+    // FINISHER5 v1: -bakeOnly A,B on the command line (or BakeOnly set from code) restricts the bake to those roster ids (the monster finisher victims + Joan's killer clip); empty = every target = today.
+    //   command: Unity.exe -batchmode -quit -projectPath <p> -executeMethod V1FinisherClipSetup.RunBatchOnly -bakeOnly Grendel,Humbaba,Erlking,Sobek,Joan
+    public static string[] BakeOnly = new string[0];
+    static bool Wanted(string id) { if (BakeOnly == null || BakeOnly.Length == 0) return true; foreach (var s in BakeOnly) if (string.Equals(s.Trim(), id, StringComparison.OrdinalIgnoreCase)) return true; return false; }
+    public static void RunBatchOnly() { var a = Environment.GetCommandLineArgs(); for (int i = 0; i + 1 < a.Length; i++) if (a[i] == "-bakeOnly") BakeOnly = a[i + 1].Split(','); EditorApplication.Exit(RunChecked() ? 0 : 2); }
 
     [MenuItem("Tools/Combat/Add V1 Finisher Clips")]
     public static void Run() { RunChecked(); }
@@ -65,13 +70,13 @@ public static class V1FinisherClipSetup
         {
             if (row == null || string.IsNullOrEmpty(row.name) || !done.Add(row.name)) continue;
             bool any = false; foreach (var c in cfg.clips) if (Targets(c, row.name)) any = true;
-            if (any) SetupCharacter(cfg, row);
+            if (any && Wanted(row.name)) SetupCharacter(cfg, row);   // FINISHER5 v1
         }
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
         // 3) every target has every state, right length, right root
-        foreach (var id in done) Verify(cfg, id);
+        foreach (var id in done) if (Wanted(id)) Verify(cfg, id);   // FINISHER5 v1
         bool ok = missing == 0 && unmatched == 0 && bad == 0 && states > 0;
         Debug.Log("V1FinisherClipSetup: done. clips built " + clipsBuilt + ", states added/updated " + states + ", unmatched " + unmatched + ", verify problems " + bad + ", GLBs missing " + missing + (ok ? "  RESULT OK" : "  RESULT NOT OK"));
         return ok;

@@ -68,12 +68,12 @@ public static class ImpactTable
             if (json == null)
             {
                 string p = Path.Combine(Application.streamingAssetsPath, "camera_impact.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
             if (json == null)
             {
                 string p = Path.Combine(Application.dataPath, "Data/camera_impact.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
         }
         catch (Exception ex) { Debug.LogWarning("ImpactTable: read failed: " + ex.Message); }

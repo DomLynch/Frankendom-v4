@@ -16,7 +16,7 @@ public class CrackFlicker : MonoBehaviour
         foreach (var p in new[] { Application.streamingAssetsPath + "/crack_flicker.json", Application.dataPath + "/Data/crack_flicker.json" })
         {
             if (!File.Exists(p)) continue;
-            try { r = JsonUtility.FromJson<Row>(File.ReadAllText(p)); } catch { }
+            try { r = JsonUtility.FromJson<Row>(DataPath.ReadFile(p)); } catch { }
             break;
         }
         if (r.lodBias > 0f) { BaseLodBias = r.lodBias; QualitySettings.lodBias = r.lodBias * QualityTiers.LodBiasMul; }   // TIERS v96: x1 on Ultra

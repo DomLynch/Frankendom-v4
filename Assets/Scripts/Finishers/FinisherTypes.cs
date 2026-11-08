@@ -488,8 +488,8 @@ public static class FinisherConfig
     {
         try
         {
-            string p = Path.Combine(Application.streamingAssetsPath, "finishers.json"); if (File.Exists(p)) return File.ReadAllText(p);
-            p = Path.Combine(Application.dataPath, "Data/finishers.json"); if (File.Exists(p)) return File.ReadAllText(p);
+            string p = Path.Combine(Application.streamingAssetsPath, "finishers.json"); if (File.Exists(p)) return DataPath.ReadFile(p);
+            p = Path.Combine(Application.dataPath, "Data/finishers.json"); if (File.Exists(p)) return DataPath.ReadFile(p);
         }
         catch (Exception e) { Debug.LogWarning("[finisher] finishers.json unreadable: " + e.Message); }
         return null;

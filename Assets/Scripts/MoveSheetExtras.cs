@@ -59,7 +59,7 @@ public class HeadSheet : MonoBehaviour
     {
         var paths = new List<string>(); string cli = Arg("-headsheetdata:"); if (!string.IsNullOrEmpty(cli)) paths.Add(cli);
         paths.Add(Path.Combine(Application.streamingAssetsPath, "head_sheet.json")); paths.Add(Path.Combine(Application.dataPath, "Data/head_sheet.json"));
-        foreach (var p in paths) { try { if (File.Exists(p)) { var d = JsonUtility.FromJson<Data>(File.ReadAllText(p)); if (d != null) return d; } } catch (Exception ex) { Debug.LogError("HeadSheet: cannot read " + p + ": " + ex.Message); } }
+        foreach (var p in paths) { try { if (File.Exists(p)) { var d = JsonUtility.FromJson<Data>(DataPath.ReadFile(p)); if (d != null) return d; } } catch (Exception ex) { Debug.LogError("HeadSheet: cannot read " + p + ": " + ex.Message); } }
         return null;
     }
 

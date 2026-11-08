@@ -21,7 +21,7 @@ public static class FighterScale
         foreach (var p in new[] { Application.streamingAssetsPath + "/camera_framing.json", Application.dataPath + "/Data/camera_framing.json" })
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<Row>(System.IO.File.ReadAllText(p).TrimStart((char)0xFEFF)); if (r != null && r.scaleFloor > 0f) defFloor = r.scaleFloor; } catch { }
+            try { var r = JsonUtility.FromJson<Row>(DataPath.ReadFile(p).TrimStart((char)0xFEFF)); if (r != null && r.scaleFloor > 0f) defFloor = r.scaleFloor; } catch { }
             break;
         }
     }

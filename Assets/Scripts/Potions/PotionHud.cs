@@ -19,6 +19,14 @@ public sealed class PotionHud : MonoBehaviour
         var k = PotionCfg.UseKeys(); return k.Length > 0 ? k[0].ToString() : "";
     }
 
+    // FIX2 v1: the chip / hint strings are rebuilt only when an input changes (string.Format + Enum.ToString on every repaint was steady GC while in game)
+    string lnId, lnName, lnFmt, lnKey, lnText, nnFmt, nnKey, nnText, hnFmt, hnKey, hnText, useLbl = "", cycLbl = ""; int lnQty = -1; KeyCode[] useSrc, cycSrc;
+    string UseLabel() { var k = PotionCfg.UseKeys(); if (!ReferenceEquals(k, useSrc)) { useSrc = k; useLbl = k.Length > 0 ? k[0].ToString() : ""; } return useLbl; }
+    string CycleLabel() { var k = PotionCfg.CycleKeys(); if (!ReferenceEquals(k, cycSrc)) { cycSrc = k; cycLbl = k.Length > 0 ? k[0].ToString() : ""; } return cycLbl; }
+    string ChipText(string fmt, string id, string name, int qty) { string kl = UseLabel(); if (lnText == null || qty != lnQty || id != lnId || name != lnName || fmt != lnFmt || kl != lnKey) { lnText = string.Format(fmt, kl, name, qty); lnId = id; lnName = name; lnQty = qty; lnFmt = fmt; lnKey = kl; } return lnText; }
+    string ChipNoneText(string fmt) { string kl = UseLabel(); if (nnText == null || fmt != nnFmt || kl != nnKey) { nnText = string.Format(fmt, kl); nnFmt = fmt; nnKey = kl; } return nnText; }
+    string CycleHintText(string fmt) { string kl = CycleLabel(); if (hnText == null || fmt != hnFmt || kl != hnKey) { hnText = string.Format(fmt, kl); hnFmt = fmt; hnKey = kl; } return hnText; }
+
     void OnGUI()
     {
         if (Event.current.type != EventType.Repaint) return;
@@ -31,8 +39,8 @@ public sealed class PotionHud : MonoBehaviour
         HudDraw.Alpha = 1f;
         string id = PotionUse.EnsureSelected(); float y = vh - H.bottomPx;
         string line; Color col;
-        if (id.Length > 0) { var p = PotionCfg.Find(id); line = string.Format(T.chip, KeyLabel(), p.name.Length > 0 ? p.name : id, PotionStore.Qty(id)); col = ink; }
-        else { line = string.Format(T.chipNone, KeyLabel()); col = dim; }
+        if (id.Length > 0) { var p = PotionCfg.Find(id); line = ChipText(T.chip, id, p.name.Length > 0 ? p.name : id, PotionStore.Qty(id)); col = ink; }   // FIX2 v1: cached
+        else { line = ChipNoneText(T.chipNone); col = dim; }
         HudDraw.Text(new Rect(H.leftPx, y, H.widthPx, H.nameSize * H.lineH), line, "serif", H.nameSize, TextAnchor.UpperLeft, true, col);
         if (id.Length > 0)
         {
@@ -40,7 +48,7 @@ public sealed class PotionHud : MonoBehaviour
             HudDraw.Fill(new Rect(H.leftPx, by, bw, H.barH), HudCfg.Col(K.frameDim));
             if (cd > 0f) HudDraw.Fill(new Rect(H.leftPx, by, bw * (1f - cd), H.barH), dim); else HudDraw.Fill(new Rect(H.leftPx, by, bw, H.barH), gold);
             if (PotionUse.KindsCarried() > 1 && PotionCfg.CycleKeys().Length > 0)
-                HudDraw.Text(new Rect(H.leftPx, by + H.barH + H.barGapPx, H.widthPx, H.hintSize * H.lineH), string.Format(T.cycleHint, PotionCfg.CycleKeys()[0].ToString()), "serif", H.hintSize, TextAnchor.UpperLeft, false, dim);
+                HudDraw.Text(new Rect(H.leftPx, by + H.barH + H.barGapPx, H.widthPx, H.hintSize * H.lineH), CycleHintText(T.cycleHint), "serif", H.hintSize, TextAnchor.UpperLeft, false, dim);
         }
         float age = Time.unscaledTime - PotionUse.ToastAt;
         if (PotionUse.ToastText.Length > 0 && age >= 0f && age <= H.toastSeconds)

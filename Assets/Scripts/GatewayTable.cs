@@ -91,11 +91,11 @@ public static class GatewayTable
         {
 #if UNITY_EDITOR
             string pe = Path.Combine(Application.dataPath, "Data/gateway.json");
-            if (File.Exists(pe)) { json = File.ReadAllText(pe); LoadedFrom = pe; }
+            if (File.Exists(pe)) { json = DataPath.ReadFile(pe); LoadedFrom = pe; }
 #endif
             if (json == null) { var ta = Resources.Load<TextAsset>("gateway"); if (ta != null) { json = ta.text; LoadedFrom = "Resources/gateway"; } }
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "gateway.json"); if (File.Exists(p)) { json = File.ReadAllText(p); LoadedFrom = p; } }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/gateway.json"); if (File.Exists(p)) { json = File.ReadAllText(p); LoadedFrom = p; } }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "gateway.json"); if (File.Exists(p)) { json = DataPath.ReadFile(p); LoadedFrom = p; } }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/gateway.json"); if (File.Exists(p)) { json = DataPath.ReadFile(p); LoadedFrom = p; } }
         }
         catch (Exception ex) { Debug.LogWarning("GatewayTable: read failed: " + ex.Message); }
 

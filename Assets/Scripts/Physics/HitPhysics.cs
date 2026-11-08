@@ -56,7 +56,7 @@ public static class HitPhysics
         string[] paths = { Path.Combine(Application.streamingAssetsPath, FileName), Path.Combine(Path.Combine(Application.dataPath, DataDir), FileName) };
         for (int i = 0; i < paths.Length && json == null; i++)
         {
-            try { if (File.Exists(paths[i])) json = File.ReadAllText(paths[i]).TrimStart('﻿'); }
+            try { if (File.Exists(paths[i])) json = DataPath.ReadFile(paths[i]).TrimStart('﻿'); }
             catch (Exception ex) { Debug.LogWarning("[HitPhysics] cannot read " + paths[i] + ": " + ex.Message); }
         }
         if (string.IsNullOrEmpty(json)) return d;

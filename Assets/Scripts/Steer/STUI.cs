@@ -58,7 +58,7 @@ public class STUI : MonoBehaviour
             try
             {
                 if (!File.Exists(p)) continue;
-                var r = JsonUtility.FromJson<Root>(File.ReadAllText(p));
+                var r = JsonUtility.FromJson<Root>(DataPath.ReadFile(p));
                 if (r != null && r.ui != null)
                 {
                     var d = DefaultCfg();
@@ -90,7 +90,7 @@ public class STUI : MonoBehaviour
             if (a == "-steer" || a == "-steerauto" || a.StartsWith("-steershot=")) return true;
         foreach (var p in new[] { Path.Combine(Application.streamingAssetsPath, "runtime_flags.json"), Path.Combine(Application.dataPath, "Data/runtime_flags.json") })
         {
-            try { if (File.Exists(p) && Regex.IsMatch(File.ReadAllText(p), "\"steer\"\\s*:\\s*true")) return true; } catch { }
+            try { if (File.Exists(p) && Regex.IsMatch(DataPath.ReadFile(p), "\"steer\"\\s*:\\s*true")) return true; } catch { }
         }
         return false;
     }

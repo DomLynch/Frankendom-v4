@@ -71,7 +71,7 @@ public class FeetClip : MonoBehaviour
         foreach (var p in new[] { cli, Path.Combine(Application.streamingAssetsPath, "feetclip.json"), Path.Combine(Application.dataPath, "Data/feetclip.json") })
         {
             if (string.IsNullOrEmpty(p) || !File.Exists(p)) continue;
-            try { var c = JsonUtility.FromJson<Cfg>(File.ReadAllText(p).TrimStart('﻿')); if (c != null) { C = c; Log("data " + p); break; } } catch (Exception e) { Debug.LogWarning("[feetclip] " + p + ": " + e.Message); }
+            try { var c = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p).TrimStart('﻿')); if (c != null) { C = c; Log("data " + p); break; } } catch (Exception e) { Debug.LogWarning("[feetclip] " + p + ": " + e.Message); }
         }
         if (C.muteAudio) AudioListener.volume = 0f;
     }

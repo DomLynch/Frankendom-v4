@@ -61,7 +61,7 @@ public static class PhysWeapon
             string[] paths = { Path.Combine(Application.streamingAssetsPath, "physweapon.json"), Path.Combine(Application.dataPath, "Data/physweapon.json") };
             for (int i = 0; i < paths.Length && json == null; i++)
             {
-                try { if (File.Exists(paths[i])) json = File.ReadAllText(paths[i]).TrimStart((char)0xFEFF); }
+                try { if (File.Exists(paths[i])) json = DataPath.ReadFile(paths[i]).TrimStart((char)0xFEFF); }
                 catch (Exception ex) { Debug.LogWarning("[physweapon] cannot read " + paths[i] + ": " + ex.Message); }
             }
             if (string.IsNullOrEmpty(json)) return cfg;

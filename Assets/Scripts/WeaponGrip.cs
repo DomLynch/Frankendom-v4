@@ -45,7 +45,7 @@ public class WeaponGrip : MonoBehaviour
         foreach (var p in DataPath.Candidates("weapon_grip.json")) /* // HCKIT2 v93 */
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null && r.characters != null) data = r; } catch { }
+            try { var r = JsonUtility.FromJson<Root>(DataPath.ReadFile(p)); if (r != null && r.characters != null) data = r; } catch { }
             break;
         }
         return data;

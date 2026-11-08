@@ -48,7 +48,7 @@ public static class PerfCpu
             try
             {
                 if (!File.Exists(p)) continue;
-                var r = JsonUtility.FromJson<PerfCpuCfg>(File.ReadAllText(p).TrimStart((char)0xFEFF));
+                var r = JsonUtility.FromJson<PerfCpuCfg>(DataPath.ReadFile(p).TrimStart((char)0xFEFF));
                 if (r != null) cfg = r;
             }
             catch (Exception e) { Debug.LogWarning("PerfCpu: perf_cpu.json unreadable: " + e.Message); }

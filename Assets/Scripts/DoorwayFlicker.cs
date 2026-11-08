@@ -24,7 +24,7 @@ public class DoorwayFlicker : MonoBehaviour
         foreach (var p in new[] { Application.streamingAssetsPath + "/doorway.json", Application.dataPath + "/Data/doorway.json" })
         {
             if (!File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<Root>(File.ReadAllText(p)); if (r != null && r.light != null) { noise = r.light.flicker; ok = true; break; } }
+            try { var r = JsonUtility.FromJson<Root>(DataPath.ReadFile(p)); if (r != null && r.light != null) { noise = r.light.flicker; ok = true; break; } }
             catch (Exception e) { Debug.LogWarning("DoorwayFlicker: " + e.Message); }
         }
         if (!ok) { Debug.LogError("DoorwayFlicker: doorway.json (light.flicker) not found; light stays steady"); enabled = false; }

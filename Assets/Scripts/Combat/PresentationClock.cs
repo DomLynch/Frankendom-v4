@@ -62,7 +62,7 @@ public static class PresentationClock
         string[] paths = { System.IO.Path.Combine(Application.dataPath, "Data/hit_stop.json"), System.IO.Path.Combine(Application.streamingAssetsPath, "hit_stop.json") };
         foreach (var p in paths)
         {
-            try { if (System.IO.File.Exists(p)) { var t = JsonUtility.FromJson<HitStopTable>(System.IO.File.ReadAllText(p)); if (t != null) return t; } }
+            try { if (System.IO.File.Exists(p)) { var t = JsonUtility.FromJson<HitStopTable>(DataPath.ReadFile(p)); if (t != null) return t; } }
             catch (Exception ex) { Debug.LogWarning("PresentationClock: could not read " + p + ": " + ex.Message); }
         }
         Debug.LogWarning("PresentationClock: hit_stop.json not found (Assets/Data or StreamingAssets); hit-stop disabled.");

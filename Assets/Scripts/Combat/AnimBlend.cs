@@ -92,12 +92,12 @@ public static class AnimBlend
             if (json == null)
             {
                 string p = Path.Combine(Application.streamingAssetsPath, "anim_blend.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
             if (json == null)
             {
                 string p = Path.Combine(Application.dataPath, "Data/anim_blend.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
         }
         catch (Exception ex) { Debug.LogWarning("AnimBlend: read failed: " + ex.Message); }

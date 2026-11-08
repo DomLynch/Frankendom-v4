@@ -83,8 +83,8 @@ public static class HitFeelTable
         {
             var ta = Resources.Load<TextAsset>("hit_feel");
             if (ta != null) json = ta.text;
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "hit_feel.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/hit_feel.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "hit_feel.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/hit_feel.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
         }
         catch (Exception ex) { Debug.LogWarning("HitFeelTable: read failed: " + ex.Message); }
         if (string.IsNullOrEmpty(json)) { data.enabled = 0; return; }   // no file: HitFeel off, BloodBurst / CombatVFX keep the code defaults (the v69 look)

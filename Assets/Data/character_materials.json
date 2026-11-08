@@ -50,7 +50,7 @@
           ],
           "smoothness": -1,
           "metallic": -1,
-          "albedoBlob": "",
+          "albedoBlob": "CharTex/pitborn_body_base_graded.bc7",
           "albedoTexture": ""
         },
         {
@@ -62,10 +62,11 @@
           ],
           "smoothness": -1,
           "metallic": -1,
-          "albedoBlob": "CharTex/pitborn_head_base.bc7",
+          "albedoBlob": "CharTex/pitborn_head_base_graded.bc7",
           "albedoTexture": "CharTex/pitborn_head_base.jpg"
         }
-      ]
+      ],
+      "_why_pitlook": "lanePITLOOK: Pitborn skin grey10 (albedo luminance down, less pink)"
     },
     {
       "character": "Sobek",

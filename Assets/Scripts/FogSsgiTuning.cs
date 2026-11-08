@@ -105,7 +105,7 @@ public static class FogSsgiTuning
             foreach (var a in Environment.GetCommandLineArgs()) if (a.StartsWith("-fogtune:")) arg = a.Substring(9);
             string path = Application.streamingAssetsPath + "/fogssgi_tuning.json";
             if (!System.IO.File.Exists(path)) return;
-            var cfg = JsonUtility.FromJson<Cfg>(System.IO.File.ReadAllText(path));
+            var cfg = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(path));
             if (cfg == null || cfg.profiles == null) return;
             string id = !string.IsNullOrEmpty(arg) ? arg : (cfg.enabled ? cfg.active : "");
             if (string.IsNullOrEmpty(id)) return;

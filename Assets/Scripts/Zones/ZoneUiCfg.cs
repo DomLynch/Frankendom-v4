@@ -43,7 +43,7 @@ using UnityEngine;
         try
         {
             foreach (var p in new[] { Path.Combine(Application.streamingAssetsPath, "zone_ui.json"), Path.Combine(Application.dataPath, "Data/zone_ui.json") })
-                if (File.Exists(p)) { var d = JsonUtility.FromJson<ZoneUiCfg>(File.ReadAllText(p).TrimStart((char)0xFEFF)); if (d != null) { k = d; break; } }
+                if (File.Exists(p)) { var d = JsonUtility.FromJson<ZoneUiCfg>(DataPath.ReadFile(p).TrimStart((char)0xFEFF)); if (d != null) { k = d; break; } }
         }
         catch (Exception e) { Debug.LogWarning("[ZoneUiCfg] zone_ui.json read failed, defaults kept: " + e.Message); k = new ZoneUiCfg(); }
         if (k.cover == null) k.cover = new CoverC(); if (k.endScreen == null) k.endScreen = new EndScreenC(); if (k.hitch == null) k.hitch = new HitchC(); if (k.camTrace == null) k.camTrace = new CamTraceC();

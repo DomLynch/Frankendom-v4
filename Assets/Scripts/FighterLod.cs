@@ -114,7 +114,7 @@ public static class FighterLod
         m = null;
         try
         {
-            string txt = null; foreach (var p in new[] { Path.Combine(Application.streamingAssetsPath, r.file), Path.Combine(Application.dataPath, "Data/" + r.file) }) { if (File.Exists(p)) { txt = File.ReadAllText(p).TrimStart((char)0xFEFF); break; } }
+            string txt = null; foreach (var p in new[] { Path.Combine(Application.streamingAssetsPath, r.file), Path.Combine(Application.dataPath, "Data/" + r.file) }) { if (File.Exists(p)) { txt = DataPath.ReadFile(p).TrimStart((char)0xFEFF); break; } }
             if (txt == null) Debug.LogWarning("[fighterlod] mesh file not found: " + r.file); else m = JsonUtility.FromJson<MidFile>(txt);
             if (m != null && (m.pos == null || m.pos.Length < 9 || m.pos.Length % 3 != 0 || m.uv.Length != m.pos.Length / 3 * 2 || m.nrm.Length != m.pos.Length || m.boneIdx.Length != m.pos.Length / 3 * 4 || m.boneW.Length != m.boneIdx.Length || m.subs == null || m.subs.Length == 0)) { Debug.LogWarning("[fighterlod] mesh file malformed: " + r.file); m = null; }
         }

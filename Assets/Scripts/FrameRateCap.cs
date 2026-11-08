@@ -15,7 +15,7 @@ public class FrameRateCap : MonoBehaviour
         var c = new Cfg();
         foreach (var p in new[] { Path.Combine(Application.streamingAssetsPath, "frameRate.json"), Path.Combine(Application.dataPath, "Data/frameRate.json") })
         {
-            try { if (File.Exists(p)) { c = JsonUtility.FromJson<Cfg>(File.ReadAllText(p)) ?? c; break; } } catch (Exception) { }
+            try { if (File.Exists(p)) { c = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p)) ?? c; break; } } catch (Exception) { }
         }
         return c;
     }

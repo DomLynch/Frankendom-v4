@@ -158,10 +158,10 @@ public static class PoiseTable
             var ta = Resources.Load<TextAsset>("poise");
             if (ta != null) json = ta.text;
 #if UNITY_EDITOR
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/poise.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/poise.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
 #endif
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "poise.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/poise.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "poise.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/poise.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
         }
         catch (Exception ex) { Debug.LogWarning("PoiseTable: read failed: " + ex.Message); }
         if (string.IsNullOrEmpty(json)) { data.enabled = false; return; }   // no file: old behaviour

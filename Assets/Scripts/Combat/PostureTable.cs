@@ -46,8 +46,8 @@ public static class PostureTable
         {
             var ta = Resources.Load<TextAsset>("posture");
             if (ta != null) json = ta.text;
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "posture.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/posture.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "posture.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/posture.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
         }
         catch (Exception ex) { Debug.LogWarning("PostureTable: read failed: " + ex.Message); }
         if (string.IsNullOrEmpty(json)) { Debug.LogWarning("PostureTable: posture.json not found; V3 posture rules in use."); return null; }

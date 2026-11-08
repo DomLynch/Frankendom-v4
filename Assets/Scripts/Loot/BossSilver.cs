@@ -21,7 +21,7 @@ public static class BossSilver
         try
         {
             string p = Path.Combine(Application.streamingAssetsPath, "boss_silver.json"); if (!File.Exists(p)) p = Path.Combine(Application.dataPath, "Data/boss_silver.json");
-            if (File.Exists(p)) { var k = JsonUtility.FromJson<Cfg>(File.ReadAllText(p).TrimStart((char)0xFEFF)); if (k != null) c = k; }
+            if (File.Exists(p)) { var k = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p).TrimStart((char)0xFEFF)); if (k != null) c = k; }
         }
         catch (Exception e) { Debug.LogWarning("[BossSilver] read failed, off: " + e.Message); c = new Cfg(); }
         if (c.rows == null) c.rows = new Row[0]; if (c.text == null) c.text = new TextC();

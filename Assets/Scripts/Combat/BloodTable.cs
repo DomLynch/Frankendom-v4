@@ -59,8 +59,8 @@ public static class BloodTable
         {
             var ta = Resources.Load<TextAsset>("blood");
             if (ta != null) json = ta.text;
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "blood.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/blood.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "blood.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/blood.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
         }
         catch (Exception ex) { Debug.LogWarning("BloodTable: read failed: " + ex.Message); }
         if (string.IsNullOrEmpty(json)) { data.enabled = false; data.ground.enabled = false; return; }   // no file: V3 numbers, no ground splats

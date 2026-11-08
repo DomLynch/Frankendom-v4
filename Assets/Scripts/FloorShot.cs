@@ -94,7 +94,7 @@ public class FloorShot : MonoBehaviour
             try
             {
                 if (!File.Exists(p)) continue;
-                var c = JsonUtility.FromJson<Cfg>(File.ReadAllText(p).TrimStart('﻿'));
+                var c = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p).TrimStart('﻿'));
                 if (c != null) { C = c; dataSrc = p; if (C.poses == null || C.poses.Length == 0) C.poses = new[] { new Pose() }; if (C.arms == null || C.arms.Length == 0) C.arms = new[] { new Arm { id = "baseline" } }; if (C.region == null || C.region.Length < 4) C.region = new Cfg().region; return; }
             }
             catch (Exception e) { Debug.LogWarning("[floorshot] cannot read " + p + ": " + e.Message); dataSrc = p + " (unreadable: defaults)"; }

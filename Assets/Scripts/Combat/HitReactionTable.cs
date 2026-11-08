@@ -146,8 +146,8 @@ public static class HitReactionTable
         {
             var ta = Resources.Load<TextAsset>("hit_reactions");
             if (ta != null) json = ta.text;
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "hit_reactions.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/hit_reactions.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "hit_reactions.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/hit_reactions.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
         }
         catch (Exception ex) { Debug.LogWarning("HitReactionTable: read failed: " + ex.Message); }
         if (string.IsNullOrEmpty(json)) { Debug.LogWarning("HitReactionTable: hit_reactions.json not found; legacy hit_light_front / hit_light_back / hit_heavy."); return; }

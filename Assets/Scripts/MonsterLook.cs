@@ -81,7 +81,7 @@ public static class MonsterLook
         loadedOnce = true; cfgStamp = t;
         try
         {
-            cfg = JsonUtility.FromJson<Cfg>(File.ReadAllText(p));
+            cfg = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p));
             if (cfg != null) { if (cfg.lookGlobal == null) cfg.lookGlobal = new Global(); if (cfg.props == null) cfg.props = new Props(); if (cfg.texture == null) cfg.texture = new TexCfg(); if (cfg.lookGlobal.keywords == null) cfg.lookGlobal.keywords = new Keywords(); }
         }
         catch (Exception e) { Debug.LogWarning("[MonsterLook] bad " + File_ + ": " + e.Message); cfg = null; }

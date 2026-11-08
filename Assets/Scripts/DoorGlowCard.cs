@@ -36,7 +36,7 @@ public class DoorGlowCard : MonoBehaviour
             if (qs != null) foreach (var kv in qs.Split(',')) { if (kv == "doorGlow=1") qOn = true; else if (kv == "doorGlow=0") qOff = true; }
             string path = Application.streamingAssetsPath + "/door_glow_card.json";
             if (!System.IO.File.Exists(path)) return;
-            var c = JsonUtility.FromJson<Cfg>(System.IO.File.ReadAllText(path)); if (c == null) return;
+            var c = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(path)); if (c == null) return;
             bool on = a1 != null ? a1 == "1" : (qOn ? true : (qOff ? false : (c.enabled || RuntimeQuality.FogLook /* INTFPS v1: tier flag */)));
             if (!on) return;
             Light L = null;

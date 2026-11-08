@@ -108,7 +108,7 @@ public class WoundShot : MonoBehaviour
         paths.Add(Path.Combine(Application.streamingAssetsPath, "woundshot.json")); paths.Add(Path.Combine(Application.dataPath, "Data/woundshot.json"));
         foreach (var p in paths)
         {
-            try { if (!File.Exists(p)) continue; var c = JsonUtility.FromJson<Cfg>(File.ReadAllText(p).TrimStart('﻿')); if (c != null) { C = c; dataSrc = p; if (C.moves == null || C.moves.Length == 0) C.moves = new Cfg().moves; return; } }
+            try { if (!File.Exists(p)) continue; var c = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p).TrimStart('﻿')); if (c != null) { C = c; dataSrc = p; if (C.moves == null || C.moves.Length == 0) C.moves = new Cfg().moves; return; } }
             catch (Exception e) { Debug.LogWarning("[woundshot] cannot read " + p + ": " + e.Message); dataSrc = p + " (unreadable: defaults)"; }
         }
     }

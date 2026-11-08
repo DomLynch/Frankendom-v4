@@ -166,7 +166,7 @@ public class BalanceAuto : MonoBehaviour
             try
             {
                 if (!File.Exists(p)) continue;
-                var c = JsonUtility.FromJson<Cfg>(File.ReadAllText(p).TrimStart('﻿'));
+                var c = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p).TrimStart('﻿'));
                 if (c != null) { C = c; dataSrc = p; return; }
             }
             catch (Exception ex) { Debug.LogWarning("[balance] cannot read " + p + ": " + ex.Message); dataSrc = p + " (unreadable: defaults)"; }

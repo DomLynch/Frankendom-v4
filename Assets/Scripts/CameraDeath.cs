@@ -40,7 +40,7 @@ public static class CameraDeath
         cfg = new Row();
         foreach (var p in new[] { Application.streamingAssetsPath + "/camera_death.json", Application.dataPath + "/Data/camera_death.json" })
         {
-            try { if (!System.IO.File.Exists(p)) continue; var r = JsonUtility.FromJson<Row>(System.IO.File.ReadAllText(p).TrimStart((char)0xFEFF)); if (r != null) cfg = r; break; } catch { }
+            try { if (!System.IO.File.Exists(p)) continue; var r = JsonUtility.FromJson<Row>(DataPath.ReadFile(p).TrimStart((char)0xFEFF)); if (r != null) cfg = r; break; } catch { }
         }
         return cfg;
     }

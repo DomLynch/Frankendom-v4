@@ -21,7 +21,7 @@ public static class MoveVariants
         if (loaded) return d; loaded = true; d = new Data { enabled = false };
         foreach (var p in new[] { Path.Combine(Application.streamingAssetsPath, "move_variants.json"), Path.Combine(Application.dataPath, "Data/move_variants.json") })
         {
-            try { if (File.Exists(p)) { var r = JsonUtility.FromJson<Data>(File.ReadAllText(p)); if (r != null) d = r; break; } } catch (Exception) { }
+            try { if (File.Exists(p)) { var r = JsonUtility.FromJson<Data>(DataPath.ReadFile(p)); if (r != null) d = r; break; } } catch (Exception) { }
         }
         return d;
     }

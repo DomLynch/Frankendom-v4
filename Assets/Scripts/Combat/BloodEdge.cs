@@ -54,12 +54,12 @@ public class BloodEdge : MonoBehaviour
             if (json == null)
             {
                 string p = Path.Combine(Application.streamingAssetsPath, "blood_edge.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
             if (json == null)
             {
                 string p = Path.Combine(Application.dataPath, "Data/blood_edge.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
         }
         catch (Exception ex) { Debug.LogWarning("BloodEdge: read failed: " + ex.Message); }

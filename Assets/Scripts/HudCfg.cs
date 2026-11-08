@@ -163,7 +163,7 @@ public static class HudCfg
     {
         foreach (var p in new[] { Path.Combine(Application.streamingAssetsPath, name), Path.Combine(Application.dataPath, "Data/" + name) })
         {
-            try { if (File.Exists(p)) return File.ReadAllText(p).TrimStart((char)0xFEFF); } catch { }
+            try { if (File.Exists(p)) return DataPath.ReadFile(p).TrimStart((char)0xFEFF); } catch { }
         }
         return null;
     }

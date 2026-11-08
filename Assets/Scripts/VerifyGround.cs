@@ -141,7 +141,7 @@ public class VerifyGround : MonoBehaviour
         paths.Add(Path.Combine(Application.dataPath, "Data/verify_ground.json"));
         foreach (var p in paths)
         {
-            try { if (File.Exists(p)) { var d = JsonUtility.FromJson<Data>(File.ReadAllText(p)); if (d != null) { src = p; return d; } } }
+            try { if (File.Exists(p)) { var d = JsonUtility.FromJson<Data>(DataPath.ReadFile(p)); if (d != null) { src = p; return d; } } }
             catch (Exception ex) { Debug.LogError("VerifyGround: cannot read " + p + ": " + ex.Message); }
         }
         src = "(built-in defaults: verify_ground.json not found)";

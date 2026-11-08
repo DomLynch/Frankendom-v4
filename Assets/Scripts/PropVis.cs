@@ -97,7 +97,7 @@ public class PropVis : MonoBehaviour
     {
         var paths = new List<string>(); if (!string.IsNullOrEmpty(cliOverride)) paths.Add(cliOverride);
         paths.Add(Path.Combine(Application.streamingAssetsPath, name)); paths.Add(Path.Combine(Application.dataPath, "Data/" + name));
-        foreach (var p in paths) { try { if (File.Exists(p)) { src = p; return File.ReadAllText(p).TrimStart('﻿'); } } catch { } }
+        foreach (var p in paths) { try { if (File.Exists(p)) { src = p; return DataPath.ReadFile(p).TrimStart('﻿'); } } catch { } }
         src = null; return null;
     }
 

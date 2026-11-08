@@ -106,8 +106,8 @@ public static class STSteer
                 try
                 {
                     string p = Application.streamingAssetsPath + "/steer.json";
-                    if (System.IO.File.Exists(p)) cfgText = System.IO.File.ReadAllText(p);
-                    else { p = Application.dataPath + "/Data/steer.json"; if (System.IO.File.Exists(p)) cfgText = System.IO.File.ReadAllText(p); }
+                    if (System.IO.File.Exists(p)) cfgText = DataPath.ReadFile(p);
+                    else { p = Application.dataPath + "/Data/steer.json"; if (System.IO.File.Exists(p)) cfgText = DataPath.ReadFile(p); }
                 }
                 catch (Exception e) { Debug.LogWarning("[steer] steer.json unreadable: " + e.Message); }
                 if (cfgText == null) cfgText = "{}";

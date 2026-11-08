@@ -91,7 +91,7 @@ public static class RuntimeQuality
         if (harness) AudioListener.volume = 0f;
         ApplyLook();   // lane LOOK: look.json exposure (+ contact shadows) on every Volume BEFORE the flags, so the flags can still switch features off
         if (!System.IO.File.Exists(path) && QualityTiers.FlagsJson == null) return;   // TIERS v96: no runtime_flags.json is fine when a tier file supplies the flags
-        F = System.IO.File.Exists(path) ? JsonUtility.FromJson<Flags>(System.IO.File.ReadAllText(path)) : new Flags();
+        F = System.IO.File.Exists(path) ? JsonUtility.FromJson<Flags>(DataPath.ReadFile(path)) : new Flags();
         QualityTiers.Overlay(F);   // TIERS v96: tier flags from quality_tiers.json, then -qset: / -renderscale: overrides
         if (harness && !F.muteInHarness) AudioListener.volume = 1f;
         if (F.exposureEV >= 0f && Mathf.Abs(F.exposureEV - LookData.Get().exposure.ev) > 0.001f) Debug.LogWarning("RuntimeQuality: runtime_flags exposureEV " + F.exposureEV + " ignored; look.json exposure.ev " + LookData.Get().exposure.ev + " is the one exposure");
@@ -99,7 +99,7 @@ public static class RuntimeQuality
     }
 
     // TIERS v96: re-applies runtime_flags.json + the (new) tier onto fresh Volume.profile clones. Called by QualityTiers.SetTier; look.json exposure is already on the shared profiles.
-    public static void Reapply() { if (!System.IO.File.Exists(FlagsPath) && QualityTiers.FlagsJson == null) return; F = System.IO.File.Exists(FlagsPath) ? JsonUtility.FromJson<Flags>(System.IO.File.ReadAllText(FlagsPath)) : new Flags(); QualityTiers.Overlay(F); Apply(FlagsPath, false); }
+    public static void Reapply() { if (!System.IO.File.Exists(FlagsPath) && QualityTiers.FlagsJson == null) return; F = System.IO.File.Exists(FlagsPath) ? JsonUtility.FromJson<Flags>(DataPath.ReadFile(FlagsPath)) : new Flags(); QualityTiers.Overlay(F); Apply(FlagsPath, false); }
 
     // FOGMERGE v1 (from FPSA v1): Balance mode derives the fog grid from the DRS-scaled viewport, so 2560 wide has ~4.3x the voxels of the 1286 wide viewport the Ultra look was approved at (grid 268 x 151 x 170 = 6.9 M).
     // Manual mode with the screen fraction = gridWidth / internal width gives every output size the approved grid. Only called when fogGridWidth > 0.

@@ -54,7 +54,7 @@ public static class FightBalance
         {
             string p = Path.Combine(Application.streamingAssetsPath, "fight_balance.json");
             if (!File.Exists(p)) p = Path.Combine(Application.dataPath, "Data/fight_balance.json");
-            if (File.Exists(p)) { C = JsonUtility.FromJson<Cfg>(File.ReadAllText(p)) ?? new Cfg(); Source = p; }
+            if (File.Exists(p)) { C = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p)) ?? new Cfg(); Source = p; }
         }
         catch (Exception e) { Debug.LogWarning("[FightBalance] load failed, defaults kept: " + e.Message); C = new Cfg(); }
     }

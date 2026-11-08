@@ -131,8 +131,8 @@ public static class StaminaTable
         {
             var ta = Resources.Load<TextAsset>(name);
             if (ta != null) json = ta.text;
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, name + ".json"); if (File.Exists(p)) json = File.ReadAllText(p); }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/" + name + ".json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, name + ".json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/" + name + ".json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
         }
         catch (Exception ex) { Debug.LogWarning("StaminaTable: read failed " + name + ": " + ex.Message); }
         if (string.IsNullOrEmpty(json)) { Debug.LogWarning("StaminaTable: " + name + ".json not found; code defaults in use."); return null; }

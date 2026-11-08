@@ -86,7 +86,7 @@ public class FeetBurst : MonoBehaviour
             try
             {
                 if (!File.Exists(p)) continue;
-                var c = JsonUtility.FromJson<Cfg>(File.ReadAllText(p).TrimStart('﻿'));
+                var c = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p).TrimStart('﻿'));
                 if (c != null) { C = c; dataSrc = p; if (C.states == null || C.states.Length == 0) C.states = new Cfg().states; if (C.refFrames == null) C.refFrames = new int[0]; return; }
             }
             catch (Exception e) { Debug.LogWarning("[feetburst] cannot read " + p + ": " + e.Message); dataSrc = p + " (unreadable: defaults)"; }

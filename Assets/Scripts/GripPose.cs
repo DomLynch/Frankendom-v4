@@ -18,7 +18,7 @@ public class GripPose : MonoBehaviour
     static Root Load()
     {
         if (data != null) return data; data = new Root { defaults = new Row() };
-        foreach (var p in DataPath.Candidates("grip_pose.json")) /* // HCKIT2 v93 */ { if (!System.IO.File.Exists(p)) continue; try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null && r.defaults != null) data = r; } catch { } break; }
+        foreach (var p in DataPath.Candidates("grip_pose.json")) /* // HCKIT2 v93 */ { if (!System.IO.File.Exists(p)) continue; try { var r = JsonUtility.FromJson<Root>(DataPath.ReadFile(p)); if (r != null && r.defaults != null) data = r; } catch { } break; }
         return data;
     }
     Transform[][] Chains(string side)

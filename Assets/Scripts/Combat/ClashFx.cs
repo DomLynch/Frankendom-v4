@@ -95,12 +95,12 @@ public static class ClashFxTable
             if (json == null)
             {
                 string p = Path.Combine(Application.streamingAssetsPath, "clash_fx.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
             if (json == null)
             {
                 string p = Path.Combine(Application.dataPath, "Data/clash_fx.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
         }
         catch (Exception ex) { Debug.LogWarning("ClashFxTable: read failed: " + ex.Message); }

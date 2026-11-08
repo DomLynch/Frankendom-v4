@@ -64,7 +64,7 @@ public class SecondaryMotion : MonoBehaviour
         foreach (var p in DataPath.Candidates("secondary_motion.json"))
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null) data = r; } catch { }
+            try { var r = JsonUtility.FromJson<Root>(DataPath.ReadFile(p)); if (r != null) data = r; } catch { }
             break;
         }
         if (data.world == null) data.world = new World(); if (data.characters == null) data.characters = new Row[0];
@@ -80,7 +80,7 @@ public class SecondaryMotion : MonoBehaviour
             foreach (var p in DataPath.Candidates("physics.json"))
             {
                 if (!System.IO.File.Exists(p)) continue;
-                try { var r = JsonUtility.FromJson<SwRoot>(System.IO.File.ReadAllText(p).TrimStart('﻿')); if (r != null && r.secondary != null) on = r.secondary.enabled; } catch { }
+                try { var r = JsonUtility.FromJson<SwRoot>(DataPath.ReadFile(p).TrimStart('﻿')); if (r != null && r.secondary != null) on = r.secondary.enabled; } catch { }
                 break;
             }
             foreach (var a in System.Environment.GetCommandLineArgs()) { if (a == "-secondary:on") on = true; else if (a == "-secondary:off") on = false; }

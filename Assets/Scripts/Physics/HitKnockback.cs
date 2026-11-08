@@ -10,7 +10,7 @@ using UnityEngine;
 [Serializable]
 public class KbCfg
 {
-    public bool enabled = false, skipShove = true, clampArena = true, clampWalls = true, clampGround = true, log = false;
+    public bool enabled = false, skipShove = true, clampArena = true, clampWalls = true, clampGround = true, log = false, simSafe = false /* FIX2 v1: true = the SIM push is cut only by the analytic arena rectangle (ArenaLimits.RoomAlong); no Physics.SphereCast / Raycast, so the result cannot depend on which zone rings are awake */;
     public float refKnockbackMps = 4f, decay = 0.88f, maxM = 1.2f, refMassKg = 66.7f, massExponent = 0.5f, minMassScale = 0.3f, maxMassScale = 1.6f;
     public float probeSkinM = 0.05f, probeStepM = 0.1f, probeUpM = 0.5f, probeDropM = 0.6f, probeChestM = 0.9f, minPushM = 0.02f;
     public int minSlideTicks = 6;
@@ -65,12 +65,12 @@ public static class HitKnockback
         float room = want; Vector3 p = d.transform.position;
         if (c.clampArena) room = Mathf.Min(room, ArenaLimits.RoomAlong(p, dir, want));
         var cc = d.GetComponent<CharacterController>();
-        if (c.clampWalls && cc != null && room > 0f)
+        if (c.clampWalls && !c.simSafe && cc != null && room > 0f)
         {
             RaycastHit h;
             if (Physics.SphereCast(p + Vector3.up * c.probeChestM, cc.radius, dir, out h, room + c.probeSkinM, PhysMasks.Ground, QueryTriggerInteraction.Ignore)) room = Mathf.Min(room, Mathf.Max(0f, h.distance - c.probeSkinM));
         }
-        if (c.clampGround && room > 0f)
+        if (c.clampGround && !c.simSafe && room > 0f)
             for (float s = c.probeStepM; s <= room + 0.0001f; s += c.probeStepM)   // hc:ok epsilon
                 if (!Physics.Raycast(p + dir * s + Vector3.up * c.probeUpM, Vector3.down, c.probeUpM + c.probeDropM, PhysMasks.Ground, QueryTriggerInteraction.Ignore)) { room = Mathf.Max(0f, s - c.probeStepM); break; }   // no floor there (gap / edge): stop one step short
         return room;

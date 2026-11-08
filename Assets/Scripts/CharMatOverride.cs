@@ -52,7 +52,7 @@ public static class CharMatOverride
         DateTime t = File.GetLastWriteTimeUtc(p);
         if (loadedOnce && t == cfgStamp) return false;
         loadedOnce = true; cfgStamp = t;
-        try { cfg = JsonUtility.FromJson<Cfg>(File.ReadAllText(p)); }
+        try { cfg = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p)); }
         catch (Exception e) { Debug.LogWarning("[CharMat] bad " + FileName + ": " + e.Message); cfg = null; }
         return true;
     }

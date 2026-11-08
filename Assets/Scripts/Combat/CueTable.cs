@@ -68,8 +68,8 @@ public static class CueTable
         {
             var ta = Resources.Load<TextAsset>("cues");
             if (ta != null) json = ta.text;
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "cues.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
-            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/cues.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "cues.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
+            if (json == null) { string p = Path.Combine(Application.dataPath, "Data/cues.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
         }
         catch (Exception ex) { Debug.LogWarning("CueTable: read failed: " + ex.Message); }
         if (string.IsNullOrEmpty(json)) { Debug.LogWarning("CueTable: cues.json not found; CueBus uses its built-in mapping."); return; }

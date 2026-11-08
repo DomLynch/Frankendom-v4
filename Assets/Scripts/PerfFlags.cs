@@ -51,7 +51,7 @@ public static class PerfFlags
             try
             {
                 if (!File.Exists(p)) continue;
-                var r = JsonUtility.FromJson<PerfCfg>(File.ReadAllText(p).TrimStart((char)0xFEFF));
+                var r = JsonUtility.FromJson<PerfCfg>(DataPath.ReadFile(p).TrimStart((char)0xFEFF));
                 if (r != null) cfg = r;
             }
             catch (Exception e) { Debug.LogWarning("PerfFlags: perf.json unreadable: " + e.Message); }

@@ -27,7 +27,7 @@ public class ArenaLimits : MonoBehaviour
         foreach (var p in new[] { Application.streamingAssetsPath + "/arena_limits.json", Application.dataPath + "/Data/arena_limits.json" })
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { row = JsonUtility.FromJson<Row>(System.IO.File.ReadAllText(p)); } catch { }
+            try { row = JsonUtility.FromJson<Row>(DataPath.ReadFile(p)); } catch { }
             break;
         }
         return row;

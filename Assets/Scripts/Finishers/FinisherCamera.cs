@@ -311,7 +311,7 @@ public class FinisherCamera : MonoBehaviour
         col = new ColRow();
         foreach (var path in new[] { Application.streamingAssetsPath + "/camera_collision.json", Application.dataPath + "/Data/camera_collision.json" })
         {
-            try { if (!System.IO.File.Exists(path)) continue; var c = JsonUtility.FromJson<ColRow>(System.IO.File.ReadAllText(path)); if (c != null) col = c; break; } catch { }
+            try { if (!System.IO.File.Exists(path)) continue; var c = JsonUtility.FromJson<ColRow>(DataPath.ReadFile(path)); if (c != null) col = c; break; } catch { }
         }
     }
     Vector3 Constrain(Vector3 p, Vector3 from)

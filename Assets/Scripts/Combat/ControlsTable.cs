@@ -82,9 +82,9 @@ public static class ControlsTable
         try
         {
 #if UNITY_EDITOR
-            { string p = Path.Combine(Application.dataPath, "Data/controls.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            { string p = Path.Combine(Application.dataPath, "Data/controls.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
 #endif
-            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "controls.json"); if (File.Exists(p)) json = File.ReadAllText(p); }
+            if (json == null) { string p = Path.Combine(Application.streamingAssetsPath, "controls.json"); if (File.Exists(p)) json = DataPath.ReadFile(p); }
         }
         catch (Exception ex) { Debug.LogWarning("ControlsTable: read failed: " + ex.Message); }
         if (string.IsNullOrEmpty(json)) return;   // no file: classic controls, any guard side blocks

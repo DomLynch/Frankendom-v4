@@ -14,7 +14,7 @@ public class PaletteGuard : MonoBehaviour
     static void Boot()
     {
         string[] paths = { Application.streamingAssetsPath + "/gateway.json", Application.dataPath + "/Data/gateway.json" };
-        foreach (var p in paths) { if (!File.Exists(p)) continue; try { row = JsonUtility.FromJson<Root>(File.ReadAllText(p)).palette; } catch { } break; }
+        foreach (var p in paths) { if (!File.Exists(p)) continue; try { row = JsonUtility.FromJson<Root>(DataPath.ReadFile(p)).palette; } catch { } break; }
         if (row == null || !row.enabled || row.crimson == null || row.crimson.Length < 3) return;
         var go = new GameObject("PaletteGuard"); DontDestroyOnLoad(go); go.AddComponent<PaletteGuard>();
     }

@@ -98,12 +98,12 @@ public static class DodgeTable
             if (json == null)
             {
                 string p = Path.Combine(Application.streamingAssetsPath, "dodge.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
             if (json == null)
             {
                 string p = Path.Combine(Application.dataPath, "Data/dodge.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
         }
         catch (Exception ex) { Debug.LogWarning("DodgeTable: read failed: " + ex.Message); }

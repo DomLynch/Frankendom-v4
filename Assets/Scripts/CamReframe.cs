@@ -29,7 +29,7 @@ public static class CamReframe
         foreach (var p in new[] { Application.streamingAssetsPath + "/camera_reframe.json", Application.dataPath + "/Data/camera_reframe.json" })
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<Row>(System.IO.File.ReadAllText(p)); if (r != null) { cfg = r; if (cfg.proof == null) cfg.proof = new ProofRow(); } } catch (Exception e) { Debug.LogWarning("[CamReframe] " + p + ": " + e.Message); }
+            try { var r = JsonUtility.FromJson<Row>(DataPath.ReadFile(p)); if (r != null) { cfg = r; if (cfg.proof == null) cfg.proof = new ProofRow(); } } catch (Exception e) { Debug.LogWarning("[CamReframe] " + p + ": " + e.Message); }
             break;
         }
         return cfg;

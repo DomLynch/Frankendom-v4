@@ -48,7 +48,7 @@ public static class CamShake
         foreach (var p in new[] { Application.streamingAssetsPath + "/camera_impact.json", Application.dataPath + "/Data/camera_impact.json" })
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<Root>(System.IO.File.ReadAllText(p)); if (r != null && r.shake != null) { cfg = r.shake; if (cfg.classes == null) cfg.classes = new ClassRow[0]; } } catch (Exception e) { Debug.LogWarning("[CamShake] " + p + ": " + e.Message); }
+            try { var r = JsonUtility.FromJson<Root>(DataPath.ReadFile(p)); if (r != null && r.shake != null) { cfg = r.shake; if (cfg.classes == null) cfg.classes = new ClassRow[0]; } } catch (Exception e) { Debug.LogWarning("[CamShake] " + p + ": " + e.Message); }
             break;
         }
         return cfg;

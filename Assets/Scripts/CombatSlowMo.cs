@@ -42,7 +42,7 @@ public static class CombatSlowMo
         foreach (var p in new[] { Application.streamingAssetsPath + "/slow_mo.json", Application.dataPath + "/Data/slow_mo.json" })
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<Row>(System.IO.File.ReadAllText(p)); if (r != null) { cfg = r; if (cfg.classes == null) cfg.classes = new ClassRow[0]; } } catch (Exception e) { Debug.LogWarning("[CombatSlowMo] " + p + ": " + e.Message); }
+            try { var r = JsonUtility.FromJson<Row>(DataPath.ReadFile(p)); if (r != null) { cfg = r; if (cfg.classes == null) cfg.classes = new ClassRow[0]; } } catch (Exception e) { Debug.LogWarning("[CombatSlowMo] " + p + ": " + e.Message); }
             break;
         }
         return cfg;

@@ -31,7 +31,7 @@ public class OffHandWeapon : MonoBehaviour
         foreach (var p in DataPath.Candidates("off_hand.json"))
         {
             if (!System.IO.File.Exists(p)) continue;
-            try { var r = JsonUtility.FromJson<Cfg>(System.IO.File.ReadAllText(p)); if (r != null) cfg = r; } catch (Exception) { }
+            try { var r = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p)); if (r != null) cfg = r; } catch (Exception) { }
             break;
         }
         if (cfg.slot == null) cfg.slot = ""; if (cfg.bone == null) cfg.bone = ""; if (cfg.socket == null) cfg.socket = "";

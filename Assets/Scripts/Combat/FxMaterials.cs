@@ -48,12 +48,12 @@ public static class FxMaterialTable
             if (json == null)
             {
                 string p = Path.Combine(Application.streamingAssetsPath, "fx_materials.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
             if (json == null)
             {
                 string p = Path.Combine(Application.dataPath, "Data/fx_materials.json");
-                if (File.Exists(p)) json = File.ReadAllText(p);
+                if (File.Exists(p)) json = DataPath.ReadFile(p);
             }
         }
         catch (Exception ex) { Debug.LogWarning("FxMaterialTable: read failed: " + ex.Message); }

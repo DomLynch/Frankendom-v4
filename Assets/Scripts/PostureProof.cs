@@ -49,7 +49,7 @@ public class PostureProof : MonoBehaviour
             try
             {
                 string p = Path.Combine(Application.streamingAssetsPath, "posture_proof.json"); if (!File.Exists(p)) p = Path.Combine(Application.dataPath, "Data/posture_proof.json");
-                if (File.Exists(p)) c = JsonUtility.FromJson<Cfg>(File.ReadAllText(p));
+                if (File.Exists(p)) c = JsonUtility.FromJson<Cfg>(DataPath.ReadFile(p));
             }
             catch (Exception) { }
             return c ?? (c = new Cfg());
