@@ -9,7 +9,7 @@
   {
     "name": "Grendel",
     "item": "grendel_blade_L",
-    "enabled": true,
+    "enabled": false,
     "socketOffset": [
       0.106,
       0.0108,

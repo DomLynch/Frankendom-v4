@@ -1320,6 +1320,53 @@
           "normalScale": 1.0
         }
       }
+    },
+    {
+      "id": "grendel_claws",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Grendel claws",
+      "slot": "mainHand",
+      "glb": "",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "laneMONSTER3 (Grendel): Dom 2026-11-08: no swords, claws only. Unarmed item cloned from sobek_claws; reachMul from the claw stand-off (grendel_claws.json).",
+      "weapon": {
+        "id": "grendel_claws",
+        "unarmed": true,
+        "tipBone": "mixamorig:RightHand",
+        "tipOffsetM": [
+          0.1391,
+          0.3918,
+          -0.0859
+        ],
+        "twoHanded": false,
+        "damageMul": 1.0,
+        "speedMul": 1.08,
+        "reachMul": 0.56,
+        "postureMul": 1.0,
+        "cueWeapon": "claws",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      }
     }
 ]
 }

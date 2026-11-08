@@ -366,6 +366,7 @@
   "build": {
     "terrainName": "WorldTerrain",
     "stampAssetDir": "Assets/Env/World/Terrain/Stamped",
+    "stampMaxMoveM": 12.0,
     "cloneNames": [
       "GroundFog0",
       "GroundFog1",

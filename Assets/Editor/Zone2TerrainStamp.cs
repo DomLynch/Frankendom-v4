@@ -19,7 +19,7 @@ public static class Zone2TerrainStamp
     [Serializable] class TB { public string mode = ""; public float xHalf = 32f, zFromLocal = -4f, zToLocal = 44f, blendM = 6f, yBias = 0f; public float uvScale = 1f; /* UVSCALE v1 */ }
     [Serializable] class ZB { public string id = ""; public float offsetZ; public TB terrain = new TB(); }
     [Serializable] class SB { public ZB[] zones = new ZB[0]; public SBuild build = new SBuild(); }
-    [Serializable] class SBuild { public string terrainName = "WorldTerrain"; public string stampAssetDir = ""; /* STAMPASSET v1 */ }
+    [Serializable] class SBuild { public string terrainName = "WorldTerrain"; public string stampAssetDir = ""; /* STAMPASSET v1 */ public float stampMaxMoveM = 0f; /* STAMPMOVE v1: sanity limit (m) on any stamped vertex move, 0 = the old 5 */ }
     [Serializable] class WM { public WMT terrain = new WMT(); }
     [Serializable] class WMT { public string glb = "Assets/Env/World/Terrain/terrain_ground.glb"; }
 
@@ -98,7 +98,7 @@ public static class Zone2TerrainStamp
             if (chunks.Count == 0) { Debug.LogError("[TerrainStamp] no terrain chunk with a pristine mesh (" + skipped + " scene-only skipped): stamp NOT done, crop fallback"); all.Clear(); return false; }
             var ws = new List<TerrainStampCore.Win>();
             foreach (var r in rows) ws.Add(new TerrainStampCore.Win { id = r.id, offsetZ = r.offsetZ, xHalf = r.terrain.xHalf, zFrom = r.terrain.zFromLocal, zTo = r.terrain.zToLocal, blend = r.terrain.blendM, yBias = r.terrain.yBias });
-            var R = TerrainStampCore.Compute(chunks, ws, 0.995f, 5f);
+            var R = TerrainStampCore.Compute(chunks, ws, 0.995f, S.build.stampMaxMoveM > 0f ? S.build.stampMaxMoveM : 5f);   // STAMPMOVE v1
             if (!R.ok) { Debug.LogError("[TerrainStamp] validation failed (" + R.error + "): stamp NOT done, crop fallback, scene untouched"); all.Clear(); return false; }
             var uvPiv = new Vector2[rows.Count];   // UVSCALE v1: per window, the uv of the terrain vertex nearest the window centre
             for (int wi = 0; wi < rows.Count; wi++) { float zc = ws[wi].offsetZ + 0.5f * (ws[wi].zFrom + ws[wi].zTo), best = float.MaxValue; for (int ci = 0; ci < all.Count; ci++) { var cuv = all[ci].pristine.uv; if (cuv == null || cuv.Length != chunks[ci].x.Length) continue; for (int i = 0; i < cuv.Length; i++) { float dx = chunks[ci].x[i], dz = chunks[ci].z[i] - zc, d = dx * dx + dz * dz; if (d < best) { best = d; uvPiv[wi] = cuv[i]; } } } }

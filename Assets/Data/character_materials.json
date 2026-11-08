@@ -102,6 +102,24 @@
           }
         ]
       }
+    },
+    {
+      "character": "Grendel",
+      "_why": "laneGRENDELLOOK: flesh / bone grade (graded albedo blob, level mid). Remove with apply_grendellook.py --apply --off.",
+      "materials": [
+        {
+          "match": "grendel_body",
+          "baseColor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "smoothness": -1,
+          "metallic": -1,
+          "albedoBlob": "CharTex/grendel_body_base_graded.bc7",
+          "albedoTexture": ""
+        }
+      ]
     }
   ],
   "lookGlobal": {

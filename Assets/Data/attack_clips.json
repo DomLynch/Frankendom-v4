@@ -1709,9 +1709,9 @@
     "character": "Grendel",
     "move": "light_right",
     "enabled": true,
-    "clip": "dw_slash_R",
+    "clip": "gcl_swipe_R",
     "startTime": 0.0,
-    "contactTime": 0.542,
+    "contactTime": 0.617,
     "endTime": 1.1,
     "holdClipTime": 0.0,
     "fallbackClip": "light_attack_R",
@@ -1728,15 +1728,15 @@
     "useStepIn": false,
     "stepIn": 0.0,
     "source": "",
-    "note": "laneMONSTER3 (Grendel): dual blades: library clip -> state dw_slash_R (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.68 m (dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
+    "note": "laneMONSTER3 (Grendel): claws: library clip -> state gcl_swipe_R (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 2.07 m (claw_check / dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
   },
   {
     "character": "Grendel",
     "move": "slash_riposte",
     "enabled": true,
-    "clip": "dw_slash_R",
+    "clip": "gcl_swipe_R",
     "startTime": 0.0,
-    "contactTime": 0.542,
+    "contactTime": 0.617,
     "endTime": 1.1,
     "holdClipTime": 0.0,
     "fallbackClip": "light_attack_R",
@@ -1753,16 +1753,16 @@
     "useStepIn": false,
     "stepIn": 0.0,
     "source": "",
-    "note": "laneMONSTER3 (Grendel): dual blades: library clip -> state dw_slash_R (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.68 m (dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
+    "note": "laneMONSTER3 (Grendel): claws: library clip -> state gcl_swipe_R (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 2.07 m (claw_check / dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
   },
   {
     "character": "Grendel",
     "move": "riposte",
     "enabled": true,
-    "clip": "dw_slash_R",
+    "clip": "gcl_counter",
     "startTime": 0.0,
-    "contactTime": 0.542,
-    "endTime": 1.1,
+    "contactTime": 0.317,
+    "endTime": 0.8,
     "holdClipTime": 0.0,
     "fallbackClip": "riposte",
     "fbStartTime": 0.0,
@@ -1778,15 +1778,15 @@
     "useStepIn": false,
     "stepIn": 0.0,
     "source": "",
-    "note": "laneMONSTER3 (Grendel): dual blades: library clip -> state dw_slash_R (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.68 m (dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
+    "note": "laneMONSTER3 (Grendel): claws: library clip -> state gcl_counter (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 2.06 m (claw_check / dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
   },
   {
     "character": "Grendel",
     "move": "light_left",
     "enabled": true,
-    "clip": "dw_slash_L",
+    "clip": "gcl_swipe_L",
     "startTime": 0.0,
-    "contactTime": 0.533,
+    "contactTime": 0.608,
     "endTime": 1.1,
     "holdClipTime": 0.0,
     "fallbackClip": "light_attack_L",
@@ -1803,17 +1803,17 @@
     "useStepIn": false,
     "stepIn": 0.0,
     "source": "",
-    "note": "laneMONSTER3 (Grendel): dual blades: library clip -> state dw_slash_L (Left hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.78 m (dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
+    "note": "laneMONSTER3 (Grendel): claws: library clip -> state gcl_swipe_L (Left hand), contact = tip within 0.15 m of Joan's chest at stand-off 2.12 m (claw_check / dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
   },
   {
     "character": "Grendel",
     "move": "heavy_right",
     "enabled": true,
-    "clip": "dw_cross",
+    "clip": "gcl_hook_R",
     "startTime": 0.0,
-    "contactTime": 0.65,
-    "endTime": 1.4,
-    "holdClipTime": 0.325,
+    "contactTime": 0.583,
+    "endTime": 1.1,
+    "holdClipTime": 0.291,
     "fallbackClip": "heavy_release",
     "fbStartTime": 0.0,
     "fbContactTime": 0.3,
@@ -1828,17 +1828,17 @@
     "useStepIn": false,
     "stepIn": 0.0,
     "source": "",
-    "note": "laneMONSTER3 (Grendel): dual blades: library clip -> state dw_cross (Left hand), contact = tip within 0.15 m of Joan's chest at stand-off 2.22 m (dw_check), hold = 50 percent of the wind-up on heavies; fallback = the base clip."
+    "note": "laneMONSTER3 (Grendel): claws: library clip -> state gcl_hook_R (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.87 m (claw_check / dw_check), hold = 50 percent of the wind-up on heavies; fallback = the base clip."
   },
   {
     "character": "Grendel",
     "move": "heavy_left",
     "enabled": true,
-    "clip": "dw_spin",
+    "clip": "gcl_hook_L",
     "startTime": 0.0,
-    "contactTime": 1.142,
-    "endTime": 1.85,
-    "holdClipTime": 0.571,
+    "contactTime": 0.583,
+    "endTime": 1.1,
+    "holdClipTime": 0.291,
     "fallbackClip": "heavy_release",
     "fbStartTime": 0.0,
     "fbContactTime": 0.3,
@@ -1853,17 +1853,17 @@
     "useStepIn": false,
     "stepIn": 0.0,
     "source": "",
-    "note": "laneMONSTER3 (Grendel): dual blades: library clip -> state dw_spin (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.99 m (dw_check), hold = 50 percent of the wind-up on heavies; fallback = the base clip."
+    "note": "laneMONSTER3 (Grendel): claws: library clip -> state gcl_hook_L (Left hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.87 m (claw_check / dw_check), hold = 50 percent of the wind-up on heavies; fallback = the base clip."
   },
   {
     "character": "Grendel",
     "move": "heavy_overhead",
     "enabled": true,
-    "clip": "dw_overhead",
+    "clip": "gcl_slam",
     "startTime": 0.0,
-    "contactTime": 0.646,
-    "endTime": 1.4,
-    "holdClipTime": 0.323,
+    "contactTime": 0.6,
+    "endTime": 1.1,
+    "holdClipTime": 0.3,
     "fallbackClip": "heavy_release",
     "fbStartTime": 0.0,
     "fbContactTime": 0.3,
@@ -1878,16 +1878,16 @@
     "useStepIn": false,
     "stepIn": 0.0,
     "source": "",
-    "note": "laneMONSTER3 (Grendel): dual blades: library clip -> state dw_overhead (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.61 m (dw_check), hold = 50 percent of the wind-up on heavies; fallback = the base clip."
+    "note": "laneMONSTER3 (Grendel): claws: library clip -> state gcl_slam (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.69 m (claw_check / dw_check), hold = 50 percent of the wind-up on heavies; fallback = the base clip."
   },
   {
     "character": "Grendel",
     "move": "light_overhead",
     "enabled": true,
-    "clip": "dw_overhead",
+    "clip": "gcl_slam",
     "startTime": 0.0,
-    "contactTime": 0.646,
-    "endTime": 1.4,
+    "contactTime": 0.6,
+    "endTime": 1.1,
     "holdClipTime": 0.0,
     "fallbackClip": "heavy_release",
     "fbStartTime": 0.0,
@@ -1903,16 +1903,16 @@
     "useStepIn": false,
     "stepIn": 0.0,
     "source": "",
-    "note": "laneMONSTER3 (Grendel): dual blades: library clip -> state dw_overhead (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.61 m (dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
+    "note": "laneMONSTER3 (Grendel): claws: library clip -> state gcl_slam (Right hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.69 m (claw_check / dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
   },
   {
     "character": "Grendel",
     "move": "thrust",
     "enabled": true,
-    "clip": "dw_double",
+    "clip": "gcl_stab",
     "startTime": 0.0,
-    "contactTime": 0.721,
-    "endTime": 1.8,
+    "contactTime": 0.408,
+    "endTime": 0.9,
     "holdClipTime": 0.0,
     "fallbackClip": "thrust",
     "fbStartTime": 0.0,
@@ -1928,17 +1928,17 @@
     "useStepIn": false,
     "stepIn": 0.0,
     "source": "",
-    "note": "laneMONSTER3 (Grendel): dual blades: library clip -> state dw_double (Left hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.87 m (dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
+    "note": "laneMONSTER3 (Grendel): claws: library clip -> state gcl_stab (Left hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.80 m (claw_check / dw_check), hold = 0 percent of the wind-up on heavies; fallback = the base clip."
   },
   {
     "character": "Grendel",
     "move": "heavy_thrust",
     "enabled": true,
-    "clip": "dw_double",
+    "clip": "gcl_stab",
     "startTime": 0.0,
-    "contactTime": 0.721,
-    "endTime": 1.8,
-    "holdClipTime": 0.36,
+    "contactTime": 0.408,
+    "endTime": 0.9,
+    "holdClipTime": 0.204,
     "fallbackClip": "thrust",
     "fbStartTime": 0.0,
     "fbContactTime": 0.3,
@@ -1953,7 +1953,7 @@
     "useStepIn": false,
     "stepIn": 0.0,
     "source": "",
-    "note": "laneMONSTER3 (Grendel): dual blades: library clip -> state dw_double (Left hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.87 m (dw_check), hold = 50 percent of the wind-up on heavies; fallback = the base clip."
+    "note": "laneMONSTER3 (Grendel): claws: library clip -> state gcl_stab (Left hand), contact = tip within 0.15 m of Joan's chest at stand-off 1.80 m (claw_check / dw_check), hold = 50 percent of the wind-up on heavies; fallback = the base clip."
   },
   {
     "character": "Humbaba",
@@ -3167,44 +3167,44 @@
     "referenceState": "guard_idle",
     "clips": [
       {
-        "state": "dw_slash_R",
-        "source": "Tools/clip_build: dw_* states are built by clip_build.py (derive rows, library clip 122770901-sword-and-shield-slash) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
+        "state": "gcl_swipe_R",
+        "source": "Tools/clip_build: gcl_* states are built by clip_build.py (derive rows, library clip 121360901-zombie-attack) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
         "rootMotion": "inplace",
         "maxStep": 0.0
       },
       {
-        "state": "dw_slash_L",
-        "source": "Tools/clip_build: dw_* states are built by clip_build.py (derive rows, library clip 122770901-sword-and-shield-slash) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
+        "state": "gcl_swipe_L",
+        "source": "Tools/clip_build: gcl_* states are built by clip_build.py (derive rows, library clip 102320908-mutant-swiping) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
         "rootMotion": "inplace",
         "maxStep": 0.0
       },
       {
-        "state": "dw_cross",
-        "source": "Tools/clip_build: dw_* states are built by clip_build.py (derive rows, library clip 128160901-dual-weapon-combo) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
+        "state": "gcl_hook_R",
+        "source": "Tools/clip_build: gcl_* states are built by clip_build.py (derive rows, library clip 128650913-standing-melee-attack-horizontal) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
         "rootMotion": "inplace",
         "maxStep": 0.0
       },
       {
-        "state": "dw_double",
-        "source": "Tools/clip_build: dw_* states are built by clip_build.py (derive rows, library clip 128160901-dual-weapon-combo) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
+        "state": "gcl_hook_L",
+        "source": "Tools/clip_build: gcl_* states are built by clip_build.py (derive rows, library clip 128650913-standing-melee-attack-horizontal) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
         "rootMotion": "inplace",
         "maxStep": 0.0
       },
       {
-        "state": "dw_spin",
-        "source": "Tools/clip_build: dw_* states are built by clip_build.py (derive rows, library clip 122550901-great-sword-high-spin-attack) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
+        "state": "gcl_slam",
+        "source": "Tools/clip_build: gcl_* states are built by clip_build.py (derive rows, library clip 128650912-standing-melee-attack-downward) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
         "rootMotion": "inplace",
         "maxStep": 0.0
       },
       {
-        "state": "dw_lunge",
-        "source": "Tools/clip_build: dw_* states are built by clip_build.py (derive rows, library clip 102700901-double-dagger-stab) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
+        "state": "gcl_stab",
+        "source": "Tools/clip_build: gcl_* states are built by clip_build.py (derive rows, library clip 102700901-double-dagger-stab) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
         "rootMotion": "inplace",
         "maxStep": 0.0
       },
       {
-        "state": "dw_overhead",
-        "source": "Tools/clip_build: dw_* states are built by clip_build.py (derive rows, library clip 122350901-great-sword-slash) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
+        "state": "gcl_counter",
+        "source": "Tools/clip_build: gcl_* states are built by clip_build.py (derive rows, library clip 118370901-right-hook) and split into Grendel_attacks_v2.glb by _agents/laneMONSTER3/finalize_glbs.py",
         "rootMotion": "inplace",
         "maxStep": 0.0
       }

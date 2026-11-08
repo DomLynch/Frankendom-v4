@@ -6682,12 +6682,12 @@
         "src": "lib:125740901-jog-strafe-right"
       },
       {
-        "state": "dw_slash_R",
+        "state": "gcl_swipe_R",
         "derive": {
-          "from": "lib:122770901-sword-and-shield-slash",
+          "from": "lib:121360901-zombie-attack",
           "frames": [
-            2,
-            24
+            9,
+            31
           ],
           "recentre": true,
           "worldRot": [
@@ -6698,7 +6698,7 @@
                 0,
                 0
               ],
-              "deg": 5.0
+              "deg": 12.5
             },
             {
               "bone": "LeftUpLeg",
@@ -6707,7 +6707,7 @@
                 0,
                 0
               ],
-              "deg": -5.0
+              "deg": -12.5
             },
             {
               "bone": "RightUpLeg",
@@ -6716,101 +6716,18 @@
                 0,
                 0
               ],
-              "deg": -5.0
+              "deg": -12.5
             }
           ]
         },
-        "note": "laneMONSTER3 dual blades: OpenTrident Mixamo library clip 122770901-sword-and-shield-slash frames 2-24 (source 20 fps), lean 5.0 deg"
+        "note": "laneMONSTER3 claws: OpenTrident Mixamo library clip 121360901-zombie-attack frames 9-31 (20 fps), lean 12.5 deg (claw_opt.py)"
       },
       {
-        "state": "dw_slash_L",
+        "state": "gcl_swipe_L",
         "derive": {
-          "from": "lib:122770901-sword-and-shield-slash",
+          "from": "lib:102320908-mutant-swiping",
           "frames": [
-            2,
-            24
-          ],
-          "recentre": true,
-          "mirror": true,
-          "worldRot": [
-            {
-              "bone": "Hips",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": 5.0
-            },
-            {
-              "bone": "LeftUpLeg",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": -5.0
-            },
-            {
-              "bone": "RightUpLeg",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": -5.0
-            }
-          ]
-        },
-        "note": "laneMONSTER3 dual blades: OpenTrident Mixamo library clip 122770901-sword-and-shield-slash frames 2-24 (source 20 fps) mirrored, lean 5.0 deg"
-      },
-      {
-        "state": "dw_cross",
-        "derive": {
-          "from": "lib:128160901-dual-weapon-combo",
-          "frames": [
-            24,
-            52
-          ],
-          "recentre": true,
-          "worldRot": [
-            {
-              "bone": "Hips",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": 32.5
-            },
-            {
-              "bone": "LeftUpLeg",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": -32.5
-            },
-            {
-              "bone": "RightUpLeg",
-              "axis": [
-                1,
-                0,
-                0
-              ],
-              "deg": -32.5
-            }
-          ]
-        },
-        "note": "laneMONSTER3 dual blades: OpenTrident Mixamo library clip 128160901-dual-weapon-combo frames 24-52 (source 20 fps), lean 32.5 deg"
-      },
-      {
-        "state": "dw_double",
-        "derive": {
-          "from": "lib:128160901-dual-weapon-combo",
-          "frames": [
-            0,
+            14,
             36
           ],
           "recentre": true,
@@ -6822,7 +6739,7 @@
                 0,
                 0
               ],
-              "deg": 37.5
+              "deg": 22.5
             },
             {
               "bone": "LeftUpLeg",
@@ -6831,7 +6748,7 @@
                 0,
                 0
               ],
-              "deg": -37.5
+              "deg": -22.5
             },
             {
               "bone": "RightUpLeg",
@@ -6840,19 +6757,19 @@
                 0,
                 0
               ],
-              "deg": -37.5
+              "deg": -22.5
             }
           ]
         },
-        "note": "laneMONSTER3 dual blades: OpenTrident Mixamo library clip 128160901-dual-weapon-combo frames 0-36 (source 20 fps), lean 37.5 deg"
+        "note": "laneMONSTER3 claws: OpenTrident Mixamo library clip 102320908-mutant-swiping frames 14-36 (20 fps), lean 22.5 deg (claw_opt.py)"
       },
       {
-        "state": "dw_spin",
+        "state": "gcl_hook_R",
         "derive": {
-          "from": "lib:122550901-great-sword-high-spin-attack",
+          "from": "lib:128650913-standing-melee-attack-horizontal",
           "frames": [
-            0,
-            37
+            7,
+            29
           ],
           "recentre": true,
           "worldRot": [
@@ -6863,7 +6780,7 @@
                 0,
                 0
               ],
-              "deg": 32.5
+              "deg": 12.5
             },
             {
               "bone": "LeftUpLeg",
@@ -6872,7 +6789,7 @@
                 0,
                 0
               ],
-              "deg": -32.5
+              "deg": -12.5
             },
             {
               "bone": "RightUpLeg",
@@ -6881,19 +6798,73 @@
                 0,
                 0
               ],
-              "deg": -32.5
+              "deg": -12.5
             }
           ]
         },
-        "note": "laneMONSTER3 dual blades: OpenTrident Mixamo library clip 122550901-great-sword-high-spin-attack frames 0-37 (source 20 fps), lean 32.5 deg"
+        "note": "laneMONSTER3 claws: OpenTrident Mixamo library clip 128650913-standing-melee-attack-horizontal frames 7-29 (20 fps), lean 12.5 deg (claw_opt.py)"
       },
       {
-        "state": "dw_lunge",
+        "state": "gcl_hook_L",
+        "derive": {
+          "from": "lib:128650913-standing-melee-attack-horizontal",
+          "frames": [
+            7,
+            29
+          ],
+          "recentre": true,
+          "mirror": true,
+          "worldRot": [
+            {
+              "bone": "Hips",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": 12.5
+            },
+            {
+              "bone": "LeftUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -12.5
+            },
+            {
+              "bone": "RightUpLeg",
+              "axis": [
+                1,
+                0,
+                0
+              ],
+              "deg": -12.5
+            }
+          ]
+        },
+        "note": "laneMONSTER3 claws: OpenTrident Mixamo library clip 128650913-standing-melee-attack-horizontal frames 7-29 (20 fps), lean 12.5 deg (claw_opt.py)"
+      },
+      {
+        "state": "gcl_slam",
+        "derive": {
+          "from": "lib:128650912-standing-melee-attack-downward",
+          "frames": [
+            5,
+            27
+          ],
+          "recentre": true
+        },
+        "note": "laneMONSTER3 claws: OpenTrident Mixamo library clip 128650912-standing-melee-attack-downward frames 5-27 (20 fps), lean 0.0 deg (claw_opt.py)"
+      },
+      {
+        "state": "gcl_stab",
         "derive": {
           "from": "lib:102700901-double-dagger-stab",
           "frames": [
             0,
-            50
+            18
           ],
           "recentre": true,
           "worldRot": [
@@ -6904,7 +6875,7 @@
                 0,
                 0
               ],
-              "deg": 45.0
+              "deg": 15.0
             },
             {
               "bone": "LeftUpLeg",
@@ -6913,7 +6884,7 @@
                 0,
                 0
               ],
-              "deg": -45.0
+              "deg": -15.0
             },
             {
               "bone": "RightUpLeg",
@@ -6922,19 +6893,19 @@
                 0,
                 0
               ],
-              "deg": -45.0
+              "deg": -15.0
             }
           ]
         },
-        "note": "laneMONSTER3 dual blades: OpenTrident Mixamo library clip 102700901-double-dagger-stab frames 0-50 (source 20 fps), lean 45.0 deg"
+        "note": "laneMONSTER3 claws: OpenTrident Mixamo library clip 102700901-double-dagger-stab frames 0-18 (20 fps), lean 15.0 deg (claw_opt.py)"
       },
       {
-        "state": "dw_overhead",
+        "state": "gcl_counter",
         "derive": {
-          "from": "lib:122350901-great-sword-slash",
+          "from": "lib:118370901-right-hook",
           "frames": [
-            4,
-            32
+            0,
+            16
           ],
           "recentre": true,
           "worldRot": [
@@ -6945,7 +6916,7 @@
                 0,
                 0
               ],
-              "deg": 40.0
+              "deg": 30.0
             },
             {
               "bone": "LeftUpLeg",
@@ -6954,7 +6925,7 @@
                 0,
                 0
               ],
-              "deg": -40.0
+              "deg": -30.0
             },
             {
               "bone": "RightUpLeg",
@@ -6963,11 +6934,11 @@
                 0,
                 0
               ],
-              "deg": -40.0
+              "deg": -30.0
             }
           ]
         },
-        "note": "laneMONSTER3 dual blades: OpenTrident Mixamo library clip 122350901-great-sword-slash frames 4-32 (source 20 fps), lean 40.0 deg"
+        "note": "laneMONSTER3 claws: OpenTrident Mixamo library clip 118370901-right-hook frames 0-16 (20 fps), lean 30.0 deg (claw_opt.py)"
       }
     ],
     "replaceRows": {
