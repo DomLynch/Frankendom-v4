@@ -8,6 +8,10 @@
   },
   "libraries": [
     {
+      "name": "hero6",
+      "pattern": "Assets/Env/Hero/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
       "name": "props",
       "pattern": "Assets/Env/Props/{asset}/{asset}_LOD{lod}.glb"
     },
@@ -46,6 +50,14 @@
     }
   ],
   "lodProfiles": [
+    {
+      "name": "hero6_arch",
+      "screenHeights": [
+        0.3,
+        0.1,
+        0.01
+      ]
+    },
     {
       "name": "props",
       "screenHeights": [
@@ -141,6 +153,240 @@
     "Z6Ring2"
   ],
   "props": [
+    {
+      "id": "z6h_erlking_antler_arch",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_antler_arch",
+      "lodProfile": "hero6_arch",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        0.0,
+        -0.09,
+        256.0
+      ],
+      "rotEuler": [
+        0,
+        180.0,
+        0
+      ],
+      "scale": 21.899,
+      "shadowsOff": false,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero"
+      ]
+    },
+    {
+      "id": "z6h_erlking_hanging_lamps_0",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_hanging_lamps",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        12.0,
+        4.8,
+        256.0
+      ],
+      "rotEuler": [
+        0,
+        0.0,
+        0
+      ],
+      "scale": 4.594,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero"
+      ]
+    },
+    {
+      "id": "z6h_erlking_hanging_lamps_1",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_hanging_lamps",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -12.0,
+        4.8,
+        256.0
+      ],
+      "rotEuler": [
+        0,
+        45.0,
+        0
+      ],
+      "scale": 4.594,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero"
+      ]
+    },
+    {
+      "id": "z6h_erlking_hanging_lamps_2",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_hanging_lamps",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        8.5,
+        4.8,
+        264.5
+      ],
+      "rotEuler": [
+        0,
+        90.0,
+        0
+      ],
+      "scale": 4.594,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero"
+      ]
+    },
+    {
+      "id": "z6h_erlking_hanging_lamps_3",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_hanging_lamps",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -8.5,
+        4.8,
+        264.5
+      ],
+      "rotEuler": [
+        0,
+        135.0,
+        0
+      ],
+      "scale": 4.594,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero"
+      ]
+    },
+    {
+      "id": "z6h_erlking_hanging_lamps_4",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_hanging_lamps",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        8.5,
+        4.8,
+        247.5
+      ],
+      "rotEuler": [
+        0,
+        180.0,
+        0
+      ],
+      "scale": 4.594,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero"
+      ]
+    },
+    {
+      "id": "z6h_erlking_hanging_lamps_5",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_hanging_lamps",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -8.5,
+        4.8,
+        247.5
+      ],
+      "rotEuler": [
+        0,
+        225.0,
+        0
+      ],
+      "scale": 4.594,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero"
+      ]
+    },
+    {
+      "id": "z6h_erlking_hanging_lamps_6",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_hanging_lamps",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        15.5,
+        4.8,
+        250.0
+      ],
+      "rotEuler": [
+        0,
+        270.0,
+        0
+      ],
+      "scale": 4.594,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero"
+      ]
+    },
+    {
+      "id": "z6h_erlking_hanging_lamps_7",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_hanging_lamps",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -15.5,
+        4.8,
+        250.0
+      ],
+      "rotEuler": [
+        0,
+        315.0,
+        0
+      ],
+      "scale": 4.594,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero"
+      ]
+    },
     {
       "id": "z6_standing_ruin_pillar_4_0",
       "group": "Z6Ring0",

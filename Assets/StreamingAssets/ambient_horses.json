@@ -1,6 +1,6 @@
 {
   "_about": "ambient_horses.json (AmbientHorses.cs, staged DARK: enabled false until unity-dev proves it). Rects are world metres, outside boss arenas: zone 1 yard flank, camp 1 entrance and east edge, zone 4 east flank (arena rect x +-12 z 117..147), zone 5 east flank (arena disc centre (0,209) r 15), camp 2 east flank. Breed heights must match the baked glbs (heightM = glbHeightM for a baked-to-size glb).",
-  "enabled": false,
+  "enabled": true,
   "debugLog": false,
   "convertMaterials": true,
   "shadows": false,
