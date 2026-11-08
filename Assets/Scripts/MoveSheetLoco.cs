@@ -1,3 +1,4 @@
+#if !FRANKEN_NO_HARNESS // FIXHARNESS v1: harness code, compiled unless the release build passes FRANKEN_NO_HARNESS (BuildPlayer -noharness)
 using UnityEngine;
 
 // Locomotion-sheet helper (lane C): with -sheet:<id> and -hide:<substring,substring> hides the matching SkinnedMeshRenderers of the sheet subject
@@ -33,3 +34,5 @@ public class MoveSheetLoco : MonoBehaviour
         logged = true;
     }
 }
+#else // FIXHARNESS v1 nl=0
+#endif // FIXHARNESS v1

@@ -1,3 +1,4 @@
+#if !FRANKEN_NO_HARNESS // FIXHARNESS v1: harness code, compiled unless the release build passes FRANKEN_NO_HARNESS (BuildPlayer -noharness)
 using System;
 
 // STEER lane S4: the ONLY place STAuto touches STSteer (S1, Assets\Scripts\Steer\STTypes.cs). String-based wrapper (enum values by NAME) so the harness logic stays free of the enum types.
@@ -34,3 +35,5 @@ public static class STAutoApi
         return 5;
     }
 }
+#else // FIXHARNESS v1 nl=0
+#endif // FIXHARNESS v1

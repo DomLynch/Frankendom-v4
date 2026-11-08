@@ -1,0 +1,244 @@
+{
+ "_about": "BOWART v2 bow_pose.json (laneBOWART, STAGED DARK): the POSE targets of the bow clips as data, read by Tools/bow_clips_build.py (clip timing, keys and gates stay in bow_clips.json). Everything is expressed in the AIM FRAME so no world numbers or names are hard-coded: vectors are [along A (towards the target), up U, front F (the way the archer's chest faces, i.e. the draw-hand side of the face)]; metres from the shoulder / head joint unless stated, degrees. Joint chains are twist-free hinge chains (Arm, ForeArm share ONE hinge axis; Tools/bow_pose.py solve_arm): the roll the palm needs is taken by the elbow swivel psi (searched with the weights below), the forearm and the hand roll at most forearmRollMaxDeg / handRollMaxDeg.",
+ "version": 2,
+ "characters": [
+  "Joan"
+ ],
+ "bowHand": "Left",
+ "drawHand": "Right",
+ "base": {
+  "state": "idle",
+  "time": 0.0,
+  "note": "legs, spine rest and head come from this clip; hips/legs/feet are re-planted by the stance below"
+ },
+ "stance": {
+  "_about": "side-on archer. feet are planted on the shot line (constant world targets, foot slide 0) at feetWidthShoulders x the measured shoulder width, weight even (hips centred between the feet + weightShiftM along A). chestOpenDeg / hipsOpenDeg = degrees from perfectly side-on towards the target (hips a little more open than the chest = the torso is turned into the shot). aim shares = how much of the clip aimYaw the hips / chest follow (feet never move). foot yaw: toes point along F turned footOpenDeg[front, back] towards the target; knees follow the toes (kneePoleUp raises the pole a little). Knees follow the toes: footOpenDeg is kept within a few degrees of hipsOpenDeg so the knee stays over the foot (knee-medial gate 0.02 m).",
+  "chestOpenDeg": 8.0,
+  "hipsOpenDeg": 20.0,
+  "hipsAimShare": 0.35,
+  "chestAimShare": 0.85,
+  "spineShare": [
+   0.34,
+   0.33,
+   0.33
+  ],
+  "feetWidthShoulders": 1.1,
+  "footOpenDeg": [
+   20.0,
+   14.0
+  ],
+  "hipsY": 0.93,
+  "weightShiftM": 0.0,
+  "kneePoleUp": 0.0,
+  "headYawOffDeg": 0.0,
+  "neckYawShare": 0.45,
+  "headPitchDeg": 0.0,
+  "headPitchFollow": 0.5,
+  "headTiltDeg": 0.0
+ },
+ "arms": {
+  "bow": {
+   "_about": "bow arm (left): straight towards the target, locked elbow (reach), elbow swivel searched (pole = preferred elbow direction, weak), fist axis vertical (palm faces F).",
+   "reach": 0.996,
+   "heightAboveShoulder": 0.03,
+   "shoulderProtractDeg": 10.0,
+   "shoulderElevateDeg": 0.0,
+   "pole": [
+    0.0,
+    -0.3,
+    1.0
+   ],
+   "fingerDir": [
+    1.0,
+    0.1,
+    0.0
+   ],
+   "palm": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "palmRollDeg": 0.0,
+   "carry": {
+    "pos": [
+     0.16,
+     -0.34,
+     0.14
+    ],
+    "fingerDir": [
+     0.3,
+     -0.9,
+     0.2
+    ],
+    "palm": [
+     0.0,
+     -0.2,
+     1.0
+    ]
+   },
+   "solver": {
+    "forearmRollMaxDeg": 12.0,
+    "handRollMaxDeg": 12.0,
+    "forearmRollShare": 0.5,
+    "armTwistSoftDeg": 50.0,
+    "wPalm": 0.02,
+    "wArmTwist": 0.5,
+    "wPsi": 0.0005,
+    "wElbow": 1.0,
+    "psiStepWindowDeg": 14.0,
+    "wTrans": 0.2
+   }
+  },
+  "draw": {
+   "_about": "draw arm (right): upper arm back, elbow about shoulder height (elbowTarget from the shoulder, aim frame), forearm in line with the arrow, string fingers at the anchor (head frame [along, up, front] from the Head joint), hand thumb/knuckle at the jaw, palm to the face. hookDist = wrist to string-fingers distance (the string point is the mean of Index2/Middle2 and is corrected by iteration, so the anchor is exact).",
+   "anchor": [
+    0.105,
+    0.0,
+    0.045
+   ],
+   "hookDist": 0.085,
+   "brace": 0.17,
+   "shoulderRetractDeg": 12.0,
+   "shoulderElevateDeg": 0.0,
+   "elbowNock": [
+    0.05,
+    0.06,
+    0.2
+   ],
+   "elbowFull": [
+    -0.1,
+    0.05,
+    0.2
+   ],
+   "elbowDrop": [
+    -0.03,
+    -0.24,
+    0.0
+   ],
+   "fingerNock": [
+    1.0,
+    0.0,
+    -0.2
+   ],
+   "fingerFull": [
+    1.0,
+    0.0,
+    -0.25
+   ],
+   "fingerDrop": [
+    0.0,
+    -1.0,
+    0.1
+   ],
+   "palmNock": [
+    0.0,
+    -0.35,
+    -0.9
+   ],
+   "palmFull": [
+    0.0,
+    -0.35,
+    -0.9
+   ],
+   "palmDrop": [
+    0.9,
+    0.0,
+    -0.1
+   ],
+   "palmRollDeg": 0.0,
+   "dropTarget": [
+    0.0,
+    -0.47,
+    0.02
+   ],
+   "solver": {
+    "forearmRollMaxDeg": 12.0,
+    "handRollMaxDeg": 12.0,
+    "forearmRollShare": 0.5,
+    "armTwistSoftDeg": 45.0,
+    "wPalm": 0.006,
+    "wArmTwist": 0.5,
+    "wPsi": 0.01,
+    "wElbow": 1.0,
+    "psiStepWindowDeg": 14.0,
+    "wTrans": 0.2
+   },
+   "wristNeutralDrop": 0.9,
+   "_wristNeutralDrop": "share of the wrist kept straight (hand continues the forearm) when the hand lets go: 0 = fingers keep pointing where fingerDrop says, 1 = neutral wrist"
+  }
+ },
+ "fingers": {
+  "_about": "curl angles per joint (deg) for Index/Middle/Ring/Pinky joints 1..3 and Thumb 1..3. bow: fist around the grip; hook: string fingers at full hook; open: relaxed.",
+  "bow": {
+   "finger": [
+    70,
+    85,
+    55
+   ],
+   "pinky": [
+    75,
+    90,
+    60
+   ],
+   "thumb": [
+    12,
+    22,
+    14
+   ]
+  },
+  "hook": {
+   "index": [
+    62,
+    80,
+    40
+   ],
+   "middle": [
+    62,
+    82,
+    42
+   ],
+   "ring": [
+    60,
+    78,
+    40
+   ],
+   "pinky": [
+    70,
+    90,
+    50
+   ],
+   "thumb": [
+    25,
+    30,
+    20
+   ]
+  },
+  "open": {
+   "finger": [
+    8,
+    10,
+    6
+   ],
+   "thumb": [
+    4,
+    6,
+    4
+   ]
+  }
+ },
+ "hold": {
+  "_about": "bow glb fit to the bow hand. The bow long axis is the fist curl axis (vertical in the aim pose), the string side faces the archer. grip = bow origin position in the hand frame solved from palmAlong/palmDepth (metres from the wrist along the hand bone / out of the palm).",
+  "refClip": "bow_hold",
+  "refTime": 0.0,
+  "palmAlong": 0.075,
+  "palmDepth": 0.03,
+  "gripShiftBack": 0.0,
+  "bowTiltPitchDeg": 0.0
+ },
+ "twistGate": {
+  "_about": "CPU gate: roll between neighbouring bones about the bone axis (swing-twist of the local rotation against the T-pose rest), every frame of every clip, both arms. elbow = Arm vs ForeArm, wrist = ForeArm vs Hand: must stay <= maxDeg (Dom: 20). shoulder = Shoulder vs Arm (humerus rotation, anatomically larger) <= shoulderMaxDeg. shoulder: only frames where the arm is swung <= shoulderSwingMaxDeg from its T-pose direction (a straight reach across the body, e.g. the string hand before it is on the string, makes any roll number ill-defined; skipped frames are counted in the report).",
+  "maxDeg": 20.0,
+  "shoulderMaxDeg": 90.0,
+  "shoulderSwingMaxDeg": 135.0
+ }
+}

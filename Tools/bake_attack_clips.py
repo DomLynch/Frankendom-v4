@@ -202,6 +202,8 @@ def main():
     for e in expand_bake(cfg, 'attack'):   # HCKIT5 v95 explicit bake rows + roster clipSet rows
         if only and e['character'] != only:
             continue
+        if e.get('prebuilt'):   # BOWART v2: glb built by Tools/bow_clips_build.py, nothing to retarget
+            print('skip prebuilt entry', e['outGlb']); continue
         bake(e, report)
     json.dump(report, open(os.path.join(ROOT, 'Tools', 'attack_bake_report.json'), 'w'), indent=1)
 

@@ -1,0 +1,455 @@
+{
+ "_about": "BOWART bow_clips.json v2 (laneBOWART, STAGED DARK): CLIPS only (ids, durations, key times, per-clip stance overrides) + CPU gates for Tools/bow_clips_build.py. The POSE targets (stance, aim-frame arm targets, anchor, fingers, hold, twist gate) are in bow_pose.json. Param meaning: raise 0..1 = bow arm from carry to aim; draw 0..1 = string hand from the nock to the anchor; hook 0..1 = string-hand finger hook; relBack = metres the string hand flies back on release; relOut = metres it swings away from the face; relDrop 0..1 = string hand falls to the hip after release; lean = torso extension degrees (+ back); aimYaw/aimPitch degrees (yaw + = towards the character's left); tremor = metres of bow-hand sway (period = clip duration); kick = metres the bow hand is thrown back by the recoil. A clip may carry 'stance': {...} overriding bow_pose.json stance (Power Shot: wider feet).",
+ "version": 1,
+ "enabled": true,
+ "characters": [
+  "Joan"
+ ],
+ "fps": 30,
+ "clips": [
+  {
+   "id": "bow_draw",
+   "role": "Draw",
+   "duration": 0.7,
+   "loop": false,
+   "ease": "smooth",
+   "keys": [
+    {
+     "t": 0.0,
+     "raise": 0.0,
+     "draw": 0.0,
+     "hook": 0.2
+    },
+    {
+     "t": 0.3,
+     "raise": 1.0,
+     "draw": 0.1,
+     "hook": 0.9
+    },
+    {
+     "t": 0.7,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 1.0
+    }
+   ]
+  },
+  {
+   "id": "bow_hold",
+   "role": "Hold",
+   "duration": 1.2,
+   "loop": true,
+   "ease": "smooth",
+   "keys": [
+    {
+     "t": 0.0,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 1.0,
+     "tremor": 0.004
+    },
+    {
+     "t": 1.2,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 1.0,
+     "tremor": 0.004
+    }
+   ]
+  },
+  {
+   "id": "bow_loose",
+   "role": "Loose",
+   "duration": 1.1,
+   "loop": false,
+   "ease": "smooth",
+   "contactTime": 0.5,
+   "keys": [
+    {
+     "t": 0.0,
+     "raise": 0.55,
+     "draw": 0.0,
+     "hook": 0.4
+    },
+    {
+     "t": 0.3,
+     "raise": 1.0,
+     "draw": 0.9,
+     "hook": 1.0
+    },
+    {
+     "t": 0.48,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 1.0
+    },
+    {
+     "t": 0.55,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.1,
+     "kick": 0.03,
+     "lean": 2.0
+    },
+    {
+     "t": 0.72,
+     "raise": 0.9,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.07,
+     "relDrop": 0.3,
+     "kick": 0.01,
+     "lean": 1.0
+    },
+    {
+     "t": 1.1,
+     "raise": 0.35,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.0,
+     "relDrop": 1.0,
+     "kick": 0.0,
+     "lean": 0.0
+    }
+   ]
+  },
+  {
+   "id": "bow_loose_L",
+   "role": "LooseLeft",
+   "duration": 1.1,
+   "loop": false,
+   "ease": "smooth",
+   "contactTime": 0.5,
+   "like": "bow_loose",
+   "aimYaw": 14.0
+  },
+  {
+   "id": "bow_loose_R",
+   "role": "LooseRight",
+   "duration": 1.1,
+   "loop": false,
+   "ease": "smooth",
+   "contactTime": 0.5,
+   "like": "bow_loose",
+   "aimYaw": -14.0
+  },
+  {
+   "id": "bow_power",
+   "role": "Special_BowPower",
+   "duration": 1.7,
+   "loop": false,
+   "ease": "smooth",
+   "contactTime": 1.0,
+   "keys": [
+    {
+     "t": 0.0,
+     "raise": 0.5,
+     "draw": 0.0,
+     "hook": 0.4
+    },
+    {
+     "t": 0.35,
+     "raise": 1.0,
+     "draw": 0.8,
+     "hook": 1.0,
+     "lean": 3.0
+    },
+    {
+     "t": 0.7,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 1.0,
+     "lean": 5.0,
+     "tremor": 0.008,
+     "drawExtra": 0.03
+    },
+    {
+     "t": 0.96,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 1.0,
+     "lean": 5.0,
+     "tremor": 0.012,
+     "drawExtra": 0.03
+    },
+    {
+     "t": 1.03,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.16,
+     "kick": 0.07,
+     "lean": -2.0,
+     "drawExtra": 0.035
+    },
+    {
+     "t": 1.2,
+     "raise": 0.9,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.1,
+     "relDrop": 0.3,
+     "kick": 0.03,
+     "lean": 0.0
+    },
+    {
+     "t": 1.7,
+     "raise": 0.3,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.0,
+     "relDrop": 1.0,
+     "kick": 0.0,
+     "lean": 0.0
+    }
+   ],
+   "stance": {
+    "_about": "Power Shot: wider, lower stance, chest closer to side-on (more torso turn), fuller draw (drawExtra: the string hand is pulled past the anchor)",
+    "feetWidthShoulders": 1.4,
+    "hipsY": 0.9,
+    "chestOpenDeg": 2.0,
+    "hipsOpenDeg": 16.0,
+    "footOpenDeg": [
+     16.0,
+     10.0
+    ]
+   }
+  },
+  {
+   "id": "bow_fan",
+   "role": "Special_BowFan",
+   "duration": 1.3,
+   "loop": false,
+   "ease": "smooth",
+   "contactTime": 0.62,
+   "aimPitch": 10.0,
+   "keys": [
+    {
+     "t": 0.0,
+     "raise": 0.5,
+     "draw": 0.0,
+     "hook": 0.4,
+     "aimYaw": 12.0
+    },
+    {
+     "t": 0.18,
+     "raise": 1.0,
+     "draw": 0.85,
+     "hook": 1.0,
+     "aimYaw": 12.0
+    },
+    {
+     "t": 0.3,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 1.0,
+     "aimYaw": 12.0,
+     "lean": 2.0
+    },
+    {
+     "t": 0.33,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.08,
+     "kick": 0.03,
+     "aimYaw": 12.0
+    },
+    {
+     "t": 0.45,
+     "raise": 1.0,
+     "draw": 0.55,
+     "hook": 0.8,
+     "relBack": 0.0,
+     "aimYaw": 2.0
+    },
+    {
+     "t": 0.58,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 1.0,
+     "aimYaw": 0.0,
+     "lean": 2.0
+    },
+    {
+     "t": 0.62,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.08,
+     "kick": 0.04,
+     "aimYaw": 0.0
+    },
+    {
+     "t": 0.74,
+     "raise": 1.0,
+     "draw": 0.55,
+     "hook": 0.8,
+     "relBack": 0.0,
+     "aimYaw": -10.0
+    },
+    {
+     "t": 0.85,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 1.0,
+     "aimYaw": -12.0,
+     "lean": 2.0
+    },
+    {
+     "t": 0.88,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.1,
+     "kick": 0.05,
+     "aimYaw": -12.0
+    },
+    {
+     "t": 1.0,
+     "raise": 0.9,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.07,
+     "relDrop": 0.25,
+     "kick": 0.02,
+     "aimYaw": -10.0
+    },
+    {
+     "t": 1.3,
+     "raise": 0.4,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.0,
+     "relDrop": 0.9,
+     "kick": 0.0,
+     "aimYaw": 0.0
+    }
+   ],
+   "_about": "Fan Volley: three quick shots (releases at 0.33, 0.62 = contact, 0.88) with the aim sweeping +12 -> 0 -> -12 deg; the string hand re-nocks in ~0.09 s between shots."
+  },
+  {
+   "id": "bow_pin",
+   "role": "Special_BowPin",
+   "duration": 1.4,
+   "loop": false,
+   "ease": "smooth",
+   "contactTime": 0.8,
+   "aimPitch": -7.0,
+   "keys": [
+    {
+     "t": 0.0,
+     "raise": 0.5,
+     "draw": 0.0,
+     "hook": 0.4
+    },
+    {
+     "t": 0.35,
+     "raise": 1.0,
+     "draw": 0.95,
+     "hook": 1.0
+    },
+    {
+     "t": 0.76,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 1.0,
+     "tremor": 0.0
+    },
+    {
+     "t": 0.83,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.09,
+     "kick": 0.02
+    },
+    {
+     "t": 1.0,
+     "raise": 0.9,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.05,
+     "relDrop": 0.3,
+     "kick": 0.0
+    },
+    {
+     "t": 1.4,
+     "raise": 0.3,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.0,
+     "relDrop": 1.0
+    }
+   ]
+  },
+  {
+   "id": "bow_quick",
+   "role": "Special_BowQuick",
+   "duration": 0.75,
+   "loop": false,
+   "ease": "smooth",
+   "contactTime": 0.24,
+   "keys": [
+    {
+     "t": 0.0,
+     "raise": 0.8,
+     "draw": 0.5,
+     "hook": 0.8
+    },
+    {
+     "t": 0.2,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 1.0
+    },
+    {
+     "t": 0.27,
+     "raise": 1.0,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.12,
+     "kick": 0.04
+    },
+    {
+     "t": 0.45,
+     "raise": 0.8,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.05,
+     "relDrop": 0.4,
+     "kick": 0.0
+    },
+    {
+     "t": 0.75,
+     "raise": 0.35,
+     "draw": 1.0,
+     "hook": 0.0,
+     "relBack": 0.0,
+     "relDrop": 0.85
+    }
+   ]
+  }
+ ],
+ "gates": {
+  "_about": "CPU gates run by bow_clips_build.py after the build (report in out/). maxJointStepDeg is per 30 fps frame over the body joints (the finger hook opens in one or two frames on purpose); reach is gated once the string hand is on the string (draw >= reachDrawFrom). The roll/TWIST gate (Arm vs ForeArm and ForeArm vs Hand <= 20 deg) is in bow_pose.json twistGate.",
+  "reachErrMaxM": 0.02,
+  "legReachErrMaxM": 0.01,
+  "footSlideMaxM": 0.005,
+  "footFloorMinM": -0.02,
+  "loopCloseMaxDeg": 0.5,
+  "maxJointStepDeg": 55.0,
+  "anchorErrMaxM": 0.03,
+  "bowToGripMaxM": 0.02,
+  "bowElbowMinDeg": 165.0,
+  "drawElbowMinDeg": 15.0,
+  "drawElbowDyMinM": -0.06,
+  "drawElbowDyMaxM": 0.14,
+  "feetWidthMin": 0.9,
+  "feetWidthMax": 1.6,
+  "reachDrawFrom": 0.5,
+  "armGapMinM": 0.002,
+  "kneeMedialMaxM": 0.02
+ }
+}

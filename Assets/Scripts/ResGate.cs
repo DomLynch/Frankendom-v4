@@ -1,3 +1,4 @@
+#if !FRANKEN_NO_HARNESS // FIXHARNESS v1: harness code, compiled unless the release build passes FRANKEN_NO_HARNESS (BuildPlayer -noharness)
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -325,3 +326,13 @@ public class ResGate : MonoBehaviour
     }
     IEnumerator Quit(int code) { yield return new WaitForSecondsRealtime(C.exitGraceSec); Application.Quit(code); }
 }
+#else // FIXHARNESS v1 stub nl=0
+using UnityEngine;
+public static class ResGateProbe
+{
+    public static bool On;
+    public static void Box(Rect r) { }
+    public static void Text(Rect r, string s, string kind, int size, TextAnchor a, bool bold, bool wrap = false) { }
+    public static void Caps(float x, float y, float width, float height, string s, int size) { }
+}   // release stub: HudDraw/LootDraw call these behind On
+#endif // FIXHARNESS v1

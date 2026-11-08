@@ -1,3 +1,4 @@
+#if !FRANKEN_NO_HARNESS // FIXHARNESS v1: harness code, compiled unless the release build passes FRANKEN_NO_HARNESS (BuildPlayer -noharness)
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -167,3 +168,11 @@ public static class FinisherPairProbe
         return ((p1 + d1 * s) - (p2 + d2 * u)).magnitude;
     }
 }
+#else // FIXHARNESS v1 stub nl=0
+[System.Serializable] public class FinisherPairCfg { }   // release stub: finishers.json rt.pair is ignored by JsonUtility
+public static class FinisherPairProbe
+{
+    public static void Begin(DuelFighter killer, DuelFighter victim) { }
+    public static void Sample(float dt) { }
+}   // release stub: FinisherPlayer calls these
+#endif // FIXHARNESS v1

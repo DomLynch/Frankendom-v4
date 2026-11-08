@@ -445,6 +445,7 @@ public class V1FinCfg
     public bool blood = true;        // gore.v1blood profiles (finisher-blood.ts timing) on units with a bloodProfile
     public bool bladeAim = true;     // V1CLIPS v98: entry.bladeAim (V1 aimBladeAt: blade through the chest)
     public bool openedExtras = true; // V1CLIPS v98: cuts.units[torso_waist].script.weapon / .legs (dropped weapon, leg topple)
+    public bool pairOverrides = false; // FINISHER2 v1: true = a per killer / victim pairOffset row (entry.overrides) is applied AFTER entry.clipsV1.pairOffset (the V1 pair number is per body size); false = today
     public string crownUnit = "head_crown", crownReplaces = "head_split";
 }
 

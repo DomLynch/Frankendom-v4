@@ -157,6 +157,7 @@ public static class FinisherPlayer
         DuelFighter A = host.Fighter(ctx.killerSide), V = host.Fighter(ctx.victimSide);
         Fighter fa = A.GetComponent<Fighter>(), fv = V.GetComponent<Fighter>();
         e = ApplyV1Clips(e, fa, fv);   // V1FIN v94: V1's authored clips when they are imported
+        { var v1o = FinisherConfig.Get().rt.v1; if (v1o != null && v1o.enabled && v1o.pairOverrides) e = FinisherPair.Resolve(e, FinisherSides.IdOf(ctx.killerSide), FinisherSides.IdOf(ctx.victimSide)); }   // FINISHER2 v1: the per-victim pairOffset beats clipsV1.pairOffset
         var v1c = FinisherConfig.Get().rt.v1; bool v1on = v1c != null && v1c.enabled;
         FinisherLoc loc = ctx.loc;
         if (e.placeholder) Debug.Log("[finisher] " + e.id + " uses placeholder clips");

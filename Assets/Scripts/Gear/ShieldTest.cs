@@ -1,3 +1,4 @@
+#if !FRANKEN_NO_HARNESS // FIXHARNESS v1: harness code, compiled unless the release build passes FRANKEN_NO_HARNESS (BuildPlayer -noharness)
 using System;
 using UnityEngine;
 
@@ -38,3 +39,5 @@ public class ShieldTestKeep : MonoBehaviour
     public DuelFighter fighter; public int side, until;
     void LateUpdate() { if (fighter == null || Duel.TickCount > until) return; fighter.guardSide = side; }
 }
+#else // FIXHARNESS v1 nl=0
+#endif // FIXHARNESS v1

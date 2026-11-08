@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿#if !FRANKEN_NO_HARNESS // FIXHARNESS v1: harness code, compiled unless the release build passes FRANKEN_NO_HARNESS (BuildPlayer -noharness)
+using System.IO;
 using UnityEngine;
 
 // Test harness: with -autoplay, captures screenshots, logs fps, asserts the enemy death pose, then quits.
@@ -267,3 +268,6 @@ public class AutoShot : MonoBehaviour
 
 
 
+#else // FIXHARNESS v1 stub nl=0
+public static class AutoShot { public static int RecFrame; }   // release stub: CueBus.cs logs AutoShot.RecFrame
+#endif // FIXHARNESS v1

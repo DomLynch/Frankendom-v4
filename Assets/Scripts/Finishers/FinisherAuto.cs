@@ -1,3 +1,4 @@
+#if !FRANKEN_NO_HARNESS // FIXHARNESS v1: harness code, compiled unless the release build passes FRANKEN_NO_HARNESS (BuildPlayer -noharness)
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -686,3 +687,5 @@ public class FinisherAuto : MonoBehaviour
         File.WriteAllText(summaryPath, sb.ToString());
     }
 }
+#else // FIXHARNESS v1 nl=0
+#endif // FIXHARNESS v1

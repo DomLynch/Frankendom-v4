@@ -1,3 +1,4 @@
+#if !FRANKEN_NO_HARNESS // FIXHARNESS v1: harness code, compiled unless the release build passes FRANKEN_NO_HARNESS (BuildPlayer -noharness)
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -146,3 +147,5 @@ public class PerfBench : MonoBehaviour
         if (!Flag("-balanceauto")) Application.Quit(0);
     }
 }
+#else // FIXHARNESS v1 nl=0
+#endif // FIXHARNESS v1
