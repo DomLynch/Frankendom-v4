@@ -30,7 +30,9 @@
     "breathM": 0.004,
     "breathCyclesPerS": 0.3,
     "blendS": 0.15,
-    "alignFullDeg": 45.0
+    "alignDeg": 45.0,
+    "standMps": 0.05,
+    "minBlendS": 0.001
   },
   "breeds": [
     {
@@ -161,5 +163,7 @@
       "avoid": [],
       "enabled": true
     }
-  ]
+  ],
+  "seedStride": 7919,
+  "hitBuffer": 8
 }

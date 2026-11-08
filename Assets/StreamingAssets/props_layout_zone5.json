@@ -46,6 +46,14 @@
   ],
   "lodProfiles": [
     {
+      "name": "hero5_cedar",
+      "screenHeights": [
+        0.3,
+        0.1,
+        0.01
+      ]
+    },
+    {
       "name": "props",
       "screenHeights": [
         0.25,
@@ -140,6 +148,58 @@
     "Z5Ring2"
   ],
   "props": [
+    {
+      "id": "z5h_humbaba_cedar",
+      "group": "Z5Ring1",
+      "library": "hero5",
+      "asset": "humbaba_cedar",
+      "lodProfile": "hero5_cedar",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        25.0,
+        -0.09,
+        234.0
+      ],
+      "rotEuler": [
+        0,
+        225.0,
+        0
+      ],
+      "scale": 38.012,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "hero5",
+        "hero"
+      ]
+    },
+    {
+      "id": "z5h_humbaba_root_stones",
+      "group": "Z5Ring1",
+      "library": "hero5",
+      "asset": "humbaba_root_stones",
+      "lodProfile": "hero_heavy",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        18.5,
+        -0.09,
+        227.5
+      ],
+      "rotEuler": [
+        0,
+        30.0,
+        0
+      ],
+      "scale": 8.155,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "hero5",
+        "hero"
+      ]
+    },
     {
       "id": "z5_entry_stump_W",
       "group": "Z5Ring0",

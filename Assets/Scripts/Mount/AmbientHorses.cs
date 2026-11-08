@@ -18,19 +18,19 @@ using UnityEngine;
 }
 [Serializable] public class AhGait
 {
-    public float walkMps = 1.1f, turnDegPerS = 90f, pauseSMin = 3f, pauseSMax = 9f, arriveM = 0.4f, cyclesPerM = 0.55f, bobM = 0.02f, pitchDeg = 1.5f, rollDeg = 1.5f, breathM = 0.004f, breathCyclesPerS = 0.3f, blendS = 0.15f, alignFullDeg = 45f;
+    public float walkMps = 1.1f, turnDegPerS = 90f, pauseSMin = 3f, pauseSMax = 9f, arriveM = 0.4f, cyclesPerM = 0.55f, bobM = 0.02f, pitchDeg = 1.5f, rollDeg = 1.5f, breathM = 0.004f, breathCyclesPerS = 0.3f, blendS = 0.15f, alignDeg = 45f, standMps = 0.05f, minBlendS = 0.001f;
 }
 [Serializable] public class AhCfg
 {
     public bool enabled = false, debugLog = false, convertMaterials = true, shadows = false, holdWhileEngaged = true;
     public float pollSeconds = 0.5f, spawnMarginM = 14f, despawnMarginM = 22f, avoidPlayerM = 4f, minSpacingM = 3f, groundRayUpM = 3f, groundRayDownM = 10f, sinkM = 0.03f, fallbackY = 0f;
-    public int groundMask = -1, framesBetweenLoads = 2, maxTargetTries = 12;
+    public int groundMask = -1, framesBetweenLoads = 2, maxTargetTries = 12, seedStride = 7919, hitBuffer = 8;
     public AhGait gait = new AhGait(); public AhBreed[] breeds = new AhBreed[0]; public AhHerd[] herds = new AhHerd[0];
 }
 
 public sealed class AmbientHorses : MonoBehaviour
 {
-    static AhCfg K; static AmbientHorses Inst; static readonly RaycastHit[] hits = new RaycastHit[8];
+    static AhCfg K; static AmbientHorses Inst; static RaycastHit[] hits = new RaycastHit[8];   // resized to hitBuffer when the config loads
     class Horse { public GameObject go; public Transform body; public AhHerd herd; public Vector3 pos, target; public float yaw, wait, phase, breath, speed, amp, bob, pitch, roll, spawnY; public bool walking, placed; public System.Random rnd; }
     class Loaded { public GltfHold hold; }
     class GltfHold { public GLTFast.GltfImport imp; }
@@ -42,7 +42,7 @@ public sealed class AmbientHorses : MonoBehaviour
     {
         if (K != null) return K; K = new AhCfg(); string txt = DataPath.ReadText("ambient_horses.json");
         if (txt != null) { try { var k = JsonUtility.FromJson<AhCfg>(txt); if (k != null) K = k; } catch (Exception e) { Debug.LogWarning("[AmbientHorses] ambient_horses.json unreadable, off: " + e.Message); K = new AhCfg(); } }
-        if (K.gait == null) K.gait = new AhGait(); if (K.breeds == null) K.breeds = new AhBreed[0]; if (K.herds == null) K.herds = new AhHerd[0];
+        if (K.gait == null) K.gait = new AhGait(); if (K.hitBuffer > 0 && K.hitBuffer != hits.Length) hits = new RaycastHit[K.hitBuffer]; if (K.breeds == null) K.breeds = new AhBreed[0]; if (K.herds == null) K.herds = new AhHerd[0];
         return K;
     }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -104,8 +104,8 @@ public sealed class AmbientHorses : MonoBehaviour
                 foreach (var r in rl) r.shadowCastingMode = K.shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
                 if (K.convertMaterials) s.mats.AddRange(GearMaterials.Convert(rl));
                 body.transform.localScale = Vector3.one * (b.heightM > 0f && b.glbHeightM > 0f ? b.heightM / b.glbHeightM : 1f);
-                var hr = new Horse { go = go, body = body.transform, herd = h, rnd = new System.Random(h.seed * 7919 + i), wait = 0f };
-                hr.pos = RandomPoint(h, hr, s, null); hr.yaw = (float)(hr.rnd.NextDouble() * 360.0); hr.target = hr.pos; hr.wait = Pause(hr);
+                var hr = new Horse { go = go, body = body.transform, herd = h, rnd = new System.Random(h.seed * K.seedStride + i), wait = 0f };
+                hr.pos = RandomPoint(h, hr, s, null); hr.yaw = (float)(hr.rnd.NextDouble() * 360.0); hr.target = hr.pos; hr.wait = Pause(hr);   // hc:ok 360 = a full turn (random start heading)
                 s.horses.Add(hr);
                 for (int f = 0; f < K.framesBetweenLoads; f++) await Task.Yield();
             }
@@ -151,14 +151,14 @@ public sealed class AmbientHorses : MonoBehaviour
             else
             {
                 float want = Mathf.Atan2(d.x, d.z) * Mathf.Rad2Deg; h.yaw = Mathf.MoveTowardsAngle(h.yaw, want, G.turnDegPerS * dt);
-                float align = Mathf.Clamp01(1f - Mathf.Abs(Mathf.DeltaAngle(h.yaw, want)) / Mathf.Max(1f, G.alignFullDeg)); spd = G.walkMps * align;   // turn on the spot first, then walk
+                float align = Mathf.Clamp01(1f - Mathf.Abs(Mathf.DeltaAngle(h.yaw, want)) / Mathf.Max(1f, K.gait.alignDeg)); spd = G.walkMps * align;   // turn on the spot first, then walk
                 var step = Quaternion.Euler(0f, h.yaw, 0f) * Vector3.forward * (spd * dt); var np = h.pos + step; float y;
                 if (Ground(np.x, np.z, h.pos.y, out y)) { h.pos = new Vector3(np.x, y, np.z); } else { h.walking = false; h.wait = Pause(h); spd = 0f; }   // no ground ahead: stop
             }
         }
         else { h.wait -= dt; if (h.wait <= 0f) { h.target = RandomPoint(herd, h, s, p); h.walking = true; } }
-        h.speed = Mathf.Lerp(h.speed, spd, Mathf.Clamp01(dt / Mathf.Max(1e-3f, G.blendS)));
-        h.amp = Mathf.MoveTowards(h.amp, h.speed > 0.05f ? 1f : 0f, dt / Mathf.Max(1e-3f, G.blendS));   // hc:ok 0.05 m/s = standing threshold
+        h.speed = Mathf.Lerp(h.speed, spd, Mathf.Clamp01(dt / Mathf.Max(G.minBlendS, G.blendS)));
+        h.amp = Mathf.MoveTowards(h.amp, h.speed > G.standMps ? 1f : 0f, dt / Mathf.Max(G.minBlendS, G.blendS));
         h.phase = Mathf.Repeat(h.phase + G.cyclesPerM * h.speed * dt * 2f * Mathf.PI, 2f * Mathf.PI); h.breath = Mathf.Repeat(h.breath + dt * G.breathCyclesPerS * 2f * Mathf.PI, 2f * Mathf.PI);
         h.bob = Mathf.Abs(Mathf.Sin(h.phase)) * G.bobM * h.amp + Mathf.Sin(h.breath) * G.breathM * (1f - h.amp); h.pitch = Mathf.Sin(h.phase * 2f) * G.pitchDeg * h.amp; h.roll = Mathf.Sin(h.phase) * G.rollDeg * h.amp;
         h.go.transform.SetPositionAndRotation(h.pos, Quaternion.Euler(0f, h.yaw, 0f)); h.body.localPosition = Vector3.up * h.bob; h.body.localRotation = Quaternion.Euler(h.pitch, 0f, h.roll);
