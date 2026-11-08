@@ -60,11 +60,24 @@ public class Fighter : MonoBehaviour
             if (anim.speed == 0f) anim.speed = savedSpeed;        // still our pin (a fresh write from the sim is left alone)
         }
     }
-    void OnDisable() { if (frozenApplied && anim) { frozenApplied = false; if (anim.speed == 0f) anim.speed = savedSpeed; } }
+    // HITFX2: presentation hit-stop = a per-fighter Animator speed dip / catch-up (HitFx.PresMul); the sim clock is not touched
+    bool presApplied; float presSaved = 1f, presWritten = 1f;
+    void ApplyPresDip()
+    {
+        if (!anim || PresentationClock.Frozen) return;
+        float m = HitFx.PresMul(this);
+        if (m == 1f && !presApplied) return;
+        if (m == 1f) { presApplied = false; if (Mathf.Approximately(anim.speed, presWritten)) anim.speed = presSaved; return; }
+        if (!presApplied) { presApplied = true; presSaved = anim.speed; }
+        else if (!Mathf.Approximately(anim.speed, presWritten)) presSaved = anim.speed;
+        presWritten = presSaved * m; anim.speed = presWritten;
+    }
+    void PresRestore() { if (presApplied) { presApplied = false; if (anim && Mathf.Approximately(anim.speed, presWritten)) anim.speed = presSaved; } }
+    void OnDisable() { PresRestore(); if (frozenApplied && anim) { frozenApplied = false; if (anim.speed == 0f) anim.speed = savedSpeed; } }
 
     void Update()
     {
-        ApplyFreeze();
+        ApplyFreeze(); ApplyPresDip(); /*HITFX2*/
         if (holdLast && anim) { var si = anim.GetCurrentAnimatorStateInfo(0); if (si.normalizedTime >= 0.97f && !anim.IsInTransition(0)) anim.speed = 0f; }
     }
     void LateUpdate()

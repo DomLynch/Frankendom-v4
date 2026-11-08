@@ -206,6 +206,22 @@
           "loop": true
         }
       ]
+    },
+    {
+      "character": "Grendel",
+      "controller": "Assets/Characters/Grendel.controller",
+      "baseGlb": "Assets/Characters/Grendel/Grendel_combat.glb",
+      "outGlb": "Assets/Characters/Grendel/Grendel_dodges.glb",
+      "outClipDir": "Assets/Characters/Grendel/DodgeClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "dodge_diveroll",
+          "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        }
+      ]
     }
   ]
 }

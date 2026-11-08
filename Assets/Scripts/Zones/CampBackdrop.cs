@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 // (the shared .mat assets are never written, so a re-run of the glb material conversion cannot undo it). Dark: only with the zones on (ZoneSave.Active), only when camp_backdrop.json enabled. No fog or light is touched.
 [Serializable] public class CampBackdropCard { public string match = ""; public float gain = 1f; }   // CAMPFIX v1: per-card emission gain (the a|b seam of the entry view stepped 1.2 to 1.7x)
 [Serializable] public class CampBackdropCap { public bool enabled = false; public float halfWidthM = 31.84f, fromYM = 99.9f, heightM = 240f; }   // CAMPFIX v1: the black cap above each card (card local metres)
-[Serializable] public class CampBackdropData { public bool enabled = true, log = true; public string rootName = "HubZone"; public string[] match = new string[] { "M_Camp_backdrop" }; public float emissiveNits = 400f; public int waitFrames = 20; public CampBackdropCard[] cards = new CampBackdropCard[0]; public CampBackdropCap cap = new CampBackdropCap(); }
+[Serializable] public class CampBackdropData { public bool enabled = true, log = true; public string rootName = "HubZone"; public string[] rootNames = new string[0]; public string[] match = new string[] { "M_Camp_backdrop" }; public float emissiveNits = 400f; public int waitFrames = 20; public CampBackdropCard[] cards = new CampBackdropCard[0]; public CampBackdropCap cap = new CampBackdropCap(); }
 
 public sealed class CampBackdrop : MonoBehaviour
 {
@@ -35,9 +35,12 @@ public sealed class CampBackdrop : MonoBehaviour
     IEnumerator Run()
     {
         for (int i = 0; i < Mathf.Max(1, D.waitFrames); i++) yield return null;
-        var root = GameObject.Find(D.rootName); if (root == null) { if (D.log) Debug.LogWarning("[CampBackdrop] no object '" + D.rootName + "' in the scene (camp not built?)"); yield break; }
+        var roots = new List<GameObject>();   // MARKET2 v1: rootName first (as before), then every rootNames[] entry that exists
+        var main = GameObject.Find(D.rootName); if (main != null) roots.Add(main); else if (D.log) Debug.LogWarning("[CampBackdrop] no object '" + D.rootName + "' in the scene (camp not built?)");
+        if (D.rootNames != null) foreach (var nm in D.rootNames) { if (string.IsNullOrEmpty(nm) || nm == D.rootName) continue; var g2 = GameObject.Find(nm); if (g2 != null) roots.Add(g2); else if (D.log) Debug.LogWarning("[CampBackdrop] no object '" + nm + "' in the scene (zone not built?)"); }
+        if (roots.Count == 0) yield break;
         float n = Mathf.Max(0f, D.emissiveNits); int rends = 0, mats = 0; var capRoots = new Dictionary<Transform, Material>();
-        foreach (var r in root.GetComponentsInChildren<Renderer>(true))
+        foreach (var root in roots) foreach (var r in root.GetComponentsInChildren<Renderer>(true))
         {
             var sm = r.sharedMaterials; bool ch = false;
             for (int i = 0; i < sm.Length; i++)
@@ -49,7 +52,7 @@ public sealed class CampBackdrop : MonoBehaviour
             if (ch) { r.sharedMaterials = sm; rends++; }
         }
         MakeCaps(capRoots);
-        if (D.log) Debug.Log("[CampBackdrop] emission " + n.ToString("F0") + " nits on " + rends + " renderers, " + mats + " material copies (root " + D.rootName + ")");
+        if (D.log) Debug.Log("[CampBackdrop] emission " + n.ToString("F0") + " nits on " + rends + " renderers, " + mats + " material copies (root " + D.rootName + (roots.Count > 1 ? " +" + (roots.Count - 1) + " more" : "") + ")");
     }
     // CAMPFIX v1: the card top edge showed as a hard line over the HDRI sky. The top 12 % of each card texture is faded to black (the glbs), and this puts one plain black quad above each card (same plane, child of the card row,
     // so it wakes / retires with its ring) so the HDRI eclipse glow and stars above the card are covered. Material = a copy of the card's own copy with the emission black (same shader, never pink). No light, no shadow.

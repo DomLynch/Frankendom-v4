@@ -4,7 +4,7 @@
   "about": "Death-only ragdoll for the Mixamo-rigged fighters (V3_TO_UNITY rows 3, 4, 8). ON since 2026-11-04 (Dom: Dracula lay flat like a board with the death clip held); set enabled false to restore the held death clip. Only the fighter that is killed is converted; nameContains [] = both. Presentation only: the sim never reads it. Spring/damper numbers are PhysX starting points to tune in the player (V3's Jolt motor gain/damping are relative multipliers here). PHYS1 v1 (2026-11-05): rig pre-built at scene load (kinematic, Hurtbox-layer trigger capsules), velocities inherited at death, blow impulse along the attacker's facing split over zone / spine2 / hips, V3 role-table joint limits (spine 20/15, spine1+2 18/12, neck 50/60, head 55/70, arm 150/100, hand 80/70, thigh 85/45, foot 40/20, forearm hinge -30..150, shin hinge -3.2..136.8), the 5 rigid cape / skirt bodies removed (their bones carry no skin weight). Hinge: min..max degrees about the axis found from the rest pose (bend +1 = toward the fighter's forward, -1 = backward); enabled:false falls back to swing / twist.",
   "enabled": true,
   "nameContains": [],
-  "startDelaySeconds": 0.0,
+  "startDelaySeconds": 0.2,
   "massKg": [
     {
       "contains": "Pitborn",
@@ -21,15 +21,20 @@
     {
       "contains": "Sobek",
       "kg": 900.0
+    },
+    {
+      "contains": "Grendel",
+      "kg": 700.0
     }
   ],
   "defaultMassKg": 80.0,
   "minParts": 12,
   "leafLengthM": 0.12,
   "death": {
+    "minSimSeconds": 2.5,
     "rampFrom": 1.0,
     "rampTo": 0.01,
-    "rampSeconds": 1.0,
+    "rampSeconds": 0.5,
     "limpDamper": 2.0,
     "freezeSpeedSq": 0.02,
     "freezeTicksBelow": 4,
@@ -39,8 +44,8 @@
     "impulse": 70.0,
     "lift": 6.0,
     "impulseScale": 1.0,
-    "speedMps": 1.6,
-    "liftMps": 0.25,
+    "speedMps": 2.2,
+    "liftMps": 0.45,
     "zoneShare": 0.15,
     "_speedNote": "FIXPHYS v99: speedMps > 0 = the blow is a velocity change of the whole body (impulse = speed x total mass, every body gets the same, the struck zone part gets zoneShare extra); impulse/lift above are only used when speedMps is 0. 70 N s on Pitborn (120 kg) was 0.58 m/s and the knee collapse beat it.",
     "zoneParts": {

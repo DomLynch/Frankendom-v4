@@ -17,7 +17,7 @@ public class RagdollDeath : MonoBehaviour
 {
     // ---------------- data (Assets/Data/ragdoll.json) ----------------
     [Serializable] public class MassRow { public string contains = ""; public float kg = 80f; }
-    [Serializable] public class DeathCfg { public float rampFrom = 1f, rampTo = 0.01f, rampSeconds = 1f, limpDamper = 2f, freezeSpeedSq = 0.02f, maxSeconds = 8f; public int freezeTicksBelow = 4; }
+    [Serializable] public class DeathCfg { public float rampFrom = 1f, rampTo = 0.01f, rampSeconds = 1f, limpDamper = 2f, freezeSpeedSq = 0.02f, maxSeconds = 8f, minSimSeconds = 0f /* RAGDOLL v1: no rest-freeze before this many sim seconds (0 = old) */; public int freezeTicksBelow = 4; }
     [Serializable] public class ZoneParts { public string head = "head", torso = "spine2", legs = "thighL"; }
     [Serializable] public class ZoneRule { public string match = "equals", value = "", zone = "torso"; }   // match: equals | prefix | contains, on the attacker's move id
     [Serializable] public class SplitRow { public string part = "zone", note = ""; public float share = 1f; }   // part: "zone" = the zone part, else a ragdoll part name

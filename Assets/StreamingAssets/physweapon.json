@@ -18,6 +18,14 @@
         "radiusM": 0.045,
         "headRadiusM": 0.0,
         "note": "sword_start_LOD0.glb: blade to y 0.996 = the glb tip node; BuildSlice put TrailTip at tipY 0.6147 (62 percent of the blade), so extendM 0.38 reaches the glb tip. UNVERIFIED in the engine (the scene is binary): run -physweapon:probe; set 0 if TrailTip already sits at the point."
+      },
+      {
+        "id": "grendel_blade",
+        "match": "grendel_blade",
+        "extendM": 0.0,
+        "radiusM": 0.05,
+        "headRadiusM": 0.0,
+        "note": "laneOFFHAND: both bone swords (items grendel_blade_R / _L, weapon.id = item id): capsule from the socket to the glb tip node (R: TrailTip rides that node, so extend 0; L: OffHandWeapon.Tip). Radius 0.05 = half the stand-in blade width 0.1 m (grendel_weapon.json standIn); the real glb is 3,500 tris, 1.13 m long, not measured for width: retune after the PhysWeapon probe."
       }
     ],
     "fallback": {

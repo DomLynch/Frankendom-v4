@@ -13,7 +13,7 @@ public static class MarketCfg
     [Serializable] public class SinkC { public string id = "", kind = "", needs = ""; public bool enabled = false; }
     [Serializable] public class AnchorC { public string zone = "", spot = ""; public float x = 0f, z = 0f; }
     [Serializable] public class AreaC { public float zMin = 0f, zMax = 0f, xHalf = 8f, enterPad = 0.5f, leavePad = 0.5f; }
-    [Serializable] public class StallC { public string id = "", title = "Trader"; public AnchorC anchor = new AnchorC(); public float radius = 2.4f, promptRadius = 5f, promptHeight = 2.1f; public AreaC area = new AreaC(); }
+    [Serializable] public class StallC { public string id = "", title = "Trader"; public AnchorC anchor = new AnchorC(); public float radius = 2.4f, promptRadius = 5f, promptHeight = 2.1f; public AreaC area = new AreaC(); public string[] items = new string[0]; }   // MARKET2 v1: items = the stock of an EXTRA stall (stalls[]); the main stall's stock stays hub.json stall.buy.items
     [Serializable] public class SafeC { public bool noCombat = true; public string[] allowPress = { "roll", "backstep", "sidestep" }; public float refuseSeconds = 1.4f, tagTop = 26f, coinDy = 8f, tagTracking = 3.2f; public int tagBig = 20, tagSmall = 15, subSize = 13, coinSize = 17; }
     [Serializable]
     public class KeysC
@@ -43,7 +43,7 @@ public static class MarketCfg
     public class Data
     {
         public int version = 1; public bool enabled = false, debugLog = false; public int guiDepth = -1090;
-        public CurrencyC currency = new CurrencyC(); public RulesC rules = new RulesC(); public RowC[] rows = new RowC[0]; public SinkC[] sinks = new SinkC[0]; public StallC stall = new StallC(); public SafeC safe = new SafeC();
+        public CurrencyC currency = new CurrencyC(); public RulesC rules = new RulesC(); public RowC[] rows = new RowC[0]; public SinkC[] sinks = new SinkC[0]; public StallC stall = new StallC(); public StallC[] stalls = new StallC[0] /* MARKET2 v1: more stalls, one per market camp (or several per camp), none ship */; public SafeC safe = new SafeC();
         public KeysC keys = new KeysC(); public ColorsC colors = new ColorsC(); public LayoutC layout = new LayoutC(); public TextC text = new TextC();
     }
 
@@ -71,6 +71,8 @@ public static class MarketCfg
         if (d.stall == null) d.stall = new StallC(); if (d.stall.anchor == null) d.stall.anchor = new AnchorC(); if (d.stall.area == null) d.stall.area = new AreaC(); if (d.safe == null) d.safe = new SafeC();
         if (d.keys == null) d.keys = new KeysC(); if (d.colors == null) d.colors = new ColorsC(); if (d.layout == null) d.layout = new LayoutC(); if (d.text == null) d.text = new TextC();
         if (d.text.codes == null) d.text.codes = new CodeC[0]; if (d.rules.ops == null) d.rules.ops = new string[0]; if (d.safe.allowPress == null) d.safe.allowPress = new string[0];
+        if (d.stalls == null) d.stalls = new StallC[0];   // MARKET2 v1
+        for (int i = 0; i < d.stalls.Length; i++) { var q = d.stalls[i]; if (q == null) q = d.stalls[i] = new StallC(); if (q.anchor == null) q.anchor = new AnchorC(); if (q.area == null) q.area = new AreaC(); if (q.items == null) q.items = new string[0]; }
         d.currency.cap = Mathf.Max(1, d.currency.cap); d.currency.startCoins = Mathf.Clamp(d.currency.startCoins, 0, d.currency.cap);
         if (d.rows.Length > 0) d.enabled = ZoneFlag.Allowed(d.enabled);   // INT108 v1: -zones turns the trader on, -nozones off, no flag = the file
         d.rules.keepRequests = Mathf.Max(1, d.rules.keepRequests); d.rules.minSell = Mathf.Max(1, d.rules.minSell);   // CAMPPLAY v1: was commented out

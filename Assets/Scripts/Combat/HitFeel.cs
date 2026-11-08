@@ -326,8 +326,8 @@ public class HitFeel : MonoBehaviour
         var sp = cfg.sparks;
         Vector3 anchor = e.target.transform.position + Vector3.up * (sp.anchorHeight * FighterScale.Of(e.target)) - along * sp.anchorBack;
         anchor = PhysWeapon.SparkAnchor(e.actor, e.target, e.type, metal, anchor); /*PHYSWEAPON v106*/ anchor = ArcFx.ContactPoint(e.actor, e.target, e.type, metal, anchor);   // ARCS v105
-        if (sparkReady && row.spark > 0f) Burst(anchor, along, row.spark, e.heavy);
-        Flash(anchor, row.flash);
+        if (sparkReady && row.spark > 0f) Burst(anchor, along, row.spark * HitFx.SparkMul(e) /*HITFX2*/, e.heavy);
+        Flash(anchor, row.flash * HitFx.FlashMul(e) /*HITFX2*/);
     }
 
     void RequestStop(CombatEvent e, float dmg)
@@ -340,10 +340,10 @@ public class HitFeel : MonoBehaviour
         float k = t.dmgHi > t.dmgLo ? (dmg > 0f ? Mathf.Clamp01((dmg - t.dmgLo) / (t.dmgHi - t.dmgLo)) : hs.unknownDamageT) : 1f;
         float ms = Mathf.Lerp(t.minMs, t.maxMs, k);
         if (CombatSlowMo.Active || Time.timeScale < 0.999f) ms *= hs.duringSlowMoMul;     // already slow: a full freeze on top reads as a stall
-        ms = Mathf.Min(ms, hs.maxMs);
+        ms = Mathf.Min(ms, hs.maxMs); ms = HitFx.StopMs(e, ms, (CombatSlowMo.Active || Time.timeScale < 0.999f) ? hs.duringSlowMoMul : 1f); /*HITFX2*/
         LastTier = id; LastStopMs = ms;
         if (ms < hs.minRequestMs) return;
-        PresentationClock.RequestStop(ms);                           // the clock keeps the longest request: this never adds to hit_stop.json
+        if (!HitFx.PresentationStop(e, ms)) PresentationClock.RequestStop(ms); /*HITFX2*/                           // the clock keeps the longest request: this never adds to hit_stop.json
         Stops++;
         if (logOn) Debug.Log("[HitFeel] tick " + Duel.TickCount + " " + e.type + " move=" + e.moveId + " tier=" + id + " dmg=" + dmg.ToString("0.0") + " -> " + ms.ToString("0") + " ms (frame " + Time.frameCount + ")");
     }

@@ -18,8 +18,9 @@ using UnityEngine.SceneManagement;
 public sealed class HubNpcs : MonoBehaviour
 {
     public static HubNpcs Inst;
+    static readonly List<HubNpcs> All = new List<HubNpcs>(); static int pendingCamp = -1; int campIdx = -1;   // VENDORS v1: one HubNpcs per camp (Inst = the main one)
     /// <summary>Number of NPC bodies standing right now (for a log line or a test).</summary>
-    public static int Standing { get { return Inst == null ? 0 : Inst.standing.Count; } }
+    public static int Standing { get { int t = 0; foreach (var h in All) if (h != null) t += h.standing.Count; return t; } }   // VENDORS v1: every camp
 
     sealed class Npc { public HubNpcRow row; public GameObject go; public GltfHold body, clip; public List<Material> mats; public bool placed; public Transform probe; public Vector3 probePos; public Quaternion probeRot; public float probeAt; }   // CAMPNPC v1: mats = the HDRP/Lit copies (destroyed with the body), placed = ground found and positioned, probe* = the "does the idle move" check
     sealed class GltfHold { public GLTFast.GltfImport imp; }
@@ -29,7 +30,7 @@ public sealed class HubNpcs : MonoBehaviour
     readonly List<Npc> standing = new List<Npc>();
     static readonly RaycastHit[] hits = new RaycastHit[12];
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Inst = null; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Inst = null; All.Clear(); pendingCamp = -1; }   // VENDORS v1
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
@@ -40,24 +41,29 @@ public sealed class HubNpcs : MonoBehaviour
         HubSafe.Arm(k);
         HubTrade.Install(k);
         var go = new GameObject("HubNpcs"); DontDestroyOnLoad(go); Inst = go.AddComponent<HubNpcs>();
+        for (int ci = 0; ci < k.camps.Length; ci++)   // VENDORS v1: nothing ships in camps[], so this loop is empty until a camp is enabled
+        {
+            if (HubCfg.Camp(ci) == null) continue;
+            pendingCamp = ci; var g2 = new GameObject("HubNpcs_camp" + ci); DontDestroyOnLoad(g2); g2.AddComponent<HubNpcs>(); pendingCamp = -1;
+        }
     }
 
-    void Awake() { K = HubCfg.Get(); res = new HubResident(K.spawner.spawnMarginM, K.spawner.despawnMarginM); }
+    void Awake() { campIdx = pendingCamp; K = campIdx >= 0 ? HubCfg.Camp(campIdx) : HubCfg.Get(); if (K == null) { Destroy(gameObject); return; } All.Add(this); res = new HubResident(K.spawner.spawnMarginM, K.spawner.despawnMarginM); }   // VENDORS v1
     void OnEnable() { SceneManager.sceneLoaded += OnLoaded; }
     void OnDisable() { SceneManager.sceneLoaded -= OnLoaded; }
-    void OnDestroy() { Clear(); if (Inst == this) Inst = null; }
+    void OnDestroy() { if (K != null) Clear(); All.Remove(this); if (Inst == this) Inst = null; }   // VENDORS v1
     void OnLoaded(Scene s, LoadSceneMode m) { if (m == LoadSceneMode.Single) { Clear(); res.Reset(); preloaded = false; liveSince = -1f; } }   // CAMPNPC v1
 
     /// <summary>The standing NPC with this id (a hub.json npcs[].id), or null.</summary>
     public static GameObject TryGet(string id)
     {
-        if (Inst == null) return null;
-        foreach (var n in Inst.standing) if (n.row.id == id && n.go != null) return n.go;
+        foreach (var h in All) { if (h == null) continue; foreach (var n in h.standing) if (n.row.id == id && n.go != null) return n.go; }   // VENDORS v1: every camp
         return null;
     }
 
     void Update()
     {
+        if (K == null) return;   // VENDORS v1
         float now = Time.unscaledTime; if (now < nextPoll) return; nextPoll = now + K.spawner.pollSeconds;
         var p = GameLoop.Player; bool zones = ZoneRuntime.Owns && ZoneSpan.Live && p != null;
         PreloadStep(zones, now, p); ProbeTick(now);   // CAMPNPC v1
@@ -288,6 +294,7 @@ public sealed class HubNpcs : MonoBehaviour
     // ------------------------------------------------------------------ the SAFE tag and the refusal toast (data: hub.json indicator)
     void OnGUI()
     {
+        if (campIdx >= 0) return;   // MARKET2 v1: the main driver draws the tag and the toast once; HubSafe.PlayerInside already covers every camp area
         var I = K.indicator; if (!I.hudTag.enabled && I.refuseToast.seconds <= 0f) return;
         bool inside = HubSafe.PlayerInside(); float age = Time.unscaledTime - HubSafe.RefusedAt; bool toast = age >= 0f && age <= I.refuseToast.seconds;
         if (!inside && !toast) return;

@@ -12,10 +12,15 @@ public static class HubSafe
     /// <summary>Set once by HubNpcs.Boot when hub.json is enabled and valid.</summary>
     public static bool On;
     public static float RefusedAt = -99f;
-    static HubAreaRow A; static HubSafeCombat C;
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { On = false; RefusedAt = -99f; A = null; C = null; }
+    static HubAreaRow A; static HubSafeCombat C; static HubAreaRow[] X = new HubAreaRow[0];   // MARKET2 v1: X = the areas of the enabled extra camps (hub.json camps[])
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { On = false; RefusedAt = -99f; A = null; C = null; X = new HubAreaRow[0]; }
 
-    public static void Arm(HubData k) { A = k.area; C = k.safe.combat; On = true; }
+    public static void Arm(HubData k)
+    {
+        A = k.area; C = k.safe.combat; On = true;
+        var l = new System.Collections.Generic.List<HubAreaRow>(); if (k.camps != null) for (int i = 0; i < k.camps.Length; i++) { var c = HubCfg.Camp(i); if (c != null) l.Add(c.area); }   // MARKET2 v1: same rule, same combat rows, in the extra camps too
+        X = l.ToArray();
+    }
     public static void Disarm() { On = false; }
 
     /// <summary>The player is standing in the camp rectangle right now.</summary>
@@ -23,7 +28,9 @@ public static class HubSafe
     {
         if (!On) return false;
         var p = GameLoop.Player; if (p == null) return false;
-        var t = p.transform.position; return HubArea.Contains(t.x, t.z, A.zMin, A.zMax, A.xHalf);
+        var t = p.transform.position; if (HubArea.Contains(t.x, t.z, A.zMin, A.zMax, A.xHalf)) return true;
+        for (int i = 0; i < X.Length; i++) if (HubArea.Contains(t.x, t.z, X[i].zMin, X[i].zMax, X[i].xHalf)) return true;   // MARKET2 v1: nothing in X unless a camp is enabled
+        return false;
     }
 
     /// <summary>True when `d` is the player and the camp is safe right now: Duel.Resolve returns without touching health, posture or stamina.</summary>

@@ -91,7 +91,7 @@ public static class CamShake
         var r = Cfg(); if (!r.enabled || r.scale <= 0f) return;
         string cls = Classify(e); if (cls == null) return;
         float who = IsPlayer(e.target) ? r.victimMul : (IsPlayer(e.actor) ? r.attackerMul : r.bystanderMul);
-        Trigger(cls, who * (r.useMoveWeight ? ImpactTable.MoveMul(e.moveId) : 1f));
+        Trigger(cls, who * (r.useMoveWeight ? ImpactTable.MoveMul(e.moveId) : 1f) * HitFx.ShakeMul(e) /*HITFX2*/);
     }
 
     public static void Trigger(string cls, float mul)

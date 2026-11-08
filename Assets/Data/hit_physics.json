@@ -1,0 +1,449 @@
+{
+  "hitPhysics": {
+    "_about": "HITPHYS v1 (lane HITPHYS): live hit physics. PRESENTATION ONLY, read by Scripts/Physics/HitPhysics.cs and applied inside HitReact (partial ragdoll of the LIVING fighters). Nothing here is read by the 60 Hz sim; simhash identical ON/OFF. A landed blow = a hit TYPE (move id -> type; attacker forceType: Pitborn maul, Sobek claw) x the victim FIGHTER row (massKg -> (refMassKg/massKg)^massExponent, reactMul, blendMul) x the attacker's punch x the CLASS (light/heavy/counter) x the ZONE (physics.json hit.rows head/torso/arms/legs when zoneRows). Per type: impulse/twist/lift/dip multipliers, blend = share of the proxy pose shown (0.2-0.5), holdS + backS in seconds (total with the row ease kept in durMinS..durMaxS = 0.15-0.35 s), atPoint = push at the blow point (thrust = sharp linear), pointLateralM = off-axis point so a slash gets torque along the swing, extra = whole-body pushes (maul/claw). Stagger step: fighter.step with score (type impulse x class impulse x punch x mass scale x stepWeight) >= stepThreshold throws the far leg out along the blow. Blocks: clash kinds x fighter clashMul x mass x attacker punch scale the arm recoil of physics.json clash. enabled=false or file missing = HitReact exactly as before. QA: edit here AND in StreamingAssets (apply_hitphys.py --off / --on does both).",
+    "enabled": true,
+    "zoneRows": true,
+    "refMassKg": 66.7,
+    "massExponent": 0.75,
+    "blendExponent": 0.5,
+    "minMassScale": 0.05,
+    "maxMassScale": 1.6,
+    "blendFloor": 0.05,
+    "blendMax": 0.5,
+    "durMinS": 0.15,
+    "durMaxS": 0.35,
+    "maxImpulseMul": 3.0,
+    "defaultType": "slash",
+    "defaultFighter": "*",
+    "types": [
+      {
+        "id": "slash",
+        "about": "sword cut: moderate push, off-axis point = torque along the swing",
+        "impulse": 1.0,
+        "twist": 1.2,
+        "lift": 1.0,
+        "dip": 1.0,
+        "blend": 0.3,
+        "holdS": 0.08,
+        "backS": 0.17,
+        "pointLateralM": 0.18,
+        "stepWeight": 1.0,
+        "atPoint": true,
+        "extra": [],
+        "extraLift": 0.1
+      },
+      {
+        "id": "thrust",
+        "about": "sharp linear push at the point, little twist",
+        "impulse": 1.15,
+        "twist": 0.2,
+        "lift": 0.5,
+        "dip": 0.9,
+        "blend": 0.35,
+        "holdS": 0.06,
+        "backS": 0.12,
+        "pointLateralM": 0.0,
+        "stepWeight": 1.1,
+        "atPoint": true,
+        "extra": [],
+        "extraLift": 0.1
+      },
+      {
+        "id": "stab",
+        "about": "small and deep: short, low impulse, spine barely moves",
+        "impulse": 0.55,
+        "twist": 0.1,
+        "lift": 0.2,
+        "dip": 0.7,
+        "blend": 0.22,
+        "holdS": 0.04,
+        "backS": 0.1,
+        "pointLateralM": 0.0,
+        "stepWeight": 0.5,
+        "atPoint": true,
+        "extra": [],
+        "extraLift": 0.1
+      },
+      {
+        "id": "maul",
+        "about": "heavy blow, whole body: hips/legs/arms follow",
+        "impulse": 1.6,
+        "twist": 1.5,
+        "lift": 1.5,
+        "dip": 1.1,
+        "blend": 0.5,
+        "holdS": 0.12,
+        "backS": 0.2,
+        "pointLateralM": 0.1,
+        "stepWeight": 1.3,
+        "atPoint": false,
+        "extra": [
+          {
+            "part": "thigh$near",
+            "share": 0.35,
+            "blend": 0.45
+          },
+          {
+            "part": "thigh$far",
+            "share": 0.25,
+            "blend": 0.4
+          },
+          {
+            "part": "arm$near",
+            "share": 0.3,
+            "blend": 0.45
+          },
+          {
+            "part": "arm$far",
+            "share": 0.2,
+            "blend": 0.4
+          }
+        ],
+        "extraLift": 0.1
+      },
+      {
+        "id": "claw",
+        "about": "raking claws: slash-like, wider, arms and torso",
+        "impulse": 1.3,
+        "twist": 1.4,
+        "lift": 1.0,
+        "dip": 1.0,
+        "blend": 0.42,
+        "holdS": 0.1,
+        "backS": 0.18,
+        "pointLateralM": 0.22,
+        "stepWeight": 1.1,
+        "atPoint": true,
+        "extra": [
+          {
+            "part": "arm$near",
+            "share": 0.3,
+            "blend": 0.4
+          }
+        ],
+        "extraLift": 0.1
+      },
+      {
+        "id": "bash",
+        "about": "shield bash / pommel / shove: broad push into the chest, lifts a little",
+        "impulse": 1.2,
+        "twist": 0.3,
+        "lift": 1.2,
+        "dip": 1.0,
+        "blend": 0.4,
+        "holdS": 0.09,
+        "backS": 0.16,
+        "pointLateralM": 0.0,
+        "stepWeight": 1.4,
+        "atPoint": false,
+        "extra": [
+          {
+            "part": "head",
+            "share": 0.15,
+            "blend": 0.35
+          }
+        ],
+        "extraLift": 0.1
+      },
+      {
+        "id": "kick",
+        "about": "kick to the legs/belly",
+        "impulse": 0.9,
+        "twist": 0.5,
+        "lift": 0.8,
+        "dip": 1.0,
+        "blend": 0.38,
+        "holdS": 0.08,
+        "backS": 0.15,
+        "pointLateralM": 0.0,
+        "stepWeight": 1.0,
+        "atPoint": false,
+        "extra": [],
+        "extraLift": 0.1
+      }
+    ],
+    "moves": [
+      {
+        "id": "thrust",
+        "type": "thrust"
+      },
+      {
+        "id": "heavy_thrust",
+        "type": "thrust"
+      },
+      {
+        "id": "skill_witchfire",
+        "type": "thrust"
+      },
+      {
+        "id": "riposte",
+        "type": "stab"
+      },
+      {
+        "id": "skill_jab",
+        "type": "stab"
+      },
+      {
+        "id": "skill_lunge",
+        "type": "stab"
+      },
+      {
+        "id": "skill_shove",
+        "type": "bash"
+      },
+      {
+        "id": "shove_L",
+        "type": "bash"
+      },
+      {
+        "id": "skill_pommel",
+        "type": "bash"
+      },
+      {
+        "id": "kick",
+        "type": "kick"
+      },
+      {
+        "id": "skill_stomp",
+        "type": "kick"
+      }
+    ],
+    "moveContains": [
+      {
+        "contains": "thrust",
+        "type": "thrust"
+      },
+      {
+        "contains": "claw",
+        "type": "claw"
+      },
+      {
+        "contains": "maul",
+        "type": "maul"
+      },
+      {
+        "contains": "bash",
+        "type": "bash"
+      },
+      {
+        "contains": "shove",
+        "type": "bash"
+      }
+    ],
+    "classes": [
+      {
+        "name": "light",
+        "impulse": 1.0,
+        "blend": 0.85,
+        "hold": 0.9
+      },
+      {
+        "name": "heavy",
+        "impulse": 1.0,
+        "blend": 1.0,
+        "hold": 1.0
+      },
+      {
+        "name": "counter",
+        "impulse": 1.1,
+        "blend": 1.0,
+        "hold": 1.1
+      }
+    ],
+    "fighters": [
+      {
+        "id": "*",
+        "about": "unknown fighter = Joan-like",
+        "massKg": 66.7,
+        "reactMul": 1.0,
+        "blendMul": 1.0,
+        "punch": 1.0,
+        "clashMul": 1.0,
+        "forceType": "",
+        "step": true,
+        "stepThreshold": 0.6,
+        "stepImpulse": 18.0,
+        "stepLift": 2.0,
+        "stepBlend": 0.45,
+        "stepDurS": 0.3,
+        "stepPart": "thigh$far",
+        "stepShin": "shin$far",
+        "stepFoot": "foot$far",
+        "stepEaseS": 0.04,
+        "stepHoldFrac": 0.4,
+        "stepThighDip": 0.3,
+        "stepShinDip": 0.4,
+        "stepFootDip": 0.5,
+        "stepShinShare": 0.8,
+        "stepFootShare": 0.5,
+        "forceOverrides": []
+      },
+      {
+        "id": "Joan",
+        "about": "66.7 kg (ragdoll.json massKg): reacts most; shield arm recoils on a block",
+        "massKg": 66.7,
+        "reactMul": 1.0,
+        "blendMul": 1.0,
+        "punch": 1.0,
+        "clashMul": 1.0,
+        "forceType": "",
+        "step": true,
+        "stepThreshold": 0.6,
+        "stepImpulse": 18.0,
+        "stepLift": 2.0,
+        "stepBlend": 0.45,
+        "stepDurS": 0.3,
+        "stepPart": "thigh$far",
+        "stepShin": "shin$far",
+        "stepFoot": "foot$far",
+        "stepEaseS": 0.04,
+        "stepHoldFrac": 0.4,
+        "stepThighDip": 0.3,
+        "stepShinDip": 0.4,
+        "stepFootDip": 0.5,
+        "stepShinShare": 0.8,
+        "stepFootShare": 0.5,
+        "forceOverrides": []
+      },
+      {
+        "id": "Dracula",
+        "about": "85 kg",
+        "massKg": 85.0,
+        "reactMul": 1.0,
+        "blendMul": 1.0,
+        "punch": 1.0,
+        "clashMul": 1.0,
+        "forceType": "",
+        "step": true,
+        "stepThreshold": 0.7,
+        "stepImpulse": 18.0,
+        "stepLift": 2.0,
+        "stepBlend": 0.45,
+        "stepDurS": 0.3,
+        "stepPart": "thigh$far",
+        "stepShin": "shin$far",
+        "stepFoot": "foot$far",
+        "stepEaseS": 0.04,
+        "stepHoldFrac": 0.4,
+        "stepThighDip": 0.3,
+        "stepShinDip": 0.4,
+        "stepFootDip": 0.5,
+        "stepShinShare": 0.8,
+        "stepFootShare": 0.5,
+        "forceOverrides": []
+      },
+      {
+        "id": "Pitborn",
+        "about": "120 kg, claws only (lanePITCLAWS): every cut, thrust and stab is a claw hit, bash and kick stay; takes sword cuts as a lean and a shrug",
+        "massKg": 120.0,
+        "reactMul": 1.0,
+        "blendMul": 0.9,
+        "punch": 1.3,
+        "clashMul": 1.0,
+        "forceType": "claw",
+        "step": false,
+        "stepThreshold": 9.0,
+        "stepImpulse": 0.0,
+        "stepLift": 0.0,
+        "stepBlend": 0.0,
+        "stepDurS": 0.3,
+        "stepPart": "thigh$far",
+        "stepShin": "shin$far",
+        "stepFoot": "foot$far",
+        "stepEaseS": 0.04,
+        "stepHoldFrac": 0.4,
+        "stepThighDip": 0.3,
+        "stepShinDip": 0.4,
+        "stepFootDip": 0.5,
+        "stepShinShare": 0.8,
+        "stepFootShare": 0.5,
+        "forceOverrides": [
+          "slash",
+          "thrust",
+          "stab"
+        ]
+      },
+      {
+        "id": "Sobek",
+        "about": "900 kg: barely moves; claws and bite hit hard",
+        "massKg": 900.0,
+        "reactMul": 1.0,
+        "blendMul": 1.0,
+        "punch": 1.6,
+        "clashMul": 1.0,
+        "forceType": "claw",
+        "step": false,
+        "stepThreshold": 9.0,
+        "stepImpulse": 0.0,
+        "stepLift": 0.0,
+        "stepBlend": 0.0,
+        "stepDurS": 0.3,
+        "stepPart": "thigh$far",
+        "stepShin": "shin$far",
+        "stepFoot": "foot$far",
+        "stepEaseS": 0.04,
+        "stepHoldFrac": 0.4,
+        "stepThighDip": 0.3,
+        "stepShinDip": 0.4,
+        "stepFootDip": 0.5,
+        "stepShinShare": 0.8,
+        "stepFootShare": 0.5,
+        "forceOverrides": [
+          "slash",
+          "thrust",
+          "stab"
+        ]
+      },
+      {
+        "id": "Grendel",
+        "about": "700 kg",
+        "massKg": 700.0,
+        "reactMul": 1.0,
+        "blendMul": 1.0,
+        "punch": 1.5,
+        "clashMul": 1.0,
+        "forceType": "claw",
+        "step": false,
+        "stepThreshold": 9.0,
+        "stepImpulse": 0.0,
+        "stepLift": 0.0,
+        "stepBlend": 0.0,
+        "stepDurS": 0.3,
+        "stepPart": "thigh$far",
+        "stepShin": "shin$far",
+        "stepFoot": "foot$far",
+        "stepEaseS": 0.04,
+        "stepHoldFrac": 0.4,
+        "stepThighDip": 0.3,
+        "stepShinDip": 0.4,
+        "stepFootDip": 0.5,
+        "stepShinShare": 0.8,
+        "stepFootShare": 0.5,
+        "forceOverrides": [
+          "slash",
+          "thrust",
+          "stab"
+        ]
+      }
+    ],
+    "clash": [
+      {
+        "name": "blocked",
+        "mul": 1.0
+      },
+      {
+        "name": "perfect",
+        "mul": 0.9
+      },
+      {
+        "name": "parried",
+        "mul": 1.1
+      },
+      {
+        "name": "broken",
+        "mul": 1.3
+      }
+    ],
+    "dipMax": 1.5
+  }
+}

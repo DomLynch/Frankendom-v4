@@ -101,6 +101,13 @@
       "tau": 0.7,
       "blend": 0.15,
       "debugEvery": 30
+    },
+    {
+      "name": "Grendel",
+      "enabled": false,
+      "tau": 0.7,
+      "blend": 0.15,
+      "debugEvery": 30
     }
   ]
 }

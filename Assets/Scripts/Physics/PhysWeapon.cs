@@ -133,14 +133,29 @@ public static class PhysWeapon
         b = t + ax / len * w.prof.extendM * sc; r = w.prof.radiusM * sc; return true;
     }
     struct Prim { public Vector3 p, q; public float r; }
-    static readonly Prim[] primsA = new Prim[2], primsB = new Prim[2];
+    static readonly Prim[] primsA = new Prim[3], primsB = new Prim[3];   // OFFHAND v2: shaft, head sphere, off-hand blade
     /// <summary>The weapon as up to two primitives: [0] the shaft capsule, [1] the head sphere at TrailTip (profile headRadiusM > 0). Returns the count (0 = no weapon found).</summary>
-    static int Prims(DuelFighter f, Prim[] buf)
+    static int Prims(DuelFighter f, Prim[] buf, bool asAttacker = false)
     {
-        Vector3 a, b; float r; if (!Blade(f, out a, out b, out r)) return 0;
-        buf[0] = new Prim { p = a, q = b, r = r }; var w = Cached(f);
-        if (w != null && w.prof.headRadiusM > 0f) { Vector3 t = w.tip.position; buf[1] = new Prim { p = t, q = t, r = w.prof.headRadiusM * FighterScale.Of(f) }; return 2; }
-        return 1;
+        /* OFFHAND v2: an attacker's contact comes from the blade(s) its move swings (off_hand.json attacks[], no row = both); a defender's blades all count. The off-hand blade is one more capsule, socket -> glb tip node. */
+        bool useMain = true, useOff = true; if (asAttacker) OffHandWeapon.BladesFor(f, out useMain, out useOff);
+        int n = 0; Vector3 a, b; float r;
+        if (useMain && Blade(f, out a, out b, out r))
+        {
+            buf[n++] = new Prim { p = a, q = b, r = r }; var w = Cached(f);
+            if (w != null && w.prof.headRadiusM > 0f) { Vector3 t = w.tip.position; buf[n++] = new Prim { p = t, q = t, r = w.prof.headRadiusM * FighterScale.Of(f) }; }
+        }
+        Prim op; if (useOff && OffPrim(f, out op)) buf[n++] = op;
+        return n;
+    }
+    /// <summary>OFFHAND v2: the off-hand weapon as a capsule: grip (its socket) -> the glb tip node + the profile's extendM, radius from the profile matched on the off-hand weapon id (same weapons[] rows as the main hand).</summary>
+    static bool OffPrim(DuelFighter f, out Prim p)
+    {
+        p = default(Prim); var oh = OffHandWeapon.Of(f); if (oh == null || !oh.VisualShown || oh.Socket == null || oh.Tip == null) return false;
+        var c = Cfg; PwWeapon prof = c.fallback; string wid = oh.WeaponId.ToLowerInvariant();
+        for (int i = 0; i < c.weapons.Length; i++) { var w = c.weapons[i]; if (w != null && !string.IsNullOrEmpty(w.match) && wid.Contains(w.match.ToLowerInvariant())) { prof = w; break; } }
+        Vector3 a = oh.Socket.position, t = oh.Tip.position, ax = t - a; float len = ax.magnitude; if (len < 1e-4f) return false;
+        float sc = FighterScale.Of(f); p = new Prim { p = a, q = t + ax / len * prof.extendM * sc, r = prof.radiusM * sc }; return true;
     }
     static float ClosestSegSeg(Vector3 p1, Vector3 q1, Vector3 p2, Vector3 q2, out Vector3 c1, out Vector3 c2)
     {
@@ -164,7 +179,7 @@ public static class PhysWeapon
     /// <summary>The real contact point of two blades. true = the blades' surfaces are within maxGapM of each other (a true crossing / touch); false = fallback: the blend of the two tips.</summary>
     public static bool ContactPoint(DuelFighter attacker, DuelFighter defender, out Vector3 point)
     {
-        point = Vector3.zero; int na = Prims(attacker, primsA); if (na == 0) return false;
+        point = Vector3.zero; int na = Prims(attacker, primsA, true); if (na == 0) return false;   // OFFHAND v2: attacker blades by move
         int nb = Prims(defender, primsB);
         if (nb == 0) { point = primsA[na - 1].q; Clamp(attacker, defender, ref point); return false; }
         float best = float.MaxValue; Vector3 bp = Vector3.zero;

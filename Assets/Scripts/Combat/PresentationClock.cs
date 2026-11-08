@@ -114,6 +114,6 @@ public class PresentationClockDriver : MonoBehaviour
 {
     void OnEnable() { ContactRelay.OnEvent += OnEvent; }
     void OnDisable() { ContactRelay.OnEvent -= OnEvent; PresentationClock.Cancel(); }
-    void OnEvent(CombatEvent e) { PresentationClock.RequestStop(e); }
+    void OnEvent(CombatEvent e) { if (!HitFx.SuppressSimStop() /*HITFX2*/) PresentationClock.RequestStop(e); }
     void Update() { PresentationClock.Tick(Time.unscaledDeltaTime); }
 }

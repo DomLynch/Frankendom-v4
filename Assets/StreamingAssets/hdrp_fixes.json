@@ -16,6 +16,20 @@
             "volumetricDimmer": 0
         },
         {
+            "name": "Fill_Player",
+            "who": "player",
+            "layerBit": 5,
+            "kelvin": 6200,
+            "lux": 1100,
+            "behind": -3.4,
+            "above": 1.5,
+            "side": 0.9,
+            "aimHeight": 1.25,
+            "spotAngle": 55,
+            "range": 9,
+            "volumetricDimmer": 0
+        },
+        {
             "name": "Rim_Enemy",
             "who": "enemy",
             "layerBit": 6,

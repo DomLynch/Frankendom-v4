@@ -26,6 +26,12 @@
       "maxStamina": 160,
       "regenMul": 0.8,
       "parryWindowTicks": 0
+    },
+    {
+      "key": "Grendel",
+      "maxStamina": 170,
+      "regenMul": 0.8,
+      "parryWindowTicks": 0
     }
   ],
   "regen": {

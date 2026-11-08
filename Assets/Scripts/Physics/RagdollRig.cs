@@ -599,7 +599,7 @@ public class RagdollRig : MonoBehaviour
         ApplyDrives(SimTime);
         if (SimTime < RagdollDeath.Cfg.limits.tightenSeconds + dt) TightenLimits(SimTime);
         if (SimTime >= dc.maxSeconds) { Freeze(); return; }
-        if (SimTime < dc.rampSeconds) { slowTicks = 0; return; }
+        if (SimTime < Mathf.Max(dc.rampSeconds, dc.minSimSeconds)) { slowTicks = 0; return; }   // RAGDOLL v1: a propped / pinned body is not frozen standing
         float maxSq = 0f;
         for (int i = 0; i < parts.Count; i++) { var rb = parts[i].rb; if (rb == null) continue; float s = rb.linearVelocity.sqrMagnitude; if (s > maxSq || float.IsNaN(s)) maxSq = float.IsNaN(s) ? float.MaxValue : s; }
         if (maxSq < dc.freezeSpeedSq) slowTicks++; else slowTicks = 0;

@@ -1,0 +1,100 @@
+{
+ "_about": "laneOFFHAND: OFFHAND v2 (Assets/Scripts/Gear/OffHandWeapon.cs, PhysWeapon.cs hunks). A second, left-hand weapon for a dual-wielder. enabled = master (false: no item loads, today's game). slot = the gear.json slot of the off-hand weapon item (an item with a shield block stays ShieldMount's), bone = the hand bone under the roster bone prefix, socket = the node made under it (WeaponSocket_L). rows[] = per-fighter grip: socketOffset metres in the hand-bone frame, socketEuler degrees, slide metres along the blade, blendSeconds ease, states[] Animator states the row applies to (empty = default); name = the fighter (RosterResolver), item = the gear item id. attacks[] = which blade(s) a move swings for the contact point of the sparks and clash (R = main hand, L = off hand; no row = both): PRESENTATION ONLY, Duel.Resolve reads no weapon geometry (hits come from the move's reach x ReachScale, the same for either blade). Numbers: grendel_weapon.json grip.L (hand-bone frame from laneMONSTER3 fist_fit2 / grip_rows), blade contact hand from grendel_contact.json.",
+ "enabled": true,
+ "debugLog": false,
+ "slot": "offHand",
+ "bone": "LeftHand",
+ "socket": "WeaponSocket_L",
+ "rows": [
+  {
+   "name": "Grendel",
+   "item": "grendel_blade_L",
+   "enabled": true,
+   "socketOffset": [
+    -0.0784,
+    0.0072,
+    -0.1042
+   ],
+   "socketEuler": [
+    165.428,
+    2.554,
+    84.842
+   ],
+   "slide": 0.0,
+   "blendSeconds": 0.1,
+   "states": []
+  }
+ ],
+ "attacks": [
+  {
+   "name": "Grendel",
+   "move": "light_right",
+   "blades": [
+    "R"
+   ]
+  },
+  {
+   "name": "Grendel",
+   "move": "slash_riposte",
+   "blades": [
+    "R"
+   ]
+  },
+  {
+   "name": "Grendel",
+   "move": "riposte",
+   "blades": [
+    "R"
+   ]
+  },
+  {
+   "name": "Grendel",
+   "move": "light_left",
+   "blades": [
+    "L"
+   ]
+  },
+  {
+   "name": "Grendel",
+   "move": "heavy_right",
+   "blades": [
+    "R"
+   ]
+  },
+  {
+   "name": "Grendel",
+   "move": "heavy_left",
+   "blades": [
+    "L"
+   ]
+  },
+  {
+   "name": "Grendel",
+   "move": "heavy_overhead",
+   "blades": [
+    "L"
+   ]
+  },
+  {
+   "name": "Grendel",
+   "move": "light_overhead",
+   "blades": [
+    "L"
+   ]
+  },
+  {
+   "name": "Grendel",
+   "move": "thrust",
+   "blades": [
+    "R"
+   ]
+  },
+  {
+   "name": "Grendel",
+   "move": "heavy_thrust",
+   "blades": [
+    "R"
+   ]
+  }
+ ]
+}

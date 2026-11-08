@@ -1,0 +1,896 @@
+{
+ "_about": "laneHITFX2 v1 (HitFx.cs). One row per hit type; most specific row wins (moves 16, weapons 8, dirs 4, kill 2, heavy 1, metal 1; later row wins a tie). type = contact type (Hit | Blocked | Parried | GuardBroken). weapons = cues.json weapon keys (sword | maul | claws); dirs = move-defs.json direction (left | right | overhead | thrust | low); heavy / metal / kill -1 any, 0 / 1. stopMs = hit-stop (clamped stopMinMs..stopMaxMs; 0 = HitFeel's own tier); hitStopMode presentation (default) = the sim keeps ticking, only the hitter's and victim's Animator speed dips to animDipMul for stopMs, then plays at catchUpMul until the lost time is recovered (capped by maxCatchUpS); sim = the old global PresentationClock stop. shakeMul = x CamShake pulse. sparkMul / flashMul = x HitFeel spark burst / flash light (sparks only on steel and guard, per hit_feel.json rows). blood = dark non-glowing droplets on flesh only: spray (along the blade path in the attacker frame: paths[]) or puff (short forward); count x blood.json. trail = brief pale streak along the blade path, DARK (on.trail 0) until Dom's LOOK OK (weapon trails were removed by Dom). on.* = sub-switches. enabled 0 = off (kit --off). No file = off.",
+ "version": 1,
+ "enabled": 1,
+ "suppressInFinisher": 1,
+ "stopMinMs": 40,
+ "stopMaxMs": 90,
+ "hitStopMode": "presentation",
+ "animDipMul": 0.1,
+ "catchUpMul": 1.5,
+ "maxCatchUpS": 0.3,
+ "on": {
+  "stop": 1,
+  "shake": 1,
+  "spark": 1,
+  "blood": 1,
+  "trail": 0
+ },
+ "pool": {
+  "sprayMax": 160,
+  "puffMax": 80,
+  "trailMax": 48,
+  "minIntervalS": 0.03,
+  "sprayLengthScale": 1.6,
+  "sprayVelocityScale": 0.02,
+  "sprayMaxSize": 0.5,
+  "gravity": 8.0,
+  "puffGravity": 5.0,
+  "puffMaxSize": 0.08
+ },
+ "trailCfg": {
+  "color": [
+   0.72,
+   0.74,
+   0.78
+  ],
+  "lengthScale": 6.0,
+  "velocityScale": 0.03,
+  "maxSize": 0.3,
+  "startFrac": 0.2,
+  "jitterM": 0.03,
+  "alphaMid": 0.6
+ },
+ "minCatchUpMul": 1.01,
+ "minFwdMix": 0.01,
+ "gravityRef": 9.81,
+ "score": {
+  "moves": 16,
+  "weapons": 8,
+  "dirs": 4,
+  "kill": 2,
+  "heavy": 1,
+  "metal": 1
+ },
+ "fade": {
+  "midAt": 0.6,
+  "sprayAlphaMid": 0.9,
+  "puffAlphaMid": 0.9
+ },
+ "rng": {
+  "mul": 1664525,
+  "add": 1013904223,
+  "seed": 90210,
+  "scale": 4294967296.0
+ },
+ "roles": {
+  "spray": "bloodStrands",
+  "puff": "blood",
+  "trail": "dust",
+  "softDistanceProp": "_SoftDistance"
+ },
+ "paths": [
+  {
+   "dir": "left",
+   "side": 1.0,
+   "down": 0.15,
+   "fwd": 0.0
+  },
+  {
+   "dir": "right",
+   "side": -1.0,
+   "down": 0.15,
+   "fwd": 0.0
+  },
+  {
+   "dir": "overhead",
+   "side": 0.0,
+   "down": 1.0,
+   "fwd": 0.35
+  },
+  {
+   "dir": "thrust",
+   "side": 0.0,
+   "down": 0.0,
+   "fwd": 1.0
+  },
+  {
+   "dir": "low",
+   "side": 0.0,
+   "down": 0.0,
+   "fwd": 1.0
+  }
+ ],
+ "rows": [
+  {
+   "id": "slash_light",
+   "type": "Hit",
+   "weapons": [],
+   "dirs": [
+    "left",
+    "right"
+   ],
+   "moves": [],
+   "heavy": 0,
+   "metal": 0,
+   "kill": -1,
+   "stopMs": 55,
+   "shakeMul": 0.9,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "spray",
+    "count": 6,
+    "speedMin": 2.2,
+    "speedMax": 4.2,
+    "coneDeg": 12,
+    "lifeMin": 0.28,
+    "lifeMax": 0.5,
+    "sizeMin": 0.02,
+    "sizeMax": 0.03,
+    "pathMix": 1,
+    "fwdMix": 0.35,
+    "upBias": 0.1
+   },
+   "trail": {
+    "count": 3,
+    "lengthM": 0.3,
+    "speed": 4.5,
+    "life": 0.06,
+    "width": 0.018,
+    "alpha": 0.22
+   }
+  },
+  {
+   "id": "slash_heavy",
+   "type": "Hit",
+   "weapons": [],
+   "dirs": [
+    "left",
+    "right"
+   ],
+   "moves": [],
+   "heavy": 1,
+   "metal": 0,
+   "kill": -1,
+   "stopMs": 80,
+   "shakeMul": 1.1,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "spray",
+    "count": 10,
+    "speedMin": 2.8,
+    "speedMax": 5.5,
+    "coneDeg": 14,
+    "lifeMin": 0.32,
+    "lifeMax": 0.6,
+    "sizeMin": 0.022,
+    "sizeMax": 0.034,
+    "pathMix": 1,
+    "fwdMix": 0.35,
+    "upBias": 0.12
+   },
+   "trail": {
+    "count": 4,
+    "lengthM": 0.4,
+    "speed": 5.5,
+    "life": 0.07,
+    "width": 0.022,
+    "alpha": 0.26
+   }
+  },
+  {
+   "id": "chop_light",
+   "type": "Hit",
+   "weapons": [],
+   "dirs": [
+    "overhead"
+   ],
+   "moves": [],
+   "heavy": 0,
+   "metal": 0,
+   "kill": -1,
+   "stopMs": 65,
+   "shakeMul": 1.0,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "spray",
+    "count": 8,
+    "speedMin": 2.4,
+    "speedMax": 4.6,
+    "coneDeg": 12,
+    "lifeMin": 0.3,
+    "lifeMax": 0.55,
+    "sizeMin": 0.02,
+    "sizeMax": 0.032,
+    "pathMix": 1,
+    "fwdMix": 0.45,
+    "upBias": 0.05
+   },
+   "trail": {
+    "count": 3,
+    "lengthM": 0.35,
+    "speed": 5,
+    "life": 0.06,
+    "width": 0.02,
+    "alpha": 0.24
+   }
+  },
+  {
+   "id": "chop_heavy",
+   "type": "Hit",
+   "weapons": [],
+   "dirs": [
+    "overhead"
+   ],
+   "moves": [],
+   "heavy": 1,
+   "metal": 0,
+   "kill": -1,
+   "stopMs": 85,
+   "shakeMul": 1.2,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "spray",
+    "count": 12,
+    "speedMin": 3.0,
+    "speedMax": 6.0,
+    "coneDeg": 14,
+    "lifeMin": 0.34,
+    "lifeMax": 0.62,
+    "sizeMin": 0.022,
+    "sizeMax": 0.036,
+    "pathMix": 1,
+    "fwdMix": 0.45,
+    "upBias": 0.05
+   },
+   "trail": {
+    "count": 4,
+    "lengthM": 0.45,
+    "speed": 6,
+    "life": 0.07,
+    "width": 0.024,
+    "alpha": 0.28
+   }
+  },
+  {
+   "id": "thrust_light",
+   "type": "Hit",
+   "weapons": [],
+   "dirs": [
+    "thrust"
+   ],
+   "moves": [],
+   "heavy": 0,
+   "metal": 0,
+   "kill": -1,
+   "stopMs": 60,
+   "shakeMul": 0.8,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "puff",
+    "count": 4,
+    "speedMin": 1.4,
+    "speedMax": 2.6,
+    "coneDeg": 8,
+    "lifeMin": 0.16,
+    "lifeMax": 0.3,
+    "sizeMin": 0.028,
+    "sizeMax": 0.045,
+    "pathMix": 0,
+    "fwdMix": 1,
+    "upBias": 0.18
+   },
+   "trail": {
+    "count": 2,
+    "lengthM": 0.45,
+    "speed": 6,
+    "life": 0.05,
+    "width": 0.014,
+    "alpha": 0.2
+   }
+  },
+  {
+   "id": "thrust_heavy",
+   "type": "Hit",
+   "weapons": [],
+   "dirs": [
+    "thrust"
+   ],
+   "moves": [],
+   "heavy": 1,
+   "metal": 0,
+   "kill": -1,
+   "stopMs": 85,
+   "shakeMul": 1.0,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "puff",
+    "count": 6,
+    "speedMin": 1.8,
+    "speedMax": 3.2,
+    "coneDeg": 9,
+    "lifeMin": 0.18,
+    "lifeMax": 0.34,
+    "sizeMin": 0.03,
+    "sizeMax": 0.05,
+    "pathMix": 0,
+    "fwdMix": 1,
+    "upBias": 0.18
+   },
+   "trail": {
+    "count": 3,
+    "lengthM": 0.55,
+    "speed": 7,
+    "life": 0.06,
+    "width": 0.016,
+    "alpha": 0.24
+   }
+  },
+  {
+   "id": "kick",
+   "type": "Hit",
+   "weapons": [],
+   "dirs": [
+    "low"
+   ],
+   "moves": [],
+   "heavy": -1,
+   "metal": 0,
+   "kill": -1,
+   "stopMs": 50,
+   "shakeMul": 0.9,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "none",
+    "count": 0,
+    "speedMin": 2,
+    "speedMax": 4,
+    "coneDeg": 12,
+    "lifeMin": 0.3,
+    "lifeMax": 0.55,
+    "sizeMin": 0.02,
+    "sizeMax": 0.03,
+    "pathMix": 1,
+    "fwdMix": 0.3,
+    "upBias": 0.1
+   },
+   "trail": {
+    "count": 0,
+    "lengthM": 0.35,
+    "speed": 4,
+    "life": 0.07,
+    "width": 0.02,
+    "alpha": 0.25
+   }
+  },
+  {
+   "id": "maul_light",
+   "type": "Hit",
+   "weapons": [
+    "maul"
+   ],
+   "dirs": [],
+   "moves": [],
+   "heavy": 0,
+   "metal": 0,
+   "kill": -1,
+   "stopMs": 75,
+   "shakeMul": 1.2,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "spray",
+    "count": 9,
+    "speedMin": 2.4,
+    "speedMax": 4.8,
+    "coneDeg": 18,
+    "lifeMin": 0.3,
+    "lifeMax": 0.55,
+    "sizeMin": 0.024,
+    "sizeMax": 0.036,
+    "pathMix": 1,
+    "fwdMix": 0.4,
+    "upBias": 0.1
+   },
+   "trail": {
+    "count": 3,
+    "lengthM": 0.4,
+    "speed": 5,
+    "life": 0.07,
+    "width": 0.03,
+    "alpha": 0.26
+   }
+  },
+  {
+   "id": "maul_heavy",
+   "type": "Hit",
+   "weapons": [
+    "maul"
+   ],
+   "dirs": [],
+   "moves": [],
+   "heavy": 1,
+   "metal": 0,
+   "kill": -1,
+   "stopMs": 90,
+   "shakeMul": 1.35,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "spray",
+    "count": 13,
+    "speedMin": 2.8,
+    "speedMax": 5.8,
+    "coneDeg": 22,
+    "lifeMin": 0.34,
+    "lifeMax": 0.62,
+    "sizeMin": 0.026,
+    "sizeMax": 0.04,
+    "pathMix": 1,
+    "fwdMix": 0.4,
+    "upBias": 0.12
+   },
+   "trail": {
+    "count": 4,
+    "lengthM": 0.5,
+    "speed": 6,
+    "life": 0.08,
+    "width": 0.034,
+    "alpha": 0.3
+   }
+  },
+  {
+   "id": "claw_light",
+   "type": "Hit",
+   "weapons": [
+    "claws"
+   ],
+   "dirs": [],
+   "moves": [],
+   "heavy": 0,
+   "metal": 0,
+   "kill": -1,
+   "stopMs": 50,
+   "shakeMul": 0.8,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "spray",
+    "count": 6,
+    "speedMin": 2.8,
+    "speedMax": 4.6,
+    "coneDeg": 8,
+    "lifeMin": 0.26,
+    "lifeMax": 0.46,
+    "sizeMin": 0.016,
+    "sizeMax": 0.026,
+    "pathMix": 1,
+    "fwdMix": 0.35,
+    "upBias": 0.08
+   },
+   "trail": {
+    "count": 3,
+    "lengthM": 0.3,
+    "speed": 5,
+    "life": 0.05,
+    "width": 0.012,
+    "alpha": 0.2
+   }
+  },
+  {
+   "id": "claw_heavy",
+   "type": "Hit",
+   "weapons": [
+    "claws"
+   ],
+   "dirs": [],
+   "moves": [],
+   "heavy": 1,
+   "metal": 0,
+   "kill": -1,
+   "stopMs": 65,
+   "shakeMul": 0.95,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "spray",
+    "count": 9,
+    "speedMin": 3.0,
+    "speedMax": 5.2,
+    "coneDeg": 9,
+    "lifeMin": 0.28,
+    "lifeMax": 0.5,
+    "sizeMin": 0.018,
+    "sizeMax": 0.03,
+    "pathMix": 1,
+    "fwdMix": 0.35,
+    "upBias": 0.08
+   },
+   "trail": {
+    "count": 4,
+    "lengthM": 0.36,
+    "speed": 5.5,
+    "life": 0.06,
+    "width": 0.014,
+    "alpha": 0.22
+   }
+  },
+  {
+   "id": "kill_slash",
+   "type": "Hit",
+   "weapons": [],
+   "dirs": [
+    "left",
+    "right",
+    "overhead"
+   ],
+   "moves": [],
+   "heavy": -1,
+   "metal": 0,
+   "kill": 1,
+   "stopMs": 90,
+   "shakeMul": 1.3,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "spray",
+    "count": 14,
+    "speedMin": 3.0,
+    "speedMax": 6.0,
+    "coneDeg": 16,
+    "lifeMin": 0.34,
+    "lifeMax": 0.65,
+    "sizeMin": 0.022,
+    "sizeMax": 0.036,
+    "pathMix": 1,
+    "fwdMix": 0.4,
+    "upBias": 0.12
+   },
+   "trail": {
+    "count": 0,
+    "lengthM": 0.35,
+    "speed": 4,
+    "life": 0.07,
+    "width": 0.02,
+    "alpha": 0.25
+   }
+  },
+  {
+   "id": "kill_stab",
+   "type": "Hit",
+   "weapons": [],
+   "dirs": [
+    "thrust"
+   ],
+   "moves": [],
+   "heavy": -1,
+   "metal": 0,
+   "kill": 1,
+   "stopMs": 90,
+   "shakeMul": 1.2,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "puff",
+    "count": 8,
+    "speedMin": 1.8,
+    "speedMax": 3.4,
+    "coneDeg": 10,
+    "lifeMin": 0.2,
+    "lifeMax": 0.38,
+    "sizeMin": 0.03,
+    "sizeMax": 0.05,
+    "pathMix": 0,
+    "fwdMix": 1,
+    "upBias": 0.2
+   },
+   "trail": {
+    "count": 0,
+    "lengthM": 0.35,
+    "speed": 4,
+    "life": 0.07,
+    "width": 0.02,
+    "alpha": 0.25
+   }
+  },
+  {
+   "id": "metal_light",
+   "type": "Hit",
+   "weapons": [],
+   "dirs": [],
+   "moves": [],
+   "heavy": 0,
+   "metal": 1,
+   "kill": -1,
+   "stopMs": 60,
+   "shakeMul": 0.9,
+   "sparkMul": 1.0,
+   "flashMul": 1,
+   "blood": {
+    "mode": "none",
+    "count": 0,
+    "speedMin": 2,
+    "speedMax": 4,
+    "coneDeg": 12,
+    "lifeMin": 0.3,
+    "lifeMax": 0.55,
+    "sizeMin": 0.02,
+    "sizeMax": 0.03,
+    "pathMix": 1,
+    "fwdMix": 0.3,
+    "upBias": 0.1
+   },
+   "trail": {
+    "count": 0,
+    "lengthM": 0.35,
+    "speed": 4,
+    "life": 0.07,
+    "width": 0.02,
+    "alpha": 0.25
+   }
+  },
+  {
+   "id": "metal_heavy",
+   "type": "Hit",
+   "weapons": [],
+   "dirs": [],
+   "moves": [],
+   "heavy": 1,
+   "metal": 1,
+   "kill": -1,
+   "stopMs": 80,
+   "shakeMul": 1.1,
+   "sparkMul": 1.1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "none",
+    "count": 0,
+    "speedMin": 2,
+    "speedMax": 4,
+    "coneDeg": 12,
+    "lifeMin": 0.3,
+    "lifeMax": 0.55,
+    "sizeMin": 0.02,
+    "sizeMax": 0.03,
+    "pathMix": 1,
+    "fwdMix": 0.3,
+    "upBias": 0.1
+   },
+   "trail": {
+    "count": 0,
+    "lengthM": 0.35,
+    "speed": 4,
+    "life": 0.07,
+    "width": 0.02,
+    "alpha": 0.25
+   }
+  },
+  {
+   "id": "block_light",
+   "type": "Blocked",
+   "weapons": [],
+   "dirs": [],
+   "moves": [],
+   "heavy": 0,
+   "metal": -1,
+   "kill": -1,
+   "stopMs": 40,
+   "shakeMul": 1.0,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "none",
+    "count": 0,
+    "speedMin": 2,
+    "speedMax": 4,
+    "coneDeg": 12,
+    "lifeMin": 0.3,
+    "lifeMax": 0.55,
+    "sizeMin": 0.02,
+    "sizeMax": 0.03,
+    "pathMix": 1,
+    "fwdMix": 0.3,
+    "upBias": 0.1
+   },
+   "trail": {
+    "count": 0,
+    "lengthM": 0.35,
+    "speed": 4,
+    "life": 0.07,
+    "width": 0.02,
+    "alpha": 0.25
+   }
+  },
+  {
+   "id": "block_heavy",
+   "type": "Blocked",
+   "weapons": [],
+   "dirs": [],
+   "moves": [],
+   "heavy": 1,
+   "metal": -1,
+   "kill": -1,
+   "stopMs": 55,
+   "shakeMul": 1.0,
+   "sparkMul": 1.1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "none",
+    "count": 0,
+    "speedMin": 2,
+    "speedMax": 4,
+    "coneDeg": 12,
+    "lifeMin": 0.3,
+    "lifeMax": 0.55,
+    "sizeMin": 0.02,
+    "sizeMax": 0.03,
+    "pathMix": 1,
+    "fwdMix": 0.3,
+    "upBias": 0.1
+   },
+   "trail": {
+    "count": 0,
+    "lengthM": 0.35,
+    "speed": 4,
+    "life": 0.07,
+    "width": 0.02,
+    "alpha": 0.25
+   }
+  },
+  {
+   "id": "block_maul",
+   "type": "Blocked",
+   "weapons": [
+    "maul"
+   ],
+   "dirs": [],
+   "moves": [],
+   "heavy": -1,
+   "metal": -1,
+   "kill": -1,
+   "stopMs": 60,
+   "shakeMul": 1.2,
+   "sparkMul": 1.15,
+   "flashMul": 1,
+   "blood": {
+    "mode": "none",
+    "count": 0,
+    "speedMin": 2,
+    "speedMax": 4,
+    "coneDeg": 12,
+    "lifeMin": 0.3,
+    "lifeMax": 0.55,
+    "sizeMin": 0.02,
+    "sizeMax": 0.03,
+    "pathMix": 1,
+    "fwdMix": 0.3,
+    "upBias": 0.1
+   },
+   "trail": {
+    "count": 0,
+    "lengthM": 0.35,
+    "speed": 4,
+    "life": 0.07,
+    "width": 0.02,
+    "alpha": 0.25
+   }
+  },
+  {
+   "id": "block_claws",
+   "type": "Blocked",
+   "weapons": [
+    "claws"
+   ],
+   "dirs": [],
+   "moves": [],
+   "heavy": -1,
+   "metal": -1,
+   "kill": -1,
+   "stopMs": 40,
+   "shakeMul": 0.9,
+   "sparkMul": 0.85,
+   "flashMul": 1,
+   "blood": {
+    "mode": "none",
+    "count": 0,
+    "speedMin": 2,
+    "speedMax": 4,
+    "coneDeg": 12,
+    "lifeMin": 0.3,
+    "lifeMax": 0.55,
+    "sizeMin": 0.02,
+    "sizeMax": 0.03,
+    "pathMix": 1,
+    "fwdMix": 0.3,
+    "upBias": 0.1
+   },
+   "trail": {
+    "count": 0,
+    "lengthM": 0.35,
+    "speed": 4,
+    "life": 0.07,
+    "width": 0.02,
+    "alpha": 0.25
+   }
+  },
+  {
+   "id": "parried",
+   "type": "Parried",
+   "weapons": [],
+   "dirs": [],
+   "moves": [],
+   "heavy": -1,
+   "metal": -1,
+   "kill": -1,
+   "stopMs": 80,
+   "shakeMul": 1.0,
+   "sparkMul": 1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "none",
+    "count": 0,
+    "speedMin": 2,
+    "speedMax": 4,
+    "coneDeg": 12,
+    "lifeMin": 0.3,
+    "lifeMax": 0.55,
+    "sizeMin": 0.02,
+    "sizeMax": 0.03,
+    "pathMix": 1,
+    "fwdMix": 0.3,
+    "upBias": 0.1
+   },
+   "trail": {
+    "count": 0,
+    "lengthM": 0.35,
+    "speed": 4,
+    "life": 0.07,
+    "width": 0.02,
+    "alpha": 0.25
+   }
+  },
+  {
+   "id": "guard_broken",
+   "type": "GuardBroken",
+   "weapons": [],
+   "dirs": [],
+   "moves": [],
+   "heavy": -1,
+   "metal": -1,
+   "kill": -1,
+   "stopMs": 90,
+   "shakeMul": 1.15,
+   "sparkMul": 1.1,
+   "flashMul": 1,
+   "blood": {
+    "mode": "none",
+    "count": 0,
+    "speedMin": 2,
+    "speedMax": 4,
+    "coneDeg": 12,
+    "lifeMin": 0.3,
+    "lifeMax": 0.55,
+    "sizeMin": 0.02,
+    "sizeMax": 0.03,
+    "pathMix": 1,
+    "fwdMix": 0.3,
+    "upBias": 0.1
+   },
+   "trail": {
+    "count": 0,
+    "lengthM": 0.35,
+    "speed": 4,
+    "life": 0.07,
+    "width": 0.02,
+    "alpha": 0.25
+   }
+  }
+ ]
+}

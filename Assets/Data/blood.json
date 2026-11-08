@@ -94,6 +94,12 @@
     "bloodScale": 1.6,
     "sparks": false,
     "flash": false
+  },
+  {
+    "match": "Grendel",
+    "bloodScale": 1.4,
+    "sparks": false,
+    "flash": false
   }
  ],
  "ground": {

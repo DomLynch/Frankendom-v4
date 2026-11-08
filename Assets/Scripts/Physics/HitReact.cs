@@ -361,10 +361,10 @@ public partial class HitReact : MonoBehaviour   // PHYSSWING v1: partial (Script
         if (!Cfg.hit.enabled) return;   // PHYSKNOCK v1: a knock-only attach (hit.enabled false) must not start stagger reactions
         var h = Cfg.hit;
         string loc = string.IsNullOrEmpty(e.location) ? "torso" : e.location;
-        HitRow row = h.mode == "zone" ? (RowById(loc) ?? RowById("stagger")) : RowById("stagger");
+        HitRow row = (h.mode == "zone" || (HitPhysics.On && HitPhysics.Cfg.zoneRows)) ? (RowById(loc) ?? RowById("stagger")) : RowById("stagger");   // HITPHYS v1: per-zone rows when hit_physics.json is on
         if (row == null) return;
         string cn = ClassName(e);
-        StartRow(row, ClassByName(cn), BlowDir(e.actor), ZoneSpec(loc));
+        { Vector3 hbd = BlowDir(e.actor); var hcl = PhysTune(e, row, ClassByName(cn), cn, hbd); StartRow(row, hcl, hbd, ZoneSpec(loc)); PhysAfter(e, hbd); }   // HITPHYS v1: per hit type x fighter (HitReactPhys.cs); identical to StartRow(row, ClassByName(cn), BlowDir(e.actor), ZoneSpec(loc)) when off
         LastClass = cn;
     }
 
@@ -399,7 +399,7 @@ public partial class HitReact : MonoBehaviour   // PHYSSWING v1: partial (Script
             {
                 var sp = row.split[s]; if (sp == null) continue;
                 int idx = ResolvePart(sp.part == "zone" ? zoneSpec : sp.part, near); if (idx < 0) continue;
-                Push(idx, dir * (imp * sp.share) + Vector3.up * (lift * sp.share));
+                PushPhys(idx, dir * (imp * sp.share) + Vector3.up * (lift * sp.share));   // HITPHYS v1: at the blow point when the type says so, else Push
             }
         float tw = row.twist * cls.twist * dTw;
         if (tw > 1e-5f && (dn == "left" || dn == "right"))
@@ -456,6 +456,7 @@ public partial class HitReact : MonoBehaviour   // PHYSSWING v1: partial (Script
         Vector3 dir = BlowDir(attacker ? df : e.actor);   // the blow's line is the ATTACKER's facing
         float mag = Mathf.Clamp(c.baseImpulse * c.weaponRatio * strength * (attacker ? k.recoil : k.absorbed), c.minImpulse, c.maxImpulse);
         if ((attacker ? k.recoil : k.absorbed) <= 0f) mag = 0f;
+        mag *= ClashMul(kind, attacker, e);   // HITPHYS v1: x kind x fighter x mass (1 when off)
         int ip = ResolvePart(side.impulsePart, 'R');
         if (ip >= 0 && mag > 0f) { Vector3 cimp = (attacker ? -dir : dir) * mag + Vector3.up * c.lift, cpt; if (PhysWeapon.ClashPoint(e, rb[ip], out cpt)) PushAt(ip, cimp, cpt); else Push(ip, cimp); /*PHYSWEAPON v106*/ }   // the weapon arm is thrown back, the guard arm driven back along the blow
     }

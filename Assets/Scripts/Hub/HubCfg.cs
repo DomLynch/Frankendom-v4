@@ -16,6 +16,7 @@ using UnityEngine;
     public HubInteract interact = new HubInteract(); public HubRuntime runtime = new HubRuntime();
 }
 [Serializable] public class HubNpcRules { public int maxSimultaneous = 3; }
+[Serializable] public class HubCamp { public bool enabled = false; public string zone = ""; public HubAreaRow area = new HubAreaRow(); public int maxSimultaneous = 0; public HubNpcRow[] npcs = new HubNpcRow[0]; }   // VENDORS v1: a second camp (the zone 7 market): its own zone, area and vendors
 [Serializable] public class HubPreload { public bool enabled = false; public float startDelaySeconds = 0.3f; }   // CAMPNPC v1
 [Serializable] public class HubSpawner
 {
@@ -37,6 +38,7 @@ using UnityEngine;
 [Serializable] public class HubData
 {
     public bool enabled; public int version = 1; public string zone = "";
+    public HubCamp[] camps = new HubCamp[0];   // VENDORS v1: extra camps, none ship (the key is absent or the rows are enabled false = nothing changes)
     public HubAreaRow area = new HubAreaRow(); public HubSafeRow safe = new HubSafeRow(); public HubNpcRow[] npcs = new HubNpcRow[0]; public HubNpcRules npcRules = new HubNpcRules();
     public HubStallRow stall = new HubStallRow(); public HubSpawner spawner = new HubSpawner(); public HubIndicator indicator = new HubIndicator(); public HubText text = new HubText();
 }
@@ -64,6 +66,7 @@ public static class HubCfg
         if (k.safe.combat == null) k.safe.combat = new HubSafeCombat();
         if (k.safe.combat.allowPress == null) k.safe.combat.allowPress = new string[0];
         if (k.npcs == null) k.npcs = new HubNpcRow[0];
+        if (k.camps == null) k.camps = new HubCamp[0];   // VENDORS v1
         if (k.npcs.Length > 0) k.enabled = ZoneFlag.Allowed(k.enabled);   // INT108 v1: -zones turns the camp on, -nozones off, no flag = the file
         if (k.npcRules == null) k.npcRules = new HubNpcRules();
         if (k.spawner == null) k.spawner = new HubSpawner();
@@ -88,6 +91,23 @@ public static class HubCfg
         }
         k.spawner.pollSeconds = Mathf.Max(0.05f, k.spawner.pollSeconds); k.spawner.maxLoadsInFlight = Mathf.Max(1, k.spawner.maxLoadsInFlight); k.spawner.framesBetweenLoads = Mathf.Max(0, k.spawner.framesBetweenLoads);
         if (k.enabled && (k.area.zMax < k.area.zMin || k.area.xHalf <= 0f)) { Debug.LogWarning("[Hub] hub.json area is empty or inverted, camp off"); k.enabled = false; }
+    }
+
+    /// <summary>VENDORS v1: the data of extra camp i = the main file's spawner / rules / text with the camp's own zone, area and vendors. Null when the hub is off or the camp is off, empty or has no area.</summary>
+    public static HubData Camp(int i)
+    {
+        var m = Get(); if (!m.enabled || m.camps == null || i < 0 || i >= m.camps.Length) return null;
+        var c = m.camps[i]; if (c == null || !c.enabled || c.npcs == null || c.npcs.Length == 0) return null;
+        var a = c.area != null ? c.area : new HubAreaRow(); if (a.zMax < a.zMin || a.xHalf <= 0f) { Debug.LogWarning("[Hub] camps[" + i + "] area is empty or inverted, camp off"); return null; }
+        var k = new HubData { enabled = true, version = m.version, zone = c.zone, area = a, npcs = c.npcs, spawner = m.spawner, safe = m.safe, stall = m.stall, indicator = m.indicator, text = m.text };
+        k.npcRules = new HubNpcRules { maxSimultaneous = c.maxSimultaneous > 0 ? c.maxSimultaneous : m.npcRules.maxSimultaneous };
+        foreach (var n in k.npcs)
+        {
+            if (n == null) continue;
+            if (n.interact == null) n.interact = new HubInteract(); if (n.runtime == null) n.runtime = new HubRuntime();
+            if (n.runtime.sources == null) n.runtime.sources = new string[0]; if (n.runtime.clipSources == null) n.runtime.clipSources = new string[0]; if (n.runtime.hideNodes == null) n.runtime.hideNodes = new string[0];
+        }
+        return k;
     }
 
     /// <summary>World x / z of a camp spot (zones.json). False when the zone or spot is missing.</summary>

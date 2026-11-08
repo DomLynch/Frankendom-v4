@@ -722,6 +722,111 @@
         "waitMul": 1,
         "reactionMul": 1
       }
+    },
+    {
+      "id": "grendel_hunter",
+      "fighter": "Grendel",
+      "bot": false,
+      "minDiff": 1,
+      "maxDiff": 99,
+      "comboChance": 0.5,
+      "combos": [
+        {
+          "id": "ll",
+          "steps": [
+            "light",
+            "light"
+          ],
+          "weight": 1.0
+        },
+        {
+          "id": "lh",
+          "steps": [
+            "light",
+            "heavy"
+          ],
+          "weight": 0.8
+        },
+        {
+          "id": "llh",
+          "steps": [
+            "light",
+            "light",
+            "heavy"
+          ],
+          "weight": 0.5
+        }
+      ],
+      "punishChance": 0.85,
+      "punishReact": 4,
+      "punishMinRemain": 6,
+      "punishApproachMin": 10,
+      "punishDashGap": 1.45,
+      "punishHeavyRemain": 34,
+      "delayChance": 0.12,
+      "delayMin": 6,
+      "delayMax": 20,
+      "earlyChance": 0.22,
+      "earlyMul": 0.55,
+      "lateChance": 0.12,
+      "lateMul": 1.6,
+      "riposteTake": 0.7,
+      "kickMax": 1,
+      "kickWindow": 1800,
+      "kickGap": 300,
+      "maxShare": 0.3,
+      "lightMaxShare": 0.32,
+      "minSample": 8,
+      "alts": [
+        {
+          "from": "light",
+          "to": [
+            "thrust",
+            "heavy"
+          ]
+        },
+        {
+          "from": "heavy",
+          "to": [
+            "thrust",
+            "light"
+          ]
+        },
+        {
+          "from": "thrust",
+          "to": [
+            "heavy",
+            "light"
+          ]
+        },
+        {
+          "from": "kick",
+          "to": [
+            "thrust",
+            "light",
+            "heavy"
+          ]
+        }
+      ],
+      "enrage": {
+        "enabled": true,
+        "hpFrac": 0.6,
+        "speedMul": 1.2,
+        "waitMul": 0.7,
+        "reactionMul": 0.9,
+        "comboAdd": 0.15,
+        "punishAdd": 0.1,
+        "diversify": 0.3,
+        "fx": {
+          "aggression": 0.1,
+          "pressure": 0.05,
+          "lapse": -0.1,
+          "stab": 0.15,
+          "kick": 0.0,
+          "dash": 0.1
+        }
+      },
+      "note": "laneBOSSDATA (Grendel, as laneMONSTER3 drafted it): cloned from sobek_hunter, same combos / punish / enrage numbers; retune after the proof run."
     }
   ]
 }

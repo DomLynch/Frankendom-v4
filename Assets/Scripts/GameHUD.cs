@@ -105,14 +105,23 @@ hp.x, hp.yMax + H.bars.framePad + P.stamina.gap, 0f, pf, true, P.stamina, P.post
         float maxW = vw - 2f * (H.player.x + H.player.hp.w + Bc.sideMargin);
         float w = Mathf.Max(H.layout.bossMinW, Mathf.Min(Bc.w, maxW)), x = (vw - w) * 0.5f, y = Bc.top;
         float nameH = Bc.nameSize * H.layout.nameLine;
-        HudDraw.Caps(x, y, 0f, ZoneRuntime.Owns ? GameLoop.EnemyName() : Roster.EnemyName, "title", Bc.nameSize, Bc.nameSmall, Bc.nameTracking, Ink());
-        float ty = y + nameH;
-        if (Bc.showTitle && GameLoop.LadderOn)
+        // HUDALIGN v1: subtitle inline + bar at Joan's bar height (hud.json boss.subtitle / boss.align; defaults = the old layout)
+        string title = Bc.showTitle && GameLoop.LadderOn ? GameLoop.CurrentRow().title : null; bool hasTitle = !string.IsNullOrEmpty(title), inl = hasTitle && Bc.subtitle.inline;
+        float below = hasTitle && !inl ? Bc.titleSize * H.layout.titleAdvance + Bc.titleGap : 0f, barY = -1f;
+        if (Bc.align.enabled)
         {
-            string title = GameLoop.CurrentRow().title;
-            if (!string.IsNullOrEmpty(title)) { HudDraw.Text(new Rect(x, ty + Bc.titleGap, w, Bc.titleSize * H.layout.titleBox), title, "serif", Bc.titleSize, TextAnchor.UpperLeft, true, Bc.titleColor != null && Bc.titleColor.Length >= 3 ? HudCfg.Col(Bc.titleColor) : HudCfg.Col(H.colors.dim), true); ty += Bc.titleSize * H.layout.titleAdvance + Bc.titleGap; }
+            var P = H.player; barY = P.y + P.nameSize * H.layout.nameLine + P.nameGap + (P.hp.h - Bc.hp.h) * Bc.align.barPivot + Bc.align.barDy;
+            y = Bc.align.nameBaseline && below <= 0f ? P.y + (P.nameSize - Bc.nameSize) * H.layout.lineH + Bc.subtitle.descent * (Bc.nameSmall - P.nameSmall) : barY - nameH - below - Bc.nameGap;
         }
-        var hp = new Rect(x, ty + Bc.nameGap, w, Bc.hp.h);
+        float nameW = HudDraw.Caps(x, y, 0f, ZoneRuntime.Owns ? GameLoop.EnemyName() : Roster.EnemyName, "title", Bc.nameSize, Bc.nameSmall, Bc.nameTracking, Ink());
+        float ty = y + nameH;
+        if (hasTitle)
+        {
+            var tcol = Bc.titleColor != null && Bc.titleColor.Length >= 3 ? HudCfg.Col(Bc.titleColor) : HudCfg.Col(H.colors.dim);
+            if (inl) { int ts = Bc.subtitle.size > 0 ? Bc.subtitle.size : Bc.titleSize; float sx = x + nameW + Bc.subtitle.gap; HudDraw.Text(new Rect(sx, y + Bc.subtitle.dy - Bc.subtitle.descent * (Bc.nameSmall - ts), Mathf.Max(0f, x + w - sx), Bc.nameSize * H.layout.lineH), title, "serif", ts, TextAnchor.LowerLeft, true, tcol, Bc.subtitle.italic); }
+            else { HudDraw.Text(new Rect(x, ty + Bc.titleGap, w, Bc.titleSize * H.layout.titleBox), title, "serif", Bc.titleSize, TextAnchor.UpperLeft, true, tcol, true); ty += below; }
+        }
+        var hp = new Rect(x, barY >= 0f ? barY : ty + Bc.nameGap, w, Bc.hp.h);
         float f = enemy != null && enemy.max > 0f ? Mathf.Clamp01(enemy.current / enemy.max) : 0f;
         lagE.Step(f, now, dt);
         CombatHudBars.Bar(hp, Bc.hp.taper, f, lagE.v, HudCfg.Col(H.colors.hpEnemy), true, true);

@@ -252,6 +252,17 @@
         },
         {
           "killer": "Joan",
+          "victim": "Grendel",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "INT106 from GRENDELFIN STAGE0: neck 2.4-2.8 m is above Joan's reach; needs the kneel stagger_loop (STAGE1). Delete this row when the kneel clip + probe exist."
+        },
+        {
+          "killer": "Joan",
           "victim": "*",
           "requireDeathblow": true,
           "pairOffset": [
@@ -559,6 +570,17 @@
         },
         {
           "killer": "Joan",
+          "victim": "Grendel",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "INT106 from GRENDELFIN STAGE0: crown above Joan's chop tip; needs the kneel clip (STAGE1)."
+        },
+        {
+          "killer": "Joan",
           "victim": "*",
           "requireDeathblow": true,
           "pairOffset": [
@@ -630,7 +652,8 @@
           "victimYawDeg": -999,
           "note": "SOBEKCLAWS: two-handed overhead maul chop: needs a long weapon, not for claws."
         },
-          {"killer": "Pitborn", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "PITCLAWS: two-handed weapon finisher, not for Pitborn claws."}
+          {"killer": "Pitborn", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "PITCLAWS: two-handed weapon finisher, not for Pitborn claws."},
+          {"killer": "Grendel", "victim": "*", "weapon": "dual_blades", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "GRENDELCLAWS: two-handed overhead maul chop: needs a long weapon, not for claws."}
       ],
       "enabled": true,
       "placeholder": false,
@@ -1187,7 +1210,8 @@
           "victimYawDeg": -999,
           "note": "SOBEKCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."
         },
-          {"killer": "Pitborn", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "PITCLAWS: two-handed weapon finisher, not for Pitborn claws."}
+          {"killer": "Pitborn", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "PITCLAWS: two-handed weapon finisher, not for Pitborn claws."},
+          {"killer": "Grendel", "victim": "*", "weapon": "dual_blades", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "GRENDELCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."}
       ],
       "enabled": false,
       "placeholder": false,
@@ -1438,7 +1462,8 @@
           "victimYawDeg": -999,
           "note": "SOBEKCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."
         },
-          {"killer": "Pitborn", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "PITCLAWS: two-handed weapon finisher, not for Pitborn claws."}
+          {"killer": "Pitborn", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "PITCLAWS: two-handed weapon finisher, not for Pitborn claws."},
+          {"killer": "Grendel", "victim": "*", "weapon": "dual_blades", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "GRENDELCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."}
       ],
       "enabled": false,
       "placeholder": false,
@@ -1618,6 +1643,18 @@
           "killerYawDeg": -999,
           "victimYawDeg": -999,
           "note": "INT106: Sobek-as-killer stays off until a -finisherauto probe with the trident (SOBEKWEAPON section 4); pairOffset/bladeReach are human numbers."
+        },
+        {
+          "killer": "Grendel",
+          "victim": "*",
+          "weapon": "dual_blades",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "GRENDELCLAWS: Grendel with claws as killer: ON (the trident row above stays for the trident). The claw goes through the chest: BladeAim uses entries[].bladeAim.claw (hand -> claw tip), pair distance = rt.killers Grendel weapon claws pairScale. UNPROVEN: -finisherauto suggest line."
         }
       ],
       "enabled": true,
@@ -2860,6 +2897,18 @@
           0.0
         ],
         "note": "SOBEKMOVES: hipsRestZ MEASURED = Hips height of Sobek_combat.glb at rest (fk_probe.py rest: 1.2667 m; was the 1.5 placeholder). hipsCorrection [1,0,0,0] = same Rx180 as every Mixamo-family body."
+      },
+      {
+        "name": "Grendel",
+        "referenceState": "guard_idle",
+        "hipsRestZ": 1.4016,
+        "hipsCorrection": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "note": "laneMONSTER3 (Grendel): hipsRestZ MEASURED = Hips height of the bound rig at rest (measure_scale.py: 1.4016 m)."
       }
     ],
     "clips": [
@@ -3138,6 +3187,11 @@
           "fighter": "Sobek",
           "footM": 0.3314,
           "toeEndM": 0.0166
+        },
+        {
+          "fighter": "Grendel",
+          "footM": 0.222,
+          "toeEndM": 0.023
         }
       ],
       "bodyClamp": true,
@@ -3444,6 +3498,23 @@
         ],
         "scaleFloor": 0.5,
         "refreshS": 0.25
+      },
+      {
+        "character": "Grendel",
+        "centerYM": 1.35,
+        "sizeM": [
+          1.7,
+          2.7,
+          1.7
+        ],
+        "maxSizeM": [
+          4.0,
+          3.5,
+          4.0
+        ],
+        "scaleFloor": 0.5,
+        "refreshS": 0.25,
+        "note": "laneMONSTER3 (Grendel): measured: 2.70 m tall, shoulder plates 0.74 m half width."
       }
     ]
   },

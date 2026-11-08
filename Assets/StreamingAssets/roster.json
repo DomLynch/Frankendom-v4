@@ -84,6 +84,31 @@
       "loadout": [
         "sobek_claws"
       ]
+    },
+    {
+      "id": "Grendel",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Grendel",
+      "objectName": "Grendel",
+      "weapon": "dual_blades",
+      "controller": "Assets/Characters/Grendel.controller",
+      "modelGlb": "Assets/Characters/Grendel/Grendel_combat.glb",
+      "animGlb": "Assets/Characters/Grendel/Grendel_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_Grendel.mask",
+      "finisherClipFolder": "Assets/Characters/Grendel/FinisherClips",
+      "heightM": 2.7,
+      "hitFwdM": 0.3,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "laneMONSTER3 (Grendel): Dom's demonic creature model, monster 3 of 100+ (zone 4 after the camp). Upright biped on the mixamo 106 rig, one mesh (400k tris), dual-wields two curved bone swords (items grendel_blade_R / _L, glbs come later). heightM 2.70 (horn tips). Name picked by Dom.",
+      "loadout": [
+        "grendel_blade_R",
+        "grendel_blade_L"
+      ]
     }
   ],
   "scene": "Assets/Scenes/HadesSlice.unity",

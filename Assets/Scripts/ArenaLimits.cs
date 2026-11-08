@@ -44,6 +44,7 @@ public class ArenaLimits : MonoBehaviour
         var r = row; if (r == null || !r.enabled || cc == null || !cc.enabled) return;
         var p = transform.position;
         float x = Mathf.Clamp(p.x, r.xMin, r.xMax), z = Mathf.Clamp(p.z, r.zMin, float.IsNaN(ZoneZMax) ? r.zMax : ZoneZMax);   // ZONES v1
+        var pa = PlayArea.Row(p.z); if (pa != null) { x = p.x; PlayArea.Project(pa, ref x, ref z); }   // PLAYAREA v1: per-zone play area (data, OFF = null)
         if (x != p.x || z != p.z) cc.Move(new Vector3(x - p.x, 0f, z - p.z));
     }
 }

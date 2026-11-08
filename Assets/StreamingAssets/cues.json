@@ -16,12 +16,16 @@
    "weapon": "claws"
   },
   {
-    "character": "Sobek",
-    "weapon": "claws"
+   "character": "Sobek",
+   "weapon": "claws"
   },
   {
    "character": "*",
    "weapon": "sword"
+  },
+  {
+   "character": "Grendel",
+   "weapon": "dual_blades"
   }
  ],
  "surfaces": [
@@ -38,11 +42,15 @@
    "surface": "flesh"
   },
   {
-    "character": "Sobek",
-    "surface": "flesh"
+   "character": "Sobek",
+   "surface": "flesh"
   },
   {
    "character": "*",
+   "surface": "flesh"
+  },
+  {
+   "character": "Grendel",
    "surface": "flesh"
   }
  ],
@@ -60,12 +68,16 @@
    "rate": 0.78
   },
   {
-    "character": "Sobek",
-    "rate": 0.55
+   "character": "Sobek",
+   "rate": 0.55
   },
   {
    "character": "*",
    "rate": 1.0
+  },
+  {
+   "character": "Grendel",
+   "rate": 0.6
   }
  ],
  "rows": [
@@ -964,249 +976,538 @@
    ]
   },
   {
-    "evt": "attack_start",
-    "layer": "voice",
-    "weapon": "*",
-    "surface": "*",
-    "weight": "heavy",
-    "attacker": "Sobek",
-    "defender": "*",
-    "moves": [],
-    "disabled": false,
-    "note": "SOBEKDATA: roar on the heavy windup: the EXISTING cue effort_voice, voicePitch 0.55 (guess) turns it into a growl, so no new audio file is required to ship. Real Sobek audio = sobek_roar / sobek_step / sobek_tail_whoosh / hurt / death, not in audio_manifest yet.",
-    "play": [
-      {
-        "cue": "effort_voice",
-        "gain": 0.3,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "attacker",
-        "chance": 1.0
-      }
-    ]
-  },
-  {"evt": "block_shield", "layer": "impact", "weapon": "*", "surface": "*", "weight": "*", "attacker": "*", "defender": "*", "moves": [], "disabled": false, "note": "SHIELD v1: a swing only the shield cover stopped: the normal block cue already played, this rings on top (existing cue, lower rate = a heavier plate)", "play": [{"cue": "block_perfect", "gain": 0.6, "delay": 0.0, "rate": 0.85, "who": "", "chance": 1.0}]},
-  {
-    "evt": "hit",
-    "layer": "impact",
-    "weapon": "claws",
-    "surface": "flesh",
-    "weight": "light",
-    "attacker": "*",
-    "defender": "*",
-    "moves": [],
-    "disabled": false,
-    "note": "SOBEKCLAWS: claw rake, no steel cut",
-    "play": [
-      {
-        "cue": "hit_flesh",
-        "gain": 0.3,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      },
-      {
-        "cue": "flesh_tear",
-        "gain": 0.14,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      }
-    ]
+   "evt": "attack_start",
+   "layer": "voice",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "heavy",
+   "attacker": "Sobek",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "SOBEKDATA: roar on the heavy windup: the EXISTING cue effort_voice, voicePitch 0.55 (guess) turns it into a growl, so no new audio file is required to ship. Real Sobek audio = sobek_roar / sobek_step / sobek_tail_whoosh / hurt / death, not in audio_manifest yet.",
+   "play": [
+    {
+     "cue": "effort_voice",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "attacker",
+     "chance": 1.0
+    }
+   ]
   },
   {
-    "evt": "hit",
-    "layer": "impact",
-    "weapon": "claws",
-    "surface": "flesh",
-    "weight": "heavy",
-    "attacker": "*",
-    "defender": "*",
-    "moves": [],
-    "disabled": false,
-    "note": "SOBEKCLAWS",
-    "play": [
-      {
-        "cue": "hit_heavy",
-        "gain": 0.3,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      },
-      {
-        "cue": "flesh_tear",
-        "gain": 0.22,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      }
-    ]
+   "evt": "block_shield",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "SHIELD v1: a swing only the shield cover stopped: the normal block cue already played, this rings on top (existing cue, lower rate = a heavier plate)",
+   "play": [
+    {
+     "cue": "block_perfect",
+     "gain": 0.6,
+     "delay": 0.0,
+     "rate": 0.85,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
   },
   {
-    "evt": "hit",
-    "layer": "impact",
-    "weapon": "claws",
-    "surface": "armour",
-    "weight": "*",
-    "attacker": "*",
-    "defender": "*",
-    "moves": [],
-    "disabled": false,
-    "note": "SOBEKCLAWS: claws on armour = a scrape, softer than the sword row",
-    "play": [
-      {
-        "cue": "block",
-        "gain": 0.3,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      },
-      {
-        "cue": "hit_flesh",
-        "gain": 0.16,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      }
-    ]
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "claws",
+   "surface": "flesh",
+   "weight": "light",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "SOBEKCLAWS: claw rake, no steel cut",
+   "play": [
+    {
+     "cue": "hit_flesh",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "flesh_tear",
+     "gain": 0.14,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
   },
   {
-    "evt": "block",
-    "layer": "impact",
-    "weapon": "claws",
-    "surface": "*",
-    "weight": "*",
-    "attacker": "*",
-    "defender": "*",
-    "moves": [],
-    "disabled": false,
-    "note": "SOBEKCLAWS: Joan steel against claws: block cue softer than steel on steel (1.0)",
-    "play": [
-      {
-        "cue": "block",
-        "gain": 0.65,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      },
-      {
-        "cue": "hit_flesh",
-        "gain": 0.12,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      }
-    ]
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "claws",
+   "surface": "flesh",
+   "weight": "heavy",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "SOBEKCLAWS",
+   "play": [
+    {
+     "cue": "hit_heavy",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "flesh_tear",
+     "gain": 0.22,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
   },
   {
-    "evt": "kill",
-    "layer": "impact",
-    "weapon": "claws",
-    "surface": "*",
-    "weight": "*",
-    "attacker": "*",
-    "defender": "*",
-    "moves": [],
-    "disabled": false,
-    "note": "SOBEKCLAWS: kill by claw (the stab rows still win for thrust)",
-    "play": [
-      {
-        "cue": "flesh_tear",
-        "gain": 0.45,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      },
-      {
-        "cue": "bone_crack",
-        "gain": 0.15,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      }
-    ]
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "claws",
+   "surface": "armour",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "SOBEKCLAWS: claws on armour = a scrape, softer than the sword row",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "hit_flesh",
+     "gain": 0.16,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
   },
   {
-    "evt": "attack_start",
-    "layer": "impact",
-    "weapon": "*",
-    "surface": "*",
-    "weight": "*",
-    "attacker": "*",
-    "defender": "*",
-    "moves": [
-      "shove_L"
-    ],
-    "disabled": false,
-    "note": "lanePITSHOVE: the shove telegraph: a heavy-ish air push, existing cue whoosh_heavy at a low gain",
-    "play": [
-      {
-        "cue": "whoosh_heavy",
-        "gain": 0.1,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      }
-    ]
+   "evt": "block",
+   "layer": "impact",
+   "weapon": "claws",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "SOBEKCLAWS: Joan steel against claws: block cue softer than steel on steel (1.0)",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 0.65,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "hit_flesh",
+     "gain": 0.12,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
   },
   {
-    "evt": "hit",
-    "layer": "impact",
-    "weapon": "*",
-    "surface": "*",
-    "weight": "*",
-    "attacker": "*",
-    "defender": "*",
-    "moves": [
-      "shove_L"
-    ],
-    "disabled": false,
-    "note": "lanePITSHOVE: a palm shove lands as a dull thump (existing hit_kick), no blade / bone cue",
-    "play": [
-      {
-        "cue": "hit_kick",
-        "gain": 0.34,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      }
-    ]
+   "evt": "kill",
+   "layer": "impact",
+   "weapon": "claws",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "SOBEKCLAWS: kill by claw (the stab rows still win for thrust)",
+   "play": [
+    {
+     "cue": "flesh_tear",
+     "gain": 0.45,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "bone_crack",
+     "gain": 0.15,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
   },
   {
-    "evt": "block",
-    "layer": "impact",
-    "weapon": "*",
-    "surface": "*",
-    "weight": "*",
-    "attacker": "*",
-    "defender": "*",
-    "moves": [
-      "shove_L"
-    ],
-    "disabled": false,
-    "note": "lanePITSHOVE: a blocked shove: the existing block cue, softer than a blade on steel",
-    "play": [
-      {
-        "cue": "block",
-        "gain": 0.55,
-        "delay": 0.0,
-        "rate": 1.0,
-        "who": "",
-        "chance": 1.0
-      }
-    ]
+   "evt": "attack_start",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [
+    "shove_L"
+   ],
+   "disabled": false,
+   "note": "lanePITSHOVE: the shove telegraph: a heavy-ish air push, existing cue whoosh_heavy at a low gain",
+   "play": [
+    {
+     "cue": "whoosh_heavy",
+     "gain": 0.1,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [
+    "shove_L"
+   ],
+   "disabled": false,
+   "note": "lanePITSHOVE: a palm shove lands as a dull thump (existing hit_kick), no blade / bone cue",
+   "play": [
+    {
+     "cue": "hit_kick",
+     "gain": 0.34,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "block",
+   "layer": "impact",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [
+    "shove_L"
+   ],
+   "disabled": false,
+   "note": "lanePITSHOVE: a blocked shove: the existing block cue, softer than a blade on steel",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 0.55,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "sword",
+   "surface": "flesh",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [
+    "thrust",
+    "heavy_thrust",
+    "riposte",
+    "skill_lunge",
+    "skill_jab",
+    "skill_witchfire"
+   ],
+   "disabled": false,
+   "note": "HITFX2 stab on flesh",
+   "play": [
+    {
+     "cue": "hit_flesh",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "flesh_stab",
+     "gain": 0.18,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "maul",
+   "surface": "armour",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "HITFX2 maul on armour",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 0.5,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "hit_heavy",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "attack_start",
+   "layer": "voice",
+   "weapon": "*",
+   "surface": "*",
+   "weight": "heavy",
+   "attacker": "Grendel",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "laneMONSTER3 (Grendel): cloned from the Sobek voice row",
+   "play": [
+    {
+     "cue": "effort_voice",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "attacker",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "dual_blades",
+   "surface": "flesh",
+   "weight": "light",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "laneMONSTER3 (Grendel): steel on flesh / armour for the bone swords (clone of the sword row)",
+   "play": [
+    {
+     "cue": "hit_flesh",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "flesh_cut",
+     "gain": 0.12,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "dual_blades",
+   "surface": "flesh",
+   "weight": "heavy",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "laneMONSTER3 (Grendel): steel on flesh / armour for the bone swords (clone of the sword row)",
+   "play": [
+    {
+     "cue": "hit_heavy",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "flesh_cut",
+     "gain": 0.18,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "dual_blades",
+   "surface": "armour",
+   "weight": "light",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "laneMONSTER3 (Grendel): steel on flesh / armour for the bone swords (clone of the sword row)",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 0.4,
+     "delay": 0,
+     "rate": 1.15,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "hit_flesh",
+     "gain": 0.16,
+     "delay": 0.01,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "dual_blades",
+   "surface": "armour",
+   "weight": "heavy",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "laneMONSTER3 (Grendel): steel on flesh / armour for the bone swords (clone of the sword row)",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 0.4,
+     "delay": 0,
+     "rate": 1.15,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "hit_flesh",
+     "gain": 0.16,
+     "delay": 0.01,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "block",
+   "layer": "impact",
+   "weapon": "dual_blades",
+   "surface": "*",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [],
+   "disabled": false,
+   "note": "laneMONSTER3 (Grendel): steel on flesh / armour for the bone swords (clone of the sword row)",
+   "play": [
+    {
+     "cue": "block",
+     "gain": 1.0,
+     "delay": 0,
+     "rate": 1.05,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
+  },
+  {
+   "evt": "hit",
+   "layer": "impact",
+   "weapon": "dual_blades",
+   "surface": "flesh",
+   "weight": "*",
+   "attacker": "*",
+   "defender": "*",
+   "moves": [
+    "thrust",
+    "heavy_thrust",
+    "riposte",
+    "skill_lunge",
+    "skill_jab",
+    "skill_witchfire"
+   ],
+   "disabled": false,
+   "note": "laneMONSTER3 (Grendel): steel on flesh / armour for the bone swords (clone of the sword row)",
+   "play": [
+    {
+     "cue": "hit_flesh",
+     "gain": 0.3,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    },
+    {
+     "cue": "flesh_stab",
+     "gain": 0.18,
+     "delay": 0.0,
+     "rate": 1.0,
+     "who": "",
+     "chance": 1.0
+    }
+   ]
   }
-]
+ ]
 }

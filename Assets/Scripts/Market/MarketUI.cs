@@ -21,6 +21,7 @@ public sealed class MarketUI : MonoBehaviour
 
     ShopController shop; LocalMarket market; LootMarketStore store;
     readonly MarketArea area = new MarketArea(); bool inArea, havePlayer; float stallX, stallZ, dist; Vector3 playerPos;
+    MarketArea[] areas; float[] ax, az; MarketCfg.StallC stl; int lastPk = -1;   // MARKET2 v1: areas[0] = area (main stall); stl = the stall the player is in (the main one when in none)
     int openFrame, unfreezeFrame = -1; float openAt; bool ownFreeze;
     KeyCode[] kInteract, kConfirm, kClose, kUp, kDown; object keyOwner; int lastDy; float nextNav; bool axisBroken;
     MarketLayout lay; int layW, layH; MarketCfg.LayoutC layFor;
@@ -42,7 +43,7 @@ public sealed class MarketUI : MonoBehaviour
     void Awake() { Instance = this; }
     void OnDisable() { if (Open) CloseUi(); MarketSafe.NoCombat = false; InReach = false; if (Instance == this) Instance = null; }
     void OnEnable() { Instance = this; UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnLoaded; }
-    void OnLoaded(UnityEngine.SceneManagement.Scene s, UnityEngine.SceneManagement.LoadSceneMode m) { if (Open) { ownFreeze = false; unfreezeFrame = -1; CloseUi(); } area.Inside = false; MarketSafe.NoCombat = false; }
+    void OnLoaded(UnityEngine.SceneManagement.Scene s, UnityEngine.SceneManagement.LoadSceneMode m) { if (Open) { ownFreeze = false; unfreezeFrame = -1; CloseUi(); } area.Inside = false; ResetExtra(); MarketSafe.NoCombat = false; }
 
     void EnsureKeys(MarketCfg.Data C)
     {
@@ -63,17 +64,32 @@ public sealed class MarketUI : MonoBehaviour
         if (unfreezeFrame >= 0 && Time.frameCount >= unfreezeFrame) { if (ownFreeze) { Duel.Frozen = false; ownFreeze = false; } unfreezeFrame = -1; }
 
         var pl = GameLoop.Player; havePlayer = pl != null && pl.gameObject.activeInHierarchy;
-        if (!havePlayer) { InReach = false; MarketSafe.NoCombat = false; area.Inside = false; inArea = false; if (Open) CloseUi(); return; }
+        if (!havePlayer) { InReach = false; MarketSafe.NoCombat = false; area.Inside = false; ResetExtra(); inArea = false; if (Open) CloseUi(); return; }
         playerPos = pl.transform.position;
         var A = C.stall.area; area.zMin = A.zMin; area.zMax = A.zMax; area.xHalf = A.xHalf; area.enterPad = A.enterPad; area.leavePad = A.leavePad;
-        inArea = area.Update(playerPos.x, playerPos.z);
+        inArea = PickStall(C) >= 0;   // MARKET2 v1: with stalls[] empty this is exactly area.Update on the main rectangle
         MarketSafe.NoCombat = C.safe.noCombat && inArea;
-        MarketWorld.StallXZ(C.stall, out stallX, out stallZ); dist = MarketArea.Dist(playerPos.x, playerPos.z, stallX, stallZ);
+        MarketWorld.StallXZ(stl, out stallX, out stallZ); dist = MarketArea.Dist(playerPos.x, playerPos.z, stallX, stallZ);
 
-        InReach = inArea && !Open && dist <= C.stall.radius && !LootScreen.Open && !RTFinisher.Busy && !GameLoopDriver.Transitioning && !Duel.Frozen && Time.frameCount != LootScreen.ClosedFrame;
+        InReach = inArea && !Open && dist <= stl.radius && !LootScreen.Open && !RTFinisher.Busy && !GameLoopDriver.Transitioning && !Duel.Frozen && Time.frameCount != LootScreen.ClosedFrame;
         if (InReach && MarketCfg.AnyDown(kInteract)) OpenUi();
         else if (Open) TickOpen(C);
     }
+
+    // MARKET2 v1: update the enter / leave state of every stall area, return the stall the player is in (-1 none), set stl, and swap the Buy stock when the stall changed.
+    int PickStall(MarketCfg.Data C)
+    {
+        int nx = C.stalls.Length;
+        if (nx == 0) { stl = C.stall; return area.Update(playerPos.x, playerPos.z) ? 0 : -1; }   // the old single-stall path, unchanged
+        if (areas == null || areas.Length != nx + 1) { areas = new MarketArea[nx + 1]; areas[0] = area; for (int i = 1; i <= nx; i++) areas[i] = new MarketArea(); ax = new float[nx + 1]; az = new float[nx + 1]; lastPk = -1; }
+        MarketWorld.StallXZ(C.stall, out ax[0], out az[0]);
+        for (int i = 1; i <= nx; i++) { var q = C.stalls[i - 1]; var a2 = areas[i]; a2.zMin = q.area.zMin; a2.zMax = q.area.zMax; a2.xHalf = q.area.xHalf; a2.enterPad = q.area.enterPad; a2.leavePad = q.area.leavePad; MarketWorld.StallXZ(q, out ax[i], out az[i]); }
+        int pk = MarketStallPick.Update(areas, ax, az, playerPos.x, playerPos.z);
+        stl = pk > 0 ? C.stalls[pk - 1] : C.stall;
+        if (pk != lastPk) { lastPk = pk; if (pk >= 0) HubTrade.UseStock(pk > 0 ? stl.items : null); }
+        return pk;
+    }
+    void ResetExtra() { if (areas != null) for (int i = 1; i < areas.Length; i++) areas[i].Inside = false; lastPk = -1; }   // MARKET2 v1
 
     void OpenUi()
     {
@@ -134,11 +150,11 @@ public sealed class MarketUI : MonoBehaviour
 
     void DrawPrompt(MarketCfg.Data C, HudCfg.Data H, float vw, float vh, float s)
     {
-        if (!inArea || dist > C.stall.promptRadius) return; var cam = Camera.main; if (cam == null) return;
-        var sp = cam.WorldToScreenPoint(new Vector3(stallX, playerPos.y + C.stall.promptHeight, stallZ)); if (sp.z <= 0f) return;
-        float x = sp.x / s, y = (Screen.height - sp.y) / s, a = Mathf.Clamp01(1f - (dist - C.stall.radius) / Mathf.Max(0.1f, C.stall.promptRadius - C.stall.radius) * 0.5f);
-        var L = C.layout; var T = C.text; bool reach = dist <= C.stall.radius; HudDraw.Alpha = a;
-        HudDraw.Caps(x, y - L.labelNameBig * 1.6f, 0.5f, C.stall.title, "title", L.labelNameBig, L.labelNameSmall, L.labelTracking, HudCfg.Col(H.colors.ink));
+        if (!inArea || dist > stl.promptRadius) return; var cam = Camera.main; if (cam == null) return;
+        var sp = cam.WorldToScreenPoint(new Vector3(stallX, playerPos.y + stl.promptHeight, stallZ)); if (sp.z <= 0f) return;
+        float x = sp.x / s, y = (Screen.height - sp.y) / s, a = Mathf.Clamp01(1f - (dist - stl.radius) / Mathf.Max(0.1f, stl.promptRadius - stl.radius) * 0.5f);
+        var L = C.layout; var T = C.text; bool reach = dist <= stl.radius; HudDraw.Alpha = a;
+        HudDraw.Caps(x, y - L.labelNameBig * 1.6f, 0.5f, stl.title, "title", L.labelNameBig, L.labelNameSmall, L.labelTracking, HudCfg.Col(H.colors.ink));
         HudDraw.Fill(new Rect(x - 60f, y + 2f, 120f, 1f), HudCfg.Col(H.colors.frame, 0.75f));
         HudDraw.Text(new Rect(x - 300f, y + L.promptGap, 600f, L.promptSize * 1.6f), "[ " + T.promptKeys + " ]   " + T.prompt.ToUpperInvariant(), "serif", L.promptSize, TextAnchor.UpperCenter, true, reach ? HudCfg.Col(H.colors.gold) : HudCfg.Col(H.colors.dim));
         HudDraw.Alpha = 1f;
@@ -169,7 +185,7 @@ public sealed class MarketUI : MonoBehaviour
         HudDraw.Fill(new Rect(p.x, p.y, L.accentBar, p.height), crimson);
         // header: title (small caps, tracked), subtitle, a rule with a diamond at each end, the coin count on the right
         Rect h = R(lay.header);
-        HudDraw.Caps(h.x, h.y, 0f, C.stall.title.Length > 0 ? C.stall.title : T.title, "title", L.titleBig, L.titleSmall, L.titleTracking, ink);
+        HudDraw.Caps(h.x, h.y, 0f, stl.title.Length > 0 ? stl.title : T.title, "title", L.titleBig, L.titleSmall, L.titleTracking, ink);
         HudDraw.Text(new Rect(h.x + 2f, h.y + L.titleBig * 1.35f, h.width * 0.7f, L.subSize * 1.5f), MarketBuyRules.Cur.Subtitle(shop.BuyTab, T.subtitle), "serif", L.subSize, TextAnchor.UpperLeft, false, dim, true);
         HudDraw.Text(new Rect(h.x, h.y + 4f, h.width, L.coinSize * 1.5f), string.Format(T.coins, shop.Stock.coins), "serif", L.coinSize, TextAnchor.UpperRight, true, gold);
         float ry = h.yMax - L.ruleH - 4f; HudDraw.Fill(new Rect(h.x, ry, h.width, L.ruleH), frame);

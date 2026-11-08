@@ -1,0 +1,12 @@
+{
+  "_note": "CHARTEX v1 (laneASSETAUDIT). Import max size for character textures (read by Assets/Editor/CharTexImport.cs). A cap, never an upscale. First matching rule wins. enabled false = off (importers keep whatever they have now). Needs a real build to be seen; VRAM cost per character in _agents/laneASSETAUDIT/kit/MANIFEST.md.",
+  "enabled": true,
+  "platform": "Standalone",
+  "compression": "CompressedHQ",
+  "compressionQuality": 100,
+  "crunched": false,
+  "rules": [
+    { "pathPrefix": "Assets/Characters/Dracula/", "maxSize": 2048, "excludeContains": [] },
+    { "pathPrefix": "Assets/Characters/", "maxSize": 4096, "excludeContains": ["_mask.png", "sheenmask", ".orig."] }
+  ]
+}

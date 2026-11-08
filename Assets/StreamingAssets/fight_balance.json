@@ -57,6 +57,18 @@
    "specialCooldownTicks": 0,
    "specialInitialCooldownTicks": -1,
    "specialMaxUses": 0
+  },
+  {
+    "key": "Grendel",
+    "maxHealth": 520.0,
+    "maxStamina": 0,
+    "damageMul": 0.9,
+    "takenMul": 1.0,
+    "specialDamageMul": 1.0,
+    "specialCooldownTicks": 600000,
+    "specialInitialCooldownTicks": 600000,
+    "specialMaxUses": 0,
+    "note": "laneBOSSDATA curve: 520 x hpMul 1.25 = 650 hp, hits 0.9 x 1.95 = 1.755; specials OFF."
   }
  ]
 }
