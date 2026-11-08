@@ -7,5 +7,6 @@
   "emissiveNits": 400.0,
   "cards": [{"match": "M_Camp_backdrop_a", "gain": 1.4}, {"match": "M_Camp_backdrop_b", "gain": 1.0}, {"match": "M_Camp_backdrop_c", "gain": 1.0}],
   "cap": {"enabled": true, "halfWidthM": 31.84, "fromYM": 99.9, "heightM": 240.0},
-  "waitFrames": 20
+  "waitFrames": 20,
+  "rootNames": ["Zone7"]
 }

@@ -500,7 +500,7 @@
       "mode": "inplace",
       "sceneRoots": [],
       "limits": {
-        "zMax": 160.0
+        "zMax": 167.0
       },
       "spots": [
         {
@@ -650,12 +650,21 @@
           ],
           "yaw": 0,
           "note": "ZONE5 v1: exit gate to the next zone"
+        },
+        {
+          "id": "approach_edge",
+          "pos": [
+            0.0,
+            199.0
+          ],
+          "yaw": 0,
+          "note": "ZONES57: boss_stand z 211.0 - aggro 9.0 - margin 3.0: the last point OUTSIDE the boss aggro radius (route bot / QA stop point)"
         }
       ],
       "spawns": [
         {
           "id": "z5_humbaba",
-          "enabled": false,
+          "enabled": true,
           "spot": "boss_stand",
           "picks": [
             {
@@ -755,6 +764,15 @@
           ],
           "yaw": 0,
           "note": "ZONE6: the far gate to zone 7, shut until z6_erlking dies"
+        },
+        {
+          "id": "approach_edge",
+          "pos": [
+            0.0,
+            267.0
+          ],
+          "yaw": 0,
+          "note": "ZONES57: boss_stand z 286.0 - aggro 16.0 - margin 3.0: the last point OUTSIDE the boss aggro radius (route bot / QA stop point)"
         }
       ],
       "spawns": [

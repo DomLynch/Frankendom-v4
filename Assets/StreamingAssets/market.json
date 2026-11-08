@@ -360,5 +360,39 @@
         "text": "Not enough coins."
       }
     ]
-  }
+  },
+  "stalls": [
+    {
+      "_about": "ZONES57: zone 7 stall (wagon A). items = PLACEHOLDER stock, Dom decides. Prices = rows x hub.json stall.buy.mul.",
+      "id": "z7_trade_a",
+      "title": "Armourer",
+      "anchor": {
+        "zone": "z7_market2",
+        "spot": "stall_1",
+        "x": -3.45,
+        "z": 342.0
+      },
+      "radius": 3.0,
+      "promptRadius": 5.0,
+      "promptHeight": 2.1,
+      "area": {
+        "zMin": 315.0,
+        "zMax": 362.0,
+        "xHalf": 10.0,
+        "enterPad": 0.5,
+        "leavePad": 0.5
+      },
+      "items": [
+        "pitborn_chest",
+        "pitborn_pauldron_joan",
+        "pitborn_pauldron",
+        "joan_helmet",
+        "bascinet_joan",
+        "pauldron_joan",
+        "vambrace_joan",
+        "gorget_joan",
+        "greave_joan"
+      ]
+    }
+  ]
 }

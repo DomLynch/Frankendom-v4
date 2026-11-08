@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public static class TerrainStampCore
 {
     public class Chunk { public string name; public float[] x, y, z; public int[][] tris; }
-    public class Win { public string id; public float offsetZ, xHalf, zFrom, zTo, blend, yBias; }
+    public class Win { public string id; public float offsetZ, xHalf, zFrom, zTo, blend, yBias; public bool flat; public float flatY; /* STAMPFLAT v1 */ }
     public class Result
     {
         public bool ok; public string error = "";
@@ -89,7 +89,7 @@ public static class TerrainStampCore
                     float zl = c.z[i] - w.offsetZ; if (Math.Abs(c.x[i]) >= w.xHalf || zl <= w.zFrom || zl >= w.zTo) continue;
                     float wt = Weight(w, c.x[i], zl); if (wt <= 0f) continue;
                     cand++; var tgt = H(c.x[i], zl); if (tgt == null) continue; found++;
-                    float d = wt * (tgt.Value + w.yBias - R.newY[ci][i]); if (Math.Abs(d) > R.maxDelta) R.maxDelta = Math.Abs(d);
+                    float d = wt * ((w.flat ? w.flatY : tgt.Value + w.yBias) - R.newY[ci][i]); /* STAMPFLAT v1 */ if (Math.Abs(d) > R.maxDelta) R.maxDelta = Math.Abs(d);
                     R.newY[ci][i] += d; R.moved[ci][i] = true; moved++;
                 }
             }

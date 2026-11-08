@@ -142,7 +142,7 @@
       "bonePrefix": "mixamorig:",
       "displayName": "Erlking",
       "objectName": "Erlking",
-      "weapon": "erlking_axe",
+      "weapon": "claws",
       "controller": "Assets/Characters/Erlking.controller",
       "modelGlb": "Assets/Characters/Erlking/Erlking_combat.glb",
       "animGlb": "Assets/Characters/Erlking/Erlking_anim.glb",
@@ -154,7 +154,7 @@
       "armoured": false,
       "notes": "laneMONSTER6 (Erlking): zone 6 final alpha boss, Dom's antlered brute (moose / minotaur) with an antler great-axe held in both hands. 106-joint mixamorig rig, one mesh (400k tris), FULL 4K textures from his source. heightM 4.06 (antler tips) = 1.30 x Sobek. Name and weapon are working data (data\\erlking_identity.json).",
       "loadout": [
-        "erlking_axe"
+        "erlking_claws"
       ]
     }
   ],

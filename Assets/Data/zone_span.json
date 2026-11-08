@@ -235,11 +235,13 @@
       },
       "terrain": {
         "mode": "stamp",
-        "xHalf": 32.0,
-        "zFromLocal": -6.0,
-        "zToLocal": 64.0,
-        "blendM": 6.0,
+        "xHalf": 42.0,
+        "zFromLocal": -20.0,
+        "zToLocal": 72.0,
+        "blendM": 12.0,
         "yBias": 0.0,
+        "flat": true,
+        "flatY": -0.05,
         "uvScale": 5.5
       },
       "rings": [
@@ -280,11 +282,13 @@
       },
       "terrain": {
         "mode": "stamp",
-        "xHalf": 32.0,
-        "zFromLocal": -6.0,
-        "zToLocal": 64.0,
-        "blendM": 6.0,
+        "xHalf": 42.0,
+        "zFromLocal": -20.0,
+        "zToLocal": 72.0,
+        "blendM": 12.0,
         "yBias": 0.0,
+        "flat": true,
+        "flatY": -0.05,
         "uvScale": 5.5
       },
       "rings": [
@@ -327,11 +331,13 @@
       },
       "terrain": {
         "mode": "stamp",
-        "xHalf": 32.0,
-        "zFromLocal": -6.0,
-        "zToLocal": 58.0,
-        "blendM": 6.0,
+        "xHalf": 42.0,
+        "zFromLocal": -20.0,
+        "zToLocal": 66.0,
+        "blendM": 12.0,
         "yBias": 0.0,
+        "flat": true,
+        "flatY": -0.05,
         "uvScale": 5.5
       },
       "rings": [

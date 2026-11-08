@@ -457,5 +457,138 @@
     ],
     "_searchRoots": "relative runtime.sources are tried under the project root ('') then its parent ('..' = Documents, where kits_out lives); StreamingAssets/<runtime.glb> is tried first.",
     "_yaw": "yawOffsetDeg: if glTFast mirrors the facing, set 180 here and every NPC turns (one number, not three rows)."
-  }
+  },
+  "camps": [
+    {
+      "_about": "ZONES57: the zone 7 caravan camp (second market). Bodies = the existing camp characters on disk; scale 1.0 for akai / erika is UNMEASURED (camp 1 trader arissa 1.0). area from zone_span offsetZ and zones.json limits.zMax.",
+      "enabled": true,
+      "zone": "z7_market2",
+      "area": {
+        "zMin": 315.0,
+        "zMax": 362.0,
+        "xHalf": 10.0
+      },
+      "maxSimultaneous": 4,
+      "npcs": [
+        {
+          "id": "npc_vendor_1",
+          "role": "armourer",
+          "title": "Armourer",
+          "spot": "vendor_1",
+          "yaw": 90,
+          "clip": "Idle",
+          "enabled": true,
+          "phaseSeconds": 0.0,
+          "interact": {
+            "kind": "shop",
+            "shop": "z7_trade_a",
+            "radius": 3.0
+          },
+          "runtime": {
+            "glb": "Npc/camp_akai.glb",
+            "sources": [],
+            "hideNodes": [
+              "Layer_Tunic",
+              "Layer_Helmet",
+              "Layer_Bracers",
+              "Layer_Greaves",
+              "Layer_Sword",
+              "Layer_Scabbard"
+            ],
+            "scale": 1.0,
+            "clipGlb": "",
+            "clipSources": [],
+            "clipName": "Idle"
+          }
+        },
+        {
+          "id": "npc_vendor_2",
+          "role": "weaponsmith",
+          "title": "Weaponsmith",
+          "spot": "vendor_2",
+          "yaw": 270,
+          "clip": "Idle",
+          "enabled": true,
+          "phaseSeconds": 1.3,
+          "interact": {
+            "kind": "none"
+          },
+          "runtime": {
+            "glb": "Npc/camp_erika.glb",
+            "sources": [],
+            "hideNodes": [
+              "Layer_Tunic",
+              "Layer_Helmet",
+              "Layer_Bracers",
+              "Layer_Greaves",
+              "Layer_Sword",
+              "Layer_Scabbard"
+            ],
+            "scale": 1.0,
+            "clipGlb": "",
+            "clipSources": [],
+            "clipName": "Idle"
+          }
+        },
+        {
+          "id": "npc_vendor_3",
+          "role": "curio",
+          "title": "Curios",
+          "spot": "vendor_3",
+          "yaw": 90,
+          "clip": "Idle",
+          "enabled": true,
+          "phaseSeconds": 2.6,
+          "interact": {
+            "kind": "none"
+          },
+          "runtime": {
+            "glb": "Npc/camp_kachujin.glb",
+            "sources": [],
+            "hideNodes": [
+              "Layer_Tunic",
+              "Layer_Helmet",
+              "Layer_Bracers",
+              "Layer_Greaves",
+              "Layer_Sword",
+              "Layer_Scabbard"
+            ],
+            "scale": 0.84,
+            "clipGlb": "",
+            "clipSources": [],
+            "clipName": "Idle"
+          }
+        },
+        {
+          "id": "npc_keeper_z7",
+          "role": "hearth_keeper",
+          "title": "Keeper",
+          "spot": "npc_keeper",
+          "yaw": 180,
+          "clip": "Idle",
+          "enabled": true,
+          "phaseSeconds": 0.7,
+          "interact": {
+            "kind": "none"
+          },
+          "runtime": {
+            "glb": "Npc/camp_goblin.glb",
+            "sources": [],
+            "hideNodes": [
+              "Layer_Tunic",
+              "Layer_Helmet",
+              "Layer_Bracers",
+              "Layer_Greaves",
+              "Layer_Sword",
+              "Layer_Scabbard"
+            ],
+            "scale": 0.74,
+            "clipGlb": "",
+            "clipSources": [],
+            "clipName": "Idle"
+          }
+        }
+      ]
+    }
+  ]
 }

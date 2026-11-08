@@ -1367,6 +1367,53 @@
         "ikWeight": 1.0,
         "ikBlendSeconds": 0.15
       }
+    },
+    {
+      "id": "erlking_claws",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Erlking claws",
+      "slot": "mainHand",
+      "glb": "",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "ZONES57 (Erlking): Dom 2026-11-08 no weapons on monsters, claws only. Unarmed item cloned from humbaba_claws, tip offset x height ratio 1.301; damageMul/speedMul/reachMul/postureMul kept from erlking_axe so the fight tuning and the chase gaps stay. UNPROVEN IN UNITY.",
+      "weapon": {
+        "id": "erlking_claws",
+        "unarmed": true,
+        "tipBone": "mixamorig:RightHand",
+        "tipOffsetM": [
+          0.0,
+          0.7417,
+          0.0
+        ],
+        "twoHanded": false,
+        "damageMul": 1.0,
+        "speedMul": 0.9,
+        "reachMul": 0.78,
+        "postureMul": 1.4,
+        "cueWeapon": "claws",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      }
     }
 ]
 }

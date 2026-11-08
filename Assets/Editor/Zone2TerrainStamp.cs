@@ -16,7 +16,7 @@ using UnityEngine;
 // No .asset files, nothing in the GLB import. Pristine meshes: the mesh asset itself, else the prefab source of the MeshFilter, else the GLB sub-asset of the same name (path from world_mats.json terrain.glb).
 public static class Zone2TerrainStamp
 {
-    [Serializable] class TB { public string mode = ""; public float xHalf = 32f, zFromLocal = -4f, zToLocal = 44f, blendM = 6f, yBias = 0f; public float uvScale = 1f; /* UVSCALE v1 */ }
+    [Serializable] class TB { public string mode = ""; public float xHalf = 32f, zFromLocal = -4f, zToLocal = 44f, blendM = 6f, yBias = 0f; public bool flat = false; public float flatY = 0f; /* STAMPFLAT v1 */ public float uvScale = 1f; /* UVSCALE v1 */ }
     [Serializable] class ZB { public string id = ""; public float offsetZ; public TB terrain = new TB(); }
     [Serializable] class SB { public ZB[] zones = new ZB[0]; public SBuild build = new SBuild(); }
     [Serializable] class SBuild { public string terrainName = "WorldTerrain"; public string stampAssetDir = ""; /* STAMPASSET v1 */ public float stampMaxMoveM = 0f; /* STAMPMOVE v1: sanity limit (m) on any stamped vertex move, 0 = the old 5 */ }
@@ -97,7 +97,7 @@ public static class Zone2TerrainStamp
             if (rows.Count == 0) return true;   // Commit() will just put the pristine meshes back
             if (chunks.Count == 0) { Debug.LogError("[TerrainStamp] no terrain chunk with a pristine mesh (" + skipped + " scene-only skipped): stamp NOT done, crop fallback"); all.Clear(); return false; }
             var ws = new List<TerrainStampCore.Win>();
-            foreach (var r in rows) ws.Add(new TerrainStampCore.Win { id = r.id, offsetZ = r.offsetZ, xHalf = r.terrain.xHalf, zFrom = r.terrain.zFromLocal, zTo = r.terrain.zToLocal, blend = r.terrain.blendM, yBias = r.terrain.yBias });
+            foreach (var r in rows) ws.Add(new TerrainStampCore.Win { id = r.id, offsetZ = r.offsetZ, xHalf = r.terrain.xHalf, zFrom = r.terrain.zFromLocal, zTo = r.terrain.zToLocal, blend = r.terrain.blendM, yBias = r.terrain.yBias, flat = r.terrain.flat, flatY = r.terrain.flatY /* STAMPFLAT v1 */ });
             var R = TerrainStampCore.Compute(chunks, ws, 0.995f, S.build.stampMaxMoveM > 0f ? S.build.stampMaxMoveM : 5f);   // STAMPMOVE v1
             if (!R.ok) { Debug.LogError("[TerrainStamp] validation failed (" + R.error + "): stamp NOT done, crop fallback, scene untouched"); all.Clear(); return false; }
             var uvPiv = new Vector2[rows.Count];   // UVSCALE v1: per window, the uv of the terrain vertex nearest the window centre
