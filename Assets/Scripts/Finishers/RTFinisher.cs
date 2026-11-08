@@ -58,6 +58,7 @@ public static class RTFinisher
     // deathblow = a posture-break deathblow (V61B): the scene starts even when the hit did not take the HP to zero; the scene's own Die() is the kill
     public static bool TryBegin(DuelFighter a, DuelFighter d, MoveDef m, bool deathblow)
     {
+        if (Duel.RangedNow) return false;   // BOW v2: an arrow kill is a plain death, no melee finisher scene
         if (ZoneRuntime.FinisherBlocked(a, d)) return false;   /* TWOFIGHT v1: the killer is not "another enemy" when the victim is the player */   // MULTI v1 (INT107): another enemy is engaged and engage.finisherWithOthers is false: plain death
         try
         {

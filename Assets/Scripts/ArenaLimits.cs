@@ -41,6 +41,22 @@ public class ArenaLimits : MonoBehaviour
             if ((f.name == Roster.PlayerObject || f.name == Roster.EnemyObject) && f.GetComponent<ArenaLimits>() == null) { f.gameObject.AddComponent<ArenaLimits>(); Debug.Log("[ArenaLimits] active on " + f.name + " x " + r.xMin + ".." + r.xMax + " z " + r.zMin + ".." + r.zMax); }
     }
 
+    // KNOCKBACK v1: metres the victim can slide from p along dir (<= want) before the arena rectangle, the per-zone play area or the stair width (the same limits Clamp and DuelFighter.MoveTick apply afterwards)
+    public static float RoomAlong(Vector3 p, Vector3 dir, float want)
+    {
+        var r = Load(); if (r == null || !r.enabled) return want;
+        float t = want; var pa = PlayArea.Row(p.z);
+        if (pa == null) { if (dir.x > 0.0001f) t = Mathf.Min(t, (r.xMax - p.x) / dir.x); else if (dir.x < -0.0001f) t = Mathf.Min(t, (r.xMin - p.x) / dir.x); }   // hc:ok epsilon: axis-parallel guard
+        float zMax = float.IsNaN(ZoneZMax) ? r.zMax : ZoneZMax;
+        if (dir.z > 0.0001f) t = Mathf.Min(t, (zMax - p.z) / dir.z); else if (dir.z < -0.0001f) t = Mathf.Min(t, (r.zMin - p.z) / dir.z);
+        if (pa == null && p.z > StairZMin && p.z < StairZMax && StairHalfWidthX < float.MaxValue && Mathf.Abs(dir.x) > 0.0001f)
+        {
+            float lim = StairHalfWidthX; t = Mathf.Min(t, ((dir.x > 0f ? lim : -lim) - p.x) / dir.x);
+        }
+        if (pa != null) { float x = p.x + dir.x * t, z = p.z + dir.z * t; PlayArea.Project(pa, ref x, ref z); t = Mathf.Min(t, Vector3.Dot(new Vector3(x - p.x, 0f, z - p.z), dir)); }
+        return Mathf.Max(0f, t);
+    }
+
     void Awake() { cc = GetComponent<CharacterController>(); }
 
     void LateUpdate() { if (!Duel.BrainsOnTick) Clamp(); }   // FPSSIM v1: with brainsOnTick DuelFighter.MoveTick clamps once per sim tick

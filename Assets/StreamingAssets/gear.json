@@ -303,6 +303,18 @@
       {
         "victim": "Sobek",
         "max": 2
+      },
+      {
+        "victim": "Grendel",
+        "max": 1
+      },
+      {
+        "victim": "Humbaba",
+        "max": 1
+      },
+      {
+        "victim": "Erlking",
+        "max": 1
       }
     ],
     "_maxPerKillBy": "WEAPONSWAP v88: per-victim cap; a victim without a row uses maxPerKill. Pitborn drops 3: maul + pauldron pair + chest (Dom's loot design)."
@@ -1414,6 +1426,7 @@
         "ikWeight": 1.0,
         "ikBlendSeconds": 0.15
       }
-    }
+    },
+    {"id": "joan_bow", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""}, "name": "Hunter's bow", "slot": "mainHand", "glb": "Gear/joan_bow_LOD0.glb", "resource": "", "part": "", "coversZones": [], "hidesLayers": [], "stats": {"armor": 0, "poise": 0, "weight": 0}, "dropFrom": [], "dropChance": 0.0, "materials": {"*": {"smoothness": 0.2, "metallic": 0.08, "normalScale": 1.0}}, "notes": "BOW v2 (laneBOW): visual home of the bow mode only (BowVisual.cs parents this glb to the left hand while the bow is up). No weapon block on purpose: equipping it through the loot UI is not a feature. glb = V1 bow-v1.glb (240 KB, EXT_texture_webp), source kit/source/v1_bow_clips/bow-v1.PROVENANCE.txt.", "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}}
 ]
 }

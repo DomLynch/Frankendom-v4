@@ -2,6 +2,7 @@
   "note": "Who plays whom. player / enemy are character ids; every per-character JSON row is keyed by these ids. Swap a character = add its row here (and its rows in the other JSON files) and change player / enemy. heightM 0 = keep the scene / GameConfig size.",
   "player": "Joan",
   "enemy": "Pitborn",
+  "fallbackEnemy": "Pitborn",
   "characters": [
     {
       "id": "Joan",

@@ -32,6 +32,7 @@ public static class WeaponHooks
     public static WeaponStats Of(Component fighter)
     {
         if (fighter == null || !GearTable.Get().enabled) return neutral;
+        var bowStats = BowHooks.StatsFor(fighter); if (bowStats != null) return bowStats;   // BOW v2: the bow is up
         var src = fighter.GetComponent<IGearWeaponSource>(); if (src == null) return neutral;
         return src.Weapon ?? neutral;
     }

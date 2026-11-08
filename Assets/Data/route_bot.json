@@ -109,6 +109,106 @@
     {
       "id": "s6b_joan_death_engaged", "name": "Joan dies while Pitborn fights her: she stands up at the arrive spot, Pitborn goes back to his spawn at full hp, no scene reload", "kind": "die", "timeoutS": 40,
       "spawn": "z1_pitborn", "zone": "pit_yard", "spot": "arrive_start", "followWaitS": 40, "finisherWaitS": 30, "settleS": 3
+    },
+    {
+      "id": "s7_prepare_deep",
+      "name": "Deep route start: wake at hub_camp with Grendel, Humbaba and Erlking alive (laneBOSSGAP v1, UNPROVEN)",
+      "kind": "restart",
+      "timeoutS": 120,
+      "zone": "hub_camp",
+      "spot": "arrive_from_prev",
+      "revive": [
+        "z4_grendel",
+        "z5_humbaba",
+        "z6_erlking"
+      ],
+      "spawn": "z4_grendel"
+    },
+    {
+      "id": "s7a_door_grendel",
+      "name": "Walk the door into grendel: camera follows, Joan stands on the ground (laneBOSSGAP v1)",
+      "kind": "walk",
+      "timeoutS": 120,
+      "toZone": "grendel",
+      "toSpot": "arrive_from_prev",
+      "camMinFollowFrac": 0.6,
+      "dwellS": 2.5,
+      "ground": true
+    },
+    {
+      "id": "s7b_kill_grendel",
+      "name": "Kill Grendel: HUD name reads GRENDEL, his health falls",
+      "kind": "kill",
+      "timeoutS": 420,
+      "spawn": "z4_grendel",
+      "expectName": "GRENDEL",
+      "pushZone": "grendel",
+      "pushSpot": "grendel_stand",
+      "assist": true,
+      "minBarDropFrac": 0.5,
+      "settleS": 6,
+      "finisherWaitS": 25
+    },
+    {
+      "id": "s8a_door_humbaba",
+      "name": "Walk the door into z5_humbaba: camera follows, Joan stands on the ground (laneBOSSGAP v1)",
+      "kind": "walk",
+      "timeoutS": 120,
+      "toZone": "z5_humbaba",
+      "toSpot": "arrive_from_prev",
+      "camMinFollowFrac": 0.6,
+      "dwellS": 2.5,
+      "ground": true
+    },
+    {
+      "id": "s8b_kill_humbaba",
+      "name": "Kill Humbaba: HUD name reads HUMBABA, his health falls",
+      "kind": "kill",
+      "timeoutS": 420,
+      "spawn": "z5_humbaba",
+      "expectName": "HUMBABA",
+      "pushZone": "z5_humbaba",
+      "pushSpot": "boss_stand",
+      "assist": true,
+      "minBarDropFrac": 0.5,
+      "settleS": 6,
+      "finisherWaitS": 25
+    },
+    {
+      "id": "s9a_door_erlking",
+      "name": "Walk the door into z6_erlking: camera follows, Joan stands on the ground (laneBOSSGAP v1)",
+      "kind": "walk",
+      "timeoutS": 120,
+      "toZone": "z6_erlking",
+      "toSpot": "arrive_from_prev",
+      "camMinFollowFrac": 0.6,
+      "dwellS": 2.5,
+      "ground": true
+    },
+    {
+      "id": "s9b_kill_erlking",
+      "name": "Kill Erlking: HUD name reads ERLKING, his health falls",
+      "kind": "kill",
+      "timeoutS": 600,
+      "spawn": "z6_erlking",
+      "expectName": "ERLKING",
+      "pushZone": "z6_erlking",
+      "pushSpot": "boss_stand",
+      "assist": true,
+      "minBarDropFrac": 0.5,
+      "settleS": 6,
+      "finisherWaitS": 25
+    },
+    {
+      "id": "s10_door_z7_market2",
+      "name": "Walk the last door into z7_market2: camera follows, Joan stands on the ground (laneBOSSGAP v1)",
+      "kind": "walk",
+      "timeoutS": 120,
+      "toZone": "z7_market2",
+      "toSpot": "arrive_from_prev",
+      "camMinFollowFrac": 0.6,
+      "dwellS": 2.5,
+      "ground": true
     }
   ]
 }

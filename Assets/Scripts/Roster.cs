@@ -27,9 +27,10 @@ using UnityEngine;
 
 public static class Roster
 {
-    [Serializable] public class Cfg { public string note = ""; public string player = ""; public string enemy = ""; public RosterCharacter[] characters = new RosterCharacter[0]; }
+    [Serializable] public class Cfg { public string note = ""; public string player = ""; public string enemy = ""; public string fallbackEnemy = ""; /* PITDATA K1 */ public RosterCharacter[] characters = new RosterCharacter[0]; }
 
-    const string FallbackEnemy = "Pitborn";   // the ONLY character literal in code /*NODRAC v93*/ FallbackPlayer literal removed: the fallback player is the first roster row that is not the enemy (FirstNonEnemy)
+    // PITDATA K1: the fallback enemy is roster.json "fallbackEnemy" (data), no character literal in code; unset = the first roster row
+    const string FallbackEnemy = "";   // the ONLY character literal in code /*NODRAC v93*/ FallbackPlayer literal removed: the fallback player is the first roster row that is not the enemy (FirstNonEnemy)
 
     static Cfg c;
     public static string Source = "(none)";
@@ -110,7 +111,8 @@ public static class Roster
         catch (Exception e) { Debug.LogWarning("[Roster] load failed, fallback pair used: " + e.Message); k = null; }
         if (k == null) k = new Cfg();
         if (k.characters == null) k.characters = new RosterCharacter[0];
-        if (string.IsNullOrEmpty(k.enemy)) k.enemy = FallbackEnemy;
+        if (string.IsNullOrEmpty(k.enemy)) k.enemy = !string.IsNullOrEmpty(k.fallbackEnemy) ? k.fallbackEnemy : (k.characters.Length > 0 ? k.characters[0].id : FallbackEnemy);   // PITDATA K1
+        if (string.IsNullOrEmpty(k.enemy)) Debug.LogError("[Roster] no enemy: set roster.json enemy or fallbackEnemy");
         if (string.IsNullOrEmpty(k.player)) k.player = FirstNonEnemy(k);   // NODRAC v93: was FallbackPlayer = "Dracula"
         if (string.IsNullOrEmpty(k.enemy)) k.enemy = FallbackEnemy;
         foreach (var r in k.characters) Fill(r);

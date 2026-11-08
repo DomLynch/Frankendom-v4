@@ -48,7 +48,7 @@ public static class AttackClipTable
     {
         var d = Get();
         if (!d.enabled || d.rows == null || string.IsNullOrEmpty(move)) return null;
-        Row any = null, exact = null; string wk = ""; if (!string.IsNullOrEmpty(character)) { var rc = Roster.Get(character); if (rc != null && rc.weapon != null) wk = rc.weapon; }   // SOBEKCLAWS
+        Row any = null, exact = null; string wk = ""; if (!string.IsNullOrEmpty(character)) { var rc = Roster.Get(character); if (rc != null && rc.weapon != null) wk = rc.weapon; } { string bowKey = BowHooks.WeaponKey(character); if (bowKey.Length > 0) wk = bowKey; } /* BOW v2 */   // SOBEKCLAWS
         for (int i = 0; i < d.rows.Length; i++)
         {
             var r = d.rows[i];

@@ -15,7 +15,7 @@ public static class BellyBite
     [Serializable] public class Data
     {
         public bool enabled = false;               // MASTER SWITCH
-        public string character = "Pitborn";       // roster id of the grabber
+        public string character = "";       // roster id of the grabber (belly_bite.json; PITDATA K2: no literal in code)
         public string moveId = "belly_grab";       // row in move-defs.json
         public float damage = 22f, throwKnock = 5f; public bool nonLethal = true;   // nonLethal: the victim keeps at least 1 HP
         public bool knockDown = true;

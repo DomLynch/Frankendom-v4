@@ -34,6 +34,7 @@ public class Duel : MonoBehaviour
             acc -= 1f / 60f; TickCount++;
             for (int i = 0; i < fighters.Count; i++) fighters[i].Tick();
             for (int i = 0; i < fighters.Count; i++) fighters[i].MoveTick();   // PHYSAUDIT: bodies move on the sim tick (after every decision of this tick)
+            BowHooks.SimTick(fighters);   // BOW v2: bow mode switch + arrows landing (master off = returns at once)
             if (BrainsOnTick) SimBrains();   // FPSSIM v1
             PhysicsClock.OnSimTick();   // PHYS1 v1: ONE Physics.Simulate per 60 Hz sim tick, after the fighters ticked (hit-stop = no tick = no step)
             if (PresentationClock.Frozen) { acc = 0f; break; }   // a contact this tick requested a stop (V3 main.ts: accumulator = 0)
@@ -50,11 +51,12 @@ public class Duel : MonoBehaviour
     public static bool Resolve(DuelFighter a, DuelFighter d, MoveDef m, float chargeMul)
     {
         if (d.Dead || FrozenFor(d) || FrozenFor(a) /* FINREALTIME v1 H2b */ || HubSafe.NoHit(d)) return false;   // laneNPCSPAWN: the player in a safe camp takes no strike (health, posture, stamina stay)
+        if (!RangedNow && BowHooks.Handles(a, m)) return BowHooks.Release(a, d, m, chargeMul);   // BOW v2: a bow-mode swing throws the arrow (BowShot judges it on arrival through this same method)
         Vector3 ad = d.transform.position - a.transform.position; ad.y = 0f;
         float dist = ad.magnitude;
         float arc = m.id == "kick" ? a.Rule("kickArc", Mathf.PI / 4f) * Mathf.Rad2Deg : a.HitArcDeg; /* DATALAYER b11 */
-        if (dist > m.reach * a.ReachScale /* WEAPONSWAP v88: weapon reach */ + a.radius + d.radius + 0.45f) return false;
-        if (Angle(a.transform.forward, ad) > arc) return false;
+        if (!RangedNow /* BOW v2 */ && dist > m.reach * a.ReachScale /* WEAPONSWAP v88: weapon reach */ + a.radius + d.radius + 0.45f) return false;
+        if (!RangedNow /* BOW v2 */ && Angle(a.transform.forward, ad) > arc) return false;
         if (d.IFrames && !d.SidestepIgnoresIFrames(m)) return false;   // rolled through it (lanePARRY: a sidestep does not beat an overhead, parry.json sidestep)
         HitReactionTable.Last = null;   // P2: set again below only for a clean hit
         if (BellyBite.Handles(a, m)) { var bgR = BellyBite.Resolve(a, d); if (bgR == BellyBite.Result.Landed) { Fire(a, d, "Hit", true, false); return true; } if (bgR == BellyBite.Result.Scene) return true; /* BELLYGRAB v1 */ }   // BELLYBITE v1: unblockable grab (data belly_bite.json, master switch off = never true)
@@ -105,6 +107,7 @@ public class Duel : MonoBehaviour
         if (db) d.ConsumeDeathblow(a); else d.AddPosture(pv.ClampPosture(d, StanceLayer.PostureDealtMul(a, d, true) /* STANCE2 v81: attacker postureDealtMul x Trickster proc; the defender half is the PostureTakenMul(d) factor of this line */ * PostureTable.HitGain(m) * WeaponHooks.PostureDealtMul(a) /* WEAPONSWAP v88 */ * (rear ? a.Rule("rear.posture", 1.5f) : 1f) * StanceLayer.PostureTakenMul(d) * GearHooks.PostureTakenMul(d)));   /* kitGEAR v79: poise stat */   // lanePARRY: stance posture resist
         d.SetKnock(away * m.knockback * a.scale * 0.9f * pv.knockMul);
         if (ShoveTable.IsMove(m.id)) ShoveTable.ApplyKnock(a, d, m, stg, hr, pv.knockMul);   // SHOVE v1: the knock velocity that puts the foe at shove.json pushToM (replaces the line above for a shove id only)
+        HitKnockback.Apply(a, d, m, away, heavy, counter, stg, hr != null ? hr.staggerScale : 1f, pv.knockMul);   // KNOCKBACK v1: per-class / mass / boss-resist push of the victim root, clamped by arena + colliders (dark: knockback.enabled=false returns at once)
         if (db && d.health > 0f && RTFinisher.DeathblowFinishes && RTFinisher.TryBegin(a, d, m, true)) return true;   // V61B: a posture-break deathblow ALWAYS starts a finisher (finishers.json rt.deathblowFinishes), lethal or not; the scene's Die() is the kill
         if (d.health <= 0f)
         {
@@ -121,13 +124,15 @@ public class Duel : MonoBehaviour
     }
 
     static bool lastRear, lastCounter;
+    public static bool RangedNow; public static MoveDef RangedMove;   // BOW v2: an arrow is being judged (BowShot.Land): no reach / arc test, no finisher; events carry the shooter's swing
+    static MoveDef FM(DuelFighter a) { return RangedMove ?? a.CurrentMove; }   // BOW v2
     // hit zone from the move (V3 hit-react zones): overhead/heavy -> head, thrust -> torso, kick -> legs, side cuts -> arms
     static string LocationOf(MoveDef m, DuelFighter d) { if (m == null) return "torso"; string id = m.id; if (id.Contains("overhead") || id.StartsWith("heavy")) return "head"; if (id == "kick") return "legs"; if (id.Contains("thrust") || id == "riposte") return "torso"; return id == "light_left" || id == "light_right" ? "arms" : "torso"; }
     static string DirectionOf(MoveDef m) { if (m == null) return "front"; if (m.id.EndsWith("left")) return "left"; if (m.id.EndsWith("right")) return "right"; return "front"; }
     static void Fire(DuelFighter a, DuelFighter d, string type, bool heavy, bool perfect)
     {
         ContactRelay.Raise(a, d, type, heavy, perfect);
-        ContactRelay.RaiseEvent(new CombatEvent { type = type, actor = a, target = d, moveId = a.CurrentMove != null ? a.CurrentMove.id : "", heavy = heavy, perfect = perfect, counter = lastCounter, rear = lastRear, location = LocationOf(a.CurrentMove, d), direction = DirectionOf(a.CurrentMove), weight = HitReactionTable.Last != null ? HitReactionTable.Last.weight : "", hitLocation = HitReactionTable.Last != null ? HitReactionTable.Last.location : "", hitDirection = HitReactionTable.Last != null ? HitReactionTable.Last.direction : "", point = HitAnchor.Point(a, d) /* KITHIT v1 */, tick = TickCount });
+        ContactRelay.RaiseEvent(new CombatEvent { type = type, actor = a, target = d, moveId = FM(a) != null ? FM(a).id : "" /* BOW v2 */, heavy = heavy, perfect = perfect, counter = lastCounter, rear = lastRear, location = LocationOf(FM(a), d), direction = DirectionOf(FM(a)), weight = HitReactionTable.Last != null ? HitReactionTable.Last.weight : "", hitLocation = HitReactionTable.Last != null ? HitReactionTable.Last.location : "", hitDirection = HitReactionTable.Last != null ? HitReactionTable.Last.direction : "", point = HitAnchor.Point(a, d) /* KITHIT v1 */, tick = TickCount });
     }
 }
 

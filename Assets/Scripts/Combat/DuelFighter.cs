@@ -28,7 +28,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
 
     float R(string k, float d) { return rules ? rules.N(k, d) : d; }
     string[] specialIds; /* DATALAYER b6 */
-    public string SpecialId(int slot) { if (specialIds == null) { var rc = Roster.Get(Roster.IdOf(this)); specialIds = rc != null && rc.specials != null && rc.specials.Length >= 2 ? rc.specials : new[] { "skill_cleave", "skill_reaping" }; } return specialIds[slot]; } /* DATALAYER b6 */
+    public string SpecialId(int slot) { string bowId = BowHooks.SpecialIdFor(this, slot); if (bowId != null) return bowId; /* BOW v2 */ if (specialIds == null) { var rc = Roster.Get(Roster.IdOf(this)); specialIds = rc != null && rc.specials != null && rc.specials.Length >= 2 ? rc.specials : new[] { "skill_cleave", "skill_reaping" }; } return specialIds[slot]; } /* DATALAYER b6 */
     public bool Dead => state == FState.Dead;
     public MoveDef CurrentMove => move;
     public int WindupLeft => state == FState.Windup && move != null ? Tk(move.Windup(chained)) - t : 99;
@@ -637,7 +637,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             case FState.Windup:
                 if (!PresentationClock.Frozen && t >= R("stepInFrom", 3) && move != null && dist > StepStopDist()) { float si = StepInFor(); if (si > 0f) v = FlowStepDir(dir) * (si * scale / Mathf.Max(0.1f, (Tk(move.Windup(chained)) - 3) / 60f)); }   // stepIn: data (attack_clips.json) or the move's value
                 break;
-            case FState.Stagger: case FState.Down: if (!PresentationClock.Frozen) { v = knock; knock *= 0.88f; } faceOpp = false; break;   // P1: no knock slide while the animation is frozen (hit-stop)
+            case FState.Stagger: case FState.Down: if (!PresentationClock.Frozen) { v = knock; knock *= HitKnockback.Decay;   /* KNOCKBACK v1: was the literal 0.88f, same default */ } faceOpp = false; break;   // P1: no knock slide while the animation is frozen (hit-stop)
             case FState.Dead: faceOpp = false; break;
         }
         if (PresentationClock.Frozen) { v.x = 0f; v.z = 0f; }   // P1: hit-stop freezes the body with the animation (the legs are frozen too: no ice-skating)

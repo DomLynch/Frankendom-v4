@@ -232,7 +232,7 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
                 float k = 1f - (now - readyT[i]) / Mathf.Max(0.05f, S.readyFlashS);
                 if (k > 0f) { float g = S.size * (H.layout.flashBase + H.layout.flashGrow * (1f - k)); HudDraw.Tex(new Rect(r.center.x - g * 0.5f, r.center.y - g * 0.5f, g, g), HudDraw.Ring(S.ringPx), new Color(readyCol.r, readyCol.g, readyCol.b, k)); }
             }
-            string label = string.IsNullOrEmpty(it.label) ? it.key : it.key + "  " + it.label;
+            string label = string.IsNullOrEmpty(it.label) ? it.key : it.key + "  " + BowHooks.SpecialLabel(pf, i, it.label); /* BOW v2 */
             HudDraw.Text(new Rect(r.x - H.layout.keyLabelPad, r.yMax + S.keyDy, S.size + 2f * H.layout.keyLabelPad, S.keySize * H.layout.keyLabelBox), label, "serif", S.keySize, TextAnchor.UpperCenter, false, ready ? HudCfg.Col(H.colors.ink, H.layout.keyLabelInk) : HudCfg.Col(H.colors.dim));
         }
     }

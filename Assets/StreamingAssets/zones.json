@@ -808,7 +808,7 @@
           "leash": 30.0,
           "hpMul": 1.0,
           "damageMul": 1.0,
-          "difficulty": 12,
+          "difficulty": 14,
           "needs": "laneMONSTER6 roster row + Resources/Creatures/Erlking.prefab; respawn 30 to 45 min is a Dom decision (final boss)"
         }
       ],
