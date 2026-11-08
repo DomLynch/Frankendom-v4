@@ -222,6 +222,146 @@
           "maxStep": 0.0
         }
       ]
+    },
+    {
+      "character": "Humbaba",
+      "controller": "Assets/Characters/Humbaba.controller",
+      "baseGlb": "Assets/Characters/Humbaba/Humbaba_combat.glb",
+      "outGlb": "Assets/Characters/Humbaba/Humbaba_dodges.glb",
+      "outClipDir": "Assets/Characters/Humbaba/DodgeClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "dodge_diveroll",
+          "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        }
+      ]
+    },
+    {
+      "character": "Grendel",
+      "_note": "LOCOMONSTER (LOCODIR v1): Grendel_loco_baked.glb is the lane glb: his own walk / run (mutant-walking / zombie-run) plus a horizontal foot-lock (hips offset in the clip, no runtime IK; tools/walkrun.py in _agents/laneMONSTERLOCO/tools); back / strafes are the library clips. Do NOT rebuild it with bake_dodge_clips.py (plain retarget, no foot-lock). Separate from laneMONSTER3 Grendel_dodges.glb.",
+      "controller": "Assets/Characters/Grendel.controller",
+      "baseGlb": "Assets/Characters/Grendel/Grendel_combat.glb",
+      "outGlb": "Assets/Characters/Grendel/Grendel_loco_baked.glb",
+      "outClipDir": "Assets/Characters/Grendel/LocoClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "loco_walk",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/100470902-mutant-walking.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_run",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/121370901-zombie-run.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_walk_back",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116150902-walking-backwards.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_strafe_L",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480901-walk-strafe-left.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_strafe_R",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480902-walk-strafe-right.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        }
+      ]
+    },
+    {
+      "character": "Erlking",
+      "_note": "LOCOMONSTER (LOCODIR v1): Erlking_loco_baked.glb is the lane glb: his own walk/run/back plus horizontal foot-lock, strafes = lane lib 116480901/2; do not rebuild with bake_dodge_clips.py (plain retarget, no foot-lock). The sources below are only the origin of the motion.",
+      "controller": "Assets/Characters/Erlking.controller",
+      "baseGlb": "Assets/Characters/Erlking/Erlking_combat.glb",
+      "outGlb": "Assets/Characters/Erlking/Erlking_loco_baked.glb",
+      "outClipDir": "Assets/Characters/Erlking/LocoClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "loco_walk",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/_work/lib/124540901-walk.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_run",
+          "source": "C:/Users/dom12/Documents/kits_out/3d/combat_clips/_work/lib/111290901-run.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_walk_back",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116150902-walking-backwards.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_strafe_L",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480901-walk-strafe-left.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        },
+        {
+          "state": "loco_strafe_R",
+          "source": "C:/Users/dom12/Documents/unity_test_hdrp/_agents/laneMONSTERLOCO/lib/116480902-walk-strafe-right.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0,
+          "loop": true
+        }
+      ]
+    },
+    {
+      "character": "Humbaba",
+      "controller": "Assets/Characters/Humbaba.controller",
+      "baseGlb": "Assets/Characters/Humbaba/Humbaba_combat.glb",
+      "outGlb": "Assets/Characters/Humbaba/Humbaba_dodges.glb",
+      "outClipDir": "Assets/Characters/Humbaba/DodgeClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "dodge_diveroll",
+          "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        }
+      ]
+    },
+    {
+      "character": "Erlking",
+      "controller": "Assets/Characters/Erlking.controller",
+      "baseGlb": "Assets/Characters/Erlking/Erlking_combat.glb",
+      "outGlb": "Assets/Characters/Erlking/Erlking_dodges.glb",
+      "outClipDir": "Assets/Characters/Erlking/DodgeClips",
+      "referenceState": "guard_idle",
+      "clips": [
+        {
+          "state": "dodge_diveroll",
+          "source": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+          "rootMotion": "inplace",
+          "maxStep": 0.0
+        }
+      ]
     }
   ]
 }

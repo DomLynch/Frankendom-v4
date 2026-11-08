@@ -168,6 +168,46 @@
       }
     ],
     "_note": "laneMONSTER3 (Grendel): ONE material (single mesh Grendel_Body). Dom's rule (2026-11-07): his supplied textures ship as designed at full 4K: base colour and metal-rough are his source files byte for byte, the normal is his normal UDN-composited with the bake of the decimation (4K). The earlier bone-vs-flesh separation (data/demon_material.json) stays staged as an OPTION in Tex_alt_separated (not installed)."
+  },
+  {
+    "id": "Humbaba",
+    "glb": "Assets/Characters/Humbaba/Humbaba_combat.glb",
+    "texDir": "Assets/Characters/Humbaba/Tex",
+    "groups": [
+      {
+        "glbMaterial": "creature5_body",
+        "maskOut": "creature5_body_mask.png",
+        "maskSize": 2048,
+        "parts": [
+          {
+            "base": "creature5_body_base.jpg",
+            "normal": "creature5_body_normal.jpg",
+            "mr": "creature5_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneMONSTER5 (Humbaba): ONE material (single mesh Creature5_Body). Dom's rule (2026-11-07): his supplied textures ship as designed at FULL 4K, source colours, nothing added to the albedo; the normal is his normal composited with the bake of the decimation."
+  },
+  {
+    "id": "Erlking",
+    "glb": "Assets/Characters/Erlking/Erlking_combat.glb",
+    "texDir": "Assets/Characters/Erlking/Tex",
+    "groups": [
+      {
+        "glbMaterial": "erlking_body",
+        "maskOut": "erlking_body_mask.png",
+        "maskSize": 2048,
+        "parts": [
+          {
+            "base": "erlking_body_base.jpg",
+            "normal": "erlking_body_normal.jpg",
+            "mr": "erlking_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneMONSTER6 (Erlking): ONE material (single mesh Erlking_Body). Dom's rule (2026-11-07): his supplied textures ship as designed at FULL 4K, source colours, nothing added to the albedo (no tint, no re-light); base = his source albedo, mr = his source roughness + baked AO in R + metallic 0, normal = his normal UDN-composited with the bake of the decimation."
   }
  ],
  "copy": [
@@ -354,6 +394,34 @@
   {
     "mat": "Assets/Characters/Grendel/Mats/grendel_body_0.mat",
     "mask": "Assets/Characters/Grendel/Tex/grendel_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "smoothnessMin": -1,
+    "smoothnessMax": 0.35,
+    "materialId": 1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/Humbaba/Mats/creature5_body_0.mat",
+    "mask": "Assets/Characters/Humbaba/Tex/creature5_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "smoothnessMin": -1,
+    "smoothnessMax": 0.35,
+    "materialId": 1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/Erlking/Mats/erlking_body_0.mat",
+    "mask": "Assets/Characters/Erlking/Tex/erlking_body_mask.png",
     "sheen": "off",
     "sheenIntensity": 1,
     "smoothnessMin": -1,

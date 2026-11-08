@@ -11,6 +11,8 @@
     { "id": "pit_veteran", "character": "Pitborn",   "name": "PITBORN", "title": "Veteran of the Pit",  "hpMul": 1.12, "damageMul": 1.08, "difficulty": 8, "inLadder": true },
     { "id": "pit_champion", "character": "Pitborn",  "name": "PITBORN", "title": "Pit Champion",        "hpMul": 1.25, "damageMul": 1.15, "difficulty": 9, "inLadder": true },
     { "id": "pit_lord", "character": "Pitborn",      "name": "PITBORN", "title": "Lord of the Furnace", "hpMul": 1.40, "damageMul": 1.25, "difficulty": 10, "inLadder": true },
-    {"id": "grendel", "character": "Grendel", "name": "GRENDEL", "title": "The Bone Reaver", "hpMul": 1.25, "damageMul": 1.95, "difficulty": 12, "inLadder": false}
+    {"id": "grendel", "character": "Grendel", "name": "GRENDEL", "title": "The Bone Reaver", "hpMul": 1.25, "damageMul": 1.95, "difficulty": 12, "inLadder": false},
+    {"id": "humbaba", "character": "Humbaba", "name": "HUMBABA", "title": "Guardian of the Cedar Forest", "hpMul": 1.3, "damageMul": 2.1, "difficulty": 13, "inLadder": false},
+    {"id": "erlking", "character": "Erlking", "name": "ERLKING", "title": "King of the Night Woods", "hpMul": 1.5, "damageMul": 2.6, "difficulty": 14, "inLadder": false}
   ]
 }

@@ -25,6 +25,14 @@
     {
       "contains": "Grendel",
       "kg": 700.0
+    },
+    {
+      "contains": "Humbaba",
+      "kg": 850.0
+    },
+    {
+      "contains": "Erlking",
+      "kg": 1400.0
     }
   ],
   "defaultMassKg": 80.0,

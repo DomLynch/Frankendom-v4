@@ -1,5 +1,5 @@
 {
-  "enabled": true,
+  "enabled": false,
   "debug": false,
   "sampleS": 0.1,
   "maxChangePerS": 3.0,
@@ -132,6 +132,132 @@
           "stride": 0,
           "cycleS": 1,
           "minAnim": 0.5,
+          "maxAnim": 1.6
+        }
+      }
+    },
+    {
+      "id": "Grendel",
+      "enabled": true,
+      "modelScaleSource": "anim",
+      "gaits": {
+        "walk": {
+          "state": "loco_walk",
+          "stride": 1.47,
+          "cycleS": 1.0,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "run": {
+          "state": "loco_run",
+          "stride": 4.86,
+          "cycleS": 0.8,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "back": {
+          "state": "loco_walk_back",
+          "stride": 1.32,
+          "cycleS": 1.4,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "strafeL": {
+          "state": "loco_strafe_L",
+          "stride": 0.71,
+          "cycleS": 1.467,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        },
+        "strafeR": {
+          "state": "loco_strafe_R",
+          "stride": 0.73,
+          "cycleS": 1.467,
+          "minAnim": 0.5,
+          "maxAnim": 1.6
+        }
+      }
+    },
+    {
+      "id": "Erlking",
+      "enabled": true,
+      "modelScaleSource": "anim",
+      "gaits": {
+        "walk": {
+          "state": "loco_walk",
+          "stride": 2.935,
+          "cycleS": 1.0,
+          "minAnim": 0.3,
+          "maxAnim": 1.6
+        },
+        "run": {
+          "state": "loco_run",
+          "stride": 6.389,
+          "cycleS": 0.8,
+          "minAnim": 0.3,
+          "maxAnim": 1.6
+        },
+        "back": {
+          "state": "loco_walk_back",
+          "stride": 0.838,
+          "cycleS": 1.4,
+          "minAnim": 0.3,
+          "maxAnim": 1.6
+        },
+        "strafeL": {
+          "state": "loco_strafe_L",
+          "stride": 1.79,
+          "cycleS": 1.467,
+          "minAnim": 0.3,
+          "maxAnim": 1.6
+        },
+        "strafeR": {
+          "state": "loco_strafe_R",
+          "stride": 1.16,
+          "cycleS": 1.467,
+          "minAnim": 0.3,
+          "maxAnim": 1.6
+        }
+      }
+    },
+    {
+      "id": "Humbaba",
+      "enabled": true,
+      "modelScaleSource": "anim",
+      "gaits": {
+        "walk": {
+          "state": "loco_walk",
+          "stride": 1.467,
+          "cycleS": 1.0,
+          "minAnim": 0.3,
+          "maxAnim": 1.6
+        },
+        "run": {
+          "state": "loco_run",
+          "stride": 4.27,
+          "cycleS": 0.8,
+          "minAnim": 0.3,
+          "maxAnim": 1.6
+        },
+        "back": {
+          "state": "loco_walk_back",
+          "stride": 0.632,
+          "cycleS": 1.4,
+          "minAnim": 0.3,
+          "maxAnim": 1.6
+        },
+        "strafeL": {
+          "state": "loco_strafe_L",
+          "stride": 0.7,
+          "cycleS": 1.467,
+          "minAnim": 0.3,
+          "maxAnim": 1.6
+        },
+        "strafeR": {
+          "state": "loco_strafe_R",
+          "stride": 0.78,
+          "cycleS": 1.467,
+          "minAnim": 0.3,
           "maxAnim": 1.6
         }
       }

@@ -48,6 +48,18 @@
     "note": "SOBEKMOVES (guess): 480 HP, hits x0.9, takes x1.0, specials OFF (cooldown 600000 ticks = the code's own spent value; Sobek has no skill clips, no new animation allowed). sobek_sweep.py: SOBEKDATA's 700/1.2/0.9 put Joan at 3-5 percent in the model, this at about 35 percent against a Pitborn anchor of 28 (model is ~12-28 points low on Joan). Proof: 20-seed run."
   },
   {
+    "key": "Erlking",
+    "maxHealth": 600.0,
+    "maxStamina": 0,
+    "damageMul": 0.9,
+    "takenMul": 1.0,
+    "specialDamageMul": 1.0,
+    "specialCooldownTicks": 600000,
+    "specialInitialCooldownTicks": 600000,
+    "specialMaxUses": 0,
+    "note": "laneBOSSDATA curve: 600 x hpMul 1.5 = 900 hp, hits 0.9 x 2.6 = 2.34; specials OFF."
+  },
+  {
    "key": "*",
    "maxHealth": 0,
    "maxStamina": 0,
@@ -69,6 +81,18 @@
     "specialInitialCooldownTicks": 600000,
     "specialMaxUses": 0,
     "note": "laneBOSSDATA curve: 520 x hpMul 1.25 = 650 hp, hits 0.9 x 1.95 = 1.755; specials OFF."
+  },
+  {
+    "key": "Humbaba",
+    "maxHealth": 560.0,
+    "maxStamina": 0,
+    "damageMul": 0.9,
+    "takenMul": 1.0,
+    "specialDamageMul": 1.0,
+    "specialCooldownTicks": 600000,
+    "specialInitialCooldownTicks": 600000,
+    "specialMaxUses": 0,
+    "note": "laneBOSSDATA curve: 560 x hpMul 1.3 = 728 hp, hits 0.9 x 2.1 = 1.89; specials OFF."
   }
  ]
 }

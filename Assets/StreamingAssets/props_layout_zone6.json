@@ -1,1056 +1,2252 @@
 {
- "_notes": "ZONE6 DRAFT (laneZONE6, STAGED, NOT APPLIED). Zone 6 (z6_erlking) authored for the Erlking boss arena: a 35 m ring of 12 standing stones (10 standing, 2 fallen) centred zone-local (0,38), 4 antler-totem stand-ins (tag TOTEM_SLOT, swap for the Tripo antler totem), 1 dead great tree, low bones, 8 boulders. World z = 238 + local z. Same libraries and lodProfiles as zone 2 (meshes and materials shared). y 0.0 platformTop is a Unity-space suggestion, NOT checked against the stamped terrain (snap on build).",
- "version": 2,
- "coordinateSpace": "unity world metres",
- "constants": {
-  "waterY": -0.9,
-  "platformTop": 0.0
- },
- "libraries": [
-  {
-   "name": "props",
-   "pattern": "Assets/Env/Props/{asset}/{asset}_LOD{lod}.glb"
+  "_notes": "ZONE6 DRAFT (laneZONE6, STAGED, NOT APPLIED). Zone 6 (z6_erlking) authored for the Erlking boss arena: a 35 m ring of 12 standing stones (10 standing, 2 fallen) centred zone-local (0,38), 4 antler-totem stand-ins (tag TOTEM_SLOT, swap for the Tripo antler totem), 1 dead great tree, low bones, 8 boulders. World z = 238 + local z. Same libraries and lodProfiles as zone 2 (meshes and materials shared). y 0.0 platformTop is a Unity-space suggestion, NOT checked against the stamped terrain (snap on build).",
+  "version": 2,
+  "coordinateSpace": "unity world metres",
+  "constants": {
+    "waterY": -0.9,
+    "platformTop": 0.0
   },
-  {
-   "name": "rocks",
-   "pattern": "Assets/Env/Rocks/{asset}_LOD{lod}.glb"
-  },
-  {
-   "name": "world_mid",
-   "pattern": "Assets/Env/World/Mid/{asset}/{asset}_LOD{lod}.glb"
-  },
-  {
-   "name": "world_far",
-   "pattern": "Assets/Env/World/Far/{asset}/{asset}_LOD{lod}.glb"
-  },
-  {
-   "name": "world_trench",
-   "pattern": "Assets/Env/World/Trench/{asset}/{asset}_LOD{lod}.glb"
-  },
-  {
-   "name": "world_bridge",
-   "pattern": "Assets/Env/World/Bridge/{asset}/{asset}_LOD{lod}.glb"
-  },
-  {
-   "name": "balu2",
-   "pattern": "Assets/Env/Balu2/{asset}_LOD{lod}.glb"
-  },
-  {
-   "name": "world_ground",
-   "pattern": "Assets/Env/World/Ground/{asset}/{asset}_LOD{lod}.glb"
-  },
-  {
-   "name": "erlking",
-   "pattern": "Assets/Env/Erlking/{asset}/{asset}_LOD{lod}.glb",
-   "status": "Dom Tripo hero piece erlking_totem; rows below use it only when the files exist at plan time"
-  }
- ],
- "lodProfiles": [
-  {
-   "name": "props",
-   "screenHeights": [
-    0.25,
-    0.08,
-    0.02
-   ]
-  },
-  {
-   "name": "trees",
-   "screenHeights": [
-    1.7,
-    0.35,
-    0.03
-   ]
-  },
-  {
-   "name": "boulders",
-   "screenHeights": [
-    0.3,
-    0.1,
-    0.03
-   ]
-  },
-  {
-   "name": "islet",
-   "screenHeights": [
-    0.2,
-    0.06,
-    0.015
-   ]
-  },
-  {
-   "name": "far_ruin",
-   "screenHeights": [
-    0.1,
-    0.03,
-    0.01
-   ]
-  },
-  {
-   "name": "shoreline",
-   "screenHeights": [
-    0.12,
-    0.04,
-    0.01
-   ]
-  },
-  {
-   "name": "debris",
-   "screenHeights": [
-    0.05,
-    0.02,
-    0.0
-   ]
-  },
-  {
-   "name": "hero_heavy",
-   "screenHeights": [
-    0.3,
-    0.1,
-    0.03
-   ]
-  },
-  {
-   "name": "mid_ruin",
-   "screenHeights": [
-    0.15,
-    0.05,
-    0.015
-   ]
-  },
-  {
-   "name": "far_ruin_world",
-   "screenHeights": [
-    0.12,
-    0.04,
-    0.012
-   ]
-  },
-  {
-   "name": "near_hq",
-   "screenHeights": [
-    0.06,
-    0.015,
-    0.004
-   ]
-  }
- ],
- "groups": [
-  "Z6Ring0",
-  "Z6Ring1",
-  "Z6Ring2"
- ],
- "props": [
-  {
-   "id": "z6_standing_ruin_pillar_4_0",
-   "group": "Z6Ring0",
-   "library": "props",
-   "asset": "standing_ruin_pillar_4",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    4.53,
-    0.0,
-    265.1
-   ],
-   "rotEuler": [
-    0,
-    145.0,
-    0
-   ],
-   "scale": 1.15,
-   "shadowsOff": false,
-   "tags": [
-    "ring",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_standing_ruin_pillar_4_1",
-   "group": "Z6Ring0",
-   "library": "props",
-   "asset": "standing_ruin_pillar_4",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    12.37,
-    0.0,
-    269.63
-   ],
-   "rotEuler": [
-    0,
-    152.0,
-    0
-   ],
-   "scale": 1.0,
-   "shadowsOff": false,
-   "tags": [
-    "ring",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_standing_ruin_pillar_4_2",
-   "group": "Z6Ring1",
-   "library": "props",
-   "asset": "standing_ruin_pillar_4",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    16.9,
-    0.0,
-    277.47
-   ],
-   "rotEuler": [
-    0,
-    119.0,
-    0
-   ],
-   "scale": 1.2,
-   "shadowsOff": false,
-   "tags": [
-    "ring",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_fallen_pillar_3_0",
-   "group": "Z6Ring1",
-   "library": "props",
-   "asset": "fallen_pillar_3",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    16.9,
-    0.0,
-    286.53
-   ],
-   "rotEuler": [
-    0,
-    357.0,
-    0
-   ],
-   "scale": 1.55,
-   "shadowsOff": false,
-   "tags": [
-    "ring_fallen",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_standing_ruin_pillar_4_3",
-   "group": "Z6Ring2",
-   "library": "props",
-   "asset": "standing_ruin_pillar_4",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    12.37,
-    0.0,
-    294.37
-   ],
-   "rotEuler": [
-    0,
-    53.0,
-    0
-   ],
-   "scale": 1.1,
-   "shadowsOff": false,
-   "tags": [
-    "ring",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_standing_ruin_pillar_4_4",
-   "group": "Z6Ring2",
-   "library": "props",
-   "asset": "standing_ruin_pillar_4",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    4.53,
-    0.0,
-    298.9
-   ],
-   "rotEuler": [
-    0,
-    20.0,
-    0
-   ],
-   "scale": 0.95,
-   "shadowsOff": false,
-   "tags": [
-    "ring",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_standing_ruin_pillar_4_5",
-   "group": "Z6Ring2",
-   "library": "props",
-   "asset": "standing_ruin_pillar_4",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -4.53,
-    0.0,
-    298.9
-   ],
-   "rotEuler": [
-    0,
-    347.0,
-    0
-   ],
-   "scale": 1.2,
-   "shadowsOff": false,
-   "tags": [
-    "ring",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_standing_ruin_pillar_4_6",
-   "group": "Z6Ring2",
-   "library": "props",
-   "asset": "standing_ruin_pillar_4",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -12.37,
-    0.0,
-    294.37
-   ],
-   "rotEuler": [
-    0,
-    314.0,
-    0
-   ],
-   "scale": 1.05,
-   "shadowsOff": false,
-   "tags": [
-    "ring",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_standing_ruin_pillar_4_7",
-   "group": "Z6Ring1",
-   "library": "props",
-   "asset": "standing_ruin_pillar_4",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -16.9,
-    0.0,
-    286.53
-   ],
-   "rotEuler": [
-    0,
-    281.0,
-    0
-   ],
-   "scale": 1.15,
-   "shadowsOff": false,
-   "tags": [
-    "ring",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_fallen_pillar_3_1",
-   "group": "Z6Ring1",
-   "library": "props",
-   "asset": "fallen_pillar_3",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -16.9,
-    0.0,
-    277.47
-   ],
-   "rotEuler": [
-    0,
-    177.0,
-    0
-   ],
-   "scale": 1.55,
-   "shadowsOff": false,
-   "tags": [
-    "ring_fallen",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_standing_ruin_pillar_4_8",
-   "group": "Z6Ring0",
-   "library": "props",
-   "asset": "standing_ruin_pillar_4",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -12.37,
-    0.0,
-    269.63
-   ],
-   "rotEuler": [
-    0,
-    215.0,
-    0
-   ],
-   "scale": 1.1,
-   "shadowsOff": false,
-   "tags": [
-    "ring",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_standing_ruin_pillar_4_9",
-   "group": "Z6Ring0",
-   "library": "props",
-   "asset": "standing_ruin_pillar_4",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -4.53,
-    0.0,
-    265.1
-   ],
-   "rotEuler": [
-    0,
-    182.0,
-    0
-   ],
-   "scale": 1.0,
-   "shadowsOff": false,
-   "tags": [
-    "ring",
-    "ring",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_dead_tree_1a_0",
-   "group": "Z6Ring0",
-   "library": "props",
-   "asset": "dead_tree_1a",
-   "lodProfile": "trees",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -6.8,
-    0.0,
-    257.0
-   ],
-   "rotEuler": [
-    0,
-    340,
-    0
-   ],
-   "scale": 0.5,
-   "shadowsOff": false,
-   "tags": [
-    "antler_totem",
-    "TOTEM_SLOT",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_dead_tree_1a_1",
-   "group": "Z6Ring0",
-   "library": "props",
-   "asset": "dead_tree_1a",
-   "lodProfile": "trees",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    6.8,
-    0.0,
-    257.0
-   ],
-   "rotEuler": [
-    0,
-    20,
-    0
-   ],
-   "scale": 0.5,
-   "shadowsOff": false,
-   "tags": [
-    "antler_totem",
-    "TOTEM_SLOT",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_dead_tree_1a_2",
-   "group": "Z6Ring2",
-   "library": "props",
-   "asset": "dead_tree_1a",
-   "lodProfile": "trees",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    16.55,
-    0.0,
-    294.93
-   ],
-   "rotEuler": [
-    0,
-    200,
-    0
-   ],
-   "scale": 0.55,
-   "shadowsOff": false,
-   "tags": [
-    "antler_totem",
-    "TOTEM_SLOT",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_dead_tree_1a_3",
-   "group": "Z6Ring2",
-   "library": "props",
-   "asset": "dead_tree_1a",
-   "lodProfile": "trees",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -16.55,
-    0.0,
-    294.93
-   ],
-   "rotEuler": [
-    0,
-    160,
-    0
-   ],
-   "scale": 0.55,
-   "shadowsOff": false,
-   "tags": [
-    "antler_totem",
-    "TOTEM_SLOT",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_dead_tree_1b_0",
-   "group": "Z6Ring2",
-   "library": "props",
-   "asset": "dead_tree_1b",
-   "lodProfile": "trees",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -13.0,
-    0.0,
-    308.0
-   ],
-   "rotEuler": [
-    0,
-    35,
-    0
-   ],
-   "scale": 1.6,
-   "shadowsOff": false,
-   "tags": [
-    "great_tree",
-    "hero",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_hero_skull_pile_a_0",
-   "group": "Z6Ring1",
-   "library": "props",
-   "asset": "hero_skull_pile_a",
-   "lodProfile": "debris",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -9.8,
-    0.0,
-    273.8
-   ],
-   "rotEuler": [
-    0,
-    30,
-    0
-   ],
-   "scale": 0.9,
-   "shadowsOff": true,
-   "tags": [
-    "bones",
-    "low",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_hero_skull_pile_b_0",
-   "group": "Z6Ring1",
-   "library": "props",
-   "asset": "hero_skull_pile_b",
-   "lodProfile": "debris",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    10.2,
-    0.0,
-    289.5
-   ],
-   "rotEuler": [
-    0,
-    200,
-    0
-   ],
-   "scale": 0.9,
-   "shadowsOff": true,
-   "tags": [
-    "bones",
-    "low",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_hero_skull_pile_b_1",
-   "group": "Z6Ring2",
-   "library": "props",
-   "asset": "hero_skull_pile_b",
-   "lodProfile": "debris",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -9.6,
-    0.0,
-    291.0
-   ],
-   "rotEuler": [
-    0,
-    110,
-    0
-   ],
-   "scale": 0.9,
-   "shadowsOff": true,
-   "tags": [
-    "bones",
-    "low",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_hero_skull_pile_a_1",
-   "group": "Z6Ring1",
-   "library": "props",
-   "asset": "hero_skull_pile_a",
-   "lodProfile": "debris",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    9.6,
-    0.0,
-    273.8
-   ],
-   "rotEuler": [
-    0,
-    300,
-    0
-   ],
-   "scale": 0.9,
-   "shadowsOff": true,
-   "tags": [
-    "bones",
-    "low",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_bone_fragments_7_0",
-   "group": "Z6Ring1",
-   "library": "props",
-   "asset": "bone_fragments_7",
-   "lodProfile": "debris",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -8.0,
-    0.0,
-    277.0
-   ],
-   "rotEuler": [
-    0,
-    10,
-    0
-   ],
-   "scale": 1.0,
-   "shadowsOff": true,
-   "tags": [
-    "bones",
-    "low",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_bone_fragments_7_1",
-   "group": "Z6Ring1",
-   "library": "props",
-   "asset": "bone_fragments_7",
-   "lodProfile": "debris",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    9.5,
-    0.0,
-    280.0
-   ],
-   "rotEuler": [
-    0,
-    140,
-    0
-   ],
-   "scale": 1.0,
-   "shadowsOff": true,
-   "tags": [
-    "bones",
-    "low",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_bone_fragments_7_2",
-   "group": "Z6Ring2",
-   "library": "props",
-   "asset": "bone_fragments_7",
-   "lodProfile": "debris",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -5.6,
-    0.0,
-    291.5
-   ],
-   "rotEuler": [
-    0,
-    250,
-    0
-   ],
-   "scale": 1.0,
-   "shadowsOff": true,
-   "tags": [
-    "bones",
-    "low",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_bone_fragments_7_3",
-   "group": "Z6Ring2",
-   "library": "props",
-   "asset": "bone_fragments_7",
-   "lodProfile": "debris",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    7.0,
-    0.0,
-    295.0
-   ],
-   "rotEuler": [
-    0,
-    70,
-    0
-   ],
-   "scale": 1.0,
-   "shadowsOff": true,
-   "tags": [
-    "bones",
-    "low",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_bone_fragments_7_4",
-   "group": "Z6Ring0",
-   "library": "props",
-   "asset": "bone_fragments_7",
-   "lodProfile": "debris",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -4.9,
-    0.0,
-    250.0
-   ],
-   "rotEuler": [
-    0,
-    90,
-    0
-   ],
-   "scale": 1.0,
-   "shadowsOff": true,
-   "tags": [
-    "bones",
-    "low",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_bone_fragments_7_5",
-   "group": "Z6Ring0",
-   "library": "props",
-   "asset": "bone_fragments_7",
-   "lodProfile": "debris",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    5.4,
-    0.0,
-    262.5
-   ],
-   "rotEuler": [
-    0,
-    20,
-    0
-   ],
-   "scale": 1.0,
-   "shadowsOff": true,
-   "tags": [
-    "bones",
-    "low",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_rock_boulder_A_0",
-   "group": "Z6Ring0",
-   "library": "rocks",
-   "asset": "rock_boulder_A",
-   "lodProfile": "boulders",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -24,
-    0.0,
-    268.0
-   ],
-   "rotEuler": [
-    0,
-    11,
-    0
-   ],
-   "scale": 1.0,
-   "shadowsOff": true,
-   "tags": [
-    "boulder",
-    "rocks",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_rock_boulder_C_0",
-   "group": "Z6Ring1",
-   "library": "rocks",
-   "asset": "rock_boulder_C",
-   "lodProfile": "boulders",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    25,
-    0.0,
-    274.0
-   ],
-   "rotEuler": [
-    0,
-    48,
-    0
-   ],
-   "scale": 1.3,
-   "shadowsOff": true,
-   "tags": [
-    "boulder",
-    "rocks",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_rock_boulder_D_0",
-   "group": "Z6Ring1",
-   "library": "rocks",
-   "asset": "rock_boulder_D",
-   "lodProfile": "boulders",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -26,
-    0.0,
-    288.0
-   ],
-   "rotEuler": [
-    0,
-    85,
-    0
-   ],
-   "scale": 1.1,
-   "shadowsOff": true,
-   "tags": [
-    "boulder",
-    "rocks",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_rock_boulder_B_0",
-   "group": "Z6Ring2",
-   "library": "rocks",
-   "asset": "rock_boulder_B",
-   "lodProfile": "boulders",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    23,
-    0.0,
-    299.0
-   ],
-   "rotEuler": [
-    0,
-    122,
-    0
-   ],
-   "scale": 0.9,
-   "shadowsOff": true,
-   "tags": [
-    "boulder",
-    "rocks",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_rock_boulder_C_1",
-   "group": "Z6Ring0",
-   "library": "rocks",
-   "asset": "rock_boulder_C",
-   "lodProfile": "boulders",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -12,
-    0.0,
-    248.0
-   ],
-   "rotEuler": [
-    0,
-    159,
-    0
-   ],
-   "scale": 0.9,
-   "shadowsOff": true,
-   "tags": [
-    "boulder",
-    "rocks",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_rock_boulder_A_1",
-   "group": "Z6Ring0",
-   "library": "rocks",
-   "asset": "rock_boulder_A",
-   "lodProfile": "boulders",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    14,
-    0.0,
-    251.0
-   ],
-   "rotEuler": [
-    0,
-    196,
-    0
-   ],
-   "scale": 1.0,
-   "shadowsOff": true,
-   "tags": [
-    "boulder",
-    "rocks",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_rock_boulder_B_1",
-   "group": "Z6Ring2",
-   "library": "rocks",
-   "asset": "rock_boulder_B",
-   "lodProfile": "boulders",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    -21,
-    0.0,
-    304.0
-   ],
-   "rotEuler": [
-    0,
-    233,
-    0
-   ],
-   "scale": 0.8,
-   "shadowsOff": true,
-   "tags": [
-    "boulder",
-    "rocks",
-    "zone6"
-   ]
-  },
-  {
-   "id": "z6_rock_boulder_D_1",
-   "group": "Z6Ring2",
-   "library": "rocks",
-   "asset": "rock_boulder_D",
-   "lodProfile": "boulders",
-   "ground": "bottom",
-   "yBase": "platformTop",
-   "pos": [
-    19,
-    0.0,
-    310.0
-   ],
-   "rotEuler": [
-    0,
-    270,
-    0
-   ],
-   "scale": 1.2,
-   "shadowsOff": true,
-   "tags": [
-    "boulder",
-    "rocks",
-    "zone6"
-   ]
-  }
- ],
- "scatter": []
+  "libraries": [
+    {
+      "name": "props",
+      "pattern": "Assets/Env/Props/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "rocks",
+      "pattern": "Assets/Env/Rocks/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_mid",
+      "pattern": "Assets/Env/World/Mid/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_far",
+      "pattern": "Assets/Env/World/Far/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_trench",
+      "pattern": "Assets/Env/World/Trench/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_bridge",
+      "pattern": "Assets/Env/World/Bridge/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "balu2",
+      "pattern": "Assets/Env/Balu2/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_ground",
+      "pattern": "Assets/Env/World/Ground/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "erlking",
+      "pattern": "Assets/Env/Erlking/{asset}/{asset}_LOD{lod}.glb",
+      "status": "Dom Tripo hero piece erlking_totem; rows below use it only when the files exist at plan time"
+    }
+  ],
+  "lodProfiles": [
+    {
+      "name": "props",
+      "screenHeights": [
+        0.25,
+        0.08,
+        0.02
+      ]
+    },
+    {
+      "name": "trees",
+      "screenHeights": [
+        1.7,
+        0.35,
+        0.03
+      ]
+    },
+    {
+      "name": "boulders",
+      "screenHeights": [
+        0.3,
+        0.1,
+        0.03
+      ]
+    },
+    {
+      "name": "islet",
+      "screenHeights": [
+        0.2,
+        0.06,
+        0.015
+      ]
+    },
+    {
+      "name": "far_ruin",
+      "screenHeights": [
+        0.1,
+        0.03,
+        0.01
+      ]
+    },
+    {
+      "name": "shoreline",
+      "screenHeights": [
+        0.12,
+        0.04,
+        0.01
+      ]
+    },
+    {
+      "name": "debris",
+      "screenHeights": [
+        0.05,
+        0.02,
+        0.0
+      ]
+    },
+    {
+      "name": "hero_heavy",
+      "screenHeights": [
+        0.3,
+        0.1,
+        0.03
+      ]
+    },
+    {
+      "name": "mid_ruin",
+      "screenHeights": [
+        0.15,
+        0.05,
+        0.015
+      ]
+    },
+    {
+      "name": "far_ruin_world",
+      "screenHeights": [
+        0.12,
+        0.04,
+        0.012
+      ]
+    },
+    {
+      "name": "near_hq",
+      "screenHeights": [
+        0.06,
+        0.015,
+        0.004
+      ]
+    }
+  ],
+  "groups": [
+    "Z6Ring0",
+    "Z6Ring1",
+    "Z6Ring2"
+  ],
+  "props": [
+    {
+      "id": "z6_standing_ruin_pillar_4_0",
+      "group": "Z6Ring0",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        4.53,
+        0.0,
+        265.1
+      ],
+      "rotEuler": [
+        0,
+        145.0,
+        0
+      ],
+      "scale": 1.15,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_standing_ruin_pillar_4_1",
+      "group": "Z6Ring0",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        12.37,
+        0.0,
+        269.63
+      ],
+      "rotEuler": [
+        0,
+        152.0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_standing_ruin_pillar_4_2",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        16.9,
+        0.0,
+        277.47
+      ],
+      "rotEuler": [
+        0,
+        119.0,
+        0
+      ],
+      "scale": 1.2,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_fallen_pillar_3_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        16.9,
+        0.0,
+        286.53
+      ],
+      "rotEuler": [
+        0,
+        357.0,
+        0
+      ],
+      "scale": 1.55,
+      "shadowsOff": false,
+      "tags": [
+        "ring_fallen",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_standing_ruin_pillar_4_3",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        12.37,
+        0.0,
+        294.37
+      ],
+      "rotEuler": [
+        0,
+        53.0,
+        0
+      ],
+      "scale": 1.1,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_standing_ruin_pillar_4_4",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        4.53,
+        0.0,
+        298.9
+      ],
+      "rotEuler": [
+        0,
+        20.0,
+        0
+      ],
+      "scale": 0.95,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_standing_ruin_pillar_4_5",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -4.53,
+        0.0,
+        298.9
+      ],
+      "rotEuler": [
+        0,
+        347.0,
+        0
+      ],
+      "scale": 1.2,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_standing_ruin_pillar_4_6",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -12.37,
+        0.0,
+        294.37
+      ],
+      "rotEuler": [
+        0,
+        314.0,
+        0
+      ],
+      "scale": 1.05,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_standing_ruin_pillar_4_7",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -16.9,
+        0.0,
+        286.53
+      ],
+      "rotEuler": [
+        0,
+        281.0,
+        0
+      ],
+      "scale": 1.15,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_fallen_pillar_3_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -16.9,
+        0.0,
+        277.47
+      ],
+      "rotEuler": [
+        0,
+        177.0,
+        0
+      ],
+      "scale": 1.55,
+      "shadowsOff": false,
+      "tags": [
+        "ring_fallen",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_standing_ruin_pillar_4_8",
+      "group": "Z6Ring0",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -12.37,
+        0.0,
+        269.63
+      ],
+      "rotEuler": [
+        0,
+        215.0,
+        0
+      ],
+      "scale": 1.1,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_standing_ruin_pillar_4_9",
+      "group": "Z6Ring0",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -4.53,
+        0.0,
+        265.1
+      ],
+      "rotEuler": [
+        0,
+        182.0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "ring",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_dead_tree_1a_0",
+      "group": "Z6Ring0",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.8,
+        0.0,
+        257.0
+      ],
+      "rotEuler": [
+        0,
+        340,
+        0
+      ],
+      "scale": 0.5,
+      "shadowsOff": false,
+      "tags": [
+        "antler_totem",
+        "TOTEM_SLOT",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_dead_tree_1a_1",
+      "group": "Z6Ring0",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        6.8,
+        0.0,
+        257.0
+      ],
+      "rotEuler": [
+        0,
+        20,
+        0
+      ],
+      "scale": 0.5,
+      "shadowsOff": false,
+      "tags": [
+        "antler_totem",
+        "TOTEM_SLOT",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_dead_tree_1a_2",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        16.55,
+        0.0,
+        294.93
+      ],
+      "rotEuler": [
+        0,
+        200,
+        0
+      ],
+      "scale": 0.55,
+      "shadowsOff": false,
+      "tags": [
+        "antler_totem",
+        "TOTEM_SLOT",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_dead_tree_1a_3",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -16.55,
+        0.0,
+        294.93
+      ],
+      "rotEuler": [
+        0,
+        160,
+        0
+      ],
+      "scale": 0.55,
+      "shadowsOff": false,
+      "tags": [
+        "antler_totem",
+        "TOTEM_SLOT",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_dead_tree_1b_0",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -19.5,
+        0.0,
+        302.0
+      ],
+      "rotEuler": [
+        0,
+        35,
+        0
+      ],
+      "scale": 1.6,
+      "shadowsOff": false,
+      "tags": [
+        "great_tree",
+        "hero",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_hero_skull_pile_a_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_a",
+      "lodProfile": "debris",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -9.8,
+        0.0,
+        273.8
+      ],
+      "rotEuler": [
+        0,
+        30,
+        0
+      ],
+      "scale": 0.9,
+      "shadowsOff": true,
+      "tags": [
+        "bones",
+        "low",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_hero_skull_pile_b_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_b",
+      "lodProfile": "debris",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        10.2,
+        0.0,
+        289.5
+      ],
+      "rotEuler": [
+        0,
+        200,
+        0
+      ],
+      "scale": 0.9,
+      "shadowsOff": true,
+      "tags": [
+        "bones",
+        "low",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_hero_skull_pile_b_1",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "hero_skull_pile_b",
+      "lodProfile": "debris",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -9.6,
+        0.0,
+        291.0
+      ],
+      "rotEuler": [
+        0,
+        110,
+        0
+      ],
+      "scale": 0.9,
+      "shadowsOff": true,
+      "tags": [
+        "bones",
+        "low",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_hero_skull_pile_a_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_a",
+      "lodProfile": "debris",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.6,
+        0.0,
+        273.8
+      ],
+      "rotEuler": [
+        0,
+        300,
+        0
+      ],
+      "scale": 0.9,
+      "shadowsOff": true,
+      "tags": [
+        "bones",
+        "low",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_bone_fragments_7_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "debris",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -8.0,
+        0.0,
+        277.0
+      ],
+      "rotEuler": [
+        0,
+        10,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": true,
+      "tags": [
+        "bones",
+        "low",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_bone_fragments_7_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "debris",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.5,
+        0.0,
+        280.0
+      ],
+      "rotEuler": [
+        0,
+        140,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": true,
+      "tags": [
+        "bones",
+        "low",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_bone_fragments_7_2",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "debris",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -5.6,
+        0.0,
+        291.5
+      ],
+      "rotEuler": [
+        0,
+        250,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": true,
+      "tags": [
+        "bones",
+        "low",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_bone_fragments_7_3",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "debris",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        7.0,
+        0.0,
+        295.0
+      ],
+      "rotEuler": [
+        0,
+        70,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": true,
+      "tags": [
+        "bones",
+        "low",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_bone_fragments_7_4",
+      "group": "Z6Ring0",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "debris",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -4.9,
+        0.0,
+        250.0
+      ],
+      "rotEuler": [
+        0,
+        90,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": true,
+      "tags": [
+        "bones",
+        "low",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_bone_fragments_7_5",
+      "group": "Z6Ring0",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "debris",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        5.4,
+        0.0,
+        262.5
+      ],
+      "rotEuler": [
+        0,
+        20,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": true,
+      "tags": [
+        "bones",
+        "low",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_rock_boulder_A_0",
+      "group": "Z6Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -24,
+        0.0,
+        268.0
+      ],
+      "rotEuler": [
+        0,
+        11,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": true,
+      "tags": [
+        "boulder",
+        "rocks",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_rock_boulder_C_0",
+      "group": "Z6Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_C",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        25,
+        0.0,
+        274.0
+      ],
+      "rotEuler": [
+        0,
+        48,
+        0
+      ],
+      "scale": 1.3,
+      "shadowsOff": true,
+      "tags": [
+        "boulder",
+        "rocks",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_rock_boulder_D_0",
+      "group": "Z6Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -26,
+        0.0,
+        288.0
+      ],
+      "rotEuler": [
+        0,
+        85,
+        0
+      ],
+      "scale": 1.1,
+      "shadowsOff": true,
+      "tags": [
+        "boulder",
+        "rocks",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_rock_boulder_B_0",
+      "group": "Z6Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        23,
+        0.0,
+        299.0
+      ],
+      "rotEuler": [
+        0,
+        122,
+        0
+      ],
+      "scale": 0.9,
+      "shadowsOff": true,
+      "tags": [
+        "boulder",
+        "rocks",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_rock_boulder_C_1",
+      "group": "Z6Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_C",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -12,
+        0.0,
+        248.0
+      ],
+      "rotEuler": [
+        0,
+        159,
+        0
+      ],
+      "scale": 0.9,
+      "shadowsOff": true,
+      "tags": [
+        "boulder",
+        "rocks",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_rock_boulder_A_1",
+      "group": "Z6Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        14,
+        0.0,
+        251.0
+      ],
+      "rotEuler": [
+        0,
+        196,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": true,
+      "tags": [
+        "boulder",
+        "rocks",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_rock_boulder_B_1",
+      "group": "Z6Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -30,
+        0.0,
+        310.0
+      ],
+      "rotEuler": [
+        0,
+        233,
+        0
+      ],
+      "scale": 0.8,
+      "shadowsOff": true,
+      "tags": [
+        "boulder",
+        "rocks",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6_rock_boulder_D_1",
+      "group": "Z6Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        19,
+        0.0,
+        310.0
+      ],
+      "rotEuler": [
+        0,
+        270,
+        0
+      ],
+      "scale": 1.2,
+      "shadowsOff": true,
+      "tags": [
+        "boulder",
+        "rocks",
+        "zone6"
+      ]
+    },
+    {
+      "id": "z6d_pillar_standing_ruin_pillar_4_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -27.21,
+        0.0,
+        268.32
+      ],
+      "rotEuler": [
+        0,
+        7.0,
+        0
+      ],
+      "scale": 1.23,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_pillar_standing_ruin_pillar_4_2",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "standing_ruin_pillar_4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        21.71,
+        0.0,
+        263.18
+      ],
+      "rotEuler": [
+        0,
+        306.0,
+        0
+      ],
+      "scale": 1.29,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_pillar_hero_column_b_3",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "hero_column_b",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -21.96,
+        0.0,
+        312.81
+      ],
+      "rotEuler": [
+        0,
+        147.4,
+        0
+      ],
+      "scale": 0.96,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_pillar_hero_column_a_4",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_column_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -13.5,
+        0.0,
+        300.7
+      ],
+      "rotEuler": [
+        0,
+        147.8,
+        0
+      ],
+      "scale": 0.98,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_pillar_hero_column_b_5",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_column_b",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -22.35,
+        0.0,
+        293.07
+      ],
+      "rotEuler": [
+        0,
+        13.5,
+        0
+      ],
+      "scale": 1.25,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_pillar_hero_column_a_6",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_column_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        17.28,
+        0.0,
+        253.57
+      ],
+      "rotEuler": [
+        0,
+        122.4,
+        0
+      ],
+      "scale": 0.92,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_pillar_hero_column_b_7",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_column_b",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.41,
+        0.0,
+        302.78
+      ],
+      "rotEuler": [
+        0,
+        291.2,
+        0
+      ],
+      "scale": 0.95,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_pillar_hero_column_b_8",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_column_b",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.61,
+        0.0,
+        260.24
+      ],
+      "rotEuler": [
+        0,
+        162.6,
+        0
+      ],
+      "scale": 1.01,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_arch_mid_buttress_stub_9",
+      "group": "Z6Ring2",
+      "library": "world_mid",
+      "asset": "mid_buttress_stub",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        28.33,
+        0.0,
+        241.87
+      ],
+      "rotEuler": [
+        0,
+        296.7,
+        0
+      ],
+      "scale": 0.99,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_arch_mid_wall_lancets_10",
+      "group": "Z6Ring2",
+      "library": "world_mid",
+      "asset": "mid_wall_lancets",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -16.85,
+        0.0,
+        241.05
+      ],
+      "rotEuler": [
+        0,
+        115.7,
+        0
+      ],
+      "scale": 0.77,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_arch_mid_wall_lancets_11",
+      "group": "Z6Ring2",
+      "library": "world_mid",
+      "asset": "mid_wall_lancets",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        16.77,
+        0.0,
+        246.42
+      ],
+      "rotEuler": [
+        0,
+        78.6,
+        0
+      ],
+      "scale": 0.74,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_arch_mid_buttress_stub_12",
+      "group": "Z6Ring2",
+      "library": "world_mid",
+      "asset": "mid_buttress_stub",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        26.66,
+        0.0,
+        246.6
+      ],
+      "rotEuler": [
+        0,
+        34.8,
+        0
+      ],
+      "scale": 0.82,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_arch_mid_buttress_stub_13",
+      "group": "Z6Ring2",
+      "library": "world_mid",
+      "asset": "mid_buttress_stub",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        28.21,
+        0.0,
+        256.76
+      ],
+      "rotEuler": [
+        0,
+        284.3,
+        0
+      ],
+      "scale": 0.68,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_arch_mid_buttress_stub_14",
+      "group": "Z6Ring2",
+      "library": "world_mid",
+      "asset": "mid_buttress_stub",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        6.33,
+        0.0,
+        244.55
+      ],
+      "rotEuler": [
+        0,
+        117.4,
+        0
+      ],
+      "scale": 0.98,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_remains_hero_skull_pile_c_15",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_c",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -18.66,
+        0.0,
+        256.36
+      ],
+      "rotEuler": [
+        0,
+        48.4,
+        0
+      ],
+      "scale": 0.86,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_remains_bone_fragments_7_16",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        16.33,
+        0.0,
+        264.82
+      ],
+      "rotEuler": [
+        0,
+        12.3,
+        0
+      ],
+      "scale": 0.85,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_remains_hero_skull_pile_c_17",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_c",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        21.4,
+        0.0,
+        280.15
+      ],
+      "rotEuler": [
+        0,
+        275.3,
+        0
+      ],
+      "scale": 0.93,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_remains_hero_skull_pile_a_18",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -9.1,
+        0.0,
+        299.59
+      ],
+      "rotEuler": [
+        0,
+        35.3,
+        0
+      ],
+      "scale": 0.97,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_remains_hero_skull_pile_a_19",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        23.18,
+        0.0,
+        268.94
+      ],
+      "rotEuler": [
+        0,
+        252.8,
+        0
+      ],
+      "scale": 0.92,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_remains_hero_skull_pile_a_20",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        7.78,
+        0.0,
+        312.43
+      ],
+      "rotEuler": [
+        0,
+        64.6,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_remains_hero_skull_pile_b_21",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_b",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -26.88,
+        0.0,
+        282.63
+      ],
+      "rotEuler": [
+        0,
+        284.4,
+        0
+      ],
+      "scale": 0.88,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_remains_hero_skull_pile_b_22",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_b",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.33,
+        0.0,
+        263.04
+      ],
+      "rotEuler": [
+        0,
+        101.8,
+        0
+      ],
+      "scale": 0.88,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_remains_bone_fragments_7_23",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -22.92,
+        0.0,
+        256.25
+      ],
+      "rotEuler": [
+        0,
+        328.1,
+        0
+      ],
+      "scale": 0.83,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_remains_bone_fragments_7_24",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -17.75,
+        0.0,
+        264.36
+      ],
+      "rotEuler": [
+        0,
+        37.5,
+        0
+      ],
+      "scale": 0.89,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_war_hero_barricade_stakes_25",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "hero_barricade_stakes",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -29.93,
+        0.0,
+        247.69
+      ],
+      "rotEuler": [
+        0,
+        341.9,
+        0
+      ],
+      "scale": 1.15,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_war_hero_barricade_stakes_26",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_barricade_stakes",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -15.33,
+        0.0,
+        306.91
+      ],
+      "rotEuler": [
+        0,
+        136.8,
+        0
+      ],
+      "scale": 1.08,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_war_hero_barricade_stakes_27",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_barricade_stakes",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        19.91,
+        0.0,
+        293.04
+      ],
+      "rotEuler": [
+        0,
+        87.9,
+        0
+      ],
+      "scale": 1.2,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_war_hero_weapon_shield_28",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_weapon_shield",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        13.31,
+        0.0,
+        313.49
+      ],
+      "rotEuler": [
+        0,
+        31.6,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_war_hero_weapon_halberd_29",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "hero_weapon_halberd",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.81,
+        0.0,
+        244.96
+      ],
+      "rotEuler": [
+        0,
+        206.4,
+        0
+      ],
+      "scale": 1.09,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_war_hero_banner_pole_30",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_banner_pole",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        5.31,
+        0.0,
+        251.41
+      ],
+      "rotEuler": [
+        0,
+        220.2,
+        0
+      ],
+      "scale": 0.94,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_war_hero_banner_pole_31",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "hero_banner_pole",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -21.96,
+        0.0,
+        240.61
+      ],
+      "rotEuler": [
+        0,
+        91.3,
+        0
+      ],
+      "scale": 1.02,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_war_hero_barricade_stakes_32",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_barricade_stakes",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -17.01,
+        0.0,
+        299.84
+      ],
+      "rotEuler": [
+        0,
+        125.3,
+        0
+      ],
+      "scale": 1.2,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_dead_tree_dead_tree_1b_33",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -22.12,
+        0.0,
+        244.79
+      ],
+      "rotEuler": [
+        0,
+        60.7,
+        0
+      ],
+      "scale": 1.49,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_dead_tree_dead_tree_1a_34",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        10.39,
+        0.0,
+        243.36
+      ],
+      "rotEuler": [
+        0,
+        255.8,
+        0
+      ],
+      "scale": 1.56,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_dead_tree_dead_tree_1a_35",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -25.99,
+        0.0,
+        251.81
+      ],
+      "rotEuler": [
+        0,
+        78.5,
+        0
+      ],
+      "scale": 1.44,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_dead_tree_dead_tree_1b_36",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        23.79,
+        0.0,
+        309.2
+      ],
+      "rotEuler": [
+        0,
+        336.0,
+        0
+      ],
+      "scale": 0.96,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_dead_tree_dead_tree_1b_37",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -21.36,
+        0.0,
+        249.14
+      ],
+      "rotEuler": [
+        0,
+        240.3,
+        0
+      ],
+      "scale": 0.7,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_dead_tree_dead_tree_1a_38",
+      "group": "Z6Ring2",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -26.86,
+        0.0,
+        308.65
+      ],
+      "rotEuler": [
+        0,
+        139.1,
+        0
+      ],
+      "scale": 0.84,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_boulder_rock_boulder_A_39",
+      "group": "Z6Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        8.02,
+        0.0,
+        298.39
+      ],
+      "rotEuler": [
+        0,
+        309.9,
+        0
+      ],
+      "scale": 1.28,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_boulder_rock_boulder_A_40",
+      "group": "Z6Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -11.46,
+        0.0,
+        259.16
+      ],
+      "rotEuler": [
+        0,
+        96.2,
+        0
+      ],
+      "scale": 1.13,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_boulder_rock_boulder_D_41",
+      "group": "Z6Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        11.26,
+        0.0,
+        247.2
+      ],
+      "rotEuler": [
+        0,
+        234.9,
+        0
+      ],
+      "scale": 0.95,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_boulder_rock_boulder_A_42",
+      "group": "Z6Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -28.32,
+        0.0,
+        240.2
+      ],
+      "rotEuler": [
+        0,
+        263.4,
+        0
+      ],
+      "scale": 1.22,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_boulder_rock_boulder_E_43",
+      "group": "Z6Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -17.05,
+        0.0,
+        270.59
+      ],
+      "rotEuler": [
+        0,
+        155.2,
+        0
+      ],
+      "scale": 1.42,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_boulder_rock_boulder_E_44",
+      "group": "Z6Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -29.97,
+        0.0,
+        284.25
+      ],
+      "rotEuler": [
+        0,
+        315.5,
+        0
+      ],
+      "scale": 1.4,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_boulder_rock_boulder_A_45",
+      "group": "Z6Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        14.6,
+        0.0,
+        261.72
+      ],
+      "rotEuler": [
+        0,
+        40.5,
+        0
+      ],
+      "scale": 1.49,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    },
+    {
+      "id": "z6d_boulder_rock_boulder_A_46",
+      "group": "Z6Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        21.46,
+        0.0,
+        296.07
+      ],
+      "rotEuler": [
+        0,
+        15.4,
+        0
+      ],
+      "scale": 1.53,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone6",
+        "density"
+      ]
+    }
+  ],
+  "scatter": []
 }

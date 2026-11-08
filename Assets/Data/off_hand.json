@@ -7,22 +7,22 @@
  "socket": "WeaponSocket_L",
  "rows": [
   {
-   "name": "Grendel",
-   "item": "grendel_blade_L",
-   "enabled": true,
-   "socketOffset": [
-    -0.0784,
-    0.0072,
-    -0.1042
-   ],
-   "socketEuler": [
-    165.428,
-    2.554,
-    84.842
-   ],
-   "slide": 0.0,
-   "blendSeconds": 0.1,
-   "states": []
+    "name": "Grendel",
+    "item": "grendel_blade_L",
+    "enabled": true,
+    "socketOffset": [
+      0.106,
+      0.0108,
+      -0.0938
+    ],
+    "socketEuler": [
+      -1.32,
+      119.985,
+      83.789
+    ],
+    "slide": 0.0,
+    "blendSeconds": 0.1,
+    "states": []
   }
  ],
  "attacks": [

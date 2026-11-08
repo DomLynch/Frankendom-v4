@@ -59,6 +59,7 @@ public static class GlbPreload
         var c = PerfFixes.C.C3; var list = new List<string>(); var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         Action<string> add = g => { string f = FindFile(g); if (f != null && seen.Add(Key(f))) list.Add(f); };
         foreach (var f in c.files) add(f);
+        foreach (var f in MonsterLook.PreloadFiles()) add(f);   // MONSTERLOOK v1: the look glbs of every enabled monster row are parsed during the intro too
         if (c.fromGearJson)
         {
             var txt = HudCfg.ReadData("gear.json");

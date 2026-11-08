@@ -1152,7 +1152,7 @@
         "twoHanded": false,
         "damageMul": 1.0,
         "speedMul": 1.0,
-        "reachMul": 0.48,
+        "reachMul": 0.51,
         "postureMul": 1.0,
         "cueWeapon": "dual_blades",
         "gripNode": "grip",
@@ -1205,13 +1205,113 @@
         "twoHanded": false,
         "damageMul": 1.0,
         "speedMul": 1.0,
-        "reachMul": 0.48,
+        "reachMul": 0.51,
         "postureMul": 1.0,
         "cueWeapon": "dual_blades",
         "gripNode": "grip",
         "tipNode": "tip",
         "offHandNode": "grip_off",
         "socket": "WeaponSocket_L",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      },
+      "materials": {
+        "*": {
+          "normalScale": 1.0
+        }
+      }
+    },
+    {
+      "id": "humbaba_claws",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Humbaba's claws",
+      "slot": "mainHand",
+      "glb": "",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "laneMONSTER5 (Humbaba): unarmed: claws + maw bite. No glb. tipBone RightHand, tipOffsetM along the bone axis (wrist -> claw tip 0.57 m measured on the bound mesh: right 0.61, left 0.53); reachMul = Sobek's claws (0.55) until the clips are measured.",
+      "weapon": {
+        "id": "claws",
+        "unarmed": true,
+        "tipBone": "mixamorig:RightHand",
+        "tipOffsetM": [
+          0.0,
+          0.57,
+          0.0
+        ],
+        "twoHanded": false,
+        "damageMul": 1.0,
+        "speedMul": 1.08,
+        "reachMul": 0.55,
+        "postureMul": 1.0,
+        "cueWeapon": "claws",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      }
+    },
+    {
+      "id": "erlking_axe",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Erlking's antler great-axe",
+      "slot": "mainHand",
+      "glb": "Gear/Erlking_axe.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 9
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "laneMONSTER6 (Erlking): Dom's designed antler great-axe (primitive axe 3d model.glb), 5000 tris, FULL 4K base / roughness / normal (his source albedo untouched, metallic 0), 1.80 m, grip node = origin (right hand, middle wrap), grip_off = the left hand (butt wrap, 0.74 m behind), tip = crescent edge, +Y = haft toward the big crescent. twoHanded true = TwoHandIK holds grip_off with the left hand. Swap by replacing the glb + data\\erlking_weapon.json.",
+      "weapon": {
+        "id": "erlking_axe",
+        "unarmed": false,
+        "tipBone": "mixamorig:RightHand",
+        "tipOffsetM": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "twoHanded": true,
+        "damageMul": 1.0,
+        "speedMul": 0.9,
+        "reachMul": 0.78,
+        "postureMul": 1.4,
+        "cueWeapon": "maul",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "socket": "WeaponSocket_R",
         "ikWeight": 1.0,
         "ikBlendSeconds": 0.15
       },

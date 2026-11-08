@@ -827,6 +827,213 @@
         }
       },
       "note": "laneBOSSDATA (Grendel, as laneMONSTER3 drafted it): cloned from sobek_hunter, same combos / punish / enrage numbers; retune after the proof run."
+    },
+    {
+      "id": "humbaba_hunter",
+      "fighter": "Humbaba",
+      "bot": false,
+      "minDiff": 1,
+      "maxDiff": 99,
+      "comboChance": 0.45,
+      "combos": [
+        {
+          "id": "tl",
+          "steps": [
+            "thrust",
+            "light"
+          ],
+          "weight": 1.0
+        },
+        {
+          "id": "tt",
+          "steps": [
+            "thrust",
+            "thrust"
+          ],
+          "weight": 0.6
+        },
+        {
+          "id": "th",
+          "steps": [
+            "thrust",
+            "heavy"
+          ],
+          "weight": 0.5
+        }
+      ],
+      "punishChance": 0.8,
+      "punishReact": 4,
+      "punishMinRemain": 6,
+      "punishApproachMin": 10,
+      "punishDashGap": 1.7,
+      "punishHeavyRemain": 34,
+      "delayChance": 0.12,
+      "delayMin": 6,
+      "delayMax": 20,
+      "earlyChance": 0.22,
+      "earlyMul": 0.55,
+      "lateChance": 0.12,
+      "lateMul": 1.6,
+      "riposteTake": 0.7,
+      "kickMax": 1,
+      "kickWindow": 1800,
+      "kickGap": 300,
+      "maxShare": 0.45,
+      "lightMaxShare": 0.35,
+      "minSample": 8,
+      "alts": [
+        {
+          "from": "thrust",
+          "to": [
+            "heavy",
+            "light"
+          ]
+        },
+        {
+          "from": "light",
+          "to": [
+            "thrust",
+            "heavy"
+          ]
+        },
+        {
+          "from": "heavy",
+          "to": [
+            "thrust",
+            "light"
+          ]
+        },
+        {
+          "from": "kick",
+          "to": [
+            "thrust",
+            "light",
+            "heavy"
+          ]
+        }
+      ],
+      "enrage": {
+        "enabled": true,
+        "hpFrac": 0.5,
+        "speedMul": 1.15,
+        "waitMul": 0.75,
+        "reactionMul": 0.9,
+        "comboAdd": 0.15,
+        "punishAdd": 0.1,
+        "diversify": 0.3,
+        "fx": {
+          "aggression": 0.1,
+          "pressure": 0.05,
+          "lapse": -0.1,
+          "stab": 0.15,
+          "kick": 0.0,
+          "dash": 0.1
+        }
+      },
+      "note": "laneBOSSDATA: Humbaba, lunging bite (thrust = the maw lunge) and grab. thrust-first combos, thrust share up to 45 percent, wider whiff-punish dash. The GRAB is not a move in move-defs yet (Pitborn's belly_grab in belly_bite.json is the reference); until it exists the bite lunge is the only closing move. Retune after the proof run."
+    },
+    {
+      "id": "erlking_hunter",
+      "fighter": "Erlking",
+      "bot": false,
+      "minDiff": 1,
+      "maxDiff": 99,
+      "comboChance": 0.3,
+      "combos": [
+        {
+          "id": "h",
+          "steps": [
+            "heavy"
+          ],
+          "weight": 1.0
+        },
+        {
+          "id": "lh",
+          "steps": [
+            "light",
+            "heavy"
+          ],
+          "weight": 0.7
+        },
+        {
+          "id": "hh",
+          "steps": [
+            "heavy",
+            "heavy"
+          ],
+          "weight": 0.35
+        }
+      ],
+      "punishChance": 0.6,
+      "punishReact": 6,
+      "punishMinRemain": 6,
+      "punishApproachMin": 10,
+      "punishDashGap": 2.3,
+      "punishHeavyRemain": 34,
+      "delayChance": 0.2,
+      "delayMin": 8,
+      "delayMax": 26,
+      "earlyChance": 0.12,
+      "earlyMul": 0.55,
+      "lateChance": 0.2,
+      "lateMul": 1.6,
+      "riposteTake": 0.7,
+      "kickMax": 1,
+      "kickWindow": 1800,
+      "kickGap": 300,
+      "maxShare": 0.45,
+      "lightMaxShare": 0.3,
+      "minSample": 8,
+      "alts": [
+        {
+          "from": "heavy",
+          "to": [
+            "light",
+            "thrust"
+          ]
+        },
+        {
+          "from": "light",
+          "to": [
+            "heavy",
+            "thrust"
+          ]
+        },
+        {
+          "from": "thrust",
+          "to": [
+            "heavy",
+            "light"
+          ]
+        },
+        {
+          "from": "kick",
+          "to": [
+            "heavy",
+            "light",
+            "thrust"
+          ]
+        }
+      ],
+      "enrage": {
+        "enabled": true,
+        "hpFrac": 0.5,
+        "speedMul": 1.1,
+        "waitMul": 0.78,
+        "reactionMul": 0.9,
+        "comboAdd": 0.1,
+        "punishAdd": 0.1,
+        "diversify": 0.3,
+        "fx": {
+          "aggression": 0.1,
+          "pressure": 0.05,
+          "lapse": -0.1,
+          "stab": 0.15,
+          "kick": 0.0,
+          "dash": 0.1
+        }
+      },
+      "note": "laneBOSSDATA: Erlking, slow and heavy with long reach: heavy-first, long waits, wide punish dash for the charge, hyper-armour on heavies and skills (poise.json). Cadence is low on purpose (aggression .62), so his damage per hit is the highest on the ladder. Retune after the proof run."
     }
   ]
 }

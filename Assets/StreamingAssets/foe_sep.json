@@ -39,6 +39,16 @@
       "id": "Grendel",
       "halfWidthM": 0.6,
       "_about": "laneMONSTER3 (Grendel): body half width (shoulder plates 0.74 m, hips narrower)."
+    },
+    {
+      "id": "Humbaba",
+      "halfWidthM": 0.75,
+      "_about": "laneMONSTER5 (Humbaba): body half width (shoulders 0.71 m, crest 0.88 m)."
+    },
+    {
+      "id": "Erlking",
+      "halfWidthM": 1.0,
+      "_about": "laneMONSTER6 (Erlking): body half width (shoulders 0.9 m, antlers 1.0 m)."
     }
   ]
 }

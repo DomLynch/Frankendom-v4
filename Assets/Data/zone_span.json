@@ -147,7 +147,7 @@
         },
         {
           "group": "HubRing1",
-          "rows": 76
+          "rows": 65
         },
         {
           "group": "HubRing2",
@@ -174,9 +174,9 @@
       "layout": "props_layout_grendel.json",
       "offsetZ": 108.0,
       "laneZMin": 8.0,
-      "laneZMax": 22.0,
-      "colliderCenterLocal": 8.5,
-      "colliderSizeZ": 70.0,
+      "laneZMax": 55.0,
+      "colliderCenterLocal": 26.0,
+      "colliderSizeZ": 72.0,
       "safe": false,
       "gateSet": false,
       "gate": {
@@ -192,7 +192,7 @@
         "mode": "stamp",
         "xHalf": 32.0,
         "zFromLocal": -6.0,
-        "zToLocal": 44.0,
+        "zToLocal": 66.0,
         "blendM": 6.0,
         "yBias": 0.0,
         "uvScale": 5.5
@@ -200,18 +200,156 @@
       "rings": [
         {
           "group": "Z4Ring0",
-          "rows": 32
+          "rows": 5
         },
         {
           "group": "Z4Ring1",
-          "rows": 103
+          "rows": 34
         },
         {
           "group": "Z4Ring2",
-          "rows": 7
+          "rows": 31
+        }
+      ],
+      "hideRows": ["worldmid_mid_buttress_stub_0", "worldmid_mid_slab_heap_b_2", "worldbehind_rock_boulder_A_61"]
+    },
+    {
+      "id": "z5_humbaba",
+      "root": "Zone5",
+      "layout": "props_layout_zone5.json",
+      "offsetZ": 177.0,
+      "laneZMin": 8.0,
+      "laneZMax": 53.0,
+      "colliderCenterLocal": 24.0,
+      "colliderSizeZ": 68.0,
+      "safe": false,
+      "gateSet": false,
+      "gate": {
+        "id": "gate_grendel_to_z5",
+        "backId": "gate_z5_to_grendel",
+        "frontLocal": 60.0,
+        "boundaryLocal": -4.0,
+        "followStopBehind": 1.5,
+        "forceOpen": false,
+        "destSafe": false
+      },
+      "terrain": {
+        "mode": "stamp",
+        "xHalf": 32.0,
+        "zFromLocal": -6.0,
+        "zToLocal": 64.0,
+        "blendM": 6.0,
+        "yBias": 0.0,
+        "uvScale": 5.5
+      },
+      "rings": [
+        {
+          "group": "Z5Ring0",
+          "rows": 11
+        },
+        {
+          "group": "Z5Ring1",
+          "rows": 4
+        },
+        {
+          "group": "Z5Ring2",
+          "rows": 6
         }
       ],
       "hideRows": []
+    },
+    {
+      "id": "z6_erlking",
+      "root": "Zone6",
+      "layout": "props_layout_zone6.json",
+      "offsetZ": 244.0,
+      "laneZMin": 8.0,
+      "laneZMax": 57.0,
+      "colliderCenterLocal": 28.0,
+      "colliderSizeZ": 76.0,
+      "safe": false,
+      "gateSet": false,
+      "gate": {
+        "id": "gate_z5_to_z6",
+        "backId": "gate_z6_to_prev",
+        "frontLocal": 58.0,
+        "boundaryLocal": -4.0,
+        "followStopBehind": 1.5,
+        "forceOpen": false,
+        "destSafe": false
+      },
+      "terrain": {
+        "mode": "stamp",
+        "xHalf": 32.0,
+        "zFromLocal": -6.0,
+        "zToLocal": 64.0,
+        "blendM": 6.0,
+        "yBias": 0.0,
+        "uvScale": 5.5
+      },
+      "rings": [
+        {
+          "group": "Z6Ring0",
+          "rows": 11
+        },
+        {
+          "group": "Z6Ring1",
+          "rows": 11
+        },
+        {
+          "group": "Z6Ring2",
+          "rows": 13
+        }
+      ],
+      "hideRows": [
+        "worldfar_far_ruin_facade_1"
+      ]
+    },
+    {
+      "id": "z7_market2",
+      "root": "Zone7",
+      "layout": "props_layout_zone7.json",
+      "offsetZ": 315.0,
+      "laneZMin": 8.0,
+      "laneZMax": 47.0,
+      "colliderCenterLocal": 24.0,
+      "colliderSizeZ": 80.0,
+      "safe": true,
+      "gateSet": false,
+      "gate": {
+        "id": "gate_z6_next",
+        "backId": "gate_z7_prev",
+        "frontLocal": 62.0,
+        "boundaryLocal": -4.0,
+        "followStopBehind": 1.5,
+        "forceOpen": false,
+        "destSafe": true
+      },
+      "terrain": {
+        "mode": "stamp",
+        "xHalf": 32.0,
+        "zFromLocal": -6.0,
+        "zToLocal": 58.0,
+        "blendM": 6.0,
+        "yBias": 0.0,
+        "uvScale": 5.5
+      },
+      "rings": [
+        {
+          "group": "Z7Ring0",
+          "rows": 33
+        },
+        {
+          "group": "Z7Ring1",
+          "rows": 10
+        },
+        {
+          "group": "Z7Ring2",
+          "rows": 7
+        }
+      ],
+      "hideRows": [],
+      "note": "frontLocal 62 = zone 6 gateZ 60 + 2 m door face (shipped convention pit 25 -> 27, zone 5 56 -> 58; laneZONE6 finding);  offset 315 = 244 + 60 + 11. root name Zone7 is a proposal for the generator."
     }
   ],
   "skyline": {

@@ -100,7 +100,7 @@
       "animGlb": "Assets/Characters/Grendel/Grendel_anim.glb",
       "guardMask": "Assets/Characters/GuardUpper_Grendel.mask",
       "finisherClipFolder": "Assets/Characters/Grendel/FinisherClips",
-      "heightM": 2.7,
+      "heightM": 3.24,
       "hitFwdM": 0.3,
       "scaleFloor": 1.0,
       "armoured": false,
@@ -108,6 +108,54 @@
       "loadout": [
         "grendel_blade_R",
         "grendel_blade_L"
+      ]
+    },
+    {
+      "id": "Humbaba",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Humbaba",
+      "objectName": "Humbaba",
+      "weapon": "claws",
+      "controller": "Assets/Characters/Humbaba.controller",
+      "modelGlb": "Assets/Characters/Humbaba/Humbaba_combat.glb",
+      "animGlb": "Assets/Characters/Humbaba/Humbaba_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_Humbaba.mask",
+      "finisherClipFolder": "Assets/Characters/Humbaba/FinisherClips",
+      "heightM": 3.12,
+      "hitFwdM": 0.3,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "loadout": [
+        "humbaba_claws"
+      ],
+      "notes": "laneMONSTER5 (Humbaba): zone 5 creature, Dom's hammer-crest demon with a huge toothed maw (monster 5). Upright hunched biped on the mixamo 106 rig, one mesh (399608 tris), 4K textures from his source, loincloth of rope / hide / bone. Fights with claws + a lunging maw bite (weapon claws, pending Dom's word). heightM 3.12 = Sobek's. Name is working data (data\\h5_identity.json)."
+    },
+    {
+      "id": "Erlking",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Erlking",
+      "objectName": "Erlking",
+      "weapon": "erlking_axe",
+      "controller": "Assets/Characters/Erlking.controller",
+      "modelGlb": "Assets/Characters/Erlking/Erlking_combat.glb",
+      "animGlb": "Assets/Characters/Erlking/Erlking_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_Erlking.mask",
+      "finisherClipFolder": "Assets/Characters/Erlking/FinisherClips",
+      "heightM": 4.06,
+      "hitFwdM": 0.3,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "laneMONSTER6 (Erlking): zone 6 final alpha boss, Dom's antlered brute (moose / minotaur) with an antler great-axe held in both hands. 106-joint mixamorig rig, one mesh (400k tris), FULL 4K textures from his source. heightM 4.06 (antler tips) = 1.30 x Sobek. Name and weapon are working data (data\\erlking_identity.json).",
+      "loadout": [
+        "erlking_axe"
       ]
     }
   ],

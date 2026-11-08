@@ -103,6 +103,28 @@
     "leftWeight": 1.0,
     "leftStates": [],
     "_about": "laneMONSTER3 (Grendel): closed fist for the bone-sword handle (r 0.0385 m): curl 50 / 70 / 98 deg per joint, fingertip-to-handle within 1.5 cm in the PCA fit for both hands (fist_fit.py). The finger bones carry NO skin weights on this body yet (rigid claws): the curl shows only after the finger skinning step (MANIFEST)."
+  },
+  {
+    "name": "Erlking",
+    "weapon": "erlking_axe",
+    "fingerDeg": 55.0,
+    "thumbDeg": 35,
+    "thumbWeight": 0.7,
+    "falloff": 1.4,
+    "fingerAxis": [
+      0,
+      0,
+      1
+    ],
+    "thumbAxis": [
+      0,
+      1,
+      0
+    ],
+    "leftHand": true,
+    "leftWeight": 1.0,
+    "leftStates": [],
+    "_about": "laneMONSTER6 (Erlking): fist_fit6.py: per-finger curl, fingertip-to-haft within 1.1 cm (+ wrist miss <= 0.4 cm) on both hands; the finger bones ARE skinned on this body, so the fist closes. GripPose has ONE angle: the median is written, the per-finger numbers are for a code hunk."
   }
  ]
 }

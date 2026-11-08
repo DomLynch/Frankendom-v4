@@ -283,6 +283,86 @@
         "followSeconds": 0.25,
         "targetHeight": 1.25
       }
+    },
+    {
+      "name": "Humbaba",
+      "enabled": true,
+      "yaw": 45,
+      "pitch": 30,
+      "categories": [
+        {
+          "id": "free",
+          "off": true,
+          "states": [
+            "knockdown",
+            "death",
+            "get_up",
+            "hit_heavy",
+            "stagger_loop"
+          ],
+          "yaw": 45,
+          "pitch": 30
+        }
+      ],
+      "torsoBone": "mixamorig:Spine2",
+      "neckBone": "mixamorig:Neck",
+      "headBone": "mixamorig:Head",
+      "neckShare": 0.5,
+      "knee": 0.8,
+      "maxUpDeg": 90,
+      "maxUpKnee": 0.5,
+      "look": {
+        "enabled": true,
+        "weight": 0.5,
+        "yawWeight": 0.0,
+        "pitchWeight": 1.0,
+        "maxDownDeg": 12.0,
+        "offInFinisher": true,
+        "fadeStartDeg": 90,
+        "fadeEndDeg": 120,
+        "followSeconds": 0.25,
+        "targetHeight": 1.25
+      }
+    },
+    {
+      "name": "Erlking",
+      "enabled": true,
+      "yaw": 45,
+      "pitch": 30,
+      "categories": [
+        {
+          "id": "free",
+          "off": true,
+          "states": [
+            "knockdown",
+            "death",
+            "get_up",
+            "hit_heavy",
+            "stagger_loop"
+          ],
+          "yaw": 45,
+          "pitch": 30
+        }
+      ],
+      "torsoBone": "mixamorig:Spine2",
+      "neckBone": "mixamorig:Neck",
+      "headBone": "mixamorig:Head",
+      "neckShare": 0.5,
+      "knee": 0.8,
+      "maxUpDeg": 90,
+      "maxUpKnee": 0.5,
+      "look": {
+        "enabled": true,
+        "weight": 0.5,
+        "yawWeight": 0.0,
+        "pitchWeight": 1.0,
+        "maxDownDeg": 25.0,
+        "offInFinisher": true,
+        "fadeStartDeg": 90,
+        "fadeEndDeg": 120,
+        "followSeconds": 0.25,
+        "targetHeight": 1.25
+      }
     }
   ]
 }

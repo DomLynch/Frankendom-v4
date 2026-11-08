@@ -35,6 +35,16 @@
       "id": "Grendel",
       "rig": "mixamo106",
       "note": "laneMONSTER3 (Grendel): rig profile mixamo106, sockets WeaponSocket_R and WeaponSocket_L (left socket: see MANIFEST, code gap)."
+    },
+    {
+      "id": "Humbaba",
+      "rig": "mixamo106",
+      "note": "laneMONSTER5 (Humbaba): rig profile mixamo106 (bound on the 106 rig, out_b2\\Creature5_bound.glb)."
+    },
+    {
+      "id": "Erlking",
+      "rig": "mixamo106",
+      "note": "laneMONSTER6 (Erlking): rig profile mixamo106 (bound on the 106 rig, rigid hooves / antlers / tusks, fingers skinned per phalanx)."
     }
   ],
   "todo": {

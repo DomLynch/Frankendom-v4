@@ -1,0 +1,21 @@
+{
+  "enabled": false,
+  "pollSeconds": 0.5,
+  "minPollS": 0.1,
+  "rayUpM": 3.0,
+  "rayDownM": 12.0,
+  "sinkM": 0.03,
+  "maxDeltaM": 1.5,
+  "zones": [
+    {
+      "id": "z5_humbaba",
+      "root": "Zone5",
+      "prefix": "z5_",
+      "floor": "earth",
+      "skipLibraries": [
+        "world_ground"
+      ]
+    }
+  ],
+  "_about": "ZONE5 v1 (laneZONE5): per-zone ground option + raycast row snap, read by ZoneRowGround.cs. zones[] = one row per zone that owns a hand-made layout: root = the zone root object, prefix = the row id prefix, floor = \"earth\" (dark cracked ground: no flagstone row in its layout, crack decals instead) or \"paving\", skipLibraries = libraries this zone does NOT copy (the span checker honours it per zone instead of the global zone_plan rules.skipLibraries). A ring that is switched on has its wrappers moved to the first non-prop, non-character collider under them (ray from y + rayUpM, rayDownM long, hit within maxDeltaM of the row y); no hit = the row y stays. Ships enabled=false; --on in apply_zone5.py flips it. Args -zonerowground:1|0. Log lines: ZONEROWGROUND <zone> root ... rows, one per snapped row, and all n rows processed."
+}

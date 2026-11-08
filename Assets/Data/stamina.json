@@ -32,6 +32,18 @@
       "maxStamina": 170,
       "regenMul": 0.8,
       "parryWindowTicks": 0
+    },
+    {
+      "key": "Humbaba",
+      "maxStamina": 180,
+      "regenMul": 0.8,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "Erlking",
+      "maxStamina": 200,
+      "regenMul": 0.75,
+      "parryWindowTicks": 0
     }
   ],
   "regen": {

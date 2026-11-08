@@ -70,6 +70,28 @@
       "downStartSeconds": 2.8,
       "downFade": 0.25,
       "note": "laneMONSTER3 (Grendel): library dying clip, Sobek timings (re-time after a look)."
+    },
+    {
+      "character": "Humbaba",
+      "clip": "death",
+      "startSeconds": 1.1,
+      "speed": 1.0,
+      "fade": 0.1,
+      "downEnabled": true,
+      "downStartSeconds": 2.8,
+      "downFade": 0.25,
+      "note": "laneMONSTER5 (Humbaba): Sobek timings (re-time after a look)."
+    },
+    {
+      "character": "Erlking",
+      "clip": "death",
+      "startSeconds": 1.1,
+      "speed": 1.0,
+      "fade": 0.1,
+      "downEnabled": true,
+      "downStartSeconds": 2.8,
+      "downFade": 0.25,
+      "note": "laneMONSTER6 (Erlking): library two-handed sword death clip, Sobek timings (re-time after a look)."
     }
   ]
 }

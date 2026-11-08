@@ -38,6 +38,20 @@
       "holdTicks": 0,
       "decayPerSecond": 9,
       "deathblowMinHealthFrac": 0.5
+    },
+    {
+      "key": "Humbaba",
+      "max": 110,
+      "holdTicks": 0,
+      "decayPerSecond": 9,
+      "deathblowMinHealthFrac": 0.5
+    },
+    {
+      "key": "Erlking",
+      "max": 130,
+      "holdTicks": 0,
+      "decayPerSecond": 9,
+      "deathblowMinHealthFrac": 0.4
     }
   ],
   "hit": {

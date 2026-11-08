@@ -480,6 +480,148 @@
                              "dripSizeMul": 0.7
                            }
                          ]
+                       },
+                       {
+                         "id": "Humbaba",
+                         "maxDecals": 6,
+                         "fadeOutSec": 2.5,
+                         "lifeSec": 40.0,
+                         "opacity": 0.95,
+                         "sizeJitter": 0.2,
+                         "heavySizeMul": 1.3,
+                         "killSizeMul": 1.5,
+                         "counterSizeMul": 1.15,
+                         "depth": 0.4,
+                         "bodyRadius": 0.72,
+                         "lateral": 0.2,
+                         "lateralJitter": 0.08,
+                         "headY": 2.6,
+                         "headRadiusM": 1.0,
+                         "torsoY": 1.86,
+                         "armY": 1.6,
+                         "legsY": 0.75,
+                         "heightJitter": 0.1,
+                         "slash": {
+                           "tex": "streak",
+                           "length": 0.54,
+                           "width": 0.108,
+                           "baseRollDeg": 0.0,
+                           "tiltDeg": 18.0
+                         },
+                         "stab": {
+                           "tex": "puncture",
+                           "length": 0.162,
+                           "width": 0.162,
+                           "baseRollDeg": 0.0,
+                           "tiltDeg": 180.0
+                         },
+                         "overhead": {
+                           "tex": "streak",
+                           "length": 0.567,
+                           "width": 0.108,
+                           "baseRollDeg": 90.0,
+                           "tiltDeg": 8.0
+                         },
+                         "legSlowSec": 4.0,
+                         "legSlowMul": 0.9,
+                         "staminaCeilPerWound": 0.015,
+                         "staminaCeilMin": 0.75,
+                         "blendSec": 0.6,
+                         "stages": [
+                           {
+                             "id": "hurt",
+                             "hpFrac": 0.5,
+                             "moveMul": 0.95,
+                             "regenMul": 0.9,
+                             "guardLayerMul": 0.92,
+                             "guardRaiseExtraTicks": 3,
+                             "dripEverySec": 0.0,
+                             "dripSplats": 1,
+                             "dripSizeMul": 0.7
+                           },
+                           {
+                             "id": "dying",
+                             "hpFrac": 0.25,
+                             "moveMul": 0.82,
+                             "regenMul": 0.65,
+                             "guardLayerMul": 0.55,
+                             "guardRaiseExtraTicks": 8,
+                             "dripEverySec": 1.8,
+                             "dripSplats": 1,
+                             "dripSizeMul": 0.7
+                           }
+                         ]
+                       },
+                       {
+                         "id": "Erlking",
+                         "maxDecals": 6,
+                         "fadeOutSec": 2.5,
+                         "lifeSec": 40.0,
+                         "opacity": 0.95,
+                         "sizeJitter": 0.2,
+                         "heavySizeMul": 1.3,
+                         "killSizeMul": 1.5,
+                         "counterSizeMul": 1.15,
+                         "depth": 0.4,
+                         "bodyRadius": 0.9,
+                         "lateral": 0.2,
+                         "lateralJitter": 0.08,
+                         "headY": 3.45,
+                         "headRadiusM": 1.2,
+                         "torsoY": 2.55,
+                         "armY": 2.75,
+                         "legsY": 1.0,
+                         "heightJitter": 0.1,
+                         "slash": {
+                           "tex": "streak",
+                           "length": 0.54,
+                           "width": 0.108,
+                           "baseRollDeg": 0.0,
+                           "tiltDeg": 18.0
+                         },
+                         "stab": {
+                           "tex": "puncture",
+                           "length": 0.162,
+                           "width": 0.162,
+                           "baseRollDeg": 0.0,
+                           "tiltDeg": 180.0
+                         },
+                         "overhead": {
+                           "tex": "streak",
+                           "length": 0.567,
+                           "width": 0.108,
+                           "baseRollDeg": 90.0,
+                           "tiltDeg": 8.0
+                         },
+                         "legSlowSec": 4.0,
+                         "legSlowMul": 0.9,
+                         "staminaCeilPerWound": 0.015,
+                         "staminaCeilMin": 0.75,
+                         "blendSec": 0.6,
+                         "stages": [
+                           {
+                             "id": "hurt",
+                             "hpFrac": 0.5,
+                             "moveMul": 0.95,
+                             "regenMul": 0.9,
+                             "guardLayerMul": 0.92,
+                             "guardRaiseExtraTicks": 3,
+                             "dripEverySec": 0.0,
+                             "dripSplats": 1,
+                             "dripSizeMul": 0.7
+                           },
+                           {
+                             "id": "dying",
+                             "hpFrac": 0.25,
+                             "moveMul": 0.82,
+                             "regenMul": 0.65,
+                             "guardLayerMul": 0.55,
+                             "guardRaiseExtraTicks": 8,
+                             "dripEverySec": 1.8,
+                             "dripSplats": 1,
+                             "dripSizeMul": 0.7
+                           }
+                         ]
                        }
                    ]
 }

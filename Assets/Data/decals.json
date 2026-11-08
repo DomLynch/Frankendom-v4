@@ -2049,6 +2049,246 @@
    "opacity": 0.8,
    "zone": "platform",
    "tags": []
+  },
+  {
+   "id": "z5_decal_crack_a_0",
+   "texture": "Assets/Env/World/Decals/decal_crack_a.png",
+   "normal": "Assets/Env/World/Decals/decal_crack_a_normal.png",
+   "pos": [
+    -4,
+    0.0,
+    199.0
+   ],
+   "yBase": "world",
+   "eulerDeg": [
+    90,
+    342.2,
+    0
+   ],
+   "size": [
+    4.73,
+    4.73,
+    0.6
+   ],
+   "opacity": 0.72,
+   "zone": "zone5",
+   "tags": []
+  },
+  {
+   "id": "z5_decal_crack_b_1",
+   "texture": "Assets/Env/World/Decals/decal_crack_b.png",
+   "normal": "Assets/Env/World/Decals/decal_crack_b_normal.png",
+   "pos": [
+    5,
+    0.0,
+    202.0
+   ],
+   "yBase": "world",
+   "eulerDeg": [
+    90,
+    302.8,
+    0
+   ],
+   "size": [
+    6.35,
+    6.35,
+    0.6
+   ],
+   "opacity": 0.81,
+   "zone": "zone5",
+   "tags": []
+  },
+  {
+   "id": "z5_decal_crack_c_2",
+   "texture": "Assets/Env/World/Decals/decal_crack_c.png",
+   "normal": "Assets/Env/World/Decals/decal_crack_c_normal.png",
+   "pos": [
+    -8,
+    0.0,
+    210.0
+   ],
+   "yBase": "world",
+   "eulerDeg": [
+    90,
+    126.6,
+    0
+   ],
+   "size": [
+    5.25,
+    5.25,
+    0.6
+   ],
+   "opacity": 0.81,
+   "zone": "zone5",
+   "tags": []
+  },
+  {
+   "id": "z5_decal_crack_a_3",
+   "texture": "Assets/Env/World/Decals/decal_crack_a.png",
+   "normal": "Assets/Env/World/Decals/decal_crack_a_normal.png",
+   "pos": [
+    7,
+    0.0,
+    215.0
+   ],
+   "yBase": "world",
+   "eulerDeg": [
+    90,
+    238.5,
+    0
+   ],
+   "size": [
+    6.91,
+    6.91,
+    0.6
+   ],
+   "opacity": 0.78,
+   "zone": "zone5",
+   "tags": []
+  },
+  {
+   "id": "z5_decal_crack_b_4",
+   "texture": "Assets/Env/World/Decals/decal_crack_b.png",
+   "normal": "Assets/Env/World/Decals/decal_crack_b_normal.png",
+   "pos": [
+    0,
+    0.0,
+    220.0
+   ],
+   "yBase": "world",
+   "eulerDeg": [
+    90,
+    146.1,
+    0
+   ],
+   "size": [
+    5.47,
+    5.47,
+    0.6
+   ],
+   "opacity": 0.81,
+   "zone": "zone5",
+   "tags": []
+  },
+  {
+   "id": "z5_decal_crack_c_5",
+   "texture": "Assets/Env/World/Decals/decal_crack_c.png",
+   "normal": "Assets/Env/World/Decals/decal_crack_c_normal.png",
+   "pos": [
+    -3,
+    0.0,
+    206.0
+   ],
+   "yBase": "world",
+   "eulerDeg": [
+    90,
+    192.3,
+    0
+   ],
+   "size": [
+    5.57,
+    5.57,
+    0.6
+   ],
+   "opacity": 0.79,
+   "zone": "zone5",
+   "tags": []
+  },
+  {
+   "id": "z5_decal_crack_a_6",
+   "texture": "Assets/Env/World/Decals/decal_crack_a.png",
+   "normal": "Assets/Env/World/Decals/decal_crack_a_normal.png",
+   "pos": [
+    9,
+    0.0,
+    207.0
+   ],
+   "yBase": "world",
+   "eulerDeg": [
+    90,
+    14.8,
+    0
+   ],
+   "size": [
+    6.08,
+    6.08,
+    0.6
+   ],
+   "opacity": 0.73,
+   "zone": "zone5",
+   "tags": []
+  },
+  {
+   "id": "z5_decal_crack_b_7",
+   "texture": "Assets/Env/World/Decals/decal_crack_b.png",
+   "normal": "Assets/Env/World/Decals/decal_crack_b_normal.png",
+   "pos": [
+    -10,
+    0.0,
+    201.0
+   ],
+   "yBase": "world",
+   "eulerDeg": [
+    90,
+    205.3,
+    0
+   ],
+   "size": [
+    6.26,
+    6.26,
+    0.6
+   ],
+   "opacity": 0.83,
+   "zone": "zone5",
+   "tags": []
+  },
+  {
+   "id": "z5_decal_crack_c_8",
+   "texture": "Assets/Env/World/Decals/decal_crack_c.png",
+   "normal": "Assets/Env/World/Decals/decal_crack_c_normal.png",
+   "pos": [
+    3,
+    0.0,
+    213.0
+   ],
+   "yBase": "world",
+   "eulerDeg": [
+    90,
+    83.4,
+    0
+   ],
+   "size": [
+    4.63,
+    4.63,
+    0.6
+   ],
+   "opacity": 0.78,
+   "zone": "zone5",
+   "tags": []
+  },
+  {
+   "id": "z5_decal_crack_a_9",
+   "texture": "Assets/Env/World/Decals/decal_crack_a.png",
+   "normal": "Assets/Env/World/Decals/decal_crack_a_normal.png",
+   "pos": [
+    -6,
+    0.0,
+    218.0
+   ],
+   "yBase": "world",
+   "eulerDeg": [
+    90,
+    70.2,
+    0
+   ],
+   "size": [
+    6.37,
+    6.37,
+    0.6
+   ],
+   "opacity": 0.81,
+   "zone": "zone5",
+   "tags": []
   }
  ]
 }

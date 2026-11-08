@@ -190,6 +190,7 @@ public sealed class ZoneRuntime : MonoBehaviour
     // ZONES-ATTACH v1 (INT107): the per-object form of every AfterSceneLoad attacher a fighter needs (same data want-checks, GetComponent guards, so a component already there is never doubled).
     static void AttachRuntime(GameObject go)
     {
+        MonsterLook.AttachTo(go);   /* MONSTERLOOK v1: swap mesh + textures to the data look (same frame) when the character row says so; the prefab look otherwise */
         ArmHold.AttachTo(go); WeaponGrip.AttachTo(go); TailSpring.AttachTo(go); FootGround.AttachTo(go); FootYaw.AttachTo(go); HeadClamp.AttachTo(go);
         GuardTorsoTurn.AttachTo(go); GearSlots.AttachTo(go); HitReact.AttachTo(go);
     }

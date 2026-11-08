@@ -68,6 +68,62 @@
       }
     ],
     "note": "laneMONSTER3 (Grendel): sourceGlb empty: Tools/clip_build.py output is installed as Assets/Characters/Grendel/Grendel_combat.glb by this kit. keepWeapon true + WeaponSocket_R (clone of the template socket; its LODs hidden by WeaponSwap.UnarmedOn until the blade glbs exist)."
+  },
+  {
+    "id": "Humbaba",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "creature5_body",
+        "mat": "Assets/Characters/Humbaba/Mats/creature5_body_0.mat",
+        "tex": "creature5_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "laneMONSTER5 (Humbaba): sourceGlb empty (his glb is installed by this kit as Humbaba_combat.glb: BOUND, NO CLIPS YET - step 4 builds them with Tools/clip_build.py; do not turn him on before). keepWeapon false: unarmed claws."
+  },
+  {
+    "id": "Erlking",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "erlking_body",
+        "mat": "Assets/Characters/Erlking/Mats/erlking_body_0.mat",
+        "tex": "erlking_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "laneMONSTER6 (Erlking): sourceGlb empty: Tools/clip_build.py output is installed as Erlking_combat.glb by this kit. keepWeapon true + WeaponSocket_R: the socket carries the antler great-axe (two-handed: TwoHandIK holds grip_off with the left hand). Unproven: EnemySwap on this rig."
   }
 ],
   "_example_row_not_used": {

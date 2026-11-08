@@ -160,18 +160,18 @@
           "debug": false,
           "debugEvery": 60,
           "weight": 1.0,
-          "ankleHeight": 0.222,
-          "rayUp": 0.72,
-          "rayDown": 1.08,
+          "ankleHeight": 0.255,
+          "rayUp": 0.864,
+          "rayDown": 1.296,
           "ignoreLayers": [
             8,
             9
           ],
-          "pelvisDownMax": 0.45,
-          "pelvisUpMax": 0.225,
+          "pelvisDownMax": 0.06,
+          "pelvisUpMax": 0.06,
           "pelvisSmooth": 0.06,
-          "plantSnap": 0.027,
-          "maxLift": 0.36,
+          "plantSnap": 0.0324,
+          "maxLift": 0.432,
           "levelWeight": 0.0,
           "toeFlatWeight": 1.0,
           "stateBlend": 0.1,
@@ -186,7 +186,75 @@
               "weight": 0.25
             }
           ],
-          "note": "laneMONSTER3 (Grendel): ankleHeight 0.222 = Foot joint height of the bound rig (0.066 raw x 3.893); lengths = Sobek x 0.865."
+          "note": "laneMONSTER3 (Grendel): ankleHeight 0.255 = MEASURED in Unity (v109n FootGround log: idle ankle 3.0/3.6 cm above ground with the 0.222 row, so the world ankle is 0.252-0.258); pelvisDownMax/UpMax capped at 6 cm so the leg IK cannot sink the hips (v109n showed -13..-30 cm); other lengths = Sobek x 1.0385. Re-measure if heightM changes."
+        },
+        {
+          "name": "Humbaba",
+          "enabled": true,
+          "debug": false,
+          "debugEvery": 60,
+          "weight": 1.0,
+          "ankleHeight": 0.355,
+          "rayUp": 0.674,
+          "rayDown": 1.01,
+          "ignoreLayers": [
+            8,
+            9
+          ],
+          "pelvisDownMax": 0.42,
+          "pelvisUpMax": 0.21,
+          "pelvisSmooth": 0.06,
+          "plantSnap": 0.0253,
+          "maxLift": 0.337,
+          "levelWeight": 0.0,
+          "toeFlatWeight": 1.0,
+          "stateBlend": 0.1,
+          "states": [
+            {
+              "states": [
+                "death",
+                "knockdown",
+                "get_up",
+                "hit_heavy"
+              ],
+              "weight": 0.25
+            }
+          ],
+          "note": "laneMONSTER5 (Humbaba): ankleHeight = Foot joint height of the bound rig (0.3553 m, measured); the other lengths = Sobek (same heightM)."
+        },
+        {
+          "name": "Erlking",
+          "enabled": true,
+          "debug": false,
+          "debugEvery": 60,
+          "weight": 1.0,
+          "ankleHeight": 0.4355,
+          "rayUp": 1.083,
+          "rayDown": 1.624,
+          "ignoreLayers": [
+            8,
+            9
+          ],
+          "pelvisDownMax": 0.677,
+          "pelvisUpMax": 0.338,
+          "pelvisSmooth": 0.06,
+          "plantSnap": 0.0406,
+          "maxLift": 0.541,
+          "levelWeight": 0.0,
+          "toeFlatWeight": 1.0,
+          "stateBlend": 0.1,
+          "states": [
+            {
+              "states": [
+                "death",
+                "knockdown",
+                "get_up",
+                "hit_heavy"
+              ],
+              "weight": 0.25
+            }
+          ],
+          "note": "laneMONSTER6 (Erlking): ankleHeight 0.4355 = Foot joint height of the bound rig (0.08 raw x 5.444); lengths = Sobek x 1.301."
         }
     ]
 }

@@ -209,6 +209,118 @@
             "armour": true
           }
         ]
+      },
+      {
+        "key": "Humbaba",
+        "moves": [
+          {
+            "move": "skill_jab",
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
+          },
+          {
+            "move": "skill_pommel",
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
+          },
+          {
+            "move": "skill_shove",
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
+          },
+          {
+            "move": "heavy*",
+            "fromTick": 7,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.15,
+            "postureMul": 0.4,
+            "armour": true
+          },
+          {
+            "move": "critical",
+            "fromTick": 7,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.15,
+            "postureMul": 0.4,
+            "armour": true
+          },
+          {
+            "move": "skill_*",
+            "fromTick": 6,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.15,
+            "postureMul": 0.4,
+            "armour": true
+          }
+        ]
+      },
+      {
+        "key": "Erlking",
+        "moves": [
+          {
+            "move": "skill_jab",
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
+          },
+          {
+            "move": "skill_pommel",
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
+          },
+          {
+            "move": "skill_shove",
+            "armour": false,
+            "fromTick": 1,
+            "damageMul": 1,
+            "knockMul": 0.25,
+            "postureMul": 0.5
+          },
+          {
+            "move": "heavy*",
+            "fromTick": 5,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.1,
+            "postureMul": 0.3,
+            "armour": true
+          },
+          {
+            "move": "critical",
+            "fromTick": 5,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.1,
+            "postureMul": 0.3,
+            "armour": true
+          },
+          {
+            "move": "skill_*",
+            "fromTick": 4,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.1,
+            "postureMul": 0.3,
+            "armour": true
+          }
+        ]
       }
     ]
   },
@@ -263,6 +375,24 @@
         "hits": 4,
         "windowTicks": 180,
         "breakOutTicks": 48,
+        "absorbDamageMul": -1,
+        "graceDamageMul": -1
+      },
+      {
+        "key": "Humbaba",
+        "enabled": true,
+        "hits": 5,
+        "windowTicks": 180,
+        "breakOutTicks": 50,
+        "absorbDamageMul": -1,
+        "graceDamageMul": -1
+      },
+      {
+        "key": "Erlking",
+        "enabled": true,
+        "hits": 6,
+        "windowTicks": 180,
+        "breakOutTicks": 54,
         "absorbDamageMul": -1,
         "graceDamageMul": -1
       }

@@ -1,0 +1,78 @@
+{
+ "_about": "laneMONSTER6: Erlking's dodge (dive roll) set, same route as Sobek (Tools/clip_sets.py --set dodges --char Erlking --config clip_sets_grendel.json). Attacks are NOT built here: his dual-blade states come from clip_build (data/grendel_attacks.json) into Erlking_attacks_v2.glb.",
+ "foreignTokens": [
+  "crimson",
+  "dracula",
+  "joan"
+ ],
+ "gates": {
+  "samplesPerClip": 36,
+  "plantedM": 0.03,
+  "inheritTolM": 0.02,
+  "postureMeanDeg": 25.0,
+  "postureMaxDeg": 60.0,
+  "liveDiffMeanDeg": 10.0,
+  "toeYawTolModifiedDeg": 20.0,
+  "poseMeanDeg": 12.0,
+  "poseMaxDeg": 25.0,
+  "toeYawTolLiveRefDeg": 12.0,
+  "authored": {
+   "atk_heavy_R": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_heavy_L": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_overhead": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_heavy_thrust": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_thrust": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_riposte": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   }
+  }
+ },
+ "scaleProfile": {
+  "footLen": 2.508,
+  "meshClearance": 1.3,
+  "hipsHeight": 1.897,
+  "armRestSeparationM": 0.09,
+  "basis": "laneMONSTER6 measure_scale.py Erlking_bound.glb vs Joan_combat.glb (rest): foot 2.508, hips 1.897, arm 2.465, leg 1.776, shoulder span 4.843"
+ },
+ "sets": {
+  "dodges": {
+   "outFile": "{id}_dodges.glb",
+   "live": "",
+   "legFixMaxSwivelDeg": 90.0,
+   "rows": {
+    "Erlking": [
+     {
+      "state": "dodge_diveroll",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.4,
+      "note": "laneMONSTER6: library dive-roll 114490901; hips lift solved on the staged body (see MANIFEST)"
+     }
+    ]
+   }
+  }
+ }
+}

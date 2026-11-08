@@ -38,6 +38,8 @@ public static class SobekUnityBatch
         public Fit[] fits = new Fit[0];
         public Group[] groups = new Group[0];
         public string baseScene = "Assets/Scenes/HadesSlice.unity";
+        public string[] deactivateRoots = new string[0];      // laneMONSTER3: root names switched off in the built enemy scene (inherited template / other enemies)
+        public bool deactivateOtherEnemies = false;           // true = also every other active roster-enemy root (the same test scene.oneEnemy uses)
     }
 
     static Cfg cfg; static string outDir = "", id = "";
@@ -166,6 +168,21 @@ public static class SobekUnityBatch
     }
 
     // ------------------------------------------------------------------ 4 scene (EnemySwap: a fresh copy of the base scene every run)
+    static void CleanInherited(string scenePath)
+    {
+        if ((cfg.deactivateRoots == null || cfg.deactivateRoots.Length == 0) && !cfg.deactivateOtherEnemies) return;
+        var sc = EditorSceneManager.OpenScene(scenePath); var r = Roster.Get(id); int off = 0;
+        foreach (var g in sc.GetRootGameObjects())
+        {
+            if (g.name == r.objectName || !g.activeSelf) continue;
+            bool hit = cfg.deactivateRoots != null && Array.IndexOf(cfg.deactivateRoots, g.name) >= 0;
+            if (!hit && cfg.deactivateOtherEnemies) { var rc = Roster.Get(Roster.IdOfName(g.name)); hit = rc != null && rc.id.Length > 0 && rc.id != id && rc.id != Roster.PlayerId; }
+            if (hit) { g.SetActive(false); off++; Log("scene: switched off inherited root '" + g.name + "' in " + scenePath); }
+        }
+        if (off > 0) { EditorSceneManager.MarkSceneDirty(sc); EditorSceneManager.SaveScene(sc); }
+        Log("scene: clean-up switched off " + off + " inherited root(s)");
+    }
+
     static bool StepScene()
     {
         var es = JsonUtility.FromJson<EnemySwap.Cfg>(File.ReadAllText("Assets/Data/enemy_swap.json"));
@@ -176,6 +193,7 @@ public static class SobekUnityBatch
         EnemySwap.ImportModels();
         EnemySwap.BuildScenesMenu();
         EnemySwap.CheckScenes();
+        CleanInherited(path);
         // the base scene must be untouched: open it and make sure no Sobek root leaked into it
         var bs = EditorSceneManager.OpenScene(es.baseScene);
         var r = Roster.Get(id); bool leaked = false;

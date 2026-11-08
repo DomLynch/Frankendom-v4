@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HadesSlice_Grendel.unity
     guid: 0b97056c2d66947499b0abdf220c8b90
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_Humbaba.unity
+    guid: 0d50f091f4127ea4fafe317ab260f452
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_Erlking.unity
+    guid: b85f26c7155369543ba985e964a1c745
   m_configObjects: {}

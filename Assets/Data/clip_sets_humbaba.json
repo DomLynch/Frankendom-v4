@@ -1,0 +1,85 @@
+{
+ "_about": "laneMONSTER5: dodge (dive roll) set, same route as Sobek / Grendel (Tools/clip_sets.py --set dodges --char Humbaba --config clip_sets_humbaba.json). Attacks are NOT built here: they come from clip_build (data/h5_attacks.json) into the attacks glb.",
+ "foreignTokens": [
+  "crimson",
+  "dracula",
+  "joan"
+ ],
+ "gates": {
+  "samplesPerClip": 36,
+  "plantedM": 0.03,
+  "inheritTolM": 0.02,
+  "postureMeanDeg": 25.0,
+  "postureMaxDeg": 60.0,
+  "liveDiffMeanDeg": 10.0,
+  "toeYawTolModifiedDeg": 20.0,
+  "poseMeanDeg": 12.0,
+  "poseMaxDeg": 25.0,
+  "toeYawTolLiveRefDeg": 12.0,
+  "authored": {
+   "atk_heavy_R": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_heavy_L": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_overhead": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_heavy_thrust": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_thrust": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   },
+   "atk_riposte": {
+    "poseMeanDeg": 12.0,
+    "poseMaxDeg": 42.0,
+    "why": "MONSTERPOLISH head pitch limit (sets.attacks.headPitch): intended deviation from the raw pose"
+   }
+  },
+  "sword": {
+   "bladeLengthM": 0.95,
+   "tangBackM": 0.15,
+   "axis": "forearm",
+   "headRadiusM": 0.115,
+   "headCentreUpM": 0.09,
+   "minClearanceM": -0.09,
+   "note": "approximation: blade axis = forearm direction (weapon_grip.json Joan row: the blade follows the forearm), segment from hand-tang to hand+blade, head = sphere at the Head bone + up",
+   "_why": "no weapon (claws): the head-sphere gate is Joan-sized; his crest / maw hangs ahead of the Head joint (same waiver as clip_build gates.waiver.Humbaba.swordMinClearanceM)"
+  }
+ },
+ "scaleProfile": {
+  "_about": "laneMONSTER5 measure_scale.py: foot 2.086 x Joan",
+  "footLen": 2.086
+ },
+ "sets": {
+  "dodges": {
+   "outFile": "{id}_dodges.glb",
+   "live": "",
+   "legFixMaxSwivelDeg": 90.0,
+   "rows": {
+    "Humbaba": [
+     {
+      "state": "dodge_diveroll",
+      "src": "C:/Users/dom12/Documents/kits_out/opentrident_audit/work/qa/glb/clips/114490901-dive-roll.glb",
+      "rootMotion": "inplace",
+      "maxStep": 0.0,
+      "hipsYOffsetM": 0.15,
+      "note": "laneMONSTER5: library dive-roll 114490901; hips lift solved on the staged body (see MANIFEST)"
+     }
+    ]
+   }
+  }
+ }
+}

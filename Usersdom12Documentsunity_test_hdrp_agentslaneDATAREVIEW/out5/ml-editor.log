@@ -1,0 +1,6 @@
+Microsoft (R) Visual C# Compiler version 4.10.0-3.25064.8 (85262f5f)
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+error CS2021: File name 'C:Usersdom12Documentsunity_test_hdrp_agentslaneDATAREVIEW\out5\ml-editor.rsp' is empty, contains invalid characters, has a drive specification without an absolute path, or is too long
+warning CS2008: No source files specified.
+error CS1562: Outputs without source must have the /out option specified

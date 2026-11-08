@@ -1,6 +1,6 @@
 {
   "_about": "PLAYAREA v1 (laneZONE6), read by Assets/Scripts/Zones/PlayArea.cs, used by ArenaLimits.Clamp and the DuelFighter stair clamp. SHIPS OFF: enabled=false = the old global lane (arena_limits.json x +-3.8, stair +-2.45) in every zone, byte for byte the old arithmetic. ONE ROW PER BOSS ZONE: zFrom..zTo = the zone's world z range (offsetZ - 4 .. gate world z + 1); inside it a fighter may stand in the lane (|x - laneX| <= laneHalfX, laneHalfX 2.45 = the old stair width) OR in the area (shape disc: centre [x, z] + radius; shape rect: centre [x, z] + half [hx, hz]); anywhere else it is moved to the nearest allowed point. Units metres, world coordinates. Offsets follow offsetZ(next) = offsetZ + gateZ + 11: z4 108/58, z5 177/56, z6 244/60. Move a zone = edit its row (or rerun the zone plan).",
-  "enabled": false,
+  "enabled": true,
   "version": 1,
   "rows": [
     { "zone": "z4_grendel", "enabled": true, "shape": "rect", "zFrom": 104.0, "zTo": 167.0, "laneX": 0.0, "laneHalfX": 2.45, "centre": [0.0, 132.0], "half": [12.0, 15.0], "note": "env-dev zone 4 v2: open fight ground in front of the hall, x +-12, local z 9..39 (24 x 30 m); Grendel stand local 26 = world 134" },

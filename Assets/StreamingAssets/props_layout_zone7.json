@@ -1,0 +1,2062 @@
+{
+  "_notes": "ZONE7 DRAFT v1 (pool-laneZONE7, NOT APPLIED, nothing in Assets). Zone 7 (z7_market2) second market camp, offset z 315.0 (env-dev zones47 plan: zone 6 offset 238 + gate 60 + 11). Rows in WORLD metres, same schema as props_layout_hub.json; ids z7_*, groups Z7Ring0/1/2. Same libraries and lodProfiles as camp 1: every mesh and material is SHARED with camp 1 / zone 1, no new draw-call kinds. Stand-in rows (tag standin) are replaced by Dom's Tripo GLBs via swapTo.",
+  "version": 2,
+  "coordinateSpace": "unity world metres",
+  "constants": {
+    "waterY": -0.9,
+    "platformTop": 0.0
+  },
+  "libraries": [
+    {
+      "name": "props",
+      "pattern": "Assets/Env/Props/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "rocks",
+      "pattern": "Assets/Env/Rocks/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_mid",
+      "pattern": "Assets/Env/World/Mid/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_far",
+      "pattern": "Assets/Env/World/Far/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_trench",
+      "pattern": "Assets/Env/World/Trench/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_bridge",
+      "pattern": "Assets/Env/World/Bridge/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "balu2",
+      "pattern": "Assets/Env/Balu2/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_ground",
+      "pattern": "Assets/Env/World/Ground/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "blocks",
+      "pattern": "Assets/Env/Blocks/{asset}.glb",
+      "status": "live files, no LOD files: the one GLB serves all three LOD slots"
+    },
+    {
+      "name": "camp",
+      "pattern": "Assets/Env/Camp/{asset}/{asset}_LOD{lod}.glb",
+      "status": "NEW: built by tools/build_camp_assets.py, copied in by apply_camp.py"
+    }
+  ],
+  "lodProfiles": [
+    {
+      "name": "props",
+      "screenHeights": [
+        0.25,
+        0.08,
+        0.02
+      ]
+    },
+    {
+      "name": "trees",
+      "screenHeights": [
+        1.7,
+        0.35,
+        0.03
+      ]
+    },
+    {
+      "name": "boulders",
+      "screenHeights": [
+        0.3,
+        0.1,
+        0.03
+      ]
+    },
+    {
+      "name": "islet",
+      "screenHeights": [
+        0.2,
+        0.06,
+        0.015
+      ]
+    },
+    {
+      "name": "far_ruin",
+      "screenHeights": [
+        0.1,
+        0.03,
+        0.01
+      ]
+    },
+    {
+      "name": "shoreline",
+      "screenHeights": [
+        0.12,
+        0.04,
+        0.01
+      ]
+    },
+    {
+      "name": "debris",
+      "screenHeights": [
+        0.05,
+        0.02,
+        0.0
+      ]
+    },
+    {
+      "name": "hero_heavy",
+      "screenHeights": [
+        0.3,
+        0.1,
+        0.03
+      ]
+    },
+    {
+      "name": "mid_ruin",
+      "screenHeights": [
+        0.15,
+        0.05,
+        0.015
+      ]
+    },
+    {
+      "name": "far_ruin_world",
+      "screenHeights": [
+        0.12,
+        0.04,
+        0.012
+      ]
+    },
+    {
+      "name": "near_hq",
+      "screenHeights": [
+        0.06,
+        0.015,
+        0.004
+      ]
+    }
+  ],
+  "groups": [
+    "Z7Ring0",
+    "Z7Ring1",
+    "Z7Ring2"
+  ],
+  "heroSlots": [
+    {
+      "id": "HERO_WAGON_A",
+      "asset": "camp_wagon_a",
+      "library": "camp",
+      "pos": [
+        -7.4,
+        27.0
+      ],
+      "yaw": 90,
+      "footprint": {
+        "alongZ": 5.2,
+        "acrossX": 2.6,
+        "height": 3.0
+      },
+      "clearBox": {
+        "x": [
+          -9.0,
+          -5.8
+        ],
+        "z": [
+          24.2,
+          29.8
+        ]
+      },
+      "pivot": "floor centre of the wagon bed",
+      "faces": "+x (open side to the lane, vendor_1 stands at x -3.6)",
+      "standIn": "z7_wagon_a_standin (camp_tent_a, scale 0.7)",
+      "status": "PENDING Dom Tripo (likely the covered caravan wagon)"
+    },
+    {
+      "id": "HERO_WAGON_B",
+      "asset": "camp_wagon_b",
+      "library": "camp",
+      "pos": [
+        7.4,
+        34.0
+      ],
+      "yaw": 270,
+      "footprint": {
+        "alongZ": 5.2,
+        "acrossX": 2.6,
+        "height": 3.0
+      },
+      "clearBox": {
+        "x": [
+          5.8,
+          9.0
+        ],
+        "z": [
+          31.2,
+          36.8
+        ]
+      },
+      "pivot": "floor centre of the wagon bed",
+      "faces": "-x (vendor_2 stands at x 3.6)",
+      "standIn": "z7_wagon_b_standin (camp_tent_b, scale 0.7)",
+      "status": "PENDING Dom Tripo (2nd hero piece, or stays a tent)"
+    },
+    {
+      "id": "HERO_GREAT_GATE",
+      "asset": "camp_great_gate",
+      "library": "camp",
+      "pos": [
+        0.0,
+        49.0
+      ],
+      "yaw": 180,
+      "footprint": {
+        "alongZ": 12.6,
+        "acrossX": 16.0,
+        "height": 11.0
+      },
+      "clearBox": {
+        "x": [
+          -8.0,
+          8.0
+        ],
+        "z": [
+          43.0,
+          56.0
+        ]
+      },
+      "pivot": "floor centre of the threshold",
+      "faces": "the player (+z walker looks at it)",
+      "standIn": "z7_gate_arch + z7_gate_leaf + z7_gate_chain_* (rock_arch_8 x1.8, causeway slab on edge, 2 chains)",
+      "status": "OPTIONAL hero; stand-in is already a gate"
+    }
+  ],
+  "props": [
+    {
+      "id": "z7_ground_paving_0",
+      "group": "Z7Ring0",
+      "library": "world_ground",
+      "asset": "ground_paving",
+      "lodProfile": "mid_ruin",
+      "ground": "pivot",
+      "yBase": "world",
+      "pos": [
+        0.0,
+        0.0,
+        315.0
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "world",
+        "ground",
+        "floor"
+      ],
+      "rationale": "camp 1 flagstone strip copied: stone tops average y 0, x +-4, z 0..22.6; copies at z 22 and 41 close the street to the gate (z 63.6)."
+    },
+    {
+      "id": "z7_ground_paving_1",
+      "group": "Z7Ring0",
+      "library": "world_ground",
+      "asset": "ground_paving",
+      "lodProfile": "mid_ruin",
+      "ground": "pivot",
+      "yBase": "world",
+      "pos": [
+        0.0,
+        0.0,
+        337.0
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "world",
+        "ground",
+        "floor"
+      ],
+      "rationale": "camp 1 flagstone strip copied: stone tops average y 0, x +-4, z 0..22.6; copies at z 22 and 41 close the street to the gate (z 63.6)."
+    },
+    {
+      "id": "z7_ground_paving_2",
+      "group": "Z7Ring0",
+      "library": "world_ground",
+      "asset": "ground_paving",
+      "lodProfile": "mid_ruin",
+      "ground": "pivot",
+      "yBase": "world",
+      "pos": [
+        0.0,
+        0.0,
+        356.0
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "world",
+        "ground",
+        "floor"
+      ],
+      "rationale": "camp 1 flagstone strip copied: stone tops average y 0, x +-4, z 0..22.6; copies at z 22 and 41 close the street to the gate (z 63.6)."
+    },
+    {
+      "id": "z7_banner_L",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_banner_pole",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -3.1,
+        0.0,
+        323.8
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "banner"
+      ]
+    },
+    {
+      "id": "z7_banner_R",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_banner_pole",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        3.1,
+        0.0,
+        323.8
+      ],
+      "rotEuler": [
+        0,
+        180,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "banner"
+      ]
+    },
+    {
+      "id": "z7_firepit",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_firepit",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        3.0,
+        0.0,
+        330.5
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "hearth"
+      ]
+    },
+    {
+      "id": "z7_bench_n",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_bench",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        3.0,
+        0.0,
+        328.25
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "bench"
+      ]
+    },
+    {
+      "id": "z7_bench_e",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_bench",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        5.25,
+        0.0,
+        330.5
+      ],
+      "rotEuler": [
+        0,
+        90,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "bench"
+      ]
+    },
+    {
+      "id": "z7_counter_a_0",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_counter",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -3.45,
+        0.0,
+        341.0
+      ],
+      "rotEuler": [
+        0,
+        90,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "counter",
+        "stall"
+      ]
+    },
+    {
+      "id": "z7_counter_a_1",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_counter",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -3.45,
+        0.0,
+        343.0
+      ],
+      "rotEuler": [
+        0,
+        90,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "counter",
+        "stall"
+      ]
+    },
+    {
+      "id": "z7_ware_a",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_weapon_sword",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -3.45,
+        1.05,
+        341.0
+      ],
+      "rotEuler": [
+        0,
+        90,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "artefact",
+        "ware"
+      ]
+    },
+    {
+      "id": "z7_counter_b_0",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_counter",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        3.45,
+        0.0,
+        348.0
+      ],
+      "rotEuler": [
+        0,
+        270,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "counter",
+        "stall"
+      ]
+    },
+    {
+      "id": "z7_counter_b_1",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_counter",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        3.45,
+        0.0,
+        350.0
+      ],
+      "rotEuler": [
+        0,
+        270,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "counter",
+        "stall"
+      ]
+    },
+    {
+      "id": "z7_ware_b",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_weapon_halberd",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        3.45,
+        1.05,
+        350.0
+      ],
+      "rotEuler": [
+        0,
+        90,
+        0
+      ],
+      "scale": 0.9,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "artefact",
+        "ware"
+      ]
+    },
+    {
+      "id": "z7_tent_e",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_tent_b",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        6.4,
+        0.0,
+        338.0
+      ],
+      "rotEuler": [
+        0,
+        270,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "tent"
+      ]
+    },
+    {
+      "id": "z7_tent_w",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_tent_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.6,
+        0.0,
+        352.5
+      ],
+      "rotEuler": [
+        0,
+        90,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "tent"
+      ]
+    },
+    {
+      "id": "z7_ware_shield",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_weapon_shield",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -2.9,
+        0.0,
+        351.6
+      ],
+      "rotEuler": [
+        0,
+        60,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "artefact",
+        "ware"
+      ]
+    },
+    {
+      "id": "z7_hitch_a_0",
+      "group": "Z7Ring0",
+      "library": "balu2",
+      "asset": "post_capped",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -8.2,
+        0.0,
+        345.7
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "artefact",
+        "hitch"
+      ]
+    },
+    {
+      "id": "z7_hitch_a_1",
+      "group": "Z7Ring0",
+      "library": "balu2",
+      "asset": "post_capped",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.6,
+        0.0,
+        345.7
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "artefact",
+        "hitch"
+      ]
+    },
+    {
+      "id": "z7_hitch_b_0",
+      "group": "Z7Ring0",
+      "library": "balu2",
+      "asset": "post_capped",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        6.6,
+        0.0,
+        352.7
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "artefact",
+        "hitch"
+      ]
+    },
+    {
+      "id": "z7_hitch_b_1",
+      "group": "Z7Ring0",
+      "library": "balu2",
+      "asset": "post_capped",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        8.2,
+        0.0,
+        352.7
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "artefact",
+        "hitch"
+      ]
+    },
+    {
+      "id": "z7_pole_a",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_pole",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -2.4,
+        0.0,
+        339.3
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "pole",
+        "lantern"
+      ]
+    },
+    {
+      "id": "z7_pole_b",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_pole",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        2.4,
+        0.0,
+        346.4
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "pole",
+        "lantern"
+      ]
+    },
+    {
+      "id": "z7_pole_c",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_pole",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -2.2,
+        0.0,
+        351.3
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "pole",
+        "lantern"
+      ]
+    },
+    {
+      "id": "z7_wagon_a_standin",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_tent_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -7.6,
+        0.0,
+        342.0
+      ],
+      "rotEuler": [
+        0,
+        90,
+        0
+      ],
+      "scale": 0.7,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "standin",
+        "wagon_slot"
+      ],
+      "swapTo": "camp_wagon_a"
+    },
+    {
+      "id": "z7_wagon_b_standin",
+      "group": "Z7Ring0",
+      "library": "camp",
+      "asset": "camp_tent_b",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        7.6,
+        0.0,
+        349.0
+      ],
+      "rotEuler": [
+        0,
+        270,
+        0
+      ],
+      "scale": 0.7,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "camp",
+        "standin",
+        "wagon_slot"
+      ],
+      "swapTo": "camp_wagon_b"
+    },
+    {
+      "id": "z7_gate_arch",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "rock_arch_8",
+      "lodProfile": "hero_heavy",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        0.0,
+        0.0,
+        364.5
+      ],
+      "rotEuler": [
+        0,
+        180,
+        0
+      ],
+      "scale": 1.8,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "gate",
+        "gate_frame"
+      ]
+    },
+    {
+      "id": "z7_gate_leaf",
+      "group": "Z7Ring0",
+      "library": "blocks",
+      "asset": "causeway_slab_2x4x0.4",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        0.0,
+        0.0,
+        363.7
+      ],
+      "rotEuler": [
+        90,
+        0,
+        0
+      ],
+      "scale": 1.55,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "gate",
+        "gate_leaf",
+        "standin"
+      ],
+      "note": "slab stood on edge: 3.15 w x 6.2 h x 0.68 t, sealed leaf stand-in"
+    },
+    {
+      "id": "z7_gate_chain_0",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -0.7,
+        1.0,
+        363.3
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.8,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "gate",
+        "chain"
+      ]
+    },
+    {
+      "id": "z7_gate_chain_1",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        0.7,
+        1.0,
+        363.3
+      ],
+      "rotEuler": [
+        0,
+        0,
+        0
+      ],
+      "scale": 1.8,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "gate",
+        "chain"
+      ]
+    },
+    {
+      "id": "z7_gate_chaincoil",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_chain_b",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        0.4,
+        0.0,
+        362.4
+      ],
+      "rotEuler": [
+        0,
+        20,
+        0
+      ],
+      "scale": 1.3,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "gate",
+        "chain"
+      ]
+    },
+    {
+      "id": "z7_gate_skulls",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_skull_pile_c",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -2.6,
+        0.0,
+        362.5
+      ],
+      "rotEuler": [
+        0,
+        200,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "gate",
+        "bones"
+      ]
+    },
+    {
+      "id": "z7_gate_bones",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        2.4,
+        0.0,
+        362.9
+      ],
+      "rotEuler": [
+        0,
+        40,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "gate",
+        "bones"
+      ]
+    },
+    {
+      "id": "z7_backdrop_a",
+      "group": "Z7Ring2",
+      "library": "camp",
+      "asset": "camp_backdrop_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -52.099,
+        -9.04,
+        379.95
+      ],
+      "rotEuler": [
+        0,
+        136.0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "backdrop"
+      ]
+    },
+    {
+      "id": "z7_backdrop_b",
+      "group": "Z7Ring2",
+      "library": "camp",
+      "asset": "camp_backdrop_b",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        0.0,
+        -9.04,
+        401.0
+      ],
+      "rotEuler": [
+        0,
+        180.0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "backdrop"
+      ]
+    },
+    {
+      "id": "z7_backdrop_c",
+      "group": "Z7Ring2",
+      "library": "camp",
+      "asset": "camp_backdrop_c",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        52.099,
+        -9.04,
+        379.95
+      ],
+      "rotEuler": [
+        0,
+        224.0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "backdrop"
+      ]
+    },
+    {
+      "id": "z7_rock_1",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -28.815,
+        0.0,
+        358.264
+      ],
+      "rotEuler": [
+        0,
+        241.25,
+        0
+      ],
+      "scale": 1.17,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_rock_2",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_C",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -20.869,
+        0.0,
+        334.717
+      ],
+      "rotEuler": [
+        0,
+        50.67,
+        0
+      ],
+      "scale": 0.88,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_rock_3",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        19.222,
+        0.0,
+        365.663
+      ],
+      "rotEuler": [
+        0,
+        133.79,
+        0
+      ],
+      "scale": 0.83,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_rock_4",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        29.716,
+        0.0,
+        354.714
+      ],
+      "rotEuler": [
+        0,
+        140.81,
+        0
+      ],
+      "scale": 0.79,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_rock_5",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        18.283,
+        0.0,
+        340.212
+      ],
+      "rotEuler": [
+        0,
+        7.48,
+        0
+      ],
+      "scale": 0.79,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_rock_6",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -19.346,
+        0.0,
+        367.188
+      ],
+      "rotEuler": [
+        0,
+        269.6,
+        0
+      ],
+      "scale": 0.85,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_rock_7",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_C",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -21.961,
+        0.0,
+        320.653
+      ],
+      "rotEuler": [
+        0,
+        147.31,
+        0
+      ],
+      "scale": 0.94,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_rock_8",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        23.148,
+        0.0,
+        315.333
+      ],
+      "rotEuler": [
+        0,
+        339.22,
+        0
+      ],
+      "scale": 1.24,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_rock_9",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        17.286,
+        0.0,
+        324.809
+      ],
+      "rotEuler": [
+        0,
+        151.41,
+        0
+      ],
+      "scale": 1.19,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_rock_10",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        21.946,
+        0.0,
+        347.073
+      ],
+      "rotEuler": [
+        0,
+        161.31,
+        0
+      ],
+      "scale": 1.1,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_far_1",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_tower_b",
+      "lodProfile": "far_ruin_world",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        64.8,
+        0.0,
+        337.5
+      ],
+      "rotEuler": [
+        0,
+        47,
+        0
+      ],
+      "scale": 1.2,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_far_2",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_stub",
+      "lodProfile": "far_ruin_world",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -68.8,
+        0.0,
+        329.5
+      ],
+      "rotEuler": [
+        0,
+        273,
+        0
+      ],
+      "scale": 1.1,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_far_3",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_arches",
+      "lodProfile": "far_ruin_world",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        40.2,
+        0.0,
+        332.5
+      ],
+      "rotEuler": [
+        0,
+        330,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7_far_4",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_arches",
+      "lodProfile": "far_ruin_world",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -60.3,
+        0.0,
+        381.4
+      ],
+      "rotEuler": [
+        0,
+        267,
+        0
+      ],
+      "scale": 1.3,
+      "shadowsOff": true,
+      "tags": [
+        "zone7",
+        "far"
+      ]
+    },
+    {
+      "id": "z7d_remains_bone_fragments_7_1",
+      "group": "Z7Ring1",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.1,
+        0.0,
+        320.71
+      ],
+      "rotEuler": [
+        0,
+        61.8,
+        0
+      ],
+      "scale": 1.19,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_remains_bone_fragments_7_2",
+      "group": "Z7Ring1",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        26.15,
+        0.0,
+        351.35
+      ],
+      "rotEuler": [
+        0,
+        207.7,
+        0
+      ],
+      "scale": 0.91,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_remains_hero_skull_pile_c_3",
+      "group": "Z7Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_c",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        19.09,
+        0.0,
+        344.61
+      ],
+      "rotEuler": [
+        0,
+        72.4,
+        0
+      ],
+      "scale": 1.17,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_remains_hero_skull_pile_c_4",
+      "group": "Z7Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_c",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -14.5,
+        0.0,
+        320.83
+      ],
+      "rotEuler": [
+        0,
+        58.0,
+        0
+      ],
+      "scale": 1.09,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_war_hero_weapon_sword_5",
+      "group": "Z7Ring1",
+      "library": "props",
+      "asset": "hero_weapon_sword",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -13.06,
+        0.0,
+        334.45
+      ],
+      "rotEuler": [
+        0,
+        340.6,
+        0
+      ],
+      "scale": 1.15,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_war_hero_weapon_halberd_6",
+      "group": "Z7Ring1",
+      "library": "props",
+      "asset": "hero_weapon_halberd",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -30.16,
+        0.0,
+        348.86
+      ],
+      "rotEuler": [
+        0,
+        92.7,
+        0
+      ],
+      "scale": 1.19,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_war_hero_chain_a_7",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        13.61,
+        0.0,
+        359.51
+      ],
+      "rotEuler": [
+        0,
+        308.9,
+        0
+      ],
+      "scale": 0.91,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_war_hero_chain_a_8",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        14.32,
+        0.0,
+        343.45
+      ],
+      "rotEuler": [
+        0,
+        118.8,
+        0
+      ],
+      "scale": 0.9,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_war_hero_banner_pole_9",
+      "group": "Z7Ring1",
+      "library": "props",
+      "asset": "hero_banner_pole",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -25.4,
+        0.0,
+        340.55
+      ],
+      "rotEuler": [
+        0,
+        139.5,
+        0
+      ],
+      "scale": 0.95,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_ruin_mid_arch_broken_a_10",
+      "group": "Z7Ring1",
+      "library": "world_mid",
+      "asset": "mid_arch_broken_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        25.37,
+        0.0,
+        327.94
+      ],
+      "rotEuler": [
+        0,
+        207.7,
+        0
+      ],
+      "scale": 0.83,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_ruin_mid_column_cluster_11",
+      "group": "Z7Ring1",
+      "library": "world_mid",
+      "asset": "mid_column_cluster",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -22.19,
+        0.0,
+        342.44
+      ],
+      "rotEuler": [
+        0,
+        50.6,
+        0
+      ],
+      "scale": 0.74,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_ruin_mid_slab_heap_a_12",
+      "group": "Z7Ring1",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -21.09,
+        0.0,
+        348.1
+      ],
+      "rotEuler": [
+        0,
+        44.2,
+        0
+      ],
+      "scale": 0.98,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_ruin_mid_buttress_stub_13",
+      "group": "Z7Ring2",
+      "library": "world_mid",
+      "asset": "mid_buttress_stub",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        21.68,
+        0.0,
+        319.36
+      ],
+      "rotEuler": [
+        0,
+        160.8,
+        0
+      ],
+      "scale": 0.98,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_dead_tree_dead_tree_1b_14",
+      "group": "Z7Ring1",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -16.13,
+        0.0,
+        361.1
+      ],
+      "rotEuler": [
+        0,
+        181.8,
+        0
+      ],
+      "scale": 1.47,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_dead_tree_dead_tree_1a_15",
+      "group": "Z7Ring1",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        10.61,
+        0.0,
+        319.1
+      ],
+      "rotEuler": [
+        0,
+        58.3,
+        0
+      ],
+      "scale": 0.97,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_dead_tree_dead_tree_1a_16",
+      "group": "Z7Ring1",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        32.12,
+        0.0,
+        358.38
+      ],
+      "rotEuler": [
+        0,
+        311.2,
+        0
+      ],
+      "scale": 1.5,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_boulder_rock_boulder_D_17",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -14.82,
+        0.0,
+        312.66
+      ],
+      "rotEuler": [
+        0,
+        220.5,
+        0
+      ],
+      "scale": 1.63,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_boulder_rock_boulder_B_18",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        19.17,
+        0.0,
+        334.78
+      ],
+      "rotEuler": [
+        0,
+        297.7,
+        0
+      ],
+      "scale": 1.33,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_boulder_rock_boulder_E_19",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        21.0,
+        0.0,
+        322.96
+      ],
+      "rotEuler": [
+        0,
+        176.7,
+        0
+      ],
+      "scale": 1.24,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    },
+    {
+      "id": "z7d_boulder_rock_boulder_E_20",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        17.89,
+        0.0,
+        358.7
+      ],
+      "rotEuler": [
+        0,
+        135.9,
+        0
+      ],
+      "scale": 1.35,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone7",
+        "density"
+      ]
+    }
+  ],
+  "scatter": []
+}

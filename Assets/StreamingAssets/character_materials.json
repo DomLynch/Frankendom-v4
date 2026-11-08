@@ -1,0 +1,133 @@
+{
+  "_note": "CHARMAT v2 (laneASSETAUDIT). PRESENTATION ONLY: per-character material overrides read by Assets/Scripts/CharMatOverride.cs (new file; no existing script calls it). Hot-deployable: edit this file or a texture under StreamingAssets in the built game's folder; it is picked up while the game runs. enabled false = nothing happens. rows[].character = roster id (any case). materials[].match = part of the material name. baseColor = multiplier on the albedo (1,1,1 = Dom's own colours); omit / -1 / empty = leave. albedoBlob = pre-compressed BC7 blob (make_bc7.py, preferred, about 21 MB for 4096, no decode); albedoTexture = jpg/png fallback. Every property name, suffix and timing below is data.",
+  "enabled": true,
+  "pollSeconds": 0.25,
+  "spawnPollSeconds": 0.0,
+  "spawnFastSeconds": 2.0,
+  "instanceSuffix": " (Instance)",
+  "cloneSuffix": " (charmat)",
+  "props": {
+    "baseColor": [
+      "_BaseColor"
+    ],
+    "baseMap": [
+      "_BaseColorMap",
+      "_MainTex"
+    ],
+    "smoothness": [
+      "_Smoothness",
+      "_SmoothnessRemapMax"
+    ],
+    "metallic": [
+      "_Metallic",
+      "_MetallicRemapMax"
+    ],
+    "normalMap": [
+      "_NormalMap"
+    ],
+    "maskMap": [
+      "_MaskMap"
+    ]
+  },
+  "texture": {
+    "anisoLevel": 8,
+    "wrap": "Repeat",
+    "filter": "Trilinear",
+    "blobMagic": "BC7B",
+    "namePrefix": "charmat_"
+  },
+  "rows": [
+    {
+      "character": "Pitborn",
+      "_why": "Dom 2026-11-08: Pitborn back to his ORIGINAL pinkish-purple flesh. Body material was multiplied by 0.52/0.60/0.47 (green, -43 percent luminance); the head texture had been darkened and tinted green at 2K by HEADSWAP. Head uses Dom's own 4096 head albedo as a BC7 blob (same UV atlas as the head mesh); the jpg is the fallback.",
+      "materials": [
+        {
+          "match": "pitborn_Body",
+          "baseColor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "smoothness": -1,
+          "metallic": -1,
+          "albedoBlob": "",
+          "albedoTexture": ""
+        },
+        {
+          "match": "pitborn_head",
+          "baseColor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "smoothness": -1,
+          "metallic": -1,
+          "albedoBlob": "CharTex/pitborn_head_base.bc7",
+          "albedoTexture": "CharTex/pitborn_head_base.jpg"
+        }
+      ]
+    },
+    {
+      "character": "Sobek",
+      "materials": [],
+      "look": {
+        "enabled": false,
+        "model": "MonsterLook/Sobek/Sobek_look.glb",
+        "parts": [
+          {
+            "renderer": "Sobek_Body",
+            "mesh": "Sobek_Body",
+            "slots": [
+              {
+                "slot": 0,
+                "glbMaterial": "sobek_body",
+                "baseMap": "MonsterLook/Sobek/sobek_body_base.bc7",
+                "normalMap": "MonsterLook/Sobek/sobek_body_normal.bc7",
+                "maskMap": "MonsterLook/Sobek/sobek_body_mask.bc7"
+              }
+            ]
+          },
+          {
+            "renderer": "Sobek_Head",
+            "mesh": "Sobek_Head",
+            "slots": [
+              {
+                "slot": 0,
+                "glbMaterial": "sobek_head",
+                "baseMap": "MonsterLook/Sobek/sobek_body_base.bc7",
+                "normalMap": "MonsterLook/Sobek/sobek_body_normal.bc7",
+                "maskMap": "MonsterLook/Sobek/sobek_body_mask.bc7"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "lookGlobal": {
+    "enabled": true,
+    "unloadAfterSwap": true,
+    "releasePerFrame": 1,
+    "requireReadable": true,
+    "logSwap": true,
+    "anisoLevel": 8,
+    "anisoMax": 16,
+    "sigCheckS": 1.0,
+    "retireAfterS": 3.0,
+    "minPollS": 0.1,
+    "offPollS": 2.0,
+    "bindposeGate": true,
+    "bindposeEps": 0.0001,
+    "bindposeMinFrac": 0.5,
+    "blendshapeGate": true,
+    "cloneSuffix": " (charmat)",
+    "keywords": {
+      "normalMap": [
+        "_NORMALMAP"
+      ],
+      "maskMap": [
+        "_MASKMAP"
+      ]
+    }
+  }
+}

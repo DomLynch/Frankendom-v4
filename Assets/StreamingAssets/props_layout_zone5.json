@@ -1,0 +1,1946 @@
+{
+  "_notes": "ZONE5 v1 (laneZONE5, hand-made layout, kind external): Zone 5 = The Petrified Wood (Humbaba boss arena). World metres, offsetZ 177 (zone 4 offset 108 + gateZ 58 + 11), entry gate z 177, exit gate z 233, 30 m clearing centred z 209, boss_stand z 211. 21 rows, existing assets as stand-ins. HERO SLOTS: rows with heroSlot (stump_near, trunk_wall, dead_tree, stump_far) take their model from laneZONE5/kit/zone5_slots.json (slot model = a folder id under Assets/Env/Hero/<id>/<id>_LOD{0,1,2}.glb, library hero5): edit the slot or one row there and run apply_zone5.py --apply; the rows here are regenerated, do not hand edit. y is a placeholder 0: ZoneRowGround.cs (zone_ground.json) snaps every z5_ row to the real ground by raycast when its ring is on. No flagstone row on purpose (zone_ground.json floor earth).",
+  "version": 2,
+  "coordinateSpace": "unity world metres",
+  "constants": {
+    "waterY": -0.9,
+    "platformTop": 0.0
+  },
+  "libraries": [
+    {
+      "name": "props",
+      "pattern": "Assets/Env/Props/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "rocks",
+      "pattern": "Assets/Env/Rocks/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_mid",
+      "pattern": "Assets/Env/World/Mid/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_far",
+      "pattern": "Assets/Env/World/Far/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_trench",
+      "pattern": "Assets/Env/World/Trench/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_bridge",
+      "pattern": "Assets/Env/World/Bridge/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "balu2",
+      "pattern": "Assets/Env/Balu2/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "world_ground",
+      "pattern": "Assets/Env/World/Ground/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
+      "name": "hero5",
+      "pattern": "Assets/Env/Hero/{asset}/{asset}_LOD{lod}.glb"
+    }
+  ],
+  "lodProfiles": [
+    {
+      "name": "props",
+      "screenHeights": [
+        0.25,
+        0.08,
+        0.02
+      ]
+    },
+    {
+      "name": "trees",
+      "screenHeights": [
+        1.7,
+        0.35,
+        0.03
+      ]
+    },
+    {
+      "name": "boulders",
+      "screenHeights": [
+        0.3,
+        0.1,
+        0.03
+      ]
+    },
+    {
+      "name": "islet",
+      "screenHeights": [
+        0.2,
+        0.06,
+        0.015
+      ]
+    },
+    {
+      "name": "far_ruin",
+      "screenHeights": [
+        0.1,
+        0.03,
+        0.01
+      ]
+    },
+    {
+      "name": "shoreline",
+      "screenHeights": [
+        0.12,
+        0.04,
+        0.01
+      ]
+    },
+    {
+      "name": "debris",
+      "screenHeights": [
+        0.05,
+        0.02,
+        0.0
+      ]
+    },
+    {
+      "name": "hero_heavy",
+      "screenHeights": [
+        0.3,
+        0.1,
+        0.03
+      ]
+    },
+    {
+      "name": "mid_ruin",
+      "screenHeights": [
+        0.15,
+        0.05,
+        0.015
+      ]
+    },
+    {
+      "name": "far_ruin_world",
+      "screenHeights": [
+        0.12,
+        0.04,
+        0.012
+      ]
+    },
+    {
+      "name": "near_hq",
+      "screenHeights": [
+        0.06,
+        0.015,
+        0.004
+      ]
+    }
+  ],
+  "groups": [
+    "Z5Ring0",
+    "Z5Ring1",
+    "Z5Ring2"
+  ],
+  "props": [
+    {
+      "id": "z5_entry_stump_W",
+      "group": "Z5Ring0",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -10.5,
+        0.0,
+        190.0
+      ],
+      "rotEuler": [
+        0,
+        20.0,
+        0
+      ],
+      "scale": 0.95,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "entry_stump_W",
+        "heroSlot:stump_near"
+      ],
+      "heroSlot": "stump_near"
+    },
+    {
+      "id": "z5_entry_stump_E",
+      "group": "Z5Ring0",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.5,
+        0.0,
+        190.5
+      ],
+      "rotEuler": [
+        0,
+        200.0,
+        0
+      ],
+      "scale": 0.85,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "entry_stump_E",
+        "heroSlot:stump_near"
+      ],
+      "heroSlot": "stump_near"
+    },
+    {
+      "id": "z5_wall_trunk_W",
+      "group": "Z5Ring0",
+      "library": "world_mid",
+      "asset": "mid_spire_fallen",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -23.0,
+        0.0,
+        208.0
+      ],
+      "rotEuler": [
+        0,
+        90.0,
+        0
+      ],
+      "scale": 0.75,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "wall_trunk_W",
+        "heroSlot:trunk_wall"
+      ],
+      "heroSlot": "trunk_wall"
+    },
+    {
+      "id": "z5_wall_trunk_E",
+      "group": "Z5Ring0",
+      "library": "world_mid",
+      "asset": "mid_spire_fallen",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        22.5,
+        0.0,
+        214.0
+      ],
+      "rotEuler": [
+        0,
+        278.0,
+        0
+      ],
+      "scale": 0.6,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "wall_trunk_E",
+        "heroSlot:trunk_wall"
+      ],
+      "heroSlot": "trunk_wall"
+    },
+    {
+      "id": "z5_exit_stump_W",
+      "group": "Z5Ring0",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -11.0,
+        0.0,
+        229.0
+      ],
+      "rotEuler": [
+        0,
+        40.0,
+        0
+      ],
+      "scale": 0.8,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "exit_stump_W",
+        "heroSlot:stump_near"
+      ],
+      "heroSlot": "stump_near"
+    },
+    {
+      "id": "z5_exit_stump_E",
+      "group": "Z5Ring0",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        10.0,
+        0.0,
+        232.0
+      ],
+      "rotEuler": [
+        0,
+        200.0,
+        0
+      ],
+      "scale": 0.7,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "exit_stump_E",
+        "heroSlot:stump_near"
+      ],
+      "heroSlot": "stump_near"
+    },
+    {
+      "id": "z5_root_log_NW",
+      "group": "Z5Ring0",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -15.5,
+        0.0,
+        224.0
+      ],
+      "rotEuler": [
+        0,
+        60.0,
+        0
+      ],
+      "scale": 2.2,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "root_log_NW"
+      ]
+    },
+    {
+      "id": "z5_root_log_SW",
+      "group": "Z5Ring0",
+      "library": "props",
+      "asset": "fallen_pillar_3",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -15.8,
+        0.0,
+        197.0
+      ],
+      "rotEuler": [
+        0,
+        15.0,
+        0
+      ],
+      "scale": 2.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "root_log_SW"
+      ]
+    },
+    {
+      "id": "z5_dead_tree_SW",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -22.0,
+        0.0,
+        185.0
+      ],
+      "rotEuler": [
+        0,
+        30.0,
+        0
+      ],
+      "scale": 1.4,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "dead_tree_SW",
+        "heroSlot:dead_tree"
+      ],
+      "heroSlot": "dead_tree"
+    },
+    {
+      "id": "z5_dead_tree_SE",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        24.0,
+        0.0,
+        183.0
+      ],
+      "rotEuler": [
+        0,
+        250.0,
+        0
+      ],
+      "scale": 1.3,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "dead_tree_SE",
+        "heroSlot:dead_tree"
+      ],
+      "heroSlot": "dead_tree"
+    },
+    {
+      "id": "z5_dead_tree_NW",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -27.0,
+        0.0,
+        229.0
+      ],
+      "rotEuler": [
+        0,
+        120.0,
+        0
+      ],
+      "scale": 1.5,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "dead_tree_NW",
+        "heroSlot:dead_tree"
+      ],
+      "heroSlot": "dead_tree"
+    },
+    {
+      "id": "z5_dead_tree_NE",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        27.0,
+        0.0,
+        225.0
+      ],
+      "rotEuler": [
+        0,
+        310.0,
+        0
+      ],
+      "scale": 1.6,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "dead_tree_NE",
+        "heroSlot:dead_tree"
+      ],
+      "heroSlot": "dead_tree"
+    },
+    {
+      "id": "z5_rock_path_W",
+      "group": "Z5Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -6.0,
+        0.0,
+        181.0
+      ],
+      "rotEuler": [
+        0,
+        80.0,
+        0
+      ],
+      "scale": 1.4,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "rock_path_W"
+      ]
+    },
+    {
+      "id": "z5_rock_path_E",
+      "group": "Z5Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        6.8,
+        0.0,
+        186.5
+      ],
+      "rotEuler": [
+        0,
+        300.0,
+        0
+      ],
+      "scale": 1.2,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "rock_path_E"
+      ]
+    },
+    {
+      "id": "z5_rock_exit_W",
+      "group": "Z5Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -6.8,
+        0.0,
+        223.0
+      ],
+      "rotEuler": [
+        0,
+        10.0,
+        0
+      ],
+      "scale": 1.6,
+      "shadowsOff": false,
+      "tags": [
+        "zone5",
+        "rock_exit_W"
+      ]
+    },
+    {
+      "id": "z5_sky_stump_1",
+      "group": "Z5Ring2",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -42.0,
+        0.0,
+        197.0
+      ],
+      "rotEuler": [
+        0,
+        150.0,
+        0
+      ],
+      "scale": 2.0,
+      "shadowsOff": true,
+      "tags": [
+        "zone5",
+        "sky_stump_1",
+        "heroSlot:stump_far"
+      ],
+      "heroSlot": "stump_far"
+    },
+    {
+      "id": "z5_sky_stump_2",
+      "group": "Z5Ring2",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        46.0,
+        0.0,
+        211.0
+      ],
+      "rotEuler": [
+        0,
+        60.0,
+        0
+      ],
+      "scale": 2.2,
+      "shadowsOff": true,
+      "tags": [
+        "zone5",
+        "sky_stump_2",
+        "heroSlot:stump_far"
+      ],
+      "heroSlot": "stump_far"
+    },
+    {
+      "id": "z5_sky_stump_3",
+      "group": "Z5Ring2",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -50.0,
+        0.0,
+        237.0
+      ],
+      "rotEuler": [
+        0,
+        250.0,
+        0
+      ],
+      "scale": 2.4,
+      "shadowsOff": true,
+      "tags": [
+        "zone5",
+        "sky_stump_3",
+        "heroSlot:stump_far"
+      ],
+      "heroSlot": "stump_far"
+    },
+    {
+      "id": "z5_sky_stump_4",
+      "group": "Z5Ring2",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        38.0,
+        0.0,
+        249.0
+      ],
+      "rotEuler": [
+        0,
+        100.0,
+        0
+      ],
+      "scale": 1.9,
+      "shadowsOff": true,
+      "tags": [
+        "zone5",
+        "sky_stump_4",
+        "heroSlot:stump_far"
+      ],
+      "heroSlot": "stump_far"
+    },
+    {
+      "id": "z5_sky_cluster_1",
+      "group": "Z5Ring2",
+      "library": "world_mid",
+      "asset": "mid_column_cluster",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -34.0,
+        0.0,
+        257.0
+      ],
+      "rotEuler": [
+        0,
+        20.0,
+        0
+      ],
+      "scale": 1.6,
+      "shadowsOff": true,
+      "tags": [
+        "zone5",
+        "sky_cluster_1"
+      ]
+    },
+    {
+      "id": "z5_sky_cluster_2",
+      "group": "Z5Ring2",
+      "library": "world_mid",
+      "asset": "mid_column_cluster",
+      "lodProfile": "mid_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        52.0,
+        0.0,
+        185.0
+      ],
+      "rotEuler": [
+        0,
+        330.0,
+        0
+      ],
+      "scale": 1.5,
+      "shadowsOff": true,
+      "tags": [
+        "zone5",
+        "sky_cluster_2"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1b_1",
+      "group": "Z5Ring2",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -17.12,
+        0.0,
+        176.86
+      ],
+      "rotEuler": [
+        0,
+        98.1,
+        0
+      ],
+      "scale": 1.54,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1a_2",
+      "group": "Z5Ring2",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -24.7,
+        0.0,
+        177.79
+      ],
+      "rotEuler": [
+        0,
+        287.1,
+        0
+      ],
+      "scale": 1.7,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1a_3",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -17.91,
+        0.0,
+        231.52
+      ],
+      "rotEuler": [
+        0,
+        184.3,
+        0
+      ],
+      "scale": 1.37,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1a_4",
+      "group": "Z5Ring2",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        29.78,
+        0.0,
+        242.01
+      ],
+      "rotEuler": [
+        0,
+        286.5,
+        0
+      ],
+      "scale": 1.75,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1a_5",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        28.44,
+        0.0,
+        218.76
+      ],
+      "rotEuler": [
+        0,
+        39.2,
+        0
+      ],
+      "scale": 1.4,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1a_6",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -18.75,
+        0.0,
+        236.6
+      ],
+      "rotEuler": [
+        0,
+        285.6,
+        0
+      ],
+      "scale": 1.82,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1b_7",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -23.44,
+        0.0,
+        216.57
+      ],
+      "rotEuler": [
+        0,
+        58.9,
+        0
+      ],
+      "scale": 1.57,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1b_8",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.98,
+        0.0,
+        232.89
+      ],
+      "rotEuler": [
+        0,
+        340.3,
+        0
+      ],
+      "scale": 1.72,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1b_9",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        22.73,
+        0.0,
+        193.22
+      ],
+      "rotEuler": [
+        0,
+        230.3,
+        0
+      ],
+      "scale": 1.47,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1a_10",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -12.18,
+        0.0,
+        186.74
+      ],
+      "rotEuler": [
+        0,
+        277.6,
+        0
+      ],
+      "scale": 1.89,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1b_11",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        27.88,
+        0.0,
+        209.62
+      ],
+      "rotEuler": [
+        0,
+        146.7,
+        0
+      ],
+      "scale": 1.21,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1a_12",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        16.93,
+        0.0,
+        230.96
+      ],
+      "rotEuler": [
+        0,
+        36.7,
+        0
+      ],
+      "scale": 1.73,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1b_13",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1b",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        6.49,
+        0.0,
+        179.25
+      ],
+      "rotEuler": [
+        0,
+        146.2,
+        0
+      ],
+      "scale": 1.29,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_dead_tree_dead_tree_1a_14",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "dead_tree_1a",
+      "lodProfile": "trees",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        19.0,
+        0.0,
+        181.5
+      ],
+      "rotEuler": [
+        0,
+        74.9,
+        0
+      ],
+      "scale": 1.39,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_stump_mid_tower_stump_15",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -24.06,
+        0.0,
+        198.23
+      ],
+      "rotEuler": [
+        0,
+        42.5,
+        0
+      ],
+      "scale": 0.72,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_stump_mid_tower_stump_16",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        21.04,
+        0.0,
+        209.29
+      ],
+      "rotEuler": [
+        0,
+        339.7,
+        0
+      ],
+      "scale": 1.47,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_stump_mid_tower_stump_17",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        28.01,
+        0.0,
+        190.21
+      ],
+      "rotEuler": [
+        0,
+        215.9,
+        0
+      ],
+      "scale": 1.42,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_stump_mid_tower_stump_18",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -27.16,
+        0.0,
+        199.88
+      ],
+      "rotEuler": [
+        0,
+        152.4,
+        0
+      ],
+      "scale": 1.14,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_stump_mid_tower_stump_19",
+      "group": "Z5Ring2",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -28.06,
+        0.0,
+        233.9
+      ],
+      "rotEuler": [
+        0,
+        200.1,
+        0
+      ],
+      "scale": 1.55,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_stump_mid_tower_stump_20",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -26.19,
+        0.0,
+        204.25
+      ],
+      "rotEuler": [
+        0,
+        351.6,
+        0
+      ],
+      "scale": 0.99,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_stump_mid_tower_stump_21",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        15.97,
+        0.0,
+        187.02
+      ],
+      "rotEuler": [
+        0,
+        346.5,
+        0
+      ],
+      "scale": 1.09,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_stump_mid_tower_stump_22",
+      "group": "Z5Ring2",
+      "library": "world_mid",
+      "asset": "mid_tower_stump",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -9.4,
+        0.0,
+        174.24
+      ],
+      "rotEuler": [
+        0,
+        175.0,
+        0
+      ],
+      "scale": 1.19,
+      "shadowsOff": true,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_fallen_mid_slab_heap_a_23",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -22.49,
+        0.0,
+        188.29
+      ],
+      "rotEuler": [
+        0,
+        77.4,
+        0
+      ],
+      "scale": 0.69,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_fallen_mid_spire_fallen_24",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_spire_fallen",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        8.51,
+        0.0,
+        192.81
+      ],
+      "rotEuler": [
+        0,
+        48.0,
+        0
+      ],
+      "scale": 1.06,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_fallen_mid_slab_heap_a_25",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -27.45,
+        0.0,
+        192.28
+      ],
+      "rotEuler": [
+        0,
+        92.5,
+        0
+      ],
+      "scale": 0.62,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_fallen_mid_slab_heap_a_26",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_slab_heap_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        13.06,
+        0.0,
+        235.38
+      ],
+      "rotEuler": [
+        0,
+        150.9,
+        0
+      ],
+      "scale": 0.86,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_fallen_mid_spire_fallen_27",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_spire_fallen",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        21.05,
+        0.0,
+        202.54
+      ],
+      "rotEuler": [
+        0,
+        42.6,
+        0
+      ],
+      "scale": 0.71,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_fallen_mid_spire_fallen_28",
+      "group": "Z5Ring1",
+      "library": "world_mid",
+      "asset": "mid_spire_fallen",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -22.09,
+        0.0,
+        191.95
+      ],
+      "rotEuler": [
+        0,
+        70.4,
+        0
+      ],
+      "scale": 0.62,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_rubble_hero_debris_rubble_29",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -27.97,
+        0.0,
+        196.52
+      ],
+      "rotEuler": [
+        0,
+        104.7,
+        0
+      ],
+      "scale": 0.96,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_rubble_hero_debris_rubble_30",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        14.67,
+        0.0,
+        177.9
+      ],
+      "rotEuler": [
+        0,
+        232.5,
+        0
+      ],
+      "scale": 1.13,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_rubble_bone_fragments_7_31",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -28.77,
+        0.0,
+        221.38
+      ],
+      "rotEuler": [
+        0,
+        228.7,
+        0
+      ],
+      "scale": 1.07,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_rubble_bone_fragments_7_32",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        26.64,
+        0.0,
+        201.9
+      ],
+      "rotEuler": [
+        0,
+        55.5,
+        0
+      ],
+      "scale": 1.1,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_rubble_hero_debris_rubble_33",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -18.03,
+        0.0,
+        182.6
+      ],
+      "rotEuler": [
+        0,
+        314.4,
+        0
+      ],
+      "scale": 0.98,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_rubble_hero_debris_rubble_34",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -23.68,
+        0.0,
+        226.3
+      ],
+      "rotEuler": [
+        0,
+        30.0,
+        0
+      ],
+      "scale": 1.08,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_rubble_bone_fragments_7_35",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -26.81,
+        0.0,
+        215.26
+      ],
+      "rotEuler": [
+        0,
+        117.6,
+        0
+      ],
+      "scale": 1.01,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_rubble_hero_debris_rubble_36",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -1.96,
+        0.0,
+        239.04
+      ],
+      "rotEuler": [
+        0,
+        55.8,
+        0
+      ],
+      "scale": 0.87,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_rubble_hero_debris_rubble_37",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -29.43,
+        0.0,
+        205.6
+      ],
+      "rotEuler": [
+        0,
+        292.6,
+        0
+      ],
+      "scale": 0.85,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_rubble_bone_fragments_7_38",
+      "group": "Z5Ring1",
+      "library": "props",
+      "asset": "bone_fragments_7",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        5.75,
+        0.0,
+        242.57
+      ],
+      "rotEuler": [
+        0,
+        320.6,
+        0
+      ],
+      "scale": 1.12,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_boulder_rock_boulder_B_39",
+      "group": "Z5Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.94,
+        0.0,
+        233.32
+      ],
+      "rotEuler": [
+        0,
+        330.3,
+        0
+      ],
+      "scale": 1.12,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_boulder_rock_boulder_A_40",
+      "group": "Z5Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -27.7,
+        0.0,
+        210.42
+      ],
+      "rotEuler": [
+        0,
+        15.2,
+        0
+      ],
+      "scale": 0.94,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_boulder_rock_boulder_E_41",
+      "group": "Z5Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -18.77,
+        0.0,
+        203.46
+      ],
+      "rotEuler": [
+        0,
+        222.4,
+        0
+      ],
+      "scale": 1.29,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_boulder_rock_boulder_D_42",
+      "group": "Z5Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        12.41,
+        0.0,
+        226.21
+      ],
+      "rotEuler": [
+        0,
+        99.3,
+        0
+      ],
+      "scale": 1.58,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_boulder_rock_boulder_E_43",
+      "group": "Z5Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        4.59,
+        0.0,
+        232.84
+      ],
+      "rotEuler": [
+        0,
+        278.5,
+        0
+      ],
+      "scale": 0.94,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_boulder_rock_boulder_B_44",
+      "group": "Z5Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -16.06,
+        0.0,
+        187.21
+      ],
+      "rotEuler": [
+        0,
+        67.5,
+        0
+      ],
+      "scale": 1.62,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_boulder_rock_boulder_E_45",
+      "group": "Z5Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        10.03,
+        0.0,
+        181.18
+      ],
+      "rotEuler": [
+        0,
+        37.6,
+        0
+      ],
+      "scale": 1.34,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_boulder_rock_boulder_C_46",
+      "group": "Z5Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_C",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        8.75,
+        0.0,
+        225.65
+      ],
+      "rotEuler": [
+        0,
+        24.4,
+        0
+      ],
+      "scale": 1.49,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_boulder_rock_boulder_E_47",
+      "group": "Z5Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        2.43,
+        0.0,
+        241.44
+      ],
+      "rotEuler": [
+        0,
+        314.5,
+        0
+      ],
+      "scale": 1.51,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    },
+    {
+      "id": "z5d_boulder_rock_boulder_D_48",
+      "group": "Z5Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -5.23,
+        0.0,
+        229.02
+      ],
+      "rotEuler": [
+        0,
+        303.4,
+        0
+      ],
+      "scale": 1.51,
+      "shadowsOff": false,
+      "tags": [
+        "ring",
+        "zone5",
+        "density"
+      ]
+    }
+  ],
+  "scatter": []
+}

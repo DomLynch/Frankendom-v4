@@ -194,6 +194,48 @@
           "armWeight": 1,
           "categories": [],
           "debugEvery": 30
+        },
+        {
+          "name": "Humbaba",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            0,
+            0
+          ],
+          "armTilt": [
+            0,
+            0
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [],
+          "debugEvery": 30
+        },
+        {
+          "name": "Erlking",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            0,
+            0
+          ],
+          "armTilt": [
+            0,
+            0
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [],
+          "debugEvery": 30
         }
     ]
 }

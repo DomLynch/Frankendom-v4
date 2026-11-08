@@ -1,0 +1,47 @@
+{
+  "_about": "ZONE7 vendor rows (pool-laneZONE7, ships enabled:false): consumed by laneVENDORS (bodies) and laneMARKET2CODE (per-npc zone field, second stall). Spots live in zones.json zone z7_market2. No reader exists today; nothing reads this file.",
+  "enabled": false,
+  "zone": "z7_market2",
+  "npcs": [
+    {
+      "id": "npc_vendor_1",
+      "role": "armourer",
+      "title": "Armourer",
+      "spot": "vendor_1",
+      "yaw": 90,
+      "stall": "stall_a (counters z7_counter_a_*, wagon A behind)",
+      "sells": "best chest/arm/leg tier (content: Dom)",
+      "body": "PENDING laneVENDORS"
+    },
+    {
+      "id": "npc_vendor_2",
+      "role": "weaponsmith",
+      "title": "Weaponsmith",
+      "spot": "vendor_2",
+      "yaw": 270,
+      "stall": "stall_b (counters z7_counter_b_*, wagon B behind)",
+      "sells": "best weapons/shields (content: Dom)",
+      "body": "PENDING laneVENDORS"
+    },
+    {
+      "id": "npc_vendor_3",
+      "role": "curio",
+      "title": "Curios",
+      "spot": "vendor_3",
+      "yaw": 90,
+      "stall": "none (stands at the west tent door like camp 1 npc_traveller)",
+      "sells": "helmet / trinkets (content: Dom)",
+      "body": "PENDING laneVENDORS"
+    },
+    {
+      "id": "npc_keeper_z7",
+      "role": "hearth_keeper",
+      "title": "Keeper",
+      "spot": "npc_keeper",
+      "yaw": 180,
+      "stall": "none",
+      "sells": "-",
+      "body": "PENDING laneVENDORS (camp 1 keeper stays Akai)"
+    }
+  ]
+}

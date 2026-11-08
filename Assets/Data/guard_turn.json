@@ -21,6 +21,8 @@
     { "id": "Pitborn", "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0 },
     { "id": "Joan",    "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0 },
     { "id": "Sobek", "enabled": false, "turnDeg": 0.0, "bakedDeg": 0.0 },
-    {"id": "Grendel", "enabled": false, "turnDeg": 0.0, "bakedDeg": 0.0}
+    {"id": "Grendel", "enabled": false, "turnDeg": 0.0, "bakedDeg": 0.0},
+    {"id": "Humbaba", "enabled": false, "turnDeg": 0.0, "bakedDeg": 0.0},
+    {"id": "Erlking", "enabled": false, "turnDeg": 0.0, "bakedDeg": 0.0}
   ]
 }

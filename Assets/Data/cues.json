@@ -26,6 +26,14 @@
   {
    "character": "Grendel",
    "weapon": "dual_blades"
+  },
+  {
+    "character": "Humbaba",
+    "weapon": "claws"
+  },
+  {
+    "character": "Erlking",
+    "weapon": "erlking_axe"
   }
  ],
  "surfaces": [
@@ -52,6 +60,14 @@
   {
    "character": "Grendel",
    "surface": "flesh"
+  },
+  {
+    "character": "Humbaba",
+    "surface": "flesh"
+  },
+  {
+    "character": "Erlking",
+    "surface": "flesh"
   }
  ],
  "voicePitch": [
@@ -78,6 +94,14 @@
   {
    "character": "Grendel",
    "rate": 0.6
+  },
+  {
+    "character": "Humbaba",
+    "rate": 0.5
+  },
+  {
+    "character": "Erlking",
+    "rate": 0.42
   }
  ],
  "rows": [
@@ -1508,6 +1532,266 @@
      "chance": 1.0
     }
    ]
+  },
+  {
+    "evt": "attack_start",
+    "layer": "voice",
+    "weapon": "*",
+    "surface": "*",
+    "weight": "heavy",
+    "attacker": "Humbaba",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER5 (Humbaba): cloned from the Sobek voice row",
+    "play": [
+      {
+        "cue": "effort_voice",
+        "gain": 0.3,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "attacker",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "attack_start",
+    "layer": "voice",
+    "weapon": "*",
+    "surface": "*",
+    "weight": "heavy",
+    "attacker": "Erlking",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER6 (Erlking): cloned from the Sobek voice row",
+    "play": [
+      {
+        "cue": "effort_voice",
+        "gain": 0.3,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "attacker",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "hit",
+    "layer": "impact",
+    "weapon": "erlking_axe",
+    "surface": "flesh",
+    "weight": "light",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER6 (Erlking): heavy steel-and-bone on flesh / armour for the great-axe (clone of the maul row)",
+    "play": [
+      {
+        "cue": "hit_heavy",
+        "gain": 0.3,
+        "delay": 0,
+        "rate": 0.9,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "bone_crack",
+        "gain": 0.12,
+        "delay": 0.02,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "hit",
+    "layer": "impact",
+    "weapon": "erlking_axe",
+    "surface": "flesh",
+    "weight": "heavy",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER6 (Erlking): heavy steel-and-bone on flesh / armour for the great-axe (clone of the maul row)",
+    "play": [
+      {
+        "cue": "hit_heavy",
+        "gain": 0.36,
+        "delay": 0,
+        "rate": 0.85,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "bone_crack",
+        "gain": 0.22,
+        "delay": 0.02,
+        "rate": 0.95,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "block",
+    "layer": "impact",
+    "weapon": "erlking_axe",
+    "surface": "*",
+    "weight": "*",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER6 (Erlking): heavy steel-and-bone on flesh / armour for the great-axe (clone of the maul row)",
+    "play": [
+      {
+        "cue": "block",
+        "gain": 1.0,
+        "delay": 0,
+        "rate": 0.8,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "guard_break",
+    "layer": "impact",
+    "weapon": "erlking_axe",
+    "surface": "*",
+    "weight": "*",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER6 (Erlking): heavy steel-and-bone on flesh / armour for the great-axe (clone of the maul row)",
+    "play": [
+      {
+        "cue": "guard_break",
+        "gain": 1.0,
+        "delay": 0,
+        "rate": 0.85,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "hit_heavy",
+        "gain": 0.4,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "attack_start",
+    "layer": "impact",
+    "weapon": "erlking_axe",
+    "surface": "*",
+    "weight": "heavy",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER6 (Erlking): heavy steel-and-bone on flesh / armour for the great-axe (clone of the maul row)",
+    "play": [
+      {
+        "cue": "whoosh_heavy",
+        "gain": 0.2,
+        "delay": 0,
+        "rate": 0.8,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "attack_start",
+    "layer": "impact",
+    "weapon": "erlking_axe",
+    "surface": "*",
+    "weight": "light",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER6 (Erlking): heavy steel-and-bone on flesh / armour for the great-axe (clone of the maul row)",
+    "play": [
+      {
+        "cue": "whoosh_heavy",
+        "gain": 0.14,
+        "delay": 0,
+        "rate": 0.9,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "kill",
+    "layer": "impact",
+    "weapon": "erlking_axe",
+    "surface": "*",
+    "weight": "*",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER6 (Erlking): heavy steel-and-bone on flesh / armour for the great-axe (clone of the maul row)",
+    "play": [
+      {
+        "cue": "bone_crack",
+        "gain": 0.5,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "flesh_tear",
+        "gain": 0.3,
+        "delay": 0.04,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
+  },
+  {
+    "evt": "hit",
+    "layer": "impact",
+    "weapon": "erlking_axe",
+    "surface": "armour",
+    "weight": "*",
+    "attacker": "*",
+    "defender": "*",
+    "moves": [],
+    "disabled": false,
+    "note": "laneMONSTER6 (Erlking): heavy steel-and-bone on flesh / armour for the great-axe (clone of the maul row)",
+    "play": [
+      {
+        "cue": "block",
+        "gain": 0.5,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      },
+      {
+        "cue": "hit_heavy",
+        "gain": 0.3,
+        "delay": 0.0,
+        "rate": 1.0,
+        "who": "",
+        "chance": 1.0
+      }
+    ]
   }
  ]
 }

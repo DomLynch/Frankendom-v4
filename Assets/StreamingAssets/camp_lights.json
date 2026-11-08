@@ -27,6 +27,98 @@
         "lacunarity": 2.0,
         "gain": 0.5
       }
+    },
+    {
+      "name": "Z7Lantern_A",
+      "pos": [
+        -2.4,
+        1.9,
+        339.3
+      ],
+      "kelvin": 2200.0,
+      "candela": 3500.0,
+      "range": 5.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 16.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "Z7Lantern_B",
+      "pos": [
+        2.4,
+        1.9,
+        346.4
+      ],
+      "kelvin": 2200.0,
+      "candela": 3500.0,
+      "range": 5.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 16.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "Z7Lantern_C",
+      "pos": [
+        -2.2,
+        1.9,
+        351.3
+      ],
+      "kelvin": 2200.0,
+      "candela": 3500.0,
+      "range": 5.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 16.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "Z7GateSeam",
+      "pos": [
+        0.0,
+        1.2,
+        364.9
+      ],
+      "kelvin": 1800.0,
+      "candela": 450.0,
+      "range": 6.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 22.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
     }
   ]
 }

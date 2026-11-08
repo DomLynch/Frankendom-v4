@@ -263,6 +263,28 @@
         },
         {
           "killer": "Joan",
+          "victim": "Humbaba",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "INT106 from HUMBABAFIN STAGE0: neck 2.4-2.8 m is above Joan's reach; needs the kneel stagger_loop (STAGE1). Delete this row when the kneel clip + probe exist."
+        },
+        {
+          "killer": "Joan",
+          "victim": "Erlking",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "INT106 from ERLKINGFIN STAGE0: neck 2.4-2.8 m is above Joan's reach; needs the kneel stagger_loop (STAGE1). Delete this row when the kneel clip + probe exist."
+        },
+        {
+          "killer": "Joan",
           "victim": "*",
           "requireDeathblow": true,
           "pairOffset": [
@@ -581,6 +603,28 @@
         },
         {
           "killer": "Joan",
+          "victim": "Humbaba",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "INT106 from HUMBABAFIN STAGE0: crown above Joan's chop tip; needs the kneel clip (STAGE1)."
+        },
+        {
+          "killer": "Joan",
+          "victim": "Erlking",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "INT106 from ERLKINGFIN STAGE0: crown above Joan's chop tip; needs the kneel clip (STAGE1)."
+        },
+        {
+          "killer": "Joan",
           "victim": "*",
           "requireDeathblow": true,
           "pairOffset": [
@@ -653,7 +697,9 @@
           "note": "SOBEKCLAWS: two-handed overhead maul chop: needs a long weapon, not for claws."
         },
           {"killer": "Pitborn", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "PITCLAWS: two-handed weapon finisher, not for Pitborn claws."},
-          {"killer": "Grendel", "victim": "*", "weapon": "dual_blades", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "GRENDELCLAWS: two-handed overhead maul chop: needs a long weapon, not for claws."}
+          {"killer": "Grendel", "victim": "*", "weapon": "dual_blades", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "GRENDELCLAWS: two-handed overhead maul chop: needs a long weapon, not for claws."},
+          {"killer": "Humbaba", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "HUMBABACLAWS: two-handed overhead maul chop: needs a long weapon, not for claws."},
+          {"killer": "Erlking", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "ERLKINGCLAWS: two-handed overhead maul chop: needs a long weapon, not for claws."}
       ],
       "enabled": true,
       "placeholder": false,
@@ -1211,7 +1257,9 @@
           "note": "SOBEKCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."
         },
           {"killer": "Pitborn", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "PITCLAWS: two-handed weapon finisher, not for Pitborn claws."},
-          {"killer": "Grendel", "victim": "*", "weapon": "dual_blades", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "GRENDELCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."}
+          {"killer": "Grendel", "victim": "*", "weapon": "dual_blades", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "GRENDELCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."},
+          {"killer": "Humbaba", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "HUMBABACLAWS: two-handed greatsword finisher, not for claws (entry is off today)."},
+          {"killer": "Erlking", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "ERLKINGCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."}
       ],
       "enabled": false,
       "placeholder": false,
@@ -1463,7 +1511,9 @@
           "note": "SOBEKCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."
         },
           {"killer": "Pitborn", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "PITCLAWS: two-handed weapon finisher, not for Pitborn claws."},
-          {"killer": "Grendel", "victim": "*", "weapon": "dual_blades", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "GRENDELCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."}
+          {"killer": "Grendel", "victim": "*", "weapon": "dual_blades", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "GRENDELCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."},
+          {"killer": "Humbaba", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "HUMBABACLAWS: two-handed greatsword finisher, not for claws (entry is off today)."},
+          {"killer": "Erlking", "victim": "*", "weapon": "claws", "unavailable": true, "contactAt": -1, "distance": -1, "bladeReach": -1, "killerYawDeg": -999, "victimYawDeg": -999, "note": "ERLKINGCLAWS: two-handed greatsword finisher, not for claws (entry is off today)."}
       ],
       "enabled": false,
       "placeholder": false,
@@ -1655,6 +1705,30 @@
           "killerYawDeg": -999,
           "victimYawDeg": -999,
           "note": "GRENDELCLAWS: Grendel with claws as killer: ON (the trident row above stays for the trident). The claw goes through the chest: BladeAim uses entries[].bladeAim.claw (hand -> claw tip), pair distance = rt.killers Grendel weapon claws pairScale. UNPROVEN: -finisherauto suggest line."
+        },
+        {
+          "killer": "Humbaba",
+          "victim": "*",
+          "weapon": "claws",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "HUMBABACLAWS: Humbaba with claws as killer: ON (the trident row above stays for the trident). The claw goes through the chest: BladeAim uses entries[].bladeAim.claw (hand -> claw tip), pair distance = rt.killers Humbaba weapon claws pairScale. UNPROVEN: -finisherauto suggest line."
+        },
+        {
+          "killer": "Erlking",
+          "victim": "*",
+          "weapon": "claws",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "ERLKINGCLAWS: Erlking with claws as killer: ON (the trident row above stays for the trident). The claw goes through the chest: BladeAim uses entries[].bladeAim.claw (hand -> claw tip), pair distance = rt.killers Erlking weapon claws pairScale. UNPROVEN: -finisherauto suggest line."
         }
       ],
       "enabled": true,
@@ -2909,6 +2983,30 @@
           0.0
         ],
         "note": "laneMONSTER3 (Grendel): hipsRestZ MEASURED = Hips height of the bound rig at rest (measure_scale.py: 1.4016 m)."
+      },
+      {
+        "name": "Humbaba",
+        "referenceState": "guard_idle",
+        "hipsRestZ": 1.4212,
+        "hipsCorrection": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "note": "laneMONSTER5 (Humbaba): hipsRestZ MEASURED = Hips height of the bound rig at rest (1.4212 m)."
+      },
+      {
+        "name": "Erlking",
+        "referenceState": "guard_idle",
+        "hipsRestZ": 1.8782,
+        "hipsCorrection": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "note": "laneMONSTER6 (Erlking): hipsRestZ MEASURED = Hips height of the bound rig at rest (1.8782 m)."
       }
     ],
     "clips": [
@@ -3192,6 +3290,16 @@
           "fighter": "Grendel",
           "footM": 0.222,
           "toeEndM": 0.023
+        },
+        {
+          "fighter": "Humbaba",
+          "footM": 0.355,
+          "toeEndM": 0.033
+        },
+        {
+          "fighter": "Erlking",
+          "footM": 0.4355,
+          "toeEndM": 0.027
         }
       ],
       "bodyClamp": true,
@@ -3515,6 +3623,40 @@
         "scaleFloor": 0.5,
         "refreshS": 0.25,
         "note": "laneMONSTER3 (Grendel): measured: 2.70 m tall, shoulder plates 0.74 m half width."
+      },
+      {
+        "character": "Humbaba",
+        "centerYM": 1.56,
+        "sizeM": [
+          1.8,
+          3.12,
+          1.8
+        ],
+        "maxSizeM": [
+          4.5,
+          3.8,
+          4.5
+        ],
+        "scaleFloor": 0.5,
+        "refreshS": 0.25,
+        "note": "laneMONSTER5 (Humbaba): measured: 3.12 m tall, crest 1.76 m wide, shoulders 0.71 m half width."
+      },
+      {
+        "character": "Erlking",
+        "centerYM": 2.03,
+        "sizeM": [
+          2.4,
+          4.06,
+          2.4
+        ],
+        "maxSizeM": [
+          6.0,
+          5.0,
+          6.0
+        ],
+        "scaleFloor": 0.5,
+        "refreshS": 0.25,
+        "note": "laneMONSTER6 (Erlking): measured: 4.06 m tall to the antler tips (bbox min y 0.00002, clean: no vertex under the hooves), shoulders 0.9 m half width."
       }
     ]
   },

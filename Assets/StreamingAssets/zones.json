@@ -37,7 +37,10 @@
       "arrive": [
         { "zone": "pit_yard", "spot": "arrive_start" },
         { "zone": "sobek_reach", "spot": "arrive_from_pit" },
-        { "zone": "hub_camp", "spot": "arrive_from_prev" }
+        { "zone": "hub_camp", "spot": "arrive_from_prev" },
+        { "zone": "z5_humbaba", "spot": "arrive_from_prev" },
+        { "zone": "z6_erlking", "spot": "arrive_from_prev" },
+        { "zone": "z7_market2", "spot": "arrive_from_prev" }
       ],
       "hpFrac": 1.0,
       "coverS": 0.5,
@@ -100,6 +103,20 @@
       "scene": "HadesSlice_Grendel",
       "path": "Creatures/Grendel",
       "_about": "laneMONSTER3 (Grendel): Resources/Creatures/Grendel.prefab, made by Hades > Zones > Save creature prefabs (MonsterBatch / ZoneCreaturePrefab.SaveAll) from his enemy scene."
+    },
+    {
+      "id": "Humbaba",
+      "source": "resources",
+      "scene": "HadesSlice_Humbaba",
+      "path": "Creatures/Humbaba",
+      "_about": "laneMONSTER5 (Humbaba): Resources/Creatures/Humbaba.prefab, made by Hades > Zones > Save creature prefabs from his enemy scene. The zone row, arena (about 30 m) and spawn picks are laneZONE5's: they reference creature 'Humbaba' and ladder row 'humbaba' (ladder row is inLadder false)."
+    },
+    {
+      "id": "Erlking",
+      "source": "resources",
+      "scene": "HadesSlice_Erlking",
+      "path": "Creatures/Erlking",
+      "_about": "laneMONSTER6 (Erlking): Resources/Creatures/Erlking.prefab, made by Hades > Zones > Save creature prefabs from his enemy scene. The zone row (z6_erlking), arena and spawn picks are laneZONE6's: they reference creature 'Erlking' and ladder row 'erlking' (ladder row is inLadder false)."
     }
   ],
   "zones": [
@@ -483,7 +500,7 @@
       "mode": "inplace",
       "sceneRoots": [],
       "limits": {
-        "zMax": 130.0
+        "zMax": 167.0
       },
       "spots": [
         {
@@ -512,6 +529,24 @@
           ],
           "yaw": 180,
           "note": "laneMONSTER3 (Grendel): the way back to the camp = the zone entry; walked."
+        },
+        {
+          "id": "arrive_from_next",
+          "pos": [
+            0.0,
+            162.0
+          ],
+          "yaw": 180,
+          "note": "ZONE4 gate: just inside the far gate, facing back (arrival from zone 5)"
+        },
+        {
+          "id": "gate_next",
+          "pos": [
+            0.0,
+            166.0
+          ],
+          "yaw": 0,
+          "note": "ZONE4 gate: the far gate to zone 5 through the open gable, shut until z4_grendel dies (local z 58)"
         }
       ],
       "spawns": [
@@ -546,6 +581,385 @@
           "unlockKilledSpawn": "",
           "sticky": true,
           "visual": "none"
+        },
+        {
+          "id": "gate_grendel_to_z5",
+          "spot": "gate_next",
+          "radius": 2.0,
+          "toZone": "z5_humbaba",
+          "toSpot": "arrive_from_prev",
+          "unlockKilledSpawn": "z4_grendel",
+          "sticky": true,
+          "visual": "none"
+        }
+      ]
+    },
+    {
+      "id": "z5_humbaba",
+      "name": "The Petrified Wood",
+      "safe": false,
+      "start": false,
+      "scene": "",
+      "mode": "inplace",
+      "sceneRoots": [],
+      "limits": {
+        "zMax": 234.0
+      },
+      "spots": [
+        {
+          "id": "arrive_from_prev",
+          "pos": [
+            0.0,
+            185.0
+          ],
+          "yaw": 0,
+          "note": "ZONE5 v1: resume spot, 8 m inside the entry gate. Crossing is by walking (ZoneSpan), no teleport."
+        },
+        {
+          "id": "gate_prev",
+          "pos": [
+            0.0,
+            177.0
+          ],
+          "yaw": 180,
+          "note": "ZONE5 v1: the way back = the zone 4 door walk (entry gate, local z 0)"
+        },
+        {
+          "id": "boss_stand",
+          "pos": [
+            0.0,
+            211.0
+          ],
+          "yaw": 180,
+          "note": "ZONE5 v1: the boss stands 2 m north of the clearing centre facing the path; PLACEHOLDER until measured in the built zone"
+        },
+        {
+          "id": "arrive_from_next",
+          "pos": [
+            0.0,
+            229.0
+          ],
+          "yaw": 180,
+          "note": "ZONE5 v1: just inside the exit gate, facing back (arrival from the next zone)"
+        },
+        {
+          "id": "gate_next",
+          "pos": [
+            0.0,
+            233.0
+          ],
+          "yaw": 0,
+          "note": "ZONE5 v1: exit gate to the next zone"
+        }
+      ],
+      "spawns": [
+        {
+          "id": "z5_humbaba",
+          "enabled": false,
+          "spot": "boss_stand",
+          "picks": [
+            {
+              "creature": "Humbaba",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "humbaba",
+          "respawnMinS": 420,
+          "respawnMaxS": 600,
+          "aggro": 9.0,
+          "leash": 30.0,
+          "hpMul": 1.0,
+          "damageMul": 1.0,
+          "difficulty": 13,
+          "needs": "Resources/Creatures/Humbaba.prefab + a roster / opponents ladder row (laneMONSTER5 / the Unity dev); the spawn is switched on with apply_zone5.py --on",
+          "note": "ZONE5 v1 DRAFT numbers (creature id, ladderRow, difficulty 13) are laneMONSTER5 / Strategy decisions. aggro 9 starts the fight at the clearing edge; leash 30 covers the 30 m circle plus the path. Skipped at run time until Resources/Creatures/Humbaba exists."
+        }
+      ],
+      "services": [],
+      "gates": [
+        {
+          "id": "gate_z5_to_grendel",
+          "spot": "gate_prev",
+          "radius": 2.0,
+          "toZone": "grendel",
+          "toSpot": "arrive_from_next",
+          "unlockKilledSpawn": "",
+          "sticky": true,
+          "visual": "none"
+        },
+        {
+          "id": "gate_z5_to_z6",
+          "spot": "gate_next",
+          "radius": 2.0,
+          "toZone": "z6_erlking",
+          "toSpot": "arrive_from_prev",
+          "unlockKilledSpawn": "z5_humbaba",
+          "sticky": true,
+          "visual": "none"
+        }
+      ]
+    },
+    {
+      "id": "z6_erlking",
+      "name": "The Hunting Ground",
+      "safe": false,
+      "start": false,
+      "scene": "",
+      "mode": "inplace",
+      "sceneRoots": [],
+      "limits": {
+        "zMax": 305.0
+      },
+      "spots": [
+        {
+          "id": "arrive_from_prev",
+          "pos": [
+            0.0,
+            252.0
+          ],
+          "yaw": 0,
+          "note": "ZONE6: just past the zone 5 door, facing the ring"
+        },
+        {
+          "id": "gate_prev",
+          "pos": [
+            0.0,
+            244.0
+          ],
+          "yaw": 180,
+          "note": "ZONE6: the way back to zone 5 (walked)"
+        },
+        {
+          "id": "boss_stand",
+          "pos": [
+            0.0,
+            286.0
+          ],
+          "yaw": 180,
+          "note": "ZONE6: Erlking stands 4 m north of the ring centre, facing the entry (21.5 m from the south mouth)"
+        },
+        {
+          "id": "arrive_from_next",
+          "pos": [
+            0.0,
+            300.0
+          ],
+          "yaw": 180,
+          "note": "ZONE6: just inside the far gate, facing back"
+        },
+        {
+          "id": "gate_next",
+          "pos": [
+            0.0,
+            304.0
+          ],
+          "yaw": 0,
+          "note": "ZONE6: the far gate to zone 7, shut until z6_erlking dies"
+        }
+      ],
+      "spawns": [
+        {
+          "id": "z6_erlking",
+          "enabled": true,
+          "spot": "boss_stand",
+          "picks": [
+            {
+              "creature": "Erlking",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "erlking",
+          "respawnMinS": 1800,
+          "respawnMaxS": 2700,
+          "aggro": 16.0,
+          "leash": 30.0,
+          "hpMul": 1.0,
+          "damageMul": 1.0,
+          "difficulty": 12,
+          "needs": "laneMONSTER6 roster row + Resources/Creatures/Erlking.prefab; respawn 30 to 45 min is a Dom decision (final boss)"
+        }
+      ],
+      "services": [],
+      "gates": [
+        {
+          "id": "gate_z6_to_prev",
+          "spot": "gate_prev",
+          "radius": 2.0,
+          "toZone": "z5_humbaba",
+          "toSpot": "arrive_from_next",
+          "unlockKilledSpawn": "",
+          "sticky": true,
+          "visual": "none"
+        },
+        {
+          "id": "gate_z6_next",
+          "spot": "gate_next",
+          "radius": 2.0,
+          "toZone": "z7_market2",
+          "toSpot": "arrive_from_prev",
+          "unlockKilledSpawn": "z6_erlking",
+          "sticky": true,
+          "visual": "none"
+        }
+      ]
+    },
+    {
+      "id": "z7_market2",
+      "name": "The Caravan Camp",
+      "safe": true,
+      "start": false,
+      "scene": "",
+      "mode": "inplace",
+      "sceneRoots": [],
+      "limits": {
+        "zMax": 362.0
+      },
+      "spots": [
+        {
+          "id": "arrive_from_prev",
+          "pos": [
+            0.0,
+            323.0
+          ],
+          "yaw": 0,
+          "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
+        },
+        {
+          "id": "gate_prev",
+          "pos": [
+            0.0,
+            315.0
+          ],
+          "yaw": 180,
+          "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
+        },
+        {
+          "id": "hearth",
+          "pos": [
+            3.0,
+            330.5
+          ],
+          "yaw": 0,
+          "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
+        },
+        {
+          "id": "stall_1",
+          "pos": [
+            -3.45,
+            342.0
+          ],
+          "yaw": 90,
+          "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
+        },
+        {
+          "id": "npc_keeper",
+          "pos": [
+            3.0,
+            333.0
+          ],
+          "yaw": 180,
+          "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
+        },
+        {
+          "id": "vendor_1",
+          "pos": [
+            -3.6,
+            342.0
+          ],
+          "yaw": 90,
+          "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
+        },
+        {
+          "id": "vendor_2",
+          "pos": [
+            3.6,
+            349.0
+          ],
+          "yaw": 270,
+          "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
+        },
+        {
+          "id": "vendor_3",
+          "pos": [
+            -3.0,
+            352.1
+          ],
+          "yaw": 90,
+          "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
+        },
+        {
+          "id": "gate_alpha_end",
+          "pos": [
+            0.0,
+            361.2
+          ],
+          "yaw": 0,
+          "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
+        },
+        {
+          "id": "beyond_stand",
+          "pos": [
+            0.0,
+            362.0
+          ],
+          "yaw": 180,
+          "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
+        }
+      ],
+      "spawns": [
+        {
+          "id": "z7_beyond_warden",
+          "enabled": false,
+          "spot": "beyond_stand",
+          "picks": [],
+          "ladderRow": "",
+          "respawnMinS": 300,
+          "respawnMaxS": 600,
+          "aggro": 7.0,
+          "leash": 24.0,
+          "hpMul": 1.0,
+          "damageMul": 1.0,
+          "difficulty": 0,
+          "needs": "nothing in the alpha: this spawn is never enabled; the next chapter gives it a creature and a ladderRow",
+          "note": "never enabled in the alpha: it only exists so the great gate has an unlock spawn that is never killed (ZoneData.Validate needs the id to resolve). The next chapter turns it into the first real fight beyond the gate."
+        }
+      ],
+      "services": [
+        {
+          "id": "hearth_z7",
+          "kind": "hearth",
+          "spot": "hearth",
+          "enabled": true
+        },
+        {
+          "id": "market_z7",
+          "kind": "market",
+          "spot": "stall_1",
+          "enabled": false,
+          "needs": "second stall: code gap, see PLAN.md section 6"
+        }
+      ],
+      "gates": [
+        {
+          "id": "gate_z7_prev",
+          "spot": "gate_prev",
+          "radius": 2.0,
+          "toZone": "z6_erlking",
+          "toSpot": "arrive_from_next",
+          "unlockKilledSpawn": "",
+          "sticky": true,
+          "visual": "none"
+        },
+        {
+          "id": "gate_z7_alpha_end",
+          "spot": "gate_alpha_end",
+          "radius": 2.0,
+          "toZone": "z7_market2",
+          "toSpot": "arrive_from_prev",
+          "unlockKilledSpawn": "z7_beyond_warden",
+          "sticky": true,
+          "visual": "none",
+          "note": "LOCKED FOR THE ALPHA: GateOpen() = ZoneSave.GateUnlocked(id), set only when z7_beyond_warden is killed; that spawn is disabled, so the gate never opens. Data only, no code."
         }
       ]
     }

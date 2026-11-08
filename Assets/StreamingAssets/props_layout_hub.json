@@ -670,33 +670,6 @@
       ]
     },
     {
-      "id": "z3_boulder_12_E",
-      "group": "HubRing1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -7.9631,
-        -0.35,
-        105.4125
-      ],
-      "rotEuler": [
-        0,
-        359.7466,
-        0
-      ],
-      "scale": 1.6984,
-      "sinkFraction": 0.3848,
-      "shadowsOff": true,
-      "tags": [
-        "boulder",
-        "seed31",
-        "zone3"
-      ]
-    },
-    {
       "id": "z3_boulder_13_C",
       "group": "HubRing0",
       "library": "rocks",
@@ -1047,34 +1020,6 @@
         "zone3"
       ],
       "rationale": "Planted banner pole (3 m, cairn base) right of the doorway, in front of the gate face (z 27); heavy mesh (54k) so hero_heavy LOD. Unity-space suggestion, NOT checked against terrain."
-    },
-    {
-      "id": "z3_hero_skull_pile_a",
-      "group": "HubRing1",
-      "library": "props",
-      "asset": "hero_skull_pile_a",
-      "lodProfile": "hero_heavy",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -7.6,
-        0.0,
-        99.9
-      ],
-      "rotEuler": [
-        0,
-        20.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "hero",
-        "skull",
-        "platform",
-        "zone3"
-      ],
-      "rationale": "Largest pile (3.3 m) at the rear-left corner of the platform, against the gate base. Strategy approved shape; GLB recolour pending, path unchanged. 2.7 m from fallen_pillar_3_0. Unity-space suggestion, NOT checked against terrain."
     },
     {
       "id": "z3_worldnear_hero_boulder_B_lite_0",
@@ -1550,33 +1495,6 @@
       ]
     },
     {
-      "id": "z3_worldnear_rock_boulder_D_1",
-      "group": "HubRing1",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -9.07,
-        -0.45,
-        107.02
-      ],
-      "rotEuler": [
-        0,
-        147.6,
-        0
-      ],
-      "scale": 0.394,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "near",
-        "rubble",
-        "zone3"
-      ]
-    },
-    {
       "id": "z3_worldnear_rock_boulder_E_1",
       "group": "HubRing1",
       "library": "rocks",
@@ -1703,33 +1621,6 @@
         0
       ],
       "scale": 0.49,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "near",
-        "rubble",
-        "zone3"
-      ]
-    },
-    {
-      "id": "z3_worldnear_rock_boulder_E_3",
-      "group": "HubRing1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -10.47,
-        -0.62,
-        108.46
-      ],
-      "rotEuler": [
-        0,
-        104.4,
-        0
-      ],
-      "scale": 0.21,
       "shadowsOff": false,
       "tags": [
         "world",
@@ -2000,33 +1891,6 @@
         0
       ],
       "scale": 0.247,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "near",
-        "rubble",
-        "zone3"
-      ]
-    },
-    {
-      "id": "z3_worldnear_rock_boulder_C_7",
-      "group": "HubRing1",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        7.99,
-        -1.12,
-        110.67
-      ],
-      "rotEuler": [
-        0,
-        52.3,
-        0
-      ],
-      "scale": 0.264,
       "shadowsOff": false,
       "tags": [
         "world",
@@ -2657,33 +2521,6 @@
       ]
     },
     {
-      "id": "z3_worldnear_rock_boulder_C_17",
-      "group": "HubRing1",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -13.22,
-        -0.93,
-        107.15
-      ],
-      "rotEuler": [
-        0,
-        162.7,
-        0
-      ],
-      "scale": 0.675,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "near",
-        "rubble",
-        "zone3"
-      ]
-    },
-    {
       "id": "z3_worldnear_rock_boulder_E_17",
       "group": "HubRing1",
       "library": "rocks",
@@ -3170,33 +3007,6 @@
       ]
     },
     {
-      "id": "z3_worldnear_rock_boulder_E_22",
-      "group": "HubRing1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -12.44,
-        -0.87,
-        108.98
-      ],
-      "rotEuler": [
-        0,
-        237.0,
-        0
-      ],
-      "scale": 0.336,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "near",
-        "rubble",
-        "zone3"
-      ]
-    },
-    {
       "id": "z3_worldnear_rock_boulder_C_23",
       "group": "HubRing0",
       "library": "rocks",
@@ -3494,33 +3304,6 @@
       ]
     },
     {
-      "id": "z3_worldedge_rock_boulder_A_71",
-      "group": "HubRing1",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "near_hq",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        10.33,
-        -0.4,
-        99.93
-      ],
-      "rotEuler": [
-        0,
-        98.5,
-        0
-      ],
-      "scale": 0.368,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "edge",
-        "rubble",
-        "zone3"
-      ]
-    },
-    {
       "id": "z3_worldedge_mid_slab_heap_a_16",
       "group": "HubRing0",
       "library": "world_mid",
@@ -3705,58 +3488,6 @@
       ]
     },
     {
-      "id": "z3_worldedge_fallen_pillar_3_21",
-      "group": "HubRing1",
-      "library": "props",
-      "asset": "fallen_pillar_3",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -11.58,
-        -0.71,
-        99.9
-      ],
-      "rotEuler": [
-        0,
-        138.1,
-        0
-      ],
-      "scale": 0.946,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "edge",
-        "zone3"
-      ]
-    },
-    {
-      "id": "z3_worldedge_mid_slab_heap_a_18",
-      "group": "HubRing1",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_a",
-      "lodProfile": "mid_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        9.64,
-        -0.55,
-        100.38
-      ],
-      "rotEuler": [
-        0,
-        300.3,
-        0
-      ],
-      "scale": 0.317,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "edge",
-        "zone3"
-      ]
-    },
-    {
       "id": "z3_worldedge_hero_debris_rubble_22",
       "group": "HubRing1",
       "library": "props",
@@ -3828,32 +3559,6 @@
         0
       ],
       "scale": 0.39,
-      "shadowsOff": false,
-      "tags": [
-        "world",
-        "edge",
-        "zone3"
-      ]
-    },
-    {
-      "id": "z3_worldedge_hero_debris_rubble_23",
-      "group": "HubRing1",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -10.07,
-        -0.46,
-        100.58
-      ],
-      "rotEuler": [
-        0,
-        114.4,
-        0
-      ],
-      "scale": 1.601,
       "shadowsOff": false,
       "tags": [
         "world",
