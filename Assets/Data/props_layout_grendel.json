@@ -8,6 +8,10 @@
   },
   "libraries": [
     {
+      "name": "hero4",
+      "pattern": "Assets/Env/Hero/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
       "name": "props",
       "pattern": "Assets/Env/Props/{asset}/{asset}_LOD{lod}.glb"
     },
@@ -136,6 +140,56 @@
     "Z4Ring2"
   ],
   "props": [
+    {
+      "id": "z4h_grendel_ruined_house",
+      "group": "Z4Ring2",
+      "library": "hero4",
+      "asset": "grendel_ruined_house",
+      "lodProfile": "hero_heavy",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        24.0,
+        -0.85,
+        150.0
+      ],
+      "rotEuler": [
+        0,
+        260.0,
+        0
+      ],
+      "scale": 7.148,
+      "shadowsOff": true,
+      "tags": [
+        "zone4",
+        "hero4"
+      ]
+    },
+    {
+      "id": "z4h_grendel_bone_tunnel",
+      "group": "Z4Ring2",
+      "library": "hero4",
+      "asset": "grendel_bone_tunnel",
+      "lodProfile": "hero_heavy",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -24.0,
+        -0.6,
+        151.0
+      ],
+      "rotEuler": [
+        0,
+        20.0,
+        0
+      ],
+      "scale": 7.142,
+      "shadowsOff": true,
+      "tags": [
+        "zone4",
+        "hero4"
+      ]
+    },
     {
       "id": "z4_arch_fragment_9a_0",
       "group": "Z4Ring2",

@@ -202,6 +202,20 @@
       "sellable": false,
       "sellOverride": 0,
       "_silver": true
+    },
+    {
+      "item": "mount_warhorse",
+      "buyValue": 400,
+      "sellable": false,
+      "sellOverride": 0,
+      "_silver": true
+    },
+    {
+      "item": "mount_skeletal_camel",
+      "buyValue": 550,
+      "sellable": false,
+      "sellOverride": 0,
+      "_silver": true
     }
   ],
   "rowsNote": "One row per sellable item id. buyValue = what the item would cost to buy (round(5 * (6 armor + 5 poise + 1 weight)) to 5, from gear.json; PLACEHOLDER balance). sellOverride > 0 pins the sell price. sellable false = the trader refuses it. An id with no row is not bought. Re-generate with gen_market.py.",
@@ -509,7 +523,9 @@
         "_about": "The camp rectangle in world x / z (zone_plan hub_camp: offset 72, boundaryLocal -4 -> z 68; limits.zMax 94). The stall and the no-fight rule work only inside it. Monsters are held outside by laneZONESPAN destSafe (followers stop 1.5 m before the door face z 63), not by this rectangle."
       },
       "items": [
-        "mount_horse"
+        "mount_horse",
+        "mount_warhorse",
+        "mount_skeletal_camel"
       ]
     },
     {
@@ -646,7 +662,9 @@
         "leavePad": 0.5
       },
       "items": [
-        "mount_horse"
+        "mount_horse",
+        "mount_warhorse",
+        "mount_skeletal_camel"
       ]
     },
     {

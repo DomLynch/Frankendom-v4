@@ -2093,6 +2093,80 @@
       },
       "glb": "",
       "resource": ""
+    },
+    {
+      "id": "mount_warhorse",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Demon Warhorse",
+      "slot": "mount",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "hades-env: Dom's Tripo fantasy war horse (80k-tri LOD, 4K textures as made). Owning this item unlocks the stronger mount (mount.json variants[], needs the MountRider variants hunk). Not wearable (slot mount, no wearer). Sold by the Stablemaster in both camps (market.json stalls hub_trade_c and z7_trade_c).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "mount_skeletal_camel",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Skeletal Camel",
+      "slot": "mount",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "hades-env: Dom's Tripo skeletal camel (80k-tri LOD, 4K textures as made; the file renders as a saddled skeletal CAMEL with a hump and long neck, as Dom said). Owning this item unlocks the third mount (mount.json variants[]). Not wearable. Sold by the Stablemaster in both camps.",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
     }
   ]
 }

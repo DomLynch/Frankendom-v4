@@ -8,6 +8,10 @@
   },
   "libraries": [
     {
+      "name": "hero2",
+      "pattern": "Assets/Env/Hero/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
       "name": "props",
       "pattern": "Assets/Env/Props/{asset}/{asset}_LOD{lod}.glb"
     },
@@ -136,6 +140,56 @@
     "Z2Ring2"
   ],
   "props": [
+    {
+      "id": "z2h_sobek_croc_idol",
+      "group": "Z2Ring0",
+      "library": "hero2",
+      "asset": "sobek_croc_idol",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.0,
+        -0.09,
+        41.0
+      ],
+      "rotEuler": [
+        0,
+        330.0,
+        0
+      ],
+      "scale": 3.459,
+      "shadowsOff": false,
+      "tags": [
+        "zone2",
+        "hero2"
+      ]
+    },
+    {
+      "id": "z2h_sobek_obelisk",
+      "group": "Z2Ring0",
+      "library": "hero2",
+      "asset": "sobek_obelisk",
+      "lodProfile": "boulders",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        14.5,
+        -1.08,
+        44.0
+      ],
+      "rotEuler": [
+        0,
+        25.0,
+        0
+      ],
+      "scale": 7.127,
+      "shadowsOff": false,
+      "tags": [
+        "zone2",
+        "hero2"
+      ]
+    },
     {
       "id": "z2_fallen_pillar_3_0",
       "group": "Z2Ring1",

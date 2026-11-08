@@ -1,0 +1,165 @@
+{
+  "_about": "ambient_horses.json (AmbientHorses.cs, staged DARK: enabled false until unity-dev proves it). Rects are world metres, outside boss arenas: zone 1 yard flank, camp 1 entrance and east edge, zone 4 east flank (arena rect x +-12 z 117..147), zone 5 east flank (arena disc centre (0,209) r 15), camp 2 east flank. Breed heights must match the baked glbs (heightM = glbHeightM for a baked-to-size glb).",
+  "enabled": false,
+  "debugLog": false,
+  "convertMaterials": true,
+  "shadows": false,
+  "holdWhileEngaged": true,
+  "pollSeconds": 0.5,
+  "spawnMarginM": 14.0,
+  "despawnMarginM": 22.0,
+  "avoidPlayerM": 4.0,
+  "minSpacingM": 3.0,
+  "groundRayUpM": 3.0,
+  "groundRayDownM": 10.0,
+  "sinkM": 0.03,
+  "fallbackY": 0.0,
+  "groundMask": -1,
+  "framesBetweenLoads": 2,
+  "maxTargetTries": 12,
+  "gait": {
+    "walkMps": 1.1,
+    "turnDegPerS": 90.0,
+    "pauseSMin": 3.0,
+    "pauseSMax": 9.0,
+    "arriveM": 0.4,
+    "cyclesPerM": 0.55,
+    "bobM": 0.02,
+    "pitchDeg": 1.5,
+    "rollDeg": 1.5,
+    "breathM": 0.004,
+    "breathCyclesPerS": 0.3,
+    "blendS": 0.15,
+    "alignFullDeg": 45.0
+  },
+  "breeds": [
+    {
+      "id": "plain",
+      "glb": "Mount/horse_lod.glb",
+      "heightM": 1.75,
+      "glbHeightM": 1.75
+    },
+    {
+      "id": "war",
+      "glb": "Mount/warhorse_lod.glb",
+      "heightM": 2.0,
+      "glbHeightM": 2.0
+    },
+    {
+      "id": "skeletal_camel",
+      "glb": "Mount/skeletal_camel_lod.glb",
+      "heightM": 1.0,
+      "glbHeightM": 1.0
+    }
+  ],
+  "herds": [
+    {
+      "id": "z1_yard_flank",
+      "zone": "pit_yard (zone 1)",
+      "area": {
+        "xMin": -22.0,
+        "xMax": -12.0,
+        "zMin": 26.0,
+        "zMax": 34.0
+      },
+      "breeds": [
+        "plain",
+        "plain"
+      ],
+      "count": 2,
+      "seed": 101,
+      "avoid": [],
+      "enabled": true
+    },
+    {
+      "id": "camp1_entrance",
+      "zone": "hub_camp (camp 1, zone 3)",
+      "area": {
+        "xMin": -5.0,
+        "xMax": 5.0,
+        "zMin": 73.5,
+        "zMax": 79.0
+      },
+      "breeds": [
+        "plain",
+        "war"
+      ],
+      "count": 2,
+      "seed": 303,
+      "avoid": [],
+      "enabled": true
+    },
+    {
+      "id": "camp1_east_edge",
+      "zone": "hub_camp (camp 1 edge)",
+      "area": {
+        "xMin": 14.0,
+        "xMax": 24.0,
+        "zMin": 68.0,
+        "zMax": 82.0
+      },
+      "breeds": [
+        "skeletal_camel"
+      ],
+      "count": 2,
+      "seed": 313,
+      "avoid": [],
+      "enabled": true
+    },
+    {
+      "id": "z4_east_flank",
+      "zone": "grendel (zone 4)",
+      "area": {
+        "xMin": 16.0,
+        "xMax": 26.0,
+        "zMin": 120.0,
+        "zMax": 142.0
+      },
+      "breeds": [
+        "skeletal_camel",
+        "skeletal_camel",
+        "skeletal_camel"
+      ],
+      "count": 3,
+      "seed": 404,
+      "avoid": [],
+      "enabled": true
+    },
+    {
+      "id": "z5_east_flank",
+      "zone": "z5_humbaba (zone 5)",
+      "area": {
+        "xMin": 17.0,
+        "xMax": 25.0,
+        "zMin": 206.0,
+        "zMax": 222.0
+      },
+      "breeds": [
+        "plain",
+        "war"
+      ],
+      "count": 2,
+      "seed": 505,
+      "avoid": [],
+      "enabled": true
+    },
+    {
+      "id": "camp2_east_flank",
+      "zone": "z7_market2 (camp 2)",
+      "area": {
+        "xMin": 14.0,
+        "xMax": 26.0,
+        "zMin": 326.0,
+        "zMax": 346.0
+      },
+      "breeds": [
+        "plain",
+        "war"
+      ],
+      "count": 2,
+      "seed": 707,
+      "avoid": [],
+      "enabled": true
+    }
+  ]
+}

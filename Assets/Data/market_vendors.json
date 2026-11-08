@@ -121,6 +121,18 @@
           "ready": true,
           "price": 50,
           "unlocks": "mount (mount.json requireOwned); needs MountRider.cs from this kit"
+        },
+        {
+          "item": "mount_warhorse",
+          "ready": true,
+          "price": 400,
+          "unlocks": "mount (mount.json requireOwned); needs MountRider.cs from this kit"
+        },
+        {
+          "item": "mount_skeletal_camel",
+          "ready": true,
+          "price": 550,
+          "unlocks": "mount (mount.json requireOwned); needs MountRider.cs from this kit"
         }
       ]
     }

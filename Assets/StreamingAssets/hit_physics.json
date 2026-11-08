@@ -4,7 +4,7 @@
     "enabled": true,
     "knockback": {
       "_about": "KNOCKBACK v1 (lane KNOCKBACK): SIM push of the victim root on a clean hit (feeds DuelFighter.SetKnock, so Stagger/Down slide it through the CharacterController: zone colliders stop it). enabled=false = nothing changes (decay stays 0.88). metres = classes[counter|heavy|light].dist x (move.knockback/refKnockbackMps) x attacker scale x (refMassKg/victimMassKg)^massExponent (clamped) x resist[victim character id] x poise knockMul, capped at maxM, cut to the room left (arena_limits rect, play area, stair width, wall sphere-cast, ground ray every probeStepM). resist: higher = pushed further, 0 = planted; '*' = default. massKg comes from hitPhysics.fighters. Shoves keep shove.json (skipShove).",
-      "enabled": false,
+      "enabled": true,
       "skipShove": true,
       "clampArena": true,
       "clampWalls": true,

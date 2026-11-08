@@ -5,6 +5,58 @@
   "summonAction": "mount",
   "summonKey": "M",
   "requireOwned": "mount_horse",
+  "variants": [
+    {
+      "horse": {
+        "id": "warhorse_demon",
+        "glb": "Mount/warhorse_lod.glb",
+        "heightM": 2.0,
+        "glbHeightM": 2.0,
+        "seatRaiseM": 0.82,
+        "seatBackM": 0.15,
+        "radiusM": 0.63,
+        "yawOffsetDeg": 0.0,
+        "convertMaterials": true,
+        "shadows": false
+      },
+      "speed": {
+        "walkMul": 1.8,
+        "runMul": 2.6
+      },
+      "stamina": {
+        "max": 140.0,
+        "gallopDrainPerS": 8.0,
+        "regenPerS": 18.0,
+        "minToGallop": 20.0
+      },
+      "item": "mount_warhorse"
+    },
+    {
+      "horse": {
+        "id": "skeletal_camel",
+        "glb": "Mount/skeletal_camel_lod.glb",
+        "heightM": 2.106,
+        "glbHeightM": 2.106,
+        "seatRaiseM": 0.866,
+        "seatBackM": 0.156,
+        "radiusM": 0.662,
+        "yawOffsetDeg": 0.0,
+        "convertMaterials": true,
+        "shadows": false
+      },
+      "speed": {
+        "walkMul": 1.9,
+        "runMul": 2.8
+      },
+      "stamina": {
+        "max": 180.0,
+        "gallopDrainPerS": 7.0,
+        "regenPerS": 20.0,
+        "minToGallop": 20.0
+      },
+      "item": "mount_skeletal_camel"
+    }
+  ],
   "horse": {
     "id": "warhorse_brown",
     "glb": "Mount/horse_lod.glb",

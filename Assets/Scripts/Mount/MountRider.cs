@@ -24,11 +24,13 @@ using UnityEngine;
 {
     public float walkCyclesPerM = 0.55f, gallopCyclesPerM = 0.28f, bobWalkM = 0.02f, bobGallopM = 0.06f, pitchWalkDeg = 1.5f, pitchGallopDeg = 5f, rollWalkDeg = 1.5f, rollGallopDeg = 1f, breathM = 0.004f, breathCyclesPerS = 0.3f, blendS = 0.12f, stillMps = 0.15f;
 }
+[Serializable] public class MtVariant { public string item = ""; public MtHorse horse = new MtHorse(); public MtSpeed speed = new MtSpeed(); public MtStamina stamina = new MtStamina(); }   // hades-env variants v1: a second horse = one row (owning item unlocks it)
 [Serializable] public class MountCfg
 {
     public bool enabled = false, debugLog = false, playAreaIsBoss = true; public string summonAction = "mount", summonKey = "H", requireOwned = ""; public float turnDegPerS = 200f;
     public MtHorse horse = new MtHorse(); public MtSpeed speed = new MtSpeed(); public MtStamina stamina = new MtStamina(); public MtSummon summon = new MtSummon(); public MtDismount dismount = new MtDismount();
     public MtZ[] noMountZ = new MtZ[0]; public MtCam camera = new MtCam(); public MtGait gait = new MtGait();
+    public MtVariant[] variants = new MtVariant[0];   // hades-env variants v1
 }
 
 public static class MountData
@@ -42,7 +44,7 @@ public static class MountData
         if (txt != null) { try { var k = JsonUtility.FromJson<MountCfg>(txt); if (k != null) c = k; } catch (Exception e) { Debug.LogWarning("[Mount] mount.json unreadable, mount off: " + e.Message); c = new MountCfg(); } }
         if (c.horse == null) c.horse = new MtHorse(); if (c.speed == null) c.speed = new MtSpeed(); if (c.stamina == null) c.stamina = new MtStamina(); if (c.summon == null) c.summon = new MtSummon();
         if (c.dismount == null) c.dismount = new MtDismount(); if (c.noMountZ == null) c.noMountZ = new MtZ[0]; if (c.camera == null) c.camera = new MtCam(); if (c.gait == null) c.gait = new MtGait();
-        if (c.requireOwned == null) c.requireOwned = ""; if (c.horse.glb == null) c.horse.glb = "";
+        if (c.requireOwned == null) c.requireOwned = ""; if (c.horse.glb == null) c.horse.glb = ""; if (c.variants == null) c.variants = new MtVariant[0];
         return c;
     }
     /// <summary>True when world z is inside a boss arena (mount.json noMountZ rows, or a play_areas.json row when playAreaIsBoss).</summary>
@@ -52,11 +54,15 @@ public static class MountData
         return k.playAreaIsBoss && PlayArea.Row(z) != null;
     }
     /// <summary>The ONE size key: mount.json horse.heightM over the height the glb was exported at (glbHeightM). 1 when they match. Read by MountRider and the static camp horse (HubNpcs).</summary>
-    public static float HorseScale() { var h = Get().horse; return h.heightM > 0f && h.glbHeightM > 0f ? h.heightM / h.glbHeightM : 1f; }
+    public static float HorseScale() { return HorseScale(Get().horse); }
+    public static float HorseScale(MtHorse h) { return h != null && h.heightM > 0f && h.glbHeightM > 0f ? h.heightM / h.glbHeightM : 1f; }   // hades-env variants v1
+    /// <summary>hades-env variants v1: the LAST variants[] row whose item the player owns (later rows are the better horse), or null = the plain horse.</summary>
+    public static MtVariant Variant() { var k = Get(); MtVariant v = null; foreach (var r in k.variants) if (r != null && !string.IsNullOrEmpty(r.item) && LootSave.Owns(r.item)) v = r; return v; }
     /// <summary>StreamingAssets/horse.glb path, or null when the file is missing.</summary>
-    public static string GlbFile()
+    public static string GlbFile() { return GlbFile(Get().horse); }
+    public static string GlbFile(MtHorse h)   // hades-env variants v1
     {
-        var g = Get().horse.glb; if (string.IsNullOrEmpty(g)) return null;
+        var g = h != null ? h.glb : null; if (string.IsNullOrEmpty(g)) return null;
         try { var p = System.IO.Path.Combine(Application.streamingAssetsPath, g); return System.IO.File.Exists(p) ? p : null; } catch (Exception) { return null; }
     }
 }
@@ -67,11 +73,12 @@ public sealed class MountRider : MonoBehaviour
     public static MountRider Inst; float nextBind;   // FIX2 v1: nextBind throttles the player search
     public static bool Mounted { get { return Inst != null && Inst.mounted; } }
     /// <summary>FIX2 v1: the ride's speed multiplier, read by DuelFighter.MoveTick (and ChaseAgent for the player) ON THE SIM TICK. walkSpeed / runSpeed fields are no longer written from Update, so the speed a tick sees never depends on frame timing. 1 when not mounted or for any other fighter.</summary>
-    public static float SpeedMul(DuelFighter f, bool run) { var i = Inst; if (i == null || !i.mounted || i.K == null || f != i.df) return 1f; return run ? i.K.speed.runMul : i.K.speed.walkMul; }
+    public static float SpeedMul(DuelFighter f, bool run) { var i = Inst; if (i == null || !i.mounted || i.K == null || f != i.df) return 1f; var S = i.cur != null ? i.cur.speed : i.K.speed; return run ? S.runMul : S.walkMul; }   // hades-env variants v1
     /// <summary>For a CameraRig hook: 1 on foot, mount.json camera.* while mounted.</summary>
     public static float CamBackMul { get { return Mounted ? MountData.Get().camera.backMul : 1f; } }
     public static float CamHeightMul { get { return Mounted ? MountData.Get().camera.heightMul : 1f; } }
 
+    MtVariant cur; MtHorse H { get { return cur != null ? cur.horse : K.horse; } } MtStamina St { get { return cur != null ? cur.stamina : K.stamina; } }   // hades-env variants v1: cur = the owned variant (null = plain)
     MountCfg K; DuelFighter df; Fighter fi; GameObject horse; Transform hBody; GLTFast.GltfImport imp; List<Material> mats;
     bool mounted, exhausted, modelSaved, loadStarted, loaded, haveLast; float stam, nextSummon, baseWalk, baseRun, horseYaw, phase, ampBlend, speedNow, breath, bob, pitch, roll; Vector3 baseModelPos, lastPos;
 
@@ -82,7 +89,7 @@ public sealed class MountRider : MonoBehaviour
         if (Inst != null) return; if (!MountData.Get().enabled || MenuCfg.Harness) return;
         var go = new GameObject("MountRider"); DontDestroyOnLoad(go); Inst = go.AddComponent<MountRider>(); go.AddComponent<MountFollow>();
     }
-    void Awake() { K = MountData.Get(); stam = K.stamina.max; }
+    void Awake() { K = MountData.Get(); stam = St.max; }
     void OnDestroy()
     {
         if (horse != null) Destroy(horse);
@@ -98,7 +105,7 @@ public sealed class MountRider : MonoBehaviour
         return df != null;
     }
 
-    bool Owned() { return string.IsNullOrEmpty(K.requireOwned) || LootSave.Owns(K.requireOwned); }
+    bool Owned() { return string.IsNullOrEmpty(K.requireOwned) || LootSave.Owns(K.requireOwned) || MountData.Variant() != null; }   // hades-env variants v1: owning only the war horse is enough
 
     string Refuse()
     {
@@ -116,14 +123,15 @@ public sealed class MountRider : MonoBehaviour
     void Update()
     {
         if (!Bind()) return; float dt = Time.deltaTime;
+        if (loaded && !mounted && MountData.Variant() != cur) { if (horse != null) Destroy(horse); if (imp != null) { try { imp.Dispose(); } catch (Exception) { } imp = null; } horse = null; hBody = null; loaded = false; loadStarted = false; }   // hades-env variants v1: a new horse was bought: reload
         if (!loadStarted && Owned()) { loadStarted = true; var t = LoadHorse(); }   // paid for only once the horse is owned
         string why = Refuse(); bool key = InputMap.Down(K.summonAction, KeyCodeOf(K.summonKey));
         if (mounted)
         {
             if (why != null || key || (K.dismount.onStrike && StrikeDown())) { Dismount(why ?? "key"); return; }
             // horse stamina: the run key is a gallop. Empty = no gallop until minToGallop is back.
-            if (df.run) { if (exhausted || stam <= 0f) df.run = false; else { stam -= K.stamina.gallopDrainPerS * dt; if (stam <= 0f) { stam = 0f; exhausted = true; df.run = false; } } }
-            else { stam = Mathf.Min(K.stamina.max, stam + K.stamina.regenPerS * dt); if (exhausted && stam >= K.stamina.minToGallop) exhausted = false; }
+            if (df.run) { if (exhausted || stam <= 0f) df.run = false; else { stam -= St.gallopDrainPerS * dt; if (stam <= 0f) { stam = 0f; exhausted = true; df.run = false; } } }
+            else { stam = Mathf.Min(St.max, stam + St.regenPerS * dt); if (exhausted && stam >= St.minToGallop) exhausted = false; }
             df.guardHeld = false;   // v1: no fighting from the saddle
             Gait(dt);
         }
@@ -144,7 +152,7 @@ public sealed class MountRider : MonoBehaviour
 
     async Task LoadHorse()
     {
-        string file = MountData.GlbFile(); if (file == null) { Debug.LogWarning("[Mount] horse glb not found (mount.json horse.glb under StreamingAssets): no mount"); return; }
+        cur = MountData.Variant(); stam = St.max; string file = MountData.GlbFile(H); if (file == null) { Debug.LogWarning("[Mount] horse glb not found (mount.json horse.glb under StreamingAssets): no mount"); return; }
         try
         {
             var root = new GameObject("MountHorse"); DontDestroyOnLoad(root); root.SetActive(false);
@@ -153,11 +161,11 @@ public sealed class MountRider : MonoBehaviour
             if (!await imp.LoadFile(file) || !await imp.InstantiateMainSceneAsync(body.transform)) { Debug.LogWarning("[Mount] horse glb failed to load: " + file); Destroy(root); return; }
             foreach (var c in root.GetComponentsInChildren<Collider>(true)) Destroy(c);
             var rl = new List<Renderer>(root.GetComponentsInChildren<Renderer>(true));
-            foreach (var r in rl) r.shadowCastingMode = K.horse.shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
-            if (K.horse.convertMaterials) mats = GearMaterials.Convert(rl);   // glTFast shader-graph materials -> HDRP/Lit, same as the camp NPCs
-            body.transform.localScale = Vector3.one * MountData.HorseScale();
+            foreach (var r in rl) r.shadowCastingMode = H.shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+            if (H.convertMaterials) mats = GearMaterials.Convert(rl);   // glTFast shader-graph materials -> HDRP/Lit, same as the camp NPCs
+            body.transform.localScale = Vector3.one * MountData.HorseScale(H);
             horse = root; hBody = body.transform; loaded = true;
-            if (K.debugLog) Debug.Log("[Mount] horse loaded, scale " + MountData.HorseScale().ToString("F3"));
+            if (K.debugLog) Debug.Log("[Mount] horse loaded, scale " + MountData.HorseScale(H).ToString("F3"));
         }
         catch (Exception e) { Debug.LogWarning("[Mount] horse load error: " + e.Message); }
     }
@@ -168,7 +176,7 @@ public sealed class MountRider : MonoBehaviour
         /* FIX2 v1: the multiplier is MountRider.SpeedMul on the sim tick, no field write */
         if (fi != null && fi.model != null) { baseModelPos = fi.model.localPosition; modelSaved = true; }
         horseYaw = df.transform.eulerAngles.y; horse.SetActive(true);
-        PlaceHorse(); if (K.debugLog) Debug.Log("[Mount] mounted " + K.horse.id);
+        PlaceHorse(); if (K.debugLog) Debug.Log("[Mount] mounted " + H.id);
     }
 
     void Dismount(string why)
@@ -196,12 +204,12 @@ public sealed class MountRider : MonoBehaviour
 
     public void PlaceHorse()
     {
-        if (horse == null || df == null || !mounted) return; var p = df.transform.position; float sc = MountData.HorseScale();
+        if (horse == null || df == null || !mounted) return; var p = df.transform.position; float sc = MountData.HorseScale(H);
         if (df.moveDir.sqrMagnitude > 0.01f) { float want = Mathf.Atan2(df.moveDir.x, df.moveDir.z) * Mathf.Rad2Deg; horseYaw = Mathf.MoveTowardsAngle(horseYaw, want, K.turnDegPerS * Time.deltaTime); }   // hc:ok 0.01 = move threshold / divide guard
-        var rot = Quaternion.Euler(0f, horseYaw + K.horse.yawOffsetDeg, 0f);
-        horse.transform.SetPositionAndRotation(p + rot * Vector3.forward * (K.horse.seatBackM * sc), rot);   // glb pivot = hooves, centre of the barrel; the saddle sits seatBackM behind it
+        var rot = Quaternion.Euler(0f, horseYaw + H.yawOffsetDeg, 0f);
+        horse.transform.SetPositionAndRotation(p + rot * Vector3.forward * (H.seatBackM * sc), rot);   // glb pivot = hooves, centre of the barrel; the saddle sits seatBackM behind it
         if (hBody != null) { hBody.localPosition = Vector3.up * bob; hBody.localRotation = Quaternion.Euler(pitch, 0f, roll); }
-        if (fi != null && fi.model != null) fi.model.localPosition = baseModelPos + Vector3.up * (K.horse.seatRaiseM * sc / Mathf.Max(0.01f, df.transform.lossyScale.y) + bob);   // hc:ok 0.01 = move threshold / divide guard
+        if (fi != null && fi.model != null) fi.model.localPosition = baseModelPos + Vector3.up * (H.seatRaiseM * sc / Mathf.Max(0.01f, df.transform.lossyScale.y) + bob);   // hc:ok 0.01 = move threshold / divide guard
     }
 }
 
