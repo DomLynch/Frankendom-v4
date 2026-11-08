@@ -10,7 +10,7 @@ using UnityEngine;
 public static class LootSave
 {
     [Serializable] public class SlotRow { public string slot = "", item = ""; }
-    [Serializable] public class FileData { public int version = 2; public string[] owned = new string[0]; public SlotRow[] equipped = new SlotRow[0]; public int coins; public int seq; public MarketSale[] sales = new MarketSale[0]; public bool startPaid; }   // STALL v1: version 2 adds coins + the sales ledger (a version 1 file loads with 0 coins)
+    [Serializable] public class FileData { public int version = 3; public string[] owned = new string[0]; public SlotRow[] equipped = new SlotRow[0]; public int coins; public int seq; public MarketSale[] sales = new MarketSale[0]; public bool startPaid; public StackRow[] stacks = new StackRow[0]; /* POTIONS v1: version 3 = stackable items with a quantity (PotionStore.cs); an older file has none */ }   // STALL v1: version 2 adds coins + the sales ledger (a version 1 file loads with 0 coins)
 
     static readonly List<string> owned = new List<string>();
     static readonly List<SlotRow> wanted = new List<SlotRow>();   // as loaded: what to put back on the wearer
@@ -20,9 +20,9 @@ public static class LootSave
     public static bool Applied;   // the saved selection has been put on a wearer at least once; before that Save() keeps the loaded rows instead of reading an empty slot list
     public static string LastError = "";
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)] static void HookErase() { SaveSlot.OnErase += Erase; }   // REBIND v100: New game forgets the carried items
-    static void Erase() { owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = true; Applied = false; startPaid = MarketCfg.Get().enabled; ledger.Coins = StartCoins(); try { if (File.Exists(Path_)) File.Delete(Path_); } catch (Exception e) { LastError = e.Message; } }
+    static void Erase() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = true; Applied = false; startPaid = MarketCfg.Get().enabled; ledger.Coins = StartCoins(); try { if (File.Exists(Path_)) File.Delete(Path_); } catch (Exception e) { LastError = e.Message; } }
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = false; Applied = false; LastError = ""; startPaid = false; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = false; Applied = false; LastError = ""; startPaid = false; }
 
     public static string Path_ { get { return Path.Combine(SavePaths.Dir, LootCfg.Get().save.file); } }
     public static IList<string> Owned { get { EnsureLoaded(); return owned; } }
@@ -61,6 +61,28 @@ public static class LootSave
         if (LastError.Length > 0) { ledger.Restore(snap); owned.Remove(item); return false; }
         return true;
     }
+    /// <summary>POTIONS v1: buy `qty` of a stackable item: take qty x unitPrice silver, add to the stack, record the request id (item + negative silver). ONE save, all or nothing.</summary>
+    public static bool CommitStackBuy(string requestId, string item, int qty, int unitPrice, int keep, int maxCarry)
+    {
+        EnsureLoaded(); if (qty < 1 || unitPrice < 1 || string.IsNullOrEmpty(item) || !PotionStore.CanAdd(item, qty, maxCarry)) return false;
+        var snap = ledger.Snapshot(); int before = PotionStore.Qty(item);
+        if (!ledger.TrySpend(unitPrice * qty, requestId, keep)) return false;
+        if (ledger.Sales.Count > 0) ledger.Sales[ledger.Sales.Count - 1].item = item;   // TrySpend records item ""; a replayed order must find the item
+        PotionStore.Add(item, qty); LastError = ""; Save();
+        if (LastError.Length > 0) { ledger.Restore(snap); PotionStore.Set(item, before); return false; }
+        return true;
+    }
+    /// <summary>POTIONS v1: sell `qty` of a stackable item for qty x unitPrice silver. ONE save, all or nothing.</summary>
+    public static bool CommitStackSell(string requestId, string item, int qty, int unitPrice, int keep, int cap)
+    {
+        EnsureLoaded(); int have = PotionStore.Qty(item);
+        if (qty < 1 || unitPrice < 1 || string.IsNullOrEmpty(requestId) || have < qty || ledger.Find(requestId) != null || (long)ledger.Coins + (long)unitPrice * qty > cap) return false;
+        var snap = ledger.Snapshot(); int total = unitPrice * qty;
+        ledger.Coins += total; ledger.Sales.Add(new MarketSale { id = requestId, item = item, coins = total }); while (ledger.Sales.Count > Mathf.Max(1, keep)) ledger.Sales.RemoveAt(0);
+        PotionStore.Set(item, have - qty); LastError = ""; Save();
+        if (LastError.Length > 0) { ledger.Restore(snap); PotionStore.Set(item, have); return false; }
+        return true;
+    }
     /// <summary>A future coin sink (a buy row, a camp upgrade): take coins, all or nothing; a repeated request id takes nothing.</summary>
     public static bool TrySpend(int amount, string requestId, int keep)
     {
@@ -69,23 +91,31 @@ public static class LootSave
         return true;
     }
 
+    /// <summary>BOSSSILVER v1: pay a reward (coins), all or nothing, one write. A repeated request id pays nothing.</summary>
+    public static bool CommitGrant(string requestId, int amount, int keep, int cap)
+    {
+        EnsureLoaded(); var snap = ledger.Snapshot(); if (!ledger.Grant(amount, requestId, keep, cap)) return false;
+        LastError = ""; Save(); if (LastError.Length > 0) { ledger.Restore(snap); return false; }
+        return true;
+    }
+
     public static void EnsureLoaded()
     {
         if (loaded) return;
-        loaded = true; owned.Clear(); wanted.Clear(); ledger.Clear(); ledger.Coins = StartCoins(); startPaid = MarketCfg.Get().enabled;   // INT108 v1: new save
+        loaded = true; PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); wanted.Clear(); ledger.Clear(); ledger.Coins = StartCoins(); startPaid = MarketCfg.Get().enabled;   // INT108 v1: new save
         if (!LootCfg.Get().save.enabled) return;
         try
         {
             string p = Path_; if (!File.Exists(p)) return;
             var f = JsonUtility.FromJson<FileData>(File.ReadAllText(p).TrimStart((char)0xFEFF)); if (f == null) return;
-            ledger.Load(f.coins, f.seq, f.sales, MarketCfg.Get().currency.cap, MarketCfg.Get().rules.keepRequests);   // STALL v1
+            ledger.Load(f.coins, f.seq, f.sales, MarketCfg.Get().currency.cap, MarketCfg.Get().rules.keepRequests); PotionStore.Load(f.stacks); /* POTIONS v1: a file without stacks = none */   // STALL v1
             if (f.version < 2) { ledger.Coins = StartCoins(); startPaid = MarketCfg.Get().enabled; } else startPaid = f.startPaid;   // INT108 v1: a version 1 save has no coins yet   // CAMPPLAY v1
             if (f.owned != null) for (int i = 0; i < f.owned.Length; i++) if (!string.IsNullOrEmpty(f.owned[i]) && !owned.Contains(f.owned[i])) owned.Add(f.owned[i]);
             if (f.equipped != null) for (int i = 0; i < f.equipped.Length; i++) { var r = f.equipped[i]; if (r != null && !string.IsNullOrEmpty(r.slot)) { if (r.item == null) r.item = ""; wanted.Add(r); if (r.item.Length > 0 && !owned.Contains(r.item)) owned.Add(r.item); } }
             if (!startPaid && MarketCfg.Get().enabled && ledger.Coins == 0 && ledger.Sales.Count == 0) { ledger.Coins = StartCoins(); startPaid = true; }   // CAMPPLAY v1: a save made with the trader off still gets the start coins once (written at the next Save)
             if (LootCfg.Get().debugLog) Debug.Log("[LootUI] save loaded: " + owned.Count + " owned, " + wanted.Count + " worn (" + p + ")");
         }
-        catch (Exception e) { LastError = e.Message; Debug.LogWarning("[LootUI] save read failed, starting empty: " + e.Message); owned.Clear(); wanted.Clear(); ledger.Clear(); }
+        catch (Exception e) { LastError = e.Message; Debug.LogWarning("[LootUI] save read failed, starting empty: " + e.Message); PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); wanted.Clear(); ledger.Clear(); }
     }
 
     /// <summary>Write owned + the slots' current contents.</summary>
@@ -105,7 +135,7 @@ public static class LootSave
                 }
                 wanted.Clear(); wanted.AddRange(rows);
             }
-            var f = new FileData { owned = owned.ToArray(), equipped = rows.ToArray(), coins = ledger.Coins, seq = ledger.Seq, sales = ledger.Sales.ToArray(), startPaid = startPaid };   // STALL v1   // CAMPPLAY v1
+            var f = new FileData { owned = owned.ToArray(), equipped = rows.ToArray(), coins = ledger.Coins, seq = ledger.Seq, sales = ledger.Sales.ToArray(), startPaid = startPaid, stacks = PotionStore.ToRows() /* POTIONS v1 */ };   // STALL v1   // CAMPPLAY v1
             string p = Path_, dir = Path.GetDirectoryName(p); if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
             string tmp = p + ".tmp"; File.WriteAllText(tmp, JsonUtility.ToJson(f, true));
             if (File.Exists(p)) File.Replace(tmp, p, null); else File.Move(tmp, p);   // STALL v1: one atomic swap, the coins are in this file (was Delete + Move: a crash between left no file)

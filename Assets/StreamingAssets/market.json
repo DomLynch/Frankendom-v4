@@ -1,15 +1,15 @@
 {
   "_about": "STALL v1 (lane laneSTALL), STAGED, SHIPS OFF. The camp trader stall: a sell-only stall in the safe camp. Read by Scripts/Market/MarketCfg.cs (StreamingAssets first, then Assets/Data). Everything the player sees or can change is here: coins, prices, keys, layout, text, the camp rectangle, the combat rule. Sizes are px at hud.json referenceHeight (1080) and scale with HudCfg.Scale() (Screen.height / referenceHeight, clamped), the same UI scale as the HUD. Colours: the HUD palette (hud.json colors) is used for ink / dim / gold / frame / crimson / charcoal / shadow; only the panel rows are here. enabled=false = no stall, no prompt, no combat rule: the game is exactly as before.",
-  "_domNote": "COINS HAVE NOTHING TO BUY YET. The stall is sell-only (Dom's brief): gear goes in, coins come out, and no system takes coins. Hooks are ready and OFF: rules.buyEnabled + ops 'buy' + rows with buyValue (a buy tab), sinks[] (camp upgrades, a toll), MarketLedger.TrySpend (future code spends coins with a request id). Decide what coins buy before this ships to players.",
-  "enabled": false,
+  "_domNote": "laneMARKET v1: currency is SILVER (whole numbers, prices max 1000). Start silver 100 (currency.startCoins, read by LootSave.StartCoins). Boss silver: boss_silver.json.",
+  "enabled": true,
   "version": 1,
   "debugLog": false,
   "guiDepth": -1090,
   "currency": {
-    "id": "coins",
-    "name": "Coins",
-    "cap": 999999,
-    "startCoins": 500,
+    "id": "silver",
+    "name": "Silver",
+    "cap": 9999,
+    "startCoins": 100,
     "_about": "cap = the most the purse holds; a sale that would pass it is refused (wallet-full). Saved inside loot_save.json (version 2)."
   },
   "rules": {
@@ -27,99 +27,180 @@
   "rows": [
     {
       "item": "joan_tunic",
-      "buyValue": 70,
+      "buyValue": 20,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "joan_helmet",
-      "buyValue": 240,
+      "buyValue": 54,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "joan_bracers",
-      "buyValue": 120,
+      "buyValue": 27,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "joan_greaves",
-      "buyValue": 160,
+      "buyValue": 36,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "joan_tabard",
-      "buyValue": 100,
+      "buyValue": 23,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "joan_boots",
-      "buyValue": 90,
+      "buyValue": 20,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "pitborn_pauldron_joan",
-      "buyValue": 410,
+      "buyValue": 93,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "pitborn_pauldron",
-      "buyValue": 410,
+      "buyValue": 93,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "pauldron_joan",
-      "buyValue": 160,
+      "buyValue": 36,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "vambrace_joan",
-      "buyValue": 160,
+      "buyValue": 36,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "gorget_joan",
-      "buyValue": 160,
+      "buyValue": 36,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "greave_joan",
-      "buyValue": 160,
+      "buyValue": 36,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "pitborn_chest",
-      "buyValue": 530,
+      "buyValue": 120,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "pitborn_maul",
-      "buyValue": 110,
+      "buyValue": 60,
       "sellable": true,
-      "sellOverride": 0
+      "sellOverride": 0,
+      "_silver": true
     },
     {
       "item": "bascinet_joan",
-      "buyValue": 215,
+      "buyValue": 49,
+      "sellable": true,
+      "sellOverride": 0,
+      "_silver": true
+    },
+    {
+      "item": "cap_joan",
+      "buyValue": 28,
+      "sellable": true,
+      "sellOverride": 0,
+      "_silver": true
+    },
+    {
+      "item": "knight_sword",
+      "buyValue": 30,
       "sellable": true,
       "sellOverride": 0
     },
     {
-      "item": "cap_joan",
-      "buyValue": 125,
+      "item": "war_axe",
+      "buyValue": 45,
       "sellable": true,
       "sellOverride": 0
+    },
+    {
+      "item": "iron_maul",
+      "buyValue": 55,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "boar_spear",
+      "buyValue": 25,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "hunting_bow",
+      "buyValue": 17,
+      "sellable": true,
+      "sellOverride": 0
+    },
+    {
+      "item": "cuirass_joan",
+      "buyValue": 69,
+      "sellable": true,
+      "sellOverride": 0,
+      "_silver": true
+    },
+    {
+      "item": "arms_joan",
+      "buyValue": 42,
+      "sellable": true,
+      "sellOverride": 0,
+      "_silver": true
+    },
+    {
+      "item": "legarmour_joan",
+      "buyValue": 55,
+      "sellable": true,
+      "sellOverride": 0,
+      "_silver": true
+    },
+    {
+      "item": "joan_shield",
+      "buyValue": 34,
+      "sellable": true,
+      "sellOverride": 0,
+      "_silver": true
+    },
+    {
+      "item": "mount_horse",
+      "buyValue": 50,
+      "sellable": false,
+      "sellOverride": 0,
+      "_silver": true
     }
   ],
   "rowsNote": "One row per sellable item id. buyValue = what the item would cost to buy (round(5 * (6 armor + 5 poise + 1 weight)) to 5, from gear.json; PLACEHOLDER balance). sellOverride > 0 pins the sell price. sellable false = the trader refuses it. An id with no row is not bought. Re-generate with gen_market.py.",
@@ -193,7 +274,10 @@
       "JoystickButton0",
       "Return"
     ],
-    "close": ["Escape", "JoystickButton1"],
+    "close": [
+      "Escape",
+      "JoystickButton1"
+    ],
     "up": [
       "UpArrow",
       "W"
@@ -286,7 +370,7 @@
   "text": {
     "title": "Trader",
     "subtitle": "Sell what you carry. What you wear is kept.",
-    "coins": "{0} coins",
+    "coins": "{0} silver",
     "price": "{0}",
     "worn": "Worn",
     "nothing": "You carry nothing the trader will take.",
@@ -356,14 +440,22 @@
         "text": "You already own that."
       },
       {
+        "code": "no-silver",
+        "text": "Not enough silver."
+      },
+      {
+        "code": "carry-full",
+        "text": "You cannot carry any more of those."
+      },
+      {
         "code": "no-coins",
-        "text": "Not enough coins."
+        "text": "Not enough silver."
       }
     ]
   },
   "stalls": [
     {
-      "_about": "ZONES57: zone 7 stall (wagon A). items = PLACEHOLDER stock, Dom decides. Prices = rows x hub.json stall.buy.mul.",
+      "_about": "laneMARKET v1: zone 7 vendor 'armourer' (zones.json spot vendor_1). Stock = market_vendors.json ready rows.",
       "id": "z7_trade_a",
       "title": "Armourer",
       "anchor": {
@@ -383,15 +475,65 @@
         "leavePad": 0.5
       },
       "items": [
-        "pitborn_chest",
-        "pitborn_pauldron_joan",
-        "pitborn_pauldron",
+        "cuirass_joan",
+        "arms_joan",
+        "legarmour_joan",
+        "joan_shield",
         "joan_helmet",
         "bascinet_joan",
-        "pauldron_joan",
-        "vambrace_joan",
-        "gorget_joan",
-        "greave_joan"
+        "joan_bracers",
+        "joan_greaves"
+      ]
+    },
+    {
+      "_about": "laneMARKET v1: zone 7 vendor 'weaponsmith' (zones.json spot vendor_2). Stock = market_vendors.json ready rows.",
+      "id": "z7_trade_b",
+      "title": "Weaponsmith",
+      "anchor": {
+        "zone": "z7_market2",
+        "spot": "vendor_2",
+        "x": 3.6,
+        "z": 349.0
+      },
+      "radius": 3.0,
+      "promptRadius": 5.0,
+      "promptHeight": 2.1,
+      "area": {
+        "zMin": 315.0,
+        "zMax": 362.0,
+        "xHalf": 10.0,
+        "enterPad": 0.5,
+        "leavePad": 0.5
+      },
+      "items": [
+        "knight_sword",
+        "war_axe",
+        "iron_maul",
+        "boar_spear"
+      ]
+    },
+    {
+      "_about": "laneHORSE v2: zone 7 vendor 'stablemaster + provisions' (zones.json spot vendor_3, the laneMARKET apothecary slot): the horse now; the potions join it when laneMARKET --with-potions runs (same stall, same vendor). Stock = market_vendors.json ready rows.",
+      "id": "z7_trade_c",
+      "title": "Stablemaster",
+      "anchor": {
+        "zone": "z7_market2",
+        "spot": "vendor_3",
+        "x": -3.0,
+        "z": 352.1
+      },
+      "radius": 3.0,
+      "promptRadius": 5.0,
+      "promptHeight": 2.1,
+      "area": {
+        "zMin": 315.0,
+        "zMax": 362.0,
+        "xHalf": 10.0,
+        "enterPad": 0.5,
+        "leavePad": 0.5
+      },
+      "items": [
+        "mount_horse"
       ]
     }
   ]

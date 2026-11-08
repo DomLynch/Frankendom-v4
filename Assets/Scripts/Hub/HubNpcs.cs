@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -214,7 +214,8 @@ public sealed class HubNpcs : MonoBehaviour
         foreach (var h in row.runtime.hideNodes) { var t = FindDeep(body.transform, h); if (t != null) t.gameObject.SetActive(false); }
         Cheapen(n.go, S);
         if (S.convertMaterials) { var rl = new List<Renderer>(); foreach (var r in body.GetComponentsInChildren<Renderer>(true)) if (OnWithin(r.transform, body.transform)) rl.Add(r); n.mats = GearMaterials.Convert(rl); }   // CAMPNPC v1: glTFast shader-graph materials -> HDRP/Lit like the gear (base colour + normal map; hideNodes skipped; n.go is switched off here, so includeInactive + own-flag test)
-        if (row.runtime.scale > 0f && Mathf.Abs(row.runtime.scale - 1f) > 1e-4f) body.transform.localScale = Vector3.one * row.runtime.scale;
+        float rsc = row.runtime.scale * (row.runtime.horseScale ? MountData.HorseScale() : 1f);   // laneHORSE v2: the static camp horse reads the same size key as the ridden one (mount.json horse.heightM)
+        if (rsc > 0f && Mathf.Abs(rsc - 1f) > 1e-4f) body.transform.localScale = Vector3.one * rsc;
         return true;
     }
 

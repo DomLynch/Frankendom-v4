@@ -1,0 +1,128 @@
+{
+  "_about": "laneMARKET v1. Source of truth for the 3 zone 7 vendors. ready=true rows are copied into market.json stalls[].items by apply_market.py; ready=false waits for the 'needs' item. Currency and gear are global: coins and owned items live in loot_save.json (LootSave), not per zone, so a purchase in zone 7 is there in every zone and after a restart.",
+  "version": 1,
+  "zone": "z7_market2",
+  "currency": "coins",
+  "vendors": [
+    {
+      "role": "armourer",
+      "stall": "z7_trade_a",
+      "spot": "vendor_1",
+      "title": "Armourer",
+      "stock": [
+        {
+          "item": "cuirass_joan",
+          "ready": true,
+          "price": 69
+        },
+        {
+          "item": "arms_joan",
+          "ready": true,
+          "price": 42
+        },
+        {
+          "item": "legarmour_joan",
+          "ready": true,
+          "price": 55
+        },
+        {
+          "item": "joan_shield",
+          "ready": true,
+          "price": 34
+        },
+        {
+          "item": "joan_helmet",
+          "ready": true,
+          "price": 54
+        },
+        {
+          "item": "bascinet_joan",
+          "ready": true,
+          "price": 49
+        },
+        {
+          "item": "joan_bracers",
+          "ready": true,
+          "price": 27
+        },
+        {
+          "item": "joan_greaves",
+          "ready": true,
+          "price": 36
+        }
+      ]
+    },
+    {
+      "role": "weaponsmith",
+      "stall": "z7_trade_b",
+      "spot": "vendor_2",
+      "title": "Weaponsmith",
+      "stock": [
+        {
+          "item": "knight_sword",
+          "ready": true,
+          "price": 30
+        },
+        {
+          "item": "war_axe",
+          "ready": true,
+          "price": 45
+        },
+        {
+          "item": "iron_maul",
+          "ready": true,
+          "price": 55
+        },
+        {
+          "item": "boar_spear",
+          "ready": true,
+          "price": 25
+        },
+        {
+          "item": "hunting_bow",
+          "ready": false,
+          "price": 17,
+          "needs": "bow combat port (ranged attack, projectile, aim, clips, glb); then rerun with --with-bow"
+        }
+      ]
+    },
+    {
+      "role": "stablemaster",
+      "stall": "z7_trade_c",
+      "spot": "vendor_3",
+      "title": "Stablemaster",
+      "stock": [
+        {
+          "item": "potion_health_minor",
+          "ready": false,
+          "price": 2,
+          "needs": "potion C# (counted stacks, buy qty, use key, heal); then rerun with --with-potions"
+        },
+        {
+          "item": "potion_health",
+          "ready": false,
+          "price": 5,
+          "needs": "potion C# (counted stacks, buy qty, use key, heal); then rerun with --with-potions"
+        },
+        {
+          "item": "potion_stamina",
+          "ready": false,
+          "price": 3,
+          "needs": "potion C# (counted stacks, buy qty, use key, heal); then rerun with --with-potions"
+        },
+        {
+          "item": "potion_poise",
+          "ready": false,
+          "price": 5,
+          "needs": "potion C# (counted stacks, buy qty, use key, heal); then rerun with --with-potions"
+        },
+        {
+          "item": "mount_horse",
+          "ready": true,
+          "price": 50,
+          "unlocks": "mount (mount.json requireOwned); needs MountRider.cs from this kit"
+        }
+      ]
+    }
+  ]
+}

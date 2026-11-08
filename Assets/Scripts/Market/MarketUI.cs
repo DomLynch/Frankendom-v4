@@ -200,7 +200,7 @@ public sealed class MarketUI : MonoBehaviour
             if (sel) { HudDraw.Fill(r, MarketCfg.Col(armed ? C.colors.rowArmed : C.colors.rowSelected)); HudDraw.Fill(new Rect(r.x, r.y, 3f, r.height), armed ? gold : crimson); FrameRect(r, armed ? frame : frameDim, 1f); }
             Color nameCol = ln.worn ? dim : ink;
             HudDraw.Text(new Rect(r.x + L.rowPadX, r.y, r.width * 0.6f, r.height), ln.name, "serif", L.rowNameSize, TextAnchor.MiddleLeft, true, nameCol);
-            if (ln.worn) HudDraw.Text(new Rect(r.x + r.width * 0.55f, r.y, r.width * 0.2f, r.height), (ln.tag.Length > 0 ? ln.tag : T.worn).ToUpperInvariant(), "serif", L.rowTagSize, TextAnchor.MiddleLeft, false, dim);
+            if (ln.worn || ln.stack /* POTIONS v1: the "x3" tag */) HudDraw.Text(new Rect(r.x + r.width * 0.55f, r.y, r.width * 0.2f, r.height), (ln.tag.Length > 0 ? ln.tag : T.worn).ToUpperInvariant(), "serif", L.rowTagSize, TextAnchor.MiddleLeft, false, dim);
             HudDraw.Text(new Rect(r.x, r.y, r.width - L.rowPadX, r.height), string.Format(T.price, ln.price), "serif", L.rowPriceSize, TextAnchor.MiddleRight, true, ln.worn ? dim : gold);
         }
         if (lines.Count > vis)   // thin scroll track on the right edge of the list
@@ -215,12 +215,12 @@ public sealed class MarketUI : MonoBehaviour
             GearItem gi; bool has = LootBridge.Catalog.TryGet(sl.id, out gi);
             HudDraw.Text(new Rect(d.x, d.y + 6f, d.width * 0.55f, L.detailNameSize * 1.5f), sl.name, "serif", L.detailNameSize, TextAnchor.UpperLeft, true, has ? LootCfg.RarityColor(gi) : ink);
             string st = ""; if (has && gi.stats != null) for (int q = 0; q < gi.stats.Length; q++) { var row = LootCfg.StatRow(gi.stats[q].stat); string lb = row != null && row.label.Length > 0 ? row.label : LootCfg.Pretty(gi.stats[q].stat); st += (st.Length > 0 ? "    " : "") + lb + " " + gi.stats[q].value.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture); }
-            HudDraw.Text(new Rect(d.x, d.y + 6f + L.detailNameSize * 1.5f, d.width, L.detailSize * 1.5f), st, "serif", L.detailSize, TextAnchor.UpperLeft, false, dim);
+            HudDraw.Text(new Rect(d.x, d.y + 6f + L.detailNameSize * 1.5f, d.width, L.detailSize * 1.5f), has ? st : PotionCfg.Describe(sl.id) /* POTIONS v1 */, "serif", L.detailSize, TextAnchor.UpperLeft, false, dim);
             HudDraw.Text(new Rect(d.x, d.y + 6f, d.width, L.detailSize * 1.5f), sl.worn ? (shop.BuyTab ? MarketCfg.Code(sl.why) : T.detailWorn) : string.Format(shop.BuyTab && MarketBuyRules.Cur.detailAsks.Length > 0 ? MarketBuyRules.Cur.detailAsks : T.detailPays, sl.price), "serif", L.detailSize, TextAnchor.UpperRight, false, sl.worn ? dim : gold);
         }
         if (shop.NoteKey.Length > 0)
         {
-            string msg = shop.NoteKey == "bought" ? string.Format(MarketBuyRules.Cur.bought, shop.NoteItem, shop.NoteCoins) : shop.NoteKey == "sold" ? string.Format(T.sold, shop.NoteItem, shop.NoteCoins) : shop.NoteKey == "armed" ? string.Format(shop.BuyTab && MarketBuyRules.Cur.armedBuy.Length > 0 ? MarketBuyRules.Cur.armedBuy : T.armed, shop.NoteItem, shop.NoteCoins) : MarketCfg.Code(shop.NoteKey);
+            string msg = shop.NoteKey == "boughtStack" || shop.NoteKey == "soldStack" ? PotionCfg.NoteText(shop.NoteKey, shop.NoteItem, shop.NoteCoins) /* POTIONS v1 */ : shop.NoteKey == "bought" ? string.Format(MarketBuyRules.Cur.bought, shop.NoteItem, shop.NoteCoins) : shop.NoteKey == "sold" ? string.Format(T.sold, shop.NoteItem, shop.NoteCoins) : shop.NoteKey == "armed" ? string.Format(shop.BuyTab && MarketBuyRules.Cur.armedBuy.Length > 0 ? MarketBuyRules.Cur.armedBuy : T.armed, shop.NoteItem, shop.NoteCoins) : MarketCfg.Code(shop.NoteKey);
             HudDraw.Text(new Rect(d.x, d.yMax - L.messageSize * 1.6f, d.width, L.messageSize * 1.6f), msg, "serif", L.messageSize, TextAnchor.LowerLeft, true, MarketCfg.Col(shop.NoteGood ? C.colors.good : C.colors.bad));
         }
         // footer: the three hints

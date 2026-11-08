@@ -43,7 +43,7 @@ public static class MarketPrice
     }
 }
 
-public sealed class MarketLine { public string id = "", name = ""; public int price; public bool canSell; public bool worn; public string why = ""; public string tag = ""; /* // laneNPCSPAWN: row tag text */ }
+public sealed class MarketLine { public string id = "", name = ""; public int price; public bool canSell; public bool worn; public string why = ""; public string tag = ""; /* // laneNPCSPAWN: row tag text */ public bool stack; public int qty; /* POTIONS v1: a stackable line (potion): qty = carried, tag = "x3" */ }
 public sealed class MarketStock { public int coins; public List<MarketLine> lines = new List<MarketLine>(); }
 public sealed class MarketResult
 {
@@ -99,6 +99,12 @@ public sealed class MarketLedger
         if (amount <= 0 || string.IsNullOrEmpty(requestId) || Find(requestId) != null || Coins < amount) return false;
         Coins -= amount; Sales.Add(new MarketSale { id = requestId, item = "", coins = -amount }); Trim(keep); return true;
     }
+    /// <summary>BOSSSILVER v1: a reward. Add coins (clamped to the cap), write the ledger row (positive). A repeated request id pays nothing the second time. False = nothing changed.</summary>
+    public bool Grant(int amount, string requestId, int keep, int cap)
+    {
+        if (amount <= 0 || string.IsNullOrEmpty(requestId) || Find(requestId) != null || Coins >= cap) return false;
+        Coins = (int)Math.Min((long)cap, (long)Coins + amount); Sales.Add(new MarketSale { id = requestId, item = "", coins = amount }); Trim(keep); return true;
+    }
     public State Snapshot() { return new State { coins = Coins, seq = Seq, sales = Sales.ToArray() }; }
     public void Restore(State s) { Coins = s.coins; Seq = s.seq; Sales.Clear(); Sales.AddRange(s.sales); }
 }
@@ -134,6 +140,7 @@ public sealed class LocalMarket : IMarketBackend
             if (worn && !rules.listEquipped) continue;
             st.lines.Add(new MarketLine { id = id, name = store.NameOf(id), price = p, worn = worn, canSell = !worn, why = worn ? MarketCode.Equipped : "" });
         }
+        PotionTrade.AddSellLines(st, rules);   // POTIONS v1: carried stacks (nothing while consumables.json is off)
         return st;
     }
 
@@ -147,9 +154,10 @@ public sealed class LocalMarket : IMarketBackend
         var prev = store.FindSale(requestId);
         if (prev != null)   // the same order again: the first answer, nothing moves
         {
-            if (prev.item != itemId || qty != 1) return MarketResult.Fail(MarketCode.Conflict, c);
+            if (prev.item != itemId || (qty != 1 && !PotionStore.IsStack(itemId) /* POTIONS v1 */)) return MarketResult.Fail(MarketCode.Conflict, c);
             return new MarketResult { ok = true, replayed = true, item = prev.item, qty = 1, coinsDelta = prev.coins, coins = c };
         }
+        if (PotionStore.IsStack(itemId)) return PotionTrade.Run(store, rules, op, itemId, qty, requestId, c);   // POTIONS v1: stackable items (potions) trade by quantity
         if (op == "buy") return Buy(itemId, qty, requestId, c);   // laneNPCSPAWN
         if (op != "sell") return MarketResult.Fail(MarketCode.NotForSale, c);
         if (qty != 1) return MarketResult.Fail(MarketCode.BadQty, c);   // gear is one copy per id in the save
@@ -180,7 +188,7 @@ public sealed class LocalMarket : IMarketBackend
         var B = MarketBuyRules.Cur; var st = new MarketStock { coins = store.Coins }; if (!B.enabled) return st;
         for (int i = 0; i < B.items.Length; i++)
         {
-            string id = B.items[i]; int p = MarketBuyRules.Price(MarketPrice.Find(rows, id), B); if (p <= 0) continue;
+            string id = B.items[i]; if (PotionStore.IsStack(id)) { PotionTrade.AddBuyLine(st, id, B, store.Coins); continue; } /* POTIONS v1 */ int p = MarketBuyRules.Price(MarketPrice.Find(rows, id), B); if (p <= 0) continue;
             bool own = Contains(store.Carried, id) || store.IsWorn(id), poor = !own && store.Coins < p;
             st.lines.Add(new MarketLine { id = id, name = store.NameOf(id), price = p, worn = own || poor, canSell = !(own || poor), why = own ? MarketCode.AlreadyOwned : poor ? MarketCode.NoCoins : "", tag = own ? B.tagOwned : poor ? B.tagPoor : "" });
         }
@@ -222,13 +230,13 @@ public sealed class ShopController
     {
         var l = Selected; if (l == null) return null;
         if (!l.canSell) { Note(l.why.Length > 0 ? l.why : MarketCode.Equipped, l, 0, false); return null; }   // laneNPCSPAWN
-        if (rules.confirmSell && Armed != l.id) { Armed = l.id; NoteKey = "armed"; NoteItem = l.name; NoteGood = true; NoteCoins = l.price; return null; }
+        if (rules.confirmSell && !l.stack /* POTIONS v1: 1-5 silver, no second press */ && Armed != l.id) { Armed = l.id; NoteKey = "armed"; NoteItem = l.name; NoteGood = true; NoteCoins = l.price; return null; }
         if (pendingItem != l.id || pendingId.Length == 0) { pendingItem = l.id; pendingId = store.NextRequestId(l.id); }   // a retry of the same item reuses the id
         var r = backend.Trade(BuyTab ? "buy" : "sell", l.id, 1, pendingId);   // laneNPCSPAWN
         Armed = "";
         bool retry = r.code == MarketCode.SaveFailed;   // keep the id: pressing again can not charge twice
         if (!retry) { pendingId = ""; pendingItem = ""; }
-        if (r.ok) Note(BuyTab ? "bought" : "sold", l, Math.Abs(r.coinsDelta), true);   // laneNPCSPAWN
+        if (r.ok) Note(l.stack ? (BuyTab ? "boughtStack" : "soldStack") : (BuyTab ? "bought" : "sold") /* POTIONS v1 */, l, Math.Abs(r.coinsDelta), true);   // laneNPCSPAWN
         else Note(r.code, l, 0, false);
         Refresh();
         return r;

@@ -1,0 +1,73 @@
+{
+  "_about": "laneHORSE v2 (staged, DARK, UNPROVEN in Unity). Read by Assets/Scripts/Mount/MountRider.cs (summon, speed, dismount, gait) and, for the size, by the static camp horse (hub.json npc_horse runtime.horseScale). enabled=false ships dark. Units metres, seconds, degrees. Copy to Assets/Data AND StreamingAssets.",
+  "enabled": false,
+  "debugLog": false,
+  "summonAction": "mount",
+  "summonKey": "H",
+  "requireOwned": "mount_horse",
+  "horse": {
+    "id": "warhorse_brown",
+    "glb": "Mount/horse_lod.glb",
+    "heightM": 1.75,
+    "glbHeightM": 1.75,
+    "seatRaiseM": 0.72,
+    "seatBackM": 0.13,
+    "radiusM": 0.55,
+    "yawOffsetDeg": 0.0,
+    "convertMaterials": true,
+    "shadows": false
+  },
+  "speed": {
+    "walkMul": 1.6,
+    "runMul": 2.2
+  },
+  "turnDegPerS": 200.0,
+  "stamina": {
+    "max": 100.0,
+    "gallopDrainPerS": 14.0,
+    "regenPerS": 22.0,
+    "minToGallop": 15.0
+  },
+  "summon": {
+    "cooldownS": 3.0
+  },
+  "dismount": {
+    "onStrike": true,
+    "onOpponent": true,
+    "inHub": true,
+    "onMenu": true,
+    "onFinisher": true
+  },
+  "playAreaIsBoss": true,
+  "noMountZ": [
+    {
+      "id": "pit_yard_arena",
+      "zFrom": 8.0,
+      "zTo": 22.0
+    },
+    {
+      "id": "sobek_arena",
+      "zFrom": 44.0,
+      "zTo": 58.0
+    }
+  ],
+  "camera": {
+    "backMul": 1.25,
+    "heightMul": 1.15
+  },
+  "gait": {
+    "walkCyclesPerM": 0.55,
+    "gallopCyclesPerM": 0.28,
+    "bobWalkM": 0.02,
+    "bobGallopM": 0.06,
+    "pitchWalkDeg": 1.5,
+    "pitchGallopDeg": 5.0,
+    "rollWalkDeg": 1.5,
+    "rollGallopDeg": 1.0,
+    "breathM": 0.004,
+    "breathCyclesPerS": 0.3,
+    "blendS": 0.12,
+    "stillMps": 0.15
+  },
+  "_notes": "heightM = height at the WITHERS (Dom: warhorse 1.75 m; Joan 1.58, Pitborn 2.5, Sobek 3.12, Grendel 3.24, Erlking 4.06 from roster.json / GameConfig). glbHeightM = the height the glb was exported at (1.75), so scale = heightM / glbHeightM: change heightM and BOTH the ridden horse and the static camp horse resize. Head top at 1.75 m withers = 2.14 m, body length 2.82 m nose to tail, width 0.87 m. seatRaiseM (0.72 at glbHeightM): Joan's pelvis bone at the saddle (back 1.52 m up at the seat; Mixamo hips about 0.87 m on her 1.58 m); seatBackM 0.13 = the saddle is 0.13 m behind the glb origin (barrel centre). Mounted: Joan head top about 2.3 m, camera back/height multipliers lift the lock camera (CameraRig hook). requireOwned = item id in loot_save.json owned[] (bought from the stable vendor, market.json row); empty = free. speed: multipliers on walkSpeed/runSpeed (Joan 2.2/5.5 m/s -> 3.5/12.1). stamina is the horse's own: empty = no gallop until minToGallop. dismount.onStrike: an attack key dismounts (v1, no fighting from the saddle). noMountZ: boss arena world-z ranges; play_areas.json rows (zones 4+) also count when playAreaIsBoss; the camp and every safe zone dismount via dismount.inHub. gait: the glb has no rig, so bob / pitch / roll are a function of the ground speed (cycles per metre), gallop when the run key is held. camera.* is read by a 2-line CameraRig hook."
+}

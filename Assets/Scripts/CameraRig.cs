@@ -119,8 +119,8 @@ public class CameraRig : MonoBehaviour
             if (!snapped) lockYaw = tgtYaw; else if (CamZone.SnapYaw(pose.zone, lockW)) lockYaw = tgtYaw; else lockYaw += CamZone.YawStep(pose.zone, Mathf.DeltaAngle(lockYaw, tgtYaw) * blend, dt);  /* CAMZONE v1 */
             var lk = pose.lockCam; float foe = FoeTall();   // how much taller than a man (the enemy 2.5 m = 0.39)
             if (!poseLoaded) LoadPose();
-            float back = (Mathf.Max(lk.backMin, lk.backPerM * d + lk.backAdd) + foe * lk.foe.back) * lk.backOuter * pose.backMul;
-            float h = (Mathf.Max(lk.heightMin, lk.heightPerM * d) * lk.heightScale + foe * lk.foe.height) * lk.heightOuter * pose.heightMul;
+            float back = (Mathf.Max(lk.backMin, lk.backPerM * d + lk.backAdd) + foe * lk.foe.back) * lk.backOuter * pose.backMul * MountRider.CamBackMul;   // laneHORSE v2
+            float h = (Mathf.Max(lk.heightMin, lk.heightPerM * d) * lk.heightScale + foe * lk.foe.height) * lk.heightOuter * pose.heightMul * MountRider.CamHeightMul;   // laneHORSE v2
             dbgGap = d; dbgBaseH = h; dbgBack = back;  /* CAMZONE v1 */ Quaternion yr = Quaternion.Euler(0f, lockYaw, 0f);
             Vector3 fwd = yr * Vector3.forward, right = yr * Vector3.right;
             Vector3 lockPos = new Vector3(P.x, P.y + h, P.z) - fwd * back + right * pose.shoulder;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 // laneNPCSPAWN v1: the data side of the camp. Assets/Data/hub.json (copy in StreamingAssets), read through DataPath like every other loader. No character name, number or id lives in code:
@@ -9,7 +9,7 @@ using UnityEngine;
 [Serializable] public class HubSafeCombat { public bool playerAttack = true, playerGuard = true; public float damageToPlayer = 1f; public string[] allowPress = new string[0]; }
 [Serializable] public class HubSafeRow { public HubSafeCombat combat = new HubSafeCombat(); }
 [Serializable] public class HubInteract { public string kind = "none", shop = ""; public float radius = 0f; }
-[Serializable] public class HubRuntime { public string glb = "", clipGlb = "", clipName = ""; public string[] sources = new string[0], clipSources = new string[0], hideNodes = new string[0]; public float scale = 1f; }
+[Serializable] public class HubRuntime { public string glb = "", clipGlb = "", clipName = ""; public string[] sources = new string[0], clipSources = new string[0], hideNodes = new string[0]; public float scale = 1f; public bool horseScale = false; /* laneHORSE v2: multiply scale by mount.json horse.heightM / glbHeightM */ }
 [Serializable] public class HubNpcRow
 {
     public string id = "", role = "", title = "", spot = "", clip = ""; public bool enabled = true; public float yaw = 0f, phaseSeconds = 0f;

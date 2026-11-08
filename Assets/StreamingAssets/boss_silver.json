@@ -1,0 +1,37 @@
+{
+  "_about": "BOSSSILVER v1: silver the player earns for killing a boss (BossSilver.cs, LootSave.CommitGrant). enabled false = nobody pays. Needs market.json enabled (coins exist). id = the victim's roster character id.",
+  "enabled": true,
+  "rows": [
+    {
+      "id": "Pitborn",
+      "silver": 16
+    },
+    {
+      "id": "Sobek",
+      "silver": 22
+    },
+    {
+      "id": "Grendel",
+      "silver": 30
+    },
+    {
+      "id": "Humbaba",
+      "silver": 38
+    },
+    {
+      "id": "Erlking",
+      "silver": 48
+    }
+  ],
+  "text": {
+    "toast": "+{0} silver"
+  },
+  "toastSeconds": 3.0,
+  "toastSize": 24,
+  "toastBottom": 190.0,
+  "color": [
+    0.93,
+    0.88,
+    0.78
+  ]
+}

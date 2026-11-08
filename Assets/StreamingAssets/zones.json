@@ -35,13 +35,34 @@
       "delayS": 6.0,
       "rule": "arrive",
       "arrive": [
-        { "zone": "pit_yard", "spot": "arrive_start" },
-        { "zone": "sobek_reach", "spot": "arrive_from_pit" },
-        { "zone": "hub_camp", "spot": "arrive_from_prev" },
-        { "zone": "z5_humbaba", "spot": "arrive_from_prev" },
-        { "zone": "z6_erlking", "spot": "arrive_from_prev" },
-        { "zone": "z7_market2", "spot": "arrive_from_prev" },
-        { "zone": "grendel", "spot": "arrive_from_prev" }
+        {
+          "zone": "pit_yard",
+          "spot": "arrive_start"
+        },
+        {
+          "zone": "sobek_reach",
+          "spot": "arrive_from_pit"
+        },
+        {
+          "zone": "hub_camp",
+          "spot": "arrive_from_prev"
+        },
+        {
+          "zone": "z5_humbaba",
+          "spot": "arrive_from_prev"
+        },
+        {
+          "zone": "z6_erlking",
+          "spot": "arrive_from_prev"
+        },
+        {
+          "zone": "z7_market2",
+          "spot": "arrive_from_prev"
+        },
+        {
+          "zone": "grendel",
+          "spot": "arrive_from_prev"
+        }
       ],
       "hpFrac": 1.0,
       "coverS": 0.5,
@@ -81,7 +102,8 @@
       "outSeconds": 0.55,
       "holdMaxSeconds": 8.0
     },
-    "allowWhileEngaged": true, "freePassage": true,
+    "allowWhileEngaged": true,
+    "freePassage": true,
     "preloadDistance": 14.0,
     "_about": "cover = the gate's flash: a full-screen ember-white overlay in OnGUI, over the frame where the swap happens. The camera is never cut: it is moved by the same offset and turn as the player. Player input is never locked (no code path locks it). holdMaxSeconds: if an additive zone scene is not ready by then the cover stays up (a heavy hold, never a loading bar)."
   },
@@ -89,13 +111,42 @@
     {
       "id": "alpha_end",
       "title": "THANK YOU FOR PLAYING THE ALPHA",
-      "lines": ["You have walked every zone this build has.", "Your gear and progress are saved.", "Turn back and explore: the zones are yours to revisit.", "More is coming. Tell us what you thought."],
+      "lines": [
+        "You have walked every zone this build has.",
+        "Your gear and progress are saved.",
+        "Turn back and explore: the zones are yours to revisit.",
+        "More is coming. Tell us what you thought."
+      ],
       "hint": "Enter: go back and explore      Esc: back to camp",
-      "fadeInS": 1.6, "minShowS": 1.0, "backdropAlpha": 0.82,
-      "titleSize": 46, "lineSize": 22, "hintSize": 18, "titleY": 0.30, "lineGap": 1.5,
-      "color": [0.93, 0.88, 0.78], "dimColor": [0.62, 0.58, 0.5],
-      "continueKeys": ["Return", "KeypadEnter", "Space"], "campKeys": ["Escape"],
-      "nudgeBackM": 8.0, "campZone": "hub_camp", "campSpot": "hearth",
+      "fadeInS": 1.6,
+      "minShowS": 1.0,
+      "backdropAlpha": 0.82,
+      "titleSize": 46,
+      "lineSize": 22,
+      "hintSize": 18,
+      "titleY": 0.3,
+      "lineGap": 1.5,
+      "color": [
+        0.93,
+        0.88,
+        0.78
+      ],
+      "dimColor": [
+        0.62,
+        0.58,
+        0.5
+      ],
+      "continueKeys": [
+        "Return",
+        "KeypadEnter",
+        "Space"
+      ],
+      "campKeys": [
+        "Escape"
+      ],
+      "nudgeBackM": 8.0,
+      "campZone": "hub_camp",
+      "campSpot": "hearth",
       "onlyWhenNoEnemyAlive": true
     }
   ],
@@ -465,6 +516,15 @@
           ],
           "yaw": 180,
           "note": "laneMONSTER3 (Grendel): arrival from zone 4, facing back into the camp"
+        },
+        {
+          "id": "npc_horse",
+          "pos": [
+            -6.4,
+            87.0
+          ],
+          "yaw": 90,
+          "note": "laneHORSE v2: static warhorse, 3.8 m west of the trader on flat ground, facing the walk path (+x). PLACEHOLDER until looked at in the built camp."
         }
       ],
       "spawns": [],

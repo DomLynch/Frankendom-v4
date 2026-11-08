@@ -45,6 +45,11 @@
       "id": "remnant2",
       "group": "remnant",
       "visual": false
+    },
+    {
+      "id": "mount",
+      "group": "",
+      "visual": false
     }
   ],
   "zones": [
@@ -283,9 +288,21 @@
         "sheen": 0.35
       }
     },
-    "baseColorTextures": ["baseColorTexture", "_BaseColorMap", "_MainTex"],
-    "normalTextures": ["normalTexture", "_NormalMap", "_BumpMap"],
-    "baseColorProps": ["baseColorFactor", "_BaseColor", "_Color"]
+    "baseColorTextures": [
+      "baseColorTexture",
+      "_BaseColorMap",
+      "_MainTex"
+    ],
+    "normalTextures": [
+      "normalTexture",
+      "_NormalMap",
+      "_BumpMap"
+    ],
+    "baseColorProps": [
+      "baseColorFactor",
+      "_BaseColor",
+      "_Color"
+    ]
   },
   "drop": {
     "enabled": true,
@@ -361,7 +378,15 @@
   },
   "items": [
     {
-      "id": "joan_tunic", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "joan_tunic",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Heraldic tunic",
       "slot": "chest",
       "layer": "Layer_Tunic",
@@ -380,10 +405,28 @@
       "dropFrom": [],
       "dropChance": 0,
       "notes": "Joan base layer (ch13 chef_base glb node Layer_Tunic, material Heraldry). Already on the wearer: equipping shows it. Zones are a first guess, tune after one render.",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "joan_helmet", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "joan_helmet",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Steel helm",
       "slot": "head",
       "layer": "Layer_Helmet",
@@ -399,10 +442,28 @@
       "dropFrom": [],
       "dropChance": 0,
       "notes": "Joan base layer (Layer_Helmet, material Steel). Not in the default loadout (bare headed); a closed helm hides the whole head zone.",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "joan_bracers", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "joan_bracers",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Leather bracers",
       "slot": "arms",
       "layer": "Layer_Bracers",
@@ -419,10 +480,28 @@
       "dropFrom": [],
       "dropChance": 0,
       "notes": "Joan base layer (Layer_Bracers, material Leather).",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "joan_greaves", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "joan_greaves",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Steel greaves",
       "slot": "legs",
       "layer": "Layer_Greaves",
@@ -441,10 +520,28 @@
       "dropFrom": [],
       "dropChance": 0,
       "notes": "Joan base layer (Layer_Greaves, material Steel).",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "joan_tabard", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "joan_tabard",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Heraldic tabard",
       "slot": "chest",
       "glb": "Gear/joan_tabard.glb",
@@ -470,10 +567,28 @@
         }
       },
       "notes": "GEAR2. kits_out/3d/gear/joan_tabard/joan_tabard.glb (laneTABARD, 11k tris, 14 bones of the 106 rig, material 'Tabard', double sided, KHR sheen) -> StreamingAssets/Gear/joan_tabard.glb (apply_gear2.ps1). Red wool: metallic 0, smoothness 0.2, normal 0.8, sheen 0.5 (needs the sheen shader, else plain Lit). hidesLayers Layer_Tunic: the sleeved shirt layer goes while the tabard is worn (same chest slot, so equipping it replaces joan_tunic anyway). coversZones empty ON PURPOSE: open sides + split hem, masking torso/pelvis would leave holes at the sides. To wear it: Joan roster loadout joan_tabard instead of joan_tunic.",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "joan_boots", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "joan_boots",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Leather boots",
       "slot": "legs",
       "glb": "Gear/joan_boots.glb",
@@ -503,10 +618,28 @@
         }
       },
       "notes": "GEAR2 PLACEHOLDER PATH: kits_out/3d/gear/joan_boots/joan_boots.glb is being made (laneBOOTS); file name, material names and zones are guesses. Missing file = stats only, one warning, no masking, the legs show bare. Same legs slot as joan_greaves (boots replace the greaves layer; hidesLayers Layer_Greaves keeps it off even if greaves sit in another slot later). coversZones feet + shins: masked ONLY after the glb loaded, so a missing asset never leaves a hole. Material rows: '*' = leather; a metal part named Steel / a leather part named Leather pick up materials.byName (exact names beat '*'). Rename/add rows when the glb exists (python _agents/laneGEAR2/tools/glb_materials.py <glb> prints the names).",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "pitborn_pauldron_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "pitborn_pauldron_joan",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Pitborn pauldrons",
       "slot": "arms",
       "glb": "Gear/pitborn_pauldron_joan_R.glb",
@@ -533,10 +666,28 @@
         }
       },
       "notes": "GEAR2. Pair: pitborn_pauldron_joan_R.glb (glb) + _L.glb (glbMirror), laneDROP1b refit to Joan (dome on RightShoulder, lames on RightArm, 1.75 cm offset), one material 'pitborn_pauldron.001' (dark steel + gold): metallic 0.85, smoothness 0.5. kits_out/3d/gear/pitborn_pauldron/ -> StreamingAssets/Gear/. coversZones empty on purpose: it is a 5 mm plate standing 1.75 cm off the body, a mask under it would show holes with the arm raised. Known: cross-body slash frames 6-16 still clip on the R side (GEAR_ITEM.md). Slot arms: replaces the leather bracers. Replaces pitborn_pauldron as THE first drop (dropChance 1.0).",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "pitborn_pauldron", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "pitborn_pauldron",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Pitborn pauldron",
       "slot": "arms",
       "glb": "Gear/pitborn_pauldron.glb",
@@ -561,10 +712,28 @@
         }
       },
       "notes": "glb = StreamingAssets/Gear/pitborn_pauldron.glb (female fit, kept so existing loot_save.json entries still resolve). SUPERSEDED by pitborn_pauldron_joan (R+L, refit to Joan): no longer drops. Right plate only, fitted to mh-female-01, NOT to the chef body: expect clipping and a gap.",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "pauldron_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "pauldron_joan",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Steel pauldron (dome + 3 lames)",
       "slot": "arms",
       "glb": "Gear/pauldron_joan_R.glb",
@@ -590,10 +759,28 @@
         }
       },
       "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 3/10 (dome oversized, reaches toward the neck, intersects the body in all poses): NOT READY, kept out of the drop table. Same arms slot as the vambrace and as pitborn_pauldron_joan: only one of the three can be worn (a separate shoulders slot would let pauldron + vambrace combine, see MANIFEST). coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3).",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "vambrace_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "vambrace_joan",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Steel vambrace with straps",
       "slot": "arms",
       "glb": "Gear/vambrace_joan_R.glb",
@@ -621,10 +808,28 @@
         }
       },
       "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 6/10: rest clearance 0.9-1.1 cm, intersects in elbow-110, Run12, Heavy24 and a few attack frames; straps are leather in the same atlas (one material, so the metallic row is a compromise: the metallic-roughness map is not converted). coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3).",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "gorget_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "gorget_joan",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Steel gorget (collar + 4 lames)",
       "slot": "chest",
       "glb": "Gear/gorget_joan_R.glb",
@@ -649,10 +854,28 @@
         }
       },
       "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 4/10: 29 verts inside the body at rest, bulky. ONE symmetric piece: the file keeps the runner's _R name, gorget_joan_L.glb is not used. Chest slot = replaces the tabard / tunic while worn. coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3).",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "greave_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "greave_joan",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Steel greave (shin plate + knee cop)",
       "slot": "legs",
       "glb": "Gear/greave_joan_R.glb",
@@ -680,10 +903,28 @@
         }
       },
       "notes": "GEAR2 from kits_out/3d/gear/armour3/gear.json (laneARMOUR3). armour3 self-score 6/10: R rest clearance 0.55 cm (below the 1 cm target), L intersects in walk / attack / knee-80 frames, flat shin plate. Legs slot = replaces joan_boots / joan_greaves. coversZones empty as in their row (overlay plates, no body mask). dropFrom Pitborn but dropChance 0 (theirs 0.3).",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "pitborn_chest", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "pitborn_chest",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Pitborn cuirass",
       "slot": "chest",
       "glb": "Gear/pitborn_chest_joan.glb",
@@ -701,10 +942,28 @@
       ],
       "dropChance": 1.0,
       "notes": "v87 PLACEHOLDER (Dom): Pitborn's chest piece drop. The glb does not exist yet, the art comes later: a missing glb = stats only, no visual, no exception. Drops with the pauldrons and the maul on the first win.",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "pitborn_maul", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "pitborn_maul",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Pitborn's maul",
       "slot": "mainHand",
       "glb": "Gear/pitborn_maul_joan_LOD0.glb",
@@ -745,7 +1004,15 @@
       }
     },
     {
-      "id": "bascinet_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "bascinet_joan",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Steel bascinet (open face, aventail edge)",
       "slot": "head",
       "glb": "Gear/bascinet_joan.glb",
@@ -774,10 +1041,28 @@
         }
       },
       "notes": "v2: smooth pointed bascinet (analytic ogive skull over a low-order scalp fit, straight brow edge, flared raised neck guard), 4.2 mm plate, 9 mm brass rolled edge, steel #4a4a4e metallic 0.85 roughness 0.34-0.46 brushed, subtle hammering (max tilt ~4 deg). 0 intersecting tris vs head in rest/turn/tilt/neck poses; 0 overlaps with body/tunic in all 11 gameplay actions (min 7.9 mm to tunic in Death); only Stress_OverheadRoll clips. Old files in _work/v1.",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
-      "id": "cap_joan", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "cap_joan",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Steel kettle cap",
       "slot": "head",
       "glb": "Gear/cap_joan.glb",
@@ -806,7 +1091,17 @@
         }
       },
       "notes": "v2: kettle hat, round elliptical dome + flat even 3.8 cm brim (9 deg droop), 9 mm brass rolled edge, same steel material. 0 overlaps in all actions (min 0.6 mm brim-to-body in Roll, no overlap).",
-      "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     },
     {
       "id": "sobek_claws",
@@ -903,7 +1198,15 @@
       }
     },
     {
-      "id": "sobek_trident", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""},
+      "id": "sobek_trident",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
       "name": "Sobek's trident",
       "slot": "mainHand",
       "glb": "Gear/sobek_trident_LOD0.glb",
@@ -934,7 +1237,59 @@
         "ikBlendSeconds": 0.15
       }
     },
-  {"id": "joan_shield", "name": "Gothic round shield", "slot": "offHand", "glb": "Gear/shield_joan_LOD0.glb", "resource": "", "part": "", "coversZones": [], "hidesLayers": [], "stats": {"armor": 0, "poise": 0, "weight": 2.5}, "dropFrom": [], "dropChance": 0, "notes": "SHIELD v1 (laneSHIELD): the owner's round shield (Downloads medieval shield 3d model.glb, Tripo, 1.93M tris 3x4096 maps) decimated to LOD0 30000 tris / 4096 maps (ASSETAUDIT: Dom's original base + normal bytes and a mask map from his metal-rough texture) (LOD1 8000 / 1024 ships as shield_joan_LOD1.glb, no loader swaps it yet; a LOD2 of 2000 tris was made and NOT shipped: its normal map breaks up). 0.60 m round, origin = the grip bar, +Z = the face, +Y up. Left hand: shield_mount.json rows (socket, per-state tuck / hide), grip pose = row curl. shield{} = the cover rule: guard side 'left' (the shield arm) ALSO covers overhead and thrust swings as a block (never a parry); blocks with that guard put 10 percent less posture on her; a block only the shield covered costs 25 percent more stamina. Nothing else changes: parry window, other guard sides, damage, reach. weight 2.5 only matters when her whole kit passes weightFree 6 (stamina regen). Remove the item from roster.json loadout = exactly today's fight.", "materials": {"*": {"smoothness": 0.3, "metallic": 0.12, "normalScale": 1.0, "useGlbMaps": true}}, "shield": {"id": "joan_shield", "sideGuard": "left", "cover": [{"guard": "left", "attacks": ["overhead", "thrust"]}], "blockStaminaMul": 1.25, "blockPostureMul": 0.9, "cueEvent": "block_shield"}, "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}},
+    {
+      "id": "joan_shield",
+      "name": "Gothic round shield",
+      "slot": "offHand",
+      "glb": "Gear/shield_joan_LOD0.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 2.5
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "SHIELD v1 (laneSHIELD): the owner's round shield (Downloads medieval shield 3d model.glb, Tripo, 1.93M tris 3x4096 maps) decimated to LOD0 30000 tris / 4096 maps (ASSETAUDIT: Dom's original base + normal bytes and a mask map from his metal-rough texture) (LOD1 8000 / 1024 ships as shield_joan_LOD1.glb, no loader swaps it yet; a LOD2 of 2000 tris was made and NOT shipped: its normal map breaks up). 0.60 m round, origin = the grip bar, +Z = the face, +Y up. Left hand: shield_mount.json rows (socket, per-state tuck / hide), grip pose = row curl. shield{} = the cover rule: guard side 'left' (the shield arm) ALSO covers overhead and thrust swings as a block (never a parry); blocks with that guard put 10 percent less posture on her; a block only the shield covered costs 25 percent more stamina. Nothing else changes: parry window, other guard sides, damage, reach. weight 2.5 only matters when her whole kit passes weightFree 6 (stamina regen). Remove the item from roster.json loadout = exactly today's fight.",
+      "materials": {
+        "*": {
+          "smoothness": 0.3,
+          "metallic": 0.12,
+          "normalScale": 1.0,
+          "useGlbMaps": true
+        }
+      },
+      "shield": {
+        "id": "joan_shield",
+        "sideGuard": "left",
+        "cover": [
+          {
+            "guard": "left",
+            "attacks": [
+              "overhead",
+              "thrust"
+            ]
+          }
+        ],
+        "blockStaminaMul": 1.25,
+        "blockPostureMul": 0.9,
+        "cueEvent": "block_shield"
+      },
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
+    },
     {
       "id": "cuirass_joan",
       "shield": {
@@ -1427,6 +1782,317 @@
         "ikBlendSeconds": 0.15
       }
     },
-    {"id": "joan_bow", "shield": {"id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": ""}, "name": "Hunter's bow", "slot": "mainHand", "glb": "Gear/joan_bow_LOD0.glb", "resource": "", "part": "", "coversZones": [], "hidesLayers": [], "stats": {"armor": 0, "poise": 0, "weight": 0}, "dropFrom": [], "dropChance": 0.0, "materials": {"*": {"smoothness": 0.2, "metallic": 0.08, "normalScale": 1.0}}, "notes": "BOW v2 (laneBOW): visual home of the bow mode only (BowVisual.cs parents this glb to the left hand while the bow is up). No weapon block on purpose: equipping it through the loot UI is not a feature. glb = V1 bow-v1.glb (240 KB, EXT_texture_webp), source kit/source/v1_bow_clips/bow-v1.PROVENANCE.txt.", "weapon": {"damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15}}
-]
+    {
+      "id": "joan_bow",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Hunter's bow",
+      "slot": "mainHand",
+      "glb": "Gear/joan_bow_LOD0.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "materials": {
+        "*": {
+          "smoothness": 0.2,
+          "metallic": 0.08,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "BOW v2 (laneBOW): visual home of the bow mode only (BowVisual.cs parents this glb to the left hand while the bow is up). No weapon block on purpose: equipping it through the loot UI is not a feature. glb = V1 bow-v1.glb (240 KB, EXT_texture_webp), source kit/source/v1_bow_clips/bow-v1.PROVENANCE.txt.",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
+    },
+    {
+      "id": "knight_sword",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Knight's sword",
+      "slot": "mainHand",
+      "glb": "",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 3.0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "laneMARKET v1 vendor weapon. glb empty = WeaponSwap keeps Joan's own sword model, only the multipliers change (a warning is logged). A real model is an optional art task.",
+      "weapon": {
+        "id": "knight_sword",
+        "twoHanded": false,
+        "damageMul": 1.15,
+        "speedMul": 1.0,
+        "reachMul": 1.0,
+        "postureMul": 1.0,
+        "cueWeapon": "sword",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      }
+    },
+    {
+      "id": "war_axe",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "War axe",
+      "slot": "mainHand",
+      "glb": "Gear/Erlking_axe.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 1,
+        "weight": 6.0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "laneMARKET v1 vendor weapon. STAND-IN art: Erlking's axe glb. Own model optional.",
+      "weapon": {
+        "id": "war_axe",
+        "twoHanded": true,
+        "damageMul": 1.3,
+        "speedMul": 0.85,
+        "reachMul": 0.85,
+        "postureMul": 1.5,
+        "cueWeapon": "maul",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15,
+        "unarmed": false,
+        "tipBone": "mixamorig:RightHand",
+        "tipOffsetM": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "socket": "WeaponSocket_R"
+      },
+      "materials": {
+        "*": {
+          "smoothness": 0.35,
+          "metallic": 0.7,
+          "normalScale": 1.0
+        }
+      }
+    },
+    {
+      "id": "iron_maul",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Iron maul",
+      "slot": "mainHand",
+      "glb": "Gear/pitborn_maul_joan_LOD0.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 1,
+        "weight": 8.0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "laneMARKET v1 vendor weapon. STAND-IN art: the Pitborn maul glb (a plain iron retexture would be a look item for Dom).",
+      "weapon": {
+        "id": "iron_maul",
+        "twoHanded": true,
+        "damageMul": 1.35,
+        "speedMul": 0.8,
+        "reachMul": 0.9,
+        "postureMul": 1.6,
+        "cueWeapon": "maul",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      },
+      "materials": {
+        "*": {
+          "smoothness": 0.35,
+          "metallic": 0.7,
+          "normalScale": 1.0
+        }
+      }
+    },
+    {
+      "id": "boar_spear",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Boar spear",
+      "slot": "mainHand",
+      "glb": "Gear/sobek_trident_LOD0.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 3.0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "laneMARKET v1 vendor weapon. STAND-IN art: Sobek's trident glb (its reach 1.768 is measured; 1.5 here is a guess, retune after one fight).",
+      "weapon": {
+        "id": "boar_spear",
+        "twoHanded": false,
+        "damageMul": 0.95,
+        "speedMul": 1.05,
+        "reachMul": 1.5,
+        "postureMul": 1.0,
+        "cueWeapon": "sword",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      },
+      "materials": {
+        "*": {
+          "smoothness": 0.35,
+          "metallic": 0.7,
+          "normalScale": 1.0
+        }
+      }
+    },
+    {
+      "id": "hunting_bow",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Hunting bow",
+      "slot": "mainHand",
+      "glb": "",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 1,
+        "weight": 2.0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "laneMARKET v1 vendor weapon. NEEDS THE BOW COMBAT PORT: ranged attack, projectile, aim, draw/release clips and a glb do not exist. Held back from stock by default; equipped today it would act as a sword.",
+      "weapon": {
+        "id": "hunting_bow",
+        "twoHanded": true,
+        "damageMul": 0.8,
+        "speedMul": 1.0,
+        "reachMul": 6.0,
+        "postureMul": 0.5,
+        "cueWeapon": "bow",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15,
+        "ranged": true,
+        "needsPort": "bow_combat"
+      }
+    },
+    {
+      "id": "mount_horse",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Warhorse",
+      "slot": "mount",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "laneHORSE: owning this item unlocks the mount (MountRider reads loot_save owned[] for mount.json requireOwned). Not wearable: slot 'mount' has no wearer. Sold by the stable vendor (market.json z7_trade_c). The glb is loaded by MountRider from StreamingAssets, not by the gear loader.",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    }
+  ]
 }

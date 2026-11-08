@@ -1,0 +1,97 @@
+{
+  "_about": "lanePOTIONS v1 (supersedes laneMARKET v1). Read by PotionCfg.cs. enabled false = the whole feature is OFF (no use key, no HUD chip, no stack trade, the save keeps any stacks it holds). Fractions are of the player's max health / stamina (DuelFighter maxHealth 150, maxStamina 100). overSeconds > 0 pays the amount out per sim tick over that time. cooldownS is per potion id. buyValue = the vendor price in silver (stock it by listing the id in a stall's items: market.json stalls[].items / hub.json stall.buy.items; sell = market.json rules.sellRatio x buyValue, at least minSell). maxCarry caps the stack. Only kind heal and stamina are implemented; the poise tonic (kind buff) stays as data and is neither sold nor usable until a stat hook exists.",
+  "version": 2,
+  "enabled": true,
+  "debugLog": false,
+  "useKeys": [
+    "H",
+    "JoystickButton6"
+  ],
+  "cycleKeys": [
+    "J"
+  ],
+  "_keysNote": "R is the camera recenter (controls.json), pad button 3 is the stall Buy tab, 7 closes the panel, 8 is the bow toggle, 9 is used by controls. H, J and pad 6 (Back / View) are unused in controls.json, loot_ui.json, hub.json and the Roslyn KeyCode scan.",
+  "rules": {
+    "refuseWhenFull": true,
+    "blockInFinisher": true,
+    "blockInMenus": true,
+    "blockStates": ["Dead", "Down", "Stagger", "Roll", "Windup", "Active"]
+  },
+  "hud": {
+    "enabled": true,
+    "leftPx": 36.0,
+    "bottomPx": 170.0,
+    "widthPx": 380.0,
+    "barH": 3.0,
+    "toastSeconds": 1.6,
+    "toastGapPx": 6.0,
+    "nameSize": 18,
+    "hintSize": 12,
+    "toastSize": 17
+  },
+  "text": {
+    "chip": "{0}   {1}   x{2}",
+    "chipNone": "{0}   No potions",
+    "cycleHint": "{0}  Swap potion",
+    "tagQty": "x{0}",
+    "tagFull": "Full",
+    "healed": "+{0} health",
+    "stamina": "Stamina restored",
+    "bought": "Bought {0} for {1} silver.",
+    "sold": "Sold {0} for {1} silver.",
+    "refuseNone": "No potions left.",
+    "refuseCooldown": "Not ready yet.",
+    "refuseFull": "Already full.",
+    "refuseBusy": "Not now.",
+    "descHealFlat": "Restores {0} health",
+    "descHealFrac": "Restores {0}% of your health",
+    "descOver": " over {0} s",
+    "descStamina": "Restores {0}% of your stamina",
+    "descCooldown": "    Ready again after {0} s"
+  },
+  "potions": [
+    {
+      "id": "potion_health_minor",
+      "name": "Minor healing draught",
+      "kind": "heal",
+      "healFlat": 40,
+      "healFracOfMax": 0.0,
+      "overSeconds": 0.0,
+      "cooldownS": 8.0,
+      "buyValue": 2,
+      "maxCarry": 9
+    },
+    {
+      "id": "potion_health",
+      "name": "Healing draught",
+      "kind": "heal",
+      "healFlat": 0,
+      "healFracOfMax": 0.5,
+      "overSeconds": 4.0,
+      "cooldownS": 10.0,
+      "buyValue": 5,
+      "maxCarry": 6
+    },
+    {
+      "id": "potion_stamina",
+      "name": "Stamina tonic",
+      "kind": "stamina",
+      "restoreFracOfMax": 1.0,
+      "overSeconds": 0.0,
+      "cooldownS": 12.0,
+      "buyValue": 3,
+      "maxCarry": 6
+    },
+    {
+      "id": "potion_poise",
+      "name": "Ironhide tonic",
+      "kind": "buff",
+      "stat": "poise",
+      "add": 4,
+      "forSeconds": 45.0,
+      "cooldownS": 30.0,
+      "buyValue": 5,
+      "maxCarry": 3
+    }
+  ]
+}
