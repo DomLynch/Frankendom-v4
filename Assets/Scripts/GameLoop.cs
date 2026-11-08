@@ -263,7 +263,8 @@ public static class GameLoop
     public static void Label(Rect r, string t, int size, TextAnchor a, bool bold, Color c)
     {
         var st = Style(size, a, bold);
-        st.normal.textColor = new Color(0f, 0f, 0f, c.a * 0.85f); GUI.Label(new Rect(r.x + 1.5f, r.y + 1.5f, r.width, r.height), t, st);
+        var ZE = ZoneUiCfg.Get().end;   // UIDATA_C v1
+        st.normal.textColor = new Color(0f, 0f, 0f, c.a * ZE.shadowAlpha); GUI.Label(new Rect(r.x + ZE.shadowOffset, r.y + ZE.shadowOffset, r.width, r.height), t, st);
         st.normal.textColor = c; GUI.Label(r, t, st);
     }
 
@@ -272,7 +273,8 @@ public static class GameLoop
     // Every size, colour and string is hud.json screens{} / colors{} / fonts{}. The prompts are clickable; keys are GameLoopDriver.Update.
     public static void DrawEnd(float vw, float vh)
     {
-        float a = ScreenAlpha; if (a <= 0.001f || Outcome == Result.None || ZonesNoEnd) return;   // SEAMLESS v1: the one drawer of the end card stands down in zones
+        var ZE = ZoneUiCfg.Get().end;   // UIDATA_C v1
+        float a = ScreenAlpha; if (a <= ZE.fadeEps || Outcome == Result.None || ZonesNoEnd) return;   // SEAMLESS v1: the one drawer of the end card stands down in zones
         var H = HudCfg.Get(); var S = H.screens; var C = H.colors; bool win = Outcome == Result.Victory;
         var E = win ? S.victory : S.defeat; Color accent = HudCfg.Col(E.color); Color tint = LookOptions.DeathTint(win, HudCfg.Col(win ? S.victoryTint : S.defeatTint));   // LOOKOPT v95: deathWash switch (look_options.json), off = hud.json tint
         bool rep = Event.current.type == EventType.Repaint; float e = a * a * (3f - 2f * a);
@@ -283,7 +285,7 @@ public static class GameLoop
         if (rep)
         {
             Fill(new Rect(0, 0, vw, vh), new Color(0f, 0f, 0f, S.dimAlpha * a));
-            HudDraw.Tex(new Rect(0, 0, vw, vh), HudDraw.Vignette(), new Color(tint.r, tint.g, tint.b, 0.9f * a));
+            HudDraw.Tex(new Rect(0, 0, vw, vh), HudDraw.Vignette(), new Color(tint.r, tint.g, tint.b, ZE.vignetteAlpha * a));
             HudDraw.Tex(new Rect(0, y0, vw, bh), HudDraw.BandV(), new Color(0f, 0f, 0f, S.bandAlpha * a));
             if (LookOptions.PlateAlpha(S.plateAlpha) > 0f)   // GOOSEBACKLOG v100: endPlate switch (look_options.json), off = hud.json; HUDFIX v92: backing plate (solid middle + feathered sides) so the text never sits straight on the corpse / Joan
             {
@@ -295,51 +297,51 @@ public static class GameLoop
         }
         var row = CurrentRow();
         string fight = string.Format(S.fightText, FightNumber, string.IsNullOrEmpty(row.title) ? Cap(Roster.EnemyName) : row.title);
-        float ty = y0 + 70f - S.titleLift, th = S.titleSize * 1.35f;
+        float ty = y0 + ZE.titleY - S.titleLift, th = S.titleSize * ZE.titleHMul;
         float track = Mathf.Round(S.titleTracking + S.titleTrackingExtra * (1f - e));                    // the letters settle inwards as the screen fades in
         if (rep)
         {
-            HudDraw.Caps(cx, y0 + 40f, 0.5f, fight, "serif", S.nextLabelSize, S.nextLabelSize, 3f, new Color(sec.r, sec.g, sec.b, sec.a * a), false);   // HUDFIX v92
+            HudDraw.Caps(cx, y0 + ZE.fightY, 0.5f, fight, "serif", S.nextLabelSize, S.nextLabelSize, ZE.fightTracking, new Color(sec.r, sec.g, sec.b, sec.a * a), false);   // HUDFIX v92
             HudDraw.Caps(cx, ty, 0.5f, E.title, "title", S.titleSize, S.titleSize, track, new Color(accent.r, accent.g, accent.b, a));
-            float ry = ty + th + 8f, hw = S.ruleW * 0.5f, ds = 9f; Color ac = new Color(accent.r, accent.g, accent.b, 0.8f * a);
-            HudDraw.TexUV(new Rect(cx - hw, ry, hw - ds, 1.3f), HudDraw.GradH(), new Rect(1f, 0f, -1f, 1f), ac);   // opaque at the centre, fades outwards
-            HudDraw.TexUV(new Rect(cx + ds, ry, hw - ds, 1.3f), HudDraw.GradH(), new Rect(0f, 0f, 1f, 1f), ac);
-            HudDraw.Tex(new Rect(cx - ds * 0.5f, ry + 0.65f - ds * 0.5f, ds, ds), HudDraw.Diamond(), ac);
-            float sy = ry + 18f;
-            HudDraw.Text(new Rect(0, sy, vw, S.subtitleSize * 1.6f), string.Format(E.subtitle, Cap(Roster.EnemyName)), "serif", S.subtitleSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.ink, a * 0.95f), S.subtitleItalic);
-            if (S.showStats) HudDraw.Text(new Rect(0, sy + S.subtitleSize * 1.7f, vw, S.statsSize * 1.6f), StatsLine(), "serif", S.statsSize, TextAnchor.UpperCenter, false, new Color(sec.r, sec.g, sec.b, sec.a * a));   // HUDFIX v92
+            float ry = ty + th + ZE.ruleGap, hw = S.ruleW * 0.5f, ds = ZE.ruleDiamond; Color ac = new Color(accent.r, accent.g, accent.b, ZE.ruleAlpha * a);
+            HudDraw.TexUV(new Rect(cx - hw, ry, hw - ds, ZE.ruleThick), HudDraw.GradH(), new Rect(1f, 0f, -1f, 1f), ac);   // opaque at the centre, fades outwards
+            HudDraw.TexUV(new Rect(cx + ds, ry, hw - ds, ZE.ruleThick), HudDraw.GradH(), new Rect(0f, 0f, 1f, 1f), ac);
+            HudDraw.Tex(new Rect(cx - ds * 0.5f, ry + ZE.ruleCenter - ds * 0.5f, ds, ds), HudDraw.Diamond(), ac);
+            float sy = ry + ZE.subGap;
+            HudDraw.Text(new Rect(0, sy, vw, S.subtitleSize * ZE.subLineH), string.Format(E.subtitle, Cap(Roster.EnemyName)), "serif", S.subtitleSize, TextAnchor.UpperCenter, false, HudCfg.Col(C.ink, a * ZE.subAlpha), S.subtitleItalic);
+            if (S.showStats) HudDraw.Text(new Rect(0, sy + S.subtitleSize * ZE.statsGapMul, vw, S.statsSize * ZE.statsLineH), StatsLine(), "serif", S.statsSize, TextAnchor.UpperCenter, false, new Color(sec.r, sec.g, sec.b, sec.a * a));   // HUDFIX v92
         }
 
-        bool canNext = win || S.nextOnDefeat; bool live = a >= 0.5f && !GameLoopDriver.Transitioning;
-        float slot = S.buttonW + S.buttonGap, py = y0 + bh - S.promptY - S.promptSize * 1.5f - S.promptHintSize * 1.9f;
+        bool canNext = win || S.nextOnDefeat; bool live = a >= ZE.liveAlpha && !GameLoopDriver.Transitioning;
+        float slot = S.buttonW + S.buttonGap, py = y0 + bh - S.promptY - S.promptSize * ZE.promptTitleMul - S.promptHintSize * ZE.promptHintMul;
         if (canNext)
         {
-            if (Prompt(new Rect(cx - slot * 0.5f - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * 1.5f + S.promptHintSize * 1.9f), S.retryText, S.retryHint, false, accent, a, live, rep)) Retry();
-            if (Prompt(new Rect(cx + slot * 0.5f - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * 1.5f + S.promptHintSize * 1.9f), S.nextText, S.confirmHint, true, accent, a, live, rep)) Next();
-            if (win && rep) HudDraw.Text(new Rect(0, py + S.promptSize * 1.5f + S.promptHintSize * 2.1f, vw, S.nextLabelSize * 1.6f), string.Format(S.nextPreview, NextRow().title.Length > 0 ? NextRow().title : Cap(string.IsNullOrEmpty(NextRow().name) ? Roster.EnemyName : NextRow().name)), "serif", S.nextLabelSize, TextAnchor.UpperCenter, false, new Color(sec.r, sec.g, sec.b, sec.a * a), true);   // HUDFIX v92
+            if (Prompt(new Rect(cx - slot * 0.5f - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * ZE.promptTitleMul + S.promptHintSize * ZE.promptHintMul), S.retryText, S.retryHint, false, accent, a, live, rep)) Retry();
+            if (Prompt(new Rect(cx + slot * 0.5f - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * ZE.promptTitleMul + S.promptHintSize * ZE.promptHintMul), S.nextText, S.confirmHint, true, accent, a, live, rep)) Next();
+            if (win && rep) HudDraw.Text(new Rect(0, py + S.promptSize * ZE.promptTitleMul + S.promptHintSize * ZE.nextPreviewGap, vw, S.nextLabelSize * ZE.nextPreviewLineH), string.Format(S.nextPreview, NextRow().title.Length > 0 ? NextRow().title : Cap(string.IsNullOrEmpty(NextRow().name) ? Roster.EnemyName : NextRow().name)), "serif", S.nextLabelSize, TextAnchor.UpperCenter, false, new Color(sec.r, sec.g, sec.b, sec.a * a), true);   // HUDFIX v92
         }
-        else if (Prompt(new Rect(cx - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * 1.5f + S.promptHintSize * 1.9f), S.retryText, S.retryHintDefeat, true, accent, a, live, rep)) Retry();
+        else if (Prompt(new Rect(cx - S.buttonW * 0.5f, py, S.buttonW, S.promptSize * ZE.promptTitleMul + S.promptHintSize * ZE.promptHintMul), S.retryText, S.retryHintDefeat, true, accent, a, live, rep)) Retry();
         } finally { HudDraw.Outline = 0f; }   // HUDFIX v92
     }
 
     // a small text prompt: tracked small-caps label, the key hint under it; the primary one is bright with a diamond on each side and a thin rule, the other dim. Returns true when clicked.
     static bool Prompt(Rect r, string label, string keyHint, bool primary, Color accent, float a, bool live, bool rep)
     {
-        var S = HudCfg.Get().screens; var C = HudCfg.Get().colors;
+        var S = HudCfg.Get().screens; var C = HudCfg.Get().colors; var ZE = ZoneUiCfg.Get().end;   // UIDATA_C v1
         bool hover = live && r.Contains(Event.current.mousePosition);
         if (rep)
         {
-            float k = primary ? 1f : hover ? 0.95f : 0.8f;   // HUDFIX v92: non-primary prompt 0.62 -> 0.8
+            float k = primary ? 1f : hover ? ZE.hoverK : ZE.idleK;   // HUDFIX v92: non-primary prompt 0.62 -> 0.8
             Color col = HudCfg.Col(C.ink, a * k);
-            float w = HudDraw.Caps(r.center.x, r.y, 0.5f, label, "title", S.promptSize, Mathf.Max(8, S.promptSize - 4), 2.5f, col);
+            float w = HudDraw.Caps(r.center.x, r.y, 0.5f, label, "title", S.promptSize, Mathf.Max(ZE.promptSmallMin, S.promptSize - ZE.promptSmallDelta), ZE.promptTracking, col);
             if (primary || hover)
             {
-                float ds = 7f; Color ac = new Color(accent.r, accent.g, accent.b, a * (primary ? 1f : 0.7f)); float cy = r.y + S.promptSize * 0.78f;
-                HudDraw.Tex(new Rect(r.center.x - w * 0.5f - 18f - ds, cy - ds * 0.5f, ds, ds), HudDraw.Diamond(), ac);
-                HudDraw.Tex(new Rect(r.center.x + w * 0.5f + 18f, cy - ds * 0.5f, ds, ds), HudDraw.Diamond(), ac);
-                Fill(new Rect(r.center.x - w * 0.5f, r.y + S.promptSize * 1.5f, w, 1f), new Color(accent.r, accent.g, accent.b, 0.7f * a));
+                float ds = ZE.promptDiamond; Color ac = new Color(accent.r, accent.g, accent.b, a * (primary ? 1f : ZE.promptDiamondIdleA)); float cy = r.y + S.promptSize * ZE.promptDiamondY;
+                HudDraw.Tex(new Rect(r.center.x - w * 0.5f - ZE.promptDiamondGap - ds, cy - ds * 0.5f, ds, ds), HudDraw.Diamond(), ac);
+                HudDraw.Tex(new Rect(r.center.x + w * 0.5f + ZE.promptDiamondGap, cy - ds * 0.5f, ds, ds), HudDraw.Diamond(), ac);
+                Fill(new Rect(r.center.x - w * 0.5f, r.y + S.promptSize * ZE.promptRuleY, w, ZE.promptRuleH), new Color(accent.r, accent.g, accent.b, ZE.promptRuleA * a));
             }
-            HudDraw.Text(new Rect(r.x, r.y + S.promptSize * 1.6f, r.width, S.promptHintSize * 1.6f), keyHint, "serif", S.promptHintSize, TextAnchor.UpperCenter, false, HudCfg.Col(S.secondary, a));   // HUDFIX v92
+            HudDraw.Text(new Rect(r.x, r.y + S.promptSize * ZE.promptHintY, r.width, S.promptHintSize * ZE.promptHintLineH), keyHint, "serif", S.promptHintSize, TextAnchor.UpperCenter, false, HudCfg.Col(S.secondary, a));   // HUDFIX v92
         }
         return GUI.Button(r, GUIContent.none, GUIStyle.none) && live;
     }
@@ -483,16 +485,17 @@ public sealed class GameLoopDriver : MonoBehaviour
 
     void OnGUI()
     {
-        GUI.depth = -1000;
+        var ZE = ZoneUiCfg.Get().end;   // UIDATA_C v1
+        GUI.depth = ZE.depth;
         var ev = Event.current;
         float s = HudCfg.Scale();
-        if (!STSteer.Active && GameLoop.ScreenAlpha > 0.001f)
+        if (!STSteer.Active && GameLoop.ScreenAlpha > ZE.fadeEps)
         {
             var m = GUI.matrix; GUI.matrix = Matrix4x4.Scale(new Vector3(s, s, 1f));
             GameLoop.DrawEnd(Screen.width / s, Screen.height / s);
             GUI.matrix = m;
         }
-        if (GameLoop.FadeAlpha > 0.001f && ev.type == EventType.Repaint)
+        if (GameLoop.FadeAlpha > ZE.fadeEps && ev.type == EventType.Repaint)
             GameLoop.Fill(new Rect(0, 0, Screen.width, Screen.height), HudCfg.Col(HudCfg.Get().fade.color, GameLoop.FadeAlpha));
     }
 }

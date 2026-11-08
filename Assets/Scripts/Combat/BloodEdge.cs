@@ -177,7 +177,7 @@ public class BloodEdge : MonoBehaviour
         for (int i = 0; i < flashes.Count; i++)
         {
             var f = flashes[i]; float a = Alpha(f);
-            if (a <= 0.001f) continue;
+            if (a <= HudLayout.Get().blood.alphaCutoff /* UIDATA_A v1 */) continue;
             GUI.color = new Color(1f, 1f, 1f, Mathf.Clamp01(a));
             float x = f.edge == 0 ? 0f : Screen.width - w;
             GUI.DrawTexture(new Rect(x, y, w, h), tex[f.edge, f.strip], ScaleMode.StretchToFill, true);

@@ -54,18 +54,20 @@ public static class BossSilver
     internal static bool ToastActive(out string text, out float alpha)
     {
         text = LastToast; alpha = 0f; if (text.Length == 0) return false;
-        var k0 = Get(); float t = Time.unscaledTime - toastT0, d = Mathf.Max(0.5f, k0.toastSeconds); if (t < 0f || t > d) return false;
-        alpha = Mathf.Clamp01(Mathf.Min(t / Mathf.Max(0.001f, k0.toastFadeInS), (d - t) / Mathf.Max(0.001f, k0.toastFadeOutS))); return true;
+        var k0 = Get(); var ZB = ZoneUiCfg.Get().boss; float t = Time.unscaledTime - toastT0, d = Mathf.Max(ZB.minSeconds, k0.toastSeconds); if (t < 0f || t > d) return false;   // UIDATA_C v1
+        alpha = Mathf.Clamp01(Mathf.Min(t / Mathf.Max(ZB.fadeEps, k0.toastFadeInS), (d - t) / Mathf.Max(ZB.fadeEps, k0.toastFadeOutS))); return true;
     }
 }
 
 /// <summary>Draws the "+N silver" toast. Colours / size / position are boss_silver.json.</summary>
 public sealed class BossSilverToast : MonoBehaviour
 {
+    static MenuLayoutCfg.SilverC ML { get { return MenuLayoutCfg.BS; } }   // UIDATAB v1: the IMGUI depth of the toast: menu_layout.json (the rest of the toast is already boss_silver.json)
     void OnGUI()
     {
+        if (Event.current.type != EventType.Repaint) return;   // UIDATA_C v1: draw only, no layout pass
         string text; float a; if (!BossSilver.ToastActive(out text, out a)) return;
-        var k = BossSilver.Get(); GUI.depth = -9000;   // hc:ok IMGUI draw order
+        var k = BossSilver.Get(); GUI.depth = ML.toast.depth;   // hc:ok IMGUI draw order
         var col = HudCfg.Col(k.color, a);
         HudDraw.Text(new Rect(0f, Screen.height - k.toastBottom, Screen.width, k.toastSize * k.toastLineH), text, "serif", k.toastSize, TextAnchor.UpperCenter, false, col);
     }

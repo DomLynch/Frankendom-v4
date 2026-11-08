@@ -14,6 +14,8 @@ using UnityEngine.SceneManagement;
 public sealed class LootUI : MonoBehaviour
 {
     public static LootUI Instance;
+    static MenuLayoutCfg.LootWorldC ML { get { return MenuLayoutCfg.LW; } }   // UIDATAB v1: layout numbers of the pickup labels / toast: menu_layout.json (defaults = the old literals)
+    readonly UiStr.Cat4 promptCat = new UiStr.Cat4(); readonly System.Collections.Generic.Dictionary<string, string> subCache = new System.Collections.Generic.Dictionary<string, string>(); object subFor;   // UIDATAB v1: cached strings (no per-frame concat / format / upper)
     /// <summary>True while the equip screen is open (and on the frame it closed): GameLoopDriver must not read Enter / A / B then.</summary>
     public static bool Blocking { get { return LootScreen.Open || LootScreen.ClosedFrame == Time.frameCount || MarketUI.Blocking; } }   // STALL v1
     /// <summary>True when a pickup is within reach this frame (PlayerBrain may ignore the E roll then; optional hunk).</summary>
@@ -211,8 +213,8 @@ public sealed class LootUI : MonoBehaviour
         var cam = Camera.main; if (cam == null || live.Count == 0) return;
         var L = C.label; var K = C.colors; var T = C.text; Vector3 cp = cam.transform.position;
         // HUDFIX v92: pass 1 = project + cull + de-overlap (stack apart by label.stackGapY), pass 2 = draw
-        slots.Clear(); float topY = L.nameSize * 1.5f + L.minScreenMargin, botY = vh - L.minScreenMargin - 90f;
-        bool plate = GameLoop.Outcome != GameLoop.Result.None && GameLoop.ScreenAlpha > 0.001f; float blockH0 = L.nameSize * 1.5f + 2f + L.lineGap + (L.showSub ? L.subSize * 1.5f + L.promptGap : 0f) + L.promptHeight;
+        slots.Clear(); float topY = L.nameSize * ML.label.nameLineK + L.minScreenMargin, botY = vh - L.minScreenMargin - ML.label.bottomPad;
+        bool plate = GameLoop.Outcome != GameLoop.Result.None && GameLoop.ScreenAlpha > 0.001f; float blockH0 = L.nameSize * ML.label.nameLineK + ML.label.ruleDy + L.lineGap + (L.showSub ? L.subSize * ML.label.subLineK + L.promptGap : 0f) + L.promptHeight;
         if (plate) { var SC = HudCfg.Get().screens; botY = Mathf.Min(botY, vh * 0.5f - SC.bandHeight * 0.5f - SC.bandLift - blockH0 - L.plateGap); }   // HUDPOLISH: labels stay above the end-screen plate, stacked upward
         for (int i = 0; i < live.Count; i++)
         {
@@ -221,10 +223,10 @@ public sealed class LootUI : MonoBehaviour
             Vector3 sp0 = cam.WorldToScreenPoint(p.Anchor + Vector3.up * L.height); if (sp0.z <= 0f) continue;
             float rx = sp0.x / s, ry = (Screen.height - sp0.y) / s;
             if (ry < -L.cullMargin || ry > vh + L.cullMargin || rx < -L.cullMargin || rx > vw + L.cullMargin) continue;   // off screen: no label pinned to the edge
-            slots.Add(new Slot { p = p, d = dist0, x = Mathf.Clamp(rx, L.minScreenMargin + 300f, vw - L.minScreenMargin - 300f), y = Mathf.Clamp(ry, topY, botY) });
+            slots.Add(new Slot { p = p, d = dist0, x = Mathf.Clamp(rx, L.minScreenMargin + ML.label.edgeX, vw - L.minScreenMargin - ML.label.edgeX), y = Mathf.Clamp(ry, topY, botY) });
         }
         slots.Sort((a0, b0) => a0.d.CompareTo(b0.d));   // nearest keeps its spot, the rest move
-        float blockH = L.nameSize * 1.5f + 2f + L.lineGap + (L.showSub ? L.subSize * 1.5f + L.promptGap : 0f);
+        float blockH = L.nameSize * ML.label.nameLineK + ML.label.ruleDy + L.lineGap + (L.showSub ? L.subSize * ML.label.subLineK + L.promptGap : 0f);
         for (int i = 1; i < slots.Count; i++)
         {
             var sl0 = slots[i]; float step = blockH + L.promptHeight + L.stackGapY, y0 = sl0.y;
@@ -235,29 +237,36 @@ public sealed class LootUI : MonoBehaviour
                 if (!hit) break;
                 sl0.y -= step; if (sl0.y < topY) { if (plate) { sl0.y = Mathf.Min(y0, botY); sl0.x = slots[i].x + ((tries & 1) == 0 ? 1f : -1f) * L.boxW * (tries / 2 + 1); } else sl0.y = y0 + step * (tries + 1); }   // HUDPOLISH: no room above the plate = spread sideways   // out of room above: stack downward instead
             }
-            sl0.y = Mathf.Clamp(sl0.y, topY, botY); sl0.x = Mathf.Clamp(sl0.x, L.minScreenMargin + 300f, vw - L.minScreenMargin - 300f); slots[i] = sl0;
+            sl0.y = Mathf.Clamp(sl0.y, topY, botY); sl0.x = Mathf.Clamp(sl0.x, L.minScreenMargin + ML.label.edgeX, vw - L.minScreenMargin - ML.label.edgeX); slots[i] = sl0;
         }
         for (int i = 0; i < slots.Count; i++)
         {
             var p = slots[i].p;
             float a = L.nearAlpha * (1f - Mathf.InverseLerp(L.fadeStartM, L.fadeEndM, slots[i].d)); float gx = slots[i].x, gy = slots[i].y;   // HUDFIX v92
             LootDraw.Alpha = a; Color col = LootCfg.RarityColor(p.item);
-            LootDraw.Text(new Rect(gx - 300f, gy - L.nameSize * 1.5f, 600f, L.nameSize * 1.5f), p.item.name, "serif", L.nameSize, TextAnchor.LowerCenter, true, col);
-            LootDraw.Fill(new Rect(gx - L.ruleW * 0.5f, gy + 2f, L.ruleW, 1f), new Color(col.r, col.g, col.b, 0.75f));
-            float yy = gy + 2f + L.lineGap;
+            LootDraw.Text(new Rect(gx - ML.label.halfW, gy - L.nameSize * ML.label.nameLineK, ML.label.boxW, L.nameSize * ML.label.nameLineK), p.item.name, "serif", L.nameSize, TextAnchor.LowerCenter, true, col);
+            LootDraw.Fill(new Rect(gx - L.ruleW * 0.5f, gy + ML.label.ruleDy, L.ruleW, ML.label.ruleH), new Color(col.r, col.g, col.b, ML.label.ruleAlpha));
+            float yy = gy + ML.label.ruleDy + L.lineGap;
             if (L.showSub)
             {
                 var rar = LootCfg.Rarity(p.item.rarity); string rl = rar != null ? rar.label : ""; string sl = LootCfg.SlotLabel(p.item.slot);
-                string sub = (rl.Length > 0 ? string.Format(T.slotLine, rl, sl) : sl).ToUpperInvariant();
-                LootDraw.Text(new Rect(gx - 300f, yy, 600f, L.subSize * 1.5f), sub, "serif", L.subSize, TextAnchor.UpperCenter, false, LootCfg.Col(K.dim)); yy += L.subSize * 1.5f + L.promptGap;
+                string sub = SubText(p.item, rl, sl, T);   // UIDATAB v1: cached per item (was Format + ToUpperInvariant every frame)
+                LootDraw.Text(new Rect(gx - ML.label.halfW, yy, ML.label.boxW, L.subSize * ML.label.subLineK), sub, "serif", L.subSize, TextAnchor.UpperCenter, false, LootCfg.Col(K.dim)); yy += L.subSize * ML.label.subLineK + L.promptGap;
             }
             if (p == near && nearDist <= C.pickup.promptRadius)
             {
                 bool reach = nearDist <= C.pickup.radius; Color pc = reach ? LootCfg.Col(K.gold) : LootCfg.Col(K.dim);
-                LootDraw.Text(new Rect(gx - 300f, yy, 600f, L.promptHeight), "[ " + T.pickupKeys + " ]   " + T.pickup.ToUpperInvariant(), "serif", L.promptSize, TextAnchor.UpperCenter, true, pc);
+                LootDraw.Text(new Rect(gx - ML.label.halfW, yy, ML.label.boxW, L.promptHeight), promptCat.Get(ML.label.promptOpen, T.pickupKeys, ML.label.promptClose, T.pickup, true), "serif", L.promptSize, TextAnchor.UpperCenter, true, pc);
             }
         }
         LootDraw.Alpha = 1f;
+    }
+
+    string SubText(GearItem item, string rl, string sl, LootCfg.TextC T)   // UIDATAB v1: the rarity / slot line of a label, built once per item
+    {
+        if (!ReferenceEquals(subFor, T)) { subCache.Clear(); subFor = T; }
+        string s; if (subCache.TryGetValue(item.id, out s)) return s;
+        s = (rl.Length > 0 ? string.Format(T.slotLine, rl, sl) : sl).ToUpperInvariant(); subCache[item.id] = s; return s;
     }
 
     void DrawEquipHint(LootCfg.Data C, float vw, float vh)
@@ -265,17 +274,17 @@ public sealed class LootUI : MonoBehaviour
         var S = C.screen; if (!S.showEquipHint || LootSave.Owned.Count == 0) return;
         if (GameLoop.Outcome == GameLoop.Result.None && !DemoOn() && !ZoneRuntime.Owns) return;   // TRADEFIN v1
         if (!LootScreen.CanOpen(DemoOn())) return;
-        LootDraw.Text(new Rect(0f, vh - S.equipHintBottom, vw, S.equipHintSize * 1.6f), C.text.equipHint.ToUpperInvariant(), "serif", S.equipHintSize, TextAnchor.UpperCenter, false, LootCfg.Col(C.colors.dim));
+        LootDraw.Text(new Rect(0f, vh - S.equipHintBottom, vw, S.equipHintSize * ML.toast.equipHintK), UiStr.Up(C.text.equipHint), "serif", S.equipHintSize, TextAnchor.UpperCenter, false, LootCfg.Col(C.colors.dim));
     }
 
     void DrawToast(LootCfg.Data C, float vw, float vh)
     {
         var P = C.pickup; float age = Time.unscaledTime - toastAt; if (age < 0f || age > P.toastS + P.toastFadeS) return;
-        float a = Mathf.Clamp01(Mathf.Min(age / 0.2f, (P.toastS + P.toastFadeS - age) / Mathf.Max(0.01f, P.toastFadeS))); LootDraw.Alpha = a;
+        float a = Mathf.Clamp01(Mathf.Min(age / ML.toast.fadeInS, (P.toastS + P.toastFadeS - age) / Mathf.Max(0.01f, P.toastFadeS))); LootDraw.Alpha = a;
         float y = vh - P.toastBottom; Color col = LootCfg.RarityColor(toastItem);
-        LootDraw.Text(new Rect(0f, y, vw, P.toastSubSize * 1.6f), C.text.acquired.ToUpperInvariant(), "serif", P.toastSubSize, TextAnchor.UpperCenter, true, LootCfg.Col(C.colors.dim));
-        LootDraw.Text(new Rect(0f, y + P.toastSubSize * 1.7f, vw, P.toastSize * 1.5f), toastName, "serif", P.toastSize, TextAnchor.UpperCenter, true, col);
-        LootDraw.Text(new Rect(0f, y + P.toastSubSize * 1.7f + P.toastSize * 1.5f, vw, P.toastSubSize * 1.6f), toastSub, "serif", P.toastSubSize, TextAnchor.UpperCenter, false, LootCfg.Col(C.colors.dim), true);
+        LootDraw.Text(new Rect(0f, y, vw, P.toastSubSize * ML.toast.subK), UiStr.Up(C.text.acquired), "serif", P.toastSubSize, TextAnchor.UpperCenter, true, LootCfg.Col(C.colors.dim));
+        LootDraw.Text(new Rect(0f, y + P.toastSubSize * ML.toast.gapK, vw, P.toastSize * ML.toast.nameK), toastName, "serif", P.toastSize, TextAnchor.UpperCenter, true, col);
+        LootDraw.Text(new Rect(0f, y + P.toastSubSize * ML.toast.gapK + P.toastSize * ML.toast.nameK, vw, P.toastSubSize * ML.toast.subK), toastSub, "serif", P.toastSubSize, TextAnchor.UpperCenter, false, LootCfg.Col(C.colors.dim), true);
         LootDraw.Alpha = 1f;
     }
 }

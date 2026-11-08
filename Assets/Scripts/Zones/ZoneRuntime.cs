@@ -598,9 +598,10 @@ public sealed class ZoneRuntime : MonoBehaviour
 
     void OnGUI()
     {
+        if (Event.current.type != EventType.Repaint) return;   // UIDATA_C v1: draw only (the end screen reads its keys in Update / ZoneEndScreen.Poll), no layout pass
         ZoneEndScreen.Draw();   // ENDALPHA v1
-        if (!on || cover <= 0.002f) return;
-        GUI.depth = -10000; var c = coverColor; c.a = cover;
+        var ZC = ZoneUiCfg.Get().cover; if (!on || cover <= ZC.minAlpha) return;
+        GUI.depth = ZC.depth; var c = coverColor; c.a = cover;
         GameLoop.Fill(new Rect(0f, 0f, Screen.width, Screen.height), c);
     }
 }

@@ -18,9 +18,10 @@
     "minSell": 1,
     "keepRequests": 200,
     "ops": [
-      "sell"
+      "sell",
+      "buy"
     ],
-    "buyEnabled": false,
+    "buyEnabled": true,
     "confirmSell": true,
     "listEquipped": true
   },
@@ -226,7 +227,7 @@
   ],
   "stall": {
     "id": "hub_trade",
-    "title": "Trader",
+    "title": "Weaponsmith",
     "anchor": {
       "zone": "hub_camp",
       "spot": "stall_1",
@@ -234,8 +235,8 @@
       "z": 89.0,
       "_about": "zones.json spot stall_1 of the camp (laneHUB rows B, camp at world offset 72). With the zone data merged, MarketZoneBridge reads the spot; x / z here are the fallback and what the checker compares. y comes from the player."
     },
-    "radius": 3.0,
-    "promptRadius": 5.0,
+    "radius": 2.2,
+    "promptRadius": 8.0,
     "promptHeight": 2.1,
     "area": {
       "zMin": 63.0,
@@ -368,7 +369,7 @@
     "openFadeS": 0.16
   },
   "text": {
-    "title": "Trader",
+    "title": "Weaponsmith",
     "subtitle": "Sell what you carry. What you wear is kept.",
     "coins": "{0} silver",
     "price": "{0}",
@@ -455,7 +456,119 @@
   },
   "stalls": [
     {
-      "_about": "laneMARKET v1: zone 7 vendor 'armourer' (zones.json spot vendor_1). Stock = market_vendors.json ready rows.",
+      "_about": "laneSTALLS vend v2: Armourer. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
+      "id": "hub_trade_a",
+      "title": "Armourer",
+      "anchor": {
+        "zone": "",
+        "spot": "",
+        "x": -1.9,
+        "z": 82.5
+      },
+      "radius": 2.2,
+      "promptRadius": 8.0,
+      "promptHeight": 2.1,
+      "area": {
+        "zMin": 63.0,
+        "zMax": 98.0,
+        "xHalf": 8.0,
+        "enterPad": 0.5,
+        "leavePad": 0.5,
+        "_about": "The camp rectangle in world x / z (zone_plan hub_camp: offset 72, boundaryLocal -4 -> z 68; limits.zMax 94). The stall and the no-fight rule work only inside it. Monsters are held outside by laneZONESPAN destSafe (followers stop 1.5 m before the door face z 63), not by this rectangle."
+      },
+      "items": [
+        "cuirass_joan",
+        "arms_joan",
+        "legarmour_joan",
+        "joan_shield",
+        "joan_helmet",
+        "bascinet_joan",
+        "joan_bracers",
+        "joan_greaves"
+      ]
+    },
+    {
+      "_about": "laneSTALLS vend v2: Stablemaster. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
+      "id": "hub_trade_c",
+      "title": "Stablemaster",
+      "anchor": {
+        "zone": "",
+        "spot": "",
+        "x": -4.7,
+        "z": 85.4
+      },
+      "radius": 2.2,
+      "promptRadius": 8.0,
+      "promptHeight": 2.1,
+      "area": {
+        "zMin": 63.0,
+        "zMax": 98.0,
+        "xHalf": 8.0,
+        "enterPad": 0.5,
+        "leavePad": 0.5,
+        "_about": "The camp rectangle in world x / z (zone_plan hub_camp: offset 72, boundaryLocal -4 -> z 68; limits.zMax 94). The stall and the no-fight rule work only inside it. Monsters are held outside by laneZONESPAN destSafe (followers stop 1.5 m before the door face z 63), not by this rectangle."
+      },
+      "items": [
+        "mount_horse"
+      ]
+    },
+    {
+      "_about": "laneSTALLS vend v2: Apothecary. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
+      "id": "hub_trade_d",
+      "title": "Apothecary",
+      "anchor": {
+        "zone": "",
+        "spot": "",
+        "x": 2.3,
+        "z": 90.0
+      },
+      "radius": 2.2,
+      "promptRadius": 8.0,
+      "promptHeight": 2.1,
+      "area": {
+        "zMin": 63.0,
+        "zMax": 98.0,
+        "xHalf": 8.0,
+        "enterPad": 0.5,
+        "leavePad": 0.5,
+        "_about": "The camp rectangle in world x / z (zone_plan hub_camp: offset 72, boundaryLocal -4 -> z 68; limits.zMax 94). The stall and the no-fight rule work only inside it. Monsters are held outside by laneZONESPAN destSafe (followers stop 1.5 m before the door face z 63), not by this rectangle."
+      },
+      "items": [
+        "potion_health_minor",
+        "potion_health",
+        "potion_stamina"
+      ]
+    },
+    {
+      "_about": "laneSTALLS vend v2: Bric-a-brac. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
+      "id": "hub_trade_e",
+      "title": "Bric-a-brac",
+      "anchor": {
+        "zone": "",
+        "spot": "",
+        "x": 4.2,
+        "z": 83.3
+      },
+      "radius": 2.2,
+      "promptRadius": 8.0,
+      "promptHeight": 2.1,
+      "area": {
+        "zMin": 63.0,
+        "zMax": 98.0,
+        "xHalf": 8.0,
+        "enterPad": 0.5,
+        "leavePad": 0.5,
+        "_about": "The camp rectangle in world x / z (zone_plan hub_camp: offset 72, boundaryLocal -4 -> z 68; limits.zMax 94). The stall and the no-fight rule work only inside it. Monsters are held outside by laneZONESPAN destSafe (followers stop 1.5 m before the door face z 63), not by this rectangle."
+      },
+      "items": [
+        "joan_tunic",
+        "joan_tabard",
+        "joan_boots",
+        "cap_joan"
+      ]
+    },
+    {
+      "_about": "laneSTALLS vend v2: Armourer. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
       "id": "z7_trade_a",
       "title": "Armourer",
       "anchor": {
@@ -465,7 +578,7 @@
         "z": 342.0
       },
       "radius": 3.0,
-      "promptRadius": 5.0,
+      "promptRadius": 8.0,
       "promptHeight": 2.1,
       "area": {
         "zMin": 315.0,
@@ -486,7 +599,7 @@
       ]
     },
     {
-      "_about": "laneMARKET v1: zone 7 vendor 'weaponsmith' (zones.json spot vendor_2). Stock = market_vendors.json ready rows.",
+      "_about": "laneSTALLS vend v2: Weaponsmith. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
       "id": "z7_trade_b",
       "title": "Weaponsmith",
       "anchor": {
@@ -496,7 +609,7 @@
         "z": 349.0
       },
       "radius": 3.0,
-      "promptRadius": 5.0,
+      "promptRadius": 8.0,
       "promptHeight": 2.1,
       "area": {
         "zMin": 315.0,
@@ -513,7 +626,7 @@
       ]
     },
     {
-      "_about": "laneHORSE v2: zone 7 vendor 'stablemaster + provisions' (zones.json spot vendor_3, the laneMARKET apothecary slot): the horse now; the potions join it when laneMARKET --with-potions runs (same stall, same vendor). Stock = market_vendors.json ready rows.",
+      "_about": "laneSTALLS vend v2: Stablemaster. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
       "id": "z7_trade_c",
       "title": "Stablemaster",
       "anchor": {
@@ -523,7 +636,7 @@
         "z": 352.1
       },
       "radius": 3.0,
-      "promptRadius": 5.0,
+      "promptRadius": 8.0,
       "promptHeight": 2.1,
       "area": {
         "zMin": 315.0,
@@ -532,7 +645,62 @@
         "enterPad": 0.5,
         "leavePad": 0.5
       },
-      "items": ["mount_horse", "potion_health_minor", "potion_health", "potion_stamina"]
+      "items": [
+        "mount_horse"
+      ]
+    },
+    {
+      "_about": "laneSTALLS vend v2: Apothecary. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
+      "id": "z7_trade_d",
+      "title": "Apothecary",
+      "anchor": {
+        "zone": "",
+        "spot": "",
+        "x": 2.3,
+        "z": 333.0
+      },
+      "radius": 3.0,
+      "promptRadius": 8.0,
+      "promptHeight": 2.1,
+      "area": {
+        "zMin": 315.0,
+        "zMax": 362.0,
+        "xHalf": 10.0,
+        "enterPad": 0.5,
+        "leavePad": 0.5
+      },
+      "items": [
+        "potion_health_minor",
+        "potion_health",
+        "potion_stamina"
+      ]
+    },
+    {
+      "_about": "laneSTALLS vend v2: Bric-a-brac. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
+      "id": "z7_trade_e",
+      "title": "Bric-a-brac",
+      "anchor": {
+        "zone": "",
+        "spot": "",
+        "x": 2.9,
+        "z": 340.0
+      },
+      "radius": 3.0,
+      "promptRadius": 8.0,
+      "promptHeight": 2.1,
+      "area": {
+        "zMin": 315.0,
+        "zMax": 362.0,
+        "xHalf": 10.0,
+        "enterPad": 0.5,
+        "leavePad": 0.5
+      },
+      "items": [
+        "joan_tunic",
+        "joan_tabard",
+        "joan_boots",
+        "cap_joan"
+      ]
     }
   ]
 }

@@ -22,6 +22,8 @@ public sealed partial class MenuUI : MonoBehaviour
     public static Func<bool> Veto;   // another full-screen UI is up: do not open
 
     static MenuUI inst;
+    static MenuLayoutCfg.MenuC ML { get { return MenuLayoutCfg.M; } }   // UIDATAB v1: layout / style numbers of the menu screens: menu_layout.json (defaults = the old literals)
+    readonly Rect[] confOpts = new Rect[2]; Rect[] tabRects = new Rect[0]; readonly UiStr.Cat4 tabHintCat = new UiStr.Cat4();   // UIDATAB v1: reused buffers (no per-frame allocation)
     enum Scr { Pause, Settings, Confirm }
     sealed class Row
     {
@@ -340,29 +342,29 @@ public sealed partial class MenuUI : MonoBehaviour
         var L = MenuCfg.Get().layout; var T = MenuCfg.Get().tabs; var g = new Geo();
         float w = Mathf.Min(L.panelW, vw - 2f * L.panelMargin), h = Mathf.Min(L.panelH, vh - 2f * L.panelMargin);
         g.panel = new Rect((vw - w) * 0.5f, (vh - h) * 0.5f, w, h);
-        float x0 = g.panel.x + L.panelPad, iw = w - 2f * L.panelPad, y = g.panel.y + L.panelPad * 0.7f;
-        g.title = new Rect(x0, y, iw, L.panelTitleSize * 1.45f); y = g.title.yMax + 6f;
-        g.tabsRow = new Rect(x0, y, iw, L.tabSize * 1.7f);
-        g.footer = new Rect(x0, g.panel.yMax - L.panelPad * 0.6f - L.footerSize * 1.6f, iw, L.footerSize * 1.6f);
-        float hintH = L.hintSize * 1.45f * Mathf.Max(1f, L.hintLines);
+        float x0 = g.panel.x + L.panelPad, iw = w - 2f * L.panelPad, y = g.panel.y + L.panelPad * ML.settings.titlePadK;
+        g.title = new Rect(x0, y, iw, L.panelTitleSize * ML.settings.capsLine); y = g.title.yMax + ML.settings.tabTopGap;
+        g.tabsRow = new Rect(x0, y, iw, L.tabSize * ML.settings.tabsRowK);
+        g.footer = new Rect(x0, g.panel.yMax - L.panelPad * ML.settings.footerPadK - L.footerSize * ML.settings.footerBoxK, iw, L.footerSize * ML.settings.footerBoxK);
+        float hintH = L.hintSize * ML.settings.hintLineK * Mathf.Max(1f, L.hintLines);
         g.hint = new Rect(x0, g.footer.y - L.footerGap - hintH, iw, hintH);
         bool controls = tab >= 0 && tab < T.Length && T[tab] != null && T[tab].type == "controls";
-        g.rowH = controls ? L.controlsRowH : L.rowH; g.headH = controls ? g.rowH * 0.9f : 0f;   // the key map uses denser rows so more of it fits
-        float ly = g.tabsRow.yMax + 14f + g.headH;
+        g.rowH = controls ? L.controlsRowH : L.rowH; g.headH = controls ? g.rowH * ML.settings.headRowK : 0f;   // the key map uses denser rows so more of it fits
+        float ly = g.tabsRow.yMax + ML.settings.listTopGap + g.headH;
         g.list = new Rect(x0, ly, iw, Mathf.Max(g.rowH, g.hint.y - L.hintGap - ly)); g.visible = Mathf.Max(1, Mathf.FloorToInt(g.list.height / g.rowH));
-        g.tab = new Rect[T.Length]; float tx = x0;
+        if (tabRects.Length != T.Length) tabRects = new Rect[T.Length]; g.tab = tabRects; float tx = x0;   // UIDATAB v1: reused array
         for (int i = 0; i < T.Length; i++)
         {
             float tw = HudDraw.CapsWidth(T[i].label, "title", L.tabSize, L.tabSmall, L.tabTracking);
-            g.tab[i] = new Rect(tx - 8f, g.tabsRow.y, tw + 16f, g.tabsRow.height); tx += tw + L.tabGap;
+            g.tab[i] = new Rect(tx - ML.settings.tabPadX, g.tabsRow.y, tw + ML.settings.tabExtraW, g.tabsRow.height); tx += tw + L.tabGap;
         }
         return g;
     }
     Rect PauseRect(int i, float vw, float vh) { var L = MenuCfg.Get().layout; return new Rect((vw - L.itemW) * 0.5f, vh * L.itemsY + i * L.itemGap, L.itemW, L.itemGap); }
     Rect[] ConfirmOpts(float vw, float vh)
     {
-        var L = MenuCfg.Get().layout; float cx = vw * 0.5f, cy = vh * 0.5f; float ow = L.confirmW * 0.3f;
-        return new[] { new Rect(cx - L.confirmW * 0.25f - ow * 0.5f, cy + L.confirmH * 0.1f, ow, L.itemGap * 0.8f), new Rect(cx + L.confirmW * 0.25f - ow * 0.5f, cy + L.confirmH * 0.1f, ow, L.itemGap * 0.8f) };
+        var L = MenuCfg.Get().layout; float cx = vw * 0.5f, cy = vh * 0.5f; float ow = L.confirmW * ML.confirm.optWK;
+        confOpts[0] = new Rect(cx - L.confirmW * ML.confirm.optOffK - ow * 0.5f, cy + L.confirmH * ML.confirm.optTopK, ow, L.itemGap * ML.confirm.optHK); confOpts[1] = new Rect(cx + L.confirmW * ML.confirm.optOffK - ow * 0.5f, cy + L.confirmH * ML.confirm.optTopK, ow, L.itemGap * ML.confirm.optHK); return confOpts;   // UIDATAB v1: reused array
     }
 
     // ---------------- mouse ----------------
@@ -392,7 +394,7 @@ public sealed partial class MenuUI : MonoBehaviour
                 rowSel = i; var r = rows[i];
                 if (r.kind == "slider" && r.setFrac != null)
                 {
-                    var br = SliderRect(rr, C.layout); var hit = new Rect(br.x - 6f, rr.y, br.width + 12f, rr.height);
+                    var br = SliderRect(rr, C.layout); var hit = new Rect(br.x - ML.settings.sliderHitPad, rr.y, br.width + ML.settings.sliderHitExtra, rr.height);
                     if (hit.Contains(p)) r.setFrac(Mathf.Clamp01((p.x - br.x) / br.width));
                     else if (p.x < br.x && r.step != null) r.step(-1); else if (r.step != null && p.x > br.xMax) r.step(1);
                 }
@@ -448,11 +450,11 @@ public sealed partial class MenuUI : MonoBehaviour
     void Rule(float cx, float y, float w)
     {
         var L = MenuCfg.Get().layout; var fr = HudCfg.Col(HudCfg.Get().colors.frame);
-        HudDraw.Fill(new Rect(cx - w * 0.5f, y, w, L.frameLine), fr); float d = L.diamond + 2f; HudDraw.Tex(new Rect(cx - d * 0.5f, y + L.frameLine * 0.5f - d * 0.5f, d, d), HudDraw.Diamond(), fr);
+        HudDraw.Fill(new Rect(cx - w * 0.5f, y, w, L.frameLine), fr); float d = L.diamond + ML.settings.ruleDiamondExtra; HudDraw.Tex(new Rect(cx - d * 0.5f, y + L.frameLine * 0.5f - d * 0.5f, d, d), HudDraw.Diamond(), fr);
     }
     void Footer(Rect r, string text)
     {
-        var L = MenuCfg.Get().layout; HudDraw.Text(r, text, "serif", L.footerSize, TextAnchor.MiddleCenter, false, new Color(Dim().r, Dim().g, Dim().b, Dim().a * 0.9f));
+        var L = MenuCfg.Get().layout; HudDraw.Text(r, text, "serif", L.footerSize, TextAnchor.MiddleCenter, false, new Color(Dim().r, Dim().g, Dim().b, Dim().a * ML.settings.footerAlphaK));
     }
 
     void DrawPause(float vw, float vh)
@@ -460,7 +462,7 @@ public sealed partial class MenuUI : MonoBehaviour
         var C = MenuCfg.Get(); var L = C.layout; float cx = vw * 0.5f;
         float ty = vh * L.titleY;
         HudDraw.Caps(cx, ty, 0.5f, C.strings.pausedTitle, "title", L.titleSize, L.titleSmall, L.titleTracking, Ink());
-        Rule(cx, ty + L.titleSize * 1.45f + 14f, L.ruleW);
+        Rule(cx, ty + L.titleSize * ML.pause.capsLine + ML.pause.ruleGap, L.ruleW);
         var hover = mouseActive && C.input.mouse ? Event.current.mousePosition : new Vector2(-1f, -1f);
         for (int i = 0; i < C.items.Length; i++)
         {
@@ -471,13 +473,13 @@ public sealed partial class MenuUI : MonoBehaviour
             if (sel)
             {
                 HudDraw.Tex(r, HudDraw.BandV(), Gold(L.selectAlpha));
-                float d = L.diamond + 3f, gx = w * 0.5f + 30f;
+                float d = L.diamond + ML.pause.diamondExtra, gx = w * 0.5f + ML.pause.selDiamondGap;
                 HudDraw.Tex(new Rect(cx - gx - d, r.center.y - d * 0.5f, d, d), HudDraw.Diamond(), Gold()); HudDraw.Tex(new Rect(cx + gx, r.center.y - d * 0.5f, d, d), HudDraw.Diamond(), Gold());
             }
-            HudDraw.Caps(cx, r.y + (r.height - L.itemSize * 1.45f) * 0.5f, 0.5f, lab, "title", L.itemSize, L.itemSmall, L.itemTracking, sel ? Gold() : Ink(0.72f));
+            HudDraw.Caps(cx, r.y + (r.height - L.itemSize * ML.pause.capsLine) * 0.5f, 0.5f, lab, "title", L.itemSize, L.itemSmall, L.itemTracking, sel ? Gold() : Ink(ML.pause.itemIdleAlpha));
         }
-        Footer(new Rect(0f, vh - 70f, vw, 30f), C.strings.footerPause);
-        if (CrashLog.ShowNotice) HudDraw.Text(new Rect(0f, vh - 112f, vw, 30f), C.strings.crashedNotice, "serif", L.footerSize + 2, TextAnchor.MiddleCenter, false, Gold(0.85f));   // RCHYGIENE v100
+        Footer(new Rect(0f, vh - ML.pause.footerBottom, vw, ML.pause.footerH), C.strings.footerPause);
+        if (CrashLog.ShowNotice) HudDraw.Text(new Rect(0f, vh - ML.pause.crashBottom, vw, ML.pause.crashH), C.strings.crashedNotice, "serif", L.footerSize + ML.pause.crashFontAdd, TextAnchor.MiddleCenter, false, Gold(ML.pause.crashAlpha));   // RCHYGIENE v100
     }
 
     void DrawConfirm(float vw, float vh)
@@ -485,18 +487,18 @@ public sealed partial class MenuUI : MonoBehaviour
         var C = MenuCfg.Get(); var L = C.layout; float cx = vw * 0.5f, cy = vh * 0.5f;
         var box = new Rect(cx - L.confirmW * 0.5f, cy - L.confirmH * 0.5f, L.confirmW, L.confirmH);
         Frame(box);
-        HudDraw.Caps(cx, box.y + L.confirmH * 0.18f, 0.5f, confText, "title", L.confirmSize, L.confirmSmall, L.itemTracking, Ink());
-        Rule(cx, box.y + L.confirmH * 0.18f + L.confirmSize * 1.45f + 12f, L.ruleW * 0.6f);
-        var o = ConfirmOpts(vw, vh); string[] labs = { C.strings.no, C.strings.yes };
+        HudDraw.Caps(cx, box.y + L.confirmH * ML.confirm.titleY, 0.5f, confText, "title", L.confirmSize, L.confirmSmall, L.itemTracking, Ink());
+        Rule(cx, box.y + L.confirmH * ML.confirm.titleY + L.confirmSize * ML.confirm.capsLine + ML.confirm.ruleGap, L.ruleW * ML.confirm.ruleK);
+        var o = ConfirmOpts(vw, vh); string lab0 = C.strings.no, lab1 = C.strings.yes;   // UIDATAB v1: no per-frame array
         var hover = mouseActive && C.input.mouse ? Event.current.mousePosition : new Vector2(-1f, -1f);
         for (int i = 0; i < 2; i++)
         {
             if (mouseActive && o[i].Contains(hover)) confSel = i;
             bool sel = i == confSel;
             if (sel) HudDraw.Tex(o[i], HudDraw.BandV(), Gold(L.selectAlpha));
-            HudDraw.Caps(o[i].center.x, o[i].y + (o[i].height - L.itemSize * 1.45f) * 0.5f, 0.5f, labs[i], "title", L.itemSize, L.itemSmall, L.itemTracking, sel ? Gold() : Ink(0.72f));
+            HudDraw.Caps(o[i].center.x, o[i].y + (o[i].height - L.itemSize * ML.confirm.capsLine) * 0.5f, 0.5f, i == 0 ? lab0 : lab1, "title", L.itemSize, L.itemSmall, L.itemTracking, sel ? Gold() : Ink(ML.confirm.itemIdleAlpha));   // UIDATAB v1
         }
-        Footer(new Rect(box.x, box.yMax - 40f, box.width, 24f), C.strings.footerConfirm);
+        Footer(new Rect(box.x, box.yMax - ML.confirm.footerOff, box.width, ML.confirm.footerH), C.strings.footerConfirm);
     }
 
     // panel + double gold frame + corner diamonds
@@ -505,9 +507,9 @@ public sealed partial class MenuUI : MonoBehaviour
         var L = MenuCfg.Get().layout; var H = HudCfg.Get(); var pc = L.panelColor;
         HudDraw.Fill(p, new Color(pc[0], pc[1], pc[2], pc[3]));
         var fr = HudCfg.Col(H.colors.frame); var fd = HudCfg.Col(H.colors.frameDim); float t = L.frameLine, q = L.framePad + t;
-        Outline(p, t, fr); Outline(new Rect(p.x + q, p.y + q, p.width - 2f * q, p.height - 2f * q), t * 0.7f, fd);
-        float d = L.diamond + 3f;
-        foreach (var c in new[] { new Vector2(p.x, p.y), new Vector2(p.xMax, p.y), new Vector2(p.x, p.yMax), new Vector2(p.xMax, p.yMax) }) HudDraw.Tex(new Rect(c.x - d * 0.5f, c.y - d * 0.5f, d, d), HudDraw.Diamond(), fr);
+        Outline(p, t, fr); Outline(new Rect(p.x + q, p.y + q, p.width - 2f * q, p.height - 2f * q), t * ML.settings.frameInnerK, fd);
+        float d = L.diamond + ML.settings.diamondExtra;
+        for (int ci = 0; ci < 4; ci++) { float c0x = (ci & 1) == 0 ? p.x : p.xMax, c0y = ci < 2 ? p.y : p.yMax; HudDraw.Tex(new Rect(c0x - d * 0.5f, c0y - d * 0.5f, d, d), HudDraw.Diamond(), fr); }   // UIDATAB v1: same 4 corners, no per-frame array
     }
     static void Outline(Rect r, float t, Color c)
     {
@@ -530,26 +532,26 @@ public sealed partial class MenuUI : MonoBehaviour
         for (int i = 0; i < T.Length; i++)
         {
             bool cur = i == tab, hv = mouseActive && g.tab[i].Contains(hover);
-            Color col = cur ? Gold() : hv ? Ink() : Ink(0.6f);
-            HudDraw.Caps(g.tab[i].x + 8f, g.tab[i].y + 2f, 0f, T[i].label, "title", L.tabSize, L.tabSmall, L.tabTracking, col);
-            if (cur) HudDraw.Fill(new Rect(g.tab[i].x, g.tab[i].yMax - 3f, g.tab[i].width, 2f), Gold());
+            Color col = cur ? Gold() : hv ? Ink() : Ink(ML.settings.tabIdleAlpha);
+            HudDraw.Caps(g.tab[i].x + ML.settings.tabPadX, g.tab[i].y + ML.settings.tabLabelDy, 0f, T[i].label, "title", L.tabSize, L.tabSmall, L.tabTracking, col);
+            if (cur) HudDraw.Fill(new Rect(g.tab[i].x, g.tab[i].yMax - ML.settings.tabUnderOff, g.tab[i].width, ML.settings.tabUnderH), Gold());
         }
-        HudDraw.Text(new Rect(g.tabsRow.x, g.tabsRow.y, g.tabsRow.width, g.tabsRow.height - 4f), C.strings.tabPrevHint + "   |   " + C.strings.tabNextHint, "serif", L.keySize, TextAnchor.MiddleRight, false, Dim());
-        HudDraw.Fill(new Rect(g.tabsRow.x, g.tabsRow.yMax, g.tabsRow.width, 1f), HudCfg.Col(H.colors.frameDim));
+        HudDraw.Text(new Rect(g.tabsRow.x, g.tabsRow.y, g.tabsRow.width, g.tabsRow.height - ML.settings.tabHintTrim), tabHintCat.Get("", C.strings.tabPrevHint, ML.settings.tabHintSep, C.strings.tabNextHint, false), "serif", L.keySize, TextAnchor.MiddleRight, false, Dim());
+        HudDraw.Fill(new Rect(g.tabsRow.x, g.tabsRow.yMax, g.tabsRow.width, ML.settings.tabRuleH), HudCfg.Col(H.colors.frameDim));
 
         bool controls = T.Length > 0 && T[Mathf.Clamp(tab, 0, T.Length - 1)].type == "controls";
         if (controls)
         {
             var hr = new Rect(g.list.x, g.list.y - g.headH, g.list.width, g.headH);
-            HudDraw.Text(new Rect(hr.x + L.rowPad, hr.y, 300f, hr.height), C.controls.colAction, "serif", L.keySize + 2, TextAnchor.MiddleLeft, false, Gold(0.8f), true);
-            HudDraw.Text(new Rect(hr.x + hr.width * L.colKeys, hr.y, 400f, hr.height), C.controls.colKeys, "serif", L.keySize + 2, TextAnchor.MiddleLeft, false, Gold(0.8f), true);
-            HudDraw.Text(new Rect(hr.x + hr.width * L.colPad, hr.y, 300f, hr.height), C.controls.colPad, "serif", L.keySize + 2, TextAnchor.MiddleLeft, false, Gold(0.8f), true);
+            HudDraw.Text(new Rect(hr.x + L.rowPad, hr.y, ML.controls.colHeadW1, hr.height), C.controls.colAction, "serif", L.keySize + ML.controls.colHeadFontAdd, TextAnchor.MiddleLeft, false, Gold(ML.controls.colHeadAlpha), true);
+            HudDraw.Text(new Rect(hr.x + hr.width * L.colKeys, hr.y, ML.controls.colHeadW2, hr.height), C.controls.colKeys, "serif", L.keySize + ML.controls.colHeadFontAdd, TextAnchor.MiddleLeft, false, Gold(ML.controls.colHeadAlpha), true);
+            HudDraw.Text(new Rect(hr.x + hr.width * L.colPad, hr.y, ML.controls.colHeadW3, hr.height), C.controls.colPad, "serif", L.keySize + ML.controls.colHeadFontAdd, TextAnchor.MiddleLeft, false, Gold(ML.controls.colHeadAlpha), true);
         }
 
         // rows
         int n = rows.Count; rowSel = Mathf.Clamp(rowSel, 0, Mathf.Max(0, n - 1));
         scroll = Mathf.Clamp(scroll, rowSel - g.visible + 1, rowSel); scroll = Mathf.Clamp(scroll, 0, Mathf.Max(0, n - g.visible));
-        float listW = g.list.width - (n > g.visible ? L.scrollW + 8f : 0f);
+        float listW = g.list.width - (n > g.visible ? L.scrollW + ML.settings.scrollGap : 0f);
         for (int i = scroll; i < n && i < scroll + g.visible; i++)
         {
             var rr = new Rect(g.list.x, g.list.y + (i - scroll) * g.rowH, listW, g.rowH);
@@ -559,16 +561,16 @@ public sealed partial class MenuUI : MonoBehaviour
         if (n > g.visible)
         {
             var track = new Rect(g.list.xMax - L.scrollW, g.list.y, L.scrollW, g.visible * g.rowH);
-            HudDraw.Fill(track, HudCfg.Col(H.colors.frameDim, 0.5f));
-            float th = Mathf.Max(24f, track.height * g.visible / n), ty = track.y + (track.height - th) * (n - g.visible <= 0 ? 0f : scroll / (float)(n - g.visible));
-            HudDraw.Fill(new Rect(track.x, ty, track.width, th), Gold(0.8f));
+            HudDraw.Fill(track, HudCfg.Col(H.colors.frameDim, ML.settings.trackAlpha));
+            float th = Mathf.Max(ML.settings.thumbMin, track.height * g.visible / n), ty = track.y + (track.height - th) * (n - g.visible <= 0 ? 0f : scroll / (float)(n - g.visible));
+            HudDraw.Fill(new Rect(track.x, ty, track.width, th), Gold(ML.settings.thumbAlpha));
         }
-        if (n == 0) HudDraw.Text(new Rect(g.list.x, g.list.y, g.list.width, g.rowH), "-", "serif", L.labelSize, TextAnchor.MiddleLeft, false, Dim());
+        if (n == 0) HudDraw.Text(new Rect(g.list.x, g.list.y, g.list.width, g.rowH), ML.settings.emptyText, "serif", L.labelSize, TextAnchor.MiddleLeft, false, Dim());
         // hint of the selected row
         if (rowSel < n && !string.IsNullOrEmpty(rows[rowSel].hint))
         {
             var st = WrapStyle(L.hintSize); var dim = Dim(); var sh = HudCfg.Col(H.colors.shadow);
-            st.normal.textColor = new Color(sh.r, sh.g, sh.b, sh.a * HudDraw.Alpha * dim.a); GUI.Label(new Rect(g.hint.x + 1f, g.hint.y + 1f, g.hint.width, g.hint.height), rows[rowSel].hint, st);
+            st.normal.textColor = new Color(sh.r, sh.g, sh.b, sh.a * HudDraw.Alpha * dim.a); GUI.Label(new Rect(g.hint.x + ML.settings.hintShadowOff, g.hint.y + ML.settings.hintShadowOff, g.hint.width, g.hint.height), rows[rowSel].hint, st);
             st.normal.textColor = new Color(dim.r, dim.g, dim.b, dim.a * HudDraw.Alpha); GUI.Label(g.hint, rows[rowSel].hint, st);
         }
         Footer(g.footer, controls ? ControlsFooter(C) : C.strings.footerSettings);
@@ -580,19 +582,19 @@ public sealed partial class MenuUI : MonoBehaviour
         if (sel)
         {
             HudDraw.Tex(rr, HudDraw.GradH(), Gold(L.selectAlpha));
-            float d = L.diamond; HudDraw.Tex(new Rect(rr.x + 4f, rr.center.y - d * 0.5f, d, d), HudDraw.Diamond(), Gold());
+            float d = L.diamond; HudDraw.Tex(new Rect(rr.x + ML.row.selDiamondX, rr.center.y - d * 0.5f, d, d), HudDraw.Diamond(), Gold());
         }
-        float lx = rr.x + L.rowPad + (sel ? L.diamond * 0.6f : 0f);
-        Color lab = sel ? Ink() : Ink(0.74f), val = sel ? Gold() : Ink(0.82f);
+        float lx = rr.x + L.rowPad + (sel ? L.diamond * ML.row.selShiftK : 0f);
+        Color lab = sel ? Ink() : Ink(ML.row.idleLabelAlpha), val = sel ? Gold() : Ink(ML.row.idleValueAlpha);
         if (controls)
         {
             if (r.bindId.Length > 0) { DrawBindRow(r, rr, sel, lx, lab, val, L); return; }   // REBIND v100
-            HudDraw.Text(new Rect(lx, rr.y, rr.width * 0.34f, rr.height), r.label, "serif", L.labelSize - 2, TextAnchor.MiddleLeft, false, lab);
-            HudDraw.Text(new Rect(rr.x + rr.width * L.colKeys, rr.y, rr.width * (L.colPad - L.colKeys) - 12f, rr.height), r.c1, "serif", L.valueSize - 2, TextAnchor.MiddleLeft, false, val);
-            HudDraw.Text(new Rect(rr.x + rr.width * L.colPad, rr.y, rr.width * (1f - L.colPad) - 8f, rr.height), r.c2, "serif", L.valueSize - 2, TextAnchor.MiddleLeft, false, val);
+            HudDraw.Text(new Rect(lx, rr.y, rr.width * ML.controls.labelColK, rr.height), r.label, "serif", L.labelSize - ML.controls.sizeSub, TextAnchor.MiddleLeft, false, lab);
+            HudDraw.Text(new Rect(rr.x + rr.width * L.colKeys, rr.y, rr.width * (L.colPad - L.colKeys) - ML.controls.keysTrim, rr.height), r.c1, "serif", L.valueSize - ML.controls.sizeSub, TextAnchor.MiddleLeft, false, val);
+            HudDraw.Text(new Rect(rr.x + rr.width * L.colPad, rr.y, rr.width * (1f - L.colPad) - ML.controls.padTrim, rr.height), r.c2, "serif", L.valueSize - ML.controls.sizeSub, TextAnchor.MiddleLeft, false, val);
             return;
         }
-        HudDraw.Text(new Rect(lx, rr.y, rr.width - L.valueW - L.rowPad * 2f, rr.height), r.label, "serif", L.labelSize, TextAnchor.MiddleLeft, false, r.kind == "action" ? (sel ? Gold() : Ink(0.74f)) : lab);
+        HudDraw.Text(new Rect(lx, rr.y, rr.width - L.valueW - L.rowPad * 2f, rr.height), r.label, "serif", L.labelSize, TextAnchor.MiddleLeft, false, r.kind == "action" ? (sel ? Gold() : Ink(ML.row.idleLabelAlpha)) : lab);
         float vx = rr.xMax - L.valueW - L.rowPad;
         if (r.kind == "slider")
         {
@@ -601,9 +603,9 @@ public sealed partial class MenuUI : MonoBehaviour
             float f = r.frac != null ? Mathf.Clamp01(r.frac()) : 0f; float ts = H.bars.texScale;
             var shape = HudDraw.BarShape(br.width, br.height, L.sliderTaper, 0f);
             HudDraw.Tex(br, shape, HudCfg.Col(H.colors.hpBack));
-            if (f > 0.001f) HudDraw.TexUV(new Rect(br.x, br.y, br.width * f, br.height), shape, new Rect(0f, 0f, f, 1f), sel ? Gold() : Gold(0.7f));
+            if (f > 0.001f) HudDraw.TexUV(new Rect(br.x, br.y, br.width * f, br.height), shape, new Rect(0f, 0f, f, 1f), sel ? Gold() : Gold(ML.row.sliderIdleAlpha));
             float p = L.framePad; HudDraw.Tex(new Rect(br.x - p, br.y - p, br.width + 2f * p, br.height + 2f * p), HudDraw.BarShape(br.width + 2f * p, br.height + 2f * p, L.sliderTaper + p, H.bars.frameLine * ts), HudCfg.Col(H.colors.frameDim));
-            HudDraw.Text(new Rect(br.xMax + 8f, rr.y, L.sliderValueW, rr.height), r.val != null ? r.val() : "", "serif", L.valueSize, TextAnchor.MiddleLeft, false, val);
+            HudDraw.Text(new Rect(br.xMax + ML.row.sliderValueGap, rr.y, L.sliderValueW, rr.height), r.val != null ? r.val() : "", "serif", L.valueSize, TextAnchor.MiddleLeft, false, val);
             HudDraw.Text(new Rect(rr.xMax - L.rowPad - L.arrowW, rr.y, L.arrowW, rr.height), S.arrowR, "serif", L.valueSize, TextAnchor.MiddleCenter, true, arrows);
         }
         else if (r.kind == "choice" || r.kind == "toggle")

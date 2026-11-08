@@ -1,0 +1,99 @@
+{
+  "cover": {
+    "minAlpha": 0.002,
+    "depth": -10000
+  },
+  "endScreen": {
+    "depth": -10001,
+    "alphaGuard": 0.01
+  },
+  "hitch": {
+    "depth": -10001
+  },
+  "camTrace": {
+    "depth": -32000,
+    "fallbackRgb": [
+      1.0,
+      0.0,
+      1.0
+    ],
+    "alpha": 1.0,
+    "markerTol": 0.3
+  },
+  "hub": {
+    "toastFadeInS": 0.12,
+    "toastFadeOutS": 0.35,
+    "toastLineH": 1.5
+  },
+  "dir": {
+    "labelHalfW": 50.0,
+    "labelW": 100.0,
+    "labelHMul": 2.0
+  },
+  "stance": {
+    "shadowOffset": 1.0,
+    "shadowAlpha": 0.7,
+    "toastHalfW": 160.0,
+    "toastW": 320.0,
+    "toastH": 30.0,
+    "toastYFrac": 0.7,
+    "toastShadowAlpha": 0.7,
+    "toastFadeMinS": 0.05,
+    "toastFadeFrac": 0.5,
+    "hintSizeDelta": 3,
+    "hintMinSize": 8
+  },
+  "capture": {
+    "fontSize": 22,
+    "rightInset": 260.0,
+    "bottomInset": 44.0,
+    "w": 250.0,
+    "h": 36.0,
+    "color": []
+  },
+  "boss": {
+    "depth": -9000,
+    "minSeconds": 0.5,
+    "fadeEps": 0.001
+  },
+  "end": {
+    "depth": -1000,
+    "fadeEps": 0.001,
+    "vignetteAlpha": 0.9,
+    "fightY": 40.0,
+    "fightTracking": 3.0,
+    "titleY": 70.0,
+    "titleHMul": 1.35,
+    "ruleGap": 8.0,
+    "ruleDiamond": 9.0,
+    "ruleThick": 1.3,
+    "ruleCenter": 0.65,
+    "ruleAlpha": 0.8,
+    "subGap": 18.0,
+    "subAlpha": 0.95,
+    "subLineH": 1.6,
+    "statsGapMul": 1.7,
+    "statsLineH": 1.6,
+    "nextPreviewGap": 2.1,
+    "nextPreviewLineH": 1.6,
+    "liveAlpha": 0.5,
+    "promptTitleMul": 1.5,
+    "promptHintMul": 1.9,
+    "hoverK": 0.95,
+    "idleK": 0.8,
+    "promptTracking": 2.5,
+    "promptDiamond": 7.0,
+    "promptDiamondGap": 18.0,
+    "promptDiamondY": 0.78,
+    "promptDiamondIdleA": 0.7,
+    "promptRuleY": 1.5,
+    "promptRuleH": 1.0,
+    "promptRuleA": 0.7,
+    "promptHintY": 1.6,
+    "promptHintLineH": 1.6,
+    "promptSmallDelta": 4,
+    "promptSmallMin": 8,
+    "shadowAlpha": 0.85,
+    "shadowOffset": 1.5
+  }
+}

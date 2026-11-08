@@ -157,7 +157,7 @@ public sealed class ZoneHitchRunner : MonoBehaviour
     void OnGUI()
     {
         if (!cover || tex == null || Event.current.type != EventType.Repaint) return;
-        GUI.depth = -10001; GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), tex, ScaleMode.StretchToFill, false);
+        GUI.depth = ZoneUiCfg.Get().hitch.depth; GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), tex, ScaleMode.StretchToFill, false);   // UIDATA_C v1
     }
 
     IEnumerator Warm(Transform skyline, List<Transform> units)

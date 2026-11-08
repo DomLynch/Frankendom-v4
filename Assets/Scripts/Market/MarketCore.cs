@@ -210,7 +210,7 @@ public sealed class ShopController
     public MarketLine Selected { get { return Index >= 0 && Index < Stock.lines.Count ? Stock.lines[Index] : null; } }
     public bool BuyTab;   // laneNPCSPAWN: the Buy tab (hub.json stall.buy), off until the data turns it on
     public void ToggleTab() { if (!MarketBuyRules.Cur.enabled) return; BuyTab = !BuyTab; Armed = ""; NoteKey = ""; Index = 0; Scroll = 0; Refresh(); Index = FirstSellable(); }
-    public void Open() { IsOpen = true; BuyTab = false; Armed = ""; NoteKey = ""; Refresh(); Index = FirstSellable(); Scroll = 0; }
+    public void Open() { IsOpen = true; BuyTab = MarketBuyRules.Cur.enabled && MarketBuyRules.Cur.items != null && MarketBuyRules.Cur.items.Length > 0; /* STALLS vend v2: open on Buy when the stall sells something */ Armed = ""; NoteKey = ""; Refresh(); Index = FirstSellable(); Scroll = 0; }
     public void Close() { IsOpen = false; Armed = ""; }
     void Refresh() { var lm = backend as LocalMarket; Stock = BuyTab && lm != null ? lm.BuyStock() : backend.Stock();   // laneNPCSPAWN
         if (Index >= Stock.lines.Count) Index = Math.Max(0, Stock.lines.Count - 1); }

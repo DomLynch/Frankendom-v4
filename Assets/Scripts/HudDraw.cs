@@ -17,7 +17,7 @@ public static class HudDraw
     static readonly GUIContent tmp = new GUIContent();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { fonts.Clear(); styles.Clear(); texs.Clear(); capsCache.Clear(); Alpha = 1f; Outline = 0f; pies = null; }
+    static void ResetStatics() { fonts.Clear(); styles.Clear(); texs.Clear(); capsCache.Clear(); lastRingTex = null; lastArcTex = null; Alpha = 1f; Outline = 0f; pies = null; }
 
     // ---------------- fonts / styles ----------------
     public static Font FontFor(string kind)
@@ -25,7 +25,7 @@ public static class HudDraw
         Font f; if (fonts.TryGetValue(kind, out f)) return f;
         var F = HudCfg.Get().fonts; string[] names = kind == "title" ? F.title : kind == "ui" ? F.ui : F.serif;
         f = null;
-        if (names != null && names.Length > 0) { try { f = Font.CreateDynamicFontFromOSFont(names, Mathf.Max(8, F.osSize)); } catch (System.Exception e) { Debug.LogWarning("[HudDraw] font " + kind + ": " + e.Message); f = null; } }
+        if (names != null && names.Length > 0) { try { f = Font.CreateDynamicFontFromOSFont(names, Mathf.Max(HudLayout.Get().draw.minOsSize, F.osSize)); } catch (System.Exception e) { Debug.LogWarning("[HudDraw] font " + kind + ": " + e.Message); f = null; } }
         fonts[kind] = f; return f;
     }
     public static GUIStyle Style(string kind, int size, TextAnchor a, bool bold, bool italic)
@@ -59,8 +59,8 @@ public static class HudDraw
     /// <summary>Shadowed single label.</summary>
     public static void Text(Rect r, string s, string kind, int size, TextAnchor a, bool bold, Color c, bool italic = false)
     {
-        if (string.IsNullOrEmpty(s) || c.a * Alpha <= 0.003f) return;
-        var st = Style(kind, size, a, bold, italic); var sh = HudCfg.Col(HudCfg.Get().colors.shadow); float d = Mathf.Max(1f, size / 13f); if (ResGateProbe.On) ResGateProbe.Text(r, s, kind, size, a, bold); /* RESGATE v1 */
+        if (string.IsNullOrEmpty(s) || c.a * Alpha <= HudLayout.Get().draw.alphaCutoffText) return;
+        var st = Style(kind, size, a, bold, italic); var sh = HudCfg.Col(HudCfg.Get().colors.shadow); float d = Mathf.Max(HudLayout.Get().draw.shadowMinText, size / HudLayout.Get().draw.shadowDivText); if (ResGateProbe.On) ResGateProbe.Text(r, s, kind, size, a, bold); /* RESGATE v1 */
         OutlineLabel(st, r, s, c.a);   // HUDFIX v92
         st.normal.textColor = Fade(new Color(sh.r, sh.g, sh.b, sh.a * c.a)); GUI.Label(new Rect(r.x + d, r.y + d, r.width, r.height), s, st);
         st.normal.textColor = Fade(c); GUI.Label(r, s, st);
@@ -68,12 +68,21 @@ public static class HudDraw
 
     class Run { public string ch; public float x; public int size; public float w; }
     class CapsLayout { public Run[] runs; public float width; public int big; }
-    static readonly Dictionary<string, CapsLayout> capsCache = new Dictionary<string, CapsLayout>();
+    // UIDATA_A v1: the key was a string built per Caps() call (kind|big|small|tracking|bold|text = garbage every label every frame); now a struct, same cache semantics
+    struct CapsKey : System.IEquatable<CapsKey>
+    {
+        public int kind, big, small; public float tracking; public bool bold; public string text;
+        public bool Equals(CapsKey o) { return kind == o.kind && big == o.big && small == o.small && tracking == o.tracking && bold == o.bold && string.Equals(text, o.text); }
+        public override bool Equals(object o) { return o is CapsKey && Equals((CapsKey)o); }
+        public override int GetHashCode() { unchecked { int h = kind * 31 + big; h = h * 31 + small; h = h * 31 + tracking.GetHashCode(); h = h * 31 + (bold ? 1 : 0); return h * 31 + (text != null ? text.GetHashCode() : 0); } }
+    }
+    static readonly Dictionary<CapsKey, CapsLayout> capsCache = new Dictionary<CapsKey, CapsLayout>();
+    static float lastRingPx = -1f, lastArcDeg = -1f, lastArcThick = -1f; static Texture2D lastRingTex, lastArcTex;   // UIDATA_A v1: front caches, the string-keyed texs dictionary stays the owner
 
-    static bool MinorWord(string t, int i) { if (i <= 0) return false; foreach (var w in new[] { "of ", "the ", "de ", "von " }) if (string.CompareOrdinal(t, i, w, 0, w.Length) == 0) return true; return false; }
+    static bool MinorWord(string t, int i) { if (i <= 0) return false; foreach (var w in HudLayout.Get().draw.minorWords) if (string.CompareOrdinal(t, i, w, 0, w.Length) == 0) return true; return false; }
     static CapsLayout Layout(string text, string kind, int big, int small, float tracking, bool bold)
     {
-        string key = kind + "|" + big + "|" + small + "|" + tracking.ToString("F1") + "|" + (bold ? 1 : 0) + "|" + text; CapsLayout c;
+        var key = new CapsKey { kind = kind == "title" ? 1 : kind == "ui" ? 2 : 0, big = big, small = small, tracking = tracking, bold = bold, text = text }; CapsLayout c;
         if (capsCache.TryGetValue(key, out c)) return c;
         if (capsCache.Count > HudCfg.Get().layout.capsCache) capsCache.Clear();   /* HCKIT6 v100 */
         string up = text.ToUpperInvariant(); var runs = new List<Run>(); float x = 0f; bool wordStart = true;
@@ -91,8 +100,8 @@ public static class HudDraw
     public static float Caps(float x, float y, float pivot, string text, string kind, int big, int small, float tracking, Color c, bool bold = true, bool shadow = true)
     {
         if (string.IsNullOrEmpty(text)) return 0f;
-        var L = Layout(text, kind, big, small, tracking, bold); if (c.a * Alpha <= 0.003f) return L.width; if (ResGateProbe.On) ResGateProbe.Caps(x - L.width * pivot, y, L.width, big * HudCfg.Get().layout.lineH, text, big); /* RESGATE v1 */
-        float x0 = x - L.width * pivot, h = big * HudCfg.Get().layout.lineH; var sh = HudCfg.Col(HudCfg.Get().colors.shadow); float d = Mathf.Max(1f, big / HudCfg.Get().layout.shadowDiv);
+        var L = Layout(text, kind, big, small, tracking, bold); if (c.a * Alpha <= HudLayout.Get().draw.alphaCutoffCaps) return L.width; if (ResGateProbe.On) ResGateProbe.Caps(x - L.width * pivot, y, L.width, big * HudCfg.Get().layout.lineH, text, big); /* RESGATE v1 */
+        float x0 = x - L.width * pivot, h = big * HudCfg.Get().layout.lineH; var sh = HudCfg.Col(HudCfg.Get().colors.shadow); float d = Mathf.Max(HudLayout.Get().draw.shadowMinCaps, big / HudCfg.Get().layout.shadowDiv);
         for (int i = 0; i < L.runs.Length; i++)
         {
             var r = L.runs[i]; if (r.ch == " ") continue;
@@ -147,20 +156,22 @@ public static class HudDraw
     public static Texture2D DiamondRing()
     {
         var Q = new[] { new Vector2(2f, 32f), new Vector2(32f, 2f), new Vector2(62f, 32f), new Vector2(32f, 62f) }; Vector2[] N; PolyNormals(Q, out N);
-        return Make("diamondRing", 64, 64, (x, y) => { float d = PolyD(Q, N, x, y); return Cov(d) - Cov(d + 3f); });
+        return Make("diamondRing", 64, 64, (x, y) => { float d = PolyD(Q, N, x, y); return Cov(d) - Cov(d + HudLayout.Get().draw.diamondRingPx); });
     }
     /// <summary>Horizontal gradient: alpha 1 at the left edge to 0 at the right edge (flip with a negative-width uv).</summary>
     public static Texture2D GradH() { return Make("gradH", 128, 2, (x, y) => 1f - x / 128f, FilterMode.Bilinear); }
     /// <summary>Vertical soft band: alpha 0 at both edges, 1 in the middle (smooth).</summary>
     public static Texture2D BandV() { return Make("bandV", 2, 128, (x, y) => { float k = Mathf.Sin(y / 128f * Mathf.PI); return k * k; }); }
     /// <summary>Radial vignette: transparent in the centre, opaque at the corners.</summary>
-    public static Texture2D Vignette() { return Make("vignette", 128, 128, (x, y) => { float dx = (x - 64f) / 64f, dy = (y - 64f) / 64f; float r = Mathf.Sqrt(dx * dx + dy * dy) / 1.2f; return Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.35f, 1f, r)); }); }
-    public static Texture2D Disc() { return Make("disc", 128, 128, (x, y) => Cov((Mathf.Sqrt((x - 64f) * (x - 64f) + (y - 64f) * (y - 64f)) - 62f))); }
-    public static Texture2D Ring(float px) { string k = "ring" + px; return Make(k, 128, 128, (x, y) => { float d = Mathf.Sqrt((x - 64f) * (x - 64f) + (y - 64f) * (y - 64f)) - 62f; return Cov(d) - Cov(d + px * 2f); }); }
+    public static Texture2D Vignette() { return Make("vignette", 128, 128, (x, y) => { float dx = (x - 64f) / 64f, dy = (y - 64f) / 64f; float r = Mathf.Sqrt(dx * dx + dy * dy) / HudLayout.Get().draw.vignetteDiv; return Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(HudLayout.Get().draw.vignetteStart, 1f, r)); }); }
+    public static Texture2D Disc() { return Make("disc", 128, 128, (x, y) => Cov((Mathf.Sqrt((x - 64f) * (x - 64f) + (y - 64f) * (y - 64f)) - HudLayout.Get().draw.discRadius))); }
+    public static Texture2D Ring(float px) { if (lastRingTex != null && px == lastRingPx) return lastRingTex; lastRingPx = px; lastRingTex = RingMake(px); return lastRingTex; }
+    static Texture2D RingMake(float px) { string k = "ring" + px; return Make(k, 128, 128, (x, y) => { float d = Mathf.Sqrt((x - 64f) * (x - 64f) + (y - 64f) * (y - 64f)) - HudLayout.Get().draw.ringRadius; return Cov(d) - Cov(d + px * 2f); }); }
 
     /// <summary>Thin crescent arc pointing up (rotate with GUIUtility.RotateAroundPivot): drawn in a square whose half-size = radius / 0.85; the band's centre radius is 0.85 of that.</summary>
     public const float ArcCentre = 0.85f;
-    public static Texture2D Arc(float arcDeg, float thick)
+    public static Texture2D Arc(float arcDeg, float thick) { if (lastArcTex != null && arcDeg == lastArcDeg && thick == lastArcThick) return lastArcTex; lastArcDeg = arcDeg; lastArcThick = thick; lastArcTex = ArcMake(arcDeg, thick); return lastArcTex; }
+    static Texture2D ArcMake(float arcDeg, float thick)
     {
         string key = "arc|" + arcDeg.ToString("F0") + "|" + thick.ToString("F2");
         return Make(key, 192, 192, (x, y) =>
@@ -184,7 +195,7 @@ public static class HudDraw
         var px = new Color32[96 * 96];
         for (int y = 0; y < 96; y++) for (int x = 0; x < 96; x++)
         {
-            float dx = x + 0.5f - 48f, dy = y + 0.5f - 48f; float d = Mathf.Sqrt(dx * dx + dy * dy) - 46f; float a = Cov(d);
+            float dx = x + 0.5f - 48f, dy = y + 0.5f - 48f; float d = Mathf.Sqrt(dx * dx + dy * dy) - HudLayout.Get().draw.pieRadius; float a = Cov(d);
             float ang = Mathf.Atan2(dx, dy); if (ang < 0f) ang += Mathf.PI * 2f; float u = ang / (Mathf.PI * 2f);   // 0 at 12 o'clock, clockwise
             if (u < 1f - cover) a = 0f;                                                                              // the ready part is cleared first, from 12 o'clock clockwise
             px[y * 96 + x] = new Color32(255, 255, 255, (byte)Mathf.RoundToInt(a * 255f));

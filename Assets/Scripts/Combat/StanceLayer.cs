@@ -202,7 +202,7 @@ public static class StanceLayer
     public class StanceDriver : MonoBehaviour
     {
         static StanceDriver inst; DuelFighter player; float wheelT, toastUntil; string toastText = ""; Color toastCol = Color.white;
-        bool axisXOk = true, axisYOk = true; float lastX, lastY, nextFind; GUIStyle st, stToast;
+        bool axisXOk = true, axisYOk = true; float lastX, lastY, nextFind; GUIStyle st, stToast; string hudTxt, cPre, cLab, cHint; int cSize;   // UIDATA_A v1: hudTxt = cached label markup (was a concat per frame)
         KeyCode[] nextK, prevK, padN, padP;
 
         void OnEnable() { inst = this; SceneManager.sceneLoaded += OnLoaded; }
@@ -222,7 +222,7 @@ public static class StanceLayer
         {
             text = ""; col = Color.white; alpha = 0f;
             if (inst == null || Time.unscaledTime >= inst.toastUntil) return false;
-            alpha = Mathf.Clamp01((inst.toastUntil - Time.unscaledTime) / Mathf.Max(0.05f, Get().hud.toastSeconds * 0.5f)); text = inst.toastText; col = inst.toastCol; return true;
+            alpha = Mathf.Clamp01((inst.toastUntil - Time.unscaledTime) / Mathf.Max(HudLayout.Get().stance.toastMinS, Get().hud.toastSeconds * 0.5f)); text = inst.toastText; col = inst.toastCol; return true;
         }
         static Color Col(float[] a, float alpha) { return a != null && a.Length >= 3 ? new Color(a[0], a[1], a[2], alpha) : new Color(1f, 1f, 1f, alpha); }
         static KeyCode[] Keys(string[] names)
@@ -277,21 +277,22 @@ public static class StanceLayer
         void OnGUI()
         {
             if (!Active) return;
+            if (Event.current.type != EventType.Repaint) return;   // UIDATA_A v1: nothing here takes input, skip the Layout pass
             if (HudCfg.Get().stance.enabled) return;   // laneHUD2 v83: GameHUD.DrawStance draws the label and the toast (hud.json stance{}); set stance.enabled false there to get this old label back
             var H = Get().hud; if (!H.enabled) return;
             var p = Player(); if (p == null) return;
             var r = Row(StanceOf(p)); if (r == null) return;
             if (st == null) { st = new GUIStyle(GUI.skin.label) { fontSize = H.fontSize, fontStyle = FontStyle.Bold }; stToast = new GUIStyle(GUI.skin.label) { fontSize = H.toastFontSize, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter }; }
             var rect = new Rect(H.x, Screen.height - H.yFromBottom, H.w, H.h);
-            string txt = H.prefix + r.label + (string.IsNullOrEmpty(H.hint) ? "" : "  <size=" + Mathf.Max(8, H.fontSize - 3) + ">" + H.hint + "</size>");
+            int small = Mathf.Max(HudLayout.Get().stance.minFont, H.fontSize - HudLayout.Get().stance.smallDelta); if (hudTxt == null || cSize != small || !string.Equals(cPre, H.prefix) || !string.Equals(cLab, r.label) || !string.Equals(cHint, H.hint)) { cSize = small; cPre = H.prefix; cLab = r.label; cHint = H.hint; hudTxt = H.prefix + r.label + (string.IsNullOrEmpty(H.hint) ? "" : "  <size=" + small + ">" + H.hint + "</size>"); } string txt = hudTxt;
             st.richText = true;
-            st.normal.textColor = new Color(0f, 0f, 0f, 0.7f * H.alpha); GUI.Label(new Rect(rect.x + 1f, rect.y + 1f, rect.width, rect.height), txt, st);
+            st.normal.textColor = new Color(0f, 0f, 0f, HudLayout.Get().stance.shadowAlpha * H.alpha); GUI.Label(new Rect(rect.x + HudLayout.Get().stance.shadowOffset, rect.y + HudLayout.Get().stance.shadowOffset, rect.width, rect.height), txt, st);
             st.normal.textColor = Col(r.color, H.alpha); GUI.Label(rect, txt, st);
             if (Time.unscaledTime < toastUntil)
             {
-                float a = Mathf.Clamp01((toastUntil - Time.unscaledTime) / Mathf.Max(0.05f, H.toastSeconds * 0.5f));
-                var tr = new Rect(Screen.width * 0.5f - 160f, Screen.height * 0.70f, 320f, 30f);
-                stToast.normal.textColor = new Color(0f, 0f, 0f, 0.7f * a); GUI.Label(new Rect(tr.x + 1f, tr.y + 1f, tr.width, tr.height), toastText, stToast);
+                float a = Mathf.Clamp01((toastUntil - Time.unscaledTime) / Mathf.Max(HudLayout.Get().stance.toastMinS, H.toastSeconds * 0.5f));
+                var tr = new Rect(Screen.width * 0.5f - HudLayout.Get().stance.toastDx, Screen.height * HudLayout.Get().stance.toastY, HudLayout.Get().stance.toastW, HudLayout.Get().stance.toastH);
+                stToast.normal.textColor = new Color(0f, 0f, 0f, HudLayout.Get().stance.shadowAlpha * a); GUI.Label(new Rect(tr.x + HudLayout.Get().stance.shadowOffset, tr.y + HudLayout.Get().stance.shadowOffset, tr.width, tr.height), toastText, stToast);
                 stToast.normal.textColor = new Color(toastCol.r, toastCol.g, toastCol.b, a); GUI.Label(tr, toastText, stToast);
             }
         }

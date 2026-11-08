@@ -282,8 +282,8 @@ public class DirectionalInput : MonoBehaviour
     void Label(Vector2 at, string text, Color col, ControlsTable.MarkerCfg Mk)
     {
         if (lbl == null) lbl = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.UpperCenter };
-        lbl.fontSize = Mk.fontSize; GUI.color = col;
-        GUI.Label(new Rect(at.x - 50f, at.y + Mk.sizePx, 100f, Mk.fontSize * 2f), text, lbl);
+        lbl.fontSize = Mk.fontSize; GUI.color = col; var ZD = ZoneUiCfg.Get().dir;   // UIDATA_C v1
+        GUI.Label(new Rect(at.x - ZD.labelHalfW, at.y + Mk.sizePx, ZD.labelW, Mk.fontSize * ZD.labelHMul), text, lbl);
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]

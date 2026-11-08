@@ -159,7 +159,7 @@ public class WoundSystem : MonoBehaviour
 
     void OnGUI()
     {
-        var V = WoundTable.Get().vignette; if (!V.enabled || vigAlpha <= 0.002f || Event.current.type != EventType.Repaint) return;
+        var V = WoundTable.Get().vignette; if (!V.enabled || vigAlpha <= HudLayout.Get().wound.vignetteCutoff /* UIDATA_A v1 */ || Event.current.type != EventType.Repaint) return;
         float pulse = 1f + V.pulseDepth * Mathf.Sin(Time.unscaledTime * Mathf.PI * 2f * V.pulseHz);
         GUI.depth = V.guiDepth; var old = GUI.color;
         GUI.color = new Color(V.color[0], V.color[1], V.color[2], Mathf.Clamp01(vigAlpha * pulse));

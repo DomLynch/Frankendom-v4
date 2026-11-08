@@ -12,11 +12,11 @@ public class FlowHud : MonoBehaviour
         var go = new GameObject("FlowHud"); DontDestroyOnLoad(go); go.AddComponent<FlowHud>();
     }
 
-    PlayerBrain pb; DuelFighter df; CameraRig rig; Camera cam; float nextFind; GUIStyle small, toast, hint;
+    PlayerBrain pb; DuelFighter df; CameraRig rig; Camera cam; float nextFind; GUIStyle small, toast, hint; string ripTxt, ripK, ripFor;   // UIDATA_A v1: ripTxt = cached "<hintText>  [<key>]" (was a concat per frame)
 
     void Find()
     {
-        nextFind = Time.unscaledTime + 0.5f;
+        /* UIDATA_A v1 */ nextFind = Time.unscaledTime + HudLayout.Get().flow.findEvery;
         if (pb == null) pb = FindFirstObjectByType<PlayerBrain>();
         if (pb != null) { df = pb.GetComponent<DuelFighter>(); rig = pb.rig != null ? pb.rig : FindFirstObjectByType<CameraRig>(); if (rig != null) cam = rig.GetComponent<Camera>(); }
     }
@@ -24,7 +24,7 @@ public class FlowHud : MonoBehaviour
     GUIStyle Style(int size, TextAnchor anchor, bool bold) { var s = new GUIStyle(GUI.skin.label) { fontSize = size, alignment = anchor, fontStyle = bold ? FontStyle.Bold : FontStyle.Normal }; s.normal.textColor = Color.white; return s; }
     static void Shadowed(Rect r, string txt, GUIStyle st, Color col)
     {
-        var o = new Rect(r.x + 1, r.y + 1, r.width, r.height); st.normal.textColor = new Color(0f, 0f, 0f, col.a * 0.85f); GUI.Label(o, txt, st);
+        var o = new Rect(r.x + HudLayout.Get().flow.shadowOffset, r.y + HudLayout.Get().flow.shadowOffset, r.width, r.height); st.normal.textColor = new Color(0f, 0f, 0f, col.a * HudLayout.Get().flow.shadowAlpha); GUI.Label(o, txt, st);
         st.normal.textColor = col; GUI.Label(r, txt, st);
     }
 
@@ -44,15 +44,15 @@ public class FlowHud : MonoBehaviour
             if (dv.magnitude <= d.lockOn.range)
             {
                 Vector3 sp = cam.WorldToScreenPoint(df.opponent.transform.position + Vector3.up * (h.yOffset * FighterScale.Of(df.opponent)));
-                if (sp.z > 0.1f)
+                if (sp.z > HudLayout.Get().flow.nearZ)
                 {
                     float x = sp.x, y = Screen.height - sp.y, px = h.dotPx;
                     if (h.dot)
                     {
-                        GUI.color = new Color(0f, 0f, 0f, col.a * 0.8f); GUI.DrawTexture(new Rect(x - px * 0.5f - 1.5f, y - px * 0.5f - 1.5f, px + 3f, px + 3f), Texture2D.whiteTexture);
+                        GUI.color = new Color(0f, 0f, 0f, col.a * HudLayout.Get().flow.dotShadowAlpha); GUI.DrawTexture(new Rect(x - px * 0.5f - HudLayout.Get().flow.dotOutline, y - px * 0.5f - HudLayout.Get().flow.dotOutline, px + HudLayout.Get().flow.dotOutlineSize, px + HudLayout.Get().flow.dotOutlineSize), Texture2D.whiteTexture);
                         GUI.color = col; GUI.DrawTexture(new Rect(x - px * 0.5f, y - px * 0.5f, px, px), Texture2D.whiteTexture); GUI.color = Color.white;
                     }
-                    if (!string.IsNullOrEmpty(h.text)) Shadowed(new Rect(x - 40f, y + px * 0.5f + 3f, 80f, 18f), h.text, small, new Color(col.r, col.g, col.b, col.a * 0.85f));
+                    if (!string.IsNullOrEmpty(h.text)) Shadowed(new Rect(x - HudLayout.Get().flow.labelDx, y + px * 0.5f + HudLayout.Get().flow.labelDy, HudLayout.Get().flow.labelW, HudLayout.Get().flow.labelH), h.text, small, new Color(col.r, col.g, col.b, col.a * HudLayout.Get().flow.labelAlpha));
                 }
             }
         }
@@ -60,13 +60,14 @@ public class FlowHud : MonoBehaviour
         if (d.lockOn.enabled && h.toast && Time.unscaledTime - FlowTable.lastToggleTime < h.toastSeconds)
         {
             float a = Mathf.Clamp01(1f - (Time.unscaledTime - FlowTable.lastToggleTime) / h.toastSeconds);
-            Shadowed(new Rect(Screen.width * 0.5f - 120f, Screen.height * h.toastY - 12f, 240f, 24f), FlowTable.lastToggleOn ? h.onText : h.offText, toast, new Color(col.r, col.g, col.b, Mathf.Min(1f, a * 1.6f)));
+            Shadowed(new Rect(Screen.width * 0.5f - HudLayout.Get().flow.toastDx, Screen.height * h.toastY - HudLayout.Get().flow.toastDy, HudLayout.Get().flow.toastW, HudLayout.Get().flow.toastH), FlowTable.lastToggleOn ? h.onText : h.offText, toast, new Color(col.r, col.g, col.b, Mathf.Min(1f, a * HudLayout.Get().flow.toastAlphaMul)));
         }
         // riposte window hint
         if (d.riposte.enabled && d.riposte.hint && df.RiposteLeft > 0)
         {
             string k = FlowTable.FirstKeyLabel(d.riposte.keys, "B");
-            Shadowed(new Rect(Screen.width * 0.5f - 160f, Screen.height * 0.78f - 14f, 320f, 28f), d.riposte.hintText + "  [" + k + "]", hint, new Color(0.98f, 0.85f, 0.45f, 0.95f));
+            if (ripTxt == null || !string.Equals(ripK, k) || !string.Equals(ripFor, d.riposte.hintText)) { ripK = k; ripFor = d.riposte.hintText; ripTxt = d.riposte.hintText + HudLayout.Get().flow.hintOpen + k + HudLayout.Get().flow.hintClose; }
+            Shadowed(new Rect(Screen.width * 0.5f - HudLayout.Get().flow.hintDx, Screen.height * HudLayout.Get().flow.hintY - HudLayout.Get().flow.hintDy, HudLayout.Get().flow.hintW, HudLayout.Get().flow.hintH), ripTxt, hint, HudLayout.Col(HudLayout.Get().flow.hintColor));
         }
     }
 }

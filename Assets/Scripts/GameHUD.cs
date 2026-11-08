@@ -19,6 +19,8 @@ public class GameHUD : MonoBehaviour
     DuelFighter zSecondDf; Health zSecondHp; string zSecondName = ""; float bossBottom;   // TWOFIGHT v1
     float guardA; float[] cdMax = new float[2]; float[] readyT = new float[2]; bool[] wasReady = new bool[2];
     float lastNow;
+    bool camArg; string fpsTxt; float fpsTxtFor = -1f; string[] lblK = new string[2], lblS = new string[2], lblT = new string[2]; static readonly string[] nums = new string[128];   // UIDATA_A v1: caches, OnGUI allocates nothing per frame
+    static string Num(int n) { if (n < 0 || n >= nums.Length) return n.ToString(); return nums[n] ?? (nums[n] = n.ToString()); }
     // HUDBUG v1 (zones): with zones on the scene enemy is an inactive template and every enemy is a clone, so enemy/ef (set by BuildSlice) never moved. Zones off: untouched.
     Health zEnemyHp; DuelFighter zEnemyDf; float zPlayerLast = -1f, zEnemyLast = -1f; DuelFighter zEnemyLogged;
     void ZonesBind()
@@ -39,7 +41,7 @@ public class GameHUD : MonoBehaviour
     void Start()
     {
         startT = Time.unscaledTime;
-        foreach (var a in System.Environment.GetCommandLineArgs()) if (a == "-fps" || a == "-gaps" || a == "-autoplay") showFps = true;
+        foreach (var a in System.Environment.GetCommandLineArgs()) if (a == "-fps" || a == "-gaps" || a == "-autoplay") showFps = true; else if (a == "-camdebug") camArg = true; /* UIDATA_A v1 */
     }
 
     void Update()
@@ -49,7 +51,7 @@ public class GameHUD : MonoBehaviour
         if (toggleKeyName != H.hint.toggleKey) { toggleKeyName = H.hint.toggleKey; System.Enum.TryParse(toggleKeyName, true, out toggleKey); }
         if (H.hint.enabled && InputMap.Down("hints", toggleKey)) { hintPinned = true; hintOn = !hintOn; }
         if (Input.GetKeyDown(KeyCode.F3)) showFps = !showFps;
-        fpsAcc += Time.unscaledDeltaTime; fpsN++; if (fpsAcc >= 0.5f) { fpsShown = fpsN / fpsAcc; fpsAcc = 0f; fpsN = 0; }
+        fpsAcc += Time.unscaledDeltaTime; fpsN++; if (fpsAcc >= HudLayout.Get().game.fpsEvery) { fpsShown = fpsN / fpsAcc; fpsAcc = 0f; fpsN = 0; }
         if (Input.GetKeyDown(KeyCode.Escape) && !MenuUI.Enabled) { Cursor.lockState = CursorLockMode.None; Cursor.visible = true; }
         // steer mode has no GameLoop key handling: keep the old Backspace restart there only
         if (STSteer.Active && Input.GetKeyDown(KeyCode.Backspace)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -66,7 +68,7 @@ public class GameHUD : MonoBehaviour
         var H = HudCfg.Get();
         if (showFps) DebugLines(H);
         if (STSteer.Active) return;   // steer mode: STUI draws the bar, hints and banners
-        float s = HudCfg.Scale(), vw = Screen.width / s, vh = Screen.height / s, now = Time.unscaledTime, dt = Mathf.Clamp(now - lastNow, 0f, 0.1f); lastNow = now;
+        float s = HudCfg.Scale(), vw = Screen.width / s, vh = Screen.height / s, now = Time.unscaledTime, dt = Mathf.Clamp(now - lastNow, 0f, HudLayout.Get().game.dtMax); lastNow = now;
         var m = GUI.matrix; GUI.matrix = Matrix4x4.Scale(new Vector3(s, s, 1f));
         HudDraw.Alpha = 1f - Mathf.Clamp01(GameLoop.ScreenAlpha) * Mathf.Clamp01(H.screens.hudFade);   // the end screen fades the HUD out
         try
@@ -95,7 +97,7 @@ public class GameHUD : MonoBehaviour
         string cue = null; Color cc = Color.white; bool big = false;
         if (pf != null && !pf.Dead) CombatHudBars.Draw(   // kitV76 (Goose v75): no stamina / posture strips at 0 HP
 hp.x, hp.yMax + H.bars.framePad + P.stamina.gap, 0f, pf, true, P.stamina, P.posture, P.showStamina, P.showPosture, out cue, out cc, out big);
-        if (cue != null) HudDraw.Caps(hp.xMax, y + P.cueDy, 1f, cue, "title", P.cueSize, Mathf.Max(8, P.cueSize - 3), 2f, cc);
+        if (cue != null) HudDraw.Caps(hp.xMax, y + P.cueDy, 1f, cue, "title", P.cueSize, Mathf.Max(HudLayout.Get().game.minFont, P.cueSize - HudLayout.Get().game.cueSmallDelta), HudLayout.Get().game.cueTracking, cc);
     }
 
     // ---------------- boss bar (top-centre) ----------------
@@ -132,7 +134,7 @@ hp.x, hp.yMax + H.bars.framePad + P.stamina.gap, 0f, pf, true, P.stamina, P.post
         if (ef != null && !ef.Dead) after = CombatHudBars.Draw(   // kitV76 (Goose v75): no stamina / posture strips at 0 HP
 hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.stamina, Bc.posture, Bc.showStamina, Bc.showPosture, out cue, out cc, out big);
         bossBottom = after;   // TWOFIGHT v1
-        if (cue != null) HudDraw.Caps(hp.center.x, after + Bc.cueGap - H.layout.cueLift, 0.5f, cue, "title", Bc.cueSize, Mathf.Max(8, Bc.cueSize - (int)H.layout.cueSmallDelta), H.layout.cueTracking, cc);
+        if (cue != null) HudDraw.Caps(hp.center.x, after + Bc.cueGap - H.layout.cueLift, 0.5f, cue, "title", Bc.cueSize, Mathf.Max(HudLayout.Get().game.minFont, Bc.cueSize - (int)H.layout.cueSmallDelta), H.layout.cueTracking, cc);
     }
 
     // ---------------- second enemy (TWOFIGHT v1; hud.json boss.second, dark until enabled) ----------------
@@ -145,7 +147,7 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
         if (zSecondHp == null) return;
         float maxW = vw - 2f * (H.player.x + H.player.hp.w + Bc.sideMargin);
         float w = Mathf.Max(H.layout.bossMinW, Mathf.Min(Bc.w, maxW)) * K.widthScale, x = (vw - w) * 0.5f, y = bossBottom + K.gap;
-        int ns = Mathf.Max(8, Mathf.RoundToInt(Bc.nameSize * K.nameScale)), nsm = Mathf.Max(8, Mathf.RoundToInt(Bc.nameSmall * K.nameScale));
+        int ns = Mathf.Max(HudLayout.Get().game.minFont, Mathf.RoundToInt(Bc.nameSize * K.nameScale)), nsm = Mathf.Max(HudLayout.Get().game.minFont, Mathf.RoundToInt(Bc.nameSmall * K.nameScale));
         HudDraw.Caps(x, y, 0f, zSecondName, "title", ns, nsm, Bc.nameTracking, Ink());
         float f = zSecondHp.max > 0f ? Mathf.Clamp01(zSecondHp.current / zSecondHp.max) : 0f;
         lagS.Step(f, now, dt);
@@ -174,15 +176,15 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
     void DrawHint(HudCfg.Data H, float vw, float vh, float dt)
     {
         var K = H.hint; if (!K.enabled) return;
-        hintA = Mathf.MoveTowards(hintA, hintOn ? 1f : 0f, dt / Mathf.Max(0.02f, K.fadeSeconds));
+        hintA = Mathf.MoveTowards(hintA, hintOn ? 1f : 0f, dt / Mathf.Max(HudLayout.Get().game.fadeMinS, K.fadeSeconds));
         Color dim = HudCfg.Col(H.colors.dim);
         // the small corner prompt, only for the first cornerSeconds of the fight and while the panel is closed
-        if (!string.IsNullOrEmpty(K.cornerText) && hintA < 0.01f && !hintPinned && Time.unscaledTime - startT < K.cornerSeconds && H.stance.enabled)
+        if (!string.IsNullOrEmpty(K.cornerText) && hintA < HudLayout.Get().game.hintCutoff && !hintPinned && Time.unscaledTime - startT < K.cornerSeconds && H.stance.enabled)
         {
             float ca = K.cornerAlpha * Mathf.Clamp01((K.cornerSeconds - (Time.unscaledTime - startT)) / H.layout.cornerFadeS);
             HudDraw.Text(new Rect(H.stance.x, vh - H.stance.bottom + H.stance.nameSize * H.layout.cornerDy, H.layout.cornerW, K.cornerSize * H.layout.cornerH), K.cornerText, "serif", K.cornerSize, TextAnchor.UpperLeft, false, new Color(dim.r, dim.g, dim.b, ca));
         }
-        if (hintA < 0.01f || K.rows == null || K.rows.Length == 0) return;
+        if (hintA < HudLayout.Get().game.hintCutoff || K.rows == null || K.rows.Length == 0) return;
         int cols = Mathf.Max(1, K.columns), perCol = Mathf.CeilToInt(K.rows.Length / (float)cols);
         float w = cols * K.colWidth + 2f * K.pad, h = perCol * K.rowHeight + 2f * K.pad + K.titleSize * H.layout.keysTitleLine + K.footerSize * H.layout.keysFooterAdvance;
         var r = new Rect(K.margin, vh - K.bottom - h, w, h);
@@ -225,14 +227,14 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
             if (!ready)
             {
                 var pie = HudDraw.Pie(cd / tot, S.pieSteps); if (pie != null) HudDraw.Tex(r, pie, new Color(H.layout.pieShade[0], H.layout.pieShade[1], H.layout.pieShade[2], H.layout.pieShade[3]));
-                HudDraw.Text(r, Mathf.CeilToInt(cd / Mathf.Max(1f, S.ticksPerSecond)).ToString(), "title", S.cdSize, TextAnchor.MiddleCenter, true, HudCfg.Col(H.colors.ink, H.layout.cdInk));
+                HudDraw.Text(r, Num(Mathf.CeilToInt(cd / Mathf.Max(1f, S.ticksPerSecond))), "title", S.cdSize, TextAnchor.MiddleCenter, true, HudCfg.Col(H.colors.ink, H.layout.cdInk));
             }
             else
             {
-                float k = 1f - (now - readyT[i]) / Mathf.Max(0.05f, S.readyFlashS);
+                float k = 1f - (now - readyT[i]) / Mathf.Max(HudLayout.Get().game.readyFlashMinS, S.readyFlashS);
                 if (k > 0f) { float g = S.size * (H.layout.flashBase + H.layout.flashGrow * (1f - k)); HudDraw.Tex(new Rect(r.center.x - g * 0.5f, r.center.y - g * 0.5f, g, g), HudDraw.Ring(S.ringPx), new Color(readyCol.r, readyCol.g, readyCol.b, k)); }
             }
-            string label = string.IsNullOrEmpty(it.label) ? it.key : it.key + "  " + BowHooks.SpecialLabel(pf, i, it.label); /* BOW v2 */
+            string label = it.key; if (!string.IsNullOrEmpty(it.label)) { string sl = BowHooks.SpecialLabel(pf, i, it.label); if (lblT[i] == null || !string.Equals(lblK[i], it.key) || !string.Equals(lblS[i], sl)) { lblK[i] = it.key; lblS[i] = sl; lblT[i] = it.key + "  " + sl; } label = lblT[i]; } /* BOW v2 */ /* UIDATA_A v1: cached concat */
             HudDraw.Text(new Rect(r.x - H.layout.keyLabelPad, r.yMax + S.keyDy, S.size + 2f * H.layout.keyLabelPad, S.keySize * H.layout.keyLabelBox), label, "serif", S.keySize, TextAnchor.UpperCenter, false, ready ? HudCfg.Col(H.colors.ink, H.layout.keyLabelInk) : HudCfg.Col(H.colors.dim));
         }
     }
@@ -242,8 +244,8 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
     {
         var G = H.guardDir; if (!G.enabled || pf == null) return;
         bool up = !pf.Dead && ControlsTable.SideRequired && (pf.state == FState.Guard || pf.guardHeld);
-        guardA = Mathf.MoveTowards(guardA, up ? 1f : 0f, dt / Mathf.Max(0.02f, up ? G.fadeInS : G.fadeOutS));
-        if (guardA < 0.01f) return;
+        guardA = Mathf.MoveTowards(guardA, up ? 1f : 0f, dt / Mathf.Max(HudLayout.Get().game.fadeMinS, up ? G.fadeInS : G.fadeOutS));
+        if (guardA < HudLayout.Get().game.guardCutoff) return;
         var sides = ControlsTable.Get().guard.sides; if (sides == null) return;
         // STEERUI v93: v83 rotated with GUIUtility.RotateAroundPivot while the HUD scale matrix was set (the pivot is taken in UNSCALED screen px, the rects in scaled px), so left / right swung away from the centre whenever scale != 1
         // (Dom 1350x858: the left arc at x=310). Now: everything in screen px with an own rotation matrix, anchored to the player's projected body (feet..head), sizes = hud.json guardDir fractions of the player's screen height.
@@ -292,23 +294,24 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
             bodyH = Mathf.Clamp(h, G.minHeightM, G.maxHeightM);
         }
         Vector3 foot = pf.transform.position; Vector3 sf = cam.WorldToScreenPoint(foot), sh = cam.WorldToScreenPoint(foot + Vector3.up * bodyH);
-        if (sf.z <= 0.1f || sh.z <= 0.1f) return;
-        float hp = Mathf.Abs(sh.y - sf.y); if (hp < 8f) return;
+        if (sf.z <= HudLayout.Get().game.nearZ || sh.z <= HudLayout.Get().game.nearZ) return;
+        float hp = Mathf.Abs(sh.y - sf.y); if (hp < HudLayout.Get().game.minBodyPx) return;
         hPx = hp; c = new Vector2(sf.x, Screen.height - Mathf.Lerp(sf.y, sh.y, G.centreFrac));
     }
 
     // ---------------- debug ----------------
     void DebugLines(HudCfg.Data H)
     {
-        var dim = Ink(0.85f);
-        HudDraw.Text(new Rect(Screen.width / 2 - 60, 8, 140, 24), "FPS " + fpsShown.ToString("F0"), "ui", H.debug.fpsLabelSize, TextAnchor.UpperLeft, false, dim);
-        bool cam = H.debug.camLine; foreach (var a in System.Environment.GetCommandLineArgs()) if (a == "-camdebug") cam = true;
+        var dim = Ink(HudLayout.Get().game.fpsInk);
+        if (fpsTxt == null || fpsTxtFor != fpsShown) { fpsTxtFor = fpsShown; fpsTxt = "FPS " + fpsShown.ToString("F0"); }
+        HudDraw.Text(new Rect(Screen.width / 2 - HudLayout.Get().game.fpsDx, HudLayout.Get().game.fpsY, HudLayout.Get().game.fpsW, HudLayout.Get().game.fpsH), fpsTxt, "ui", H.debug.fpsLabelSize, TextAnchor.UpperLeft, false, dim);
+        bool cam = H.debug.camLine || camArg;
         if (cam && pf && Camera.main)
         {
             var c = Camera.main.transform; var rel = c.position - pf.transform.position; var flat = new Vector3(c.forward.x, 0f, c.forward.z).normalized; float back = -Vector3.Dot(rel, flat);
             var ax = ef ? ef.transform.position - pf.transform.position : Vector3.forward; ax.y = 0f; ax.Normalize(); float side = Vector3.Dot(rel, Quaternion.Euler(0f, 90f, 0f) * ax);
             float pitch = Mathf.Asin(c.forward.y) * Mathf.Rad2Deg; var sp = Camera.main.WorldToScreenPoint(pf.transform.position + Vector3.up);
-            HudDraw.Text(new Rect(Screen.width / 2 - 200, 28, 520, 24), $"CAM h={rel.y:F2} back={back:F2} side={side:F2} pitch={pitch:F1} px={sp.x / Screen.width:F2}", "ui", H.debug.fpsLabelSize, TextAnchor.UpperLeft, false, dim);
+            HudDraw.Text(new Rect(Screen.width / 2 - HudLayout.Get().game.camDx, HudLayout.Get().game.camY, HudLayout.Get().game.camW, HudLayout.Get().game.camH), $"CAM h={rel.y:F2} back={back:F2} side={side:F2} pitch={pitch:F1} px={sp.x / Screen.width:F2}", "ui", H.debug.fpsLabelSize, TextAnchor.UpperLeft, false, dim);
         }
     }
 }

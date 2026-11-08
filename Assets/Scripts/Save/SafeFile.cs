@@ -65,6 +65,12 @@ public static class SafeFile
         if (FaultAt != null) FaultAt("replaced");
     }
 
+    /// <summary>ERASEFIX v1: a New game / erase must also remove the .bak and .tmp, else Recover() brings the erased save back at the next launch. Deletes path, path.bak, path.tmp (missing files are fine).</summary>
+    public static void Discard(string path)
+    {
+        foreach (var f in new[] { path, Bak(path), Tmp(path) }) { try { if (File.Exists(f)) File.Delete(f); } catch (Exception e) { WarnOnce("discard:" + f, "[Save] could not delete " + f + ": " + e.Message); } }
+    }
+
     /// <summary>The save is gone but a finished .tmp (the old Delete + Move crash) or a .bak is left: restore it so the loader finds a file. True when something was restored.</summary>
     public static bool Recover(string path)
     {

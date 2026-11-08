@@ -1,0 +1,117 @@
+{
+  "_doc": "UIDATA_A v1: HUD layout/style numbers moved out of the draw code. Defaults equal the old literals. See Assets/Scripts/HudLayout.cs.",
+  "enabled": true,
+  "game": {
+    "dtMax": 0.1,
+    "fadeMinS": 0.02,
+    "cueSmallDelta": 3,
+    "minFont": 8,
+    "cueTracking": 2.0,
+    "readyFlashMinS": 0.05,
+    "hintCutoff": 0.01,
+    "guardCutoff": 0.01,
+    "fpsEvery": 0.5,
+    "fpsDx": 60,
+    "fpsY": 8,
+    "fpsW": 140,
+    "fpsH": 24,
+    "fpsInk": 0.85,
+    "camDx": 200,
+    "camY": 28,
+    "camW": 520,
+    "camH": 24,
+    "minBodyPx": 8.0,
+    "nearZ": 0.1
+  },
+  "draw": {
+    "minOsSize": 8,
+    "alphaCutoffText": 0.003,
+    "alphaCutoffCaps": 0.003,
+    "shadowDivText": 13.0,
+    "shadowMinText": 1.0,
+    "shadowMinCaps": 1.0,
+    "minorWords": [
+      "of ",
+      "the ",
+      "de ",
+      "von "
+    ],
+    "diamondRingPx": 3.0,
+    "vignetteStart": 0.35,
+    "vignetteDiv": 1.2,
+    "discRadius": 62.0,
+    "ringRadius": 62.0,
+    "pieRadius": 46.0
+  },
+  "barFx": {
+    "lagHitEps": 0.0005,
+    "lagCloseEps": 0.002,
+    "lagShowEps": 0.002,
+    "fillMinFrac": 0.001,
+    "capBack": [
+      0.0,
+      0.0,
+      0.0,
+      0.85
+    ],
+    "capOverhang": 0.4,
+    "leadThickMin": 1.0,
+    "leadThickMul": 0.8,
+    "exhaustMin": 0.55,
+    "exhaustAmp": 0.45,
+    "postureShowMin": 0.01,
+    "flashPad": 2.0,
+    "flashGrow": 4.0,
+    "deathFlashAlpha": 0.9,
+    "parryFlashAlpha": 0.7
+  },
+  "flow": {
+    "findEvery": 0.5,
+    "nearZ": 0.1,
+    "dotShadowAlpha": 0.8,
+    "dotOutline": 1.5,
+    "dotOutlineSize": 3.0,
+    "shadowOffset": 1,
+    "shadowAlpha": 0.85,
+    "labelAlpha": 0.85,
+    "labelDx": 40.0,
+    "labelDy": 3.0,
+    "labelW": 80.0,
+    "labelH": 18.0,
+    "toastDx": 120.0,
+    "toastDy": 12.0,
+    "toastW": 240.0,
+    "toastH": 24.0,
+    "toastAlphaMul": 1.6,
+    "hintDx": 160.0,
+    "hintY": 0.78,
+    "hintDy": 14.0,
+    "hintW": 320.0,
+    "hintH": 28.0,
+    "hintColor": [
+      0.98,
+      0.85,
+      0.45,
+      0.95
+    ],
+    "hintOpen": "  [",
+    "hintClose": "]"
+  },
+  "blood": {
+    "alphaCutoff": 0.001
+  },
+  "wound": {
+    "vignetteCutoff": 0.002
+  },
+  "stance": {
+    "shadowOffset": 1.0,
+    "shadowAlpha": 0.7,
+    "smallDelta": 3,
+    "minFont": 8,
+    "toastDx": 160.0,
+    "toastY": 0.7,
+    "toastW": 320.0,
+    "toastH": 30.0,
+    "toastMinS": 0.05
+  }
+}

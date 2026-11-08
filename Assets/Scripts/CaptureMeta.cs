@@ -16,11 +16,13 @@ public class CaptureMeta : MonoBehaviour
         var go = new GameObject("CaptureMeta"); DontDestroyOnLoad(go); go.AddComponent<CaptureMeta>();
     }
 
+    GUIStyle fastStyle; int fastSize = -1;   // UIDATA_C v1: the stamp style is built once (was a new GUIStyle every frame)
     void OnGUI()
     {
-        if (!RuntimeQuality.Fast) return;
-        var s = new GUIStyle(GUI.skin.label) { fontSize = 22, fontStyle = FontStyle.Bold }; s.normal.textColor = Color.yellow;
-        GUI.Label(new Rect(Screen.width - 260, Screen.height - 44, 250, 36), "FAST/NOT-QC", s);
+        if (!RuntimeQuality.Fast || Event.current.type != EventType.Repaint) return;
+        var ZP = ZoneUiCfg.Get().capture;
+        if (fastStyle == null || fastSize != ZP.fontSize) { fastSize = ZP.fontSize; fastStyle = new GUIStyle(GUI.skin.label) { fontSize = ZP.fontSize, fontStyle = FontStyle.Bold }; fastStyle.normal.textColor = ZoneUiCfg.Rgba(ZP.color, Color.yellow); }
+        GUI.Label(new Rect(Screen.width - ZP.rightInset, Screen.height - ZP.bottomInset, ZP.w, ZP.h), "FAST/NOT-QC", fastStyle);
     }
 
     // WOUNDSHOT v84: the sidecar json of one PNG. `extra` = more json members ("a":1,"b":"x", no leading comma) appended by a harness that knows more than the scene (hit zone, damage, decal count ...).

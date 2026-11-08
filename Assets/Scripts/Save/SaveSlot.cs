@@ -165,7 +165,8 @@ public static class SaveSlot
         GameLoop.OpponentIndex = Mathf.Max(0, GameLoop.Opponents().startIndex); GameLoop.FightNumber = 1;   // the run restarts even when the slot is switched off
         if (!Active) return; EnsureLoaded();
         data = new FileData(); applied = true;
-        try { string p = FilePath; if (File.Exists(p)) { SafeFile.Quarantine(p, "erased", "was erased by New game"); File.Delete(p); } } catch (Exception e) { LastError = e.Message; }   // FIXSAVE v1: last 3 erased slots stay as .erased.<stamp>
+        try { string p = FilePath; if (File.Exists(p)) { SafeFile.Quarantine(p, "erased", "was erased by New game"); File.Delete(p); }
+            SafeFile.Discard(p); /* ERASEFIX v1: .bak/.tmp too, else Recover restores the erased save */ } catch (Exception e) { LastError = e.Message; }   // FIXSAVE v1: last 3 erased slots stay as .erased.<stamp>
         try { if (OnErase != null) OnErase(); } catch (Exception e) { Debug.LogWarning("[SaveSlot] erase hook failed: " + e.Message); }
         if (Cfg().debugLog) Debug.Log("[SaveSlot] slot erased");
     }

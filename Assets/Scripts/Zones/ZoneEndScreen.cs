@@ -30,8 +30,9 @@ public static class ZoneEndScreen
     public static void Draw()
     {
         if (row == null) return;
-        float a = Mathf.Clamp01((Time.unscaledTime - t0) / Mathf.Max(0.01f, row.fadeInS)), vw = Screen.width, vh = Screen.height;   // hc:ok 0.01 = divide guard
-        GUI.depth = -10001;   // hc:ok IMGUI draw order
+        var ZN = ZoneUiCfg.Get().endScreen;   // UIDATA_C v1
+        float a = Mathf.Clamp01((Time.unscaledTime - t0) / Mathf.Max(ZN.alphaGuard, row.fadeInS)), vw = Screen.width, vh = Screen.height;
+        GUI.depth = ZN.depth;
         var veil = Color.black; veil.a = row.backdropAlpha * a; GameLoop.Fill(new Rect(0f, 0f, vw, vh), veil);
         Color ink = HudCfg.Col(row.color, a), dim = HudCfg.Col(row.dimColor, a);
         float y = vh * row.titleY;

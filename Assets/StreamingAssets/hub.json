@@ -129,8 +129,8 @@
   "npcs": [
     {
       "id": "npc_trader",
-      "role": "trader",
-      "title": "Trader",
+      "role": "weaponsmith",
+      "title": "Weaponsmith",
       "spot": "npc_trader",
       "yaw": 90,
       "clip": "Idle",
@@ -138,7 +138,7 @@
       "interact": {
         "kind": "shop",
         "shop": "hub_trade",
-        "radius": 3.0
+        "radius": 2.2
       },
       "body": {
         "status": "camp_character",
@@ -173,14 +173,16 @@
     },
     {
       "id": "npc_keeper",
-      "role": "hearth_keeper",
-      "title": "Keeper",
+      "role": "apothecary",
+      "title": "Apothecary",
       "spot": "npc_keeper",
-      "yaw": 180,
+      "yaw": 270,
       "clip": "Idle",
       "phaseSeconds": 1.3,
       "interact": {
-        "kind": "none"
+        "kind": "shop",
+        "shop": "hub_trade_d",
+        "radius": 2.2
       },
       "body": {
         "status": "camp_character",
@@ -215,14 +217,16 @@
     },
     {
       "id": "npc_traveller",
-      "role": "traveller",
-      "title": "Traveller",
+      "role": "armourer",
+      "title": "Armourer",
       "spot": "npc_traveller",
       "yaw": 90,
       "clip": "Idle",
       "phaseSeconds": 2.6,
       "interact": {
-        "kind": "none"
+        "kind": "shop",
+        "shop": "hub_trade_a",
+        "radius": 2.2
       },
       "body": {
         "status": "camp_character",
@@ -255,6 +259,68 @@
         "clipName": "Idle"
       },
       "enabled": true
+    },
+    {
+      "id": "npc_stablemaster",
+      "role": "stablemaster",
+      "title": "Stablemaster",
+      "spot": "npc_stable",
+      "yaw": 90,
+      "clip": "Idle",
+      "enabled": true,
+      "phaseSeconds": 0.9,
+      "interact": {
+        "kind": "shop",
+        "shop": "hub_trade_c",
+        "radius": 2.2
+      },
+      "runtime": {
+        "glb": "Npc/camp_akai.glb",
+        "sources": [],
+        "hideNodes": [
+          "Layer_Tunic",
+          "Layer_Helmet",
+          "Layer_Bracers",
+          "Layer_Greaves",
+          "Layer_Sword",
+          "Layer_Scabbard"
+        ],
+        "scale": 1.0,
+        "clipGlb": "",
+        "clipSources": [],
+        "clipName": "Idle"
+      }
+    },
+    {
+      "id": "npc_bricabrac",
+      "role": "bricabrac",
+      "title": "Bric-a-brac",
+      "spot": "npc_misc",
+      "yaw": 270,
+      "clip": "Idle",
+      "enabled": true,
+      "phaseSeconds": 2.1,
+      "interact": {
+        "kind": "shop",
+        "shop": "hub_trade_e",
+        "radius": 2.2
+      },
+      "runtime": {
+        "glb": "Npc/camp_erika.glb",
+        "sources": [],
+        "hideNodes": [
+          "Layer_Tunic",
+          "Layer_Helmet",
+          "Layer_Bracers",
+          "Layer_Greaves",
+          "Layer_Sword",
+          "Layer_Scabbard"
+        ],
+        "scale": 1.0,
+        "clipGlb": "",
+        "clipSources": [],
+        "clipName": "Idle"
+      }
     },
     {
       "id": "npc_horse",
@@ -300,7 +366,7 @@
       8.0,
       16.0
     ],
-    "maxSimultaneous": 4,
+    "maxSimultaneous": 6,
     "interactAction": "Interact",
     "_idle": "CAMPNPC: every NPC plays the Idle inside its own glb (runtime.clipName). Idle is 4.0 s; phaseSeconds 0 / 1.3 / 2.6 keep the three out of step (HubClip.StartTime wraps by the clip length)."
   },
@@ -346,9 +412,10 @@
       "mul": 1.0,
       "minPrice": 1,
       "items": [
-        "joan_tabard",
-        "joan_boots",
-        "cap_joan"
+        "knight_sword",
+        "war_axe",
+        "iron_maul",
+        "boar_spear"
       ],
       "tabKeys": [
         "Q",
@@ -414,7 +481,7 @@
     "hudTag": "SAFE",
     "noFight": "No fighting in the camp.",
     "tagLine": "{stall} - press Interact",
-    "stallTitle": "Trader",
+    "stallTitle": "Weaponsmith",
     "sellTab": "Sell",
     "sold": "Sold {qty} x {name} for {silver}.",
     "nothingToSell": "You have nothing the trader will take."
@@ -502,7 +569,7 @@
         "zMax": 362.0,
         "xHalf": 10.0
       },
-      "maxSimultaneous": 4,
+      "maxSimultaneous": 5,
       "npcs": [
         {
           "id": "npc_vendor_1",
@@ -545,7 +612,9 @@
           "enabled": true,
           "phaseSeconds": 1.3,
           "interact": {
-            "kind": "none"
+            "kind": "shop",
+            "shop": "z7_trade_b",
+            "radius": 3.0
           },
           "runtime": {
             "glb": "Npc/camp_erika.glb",
@@ -596,16 +665,49 @@
           }
         },
         {
+          "id": "npc_vendor_5",
+          "role": "bricabrac",
+          "title": "Bric-a-brac",
+          "spot": "vendor_5",
+          "yaw": 270,
+          "clip": "Idle",
+          "phaseSeconds": 1.9,
+          "interact": {
+            "kind": "shop",
+            "shop": "z7_trade_e",
+            "radius": 3.0
+          },
+          "runtime": {
+            "glb": "Npc/camp_arissa.glb",
+            "sources": [],
+            "hideNodes": [
+              "Layer_Tunic",
+              "Layer_Helmet",
+              "Layer_Bracers",
+              "Layer_Greaves",
+              "Layer_Sword",
+              "Layer_Scabbard"
+            ],
+            "scale": 1.0,
+            "clipGlb": "",
+            "clipSources": [],
+            "clipName": "Idle"
+          },
+          "enabled": true
+        },
+        {
           "id": "npc_keeper_z7",
-          "role": "hearth_keeper",
-          "title": "Keeper",
+          "role": "apothecary",
+          "title": "Apothecary",
           "spot": "npc_keeper",
-          "yaw": 180,
+          "yaw": 270,
           "clip": "Idle",
           "enabled": true,
           "phaseSeconds": 0.7,
           "interact": {
-            "kind": "none"
+            "kind": "shop",
+            "shop": "z7_trade_d",
+            "radius": 3.0
           },
           "runtime": {
             "glb": "Npc/camp_goblin.glb",

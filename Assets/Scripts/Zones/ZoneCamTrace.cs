@@ -187,10 +187,10 @@ public sealed class ZoneCamTrace : MonoBehaviour
     void OnGUI()
     {
         if (!calibrating || Event.current.type != EventType.Repaint) return;
-        var c = C.frames.markerRgb; GUI.depth = -32000; var old = GUI.color; GUI.color = new Color(c.Length > 0 ? c[0] : 1f, c.Length > 1 ? c[1] : 0f, c.Length > 2 ? c[2] : 1f, 1f);
+        var c = C.frames.markerRgb; var ZK = ZoneUiCfg.Get().camTrace; var fb = ZK.fallbackRgb; GUI.depth = ZK.depth; var old = GUI.color; GUI.color = new Color(c.Length > 0 ? c[0] : fb[0], c.Length > 1 ? c[1] : fb[1], c.Length > 2 ? c[2] : fb[2], ZK.alpha);   // UIDATA_C v1
         GUI.DrawTexture(new Rect(0f, 0f, C.frames.markerPx, C.frames.markerPx), Texture2D.whiteTexture); GUI.color = old;
     }
-    bool IsMarker(Color p) { var c = C.frames.markerRgb; float r = c.Length > 0 ? c[0] : 1f, g = c.Length > 1 ? c[1] : 0f, b = c.Length > 2 ? c[2] : 1f; return Mathf.Abs(p.r - r) < 0.3f && Mathf.Abs(p.g - g) < 0.3f && Mathf.Abs(p.b - b) < 0.3f; }
+    bool IsMarker(Color p) { var c = C.frames.markerRgb; var ZK = ZoneUiCfg.Get().camTrace; var fb = ZK.fallbackRgb; float r = c.Length > 0 ? c[0] : fb[0], g = c.Length > 1 ? c[1] : fb[1], b = c.Length > 2 ? c[2] : fb[2]; return Mathf.Abs(p.r - r) < ZK.markerTol && Mathf.Abs(p.g - g) < ZK.markerTol && Mathf.Abs(p.b - b) < ZK.markerTol; }   // UIDATA_C v1
     static float Luma(Texture2D t) { float s = 0f; int n = 0; for (int y = 4; y < t.height; y += Mathf.Max(1, t.height / 8)) for (int x = 4; x < t.width; x += Mathf.Max(1, t.width / 8)) { var c = t.GetPixel(x, y); s += 0.2126f * c.r + 0.7152f * c.g + 0.0722f * c.b; n++; } return n > 0 ? s / n : 0f; }
 
     IEnumerator Capture(float tGame)

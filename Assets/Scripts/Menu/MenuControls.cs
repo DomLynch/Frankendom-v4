@@ -10,6 +10,7 @@ using UnityEngine;
 // When the key map is off (no bindings block, harness) the old read-only key map of laneMENU is shown instead.
 public sealed partial class MenuUI
 {
+    Rect[] bindCellBuf = new Rect[0];   // UIDATAB v1: reused cell array
     bool capturing, capAsking; int capFrame = -1, capEndFrame = -1, capSlot, bindSlot; InputMap.Act capAct; KeyCode capKey; string capWarn = "", capConflict = "";
     static bool CaptureBusy { get { return inst != null && (inst.capturing || inst.capEndFrame == Time.frameCount); } }
 
@@ -58,8 +59,8 @@ public sealed partial class MenuUI
     // ---------------- geometry (shared by drawing and the mouse) ----------------
     Rect[] BindCells(Rect rr, MenuCfg.LayoutC L)
     {
-        int n = InputMap.Slots; float x0 = rr.x + rr.width * L.colKeys, x1 = rr.x + rr.width * L.colPad - 12f, w = (x1 - x0) / n; var c = new Rect[n];
-        for (int i = 0; i < n; i++) c[i] = new Rect(x0 + i * w + 2f, rr.y + 3f, w - 6f, rr.height - 6f);
+        int n = InputMap.Slots; float x0 = rr.x + rr.width * L.colKeys, x1 = rr.x + rr.width * L.colPad - ML.controls.keysTrim, w = (x1 - x0) / n; if (bindCellBuf.Length != n) bindCellBuf = new Rect[n]; var c = bindCellBuf;   // UIDATAB v1: reused array
+        for (int i = 0; i < n; i++) c[i] = new Rect(x0 + i * w + ML.controls.bindCellDx, rr.y + ML.controls.bindCellDy, w - ML.controls.bindCellWTrim, rr.height - ML.controls.bindCellHTrim);
         return c;
     }
     void BindClick(Row r, Rect rr, Vector2 p)
@@ -75,35 +76,35 @@ public sealed partial class MenuUI
     {
         var a = InputMap.Find(r.bindId); if (a == null) return;
         bool noKey = true; foreach (var k0 in a.cur) if (k0 != KeyCode.None) noKey = false;
-        HudDraw.Text(new Rect(lx, rr.y, rr.width * 0.34f, rr.height), r.label, "serif", L.labelSize - 2, TextAnchor.MiddleLeft, false, noKey ? HudCfg.Col(HudCfg.Get().colors.crimson) : lab);   // no key at all = crimson
+        HudDraw.Text(new Rect(lx, rr.y, rr.width * ML.controls.labelColK, rr.height), r.label, "serif", L.labelSize - ML.controls.sizeSub, TextAnchor.MiddleLeft, false, noKey ? HudCfg.Col(HudCfg.Get().colors.crimson) : lab);   // no key at all = crimson
         var cells = BindCells(rr, L); var fd = HudCfg.Col(HudCfg.Get().colors.frameDim); var cr = HudCfg.Col(HudCfg.Get().colors.crimson);
         for (int i = 0; i < cells.Length; i++)
         {
             bool cur = sel && i == bindSlot, waiting = capturing && capAct == a && capSlot == i;
             KeyCode k = i < a.cur.Length ? a.cur[i] : KeyCode.None;
-            HudDraw.Fill(cells[i], new Color(0f, 0f, 0f, cur ? 0.35f : 0.18f));
-            Outline(cells[i], cur ? 1.6f : 1f, waiting ? cr : cur ? Gold() : fd);
-            string t = waiting ? "..." : InputMap.Name(k);
-            HudDraw.Text(cells[i], t, "serif", L.valueSize - 2, TextAnchor.MiddleCenter, false, k == KeyCode.None && !waiting ? Dim() : cur ? Gold() : val);
+            HudDraw.Fill(cells[i], new Color(0f, 0f, 0f, cur ? ML.controls.bindCellAlphaSel : ML.controls.bindCellAlpha));
+            Outline(cells[i], cur ? ML.controls.bindOutlineSel : ML.controls.bindOutline, waiting ? cr : cur ? Gold() : fd);
+            string t = waiting ? ML.controls.bindWaiting : InputMap.Name(k);
+            HudDraw.Text(cells[i], t, "serif", L.valueSize - ML.controls.sizeSub, TextAnchor.MiddleCenter, false, k == KeyCode.None && !waiting ? Dim() : cur ? Gold() : val);
         }
-        HudDraw.Text(new Rect(rr.x + rr.width * L.colPad, rr.y, rr.width * (1f - L.colPad) - 8f, rr.height), r.c2, "serif", L.valueSize - 2, TextAnchor.MiddleLeft, false, val);
+        HudDraw.Text(new Rect(rr.x + rr.width * L.colPad, rr.y, rr.width * (1f - L.colPad) - ML.controls.padTrim, rr.height), r.c2, "serif", L.valueSize - ML.controls.sizeSub, TextAnchor.MiddleLeft, false, val);
     }
 
     void DrawCapture(float vw, float vh)
     {
         if (!capturing || capAct == null) return;
         var C = MenuCfg.Get(); var L = C.layout; var U = InputMap.Ui; float cx = vw * 0.5f, cy = vh * 0.5f;
-        HudDraw.Fill(new Rect(0f, 0f, vw, vh), new Color(0f, 0f, 0f, 0.45f));
+        HudDraw.Fill(new Rect(0f, 0f, vw, vh), new Color(0f, 0f, 0f, ML.capture.dimAlpha));
         var box = new Rect(cx - L.confirmW * 0.5f, cy - L.confirmH * 0.5f, L.confirmW, L.confirmH);
         Frame(box);
-        HudDraw.Caps(cx, box.y + L.confirmH * 0.12f, 0.5f, string.Format(U.captureTitle, capAct.label) + "   " + string.Format(U.captureSlot, capSlot + 1), "title", L.confirmSize - 4, L.confirmSmall - 3, L.itemTracking, Ink());
-        Rule(cx, box.y + L.confirmH * 0.12f + (L.confirmSize - 4) * 1.45f + 10f, L.ruleW * 0.6f);
+        HudDraw.Caps(cx, box.y + L.confirmH * ML.capture.titleY, 0.5f, string.Format(U.captureTitle, capAct.label) + ML.capture.titleSep + string.Format(U.captureSlot, capSlot + 1), "title", L.confirmSize - ML.capture.titleSizeSub, L.confirmSmall - ML.capture.smallSizeSub, L.itemTracking, Ink());
+        Rule(cx, box.y + L.confirmH * ML.capture.titleY + (L.confirmSize - ML.capture.titleSizeSub) * ML.capture.capsLine + ML.capture.ruleGap, L.ruleW * ML.confirm.ruleK);
         string line1 = capAsking ? string.Format(U.conflict, InputMap.Name(capKey), capConflict) : U.capturePress;
         string line2 = capAsking ? U.conflictHint : U.captureCancel;
         var sh = HudCfg.Col(HudCfg.Get().colors.shadow);
-        HudDraw.Text(new Rect(box.x + 20f, box.y + L.confirmH * 0.42f, box.width - 40f, L.labelSize * 1.6f), line1, "serif", L.labelSize - 2, TextAnchor.MiddleCenter, false, capAsking ? Gold() : Ink());
-        if (!string.IsNullOrEmpty(capWarn)) HudDraw.Text(new Rect(box.x + 20f, box.y + L.confirmH * 0.42f + L.labelSize * 1.6f, box.width - 40f, L.labelSize * 1.4f), capWarn, "serif", L.hintSize, TextAnchor.MiddleCenter, false, HudCfg.Col(HudCfg.Get().colors.crimson));
-        Footer(new Rect(box.x, box.yMax - 40f, box.width, 24f), line2);
+        HudDraw.Text(new Rect(box.x + ML.capture.marginX, box.y + L.confirmH * ML.capture.lineY, box.width - ML.capture.marginW, L.labelSize * ML.capture.lineK), line1, "serif", L.labelSize - ML.controls.sizeSub, TextAnchor.MiddleCenter, false, capAsking ? Gold() : Ink());
+        if (!string.IsNullOrEmpty(capWarn)) HudDraw.Text(new Rect(box.x + ML.capture.marginX, box.y + L.confirmH * ML.capture.lineY + L.labelSize * ML.capture.lineK, box.width - ML.capture.marginW, L.labelSize * ML.capture.warnK), capWarn, "serif", L.hintSize, TextAnchor.MiddleCenter, false, HudCfg.Col(HudCfg.Get().colors.crimson));
+        Footer(new Rect(box.x, box.yMax - ML.confirm.footerOff, box.width, ML.confirm.footerH), line2);
     }
 
     // ---------------- capture ----------------

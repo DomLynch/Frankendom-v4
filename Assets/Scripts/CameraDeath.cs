@@ -21,10 +21,13 @@ public static class CameraDeath
         public float margin = 1.3f;           // >1 = air around the body
         public float maxDist = 8f;
         public float followRate = 6f;         // smoothing of the body bounds
+        public bool keepFightCam = false;     // DEATHCAM v1: true = the death camera does nothing, the lock camera of the fight carries on (weight 0)
+        public float minDistFightFrac = 0f;   // DEATHCAM v1: never closer to the body than this x the fight camera's horizontal distance when the fighter died (0 = off)
+        public float minHeightFightFrac = 0f; // DEATHCAM v1: never lower than this x the fight camera's height above the body's floor (0 = off)
         public float padM = 0.1f, fallbackAspect = 1.7778f; /* DATALAYER b7 */ // air above / beside the body in the fit; aspect used when there is no main camera
     }
     static Row cfg; static readonly FinisherBody body = new FinisherBody();
-    static float age; static bool dirSet; static Vector3 dir = Vector3.back;
+    static float age, fightDist, fightH; static bool dirSet; static Vector3 dir = Vector3.back;
     static Health pHp; static Transform pHpFor;
     public static float Weight { get; private set; }
     public static float Fov { get { return Cfg().fov; } }
@@ -47,7 +50,7 @@ public static class CameraDeath
     public static void Shape(Transform player, Transform enemy, Health enemyHp, ref Vector3 wantPos, ref Vector3 wantLook, Vector3 camNow)
     {
         var c = Cfg();
-        if (!c.enabled || player == null || RTFinisher.Busy) { if (Weight != 0f) Clear(); return; }
+        if (!c.enabled || c.keepFightCam /* DEATHCAM v1 */ || player == null || RTFinisher.Busy) { if (Weight != 0f) Clear(); return; }
         if (pHpFor != player) { pHpFor = player; pHp = player.GetComponent<Health>(); if (pHp == null) pHp = player.GetComponentInParent<Health>(); }
         bool pDead = pHp != null && pHp.Dead, eDead = enemyHp != null && enemyHp.Dead;
         Transform victim = pDead ? player : (eDead && enemy != null ? enemy : null);
@@ -62,6 +65,7 @@ public static class CameraDeath
         {
             Vector3 d0 = camNow - center; d0.y = 0f; if (d0.sqrMagnitude < 0.25f) d0 = -victim.forward; d0.y = 0f;
             dir = Quaternion.Euler(0f, c.sideDeg, 0f) * d0.normalized; dirSet = true;
+            { Vector3 fd = camNow - center; fd.y = 0f; fightDist = fd.magnitude; fightH = camNow.y - bb.min.y; /* DEATHCAM v1: the fight camera at the moment of death */ }
         }
         float w = c.blendSeconds <= 0f ? 1f : Mathf.Clamp01((age - c.delaySeconds) / c.blendSeconds); w = w * w * (3f - 2f * w);
         Weight = w;
@@ -72,7 +76,8 @@ public static class CameraDeath
         float halfV = Mathf.Max(lookY - bb.min.y, bb.max.y - lookY) + c.padM, halfH = Mathf.Max(bb.extents.x, bb.extents.z) + c.padM; /* DATALAYER b7 */
         float need = Mathf.Max(halfV / tanV, halfH / tanH) * c.margin;
         float dist = Mathf.Min(Mathf.Max(c.dist, need), Mathf.Max(c.dist, c.maxDist));
-        Vector3 pos = center + dir * dist; pos.y = bb.min.y + c.height * sc;
+        if (c.minDistFightFrac > 0f) dist = Mathf.Max(dist, fightDist * c.minDistFightFrac);   // DEATHCAM v1: no zoom in past the fight camera
+        Vector3 pos = center + dir * dist; pos.y = Mathf.Max(bb.min.y + c.height * sc, bb.min.y + fightH * c.minHeightFightFrac);   // DEATHCAM v1
         Vector3 look = new Vector3(center.x, lookY, center.z);
         wantPos = Vector3.Lerp(wantPos, pos, w); wantLook = Vector3.Lerp(wantLook, look, w);
     }

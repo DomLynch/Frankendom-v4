@@ -13,12 +13,12 @@ public static class CombatHudBars
         {
             var B = HudCfg.Get().bars;
             if (!init || f >= v) { init = true; v = f; last = f; holdUntil = -1f; return; }
-            if (f < last - 0.0005f) holdUntil = now + B.lagHold;   // a new hit: wait again, the trail keeps its old top
+            /* UIDATA_A v1 */ if (f < last - HudLayout.Get().barFx.lagHitEps) holdUntil = now + B.lagHold;   // a new hit: wait again, the trail keeps its old top
             last = f;
             if (now < holdUntil) return;
             float gap = v - f, step = Mathf.Max(gap * (1f - Mathf.Exp(-B.lagEase * dt)), B.lagMinRate * dt);
             if (B.lagMaxS > 0f && now - holdUntil >= B.lagMaxS) step = gap;
-            v = gap <= 0.002f || step >= gap ? f : v - step;
+            v = gap <= HudLayout.Get().barFx.lagCloseEps || step >= gap ? f : v - step;
         }
     }
 
@@ -30,8 +30,8 @@ public static class CombatHudBars
         var backR = new Rect(r.x - bp, r.y - bp, r.width + 2f * bp, r.height + 2f * bp);
         HudDraw.Tex(backR, HudDraw.BarShape(backR.width, backR.height, taper + bp, 0f), HudCfg.Col(C.hpBack));
         var shape = HudDraw.BarShape(r.width, r.height, taper, 0f);
-        if (lag > frac + 0.002f) HudDraw.TexUV(new Rect(r.x, r.y, r.width * lag, r.height), shape, new Rect(0f, 0f, Mathf.Clamp01(lag), 1f), HudCfg.Col(C.hpLag));
-        if (frac > 0.001f)
+        if (lag > frac + HudLayout.Get().barFx.lagShowEps) HudDraw.TexUV(new Rect(r.x, r.y, r.width * lag, r.height), shape, new Rect(0f, 0f, Mathf.Clamp01(lag), 1f), HudCfg.Col(C.hpLag));
+        if (frac > HudLayout.Get().barFx.fillMinFrac)
         {
             HudDraw.TexUV(new Rect(r.x, r.y, r.width * frac, r.height), shape, new Rect(0f, 0f, frac, 1f), fill);
             if (B.gloss > 0f) HudDraw.TexUV(new Rect(r.x, r.y, r.width * frac, r.height * 0.5f), shape, new Rect(0f, 0.5f, frac, 0.5f), new Color(1f, 1f, 1f, B.gloss));   // texture y 0 = bottom, so 0.5..1 is the top half
@@ -52,11 +52,11 @@ public static class CombatHudBars
         var outer = new Rect(r.x - p, r.y - p, r.width + 2f * p, r.height + 2f * p);
         Color fc = HudCfg.Col(C.frame), dim = HudCfg.Col(C.frameDim);
         HudDraw.Tex(outer, HudDraw.BarShape(outer.width, outer.height, taper + p, B.frameLine * B.texScale), fc);
-        float cs = B.capSize, cy = r.center.y, lead = B.capLead, lh = Mathf.Max(1f, B.frameLine * 0.8f);
-        float lx = outer.x - cs * 0.4f, rx = outer.xMax + cs * 0.4f;                       // tips of the outline
-        HudDraw.Tex(new Rect(lx - cs, cy - cs, cs * 2f, cs * 2f), HudDraw.Diamond(), new Color(0f, 0f, 0f, 0.85f));
+        float cs = B.capSize, cy = r.center.y, lead = B.capLead, lh = Mathf.Max(HudLayout.Get().barFx.leadThickMin, B.frameLine * HudLayout.Get().barFx.leadThickMul);
+        float lx = outer.x - cs * HudLayout.Get().barFx.capOverhang, rx = outer.xMax + cs * HudLayout.Get().barFx.capOverhang;                       // tips of the outline
+        HudDraw.Tex(new Rect(lx - cs, cy - cs, cs * 2f, cs * 2f), HudDraw.Diamond(), HudLayout.Col(HudLayout.Get().barFx.capBack));
         HudDraw.Tex(new Rect(lx - cs, cy - cs, cs * 2f, cs * 2f), HudDraw.DiamondRing(), fc);
-        HudDraw.Tex(new Rect(rx - cs, cy - cs, cs * 2f, cs * 2f), HudDraw.Diamond(), new Color(0f, 0f, 0f, 0.85f));
+        HudDraw.Tex(new Rect(rx - cs, cy - cs, cs * 2f, cs * 2f), HudDraw.Diamond(), HudLayout.Col(HudLayout.Get().barFx.capBack));
         HudDraw.Tex(new Rect(rx - cs, cy - cs, cs * 2f, cs * 2f), HudDraw.DiamondRing(), fc);
         HudDraw.TexUV(new Rect(lx - cs - lead, cy - lh * 0.5f, lead, lh), HudDraw.GradH(), new Rect(1f, 0f, -1f, 1f), dim);      // opaque at the diamond, fades outwards
         HudDraw.TexUV(new Rect(rx + cs, cy - lh * 0.5f, lead, lh), HudDraw.GradH(), new Rect(0f, 0f, 1f, 1f), dim);
@@ -77,14 +77,14 @@ public static class CombatHudBars
             float frac = Mathf.Clamp01(f.stamina / Mathf.Max(1f, f.maxStamina));
             stamRect = new Rect(x - stam.w * pivot, yy, stam.w, stam.h); haveStam = true;
             Color c = frac < B.lowFraction ? HudCfg.Col(C.staminaLow) : HudCfg.Col(C.stamina);
-            if (f.Exhausted) { float p = 0.55f + 0.45f * Mathf.Abs(Mathf.Sin(Time.unscaledTime * Mathf.PI * B.exhaustedPulseHz)); c = HudCfg.Col(C.staminaExhausted) * p; c.a = 1f; }
+            if (f.Exhausted) { float p = HudLayout.Get().barFx.exhaustMin + HudLayout.Get().barFx.exhaustAmp * Mathf.Abs(Mathf.Sin(Time.unscaledTime * Mathf.PI * B.exhaustedPulseHz)); c = HudCfg.Col(C.staminaExhausted) * p; c.a = 1f; }
             Bar(stamRect, stam.taper, frac, -1f, c, false, false);
             yy = stamRect.yMax + stam.gap;
         }
         if (showPost && post != null && PD.enabled && PH.enabled)
         {
             float pmax = Mathf.Max(1f, f.PostureMax), pf = Mathf.Clamp01(f.posture / pmax);
-            if (PH.alwaysShow || pf > 0.01f || f.PostureBroken)
+            if (PH.alwaysShow || pf > HudLayout.Get().barFx.postureShowMin || f.PostureBroken)
             {
                 var pr = new Rect(x - post.w * pivot, yy, post.w, post.h);
                 Color pc; float fillFrac = pf;
@@ -101,9 +101,9 @@ public static class CombatHudBars
                 if (f.PostureBreakFlash > 0 && f.PostureBroken)   // V61A: the break flash belongs to an active break only
                 {
                     float a = f.PostureBreakFlash / (float)Mathf.Max(1, PD.posBreak.flashTicks);
-                    var fr = new Rect(pr.x - 2f, pr.y - 2f, pr.width + 4f, pr.height + 4f);
-                    HudDraw.Tex(fr, HudDraw.BarShape(fr.width, fr.height, post.taper + 2f, 0f), HudCfg.Col(C.postureBreak, B.flashAlpha * a));
-                    HudDraw.TexUV(pr, HudDraw.BarShape(pr.width, pr.height, post.taper, 0f), new Rect(0f, 0f, 1f, 1f), HudCfg.Col(C.deathblow, 0.9f * a));
+                    var fr = new Rect(pr.x - HudLayout.Get().barFx.flashPad, pr.y - HudLayout.Get().barFx.flashPad, pr.width + HudLayout.Get().barFx.flashGrow, pr.height + HudLayout.Get().barFx.flashGrow);
+                    HudDraw.Tex(fr, HudDraw.BarShape(fr.width, fr.height, post.taper + HudLayout.Get().barFx.flashPad, 0f), HudCfg.Col(C.postureBreak, B.flashAlpha * a));
+                    HudDraw.TexUV(pr, HudDraw.BarShape(pr.width, pr.height, post.taper, 0f), new Rect(0f, 0f, 1f, 1f), HudCfg.Col(C.deathblow, HudLayout.Get().barFx.deathFlashAlpha * a));
                     if (cue == null) { cue = PH.breakText; cueCol = HudCfg.Col(C.postureBreak); }
                 }
                 yy = pr.yMax + post.gap;
@@ -113,13 +113,13 @@ public static class CombatHudBars
         if (f.GuardBreakFlash > 0)
         {
             float a = f.GuardBreakFlash / (float)Mathf.Max(1, StaminaTable.Get().guardBreak.flashTicks);
-            if (haveStam) { var fr = new Rect(stamRect.x - 2f, stamRect.y - 2f, stamRect.width + 4f, stamRect.height + 4f); HudDraw.Tex(fr, HudDraw.BarShape(fr.width, fr.height, stam.taper + 2f, 0f), HudCfg.Col(C.postureBreak, B.flashAlpha * a)); }
+            if (haveStam) { var fr = new Rect(stamRect.x - HudLayout.Get().barFx.flashPad, stamRect.y - HudLayout.Get().barFx.flashPad, stamRect.width + HudLayout.Get().barFx.flashGrow, stamRect.height + HudLayout.Get().barFx.flashGrow); HudDraw.Tex(fr, HudDraw.BarShape(fr.width, fr.height, stam.taper + HudLayout.Get().barFx.flashPad, 0f), HudCfg.Col(C.postureBreak, B.flashAlpha * a)); }
             if (cue == null) { cue = SH.breakText; cueCol = HudCfg.Col(C.postureBreak, a); }
         }
         else if (f.ParryFlash > 0)
         {
             float a = f.ParryFlash / (float)Mathf.Max(1, SH.parryFlashTicks);
-            if (haveStam) { var fr = new Rect(stamRect.x - 2f, stamRect.y - 2f, stamRect.width + 4f, stamRect.height + 4f); HudDraw.Tex(fr, HudDraw.BarShape(fr.width, fr.height, stam.taper + 2f, 0f), HudCfg.Col(C.parry, 0.7f * a)); }
+            if (haveStam) { var fr = new Rect(stamRect.x - HudLayout.Get().barFx.flashPad, stamRect.y - HudLayout.Get().barFx.flashPad, stamRect.width + HudLayout.Get().barFx.flashGrow, stamRect.height + HudLayout.Get().barFx.flashGrow); HudDraw.Tex(fr, HudDraw.BarShape(fr.width, fr.height, stam.taper + HudLayout.Get().barFx.flashPad, 0f), HudCfg.Col(C.parry, HudLayout.Get().barFx.parryFlashAlpha * a)); }
             if (cue == null) { cue = SH.parryText; cueCol = HudCfg.Col(C.parry, a); }
         }
         return yy;

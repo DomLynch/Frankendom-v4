@@ -1,0 +1,237 @@
+{
+  "menu": {
+    "settings": {
+      "titlePadK": 0.7,
+      "capsLine": 1.45,
+      "tabTopGap": 6,
+      "tabsRowK": 1.7,
+      "footerPadK": 0.6,
+      "footerBoxK": 1.6,
+      "hintLineK": 1.45,
+      "headRowK": 0.9,
+      "listTopGap": 14,
+      "tabPadX": 8,
+      "tabExtraW": 16,
+      "sliderHitPad": 6,
+      "sliderHitExtra": 12,
+      "footerAlphaK": 0.9,
+      "frameInnerK": 0.7,
+      "diamondExtra": 3,
+      "ruleDiamondExtra": 2,
+      "tabIdleAlpha": 0.6,
+      "tabLabelDy": 2,
+      "tabUnderOff": 3,
+      "tabUnderH": 2,
+      "tabHintTrim": 4,
+      "tabHintSep": "   |   ",
+      "tabRuleH": 1,
+      "scrollGap": 8,
+      "trackAlpha": 0.5,
+      "thumbMin": 24,
+      "thumbAlpha": 0.8,
+      "emptyText": "-",
+      "hintShadowOff": 1
+    },
+    "confirm": {
+      "optWK": 0.3,
+      "optOffK": 0.25,
+      "optTopK": 0.1,
+      "optHK": 0.8,
+      "titleY": 0.18,
+      "capsLine": 1.45,
+      "ruleGap": 12,
+      "ruleK": 0.6,
+      "itemIdleAlpha": 0.72,
+      "footerOff": 40,
+      "footerH": 24
+    },
+    "pause": {
+      "capsLine": 1.45,
+      "ruleGap": 14,
+      "diamondExtra": 3,
+      "selDiamondGap": 30,
+      "itemIdleAlpha": 0.72,
+      "footerBottom": 70,
+      "footerH": 30,
+      "crashBottom": 112,
+      "crashH": 30,
+      "crashFontAdd": 2,
+      "crashAlpha": 0.85
+    },
+    "controls": {
+      "colHeadW1": 300,
+      "colHeadFontAdd": 2,
+      "colHeadAlpha": 0.8,
+      "colHeadW2": 400,
+      "colHeadW3": 300,
+      "labelColK": 0.34,
+      "sizeSub": 2,
+      "keysTrim": 12,
+      "padTrim": 8,
+      "bindCellDx": 2,
+      "bindCellDy": 3,
+      "bindCellWTrim": 6,
+      "bindCellHTrim": 6,
+      "bindCellAlphaSel": 0.35,
+      "bindCellAlpha": 0.18,
+      "bindOutlineSel": 1.6,
+      "bindOutline": 1,
+      "bindWaiting": "..."
+    },
+    "row": {
+      "selDiamondX": 4,
+      "selShiftK": 0.6,
+      "idleLabelAlpha": 0.74,
+      "idleValueAlpha": 0.82,
+      "sliderValueGap": 8,
+      "sliderIdleAlpha": 0.7
+    },
+    "capture": {
+      "dimAlpha": 0.45,
+      "titleY": 0.12,
+      "titleSep": "   ",
+      "titleSizeSub": 4,
+      "smallSizeSub": 3,
+      "capsLine": 1.45,
+      "ruleGap": 10,
+      "marginX": 20,
+      "lineY": 0.42,
+      "marginW": 40,
+      "lineK": 1.6,
+      "warnK": 1.4
+    }
+  },
+  "lootWorld": {
+    "label": {
+      "nameLineK": 1.5,
+      "bottomPad": 90,
+      "ruleDy": 2,
+      "subLineK": 1.5,
+      "edgeX": 300,
+      "halfW": 300,
+      "boxW": 600,
+      "ruleH": 1,
+      "ruleAlpha": 0.75,
+      "promptOpen": "[ ",
+      "promptClose": " ]   "
+    },
+    "toast": {
+      "equipHintK": 1.6,
+      "fadeInS": 0.2,
+      "subK": 1.6,
+      "gapK": 1.7,
+      "nameK": 1.5
+    }
+  },
+  "lootScreen": {
+    "screen": {
+      "closeFrameW": 1,
+      "rowFrameW": 1,
+      "candPadX": 14,
+      "candTrimW": 20,
+      "candPadY": 5,
+      "candNameTrim": 100,
+      "candNameK": 1.4,
+      "candSubK": 1.35,
+      "candSubBoxK": 1.5,
+      "badgeDx": 92,
+      "badgeW": 80,
+      "nothingDx": 6,
+      "nothingDy": 8,
+      "hintSep": "     ",
+      "msgOffK": 2.2,
+      "msgBoxK": 1.8,
+      "msgSizeAdd": 2
+    },
+    "detail": {
+      "emptySizeAdd": 2,
+      "removeK": 1.7,
+      "nameBigK": 1.35,
+      "nameBoxK": 1.4,
+      "lineSizeAdd": 1,
+      "lineGapAdd": 6,
+      "ruleH": 1,
+      "ruleGapK": 0.6,
+      "compareK": 1.9,
+      "statTrim": 24,
+      "statPadX": 8,
+      "dashInset": 2,
+      "dashHalf": 1,
+      "dashTrim": 4,
+      "dashH": 2,
+      "plus": "+",
+      "deltaSizeSub": 2
+    },
+    "draw": {
+      "fontMin": 8,
+      "ruleH": 1,
+      "shadowDiv": 13,
+      "triRefSize": 32
+    }
+  },
+  "market": {
+    "panel": {
+      "fallbackRows": 8,
+      "insetPx": 6,
+      "insetTrim": 12,
+      "innerFrameW": 1,
+      "subDx": 2,
+      "titleK": 1.35,
+      "subW": 0.7,
+      "subK": 1.5,
+      "coinDy": 4,
+      "coinK": 1.5,
+      "ruleBottom": 4,
+      "nothingDy": 20,
+      "nothingK": 1.6,
+      "accentW": 3,
+      "rowFrameW": 1,
+      "nameW": 0.6,
+      "tagX": 0.55,
+      "tagW": 0.2,
+      "thumbMin": 18,
+      "trackDx": 6,
+      "trackW": 2
+    },
+    "tag": {
+      "bigK": 1.5,
+      "subK": 1.5,
+      "coinK": 1.5
+    },
+    "prompt": {
+      "minSpan": 0.1,
+      "fadeK": 0.5,
+      "liftK": 1.6,
+      "ruleHalf": 60,
+      "ruleDy": 2,
+      "ruleW": 120,
+      "ruleH": 1,
+      "ruleAlpha": 0.75,
+      "halfW": 300,
+      "boxW": 600,
+      "boxK": 1.6,
+      "open": "[ ",
+      "close": " ]   "
+    },
+    "refusal": {
+      "fadeInS": 0.12,
+      "fadeOutS": 0.35,
+      "boxK": 1.5
+    },
+    "detail": {
+      "ruleH": 1,
+      "dy": 6,
+      "nameW": 0.55,
+      "nameK": 1.5,
+      "textK": 1.5,
+      "msgK": 1.6,
+      "statSep": "    ",
+      "statFmt": "0.#"
+    }
+  },
+  "bossSilver": {
+    "toast": {
+      "depth": -9000
+    }
+  }
+}

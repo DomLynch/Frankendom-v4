@@ -295,6 +295,7 @@ public sealed class HubNpcs : MonoBehaviour
     // ------------------------------------------------------------------ the SAFE tag and the refusal toast (data: hub.json indicator)
     void OnGUI()
     {
+        if (Event.current.type != EventType.Repaint) return;   // UIDATA_C v1: draw only (tag + toast), no layout pass
         if (campIdx >= 0) return;   // MARKET2 v1: the main driver draws the tag and the toast once; HubSafe.PlayerInside already covers every camp area
         var I = K.indicator; if (!I.hudTag.enabled && I.refuseToast.seconds <= 0f) return;
         bool inside = HubSafe.PlayerInside(); float age = Time.unscaledTime - HubSafe.RefusedAt; bool toast = age >= 0f && age <= I.refuseToast.seconds;
@@ -303,8 +304,8 @@ public sealed class HubNpcs : MonoBehaviour
         if (inside && I.hudTag.enabled) HudDraw.Caps(vw * 0.5f, I.hudTag.top, 0.5f, K.text.hudTag, "title", I.hudTag.big, I.hudTag.small, I.hudTag.tracking, HudCfg.Col(I.hudTag.colour));
         if (toast)
         {
-            float T = I.refuseToast.seconds; HudDraw.Alpha = Mathf.Clamp01(Mathf.Min(age / 0.12f, (T - age) / 0.35f));
-            HudDraw.Text(new Rect(0f, vh - I.refuseToast.bottom, vw, I.refuseToast.size * 1.5f), K.text.noFight, "serif", I.refuseToast.size, TextAnchor.UpperCenter, true, HudCfg.Col(H.colors.ink));
+            var ZH = ZoneUiCfg.Get().hub; float T = I.refuseToast.seconds; HudDraw.Alpha = Mathf.Clamp01(Mathf.Min(age / ZH.toastFadeInS, (T - age) / ZH.toastFadeOutS));   // UIDATA_C v1
+            HudDraw.Text(new Rect(0f, vh - I.refuseToast.bottom, vw, I.refuseToast.size * ZH.toastLineH), K.text.noFight, "serif", I.refuseToast.size, TextAnchor.UpperCenter, true, HudCfg.Col(H.colors.ink));
         }
         HudDraw.Alpha = 1f; GUI.matrix = m;
     }

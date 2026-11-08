@@ -12,6 +12,8 @@ using UnityEngine;
 public sealed class MarketUI : MonoBehaviour
 {
     public static MarketUI Instance;
+    static MenuLayoutCfg.MarketC ML { get { return MenuLayoutCfg.MK; } }   // UIDATAB v1: layout numbers of the stall UI: menu_layout.json (defaults = the old literals)
+    readonly UiStr.Cat4 promptCat = new UiStr.Cat4(); readonly UiStr.IntFmt coinFmt = new UiStr.IntFmt(), priceFmt = new UiStr.IntFmt(); string statFor = null, statText = "";   // UIDATAB v1: cached strings (no per-frame concat / format / upper)
     public static bool Open { get; private set; }
     public static int ClosedFrame = -1;
     /// <summary>True while the panel is open (and on the frame it closed): GameLoopDriver must not read Enter / A / B then (LootUI.Blocking includes it).</summary>
@@ -115,7 +117,7 @@ public sealed class MarketUI : MonoBehaviour
             try { float ay = Input.GetAxisRaw(C.keys.axisY); if (ay > C.keys.stickThreshold) dy = -1; else if (ay < -C.keys.stickThreshold) dy = 1; }
             catch (Exception) { axisBroken = true; Debug.LogWarning("[Market] input axis '" + C.keys.axisY + "' is not defined; keys only."); }
         }
-        int rows = lay != null ? lay.visibleRows : 8;
+        int rows = lay != null ? lay.visibleRows : ML.panel.fallbackRows;
         if (dy != lastDy) { lastDy = dy; nextNav = now + C.keys.repeatDelayS; if (dy != 0) shop.Move(dy, rows); }
         else if (dy != 0 && now >= nextNav) { nextNav = now + C.keys.repeatS; shop.Move(dy, rows); }
         if (HubTrade.TabPressed()) { shop.ToggleTab(); return; }   // laneNPCSPAWN: Buy / Sell tab
@@ -144,27 +146,40 @@ public sealed class MarketUI : MonoBehaviour
     {
         if (!inArea) return; var S = C.safe; var T = C.text; Color gold = HudCfg.Col(H.colors.gold), dim = HudCfg.Col(H.colors.dim);
         float y = S.tagTop; HudDraw.Caps(vw * 0.5f, y, 0.5f, T.safeTag, "title", S.tagBig, S.tagSmall, S.tagTracking, gold);
-        y += S.tagBig * 1.5f; HudDraw.Text(new Rect(0f, y, vw, S.subSize * 1.5f), T.safeSub, "serif", S.subSize, TextAnchor.UpperCenter, false, dim);
-        y += S.subSize * 1.5f + S.coinDy; HudDraw.Text(new Rect(0f, y, vw, S.coinSize * 1.5f), string.Format(T.coins, LootSave.Coins), "serif", S.coinSize, TextAnchor.UpperCenter, true, gold);
+        y += S.tagBig * ML.tag.bigK; HudDraw.Text(new Rect(0f, y, vw, S.subSize * ML.tag.subK), T.safeSub, "serif", S.subSize, TextAnchor.UpperCenter, false, dim);
+        y += S.subSize * ML.tag.subK + S.coinDy; HudDraw.Text(new Rect(0f, y, vw, S.coinSize * ML.tag.coinK), coinFmt.Get(T.coins, LootSave.Coins), "serif", S.coinSize, TextAnchor.UpperCenter, true, gold);
     }
 
     void DrawPrompt(MarketCfg.Data C, HudCfg.Data H, float vw, float vh, float s)
     {
-        if (!inArea || dist > stl.promptRadius) return; var cam = Camera.main; if (cam == null) return;
-        var sp = cam.WorldToScreenPoint(new Vector3(stallX, playerPos.y + stl.promptHeight, stallZ)); if (sp.z <= 0f) return;
-        float x = sp.x / s, y = (Screen.height - sp.y) / s, a = Mathf.Clamp01(1f - (dist - stl.radius) / Mathf.Max(0.1f, stl.promptRadius - stl.radius) * 0.5f);
-        var L = C.layout; var T = C.text; bool reach = dist <= stl.radius; HudDraw.Alpha = a;
-        HudDraw.Caps(x, y - L.labelNameBig * 1.6f, 0.5f, stl.title, "title", L.labelNameBig, L.labelNameSmall, L.labelTracking, HudCfg.Col(H.colors.ink));
-        HudDraw.Fill(new Rect(x - 60f, y + 2f, 120f, 1f), HudCfg.Col(H.colors.frame, 0.75f));
-        HudDraw.Text(new Rect(x - 300f, y + L.promptGap, 600f, L.promptSize * 1.6f), "[ " + T.promptKeys + " ]   " + T.prompt.ToUpperInvariant(), "serif", L.promptSize, TextAnchor.UpperCenter, true, reach ? HudCfg.Col(H.colors.gold) : HudCfg.Col(H.colors.dim));
+        if (!inArea) return; var cam = Camera.main; if (cam == null) return;   // STALLS vend v2: a label over EVERY stall of this camp
+        int n = C.stalls.Length;
+        for (int i = 0; i <= n; i++)   // 0 = the main stall, i > 0 = stalls[i - 1]
+        {
+            var q = i == 0 ? C.stall : C.stalls[i - 1];
+            if (n > 0 && (areas == null || i >= areas.Length || !areas[i].Inside)) continue;   // only the stalls of the camp the player stands in
+            float qx, qz; MarketWorld.StallXZ(q, out qx, out qz);
+            float qd = MarketArea.Dist(playerPos.x, playerPos.z, qx, qz); if (qd > q.promptRadius) continue;
+            DrawStallLabel(C, H, cam, s, q, qx, qz, qd, ReferenceEquals(q, stl));
+        }
+    }
+
+    void DrawStallLabel(MarketCfg.Data C, HudCfg.Data H, Camera cam, float s, MarketCfg.StallC q, float qx, float qz, float qd, bool pick)
+    {
+        var sp = cam.WorldToScreenPoint(new Vector3(qx, playerPos.y + q.promptHeight, qz)); if (sp.z <= 0f) return;
+        float x = sp.x / s, y = (Screen.height - sp.y) / s, a = Mathf.Clamp01(1f - (qd - q.radius) / Mathf.Max(ML.prompt.minSpan, q.promptRadius - q.radius) * ML.prompt.fadeK);
+        var L = C.layout; var T = C.text; bool reach = pick && qd <= q.radius; HudDraw.Alpha = a;
+        HudDraw.Caps(x, y - L.labelNameBig * ML.prompt.liftK, 0.5f, q.title, "title", L.labelNameBig, L.labelNameSmall, L.labelTracking, HudCfg.Col(H.colors.ink));
+        HudDraw.Fill(new Rect(x - ML.prompt.ruleHalf, y + ML.prompt.ruleDy, ML.prompt.ruleW, ML.prompt.ruleH), HudCfg.Col(H.colors.frame, ML.prompt.ruleAlpha));
+        if (pick) HudDraw.Text(new Rect(x - ML.prompt.halfW, y + L.promptGap, ML.prompt.boxW, L.promptSize * ML.prompt.boxK), promptCat.Get(ML.prompt.open, T.promptKeys, ML.prompt.close, T.prompt, true), "serif", L.promptSize, TextAnchor.UpperCenter, true, reach ? HudCfg.Col(H.colors.gold) : HudCfg.Col(H.colors.dim));
         HudDraw.Alpha = 1f;
     }
 
     void DrawRefusal(MarketCfg.Data C, HudCfg.Data H, float vw, float vh)
     {
         float age = Time.unscaledTime - MarketSafe.RefusedAt, T = C.safe.refuseSeconds; if (age < 0f || age > T) return;
-        HudDraw.Alpha = Mathf.Clamp01(Mathf.Min(age / 0.12f, (T - age) / 0.35f));
-        HudDraw.Text(new Rect(0f, vh - C.layout.toastBottom, vw, C.layout.toastSize * 1.5f), C.text.noFight, "serif", C.layout.toastSize, TextAnchor.UpperCenter, true, HudCfg.Col(H.colors.ink)); HudDraw.Alpha = 1f;
+        HudDraw.Alpha = Mathf.Clamp01(Mathf.Min(age / ML.refusal.fadeInS, (T - age) / ML.refusal.fadeOutS));
+        HudDraw.Text(new Rect(0f, vh - C.layout.toastBottom, vw, C.layout.toastSize * ML.refusal.boxK), C.text.noFight, "serif", C.layout.toastSize, TextAnchor.UpperCenter, true, HudCfg.Col(H.colors.ink)); HudDraw.Alpha = 1f;
     }
 
     MarketLayout Layout(MarketCfg.Data C, HudCfg.Data H)
@@ -175,58 +190,65 @@ public sealed class MarketUI : MonoBehaviour
     static Rect R(MRect r) { return new Rect(r.x, r.y, r.w, r.h); }
     static void FrameRect(Rect r, Color c, float t) { HudDraw.Fill(new Rect(r.x, r.y, r.width, t), c); HudDraw.Fill(new Rect(r.x, r.yMax - t, r.width, t), c); HudDraw.Fill(new Rect(r.x, r.y + t, t, r.height - 2f * t), c); HudDraw.Fill(new Rect(r.xMax - t, r.y + t, t, r.height - 2f * t), c); }
 
+    string StatText(string id, bool has, GearItem gi)   // UIDATAB v1: the stat line of the detail strip, cached per item id
+    {
+        if (statFor == id) return statText;
+        string st = ""; if (has && gi.stats != null) for (int q = 0; q < gi.stats.Length; q++) { var row = LootCfg.StatRow(gi.stats[q].stat); string lb = row != null && row.label.Length > 0 ? row.label : LootCfg.Pretty(gi.stats[q].stat); st += (st.Length > 0 ? ML.detail.statSep : "") + lb + " " + gi.stats[q].value.ToString(ML.detail.statFmt, System.Globalization.CultureInfo.InvariantCulture); }
+        statFor = id; statText = st; return st;
+    }
+
     void DrawPanel(MarketCfg.Data C, HudCfg.Data H, float vw, float vh)
     {
         var L = C.layout; var T = C.text; var K = H.colors; var lay = Layout(C, H);
         Color ink = HudCfg.Col(K.ink), dim = HudCfg.Col(K.dim), gold = HudCfg.Col(K.gold), frame = HudCfg.Col(K.frame), frameDim = HudCfg.Col(K.frameDim), crimson = HudCfg.Col(K.crimson);
         HudDraw.Alpha = Mathf.Clamp01((Time.unscaledTime - openAt) / Mathf.Max(0.01f, L.openFadeS));
         HudDraw.Fill(new Rect(0f, 0f, vw, vh), MarketCfg.Col(C.colors.dimmer));
-        Rect p = R(lay.panel); HudDraw.Fill(p, MarketCfg.Col(C.colors.panel)); FrameRect(p, frame, L.frameW); FrameRect(new Rect(p.x + 6f, p.y + 6f, p.width - 12f, p.height - 12f), frameDim, 1f);
+        Rect p = R(lay.panel); HudDraw.Fill(p, MarketCfg.Col(C.colors.panel)); FrameRect(p, frame, L.frameW); FrameRect(new Rect(p.x + ML.panel.insetPx, p.y + ML.panel.insetPx, p.width - ML.panel.insetTrim, p.height - ML.panel.insetTrim), frameDim, ML.panel.innerFrameW);
         HudDraw.Fill(new Rect(p.x, p.y, L.accentBar, p.height), crimson);
         // header: title (small caps, tracked), subtitle, a rule with a diamond at each end, the coin count on the right
         Rect h = R(lay.header);
         HudDraw.Caps(h.x, h.y, 0f, stl.title.Length > 0 ? stl.title : T.title, "title", L.titleBig, L.titleSmall, L.titleTracking, ink);
-        HudDraw.Text(new Rect(h.x + 2f, h.y + L.titleBig * 1.35f, h.width * 0.7f, L.subSize * 1.5f), MarketBuyRules.Cur.Subtitle(shop.BuyTab, T.subtitle), "serif", L.subSize, TextAnchor.UpperLeft, false, dim, true);
-        HudDraw.Text(new Rect(h.x, h.y + 4f, h.width, L.coinSize * 1.5f), string.Format(T.coins, shop.Stock.coins), "serif", L.coinSize, TextAnchor.UpperRight, true, gold);
-        float ry = h.yMax - L.ruleH - 4f; HudDraw.Fill(new Rect(h.x, ry, h.width, L.ruleH), frame);
+        HudDraw.Text(new Rect(h.x + ML.panel.subDx, h.y + L.titleBig * ML.panel.titleK, h.width * ML.panel.subW, L.subSize * ML.panel.subK), MarketBuyRules.Cur.Subtitle(shop.BuyTab, T.subtitle), "serif", L.subSize, TextAnchor.UpperLeft, false, dim, true);
+        HudDraw.Text(new Rect(h.x, h.y + ML.panel.coinDy, h.width, L.coinSize * ML.panel.coinK), coinFmt.Get(T.coins, shop.Stock.coins), "serif", L.coinSize, TextAnchor.UpperRight, true, gold);
+        float ry = h.yMax - L.ruleH - ML.panel.ruleBottom; HudDraw.Fill(new Rect(h.x, ry, h.width, L.ruleH), frame);
         var dia = HudDraw.Diamond(); HudDraw.Tex(new Rect(h.x - L.diamond * 0.5f, ry + L.ruleH * 0.5f - L.diamond * 0.5f, L.diamond, L.diamond), dia, gold); HudDraw.Tex(new Rect(h.xMax - L.diamond * 0.5f, ry + L.ruleH * 0.5f - L.diamond * 0.5f, L.diamond, L.diamond), dia, gold);
         // rows
         var lines = shop.Stock.lines; Rect list = R(lay.list);
-        if (lines.Count == 0) HudDraw.Text(new Rect(list.x, list.y + 20f, list.width, L.rowNameSize * 1.6f), T.nothing, "serif", L.rowNameSize, TextAnchor.UpperCenter, false, dim, true);
+        if (lines.Count == 0) HudDraw.Text(new Rect(list.x, list.y + ML.panel.nothingDy, list.width, L.rowNameSize * ML.panel.nothingK), T.nothing, "serif", L.rowNameSize, TextAnchor.UpperCenter, false, dim, true);
         int vis = lay.visibleRows;
         for (int v = 0; v < vis; v++)
         {
             int i = shop.Scroll + v; if (i >= lines.Count) break; var ln = lines[i]; Rect r = R(lay.Row(v)); bool sel = i == shop.Index, armed = sel && shop.Armed == ln.id;
-            if (sel) { HudDraw.Fill(r, MarketCfg.Col(armed ? C.colors.rowArmed : C.colors.rowSelected)); HudDraw.Fill(new Rect(r.x, r.y, 3f, r.height), armed ? gold : crimson); FrameRect(r, armed ? frame : frameDim, 1f); }
+            if (sel) { HudDraw.Fill(r, MarketCfg.Col(armed ? C.colors.rowArmed : C.colors.rowSelected)); HudDraw.Fill(new Rect(r.x, r.y, ML.panel.accentW, r.height), armed ? gold : crimson); FrameRect(r, armed ? frame : frameDim, ML.panel.rowFrameW); }
             Color nameCol = ln.worn ? dim : ink;
-            HudDraw.Text(new Rect(r.x + L.rowPadX, r.y, r.width * 0.6f, r.height), ln.name, "serif", L.rowNameSize, TextAnchor.MiddleLeft, true, nameCol);
-            if (ln.worn || ln.stack /* POTIONS v1: the "x3" tag */) HudDraw.Text(new Rect(r.x + r.width * 0.55f, r.y, r.width * 0.2f, r.height), (ln.tag.Length > 0 ? ln.tag : T.worn).ToUpperInvariant(), "serif", L.rowTagSize, TextAnchor.MiddleLeft, false, dim);
-            HudDraw.Text(new Rect(r.x, r.y, r.width - L.rowPadX, r.height), string.Format(T.price, ln.price), "serif", L.rowPriceSize, TextAnchor.MiddleRight, true, ln.worn ? dim : gold);
+            HudDraw.Text(new Rect(r.x + L.rowPadX, r.y, r.width * ML.panel.nameW, r.height), ln.name, "serif", L.rowNameSize, TextAnchor.MiddleLeft, true, nameCol);
+            if (ln.worn || ln.stack /* POTIONS v1: the "x3" tag */) HudDraw.Text(new Rect(r.x + r.width * ML.panel.tagX, r.y, r.width * ML.panel.tagW, r.height), UiStr.Up(ln.tag.Length > 0 ? ln.tag : T.worn), "serif", L.rowTagSize, TextAnchor.MiddleLeft, false, dim);
+            HudDraw.Text(new Rect(r.x, r.y, r.width - L.rowPadX, r.height), priceFmt.Get(T.price, ln.price), "serif", L.rowPriceSize, TextAnchor.MiddleRight, true, ln.worn ? dim : gold);
         }
         if (lines.Count > vis)   // thin scroll track on the right edge of the list
         {
-            float th = list.height, thumb = Mathf.Max(18f, th * vis / lines.Count), ty = list.y + (th - thumb) * (shop.Scroll / (float)Mathf.Max(1, lines.Count - vis));
-            HudDraw.Fill(new Rect(list.xMax + 6f, list.y, 2f, th), frameDim); HudDraw.Fill(new Rect(list.xMax + 6f, ty, 2f, thumb), gold);
+            float th = list.height, thumb = Mathf.Max(ML.panel.thumbMin, th * vis / lines.Count), ty = list.y + (th - thumb) * (shop.Scroll / (float)Mathf.Max(1, lines.Count - vis));
+            HudDraw.Fill(new Rect(list.xMax + ML.panel.trackDx, list.y, ML.panel.trackW, th), frameDim); HudDraw.Fill(new Rect(list.xMax + ML.panel.trackDx, ty, ML.panel.trackW, thumb), gold);
         }
         // detail strip: stats of the selected item + what the trader pays, then the last message
-        Rect d = R(lay.detail); HudDraw.Fill(new Rect(d.x, d.y, d.width, 1f), frameDim); var sl = shop.Selected;
+        Rect d = R(lay.detail); HudDraw.Fill(new Rect(d.x, d.y, d.width, ML.detail.ruleH), frameDim); var sl = shop.Selected;
         if (sl != null)
         {
             GearItem gi; bool has = LootBridge.Catalog.TryGet(sl.id, out gi);
-            HudDraw.Text(new Rect(d.x, d.y + 6f, d.width * 0.55f, L.detailNameSize * 1.5f), sl.name, "serif", L.detailNameSize, TextAnchor.UpperLeft, true, has ? LootCfg.RarityColor(gi) : ink);
-            string st = ""; if (has && gi.stats != null) for (int q = 0; q < gi.stats.Length; q++) { var row = LootCfg.StatRow(gi.stats[q].stat); string lb = row != null && row.label.Length > 0 ? row.label : LootCfg.Pretty(gi.stats[q].stat); st += (st.Length > 0 ? "    " : "") + lb + " " + gi.stats[q].value.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture); }
-            HudDraw.Text(new Rect(d.x, d.y + 6f + L.detailNameSize * 1.5f, d.width, L.detailSize * 1.5f), has ? st : PotionCfg.Describe(sl.id) /* POTIONS v1 */, "serif", L.detailSize, TextAnchor.UpperLeft, false, dim);
-            HudDraw.Text(new Rect(d.x, d.y + 6f, d.width, L.detailSize * 1.5f), sl.worn ? (shop.BuyTab ? MarketCfg.Code(sl.why) : T.detailWorn) : string.Format(shop.BuyTab && MarketBuyRules.Cur.detailAsks.Length > 0 ? MarketBuyRules.Cur.detailAsks : T.detailPays, sl.price), "serif", L.detailSize, TextAnchor.UpperRight, false, sl.worn ? dim : gold);
+            HudDraw.Text(new Rect(d.x, d.y + ML.detail.dy, d.width * ML.detail.nameW, L.detailNameSize * ML.detail.nameK), sl.name, "serif", L.detailNameSize, TextAnchor.UpperLeft, true, has ? LootCfg.RarityColor(gi) : ink);
+            string st = StatText(sl.id, has, gi);   // UIDATAB v1: built once per item (was rebuilt every frame)
+            HudDraw.Text(new Rect(d.x, d.y + ML.detail.dy + L.detailNameSize * ML.detail.nameK, d.width, L.detailSize * ML.detail.textK), has ? st : PotionCfg.Describe(sl.id) /* POTIONS v1 */, "serif", L.detailSize, TextAnchor.UpperLeft, false, dim);
+            HudDraw.Text(new Rect(d.x, d.y + ML.detail.dy, d.width, L.detailSize * ML.detail.textK), sl.worn ? (shop.BuyTab ? MarketCfg.Code(sl.why) : T.detailWorn) : string.Format(shop.BuyTab && MarketBuyRules.Cur.detailAsks.Length > 0 ? MarketBuyRules.Cur.detailAsks : T.detailPays, sl.price), "serif", L.detailSize, TextAnchor.UpperRight, false, sl.worn ? dim : gold);
         }
         if (shop.NoteKey.Length > 0)
         {
             string msg = shop.NoteKey == "boughtStack" || shop.NoteKey == "soldStack" ? PotionCfg.NoteText(shop.NoteKey, shop.NoteItem, shop.NoteCoins) /* POTIONS v1 */ : shop.NoteKey == "bought" ? string.Format(MarketBuyRules.Cur.bought, shop.NoteItem, shop.NoteCoins) : shop.NoteKey == "sold" ? string.Format(T.sold, shop.NoteItem, shop.NoteCoins) : shop.NoteKey == "armed" ? string.Format(shop.BuyTab && MarketBuyRules.Cur.armedBuy.Length > 0 ? MarketBuyRules.Cur.armedBuy : T.armed, shop.NoteItem, shop.NoteCoins) : MarketCfg.Code(shop.NoteKey);
-            HudDraw.Text(new Rect(d.x, d.yMax - L.messageSize * 1.6f, d.width, L.messageSize * 1.6f), msg, "serif", L.messageSize, TextAnchor.LowerLeft, true, MarketCfg.Col(shop.NoteGood ? C.colors.good : C.colors.bad));
+            HudDraw.Text(new Rect(d.x, d.yMax - L.messageSize * ML.detail.msgK, d.width, L.messageSize * ML.detail.msgK), msg, "serif", L.messageSize, TextAnchor.LowerLeft, true, MarketCfg.Col(shop.NoteGood ? C.colors.good : C.colors.bad));
         }
         // footer: the three hints
         Rect f = R(lay.footer); float w3 = f.width / 3f;
-        HudDraw.Text(new Rect(f.x, f.y, w3, f.height), MarketBuyRules.Cur.HintMove(T.hintMove).ToUpperInvariant(), "serif", L.hintSize, TextAnchor.MiddleLeft, false, dim);
-        HudDraw.Text(new Rect(f.x + w3, f.y, w3, f.height), MarketBuyRules.Cur.HintConfirm(shop.BuyTab, T.hintSell).ToUpperInvariant(), "serif", L.hintSize, TextAnchor.MiddleCenter, true, gold);
-        HudDraw.Text(new Rect(f.x + 2f * w3, f.y, w3, f.height), T.hintClose.ToUpperInvariant(), "serif", L.hintSize, TextAnchor.MiddleRight, false, dim);
+        HudDraw.Text(new Rect(f.x, f.y, w3, f.height), UiStr.Up(MarketBuyRules.Cur.HintMove(T.hintMove)), "serif", L.hintSize, TextAnchor.MiddleLeft, false, dim);
+        HudDraw.Text(new Rect(f.x + w3, f.y, w3, f.height), UiStr.Up(MarketBuyRules.Cur.HintConfirm(shop.BuyTab, T.hintSell)), "serif", L.hintSize, TextAnchor.MiddleCenter, true, gold);
+        HudDraw.Text(new Rect(f.x + 2f * w3, f.y, w3, f.height), UiStr.Up(T.hintClose), "serif", L.hintSize, TextAnchor.MiddleRight, false, dim);
     }
 }
