@@ -1,0 +1,310 @@
+﻿{
+ "_about": "VIS3 item 13 (colour part): the camp props that are showroom clean (tent canvas, awning, wood, banner cloth, camp paving) get a darker shared clone: colour multiply 0.68-0.82 and a smoothness cap, so they read as used. No new texture, no new keyword (no shader variant risk). Roots: HubZone, Zone7. Read by VisMatPass.cs. enabled=false.",
+ "enabled": true,
+ "log": true,
+ "pollSeconds": 1.0,
+ "rescanSeconds": 10.0,
+ "minPollS": 0.25,
+ "maxPerPoll": 40,
+ "cloneSuffix": " (vismat)",
+ "instanceSuffix": " (Instance)",
+ "props": {
+  "baseColor": [
+   "_BaseColor"
+  ],
+  "smoothMin": [
+   "_SmoothnessRemapMin"
+  ],
+  "smoothMax": [
+   "_SmoothnessRemapMax"
+  ],
+  "metallic": [
+   "_Metallic"
+  ],
+  "metallicMax": [
+   "_MetallicRemapMax"
+  ]
+ },
+ "rows": [
+  {
+   "id": "hubzone_canvas",
+   "zoneRoot": "HubZone",
+   "matchMaterial": [
+    "M_Camp_canvas"
+   ],
+   "excludeMaterial": [
+    "emiss",
+    "glow",
+    "lamp",
+    "flame",
+    "fire",
+    "water",
+    "glass",
+    "ember",
+    "eye"
+   ],
+   "baseColorMul": [
+    0.72,
+    0.68,
+    0.62
+   ],
+   "smoothnessMinFloor": -1.0,
+   "smoothnessMaxFloor": -1.0,
+   "smoothnessMaxCap": 0.35,
+   "metallicMul": -1.0,
+   "enabled": true
+  },
+  {
+   "id": "hubzone_awning",
+   "zoneRoot": "HubZone",
+   "matchMaterial": [
+    "M_Camp_awning"
+   ],
+   "excludeMaterial": [
+    "emiss",
+    "glow",
+    "lamp",
+    "flame",
+    "fire",
+    "water",
+    "glass",
+    "ember",
+    "eye"
+   ],
+   "baseColorMul": [
+    0.75,
+    0.72,
+    0.68
+   ],
+   "smoothnessMinFloor": -1.0,
+   "smoothnessMaxFloor": -1.0,
+   "smoothnessMaxCap": 0.35,
+   "metallicMul": -1.0,
+   "enabled": true
+  },
+  {
+   "id": "hubzone_wood",
+   "zoneRoot": "HubZone",
+   "matchMaterial": [
+    "M_Camp_wood"
+   ],
+   "excludeMaterial": [
+    "emiss",
+    "glow",
+    "lamp",
+    "flame",
+    "fire",
+    "water",
+    "glass",
+    "ember",
+    "eye"
+   ],
+   "baseColorMul": [
+    0.8,
+    0.76,
+    0.72
+   ],
+   "smoothnessMinFloor": -1.0,
+   "smoothnessMaxFloor": -1.0,
+   "smoothnessMaxCap": 0.4,
+   "metallicMul": -1.0,
+   "enabled": true
+  },
+  {
+   "id": "hubzone_banner",
+   "zoneRoot": "HubZone",
+   "matchMaterial": [
+    "cloth2"
+   ],
+   "excludeMaterial": [
+    "emiss",
+    "glow",
+    "lamp",
+    "flame",
+    "fire",
+    "water",
+    "glass",
+    "ember",
+    "eye"
+   ],
+   "baseColorMul": [
+    0.7,
+    0.68,
+    0.66
+   ],
+   "smoothnessMinFloor": -1.0,
+   "smoothnessMaxFloor": -1.0,
+   "smoothnessMaxCap": 0.35,
+   "metallicMul": -1.0,
+   "enabled": true
+  },
+  {
+   "id": "hubzone_paving",
+   "zoneRoot": "HubZone",
+   "matchMaterial": [
+    "ground_paving"
+   ],
+   "excludeMaterial": [
+    "emiss",
+    "glow",
+    "lamp",
+    "flame",
+    "fire",
+    "water",
+    "glass",
+    "ember",
+    "eye"
+   ],
+   "baseColorMul": [
+    0.9,
+    0.86,
+    0.8
+   ],
+   "smoothnessMinFloor": -1.0,
+   "smoothnessMaxFloor": -1.0,
+   "smoothnessMaxCap": 0.3,
+   "metallicMul": -1.0,
+   "enabled": true
+  },
+  {
+   "id": "zone7_canvas",
+   "zoneRoot": "Zone7",
+   "matchMaterial": [
+    "M_Camp_canvas"
+   ],
+   "excludeMaterial": [
+    "emiss",
+    "glow",
+    "lamp",
+    "flame",
+    "fire",
+    "water",
+    "glass",
+    "ember",
+    "eye"
+   ],
+   "baseColorMul": [
+    0.72,
+    0.68,
+    0.62
+   ],
+   "smoothnessMinFloor": -1.0,
+   "smoothnessMaxFloor": -1.0,
+   "smoothnessMaxCap": 0.35,
+   "metallicMul": -1.0,
+   "enabled": true
+  },
+  {
+   "id": "zone7_awning",
+   "zoneRoot": "Zone7",
+   "matchMaterial": [
+    "M_Camp_awning"
+   ],
+   "excludeMaterial": [
+    "emiss",
+    "glow",
+    "lamp",
+    "flame",
+    "fire",
+    "water",
+    "glass",
+    "ember",
+    "eye"
+   ],
+   "baseColorMul": [
+    0.75,
+    0.72,
+    0.68
+   ],
+   "smoothnessMinFloor": -1.0,
+   "smoothnessMaxFloor": -1.0,
+   "smoothnessMaxCap": 0.35,
+   "metallicMul": -1.0,
+   "enabled": true
+  },
+  {
+   "id": "zone7_wood",
+   "zoneRoot": "Zone7",
+   "matchMaterial": [
+    "M_Camp_wood"
+   ],
+   "excludeMaterial": [
+    "emiss",
+    "glow",
+    "lamp",
+    "flame",
+    "fire",
+    "water",
+    "glass",
+    "ember",
+    "eye"
+   ],
+   "baseColorMul": [
+    0.8,
+    0.76,
+    0.72
+   ],
+   "smoothnessMinFloor": -1.0,
+   "smoothnessMaxFloor": -1.0,
+   "smoothnessMaxCap": 0.4,
+   "metallicMul": -1.0,
+   "enabled": true
+  },
+  {
+   "id": "zone7_banner",
+   "zoneRoot": "Zone7",
+   "matchMaterial": [
+    "cloth2"
+   ],
+   "excludeMaterial": [
+    "emiss",
+    "glow",
+    "lamp",
+    "flame",
+    "fire",
+    "water",
+    "glass",
+    "ember",
+    "eye"
+   ],
+   "baseColorMul": [
+    0.7,
+    0.68,
+    0.66
+   ],
+   "smoothnessMinFloor": -1.0,
+   "smoothnessMaxFloor": -1.0,
+   "smoothnessMaxCap": 0.35,
+   "metallicMul": -1.0,
+   "enabled": true
+  },
+  {
+   "id": "zone7_paving",
+   "zoneRoot": "Zone7",
+   "matchMaterial": [
+    "ground_paving"
+   ],
+   "excludeMaterial": [
+    "emiss",
+    "glow",
+    "lamp",
+    "flame",
+    "fire",
+    "water",
+    "glass",
+    "ember",
+    "eye"
+   ],
+   "baseColorMul": [
+    0.9,
+    0.86,
+    0.8
+   ],
+   "smoothnessMinFloor": -1.0,
+   "smoothnessMaxFloor": -1.0,
+   "smoothnessMaxCap": 0.3,
+   "metallicMul": -1.0,
+   "enabled": true
+  }
+ ]
+}

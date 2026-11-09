@@ -10,6 +10,24 @@
       "parryWindowTicks": 0
     },
     {
+      "key": "BanditMelee",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "BanditAssassin",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "BanditArcher",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
       "key": "Joan",
       "maxStamina": 100,
       "regenMul": 1.0,

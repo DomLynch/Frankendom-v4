@@ -149,16 +149,16 @@
       "ground": "bottom",
       "yBase": "platformTop",
       "pos": [
-        24.0,
-        -0.85,
-        150.0
+        9.5,
+        -0.943,
+        157.0
       ],
       "rotEuler": [
         0,
-        260.0,
+        165.8,
         0
       ],
-      "scale": 7.148,
+      "scale": 5.004,
       "shadowsOff": true,
       "tags": [
         "zone4",
@@ -174,16 +174,16 @@
       "ground": "bottom",
       "yBase": "platformTop",
       "pos": [
-        -24.0,
-        -0.6,
+        -19.0,
+        -0.83,
         151.0
       ],
       "rotEuler": [
         0,
-        20.0,
+        65.0,
         0
       ],
-      "scale": 7.142,
+      "scale": 8.213,
       "shadowsOff": true,
       "tags": [
         "zone4",

@@ -1,0 +1,1359 @@
+{
+  "_about": "BANDITS v1 (pool-laneBANDITS kit, STAGED DARK). Hooded human fodder in groups of 2-4 before and after the boss of zones 4, 5, 6. ONE authoring file: apply_bandits.py compiles it into zones.json spots/spawns/creatures + roster / enemy_swap / opponents / fight_balance / boss_silver / gear rows (all existing schemas), plan_bandits.py computes the placements (alongM / lateralM) from existing spots, play_areas.json and props_layout_*.json, BanditArcher.cs (optional, new file) reads types[].ranged and gates. Missing file or enabled false = the game is unchanged. Nothing numeric lives in the scripts: every limit below is a key.",
+  "enabled": false,
+  "version": 1,
+  "hpScaleOfBoss": 0.5,
+  "dmgScaleOfBoss": 0.35,
+  "hpRefZone": "grendel",
+  "spawnIdFormat": "bandit_{group}_{n}",
+  "bodyMode": "hooded",
+  "bodyModes": {
+    "hooded": "roster rows point at Assets/Characters/<Id>/<Id>_combat.glb (the hooded Mixamo bodies after clip_build.py: NOT BUILT YET, see UNITY_DEV_CHECKLIST.md part B)",
+    "placeholder": "roster rows clone the Dracula human sword fighter (his combat/anim glb, mask, finisher folder) under the three bandit ids, so spawn / aggro / silver / drops / fps can be tested before the hooded art exists. Switch with apply_bandits.py --mode placeholder."
+  },
+  "placeholder": {
+    "cloneOf": "Dracula",
+    "cloneRows": [
+      {
+        "file": "foot_ground.json",
+        "anchor": "\"name\": \"Dracula\"",
+        "field": "name"
+      },
+      {
+        "file": "weapon_grip.json",
+        "anchor": "\"name\": \"Dracula\"",
+        "field": "name"
+      },
+      {
+        "file": "foot_yaw.json",
+        "anchor": "\"name\": \"Dracula\"",
+        "field": "name"
+      },
+      {
+        "file": "head_clamp.json",
+        "anchor": "\"name\": \"Dracula\"",
+        "field": "name"
+      },
+      {
+        "file": "arm_hold.json",
+        "anchor": "\"name\": \"Dracula\"",
+        "field": "name"
+      },
+      {
+        "file": "blood.json",
+        "anchor": "\"match\": \"Dracula\"",
+        "field": "match"
+      },
+      {
+        "file": "posture.json",
+        "anchor": "\"key\": \"Dracula\"",
+        "field": "key"
+      },
+      {
+        "file": "stamina.json",
+        "anchor": "\"key\": \"Dracula\"",
+        "field": "key"
+      },
+      {
+        "file": "cues.json",
+        "anchor": "\"character\": \"Dracula\"",
+        "field": "character",
+        "all": true
+      }
+    ],
+    "_about": "Per-character SHOULD rows of the Dracula fighter, cloned under each bandit id (text splice, removed again by --off). Only used with --mode placeholder. Files without a row are skipped with a printed note."
+  },
+  "bodies": {
+    "_about": "Hooded Mixamo bodies from OpenTrident (C:\\Users\\dom12\\Documents\\kits_out\\opentrident_for_frankendom\\bandits). v2_106 = 106-joint mixamorig rig, 512 textures; original = full 1024 textures, 52-59 bones (bind it yourself). heightHintM is the index value, to be measured on import.",
+    "arissa": {
+      "v2_106": "bodies/custom/arissa-full-phone-mixamorig.glb",
+      "original": "bodies/mixamo/glb/arissa.glb",
+      "heightHintM": 1.8,
+      "tris106": 10411
+    },
+    "akai-e-espiritu": {
+      "v2_106": "bodies/custom/akai-e-espiritu-full-phone-mixamorig.glb",
+      "original": "bodies/mixamo/glb/akai-e-espiritu.glb",
+      "heightHintM": 2.005,
+      "tris106": 14500,
+      "warn": "index height 2.005 m is suspicious: measure on import"
+    },
+    "erika-archer-with-bow-arrow": {
+      "v2_106": "bodies/custom/erika-archer-with-bow-arrow-full-phone-mixamorig.glb",
+      "original": "bodies/mixamo/glb/erika-archer-with-bow-arrow.glb",
+      "heightHintM": 1.81,
+      "tris106": 22347,
+      "note": "the bow is part of the mesh, so the archer needs no weapon item"
+    }
+  },
+  "delivered": {
+    "_about": "OpenTrident combat GLBs (camp_npcs_clipbuild, 2026-11-09): 106-joint, 28 Joan-named base states from raw Mixamo (punch/jab light attacks, NOT sword/dagger/bow attacks). apply_bandits --mode hooded writes them as enemy_swap sourceGlb / sourceAnimGlb (Hades > Enemy 1 copies them to Assets/Characters/<Id>/<Id>_combat.glb). erika is the archer body WITHOUT the bow (same size as erika-archer-full-phone-mixamorig): the bow-in-mesh variant is requested from OpenTrident; until then BanditArcher has no bow visual. Known gaps: sword merged in the mesh, Arissa cloak stiff, thrust / knockdown / roll weak, offline gates need a material named body.",
+    "BanditMelee": {
+      "combat": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/arissa_combat.glb",
+      "anim": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/arissa_combat.glb"
+    },
+    "BanditAssassin": {
+      "combat": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/akai_combat.glb",
+      "anim": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/akai_combat.glb"
+    },
+    "BanditArcher": {
+      "combat": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/erika_bow_combat.glb",
+      "anim": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/erika_bow_combat.glb"
+    }
+  },
+  "import": {
+    "_about": "Editor-import knobs written into the enemy_swap rows (apply_bandits.py). templateId: roster id whose scene root EnemySwap clones (empty = Pitborn, whose maul socket is cloned when keepWeapon is true: that is why melee/assassin default keepWeapon false). hideNodePrefixes per mode: the 106-joint hooded bodies carry Layer_Tunic / Layer_Helmet / Layer_Bracers / Layer_Greaves / Layer_Scabbard and a RIGID Layer_Sword under RightHand/SwordDrawn (hooded/EDITOR_STEPS.md); melee + assassin keep Layer_Sword as the visible weapon (no sword glb exists in the project), the archer hides every Layer_ node. UNPROVEN until the first import.",
+    "materials": {
+      "BanditAssassin": [
+        {
+          "glbMaterial": "Akai_",
+          "mat": "Assets/Characters/BanditAssassin/Mats/akai_0.mat",
+          "tex": "akai",
+          "ext": "png",
+          "smoothness": 0.25,
+          "alphaClip": 0.0,
+          "doubleSided": true
+        }
+      ],
+      "BanditMelee": [
+        {
+          "glbMaterial": "Arissa_",
+          "mat": "Assets/Characters/BanditMelee/Mats/arissa_0.mat",
+          "tex": "arissa",
+          "ext": "png",
+          "smoothness": 0.25,
+          "alphaClip": 0.0,
+          "doubleSided": true
+        }
+      ],
+      "BanditArcher": [
+        {
+          "glbMaterial": "Akai_MAT1",
+          "mat": "Assets/Characters/BanditArcher/Mats/erika_clothes_0.mat",
+          "tex": "erika_clothes",
+          "ext": "png",
+          "smoothness": 0.25,
+          "alphaClip": 0.0,
+          "doubleSided": true
+        },
+        {
+          "glbMaterial": "Erika_body_MAT1",
+          "mat": "Assets/Characters/BanditArcher/Mats/erika_clothes_0.mat",
+          "tex": "erika_clothes",
+          "ext": "png",
+          "smoothness": 0.25,
+          "alphaClip": 0.0,
+          "doubleSided": true
+        },
+        {
+          "glbMaterial": "Body_MAT1",
+          "mat": "Assets/Characters/BanditArcher/Mats/erika_skin_0.mat",
+          "tex": "erika_body",
+          "ext": "png",
+          "smoothness": 0.25,
+          "alphaClip": 0.0,
+          "doubleSided": false
+        },
+        {
+          "glbMaterial": "Skin_MAT1",
+          "mat": "Assets/Characters/BanditArcher/Mats/erika_skin_0.mat",
+          "tex": "erika_body",
+          "ext": "png",
+          "smoothness": 0.25,
+          "alphaClip": 0.0,
+          "doubleSided": false
+        },
+        {
+          "glbMaterial": "EyeSpec_MAT1",
+          "mat": "Assets/Characters/BanditArcher/Mats/erika_eyes_0.mat",
+          "tex": "erika_body",
+          "ext": "png",
+          "smoothness": 0.5,
+          "alphaClip": 0.0,
+          "doubleSided": false
+        },
+        {
+          "glbMaterial": "phong1",
+          "mat": "Assets/Characters/BanditArcher/Mats/erika_lash_0.mat",
+          "tex": "erika_lash",
+          "ext": "png",
+          "smoothness": 0.1,
+          "alphaClip": 0.5,
+          "doubleSided": true
+        },
+        {
+          "glbMaterial": "Bow_MAT",
+          "mat": "Assets/Characters/BanditArcher/Mats/bow_0.mat",
+          "tex": "erika_bow",
+          "ext": "jpg",
+          "smoothness": 0.3,
+          "alphaClip": 0.0,
+          "doubleSided": true
+        }
+      ]
+    },
+    "templateId": "",
+    "keepWeapon": false,
+    "keepWeaponPlaceholder": false,
+    "hideNodePrefixes": {
+      "hooded": [
+        "Layer_",
+        "Icosphere"
+      ],
+      "placeholder": []
+    }
+  },
+  "types": [
+    {
+      "id": "BanditMelee",
+      "role": "melee",
+      "displayName": "Hooded Brigand",
+      "hudName": "HOODED BRIGAND",
+      "hudTitle": "Roadside Bandit",
+      "body": "arissa",
+      "heightM": 1.78,
+      "weapon": "sword",
+      "weaponItem": "bandit_sword",
+      "loadout": [
+        "bandit_sword"
+      ],
+      "keepWeapon": false,
+      "hpTypeMul": 1.0,
+      "dmgTypeMul": 1.0,
+      "difficulty": 4,
+      "aggro": 7.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "BanditAssassin",
+      "role": "assassin",
+      "displayName": "Hooded Cutthroat",
+      "hudName": "HOODED CUTTHROAT",
+      "hudTitle": "Knife in the Dark",
+      "body": "akai-e-espiritu",
+      "heightM": 1.72,
+      "weapon": "sword",
+      "weaponItem": "bandit_dagger",
+      "loadout": [
+        "bandit_dagger"
+      ],
+      "keepWeapon": false,
+      "hpTypeMul": 0.7,
+      "dmgTypeMul": 1.143,
+      "difficulty": 6,
+      "aggro": 9.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "BanditArcher",
+      "hideNodePrefixes": [
+        "Layer_",
+        "Icosphere"
+      ],
+      "role": "archer",
+      "displayName": "Hooded Archer",
+      "hudName": "HOODED ARCHER",
+      "hudTitle": "Bowman of the Wood",
+      "body": "erika-archer-with-bow-arrow",
+      "heightM": 1.78,
+      "weapon": "sword",
+      "weaponItem": "",
+      "loadout": [],
+      "keepWeapon": false,
+      "hpTypeMul": 0.6,
+      "dmgTypeMul": 0.857,
+      "difficulty": 4,
+      "aggro": 16.0,
+      "leashExtra": 10.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 1,
+      "ranged": {
+        "minM": 5.0,
+        "maxM": 15.0,
+        "cooldownS": 2.6,
+        "windupS": 0.7,
+        "speedCmS": 700,
+        "missChance": 0.15,
+        "needLos": true,
+        "kiteBelowM": 4.0,
+        "moveId": "thrust",
+        "arrowDamageMul": 1.0,
+        "tint": "#e8d9a8",
+        "losHeightM": 1.3,
+        "windupMaxS": 1.5,
+        "turnDegPerS": 360
+      }
+    },
+    {
+      "id": "BanditAxe",
+      "role": "melee",
+      "off": true,
+      "displayName": "Hooded Axeman",
+      "hudName": "HOODED AXEMAN",
+      "hudTitle": "Hatchet Man",
+      "body": "arissa",
+      "heightM": 1.78,
+      "weapon": "sword",
+      "weaponItem": "bandit_axe",
+      "loadout": [
+        "bandit_axe"
+      ],
+      "keepWeapon": false,
+      "hpTypeMul": 1.1,
+      "dmgTypeMul": 1.1,
+      "difficulty": 5,
+      "aggro": 7.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2,
+      "note": "OFF: the small one-hand axe has no model (SPAWN_AUDIT section 4) and the id would need its own scene + prefab. Remove \"off\" and add it to a group once the model exists."
+    }
+  ],
+  "weaponItems": [
+    {
+      "id": "bandit_sword",
+      "name": "Bandit's sword",
+      "damageMul": 1.0,
+      "speedMul": 1.0,
+      "reachMul": 1.0,
+      "postureMul": 1.0,
+      "twoHanded": false,
+      "cueWeapon": "sword",
+      "notes": "BANDITS v1: glb empty = the base sword model stays (like knight_sword); multipliers 1.0 so the type's damage comes only from bandits.json."
+    },
+    {
+      "id": "bandit_dagger",
+      "name": "Bandit's dagger",
+      "damageMul": 0.9,
+      "speedMul": 1.25,
+      "reachMul": 0.65,
+      "postureMul": 0.8,
+      "twoHanded": false,
+      "cueWeapon": "sword",
+      "notes": "BANDITS v1: NO dagger model exists (SPAWN_AUDIT section 4): glb empty = sword model with a short reach and a fast swing until art exists. cues.json has only claws/sword, so the hit audio is the sword's."
+    },
+    {
+      "id": "bandit_axe",
+      "name": "Bandit's hatchet",
+      "damageMul": 1.05,
+      "speedMul": 1.1,
+      "reachMul": 0.85,
+      "postureMul": 1.1,
+      "twoHanded": false,
+      "cueWeapon": "sword",
+      "notes": "BANDITS v1: NO small axe model exists. Only used by the BanditAxe type, which is OFF."
+    }
+  ],
+  "refBoss": [
+    {
+      "zone": "grendel",
+      "expectEffHp": 650
+    },
+    {
+      "zone": "z5_humbaba",
+      "expectEffHp": 728
+    },
+    {
+      "zone": "z6_erlking",
+      "expectEffHp": 900
+    }
+  ],
+  "layout": {
+    "_about": "Hard rules the placement must meet (plan_bandits.py checks them, apply_bandits.py refuses a layout that fails). Metres. Lane = play_areas.json laneX +- laneHalfX; a member must be in the lane (inset) or inside the play-area shape.",
+    "laneInsetM": 0.8,
+    "clearanceM": 1.6,
+    "gateClearM": 3.5,
+    "bossMarginM": 3.0,
+    "arenaFightMarginM": 1.5,
+    "minAggroM": 4.0,
+    "spotAvoidPrefixes": [
+      "gate_",
+      "arrive_",
+      "hearth",
+      "stall",
+      "npc_",
+      "vendor"
+    ],
+    "spotClearM": 3.0,
+    "arriveClearM": 2.0,
+    "memberSpacingM": 1.7,
+    "memberRadiusM": 0.45,
+    "playerRadiusM": 0.5,
+    "corridorMinM": 1.2,
+    "corridorStepM": 0.25,
+    "planStepM": 0.25,
+    "propSearchPadM": 12.0,
+    "blockHeightM": 2.2,
+    "glbBboxOnlyAboveMB": 150.0,
+    "missingGlbHalfM": 1.5,
+    "gatedMinShapeDistM": 2.0,
+    "gatedStandbyAggroM": 0.5,
+    "cellsAcross": 64,
+    "dedupeM": 0.25,
+    "propNearM": 8.0,
+    "acceptMarginM": 0.3
+  },
+  "zones": [
+    {
+      "id": "grendel",
+      "short": "z4",
+      "playArea": "z4_grendel",
+      "propsLayouts": [
+        "props_layout_grendel.json"
+      ],
+      "boss": {
+        "spawn": "z4_grendel",
+        "creature": "Grendel",
+        "ladderRow": "grendel"
+      },
+      "gatePrev": "gate_prev",
+      "arrivePrev": "arrive_from_prev",
+      "arriveNext": "arrive_from_next",
+      "gateNext": "gate_next",
+      "walkThroughAssets": [],
+      "avoidRects": []
+    },
+    {
+      "id": "z5_humbaba",
+      "short": "z5",
+      "playArea": "z5_humbaba",
+      "propsLayouts": [
+        "props_layout_zone5.json"
+      ],
+      "boss": {
+        "spawn": "z5_humbaba",
+        "creature": "Humbaba",
+        "ladderRow": "humbaba"
+      },
+      "gatePrev": "gate_prev",
+      "arrivePrev": "arrive_from_prev",
+      "arriveNext": "arrive_from_next",
+      "gateNext": "gate_next",
+      "walkThroughAssets": [],
+      "avoidRects": []
+    },
+    {
+      "id": "z6_erlking",
+      "short": "z6",
+      "playArea": "z6_erlking",
+      "propsLayouts": [
+        "props_layout_zone6.json"
+      ],
+      "boss": {
+        "spawn": "z6_erlking",
+        "creature": "Erlking",
+        "ladderRow": "erlking"
+      },
+      "gatePrev": "gate_prev",
+      "arrivePrev": "arrive_from_prev",
+      "arriveNext": "arrive_from_next",
+      "gateNext": "gate_next",
+      "walkThroughAssets": [
+        "erlking_antler_arch",
+        "erlking_hanging_lamps"
+      ],
+      "avoidRects": [
+        {
+          "id": "antler_arch",
+          "xMin": -10.8,
+          "xMax": 10.8,
+          "zMin": 251.9,
+          "zMax": 260.1
+        }
+      ]
+    }
+  ],
+  "afterGate": {
+    "_about": "BanditArcher.cs (optional): a group with needsGate true wakes only after its zone boss is dead (its spawn row aggro is held at the capped value while the boss lives, then raised to the type aggro). Without the C# the capped aggro in zones.json stays: those members are then nearly inert, never a danger during the boss fight.",
+    "enabled": true,
+    "pollS": 0.5
+  },
+  "runtime": {
+    "_about": "BanditArcher.cs poller + HP assertion. hpAssert: after fight_balance.json has applied (it can overwrite maxHealth AFTER ZoneRuntime.ApplyRow multiplied it), set maxHealth = fight_balance maxHealth x the spawn row's ladder hpMul once per fighter. Needs the fighter to be fresh (health at max).",
+    "pollS": 0.5,
+    "hpAssert": true,
+    "hpAssertAfterFrames": 90,
+    "tickHz": 60
+  },
+  "groups": [
+    {
+      "id": "g4_before",
+      "zone": "grendel",
+      "side": "before",
+      "anchor": "arrive_from_prev",
+      "alongM": -3.75,
+      "lateralM": 0.0,
+      "yaw": 180,
+      "members": [
+        {
+          "type": "BanditAssassin",
+          "dx": -1.2,
+          "dz": 0.0
+        },
+        {
+          "type": "BanditMelee",
+          "dx": 1.2,
+          "dz": 1.4
+        }
+      ],
+      "prefer": {
+        "alongM": 99.0,
+        "lateralM": 0.0
+      },
+      "needsGate": false,
+      "planned": {
+        "minMarginM": 0.35,
+        "freeCorridorM": 4.29,
+        "members": [
+          {
+            "x": -1.2,
+            "z": 112.25,
+            "aggro": 9.0
+          },
+          {
+            "x": 1.2,
+            "z": 113.65,
+            "aggro": 7.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "g4_after",
+      "zone": "grendel",
+      "side": "after",
+      "anchor": "arrive_from_next",
+      "alongM": -3.75,
+      "lateralM": -0.75,
+      "yaw": 180,
+      "members": [
+        {
+          "type": "BanditMelee",
+          "dx": -2.4,
+          "dz": 0.0
+        },
+        {
+          "type": "BanditAssassin",
+          "dx": -0.8,
+          "dz": 1.7
+        },
+        {
+          "type": "BanditArcher",
+          "dx": 0.9,
+          "dz": 0.1
+        },
+        {
+          "type": "BanditArcher",
+          "dx": 2.5,
+          "dz": 1.7
+        }
+      ],
+      "prefer": {
+        "alongM": 99.0,
+        "lateralM": 0.0
+      },
+      "needsGate": true,
+      "planned": {
+        "minMarginM": 0.306,
+        "freeCorridorM": 2.34,
+        "members": [
+          {
+            "x": -3.15,
+            "z": 158.25,
+            "aggro": 7.0
+          },
+          {
+            "x": -1.55,
+            "z": 159.95,
+            "aggro": 9.0
+          },
+          {
+            "x": 0.15,
+            "z": 158.35,
+            "aggro": 9.8
+          },
+          {
+            "x": 1.75,
+            "z": 159.95,
+            "aggro": 11.4
+          }
+        ]
+      }
+    },
+    {
+      "id": "g5_before",
+      "zone": "z5_humbaba",
+      "side": "before",
+      "anchor": "arrive_from_prev",
+      "alongM": 3.75,
+      "lateralM": -0.75,
+      "yaw": 180,
+      "members": [
+        {
+          "type": "BanditMelee",
+          "dx": -2.2,
+          "dz": 0.0
+        },
+        {
+          "type": "BanditArcher",
+          "dx": 0.4,
+          "dz": 1.2
+        },
+        {
+          "type": "BanditAssassin",
+          "dx": 2.4,
+          "dz": 0.2
+        }
+      ],
+      "prefer": {
+        "alongM": 99.0,
+        "lateralM": 0.0
+      },
+      "needsGate": false,
+      "planned": {
+        "minMarginM": 0.305,
+        "freeCorridorM": 3.33,
+        "members": [
+          {
+            "x": -2.95,
+            "z": 188.75,
+            "aggro": 7.0
+          },
+          {
+            "x": -0.35,
+            "z": 189.95,
+            "aggro": 16.0
+          },
+          {
+            "x": 1.65,
+            "z": 188.95,
+            "aggro": 9.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "g5_after",
+      "zone": "z5_humbaba",
+      "side": "after",
+      "anchor": "arrive_from_next",
+      "alongM": -2.5,
+      "lateralM": 1.0,
+      "yaw": 180,
+      "members": [
+        {
+          "type": "BanditMelee",
+          "dx": -1.2,
+          "dz": 0.0
+        },
+        {
+          "type": "BanditAssassin",
+          "dx": 1.2,
+          "dz": 1.4
+        }
+      ],
+      "prefer": {
+        "alongM": 99.0,
+        "lateralM": 0.0
+      },
+      "needsGate": true,
+      "planned": {
+        "minMarginM": 0.332,
+        "freeCorridorM": 3.01,
+        "members": [
+          {
+            "x": -0.2,
+            "z": 226.5,
+            "aggro": 1.0
+          },
+          {
+            "x": 2.2,
+            "z": 227.9,
+            "aggro": 2.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "g6_before",
+      "zone": "z6_erlking",
+      "side": "before",
+      "anchor": "arrive_from_prev",
+      "alongM": -3.5,
+      "lateralM": 0.0,
+      "yaw": 180,
+      "members": [
+        {
+          "type": "BanditAssassin",
+          "dx": -2.2,
+          "dz": 0.0
+        },
+        {
+          "type": "BanditMelee",
+          "dx": 0.4,
+          "dz": 1.2
+        },
+        {
+          "type": "BanditArcher",
+          "dx": 2.4,
+          "dz": 0.2
+        }
+      ],
+      "prefer": {
+        "alongM": 99.0,
+        "lateralM": 0.0
+      },
+      "needsGate": false,
+      "planned": {
+        "minMarginM": 0.335,
+        "freeCorridorM": 1.65,
+        "members": [
+          {
+            "x": -2.2,
+            "z": 248.5,
+            "aggro": 9.0
+          },
+          {
+            "x": 0.4,
+            "z": 249.7,
+            "aggro": 7.0
+          },
+          {
+            "x": 2.4,
+            "z": 248.7,
+            "aggro": 16.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "g6_after",
+      "zone": "z6_erlking",
+      "side": "after",
+      "anchor": "arrive_from_next",
+      "alongM": 0.0,
+      "lateralM": 0.0,
+      "yaw": 180,
+      "members": [
+        {
+          "type": "BanditMelee",
+          "dx": -1.2,
+          "dz": 0.0
+        },
+        {
+          "type": "BanditAssassin",
+          "dx": 1.2,
+          "dz": 1.4
+        }
+      ],
+      "prefer": {
+        "alongM": 99.0,
+        "lateralM": 0.0
+      },
+      "needsGate": true,
+      "skip": true,
+      "skipReason": "NO ROOM under the layout rules: z6 has 8 m between the arena rim (z 297) and the exit gate (z 304), with the exit pillars at z 298.9, the arrival spot at z 300 and gate clearance. Planner result with gateClearM 1.5, arriveClearM 1.0, clearanceM 1.2, corridorMinM 1.0 (all relaxed): two men fit between the pillars and leave a 1.15 m lane; NOT used because nothing may shut the player. Dom decision: relax the rules, drop the group, or shift the exit.",
+      "skipCandidateOverride": {
+        "gateClearM": 1.5,
+        "arriveClearM": 1.0,
+        "clearanceM": 1.2,
+        "corridorMinM": 1.0
+      }
+    }
+  ],
+  "weaponTemplate": "knight_sword",
+  "zonesAbout": "Per zone: ids of the existing rows the groups hang off. propsLayouts are Assets/Data files. walkThroughAssets are prop assets the player walks through (no circle; use avoidRects). avoidRects are world metres; the antler arch numbers come from laneENVKIT\\hero6\\MANIFEST.md (placed at (0, 256), depth 8.1 m, 21.5 m wide).",
+  "refBossAbout": "Effective boss numbers are COMPUTED from the live files (fight_balance.json maxHealth x opponents.json hpMul; damageMul x damageMul). expect* are the figures Dom/Strategy quoted, only a cross-check: a mismatch prints a WARN, never changes a number.",
+  "hoodedRows": {
+    "_about": "bandits-dev2 2026-11-09: --mode hooded clones the nearest humanoid enemy rows (Dracula, human sword fighter) per file under the bandit ids (same text splice as placeholder mode, removed by --off); ids = only these types get the row (melee+assassin: sword/dagger grip + arm hold + guard turn; the archer has the bow in its mesh). Numbers are Dracula-proven, NOT fitted to the new bodies: MEASURE items in hooded/should_rows.draft.json (ankleHeight, grip pose, head clamp with the hood).",
+    "cloneRows": [
+      {
+        "file": "foot_ground.json",
+        "anchor": "\"name\": \"Dracula\"",
+        "field": "name"
+      },
+      {
+        "file": "weapon_grip.json",
+        "anchor": "\"name\": \"Dracula\"",
+        "field": "name",
+        "ids": [
+          "BanditMelee",
+          "BanditAssassin"
+        ]
+      },
+      {
+        "file": "foot_yaw.json",
+        "anchor": "\"name\": \"Dracula\"",
+        "field": "name"
+      },
+      {
+        "file": "head_clamp.json",
+        "anchor": "\"name\": \"Dracula\"",
+        "field": "name"
+      },
+      {
+        "file": "arm_hold.json",
+        "anchor": "\"name\": \"Dracula\"",
+        "field": "name",
+        "ids": [
+          "BanditMelee",
+          "BanditAssassin"
+        ]
+      },
+      {
+        "file": "blood.json",
+        "anchor": "\"match\": \"Dracula\"",
+        "field": "match"
+      },
+      {
+        "file": "posture.json",
+        "anchor": "\"key\": \"Dracula\"",
+        "field": "key"
+      },
+      {
+        "file": "stamina.json",
+        "anchor": "\"key\": \"Dracula\"",
+        "field": "key"
+      },
+      {
+        "file": "cues.json",
+        "anchor": "\"character\": \"Dracula\"",
+        "field": "character",
+        "all": true
+      },
+      {
+        "file": "guard_turn.json",
+        "anchor": "\"id\": \"Dracula\"",
+        "field": "id",
+        "ids": [
+          "BanditMelee",
+          "BanditAssassin"
+        ]
+      }
+    ]
+  },
+  "attackClips": {
+    "_about": "bandits-dev2: attack_clips.json bake[] + rows[] for the three ids, from hooded/bandit_attack_rows.draft.json (contact times are ESTIMATES from right-hand speed peaks). Written in hooded mode only. bake[] is run by Tools/bake_attack_clips.py (Unity closed, after the glb is imported once) then Tools > Combat > Add Attack Clips; until baked every row falls back to its fallbackClip (a base state), so the rows are safe to ship before the bake.",
+    "bake": [
+      {
+        "character": "BanditMelee",
+        "controller": "Assets/Characters/BanditMelee.controller",
+        "baseGlb": "Assets/Characters/BanditMelee/BanditMelee_combat.glb",
+        "outGlb": "Assets/Characters/BanditMelee/BanditMelee_attacks_v2.glb",
+        "outClipDir": "Assets/Characters/BanditMelee/AttackClips",
+        "referenceState": "guard_idle",
+        "clips": [
+          {
+            "state": "atk_slash_R",
+            "source": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/bandits/clips/122770901-sword-and-shield-slash.glb",
+            "rootMotion": "inplace",
+            "maxStep": 0.0
+          },
+          {
+            "state": "atk_slash_R2",
+            "source": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/bandits/clips/122790901-sword-and-shield-slash.glb",
+            "rootMotion": "inplace",
+            "maxStep": 0.0
+          },
+          {
+            "state": "atk_cut_in",
+            "source": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/bandits/clips/104990901-stable-sword-inward-slash.glb",
+            "rootMotion": "inplace",
+            "maxStep": 0.0
+          },
+          {
+            "state": "atk_thrust_sword",
+            "source": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/lib/115180901-thrust-slash.glb",
+            "rootMotion": "inplace",
+            "maxStep": 0.0
+          },
+          {
+            "state": "atk_overhead",
+            "source": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/bandits/clips/128650912-standing-melee-attack-downward.glb",
+            "rootMotion": "inplace",
+            "maxStep": 0.0
+          }
+        ]
+      },
+      {
+        "character": "BanditAssassin",
+        "controller": "Assets/Characters/BanditAssassin.controller",
+        "baseGlb": "Assets/Characters/BanditAssassin/BanditAssassin_combat.glb",
+        "outGlb": "Assets/Characters/BanditAssassin/BanditAssassin_attacks_v2.glb",
+        "outClipDir": "Assets/Characters/BanditAssassin/AttackClips",
+        "referenceState": "guard_idle",
+        "clips": [
+          {
+            "state": "atk_stab_3",
+            "source": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/bandits/clips/100800901-stabbing.glb",
+            "rootMotion": "inplace",
+            "maxStep": 0.0
+          },
+          {
+            "state": "atk_stab_2",
+            "source": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/bandits/clips/100790901-stabbing.glb",
+            "rootMotion": "inplace",
+            "maxStep": 0.0
+          },
+          {
+            "state": "atk_stab_double",
+            "source": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/bandits/clips/102700901-double-dagger-stab.glb",
+            "rootMotion": "inplace",
+            "maxStep": 0.0
+          }
+        ]
+      },
+      {
+        "character": "BanditArcher",
+        "controller": "Assets/Characters/BanditArcher.controller",
+        "baseGlb": "Assets/Characters/BanditArcher/BanditArcher_combat.glb",
+        "outGlb": "Assets/Characters/BanditArcher/BanditArcher_attacks_v2.glb",
+        "outClipDir": "Assets/Characters/BanditArcher/AttackClips",
+        "referenceState": "guard_idle",
+        "clips": [
+          {
+            "state": "atk_bow_loose",
+            "source": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/bandits/clips/127690924-standing-aim-recoil.glb",
+            "rootMotion": "inplace",
+            "maxStep": 0.0
+          }
+        ]
+      }
+    ],
+    "rows": [
+      {
+        "character": "BanditMelee",
+        "move": "light_right",
+        "enabled": true,
+        "clip": "atk_slash_R",
+        "startTime": 0.1,
+        "contactTime": 0.6,
+        "endTime": 1.2,
+        "holdClipTime": 0.0,
+        "fallbackClip": "light_attack_R",
+        "fbStartTime": 0.1,
+        "fbContactTime": 0.55,
+        "fbEndTime": 1.2,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.5,
+        "useStepIn": true,
+        "stepIn": 0.3,
+        "source": "122770901 sword-and-shield-slash",
+        "note": "122770901 R-hand peak 0.60 s (12 m/s); same clip and times as Joan atk_light_R"
+      },
+      {
+        "character": "BanditMelee",
+        "move": "slash_riposte",
+        "enabled": true,
+        "clip": "atk_slash_R",
+        "startTime": 0.25,
+        "contactTime": 0.6,
+        "endTime": 1.15,
+        "holdClipTime": 0.0,
+        "fallbackClip": "light_attack_R",
+        "fbStartTime": 0.25,
+        "fbContactTime": 0.55,
+        "fbEndTime": 1.15,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.6,
+        "useStepIn": true,
+        "stepIn": 0.4,
+        "source": "122770901",
+        "note": "same clip, 12-tick windup -> about x1.7"
+      },
+      {
+        "character": "BanditMelee",
+        "move": "light_left",
+        "enabled": true,
+        "clip": "atk_cut_in",
+        "startTime": 0.8,
+        "contactTime": 1.3,
+        "endTime": 1.75,
+        "holdClipTime": 0.0,
+        "fallbackClip": "light_attack_L",
+        "fbStartTime": 0.7,
+        "fbContactTime": 1.15,
+        "fbEndTime": 1.8,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.5,
+        "useStepIn": true,
+        "stepIn": 0.3,
+        "source": "104990901 stable-sword-inward-slash",
+        "note": "104990901 inward slash; the Joan row for the same clip is 0.8/1.32/1.7 (verified by eye there)"
+      },
+      {
+        "character": "BanditMelee",
+        "move": "thrust",
+        "enabled": true,
+        "clip": "atk_thrust_sword",
+        "startTime": 0.35,
+        "contactTime": 0.77,
+        "endTime": 1.3,
+        "holdClipTime": 0.0,
+        "fallbackClip": "thrust",
+        "fbStartTime": 0.0,
+        "fbContactTime": 0.35,
+        "fbEndTime": 1.0,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.8,
+        "useStepIn": true,
+        "stepIn": 0.5,
+        "source": "115180901 thrust-slash",
+        "note": "NEW 115180901 thrust-slash (3.0 s; in camp lib / out_plus state thrust_sword, NOT in the 42): R-hand peak 0.77 s 7.8 m/s, second movement from 1.43 s is cut by end 1.30. ESTIMATE, check on a contact strip"
+      },
+      {
+        "character": "BanditMelee",
+        "move": "heavy_overhead",
+        "enabled": true,
+        "clip": "atk_overhead",
+        "startTime": 0.1,
+        "contactTime": 0.85,
+        "endTime": 1.8,
+        "holdClipTime": 0.35,
+        "fallbackClip": "heavy_release",
+        "fbStartTime": 0.1,
+        "fbContactTime": 0.85,
+        "fbEndTime": 1.8,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.7,
+        "useStepIn": true,
+        "stepIn": 0.6,
+        "source": "128650912 standing-melee-attack-downward",
+        "note": "128650912 axe overhead (R peak 0.87 s, 8.3 m/s); no sword overhead delivered. holdClipTime 0.35 as the v1 draft"
+      },
+      {
+        "character": "BanditMelee",
+        "move": "riposte",
+        "enabled": true,
+        "clip": "atk_slash_R2",
+        "startTime": 0.45,
+        "contactTime": 0.85,
+        "endTime": 1.5,
+        "holdClipTime": 0.0,
+        "fallbackClip": "riposte",
+        "fbStartTime": 0.45,
+        "fbContactTime": 0.85,
+        "fbEndTime": 1.5,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.6,
+        "useStepIn": true,
+        "stepIn": 0.4,
+        "source": "122790901 sword-and-shield-slash",
+        "note": "122790901 second slash, R peak 0.83 s"
+      },
+      {
+        "character": "BanditAssassin",
+        "move": "light_right",
+        "enabled": true,
+        "clip": "atk_stab_3",
+        "startTime": 0.35,
+        "contactTime": 0.8,
+        "endTime": 1.45,
+        "holdClipTime": 0.0,
+        "fallbackClip": "light_attack_R",
+        "fbStartTime": 0.35,
+        "fbContactTime": 0.8,
+        "fbEndTime": 1.45,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.5,
+        "useStepIn": true,
+        "stepIn": 0.3,
+        "source": "100800901 stabbing",
+        "note": "100800901 stab, R-hand peak 0.77-0.87 s (4.4 m/s); windup speed 1.27"
+      },
+      {
+        "character": "BanditAssassin",
+        "move": "slash_riposte",
+        "enabled": true,
+        "clip": "atk_stab_3",
+        "startTime": 0.35,
+        "contactTime": 0.8,
+        "endTime": 1.4,
+        "holdClipTime": 0.0,
+        "fallbackClip": "light_attack_R",
+        "fbStartTime": 0.35,
+        "fbContactTime": 0.8,
+        "fbEndTime": 1.4,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.6,
+        "useStepIn": true,
+        "stepIn": 0.4,
+        "source": "100800901",
+        "note": "same clip, 12-tick windup -> about x2.1 (cap 2.6)"
+      },
+      {
+        "character": "BanditAssassin",
+        "move": "light_left",
+        "enabled": true,
+        "clip": "atk_stab_double",
+        "startTime": 0.7,
+        "contactTime": 1.13,
+        "endTime": 1.8,
+        "holdClipTime": 0.0,
+        "fallbackClip": "light_attack_L",
+        "fbStartTime": 0.2,
+        "fbContactTime": 0.65,
+        "fbEndTime": 1.3,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.5,
+        "useStepIn": true,
+        "stepIn": 0.3,
+        "source": "102700901 double-dagger-stab",
+        "note": "102700901 double stab, R peaks 1.13 s and 1.77 s. REPLACES 100770901: measured, that clip is a LEFT-hand stab (L 8.0 m/s at 0.27/0.63 s, R only 2.2), wrong for a dagger in the right-hand socket"
+      },
+      {
+        "character": "BanditAssassin",
+        "move": "thrust",
+        "enabled": true,
+        "clip": "atk_stab_2",
+        "startTime": 0.0,
+        "contactTime": 0.37,
+        "endTime": 1.0,
+        "holdClipTime": 0.0,
+        "fallbackClip": "thrust",
+        "fbStartTime": 0.0,
+        "fbContactTime": 0.35,
+        "fbEndTime": 1.0,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.8,
+        "useStepIn": true,
+        "stepIn": 0.7,
+        "source": "100790901 stabbing",
+        "note": "100790901 stab, R peaks 0.37 s (6.3) and 1.10 s"
+      },
+      {
+        "character": "BanditAssassin",
+        "move": "riposte",
+        "enabled": true,
+        "clip": "atk_stab_2",
+        "startTime": 0.75,
+        "contactTime": 1.1,
+        "endTime": 1.7,
+        "holdClipTime": 0.0,
+        "fallbackClip": "riposte",
+        "fbStartTime": 0.7,
+        "fbContactTime": 1.15,
+        "fbEndTime": 1.8,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.6,
+        "useStepIn": true,
+        "stepIn": 0.4,
+        "source": "100790901",
+        "note": "100790901 second stab (1.10 s)"
+      },
+      {
+        "character": "BanditAssassin",
+        "move": "heavy_overhead",
+        "enabled": true,
+        "clip": "atk_stab_double",
+        "startTime": 0.4,
+        "contactTime": 1.13,
+        "endTime": 1.9,
+        "holdClipTime": 0.85,
+        "fallbackClip": "heavy_release",
+        "fbStartTime": 0.1,
+        "fbContactTime": 0.85,
+        "fbEndTime": 1.8,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.7,
+        "useStepIn": true,
+        "stepIn": 0.6,
+        "source": "102700901",
+        "note": "OPTIONAL stand-in, no dagger heavy exists: double stab cocked at 0.85. Delete this row to keep the axe-chop base state (heavy_release) with the default heavy row. ESTIMATE"
+      },
+      {
+        "character": "BanditArcher",
+        "move": "thrust",
+        "enabled": true,
+        "clip": "atk_bow_loose",
+        "startTime": 0.0,
+        "contactTime": 0.2,
+        "endTime": 0.7,
+        "holdClipTime": 0.0,
+        "fallbackClip": "thrust",
+        "fbStartTime": 0.05,
+        "fbContactTime": 0.2,
+        "fbEndTime": 0.7,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.0,
+        "useStepIn": false,
+        "stepIn": 0.0,
+        "source": "127690924 standing-aim-recoil",
+        "note": "THE SHOT. 127690924 aim-recoil (= out_plus state bow_aim_recoil), release at 0.20 s. 16-tick windup -> speed 0.71. The arrow leaves at tick 0 (BanditArcher.cs Loose()), so the visible release trails it by about 0.28 s until a draw state plays first"
+      },
+      {
+        "character": "BanditArcher",
+        "move": "light_right",
+        "enabled": true,
+        "clip": "light_attack_R",
+        "startTime": 0.0,
+        "contactTime": 0.3,
+        "endTime": 1.1,
+        "holdClipTime": 0.0,
+        "fallbackClip": "",
+        "fbStartTime": 0,
+        "fbContactTime": 0,
+        "fbEndTime": 0,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.0,
+        "useStepIn": false,
+        "stepIn": 0.0,
+        "source": "lib 118370901 right-hook",
+        "note": "base lib state, step-in 0 (v1 draft numbers); the bow is in the left hand so L punches swing it"
+      },
+      {
+        "character": "BanditArcher",
+        "move": "light_left",
+        "enabled": true,
+        "clip": "light_attack_L",
+        "startTime": 0.5,
+        "contactTime": 0.95,
+        "endTime": 1.6,
+        "holdClipTime": 0.0,
+        "fallbackClip": "",
+        "fbStartTime": 0,
+        "fbContactTime": 0,
+        "fbEndTime": 0,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.0,
+        "useStepIn": false,
+        "stepIn": 0.0,
+        "source": "lib 113550901 hook-punch",
+        "note": "base lib state, step-in 0 (v1 draft numbers); the bow is in the left hand so L punches swing it"
+      },
+      {
+        "character": "BanditArcher",
+        "move": "heavy_overhead",
+        "enabled": true,
+        "clip": "heavy_release",
+        "startTime": 0.1,
+        "contactTime": 0.85,
+        "endTime": 1.8,
+        "holdClipTime": 0.35,
+        "fallbackClip": "",
+        "fbStartTime": 0,
+        "fbContactTime": 0,
+        "fbEndTime": 0,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.0,
+        "useStepIn": false,
+        "stepIn": 0.0,
+        "source": "lib 128650912",
+        "note": "base lib state, step-in 0 (v1 draft numbers); the bow is in the left hand so L punches swing it"
+      },
+      {
+        "character": "BanditArcher",
+        "move": "riposte",
+        "enabled": true,
+        "clip": "riposte",
+        "startTime": 0.25,
+        "contactTime": 0.55,
+        "endTime": 1.2,
+        "holdClipTime": 0.0,
+        "fallbackClip": "",
+        "fbStartTime": 0,
+        "fbContactTime": 0,
+        "fbEndTime": 0,
+        "fbHoldClipTime": 0.0,
+        "windupSpeed": 0.0,
+        "recoverySpeed": 0.0,
+        "blendIn": 0.04,
+        "blendOut": 0.12,
+        "rootMotion": "inplace",
+        "maxStep": 0.0,
+        "useStepIn": false,
+        "stepIn": 0.0,
+        "source": "lib 110440904 body-jab-cross",
+        "note": "base lib state, step-in 0 (v1 draft numbers); the bow is in the left hand so L punches swing it"
+      }
+    ]
+  }
+}

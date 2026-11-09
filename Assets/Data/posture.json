@@ -11,6 +11,27 @@
       "deathblowMinHealthFrac": 0.6
     },
     {
+      "key": "BanditMelee",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "BanditAssassin",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "BanditArcher",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
       "key": "Joan",
       "max": 100,
       "holdTicks": 0,

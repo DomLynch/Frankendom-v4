@@ -42,6 +42,86 @@
       ]
     },
     {
+      "name": "BanditMelee",
+      "enabled": true,
+      "debug": false,
+      "debugEvery": 30,
+      "tau": 1.0,
+      "blend": 0.15,
+      "bones": [
+        {
+          "bone": "mixamorig:RightArm",
+          "w": 1.0
+        },
+        {
+          "bone": "mixamorig:RightForeArm",
+          "w": 1.0
+        },
+        {
+          "bone": "mixamorig:RightHand",
+          "w": 0.9
+        }
+      ],
+      "states": [
+        {
+          "states": [
+            "walk",
+            "run",
+            "strafe_L",
+            "strafe_R",
+            "backstep"
+          ],
+          "weight": 0.95
+        },
+        {
+          "states": [
+            "idle"
+          ],
+          "weight": 0.6
+        }
+      ]
+    },
+    {
+      "name": "BanditAssassin",
+      "enabled": true,
+      "debug": false,
+      "debugEvery": 30,
+      "tau": 1.0,
+      "blend": 0.15,
+      "bones": [
+        {
+          "bone": "mixamorig:RightArm",
+          "w": 1.0
+        },
+        {
+          "bone": "mixamorig:RightForeArm",
+          "w": 1.0
+        },
+        {
+          "bone": "mixamorig:RightHand",
+          "w": 0.9
+        }
+      ],
+      "states": [
+        {
+          "states": [
+            "walk",
+            "run",
+            "strafe_L",
+            "strafe_R",
+            "backstep"
+          ],
+          "weight": 0.95
+        },
+        {
+          "states": [
+            "idle"
+          ],
+          "weight": 0.6
+        }
+      ]
+    },
+    {
       "name": "Joan",
       "enabled": true,
       "debug": false,

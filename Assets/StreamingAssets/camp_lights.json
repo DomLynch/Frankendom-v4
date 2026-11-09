@@ -119,6 +119,259 @@
         "lacunarity": 2.0,
         "gain": 0.5
       }
+    },
+    {
+      "name": "V2_Z6Lamp_0",
+      "pos": [
+        12.0,
+        4.5,
+        256.0
+      ],
+      "kelvin": 1900.0,
+      "candela": 7400.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 40.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.04,
+        "frequency": 0.7,
+        "octaves": 2,
+        "seed": 5.3,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V2_Z6Lamp_1",
+      "pos": [
+        -12.0,
+        4.5,
+        256.0
+      ],
+      "kelvin": 1900.0,
+      "candela": 7400.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 40.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.04,
+        "frequency": 0.7,
+        "octaves": 2,
+        "seed": 7.2,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V2_Z6Lamp_2",
+      "pos": [
+        8.5,
+        4.5,
+        264.5
+      ],
+      "kelvin": 1900.0,
+      "candela": 7400.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 40.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.04,
+        "frequency": 0.7,
+        "octaves": 2,
+        "seed": 9.1,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V2_Z6Lamp_3",
+      "pos": [
+        -8.5,
+        4.5,
+        264.5
+      ],
+      "kelvin": 1900.0,
+      "candela": 7400.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 40.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.04,
+        "frequency": 0.7,
+        "octaves": 2,
+        "seed": 11.0,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V2_Z6Lamp_4",
+      "pos": [
+        8.5,
+        4.5,
+        247.5
+      ],
+      "kelvin": 1900.0,
+      "candela": 7400.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 40.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.04,
+        "frequency": 0.7,
+        "octaves": 2,
+        "seed": 12.9,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V2_Z6Lamp_5",
+      "pos": [
+        -8.5,
+        4.5,
+        247.5
+      ],
+      "kelvin": 1900.0,
+      "candela": 7400.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 40.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.04,
+        "frequency": 0.7,
+        "octaves": 2,
+        "seed": 14.8,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V2_Z6Lamp_6",
+      "pos": [
+        15.5,
+        4.5,
+        250.0
+      ],
+      "kelvin": 1900.0,
+      "candela": 7400.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 40.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.04,
+        "frequency": 0.7,
+        "octaves": 2,
+        "seed": 16.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V2_Z6Lamp_7",
+      "pos": [
+        -15.5,
+        4.5,
+        250.0
+      ],
+      "kelvin": 1900.0,
+      "candela": 7400.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 40.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.04,
+        "frequency": 0.7,
+        "octaves": 2,
+        "seed": 18.6,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V2_Z4BonePhosphor",
+      "pos": [
+        -19.0,
+        1.2,
+        151.0
+      ],
+      "kelvin": 9500.0,
+      "candela": 1100.0,
+      "range": 9.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 32.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.08,
+        "frequency": 0.3,
+        "octaves": 1,
+        "seed": 11.1,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V2_Z3Firepit",
+      "pos": [
+        3.0,
+        0.7,
+        87.5
+      ],
+      "kelvin": 1800.0,
+      "candela": 3000.0,
+      "range": 7.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 22.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.14,
+        "frequency": 2.0,
+        "octaves": 2,
+        "seed": 21.4,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V2_Z7Firepit",
+      "pos": [
+        3.0,
+        0.7,
+        330.5
+      ],
+      "kelvin": 1800.0,
+      "candela": 3000.0,
+      "range": 7.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 22.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.14,
+        "frequency": 2.0,
+        "octaves": 2,
+        "seed": 27.9,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
     }
   ]
 }

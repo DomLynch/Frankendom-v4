@@ -149,13 +149,13 @@
       "ground": "bottom",
       "yBase": "platformTop",
       "pos": [
-        -6.0,
+        -5.5,
         -0.09,
-        41.0
+        54.0
       ],
       "rotEuler": [
         0,
-        330.0,
+        88.9,
         0
       ],
       "scale": 3.459,
@@ -174,16 +174,16 @@
       "ground": "bottom",
       "yBase": "platformTop",
       "pos": [
-        14.5,
-        -1.08,
-        44.0
+        8.0,
+        -0.103,
+        55.5
       ],
       "rotEuler": [
         0,
-        25.0,
+        115.0,
         0
       ],
-      "scale": 7.127,
+      "scale": 4.989,
       "shadowsOff": false,
       "tags": [
         "zone2",
@@ -464,9 +464,9 @@
       "ground": "bottom",
       "yBase": "platformTop",
       "pos": [
-        6.2,
+        4.6,
         0.0,
-        60.2
+        53.6
       ],
       "rotEuler": [
         0,

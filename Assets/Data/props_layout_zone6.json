@@ -388,6 +388,1086 @@
       ]
     },
     {
+      "id": "z6s_post_0",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_lamp_post",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        15.8,
+        -0.09,
+        256.0
+      ],
+      "rotEuler": [
+        0,
+        180.0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_0_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        12.0,
+        6.2,
+        258.2
+      ],
+      "rotEuler": [
+        50.48,
+        180.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_0_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        14.2,
+        6.2,
+        256.0
+      ],
+      "rotEuler": [
+        50.48,
+        -90.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_0_2",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        12.0,
+        6.2,
+        253.8
+      ],
+      "rotEuler": [
+        50.48,
+        0.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_0_3",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.8,
+        6.2,
+        256.0
+      ],
+      "rotEuler": [
+        50.48,
+        90.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_post_1",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_lamp_post",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -15.8,
+        -0.09,
+        256.0
+      ],
+      "rotEuler": [
+        0,
+        0.0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_1_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.444,
+        6.2,
+        257.556
+      ],
+      "rotEuler": [
+        50.48,
+        -135.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_1_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.444,
+        6.2,
+        254.444
+      ],
+      "rotEuler": [
+        50.48,
+        -45.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_1_2",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -13.556,
+        6.2,
+        254.444
+      ],
+      "rotEuler": [
+        50.48,
+        45.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_1_3",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -13.556,
+        6.2,
+        257.556
+      ],
+      "rotEuler": [
+        50.48,
+        135.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_post_2",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_lamp_post",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        11.187,
+        -0.09,
+        267.187
+      ],
+      "rotEuler": [
+        0,
+        135.0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_2_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        10.7,
+        6.2,
+        264.5
+      ],
+      "rotEuler": [
+        50.48,
+        -90.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_2_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        8.5,
+        6.2,
+        262.3
+      ],
+      "rotEuler": [
+        50.48,
+        0.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_2_2",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        6.3,
+        6.2,
+        264.5
+      ],
+      "rotEuler": [
+        50.48,
+        90.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_2_3",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        8.5,
+        6.2,
+        266.7
+      ],
+      "rotEuler": [
+        50.48,
+        180.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_post_3",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_lamp_post",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -11.187,
+        -0.09,
+        267.187
+      ],
+      "rotEuler": [
+        0,
+        45.0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_3_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.944,
+        6.2,
+        262.944
+      ],
+      "rotEuler": [
+        50.48,
+        -45.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_3_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.056,
+        6.2,
+        262.944
+      ],
+      "rotEuler": [
+        50.48,
+        45.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_3_2",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.056,
+        6.2,
+        266.056
+      ],
+      "rotEuler": [
+        50.48,
+        135.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_3_3",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.944,
+        6.2,
+        266.056
+      ],
+      "rotEuler": [
+        50.48,
+        -135.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_post_4",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_lamp_post",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        11.187,
+        -0.09,
+        244.813
+      ],
+      "rotEuler": [
+        0,
+        -135.0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_4_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        8.5,
+        6.2,
+        245.3
+      ],
+      "rotEuler": [
+        50.48,
+        0.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_4_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        6.3,
+        6.2,
+        247.5
+      ],
+      "rotEuler": [
+        50.48,
+        90.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_4_2",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        8.5,
+        6.2,
+        249.7
+      ],
+      "rotEuler": [
+        50.48,
+        180.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_4_3",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        10.7,
+        6.2,
+        247.5
+      ],
+      "rotEuler": [
+        50.48,
+        -90.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_post_5",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_lamp_post",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -11.187,
+        -0.09,
+        244.813
+      ],
+      "rotEuler": [
+        0,
+        -45.0,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_5_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.056,
+        6.2,
+        245.944
+      ],
+      "rotEuler": [
+        50.48,
+        45.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_5_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.056,
+        6.2,
+        249.056
+      ],
+      "rotEuler": [
+        50.48,
+        135.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_5_2",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.944,
+        6.2,
+        249.056
+      ],
+      "rotEuler": [
+        50.48,
+        -135.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_5_3",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.944,
+        6.2,
+        245.944
+      ],
+      "rotEuler": [
+        50.48,
+        -45.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_post_6",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_lamp_post",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        19.044,
+        -0.09,
+        248.628
+      ],
+      "rotEuler": [
+        0,
+        -158.84,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_6_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        13.3,
+        6.2,
+        250.0
+      ],
+      "rotEuler": [
+        50.48,
+        90.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_6_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        15.5,
+        6.2,
+        252.2
+      ],
+      "rotEuler": [
+        50.48,
+        180.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_6_2",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        17.7,
+        6.2,
+        250.0
+      ],
+      "rotEuler": [
+        50.48,
+        -90.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_6_3",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        15.5,
+        6.2,
+        247.8
+      ],
+      "rotEuler": [
+        50.48,
+        0.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_post_7",
+      "group": "Z6Ring1",
+      "library": "hero6",
+      "asset": "erlking_lamp_post",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -19.044,
+        -0.09,
+        248.628
+      ],
+      "rotEuler": [
+        0,
+        -21.16,
+        0
+      ],
+      "scale": 1.0,
+      "shadowsOff": false,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_7_0",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -17.056,
+        6.2,
+        251.556
+      ],
+      "rotEuler": [
+        50.48,
+        135.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_7_1",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -13.944,
+        6.2,
+        251.556
+      ],
+      "rotEuler": [
+        50.48,
+        -135.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_7_2",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -13.944,
+        6.2,
+        248.444
+      ],
+      "rotEuler": [
+        50.48,
+        -45.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
+      "id": "z6s_chain_7_3",
+      "group": "Z6Ring1",
+      "library": "props",
+      "asset": "hero_chain_a",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -17.056,
+        6.2,
+        248.444
+      ],
+      "rotEuler": [
+        50.48,
+        45.0,
+        0
+      ],
+      "scale": 1.654,
+      "shadowsOff": true,
+      "tags": [
+        "zone6",
+        "hero6",
+        "hero",
+        "support"
+      ]
+    },
+    {
       "id": "z6_standing_ruin_pillar_4_0",
       "group": "Z6Ring0",
       "library": "props",

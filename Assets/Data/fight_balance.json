@@ -60,6 +60,42 @@
     "note": "laneBOSSDATA curve: 600 x hpMul 1.5 = 900 hp, hits 0.9 x 2.6 = 2.34; specials OFF."
   },
   {
+    "key": "BanditArcher",
+    "maxHealth": 195.0,
+    "maxStamina": 0,
+    "damageMul": 1.0,
+    "takenMul": 1.0,
+    "specialDamageMul": 1.0,
+    "specialCooldownTicks": 600000,
+    "specialInitialCooldownTicks": 600000,
+    "specialMaxUses": 0,
+    "note": "BANDITS v1: maxHealth = hpScaleOfBoss x type mul x the grendel boss effective HP (the reference zone); the other zones scale it with the ladder row hpMul. damage is the ladder row damageMul. Specials OFF (cooldown = the code's spent value)."
+  },
+  {
+    "key": "BanditAssassin",
+    "maxHealth": 227.5,
+    "maxStamina": 0,
+    "damageMul": 1.0,
+    "takenMul": 1.0,
+    "specialDamageMul": 1.0,
+    "specialCooldownTicks": 600000,
+    "specialInitialCooldownTicks": 600000,
+    "specialMaxUses": 0,
+    "note": "BANDITS v1: maxHealth = hpScaleOfBoss x type mul x the grendel boss effective HP (the reference zone); the other zones scale it with the ladder row hpMul. damage is the ladder row damageMul. Specials OFF (cooldown = the code's spent value)."
+  },
+  {
+    "key": "BanditMelee",
+    "maxHealth": 325.0,
+    "maxStamina": 0,
+    "damageMul": 1.0,
+    "takenMul": 1.0,
+    "specialDamageMul": 1.0,
+    "specialCooldownTicks": 600000,
+    "specialInitialCooldownTicks": 600000,
+    "specialMaxUses": 0,
+    "note": "BANDITS v1: maxHealth = hpScaleOfBoss x type mul x the grendel boss effective HP (the reference zone); the other zones scale it with the ladder row hpMul. damage is the ladder row damageMul. Specials OFF (cooldown = the code's spent value)."
+  },
+  {
    "key": "*",
    "maxHealth": 0,
    "maxStamina": 0,

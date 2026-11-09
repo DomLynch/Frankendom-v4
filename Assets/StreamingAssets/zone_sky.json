@@ -1,0 +1,121 @@
+{
+  "_about": "laneVIS2 item 8 (STAGED, not shipped). Read by the NEW Scripts/Zones/ZoneSky.cs (kit\\code). A dark, slow HDRP CLOUD LAYER (baked lat-long texture composited in the sky pass; NOT Volumetric Clouds) in one global runtime Volume, priority 21. enabled=false, an absent file or -zonesky:off = nothing. Per zone only opacity / tint / scrollSpeed (km/h, HDRP Cloud Layer wind speed): they are render-time parameters, a zone blend never re-bakes the cloud texture. tint = fraction of a sky texel at the same exposure: the cloud exposure is read from the live HDRISky exposure (exposureFromHdri) + exposureOffsetEV; tintScale scales every tint at once (first thing to tune on the first frame). cloudMapPath '' = HDRP's own DefaultCloudMap. castShadows false = no cloud shadow cookie on the sun (extra cost, and the key must stay a clean low light).",
+  "enabled": false,
+  "log": true,
+  "exposureFromHdri": true,
+  "exposureEV": 0.0,
+  "exposureOffsetEV": 0.0,
+  "tintScale": 1.0,
+  "lighting": true,
+  "steps": 6,
+  "resolution": 1024,
+  "altitude": 2000.0,
+  "thickness": 0.5,
+  "rotation": 0.0,
+  "scrollOrientation": 0.0,
+  "upperHemisphereOnly": true,
+  "castShadows": false,
+  "cloudMapPath": "",
+  "waitFrames": 60,
+  "pollSeconds": 0.25,
+  "blendM": 14.0,
+  "smoothSeconds": 2.0,
+  "rescanSeconds": 5.0,
+  "priority": 21.0,
+  "defaults": {
+    "id": "default",
+    "opacity": 0.3,
+    "tint": [
+      0.1,
+      0.1,
+      0.11
+    ],
+    "scrollSpeed": 8.0
+  },
+  "rows": [
+    {
+      "id": "pit_yard",
+      "zFrom": -100000.0,
+      "zTo": 26.0,
+      "opacity": 0.3,
+      "tint": [
+        0.11,
+        0.095,
+        0.09
+      ],
+      "scrollSpeed": 8.0
+    },
+    {
+      "id": "sobek_reach",
+      "zFrom": 26.0,
+      "zTo": 62.0,
+      "opacity": 0.35,
+      "tint": [
+        0.085,
+        0.11,
+        0.105
+      ],
+      "scrollSpeed": 6.0
+    },
+    {
+      "id": "hub_camp",
+      "zFrom": 62.0,
+      "zTo": 98.0,
+      "opacity": 0.25,
+      "tint": [
+        0.11,
+        0.1,
+        0.09
+      ],
+      "scrollSpeed": 6.0
+    },
+    {
+      "id": "grendel",
+      "zFrom": 98.0,
+      "zTo": 167.0,
+      "opacity": 0.35,
+      "tint": [
+        0.12,
+        0.115,
+        0.11
+      ],
+      "scrollSpeed": 10.0
+    },
+    {
+      "id": "z5_humbaba",
+      "zFrom": 167.0,
+      "zTo": 234.0,
+      "opacity": 0.4,
+      "tint": [
+        0.09,
+        0.11,
+        0.085
+      ],
+      "scrollSpeed": 7.0
+    },
+    {
+      "id": "z6_erlking",
+      "zFrom": 234.0,
+      "zTo": 305.0,
+      "opacity": 0.4,
+      "tint": [
+        0.15,
+        0.07,
+        0.065
+      ],
+      "scrollSpeed": 9.0
+    },
+    {
+      "id": "z7_market2",
+      "zFrom": 305.0,
+      "zTo": 100000.0,
+      "opacity": 0.25,
+      "tint": [
+        0.11,
+        0.1,
+        0.09
+      ],
+      "scrollSpeed": 6.0
+    }
+  ]
+}

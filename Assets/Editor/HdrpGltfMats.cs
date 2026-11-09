@@ -75,7 +75,7 @@ public static class HdrpGltfMats
                     var et = T("emissiveTexture"); Color ef = m.HasProperty("emissiveFactor") ? m.GetColor("emissiveFactor") : Color.black;
                     if (et != null || ef.maxColorComponent > 0.001f) { nm.SetColor("_EmissiveColor", ef); nm.SetTexture("_EmissiveColorMap", et); }
                     bool clip = m.IsKeywordEnabled("_ALPHATEST_ON") || (m.HasProperty("alphaCutoff") && m.GetFloat("alphaCutoff") > 0f && m.HasProperty("_Mode") && m.GetFloat("_Mode") == 1f);
-                    if (clip) { nm.SetFloat("_AlphaCutoffEnable", 1f); nm.SetFloat("_AlphaCutoff", m.HasProperty("alphaCutoff") ? m.GetFloat("alphaCutoff") : GLM.alphaCutoffDefault); }
+                    if (clip && !(m.HasProperty("alphaCutoff") && m.GetFloat("alphaCutoff") <= 0f)) { /* AV-W8C: cutoff 0 clips nothing, do not re-enable the alpha-clip flag */ nm.SetFloat("_AlphaCutoffEnable", 1f); nm.SetFloat("_AlphaCutoff", m.HasProperty("alphaCutoff") ? m.GetFloat("alphaCutoff") : GLM.alphaCutoffDefault); }
                     bool keepDouble = lp.Contains("cloak") || lp.Contains("tree") || lp.Contains("hair") || lp.Contains("foliage") || lp.Contains("card"); nm.SetFloat("_DoubleSidedEnable", keepDouble ? 1f : 0f);
                     HDMaterial.ValidateMaterial(nm); EditorUtility.SetDirty(nm); map[m] = nm; n++;
                 }

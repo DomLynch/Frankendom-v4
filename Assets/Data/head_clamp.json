@@ -103,6 +103,276 @@
       "maxUpKnee": 0.5
     },
     {
+      "name": "BanditMelee",
+      "enabled": true,
+      "debug": false,
+      "torsoBone": "mixamorig:Spine2",
+      "neckBone": "mixamorig:Neck",
+      "headBone": "mixamorig:Head",
+      "yaw": 45,
+      "pitch": 20,
+      "neckShare": 0.5,
+      "knee": 0.8,
+      "look": {
+        "yawWeight": -1,
+        "pitchWeight": -1,
+        "offInFinisher": true,
+        "enabled": false,
+        "weight": 0.5,
+        "fadeStartDeg": 90,
+        "fadeEndDeg": 120,
+        "followSeconds": 0.15,
+        "targetHeight": 1.5
+      },
+      "categories": [
+        {
+          "id": "free",
+          "off": true,
+          "states": [
+            "knockdown",
+            "death",
+            "get_up"
+          ],
+          "yaw": 45,
+          "pitch": 20
+        },
+        {
+          "id": "hit",
+          "yaw": 40,
+          "pitch": 35,
+          "states": [
+            "hit_light_front",
+            "hit_light_back",
+            "hit_heavy",
+            "stagger_loop"
+          ]
+        },
+        {
+          "id": "locomotion",
+          "yaw": 55,
+          "pitch": 25,
+          "states": [
+            "walk",
+            "run",
+            "strafe_L",
+            "strafe_R",
+            "backstep",
+            "roll_forward"
+          ]
+        },
+        {
+          "id": "combat",
+          "yaw": 80,
+          "pitch": 40,
+          "states": [
+            "guard_idle",
+            "guard_left",
+            "guard_right",
+            "guard_up",
+            "guard_hit",
+            "parry",
+            "riposte",
+            "kick",
+            "thrust",
+            "light_attack_L",
+            "light_attack_R",
+            "heavy_windup",
+            "heavy_windup_hold",
+            "heavy_release",
+            "special_skullcrack",
+            "special_whirlwind",
+            "atk_light_L",
+            "atk_light_R",
+            "atk_thrust",
+            "atk_heavy",
+            "atk_riposte"
+          ]
+        }
+      ],
+      "maxUpDeg": 90,
+      "maxUpKnee": 0.5
+    },
+    {
+      "name": "BanditAssassin",
+      "enabled": true,
+      "debug": false,
+      "torsoBone": "mixamorig:Spine2",
+      "neckBone": "mixamorig:Neck",
+      "headBone": "mixamorig:Head",
+      "yaw": 45,
+      "pitch": 20,
+      "neckShare": 0.5,
+      "knee": 0.8,
+      "look": {
+        "yawWeight": -1,
+        "pitchWeight": -1,
+        "offInFinisher": true,
+        "enabled": false,
+        "weight": 0.5,
+        "fadeStartDeg": 90,
+        "fadeEndDeg": 120,
+        "followSeconds": 0.15,
+        "targetHeight": 1.5
+      },
+      "categories": [
+        {
+          "id": "free",
+          "off": true,
+          "states": [
+            "knockdown",
+            "death",
+            "get_up"
+          ],
+          "yaw": 45,
+          "pitch": 20
+        },
+        {
+          "id": "hit",
+          "yaw": 40,
+          "pitch": 35,
+          "states": [
+            "hit_light_front",
+            "hit_light_back",
+            "hit_heavy",
+            "stagger_loop"
+          ]
+        },
+        {
+          "id": "locomotion",
+          "yaw": 55,
+          "pitch": 25,
+          "states": [
+            "walk",
+            "run",
+            "strafe_L",
+            "strafe_R",
+            "backstep",
+            "roll_forward"
+          ]
+        },
+        {
+          "id": "combat",
+          "yaw": 80,
+          "pitch": 40,
+          "states": [
+            "guard_idle",
+            "guard_left",
+            "guard_right",
+            "guard_up",
+            "guard_hit",
+            "parry",
+            "riposte",
+            "kick",
+            "thrust",
+            "light_attack_L",
+            "light_attack_R",
+            "heavy_windup",
+            "heavy_windup_hold",
+            "heavy_release",
+            "special_skullcrack",
+            "special_whirlwind",
+            "atk_light_L",
+            "atk_light_R",
+            "atk_thrust",
+            "atk_heavy",
+            "atk_riposte"
+          ]
+        }
+      ],
+      "maxUpDeg": 90,
+      "maxUpKnee": 0.5
+    },
+    {
+      "name": "BanditArcher",
+      "enabled": true,
+      "debug": false,
+      "torsoBone": "mixamorig:Spine2",
+      "neckBone": "mixamorig:Neck",
+      "headBone": "mixamorig:Head",
+      "yaw": 45,
+      "pitch": 20,
+      "neckShare": 0.5,
+      "knee": 0.8,
+      "look": {
+        "yawWeight": -1,
+        "pitchWeight": -1,
+        "offInFinisher": true,
+        "enabled": false,
+        "weight": 0.5,
+        "fadeStartDeg": 90,
+        "fadeEndDeg": 120,
+        "followSeconds": 0.15,
+        "targetHeight": 1.5
+      },
+      "categories": [
+        {
+          "id": "free",
+          "off": true,
+          "states": [
+            "knockdown",
+            "death",
+            "get_up"
+          ],
+          "yaw": 45,
+          "pitch": 20
+        },
+        {
+          "id": "hit",
+          "yaw": 40,
+          "pitch": 35,
+          "states": [
+            "hit_light_front",
+            "hit_light_back",
+            "hit_heavy",
+            "stagger_loop"
+          ]
+        },
+        {
+          "id": "locomotion",
+          "yaw": 55,
+          "pitch": 25,
+          "states": [
+            "walk",
+            "run",
+            "strafe_L",
+            "strafe_R",
+            "backstep",
+            "roll_forward"
+          ]
+        },
+        {
+          "id": "combat",
+          "yaw": 80,
+          "pitch": 40,
+          "states": [
+            "guard_idle",
+            "guard_left",
+            "guard_right",
+            "guard_up",
+            "guard_hit",
+            "parry",
+            "riposte",
+            "kick",
+            "thrust",
+            "light_attack_L",
+            "light_attack_R",
+            "heavy_windup",
+            "heavy_windup_hold",
+            "heavy_release",
+            "special_skullcrack",
+            "special_whirlwind",
+            "atk_light_L",
+            "atk_light_R",
+            "atk_thrust",
+            "atk_heavy",
+            "atk_riposte"
+          ]
+        }
+      ],
+      "maxUpDeg": 90,
+      "maxUpKnee": 0.5
+    },
+    {
       "name": "Joan",
       "enabled": true,
       "debug": false,

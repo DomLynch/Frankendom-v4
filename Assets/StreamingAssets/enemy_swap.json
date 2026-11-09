@@ -124,6 +124,153 @@
       }
     ],
     "note": "laneMONSTER6 (Erlking): sourceGlb empty: Tools/clip_build.py output is installed as Erlking_combat.glb by this kit. keepWeapon true + WeaponSocket_R: the socket carries the antler great-axe (two-handed: TwoHandIK holds grip_off with the left hand). Unproven: EnemySwap on this rig."
+  },
+  {
+    "id": "BanditArcher",
+    "sourceGlb": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/erika_bow_combat.glb",
+    "sourceAnimGlb": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/erika_bow_combat.glb",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": false,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [
+      "Layer_",
+      "Icosphere"
+    ],
+    "materials": [
+      {
+        "glbMaterial": "Akai_MAT1",
+        "mat": "Assets/Characters/BanditArcher/Mats/erika_clothes_0.mat",
+        "tex": "erika_clothes",
+        "ext": "png",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": true
+      },
+      {
+        "glbMaterial": "Erika_body_MAT1",
+        "mat": "Assets/Characters/BanditArcher/Mats/erika_clothes_0.mat",
+        "tex": "erika_clothes",
+        "ext": "png",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": true
+      },
+      {
+        "glbMaterial": "Body_MAT1",
+        "mat": "Assets/Characters/BanditArcher/Mats/erika_skin_0.mat",
+        "tex": "erika_body",
+        "ext": "png",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      },
+      {
+        "glbMaterial": "Skin_MAT1",
+        "mat": "Assets/Characters/BanditArcher/Mats/erika_skin_0.mat",
+        "tex": "erika_body",
+        "ext": "png",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      },
+      {
+        "glbMaterial": "EyeSpec_MAT1",
+        "mat": "Assets/Characters/BanditArcher/Mats/erika_eyes_0.mat",
+        "tex": "erika_body",
+        "ext": "png",
+        "smoothness": 0.5,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      },
+      {
+        "glbMaterial": "phong1",
+        "mat": "Assets/Characters/BanditArcher/Mats/erika_lash_0.mat",
+        "tex": "erika_lash",
+        "ext": "png",
+        "smoothness": 0.1,
+        "alphaClip": 0.5,
+        "doubleSided": true
+      },
+      {
+        "glbMaterial": "Bow_MAT",
+        "mat": "Assets/Characters/BanditArcher/Mats/bow_0.mat",
+        "tex": "erika_bow",
+        "ext": "jpg",
+        "smoothness": 0.3,
+        "alphaClip": 0.0,
+        "doubleSided": true
+      }
+    ],
+    "note": "BANDITS v1 (archer, hooded): materials = HDRP/Lit rows from bandits.json import.materials in hooded mode (Tex/<tex>_base + _normal.jpg must be in Assets/Characters/<Id>/Tex first: tools install_bandit_tex.py), empty in placeholder mode. keepWeapon False (true clones the TEMPLATE's weapon socket: Pitborn's maul unless templateId says otherwise). hideNodePrefixes ['Layer_', 'Icosphere']."
+  },
+  {
+    "id": "BanditAssassin",
+    "sourceGlb": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/akai_combat.glb",
+    "sourceAnimGlb": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/akai_combat.glb",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": false,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [
+      "Layer_",
+      "Icosphere"
+    ],
+    "materials": [
+      {
+        "glbMaterial": "Akai_",
+        "mat": "Assets/Characters/BanditAssassin/Mats/akai_0.mat",
+        "tex": "akai",
+        "ext": "png",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": true
+      }
+    ],
+    "note": "BANDITS v1 (assassin, hooded): materials = HDRP/Lit rows from bandits.json import.materials in hooded mode (Tex/<tex>_base + _normal.jpg must be in Assets/Characters/<Id>/Tex first: tools install_bandit_tex.py), empty in placeholder mode. keepWeapon False (true clones the TEMPLATE's weapon socket: Pitborn's maul unless templateId says otherwise). hideNodePrefixes ['Layer_', 'Icosphere']."
+  },
+  {
+    "id": "BanditMelee",
+    "sourceGlb": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/arissa_combat.glb",
+    "sourceAnimGlb": "C:/Users/dom12/Documents/kits_out/opentrident_for_frankendom/camp_npcs_clipbuild/final3/arissa_combat.glb",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": false,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [
+      "Layer_",
+      "Icosphere"
+    ],
+    "materials": [
+      {
+        "glbMaterial": "Arissa_",
+        "mat": "Assets/Characters/BanditMelee/Mats/arissa_0.mat",
+        "tex": "arissa",
+        "ext": "png",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": true
+      }
+    ],
+    "note": "BANDITS v1 (melee, hooded): materials = HDRP/Lit rows from bandits.json import.materials in hooded mode (Tex/<tex>_base + _normal.jpg must be in Assets/Characters/<Id>/Tex first: tools install_bandit_tex.py), empty in placeholder mode. keepWeapon False (true clones the TEMPLATE's weapon socket: Pitborn's maul unless templateId says otherwise). hideNodePrefixes ['Layer_', 'Icosphere']."
   }
 ],
   "_example_row_not_used": {

@@ -78,6 +78,171 @@
             "debugEvery": 20
         },
         {
+          "name": "BanditMelee",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "BanditAssassin",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "BanditArcher",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
             "name": "Joan",
             "enabled": false,
             "handedSign": -1,

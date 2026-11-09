@@ -8,6 +8,10 @@
   },
   "libraries": [
     {
+      "name": "hero3",
+      "pattern": "Assets/Env/Hero/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
       "name": "props",
       "pattern": "Assets/Env/Props/{asset}/{asset}_LOD{lod}.glb"
     },
@@ -51,6 +55,14 @@
     }
   ],
   "lodProfiles": [
+    {
+      "name": "hero3_lion",
+      "screenHeights": [
+        0.2,
+        0.07,
+        0.01
+      ]
+    },
     {
       "name": "props",
       "screenHeights": [
@@ -146,6 +158,32 @@
     "HubRing2"
   ],
   "props": [
+    {
+      "id": "z3h_hub_lion_statue",
+      "group": "HubRing1",
+      "library": "hero3",
+      "asset": "hub_lion_statue",
+      "lodProfile": "hero3_lion",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -7.0,
+        -0.12,
+        103.0
+      ],
+      "rotEuler": [
+        0,
+        162.0,
+        0
+      ],
+      "scale": 5.806,
+      "shadowsOff": false,
+      "tags": [
+        "zone3",
+        "hero3",
+        "hero"
+      ]
+    },
     {
       "id": "z3_fallen_pillar_3_0",
       "group": "HubRing1",

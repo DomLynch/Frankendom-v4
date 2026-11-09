@@ -18,6 +18,7 @@
     "resetOnNewGame": true,
     "skipSaveWhileDown": true,
     "spanWarmFinally": true,
+      "minLoadHpFrac": 1.0,
     "_about": "Application.persistentDataPath. Harness runs (MenuCfg.Harness) never read or write it. Rows use the Supabase zone_spawns field names (zone = instance, generation, respawnAtMs = respawn_at) so a later store is a swap of storage, not of data."
   },
   "hp": {
@@ -189,6 +190,27 @@
       "scene": "HadesSlice_Erlking",
       "path": "Creatures/Erlking",
       "_about": "laneMONSTER6 (Erlking): Resources/Creatures/Erlking.prefab, made by Hades > Zones > Save creature prefabs from his enemy scene. The zone row (z6_erlking), arena and spawn picks are laneZONE6's: they reference creature 'Erlking' and ladder row 'erlking' (ladder row is inLadder false)."
+    },
+    {
+      "id": "BanditMelee",
+      "source": "resources",
+      "scene": "HadesSlice_BanditMelee",
+      "path": "Creatures/BanditMelee",
+      "_about": "BANDITS v1: Resources/Creatures/BanditMelee.prefab, made by Hades > Zones > Save creature prefabs from its enemy scene (UNITY_DEV_CHECKLIST.md). Until it exists its spawn rows are skipped with one log line."
+    },
+    {
+      "id": "BanditAssassin",
+      "source": "resources",
+      "scene": "HadesSlice_BanditAssassin",
+      "path": "Creatures/BanditAssassin",
+      "_about": "BANDITS v1: Resources/Creatures/BanditAssassin.prefab, made by Hades > Zones > Save creature prefabs from its enemy scene (UNITY_DEV_CHECKLIST.md). Until it exists its spawn rows are skipped with one log line."
+    },
+    {
+      "id": "BanditArcher",
+      "source": "resources",
+      "scene": "HadesSlice_BanditArcher",
+      "path": "Creatures/BanditArcher",
+      "_about": "BANDITS v1: Resources/Creatures/BanditArcher.prefab, made by Hades > Zones > Save creature prefabs from its enemy scene (UNITY_DEV_CHECKLIST.md). Until it exists its spawn rows are skipped with one log line."
     }
   ],
   "zones": [
@@ -646,6 +668,42 @@
           ],
           "yaw": 0,
           "note": "ZONE4 gate: the far gate to zone 5 through the open gable, shut until z4_grendel dies (local z 58)"
+        },
+        {
+          "id": "bandit_g4_before_1",
+          "pos": [5, 113],
+          "yaw": 219.8,
+          "note": "BANDITS v1 g4_before member 1 (BanditAssassin): anchor arrive_from_prev along -3.75 lateral 0.00 formation (-1.2, 0.0); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_g4_before_2",
+          "pos": [-4.6, 111.9],
+          "yaw": 142.5,
+          "note": "BANDITS v1 g4_before member 2 (BanditMelee): anchor arrive_from_prev along -3.75 lateral 0.00 formation (1.2, 1.4); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_g4_after_1",
+          "pos": [-4, 150.7],
+          "yaw": 146.3,
+          "note": "BANDITS v1 g4_after member 1 (BanditMelee): anchor arrive_from_next along -3.75 lateral -0.75 formation (-2.4, 0.0); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_g4_after_2",
+          "pos": [4.4, 151.8],
+          "yaw": 216.3,
+          "note": "BANDITS v1 g4_after member 2 (BanditAssassin): anchor arrive_from_next along -3.75 lateral -0.75 formation (-0.8, 1.7); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_g4_after_3",
+          "pos": [-5.2, 154],
+          "yaw": 139.1,
+          "note": "BANDITS v1 g4_after member 3 (BanditArcher): anchor arrive_from_next along -3.75 lateral -0.75 formation (0.9, 0.1); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_g4_after_4",
+          "pos": [5.2, 156.4],
+          "yaw": 220.9,
+          "note": "BANDITS v1 g4_after member 4 (BanditArcher): anchor arrive_from_next along -3.75 lateral -0.75 formation (2.5, 1.7); computed by plan_bandits.py, ground by the runtime raycast."
         }
       ],
       "spawns": [
@@ -667,6 +725,126 @@
           "hpMul": 1.0,
           "damageMul": 1.0,
           "difficulty": 12
+        },
+        {
+          "id": "bandit_g4_before_1",
+          "enabled": false,
+          "spot": "bandit_g4_before_1",
+          "picks": [
+            {
+              "creature": "BanditAssassin",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_assassin_z4",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 5,
+          "leash": 17,
+          "hpMul": 1.0,
+          "damageMul": 0.7021,
+          "difficulty": 6,
+          "needs": "BANDITS v1: Resources/Creatures/BanditAssassin.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+        },
+        {
+          "id": "bandit_g4_before_2",
+          "enabled": false,
+          "spot": "bandit_g4_before_2",
+          "picks": [
+            {
+              "creature": "BanditMelee",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_melee_z4",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 5.5,
+          "leash": 17.5,
+          "hpMul": 1.0,
+          "damageMul": 0.6142,
+          "difficulty": 4,
+          "needs": "BANDITS v1: Resources/Creatures/BanditMelee.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+        },
+        {
+          "id": "bandit_g4_after_1",
+          "enabled": false,
+          "spot": "bandit_g4_after_1",
+          "picks": [
+            {
+              "creature": "BanditMelee",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_melee_z4",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 2.1,
+          "leash": 14.1,
+          "hpMul": 1.0,
+          "damageMul": 0.6142,
+          "difficulty": 4,
+          "needs": "BANDITS v1: Resources/Creatures/BanditMelee.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z4_grendel is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
+        },
+        {
+          "id": "bandit_g4_after_2",
+          "enabled": false,
+          "spot": "bandit_g4_after_2",
+          "picks": [
+            {
+              "creature": "BanditAssassin",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_assassin_z4",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 3.3,
+          "leash": 15.3,
+          "hpMul": 1.0,
+          "damageMul": 0.7021,
+          "difficulty": 6,
+          "needs": "BANDITS v1: Resources/Creatures/BanditAssassin.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z4_grendel is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
+        },
+        {
+          "id": "bandit_g4_after_3",
+          "enabled": false,
+          "spot": "bandit_g4_after_3",
+          "picks": [
+            {
+              "creature": "BanditArcher",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_archer_z4",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 5.5,
+          "leash": 15.5,
+          "hpMul": 1.0,
+          "damageMul": 0.5264,
+          "difficulty": 4,
+          "needs": "BANDITS v1: Resources/Creatures/BanditArcher.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z4_grendel is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
+        },
+        {
+          "id": "bandit_g4_after_4",
+          "enabled": false,
+          "spot": "bandit_g4_after_4",
+          "picks": [
+            {
+              "creature": "BanditArcher",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_archer_z4",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 7.9,
+          "leash": 17.9,
+          "hpMul": 1.0,
+          "damageMul": 0.5264,
+          "difficulty": 4,
+          "needs": "BANDITS v1: Resources/Creatures/BanditArcher.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z4_grendel is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
         }
       ],
       "services": [],
@@ -758,6 +936,36 @@
           ],
           "yaw": 0,
           "note": "ZONES57: boss_stand z 211.0 - aggro 9.0 - margin 3.0: the last point OUTSIDE the boss aggro radius (route bot / QA stop point)"
+        },
+        {
+          "id": "bandit_g5_before_1",
+          "pos": [-3.6, 187.7],
+          "yaw": 149,
+          "note": "BANDITS v1 g5_before member 1 (BanditMelee): anchor arrive_from_prev along 3.75 lateral -0.75 formation (-2.2, 0.0); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_g5_before_2",
+          "pos": [4.8, 189.3],
+          "yaw": 218.7,
+          "note": "BANDITS v1 g5_before member 2 (BanditArcher): anchor arrive_from_prev along 3.75 lateral -0.75 formation (0.4, 1.2); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_g5_before_3",
+          "pos": [-3.7, 192.2],
+          "yaw": 148.3,
+          "note": "BANDITS v1 g5_before member 3 (BanditAssassin): anchor arrive_from_prev along 3.75 lateral -0.75 formation (2.4, 0.2); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_g5_after_1",
+          "pos": [-3.7, 225.6],
+          "yaw": 148.3,
+          "note": "BANDITS v1 g5_after member 1 (BanditMelee): anchor arrive_from_next along -2.50 lateral 1.00 formation (-1.2, 0.0); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_g5_after_2",
+          "pos": [3.9, 225.9],
+          "yaw": 213,
+          "note": "BANDITS v1 g5_after member 2 (BanditAssassin): anchor arrive_from_next along -2.50 lateral 1.00 formation (1.2, 1.4); computed by plan_bandits.py, ground by the runtime raycast."
         }
       ],
       "spawns": [
@@ -781,6 +989,106 @@
           "difficulty": 13,
           "needs": "Resources/Creatures/Humbaba.prefab + a roster / opponents ladder row (laneMONSTER5 / the Unity dev); the spawn is switched on with apply_zone5.py --on",
           "note": "ZONE5 v1 DRAFT numbers (creature id, ladderRow, difficulty 13) are laneMONSTER5 / Strategy decisions. aggro 9 starts the fight at the clearing edge; leash 30 covers the 30 m circle plus the path. Skipped at run time until Resources/Creatures/Humbaba exists."
+        },
+        {
+          "id": "bandit_g5_before_1",
+          "enabled": false,
+          "spot": "bandit_g5_before_1",
+          "picks": [
+            {
+              "creature": "BanditMelee",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_melee_z5",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 6,
+          "leash": 18,
+          "hpMul": 1.12,
+          "damageMul": 0.6615,
+          "difficulty": 4,
+          "needs": "BANDITS v1: Resources/Creatures/BanditMelee.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+        },
+        {
+          "id": "bandit_g5_before_2",
+          "enabled": false,
+          "spot": "bandit_g5_before_2",
+          "picks": [
+            {
+              "creature": "BanditArcher",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_archer_z5",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 10,
+          "leash": 20,
+          "hpMul": 1.12,
+          "damageMul": 0.5669,
+          "difficulty": 4,
+          "needs": "BANDITS v1: Resources/Creatures/BanditArcher.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+        },
+        {
+          "id": "bandit_g5_before_3",
+          "enabled": false,
+          "spot": "bandit_g5_before_3",
+          "picks": [
+            {
+              "creature": "BanditAssassin",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_assassin_z5",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 8,
+          "leash": 20,
+          "hpMul": 1.12,
+          "damageMul": 0.7561,
+          "difficulty": 6,
+          "needs": "BANDITS v1: Resources/Creatures/BanditAssassin.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+        },
+        {
+          "id": "bandit_g5_after_1",
+          "enabled": false,
+          "spot": "bandit_g5_after_1",
+          "picks": [
+            {
+              "creature": "BanditMelee",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_melee_z5",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 1.12,
+          "damageMul": 0.6615,
+          "difficulty": 4,
+          "needs": "BANDITS v1: Resources/Creatures/BanditMelee.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z5_humbaba is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
+        },
+        {
+          "id": "bandit_g5_after_2",
+          "enabled": false,
+          "spot": "bandit_g5_after_2",
+          "picks": [
+            {
+              "creature": "BanditAssassin",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_assassin_z5",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.8,
+          "leash": 12.8,
+          "hpMul": 1.12,
+          "damageMul": 0.7561,
+          "difficulty": 6,
+          "needs": "BANDITS v1: Resources/Creatures/BanditAssassin.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z5_humbaba is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
         }
       ],
       "services": [],
@@ -872,6 +1180,24 @@
           ],
           "yaw": 0,
           "note": "ZONES57: boss_stand z 286.0 - aggro 16.0 - margin 3.0: the last point OUTSIDE the boss aggro radius (route bot / QA stop point)"
+        },
+        {
+          "id": "bandit_g6_before_1",
+          "pos": [-5.2, 247.6],
+          "yaw": 139.1,
+          "note": "BANDITS v1 g6_before member 1 (BanditAssassin): anchor arrive_from_prev along -3.50 lateral 0.00 formation (-2.2, 0.0); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_g6_before_2",
+          "pos": [-2.7, 250.1],
+          "yaw": 155.8,
+          "note": "BANDITS v1 g6_before member 2 (BanditMelee): anchor arrive_from_prev along -3.50 lateral 0.00 formation (0.4, 1.2); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_g6_before_3",
+          "pos": [3.8, 249.9],
+          "yaw": 212.3,
+          "note": "BANDITS v1 g6_before member 3 (BanditArcher): anchor arrive_from_prev along -3.50 lateral 0.00 formation (2.4, 0.2); computed by plan_bandits.py, ground by the runtime raycast."
         }
       ],
       "spawns": [
@@ -894,6 +1220,66 @@
           "damageMul": 1.0,
           "difficulty": 14,
           "needs": "laneMONSTER6 roster row + Resources/Creatures/Erlking.prefab; respawn 30 to 45 min is a Dom decision (final boss)"
+        },
+        {
+          "id": "bandit_g6_before_1",
+          "enabled": false,
+          "spot": "bandit_g6_before_1",
+          "picks": [
+            {
+              "creature": "BanditAssassin",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_assassin_z6",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 6.5,
+          "leash": 18.5,
+          "hpMul": 1.3846,
+          "damageMul": 0.9361,
+          "difficulty": 6,
+          "needs": "BANDITS v1: Resources/Creatures/BanditAssassin.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+        },
+        {
+          "id": "bandit_g6_before_2",
+          "enabled": false,
+          "spot": "bandit_g6_before_2",
+          "picks": [
+            {
+              "creature": "BanditMelee",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_melee_z6",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 6,
+          "leash": 18,
+          "hpMul": 1.3846,
+          "damageMul": 0.819,
+          "difficulty": 4,
+          "needs": "BANDITS v1: Resources/Creatures/BanditMelee.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+        },
+        {
+          "id": "bandit_g6_before_3",
+          "enabled": false,
+          "spot": "bandit_g6_before_3",
+          "picks": [
+            {
+              "creature": "BanditArcher",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "bandit_archer_z6",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 7.5,
+          "leash": 17.5,
+          "hpMul": 1.3846,
+          "damageMul": 0.7019,
+          "difficulty": 4,
+          "needs": "BANDITS v1: Resources/Creatures/BanditArcher.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
         }
       ],
       "services": [],

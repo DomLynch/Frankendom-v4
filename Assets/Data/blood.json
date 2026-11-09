@@ -78,6 +78,24 @@
    "flash": false
   },
   {
+    "match": "BanditMelee",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "BanditAssassin",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "BanditArcher",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
    "match": "Joan",
    "bloodScale": 1.0,
    "sparks": false,

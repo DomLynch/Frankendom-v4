@@ -2153,6 +2153,86 @@
       },
       "glb": "",
       "resource": ""
+    },
+    {
+      "id": "bandit_sword",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Bandit's sword",
+      "slot": "mainHand",
+      "glb": "",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 3.0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "BANDITS v1: glb empty = the base sword model stays (like knight_sword); multipliers 1.0 so the type's damage comes only from bandits.json.",
+      "weapon": {
+        "id": "bandit_sword",
+        "twoHanded": false,
+        "damageMul": 1.0,
+        "speedMul": 1.0,
+        "reachMul": 1.0,
+        "postureMul": 1.0,
+        "cueWeapon": "sword",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      }
+    },
+    {
+      "id": "bandit_dagger",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Bandit's dagger",
+      "slot": "mainHand",
+      "glb": "",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 3.0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "BANDITS v1: NO dagger model exists (SPAWN_AUDIT section 4): glb empty = sword model with a short reach and a fast swing until art exists. cues.json has only claws/sword, so the hit audio is the sword's.",
+      "weapon": {
+        "id": "bandit_dagger",
+        "twoHanded": false,
+        "damageMul": 0.9,
+        "speedMul": 1.25,
+        "reachMul": 0.65,
+        "postureMul": 0.8,
+        "cueWeapon": "sword",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      }
     }
   ]
 }

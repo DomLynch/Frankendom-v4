@@ -1,0 +1,72 @@
+{
+  "_note": "VIS4 item 15 (laneVIS4, 2026-11-09): subsurface scattering on Joan's skin and the monsters' flesh. PRESENTATION ONLY, read by Assets/Scripts/CharTwin.cs (new file; no existing script calls it). enabled=false = the shipped state: nothing is swapped and the original materials are restored if it was on (hot, while the game runs). enabled=true swaps each listed material for its SSS TWIN: a Resources material authored in the Editor by CharTwinAuthor (Frankendom > VIS4 > Build char twins, or -executeMethod CharTwinAuthor.BuildBatch) from the 'author' block below = the original HDRP/Lit material copied, Material Type = Subsurface Scattering, diffusion profile = the HDRP package Skin profile (guid 404820c4cf36ad944862fa59c56064f0, already in the Default Volume diffusion profile list, post-scatter texturing so albedo detail is not blurred). rows[].character = roster id (any case); rows[].enabled false = that character keeps its original materials (Grendel: opt-out, approved colour grade; Pitborn: off until Dom's slate pick); materials[].match = part of the material name; twin = Resources path. copyTextures / copyColors / copyFloats mirror those properties from the ORIGINAL onto the twin every poll, so character_materials.json (CharMatOverride, graded BC7 albedo) still shows. SSS scatters LIGHTING, not albedo: no albedo or colour grade is edited anywhere. All numbers in 'author' are untuned starting values (UNPROVEN, no frame seen).",
+  "enabled": true,
+  "log": true,
+  "pollSeconds": 0.5,
+  "spawnPollSeconds": 0.1,
+  "spawnFastSeconds": 2.0,
+  "instanceSuffix": " (Instance)",
+  "cloneSuffix": " (charmat)",
+  "twinMarker": "_sss",
+  "copyTextures": ["_BaseColorMap", "_MainTex"],
+  "copyColors": ["_BaseColor"],
+  "copyFloats": [],
+  "resourcesDir": "Assets/Resources",
+  "rows": [
+    {
+      "character": "Joan",
+      "enabled": true,
+      "_why": "face, ears, neck (joan_head_0). The body atlas (joan_body_0) also holds armour, leather and cloth: SSS on it needs a skin-only _SubsurfaceMaskMap, so the hands are NOT in v1 (see MANIFEST).",
+      "materials": [ { "match": "joan_head_0", "twin": "CharTwin/joan_head_0_sss" } ]
+    },
+    {
+      "character": "Grendel",
+      "enabled": false,
+      "_why": "OPT-OUT (Dom 2026-11-08: Grendel look approved, mid flesh + mid_bone2 bone). No twin is authored for him. Enable only after a before/after pair proves no visible colour change.",
+      "materials": []
+    },
+    {
+      "character": "Pitborn",
+      "enabled": false,
+      "_why": "OFF until Dom picks the grey/slate A/B. SSS does not touch his albedo, but it changes how the flesh is lit, which is part of that pick.",
+      "materials": [
+        { "match": "pitborn_Body", "twin": "CharTwin/pitborn_Body_0_sss" },
+        { "match": "pitborn_head", "twin": "CharTwin/pitborn_head_0_sss" }
+      ]
+    },
+    {
+      "character": "Humbaba",
+      "enabled": true,
+      "materials": [ { "match": "creature5_body", "twin": "CharTwin/creature5_body_0_sss" } ]
+    },
+    {
+      "character": "Erlking",
+      "enabled": true,
+      "materials": [ { "match": "erlking_body", "twin": "CharTwin/erlking_body_0_sss" } ]
+    },
+    {
+      "character": "Sobek",
+      "enabled": true,
+      "materials": [
+        { "match": "sobek_body", "twin": "CharTwin/sobek_body_0_sss" },
+        { "match": "sobek_head", "twin": "CharTwin/sobek_head_0_sss" }
+      ]
+    }
+  ],
+  "author": [
+    { "twin": "CharTwin/joan_head_0_sss", "from": "joan_head_0", "fromFolder": "/Characters/Joan/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 1.0 } ] },
+    { "twin": "CharTwin/pitborn_Body_0_sss", "from": "pitborn_Body_0", "fromFolder": "/Characters/Pitborn/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] },
+    { "twin": "CharTwin/pitborn_head_0_sss", "from": "pitborn_head_0", "fromFolder": "/Characters/Pitborn/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] },
+    { "twin": "CharTwin/creature5_body_0_sss", "from": "creature5_body_0", "fromFolder": "/Characters/Humbaba/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] },
+    { "twin": "CharTwin/erlking_body_0_sss", "from": "erlking_body_0", "fromFolder": "/Characters/Erlking/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] },
+    { "twin": "CharTwin/sobek_body_0_sss", "from": "sobek_body_0", "fromFolder": "/Characters/Sobek/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] },
+    { "twin": "CharTwin/sobek_head_0_sss", "from": "sobek_head_0", "fromFolder": "/Characters/Sobek/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] }
+  ]
+}

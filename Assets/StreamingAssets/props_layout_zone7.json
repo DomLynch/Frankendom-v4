@@ -8,6 +8,10 @@
   },
   "libraries": [
     {
+      "name": "hero7",
+      "pattern": "Assets/Env/Hero/{asset}/{asset}_LOD{lod}.glb"
+    },
+    {
       "name": "props",
       "pattern": "Assets/Env/Props/{asset}/{asset}_LOD{lod}.glb"
     },
@@ -51,6 +55,14 @@
     }
   ],
   "lodProfiles": [
+    {
+      "name": "hero7_church",
+      "screenHeights": [
+        0.3,
+        0.1,
+        0.01
+      ]
+    },
     {
       "name": "props",
       "screenHeights": [
@@ -235,6 +247,32 @@
     }
   ],
   "props": [
+    {
+      "id": "z7h_z7_ruined_church",
+      "group": "Z7Ring1",
+      "library": "hero7",
+      "asset": "z7_ruined_church",
+      "lodProfile": "hero7_church",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        25.0,
+        -0.3,
+        343.0
+      ],
+      "rotEuler": [
+        0,
+        270.0,
+        0
+      ],
+      "scale": 22.378,
+      "shadowsOff": false,
+      "tags": [
+        "zone7",
+        "hero7",
+        "hero"
+      ]
+    },
     {
       "id": "z7_ground_paving_0",
       "group": "Z7Ring0",

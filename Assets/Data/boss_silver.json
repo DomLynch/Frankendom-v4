@@ -21,6 +21,18 @@
     {
       "id": "Erlking",
       "silver": 48
+    },
+    {
+      "id": "BanditArcher",
+      "silver": 1
+    },
+    {
+      "id": "BanditAssassin",
+      "silver": 2
+    },
+    {
+      "id": "BanditMelee",
+      "silver": 2
     }
   ],
   "text": {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -18,7 +18,7 @@ public static class PropsLayout
     {
         public string id, group, library, asset, lodProfile, ground, groundMode, yBase, note;
         public float[] pos, rotEuler;
-        public float scale = 1f, sinkFraction, baseColorMul;
+        public float scale = 1f, sinkFraction, baseColorMul, scaleYMul = 1f;   // scaleYMul: optional non-uniform height factor (1 = uniform, old behaviour)
         public bool shadowsOff, disabled;
         public string[] tags;
     }
@@ -138,29 +138,29 @@ public static class PropsLayout
 
         Vector3 pos = new Vector3(p.pos[0], BaseY(L, p), p.pos[2]);
         Quaternion rot = Quaternion.Euler(p.rotEuler != null && p.rotEuler.Length == 3 ? new Vector3(p.rotEuler[0], p.rotEuler[1], p.rotEuler[2]) : Vector3.zero);
-        float s = p.scale > 0f ? p.scale : 1f;
+        float s = p.scale > 0f ? p.scale : 1f; float sy = s * (p.scaleYMul > 0f ? p.scaleYMul : 1f); Vector3 sv = new Vector3(s, sy, s);
         if (p.ground == "boundsCentreSink")
         {
             // old AddBoulders: LOD0 bounds centre on (x, z) at scale 1, scale about the pivot, then sink the bottom below the waterline
             root.transform.rotation = rot; root.transform.localScale = Vector3.one; root.transform.position = Vector3.zero;
             var c = Encapsulated(lod0).center;
             root.transform.position = new Vector3(pos.x - c.x, 0f, pos.z - c.z);
-            root.transform.localScale = Vector3.one * s;
+            root.transform.localScale = sv;
             var bb = Encapsulated(lod0);
             root.transform.position += new Vector3(0f, (pos.y - bb.size.y * p.sinkFraction) - bb.min.y, 0f);
         }
         else if (p.ground == "pivot" || p.groundMode == "pivot")
         {
             // pieces authored in real world coordinates (e.g. ground_paving, bounds y -0.4..+0.15 with the stone tops at 0): the pivot goes to pos exactly, no bounds offset
-            root.transform.localScale = Vector3.one * s; root.transform.rotation = rot;
+            root.transform.localScale = sv; root.transform.rotation = rot;
             root.transform.position = new Vector3(pos.x, pos.y, pos.z);
         }
         else
         {
             // old PlaceLod: LOD0 bounds bottom sits on pos.y (props have a bottom-centre origin); the bounds are read at identity
             var b0 = Encapsulated(lod0);
-            root.transform.localScale = Vector3.one * s; root.transform.rotation = rot;
-            root.transform.position = new Vector3(pos.x, pos.y - b0.min.y * s, pos.z);
+            root.transform.localScale = sv; root.transform.rotation = rot;
+            root.transform.position = new Vector3(pos.x, pos.y - b0.min.y * sy, pos.z);
         }
         return root;
     }

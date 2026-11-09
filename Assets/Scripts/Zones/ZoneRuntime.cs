@@ -60,7 +60,7 @@ public sealed class ZoneRuntime : MonoBehaviour
         if (z == null) { z = ZoneData.StartZone(); spot = T.start.spot; }
         if (z == null) return;
         on = true; GameLoop.Player = player; GameLoop.Ready = true; GameLoop.LadderApplied = true;
-        if (sv.player.has && player.maxHealth > 0f) SetHp(Mathf.Max(1f / player.maxHealth, sv.player.hpFrac) * player.maxHealth);
+        if (sv.player.has && player.maxHealth > 0f) { float hpFrac = sv.player.hpFrac <= 0.001f ? Mathf.Max(sv.player.hpFrac, ZoneData.Get().persistence.minLoadHpFrac) : sv.player.hpFrac; /* HPLOAD v1: an old save written while dead stored hpFrac 0 (floored to 1 HP): a saved fraction of 0 (dead) restores minLoadHpFrac; any living fraction is kept (data key, 0 = old behaviour) */ if (hpFrac > sv.player.hpFrac) Debug.Log("[SaveFix] hp " + sv.player.hpFrac.ToString("F2") + " restored to " + hpFrac.ToString("F2")); SetHp(Mathf.Max(1f / player.maxHealth, hpFrac) * player.maxHealth); }
         var sp = ZoneData.Spot(z, spot); Vector3 pos = player.transform.position;
         EnterZone(z, spot, false);
         if (sp != null && sp.pos.Length >= 2) { Vector3 np = SpotPos(sp, pos); Place(player, np, sp.yaw); ZoneGround.Begin(player, np); /* CAMPGROUND v1 */ }

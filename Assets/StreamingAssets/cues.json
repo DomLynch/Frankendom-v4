@@ -8,6 +8,18 @@
    "weapon": "sword"
   },
   {
+    "character": "BanditMelee",
+    "weapon": "sword"
+  },
+  {
+    "character": "BanditAssassin",
+    "weapon": "sword"
+  },
+  {
+    "character": "BanditArcher",
+    "weapon": "sword"
+  },
+  {
    "character": "Joan",
    "weapon": "sword"
   },
@@ -42,6 +54,18 @@
    "surface": "flesh"
   },
   {
+    "character": "BanditMelee",
+    "surface": "flesh"
+  },
+  {
+    "character": "BanditAssassin",
+    "surface": "flesh"
+  },
+  {
+    "character": "BanditArcher",
+    "surface": "flesh"
+  },
+  {
    "character": "Joan",
    "surface": "flesh"
   },
@@ -74,6 +98,18 @@
   {
    "character": "Dracula",
    "rate": 1.0
+  },
+  {
+    "character": "BanditMelee",
+    "rate": 1.0
+  },
+  {
+    "character": "BanditAssassin",
+    "rate": 1.0
+  },
+  {
+    "character": "BanditArcher",
+    "rate": 1.0
   },
   {
    "character": "Joan",

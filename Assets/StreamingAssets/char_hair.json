@@ -1,0 +1,31 @@
+{
+  "_note": "VIS4 item 16 (laneVIS4, 2026-11-09): CHEAPEST hair-look path with NO new asset: Joan's existing opaque hair shell (Joan_Hair, 280k tris in the GLB) gets an ANISOTROPIC-specular twin (HDRP/Lit, Material Type = Anisotropy, a lower smoothness so the highlight stretches) instead of the flat waxy Standard look. Same machinery as char_sss.json (read by Assets/Scripts/CharTwin.cs, twin authored by CharTwinAuthor, see that file's _note). enabled=false = the shipped state. This is NOT hair cards: no hair-card asset exists for Joan (see MANIFEST). UNPROVEN and a risk to the look: Anisotropy follows the mesh TANGENT, which on a baked strand shell follows the UV, not the strand flow, so the highlight direction can be wrong; the before/after frame decides. The real fix (cards or a strand-flow tangent map) needs Dom's own hair source.",
+  "enabled": true,
+  "log": true,
+  "pollSeconds": 0.5,
+  "spawnPollSeconds": 0.1,
+  "spawnFastSeconds": 2.0,
+  "instanceSuffix": " (Instance)",
+  "cloneSuffix": " (charmat)",
+  "twinMarker": "_aniso",
+  "copyTextures": ["_BaseColorMap", "_MainTex"],
+  "copyColors": ["_BaseColor"],
+  "copyFloats": [],
+  "resourcesDir": "Assets/Resources",
+  "rows": [
+    {
+      "character": "Joan",
+      "enabled": true,
+      "materials": [
+        { "match": "joan_hairshell_0", "twin": "CharTwin/joan_hairshell_0_aniso" },
+        { "match": "joan_hair_0", "twin": "CharTwin/joan_hair_0_aniso" }
+      ]
+    }
+  ],
+  "author": [
+    { "twin": "CharTwin/joan_hairshell_0_aniso", "from": "joan_hairshell_0", "fromFolder": "/Characters/Joan/", "materialType": "Aniso", "diffusionProfileGuid": "",
+      "floats": [ { "name": "_Anisotropy", "value": 0.7 }, { "name": "_SmoothnessRemapMax", "value": 0.45 } ] },
+    { "twin": "CharTwin/joan_hair_0_aniso", "from": "joan_hair_0", "fromFolder": "/Characters/Joan/", "materialType": "Aniso", "diffusionProfileGuid": "",
+      "floats": [ { "name": "_Anisotropy", "value": 0.7 }, { "name": "_SmoothnessRemapMax", "value": 0.45 } ] }
+  ]
+}

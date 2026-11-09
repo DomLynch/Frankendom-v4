@@ -33,7 +33,7 @@ using UnityEngine;
 [Serializable] public class ZCreature { public string id = "", source = "scene", path = "", scene = "";   /* ZONES-ATTACH v1: enemy scene the prefab is saved from (empty = the zone scene) */ }
 [Serializable] public class ZStart { public string zone = "", spot = ""; }
 [Serializable] public class ZClock { public int guardSeconds = 120; }
-[Serializable] public class ZPersist { public string file = "zones_save.json"; public int version = 1; public float saveEverySeconds = 30f; public bool resetOnNewGame = false, skipSaveWhileDown = false, spanWarmFinally = false; /* SAVEFIX v2: all three default to today's behaviour, zones.json persistence turns them on */ }
+[Serializable] public class ZPersist { public string file = "zones_save.json"; public int version = 1; public float saveEverySeconds = 30f; public bool resetOnNewGame = false, skipSaveWhileDown = false, spanWarmFinally = false; public float minLoadHpFrac = 0f;   /* HPLOAD v1 */ /* SAVEFIX v2: all three default to today's behaviour, zones.json persistence turns them on */ }
 // REVIVE v1 (laneSEAMLESS): zones.json hp.respawn = Joan's in-world respawn. enabled false = the old death (black, GameLoop.Retry reload). rule: arrive = the zone's arrive spot from `arrive` rows, hearth = the zone's hearth service spot (arrive if none).
 [Serializable] public class ZArrive { public string zone = "", spot = ""; }
 [Serializable] public class ZRespawn

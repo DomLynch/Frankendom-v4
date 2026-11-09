@@ -27,19 +27,24 @@ using UnityEngine;
     public float freeMarginM = 0f, engagedMaxM = 40f;   // laneHERDS fix2: free a sleeping herd's meshes/textures when the player is this far from its area (0 = never, today)
     public int groundMask = -1, framesBetweenLoads = 2, maxTargetTries = 12, seedStride = 7919, hitBuffer = 8;
     public float lodMidEnterM = 0f, lodMidExitM = 0f, lodMidBoundsTolM = 0.15f;   // FPSX_D2: camera distance (m) beyond which the mid mesh is shown / back to full inside exit; 0 = never load or use a mid mesh (today)
+    public bool midFirst = false;   // laneHERDS load: true = the mid mesh (untextured, ~0.4 MB) is shown first, the full textured glb is imported ONCE per breed and shared (false = old behaviour)
+    public float midFirstFullMaxM = 0f;   // midFirst: >0 = the full glb of a breed is only imported while the player is within this many m of the herd area (0 = always)
+    public float[] midFirstTint = new float[0];   // midFirst: optional r,g,b placeholder colour of the untextured mid mesh (empty = the glb colour)
     public AhGait gait = new AhGait(); public AhBreed[] breeds = new AhBreed[0]; public AhHerd[] herds = new AhHerd[0];
 }
 
 public sealed class AmbientHorses : MonoBehaviour
 {
     static AhCfg K; static AmbientHorses Inst; static RaycastHit[] hits = new RaycastHit[8];   // resized to hitBuffer when the config loads
-    class Horse { public Renderer[] fullR, midR; public bool midOn; public GameObject go; public Transform body; public AhHerd herd; public Vector3 pos, target; public float yaw, wait, phase, breath, speed, amp, bob, pitch, roll, spawnY; public bool walking, placed; public System.Random rnd; }
+    class Horse { public Renderer[] fullR, midR; public bool midOn; public GameObject go; public Transform body; public AhHerd herd; public Vector3 pos, target; public float yaw, wait, phase, breath, speed, amp, bob, pitch, roll, spawnY; public bool walking, placed; public System.Random rnd; public Renderer midMain; public Transform midNode; }
     class Loaded { public GltfHold hold; }
     class GltfHold { public GLTFast.GltfImport imp; }
-    class HerdState { public List<Horse> horses = new List<Horse>(); public bool loading, tried, asleep, traced; public List<Material> mats = new List<Material>(); public List<GltfHold> holds = new List<GltfHold>(); public int gen; }
+    class HerdState { public List<Horse> horses = new List<Horse>(); public bool loading, tried, asleep, traced; public List<Material> mats = new List<Material>(); public List<GltfHold> holds = new List<GltfHold>(); public int gen; public List<KeyValuePair<Horse, AhBreed>> up = new List<KeyValuePair<Horse, AhBreed>>(); }
+    class BreedCache { public Task<GLTFast.GltfImport> mid, full; public Material[] midMats, fullMats; public List<Material> made = new List<Material>(); }   // laneHERDS load: one import per breed, shared by every animal
+    static readonly Dictionary<string, BreedCache> cache = new Dictionary<string, BreedCache>();
     readonly Dictionary<AhHerd, HerdState> st = new Dictionary<AhHerd, HerdState>(); float nextPoll, nextGateLog;
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Inst = null; K = null; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Inst = null; K = null; cache.Clear(); }
     public static AhCfg Get()
     {
         if (K != null) return K; K = new AhCfg(); string txt = DataPath.ReadText("ambient_horses.json");
@@ -56,7 +61,12 @@ public sealed class AmbientHorses : MonoBehaviour
         if (!k.enabled || k.herds.Length == 0) return; if (PerfFlags.HarnessRun() && !argOn) return;
         var go = new GameObject("AmbientHorses"); DontDestroyOnLoad(go); Inst = go.AddComponent<AmbientHorses>();
     }
-    void OnDestroy() { foreach (var kv in st) Free(kv.Value); st.Clear(); if (Inst == this) Inst = null; }
+    void OnDestroy()
+    {
+        foreach (var kv in st) Free(kv.Value); st.Clear(); if (Inst == this) Inst = null;
+        foreach (var kv in cache) { foreach (var m in kv.Value.made) if (m != null) Destroy(m); foreach (var t in new[] { kv.Value.mid, kv.Value.full }) if (t != null && t.Status == TaskStatus.RanToCompletion && t.Result != null) { try { t.Result.Dispose(); } catch (Exception) { } } }
+        cache.Clear();
+    }
 
     static AhBreed Breed(string id) { foreach (var b in K.breeds) if (b != null && b.id == id) return b; return null; }
     static string File(AhBreed b) { try { var p = System.IO.Path.Combine(Application.streamingAssetsPath, b.glb); return System.IO.File.Exists(p) ? p : null; } catch (Exception) { return null; } }
@@ -96,11 +106,12 @@ public sealed class AmbientHorses : MonoBehaviour
         s.loading = true;
         try
         {
-            if (K.debugLog) Debug.Log("[AmbientHorses] SpawnHerd start " + h.id + " count=" + h.count); var rnd = new System.Random(h.seed);
+            float t0 = Time.realtimeSinceStartup; if (K.debugLog) Debug.Log("[AmbientHorses] SpawnHerd start " + h.id + " count=" + h.count); var rnd = new System.Random(h.seed);
             for (int i = 0; i < h.count; i++)
             {
                 if (gen != s.gen) { Free(s); return; }
                 var b = Breed(h.breeds[rnd.Next(h.breeds.Length)]); if (b == null) { Debug.LogWarning("[AmbientHorses] herd " + h.id + ": unknown breed"); continue; }
+                if (K.midFirst && !string.IsNullOrEmpty(b.midGlb) && File(new AhBreed { glb = b.midGlb }) != null) { await SpawnMidFirst(h, s, gen, i, b, t0); if (gen != s.gen) { Free(s); return; } for (int f = 0; f < K.framesBetweenLoads; f++) await Task.Yield(); continue; }   // laneHERDS load
                 string file = File(b); if (K.debugLog) Debug.Log("[AmbientHorses] " + h.id + "[" + i + "] breed=" + b.id + " file=" + (file ?? "NULL")); if (file == null) { Debug.LogWarning("[AmbientHorses] breed " + b.id + ": glb not found under StreamingAssets: " + b.glb); continue; }
                 var go = new GameObject("AmbientHorse_" + h.id + "_" + i); DontDestroyOnLoad(go); go.SetActive(false);
                 var body = new GameObject("Body"); body.transform.SetParent(go.transform, false);
@@ -121,9 +132,73 @@ public sealed class AmbientHorses : MonoBehaviour
                 for (int f = 0; f < K.framesBetweenLoads; f++) await Task.Yield();
             }
             if (K.debugLog) Debug.Log("[AmbientHorses] herd " + h.id + ": " + s.horses.Count + " horses loaded");
+            if (s.up.Count > 0 && gen == s.gen) { var upg = UpgradeHerd(h, s, gen, t0); }   // laneHERDS load: textured full meshes follow in the background
         }
         catch (Exception e) { Debug.LogWarning("[AmbientHorses] herd " + h.id + " error: " + e.Message); }
         finally { s.loading = false; }
+    }
+
+    // laneHERDS load (midFirst): one import per breed, cached, shared by every animal of every herd (instantiate copies). Mid first, full later.
+    static BreedCache BC(string id) { BreedCache c; if (!cache.TryGetValue(id, out c)) { c = new BreedCache(); cache[id] = c; } return c; }
+    static async Task<GLTFast.GltfImport> Import(string file) { var imp = new GLTFast.GltfImport(); bool ok = await imp.LoadFile(file); return ok ? imp : null; }
+
+    async Task SpawnMidFirst(AhHerd h, HerdState s, int gen, int i, AhBreed b, float t0)
+    {
+        var bc = BC(b.id); if (bc.mid == null) bc.mid = Import(File(new AhBreed { glb = b.midGlb }));
+        var imp = await bc.mid; if (imp == null || gen != s.gen) return;
+        var go = new GameObject("AmbientHorse_" + h.id + "_" + i); DontDestroyOnLoad(go); go.SetActive(false);
+        var body = new GameObject("Body"); body.transform.SetParent(go.transform, false);
+        var node = new GameObject("MidLod"); node.transform.SetParent(body.transform, false);
+        if (!await imp.InstantiateMainSceneAsync(node.transform)) { Destroy(go); return; }
+        if (gen != s.gen) { Destroy(go); return; }
+        foreach (var c in go.GetComponentsInChildren<Collider>(true)) Destroy(c);
+        var rl = new List<Renderer>(go.GetComponentsInChildren<Renderer>(true));
+        foreach (var r in rl) r.shadowCastingMode = K.shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+        if (rl.Count == 1 && bc.midMats != null) rl[0].sharedMaterials = bc.midMats;
+        else
+        {
+            if (K.convertMaterials) { var made = GearMaterials.Convert(rl); bc.made.AddRange(made); if (K.midFirstTint != null && K.midFirstTint.Length >= 3) { var tc = new Color(K.midFirstTint[0], K.midFirstTint[1], K.midFirstTint[2], 1f); foreach (var m in made) { if (m == null) continue; if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", tc); if (m.HasProperty("_Color")) m.SetColor("_Color", tc); } } }
+            if (rl.Count == 1) bc.midMats = rl[0].sharedMaterials;
+        }
+        body.transform.localScale = Vector3.one * (b.heightM > 0f && b.glbHeightM > 0f ? b.heightM / b.glbHeightM : 1f);
+        var hr = new Horse { go = go, body = body.transform, herd = h, rnd = new System.Random(h.seed * K.seedStride + i), wait = 0f, midMain = rl.Count == 1 ? rl[0] : null, midNode = node.transform };
+        hr.pos = RandomPoint(h, hr, s, null); hr.yaw = (float)(hr.rnd.NextDouble() * 360.0); hr.target = hr.pos; hr.wait = Pause(hr);   // hc:ok 360 = a full turn (random start heading)
+        s.horses.Add(hr); go.transform.position = hr.pos; if (!s.asleep) go.SetActive(true);
+        s.up.Add(new KeyValuePair<Horse, AhBreed>(hr, b));
+        Debug.Log("[AmbientHorses] mid shown in " + (Time.realtimeSinceStartup - t0).ToString("F2") + " s (" + h.id + "[" + i + "] " + b.id + ")");
+    }
+
+    async Task UpgradeHerd(AhHerd h, HerdState s, int gen, float t0)
+    {
+        try
+        {
+            var todo = new List<KeyValuePair<Horse, AhBreed>>(s.up); s.up.Clear();
+            foreach (var kv in todo)
+            {
+                var hr = kv.Key; var b = kv.Value; if (gen != s.gen) return; if (hr.go == null) continue;
+                while (K.midFirstFullMaxM > 0f && hr.go != null && gen == s.gen && (GameLoop.Player == null || !Near(GameLoop.Player.transform.position, h.area, K.midFirstFullMaxM))) await Task.Yield();   // far: stay on the mid mesh
+                if (hr.go == null || gen != s.gen) continue;
+                var bc = BC(b.id); string file = File(b); if (file == null) continue;
+                bool first = bc.full == null; if (first) bc.full = Import(file);
+                var imp = await bc.full; if (first) Debug.Log("[AmbientHorses] full " + b.id + " imported in " + (Time.realtimeSinceStartup - t0).ToString("F2") + " s (shared, once per breed)");
+                if (imp == null || hr.go == null || gen != s.gen) continue;
+                var node = new GameObject("FullLod"); node.transform.SetParent(hr.body, false);
+                if (!await imp.InstantiateMainSceneAsync(node.transform)) { Destroy(node); continue; }
+                if (hr.go == null) return;
+                foreach (var c in node.GetComponentsInChildren<Collider>(true)) Destroy(c);
+                var rl = new List<Renderer>(node.GetComponentsInChildren<Renderer>(true));
+                foreach (var r in rl) r.shadowCastingMode = K.shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+                if (rl.Count == 1 && bc.fullMats != null) rl[0].sharedMaterials = bc.fullMats;
+                else { if (K.convertMaterials) bc.made.AddRange(GearMaterials.Convert(rl)); if (rl.Count == 1) bc.fullMats = rl[0].sharedMaterials; }
+                bool lod = K.lodMidEnterM > 0f && hr.midMain != null && rl.Count == 1; Bounds bf, bm;
+                if (lod && (!LocalBounds(hr.body, rl[0], out bf) || !LocalBounds(hr.body, hr.midMain, out bm) || (bf.center - bm.center).magnitude > K.lodMidBoundsTolM || (bf.size - bm.size).magnitude > K.lodMidBoundsTolM * 2f)) lod = false;   // hc:ok size tolerance = 2 x the centre tolerance
+                if (lod) { hr.midMain.sharedMaterials = rl[0].sharedMaterials; hr.fullR = new[] { rl[0] }; hr.midR = new[] { hr.midMain }; hr.midOn = true; rl[0].enabled = false; }
+                else if (hr.midNode != null) Destroy(hr.midNode.gameObject);
+                Debug.Log("[AmbientHorses] textured shown in " + (Time.realtimeSinceStartup - t0).ToString("F2") + " s (" + h.id + " " + b.id + " lod=" + lod + ")");
+                await Task.Yield();
+            }
+        }
+        catch (Exception e) { Debug.LogWarning("[AmbientHorses] herd " + h.id + " upgrade error: " + e.Message); }
     }
 
     // FPSX_D2: mid mesh twin. A mesh-only glb (no textures) is loaded beside the full body and shares the full body's material, so the 4K textures exist once. It is used only if its local bounds match the full mesh

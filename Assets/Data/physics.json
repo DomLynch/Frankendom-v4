@@ -2264,7 +2264,7 @@
     ]
   },
   "secondary": {
-    "enabled": false,
+    "enabled": true,
     "_about": "PHYSCLOTH v1 sub-switch: secondary motion (hair / skirt / cape / tail / fin / gear spring chains on the existing 106 joints, Scripts/Physics/SecondaryMotion.cs, rows in secondary_motion.json). PRESENTATION ONLY (LateUpdate, render time, no sim read, simhash identical on/off). Independent of the master and of the PhysX clock. false = SecondaryMotion is never attached. QA: -secondary:on / -secondary:off. Edit here AND in StreamingAssets."
   }
 }

@@ -157,6 +157,73 @@
       "loadout": [
         "erlking_claws"
       ]
+    },
+    {
+      "id": "BanditArcher",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Hooded Archer",
+      "objectName": "BanditArcher",
+      "weapon": "sword",
+      "controller": "Assets/Characters/BanditArcher.controller",
+      "modelGlb": "Assets/Characters/BanditArcher/BanditArcher_combat.glb",
+      "animGlb": "Assets/Characters/BanditArcher/BanditArcher_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_BanditArcher.mask",
+      "finisherClipFolder": "Assets/Characters/BanditArcher/FinisherClips",
+      "heightM": 1.78,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "BANDITS v1 (archer): hooded Mixamo body erika-archer-with-bow-arrow on the 106-joint mixamorig rig; combat glb built by clip_build.py (NOT BUILT YET). Fodder: hp 0.30 of the zone boss, dmg 0.30.",
+      "loadout": []
+    },
+    {
+      "id": "BanditAssassin",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Hooded Cutthroat",
+      "objectName": "BanditAssassin",
+      "weapon": "sword",
+      "controller": "Assets/Characters/BanditAssassin.controller",
+      "modelGlb": "Assets/Characters/BanditAssassin/BanditAssassin_combat.glb",
+      "animGlb": "Assets/Characters/BanditAssassin/BanditAssassin_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_BanditAssassin.mask",
+      "finisherClipFolder": "Assets/Characters/BanditAssassin/FinisherClips",
+      "heightM": 1.72,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "BANDITS v1 (assassin): hooded Mixamo body akai-e-espiritu on the 106-joint mixamorig rig; combat glb built by clip_build.py (NOT BUILT YET). Fodder: hp 0.35 of the zone boss, dmg 0.40.",
+      "loadout": [
+        "bandit_dagger"
+      ]
+    },
+    {
+      "id": "BanditMelee",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Hooded Brigand",
+      "objectName": "BanditMelee",
+      "weapon": "sword",
+      "controller": "Assets/Characters/BanditMelee.controller",
+      "modelGlb": "Assets/Characters/BanditMelee/BanditMelee_combat.glb",
+      "animGlb": "Assets/Characters/BanditMelee/BanditMelee_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_BanditMelee.mask",
+      "finisherClipFolder": "Assets/Characters/BanditMelee/FinisherClips",
+      "heightM": 1.78,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "BANDITS v1 (melee): hooded Mixamo body arissa on the 106-joint mixamorig rig; combat glb built by clip_build.py (NOT BUILT YET). Fodder: hp 0.50 of the zone boss, dmg 0.35.",
+      "loadout": [
+        "bandit_sword"
+      ]
     }
   ],
   "scene": "Assets/Scenes/HadesSlice.unity",

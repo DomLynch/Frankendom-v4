@@ -150,6 +150,7 @@
   "props": [
     {
       "id": "z5h_humbaba_cedar",
+      "scaleYMul": 0.7,
       "group": "Z5Ring1",
       "library": "hero5",
       "asset": "humbaba_cedar",
@@ -157,9 +158,9 @@
       "ground": "bottom",
       "yBase": "platformTop",
       "pos": [
-        25.0,
-        -0.09,
-        234.0
+        18.5,
+        -1.09,
+        239.5
       ],
       "rotEuler": [
         0,
@@ -183,16 +184,16 @@
       "ground": "bottom",
       "yBase": "platformTop",
       "pos": [
-        18.5,
-        -0.09,
+        11.0,
+        -0.14,
         227.5
       ],
       "rotEuler": [
         0,
-        30.0,
+        75.0,
         0
       ],
-      "scale": 8.155,
+      "scale": 6.932,
       "shadowsOff": false,
       "tags": [
         "zone5",
