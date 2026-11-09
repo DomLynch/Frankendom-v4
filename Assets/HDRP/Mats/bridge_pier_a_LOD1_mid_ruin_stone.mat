@@ -76,7 +76,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissiveColorMap:
-        m_Texture: {fileID: 3765854111648414532, guid: c3834282d0c93324bbf587ec221e1259, type: 3}
+        m_Texture: {fileID: 3765854111648414532, guid: 8995f4bdc309a664bb0e223b05f68816, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:

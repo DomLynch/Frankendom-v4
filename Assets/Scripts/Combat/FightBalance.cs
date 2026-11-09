@@ -90,7 +90,7 @@ public static class FightBalance
                 if (f == null || st.ContainsKey(f)) continue;
                 var r = For(f); if (r == null) continue;
                 bool fresh = f.health >= f.maxHealth - 0.01f;
-                if (r.maxHealth > 0f) { f.maxHealth = r.maxHealth; if (fresh) f.health = r.maxHealth; var hp = f.GetComponent<Health>(); if (hp) { hp.max = r.maxHealth; if (fresh) hp.current = r.maxHealth; } }
+                if (r.maxHealth > 0f) { float oldFrac = f.maxHealth > 0f ? Mathf.Clamp01(f.health / f.maxHealth) : 1f; f.maxHealth = r.maxHealth; if (fresh) f.health = r.maxHealth; else { f.health = oldFrac * r.maxHealth; if (f == GameLoop.Player) Debug.Log("[SaveFix] hp frac " + oldFrac.ToString("F2") + " -> " + f.health.ToString("F0") + "/" + r.maxHealth.ToString("F0")); /* HPSCALE v1: a damaged fighter keeps its FRACTION when its max is raised (the zone load restored the fraction against the pre-ladder max 150) */ } var hp = f.GetComponent<Health>(); if (hp) { hp.max = r.maxHealth; if (fresh) hp.current = r.maxHealth; else hp.current = f.health; } }
                 if (r.maxStamina > 0f) { f.maxStamina = r.maxStamina; f.stamina = r.maxStamina; }
                 if (r.specialInitialCooldownTicks >= 0) { f.special1Cd = r.specialInitialCooldownTicks; f.special2Cd = r.specialInitialCooldownTicks; }
                 st[f] = new St { p1 = f.special1Cd, p2 = f.special2Cd };

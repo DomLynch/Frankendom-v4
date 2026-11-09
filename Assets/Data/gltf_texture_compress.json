@@ -1,10 +1,10 @@
 {
-  "_notes": "Read by the patched glTFast importer (Packages/com.unity.cloud.gltfast/Editor/Scripts/GltfTextureCompress.cs). enabled=false => GLB import is unchanged (RGBA32 sub-asset textures). quality: Fast|Normal|Best. Formats are UnityEngine.TextureFormat names. normalFormat BC5 (laneOPT2 offline test: BC5 angular error 0.58 deg median vs 0.85 for a BC7 mode-6 floor, worst 2.5 vs 8.6 deg; HDRP UnpackNormalMapRGorAG handles BC5 and RGB normals; fall back to BC7 = same bytes). maskFormat BC7 (glTF packs occlusion/roughness/metal in RGB). Alpha textures stay BC7 (alpha kept). Paths are asset paths; empty include list = all GLBs. After changing this file reimport (Assets > Reimport, or only the folders you listed).",
+  "_notes": "Read by the patched glTFast importer (Packages/com.unity.cloud.gltfast/Editor/Scripts/GltfTextureCompress.cs). enabled=false => GLB import is unchanged (RGBA32 sub-asset textures). quality: Fast|Normal|Best. Formats are UnityEngine.TextureFormat names. normalFormat BC5 (laneOPT2 offline test: BC5 angular error 0.58 deg median vs 0.85 for a BC7 mode-6 floor, worst 2.5 vs 8.6 deg; HDRP UnpackNormalMapRGorAG handles BC5 and RGB normals; fall back to BC7 = same bytes). maskFormat BC7 (glTF packs occlusion/roughness/metal in RGB). Alpha textures stay BC7 (alpha kept). Paths are asset paths; empty include list = all GLBs. After changing this file reimport (Assets > Reimport, or only the folders you listed). COMPRESS v1 (tier env_all): include/exclude lists come from laneCOMPRESS compress_tiers.json; maskFormat empty = ORM left RGBA32 (HdrpGltfMats bakes the mask from it, the build does not ship it). After editing this file reimport the listed folders (cs/CompressReimport.cs), the JSON is not part of the importer hash.",
   "enabled": true,
   "quality": "Normal",
   "colorFormat": "BC7",
   "normalFormat": "BC5",
-  "maskFormat": "BC7",
+  "maskFormat": "",
   "minSize": 16,
   "normalProps": [
     "normalTexture",
@@ -14,7 +14,8 @@
   ],
   "excludePathContains": [],
   "includePathContains": [
-    "Assets/Env/Rocks/"
+    "Assets/Env/",
+    "Assets/Characters/Weapons/"
   ],
   "excludeTextureNameContains": [],
   "logEach": false

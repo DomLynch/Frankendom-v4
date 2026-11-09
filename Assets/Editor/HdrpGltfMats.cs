@@ -86,6 +86,7 @@ public static class HdrpGltfMats
         HdrpGroundLook.Run();   // lane LOOK fix 3: ground detail / roughness breakup (after the paving materials were rebuilt)
         HdrpCharMats.Run(); // fighter materials (Characters/*/Mats): mask maps + Fabric sheen, data: Assets/Data/hdrp_char_mats.json
         AssetDatabase.SaveAssets(); EditorSceneManager.MarkAllScenesDirty(); EditorSceneManager.SaveOpenScenes();
+        LodTexRepoint.Run();   // DEDUPE v2: re-point the LOD material slots at LOD0 textures (must follow every Run)
         Debug.Log("HDRPGLTF replaced materials=" + n);
     }
 }

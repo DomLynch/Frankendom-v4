@@ -217,7 +217,7 @@
       "loadout": [
         "bandit_sword"
       ],
-      "keepWeapon": false,
+      "keepWeapon": true,
       "hpTypeMul": 1.0,
       "dmgTypeMul": 1.0,
       "difficulty": 4,
@@ -240,7 +240,7 @@
       "loadout": [
         "bandit_dagger"
       ],
-      "keepWeapon": false,
+      "keepWeapon": true,
       "hpTypeMul": 0.7,
       "dmgTypeMul": 1.143,
       "difficulty": 6,
@@ -327,7 +327,8 @@
       "postureMul": 1.0,
       "twoHanded": false,
       "cueWeapon": "sword",
-      "notes": "BANDITS v1: glb empty = the base sword model stays (like knight_sword); multipliers 1.0 so the type's damage comes only from bandits.json."
+      "notes": "BANDITS v1: glb empty = the base sword model stays (like knight_sword); multipliers 1.0 so the type's damage comes only from bandits.json.",
+      "glb": "Gear/bandit_sword_LOD2.glb"
     },
     {
       "id": "bandit_dagger",
@@ -338,7 +339,8 @@
       "postureMul": 0.8,
       "twoHanded": false,
       "cueWeapon": "sword",
-      "notes": "BANDITS v1: NO dagger model exists (SPAWN_AUDIT section 4): glb empty = sword model with a short reach and a fast swing until art exists. cues.json has only claws/sword, so the hit audio is the sword's."
+      "notes": "BANDITS v1: NO dagger model exists (SPAWN_AUDIT section 4): glb empty = sword model with a short reach and a fast swing until art exists. cues.json has only claws/sword, so the hit audio is the sword's.",
+      "glb": "Gear/bandit_sword_LOD2.glb"
     },
     {
       "id": "bandit_axe",
@@ -1355,5 +1357,12 @@
         "note": "base lib state, step-in 0 (v1 draft numbers); the bow is in the left hand so L punches swing it"
       }
     ]
-  }
+  },
+  "gearGlbCopies": [
+    {
+      "from": "Assets/Characters/Weapons/sword_start/sword_start_LOD2.glb",
+      "to": "Assets/StreamingAssets/Gear/bandit_sword_LOD2.glb",
+      "_about": "Joan start sword, LOD2 0.8 MB, nodes grip + tip (+Y along the blade, tip at y 0.996 m): the standard gear glb layout. bandit_dagger reuses it (reach / speed come from the item row, the visual is the same blade: no dagger model exists). Gear glbs under Assets/ are not in a player build, so the copy goes to StreamingAssets/Gear (GearAssetLoader lookup)."
+    }
+  ]
 }

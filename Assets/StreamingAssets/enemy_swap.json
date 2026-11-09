@@ -218,7 +218,7 @@
     "scene": "",
     "inPlace": false,
     "pruneOthers": true,
-    "keepWeapon": false,
+    "keepWeapon": true,
     "rightHand": "mixamorig:RightHand",
     "middle": "mixamorig:RightHandMiddle1",
     "socket": "WeaponSocket_R",
@@ -239,7 +239,7 @@
         "doubleSided": true
       }
     ],
-    "note": "BANDITS v1 (assassin, hooded): materials = HDRP/Lit rows from bandits.json import.materials in hooded mode (Tex/<tex>_base + _normal.jpg must be in Assets/Characters/<Id>/Tex first: tools install_bandit_tex.py), empty in placeholder mode. keepWeapon False (true clones the TEMPLATE's weapon socket: Pitborn's maul unless templateId says otherwise). hideNodePrefixes ['Layer_', 'Icosphere']."
+    "note": "BANDITS v1 (assassin, hooded): materials = HDRP/Lit rows from bandits.json import.materials in hooded mode (Tex/<tex>_base + _normal.jpg must be in Assets/Characters/<Id>/Tex first: tools install_bandit_tex.py), empty in placeholder mode. keepWeapon True (true clones the TEMPLATE's weapon socket: Pitborn's maul unless templateId says otherwise). hideNodePrefixes ['Layer_', 'Icosphere']."
   },
   {
     "id": "BanditMelee",
@@ -249,7 +249,7 @@
     "scene": "",
     "inPlace": false,
     "pruneOthers": true,
-    "keepWeapon": false,
+    "keepWeapon": true,
     "rightHand": "mixamorig:RightHand",
     "middle": "mixamorig:RightHandMiddle1",
     "socket": "WeaponSocket_R",
@@ -270,7 +270,7 @@
         "doubleSided": true
       }
     ],
-    "note": "BANDITS v1 (melee, hooded): materials = HDRP/Lit rows from bandits.json import.materials in hooded mode (Tex/<tex>_base + _normal.jpg must be in Assets/Characters/<Id>/Tex first: tools install_bandit_tex.py), empty in placeholder mode. keepWeapon False (true clones the TEMPLATE's weapon socket: Pitborn's maul unless templateId says otherwise). hideNodePrefixes ['Layer_', 'Icosphere']."
+    "note": "BANDITS v1 (melee, hooded): materials = HDRP/Lit rows from bandits.json import.materials in hooded mode (Tex/<tex>_base + _normal.jpg must be in Assets/Characters/<Id>/Tex first: tools install_bandit_tex.py), empty in placeholder mode. keepWeapon True (true clones the TEMPLATE's weapon socket: Pitborn's maul unless templateId says otherwise). hideNodePrefixes ['Layer_', 'Icosphere']."
   }
 ],
   "_example_row_not_used": {

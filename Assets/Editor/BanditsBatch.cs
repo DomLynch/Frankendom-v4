@@ -153,7 +153,14 @@ public static class BanditsBatch
         {
             var row = rows[id]; var er = Roster.Get(id); string fe;
             bool had = File.Exists(er.modelGlb), hadCtl = File.Exists(er.controller);
-            int e = Guarded(() => { importOne(sub, row); AssetDatabase.SaveAssets(); }, out fe);
+            // bandits-dev2 T-POSE FIX: a controller left over from an earlier pass (the placeholder pass re-pointed its states to DRACULA's glb) is never re-pointed by EnemySwap (it only touches clips from the TEMPLATE's glb): the states then play clips of another rig = T-pose
+            string tplGlb = Roster.Get(TemplateId(full, row)).modelGlb;
+            if (hadCtl)
+            {
+                var old = AssetDatabase.LoadAssetAtPath<AnimatorController>(er.controller); int stale = old != null ? StaleClips(old, tplGlb, er.modelGlb) : 0;
+                if (stale > 0) { AssetDatabase.DeleteAsset(er.controller); hadCtl = false; Debug.Log("BANDITS step 1 " + id + ": controller " + er.controller + " had " + stale + " state clip(s) from another character's combat glb (placeholder leftover): deleted, EnemySwap copies the template controller again"); }
+            }
+            int e = Guarded(() => { importOne(sub, row); RepointToOwn(er.controller, er.modelGlb, id); AssetDatabase.SaveAssets(); }, out fe);
             string why = e > 0 ? "errors=" + e + " [" + fe + "]" : "";
             if (e == 0 && !File.Exists(er.modelGlb)) why = "combat glb still missing";
             var ctl = e == 0 ? AssetDatabase.LoadAssetAtPath<AnimatorController>(er.controller) : null;
@@ -189,6 +196,13 @@ public static class BanditsBatch
             int e = Guarded(() => { Roster.Reload(); ok = buildOne(sub, row); }, out fe);
             if (e > 0 || !ok || !File.Exists(path)) { Fail("step 3 scene " + id + " FAILED: " + path + " ok=" + ok + " errors=" + e + (fe.Length > 0 ? " [" + fe + "]" : "")); live.Remove(id); }
             else Debug.Log("BANDITS step 3 scene " + id + " OK: " + path);
+        }
+        // ---- step 3b ground: the cloned template keeps ITS model local Y; put the lowest skinned vertex of the new body on the root pivot (frames showed the bodies 0.5-1 m in the air)
+        foreach (var id in new List<string>(live))
+        {
+            var row = rows[id]; var er = Roster.Get(id); string fe, path = EnemySwap.ScenePathOf(full, row);
+            int e = Guarded(() => GroundFix(id, path, er.objectName), out fe);
+            if (e > 0) { Fail("step 3b ground " + id + " FAILED: errors=" + e + " [" + fe + "]"); live.Remove(id); }
         }
         // ---- step 4 creature prefabs (= Hades > Zones > Save creature prefabs, bandit creatures only)
         foreach (var id in new List<string>(live))
@@ -226,6 +240,97 @@ public static class BanditsBatch
         var m = typeof(EnemySwap).GetMethod(name, BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
         if (m == null) throw new MissingMethodException("EnemySwap." + name);
         return (T)(object)Delegate.CreateDelegate(typeof(T), m);
+    }
+
+    // ---------------------------------------------------------------- bandits-dev2: controller hygiene, own-clip re-pointing, ground fix
+    static string ShortName(string n) { int i = n.LastIndexOf('|'); return i >= 0 ? n.Substring(i + 1) : n; }
+
+    static void AllStates(AnimatorStateMachine sm, List<AnimatorState> into)
+    {
+        foreach (var cs in sm.states) into.Add(cs.state);
+        foreach (var sub in sm.stateMachines) AllStates(sub.stateMachine, into);
+    }
+
+    static void ClipsOf(Motion m, List<AnimationClip> into)
+    {
+        if (m == null) return;
+        var c = m as AnimationClip; if (c != null) { into.Add(c); return; }
+        var bt = m as BlendTree; if (bt != null) foreach (var ch in bt.children) ClipsOf(ch.motion, into);
+    }
+
+    /// <summary>States whose clip lives in some OTHER character's combat glb (neither the template's nor this id's own).</summary>
+    static int StaleClips(AnimatorController ctl, string tplGlb, string ownGlb)
+    {
+        var sts = new List<AnimatorState>(); foreach (var l in ctl.layers) AllStates(l.stateMachine, sts);
+        int n = 0;
+        foreach (var st in sts)
+        {
+            var cl = new List<AnimationClip>(); ClipsOf(st.motion, cl);
+            foreach (var c in cl) { string p = AssetDatabase.GetAssetPath(c); if (p.EndsWith("_combat.glb") && p != tplGlb && p != ownGlb) n++; }
+        }
+        return n;
+    }
+
+    static Motion RemapOwn(Motion m, Dictionary<string, AnimationClip> own, string ownGlb, ref int same, ref int byName, ref int fb, List<string> fbNames)
+    {
+        if (m == null) return null;
+        var c = m as AnimationClip;
+        if (c != null)
+        {
+            if (AssetDatabase.GetAssetPath(c) == ownGlb) { same++; return c; }
+            string n = ShortName(c.name); AnimationClip j;
+            if (own.TryGetValue(n, out j)) { byName++; return j; }
+            string l = n.ToLowerInvariant(); bool atk = l.Contains("atk") || l.Contains("attack") || l.Contains("slash") || l.Contains("light") || l.Contains("heavy") || l.Contains("maul") || l.Contains("claw") || l.Contains("swing") || l.Contains("strike") || l.Contains("special") || l.Contains("thrust");
+            AnimationClip f; if (!own.TryGetValue(atk ? "light_attack_R" : "idle", out f) && !own.TryGetValue("idle", out f)) return c;
+            fb++; if (fbNames.Count < 40) fbNames.Add(n + "->" + f.name); return f;
+        }
+        var bt = m as BlendTree;
+        if (bt != null) { var ch = bt.children; for (int i = 0; i < ch.Length; i++) ch[i].motion = RemapOwn(ch[i].motion, own, ownGlb, ref same, ref byName, ref fb, fbNames); bt.children = ch; }
+        return m;
+    }
+
+    /// <summary>After EnemySwap's import: EVERY state clip of the controller comes from this id's own combat glb (by clip name; a foreign attack/maul/other clip falls back to light_attack_R / idle). No clip of another rig is left to T-pose the body.</summary>
+    static void RepointToOwn(string ctlPath, string ownGlb, string id)
+    {
+        var ctl = AssetDatabase.LoadAssetAtPath<AnimatorController>(ctlPath); if (ctl == null) { Debug.LogError("BANDITS repoint " + id + ": controller not loadable " + ctlPath); return; }
+        var own = new Dictionary<string, AnimationClip>();
+        foreach (var o in AssetDatabase.LoadAllAssetsAtPath(ownGlb)) { var c = o as AnimationClip; if (c != null && !c.name.StartsWith("__preview")) own[ShortName(c.name)] = c; }
+        if (!own.ContainsKey("idle")) { Debug.LogError("BANDITS repoint " + id + ": no 'idle' clip in " + ownGlb + " (clips=" + own.Count + ")"); return; }
+        var sts = new List<AnimatorState>(); foreach (var l in ctl.layers) AllStates(l.stateMachine, sts);
+        int same = 0, byName = 0, fb = 0, states = 0; var fbNames = new List<string>();
+        foreach (var st in sts)
+        {
+            states++; var m = RemapOwn(st.motion, own, ownGlb, ref same, ref byName, ref fb, fbNames);
+            if (m != st.motion) { st.motion = m; EditorUtility.SetDirty(st); }
+        }
+        EditorUtility.SetDirty(ctl);
+        Debug.Log("BANDITS step 1 repoint " + id + ": " + states + " states, clips already own=" + same + ", re-pointed by name=" + byName + ", fallback to own idle/light_attack_R=" + fb + (fb > 0 ? " [" + string.Join(", ", fbNames) + "]" : ""));
+    }
+
+    /// <summary>Opens the enemy scene, measures the lowest skinned vertex of the new body (bind pose, BakeMesh like EnemySwap.WorldHeight) against the root pivot and moves the model's local Y so the feet stand on the pivot.</summary>
+    static void GroundFix(string id, string scenePath, string objectName)
+    {
+        var sc = EditorSceneManager.OpenScene(scenePath); GameObject root = null;
+        foreach (var g in sc.GetRootGameObjects()) if (g.name == objectName) root = g;
+        if (root == null) { Debug.LogWarning("BANDITS step 3b ground " + id + ": no root '" + objectName + "' in " + scenePath); return; }
+        var an = root.GetComponentInChildren<Animator>(true); if (an == null) { Debug.LogWarning("BANDITS step 3b ground " + id + ": no Animator"); return; }
+        var model = an.transform; float lo = float.MaxValue;
+        foreach (var s in model.GetComponentsInChildren<SkinnedMeshRenderer>(false))
+        {
+            if (!s.gameObject.activeInHierarchy || s.sharedMesh == null) continue;
+            var m = new Mesh(); s.BakeMesh(m); var vs = m.vertices; var tf = s.transform;
+            for (int i = 0; i < vs.Length; i++) { float y = tf.TransformPoint(vs[i]).y; if (y < lo) lo = y; }
+            UnityEngine.Object.DestroyImmediate(m);
+        }
+        if (lo == float.MaxValue) { Debug.LogWarning("BANDITS step 3b ground " + id + ": no visible skinned mesh"); return; }
+        float d = lo - root.transform.position.y; float py = model.localPosition.y;
+        if (Mathf.Abs(d) > 0.02f)
+        {
+            float ps = model.parent != null ? Mathf.Max(0.0001f, model.parent.lossyScale.y) : 1f; var p = model.localPosition; p.y -= d / ps; model.localPosition = p;
+            EditorSceneManager.MarkSceneDirty(sc); EditorSceneManager.SaveScene(sc);
+            Debug.Log("BANDITS step 3b ground " + id + " OK: lowest vertex was " + d.ToString("F3") + " m above the root pivot, model local Y " + py.ToString("F3") + " -> " + p.y.ToString("F3") + " (scene saved)");
+        }
+        else Debug.Log("BANDITS step 3b ground " + id + " OK: lowest vertex " + d.ToString("F3") + " m from the root pivot, no change (model local Y " + py.ToString("F3") + ")");
     }
 
     static string TemplateId(EnemySwap.Cfg c, EnemySwap.Row r) { return !string.IsNullOrEmpty(r.templateId) ? r.templateId : !string.IsNullOrEmpty(c.templateId) ? c.templateId : Roster.DefaultEnemyId; }

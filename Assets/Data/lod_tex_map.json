@@ -1,0 +1,2355 @@
+{
+ "version": 1,
+ "note": "LOD material slot -> LOD0 material slot with byte-identical image + same sampler; consumed by Assets/Editor/LodTexRepoint.cs",
+ "entries": [
+  {
+   "glb": "Assets/Env/Camp/camp_awning/camp_awning_LOD1.glb",
+   "lod0": "Assets/Env/Camp/camp_awning/camp_awning_LOD0.glb",
+   "material": "M_Camp_wood",
+   "slots": {
+    "base": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "4c47a4a4abecacc9387a778ebed4bbd9",
+     "lodImage": 4,
+     "lod0Image": 4
+    },
+    "normal": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "ef7ca7fbbec100034830199caeb20de4",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "mr": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "c394db9fd7c4ae4457e6a5576911af18",
+     "lodImage": 5,
+     "lod0Image": 5
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "M_Camp_wood"
+  },
+  {
+   "glb": "Assets/Env/Camp/camp_awning/camp_awning_LOD2.glb",
+   "lod0": "Assets/Env/Camp/camp_awning/camp_awning_LOD0.glb",
+   "material": "M_Camp_wood",
+   "slots": {
+    "base": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "4c47a4a4abecacc9387a778ebed4bbd9",
+     "lodImage": 4,
+     "lod0Image": 4
+    },
+    "normal": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "ef7ca7fbbec100034830199caeb20de4",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "mr": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "c394db9fd7c4ae4457e6a5576911af18",
+     "lodImage": 5,
+     "lod0Image": 5
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "M_Camp_wood"
+  },
+  {
+   "glb": "Assets/Env/Camp/camp_pole/camp_pole_LOD1.glb",
+   "lod0": "Assets/Env/Camp/camp_pole/camp_pole_LOD0.glb",
+   "material": "M_Camp_wood",
+   "slots": {
+    "base": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "4c47a4a4abecacc9387a778ebed4bbd9",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "ef7ca7fbbec100034830199caeb20de4",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "c394db9fd7c4ae4457e6a5576911af18",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "M_Camp_wood"
+  },
+  {
+   "glb": "Assets/Env/Camp/camp_pole/camp_pole_LOD2.glb",
+   "lod0": "Assets/Env/Camp/camp_pole/camp_pole_LOD0.glb",
+   "material": "M_Camp_wood",
+   "slots": {
+    "base": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "4c47a4a4abecacc9387a778ebed4bbd9",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "ef7ca7fbbec100034830199caeb20de4",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "c394db9fd7c4ae4457e6a5576911af18",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "M_Camp_wood"
+  },
+  {
+   "glb": "Assets/Env/Camp/camp_tent_a/camp_tent_a_LOD1.glb",
+   "lod0": "Assets/Env/Camp/camp_tent_a/camp_tent_a_LOD0.glb",
+   "material": "M_Camp_wood",
+   "slots": {
+    "base": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "4c47a4a4abecacc9387a778ebed4bbd9",
+     "lodImage": 4,
+     "lod0Image": 4
+    },
+    "normal": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "ef7ca7fbbec100034830199caeb20de4",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "mr": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "c394db9fd7c4ae4457e6a5576911af18",
+     "lodImage": 5,
+     "lod0Image": 5
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "M_Camp_wood"
+  },
+  {
+   "glb": "Assets/Env/Camp/camp_tent_a/camp_tent_a_LOD2.glb",
+   "lod0": "Assets/Env/Camp/camp_tent_a/camp_tent_a_LOD0.glb",
+   "material": "M_Camp_wood",
+   "slots": {
+    "base": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "4c47a4a4abecacc9387a778ebed4bbd9",
+     "lodImage": 4,
+     "lod0Image": 4
+    },
+    "normal": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "ef7ca7fbbec100034830199caeb20de4",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "mr": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "c394db9fd7c4ae4457e6a5576911af18",
+     "lodImage": 5,
+     "lod0Image": 5
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "M_Camp_wood"
+  },
+  {
+   "glb": "Assets/Env/Camp/camp_tent_b/camp_tent_b_LOD1.glb",
+   "lod0": "Assets/Env/Camp/camp_tent_b/camp_tent_b_LOD0.glb",
+   "material": "M_Camp_wood",
+   "slots": {
+    "base": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "4c47a4a4abecacc9387a778ebed4bbd9",
+     "lodImage": 4,
+     "lod0Image": 4
+    },
+    "normal": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "ef7ca7fbbec100034830199caeb20de4",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "mr": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "c394db9fd7c4ae4457e6a5576911af18",
+     "lodImage": 5,
+     "lod0Image": 5
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "M_Camp_wood"
+  },
+  {
+   "glb": "Assets/Env/Camp/camp_tent_b/camp_tent_b_LOD2.glb",
+   "lod0": "Assets/Env/Camp/camp_tent_b/camp_tent_b_LOD0.glb",
+   "material": "M_Camp_wood",
+   "slots": {
+    "base": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "4c47a4a4abecacc9387a778ebed4bbd9",
+     "lodImage": 4,
+     "lod0Image": 4
+    },
+    "normal": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "ef7ca7fbbec100034830199caeb20de4",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "mr": {
+     "lod0Material": "M_Camp_wood",
+     "md5": "c394db9fd7c4ae4457e6a5576911af18",
+     "lodImage": 5,
+     "lod0Image": 5
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "M_Camp_wood"
+  },
+  {
+   "glb": "Assets/Env/Gate/gate_LOD1.glb",
+   "lod0": "Assets/Env/Gate/gate_LOD0.glb",
+   "material": "gate",
+   "slots": {
+    "base": {
+     "lod0Material": "gate",
+     "md5": "5f4d9bc9e978c2d032eb91b81232fc34",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "gate",
+     "md5": "0fa6ad0426ee0a3df66708ff28688565",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/Hero/erlking_antler_arch/erlking_antler_arch_LOD1.glb",
+   "lod0": "Assets/Env/Hero/erlking_antler_arch/erlking_antler_arch_LOD0.glb",
+   "material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "729a9fc8a5e62fcc1988f23319a34897",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "9e434ed9e35da5a6fe74ef3b9e49c4b3",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "bddf48984052097fe711127b6cebd7db",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4"
+  },
+  {
+   "glb": "Assets/Env/Hero/erlking_antler_arch/erlking_antler_arch_LOD2.glb",
+   "lod0": "Assets/Env/Hero/erlking_antler_arch/erlking_antler_arch_LOD0.glb",
+   "material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "729a9fc8a5e62fcc1988f23319a34897",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "9e434ed9e35da5a6fe74ef3b9e49c4b3",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "bddf48984052097fe711127b6cebd7db",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4"
+  },
+  {
+   "glb": "Assets/Env/Hero/erlking_hanging_lamps/erlking_hanging_lamps_LOD1.glb",
+   "lod0": "Assets/Env/Hero/erlking_hanging_lamps/erlking_hanging_lamps_LOD0.glb",
+   "material": "tripo_material_0627510f-57ff-4df5-8d08-fa75f59f305f",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_0627510f-57ff-4df5-8d08-fa75f59f305f",
+     "md5": "104d866e4dc05d9d8d00817384e0496b",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_0627510f-57ff-4df5-8d08-fa75f59f305f",
+     "md5": "9f17bb6ebe8fe88a9748229e75f4638e",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_0627510f-57ff-4df5-8d08-fa75f59f305f",
+     "md5": "68efc1d7a6726bd3b66608eba3e09f5e",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_0627510f-57ff-4df5-8d08-fa75f59f305f"
+  },
+  {
+   "glb": "Assets/Env/Hero/erlking_hanging_lamps/erlking_hanging_lamps_LOD2.glb",
+   "lod0": "Assets/Env/Hero/erlking_hanging_lamps/erlking_hanging_lamps_LOD0.glb",
+   "material": "tripo_material_0627510f-57ff-4df5-8d08-fa75f59f305f",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_0627510f-57ff-4df5-8d08-fa75f59f305f",
+     "md5": "104d866e4dc05d9d8d00817384e0496b",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_0627510f-57ff-4df5-8d08-fa75f59f305f",
+     "md5": "9f17bb6ebe8fe88a9748229e75f4638e",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_0627510f-57ff-4df5-8d08-fa75f59f305f",
+     "md5": "68efc1d7a6726bd3b66608eba3e09f5e",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_0627510f-57ff-4df5-8d08-fa75f59f305f"
+  },
+  {
+   "glb": "Assets/Env/Hero/erlking_lamp_post/erlking_lamp_post_LOD1.glb",
+   "lod0": "Assets/Env/Hero/erlking_lamp_post/erlking_lamp_post_LOD0.glb",
+   "material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "a08a1d16d52788102c6c8e0aed9b5a74",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "6b64dc6639884e773e131cd31b3fae4e",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "a9c17bccab85c466914a5d891d237cd3",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4"
+  },
+  {
+   "glb": "Assets/Env/Hero/erlking_lamp_post/erlking_lamp_post_LOD2.glb",
+   "lod0": "Assets/Env/Hero/erlking_lamp_post/erlking_lamp_post_LOD0.glb",
+   "material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "a08a1d16d52788102c6c8e0aed9b5a74",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "6b64dc6639884e773e131cd31b3fae4e",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4",
+     "md5": "a9c17bccab85c466914a5d891d237cd3",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_7597ba0f-9fda-4082-897e-06a5c88e5fd4"
+  },
+  {
+   "glb": "Assets/Env/Hero/grendel_bone_tunnel/grendel_bone_tunnel_LOD1.glb",
+   "lod0": "Assets/Env/Hero/grendel_bone_tunnel/grendel_bone_tunnel_LOD0.glb",
+   "material": "tripo_material_6b44fcae-c20e-4ec2-bed3-9f911ed3c5e2",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_6b44fcae-c20e-4ec2-bed3-9f911ed3c5e2",
+     "md5": "3f485cc7444e6477d8bf3a359c4af14e",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_6b44fcae-c20e-4ec2-bed3-9f911ed3c5e2",
+     "md5": "057204207f05d1075fef15f6d351c9fc",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_6b44fcae-c20e-4ec2-bed3-9f911ed3c5e2",
+     "md5": "d3678e24e17d2c8d2f9b8a4ed3b412e3",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_6b44fcae-c20e-4ec2-bed3-9f911ed3c5e2"
+  },
+  {
+   "glb": "Assets/Env/Hero/grendel_bone_tunnel/grendel_bone_tunnel_LOD2.glb",
+   "lod0": "Assets/Env/Hero/grendel_bone_tunnel/grendel_bone_tunnel_LOD0.glb",
+   "material": "tripo_material_6b44fcae-c20e-4ec2-bed3-9f911ed3c5e2",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_6b44fcae-c20e-4ec2-bed3-9f911ed3c5e2",
+     "md5": "3f485cc7444e6477d8bf3a359c4af14e",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_6b44fcae-c20e-4ec2-bed3-9f911ed3c5e2",
+     "md5": "057204207f05d1075fef15f6d351c9fc",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_6b44fcae-c20e-4ec2-bed3-9f911ed3c5e2",
+     "md5": "d3678e24e17d2c8d2f9b8a4ed3b412e3",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_6b44fcae-c20e-4ec2-bed3-9f911ed3c5e2"
+  },
+  {
+   "glb": "Assets/Env/Hero/grendel_ruined_house/grendel_ruined_house_LOD1.glb",
+   "lod0": "Assets/Env/Hero/grendel_ruined_house/grendel_ruined_house_LOD0.glb",
+   "material": "tripo_material_2e36369f-b469-4b1c-b4ad-c20e18287632",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_2e36369f-b469-4b1c-b4ad-c20e18287632",
+     "md5": "285fe574d51b93a9389d087319de4447",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_2e36369f-b469-4b1c-b4ad-c20e18287632",
+     "md5": "265883cb37052401888bcaafdb15f1cb",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_2e36369f-b469-4b1c-b4ad-c20e18287632",
+     "md5": "99e41519bb5a8c634f865c2d27fb87aa",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_2e36369f-b469-4b1c-b4ad-c20e18287632"
+  },
+  {
+   "glb": "Assets/Env/Hero/grendel_ruined_house/grendel_ruined_house_LOD2.glb",
+   "lod0": "Assets/Env/Hero/grendel_ruined_house/grendel_ruined_house_LOD0.glb",
+   "material": "tripo_material_2e36369f-b469-4b1c-b4ad-c20e18287632",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_2e36369f-b469-4b1c-b4ad-c20e18287632",
+     "md5": "285fe574d51b93a9389d087319de4447",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_2e36369f-b469-4b1c-b4ad-c20e18287632",
+     "md5": "265883cb37052401888bcaafdb15f1cb",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_2e36369f-b469-4b1c-b4ad-c20e18287632",
+     "md5": "99e41519bb5a8c634f865c2d27fb87aa",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_2e36369f-b469-4b1c-b4ad-c20e18287632"
+  },
+  {
+   "glb": "Assets/Env/Hero/hub_lion_statue/hub_lion_statue_LOD1.glb",
+   "lod0": "Assets/Env/Hero/hub_lion_statue/hub_lion_statue_LOD0.glb",
+   "material": "tripo_material_92bfa443-09bd-4ebd-a4d1-74557cba83e9",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_92bfa443-09bd-4ebd-a4d1-74557cba83e9",
+     "md5": "b38970638c5c7d5f2e0b9ae9c411f753",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_92bfa443-09bd-4ebd-a4d1-74557cba83e9",
+     "md5": "037a15a082d280b7213ffd45ea656517",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_92bfa443-09bd-4ebd-a4d1-74557cba83e9",
+     "md5": "4d349a44fce501d682ea72cffaba9e6f",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_92bfa443-09bd-4ebd-a4d1-74557cba83e9"
+  },
+  {
+   "glb": "Assets/Env/Hero/hub_lion_statue/hub_lion_statue_LOD2.glb",
+   "lod0": "Assets/Env/Hero/hub_lion_statue/hub_lion_statue_LOD0.glb",
+   "material": "tripo_material_92bfa443-09bd-4ebd-a4d1-74557cba83e9",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_92bfa443-09bd-4ebd-a4d1-74557cba83e9",
+     "md5": "b38970638c5c7d5f2e0b9ae9c411f753",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_92bfa443-09bd-4ebd-a4d1-74557cba83e9",
+     "md5": "037a15a082d280b7213ffd45ea656517",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_92bfa443-09bd-4ebd-a4d1-74557cba83e9",
+     "md5": "4d349a44fce501d682ea72cffaba9e6f",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_92bfa443-09bd-4ebd-a4d1-74557cba83e9"
+  },
+  {
+   "glb": "Assets/Env/Hero/humbaba_cedar/humbaba_cedar_LOD1.glb",
+   "lod0": "Assets/Env/Hero/humbaba_cedar/humbaba_cedar_LOD0.glb",
+   "material": "tripo_material_681715e4-a463-4e9d-8495-8fc4173620cc",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_681715e4-a463-4e9d-8495-8fc4173620cc",
+     "md5": "0411fc136f4cd12fe1cf771124ce0672",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_681715e4-a463-4e9d-8495-8fc4173620cc",
+     "md5": "d2f5ce0b1dd1bb732dbe635494ce9441",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_681715e4-a463-4e9d-8495-8fc4173620cc",
+     "md5": "90b94364d75065d8cd8dc39b43b5fded",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_681715e4-a463-4e9d-8495-8fc4173620cc"
+  },
+  {
+   "glb": "Assets/Env/Hero/humbaba_cedar/humbaba_cedar_LOD2.glb",
+   "lod0": "Assets/Env/Hero/humbaba_cedar/humbaba_cedar_LOD0.glb",
+   "material": "tripo_material_681715e4-a463-4e9d-8495-8fc4173620cc",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_681715e4-a463-4e9d-8495-8fc4173620cc",
+     "md5": "0411fc136f4cd12fe1cf771124ce0672",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_681715e4-a463-4e9d-8495-8fc4173620cc",
+     "md5": "d2f5ce0b1dd1bb732dbe635494ce9441",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_681715e4-a463-4e9d-8495-8fc4173620cc",
+     "md5": "90b94364d75065d8cd8dc39b43b5fded",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_681715e4-a463-4e9d-8495-8fc4173620cc"
+  },
+  {
+   "glb": "Assets/Env/Hero/humbaba_root_stones/humbaba_root_stones_LOD1.glb",
+   "lod0": "Assets/Env/Hero/humbaba_root_stones/humbaba_root_stones_LOD0.glb",
+   "material": "tripo_material_e6d35097-595b-4e8f-822e-0a5faa7b7cac",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_e6d35097-595b-4e8f-822e-0a5faa7b7cac",
+     "md5": "b001a423cac0d434169e06f93e2798ff",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_e6d35097-595b-4e8f-822e-0a5faa7b7cac",
+     "md5": "aae28a6685064c7d0180a134625e0419",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_e6d35097-595b-4e8f-822e-0a5faa7b7cac",
+     "md5": "afe822d2bdc14feebdc146ca97e29c42",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_e6d35097-595b-4e8f-822e-0a5faa7b7cac"
+  },
+  {
+   "glb": "Assets/Env/Hero/humbaba_root_stones/humbaba_root_stones_LOD2.glb",
+   "lod0": "Assets/Env/Hero/humbaba_root_stones/humbaba_root_stones_LOD0.glb",
+   "material": "tripo_material_e6d35097-595b-4e8f-822e-0a5faa7b7cac",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_e6d35097-595b-4e8f-822e-0a5faa7b7cac",
+     "md5": "b001a423cac0d434169e06f93e2798ff",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_e6d35097-595b-4e8f-822e-0a5faa7b7cac",
+     "md5": "aae28a6685064c7d0180a134625e0419",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_e6d35097-595b-4e8f-822e-0a5faa7b7cac",
+     "md5": "afe822d2bdc14feebdc146ca97e29c42",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_e6d35097-595b-4e8f-822e-0a5faa7b7cac"
+  },
+  {
+   "glb": "Assets/Env/Hero/sobek_croc_idol/sobek_croc_idol_LOD1.glb",
+   "lod0": "Assets/Env/Hero/sobek_croc_idol/sobek_croc_idol_LOD0.glb",
+   "material": "tripo_material_42233bff-392b-4088-8516-559f8fc8d7b5",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_42233bff-392b-4088-8516-559f8fc8d7b5",
+     "md5": "85ff7a8e622c5bc52256013ef977c97a",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_42233bff-392b-4088-8516-559f8fc8d7b5",
+     "md5": "b0f312752b50de279adbedc9df363a2f",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_42233bff-392b-4088-8516-559f8fc8d7b5",
+     "md5": "2a61f6161d39efb1a0d43cd9667a81f5",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_42233bff-392b-4088-8516-559f8fc8d7b5"
+  },
+  {
+   "glb": "Assets/Env/Hero/sobek_croc_idol/sobek_croc_idol_LOD2.glb",
+   "lod0": "Assets/Env/Hero/sobek_croc_idol/sobek_croc_idol_LOD0.glb",
+   "material": "tripo_material_42233bff-392b-4088-8516-559f8fc8d7b5",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_42233bff-392b-4088-8516-559f8fc8d7b5",
+     "md5": "85ff7a8e622c5bc52256013ef977c97a",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_42233bff-392b-4088-8516-559f8fc8d7b5",
+     "md5": "b0f312752b50de279adbedc9df363a2f",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_42233bff-392b-4088-8516-559f8fc8d7b5",
+     "md5": "2a61f6161d39efb1a0d43cd9667a81f5",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_42233bff-392b-4088-8516-559f8fc8d7b5"
+  },
+  {
+   "glb": "Assets/Env/Hero/sobek_obelisk/sobek_obelisk_LOD1.glb",
+   "lod0": "Assets/Env/Hero/sobek_obelisk/sobek_obelisk_LOD0.glb",
+   "material": "tripo_material_b8b2385a-7088-4ef8-baa5-e11144b2638b",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_b8b2385a-7088-4ef8-baa5-e11144b2638b",
+     "md5": "e9535cd3d66aeb75dda19cdae58d1d35",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_b8b2385a-7088-4ef8-baa5-e11144b2638b",
+     "md5": "cd0fb56e886d37ae02dbc25ca377b13d",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_b8b2385a-7088-4ef8-baa5-e11144b2638b",
+     "md5": "d34b9224d0e99ca79525e5f329f19b28",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_b8b2385a-7088-4ef8-baa5-e11144b2638b"
+  },
+  {
+   "glb": "Assets/Env/Hero/sobek_obelisk/sobek_obelisk_LOD2.glb",
+   "lod0": "Assets/Env/Hero/sobek_obelisk/sobek_obelisk_LOD0.glb",
+   "material": "tripo_material_b8b2385a-7088-4ef8-baa5-e11144b2638b",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_b8b2385a-7088-4ef8-baa5-e11144b2638b",
+     "md5": "e9535cd3d66aeb75dda19cdae58d1d35",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_b8b2385a-7088-4ef8-baa5-e11144b2638b",
+     "md5": "cd0fb56e886d37ae02dbc25ca377b13d",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_b8b2385a-7088-4ef8-baa5-e11144b2638b",
+     "md5": "d34b9224d0e99ca79525e5f329f19b28",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_b8b2385a-7088-4ef8-baa5-e11144b2638b"
+  },
+  {
+   "glb": "Assets/Env/Hero/z7_ruined_church/z7_ruined_church_LOD1.glb",
+   "lod0": "Assets/Env/Hero/z7_ruined_church/z7_ruined_church_LOD0.glb",
+   "material": "tripo_material_60470951-afe6-4e78-91c6-3caff43004a9",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_60470951-afe6-4e78-91c6-3caff43004a9",
+     "md5": "675480a8895e074c17594a7bc33c8752",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_60470951-afe6-4e78-91c6-3caff43004a9",
+     "md5": "fa093a59a951790f3add10f1916fdfa6",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_60470951-afe6-4e78-91c6-3caff43004a9",
+     "md5": "113b1b0fa7149185227c9cbcfa4afe27",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_60470951-afe6-4e78-91c6-3caff43004a9"
+  },
+  {
+   "glb": "Assets/Env/Hero/z7_ruined_church/z7_ruined_church_LOD2.glb",
+   "lod0": "Assets/Env/Hero/z7_ruined_church/z7_ruined_church_LOD0.glb",
+   "material": "tripo_material_60470951-afe6-4e78-91c6-3caff43004a9",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_60470951-afe6-4e78-91c6-3caff43004a9",
+     "md5": "675480a8895e074c17594a7bc33c8752",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_60470951-afe6-4e78-91c6-3caff43004a9",
+     "md5": "fa093a59a951790f3add10f1916fdfa6",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_60470951-afe6-4e78-91c6-3caff43004a9",
+     "md5": "113b1b0fa7149185227c9cbcfa4afe27",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_60470951-afe6-4e78-91c6-3caff43004a9"
+  },
+  {
+   "glb": "Assets/Env/Props/brazier_2a/brazier_2a_LOD1.glb",
+   "lod0": "Assets/Env/Props/brazier_2a/brazier_2a_LOD0.glb",
+   "material": "brazier_iron",
+   "slots": {
+    "normal": {
+     "lod0Material": "brazier_iron",
+     "md5": "6addba8cde7ec3c45099e7b5ea5a691c",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "brazier_iron",
+     "md5": "50301a08411bcc0980ded927d7219b3e",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "occ": {
+     "lod0Material": "brazier_iron",
+     "md5": "50301a08411bcc0980ded927d7219b3e",
+     "lodImage": 1,
+     "lod0Image": 1
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "brazier_iron"
+  },
+  {
+   "glb": "Assets/Env/Props/brazier_2a/brazier_2a_LOD1.glb",
+   "lod0": "Assets/Env/Props/brazier_2a/brazier_2a_LOD0.glb",
+   "material": "coal",
+   "slots": {
+    "base": {
+     "lod0Material": "coal",
+     "md5": "ef00c0e1edcea9492506d7ed1f53dd29",
+     "lodImage": 5,
+     "lod0Image": 5
+    },
+    "normal": {
+     "lod0Material": "coal",
+     "md5": "28340008f8981b36921224b5769a4abb",
+     "lodImage": 4,
+     "lod0Image": 4
+    },
+    "emis": {
+     "lod0Material": "coal",
+     "md5": "28a211719132e38314178d31e2046b25",
+     "lodImage": 3,
+     "lod0Image": 3
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/Props/brazier_2a/brazier_2a_LOD1.glb",
+   "lod0": "Assets/Env/Props/brazier_2a/brazier_2a_LOD0.glb",
+   "material": "plinth_lower",
+   "slots": {
+    "base": {
+     "lod0Material": "plinth_lower",
+     "md5": "b5f5c8823b489833ce177722881795a9",
+     "lodImage": 8,
+     "lod0Image": 8
+    },
+    "normal": {
+     "lod0Material": "plinth_lower",
+     "md5": "14f9910aa50c98b40e52ad3773cbf944",
+     "lodImage": 6,
+     "lod0Image": 6
+    },
+    "mr": {
+     "lod0Material": "plinth_lower",
+     "md5": "c164b003ca793733a2e88a886e3a1310",
+     "lodImage": 7,
+     "lod0Image": 7
+    },
+    "occ": {
+     "lod0Material": "plinth_lower",
+     "md5": "c164b003ca793733a2e88a886e3a1310",
+     "lodImage": 7,
+     "lod0Image": 7
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "plinth_lower"
+  },
+  {
+   "glb": "Assets/Env/Props/brazier_2a/brazier_2a_LOD1.glb",
+   "lod0": "Assets/Env/Props/brazier_2a/brazier_2a_LOD0.glb",
+   "material": "plinth_upper",
+   "slots": {
+    "base": {
+     "lod0Material": "plinth_lower",
+     "md5": "b5f5c8823b489833ce177722881795a9",
+     "lodImage": 8,
+     "lod0Image": 8
+    },
+    "normal": {
+     "lod0Material": "plinth_lower",
+     "md5": "14f9910aa50c98b40e52ad3773cbf944",
+     "lodImage": 6,
+     "lod0Image": 6
+    },
+    "mr": {
+     "lod0Material": "plinth_upper",
+     "md5": "a72079dd7f206f5eb801e89834d46eef",
+     "lodImage": 9,
+     "lod0Image": 9
+    },
+    "occ": {
+     "lod0Material": "plinth_upper",
+     "md5": "a72079dd7f206f5eb801e89834d46eef",
+     "lodImage": 9,
+     "lod0Image": 9
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "plinth_upper"
+  },
+  {
+   "glb": "Assets/Env/Props/hero_banner_pole/hero_banner_pole_LOD1.glb",
+   "lod0": "Assets/Env/Props/hero_banner_pole/hero_banner_pole_LOD0.glb",
+   "material": "charwood_512",
+   "slots": {
+    "base": {
+     "lod0Material": "charwood_1024",
+     "md5": "5631b5933e64c3e4050fc48441ca0b99",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "normal": {
+     "lod0Material": "charwood_1024",
+     "md5": "3e2cf0c8b6a6ce8d8432ead83e519ed9",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "charwood_1024",
+     "md5": "3df522c991facfdaf32039b9e3b347c3",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "occ": {
+     "lod0Material": "charwood_1024",
+     "md5": "3df522c991facfdaf32039b9e3b347c3",
+     "lodImage": 1,
+     "lod0Image": 1
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/Props/hero_banner_pole/hero_banner_pole_LOD2.glb",
+   "lod0": "Assets/Env/Props/hero_banner_pole/hero_banner_pole_LOD0.glb",
+   "material": "charwood_256",
+   "slots": {
+    "base": {
+     "lod0Material": "charwood_1024",
+     "md5": "5631b5933e64c3e4050fc48441ca0b99",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "normal": {
+     "lod0Material": "charwood_1024",
+     "md5": "3e2cf0c8b6a6ce8d8432ead83e519ed9",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "charwood_1024",
+     "md5": "3df522c991facfdaf32039b9e3b347c3",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "occ": {
+     "lod0Material": "charwood_1024",
+     "md5": "3df522c991facfdaf32039b9e3b347c3",
+     "lodImage": 1,
+     "lod0Image": 1
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/Props/hero_barricade_stakes/hero_barricade_stakes_LOD1.glb",
+   "lod0": "Assets/Env/Props/hero_barricade_stakes/hero_barricade_stakes_LOD0.glb",
+   "material": "charwood_512",
+   "slots": {
+    "base": {
+     "lod0Material": "charwood_1024",
+     "md5": "5631b5933e64c3e4050fc48441ca0b99",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "normal": {
+     "lod0Material": "charwood_1024",
+     "md5": "3e2cf0c8b6a6ce8d8432ead83e519ed9",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "charwood_1024",
+     "md5": "3df522c991facfdaf32039b9e3b347c3",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "occ": {
+     "lod0Material": "charwood_1024",
+     "md5": "3df522c991facfdaf32039b9e3b347c3",
+     "lodImage": 1,
+     "lod0Image": 1
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/Props/hero_barricade_stakes/hero_barricade_stakes_LOD2.glb",
+   "lod0": "Assets/Env/Props/hero_barricade_stakes/hero_barricade_stakes_LOD0.glb",
+   "material": "charwood_256",
+   "slots": {
+    "base": {
+     "lod0Material": "charwood_1024",
+     "md5": "5631b5933e64c3e4050fc48441ca0b99",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "normal": {
+     "lod0Material": "charwood_1024",
+     "md5": "3e2cf0c8b6a6ce8d8432ead83e519ed9",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "charwood_1024",
+     "md5": "3df522c991facfdaf32039b9e3b347c3",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "occ": {
+     "lod0Material": "charwood_1024",
+     "md5": "3df522c991facfdaf32039b9e3b347c3",
+     "lodImage": 1,
+     "lod0Image": 1
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/Props/hero_weapon_sword/_pre_rough_LOD1.glb",
+   "lod0": "Assets/Env/Props/hero_weapon_sword/_pre_rough_LOD0.glb",
+   "material": "leather_512",
+   "slots": {
+    "base": {
+     "lod0Material": "leather_1024",
+     "md5": "9ccf2b15aca9c1b79013248df0841ca1",
+     "lodImage": 8,
+     "lod0Image": 8
+    },
+    "normal": {
+     "lod0Material": "leather_1024",
+     "md5": "dd4edd4ca046c1416513e3cdcd2d3211",
+     "lodImage": 6,
+     "lod0Image": 6
+    },
+    "mr": {
+     "lod0Material": "leather_1024",
+     "md5": "1e1e219b56b216295141ea24718f73f8",
+     "lodImage": 7,
+     "lod0Image": 7
+    },
+    "occ": {
+     "lod0Material": "leather_1024",
+     "md5": "1e1e219b56b216295141ea24718f73f8",
+     "lodImage": 7,
+     "lod0Image": 7
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/Props/hero_weapon_sword/_pre_rough_LOD2.glb",
+   "lod0": "Assets/Env/Props/hero_weapon_sword/_pre_rough_LOD0.glb",
+   "material": "leather_256",
+   "slots": {
+    "base": {
+     "lod0Material": "leather_1024",
+     "md5": "9ccf2b15aca9c1b79013248df0841ca1",
+     "lodImage": 8,
+     "lod0Image": 8
+    },
+    "normal": {
+     "lod0Material": "leather_1024",
+     "md5": "dd4edd4ca046c1416513e3cdcd2d3211",
+     "lodImage": 6,
+     "lod0Image": 6
+    },
+    "mr": {
+     "lod0Material": "leather_1024",
+     "md5": "1e1e219b56b216295141ea24718f73f8",
+     "lodImage": 7,
+     "lod0Image": 7
+    },
+    "occ": {
+     "lod0Material": "leather_1024",
+     "md5": "1e1e219b56b216295141ea24718f73f8",
+     "lodImage": 7,
+     "lod0Image": 7
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/Props/hero_weapon_sword/hero_weapon_sword_LOD1.glb",
+   "lod0": "Assets/Env/Props/hero_weapon_sword/hero_weapon_sword_LOD0.glb",
+   "material": "leather_512",
+   "slots": {
+    "base": {
+     "lod0Material": "leather_1024",
+     "md5": "9ccf2b15aca9c1b79013248df0841ca1",
+     "lodImage": 8,
+     "lod0Image": 8
+    },
+    "normal": {
+     "lod0Material": "leather_1024",
+     "md5": "dd4edd4ca046c1416513e3cdcd2d3211",
+     "lodImage": 6,
+     "lod0Image": 6
+    },
+    "mr": {
+     "lod0Material": "leather_1024",
+     "md5": "1e1e219b56b216295141ea24718f73f8",
+     "lodImage": 7,
+     "lod0Image": 7
+    },
+    "occ": {
+     "lod0Material": "leather_1024",
+     "md5": "1e1e219b56b216295141ea24718f73f8",
+     "lodImage": 7,
+     "lod0Image": 7
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/Props/hero_weapon_sword/hero_weapon_sword_LOD2.glb",
+   "lod0": "Assets/Env/Props/hero_weapon_sword/hero_weapon_sword_LOD0.glb",
+   "material": "leather_256",
+   "slots": {
+    "base": {
+     "lod0Material": "leather_1024",
+     "md5": "9ccf2b15aca9c1b79013248df0841ca1",
+     "lodImage": 8,
+     "lod0Image": 8
+    },
+    "normal": {
+     "lod0Material": "leather_1024",
+     "md5": "dd4edd4ca046c1416513e3cdcd2d3211",
+     "lodImage": 6,
+     "lod0Image": 6
+    },
+    "mr": {
+     "lod0Material": "leather_1024",
+     "md5": "1e1e219b56b216295141ea24718f73f8",
+     "lodImage": 7,
+     "lod0Image": 7
+    },
+    "occ": {
+     "lod0Material": "leather_1024",
+     "md5": "1e1e219b56b216295141ea24718f73f8",
+     "lodImage": 7,
+     "lod0Image": 7
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_1_LOD1.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_1_LOD0.glb",
+   "material": "shard_1_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_1_obsidian",
+     "md5": "657d2b506d1afafc17e7f4cbfddabe8e",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_1_obsidian",
+     "md5": "4e96337eb8bf6878e20c57c50c6a24a0",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_1_obsidian",
+     "md5": "cd837364faf3bef2ef995b21ba7f6551",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_1_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_1_LOD2.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_1_LOD0.glb",
+   "material": "shard_1_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_1_obsidian",
+     "md5": "657d2b506d1afafc17e7f4cbfddabe8e",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_1_obsidian",
+     "md5": "4e96337eb8bf6878e20c57c50c6a24a0",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_1_obsidian",
+     "md5": "cd837364faf3bef2ef995b21ba7f6551",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_1_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_10_LOD1.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_10_LOD0.glb",
+   "material": "shard_10_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_10_obsidian",
+     "md5": "6095272a73b7c1e1434ea417956aa530",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_10_obsidian",
+     "md5": "6508362d991987265e3072e93ce05e0b",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_10_obsidian",
+     "md5": "afe622f178ebac587ab880e22683209c",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_10_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_10_LOD2.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_10_LOD0.glb",
+   "material": "shard_10_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_10_obsidian",
+     "md5": "6095272a73b7c1e1434ea417956aa530",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_10_obsidian",
+     "md5": "6508362d991987265e3072e93ce05e0b",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_10_obsidian",
+     "md5": "afe622f178ebac587ab880e22683209c",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_10_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_2_LOD1.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_2_LOD0.glb",
+   "material": "shard_2_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_2_obsidian",
+     "md5": "cad4bf8ea3134068ed78933fc4318046",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_2_obsidian",
+     "md5": "6f89dd8a4fb3d84f68dc42539c751cd1",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_2_obsidian",
+     "md5": "c3fc3c274953172e496a5769c2f5dddc",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_2_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_2_LOD2.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_2_LOD0.glb",
+   "material": "shard_2_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_2_obsidian",
+     "md5": "cad4bf8ea3134068ed78933fc4318046",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_2_obsidian",
+     "md5": "6f89dd8a4fb3d84f68dc42539c751cd1",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_2_obsidian",
+     "md5": "c3fc3c274953172e496a5769c2f5dddc",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_2_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_3_LOD1.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_3_LOD0.glb",
+   "material": "shard_3_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_3_obsidian",
+     "md5": "a54282962ba766fd9304d80d486ab6bb",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_3_obsidian",
+     "md5": "690759208f91410834557400a1f61ede",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_3_obsidian",
+     "md5": "78e26d196302497adbc0dd2cefbf9e68",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_3_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_3_LOD2.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_3_LOD0.glb",
+   "material": "shard_3_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_3_obsidian",
+     "md5": "a54282962ba766fd9304d80d486ab6bb",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_3_obsidian",
+     "md5": "690759208f91410834557400a1f61ede",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_3_obsidian",
+     "md5": "78e26d196302497adbc0dd2cefbf9e68",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_3_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_4_LOD1.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_4_LOD0.glb",
+   "material": "shard_4_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_4_obsidian",
+     "md5": "71ea51159bc1dae0346375ba1e4a55c7",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_4_obsidian",
+     "md5": "7de546cee41b438677b8f4d978403eb7",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_4_obsidian",
+     "md5": "c534c718b072d2e12e10afbb406002c0",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_4_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_4_LOD2.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_4_LOD0.glb",
+   "material": "shard_4_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_4_obsidian",
+     "md5": "71ea51159bc1dae0346375ba1e4a55c7",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_4_obsidian",
+     "md5": "7de546cee41b438677b8f4d978403eb7",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_4_obsidian",
+     "md5": "c534c718b072d2e12e10afbb406002c0",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_4_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_5_LOD1.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_5_LOD0.glb",
+   "material": "shard_5_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_5_obsidian",
+     "md5": "db15df32eec1f0fb9cf1d8d73d37517c",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_5_obsidian",
+     "md5": "cf121df89b912d57145dd9a67d54ec74",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_5_obsidian",
+     "md5": "2553ef66ebd65672f2ecd7c8b948e8b7",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_5_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_5_LOD2.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_5_LOD0.glb",
+   "material": "shard_5_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_5_obsidian",
+     "md5": "db15df32eec1f0fb9cf1d8d73d37517c",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_5_obsidian",
+     "md5": "cf121df89b912d57145dd9a67d54ec74",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_5_obsidian",
+     "md5": "2553ef66ebd65672f2ecd7c8b948e8b7",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_5_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_6_LOD1.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_6_LOD0.glb",
+   "material": "shard_6_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_6_obsidian",
+     "md5": "475a9a4d0583c96c719e335ee3f7bfc9",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_6_obsidian",
+     "md5": "e5e09cbfb3fc441e16d536bb6d95baae",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_6_obsidian",
+     "md5": "cf9919227dbdb66731d9d87121dc0651",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_6_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_6_LOD2.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_6_LOD0.glb",
+   "material": "shard_6_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_6_obsidian",
+     "md5": "475a9a4d0583c96c719e335ee3f7bfc9",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_6_obsidian",
+     "md5": "e5e09cbfb3fc441e16d536bb6d95baae",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_6_obsidian",
+     "md5": "cf9919227dbdb66731d9d87121dc0651",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_6_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_7_LOD1.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_7_LOD0.glb",
+   "material": "shard_7_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_7_obsidian",
+     "md5": "ae3f45fc8cc00deb0e611a4733fa3de6",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_7_obsidian",
+     "md5": "dbb591ddcdb37327f884b1c7643c27d1",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_7_obsidian",
+     "md5": "a07210cf96ff6f2d42f77f135b8e08f2",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_7_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_7_LOD2.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_7_LOD0.glb",
+   "material": "shard_7_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_7_obsidian",
+     "md5": "ae3f45fc8cc00deb0e611a4733fa3de6",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_7_obsidian",
+     "md5": "dbb591ddcdb37327f884b1c7643c27d1",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_7_obsidian",
+     "md5": "a07210cf96ff6f2d42f77f135b8e08f2",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_7_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_8_LOD1.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_8_LOD0.glb",
+   "material": "shard_8_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_8_obsidian",
+     "md5": "f692fc9ffd5ecbc1476ad3fe2b48e7f8",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_8_obsidian",
+     "md5": "bafc13e07466c38ca17b35da9e314403",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_8_obsidian",
+     "md5": "3c9d69b617bf8cb67e4622a36ef0d6a4",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_8_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_8_LOD2.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_8_LOD0.glb",
+   "material": "shard_8_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_8_obsidian",
+     "md5": "f692fc9ffd5ecbc1476ad3fe2b48e7f8",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_8_obsidian",
+     "md5": "bafc13e07466c38ca17b35da9e314403",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_8_obsidian",
+     "md5": "3c9d69b617bf8cb67e4622a36ef0d6a4",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_8_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_9_LOD1.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_9_LOD0.glb",
+   "material": "shard_9_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_9_obsidian",
+     "md5": "2698cbfd650c132ca7e9d4ae0cb432a1",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_9_obsidian",
+     "md5": "49df7a00cca80289454f373e0d204a40",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_9_obsidian",
+     "md5": "84ce03d396ceee1f6af12fbdd1840003",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_9_obsidian"
+  },
+  {
+   "glb": "Assets/Env/Props/rift_shards/shard_9_LOD2.glb",
+   "lod0": "Assets/Env/Props/rift_shards/shard_9_LOD0.glb",
+   "material": "shard_9_obsidian",
+   "slots": {
+    "base": {
+     "lod0Material": "shard_9_obsidian",
+     "md5": "2698cbfd650c132ca7e9d4ae0cb432a1",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "shard_9_obsidian",
+     "md5": "49df7a00cca80289454f373e0d204a40",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "emis": {
+     "lod0Material": "shard_9_obsidian",
+     "md5": "84ce03d396ceee1f6af12fbdd1840003",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "shard_9_obsidian"
+  },
+  {
+   "glb": "Assets/Env/World/Bridge/bridge_buttress_arch/bridge_buttress_arch_LOD1.glb",
+   "lod0": "Assets/Env/World/Bridge/bridge_buttress_arch/bridge_buttress_arch_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Bridge/bridge_buttress_arch/bridge_buttress_arch_LOD2.glb",
+   "lod0": "Assets/Env/World/Bridge/bridge_buttress_arch/bridge_buttress_arch_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Bridge/bridge_pier_a/bridge_pier_a_LOD1.glb",
+   "lod0": "Assets/Env/World/Bridge/bridge_pier_a/bridge_pier_a_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Bridge/bridge_pier_a/bridge_pier_a_LOD2.glb",
+   "lod0": "Assets/Env/World/Bridge/bridge_pier_a/bridge_pier_a_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Bridge/bridge_pier_broken/bridge_pier_broken_LOD1.glb",
+   "lod0": "Assets/Env/World/Bridge/bridge_pier_broken/bridge_pier_broken_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Bridge/bridge_pier_broken/bridge_pier_broken_LOD2.glb",
+   "lod0": "Assets/Env/World/Bridge/bridge_pier_broken/bridge_pier_broken_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Bridge/bridge_rubble_ledge/bridge_rubble_ledge_LOD1.glb",
+   "lod0": "Assets/Env/World/Bridge/bridge_rubble_ledge/bridge_rubble_ledge_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Bridge/bridge_rubble_ledge/bridge_rubble_ledge_LOD2.glb",
+   "lod0": "Assets/Env/World/Bridge/bridge_rubble_ledge/bridge_rubble_ledge_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Bridge/gate_approach_flat/gate_approach_flat_LOD1.glb",
+   "lod0": "Assets/Env/World/Bridge/gate_approach_flat/gate_approach_flat_LOD0.glb",
+   "material": "plate_side",
+   "slots": {
+    "base": {
+     "lod0Material": "plate_side",
+     "md5": "a4d33613346592aeb3d3020c26c10466",
+     "lodImage": 4,
+     "lod0Image": 4
+    },
+    "normal": {
+     "lod0Material": "plate_side",
+     "md5": "fecce8c351ae87cc7b66fdd970b9d41b",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "mr": {
+     "lod0Material": "plate_side",
+     "md5": "75cb7bb7c388c7f6c5aa12ea1bd4edb1",
+     "lodImage": 5,
+     "lod0Image": 5
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "plate_side"
+  },
+  {
+   "glb": "Assets/Env/World/Bridge/gate_approach_flat/gate_approach_flat_LOD2.glb",
+   "lod0": "Assets/Env/World/Bridge/gate_approach_flat/gate_approach_flat_LOD0.glb",
+   "material": "plate_side",
+   "slots": {
+    "base": {
+     "lod0Material": "plate_side",
+     "md5": "a4d33613346592aeb3d3020c26c10466",
+     "lodImage": 4,
+     "lod0Image": 4
+    },
+    "normal": {
+     "lod0Material": "plate_side",
+     "md5": "fecce8c351ae87cc7b66fdd970b9d41b",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "mr": {
+     "lod0Material": "plate_side",
+     "md5": "75cb7bb7c388c7f6c5aa12ea1bd4edb1",
+     "lodImage": 5,
+     "lod0Image": 5
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "plate_side"
+  },
+  {
+   "glb": "Assets/Env/World/Ground/ground_paving/ground_paving_LOD1.glb",
+   "lod0": "Assets/Env/World/Ground/ground_paving/ground_paving_LOD0.glb",
+   "material": "plate_side",
+   "slots": {
+    "base": {
+     "lod0Material": "plate_side",
+     "md5": "a4d33613346592aeb3d3020c26c10466",
+     "lodImage": 4,
+     "lod0Image": 4
+    },
+    "normal": {
+     "lod0Material": "plate_side",
+     "md5": "fecce8c351ae87cc7b66fdd970b9d41b",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "mr": {
+     "lod0Material": "plate_side",
+     "md5": "75cb7bb7c388c7f6c5aa12ea1bd4edb1",
+     "lodImage": 5,
+     "lod0Image": 5
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "plate_side"
+  },
+  {
+   "glb": "Assets/Env/World/Ground/ground_paving/ground_paving_LOD2.glb",
+   "lod0": "Assets/Env/World/Ground/ground_paving/ground_paving_LOD0.glb",
+   "material": "plate_side",
+   "slots": {
+    "base": {
+     "lod0Material": "plate_side",
+     "md5": "a4d33613346592aeb3d3020c26c10466",
+     "lodImage": 4,
+     "lod0Image": 4
+    },
+    "normal": {
+     "lod0Material": "plate_side",
+     "md5": "fecce8c351ae87cc7b66fdd970b9d41b",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "mr": {
+     "lod0Material": "plate_side",
+     "md5": "75cb7bb7c388c7f6c5aa12ea1bd4edb1",
+     "lodImage": 5,
+     "lod0Image": 5
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "plate_side"
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_arch_broken_a/mid_arch_broken_a_LOD1.glb",
+   "lod0": "Assets/Env/World/Mid/mid_arch_broken_a/mid_arch_broken_a_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_arch_broken_a/mid_arch_broken_a_LOD2.glb",
+   "lod0": "Assets/Env/World/Mid/mid_arch_broken_a/mid_arch_broken_a_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_arch_broken_b/mid_arch_broken_b_LOD1.glb",
+   "lod0": "Assets/Env/World/Mid/mid_arch_broken_b/mid_arch_broken_b_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_arch_broken_b/mid_arch_broken_b_LOD2.glb",
+   "lod0": "Assets/Env/World/Mid/mid_arch_broken_b/mid_arch_broken_b_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_buttress_stub/mid_buttress_stub_LOD1.glb",
+   "lod0": "Assets/Env/World/Mid/mid_buttress_stub/mid_buttress_stub_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_buttress_stub/mid_buttress_stub_LOD2.glb",
+   "lod0": "Assets/Env/World/Mid/mid_buttress_stub/mid_buttress_stub_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_column_cluster/mid_column_cluster_LOD1.glb",
+   "lod0": "Assets/Env/World/Mid/mid_column_cluster/mid_column_cluster_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_column_cluster/mid_column_cluster_LOD2.glb",
+   "lod0": "Assets/Env/World/Mid/mid_column_cluster/mid_column_cluster_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_slab_heap_a/mid_slab_heap_a_LOD1.glb",
+   "lod0": "Assets/Env/World/Mid/mid_slab_heap_a/mid_slab_heap_a_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_slab_heap_a/mid_slab_heap_a_LOD2.glb",
+   "lod0": "Assets/Env/World/Mid/mid_slab_heap_a/mid_slab_heap_a_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_slab_heap_b/mid_slab_heap_b_LOD1.glb",
+   "lod0": "Assets/Env/World/Mid/mid_slab_heap_b/mid_slab_heap_b_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_slab_heap_b/mid_slab_heap_b_LOD2.glb",
+   "lod0": "Assets/Env/World/Mid/mid_slab_heap_b/mid_slab_heap_b_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_spire_fallen/mid_spire_fallen_LOD1.glb",
+   "lod0": "Assets/Env/World/Mid/mid_spire_fallen/mid_spire_fallen_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_spire_fallen/mid_spire_fallen_LOD2.glb",
+   "lod0": "Assets/Env/World/Mid/mid_spire_fallen/mid_spire_fallen_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_tower_stump/mid_tower_stump_LOD1.glb",
+   "lod0": "Assets/Env/World/Mid/mid_tower_stump/mid_tower_stump_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_tower_stump/mid_tower_stump_LOD2.glb",
+   "lod0": "Assets/Env/World/Mid/mid_tower_stump/mid_tower_stump_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_wall_lancets/mid_wall_lancets_LOD1.glb",
+   "lod0": "Assets/Env/World/Mid/mid_wall_lancets/mid_wall_lancets_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_wall_lancets/mid_wall_lancets_LOD2.glb",
+   "lod0": "Assets/Env/World/Mid/mid_wall_lancets/mid_wall_lancets_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_wall_traceried/mid_wall_traceried_LOD1.glb",
+   "lod0": "Assets/Env/World/Mid/mid_wall_traceried/mid_wall_traceried_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Mid/mid_wall_traceried/mid_wall_traceried_LOD2.glb",
+   "lod0": "Assets/Env/World/Mid/mid_wall_traceried/mid_wall_traceried_LOD0.glb",
+   "material": "mid_ruin_stone",
+   "slots": {
+    "emis": {
+     "lod0Material": "mid_ruin_stone",
+     "md5": "321041117a2007d9795d4a668d888b11",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": false,
+   "maskFromLod0Material": null
+  },
+  {
+   "glb": "Assets/Env/World/Trench/trench_lava/trench_lava_LOD1.glb",
+   "lod0": "Assets/Env/World/Trench/trench_lava/trench_lava_LOD0.glb",
+   "material": "trench_lava",
+   "slots": {
+    "base": {
+     "lod0Material": "trench_lava",
+     "md5": "11f11f89c9720e2c1bd2d4b105274af5",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "normal": {
+     "lod0Material": "trench_lava",
+     "md5": "79ceadef048df4455148514ec6779107",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "trench_lava",
+     "md5": "63feb1418ebc805209f757d3cb566ae4",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "emis": {
+     "lod0Material": "trench_lava",
+     "md5": "1764219ae2ceb44803553dd273ad656f",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "trench_lava"
+  },
+  {
+   "glb": "Assets/Env/World/Trench/trench_lava/trench_lava_LOD2.glb",
+   "lod0": "Assets/Env/World/Trench/trench_lava/trench_lava_LOD0.glb",
+   "material": "trench_lava",
+   "slots": {
+    "base": {
+     "lod0Material": "trench_lava",
+     "md5": "11f11f89c9720e2c1bd2d4b105274af5",
+     "lodImage": 2,
+     "lod0Image": 2
+    },
+    "normal": {
+     "lod0Material": "trench_lava",
+     "md5": "79ceadef048df4455148514ec6779107",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "mr": {
+     "lod0Material": "trench_lava",
+     "md5": "63feb1418ebc805209f757d3cb566ae4",
+     "lodImage": 3,
+     "lod0Image": 3
+    },
+    "emis": {
+     "lod0Material": "trench_lava",
+     "md5": "1764219ae2ceb44803553dd273ad656f",
+     "lodImage": 0,
+     "lod0Image": 0
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "trench_lava"
+  }
+ ]
+}
