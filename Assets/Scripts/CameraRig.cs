@@ -101,6 +101,7 @@ public class CameraRig : MonoBehaviour
         {
             yaw += Input.GetAxis("Mouse X") * sensitivity * MenuSettings.CamSens; /* MENU v100: Settings > Gameplay > camera sensitivity */ yaw = Mathf.Clamp(Mathf.DeltaAngle(0f, yaw), -free.yawLimitDeg, free.yawLimitDeg);
             pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * sensitivity * MenuSettings.CamSens, free.pitchMinDeg, CamZone.PitchMax(pose.zone, free.pitchMaxDeg)); /* MENU v100 */ /* CAMZONE v1 */
+            float padYaw, padPitch; if (PadExtras.Look(lockOn, out padYaw, out padPitch)) { yaw = Mathf.Clamp(Mathf.DeltaAngle(0f, yaw + padYaw * Time.deltaTime), -free.yawLimitDeg, free.yawLimitDeg); pitch = Mathf.Clamp(pitch - padPitch * Time.deltaTime, free.pitchMinDeg, CamZone.PitchMax(pose.zone, free.pitchMaxDeg)); }   // PADEXTRAS v1: right stick looks around in the free camera (off = this line does nothing)
         }
         var fcr = pose.freeCam; bool fcOn = fcr.enabled && lockW <= 0.001f;   // FREECAM v1: the free camera only; while any lock weight is left, the collision path below is the old one
         if (fcr.enabled && !freePitchInit) { freePitchInit = true; pitch = Mathf.Clamp(fcr.startPitchDeg, free.pitchMinDeg, CamZone.PitchMax(pose.zone, free.pitchMaxDeg)); }   // FREECAM v1: the scene starts at 2 deg, the zone free pitch after a lock is 8: one value

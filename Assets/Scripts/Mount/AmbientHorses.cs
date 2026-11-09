@@ -24,6 +24,7 @@ using UnityEngine;
 {
     public bool enabled = false, debugLog = false, convertMaterials = true, shadows = false, holdWhileEngaged = true;
     public float pollSeconds = 0.5f, spawnMarginM = 14f, despawnMarginM = 22f, avoidPlayerM = 4f, minSpacingM = 3f, groundRayUpM = 3f, groundRayDownM = 10f, sinkM = 0.03f, fallbackY = 0f;
+    public float freeMarginM = 0f, engagedMaxM = 40f;   // laneHERDS fix2: free a sleeping herd's meshes/textures when the player is this far from its area (0 = never, today)
     public int groundMask = -1, framesBetweenLoads = 2, maxTargetTries = 12, seedStride = 7919, hitBuffer = 8;
     public float lodMidEnterM = 0f, lodMidExitM = 0f, lodMidBoundsTolM = 0.15f;   // FPSX_D2: camera distance (m) beyond which the mid mesh is shown / back to full inside exit; 0 = never load or use a mid mesh (today)
     public AhGait gait = new AhGait(); public AhBreed[] breeds = new AhBreed[0]; public AhHerd[] herds = new AhHerd[0];
@@ -35,8 +36,8 @@ public sealed class AmbientHorses : MonoBehaviour
     class Horse { public Renderer[] fullR, midR; public bool midOn; public GameObject go; public Transform body; public AhHerd herd; public Vector3 pos, target; public float yaw, wait, phase, breath, speed, amp, bob, pitch, roll, spawnY; public bool walking, placed; public System.Random rnd; }
     class Loaded { public GltfHold hold; }
     class GltfHold { public GLTFast.GltfImport imp; }
-    class HerdState { public List<Horse> horses = new List<Horse>(); public bool loading, tried, asleep; public List<Material> mats = new List<Material>(); public List<GltfHold> holds = new List<GltfHold>(); public int gen; }
-    readonly Dictionary<AhHerd, HerdState> st = new Dictionary<AhHerd, HerdState>(); float nextPoll;
+    class HerdState { public List<Horse> horses = new List<Horse>(); public bool loading, tried, asleep, traced; public List<Material> mats = new List<Material>(); public List<GltfHold> holds = new List<GltfHold>(); public int gen; }
+    readonly Dictionary<AhHerd, HerdState> st = new Dictionary<AhHerd, HerdState>(); float nextPoll, nextGateLog;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Inst = null; K = null; }
     public static AhCfg Get()
@@ -49,7 +50,10 @@ public sealed class AmbientHorses : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
-        if (Inst != null) return; var k = Get(); if (!k.enabled || k.herds.Length == 0) return; if (PerfFlags.HarnessRun()) return;
+        if (Inst != null) return; var k = Get();
+        bool argOn = false; foreach (var a in Environment.GetCommandLineArgs()) if (a.StartsWith("-ambienthorses", StringComparison.OrdinalIgnoreCase)) argOn = true;   // laneHERDS proof: bypass the harness return (default behaviour unchanged)
+        if (k.debugLog || argOn) Debug.Log("[AmbientHorses] Boot enabled=" + k.enabled + " herds=" + k.herds.Length + " harness=" + PerfFlags.HarnessRun() + " arg=" + argOn);
+        if (!k.enabled || k.herds.Length == 0) return; if (PerfFlags.HarnessRun() && !argOn) return;
         var go = new GameObject("AmbientHorses"); DontDestroyOnLoad(go); Inst = go.AddComponent<AmbientHorses>();
     }
     void OnDestroy() { foreach (var kv in st) Free(kv.Value); st.Clear(); if (Inst == this) Inst = null; }
@@ -63,13 +67,16 @@ public sealed class AmbientHorses : MonoBehaviour
         if (now >= nextPoll)
         {
             nextPoll = now + K.pollSeconds;
+            if (K.debugLog && now >= nextGateLog) { nextGateLog = now + 5f; Debug.Log("[AmbientHorses] gate zones=" + zones + " Owns=" + ZoneRuntime.Owns + " Live=" + ZoneSpan.Live + " player=" + (p != null) + " groundHold=" + ZoneGroundHold.Active + " pos=" + (p != null ? p.transform.position.ToString("F1") : "-")); }   // laneHERDS debug
             foreach (var h in K.herds)
             {
                 if (h == null || !h.enabled || h.count <= 0 || h.breeds == null || h.breeds.Length == 0) continue; HerdState s; if (!st.TryGetValue(h, out s)) { s = new HerdState(); st[h] = s; }
                 bool near = zones && Near(p.transform.position, h.area, s.asleep || s.horses.Count > 0 ? K.despawnMarginM : K.spawnMarginM);
-                bool engaged = K.holdWhileEngaged && p != null && p.opponent != null && !p.opponent.Dead;
+                bool engaged = K.holdWhileEngaged && p != null && p.opponent != null && !p.opponent.Dead && (K.engagedMaxM <= 0f || Vector3.Distance(p.transform.position, p.opponent.transform.position) <= K.engagedMaxM);   // laneHERDS fix3: a stale/far opponent (player.opponent is never cleared on leaving a zone) is not a fight
+                if (K.debugLog && !s.traced) { s.traced = true; Debug.Log("[AmbientHorses] decide " + h.id + " near=" + near + " engaged=" + engaged + " opp=" + (p != null && p.opponent != null ? p.opponent.name : "-") + " loading=" + s.loading + " tried=" + s.tried + " asleep=" + s.asleep + " horses=" + s.horses.Count + " pos=" + (p != null ? p.transform.position.ToString("F1") : "-") + " area=" + h.area.xMin + ".." + h.area.xMax + " / " + h.area.zMin + ".." + h.area.zMax); }   // laneHERDS trace
                 if (near && !engaged) { if (s.asleep) Wake(s); else if (!s.loading && !s.tried && s.horses.Count == 0) { s.tried = true; var t = SpawnHerd(h, s, ++s.gen); } }
-                else if (!near || engaged) { if (s.horses.Count > 0 && !s.asleep) Sleep(s); else if (s.loading) { s.gen++; s.tried = false; } if (!near) s.tried = false; }
+                else if (!near || engaged) { if (s.horses.Count > 0 && !s.asleep) Sleep(s); else if (s.loading) { s.gen++; s.tried = false; } if (!near) s.tried = false;
+                    if (!near && p != null && K.freeMarginM > 0f && s.asleep && s.horses.Count > 0 && !Near(p.transform.position, h.area, K.freeMarginM)) { Free(s); s.asleep = false; s.tried = false; } }   // laneHERDS fix2
             }
         }
         float dt = Time.deltaTime; foreach (var kv in st) { var s = kv.Value; if (s.asleep) continue; foreach (var hr in s.horses) if (hr.go != null && hr.go.activeSelf) Step(hr, kv.Key, s, dt, p); }
@@ -89,16 +96,16 @@ public sealed class AmbientHorses : MonoBehaviour
         s.loading = true;
         try
         {
-            var rnd = new System.Random(h.seed);
+            if (K.debugLog) Debug.Log("[AmbientHorses] SpawnHerd start " + h.id + " count=" + h.count); var rnd = new System.Random(h.seed);
             for (int i = 0; i < h.count; i++)
             {
                 if (gen != s.gen) { Free(s); return; }
                 var b = Breed(h.breeds[rnd.Next(h.breeds.Length)]); if (b == null) { Debug.LogWarning("[AmbientHorses] herd " + h.id + ": unknown breed"); continue; }
-                string file = File(b); if (file == null) { Debug.LogWarning("[AmbientHorses] breed " + b.id + ": glb not found under StreamingAssets: " + b.glb); continue; }
+                string file = File(b); if (K.debugLog) Debug.Log("[AmbientHorses] " + h.id + "[" + i + "] breed=" + b.id + " file=" + (file ?? "NULL")); if (file == null) { Debug.LogWarning("[AmbientHorses] breed " + b.id + ": glb not found under StreamingAssets: " + b.glb); continue; }
                 var go = new GameObject("AmbientHorse_" + h.id + "_" + i); DontDestroyOnLoad(go); go.SetActive(false);
                 var body = new GameObject("Body"); body.transform.SetParent(go.transform, false);
                 var hold = new GltfHold { imp = new GLTFast.GltfImport() }; s.holds.Add(hold);
-                if (!await hold.imp.LoadFile(file) || !await hold.imp.InstantiateMainSceneAsync(body.transform)) { Debug.LogWarning("[AmbientHorses] glb failed: " + file); Destroy(go); continue; }
+                bool okLoad = await hold.imp.LoadFile(file); if (K.debugLog) Debug.Log("[AmbientHorses] " + h.id + "[" + i + "] LoadFile ok=" + okLoad); if (!okLoad || !await hold.imp.InstantiateMainSceneAsync(body.transform)) { Debug.LogWarning("[AmbientHorses] glb failed: " + file); Destroy(go); continue; }
                 if (gen != s.gen) { Destroy(go); Free(s); return; }
                 foreach (var c in go.GetComponentsInChildren<Collider>(true)) Destroy(c);
                 var rl = new List<Renderer>(go.GetComponentsInChildren<Renderer>(true));
@@ -108,6 +115,8 @@ public sealed class AmbientHorses : MonoBehaviour
                 var hr = new Horse { go = go, body = body.transform, herd = h, rnd = new System.Random(h.seed * K.seedStride + i), wait = 0f };
                 hr.pos = RandomPoint(h, hr, s, null); hr.yaw = (float)(hr.rnd.NextDouble() * 360.0); hr.target = hr.pos; hr.wait = Pause(hr);   // hc:ok 360 = a full turn (random start heading)
                 s.horses.Add(hr);
+                go.transform.position = hr.pos;            // laneHERDS fix1: not at the world origin while Step() waits for ground
+                if (!s.asleep) go.SetActive(true);         // laneHERDS fix1: the horse was created inactive and nothing ever activated it
                 if (K.lodMidEnterM > 0f && !string.IsNullOrEmpty(b.midGlb) && rl.Count == 1) await AddMid(b, body.transform, hr, s, rl[0]);   // FPSX_D2
                 for (int f = 0; f < K.framesBetweenLoads; f++) await Task.Yield();
             }

@@ -105,7 +105,7 @@
       "spinYawRadS": 0.5,
       "massKg": 7.0,
       "headMassShare": 0.8,
-      "maxLifeS": 280.0,
+      "maxLifeS": 170.0,
       "lingerAfterOwnerS": 20.0,
       "sinkS": 1.5,
       "lootItems": [
@@ -115,8 +115,8 @@
     {
       "character": "Sobek",
       "weapon": "",
-      "note": "Claws: nothing in the hand to drop (WeaponSwap.Unarmed is also checked in code).",
-      "enabled": false,
+      "note": "WEAPONDROP presentation for Sobek (the trident falls as a body after the kill). Copy of Pitborn's timing. Shape = the row with weapon 'sword' or the '' fallback box (UNVERIFIED for a trident). The GEAR drop (loot pillar, GearDrop.cs, data dropFrom) is independent of this presentation.",
+      "enabled": true,
       "duringFinisher": true,
       "vanishOnRespawn": true,
       "delayS": 0.35,
@@ -128,10 +128,12 @@
       "spinYawRadS": 0.5,
       "massKg": 7.0,
       "headMassShare": 0.8,
-      "maxLifeS": 280.0,
+      "maxLifeS": 170.0,
       "lingerAfterOwnerS": 20.0,
       "sinkS": 1.5,
-      "lootItems": []
+      "lootItems": [
+        "sobek_trident"
+      ]
     },
     {
       "character": "Joan",

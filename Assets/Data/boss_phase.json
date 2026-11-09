@@ -1,0 +1,19 @@
+{
+  "_about": "BOSSPHASE v1 (laneTOP20B, BossPhase.cs, UNPROVEN IN UNITY). The half-HP phase of a boss as a readable tell. The phase itself is AiAdapt's enrage (ai_adapt.json profiles[].enrage: hpFrac, speedMul, waitMul, reactionMul, comboAdd, punishAdd, diversify, fx): this file adds what the player can SEE and HEAR when it starts, and an optional damage step. A row fires once when the boss enters its phase (AIBrain.adapt.enraged turns true; a fighter with no AiAdapt profile falls back to health / maxHealth <= the row hpFrac). rows[].id = roster id (RosterResolver; '*' = any enemy). cue = an EXISTING cue name from audio_manifest.json played through CueBus (gain 0 = silent, rate < 1 = deeper: effort_voice at 0.45 to 0.85 is the roar; no new audio). shake = a camera_impact.json shake class id ('special', 'crit', 'deathblow', 'hitHeavy', 'guardBreak', '' = none) x shakeMul. damageMul multiplies DuelFighter.damageScale while the phase is on (1.0 = no change, and 1.0 ships on every row: raise it only after a -balanceauto run). Nothing here adds a move, clip, weapon or texture; Grendel stays claws only, Erlking unarmed. MASTER enabled ships false = no BossPhase object, today's behaviour byte for byte.",
+  "enabled": true,
+  "pollSeconds": 0.25,
+  "refreshSeconds": 2.0,
+  "log": true,
+  "rows": [
+    { "id": "Pitborn", "enabled": true, "hpFrac": 0.5, "damageMul": 1.0, "cue": { "cue": "effort_voice", "gain": 0.35, "rate": 0.85, "delay": 0.0 }, "shake": "special", "shakeMul": 0.6,
+      "_note": "Gate Warden: tutorial boss, mild tell. Phase = enemy_d7_10 enrage (speed x1.15, waits x0.6, +combo, +punish)." },
+    { "id": "Sobek", "enabled": true, "hpFrac": 0.5, "damageMul": 1.0, "cue": { "cue": "effort_voice", "gain": 0.40, "rate": 0.60, "delay": 0.0 }, "shake": "special", "shakeMul": 0.8,
+      "_note": "River Tyrant: phase = sobek_hunter enrage, which fires at hpFrac 0.6 in ai_adapt.json (SOBEKBAL); Dom's 'half HP' means set that to 0.5 and re-prove." },
+    { "id": "Grendel", "enabled": true, "hpFrac": 0.5, "damageMul": 1.0, "cue": { "cue": "effort_voice", "gain": 0.45, "rate": 0.55, "delay": 0.0 }, "shake": "crit", "shakeMul": 1.0,
+      "_note": "Bone Reaver, claws only. Needs the ai_adapt.json order fix or he enrages as the generic enemy_d7_10 (see AUDIT item 5)." },
+    { "id": "Humbaba", "enabled": true, "hpFrac": 0.5, "damageMul": 1.0, "cue": { "cue": "effort_voice", "gain": 0.45, "rate": 0.50, "delay": 0.0 }, "shake": "crit", "shakeMul": 1.2,
+      "_note": "Cedar guardian, claws + maw lunge. Same order fix as Grendel." },
+    { "id": "Erlking", "enabled": true, "hpFrac": 0.5, "damageMul": 1.0, "cue": { "cue": "effort_voice", "gain": 0.50, "rate": 0.45, "delay": 0.0 }, "shake": "deathblow", "shakeMul": 0.8,
+      "_note": "Final boss, unarmed. Same order fix; slow heavy tempo, so the tell is the loudest." }
+  ]
+}

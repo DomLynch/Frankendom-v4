@@ -64,6 +64,12 @@ public static class ZoneSave
     static ZoneFile data; static bool dirty;
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { data = null; dirty = false; LastError = ""; Store = new LocalFileStore(); }
 
+    public static float NewGamePendingUntil;   // SAVEFIX v2: set by OnNewGame, cleared by ZoneRuntime.Rebind, expires after one save interval: the restart is under way, no autosave may write the old zone back
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetSaveFix() { NewGamePendingUntil = 0f; }   // SAVEFIX v2
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)] static void HookErase() { SaveSlot.OnErase += OnNewGame; }   // SAVEFIX v2: same hook point as LootSave (SaveSlot.Erase only fires it while SaveSlot.Active)
+    static void OnNewGame() { var P = ZoneData.Get().persistence; if (!P.resetOnNewGame || !Active) return; data = new ZoneFile(); Fix(data); dirty = false; NewGamePendingUntil = Time.unscaledTime + P.saveEverySeconds; var ls = Store as LocalFileStore; if (ls != null && !RunMode.RealSaveBlocked) { try { string p = ls.Path_; if (File.Exists(p)) { SafeFile.Quarantine(p, "erased", "was erased by New game"); File.Delete(p); } SafeFile.Discard(p); /* .bak and .tmp too */ } catch (Exception e) { LastError = e.Message; } } Debug.Log("[SaveFix] zones save reset by New game"); }   // SAVEFIX v2
+    /// <summary>True = ZoneRuntime.SaveNow must not write now. Both rows are off by default (then always false, no log).</summary>   // SAVEFIX v2
+    public static bool ShouldSkipSave(bool down) { var P = ZoneData.Get().persistence; if (P.skipSaveWhileDown && down) { Debug.Log("[SaveFix] zone save skipped while down: the last living record stays"); return true; } if (P.resetOnNewGame && Time.unscaledTime < NewGamePendingUntil) { Debug.Log("[SaveFix] zone save skipped: New game restart pending"); return true; } return false; }   // SAVEFIX v2
     public static bool Active { get { return ZoneData.On && !MenuCfg.Harness; } }
     public static ZoneFile Data { get { if (data == null) { data = Active ? Store.Load() : new ZoneFile(); Fix(data); } return data; } }
     static void Fix(ZoneFile f) { if (f.player == null) f.player = new ZonePlayerRec(); if (f.spawns == null) f.spawns = new SpawnRec[0]; if (f.gates == null) f.gates = new string[0]; f.version = ZoneData.Get().persistence.version; }

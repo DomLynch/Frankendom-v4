@@ -1,0 +1,24 @@
+{
+  "_about": "PADEXTRAS v1 (laneTOP20C). Gamepad actions that had no pad binding, plus right-stick free look. Read by PadExtras.cs (NEW). Missing file or enabled=false = the old behaviour bit for bit. rows[]: action = press:<move id> | feint | potionCycle | recenter; trigger = button (KeyCode name, JoystickButtonN: 0 A, 1 B, 2 X, 3 Y, 4 LB, 5 RB, 6 Back, 7 Start, 8 L3, 9 R3) OR axis + axisSign (Input Manager axis name, edge when |value| >= axisThreshold in that sign; the D-pad is the axis DPadY: up = +1 on Windows XInput, flip axisSign if a pad reports it the other way); chord = buttons that must be held (the row with the most chord buttons wins for the same trigger). look: the right stick turns the free camera (never while locked on, never while a blockWhileHeld button is held); deg/s at full deflection, radial dead zone, response curve. Run is the controls.json run row (pad JoystickButton8 = L3, hold). The stance switch stays on D-pad left/right (stances.json padAxisX = DPadX).",
+  "version": 1,
+  "enabled": true,
+  "debugLog": false,
+  "axisThreshold": 0.5,
+  "look": {
+    "enabled": true,
+    "axisX": "RightStickX",
+    "axisY": "RightStickY",
+    "deadZone": 0.2,
+    "yawDegPerS": 120.0,
+    "pitchDegPerS": 70.0,
+    "responsePower": 1.5,
+    "invertY": false,
+    "blockWhileHeld": ["JoystickButton4", "JoystickButton5"]
+  },
+  "rows": [
+    { "id": "kick",         "action": "press:kick",  "axis": "DPadY", "axisSign": 1.0,  "note": "D-pad up" },
+    { "id": "feint",        "action": "feint",       "axis": "DPadY", "axisSign": -1.0, "note": "D-pad down" },
+    { "id": "potionCycle",  "action": "potionCycle", "axis": "DPadY", "axisSign": 1.0,  "chord": ["JoystickButton4"], "note": "LB + D-pad up (wins over kick while LB is held)" },
+    { "id": "recenter",     "action": "recenter",    "axis": "DPadY", "axisSign": -1.0, "chord": ["JoystickButton4"], "note": "LB + D-pad down (wins over feint while LB is held)" }
+  ]
+}

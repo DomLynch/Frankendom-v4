@@ -1,6 +1,6 @@
 {
   "_about": "BOW v2 STAGED DARK, UNPROVEN IN UNITY. Read by BowCfg.cs. Master 'enabled' false or a missing file = no bow anywhere, every fight is bit for bit today's (BowHooks returns neutral on its first line). Ported from Frankendom V3 / V1 sandbox rows (sandbox-rules-defs.json: missile, missileLanes, bowSpecial, specialPick; kit/source/v3_sandbox-rules-defs.json). V3 units kept where it can: speeds in cm/s, shares per-mille, ticks at 60 Hz. The bow is a MODE of the fighter, not a gear swap: mode ON = strikes become auto-aimed arrows (the shot always flies at the foe, only a roll i-frame, a guard that covers the lane, or a parry-less block answers it; V3 missileHoming 1), the two specials change to the bow's, WeaponHooks reports the bow weapon stats. Command line: -bow:on / -bow:off (force master), -bow:auto (force auto.enabled), -bow:log (one line per switch and shot).",
-  "enabled": false,
+  "enabled": true,
   "debugLog": false,
   "characters": [
     "Joan"
@@ -224,7 +224,7 @@
   "input": {
     "_about": "Manual toggle (works with auto off). Alpha3 = key 3 (1 / 2 are the specials; B is the riposte key in flow.json). KeyCode names; pad L3 = JoystickButton8 (A/B/R3 are dodge/riposte/lock, Y/X specials).",
     "toggleKeys": [
-      "Alpha3"
+      "Alpha5"
     ],
     "padToggleKeys": [
       "JoystickButton8"

@@ -315,11 +315,11 @@
     "maxPerKillBy": [
       {
         "victim": "Pitborn",
-        "max": 3
+        "max": 1
       },
       {
         "victim": "Sobek",
-        "max": 2
+        "max": 1
       },
       {
         "victim": "Grendel",
@@ -654,10 +654,8 @@
         "poise": 6,
         "weight": 4
       },
-      "dropFrom": [
-        "Pitborn"
-      ],
-      "dropChance": 1.0,
+      "dropFrom": [],
+      "dropChance": 0.0,
       "materials": {
         "*": {
           "smoothness": 0.5,
@@ -747,9 +745,7 @@
         "poise": 1,
         "weight": 2.5
       },
-      "dropFrom": [
-        "Pitborn"
-      ],
+      "dropFrom": [],
       "dropChance": 0.0,
       "materials": {
         "pauldron_mat": {
@@ -796,9 +792,7 @@
         "poise": 1,
         "weight": 2.5
       },
-      "dropFrom": [
-        "Pitborn"
-      ],
+      "dropFrom": [],
       "dropChance": 0.0,
       "materials": {
         "vambrace_mat": {
@@ -842,9 +836,7 @@
         "poise": 1,
         "weight": 2.5
       },
-      "dropFrom": [
-        "Pitborn"
-      ],
+      "dropFrom": [],
       "dropChance": 0.0,
       "materials": {
         "gorget_mat": {
@@ -891,9 +883,7 @@
         "poise": 1,
         "weight": 2.5
       },
-      "dropFrom": [
-        "Pitborn"
-      ],
+      "dropFrom": [],
       "dropChance": 0.0,
       "materials": {
         "greave_mat": {
@@ -937,10 +927,8 @@
         "poise": 8,
         "weight": 6
       },
-      "dropFrom": [
-        "Pitborn"
-      ],
-      "dropChance": 1.0,
+      "dropFrom": [],
+      "dropChance": 0.0,
       "notes": "v87 PLACEHOLDER (Dom): Pitborn's chest piece drop. The glb does not exist yet, the art comes later: a missing glb = stats only, no visual, no exception. Drops with the pauldrons and the maul on the first win.",
       "weapon": {
         "damageMul": 1,
@@ -1027,10 +1015,8 @@
         "poise": 2,
         "weight": 2.8
       },
-      "dropFrom": [
-        "Pitborn"
-      ],
-      "dropChance": 0.15,
+      "dropFrom": [],
+      "dropChance": 0.0,
       "tier": "drop",
       "source": "modelled v2 (laneHELMET2): smooth analytic shell, fitted to the Joan_v6b scalp",
       "doubleSided": false,
@@ -1077,10 +1063,8 @@
         "poise": 1,
         "weight": 1.6
       },
-      "dropFrom": [
-        "Pitborn"
-      ],
-      "dropChance": 0.3,
+      "dropFrom": [],
+      "dropChance": 0.0,
       "tier": "drop",
       "source": "modelled v2 (laneHELMET2): smooth analytic shell, fitted to the Joan_v6b scalp",
       "doubleSided": false,
@@ -1219,8 +1203,10 @@
         "poise": 0,
         "weight": 0
       },
-      "dropFrom": [],
-      "dropChance": 0.0,
+      "dropFrom": [
+        "Sobek"
+      ],
+      "dropChance": 1.0,
       "notes": "SOBEKTUNE v1 (replaces the SOBEKWEAPON ornate stand-in): Strategy picked C14 = frankendom src/assets/source/weapons/trident.glb (dark bronze, 99,646 tris source, never edited, copy in laneSOBEKTUNE\\trident). LOD0 = 18000 tris with a 2K normal and 2K AO (R channel, occlusionTexture) baked from the 99.6k source (Cycles CPU), all textures PNG; LOD1 = 5400 tris (distance LOD: swap by distance is a Unity step, no loader exists yet). Length 2.55 m = 0.85 x Sobek 3.0 m, grip node = origin, butt 0.51 m behind it, tip 2.04 m ahead, nodes grip / tip / head / grip_off / grip_off_low. Extra cost vs the 3,120-tri stand-in: +14880 tris (LOD0), 2 x 2K maps + 2 x 1K maps in memory. | SOBEKMOVES: speedMul 1.08 (a bit quicker than the sword), reachMul 1.7 = median ReachScale for a 2.2 m tip (tools\\reach_table.py; fighter.scale assumed 1), damage/posture 1.0.",
       "weapon": {
         "id": "sobek_trident",

@@ -1,0 +1,17 @@
+{
+  "_about": "laneTOP20A CombatCues.cs. enabled false (shipped default) = the component is not created, the game is unchanged. wrongSide: a toast when the PLAYER's raised guard faced the attacker but its side did not cover the swing (controls.json guard.match), so the blow went through as a clean hit. exhausted: a toast when the player's stamina hits 0 plus a pulsing red screen edge while DuelFighter.Exhausted lasts (stamina.json exhausted{}: walk x0.85, damage x0.75, no parry, slow guard raise, heavies refused). seconds = toast time, sizeFrac / yFrac = font size and vertical position as fractions of screen height, edgeAlpha / edgeWidthFrac / edgeHz = edge pulse. Colours r,g,b,a.",
+  "enabled": true,
+  "wrongSide": true,
+  "exhausted": true,
+  "edge": true,
+  "wrongSideText": "WRONG SIDE",
+  "exhaustedText": "EXHAUSTED",
+  "seconds": 0.8,
+  "sizeFrac": 0.04,
+  "yFrac": 0.64,
+  "edgeAlpha": 0.4,
+  "edgeWidthFrac": 0.07,
+  "edgeHz": 1.8,
+  "wrongColor": [0.95, 0.72, 0.28, 1.0],
+  "exhaustedColor": [0.85, 0.2, 0.12, 1.0]
+}

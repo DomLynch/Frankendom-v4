@@ -44,6 +44,7 @@ public sealed class ZoneRuntime : MonoBehaviour
     void Rebind()
     {
         if (lastRebind == Time.frameCount) return; lastRebind = Time.frameCount;
+        ZoneSave.NewGamePendingUntil = 0f;   // SAVEFIX v2: the restart reached Rebind, the fresh ZoneSave.Data is read next
         on = false; T = ZoneData.Get(); live.Clear(); templates.Clear(); player = null; rift = null; riftOpen = false; phase = Phase.Play; cover = 0f; downHandled = false; crossGate = null;
         var found = new List<DuelFighter>();
         foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsInactive.Include, FindObjectsSortMode.None)) { if (f.name.Contains(Roster.PlayerObject)) player = f; else found.Add(f); }
@@ -86,7 +87,7 @@ public sealed class ZoneRuntime : MonoBehaviour
         zone = z; if (spot.Length > 0) lastSpot = spot; ArenaLimits.ZoneZMax = z.limits != null ? z.limits.zMax : float.NaN; arriveGraceUntil = 0f; UpdateRift(true); LookSpawns(false); return true;
     }
     public void SpanRestoreLimits() { if (zone != null) ArenaLimits.ZoneZMax = zone.limits != null ? zone.limits.zMax : float.NaN; }
-    public void SpanWarm(string zoneId) { var z = ZoneData.Zone(zoneId); if (!on || z == null || z == zone || phase != Phase.Play) return; var keep = zone; zone = z; long zs = ZoneHitch.Mark(); LookSpawns(true); ZoneHitch.Lap("spanWarm.lookSpawns " + zoneId, ref zs); zone = keep; }
+    public void SpanWarm(string zoneId) { var z = ZoneData.Zone(zoneId); if (!on || z == null || z == zone || phase != Phase.Play) return; var keep = zone; zone = z; long zs = ZoneHitch.Mark(); try { LookSpawns(true); ZoneHitch.Lap("spanWarm.lookSpawns " + zoneId, ref zs); } finally { if (ZoneData.Get().persistence.spanWarmFinally) zone = keep; } zone = keep; }   /* SAVEFIX v2: key on = an exception in LookSpawns no longer leaves `zone` on the NEXT zone; key off = it propagates exactly as before */
     // ZONEHITCH v1: load (and keep) every Resources prefab a zone spawn row can pick, before the player walks there; returns those prefab assets (ZoneHitch draws their materials once). Never instantiates, never touches `live`.
     public List<GameObject> SpanPreload()
     {
@@ -278,6 +279,7 @@ public sealed class ZoneRuntime : MonoBehaviour
         var rg = FindFirstObjectByType<CameraRig>(); if (rg != null) { rg.enemy = best.df.transform; rg.enemyHp = best.df.GetComponent<Health>(); }
         var orw = GameLoop.Opponents().rows; if (best.row.ladderRow.Length > 0 && orw != null) for (int i = 0; i < orw.Length; i++) if (orw[i] != null && orw[i].id == best.row.ladderRow) { GameLoop.OpponentIndex = i; break; }
     }
+    float nextStaleLog;   // OPPSTALE v1
     int EngagedCount() { int n = 0; foreach (var l in live.Values) if (l.engaged && !l.killed && l.df != null && !l.df.Dead) n++; return n; }
     void Engagement()
     {
@@ -285,6 +287,12 @@ public sealed class ZoneRuntime : MonoBehaviour
         if (T.twoFight.noEngageInFinisher && RTFinisher.Busy) return;   // TWOFIGHT v1: nobody new engages (and the target is not re-picked) while a finisher scene owns both fighters: Engage() during the scene set player.opponent, then RTFinisher.Release nulled it
         if (T.twoFight.healTarget && EngagedCount() > 0 && !TargetOk(player.opponent)) Retarget(true);   // TWOFIGHT v1: a target that is missing, dead or gave up while another enemy is engaged (Release / ChaseAgent clear player.opponent; the old retarget only ran with 2+ engaged)
         if (T.twoFight.safeZoneGiveUp) SafeZoneGiveUp();   // TWOFIGHT v1
+        if (T.twoFight.clearStaleOpponent && player.opponent != null && EngagedCount() == 0)   // OPPSTALE v1: an ALIVE opponent that is not fighting Joan (dormant / far / inactive / gave up) must not stay player.opponent (blocked camp NPCs, mounting, herds, camera re-lock). A dead one is left to the kill sequence.
+        {
+            var so = player.opponent;
+            bool stale = !so.Dead && (!so.gameObject.activeInHierarchy || !TargetOk(so) || (T.twoFight.staleMaxM > 0f && Flat(player.transform.position, so.transform.position) > T.twoFight.staleMaxM));
+            if (stale) { if (Time.unscaledTime >= nextStaleLog) { nextStaleLog = Time.unscaledTime + 10f; Debug.Log("[OppStale] cleared stale opponent " + so.name + " (dist " + Flat(player.transform.position, so.transform.position).ToString("F1") + " m)"); } player.opponent = null; }
+        }
         Vector3 pp = player.transform.position;
         foreach (var l in live.Values)
         {
@@ -568,6 +576,7 @@ public sealed class ZoneRuntime : MonoBehaviour
     void SaveNow()
     {
         if (!on || zone == null || player == null) return;
+        if (ZoneSave.ShouldSkipSave(player.Dead || phase == Phase.Down)) return;   // SAVEFIX v2: keep the last living record (or the hearth record DownStep wrote)
         ZoneSave.SetPlayer(zone.id, lastSpot, player.health / Mathf.Max(1f, player.maxHealth)); ZoneSave.Flush(true);
     }
 

@@ -416,9 +416,9 @@
         "keys": [
           "LeftShift"
         ],
-        "pad": [],
+        "pad": ["JoystickButton8"],
         "padFrom": "",
-        "padText": "",
+        "padText": "L3 (hold)",
         "overlap": [],
         "hint": "Hold to run."
       },
@@ -467,7 +467,7 @@
         ],
         "pad": [],
         "padFrom": "",
-        "padText": "",
+        "padText": "D-pad up",
         "overlap": [],
         "hint": "Breaks a guard."
       },
@@ -549,7 +549,7 @@
         ],
         "pad": [],
         "padFrom": "",
-        "padText": "",
+        "padText": "D-pad down",
         "overlap": [],
         "hint": "Cancel a wind-up."
       },
@@ -616,7 +616,7 @@
         ],
         "pad": [],
         "padFrom": "",
-        "padText": "",
+        "padText": "LB + D-pad down",
         "overlap": [],
         "hint": ""
       },

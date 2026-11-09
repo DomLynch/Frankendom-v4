@@ -15,6 +15,9 @@
     "file": "zones_save.json",
     "version": 1,
     "saveEverySeconds": 30,
+    "resetOnNewGame": true,
+    "skipSaveWhileDown": true,
+    "spanWarmFinally": true,
     "_about": "Application.persistentDataPath. Harness runs (MenuCfg.Harness) never read or write it. Rows use the Supabase zone_spawns field names (zone = instance, generation, respawnAtMs = respawn_at) so a later store is a swap of storage, not of data."
   },
   "hp": {
@@ -82,6 +85,8 @@
     "_about": "INT107 (Dom): maxEngaged 2 = Pitborn and Sobek can be on you together (both brains attack the player; target = nearest engaged, switches when another is nearer by retargetMarginM; finisherWithOthers false = plain death while another enemy is engaged). 1 = the duel stays 1 v 1 (the sim and the camera are tuned for it); a camp of 2 is a later Dom decision. spawnMinDistance: a creature whose timer ran out while you stand in its zone appears only when you are at least this far from its spot, or when you arrive through a gate (hidden by the flash); in a small arena that means it appears when you arrive, never in front of you."
   },
   "twoFight": {
+      "clearStaleOpponent": true,
+      "staleMaxM": 60.0,
     "_about": "laneTWOFIGHT v1 (UNPROVEN in Unity): the rules for two enemies on the player at once. skipGivingUp: an enemy that gave up (chase Pause / Home) is neither a target nor a combatant when the target is picked. healTarget: the target is re-picked at once when it is missing, dead or gave up while another enemy is engaged (a finisher ends with player.opponent null). noEngageInFinisher: nobody new engages while a finisher scene runs. killerExempt: an enemy's finisher on the player is blocked only by ANOTHER engaged enemy, not by the killer itself. safeZoneGiveUp: engaged chasers drop aggro and walk home while the player is inside a safe zone (the row hub.json safe.monsters.chasers.atThreshold stopAndGoHome that no code read). resetBarOnSwitch: the boss bar damage trail restarts when the target changes. false = the v108 behaviour of that rule.",
     "skipGivingUp": true,
     "healTarget": true,
@@ -258,8 +263,8 @@
             }
           ],
           "ladderRow": "gate_warden",
-          "respawnMinS": 300,
-          "respawnMaxS": 420,
+          "respawnMinS": 180,
+          "respawnMaxS": 180,
           "aggro": 5.5,
           "leash": 58.0,
           "hpMul": 1,
@@ -276,8 +281,8 @@
             }
           ],
           "ladderRow": "pit_veteran",
-          "respawnMinS": 420,
-          "respawnMaxS": 600,
+          "respawnMinS": 180,
+          "respawnMaxS": 180,
           "aggro": 7.0,
           "leash": 24.0,
           "needs": "a second spot and a second Pitborn instance room; Dom decision: stronger Pitborn rows as roaming camp, or new weaker creatures (see MANIFEST)",
@@ -392,8 +397,8 @@
             }
           ],
           "ladderRow": "sobek",
-          "respawnMinS": 360,
-          "respawnMaxS": 600,
+          "respawnMinS": 180,
+          "respawnMaxS": 180,
           "aggro": 8.0,
           "leash": 26.0,
           "hpMul": 1.0,
@@ -655,8 +660,8 @@
             }
           ],
           "ladderRow": "grendel",
-          "respawnMinS": 480,
-          "respawnMaxS": 720,
+          "respawnMinS": 180,
+          "respawnMaxS": 180,
           "aggro": 8.0,
           "leash": 26.0,
           "hpMul": 1.0,
@@ -767,8 +772,8 @@
             }
           ],
           "ladderRow": "humbaba",
-          "respawnMinS": 420,
-          "respawnMaxS": 600,
+          "respawnMinS": 180,
+          "respawnMaxS": 180,
           "aggro": 9.0,
           "leash": 30.0,
           "hpMul": 1.0,
@@ -881,8 +886,8 @@
             }
           ],
           "ladderRow": "erlking",
-          "respawnMinS": 1800,
-          "respawnMaxS": 2700,
+          "respawnMinS": 180,
+          "respawnMaxS": 180,
           "aggro": 16.0,
           "leash": 30.0,
           "hpMul": 1.0,
@@ -1034,8 +1039,8 @@
           "spot": "beyond_stand",
           "picks": [],
           "ladderRow": "",
-          "respawnMinS": 300,
-          "respawnMaxS": 600,
+          "respawnMinS": 180,
+          "respawnMaxS": 180,
           "aggro": 7.0,
           "leash": 24.0,
           "hpMul": 1.0,

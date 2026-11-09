@@ -14,7 +14,7 @@
       { "id": "hitLight",   "minMs": 60,  "maxMs": 80,  "dmgLo": 10, "dmgHi": 24 },
       { "id": "hitHeavy",   "minMs": 90,  "maxMs": 110, "dmgLo": 18, "dmgHi": 40 },
       { "id": "kick",       "minMs": 50,  "maxMs": 60,  "dmgLo": 0,  "dmgHi": 8 },
-      { "id": "kill",       "minMs": 110, "maxMs": 130, "dmgLo": 5,  "dmgHi": 40 },
+      { "id": "kill",       "minMs": 0, "maxMs": 0, "dmgLo": 5,  "dmgHi": 40 },
       { "id": "blockLight", "minMs": 30,  "maxMs": 30,  "dmgLo": 0,  "dmgHi": 0 },
       { "id": "blockHeavy", "minMs": 50,  "maxMs": 50,  "dmgLo": 0,  "dmgHi": 0 },
       { "id": "parry",      "minMs": 100, "maxMs": 100, "dmgLo": 0,  "dmgHi": 0 },

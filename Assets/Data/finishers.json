@@ -1,7 +1,7 @@
 {
   "version": 1,
   "note": "ROSTER: no character names here except per-character rows keyed by roster id (clipImport.characters, rt.ground.soles); attackerSide and clip targets are roles \"player\" / \"enemy\" (a character id still works); the killer weapon, controller and finisher clip folder come from roster.json. STANDALONE finisher data (no duel_rules.json). Read by Finishers loader (FN1), the mesh cut and Assets/Editor/FinisherClipSetup.cs (clipImport). StreamingAssets copy must be identical. Offsets are stand-in metres; TUNE from renders. V61B: finishers ON, rotation.enabledIds = decapitation / split_crown / split_crown_pit, shots frame the victim body (frameBody), *_settle shot at the end. V62: rotation.perWeapon + enabledIds += river_light, hengdao_heavy; per-finisher slow-mo curves, *_settle rest shots, per-entry sheetFrames, pair probe fields. V61C: finisher length 4-6 s (clip start / speed / dieAt / slow-mo / hold), split_crown pairOffset forward 1.4, rt.look (camera keeps the gameplay look), auto.maxFinisherSeconds / lumaTolerance / clearance. V63G: rotation.enabledIds = decapitation + split_crown; head_split gets gore.cleaves/bursts \"crown\" (wound line, side patches, drips, bigger burst); rt.look.vignette (slow-mo-only override, fades out and is removed); rt.auto.vignette* checks. V64F: river_light pair placement re-derived; rt.pair (interpenetration probe), rt.victimLook (victim luma probe / stuck-flash guard), rt.ground body clamp for the victim, cuts.capMaterial (dark wet red cap). rotation.enabledIds unchanged (river_light / hengdao_heavy stay OFF: enable = add the ids to the list). V64F2: rt.pair radiusK 0.6 + failPairs (torso/leg only fail, arm / hand overlaps warn); gore.piece settleLift (resting head lifted to the floor); the victim foot-float is a WARN when the lowest body point is judged.",
-  "enableFinishers": true,
+  "enableFinishers": false,
   "enableGore": true,
   "rotation": {
     "mode": "sequence",
@@ -222,7 +222,7 @@
           "strength": 1
         }
       ],
-      "slowmo": [{"t": 0.0, "rel": "contact", "scale": 0.45, "duration": 0.28, "easeIn": 0.04, "easeOut": 0.18, "curve": []}],
+      "slowmo": [],
       "holdAfter": 0.6,
       "note": "wind-up 0..0.95, downward slash peaks 34.7 m/s at 1.10 s (right hand), head-off effect at contact; victim plays its own death clip 0.3 s later (stagger 0..1.7 s of that clip, down 2.6-3.1 s) | JOANFIN v77: v75 gate FAIL (capsule overlap killer LeftLeg>LeftFoot x victim Spine2>Neck 0.94 s, worst -0.12 m). Model (tools/pairsim.py: killer clip end pose vs the Pitborn death-clip final pose): dz 1.16 -> -0.00 m, dz 1.20 + victimYawDeg 20 -> +0.30 m (the fallen torso lies across the killer left foot; turning the victim 20 deg swings the body off it). dz +0.04 keeps hand->neck 0.89 m < blade 1.0 m. | FINFIX v93: attackerClipStart=0.0, attackerClipSpeed=1.0, contactAt=1.1, victimStart=1.4, victimClipSpeed=0.75, victimClipStart=0.5, dieAt=4.4, duration=4.6, holdAfter=1.5 | V1FIN v94: V1 decapitation: head pops 0.16 s after the blade (5% of the 2.4 s victim clip at 0.75x), front-hold camera slides 0.8 m over 1.73 s, no cuts; killer clip stays fin_beheading_k (V1 has none)",
       "attackerClipSpeed": 1.0,
@@ -560,7 +560,7 @@
           "strength": 1
         }
       ],
-      "slowmo": [{"t": 0.0, "rel": "contact", "scale": 0.45, "duration": 0.28, "easeIn": 0.04, "easeOut": 0.18, "curve": []}],
+      "slowmo": [],
       "holdAfter": 0.6,
       "note": "one-hand overhead chop: hand peaks 1.6 m at 0.2 s, comes down 0.5 s; crown split effect at contact, body drops straight down (death) | FINFIX v93: attackerClipStart=0.0, attackerClipSpeed=1.0, contactAt=0.48, victimStart=0.78, victimClipSpeed=0.75, victimClipStart=0.5, dieAt=4.0, duration=4.2, holdAfter=1.5 | V1FIN v94: V1 split crown: head-only split (unit head_crown), opens over 0.384 s, late 45 deg reveal from 4.2 m at +1.44 s over 1.76 s; killer clip stays fin_chop1h_k (V1: the existing heavy attack)",
       "attackerClipSpeed": 1.0,
@@ -922,7 +922,7 @@
           "strength": 1
         }
       ],
-      "slowmo": [{"t": 0.0, "rel": "contact", "scale": 0.45, "duration": 0.28, "easeIn": 0.04, "easeOut": 0.18, "curve": []}],
+      "slowmo": [],
       "holdAfter": 0.6,
       "note": "two-hand overhead chop, same timing as the one-hand clip | FINFIX v93: attackerClipStart=0.0, attackerClipSpeed=1.0, contactAt=0.48, victimStart=0.78, victimClipSpeed=0.75, victimClipStart=0.5, dieAt=4.0, duration=4.2, holdAfter=1.5 | V1FIN v94: V1 split crown: head-only split (unit head_crown), opens over 0.384 s, late 45 deg reveal from 4.2 m at +1.44 s over 1.76 s; killer clip stays fin_chop2h_k (V1: the existing heavy attack)",
       "attackerClipSpeed": 1.0,
@@ -1735,7 +1735,7 @@
         {
           "killer": "Joan",
           "victim": "Sobek",
-          "unavailable": false,
+          "unavailable": true,
           "pairOffset": [
             -0.06,
             0.0,
@@ -1806,6 +1806,39 @@
             }
           ],
           "note": "laneFINISHER5: run_through Joan>Sobek (templated on the Pitborn own-clip row clipsV1.pairOffset [-0.06,0,0.814] and laneFINISHER2's Humbaba row [-0.06,0,0.95], heightM 3.12 both): lab/sweep5_sobek.py = laneFINISHER2 gate.py on Sobek (rest torso depth: Hips band, snout contaminates the Spine bands so a Humbaba-like 0.43-0.47 m front depth is the stand-in): forward 1.0 passes mesh clearance 0.19-0.30 (>= 0.15), tip depth 0.32-0.48 m (>= 0.20), capsule +0.29..0.32, hips 0.92-0.99 m over world scale 0.9-1.1 (heightM 3.12 / mesh 3.120 = 1.000). The blade aims 45-62 deg left and 26-39 deg up (Spine1 2.08 m vs Joan's hand 1.2-1.5 m): a weak read like Erlking, a kneel victim fits better. Needs rt.v1.pairOverrides true and the Editor bake of v1_run_through_victim for Sobek. UNPROVEN in Unity."
+        },
+        {
+          "killer": "Joan",
+          "victim": "Grendel",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "FINHOT (bandits-dev): pinned dark until its proof passes; flip with finhot.py --set <switch>=on"
+        },
+        {
+          "killer": "Joan",
+          "victim": "Humbaba",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "FINHOT (bandits-dev): pinned dark until its proof passes; flip with finhot.py --set <switch>=on"
+        },
+        {
+          "killer": "Joan",
+          "victim": "Erlking",
+          "unavailable": true,
+          "contactAt": -1,
+          "distance": -1,
+          "bladeReach": -1,
+          "killerYawDeg": -999,
+          "victimYawDeg": -999,
+          "note": "FINHOT (bandits-dev): pinned dark until its proof passes; flip with finhot.py --set <switch>=on"
         }
       ],
       "enabled": true,
@@ -1957,7 +1990,7 @@
           "strength": 1
         }
       ],
-      "slowmo": [{"t": 0.0, "rel": "contact", "scale": 0.45, "duration": 0.28, "easeIn": 0.04, "easeOut": 0.18, "curve": []}],
+      "slowmo": [],
       "holdAfter": 0.6,
       "note": "placeholder clips; real: paired Death_RunThrough 2.4 s + Fin_RunThrough, blade stays in, victim arches then kneels. top20 hq-rapier-thrust-torso if missing | FINFIX v93: duration=4.2, holdAfter=1.5 | V1FIN v94: V1 run through: needs the imported V1 clips (states v1_run_through_victim / _killer); without them the thrust placeholder runs with the V1 chest-entry + back-exit blood | V1CLIPS v98: bladeAim (blade through the chest), clipsV1.pairOffset, rt_v1_reveal camera back / up / look 1.0",
       "shotsV1": [
@@ -2250,17 +2283,7 @@
           "strength": 1
         }
       ],
-      "slowmo": [
-        {
-          "t": 0.0,
-          "rel": "contact",
-          "scale": 0.45,
-          "duration": 0.28,
-          "easeIn": 0.04,
-          "easeOut": 0.18,
-          "curve": []
-        }
-      ],
+      "slowmo": [],
       "holdAfter": 0.6,
       "note": "FINISHER5 v1: DECAPITATION of a 3-4 m monster. A clone of entry decapitation (cuts, gore, camera) with Joan's own licence-clean killer clip (v1_execution_killer = 9100006) and the kneel / bow victim v1_split_crown_victim (9100001): the monster is down on its knees at contact, so Joan's sword reaches the neck. Only the Joan>Grendel/Humbaba/Erlking/Sobek override rows turn it on; every other pair keeps the old entries. Without the Editor bake (states missing) the entry keeps the placeholder move + plain death. UNPROVEN in Unity.",
       "attackerClipSpeed": 1.0,
@@ -2293,7 +2316,7 @@
         {
           "killer": "Joan",
           "victim": "Grendel",
-          "unavailable": false,
+          "unavailable": true,
           "requireDeathblow": false,
           "pairOffset": [
             -0.596,
@@ -2342,7 +2365,7 @@
         {
           "killer": "Joan",
           "victim": "Humbaba",
-          "unavailable": false,
+          "unavailable": true,
           "requireDeathblow": false,
           "pairOffset": [
             -0.488,
@@ -2391,7 +2414,7 @@
         {
           "killer": "Joan",
           "victim": "Erlking",
-          "unavailable": false,
+          "unavailable": true,
           "requireDeathblow": false,
           "pairOffset": [
             -0.379,
@@ -2440,7 +2463,7 @@
         {
           "killer": "Joan",
           "victim": "Sobek",
-          "unavailable": false,
+          "unavailable": true,
           "requireDeathblow": false,
           "pairOffset": [
             -0.271,
@@ -2747,17 +2770,7 @@
           "strength": 1
         }
       ],
-      "slowmo": [
-        {
-          "t": 0.0,
-          "rel": "contact",
-          "scale": 0.45,
-          "duration": 0.28,
-          "easeIn": 0.04,
-          "easeOut": 0.18,
-          "curve": []
-        }
-      ],
+      "slowmo": [],
       "holdAfter": 0.6,
       "note": "FINISHER5 v1: SPLIT CROWN of a 3-4 m monster. Clone of entry split_crown with Joan's overhead execution chop (9100006) and the bow / kneel victim 9100001; the head joint is 0.8-1.7 m high at contact. Needs the monster body cut proxy (cut_lod rows, part 'proxy') for MeshCut; without it the cut is skipped (logged) and clip + blade + blood still play. UNPROVEN in Unity.",
       "attackerClipSpeed": 1.0,
@@ -2792,7 +2805,7 @@
         {
           "killer": "Joan",
           "victim": "Grendel",
-          "unavailable": false,
+          "unavailable": true,
           "requireDeathblow": false,
           "pairOffset": [
             -0.488,
@@ -2867,7 +2880,7 @@
         {
           "killer": "Joan",
           "victim": "Humbaba",
-          "unavailable": false,
+          "unavailable": true,
           "requireDeathblow": false,
           "pairOffset": [
             -0.379,
@@ -2942,7 +2955,7 @@
         {
           "killer": "Joan",
           "victim": "Erlking",
-          "unavailable": false,
+          "unavailable": true,
           "requireDeathblow": false,
           "pairOffset": [
             -0.271,
@@ -3017,7 +3030,7 @@
         {
           "killer": "Joan",
           "victim": "Sobek",
-          "unavailable": false,
+          "unavailable": true,
           "requireDeathblow": false,
           "pairOffset": [
             -0.163,
@@ -4668,14 +4681,14 @@
     "maxStepS": 0.05,
     "contactShake": 0.08,
     "contactShakeS": 0.25,
-    "contactHoldMs": 80.0,
+    "contactHoldMs": 0.0,
     "realtime": {"enabled": true, "pairOnlyFreeze": true, "firstBlendS": 0.45, "placeSlideS": 0.3, "spike": {"preS": 2.0, "postS": 2.0, "maxScenes": 6, "timeoutS": 900.0, "hitchMs": 100.0, "slowBelow": 0.99, "maxSlowS": 0.7, "maxHitStopMs": 90.0, "cutJumpM": 1.5, "minOthersMovedM": 0.05}},
     "hpToZeroAtContact": true,
     "precut": {
       "enabled": true,
       "startAt": 0.05,
-      "budgetMs": 16.0,
-      "catchUpBudgetMs": 40.0,
+      "budgetMs": 4.0,
+      "catchUpBudgetMs": 8.0,
       "catchUpBeforeContactS": 0.5,
       "checkEvery": 512
     },

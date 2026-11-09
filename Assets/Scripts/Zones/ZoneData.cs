@@ -33,7 +33,7 @@ using UnityEngine;
 [Serializable] public class ZCreature { public string id = "", source = "scene", path = "", scene = "";   /* ZONES-ATTACH v1: enemy scene the prefab is saved from (empty = the zone scene) */ }
 [Serializable] public class ZStart { public string zone = "", spot = ""; }
 [Serializable] public class ZClock { public int guardSeconds = 120; }
-[Serializable] public class ZPersist { public string file = "zones_save.json"; public int version = 1; public float saveEverySeconds = 30f; }
+[Serializable] public class ZPersist { public string file = "zones_save.json"; public int version = 1; public float saveEverySeconds = 30f; public bool resetOnNewGame = false, skipSaveWhileDown = false, spanWarmFinally = false; /* SAVEFIX v2: all three default to today's behaviour, zones.json persistence turns them on */ }
 // REVIVE v1 (laneSEAMLESS): zones.json hp.respawn = Joan's in-world respawn. enabled false = the old death (black, GameLoop.Retry reload). rule: arrive = the zone's arrive spot from `arrive` rows, hearth = the zone's hearth service spot (arrive if none).
 [Serializable] public class ZArrive { public string zone = "", spot = ""; }
 [Serializable] public class ZRespawn
@@ -52,7 +52,7 @@ using UnityEngine;
 [Serializable] public class ZCrossing { public ZCover cover = new ZCover(); public bool allowWhileEngaged = false; public float preloadDistance = 14f; public bool freePassage = false; /* ALPHAFLOW v1 */ }
 
 // TWOFIGHT v1 (laneTWOFIGHT): zones.json "twoFight" = the switches of the two-enemy rules (all rows in data; defaults here = the shipped rows)
-[Serializable] public class ZTwoFight { public bool skipGivingUp = true, healTarget = true, noEngageInFinisher = true, killerExempt = true, safeZoneGiveUp = true, resetBarOnSwitch = true; }
+[Serializable] public class ZTwoFight { public bool skipGivingUp = true, healTarget = true, noEngageInFinisher = true, killerExempt = true, safeZoneGiveUp = true, resetBarOnSwitch = true, clearStaleOpponent = false; public float staleMaxM = 0f; }   /* OPPSTALE v1 */
 [Serializable] public class ZoneTable
 {
     public bool enabled = false; public int version = 1; public float pollSeconds = 0.5f;
