@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -98,6 +98,22 @@ public static class GameSettings
                 var t = GraphicsTiers(); var ids = new List<string>(); var labs = new List<string>();
                 foreach (var ti in t) if (ti != null && !string.IsNullOrEmpty(ti.name)) { ids.Add(ti.name.ToLowerInvariant()); labs.Add(string.IsNullOrEmpty(ti.label) ? ti.name : ti.label); }
                 r.Choices = ids.ToArray(); r.ChoiceLabels = labs.ToArray(); r.Get = () => GraphicsTier; r.Set = v => SetGraphicsTier(v);
+            }
+            else if (e.id == "graphics.renderScale" || e.id == "graphics.upscaler")   // FPSX_C v1: hidden while quality_tiers.json userScale.enabled=false
+            {
+                if (!QualityTiers.UserScaleOn) continue;
+                var us = QualityTiers.UserScaleCfg; var ids = new List<string>(); var labs = new List<string>();
+                if (e.id == "graphics.renderScale")
+                {
+                    foreach (int s in us.scales) { ids.Add(s.ToString()); labs.Add(s >= 100 ? "Native 100%" : s + "%"); }
+                    r.Get = () => QualityTiers.UserScale.ToString(); r.Set = v => { int s; if (int.TryParse(v, out s)) { QualityTiers.SetUser(s, null); Fire(); } };
+                }
+                else
+                {
+                    for (int i = 0; i < us.upscalers.Length; i++) { ids.Add(us.upscalers[i]); labs.Add(i < us.upscalerLabels.Length && !string.IsNullOrEmpty(us.upscalerLabels[i]) ? us.upscalerLabels[i] : us.upscalers[i].ToUpperInvariant()); }
+                    r.Get = () => QualityTiers.UserUpscaler; r.Set = v => { QualityTiers.SetUser(0, v); Fire(); };
+                }
+                r.Choices = ids.ToArray(); r.ChoiceLabels = labs.ToArray();
             }
             else if (e.id == "camera.freeInCombat")
             {

@@ -44,6 +44,7 @@ public static class ShadowProxy
         public string note = "";
         public bool enabled = false;
         public string arenaRoot = "Arena";
+        public string[] extraRoots = new string[0], extraGroups = new string[0];   // FPSX_D2: more scene roots (zone roots Zone2, HubZone, ...) and the ring groups under each; empty = only Arena as before
         public string[] groups = new string[0];
         public string[] excludeNameContains = new string[0];
         public string[] layoutFiles = new string[0];             // prop id -> (library, asset)
@@ -70,7 +71,7 @@ public static class ShadowProxy
             cfg = new Cfg();
             var txt = HudCfg.ReadData("shadow_proxy.json");
             if (txt != null) { try { var c = JsonUtility.FromJson<Cfg>(txt); if (c != null) cfg = c; } catch (Exception e) { Debug.LogWarning("[ShadowProxy] shadow_proxy.json parse failed, OFF: " + e.Message); cfg = new Cfg(); } }
-            if (cfg.groups == null) cfg.groups = new string[0]; if (cfg.excludeNameContains == null) cfg.excludeNameContains = new string[0];
+            if (cfg.extraRoots == null) cfg.extraRoots = new string[0]; if (cfg.extraGroups == null) cfg.extraGroups = new string[0]; if (cfg.groups == null) cfg.groups = new string[0]; if (cfg.excludeNameContains == null) cfg.excludeNameContains = new string[0];
             if (cfg.layoutFiles == null) cfg.layoutFiles = new string[0]; if (cfg.disableWhenArgs == null) cfg.disableWhenArgs = new string[0];
             if (cfg.calc == null) cfg.calc = new Calc(); if (cfg.assets == null) cfg.assets = new AssetRow[0];
             ParseArgs();
@@ -163,9 +164,12 @@ public static class ShadowProxy
             foreach (var r in C.assets) if (r != null && !string.IsNullOrEmpty(r.key)) rows[r.key] = r;
             var arena = GameObject.Find(C.arenaRoot); if (arena == null) { Debug.LogWarning("[ShadowProxy] arena root '" + C.arenaRoot + "' not found, off"); return; }
             var cal = C.calc;
-            foreach (var gname in C.groups)
+            var gl = new List<Transform>();   // FPSX_D2: Arena groups first (unchanged order), then the ring groups of the extra roots
+            foreach (var gname in C.groups) { var g0 = arena.transform.Find(gname); if (g0 != null) gl.Add(g0); }
+            if (C.extraRoots.Length > 0) foreach (var sr in UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects())
+                foreach (var rn in C.extraRoots) if (!string.IsNullOrEmpty(rn) && sr.name == rn) foreach (var gn in C.extraGroups) { var g1 = sr.transform.Find(gn); if (g1 != null) gl.Add(g1); }   // roots found among the scene roots, so an inactive root works
+            foreach (var g in gl)
             {
-                var g = arena.transform.Find(gname); if (g == null) continue;
                 for (int i = 0; i < g.childCount; i++)
                 {
                     var t = g.GetChild(i); bool skip = false;
@@ -204,13 +208,23 @@ public static class ShadowProxy
             {
                 if (proxies.Contains(all[i])) continue;
                 e.lodRs[n] = all[i]; e.orig[n] = all[i].shadowCastingMode; n++;
-                if (first) { b = all[i].bounds; first = false; } else b.Encapsulate(all[i].bounds);
+                if (first) { b = RBounds(all[i]); first = false; } else b.Encapsulate(RBounds(all[i]));
             }
             Array.Resize(ref e.lodRs, n); Array.Resize(ref e.orig, n);
             e.c = b.center; e.r = b.extents.magnitude;
             e.nearM = cal.nearRangeM + cal.nearMarginM + row.heightUnit * s * cal.shadowLenPerHeight;
             trisFull += FarTris(row, 0); trisProxy += FarTris(row, farLod);
             return e;
+        }
+
+        // FPSX_D2: Renderer.bounds under an INACTIVE ring is not trusted; build the world bounds from the mesh bounds then. Active renderers: r.bounds exactly as before.
+        static Bounds RBounds(Renderer r)
+        {
+            if (r.gameObject.activeInHierarchy) return r.bounds;
+            var mf = r.GetComponent<MeshFilter>(); if (mf == null || mf.sharedMesh == null) return r.bounds;
+            var m = mf.transform.localToWorldMatrix; var mb = mf.sharedMesh.bounds; var res = new Bounds(m.MultiplyPoint3x4(mb.center), Vector3.zero);
+            for (int i = 0; i < 8; i++) res.Encapsulate(m.MultiplyPoint3x4(mb.center + Vector3.Scale(mb.extents, new Vector3((i & 1) == 0 ? -1f : 1f, (i & 2) == 0 ? -1f : 1f, (i & 4) == 0 ? -1f : 1f))));   // hc:ok box corner signs
+            return res;
         }
 
         Renderer[] BuildSet(Transform root, int lod)

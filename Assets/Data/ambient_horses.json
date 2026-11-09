@@ -39,19 +39,22 @@
       "id": "plain",
       "glb": "Mount/horse_lod.glb",
       "heightM": 1.75,
-      "glbHeightM": 1.75
+      "glbHeightM": 1.75,
+      "midGlb": "Mount/horse_mid.glb"
     },
     {
       "id": "war",
       "glb": "Mount/warhorse_lod.glb",
       "heightM": 2.0,
-      "glbHeightM": 2.0
+      "glbHeightM": 2.0,
+      "midGlb": "Mount/warhorse_mid.glb"
     },
     {
       "id": "skeletal_camel",
       "glb": "Mount/skeletal_camel_lod.glb",
       "heightM": 1.0,
-      "glbHeightM": 1.0
+      "glbHeightM": 1.0,
+      "midGlb": "Mount/skeletal_camel_mid.glb"
     }
   ],
   "herds": [
@@ -165,5 +168,8 @@
     }
   ],
   "seedStride": 7919,
-  "hitBuffer": 8
+  "hitBuffer": 8,
+  "lodMidEnterM": 0.0,
+  "lodMidExitM": 0.0,
+  "lodMidBoundsTolM": 0.15
 }

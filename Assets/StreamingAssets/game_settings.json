@@ -13,6 +13,8 @@
   },
   "menu": [
     { "id": "graphics.tier", "label": "Graphics", "kind": "choice", "source": "graphics.tiers", "hint": "Ultra Native is the default: it draws at your window's own resolution with SSGI off. Ultra (scaled) is the older 67% look with full SSGI. Lower tiers trade effects for frame rate on 8-16 GB graphics cards." },
+    { "id": "graphics.renderScale", "label": "Render scale", "kind": "choice", "hint": "Native is sharpest. Lower values draw fewer pixels and upscale: more frame rate on weaker graphics cards." },
+    { "id": "graphics.upscaler", "label": "Upscaler", "kind": "choice", "hint": "How a lowered render scale is scaled back up. STP is temporal and the default; FSR 2 falls back to STP when this graphics card cannot run it." },
     { "id": "camera.freeInCombat", "label": "Free camera in combat", "kind": "toggle", "hint": "Off: the camera locks on to the enemy when the duel starts. On: you steer the camera yourself." }
   ]
 }

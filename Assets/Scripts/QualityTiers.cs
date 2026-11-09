@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -16,7 +16,9 @@ using UnityEngine.Rendering.HighDefinition;
 public static class QualityTiers
 {
     [System.Serializable] public class TierInfo { public string name = "", label = "", note = ""; public int minVramMb = 0, targetFps = 0; public string level = ""; public bool suggest = true; }   // 2KPROFILE v01: level = QualitySettings level (empty = the tier name capitalised), suggest = SuggestedTier() may pick it
-    [System.Serializable] class Head { public string defaultTier = "ultra", baseTier = "ultra", prefsKey = "gfx.tier", harnessTier = ""; public TierInfo[] tiers = new TierInfo[0]; }
+    // FPSX_C v1: the player-facing render scale / upscaler option (quality_tiers.json "userScale"). enabled=false (shipped) = no menu rows, no PlayerPrefs read, nothing changes.
+    [System.Serializable] public class UserScaleRow { public bool enabled = false; public int[] scales = new[] { 100, 85, 80, 67 }; public string[] upscalers = new[] { "stp", "fsr2" }; public string[] upscalerLabels = new string[0]; public string scaleKey = "gfx.renderScale", upscalerKey = "gfx.upscaler", defaultUpscaler = "stp"; }
+    [System.Serializable] class Head { public string defaultTier = "ultra", baseTier = "ultra", prefsKey = "gfx.tier", harnessTier = ""; public TierInfo[] tiers = new TierInfo[0]; public UserScaleRow userScale = new UserScaleRow(); }
     [System.Serializable] class Mul { public float lodBiasMul = 1f; }
     struct PBase { public int max; public float rate, dist; }
 
@@ -34,7 +36,7 @@ public static class QualityTiers
     static string Arg(string prefix) { foreach (var a in System.Environment.GetCommandLineArgs()) if (a.StartsWith(prefix, System.StringComparison.Ordinal)) return a.Substring(prefix.Length); return null; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { raw = null; head = new Head(); FlagsJson = null; LodBiasMul = 1f; Current = "ultra"; tracked.Clear(); pbase.Clear(); }
+    static void ResetStatics() { raw = null; head = new Head(); FlagsJson = null; LodBiasMul = 1f; Current = "ultra"; tracked.Clear(); pbase.Clear(); upOrig.Clear(); }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Early()
@@ -94,11 +96,46 @@ public static class QualityTiers
     public static void Overlay(object flags)
     {
         if (FlagsJson != null && !string.Equals(Current, head.baseTier, System.StringComparison.OrdinalIgnoreCase)) JsonUtility.FromJsonOverwrite(FlagsJson, flags);
+        if (UserScaleOn && PlayerPrefs.HasKey(head.userScale.scaleKey))   // FPSX_C v1: the player's own choice beats the tier; -qset: / -renderscale: below beat the player
+            JsonUtility.FromJsonOverwrite("{\"renderScale\":" + UserScale + ",\"upscaler\":\"" + UserUpscaler + "\"}", flags);
         string qs = Arg("-qset:"), rs = Arg("-renderscale:");
         var sb = new System.Text.StringBuilder("{");
         if (qs != null) foreach (var kv in qs.Split(',')) { var s = kv.Split('='); if (s.Length == 2) sb.Append("\"" + s[0] + "\":" + s[1] + ","); }
         if (rs != null) sb.Append("\"renderScale\":" + rs + ",");
         if (sb.Length > 1) { sb.Length--; sb.Append("}"); JsonUtility.FromJsonOverwrite(sb.ToString(), flags); }
+    }
+
+    // ---- FPSX_C v1: render scale + upscaler as a player option (HDRP dynamic resolution; the HDRP assets already have DRS on, hardware, STP) ----
+    public static bool UserScaleOn { get { return head.userScale != null && head.userScale.enabled && !RuntimeQuality.IsHarness(); } }
+    public static UserScaleRow UserScaleCfg { get { return head.userScale ?? new UserScaleRow(); } }
+    public static int UserScale { get { return PlayerPrefs.GetInt(head.userScale.scaleKey, 100); } }
+    public static string UserUpscaler { get { return PlayerPrefs.GetString(head.userScale.upscalerKey, head.userScale.defaultUpscaler); } }
+    public static void SetUser(int scale, string upscaler)
+    {
+        if (!UserScaleOn) return;
+        if (scale > 0) PlayerPrefs.SetInt(head.userScale.scaleKey, scale);
+        if (!string.IsNullOrEmpty(upscaler)) PlayerPrefs.SetString(head.userScale.upscalerKey, upscaler.ToLowerInvariant());
+        PlayerPrefs.Save(); RuntimeQuality.Reapply();
+    }
+
+    // Picks the HDRP upscaler. stp / fsr2 go through the asset's advancedUpscalerNames priority list (HDRP walks it every frame in SetupPartnerUpscalers and takes the first that can render, so "fsr2" falls back to STP when FSR2 is not detected);
+    // fsr1 / cas / catmull clear the list and set the spatial DynamicResUpscaleFilter per camera. Done in place on the live asset (memory only, never saved); the first-seen list of each asset is restored when upscaler is "" again. Player only.
+    static readonly Dictionary<HDRenderPipelineAsset, string[]> upOrig = new Dictionary<HDRenderPipelineAsset, string[]>();
+    public static void ApplyUpscaler(string name, float scale)
+    {
+        var pipe = GraphicsSettings.currentRenderPipeline as HDRenderPipelineAsset;
+        if (pipe == null || Application.isEditor) return;
+        var list = pipe.currentPlatformRenderPipelineSettings.dynamicResolutionSettings.advancedUpscalerNames;
+        if (list == null) return;
+        if (!upOrig.ContainsKey(pipe)) { if (string.IsNullOrEmpty(name)) return; upOrig[pipe] = list.ToArray(); }
+        string n = string.IsNullOrEmpty(name) ? "" : name.ToLowerInvariant();
+        list.Clear();
+        if (n == "") list.AddRange(upOrig[pipe]);
+        else if (n == "stp") list.Add("STP");
+        else if (n == "fsr2") { list.Add("FSR2"); list.Add("STP"); }
+        var filter = n == "cas" ? DynamicResUpscaleFilter.ContrastAdaptiveSharpen : n == "fsr1" ? DynamicResUpscaleFilter.EdgeAdaptiveScalingUpres : DynamicResUpscaleFilter.CatmullRom;
+        if (n == "cas" || n == "fsr1" || n == "catmull") foreach (var cam in Object.FindObjectsByType<Camera>(FindObjectsSortMode.None)) DynamicResolutionHandler.SetUpscaleFilter(cam, filter);
+        Debug.Log("[renderscale] upscaler=" + (n == "" ? "(asset default)" : n) + " scale=" + scale + " list=" + string.Join(",", list.ToArray()));
     }
 
     // Returns a private clone of the Volume's shared profile so tier edits never touch the shared Global.asset (and a later SetTier starts again from the authored profile).

@@ -9,7 +9,7 @@ using UnityEngine;
 // Spawn: a herd loads (one body at a time) when the player is within spawnMarginM of its rectangle and the zones are live; sleeps (SetActive false) past despawnMarginM, or while the player is in a fight.
 // Walk: pick a random point in the rectangle (not within avoidPlayerM of the player, not inside an avoid circle, not closer than minSpacingM to a herdmate), turn, walk at walkMps with a procedural gait
 // (bob / pitch / roll locked to the ground speed, the same recipe as MountRider.Gait), stand pauseSMin..pauseSMax s. Ground = a down ray (first non-player collider); no ground = stand still.
-[Serializable] public class AhBreed { public string id = ""; public string glb = ""; public float heightM = 1.75f, glbHeightM = 1.75f; }
+[Serializable] public class AhBreed { public string id = ""; public string glb = ""; public float heightM = 1.75f, glbHeightM = 1.75f; public string midGlb = ""; }   // FPSX_D2: midGlb = mesh-only twin (~10k tris), "" = none
 [Serializable] public class AhRect { public float xMin, xMax, zMin, zMax; }
 [Serializable] public class AhCircle { public float x, z, r; }
 [Serializable] public class AhHerd
@@ -25,13 +25,14 @@ using UnityEngine;
     public bool enabled = false, debugLog = false, convertMaterials = true, shadows = false, holdWhileEngaged = true;
     public float pollSeconds = 0.5f, spawnMarginM = 14f, despawnMarginM = 22f, avoidPlayerM = 4f, minSpacingM = 3f, groundRayUpM = 3f, groundRayDownM = 10f, sinkM = 0.03f, fallbackY = 0f;
     public int groundMask = -1, framesBetweenLoads = 2, maxTargetTries = 12, seedStride = 7919, hitBuffer = 8;
+    public float lodMidEnterM = 0f, lodMidExitM = 0f, lodMidBoundsTolM = 0.15f;   // FPSX_D2: camera distance (m) beyond which the mid mesh is shown / back to full inside exit; 0 = never load or use a mid mesh (today)
     public AhGait gait = new AhGait(); public AhBreed[] breeds = new AhBreed[0]; public AhHerd[] herds = new AhHerd[0];
 }
 
 public sealed class AmbientHorses : MonoBehaviour
 {
     static AhCfg K; static AmbientHorses Inst; static RaycastHit[] hits = new RaycastHit[8];   // resized to hitBuffer when the config loads
-    class Horse { public GameObject go; public Transform body; public AhHerd herd; public Vector3 pos, target; public float yaw, wait, phase, breath, speed, amp, bob, pitch, roll, spawnY; public bool walking, placed; public System.Random rnd; }
+    class Horse { public Renderer[] fullR, midR; public bool midOn; public GameObject go; public Transform body; public AhHerd herd; public Vector3 pos, target; public float yaw, wait, phase, breath, speed, amp, bob, pitch, roll, spawnY; public bool walking, placed; public System.Random rnd; }
     class Loaded { public GltfHold hold; }
     class GltfHold { public GLTFast.GltfImport imp; }
     class HerdState { public List<Horse> horses = new List<Horse>(); public bool loading, tried, asleep; public List<Material> mats = new List<Material>(); public List<GltfHold> holds = new List<GltfHold>(); public int gen; }
@@ -107,12 +108,47 @@ public sealed class AmbientHorses : MonoBehaviour
                 var hr = new Horse { go = go, body = body.transform, herd = h, rnd = new System.Random(h.seed * K.seedStride + i), wait = 0f };
                 hr.pos = RandomPoint(h, hr, s, null); hr.yaw = (float)(hr.rnd.NextDouble() * 360.0); hr.target = hr.pos; hr.wait = Pause(hr);   // hc:ok 360 = a full turn (random start heading)
                 s.horses.Add(hr);
+                if (K.lodMidEnterM > 0f && !string.IsNullOrEmpty(b.midGlb) && rl.Count == 1) await AddMid(b, body.transform, hr, s, rl[0]);   // FPSX_D2
                 for (int f = 0; f < K.framesBetweenLoads; f++) await Task.Yield();
             }
             if (K.debugLog) Debug.Log("[AmbientHorses] herd " + h.id + ": " + s.horses.Count + " horses loaded");
         }
         catch (Exception e) { Debug.LogWarning("[AmbientHorses] herd " + h.id + " error: " + e.Message); }
         finally { s.loading = false; }
+    }
+
+    // FPSX_D2: mid mesh twin. A mesh-only glb (no textures) is loaded beside the full body and shares the full body's material, so the 4K textures exist once. It is used only if its local bounds match the full mesh
+    // (lodMidBoundsTolM) and it has one renderer; otherwise it is dropped and the horse stays full. Switch = camera distance with hysteresis. lodMidEnterM 0 = this code never runs.
+    async Task AddMid(AhBreed b, Transform body, Horse hr, HerdState s, Renderer full)
+    {
+        string file = File(new AhBreed { glb = b.midGlb }); if (file == null) return;
+        var node = new GameObject("MidLod"); node.transform.SetParent(body, false);
+        var hold = new GltfHold { imp = new GLTFast.GltfImport() }; s.holds.Add(hold);
+        bool ok = await hold.imp.LoadFile(file) && await hold.imp.InstantiateMainSceneAsync(node.transform);
+        if (hr.go == null) return;
+        if (!ok) { Destroy(node); return; }
+        foreach (var c in node.GetComponentsInChildren<Collider>(true)) Destroy(c);
+        var mr = new List<Renderer>(node.GetComponentsInChildren<Renderer>(true)); Bounds bf, bm;
+        if (mr.Count != 1 || !LocalBounds(body, full, out bf) || !LocalBounds(body, mr[0], out bm) || (bf.center - bm.center).magnitude > K.lodMidBoundsTolM || (bf.size - bm.size).magnitude > K.lodMidBoundsTolM * 2f)   // hc:ok size tolerance = 2 x the centre tolerance
+        { if (K.debugLog) Debug.Log("[AmbientHorses] mid mesh of " + b.id + " dropped (renderer count or bounds differ)"); Destroy(node); return; }
+        mr[0].sharedMaterials = full.sharedMaterials; mr[0].shadowCastingMode = full.shadowCastingMode; mr[0].enabled = false;
+        hr.fullR = new[] { full }; hr.midR = new[] { mr[0] };
+    }
+
+    static bool LocalBounds(Transform space, Renderer r, out Bounds b)
+    {
+        b = default(Bounds); var mf = r.GetComponent<MeshFilter>(); if (mf == null || mf.sharedMesh == null) return false;
+        var m = space.worldToLocalMatrix * mf.transform.localToWorldMatrix; var mb = mf.sharedMesh.bounds; b = new Bounds(m.MultiplyPoint3x4(mb.center), Vector3.zero);
+        for (int i = 0; i < 8; i++) b.Encapsulate(m.MultiplyPoint3x4(mb.center + Vector3.Scale(mb.extents, new Vector3((i & 1) == 0 ? -1f : 1f, (i & 2) == 0 ? -1f : 1f, (i & 4) == 0 ? -1f : 1f))));   // hc:ok box corner signs
+        return true;
+    }
+
+    void LodStep(Horse h, DuelFighter p)
+    {
+        var cam = Camera.main; if (cam == null && p == null) return;
+        Vector3 q = cam != null ? cam.transform.position : p.transform.position; float d = Vector3.Distance(q, h.pos);
+        bool want = h.midOn ? d > Mathf.Min(K.lodMidExitM, K.lodMidEnterM) : d > K.lodMidEnterM; if (want == h.midOn) return;
+        h.midOn = want; foreach (var r in h.fullR) if (r != null) r.enabled = !want; foreach (var r in h.midR) if (r != null) r.enabled = want;
     }
 
     static float Pause(Horse h) { var g = K.gait; return g.pauseSMin + (float)h.rnd.NextDouble() * Mathf.Max(0f, g.pauseSMax - g.pauseSMin); }
@@ -161,6 +197,7 @@ public sealed class AmbientHorses : MonoBehaviour
         h.amp = Mathf.MoveTowards(h.amp, h.speed > G.standMps ? 1f : 0f, dt / Mathf.Max(G.minBlendS, G.blendS));
         h.phase = Mathf.Repeat(h.phase + G.cyclesPerM * h.speed * dt * 2f * Mathf.PI, 2f * Mathf.PI); h.breath = Mathf.Repeat(h.breath + dt * G.breathCyclesPerS * 2f * Mathf.PI, 2f * Mathf.PI);
         h.bob = Mathf.Abs(Mathf.Sin(h.phase)) * G.bobM * h.amp + Mathf.Sin(h.breath) * G.breathM * (1f - h.amp); h.pitch = Mathf.Sin(h.phase * 2f) * G.pitchDeg * h.amp; h.roll = Mathf.Sin(h.phase) * G.rollDeg * h.amp;
+        if (h.midR != null) LodStep(h, p);   // FPSX_D2
         h.go.transform.SetPositionAndRotation(h.pos, Quaternion.Euler(0f, h.yaw, 0f)); h.body.localPosition = Vector3.up * h.bob; h.body.localRotation = Quaternion.Euler(h.pitch, 0f, h.roll);
     }
 }

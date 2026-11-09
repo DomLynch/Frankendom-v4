@@ -1,0 +1,107 @@
+{
+  "_about": "HEROPREWARM v1 (laneFPSX_D kit3). Read by Scripts/HeroPrewarm.cs (HudCfg.ReadData). enabled=false = OFF; a missing file or a missing 'enabled' key is also OFF. rows[]: match = GameObject name of the prop row (exact) or, with mode prefix, a name prefix; lod -1 = every LOD renderer, else that LOD only; maxObjects = objects matched; late = search SkinnedMeshRenderer roots every pollSeconds (runtime-loaded GLBs) up to lateMaxSeconds; castShadows = draw with shadows on; whenZ > 0 = wait for Camera.main z. The prewarm draws each mesh/material sub-pixel (sizeM) distanceM in front of the camera for drawFrames frames, behind the StartupWarm cover for at most maxCoverFrames frames, then rowsPerFrame rows per frame. Off for one run: -noheroprewarm. In harness runs only with inHarness or -heroprewarmharness. UNPROVEN IN UNITY.",
+  "enabled": false,
+  "inHarness": false,
+  "startDelayFrames": 2,
+  "maxWaitFrames": 300,
+  "maxCoverFrames": 8,
+  "rowsPerFrame": 1,
+  "drawFrames": 3,
+  "distanceM": 2.0,
+  "sizeM": 2e-05,
+  "pollSeconds": 1.0,
+  "lateMaxSeconds": 180.0,
+  "log": true,
+  "rows": [
+    {
+      "label": "croc idol (zone 2)",
+      "match": "z2h_sobek_croc_idol",
+      "mode": "exact",
+      "lod": -1,
+      "maxObjects": 1,
+      "late": false,
+      "castShadows": true,
+      "whenZ": 0.0
+    },
+    {
+      "label": "obelisk (zone 2)",
+      "match": "z2h_sobek_obelisk",
+      "mode": "exact",
+      "lod": -1,
+      "maxObjects": 1,
+      "late": false,
+      "castShadows": true,
+      "whenZ": 0.0
+    },
+    {
+      "label": "ruined house (zone 4)",
+      "match": "z4h_grendel_ruined_house",
+      "mode": "exact",
+      "lod": -1,
+      "maxObjects": 1,
+      "late": false,
+      "castShadows": false,
+      "whenZ": 0.0
+    },
+    {
+      "label": "bone ring (zone 4)",
+      "match": "z4h_grendel_bone_tunnel",
+      "mode": "exact",
+      "lod": -1,
+      "maxObjects": 1,
+      "late": false,
+      "castShadows": false,
+      "whenZ": 0.0
+    },
+    {
+      "label": "cedar (zone 5)",
+      "match": "z5h_humbaba_cedar",
+      "mode": "exact",
+      "lod": -1,
+      "maxObjects": 1,
+      "late": false,
+      "castShadows": true,
+      "whenZ": 0.0
+    },
+    {
+      "label": "root stones (zone 5)",
+      "match": "z5h_humbaba_root_stones",
+      "mode": "exact",
+      "lod": -1,
+      "maxObjects": 1,
+      "late": false,
+      "castShadows": true,
+      "whenZ": 0.0
+    },
+    {
+      "label": "antler arch (zone 6)",
+      "match": "z6h_erlking_antler_arch",
+      "mode": "exact",
+      "lod": -1,
+      "maxObjects": 1,
+      "late": false,
+      "castShadows": true,
+      "whenZ": 0.0
+    },
+    {
+      "label": "chandelier (zone 6, 8 instances share one asset)",
+      "match": "z6h_erlking_hanging_lamps_0",
+      "mode": "exact",
+      "lod": -1,
+      "maxObjects": 1,
+      "late": false,
+      "castShadows": false,
+      "whenZ": 0.0
+    },
+    {
+      "label": "ambient horses: warhorse / plain horse / camel (runtime GLBs, whichever are present at the poll)",
+      "match": "AmbientHorse_",
+      "mode": "prefix",
+      "lod": -1,
+      "maxObjects": 8,
+      "late": true,
+      "castShadows": false,
+      "whenZ": 0.0
+    }
+  ]
+}

@@ -6,7 +6,8 @@ using UnityEngine.Rendering.HighDefinition;
 // -flags:<path> on the command line overrides the file. Missing file = scene defaults.
 public static class RuntimeQuality
 {
-    [System.Serializable] public class Flags { public bool clouds = true, volumetricFog = true, ssgi = true, ssr = true, contactShadows = true, shadows = true; public float renderScale = 100f; public int shadowResolution = 0;
+    [System.Serializable] public class Flags { public bool clouds = true, volumetricFog = true, ssgi = true, ssr = true, contactShadows = true, shadows = true; public float renderScale = 100f; public int shadowResolution = 0; public string upscaler = "";   // FPSX_C v1: "" = leave the HDRP asset as authored (STP); stp | fsr2 | fsr1 | cas | catmull
+       
         // extra switches (-1 = leave scene/asset default). quality levels: 0 low, 1 medium, 2 high.
         public bool ssao = true, ssgiFullRes = true; public int ssgiQuality = -1, ssrQuality = -1, fogQuality = -1, cloudMode = -1, cascades = 0; public float fogBudget = -1f, shadowDistance = 0f;
         // look overrides applied in the player so tuning needs no rebuild (-1 = leave as authored)
@@ -168,6 +169,7 @@ public static class RuntimeQuality
             }
             DynamicResolutionHandler.SetDynamicResScaler(() => scale, DynamicResScalePolicyType.ReturnsPercentage);
         }
+        QualityTiers.ApplyUpscaler(F.upscaler, scale);   // FPSX_C v1: no-op while upscaler is "" (every shipped tier)
         QualityTiers.ApplyCamera(F.asyncCompute); QualityTiers.ApplyParticles(F.particleScale); QualityTiers.ApplyLod();   // TIERS v96
         Debug.Log("RuntimeQuality applied from " + path + " tier=" + QualityTiers.Current + " scale=" + scale);
     }
