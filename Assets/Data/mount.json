@@ -92,11 +92,11 @@
     "strikeKeys": ["Mouse0", "F"],
     "heavyKeys": ["G"],
     "onOpponent": true,
-    "inHub": true,
+    "inHub": false,
     "onMenu": false,
     "onFinisher": true,
     "onHit": true,
-    "foeRadiusM": 30.0,
+    "foeRadiusM": 14.0,
     "actions": [
       "thrust",
       "kick",
@@ -116,12 +116,12 @@
     },
     {
       "id": "sobek_arena",
-      "zFrom": 44.0,
+      "zFrom": 47.0,
       "zTo": 58.0
     },
     {
       "id": "grendel_arena",
-      "zFrom": 114.0,
+      "zFrom": 119.0,
       "zTo": 150.0
     },
     {

@@ -64,7 +64,7 @@
         "shadowResolution": 1024,
         "volumetricDimmer": 0.12,
         "spotAngle": 120,
-        "flicker": { "baseValue": 1.0, "amplitude": 0.15, "frequency": 1.0, "octaves": 1, "seed": 4.3, "lacunarity": 2.0, "gain": 0.5 }
+        "flicker": { "baseValue": 1.0, "amplitude": 0.0, "frequency": 1.0, "octaves": 1, "seed": 4.3, "lacunarity": 2.0, "gain": 0.5 }
     },
     "embers": {
         "enabled": false,

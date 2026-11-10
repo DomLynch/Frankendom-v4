@@ -728,7 +728,7 @@
         },
         {
           "id": "bandit_g4_before_1",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_g4_before_1",
           "picks": [
             {
@@ -748,7 +748,7 @@
         },
         {
           "id": "bandit_g4_before_2",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_g4_before_2",
           "picks": [
             {
@@ -768,7 +768,7 @@
         },
         {
           "id": "bandit_g4_after_1",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_g4_after_1",
           "picks": [
             {
@@ -788,7 +788,7 @@
         },
         {
           "id": "bandit_g4_after_2",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_g4_after_2",
           "picks": [
             {
@@ -992,7 +992,7 @@
         },
         {
           "id": "bandit_g5_before_1",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_g5_before_1",
           "picks": [
             {
@@ -1012,7 +1012,7 @@
         },
         {
           "id": "bandit_g5_before_2",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_g5_before_2",
           "picks": [
             {
@@ -1032,7 +1032,7 @@
         },
         {
           "id": "bandit_g5_before_3",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_g5_before_3",
           "picks": [
             {
@@ -1052,7 +1052,7 @@
         },
         {
           "id": "bandit_g5_after_1",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_g5_after_1",
           "picks": [
             {
@@ -1072,7 +1072,7 @@
         },
         {
           "id": "bandit_g5_after_2",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_g5_after_2",
           "picks": [
             {
@@ -1243,7 +1243,7 @@
         },
         {
           "id": "bandit_g6_before_2",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_g6_before_2",
           "picks": [
             {
@@ -1263,7 +1263,7 @@
         },
         {
           "id": "bandit_g6_before_3",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_g6_before_3",
           "picks": [
             {

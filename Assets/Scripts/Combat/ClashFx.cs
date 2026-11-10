@@ -31,7 +31,7 @@ public static class ClashFxTable
     }
     [Serializable] public class Block { public float countBase, countPerStrength, radius, speedBase, speedPerStrength, liftBase, liftPerStrength, sizeBase, sizePerStrength, footBack, footSide; }
     [Serializable] public class Plant { public int count; public float radius, speed, lift, size; }
-    [Serializable] public class Heuristic { public int enabled; public float minSpeed, runSpeed, walkStride, runStride, plantCooldown, maxStepMeters, footSide, footForward; public int skipWhenDead; }
+    [Serializable] public class Heuristic { public int enabled; public float minSpeed, runSpeed, walkStride, runStride, plantCooldown, maxStepMeters, footSide, footForward; public int skipWhenDead; public int scaleByHeight; public float refHeightM = 1.58f, maxScale = 3f, deadband = 1.25f, minBoundsM = 0.3f, retryS = 1f; /* FEETQC: scaleByHeight 1 = dust sized by the fighter's own height */ }
     [Serializable]
     public class Dust
     {
@@ -164,7 +164,7 @@ public class ClashFx : MonoBehaviour
         ps.Emit(ep, 1);
     }
 
-    class Foot { public DuelFighter f; public Vector3 prev; public bool has; public float stride, cool; public int side = 1; }
+    class Foot { public DuelFighter f; public Vector3 prev; public bool has; public float stride, cool, scale = 1f, retryAt; public bool scaled; public int side = 1; }
     struct Late { public float at; public Vector3 anchor, along, side; public float strength; public int n; }
 
     ClashFxTable.Data cfg;
@@ -550,6 +550,7 @@ public class ClashFx : MonoBehaviour
         {
             var ft = feet[i];
             if (ft.f == null) continue;
+            if (h.scaleByHeight != 0 && !ft.scaled && Time.time >= ft.retryAt) { ft.retryAt = Time.time + h.retryS; ft.scale = HeightScale(ft.f, h, ref ft.scaled); }
             Vector3 p = ft.f.transform.position;
             ft.cool = Mathf.Max(0f, ft.cool - dt);
             if (ft.has)
@@ -561,20 +562,30 @@ public class ClashFx : MonoBehaviour
                 if (dist < h.maxStepMeters && speed >= h.minSpeed && !dead)
                 {
                     ft.stride += dist;
-                    float need = speed >= h.runSpeed ? h.runStride : h.walkStride;
+                    float need = (speed >= h.runSpeed ? h.runStride : h.walkStride) * ft.scale;
                     if (ft.stride >= need && ft.cool <= 0f)
                     {
                         ft.stride = 0f; ft.cool = h.plantCooldown; ft.side = -ft.side;
                         var t = ft.f.transform;
-                        Vector3 fp = p + t.right * (h.footSide * ft.side) + t.forward * h.footForward;
+                        Vector3 fp = p + t.right * (h.footSide * ft.scale * ft.side) + t.forward * (h.footForward * ft.scale);
                         var pl = cfg.dust.plant;
-                        SpawnDust(fp, pl.count, pl.radius, pl.speed, pl.lift, pl.size);
+                        float sq = Mathf.Sqrt(ft.scale); SpawnDust(fp, pl.count, pl.radius * ft.scale, pl.speed * sq, pl.lift * sq, pl.size * ft.scale);
                     }
                 }
                 else if (speed < h.minSpeed) ft.stride = 0f;
             }
             ft.prev = p; ft.has = true;
         }
+    }
+
+    // FEETQC: dust scale from the fighter's own skinned bounds height; below deadband x refHeightM (Joan) it stays 1 = unchanged. false until the model is loaded.
+    static float HeightScale(DuelFighter f, ClashFxTable.Heuristic h, ref bool done)
+    {
+        var rs = f.GetComponentsInChildren<SkinnedMeshRenderer>(); if (rs.Length == 0) return 1f;
+        Bounds b = rs[0].bounds; for (int i = 1; i < rs.Length; i++) b.Encapsulate(rs[i].bounds);
+        if (b.size.y < h.minBoundsM) return 1f;
+        done = true; float r = h.refHeightM > 0f ? b.size.y / h.refHeightM : 1f;
+        return r < h.deadband ? 1f : Mathf.Clamp(r, 1f, Mathf.Max(1f, h.maxScale));
     }
 
     void RefreshFighters()

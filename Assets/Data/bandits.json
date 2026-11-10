@@ -1,6 +1,6 @@
 {
   "_about": "BANDITS v1 (pool-laneBANDITS kit, STAGED DARK). Hooded human fodder in groups of 2-4 before and after the boss of zones 4, 5, 6. ONE authoring file: apply_bandits.py compiles it into zones.json spots/spawns/creatures + roster / enemy_swap / opponents / fight_balance / boss_silver / gear rows (all existing schemas), plan_bandits.py computes the placements (alongM / lateralM) from existing spots, play_areas.json and props_layout_*.json, BanditArcher.cs (optional, new file) reads types[].ranged and gates. Missing file or enabled false = the game is unchanged. Nothing numeric lives in the scripts: every limit below is a key.",
-  "enabled": false,
+  "enabled": true,
   "version": 1,
   "hpScaleOfBoss": 0.5,
   "dmgScaleOfBoss": 0.35,

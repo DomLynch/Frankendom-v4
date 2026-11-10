@@ -18,7 +18,7 @@ public static class OcclusionCull
     [Serializable] class Occludee { public string[] groups = new string[0], extraRootNames = new string[0]; public float maxRadiusFromOrigin = 0f; }
     [Serializable] class Occluder { public string[] rootNames = new string[0], assetPatterns = new string[0]; public float minLongestSide = 8f, minThickness = 1f; public bool lod0Only = true; }
     [Serializable] class Skip { public string[] rootNames = new string[0], nameContains = new string[0]; public bool skipSkinned = true, skipParticles = true, skipTransparentMaterials = true; }
-    [Serializable] class Compute { public float smallestOccluder = 5f, smallestHole = 0.25f, backfaceThreshold = 100f; public bool bake = true; }
+    [Serializable] class Compute { public float smallestOccluder = 5f, smallestHole = 0.25f, backfaceThreshold = 100f; public bool bake = true; public long minAssetBytes = 10000; }
     [Serializable] class Cam { public bool mainCamera = true, useOcclusionCulling = true; public string[] offNames = new string[0]; }
     [Serializable] class Row
     {
@@ -107,7 +107,13 @@ public static class OcclusionCull
             StaticOcclusionCulling.backfaceThreshold = R.compute.backfaceThreshold;
             double t0 = sw.Elapsed.TotalSeconds;
             baked = StaticOcclusionCulling.Compute();   // blocking in batch mode; bakes the open scene; result is an OcclusionCullingData asset beside the scene
-            sb.AppendLine("  bake " + (baked ? "OK" : "FAILED") + " in " + (sw.Elapsed.TotalSeconds - t0).ToString("F1") + " s, umbraDataSize=" + StaticOcclusionCulling.umbraDataSize + " bytes");
+            // OCCLV2: StaticOcclusionCulling.umbraDataSize is a STALE getter in batch mode (read right after Compute it said 0 in v109av/ay while the asset on disk held 64288 PVS bytes
+            // and 2089 renderers). The truth is the saved OcclusionCullingData asset beside the scene: save + refresh, then measure its file size and gate on compute.minAssetBytes.
+            AssetDatabase.SaveAssets(); AssetDatabase.Refresh();
+            string assetPath = Path.Combine(Path.ChangeExtension(R.scenePath, null), "OcclusionCullingData.asset");
+            long assetBytes = File.Exists(assetPath) ? new FileInfo(assetPath).Length : -1;
+            sb.AppendLine("  bake " + (baked ? "OK" : "FAILED") + " in " + (sw.Elapsed.TotalSeconds - t0).ToString("F1") + " s, assetBytes=" + assetBytes + " (" + assetPath + "), umbraDataSize getter=" + StaticOcclusionCulling.umbraDataSize + " (stale in batch mode, informational)");
+            if (!baked || assetBytes < R.compute.minAssetBytes) { sb.AppendLine("  OCCL BAKE EMPTY: assetBytes " + assetBytes + " < minAssetBytes " + R.compute.minAssetBytes); Debug.LogError("OCCL bake empty or missing (assetBytes=" + assetBytes + ")"); }
         }
         EditorSceneManager.MarkSceneDirty(sc); EditorSceneManager.SaveScene(sc);
 

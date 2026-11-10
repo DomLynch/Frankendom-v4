@@ -23,6 +23,7 @@ public class FootGround : MonoBehaviour
         public float maxLift = 0.16f;        // above this height the IK lets go (deliberate swing / step)
         public float levelWeight = 1f;       // foot levelled to the ground normal while planted
         public float toeFlatWeight = 1f;     // toe segment flattened while planted
+        public float axisPitchDeg = 0f;      // FEETQC: dip (deg, nose down) of her heel-to-toe axis in the BIND pose that levelling aims at; 0 = flat axis = the old behaviour. Joan: 40.6 (her boot sole is flat in bind, the foot->ToeBase axis is -40.6)
         public float stateBlend = 0.1f;      // seconds to ease the per-state weight
         public StateRow[] states;            // unlisted states use `weight` only
     }
@@ -173,6 +174,9 @@ public class FootGround : MonoBehaviour
         return Mathf.Atan2(v.y, new Vector2(v.x, v.z).magnitude) * Mathf.Rad2Deg;
     }
 
+    // FEETQC: the target direction for the heel-to-toe axis = the ground-plane direction tilted nose-down by row.axisPitchDeg (0 = unchanged)
+    Vector3 Tilt(Vector3 flat, Vector3 n) { if (row.axisPitchDeg == 0f || flat.sqrMagnitude < 1e-8f) return flat; return Quaternion.AngleAxis(row.axisPitchDeg, Vector3.Cross(n, flat).normalized) * flat; }
+
     void Plant(Transform up, Transform leg, Transform foot, Transform toe, Transform toeEnd, float W)
     {
         var f = Measure(foot); if (!f.hit) return;
@@ -191,14 +195,14 @@ public class FootGround : MonoBehaviour
         if (toe != null && row.levelWeight > 0f)
         {
             Vector3 fd = toe.position - foot.position;
-            Vector3 flat = Vector3.ProjectOnPlane(fd, f.n);
+            Vector3 flat = Tilt(Vector3.ProjectOnPlane(fd, f.n), f.n);
             if (fd.sqrMagnitude > 1e-8f && flat.sqrMagnitude > 1e-8f)
                 foot.rotation = Quaternion.Slerp(Quaternion.identity, Quaternion.FromToRotation(fd, flat), w * row.levelWeight) * foot.rotation;
         }
         if (toe != null && toeEnd != null && row.toeFlatWeight > 0f)
         {
             Vector3 td = toeEnd.position - toe.position;
-            Vector3 flat = Vector3.ProjectOnPlane(td, f.n);
+            Vector3 flat = Tilt(Vector3.ProjectOnPlane(td, f.n), f.n);
             if (td.sqrMagnitude > 1e-8f && flat.sqrMagnitude > 1e-8f)
                 toe.rotation = Quaternion.Slerp(Quaternion.identity, Quaternion.FromToRotation(td, flat), w * row.toeFlatWeight) * toe.rotation;
         }

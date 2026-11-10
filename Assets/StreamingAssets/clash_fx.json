@@ -171,7 +171,13 @@
       "maxStepMeters": 1.0,
       "footSide": 0.14,
       "footForward": 0.1,
-      "skipWhenDead": 1
+      "skipWhenDead": 1,
+      "scaleByHeight": 0,
+      "refHeightM": 1.58,
+      "maxScale": 3.0,
+      "deadband": 1.25,
+      "minBoundsM": 0.3,
+      "retryS": 1.0
     }
   },
   "rows": [

@@ -17,7 +17,7 @@ using UnityEngine;
 [Serializable] public class MtSpeed { public float walkMul = 1.6f, runMul = 2.2f; }
 [Serializable] public class MtStamina { public float max = 100f, gallopDrainPerS = 14f, regenPerS = 22f, minToGallop = 15f; }
 [Serializable] public class MtSummon { public float cooldownS = 3f; }
-[Serializable] public class MtDismount { public string strikeAction = "strike", heavyAction = "heavy"; public string[] strikeKeys = { "Mouse0", "F" }, heavyKeys = { "G" }; /* FIX2 v1: were literals in Update */ public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true; }
+[Serializable] public class MtDismount { public string strikeAction = "strike", heavyAction = "heavy"; public string[] strikeKeys = { "Mouse0", "F" }, heavyKeys = { "G" }; /* FIX2 v1: were literals in Update */ public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true; public float foeRadiusM = 0f; /* MOUNTRULE v1: 0 = any live opponent engages (old); > 0 = only an opponent closer than this many metres */ }
 [Serializable] public class MtZ { public string id = ""; public float zFrom, zTo; }
 [Serializable] public class MtCam { public float backMul = 1f, heightMul = 1f; }
 [Serializable] public class MtGait
@@ -72,6 +72,12 @@ public sealed class MountRider : MonoBehaviour
 {
     public static MountRider Inst; float nextBind;   // FIX2 v1: nextBind throttles the player search
     public static bool Mounted { get { return Inst != null && Inst.mounted; } }
+    // MOUNTPROOF v1 (unity-build): test hook for MountProof.cs only (-mountproof launch flag). ProofKey = one virtual press of the summon key; ProofOwn = treat the horse as owned (the save is never written). Both false in normal play.
+    public static bool ProofKey, ProofOwn;
+    public static bool ProofReady { get { return Inst != null && Inst.loaded && Inst.df != null; } }
+    public static string ProofInfo() { var i = Inst; if (i == null) return "no rider"; return "mounted=" + i.mounted + " loaded=" + i.loaded + " speedNow=" + i.speedNow.ToString("F2") + " stam=" + i.stam.ToString("F0") + " horse=" + (i.horse != null && i.horse.activeSelf ? i.horse.transform.position.ToString("F2") : "off") + " player=" + (i.df != null ? i.df.transform.position.ToString("F2") : "none") + " scale=" + (i.loaded ? MountData.HorseScale(i.H).ToString("F3") : "-"); }
+    public static string ProofRefuse() { var i = Inst; return i == null || i.df == null ? "no rider" : i.Refuse(); }
+    bool ProofTake() { bool k = ProofKey; ProofKey = false; return k; }
     /// <summary>FIX2 v1: the ride's speed multiplier, read by DuelFighter.MoveTick (and ChaseAgent for the player) ON THE SIM TICK. walkSpeed / runSpeed fields are no longer written from Update, so the speed a tick sees never depends on frame timing. 1 when not mounted or for any other fighter.</summary>
     public static float SpeedMul(DuelFighter f, bool run) { var i = Inst; if (i == null || !i.mounted || i.K == null || f != i.df) return 1f; var S = i.cur != null ? i.cur.speed : i.K.speed; return run ? S.runMul : S.walkMul; }   // hades-env variants v1
     /// <summary>For a CameraRig hook: 1 on foot, mount.json camera.* while mounted.</summary>
@@ -105,7 +111,7 @@ public sealed class MountRider : MonoBehaviour
         return df != null;
     }
 
-    bool Owned() { return string.IsNullOrEmpty(K.requireOwned) || LootSave.Owns(K.requireOwned) || MountData.Variant() != null; }   // hades-env variants v1: owning only the war horse is enough
+    bool Owned() { return ProofOwn || string.IsNullOrEmpty(K.requireOwned) || LootSave.Owns(K.requireOwned) || MountData.Variant() != null; }   // hades-env variants v1: owning only the war horse is enough
 
     string Refuse()
     {
@@ -113,7 +119,7 @@ public sealed class MountRider : MonoBehaviour
         if (!loaded) return "horse not loaded yet";
         if (df.Dead) return "dead";
         if (MountData.BossZ(df.transform.position.z)) return "boss arena";
-        if (K.dismount.onOpponent && df.opponent != null && !df.opponent.Dead) return "fight engaged";
+        if (K.dismount.onOpponent && df.opponent != null && !df.opponent.Dead) { float fr = K.dismount.foeRadiusM; if (fr <= 0f || (df.opponent.transform.position - df.transform.position).sqrMagnitude <= fr * fr) return "fight engaged"; }   // MOUNTRULE v1: foeRadiusM (mount.json dismount) limits "engaged" to a boss that is actually close
         if (K.dismount.inHub && (HubSafe.PlayerInside() || MarketSafe.NoCombat)) return "safe zone";
         if (K.dismount.onMenu && MenuUI.Open) return "menu";
         if (K.dismount.onFinisher && Duel.Frozen) return "finisher";
@@ -125,7 +131,7 @@ public sealed class MountRider : MonoBehaviour
         if (!Bind()) return; float dt = Time.deltaTime;
         if (loaded && !mounted && MountData.Variant() != cur) { if (horse != null) Destroy(horse); if (imp != null) { try { imp.Dispose(); } catch (Exception) { } imp = null; } horse = null; hBody = null; loaded = false; loadStarted = false; }   // hades-env variants v1: a new horse was bought: reload
         if (!loadStarted && Owned()) { loadStarted = true; var t = LoadHorse(); }   // paid for only once the horse is owned
-        string why = Refuse(); bool key = InputMap.Down(K.summonAction, KeyCodeOf(K.summonKey));
+        string why = Refuse(); bool key = InputMap.Down(K.summonAction, KeyCodeOf(K.summonKey)) | ProofTake();
         if (mounted)
         {
             if (why != null || key || (K.dismount.onStrike && StrikeDown())) { Dismount(why ?? "key"); return; }

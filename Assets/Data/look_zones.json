@@ -5,7 +5,7 @@
   "pollSeconds": 0.1,
   "blendM": 14.0,
   "smoothSeconds": 1.5,
-  "waitFrames": 30,
+  "waitFrames": 4,
   "i2": true,
   "i3": true,
   "i5": true,

@@ -155,6 +155,7 @@
             "pelvisSmooth": 0.06,
             "plantSnap": 0.0184,
             "maxLift": 0.1476,
+            "axisPitchDeg": 0,
             "levelWeight": 1.0,
             "toeFlatWeight": 1.0,
             "stateBlend": 0.1,

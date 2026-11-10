@@ -32,7 +32,9 @@
     "smallestOccluder": 5.0,
     "smallestHole": 0.25,
     "backfaceThreshold": 100.0,
-    "bake": true
+    "bake": true,
+    "minAssetBytes": 10000,
+    "_minAssetBytes": "OCCLV2: the bake is reported EMPTY (Debug.LogError + report line) when the saved OcclusionCullingData.asset is smaller than this. v109av/ay baked 268950 bytes of asset (64288 PVS bytes)."
   },
   "camera": {
     "_about": "useOcclusionCulling is set on these cameras. mainCamera=true: Camera.main. offNames: cameras forced OFF (finisher / free / capture cameras that may sit outside the baked view cells or look from inside geometry).",

@@ -275,7 +275,7 @@
         "radius": 2.2
       },
       "runtime": {
-        "glb": "Npc/camp_akai.glb",
+        "glb": "Npc/camp_akai_olive.glb",
         "sources": [],
         "hideNodes": [
           "Layer_Tunic",
@@ -306,7 +306,7 @@
         "radius": 2.2
       },
       "runtime": {
-        "glb": "Npc/camp_erika.glb",
+        "glb": "Npc/camp_erika_olive.glb",
         "sources": [],
         "hideNodes": [
           "Layer_Tunic",
@@ -586,7 +586,7 @@
             "radius": 3.0
           },
           "runtime": {
-            "glb": "Npc/camp_akai.glb",
+            "glb": "Npc/camp_akai_olive.glb",
             "sources": [],
             "hideNodes": [
               "Layer_Tunic",
@@ -617,7 +617,7 @@
             "radius": 3.0
           },
           "runtime": {
-            "glb": "Npc/camp_erika.glb",
+            "glb": "Npc/camp_erika_olive.glb",
             "sources": [],
             "hideNodes": [
               "Layer_Tunic",
