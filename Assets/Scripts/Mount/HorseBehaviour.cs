@@ -206,6 +206,7 @@ public sealed partial class AmbientHorses
         b.v = 0f; b.vAnim = 0f; b.yawRate = 0f; foreach (var l in b.legs) l.stance = false;
         if (b.st == HbS.Dying) { b.st = HbS.Corpse; }
     }
+    public static bool ProofHit;   // HORSEPROOF v1 (unity-build): one virtual light hit on the targeted / nearest horse, set by HorseProof.cs (-horseproof) for the scripted proof; false in normal play
     // one pass per frame: the swing watch + the horse that takes the hit, the soft target, the debug key
     void HbFrame(DuelFighter p, HbCfg C, float now)
     {
@@ -218,6 +219,7 @@ public sealed partial class AmbientHorses
         }
         else hbSwingPrev = false;
         HbTargetPass(p, C, now);
+        if (ProofHit && p != null) { ProofHit = false; HbDebugHit(p, C); }   // HORSEPROOF v1
         if (!string.IsNullOrEmpty(C.debugHitKey) && p != null) { bool down = false; try { KeyCode kc; if (Enum.TryParse(C.debugHitKey, true, out kc)) down = Input.GetKeyDown(kc); } catch (Exception) { } if (down) HbDebugHit(p, C); }
         for (int i = hbAll.Count - 1; i >= 0; i--) if (hbAll[i].Key == null || hbAll[i].Key.go == null) hbAll.RemoveAt(i);
     }
