@@ -438,7 +438,7 @@
         },
         {
           "id": "z2_burrow_croc",
-          "enabled": true,
+          "enabled": false,
           "spot": "burrow_croc_home",
           "picks": [
             {
@@ -756,7 +756,7 @@
         },
         {
           "id": "bandit_g4_before_1",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_g4_before_1",
           "picks": [
             {
@@ -776,7 +776,7 @@
         },
         {
           "id": "bandit_g4_before_2",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_g4_before_2",
           "picks": [
             {
@@ -1020,7 +1020,7 @@
         },
         {
           "id": "bandit_g5_before_1",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_g5_before_1",
           "picks": [
             {
@@ -1040,7 +1040,7 @@
         },
         {
           "id": "bandit_g5_before_2",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_g5_before_2",
           "picks": [
             {
@@ -1060,7 +1060,7 @@
         },
         {
           "id": "bandit_g5_before_3",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_g5_before_3",
           "picks": [
             {
@@ -1271,7 +1271,7 @@
         },
         {
           "id": "bandit_g6_before_2",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_g6_before_2",
           "picks": [
             {
@@ -1291,7 +1291,7 @@
         },
         {
           "id": "bandit_g6_before_3",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_g6_before_3",
           "picks": [
             {
