@@ -2350,6 +2350,888 @@
    },
    "maskRepoint": true,
    "maskFromLod0Material": "trench_lava"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/bog_pool_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/bog_pool_LOD0.glb",
+   "material": "tripo_material_eee42cff-7266-4749-8f4b-7028d7d86fff",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_eee42cff-7266-4749-8f4b-7028d7d86fff",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_eee42cff-7266-4749-8f4b-7028d7d86fff",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_eee42cff-7266-4749-8f4b-7028d7d86fff"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/bog_pool_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/bog_pool_LOD0.glb",
+   "material": "tripo_material_eee42cff-7266-4749-8f4b-7028d7d86fff",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_eee42cff-7266-4749-8f4b-7028d7d86fff",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_eee42cff-7266-4749-8f4b-7028d7d86fff",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_eee42cff-7266-4749-8f4b-7028d7d86fff"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/caravan_wreck_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/caravan_wreck_LOD0.glb",
+   "material": "tripo_material_7c216194-7da6-49df-bfad-f21a5848a1ad",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_7c216194-7da6-49df-bfad-f21a5848a1ad",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_7c216194-7da6-49df-bfad-f21a5848a1ad",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_7c216194-7da6-49df-bfad-f21a5848a1ad"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/caravan_wreck_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/caravan_wreck_LOD0.glb",
+   "material": "tripo_material_7c216194-7da6-49df-bfad-f21a5848a1ad",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_7c216194-7da6-49df-bfad-f21a5848a1ad",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_7c216194-7da6-49df-bfad-f21a5848a1ad",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_7c216194-7da6-49df-bfad-f21a5848a1ad"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/cedar_spirit_totem_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/cedar_spirit_totem_LOD0.glb",
+   "material": "tripo_material_a373479a-1d77-40ed-a7d3-b950599d47b5",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a373479a-1d77-40ed-a7d3-b950599d47b5",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a373479a-1d77-40ed-a7d3-b950599d47b5",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a373479a-1d77-40ed-a7d3-b950599d47b5"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/cedar_spirit_totem_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/cedar_spirit_totem_LOD0.glb",
+   "material": "tripo_material_a373479a-1d77-40ed-a7d3-b950599d47b5",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a373479a-1d77-40ed-a7d3-b950599d47b5",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a373479a-1d77-40ed-a7d3-b950599d47b5",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a373479a-1d77-40ed-a7d3-b950599d47b5"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/chain_gantry_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/chain_gantry_LOD0.glb",
+   "material": "tripo_material_0d17d233-2033-4541-bd84-215be58bbe96",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_0d17d233-2033-4541-bd84-215be58bbe96",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_0d17d233-2033-4541-bd84-215be58bbe96",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_0d17d233-2033-4541-bd84-215be58bbe96"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/chain_gantry_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/chain_gantry_LOD0.glb",
+   "material": "tripo_material_0d17d233-2033-4541-bd84-215be58bbe96",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_0d17d233-2033-4541-bd84-215be58bbe96",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_0d17d233-2033-4541-bd84-215be58bbe96",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_0d17d233-2033-4541-bd84-215be58bbe96"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/crystal_fungus_cluster_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/crystal_fungus_cluster_LOD0.glb",
+   "material": "tripo_material_2ac59a27-ca36-4956-9fb2-59ffc336caaf",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_2ac59a27-ca36-4956-9fb2-59ffc336caaf",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_2ac59a27-ca36-4956-9fb2-59ffc336caaf",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_2ac59a27-ca36-4956-9fb2-59ffc336caaf"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/crystal_fungus_cluster_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/crystal_fungus_cluster_LOD0.glb",
+   "material": "tripo_material_2ac59a27-ca36-4956-9fb2-59ffc336caaf",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_2ac59a27-ca36-4956-9fb2-59ffc336caaf",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_2ac59a27-ca36-4956-9fb2-59ffc336caaf",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_2ac59a27-ca36-4956-9fb2-59ffc336caaf"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/drowned_colossus_head_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/drowned_colossus_head_LOD0.glb",
+   "material": "tripo_material_9c89fa1c-dd87-4400-8fdd-513f78e15639",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_9c89fa1c-dd87-4400-8fdd-513f78e15639",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_9c89fa1c-dd87-4400-8fdd-513f78e15639",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_9c89fa1c-dd87-4400-8fdd-513f78e15639"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/drowned_colossus_head_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/drowned_colossus_head_LOD0.glb",
+   "material": "tripo_material_9c89fa1c-dd87-4400-8fdd-513f78e15639",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_9c89fa1c-dd87-4400-8fdd-513f78e15639",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_9c89fa1c-dd87-4400-8fdd-513f78e15639",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_9c89fa1c-dd87-4400-8fdd-513f78e15639"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/fallen_petrified_giant_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/fallen_petrified_giant_LOD0.glb",
+   "material": "tripo_material_4d09b59b-d5a9-4513-b72d-dca564ad941b",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_4d09b59b-d5a9-4513-b72d-dca564ad941b",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_4d09b59b-d5a9-4513-b72d-dca564ad941b",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_4d09b59b-d5a9-4513-b72d-dca564ad941b"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/fallen_petrified_giant_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/fallen_petrified_giant_LOD0.glb",
+   "material": "tripo_material_4d09b59b-d5a9-4513-b72d-dca564ad941b",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_4d09b59b-d5a9-4513-b72d-dca564ad941b",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_4d09b59b-d5a9-4513-b72d-dca564ad941b",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_4d09b59b-d5a9-4513-b72d-dca564ad941b"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/hanging_lantern_tree_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/hanging_lantern_tree_LOD0.glb",
+   "material": "tripo_material_ded4810b-375e-4e01-8684-2f59d8d0f53c",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_ded4810b-375e-4e01-8684-2f59d8d0f53c",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_ded4810b-375e-4e01-8684-2f59d8d0f53c",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_ded4810b-375e-4e01-8684-2f59d8d0f53c"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/hanging_lantern_tree_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/hanging_lantern_tree_LOD0.glb",
+   "material": "tripo_material_ded4810b-375e-4e01-8684-2f59d8d0f53c",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_ded4810b-375e-4e01-8684-2f59d8d0f53c",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_ded4810b-375e-4e01-8684-2f59d8d0f53c",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_ded4810b-375e-4e01-8684-2f59d8d0f53c"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/hieroglyph_pylon_pair_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/hieroglyph_pylon_pair_LOD0.glb",
+   "material": "tripo_material_70a03757-6be0-48d6-80de-3feba12c3b0e",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_70a03757-6be0-48d6-80de-3feba12c3b0e",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_70a03757-6be0-48d6-80de-3feba12c3b0e",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_70a03757-6be0-48d6-80de-3feba12c3b0e"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/hieroglyph_pylon_pair_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/hieroglyph_pylon_pair_LOD0.glb",
+   "material": "tripo_material_70a03757-6be0-48d6-80de-3feba12c3b0e",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_70a03757-6be0-48d6-80de-3feba12c3b0e",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_70a03757-6be0-48d6-80de-3feba12c3b0e",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_70a03757-6be0-48d6-80de-3feba12c3b0e"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/hunter_gibbet_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/hunter_gibbet_LOD0.glb",
+   "material": "tripo_material_b77f1998-ea3a-4ec8-80aa-a68e965f9da0",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_b77f1998-ea3a-4ec8-80aa-a68e965f9da0",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_b77f1998-ea3a-4ec8-80aa-a68e965f9da0",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_b77f1998-ea3a-4ec8-80aa-a68e965f9da0"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/hunter_gibbet_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/hunter_gibbet_LOD0.glb",
+   "material": "tripo_material_b77f1998-ea3a-4ec8-80aa-a68e965f9da0",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_b77f1998-ea3a-4ec8-80aa-a68e965f9da0",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_b77f1998-ea3a-4ec8-80aa-a68e965f9da0",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_b77f1998-ea3a-4ec8-80aa-a68e965f9da0"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/hunting_horn_arch_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/hunting_horn_arch_LOD0.glb",
+   "material": "tripo_material_daaaca2b-1632-45e4-a0f2-253d62fee6bd",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_daaaca2b-1632-45e4-a0f2-253d62fee6bd",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_daaaca2b-1632-45e4-a0f2-253d62fee6bd",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_daaaca2b-1632-45e4-a0f2-253d62fee6bd"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/hunting_horn_arch_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/hunting_horn_arch_LOD0.glb",
+   "material": "tripo_material_daaaca2b-1632-45e4-a0f2-253d62fee6bd",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_daaaca2b-1632-45e4-a0f2-253d62fee6bd",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_daaaca2b-1632-45e4-a0f2-253d62fee6bd",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_daaaca2b-1632-45e4-a0f2-253d62fee6bd"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/lion_shrine_altar_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/lion_shrine_altar_LOD0.glb",
+   "material": "tripo_material_39fc51d0-efe7-4740-8c8b-188bba3cde34",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_39fc51d0-efe7-4740-8c8b-188bba3cde34",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_39fc51d0-efe7-4740-8c8b-188bba3cde34",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_39fc51d0-efe7-4740-8c8b-188bba3cde34"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/lion_shrine_altar_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/lion_shrine_altar_LOD0.glb",
+   "material": "tripo_material_39fc51d0-efe7-4740-8c8b-188bba3cde34",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_39fc51d0-efe7-4740-8c8b-188bba3cde34",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_39fc51d0-efe7-4740-8c8b-188bba3cde34",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_39fc51d0-efe7-4740-8c8b-188bba3cde34"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/merchant_stall_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/merchant_stall_LOD0.glb",
+   "material": "tripo_material_cc060ac4-02c1-4ee6-add6-6be4c26ccc8b",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_cc060ac4-02c1-4ee6-add6-6be4c26ccc8b",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_cc060ac4-02c1-4ee6-add6-6be4c26ccc8b",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_cc060ac4-02c1-4ee6-add6-6be4c26ccc8b"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/merchant_stall_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/merchant_stall_LOD0.glb",
+   "material": "tripo_material_cc060ac4-02c1-4ee6-add6-6be4c26ccc8b",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_cc060ac4-02c1-4ee6-add6-6be4c26ccc8b",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_cc060ac4-02c1-4ee6-add6-6be4c26ccc8b",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_cc060ac4-02c1-4ee6-add6-6be4c26ccc8b"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/pitborn_trophy_wall_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/pitborn_trophy_wall_LOD0.glb",
+   "material": "tripo_material_462dac00-7145-444f-846b-7981d3f2a4ca",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_462dac00-7145-444f-846b-7981d3f2a4ca",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_462dac00-7145-444f-846b-7981d3f2a4ca",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_462dac00-7145-444f-846b-7981d3f2a4ca"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/pitborn_trophy_wall_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/pitborn_trophy_wall_LOD0.glb",
+   "material": "tripo_material_462dac00-7145-444f-846b-7981d3f2a4ca",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_462dac00-7145-444f-846b-7981d3f2a4ca",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_462dac00-7145-444f-846b-7981d3f2a4ca",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_462dac00-7145-444f-846b-7981d3f2a4ca"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/reed_hide_canoe_wreck_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/reed_hide_canoe_wreck_LOD0.glb",
+   "material": "tripo_material_4a5d0c63-34a9-4e1c-a044-52909afb4f77",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_4a5d0c63-34a9-4e1c-a044-52909afb4f77",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_4a5d0c63-34a9-4e1c-a044-52909afb4f77",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_4a5d0c63-34a9-4e1c-a044-52909afb4f77"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/reed_hide_canoe_wreck_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/reed_hide_canoe_wreck_LOD0.glb",
+   "material": "tripo_material_4a5d0c63-34a9-4e1c-a044-52909afb4f77",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_4a5d0c63-34a9-4e1c-a044-52909afb4f77",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_4a5d0c63-34a9-4e1c-a044-52909afb4f77",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_4a5d0c63-34a9-4e1c-a044-52909afb4f77"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/rose_window_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/rose_window_LOD0.glb",
+   "material": "tripo_material_1f39d7ee-2b8e-46be-820c-1c4cbfe395f2",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_1f39d7ee-2b8e-46be-820c-1c4cbfe395f2",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_1f39d7ee-2b8e-46be-820c-1c4cbfe395f2",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_1f39d7ee-2b8e-46be-820c-1c4cbfe395f2"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/rose_window_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/rose_window_LOD0.glb",
+   "material": "tripo_material_1f39d7ee-2b8e-46be-820c-1c4cbfe395f2",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_1f39d7ee-2b8e-46be-820c-1c4cbfe395f2",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_1f39d7ee-2b8e-46be-820c-1c4cbfe395f2",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_1f39d7ee-2b8e-46be-820c-1c4cbfe395f2"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/slag_furnace_mouth_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/slag_furnace_mouth_LOD0.glb",
+   "material": "tripo_material_6cf541a1-b0dd-49c3-ab60-c260e1d25fa4",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_6cf541a1-b0dd-49c3-ab60-c260e1d25fa4",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_6cf541a1-b0dd-49c3-ab60-c260e1d25fa4",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_6cf541a1-b0dd-49c3-ab60-c260e1d25fa4"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/slag_furnace_mouth_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/slag_furnace_mouth_LOD0.glb",
+   "material": "tripo_material_6cf541a1-b0dd-49c3-ab60-c260e1d25fa4",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_6cf541a1-b0dd-49c3-ab60-c260e1d25fa4",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_6cf541a1-b0dd-49c3-ab60-c260e1d25fa4",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_6cf541a1-b0dd-49c3-ab60-c260e1d25fa4"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/spear_skull_palisade_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/spear_skull_palisade_LOD0.glb",
+   "material": "tripo_material_833f1ae1-3cdc-4a4a-a439-ef0dcd4a7f8c",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_833f1ae1-3cdc-4a4a-a439-ef0dcd4a7f8c",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_833f1ae1-3cdc-4a4a-a439-ef0dcd4a7f8c",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_833f1ae1-3cdc-4a4a-a439-ef0dcd4a7f8c"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/spear_skull_palisade_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/spear_skull_palisade_LOD0.glb",
+   "material": "tripo_material_833f1ae1-3cdc-4a4a-a439-ef0dcd4a7f8c",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_833f1ae1-3cdc-4a4a-a439-ef0dcd4a7f8c",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_833f1ae1-3cdc-4a4a-a439-ef0dcd4a7f8c",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_833f1ae1-3cdc-4a4a-a439-ef0dcd4a7f8c"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/stag_skull_totem_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/stag_skull_totem_LOD0.glb",
+   "material": "tripo_material_9696ca20-a046-40d0-bf9f-9e33624776b5",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_9696ca20-a046-40d0-bf9f-9e33624776b5",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_9696ca20-a046-40d0-bf9f-9e33624776b5",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_9696ca20-a046-40d0-bf9f-9e33624776b5"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/stag_skull_totem_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/stag_skull_totem_LOD0.glb",
+   "material": "tripo_material_9696ca20-a046-40d0-bf9f-9e33624776b5",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_9696ca20-a046-40d0-bf9f-9e33624776b5",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_9696ca20-a046-40d0-bf9f-9e33624776b5",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_9696ca20-a046-40d0-bf9f-9e33624776b5"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/starfall_obelisk_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/starfall_obelisk_LOD0.glb",
+   "material": "tripo_material_e0e88ac8-781a-4376-ab43-c86b6780b9c6",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_e0e88ac8-781a-4376-ab43-c86b6780b9c6",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_e0e88ac8-781a-4376-ab43-c86b6780b9c6",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_e0e88ac8-781a-4376-ab43-c86b6780b9c6"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/starfall_obelisk_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/starfall_obelisk_LOD0.glb",
+   "material": "tripo_material_e0e88ac8-781a-4376-ab43-c86b6780b9c6",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_e0e88ac8-781a-4376-ab43-c86b6780b9c6",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_e0e88ac8-781a-4376-ab43-c86b6780b9c6",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_e0e88ac8-781a-4376-ab43-c86b6780b9c6"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/wrecked_longship_LOD1.glb",
+   "lod0": "Assets/Env/Props/wow21/wrecked_longship_LOD0.glb",
+   "material": "tripo_material_a7a4b5fb-a316-4ddf-bafe-470c813c2c41",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a7a4b5fb-a316-4ddf-bafe-470c813c2c41",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a7a4b5fb-a316-4ddf-bafe-470c813c2c41",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a7a4b5fb-a316-4ddf-bafe-470c813c2c41"
+  },
+  {
+   "glb": "Assets/Env/Props/wow21/wrecked_longship_LOD2.glb",
+   "lod0": "Assets/Env/Props/wow21/wrecked_longship_LOD0.glb",
+   "material": "tripo_material_a7a4b5fb-a316-4ddf-bafe-470c813c2c41",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a7a4b5fb-a316-4ddf-bafe-470c813c2c41",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 0
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a7a4b5fb-a316-4ddf-bafe-470c813c2c41",
+     "md5": "",
+     "lodImage": -1,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a7a4b5fb-a316-4ddf-bafe-470c813c2c41"
   }
  ]
 }

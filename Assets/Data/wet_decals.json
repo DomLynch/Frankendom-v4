@@ -60,6 +60,32 @@
    "affectNormal": false,
    "affectSmoothness": true,
    "affectAO": false
+  },
+  {
+   "id": "gid_pool",
+   "name": "gid_pool",
+   "smoothness": 0.97,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "gid_pool_peat",
+   "name": "gid_pool_peat",
+   "smoothness": 0.95,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
   }
  ],
  "zones": [
@@ -71,6 +97,36 @@
    "yTolM": 0.4,
    "enabled": true,
    "maxRows": 100
+  },
+  {
+   "id": "hub_camp",
+   "zMin": 72.0,
+   "zMax": 98.0,
+   "yExpect": 0.0,
+   "yTolM": 0.4,
+   "enabled": true,
+   "maxRows": 40,
+   "_gid": true
+  },
+  {
+   "id": "z5_humbaba",
+   "zMin": 177.0,
+   "zMax": 234.0,
+   "yExpect": -0.05,
+   "yTolM": 0.4,
+   "enabled": true,
+   "maxRows": 40,
+   "_gid": true
+  },
+  {
+   "id": "grendel",
+   "zMin": 108.0,
+   "zMax": 167.0,
+   "yExpect": 0.0,
+   "yTolM": 0.4,
+   "enabled": true,
+   "maxRows": 40,
+   "_gid": true
   }
  ],
  "rows": [
@@ -489,7 +545,242 @@
    "depth": 0.0,
    "opacity": 0.9,
    "dd": 0.0
+  },
+  {
+   "id": "gidI_sobe_pool_001",
+   "zone": "sobek_reach",
+   "tex": "gid_pool",
+   "x": -3.455,
+   "z": 55.066,
+   "yaw": 201.5,
+   "w": 2.1,
+   "h": 1.64,
+   "depth": 0.0,
+   "opacity": 0.97,
+   "dd": 40.0
+  },
+  {
+   "id": "gidI_sobe_pool_002",
+   "zone": "sobek_reach",
+   "tex": "gid_pool",
+   "x": 3.782,
+   "z": 53.277,
+   "yaw": 217.0,
+   "w": 3.09,
+   "h": 2.43,
+   "depth": 0.0,
+   "opacity": 0.96,
+   "dd": 40.0
+  },
+  {
+   "id": "gidI_sobe_pool_003",
+   "zone": "sobek_reach",
+   "tex": "gid_pool",
+   "x": 3.513,
+   "z": 58.25,
+   "yaw": 267.5,
+   "w": 2.46,
+   "h": 1.86,
+   "depth": 0.0,
+   "opacity": 0.99,
+   "dd": 40.0
+  },
+  {
+   "id": "gidI_sobe_pool_004",
+   "zone": "sobek_reach",
+   "tex": "gid_pool",
+   "x": -3.295,
+   "z": 48.824,
+   "yaw": 188.1,
+   "w": 2.99,
+   "h": 2.73,
+   "depth": 0.0,
+   "opacity": 0.93,
+   "dd": 40.0
+  },
+  {
+   "id": "gidI_sobe_pool_005",
+   "zone": "sobek_reach",
+   "tex": "gid_pool",
+   "x": -3.412,
+   "z": 59.495,
+   "yaw": 351.2,
+   "w": 2.67,
+   "h": 2.26,
+   "depth": 0.0,
+   "opacity": 0.95,
+   "dd": 40.0
+  },
+  {
+   "id": "gid_hub__pool_001",
+   "zone": "hub_camp",
+   "tex": "gid_pool",
+   "x": -2.532,
+   "z": 96.178,
+   "yaw": 116.7,
+   "w": 1.74,
+   "h": 1.28,
+   "depth": 0.0,
+   "opacity": 0.95,
+   "dd": 45.0
+  },
+  {
+   "id": "gid_hub__pool_002",
+   "zone": "hub_camp",
+   "tex": "gid_pool",
+   "x": -1.808,
+   "z": 91.376,
+   "yaw": 284.9,
+   "w": 2.34,
+   "h": 1.72,
+   "depth": 0.0,
+   "opacity": 0.97,
+   "dd": 45.0
+  },
+  {
+   "id": "gid_hub__pool_003",
+   "zone": "hub_camp",
+   "tex": "gid_pool",
+   "x": -2.942,
+   "z": 85.056,
+   "yaw": 2.1,
+   "w": 2.47,
+   "h": 2.36,
+   "depth": 0.0,
+   "opacity": 0.98,
+   "dd": 45.0
+  },
+  {
+   "id": "gid_gren_pool_p_001",
+   "zone": "grendel",
+   "tex": "gid_pool_peat",
+   "x": 22.938,
+   "z": 121.0,
+   "yaw": 168.3,
+   "w": 6.43,
+   "h": 4.95,
+   "depth": 0.0,
+   "opacity": 0.93,
+   "dd": 45.0
+  },
+  {
+   "id": "gid_gren_pool_p_007",
+   "zone": "grendel",
+   "tex": "gid_pool_peat",
+   "x": -21.486,
+   "z": 113.951,
+   "yaw": 344.5,
+   "w": 6.64,
+   "h": 5.11,
+   "depth": 0.0,
+   "opacity": 0.92,
+   "dd": 45.0
+  },
+  {
+   "id": "gid_gren_pool_p_014",
+   "zone": "grendel",
+   "tex": "gid_pool_peat",
+   "x": -23.046,
+   "z": 157.971,
+   "yaw": 297.5,
+   "w": 5.89,
+   "h": 5.67,
+   "depth": 0.0,
+   "opacity": 0.96,
+   "dd": 45.0
+  },
+  {
+   "id": "gid_gren_pool_p_021",
+   "zone": "grendel",
+   "tex": "gid_pool_peat",
+   "x": -7.958,
+   "z": 112.438,
+   "yaw": 319.1,
+   "w": 5.18,
+   "h": 4.01,
+   "depth": 0.0,
+   "opacity": 1.0,
+   "dd": 45.0
+  },
+  {
+   "id": "gid_gren_pool_p_028",
+   "zone": "grendel",
+   "tex": "gid_pool_peat",
+   "x": 6.254,
+   "z": 112.382,
+   "yaw": 308.1,
+   "w": 4.17,
+   "h": 3.71,
+   "depth": 0.0,
+   "opacity": 0.98,
+   "dd": 45.0
+  },
+  {
+   "id": "gid_gren_pool_p_034",
+   "zone": "grendel",
+   "tex": "gid_pool_peat",
+   "x": 22.885,
+   "z": 154.122,
+   "yaw": 1.9,
+   "w": 3.73,
+   "h": 2.81,
+   "depth": 0.0,
+   "opacity": 0.96,
+   "dd": 45.0
+  },
+  {
+   "id": "gidI_gren_pool_p_001",
+   "zone": "grendel",
+   "tex": "gid_pool_peat",
+   "x": 8.125,
+   "z": 118.324,
+   "yaw": 128.8,
+   "w": 3.14,
+   "h": 2.78,
+   "depth": 0.0,
+   "opacity": 1.0,
+   "dd": 40.0
+  },
+  {
+   "id": "gidI_gren_pool_p_002",
+   "zone": "grendel",
+   "tex": "gid_pool_peat",
+   "x": -9.911,
+   "z": 118.086,
+   "yaw": 111.3,
+   "w": 2.46,
+   "h": 2.3,
+   "depth": 0.0,
+   "opacity": 0.95,
+   "dd": 40.0
+  },
+  {
+   "id": "gid_z5_h_pool_001",
+   "zone": "z5_humbaba",
+   "tex": "gid_pool",
+   "x": 18.952,
+   "z": 190.171,
+   "yaw": 207.8,
+   "w": 2.85,
+   "h": 2.58,
+   "depth": 0.0,
+   "opacity": 0.96,
+   "dd": 45.0
+  },
+  {
+   "id": "gid_z5_h_pool_009",
+   "zone": "z5_humbaba",
+   "tex": "gid_pool",
+   "x": -5.545,
+   "z": 181.414,
+   "yaw": 65.3,
+   "w": 3.13,
+   "h": 2.76,
+   "depth": 0.0,
+   "opacity": 0.94,
+   "dd": 45.0
   }
  ],
- "_v4_note": "laneV4V6 V4 T1: per-zone tint entries tex@zone, rows retargeted, colour only (depthM/liftM untouched). --off restores the backup."
+ "_v4_note": "laneV4V6 V4 T1: per-zone tint entries tex@zone, rows retargeted, colour only (depthM/liftM untouched). --off restores the backup.",
+ "_gid_note": "laneGROUNDID gen_groundid.py: gid_/gidI_ rows + textures appended; --off removes them by id prefix."
 }

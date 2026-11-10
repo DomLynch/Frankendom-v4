@@ -9,6 +9,99 @@
   "groundWaitSeconds": 20.0,
   "shots": [
     {
+      "id": "z4flat_right",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "grendel_stand",
+        "off": [
+          11,
+          1.7,
+          5
+        ]
+      },
+      "look": {
+        "spot": "grendel_stand",
+        "off": [
+          11,
+          1.0,
+          20
+        ]
+      },
+      "fov": 60.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "z4flat_left",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "grendel_stand",
+        "off": [
+          -11,
+          1.7,
+          5
+        ]
+      },
+      "look": {
+        "spot": "grendel_stand",
+        "off": [
+          -11,
+          1.0,
+          20
+        ]
+      },
+      "fov": 60.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "z4flat_far",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          1.7,
+          12
+        ]
+      },
+      "look": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          1.0,
+          28
+        ]
+      },
+      "fov": 60.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
       "id": "sobek_stand",
       "zone": "sobek_reach",
       "stand": "arrive_from_pit",
@@ -1021,9 +1114,9 @@
     {
       "id": "play_camp",
       "zone": "hub_camp",
-      "stand": "gate_prev",
+      "stand": "arrive_from_prev",
       "cam": {
-        "spot": "gate_prev",
+        "spot": "arrive_from_prev",
         "off": [
           0.0,
           2.4,
@@ -1031,7 +1124,7 @@
         ]
       },
       "look": {
-        "spot": "gate_prev",
+        "spot": "arrive_from_prev",
         "off": [
           0.0,
           1.4,
@@ -1968,6 +2061,526 @@
       "closeM": 2.4,
       "headY": 1.95,
       "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "npc15_mereraider_a",
+      "zone": "grendel",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "bandit_g4_after_1",
+        "off": [
+          2.4,
+          1.5,
+          -3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g4_after_1",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0
+    },
+    {
+      "id": "npc15_mereraider_b",
+      "zone": "grendel",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "bandit_g4_after_1",
+        "off": [
+          -2.4,
+          1.5,
+          3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g4_after_1",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0,
+      "_note": "NpcMereRaider at spot bandit_g4_after_1 (spawn enabled=True, aggro 2.1), player stands at gate_next"
+    },
+    {
+      "id": "npc15_boghag_a",
+      "zone": "grendel",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "bandit_g4_after_2",
+        "off": [
+          2.4,
+          1.5,
+          -3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g4_after_2",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0
+    },
+    {
+      "id": "npc15_boghag_b",
+      "zone": "grendel",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "bandit_g4_after_2",
+        "off": [
+          -2.4,
+          1.5,
+          3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g4_after_2",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0,
+      "_note": "NpcBogHag at spot bandit_g4_after_2 (spawn enabled=True, aggro 3.3), player stands at gate_next"
+    },
+    {
+      "id": "npc15_drownedthane_a",
+      "zone": "grendel",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "bandit_g4_after_3",
+        "off": [
+          2.4,
+          1.5,
+          -3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g4_after_3",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0
+    },
+    {
+      "id": "npc15_drownedthane_b",
+      "zone": "grendel",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "bandit_g4_after_3",
+        "off": [
+          -2.4,
+          1.5,
+          3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g4_after_3",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0,
+      "_note": "NpcDrownedThane at spot bandit_g4_after_3 (spawn enabled=False, aggro 5.5), player stands at gate_next"
+    },
+    {
+      "id": "npc15_barksentinel_a",
+      "zone": "z5_humbaba",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "bandit_g5_after_1",
+        "off": [
+          2.4,
+          1.5,
+          -3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g5_after_1",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0
+    },
+    {
+      "id": "npc15_barksentinel_b",
+      "zone": "z5_humbaba",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "bandit_g5_after_1",
+        "off": [
+          -2.4,
+          1.5,
+          3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g5_after_1",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0,
+      "_note": "NpcBarkSentinel at spot bandit_g5_after_1 (spawn enabled=True, aggro 0.5), player stands at gate_next"
+    },
+    {
+      "id": "npc15_cedararcher_a",
+      "zone": "z5_humbaba",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "bandit_g5_before_2",
+        "off": [
+          2.4,
+          1.5,
+          -3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g5_before_2",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0
+    },
+    {
+      "id": "npc15_cedararcher_b",
+      "zone": "z5_humbaba",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "bandit_g5_before_2",
+        "off": [
+          -2.4,
+          1.5,
+          3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g5_before_2",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0,
+      "_note": "NpcCedarArcher at spot bandit_g5_before_2 (spawn enabled=False, aggro 10), player stands at gate_prev"
+    },
+    {
+      "id": "npc15_rootdruid_a",
+      "zone": "z5_humbaba",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "bandit_g5_after_2",
+        "off": [
+          2.4,
+          1.5,
+          -3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g5_after_2",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0
+    },
+    {
+      "id": "npc15_rootdruid_b",
+      "zone": "z5_humbaba",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "bandit_g5_after_2",
+        "off": [
+          -2.4,
+          1.5,
+          3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g5_after_2",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0,
+      "_note": "NpcRootDruid at spot bandit_g5_after_2 (spawn enabled=True, aggro 0.8), player stands at gate_next"
+    },
+    {
+      "id": "npc15_huntsman_a",
+      "zone": "z6_erlking",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "bandit_g6_before_3",
+        "off": [
+          2.4,
+          1.5,
+          -3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g6_before_3",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0
+    },
+    {
+      "id": "npc15_huntsman_b",
+      "zone": "z6_erlking",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "bandit_g6_before_3",
+        "off": [
+          -2.4,
+          1.5,
+          3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g6_before_3",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0,
+      "_note": "NpcHuntsman at spot bandit_g6_before_3 (spawn enabled=False, aggro 7.5), player stands at gate_prev"
+    },
+    {
+      "id": "npc15_houndmaster_a",
+      "zone": "z6_erlking",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "bandit_g6_before_1",
+        "off": [
+          2.4,
+          1.5,
+          -3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g6_before_1",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0
+    },
+    {
+      "id": "npc15_houndmaster_b",
+      "zone": "z6_erlking",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "bandit_g6_before_1",
+        "off": [
+          -2.4,
+          1.5,
+          3.4
+        ]
+      },
+      "look": {
+        "spot": "bandit_g6_before_1",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 6.0,
+      "_note": "NpcHoundMaster at spot bandit_g6_before_1 (spawn enabled=False, aggro 6.5), player stands at gate_prev"
     }
   ],
   "renders": 5,

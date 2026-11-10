@@ -39,7 +39,10 @@
         "water",
         "glass",
         "ember",
-        "eye"
+        "eye",
+        "rock_boulder",
+        "hero_boulder",
+        "hero_debris_rubble"
       ],
       "baseColorMul": [
         0.58,
@@ -49,6 +52,286 @@
       "smoothnessMinFloor": 0.55,
       "smoothnessMaxFloor": 0.92,
       "smoothnessMaxCap": -1.0,
+      "metallicMul": -1.0,
+      "enabled": true
+    },
+    {
+      "id": "z2_rock_A",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "rock_boulder_A_"
+      ],
+      "excludeMaterial": [
+        "emiss",
+        "glow",
+        "lamp",
+        "flame",
+        "fire",
+        "water",
+        "glass",
+        "ember",
+        "eye"
+      ],
+      "baseColorMul": [
+        1.2,
+        1.17,
+        1.11
+      ],
+      "smoothnessMinFloor": -1.0,
+      "smoothnessMaxFloor": -1.0,
+      "smoothnessMaxCap": 0.3,
+      "metallicMul": -1.0,
+      "enabled": true
+    },
+    {
+      "id": "z2_rock_B",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "rock_boulder_B_"
+      ],
+      "excludeMaterial": [
+        "emiss",
+        "glow",
+        "lamp",
+        "flame",
+        "fire",
+        "water",
+        "glass",
+        "ember",
+        "eye"
+      ],
+      "baseColorMul": [
+        1.26,
+        1.18,
+        1.06
+      ],
+      "smoothnessMinFloor": -1.0,
+      "smoothnessMaxFloor": -1.0,
+      "smoothnessMaxCap": 0.3,
+      "metallicMul": -1.0,
+      "enabled": true
+    },
+    {
+      "id": "z2_rock_C",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "rock_boulder_C_"
+      ],
+      "excludeMaterial": [
+        "emiss",
+        "glow",
+        "lamp",
+        "flame",
+        "fire",
+        "water",
+        "glass",
+        "ember",
+        "eye"
+      ],
+      "baseColorMul": [
+        1.12,
+        1.14,
+        1.12
+      ],
+      "smoothnessMinFloor": -1.0,
+      "smoothnessMaxFloor": -1.0,
+      "smoothnessMaxCap": 0.3,
+      "metallicMul": -1.0,
+      "enabled": true
+    },
+    {
+      "id": "z2_rock_D",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "rock_boulder_D_"
+      ],
+      "excludeMaterial": [
+        "emiss",
+        "glow",
+        "lamp",
+        "flame",
+        "fire",
+        "water",
+        "glass",
+        "ember",
+        "eye"
+      ],
+      "baseColorMul": [
+        1.24,
+        1.2,
+        1.12
+      ],
+      "smoothnessMinFloor": -1.0,
+      "smoothnessMaxFloor": -1.0,
+      "smoothnessMaxCap": 0.3,
+      "metallicMul": -1.0,
+      "enabled": true
+    },
+    {
+      "id": "z2_rock_E",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "rock_boulder_E_"
+      ],
+      "excludeMaterial": [
+        "emiss",
+        "glow",
+        "lamp",
+        "flame",
+        "fire",
+        "water",
+        "glass",
+        "ember",
+        "eye"
+      ],
+      "baseColorMul": [
+        1.16,
+        1.14,
+        1.12
+      ],
+      "smoothnessMinFloor": -1.0,
+      "smoothnessMaxFloor": -1.0,
+      "smoothnessMaxCap": 0.3,
+      "metallicMul": -1.0,
+      "enabled": true
+    },
+    {
+      "id": "z2_hero_boulder_A",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "hero_boulder_A_"
+      ],
+      "excludeMaterial": [
+        "emiss",
+        "glow",
+        "lamp",
+        "flame",
+        "fire",
+        "water",
+        "glass",
+        "ember",
+        "eye"
+      ],
+      "baseColorMul": [
+        1.02,
+        1.0,
+        0.95
+      ],
+      "smoothnessMinFloor": -1.0,
+      "smoothnessMaxFloor": -1.0,
+      "smoothnessMaxCap": 0.3,
+      "metallicMul": -1.0,
+      "enabled": true
+    },
+    {
+      "id": "z2_hero_boulder_B",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "hero_boulder_B_"
+      ],
+      "excludeMaterial": [
+        "emiss",
+        "glow",
+        "lamp",
+        "flame",
+        "fire",
+        "water",
+        "glass",
+        "ember",
+        "eye"
+      ],
+      "baseColorMul": [
+        0.98,
+        0.98,
+        0.96
+      ],
+      "smoothnessMinFloor": -1.0,
+      "smoothnessMaxFloor": -1.0,
+      "smoothnessMaxCap": 0.3,
+      "metallicMul": -1.0,
+      "enabled": true
+    },
+    {
+      "id": "z2_hero_boulder_C",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "hero_boulder_C_"
+      ],
+      "excludeMaterial": [
+        "emiss",
+        "glow",
+        "lamp",
+        "flame",
+        "fire",
+        "water",
+        "glass",
+        "ember",
+        "eye"
+      ],
+      "baseColorMul": [
+        1.04,
+        1.0,
+        0.94
+      ],
+      "smoothnessMinFloor": -1.0,
+      "smoothnessMaxFloor": -1.0,
+      "smoothnessMaxCap": 0.3,
+      "metallicMul": -1.0,
+      "enabled": true
+    },
+    {
+      "id": "z2_hero_boulder_D",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "hero_boulder_D_"
+      ],
+      "excludeMaterial": [
+        "emiss",
+        "glow",
+        "lamp",
+        "flame",
+        "fire",
+        "water",
+        "glass",
+        "ember",
+        "eye"
+      ],
+      "baseColorMul": [
+        1.0,
+        1.0,
+        0.97
+      ],
+      "smoothnessMinFloor": -1.0,
+      "smoothnessMaxFloor": -1.0,
+      "smoothnessMaxCap": 0.3,
+      "metallicMul": -1.0,
+      "enabled": true
+    },
+    {
+      "id": "z2_debris_rubble",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "hero_debris_rubble_"
+      ],
+      "excludeMaterial": [
+        "emiss",
+        "glow",
+        "lamp",
+        "flame",
+        "fire",
+        "water",
+        "glass",
+        "ember",
+        "eye"
+      ],
+      "baseColorMul": [
+        1.2,
+        1.17,
+        1.11
+      ],
+      "smoothnessMinFloor": -1.0,
+      "smoothnessMaxFloor": -1.0,
+      "smoothnessMaxCap": 0.3,
       "metallicMul": -1.0,
       "enabled": true
     }

@@ -29,4 +29,46 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HadesSlice_BanditArcher.unity
     guid: 2ea7cf455f34078408262f98fa8369c9
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcPitGladiator.unity
+    guid: f5e501b9959de9140aea58aba2c4d2ca
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcChainWarden.unity
+    guid: ae141205c8bd8fc4086be157ada00830
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcSlagCrossbowman.unity
+    guid: 80b91ed932020424183ba0fde0d0f985
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcCrocWarrior.unity
+    guid: 9975972dce10a5740b01da606f240404
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcReedSkirmisher.unity
+    guid: fb530d08f6729e449a6c5b69c06234dd
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcEmbalmerCultist.unity
+    guid: 4c27b7a17116b8e4ba6eea45839d5bb5
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcMereRaider.unity
+    guid: cf70693ce094217479499c5ed0fe3f72
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcBogHag.unity
+    guid: 8bd605176c8ec484caa3f365e73c568e
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcDrownedThane.unity
+    guid: 91c8900aa2f53d346b0607e815fff9f5
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcBarkSentinel.unity
+    guid: 27ee5c71d56661e45b42b3e78f807744
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcCedarArcher.unity
+    guid: 76ff8fa970e736547afc6f6d49b339db
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcRootDruid.unity
+    guid: e9c8f33b358a7de4a8c2e62f3ea111a4
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcHuntsman.unity
+    guid: 34e208ee8eb280340b1fd601ede88cf3
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcHoundMaster.unity
+    guid: d9730f5ee9011a543a0d65b67022e092
   m_configObjects: {}
