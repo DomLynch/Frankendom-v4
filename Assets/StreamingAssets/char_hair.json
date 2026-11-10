@@ -43,11 +43,11 @@
       "floats": [
         {
           "name": "_Anisotropy",
-          "value": 0.85
+          "value": 1.0
         },
         {
           "name": "_SmoothnessRemapMax",
-          "value": 0.6
+          "value": 0.72
         }
       ]
     },
@@ -60,11 +60,11 @@
       "floats": [
         {
           "name": "_Anisotropy",
-          "value": 0.85
+          "value": 1.0
         },
         {
           "name": "_SmoothnessRemapMax",
-          "value": 0.6
+          "value": 0.72
         }
       ]
     }

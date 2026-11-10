@@ -2,8 +2,15 @@
   "_about": "ZONESPAN v1 (zone_span.json v2), read by Assets/Scripts/Zones/ZoneSpan.cs and Assets/Editor/Zone2Build.cs. SHIPS DARK: enabled=false. ONE ROW PER ZONE in \"zones\" (any number): each has its offsetZ, ring groups and gate row. A zone is a physical copy of the Pit Yard (or a safe zone) at z + offsetZ in the SAME scene (one sky, one sun, one fog stack). Zone roots are switched by distance, ring by ring. Units metres, seconds. Needs zones.json enabled too (laneZONES). Generated from zone_plan.json by gen_zone2.py: edit the plan, not this file.",
   "enabled": false,
   "version": 2,
-  "arrive": { "enabled": true, "holdFrames": 240, "noSpanFrames": 900, "rayUpM": 3.0, "rayDownM": 10.0, "groundMask": -1,
-    "_about": "CAMPGROUND v1: an arrival that is not a walk (direct start, zone shot) pins the player until a down ray finds ground; holdFrames counted after the span is bound, noSpanFrames if it never binds." },
+  "arrive": {
+    "enabled": true,
+    "holdFrames": 240,
+    "noSpanFrames": 900,
+    "rayUpM": 3.0,
+    "rayDownM": 10.0,
+    "groundMask": -1,
+    "_about": "CAMPGROUND v1: an arrival that is not a walk (direct start, zone shot) pins the player until a down ray finds ground; holdFrames counted after the span is bound, noSpanFrames if it never binds."
+  },
   "pollSeconds": 0.25,
   "ringsPerFrame": 1,
   "wake": {
@@ -65,15 +72,15 @@
       "rings": [
         {
           "group": "Z2Ring0",
-          "rows": 43
+          "rows": 47
         },
         {
           "group": "Z2Ring1",
-          "rows": 114
+          "rows": 133
         },
         {
           "group": "Z2Ring2",
-          "rows": 7
+          "rows": 41
         }
       ],
       "hideRows": [
@@ -143,15 +150,15 @@
       "rings": [
         {
           "group": "HubRing0",
-          "rows": 80
+          "rows": 90
         },
         {
           "group": "HubRing1",
-          "rows": 65
+          "rows": 74
         },
         {
           "group": "HubRing2",
-          "rows": 4
+          "rows": 29
         }
       ],
       "hideRows": [
@@ -200,18 +207,22 @@
       "rings": [
         {
           "group": "Z4Ring0",
-          "rows": 5
+          "rows": 17
         },
         {
           "group": "Z4Ring1",
-          "rows": 34
+          "rows": 51
         },
         {
           "group": "Z4Ring2",
-          "rows": 31
+          "rows": 82
         }
       ],
-      "hideRows": ["worldmid_mid_buttress_stub_0", "worldmid_mid_slab_heap_b_2", "worldbehind_rock_boulder_A_61"]
+      "hideRows": [
+        "worldmid_mid_buttress_stub_0",
+        "worldmid_mid_slab_heap_b_2",
+        "worldbehind_rock_boulder_A_61"
+      ]
     },
     {
       "id": "z5_humbaba",
@@ -247,15 +258,15 @@
       "rings": [
         {
           "group": "Z5Ring0",
-          "rows": 11
+          "rows": 30
         },
         {
           "group": "Z5Ring1",
-          "rows": 4
+          "rows": 23
         },
         {
           "group": "Z5Ring2",
-          "rows": 6
+          "rows": 39
         }
       ],
       "hideRows": []
@@ -298,11 +309,11 @@
         },
         {
           "group": "Z6Ring1",
-          "rows": 11
+          "rows": 48
         },
         {
           "group": "Z6Ring2",
-          "rows": 13
+          "rows": 71
         }
       ],
       "hideRows": [
@@ -343,15 +354,15 @@
       "rings": [
         {
           "group": "Z7Ring0",
-          "rows": 33
+          "rows": 46
         },
         {
           "group": "Z7Ring1",
-          "rows": 10
+          "rows": 18
         },
         {
           "group": "Z7Ring2",
-          "rows": 7
+          "rows": 50
         }
       ],
       "hideRows": [],
@@ -385,7 +396,9 @@
       "GroundFog8"
     ],
     "cloneProbes": true,
-    "colliderName": "GroundCollider", "colliderWidthM": 80.0, "colliderThicknessM": 1.0,
+    "colliderName": "GroundCollider",
+    "colliderWidthM": 80.0,
+    "colliderThicknessM": 1.0,
     "_about": "Editor step only (Zone2Build), per zone row: fog objects and every ReflectionProbe are Instantiate-d (same assets) and moved by offsetZ; the terrain follows the row's terrain block (crop = only the triangles in its window, not the whole 880 m mesh); a GroundCollider of colliderSizeZ (per row) at offsetZ + colliderCenterLocal (4 m before the previous door face to 8 m past the lane end)."
   },
   "test": {

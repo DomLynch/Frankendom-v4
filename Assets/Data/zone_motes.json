@@ -17,14 +17,14 @@
       "zFrom": -100000.0,
       "zTo": 26.0,
       "color": [
-        0.14,
-        0.12,
-        0.11,
-        0.5
+        0.28,
+        0.24,
+        0.22,
+        0.8
       ],
-      "sizeMin": 0.02,
-      "sizeMax": 0.05,
-      "count": 40,
+      "sizeMin": 0.06,
+      "sizeMax": 0.15,
+      "count": 104,
       "lifeMin": 16,
       "lifeMax": 24,
       "box": [
@@ -50,14 +50,14 @@
       "zFrom": 26.0,
       "zTo": 62.0,
       "color": [
-        0.26,
-        0.31,
-        0.29,
-        0.28
+        0.52,
+        0.62,
+        0.58,
+        0.56
       ],
-      "sizeMin": 0.015,
-      "sizeMax": 0.035,
-      "count": 44,
+      "sizeMin": 0.045,
+      "sizeMax": 0.105,
+      "count": 114,
       "lifeMin": 18,
       "lifeMax": 26,
       "box": [
@@ -83,14 +83,14 @@
       "zFrom": 62.0,
       "zTo": 98.0,
       "color": [
-        0.26,
-        0.2,
-        0.14,
-        0.26
+        0.52,
+        0.4,
+        0.28,
+        0.52
       ],
-      "sizeMin": 0.015,
-      "sizeMax": 0.03,
-      "count": 20,
+      "sizeMin": 0.045,
+      "sizeMax": 0.09,
+      "count": 52,
       "lifeMin": 16,
       "lifeMax": 24,
       "box": [
@@ -116,14 +116,14 @@
       "zFrom": 98.0,
       "zTo": 167.0,
       "color": [
-        0.5,
-        0.47,
-        0.42,
-        0.34
+        0.9,
+        0.9,
+        0.84,
+        0.68
       ],
-      "sizeMin": 0.03,
-      "sizeMax": 0.07,
-      "count": 60,
+      "sizeMin": 0.09,
+      "sizeMax": 0.18,
+      "count": 150,
       "lifeMin": 14,
       "lifeMax": 22,
       "box": [
@@ -149,14 +149,14 @@
       "zFrom": 167.0,
       "zTo": 234.0,
       "color": [
-        0.27,
-        0.33,
-        0.15,
-        0.32
+        0.54,
+        0.66,
+        0.3,
+        0.64
       ],
-      "sizeMin": 0.02,
-      "sizeMax": 0.05,
-      "count": 50,
+      "sizeMin": 0.06,
+      "sizeMax": 0.15,
+      "count": 130,
       "lifeMin": 18,
       "lifeMax": 28,
       "box": [
@@ -182,14 +182,14 @@
       "zFrom": 234.0,
       "zTo": 305.0,
       "color": [
-        0.38,
-        0.09,
-        0.07,
-        0.38
+        0.76,
+        0.18,
+        0.14,
+        0.76
       ],
-      "sizeMin": 0.02,
-      "sizeMax": 0.05,
-      "count": 55,
+      "sizeMin": 0.06,
+      "sizeMax": 0.15,
+      "count": 143,
       "lifeMin": 16,
       "lifeMax": 24,
       "box": [
@@ -215,14 +215,14 @@
       "zFrom": 305.0,
       "zTo": 100000.0,
       "color": [
-        0.26,
-        0.2,
-        0.14,
-        0.26
+        0.52,
+        0.4,
+        0.28,
+        0.52
       ],
-      "sizeMin": 0.015,
-      "sizeMax": 0.03,
-      "count": 20,
+      "sizeMin": 0.045,
+      "sizeMax": 0.09,
+      "count": 52,
       "lifeMin": 16,
       "lifeMax": 24,
       "box": [

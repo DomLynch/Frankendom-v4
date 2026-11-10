@@ -242,7 +242,7 @@
         "final": "Mixamo Kachujin G Rosales on the 106 rig."
       },
       "runtime": {
-        "glb": "Npc/camp_kachujin.glb",
+        "glb": "Npc/camp_kachujin_sombre.glb",
         "sources": [],
         "hideNodes": [
           "Layer_Tunic",
@@ -648,7 +648,7 @@
             "radius": 3.0
           },
           "runtime": {
-            "glb": "Npc/camp_kachujin.glb",
+            "glb": "Npc/camp_kachujin_sombre.glb",
             "sources": [],
             "hideNodes": [
               "Layer_Tunic",

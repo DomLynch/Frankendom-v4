@@ -1,14 +1,14 @@
 {
-  "_about": "laneVIS2 item 8 (STAGED, not shipped). Read by the NEW Scripts/Zones/ZoneSky.cs (kit\\code). A dark, slow HDRP CLOUD LAYER (baked lat-long texture composited in the sky pass; NOT Volumetric Clouds) in one global runtime Volume, priority 21. enabled=false, an absent file or -zonesky:off = nothing. Per zone only opacity / tint / scrollSpeed (km/h, HDRP Cloud Layer wind speed): they are render-time parameters, a zone blend never re-bakes the cloud texture. tint = fraction of a sky texel at the same exposure: the cloud exposure is read from the live HDRISky exposure (exposureFromHdri) + exposureOffsetEV; tintScale scales every tint at once (first thing to tune on the first frame). cloudMapPath '' = HDRP's own DefaultCloudMap. castShadows false = no cloud shadow cookie on the sun (extra cost, and the key must stay a clean low light).",
+  "_about": "laneVIS2 item 8 (STAGED, not shipped). Read by the NEW Scripts/Zones/ZoneSky.cs (kit\\code). A dark, slow HDRP CLOUD LAYER (baked lat-long texture composited in the sky pass; NOT Volumetric Clouds) in one global runtime Volume, priority 21. enabled=false, an absent file or -zonesky:off = nothing. Per zone only opacity / tint / scrollSpeed (km/h, HDRP Cloud Layer wind speed): they are render-time parameters, a zone blend never re-bakes the cloud texture. tint = fraction of a sky texel at the same exposure: the cloud exposure is read from the live HDRISky exposure (exposureFromHdri) + exposureOffsetEV; tintScale scales every tint at once (first thing to tune on the first frame). cloudMapPath '' = HDRP's own DefaultCloudMap. castShadows false = no cloud shadow cookie on the sun (extra cost, and the key must stay a clean low light). | V15 retune (apply_v15.py): tint solved per zone from the MEASURED sky (Yc = Ys*(1+frac/(op*coverage))), over-blend, lighting off, resolution 512, steps 4.",
   "enabled": false,
   "log": true,
   "exposureFromHdri": true,
   "exposureEV": 0.0,
   "exposureOffsetEV": 0.0,
   "tintScale": 1.0,
-  "lighting": true,
-  "steps": 6,
-  "resolution": 1024,
+  "lighting": false,
+  "steps": 4,
+  "resolution": 512,
   "altitude": 2000.0,
   "thickness": 0.5,
   "rotation": 0.0,
@@ -24,84 +24,84 @@
   "priority": 21.0,
   "defaults": {
     "id": "default",
-    "opacity": 0.3,
+    "opacity": 0.35,
     "tint": [
-      0.1,
-      0.1,
-      0.11
+      0.02301,
+      0.01332,
+      0.00807
     ],
-    "scrollSpeed": 8.0
+    "scrollSpeed": 5.0
   },
   "rows": [
     {
       "id": "pit_yard",
       "zFrom": -100000.0,
       "zTo": 26.0,
-      "opacity": 0.3,
+      "opacity": 0.45,
       "tint": [
-        0.11,
-        0.095,
-        0.09
+        0.03268,
+        0.01395,
+        0.00917
       ],
-      "scrollSpeed": 8.0
+      "scrollSpeed": 6.0
     },
     {
       "id": "sobek_reach",
       "zFrom": 26.0,
       "zTo": 62.0,
-      "opacity": 0.35,
+      "opacity": 0.55,
       "tint": [
-        0.085,
-        0.11,
-        0.105
+        0.00744,
+        0.02372,
+        0.01692
       ],
-      "scrollSpeed": 6.0
+      "scrollSpeed": 5.0
     },
     {
       "id": "hub_camp",
       "zFrom": 62.0,
       "zTo": 98.0,
-      "opacity": 0.25,
+      "opacity": 0.35,
       "tint": [
-        0.11,
-        0.1,
-        0.09
+        0.02301,
+        0.01332,
+        0.00807
       ],
-      "scrollSpeed": 6.0
+      "scrollSpeed": 5.0
     },
     {
       "id": "grendel",
       "zFrom": 98.0,
       "zTo": 167.0,
-      "opacity": 0.35,
+      "opacity": 0.6,
       "tint": [
-        0.12,
-        0.115,
-        0.11
+        0.01918,
+        0.01412,
+        0.01105
       ],
-      "scrollSpeed": 10.0
+      "scrollSpeed": 8.0
     },
     {
       "id": "z5_humbaba",
       "zFrom": 167.0,
       "zTo": 234.0,
-      "opacity": 0.4,
+      "opacity": 0.55,
       "tint": [
-        0.09,
-        0.11,
-        0.085
+        0.01384,
+        0.02513,
+        0.01104
       ],
-      "scrollSpeed": 7.0
+      "scrollSpeed": 5.0
     },
     {
       "id": "z6_erlking",
       "zFrom": 234.0,
       "zTo": 305.0,
-      "opacity": 0.4,
+      "opacity": 0.5,
       "tint": [
-        0.15,
-        0.07,
-        0.065
+        0.04846,
+        0.01652,
+        0.01652
       ],
       "scrollSpeed": 9.0
     },
@@ -109,13 +109,13 @@
       "id": "z7_market2",
       "zFrom": 305.0,
       "zTo": 100000.0,
-      "opacity": 0.25,
+      "opacity": 0.35,
       "tint": [
-        0.11,
-        0.1,
-        0.09
+        0.02301,
+        0.01332,
+        0.00807
       ],
-      "scrollSpeed": 6.0
+      "scrollSpeed": 5.0
     }
   ]
 }

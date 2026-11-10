@@ -132,6 +132,32 @@
         0.015,
         0.004
       ]
+    },
+    {
+      "name": "pebbles",
+      "screenHeights": [
+        0.06,
+        0.02,
+        0.007
+      ]
+    },
+    {
+        "name": "sky_ridge",
+        "screenHeights": [
+            20.0,
+            10.0,
+            0.0
+        ],
+        "_about": "LOD0/LOD1 can never be selected (screen height cannot exceed 1 for a ridge in view at 10x), so every ridge is the 2.5-3.2k tri LOD2 and is never culled by size"
+    },
+    {
+        "name": "sky_ruin",
+        "screenHeights": [
+            1.2,
+            0.3,
+            0.0
+        ],
+        "_about": "far_ruin LOD1 (2.6-3.3k tris) while a tower fills > 30 % of the screen height, else LOD2 (0.75-1.2k tris); LOD0 (20 MB glb) only if one fills the whole screen"
     }
   ],
   "groups": [
@@ -2054,6 +2080,2152 @@
         "look",
         "skyline"
       ]
+    },
+    {
+      "id": "v9s_grendel_00",
+      "group": "Z4Ring2",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.41,
+        -0.17,
+        146.79
+      ],
+      "rotEuler": [
+        0,
+        231.7,
+        0
+      ],
+      "scale": 0.372,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_01",
+      "group": "Z4Ring2",
+      "library": "props",
+      "asset": "hero_skull_pile_b",
+      "lodProfile": "hero_heavy",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.84,
+        -0.17,
+        147.25
+      ],
+      "rotEuler": [
+        0,
+        89.7,
+        0
+      ],
+      "scale": 0.471,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_02",
+      "group": "Z4Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        6.44,
+        -0.17,
+        147.21
+      ],
+      "rotEuler": [
+        0,
+        255.8,
+        0
+      ],
+      "scale": 0.548,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_03",
+      "group": "Z4Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.14,
+        -0.17,
+        145.99
+      ],
+      "rotEuler": [
+        0,
+        109.7,
+        0
+      ],
+      "scale": 0.501,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_04",
+      "group": "Z4Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.95,
+        -0.17,
+        145.79
+      ],
+      "rotEuler": [
+        0,
+        75.8,
+        0
+      ],
+      "scale": 0.445,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_05",
+      "group": "Z4Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_b",
+      "lodProfile": "hero_heavy",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -7.6,
+        -0.17,
+        133.51
+      ],
+      "rotEuler": [
+        0,
+        316.6,
+        0
+      ],
+      "scale": 0.395,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_06",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -8.11,
+        -0.17,
+        132.46
+      ],
+      "rotEuler": [
+        0,
+        202.0,
+        0
+      ],
+      "scale": 0.398,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_07",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -6.89,
+        -0.17,
+        132.52
+      ],
+      "rotEuler": [
+        0,
+        151.0,
+        0
+      ],
+      "scale": 0.295,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_08",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        5.2,
+        -0.17,
+        138.92
+      ],
+      "rotEuler": [
+        0,
+        210.7,
+        0
+      ],
+      "scale": 0.513,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_09",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        6.25,
+        -0.17,
+        138.96
+      ],
+      "rotEuler": [
+        0,
+        166.7,
+        0
+      ],
+      "scale": 0.34,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_10",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        6.34,
+        -0.17,
+        138.34
+      ],
+      "rotEuler": [
+        0,
+        215.3,
+        0
+      ],
+      "scale": 0.264,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_11",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        5.61,
+        -0.17,
+        138.36
+      ],
+      "rotEuler": [
+        0,
+        313.8,
+        0
+      ],
+      "scale": 0.452,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_12",
+      "group": "Z4Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.24,
+        -0.1,
+        118.17
+      ],
+      "rotEuler": [
+        0,
+        9.5,
+        0
+      ],
+      "scale": 0.546,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_13",
+      "group": "Z4Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.17,
+        -0.1,
+        118.79
+      ],
+      "rotEuler": [
+        0,
+        358.4,
+        0
+      ],
+      "scale": 0.338,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_14",
+      "group": "Z4Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.56,
+        -0.1,
+        117.68
+      ],
+      "rotEuler": [
+        0,
+        82.7,
+        0
+      ],
+      "scale": 0.305,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_15",
+      "group": "Z4Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -10.35,
+        -0.279,
+        115.16
+      ],
+      "rotEuler": [
+        0,
+        32.9,
+        0
+      ],
+      "scale": 0.403,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_16",
+      "group": "Z4Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -11.32,
+        -0.326,
+        114.72
+      ],
+      "rotEuler": [
+        0,
+        209.5,
+        0
+      ],
+      "scale": 0.399,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_17",
+      "group": "Z4Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -11.74,
+        -0.365,
+        113.88
+      ],
+      "rotEuler": [
+        0,
+        81.6,
+        0
+      ],
+      "scale": 0.532,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_18",
+      "group": "Z4Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -10.96,
+        -0.349,
+        114.18
+      ],
+      "rotEuler": [
+        0,
+        50.0,
+        0
+      ],
+      "scale": 0.448,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_19",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -7.96,
+        -0.17,
+        126.97
+      ],
+      "rotEuler": [
+        0,
+        111.1,
+        0
+      ],
+      "scale": 0.482,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_20",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -7.99,
+        -0.17,
+        126.36
+      ],
+      "rotEuler": [
+        0,
+        296.3,
+        0
+      ],
+      "scale": 0.55,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_21",
+      "group": "Z4Ring2",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -6.01,
+        -0.17,
+        147.36
+      ],
+      "rotEuler": [
+        0,
+        316.5,
+        0
+      ],
+      "scale": 0.397,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_22",
+      "group": "Z4Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -5.16,
+        -0.17,
+        146.45
+      ],
+      "rotEuler": [
+        0,
+        24.3,
+        0
+      ],
+      "scale": 0.509,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_23",
+      "group": "Z4Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -5.57,
+        -0.17,
+        146.54
+      ],
+      "rotEuler": [
+        0,
+        10.3,
+        0
+      ],
+      "scale": 0.293,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_24",
+      "group": "Z4Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -5.54,
+        -0.17,
+        148.3
+      ],
+      "rotEuler": [
+        0,
+        332.1,
+        0
+      ],
+      "scale": 0.307,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_25",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        6.14,
+        -0.17,
+        126.35
+      ],
+      "rotEuler": [
+        0,
+        279.0,
+        0
+      ],
+      "scale": 0.297,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_26",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.47,
+        -0.17,
+        126.37
+      ],
+      "rotEuler": [
+        0,
+        25.9,
+        0
+      ],
+      "scale": 0.261,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_27",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.82,
+        -0.17,
+        126.86
+      ],
+      "rotEuler": [
+        0,
+        351.4,
+        0
+      ],
+      "scale": 0.254,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_28",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        9.87,
+        -0.17,
+        130.92
+      ],
+      "rotEuler": [
+        0,
+        17.1,
+        0
+      ],
+      "scale": 0.506,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_29",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        9.22,
+        -0.17,
+        129.66
+      ],
+      "rotEuler": [
+        0,
+        69.1,
+        0
+      ],
+      "scale": 0.395,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_30",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        9.13,
+        -0.17,
+        131.14
+      ],
+      "rotEuler": [
+        0,
+        237.3,
+        0
+      ],
+      "scale": 0.388,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_31",
+      "group": "Z4Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -6.32,
+        -0.212,
+        112.5
+      ],
+      "rotEuler": [
+        0,
+        19.8,
+        0
+      ],
+      "scale": 0.461,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_32",
+      "group": "Z4Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -5.36,
+        -0.147,
+        113.39
+      ],
+      "rotEuler": [
+        0,
+        77.8,
+        0
+      ],
+      "scale": 0.527,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_33",
+      "group": "Z4Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -13.05,
+        -0.17,
+        141.75
+      ],
+      "rotEuler": [
+        0,
+        153.0,
+        0
+      ],
+      "scale": 0.548,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_34",
+      "group": "Z4Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -11.95,
+        -0.17,
+        142.46
+      ],
+      "rotEuler": [
+        0,
+        317.6,
+        0
+      ],
+      "scale": 0.309,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_35",
+      "group": "Z4Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -11.39,
+        -0.17,
+        141.63
+      ],
+      "rotEuler": [
+        0,
+        280.3,
+        0
+      ],
+      "scale": 0.449,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_36",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        6.34,
+        -0.17,
+        135.22
+      ],
+      "rotEuler": [
+        0,
+        315.0,
+        0
+      ],
+      "scale": 0.401,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_37",
+      "group": "Z4Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.78,
+        -0.17,
+        135.26
+      ],
+      "rotEuler": [
+        0,
+        331.1,
+        0
+      ],
+      "scale": 0.295,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_38",
+      "group": "Z4Ring2",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -8.93,
+        -0.17,
+        151.6
+      ],
+      "rotEuler": [
+        0,
+        164.8,
+        0
+      ],
+      "scale": 0.436,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_39",
+      "group": "Z4Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -8.38,
+        -0.17,
+        150.74
+      ],
+      "rotEuler": [
+        0,
+        103.2,
+        0
+      ],
+      "scale": 0.456,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_40",
+      "group": "Z4Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -7.99,
+        -0.161,
+        117.42
+      ],
+      "rotEuler": [
+        0,
+        89.7,
+        0
+      ],
+      "scale": 0.315,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_41",
+      "group": "Z4Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -6.99,
+        -0.141,
+        117.23
+      ],
+      "rotEuler": [
+        0,
+        225.8,
+        0
+      ],
+      "scale": 0.403,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+      "id": "v9s_grendel_42",
+      "group": "Z4Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -8.0,
+        -0.178,
+        118.38
+      ],
+      "rotEuler": [
+        0,
+        278.8,
+        0
+      ],
+      "scale": 0.235,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "grendel"
+      ]
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_L0",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -93.68,
+            -3,
+            291.48
+        ],
+        "rotEuler": [
+            0.0,
+            68.5,
+            0.0
+        ],
+        "scale": 8.798,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.626
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_L1",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -96.73,
+            -3,
+            299.72
+        ],
+        "rotEuler": [
+            0.0,
+            8.0,
+            0.0
+        ],
+        "scale": 11.57,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.5842
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_L2",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -125.36,
+            -3,
+            318.31
+        ],
+        "rotEuler": [
+            0.0,
+            194.4,
+            0.0
+        ],
+        "scale": 9.874,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.7106
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_L3",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -133.95,
+            -3,
+            307.14
+        ],
+        "rotEuler": [
+            0.0,
+            261.3,
+            0.0
+        ],
+        "scale": 10.294,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.3795
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_L4",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -158.52,
+            -3,
+            308.51
+        ],
+        "rotEuler": [
+            0.0,
+            183.9,
+            0.0
+        ],
+        "scale": 8.051,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.6345
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_L5",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -197.27,
+            -3,
+            329.01
+        ],
+        "rotEuler": [
+            0.0,
+            186.9,
+            0.0
+        ],
+        "scale": 10.909,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.6294
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_L6",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -206.93,
+            -3,
+            306.69
+        ],
+        "rotEuler": [
+            0.0,
+            241.2,
+            0.0
+        ],
+        "scale": 9.946,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.6812
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_L7",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -237.31,
+            -3,
+            302.72
+        ],
+        "rotEuler": [
+            0.0,
+            130.0,
+            0.0
+        ],
+        "scale": 12.188,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.4172
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_R0",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            94.34,
+            -3,
+            294.92
+        ],
+        "rotEuler": [
+            0.0,
+            285.2,
+            0.0
+        ],
+        "scale": 9.398,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.6226
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_R1",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            104.73,
+            -3,
+            305.25
+        ],
+        "rotEuler": [
+            0.0,
+            101.9,
+            0.0
+        ],
+        "scale": 10.571,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.5091
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_R2",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            131.0,
+            -3,
+            318.63
+        ],
+        "rotEuler": [
+            0.0,
+            317.3,
+            0.0
+        ],
+        "scale": 10.128,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.5334
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_R3",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            155.11,
+            -3,
+            320.21
+        ],
+        "rotEuler": [
+            0.0,
+            111.5,
+            0.0
+        ],
+        "scale": 10.342,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.4802
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_R4",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            190.95,
+            -3,
+            331.76
+        ],
+        "rotEuler": [
+            0.0,
+            136.8,
+            0.0
+        ],
+        "scale": 12.753,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.4312
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_R5",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            193.33,
+            -3,
+            305.24
+        ],
+        "rotEuler": [
+            0.0,
+            315.9,
+            0.0
+        ],
+        "scale": 7.665,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.7047
+    },
+    {
+        "id": "v10sky_z4_grendel_hummocks_R6",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            211.36,
+            -3,
+            294.6
+        ],
+        "rotEuler": [
+            0.0,
+            271.0,
+            0.0
+        ],
+        "scale": 11.706,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.4396
+    },
+    {
+        "id": "v10sky_z4_grendel_hills_L0",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -111.68,
+            -8,
+            401.33
+        ],
+        "rotEuler": [
+            0.0,
+            189.8,
+            0.0
+        ],
+        "scale": 25.167,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.6242
+    },
+    {
+        "id": "v10sky_z4_grendel_hills_L1",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -129.42,
+            -8,
+            406.61
+        ],
+        "rotEuler": [
+            0.0,
+            127.3,
+            0.0
+        ],
+        "scale": 28.424,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.5517
+    },
+    {
+        "id": "v10sky_z4_grendel_hills_L2",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -171.77,
+            -8,
+            391.86
+        ],
+        "rotEuler": [
+            0.0,
+            58.2,
+            0.0
+        ],
+        "scale": 24.447,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.583
+    },
+    {
+        "id": "v10sky_z4_grendel_hills_L3",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_C",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -225.88,
+            -8,
+            390.18
+        ],
+        "rotEuler": [
+            0.0,
+            120.7,
+            0.0
+        ],
+        "scale": 28.835,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.4092
+    },
+    {
+        "id": "v10sky_z4_grendel_hills_R0",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            115.08,
+            -8,
+            440.77
+        ],
+        "rotEuler": [
+            0.0,
+            156.8,
+            0.0
+        ],
+        "scale": 24.862,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.5126
+    },
+    {
+        "id": "v10sky_z4_grendel_hills_R1",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_C",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            116.86,
+            -8,
+            379.27
+        ],
+        "rotEuler": [
+            0.0,
+            67.2,
+            0.0
+        ],
+        "scale": 22.361,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.5271
+    },
+    {
+        "id": "v10sky_z4_grendel_hills_R2",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            178.22,
+            -8,
+            424.34
+        ],
+        "rotEuler": [
+            0.0,
+            203.5,
+            0.0
+        ],
+        "scale": 25.069,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.7252
+    },
+    {
+        "id": "v10sky_z4_grendel_hills_R3",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_C",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            205.82,
+            -8,
+            395.96
+        ],
+        "rotEuler": [
+            0.0,
+            78.6,
+            0.0
+        ],
+        "scale": 20.414,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.602
+    },
+    {
+        "id": "v10sky_z4_grendel_hills_R4",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            245.63,
+            -8,
+            402.01
+        ],
+        "rotEuler": [
+            0.0,
+            227.9,
+            0.0
+        ],
+        "scale": 17.745,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.7628
+    },
+    {
+        "id": "v10sky_z4_grendel_far_L0",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -134.1,
+            -12,
+            481.81
+        ],
+        "rotEuler": [
+            0.0,
+            230.6,
+            0.0
+        ],
+        "scale": 40.081,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.5438
+    },
+    {
+        "id": "v10sky_z4_grendel_far_L1",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_C",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -178.84,
+            -12,
+            565.26
+        ],
+        "rotEuler": [
+            0.0,
+            13.1,
+            0.0
+        ],
+        "scale": 42.871,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.6576
+    },
+    {
+        "id": "v10sky_z4_grendel_far_L2",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_C",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -188.38,
+            -12,
+            489.35
+        ],
+        "rotEuler": [
+            0.0,
+            75.1,
+            0.0
+        ],
+        "scale": 36.461,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.623
+    },
+    {
+        "id": "v10sky_z4_grendel_far_L3",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_C",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -275.71,
+            -12,
+            546.04
+        ],
+        "rotEuler": [
+            0.0,
+            130.3,
+            0.0
+        ],
+        "scale": 48.83,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.551
+    },
+    {
+        "id": "v10sky_z4_grendel_far_L4",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_C",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -307.13,
+            -12,
+            500.95
+        ],
+        "rotEuler": [
+            0.0,
+            295.5,
+            0.0
+        ],
+        "scale": 55.624,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.3523
+    },
+    {
+        "id": "v10sky_z4_grendel_far_R0",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            127.74,
+            -12,
+            541.67
+        ],
+        "rotEuler": [
+            0.0,
+            271.4,
+            0.0
+        ],
+        "scale": 34.991,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.6258
+    },
+    {
+        "id": "v10sky_z4_grendel_far_R1",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_C",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            138.56,
+            -12,
+            500.87
+        ],
+        "rotEuler": [
+            0.0,
+            235.7,
+            0.0
+        ],
+        "scale": 41.853,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.4518
+    },
+    {
+        "id": "v10sky_z4_grendel_far_R2",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            188.43,
+            -12,
+            483.43
+        ],
+        "rotEuler": [
+            0.0,
+            129.3,
+            0.0
+        ],
+        "scale": 40.917,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.5388
+    },
+    {
+        "id": "v10sky_z4_grendel_far_R3",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            298.64,
+            -12,
+            520.39
+        ],
+        "rotEuler": [
+            0.0,
+            353.4,
+            0.0
+        ],
+        "scale": 33.705,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "mound"
+        ],
+        "scaleYMul": 0.7432
+    },
+    {
+        "id": "v10sky_z4_grendel_mound_0",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -137.17,
+            -3.0,
+            442.98
+        ],
+        "rotEuler": [
+            0.0,
+            179.8,
+            0.0
+        ],
+        "scale": 15.168,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "skirt"
+        ],
+        "scaleYMul": 0.7542
+    },
+    {
+        "id": "v10sky_z4_grendel_tower_0",
+        "group": "Z4Ring2",
+        "library": "world_far",
+        "asset": "far_ruin_tower_b",
+        "lodProfile": "sky_ruin",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -137.17,
+            4.79,
+            442.98
+        ],
+        "rotEuler": [
+            0,
+            179.8,
+            0
+        ],
+        "scale": 0.644,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "tower"
+        ]
+    },
+    {
+        "id": "v10sky_z4_grendel_mound_1",
+        "group": "Z4Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            235.66,
+            -3.0,
+            460.5
+        ],
+        "rotEuler": [
+            0.0,
+            75.5,
+            0.0
+        ],
+        "scale": 20.917,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "skirt"
+        ],
+        "scaleYMul": 0.5073
+    },
+    {
+        "id": "v10sky_z4_grendel_tower_1",
+        "group": "Z4Ring2",
+        "library": "world_far",
+        "asset": "far_ruin_stub",
+        "lodProfile": "sky_ruin",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            235.66,
+            4.34,
+            460.5
+        ],
+        "rotEuler": [
+            0,
+            75.5,
+            0
+        ],
+        "scale": 0.699,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z4_grendel",
+            "tower"
+        ]
     }
   ],
   "scatter": []

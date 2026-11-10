@@ -1,0 +1,274 @@
+{
+ "_about": "laneV14 character separation. Read by NEW Scripts/Zones/ZoneCharSep.cs (kit/code/ZoneCharSep.cs, UNCOMPILED). Multipliers on the AUTHORED character lights by name (Rim_Player, Fill_Player, Rim_Enemy, Rim_Character: hdrp_fixes.json + look_zones.json are NOT edited) and a per-zone colour, complementary to the zone grade (cool zones: eclipse-ember 18 deg hue; warm/red zones: complementary hue). Zone ranges and blend come from look_zones.json rows (same ids), nothing duplicated. Ships DARK: enabled=false. -charsep:off (same-build arm) / -charsep:scale=<f> scales every Mul-1 / -charsep:noshadow.",
+ "enabled": true,
+ "log": true,
+ "pollSeconds": 0.1,
+ "smoothSeconds": 1.5,
+ "rimSat": 0.62,
+ "shadowLight": {
+  "enabled": false,
+  "name": "Sep_Shadow",
+  "_about": "ONE shadowed spot, characters light-layer only (copies Rim_Player light layers + Rim_Enemy layers), off the lane to the side, self-shadow sculpt only. Separate switch so it can be judged and costed alone."
+ },
+ "rows": [
+  {
+   "id": "pit_yard",
+   "rimColor": [
+    0.38,
+    0.742,
+    1.0
+   ],
+   "playerRimMul": 1.5,
+   "enemyRimColor": [
+    0.38,
+    0.742,
+    1.0
+   ],
+   "enemyRimMul": 2.2,
+   "fillColor": [
+    1.0,
+    0.7,
+    0.55
+   ],
+   "fillMul": 1.0,
+   "heroRimColor": [
+    0.38,
+    0.742,
+    1.0
+   ],
+   "heroRimMul": 1.4,
+   "shadow": {
+    "colorFromRim": true,
+    "lux": 900.0,
+    "sideM": 8.0,
+    "heightM": 4.5,
+    "backM": 3.0,
+    "spotAngle": 70.0,
+    "range": 24.0,
+    "shadowRes": 512
+   }
+  },
+  {
+   "id": "sobek_reach",
+   "rimColor": [
+    1.0,
+    0.566,
+    0.38
+   ],
+   "playerRimMul": 1.5,
+   "enemyRimColor": [
+    1.0,
+    0.566,
+    0.38
+   ],
+   "enemyRimMul": 2.4,
+   "fillColor": [
+    0.675,
+    0.81,
+    0.76
+   ],
+   "fillMul": 1.0,
+   "heroRimColor": [
+    1.0,
+    0.566,
+    0.38
+   ],
+   "heroRimMul": 1.5,
+   "shadow": {
+    "colorFromRim": true,
+    "lux": 900.0,
+    "sideM": 8.0,
+    "heightM": 4.5,
+    "backM": 3.0,
+    "spotAngle": 70.0,
+    "range": 24.0,
+    "shadowRes": 512
+   }
+  },
+  {
+   "id": "hub_camp",
+   "rimColor": [
+    0.38,
+    0.674,
+    1.0
+   ],
+   "playerRimMul": 1.3,
+   "enemyRimColor": [
+    0.38,
+    0.674,
+    1.0
+   ],
+   "enemyRimMul": 1.8,
+   "fillColor": [
+    1.0,
+    0.82,
+    0.65
+   ],
+   "fillMul": 1.0,
+   "heroRimColor": [
+    0.38,
+    0.674,
+    1.0
+   ],
+   "heroRimMul": 1.2,
+   "shadow": {
+    "colorFromRim": true,
+    "lux": 900.0,
+    "sideM": 8.0,
+    "heightM": 4.5,
+    "backM": 3.0,
+    "spotAngle": 70.0,
+    "range": 24.0,
+    "shadowRes": 512
+   }
+  },
+  {
+   "id": "grendel",
+   "rimColor": [
+    0.38,
+    0.693,
+    1.0
+   ],
+   "playerRimMul": 1.5,
+   "enemyRimColor": [
+    0.38,
+    0.693,
+    1.0
+   ],
+   "enemyRimMul": 2.4,
+   "fillColor": [
+    0.95,
+    0.61,
+    0.58
+   ],
+   "fillMul": 1.0,
+   "heroRimColor": [
+    0.38,
+    0.693,
+    1.0
+   ],
+   "heroRimMul": 1.5,
+   "shadow": {
+    "colorFromRim": true,
+    "lux": 900.0,
+    "sideM": 8.0,
+    "heightM": 4.5,
+    "backM": 3.0,
+    "spotAngle": 70.0,
+    "range": 24.0,
+    "shadowRes": 512
+   }
+  },
+  {
+   "id": "z5_humbaba",
+   "rimColor": [
+    1.0,
+    0.566,
+    0.38
+   ],
+   "playerRimMul": 1.5,
+   "enemyRimColor": [
+    1.0,
+    0.566,
+    0.38
+   ],
+   "enemyRimMul": 2.4,
+   "fillColor": [
+    0.7,
+    0.8,
+    0.675
+   ],
+   "fillMul": 1.0,
+   "heroRimColor": [
+    1.0,
+    0.566,
+    0.38
+   ],
+   "heroRimMul": 1.5,
+   "shadow": {
+    "colorFromRim": true,
+    "lux": 900.0,
+    "sideM": 8.0,
+    "heightM": 4.5,
+    "backM": 3.0,
+    "spotAngle": 70.0,
+    "range": 24.0,
+    "shadowRes": 512
+   }
+  },
+  {
+   "id": "z6_erlking",
+   "rimColor": [
+    0.38,
+    1.0,
+    1.0
+   ],
+   "playerRimMul": 1.6,
+   "enemyRimColor": [
+    0.38,
+    1.0,
+    1.0
+   ],
+   "enemyRimMul": 2.6,
+   "fillColor": [
+    0.95,
+    0.61,
+    0.58
+   ],
+   "fillMul": 1.0,
+   "heroRimColor": [
+    0.38,
+    1.0,
+    1.0
+   ],
+   "heroRimMul": 1.6,
+   "shadow": {
+    "colorFromRim": true,
+    "lux": 900.0,
+    "sideM": 8.0,
+    "heightM": 4.5,
+    "backM": 3.0,
+    "spotAngle": 70.0,
+    "range": 24.0,
+    "shadowRes": 512
+   }
+  },
+  {
+   "id": "z7_market2",
+   "rimColor": [
+    0.38,
+    0.674,
+    1.0
+   ],
+   "playerRimMul": 1.3,
+   "enemyRimColor": [
+    0.38,
+    0.674,
+    1.0
+   ],
+   "enemyRimMul": 1.8,
+   "fillColor": [
+    1.0,
+    0.82,
+    0.65
+   ],
+   "fillMul": 1.0,
+   "heroRimColor": [
+    0.38,
+    0.674,
+    1.0
+   ],
+   "heroRimMul": 1.2,
+   "shadow": {
+    "colorFromRim": true,
+    "lux": 900.0,
+    "sideM": 8.0,
+    "heightM": 4.5,
+    "backM": 3.0,
+    "spotAngle": 70.0,
+    "range": 24.0,
+    "shadowRes": 512
+   }
+  }
+ ]
+}

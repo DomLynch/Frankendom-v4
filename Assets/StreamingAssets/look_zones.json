@@ -10,7 +10,7 @@
   "i3": true,
   "i5": true,
   "i6": true,
-  "i9": false,
+  "i9": true,
   "i18": true,
   "keyGroundMul": 0.95,
   "keyMaxBoost": 1.8,
@@ -33,9 +33,9 @@
     "tint": 0.0,
     "saturation": -10.0,
     "contrast": 33.0,
-    "vignette": 0.3,
-    "bloomIntensity": 0.15,
-    "bloomThreshold": 1.1,
+    "vignette": 0.48,
+    "bloomIntensity": 0.22,
+    "bloomThreshold": 0.92,
     "fogAlbedo": [
       0.55,
       0.62,
@@ -84,7 +84,7 @@
       "tint": 0.0,
       "saturation": -6.0,
       "contrast": 36.0,
-      "vignette": 0.3,
+      "vignette": 0.48,
       "fogAlbedo": [
         0.67,
         0.528,
@@ -116,7 +116,10 @@
         0.78,
         0.66,
         0.6
-      ]
+      ],
+      "bloomIntensity": 0.22,
+      "bloomThreshold": 0.92,
+      "bloomScatter": 0.7
     },
     {
       "id": "sobek_reach",
@@ -132,7 +135,7 @@
       "tint": -8.0,
       "saturation": -12.0,
       "contrast": 34.0,
-      "vignette": 0.3,
+      "vignette": 0.48,
       "fogAlbedo": [
         0.399,
         0.598,
@@ -164,7 +167,10 @@
         0.62,
         0.72,
         0.7
-      ]
+      ],
+      "bloomIntensity": 0.6,
+      "bloomThreshold": 0.4,
+      "bloomScatter": 0.6
     },
     {
       "id": "hub_camp",
@@ -180,7 +186,7 @@
       "tint": 0.0,
       "saturation": -8.0,
       "contrast": 30.0,
-      "vignette": 0.26,
+      "vignette": 0.48,
       "fogAlbedo": [
         0.637,
         0.538,
@@ -212,7 +218,10 @@
         0.8,
         0.7,
         0.62
-      ]
+      ],
+      "bloomIntensity": 0.65,
+      "bloomThreshold": 0.35,
+      "bloomScatter": 0.75
     },
     {
       "id": "grendel",
@@ -228,7 +237,7 @@
       "tint": 0.0,
       "saturation": -14.0,
       "contrast": 38.0,
-      "vignette": 0.3,
+      "vignette": 0.48,
       "fogAlbedo": [
         0.594,
         0.544,
@@ -260,7 +269,10 @@
         0.8,
         0.74,
         0.7
-      ]
+      ],
+      "bloomIntensity": 0.22,
+      "bloomThreshold": 0.92,
+      "bloomScatter": 0.7
     },
     {
       "id": "z5_humbaba",
@@ -276,7 +288,7 @@
       "tint": -10.0,
       "saturation": -8.0,
       "contrast": 33.0,
-      "vignette": 0.3,
+      "vignette": 0.48,
       "fogAlbedo": [
         0.447,
         0.596,
@@ -308,7 +320,10 @@
         0.7,
         0.76,
         0.7
-      ]
+      ],
+      "bloomIntensity": 0.22,
+      "bloomThreshold": 0.92,
+      "bloomScatter": 0.7
     },
     {
       "id": "z6_erlking",
@@ -324,7 +339,7 @@
       "tint": 6.0,
       "saturation": -4.0,
       "contrast": 38.0,
-      "vignette": 0.34,
+      "vignette": 0.48,
       "fogAlbedo": [
         0.726,
         0.504,
@@ -356,7 +371,10 @@
         0.86,
         0.66,
         0.66
-      ]
+      ],
+      "bloomIntensity": 0.45,
+      "bloomThreshold": 0.5,
+      "bloomScatter": 0.7
     },
     {
       "id": "z7_market2",
@@ -372,7 +390,7 @@
       "tint": 0.0,
       "saturation": -8.0,
       "contrast": 30.0,
-      "vignette": 0.26,
+      "vignette": 0.48,
       "fogAlbedo": [
         0.637,
         0.538,
@@ -404,7 +422,10 @@
         0.8,
         0.7,
         0.62
-      ]
+      ],
+      "bloomIntensity": 0.22,
+      "bloomThreshold": 0.92,
+      "bloomScatter": 0.7
     }
   ],
   "haze": [
@@ -419,15 +440,15 @@
       "groundY": 0.0,
       "size": [
         16.0,
-        0.8,
+        2.8,
         26.0
       ],
       "albedo": [
-        0.1,
-        0.1,
-        0.12
+        0.4,
+        0.6,
+        0.54
       ],
-      "meanFreePath": 5.0,
+      "meanFreePath": 6.0,
       "positiveFade": [
         0.35,
         1.0,
@@ -452,15 +473,15 @@
       "groundY": 0.0,
       "size": [
         26.0,
-        0.8,
+        2.8,
         32.0
       ],
       "albedo": [
-        0.1,
-        0.1,
-        0.12
+        0.594,
+        0.544,
+        0.495
       ],
-      "meanFreePath": 5.0,
+      "meanFreePath": 6.0,
       "positiveFade": [
         0.35,
         1.0,
@@ -485,15 +506,15 @@
       "groundY": 0.0,
       "size": [
         32.0,
-        0.8,
+        2.8,
         32.0
       ],
       "albedo": [
-        0.1,
-        0.1,
-        0.12
+        0.447,
+        0.596,
+        0.417
       ],
-      "meanFreePath": 5.0,
+      "meanFreePath": 6.0,
       "positiveFade": [
         0.35,
         1.0,
@@ -518,15 +539,15 @@
       "groundY": 0.0,
       "size": [
         32.0,
-        0.8,
+        2.8,
         32.0
       ],
       "albedo": [
-        0.1,
-        0.1,
-        0.12
+        0.726,
+        0.504,
+        0.504
       ],
-      "meanFreePath": 5.0,
+      "meanFreePath": 6.0,
       "positiveFade": [
         0.35,
         1.0,
@@ -539,6 +560,403 @@
       ],
       "activeRadiusM": 45.0,
       "raycastGround": true
+    },
+    {
+      "id": "v12_z1_furnace_smoke",
+      "zone": "pit_yard",
+      "center": [
+        0.0,
+        0.0,
+        26.5
+      ],
+      "groundY": 0.0,
+      "size": [
+        8.0,
+        10.0,
+        5.0
+      ],
+      "albedo": [
+        0.05,
+        0.045,
+        0.045
+      ],
+      "meanFreePath": 14.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 40.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v12_z2_moat_L",
+      "zone": "sobek_reach",
+      "center": [
+        -17.5,
+        0.0,
+        48.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        10.0,
+        2.0,
+        30.0
+      ],
+      "albedo": [
+        0.4,
+        0.6,
+        0.54
+      ],
+      "meanFreePath": 12.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 55.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v12_z2_moat_R",
+      "zone": "sobek_reach",
+      "center": [
+        14.0,
+        0.0,
+        48.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        10.0,
+        2.0,
+        30.0
+      ],
+      "albedo": [
+        0.4,
+        0.6,
+        0.54
+      ],
+      "meanFreePath": 12.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 55.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v12_z4_flank_L",
+      "zone": "grendel",
+      "center": [
+        -19.0,
+        0.0,
+        132.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        10.0,
+        2.2,
+        40.0
+      ],
+      "albedo": [
+        0.5,
+        0.46,
+        0.41
+      ],
+      "meanFreePath": 11.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 55.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v12_z4_flank_R",
+      "zone": "grendel",
+      "center": [
+        19.0,
+        0.0,
+        132.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        10.0,
+        2.2,
+        40.0
+      ],
+      "albedo": [
+        0.5,
+        0.46,
+        0.41
+      ],
+      "meanFreePath": 11.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 55.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v12_z4_back",
+      "zone": "grendel",
+      "center": [
+        0.0,
+        0.0,
+        155.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        30.0,
+        2.6,
+        10.0
+      ],
+      "albedo": [
+        0.5,
+        0.46,
+        0.41
+      ],
+      "meanFreePath": 11.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 55.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v12_z5_trunks_W",
+      "zone": "z5_humbaba",
+      "center": [
+        -23.0,
+        0.0,
+        209.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        10.0,
+        14.0,
+        36.0
+      ],
+      "albedo": [
+        0.4,
+        0.54,
+        0.38
+      ],
+      "meanFreePath": 28.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 60.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v12_z5_trunks_E",
+      "zone": "z5_humbaba",
+      "center": [
+        23.0,
+        0.0,
+        209.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        10.0,
+        14.0,
+        36.0
+      ],
+      "albedo": [
+        0.4,
+        0.54,
+        0.38
+      ],
+      "meanFreePath": 28.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 60.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v12_z5_trunks_N",
+      "zone": "z5_humbaba",
+      "center": [
+        0.0,
+        0.0,
+        229.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        34.0,
+        14.0,
+        8.0
+      ],
+      "albedo": [
+        0.4,
+        0.54,
+        0.38
+      ],
+      "meanFreePath": 28.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 60.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v12_z6_ring_L",
+      "zone": "z6_erlking",
+      "center": [
+        -23.0,
+        0.0,
+        282.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        10.0,
+        2.4,
+        36.0
+      ],
+      "albedo": [
+        0.7,
+        0.46,
+        0.46
+      ],
+      "meanFreePath": 12.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 60.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v12_z6_ring_R",
+      "zone": "z6_erlking",
+      "center": [
+        23.0,
+        0.0,
+        282.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        10.0,
+        2.4,
+        36.0
+      ],
+      "albedo": [
+        0.7,
+        0.46,
+        0.46
+      ],
+      "meanFreePath": 12.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 60.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v12_z6_ring_N",
+      "zone": "z6_erlking",
+      "center": [
+        0.0,
+        0.0,
+        301.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        30.0,
+        2.4,
+        6.0
+      ],
+      "albedo": [
+        0.7,
+        0.46,
+        0.46
+      ],
+      "meanFreePath": 12.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 60.0,
+      "raycastGround": true
     }
-  ]
+  ],
+  "_v6_note": "laneV4V6 V6 T1: i9 true carries bloom intensity/threshold per zone (ZoneLook applies them); vignette pinned to the live 0.48 so ONLY bloom changes; bloomScatter is staged data for a 3-line ZoneLook change (JsonUtility ignores it today)."
 }

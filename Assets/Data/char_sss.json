@@ -95,7 +95,7 @@
       "floats": [
         {
           "name": "_TransmissionEnable",
-          "value": 0
+          "value": 1
         },
         {
           "name": "_SubsurfaceMask",
@@ -112,7 +112,7 @@
       "floats": [
         {
           "name": "_TransmissionEnable",
-          "value": 0
+          "value": 1
         },
         {
           "name": "_SubsurfaceMask",
@@ -129,7 +129,7 @@
       "floats": [
         {
           "name": "_TransmissionEnable",
-          "value": 0
+          "value": 1
         },
         {
           "name": "_SubsurfaceMask",
@@ -146,7 +146,7 @@
       "floats": [
         {
           "name": "_TransmissionEnable",
-          "value": 0
+          "value": 1
         },
         {
           "name": "_SubsurfaceMask",
@@ -163,7 +163,7 @@
       "floats": [
         {
           "name": "_TransmissionEnable",
-          "value": 0
+          "value": 1
         },
         {
           "name": "_SubsurfaceMask",
@@ -180,7 +180,7 @@
       "floats": [
         {
           "name": "_TransmissionEnable",
-          "value": 0
+          "value": 1
         },
         {
           "name": "_SubsurfaceMask",
@@ -197,7 +197,7 @@
       "floats": [
         {
           "name": "_TransmissionEnable",
-          "value": 0
+          "value": 1
         },
         {
           "name": "_SubsurfaceMask",

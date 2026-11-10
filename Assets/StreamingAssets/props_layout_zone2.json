@@ -132,6 +132,32 @@
         0.015,
         0.004
       ]
+    },
+    {
+      "name": "pebbles",
+      "screenHeights": [
+        0.06,
+        0.02,
+        0.007
+      ]
+    },
+    {
+        "name": "sky_ridge",
+        "screenHeights": [
+            20.0,
+            10.0,
+            0.0
+        ],
+        "_about": "LOD0/LOD1 can never be selected (screen height cannot exceed 1 for a ridge in view at 10x), so every ridge is the 2.5-3.2k tri LOD2 and is never culled by size"
+    },
+    {
+        "name": "sky_ruin",
+        "screenHeights": [
+            1.2,
+            0.3,
+            0.0
+        ],
+        "_about": "far_ruin LOD1 (2.6-3.3k tris) while a tower fills > 30 % of the screen height, else LOD2 (0.75-1.2k tris); LOD0 (20 MB glb) only if one fills the whole screen"
     }
   ],
   "groups": [
@@ -4736,6 +4762,1565 @@
         "zone2"
       ],
       "rationale": "flush flagstone paving: stone tops average y 0 (terrain lane is -0.05), x +-4 z 0..22.6 with a ragged broken edge fading into the ground, no lip. Authored in WORLD coordinates (bounds y about -0.4..0): ground=pivot means place with the model origin on pos, do NOT lift the bounds bottom to pos.y."
+    },
+    {
+      "id": "v9s_sobek_reach_00",
+      "group": "Z2Ring1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -6.05,
+        -0.238,
+        57.13
+      ],
+      "rotEuler": [
+        0,
+        147.3,
+        0
+      ],
+      "scale": 0.521,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_01",
+      "group": "Z2Ring1",
+      "library": "props",
+      "asset": "hero_skull_pile_b",
+      "lodProfile": "hero_heavy",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -6.54,
+        -0.257,
+        57.55
+      ],
+      "rotEuler": [
+        0,
+        50.2,
+        0
+      ],
+      "scale": 0.494,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_02",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -6.63,
+        -0.256,
+        57.97
+      ],
+      "rotEuler": [
+        0,
+        227.6,
+        0
+      ],
+      "scale": 0.309,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_03",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -5.56,
+        -0.205,
+        57.5
+      ],
+      "rotEuler": [
+        0,
+        342.0,
+        0
+      ],
+      "scale": 0.491,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_04",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -11.47,
+        -0.425,
+        65.64
+      ],
+      "rotEuler": [
+        0,
+        192.4,
+        0
+      ],
+      "scale": 0.481,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_05",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -12.94,
+        -0.443,
+        64.64
+      ],
+      "rotEuler": [
+        0,
+        158.5,
+        0
+      ],
+      "scale": 0.379,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_06",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -13.39,
+        -0.468,
+        66.22
+      ],
+      "rotEuler": [
+        0,
+        255.2,
+        0
+      ],
+      "scale": 0.31,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_07",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        10.25,
+        -0.343,
+        65.26
+      ],
+      "rotEuler": [
+        0,
+        62.5,
+        0
+      ],
+      "scale": 0.449,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_08",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        10.78,
+        -0.351,
+        65.26
+      ],
+      "rotEuler": [
+        0,
+        242.0,
+        0
+      ],
+      "scale": 0.373,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_09",
+      "group": "Z2Ring1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        5.53,
+        -0.185,
+        64.51
+      ],
+      "rotEuler": [
+        0,
+        297.7,
+        0
+      ],
+      "scale": 0.537,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_10",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        5.49,
+        -0.157,
+        63.93
+      ],
+      "rotEuler": [
+        0,
+        178.9,
+        0
+      ],
+      "scale": 0.281,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_11",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        5.84,
+        -0.203,
+        65.59
+      ],
+      "rotEuler": [
+        0,
+        53.6,
+        0
+      ],
+      "scale": 0.388,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_12",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -5.58,
+        -0.223,
+        64.45
+      ],
+      "rotEuler": [
+        0,
+        284.3,
+        0
+      ],
+      "scale": 0.273,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_13",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        5.55,
+        -0.25,
+        58.31
+      ],
+      "rotEuler": [
+        0,
+        328.9,
+        0
+      ],
+      "scale": 0.225,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_14",
+      "group": "Z2Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -8.49,
+        -0.317,
+        49.42
+      ],
+      "rotEuler": [
+        0,
+        311.3,
+        0
+      ],
+      "scale": 0.542,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_15",
+      "group": "Z2Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -8.71,
+        -0.317,
+        54.02
+      ],
+      "rotEuler": [
+        0,
+        26.5,
+        0
+      ],
+      "scale": 0.317,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_16",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -12.64,
+        -0.459,
+        60.51
+      ],
+      "rotEuler": [
+        0,
+        230.0,
+        0
+      ],
+      "scale": 0.268,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_17",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -12.94,
+        -0.466,
+        59.78
+      ],
+      "rotEuler": [
+        0,
+        210.8,
+        0
+      ],
+      "scale": 0.268,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_18",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -13.35,
+        -0.462,
+        59.71
+      ],
+      "rotEuler": [
+        0,
+        213.7,
+        0
+      ],
+      "scale": 0.436,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_19",
+      "group": "Z2Ring1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -9.15,
+        -0.381,
+        63.48
+      ],
+      "rotEuler": [
+        0,
+        27.5,
+        0
+      ],
+      "scale": 0.445,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_20",
+      "group": "Z2Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -8.22,
+        -0.34,
+        62.38
+      ],
+      "rotEuler": [
+        0,
+        298.0,
+        0
+      ],
+      "scale": 0.298,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_21",
+      "group": "Z2Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        5.66,
+        -0.396,
+        47.19
+      ],
+      "rotEuler": [
+        0,
+        26.8,
+        0
+      ],
+      "scale": 0.542,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+      "id": "v9s_sobek_reach_22",
+      "group": "Z2Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        6.12,
+        -0.388,
+        48.2
+      ],
+      "rotEuler": [
+        0,
+        15.3,
+        0
+      ],
+      "scale": 0.412,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "sobek_reach"
+      ]
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_L0",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -98.56,
+            -2,
+            227.59
+        ],
+        "rotEuler": [
+            0.0,
+            35.5,
+            0.0
+        ],
+        "scale": 13.233,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.3003
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_L1",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -109.69,
+            -2,
+            238.6
+        ],
+        "rotEuler": [
+            0.0,
+            194.9,
+            0.0
+        ],
+        "scale": 14.516,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.2063
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_L2",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -131.58,
+            -2,
+            233.72
+        ],
+        "rotEuler": [
+            0.0,
+            178.7,
+            0.0
+        ],
+        "scale": 8.965,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.5611
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_L3",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -153.73,
+            -2,
+            243.14
+        ],
+        "rotEuler": [
+            0.0,
+            162.2,
+            0.0
+        ],
+        "scale": 12.562,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.4056
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_L4",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -162.44,
+            -2,
+            217.44
+        ],
+        "rotEuler": [
+            0.0,
+            33.4,
+            0.0
+        ],
+        "scale": 13.196,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.2474
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_L5",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -240.71,
+            -2,
+            255.64
+        ],
+        "rotEuler": [
+            0.0,
+            337.1,
+            0.0
+        ],
+        "scale": 11.44,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.4476
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_L6",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -257.07,
+            -2,
+            241.34
+        ],
+        "rotEuler": [
+            0.0,
+            56.8,
+            0.0
+        ],
+        "scale": 11.374,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.2762
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_R0",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            99.27,
+            -2,
+            246.61
+        ],
+        "rotEuler": [
+            0.0,
+            88.3,
+            0.0
+        ],
+        "scale": 11.313,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.4316
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_R1",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            102.86,
+            -2,
+            233.29
+        ],
+        "rotEuler": [
+            0.0,
+            90.3,
+            0.0
+        ],
+        "scale": 16.054,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.1849
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_R2",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            141.91,
+            -2,
+            254.63
+        ],
+        "rotEuler": [
+            0.0,
+            47.0,
+            0.0
+        ],
+        "scale": 13.397,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.2669
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_R3",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            147.94,
+            -2,
+            229.65
+        ],
+        "rotEuler": [
+            0.0,
+            130.0,
+            0.0
+        ],
+        "scale": 12.151,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.2762
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_R4",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            183.98,
+            -2,
+            235.29
+        ],
+        "rotEuler": [
+            0.0,
+            316.1,
+            0.0
+        ],
+        "scale": 14.158,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.2308
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_R5",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            221.12,
+            -2,
+            236.27
+        ],
+        "rotEuler": [
+            0.0,
+            1.4,
+            0.0
+        ],
+        "scale": 10.01,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.5096
+    },
+    {
+        "id": "v10sky_z2_sobek_bank_R6",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            261.25,
+            -2,
+            244.56
+        ],
+        "rotEuler": [
+            0.0,
+            167.2,
+            0.0
+        ],
+        "scale": 16.814,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.245
+    },
+    {
+        "id": "v10sky_z2_sobek_dunes_L0",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -107.47,
+            -5,
+            338.64
+        ],
+        "rotEuler": [
+            0.0,
+            354.3,
+            0.0
+        ],
+        "scale": 17.385,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.7845
+    },
+    {
+        "id": "v10sky_z2_sobek_dunes_L1",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -117.79,
+            -5,
+            322.91
+        ],
+        "rotEuler": [
+            0.0,
+            139.6,
+            0.0
+        ],
+        "scale": 22.575,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.4808
+    },
+    {
+        "id": "v10sky_z2_sobek_dunes_L2",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -164.03,
+            -5,
+            329.87
+        ],
+        "rotEuler": [
+            0.0,
+            71.0,
+            0.0
+        ],
+        "scale": 19.107,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.467
+    },
+    {
+        "id": "v10sky_z2_sobek_dunes_L3",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -175.04,
+            -5,
+            294.34
+        ],
+        "rotEuler": [
+            0.0,
+            351.5,
+            0.0
+        ],
+        "scale": 22.24,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.3383
+    },
+    {
+        "id": "v10sky_z2_sobek_dunes_L4",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -247.77,
+            -5,
+            335.81
+        ],
+        "rotEuler": [
+            0.0,
+            204.0,
+            0.0
+        ],
+        "scale": 24.091,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.2914
+    },
+    {
+        "id": "v10sky_z2_sobek_dunes_R0",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            111.81,
+            -5,
+            336.73
+        ],
+        "rotEuler": [
+            0.0,
+            59.4,
+            0.0
+        ],
+        "scale": 22.249,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.3577
+    },
+    {
+        "id": "v10sky_z2_sobek_dunes_R1",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            118.14,
+            -5,
+            311.89
+        ],
+        "rotEuler": [
+            0.0,
+            62.5,
+            0.0
+        ],
+        "scale": 27.313,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.2788
+    },
+    {
+        "id": "v10sky_z2_sobek_dunes_R2",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            164.95,
+            -5,
+            321.8
+        ],
+        "rotEuler": [
+            0.0,
+            299.7,
+            0.0
+        ],
+        "scale": 29.187,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.2868
+    },
+    {
+        "id": "v10sky_z2_sobek_dunes_R3",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            215.91,
+            -5,
+            330.21
+        ],
+        "rotEuler": [
+            0.0,
+            241.9,
+            0.0
+        ],
+        "scale": 19.094,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.423
+    },
+    {
+        "id": "v10sky_z2_sobek_dunes_R4",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            247.96,
+            -5,
+            323.46
+        ],
+        "rotEuler": [
+            0.0,
+            303.3,
+            0.0
+        ],
+        "scale": 19.491,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.701
+    },
+    {
+        "id": "v10sky_z2_sobek_far_L0",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -145.48,
+            -10,
+            450.62
+        ],
+        "rotEuler": [
+            0.0,
+            141.9,
+            0.0
+        ],
+        "scale": 55.889,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.4861
+    },
+    {
+        "id": "v10sky_z2_sobek_far_L1",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -188.0,
+            -10,
+            454.21
+        ],
+        "rotEuler": [
+            0.0,
+            169.3,
+            0.0
+        ],
+        "scale": 53.251,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.4526
+    },
+    {
+        "id": "v10sky_z2_sobek_far_L2",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -242.18,
+            -10,
+            412.07
+        ],
+        "rotEuler": [
+            0.0,
+            104.6,
+            0.0
+        ],
+        "scale": 52.468,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.4772
+    },
+    {
+        "id": "v10sky_z2_sobek_far_R0",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            144.13,
+            -10,
+            455.73
+        ],
+        "rotEuler": [
+            0.0,
+            238.6,
+            0.0
+        ],
+        "scale": 44.541,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.6422
+    },
+    {
+        "id": "v10sky_z2_sobek_far_R1",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            184.26,
+            -10,
+            456.51
+        ],
+        "rotEuler": [
+            0.0,
+            220.8,
+            0.0
+        ],
+        "scale": 63.341,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.4149
+    },
+    {
+        "id": "v10sky_z2_sobek_far_R2",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            262.06,
+            -10,
+            420.34
+        ],
+        "rotEuler": [
+            0.0,
+            161.4,
+            0.0
+        ],
+        "scale": 40.228,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "mound"
+        ],
+        "scaleYMul": 0.5968
+    },
+    {
+        "id": "v10sky_z2_sobek_mound_0",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -179.28,
+            -3.0,
+            364.4
+        ],
+        "rotEuler": [
+            0.0,
+            106.0,
+            0.0
+        ],
+        "scale": 20.431,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "skirt"
+        ],
+        "scaleYMul": 0.4195
+    },
+    {
+        "id": "v10sky_z2_sobek_tower_0",
+        "group": "Z2Ring2",
+        "library": "world_far",
+        "asset": "far_ruin_tower_a",
+        "lodProfile": "sky_ruin",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -179.28,
+            3.21,
+            364.4
+        ],
+        "rotEuler": [
+            0,
+            106.0,
+            0
+        ],
+        "scale": 0.622,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "tower"
+        ]
+    },
+    {
+        "id": "v10sky_z2_sobek_mound_1",
+        "group": "Z2Ring2",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            115.17,
+            -3.0,
+            398.11
+        ],
+        "rotEuler": [
+            0.0,
+            15.1,
+            0.0
+        ],
+        "scale": 18.235,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "skirt"
+        ],
+        "scaleYMul": 0.4828
+    },
+    {
+        "id": "v10sky_z2_sobek_tower_1",
+        "group": "Z2Ring2",
+        "library": "world_far",
+        "asset": "far_ruin_stub",
+        "lodProfile": "sky_ruin",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            115.17,
+            3.34,
+            398.11
+        ],
+        "rotEuler": [
+            0,
+            15.1,
+            0
+        ],
+        "scale": 0.58,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "z2_sobek",
+            "tower"
+        ]
     }
   ],
   "scatter": []

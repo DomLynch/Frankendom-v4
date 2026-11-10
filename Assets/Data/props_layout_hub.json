@@ -150,6 +150,32 @@
         0.015,
         0.004
       ]
+    },
+    {
+      "name": "pebbles",
+      "screenHeights": [
+        0.06,
+        0.02,
+        0.007
+      ]
+    },
+    {
+      "name": "sky_ridge",
+      "screenHeights": [
+        20.0,
+        10.0,
+        0.0
+      ],
+      "_about": "LOD0/LOD1 can never be selected (screen height cannot exceed 1 for a ridge in view at 10x), so every ridge is the 2.5-3.2k tri LOD2 and is never culled by size"
+    },
+    {
+      "name": "sky_ruin",
+      "screenHeights": [
+        1.2,
+        0.3,
+        0.0
+      ],
+      "_about": "far_ruin LOD1 (2.6-3.3k tris) while a tower fills > 30 % of the screen height, else LOD2 (0.75-1.2k tris); LOD0 (20 MB glb) only if one fills the whole screen"
     }
   ],
   "groups": [
@@ -3843,7 +3869,8 @@
         "hearth"
       ],
       "group": "HubRing0",
-      "status": "new_built_by_laneCAMPSET"
+      "status": "new_built_by_laneCAMPSET",
+      "sinkFraction": 0.03
     },
     {
       "id": "z3_hub_bench_n",
@@ -3870,7 +3897,8 @@
         "seat"
       ],
       "group": "HubRing0",
-      "status": "new_built_by_laneCAMPSET"
+      "status": "new_built_by_laneCAMPSET",
+      "sinkFraction": 0.02
     },
     {
       "id": "z3_hub_bench_e",
@@ -3897,7 +3925,8 @@
         "seat"
       ],
       "group": "HubRing0",
-      "status": "new_built_by_laneCAMPSET"
+      "status": "new_built_by_laneCAMPSET",
+      "sinkFraction": 0.02
     },
     {
       "id": "z3_hub_bench_w",
@@ -3924,7 +3953,8 @@
         "seat"
       ],
       "group": "HubRing0",
-      "status": "new_built_by_laneCAMPSET"
+      "status": "new_built_by_laneCAMPSET",
+      "sinkFraction": 0.02
     },
     {
       "id": "z3_hub_counter_wood_0",
@@ -3951,7 +3981,8 @@
         "counter"
       ],
       "group": "HubRing0",
-      "status": "new_built_by_laneCAMPSET"
+      "status": "new_built_by_laneCAMPSET",
+      "sinkFraction": 0.01
     },
     {
       "id": "z3_hub_counter_wood_1",
@@ -3978,7 +4009,8 @@
         "counter"
       ],
       "group": "HubRing0",
-      "status": "new_built_by_laneCAMPSET"
+      "status": "new_built_by_laneCAMPSET",
+      "sinkFraction": 0.01
     },
     {
       "id": "z3_hub_backdrop_a",
@@ -4086,7 +4118,8 @@
         "tent"
       ],
       "group": "HubRing0",
-      "status": "new_built_by_laneCAMPSET"
+      "status": "new_built_by_laneCAMPSET",
+      "sinkFraction": 0.004
     },
     {
       "id": "z3_hub_tent_e",
@@ -4113,7 +4146,8 @@
         "tent"
       ],
       "group": "HubRing0",
-      "status": "new_built_by_laneCAMPSET"
+      "status": "new_built_by_laneCAMPSET",
+      "sinkFraction": 0.004
     },
     {
       "id": "z3_hub_awning",
@@ -4167,7 +4201,1622 @@
         "pole"
       ],
       "group": "HubRing0",
-      "status": "new_built_by_laneCAMPSET"
+      "status": "new_built_by_laneCAMPSET",
+      "sinkFraction": 0.01
+    },
+    {
+      "id": "v9s_hub_camp_00",
+      "group": "HubRing1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.03,
+        -0.403,
+        100.19
+      ],
+      "rotEuler": [
+        0,
+        249.9,
+        0
+      ],
+      "scale": 0.322,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_01",
+      "group": "HubRing1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.98,
+        -0.405,
+        100.62
+      ],
+      "rotEuler": [
+        0,
+        163.3,
+        0
+      ],
+      "scale": 0.493,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_02",
+      "group": "HubRing1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.13,
+        -0.397,
+        100.6
+      ],
+      "rotEuler": [
+        0,
+        60.8,
+        0
+      ],
+      "scale": 0.253,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_03",
+      "group": "HubRing0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -8.08,
+        -0.1,
+        88.8
+      ],
+      "rotEuler": [
+        0,
+        214.4,
+        0
+      ],
+      "scale": 0.332,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_04",
+      "group": "HubRing0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -9.15,
+        -0.108,
+        88.07
+      ],
+      "rotEuler": [
+        0,
+        315.0,
+        0
+      ],
+      "scale": 0.298,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_05",
+      "group": "HubRing0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -8.47,
+        -0.111,
+        89.05
+      ],
+      "rotEuler": [
+        0,
+        113.0,
+        0
+      ],
+      "scale": 0.435,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_06",
+      "group": "HubRing1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -9.08,
+        -0.356,
+        98.91
+      ],
+      "rotEuler": [
+        0,
+        357.8,
+        0
+      ],
+      "scale": 0.272,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_07",
+      "group": "HubRing0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        11.93,
+        -0.37,
+        77.65
+      ],
+      "rotEuler": [
+        0,
+        194.7,
+        0
+      ],
+      "scale": 0.513,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_08",
+      "group": "HubRing0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.78,
+        -0.37,
+        78.12
+      ],
+      "rotEuler": [
+        0,
+        174.4,
+        0
+      ],
+      "scale": 0.374,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_09",
+      "group": "HubRing1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.88,
+        -0.284,
+        100.88
+      ],
+      "rotEuler": [
+        0,
+        254.8,
+        0
+      ],
+      "scale": 0.364,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_10",
+      "group": "HubRing1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.09,
+        -0.258,
+        101.29
+      ],
+      "rotEuler": [
+        0,
+        7.9,
+        0
+      ],
+      "scale": 0.42,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_11",
+      "group": "HubRing1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.65,
+        -0.249,
+        99.79
+      ],
+      "rotEuler": [
+        0,
+        115.7,
+        0
+      ],
+      "scale": 0.247,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_12",
+      "group": "HubRing1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        5.05,
+        -0.163,
+        96.24
+      ],
+      "rotEuler": [
+        0,
+        3.0,
+        0
+      ],
+      "scale": 0.44,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_13",
+      "group": "HubRing1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        5.74,
+        -0.176,
+        96.37
+      ],
+      "rotEuler": [
+        0,
+        73.7,
+        0
+      ],
+      "scale": 0.241,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_14",
+      "group": "HubRing0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        6.09,
+        -0.189,
+        95.21
+      ],
+      "rotEuler": [
+        0,
+        320.1,
+        0
+      ],
+      "scale": 0.302,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_15",
+      "group": "HubRing0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        5.59,
+        -0.17,
+        95.36
+      ],
+      "rotEuler": [
+        0,
+        231.5,
+        0
+      ],
+      "scale": 0.247,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_16",
+      "group": "HubRing0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        5.11,
+        -0.1,
+        85.48
+      ],
+      "rotEuler": [
+        0,
+        21.5,
+        0
+      ],
+      "scale": 0.276,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_17",
+      "group": "HubRing0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        6.44,
+        -0.1,
+        84.84
+      ],
+      "rotEuler": [
+        0,
+        31.8,
+        0
+      ],
+      "scale": 0.547,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v9s_hub_camp_18",
+      "group": "HubRing0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        6.82,
+        -0.1,
+        84.58
+      ],
+      "rotEuler": [
+        0,
+        66.2,
+        0
+      ],
+      "scale": 0.313,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "hub_camp"
+      ]
+    },
+    {
+      "id": "v10sky_hub_camp_rim_L0",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -100.87,
+        -3,
+        275.69
+      ],
+      "rotEuler": [
+        0.0,
+        71.3,
+        0.0
+      ],
+      "scale": 15.333,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.3846
+    },
+    {
+      "id": "v10sky_hub_camp_rim_L1",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -99.66,
+        -3,
+        253.14
+      ],
+      "rotEuler": [
+        0.0,
+        333.5,
+        0.0
+      ],
+      "scale": 14.233,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.3434
+    },
+    {
+      "id": "v10sky_hub_camp_rim_L2",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -111.31,
+        -3,
+        253.22
+      ],
+      "rotEuler": [
+        0.0,
+        315.6,
+        0.0
+      ],
+      "scale": 10.823,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.5018
+    },
+    {
+      "id": "v10sky_hub_camp_rim_L3",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -155.37,
+        -3,
+        284.39
+      ],
+      "rotEuler": [
+        0.0,
+        1.1,
+        0.0
+      ],
+      "scale": 14.739,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.4619
+    },
+    {
+      "id": "v10sky_hub_camp_rim_L4",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -196.58,
+        -3,
+        288.74
+      ],
+      "rotEuler": [
+        0.0,
+        82.7,
+        0.0
+      ],
+      "scale": 14.564,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.3608
+    },
+    {
+      "id": "v10sky_hub_camp_rim_L5",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -217.38,
+        -3,
+        277.64
+      ],
+      "rotEuler": [
+        0.0,
+        288.0,
+        0.0
+      ],
+      "scale": 10.96,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.5019
+    },
+    {
+      "id": "v10sky_hub_camp_rim_L6",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -272.51,
+        -3,
+        295.25
+      ],
+      "rotEuler": [
+        0.0,
+        183.1,
+        0.0
+      ],
+      "scale": 12.686,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.456
+    },
+    {
+      "id": "v10sky_hub_camp_rim_R0",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        98.94,
+        -3,
+        250.5
+      ],
+      "rotEuler": [
+        0.0,
+        345.7,
+        0.0
+      ],
+      "scale": 11.064,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.5472
+    },
+    {
+      "id": "v10sky_hub_camp_rim_R1",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        101.57,
+        -3,
+        255.71
+      ],
+      "rotEuler": [
+        0.0,
+        221.9,
+        0.0
+      ],
+      "scale": 15.969,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.2508
+    },
+    {
+      "id": "v10sky_hub_camp_rim_R2",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        148.72,
+        -3,
+        294.68
+      ],
+      "rotEuler": [
+        0.0,
+        149.9,
+        0.0
+      ],
+      "scale": 12.916,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.3902
+    },
+    {
+      "id": "v10sky_hub_camp_rim_R3",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        170.77,
+        -3,
+        289.86
+      ],
+      "rotEuler": [
+        0.0,
+        181.9,
+        0.0
+      ],
+      "scale": 10.424,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.5317
+    },
+    {
+      "id": "v10sky_hub_camp_rim_R4",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        164.62,
+        -3,
+        252.74
+      ],
+      "rotEuler": [
+        0.0,
+        210.7,
+        0.0
+      ],
+      "scale": 16.472,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.2659
+    },
+    {
+      "id": "v10sky_hub_camp_rim_R5",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        218.68,
+        -3,
+        259.43
+      ],
+      "rotEuler": [
+        0.0,
+        156.0,
+        0.0
+      ],
+      "scale": 11.167,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.4526
+    },
+    {
+      "id": "v10sky_hub_camp_far_L0",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -124.09,
+        -10,
+        445.6
+      ],
+      "rotEuler": [
+        0.0,
+        37.3,
+        0.0
+      ],
+      "scale": 36.442,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.517
+    },
+    {
+      "id": "v10sky_hub_camp_far_L1",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -140.99,
+        -10,
+        446.64
+      ],
+      "rotEuler": [
+        0.0,
+        104.7,
+        0.0
+      ],
+      "scale": 31.422,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.5456
+    },
+    {
+      "id": "v10sky_hub_camp_far_L2",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -229.18,
+        -10,
+        505.31
+      ],
+      "rotEuler": [
+        0.0,
+        53.7,
+        0.0
+      ],
+      "scale": 53.76,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.3741
+    },
+    {
+      "id": "v10sky_hub_camp_far_L3",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -294.27,
+        -10,
+        492.98
+      ],
+      "rotEuler": [
+        0.0,
+        162.6,
+        0.0
+      ],
+      "scale": 39.286,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.381
+    },
+    {
+      "id": "v10sky_hub_camp_far_R0",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        118.66,
+        -10,
+        425.51
+      ],
+      "rotEuler": [
+        0.0,
+        265.2,
+        0.0
+      ],
+      "scale": 25.673,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.9538
+    },
+    {
+      "id": "v10sky_hub_camp_far_R1",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        129.54,
+        -10,
+        441.58
+      ],
+      "rotEuler": [
+        0.0,
+        109.4,
+        0.0
+      ],
+      "scale": 34.394,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.6608
+    },
+    {
+      "id": "v10sky_hub_camp_far_R2",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        169.49,
+        -10,
+        445.19
+      ],
+      "rotEuler": [
+        0.0,
+        261.4,
+        0.0
+      ],
+      "scale": 53.653,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.429
+    },
+    {
+      "id": "v10sky_hub_camp_far_R3",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        263.51,
+        -10,
+        455.89
+      ],
+      "rotEuler": [
+        0.0,
+        1.4,
+        0.0
+      ],
+      "scale": 42.037,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "mound"
+      ],
+      "scaleYMul": 0.4891
+    },
+    {
+      "id": "v10sky_hub_camp_mound_0",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -136.43,
+        -3.0,
+        400.32
+      ],
+      "rotEuler": [
+        0.0,
+        194.0,
+        0.0
+      ],
+      "scale": 15.213,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "skirt"
+      ],
+      "scaleYMul": 0.5768
+    },
+    {
+      "id": "v10sky_hub_camp_tower_0",
+      "group": "HubRing2",
+      "library": "world_far",
+      "asset": "far_ruin_spire",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -136.43,
+        3.33,
+        400.32
+      ],
+      "rotEuler": [
+        0,
+        194.0,
+        0
+      ],
+      "scale": 0.692,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "tower"
+      ]
+    },
+    {
+      "id": "v10sky_hub_camp_mound_1",
+      "group": "HubRing2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        125.62,
+        -3.0,
+        330.35
+      ],
+      "rotEuler": [
+        0.0,
+        241.5,
+        0.0
+      ],
+      "scale": 23.05,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "skirt"
+      ],
+      "scaleYMul": 0.3683
+    },
+    {
+      "id": "v10sky_hub_camp_tower_1",
+      "group": "HubRing2",
+      "library": "world_far",
+      "asset": "far_ruin_gatehouse",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        125.62,
+        3.17,
+        330.35
+      ],
+      "rotEuler": [
+        0,
+        241.5,
+        0
+      ],
+      "scale": 0.687,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "hub_camp",
+        "tower"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_w_0",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.039,
+        0.0,
+        80.109
+      ],
+      "rotEuler": [
+        0,
+        115.6,
+        0
+      ],
+      "scale": 0.217,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_w_1",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -2.973,
+        0.0,
+        80.038
+      ],
+      "rotEuler": [
+        0,
+        175.5,
+        0
+      ],
+      "scale": 0.266,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_w_2",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -2.92,
+        0.0,
+        85.993
+      ],
+      "rotEuler": [
+        0,
+        197.5,
+        0
+      ],
+      "scale": 0.228,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_w_3",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.211,
+        0.0,
+        85.871
+      ],
+      "rotEuler": [
+        0,
+        185.9,
+        0
+      ],
+      "scale": 0.207,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_w_4",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.581,
+        0.0,
+        80.057
+      ],
+      "rotEuler": [
+        0,
+        334.6,
+        0
+      ],
+      "scale": 0.242,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_w_5",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.694,
+        0.0,
+        85.799
+      ],
+      "rotEuler": [
+        0,
+        84.0,
+        0
+      ],
+      "scale": 0.256,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_w_6",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.277,
+        0.0,
+        83.065
+      ],
+      "rotEuler": [
+        0,
+        325.5,
+        0
+      ],
+      "scale": 0.213,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_w_7",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -3.062,
+        0.0,
+        83.14
+      ],
+      "rotEuler": [
+        0,
+        226.1,
+        0
+      ],
+      "scale": 0.312,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_e_0",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        3.085,
+        0.0,
+        88.899
+      ],
+      "rotEuler": [
+        0,
+        131.4,
+        0
+      ],
+      "scale": 0.238,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_e_1",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.627,
+        0.0,
+        88.841
+      ],
+      "rotEuler": [
+        0,
+        18.4,
+        0
+      ],
+      "scale": 0.322,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_e_2",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.675,
+        0.0,
+        94.236
+      ],
+      "rotEuler": [
+        0,
+        312.9,
+        0
+      ],
+      "scale": 0.238,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_e_3",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        3.145,
+        0.0,
+        94.183
+      ],
+      "rotEuler": [
+        0,
+        119.8,
+        0
+      ],
+      "scale": 0.209,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_e_4",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        6.275,
+        0.0,
+        88.614
+      ],
+      "rotEuler": [
+        0,
+        13.7,
+        0
+      ],
+      "scale": 0.287,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_e_5",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        6.32,
+        0.0,
+        94.339
+      ],
+      "rotEuler": [
+        0,
+        315.7,
+        0
+      ],
+      "scale": 0.262,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_e_6",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        2.982,
+        0.0,
+        91.638
+      ],
+      "rotEuler": [
+        0,
+        156.5,
+        0
+      ],
+      "scale": 0.217,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z3_hub_tent_e_7",
+      "group": "HubRing0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.68,
+        0.0,
+        91.381
+      ],
+      "rotEuler": [
+        0,
+        278.4,
+        0
+      ],
+      "scale": 0.329,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
     }
   ],
   "scatter": []

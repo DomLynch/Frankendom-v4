@@ -1,56 +1,56 @@
 ﻿{
- "_about": "VIS3 item 12 (prop part): z2 only. Props and paving under the Zone2 root get a darker, glossier shared clone of their own material (colour multiply + smoothness remap floors); nothing else changes. The terrain is one shared material and is wetted by wet_decals.json instead. Read by VisMatPass.cs. enabled=false.",
- "enabled": true,
- "log": true,
- "pollSeconds": 1.0,
- "rescanSeconds": 10.0,
- "minPollS": 0.25,
- "maxPerPoll": 40,
- "cloneSuffix": " (vismat)",
- "instanceSuffix": " (Instance)",
- "props": {
-  "baseColor": [
-   "_BaseColor"
-  ],
-  "smoothMin": [
-   "_SmoothnessRemapMin"
-  ],
-  "smoothMax": [
-   "_SmoothnessRemapMax"
-  ],
-  "metallic": [
-   "_Metallic"
-  ],
-  "metallicMax": [
-   "_MetallicRemapMax"
+  "_about": "VIS3 item 12 (prop part): z2 only. Props and paving under the Zone2 root get a darker, glossier shared clone of their own material (colour multiply + smoothness remap floors); nothing else changes. The terrain is one shared material and is wetted by wet_decals.json instead. Read by VisMatPass.cs. enabled=false.",
+  "enabled": true,
+  "log": true,
+  "pollSeconds": 1.0,
+  "rescanSeconds": 10.0,
+  "minPollS": 0.25,
+  "maxPerPoll": 40,
+  "cloneSuffix": " (vismat)",
+  "instanceSuffix": " (Instance)",
+  "props": {
+    "baseColor": [
+      "_BaseColor"
+    ],
+    "smoothMin": [
+      "_SmoothnessRemapMin"
+    ],
+    "smoothMax": [
+      "_SmoothnessRemapMax"
+    ],
+    "metallic": [
+      "_Metallic"
+    ],
+    "metallicMax": [
+      "_MetallicRemapMax"
+    ]
+  },
+  "rows": [
+    {
+      "id": "z2_wet_props",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [],
+      "excludeMaterial": [
+        "emiss",
+        "glow",
+        "lamp",
+        "flame",
+        "fire",
+        "water",
+        "glass",
+        "ember",
+        "eye"
+      ],
+      "baseColorMul": [
+        0.58,
+        0.63,
+        0.68
+      ],
+      "smoothnessMinFloor": 0.55,
+      "smoothnessMaxFloor": 0.92,
+      "smoothnessMaxCap": -1.0,
+      "metallicMul": -1.0,
+      "enabled": true
+    }
   ]
- },
- "rows": [
-  {
-   "id": "z2_wet_props",
-   "zoneRoot": "Zone2",
-   "matchMaterial": [],
-   "excludeMaterial": [
-    "emiss",
-    "glow",
-    "lamp",
-    "flame",
-    "fire",
-    "water",
-    "glass",
-    "ember",
-    "eye"
-   ],
-   "baseColorMul": [
-    0.8,
-    0.83,
-    0.86
-   ],
-   "smoothnessMinFloor": 0.28,
-   "smoothnessMaxFloor": 0.74,
-   "smoothnessMaxCap": -1.0,
-   "metallicMul": -1.0,
-   "enabled": true
-  }
- ]
 }

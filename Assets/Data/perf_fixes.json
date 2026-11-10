@@ -55,7 +55,7 @@
     "files": [
       "Npc/camp_arissa.glb",
       "Npc/camp_goblin.glb",
-      "Npc/camp_kachujin.glb"
+      "Npc/camp_kachujin_sombre.glb"
     ],
     "startDelayFrames": 30,
     "framesBetweenFiles": 20,

@@ -1,4 +1,4 @@
-﻿{
+{
   "_about": "laneFOGSSGI v1. OFF by default: 'enabled' false and no -fogtune: argument = FogSsgiTuning does nothing. A profile edits scene objects BY NAME at start-up: local fog volumes (enable 0 = component off, fadeStart/fadeEnd = distance fade in m from the camera, -1 = leave, densityMul > 1 = denser: meanFreePath / densityMul) and light volumetricDimmer / volumetricFadeDistance (-1 = leave). Select with 'active' (and enabled true) or with -fogtune:<id> on the command line (the argument wins, enabled is ignored then). Every profile except the *_MEAS one CHANGES THE LOOK and needs Dom's LOOK OK before it is turned on for real. DoorHaze is left out of every cut on purpose: GatewayRift scales its density at runtime. Volume and light names come from hdrp_lighting_ultra.json (fogVolumes / lights / extra). The volume-level knobs (fog depth extent, slices, denoise mode, cutoff, SSGI steps, denoiser switches) are NOT here: they are RuntimeQuality.Flags keys (fogManual fogScreenPct fogSlices fogDepthExtent fogDepthRatio fogDenoise fogAniso fogUniformity fogCutoff fogDirOnly ssgiSteps ssgiDenoise ssgiHalfDenoise ssgiSecondDenoise ssgiRadius ssgiThickness ssgiRayMiss), -1 = leave as authored, set through runtime_flags.json, a quality tier or -qset:.",
   "enabled": false,
   "active": "",
@@ -168,6 +168,32 @@
         }
       ],
       "volumes": []
+    },
+    {
+      "id": "V12_SHAFTS_A",
+      "what": "key light (Key_ColdSun) volumetricDimmer up so the sun shafts through gaps/trunks/arches read; start value",
+      "look": "LOOK: sun-facing views gain visible beams where the 2 sun cascades (shadowDistance 40 m) are blocked; off-axis views change little (HG g 0.6)",
+      "volumes": [],
+      "lights": [
+        {
+          "name": "Key_ColdSun",
+          "volumetricDimmer": 0.35,
+          "fadeDistance": -1
+        }
+      ]
+    },
+    {
+      "id": "V12_SHAFTS_B",
+      "what": "same, stronger (ladder step 2)",
+      "look": "LOOK: stronger beams, brighter global haze toward the sun; check Joan/boss readability",
+      "volumes": [],
+      "lights": [
+        {
+          "name": "Key_ColdSun",
+          "volumetricDimmer": 0.6,
+          "fadeDistance": -1
+        }
+      ]
     }
   ]
 }

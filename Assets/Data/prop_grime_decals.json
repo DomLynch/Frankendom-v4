@@ -23,13 +23,26 @@
  "decalLayer": -1,
  "textures": [
   {
-   "id": "dirt_skirt",
+   "id": "dirt_skirt@hub_camp",
    "name": "vis_dirt_skirt",
    "smoothness": 0.12,
    "tint": [
-    1,
-    1,
-    1
+    1.0,
+    0.938,
+    0.869
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "dirt_skirt@z7_market2",
+   "name": "vis_dirt_skirt",
+   "smoothness": 0.12,
+   "tint": [
+    1.0,
+    0.938,
+    0.869
    ],
    "affectNormal": false,
    "affectSmoothness": true,
@@ -60,7 +73,7 @@
   {
    "id": "hub__skirt_045",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": 5.6,
    "z": 98.6,
    "yaw": 15.0,
@@ -73,7 +86,7 @@
   {
    "id": "hub__skirt_046",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": -3.1,
    "z": 80.8,
    "yaw": 0,
@@ -86,7 +99,7 @@
   {
    "id": "hub__skirt_047",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": 3.1,
    "z": 80.8,
    "yaw": 180,
@@ -99,7 +112,7 @@
   {
    "id": "hub__skirt_048",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": 3.0,
    "z": 85.25,
    "yaw": 0,
@@ -112,7 +125,7 @@
   {
    "id": "hub__skirt_049",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": 5.25,
    "z": 87.5,
    "yaw": 90,
@@ -125,7 +138,7 @@
   {
    "id": "hub__skirt_050",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": -3.0,
    "z": 83.8,
    "yaw": 0,
@@ -138,7 +151,7 @@
   {
    "id": "hub__skirt_051",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": -2.65,
    "z": 88.5,
    "yaw": 90,
@@ -151,7 +164,7 @@
   {
    "id": "hub__skirt_052",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": -2.65,
    "z": 90.5,
    "yaw": 90,
@@ -164,7 +177,7 @@
   {
    "id": "hub__skirt_053",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": -6.6,
    "z": 83.0,
    "yaw": 90,
@@ -177,7 +190,7 @@
   {
    "id": "hub__skirt_054",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": 6.4,
    "z": 91.5,
    "yaw": 270,
@@ -190,7 +203,7 @@
   {
    "id": "hub__skirt_055",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": -4.25,
    "z": 89.5,
    "yaw": 270,
@@ -203,7 +216,7 @@
   {
    "id": "hub__skirt_056",
    "zone": "hub_camp",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@hub_camp",
    "x": 4.0,
    "z": 93.7,
    "yaw": 0,
@@ -216,7 +229,7 @@
   {
    "id": "z7_m_skirt_048",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": -3.1,
    "z": 323.8,
    "yaw": 0,
@@ -229,7 +242,7 @@
   {
    "id": "z7_m_skirt_049",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": 3.1,
    "z": 323.8,
    "yaw": 180,
@@ -242,7 +255,7 @@
   {
    "id": "z7_m_skirt_050",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": 3.0,
    "z": 328.25,
    "yaw": 0,
@@ -255,7 +268,7 @@
   {
    "id": "z7_m_skirt_051",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": 5.25,
    "z": 330.5,
    "yaw": 90,
@@ -268,7 +281,7 @@
   {
    "id": "z7_m_skirt_052",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": -3.45,
    "z": 341.0,
    "yaw": 90,
@@ -281,7 +294,7 @@
   {
    "id": "z7_m_skirt_053",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": -3.45,
    "z": 343.0,
    "yaw": 90,
@@ -294,7 +307,7 @@
   {
    "id": "z7_m_skirt_054",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": 3.45,
    "z": 348.0,
    "yaw": 270,
@@ -307,7 +320,7 @@
   {
    "id": "z7_m_skirt_055",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": 3.45,
    "z": 350.0,
    "yaw": 270,
@@ -320,7 +333,7 @@
   {
    "id": "z7_m_skirt_056",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": 6.4,
    "z": 338.0,
    "yaw": 270,
@@ -333,7 +346,7 @@
   {
    "id": "z7_m_skirt_057",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": -6.6,
    "z": 352.5,
    "yaw": 90,
@@ -346,7 +359,7 @@
   {
    "id": "z7_m_skirt_058",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": -2.4,
    "z": 339.3,
    "yaw": 0,
@@ -359,7 +372,7 @@
   {
    "id": "z7_m_skirt_059",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": 2.4,
    "z": 346.4,
    "yaw": 0,
@@ -372,7 +385,7 @@
   {
    "id": "z7_m_skirt_060",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": -2.2,
    "z": 351.3,
    "yaw": 0,
@@ -385,7 +398,7 @@
   {
    "id": "z7_m_skirt_061",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": -7.6,
    "z": 342.0,
    "yaw": 90,
@@ -398,7 +411,7 @@
   {
    "id": "z7_m_skirt_062",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": 7.6,
    "z": 349.0,
    "yaw": 270,
@@ -411,7 +424,7 @@
   {
    "id": "z7_m_skirt_063",
    "zone": "z7_market2",
-   "tex": "dirt_skirt",
+   "tex": "dirt_skirt@z7_market2",
    "x": -25.4,
    "z": 340.55,
    "yaw": 139.5,
@@ -421,5 +434,6 @@
    "opacity": 0.7,
    "dd": 0.0
   }
- ]
+ ],
+ "_v4_note": "laneV4V6 V4 T1: per-zone tint entries tex@zone, rows retargeted, colour only (depthM/liftM untouched). --off restores the backup."
 }

@@ -128,6 +128,24 @@
         0.015,
         0.004
       ]
+    },
+    {
+        "name": "sky_ridge",
+        "screenHeights": [
+            20.0,
+            10.0,
+            0.0
+        ],
+        "_about": "LOD0/LOD1 can never be selected (screen height cannot exceed 1 for a ridge in view at 10x), so every ridge is the 2.5-3.2k tri LOD2 and is never culled by size"
+    },
+    {
+        "name": "sky_ruin",
+        "screenHeights": [
+            1.2,
+            0.3,
+            0.0
+        ],
+        "_about": "far_ruin LOD1 (2.6-3.3k tris) while a tower fills > 30 % of the screen height, else LOD2 (0.75-1.2k tris); LOD0 (20 MB glb) only if one fills the whole screen"
     }
   ],
   "groups": [
@@ -143,7 +161,8 @@
     "WorldTrench",
     "WorldBridge",
     "WorldDetail",
-    "WorldEdge"
+    "WorldEdge",
+    "WorldSkyline"
   ],
   "props": [
     {
@@ -18572,6 +18591,267 @@
         "variant_gateApproach_ground"
       ],
       "rationale": "flush flagstone paving: stone tops average y 0 (terrain lane is -0.05), x +-4 z 0..22.6 with a ragged broken edge fading into the ground, no lip. Authored in WORLD coordinates (bounds y about -0.4..0): ground=pivot means place with the model origin on pos, do NOT lift the bounds bottom to pos.y."
+    },
+    {
+        "id": "v10sky_massif_0",
+        "group": "WorldSkyline",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -249.82,
+            -18.0,
+            607.73
+        ],
+        "rotEuler": [
+            0.0,
+            104.5,
+            0.0
+        ],
+        "scale": 46.063,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "massif",
+            "mound"
+        ],
+        "scaleYMul": 0.7439
+    },
+    {
+        "id": "v10sky_massif_1",
+        "group": "WorldSkyline",
+        "library": "rocks",
+        "asset": "rock_boulder_C",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -182.86,
+            -18.0,
+            575.41
+        ],
+        "rotEuler": [
+            0.0,
+            159.8,
+            0.0
+        ],
+        "scale": 68.445,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "massif",
+            "mound"
+        ],
+        "scaleYMul": 0.4403
+    },
+    {
+        "id": "v10sky_massif_2",
+        "group": "WorldSkyline",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -109.15,
+            -18.0,
+            605.68
+        ],
+        "rotEuler": [
+            0.0,
+            140.1,
+            0.0
+        ],
+        "scale": 74.534,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "massif",
+            "mound"
+        ],
+        "scaleYMul": 0.6376
+    },
+    {
+        "id": "v10sky_massif_3",
+        "group": "WorldSkyline",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -55.23,
+            -18.0,
+            596.14
+        ],
+        "rotEuler": [
+            0.0,
+            274.4,
+            0.0
+        ],
+        "scale": 42.979,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "massif",
+            "mound"
+        ],
+        "scaleYMul": 1.0388
+    },
+    {
+        "id": "v10sky_massif_4",
+        "group": "WorldSkyline",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            -19.82,
+            -18.0,
+            590.5
+        ],
+        "rotEuler": [
+            0.0,
+            235.8,
+            0.0
+        ],
+        "scale": 46.991,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "massif",
+            "mound"
+        ],
+        "scaleYMul": 0.5459
+    },
+    {
+        "id": "v10sky_massif_5",
+        "group": "WorldSkyline",
+        "library": "rocks",
+        "asset": "rock_boulder_C",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            60.67,
+            -18.0,
+            606.29
+        ],
+        "rotEuler": [
+            0.0,
+            230.1,
+            0.0
+        ],
+        "scale": 65.379,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "massif",
+            "mound"
+        ],
+        "scaleYMul": 0.4673
+    },
+    {
+        "id": "v10sky_massif_6",
+        "group": "WorldSkyline",
+        "library": "rocks",
+        "asset": "rock_boulder_B",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            116.09,
+            -18.0,
+            628.94
+        ],
+        "rotEuler": [
+            0.0,
+            122.8,
+            0.0
+        ],
+        "scale": 51.142,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "massif",
+            "mound"
+        ],
+        "scaleYMul": 0.8555
+    },
+    {
+        "id": "v10sky_massif_7",
+        "group": "WorldSkyline",
+        "library": "rocks",
+        "asset": "rock_boulder_D",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            172.03,
+            -18.0,
+            600.71
+        ],
+        "rotEuler": [
+            0.0,
+            211.1,
+            0.0
+        ],
+        "scale": 52.422,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "massif",
+            "mound"
+        ],
+        "scaleYMul": 0.8084
+    },
+    {
+        "id": "v10sky_massif_8",
+        "group": "WorldSkyline",
+        "library": "rocks",
+        "asset": "rock_boulder_A",
+        "lodProfile": "sky_ridge",
+        "ground": "bottom",
+        "yBase": "world",
+        "pos": [
+            254.27,
+            -18.0,
+            603.44
+        ],
+        "rotEuler": [
+            0.0,
+            0.0,
+            0.0
+        ],
+        "scale": 54.087,
+        "shadowsOff": true,
+        "tags": [
+            "world",
+            "skyline",
+            "v10sky",
+            "massif",
+            "mound"
+        ],
+        "scaleYMul": 0.6721
     }
   ],
   "scatter": [

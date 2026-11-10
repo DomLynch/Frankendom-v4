@@ -23,130 +23,403 @@
  "decalLayer": -1,
  "textures": [
   {
-   "id": "patch_ash_a",
-   "name": "vis_patch_ash_a",
-   "smoothness": 0.12,
-   "tint": [
-    1,
-    1,
-    1
-   ],
-   "affectNormal": true,
-   "affectSmoothness": true,
-   "affectAO": false
-  },
-  {
-   "id": "patch_ash_b",
-   "name": "vis_patch_ash_b",
-   "smoothness": 0.12,
-   "tint": [
-    1,
-    1,
-    1
-   ],
-   "affectNormal": true,
-   "affectSmoothness": true,
-   "affectAO": false
-  },
-  {
-   "id": "patch_bone_a",
-   "name": "vis_patch_bone_a",
-   "smoothness": 0.14,
-   "tint": [
-    1,
-    1,
-    1
-   ],
-   "affectNormal": true,
-   "affectSmoothness": true,
-   "affectAO": false
-  },
-  {
-   "id": "patch_bone_b",
-   "name": "vis_patch_bone_b",
-   "smoothness": 0.14,
-   "tint": [
-    1,
-    1,
-    1
-   ],
-   "affectNormal": true,
-   "affectSmoothness": true,
-   "affectAO": false
-  },
-  {
-   "id": "patch_earth_a",
-   "name": "vis_patch_earth_a",
-   "smoothness": 0.18,
-   "tint": [
-    1,
-    1,
-    1
-   ],
-   "affectNormal": true,
-   "affectSmoothness": true,
-   "affectAO": false
-  },
-  {
-   "id": "patch_earth_b",
+   "id": "patch_earth_b@pit_yard",
    "name": "vis_patch_earth_b",
    "smoothness": 0.18,
    "tint": [
-    1,
-    1,
-    1
+    1.0,
+    0.905,
+    0.837
    ],
    "affectNormal": true,
    "affectSmoothness": true,
    "affectAO": false
   },
   {
-   "id": "patch_moss_a",
-   "name": "vis_patch_moss_a",
-   "smoothness": 0.25,
+   "id": "patch_earth_a@pit_yard",
+   "name": "vis_patch_earth_a",
+   "smoothness": 0.18,
    "tint": [
-    1,
-    1,
-    1
+    1.0,
+    0.905,
+    0.837
    ],
    "affectNormal": true,
    "affectSmoothness": true,
    "affectAO": false
   },
   {
-   "id": "patch_moss_b",
+   "id": "patch_ash_b@pit_yard",
+   "name": "vis_patch_ash_b",
+   "smoothness": 0.12,
+   "tint": [
+    1.0,
+    0.915,
+    0.855
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_ash_a@pit_yard",
+   "name": "vis_patch_ash_a",
+   "smoothness": 0.12,
+   "tint": [
+    1.0,
+    0.915,
+    0.855
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_b@sobek_reach",
+   "name": "vis_patch_earth_b",
+   "smoothness": 0.18,
+   "tint": [
+    0.85,
+    1.0,
+    0.955
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_a@sobek_reach",
+   "name": "vis_patch_earth_a",
+   "smoothness": 0.18,
+   "tint": [
+    0.85,
+    1.0,
+    0.955
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_moss_b@sobek_reach",
    "name": "vis_patch_moss_b",
    "smoothness": 0.25,
    "tint": [
-    1,
-    1,
-    1
+    0.917,
+    1.0,
+    0.975
    ],
    "affectNormal": true,
    "affectSmoothness": true,
    "affectAO": false
   },
   {
-   "id": "patch_needles_a",
-   "name": "vis_patch_needles_a",
-   "smoothness": 0.16,
+   "id": "patch_moss_a@sobek_reach",
+   "name": "vis_patch_moss_a",
+   "smoothness": 0.25,
    "tint": [
-    1,
-    1,
-    1
+    0.917,
+    1.0,
+    0.975
    ],
    "affectNormal": true,
    "affectSmoothness": true,
    "affectAO": false
   },
   {
-   "id": "patch_needles_b",
+   "id": "patch_ash_a@sobek_reach",
+   "name": "vis_patch_ash_a",
+   "smoothness": 0.12,
+   "tint": [
+    0.867,
+    1.0,
+    0.96
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_a@hub_camp",
+   "name": "vis_patch_earth_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    0.93,
+    0.852
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_b@hub_camp",
+   "name": "vis_patch_earth_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    0.93,
+    0.852
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_ash_a@hub_camp",
+   "name": "vis_patch_ash_a",
+   "smoothness": 0.12,
+   "tint": [
+    1.0,
+    0.938,
+    0.869
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_bone_a@grendel",
+   "name": "vis_patch_bone_a",
+   "smoothness": 0.14,
+   "tint": [
+    1.0,
+    0.975,
+    0.95
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_bone_b@grendel",
+   "name": "vis_patch_bone_b",
+   "smoothness": 0.14,
+   "tint": [
+    1.0,
+    0.975,
+    0.95
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_b@grendel",
+   "name": "vis_patch_earth_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    0.962,
+    0.925
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_a@grendel",
+   "name": "vis_patch_earth_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    0.962,
+    0.925
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_ash_a@grendel",
+   "name": "vis_patch_ash_a",
+   "smoothness": 0.12,
+   "tint": [
+    1.0,
+    0.966,
+    0.933
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_ash_b@grendel",
+   "name": "vis_patch_ash_b",
+   "smoothness": 0.12,
+   "tint": [
+    1.0,
+    0.966,
+    0.933
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_needles_b@z5_humbaba",
    "name": "vis_patch_needles_b",
    "smoothness": 0.16,
    "tint": [
-    1,
-    1,
-    1
+    0.938,
+    1.0,
+    0.925
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_needles_a@z5_humbaba",
+   "name": "vis_patch_needles_a",
+   "smoothness": 0.16,
+   "tint": [
+    0.938,
+    1.0,
+    0.925
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_a@z5_humbaba",
+   "name": "vis_patch_earth_a",
+   "smoothness": 0.18,
+   "tint": [
+    0.888,
+    1.0,
+    0.865
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_b@z5_humbaba",
+   "name": "vis_patch_earth_b",
+   "smoothness": 0.18,
+   "tint": [
+    0.888,
+    1.0,
+    0.865
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_moss_b@z5_humbaba",
+   "name": "vis_patch_moss_b",
+   "smoothness": 0.25,
+   "tint": [
+    0.938,
+    1.0,
+    0.925
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_ash_a@z6_erlking",
+   "name": "vis_patch_ash_a",
+   "smoothness": 0.12,
+   "tint": [
+    1.0,
+    0.878,
+    0.878
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_ash_b@z6_erlking",
+   "name": "vis_patch_ash_b",
+   "smoothness": 0.12,
+   "tint": [
+    1.0,
+    0.878,
+    0.878
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_b@z6_erlking",
+   "name": "vis_patch_earth_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    0.862,
+    0.862
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_a@z6_erlking",
+   "name": "vis_patch_earth_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    0.862,
+    0.862
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_b@z7_market2",
+   "name": "vis_patch_earth_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    0.93,
+    0.852
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_earth_a@z7_market2",
+   "name": "vis_patch_earth_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    0.93,
+    0.852
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_ash_b@z7_market2",
+   "name": "vis_patch_ash_b",
+   "smoothness": 0.12,
+   "tint": [
+    1.0,
+    0.938,
+    0.869
+   ],
+   "affectNormal": true,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "patch_ash_a@z7_market2",
+   "name": "vis_patch_ash_a",
+   "smoothness": 0.12,
+   "tint": [
+    1.0,
+    0.938,
+    0.869
    ],
    "affectNormal": true,
    "affectSmoothness": true,
@@ -222,7 +495,7 @@
   {
    "id": "pit__patch_earth_000",
    "zone": "pit_yard",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@pit_yard",
    "x": 9.626,
    "z": 18.057,
    "yaw": 320.6,
@@ -235,7 +508,7 @@
   {
    "id": "pit__patch_earth_001",
    "zone": "pit_yard",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@pit_yard",
    "x": 8.978,
    "z": 19.379,
    "yaw": 343.0,
@@ -248,7 +521,7 @@
   {
    "id": "pit__patch_earth_002",
    "zone": "pit_yard",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@pit_yard",
    "x": -8.851,
    "z": 10.575,
    "yaw": 226.5,
@@ -261,7 +534,7 @@
   {
    "id": "pit__patch_earth_003",
    "zone": "pit_yard",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@pit_yard",
    "x": -10.797,
    "z": 19.587,
    "yaw": 251.0,
@@ -274,7 +547,7 @@
   {
    "id": "pit__patch_earth_004",
    "zone": "pit_yard",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@pit_yard",
    "x": 11.935,
    "z": 22.185,
    "yaw": 341.0,
@@ -287,7 +560,7 @@
   {
    "id": "pit__patch_earth_005",
    "zone": "pit_yard",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@pit_yard",
    "x": 7.953,
    "z": 24.007,
    "yaw": 42.6,
@@ -300,7 +573,7 @@
   {
    "id": "pit__patch_earth_006",
    "zone": "pit_yard",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@pit_yard",
    "x": -11.081,
    "z": 17.736,
    "yaw": 209.5,
@@ -313,7 +586,7 @@
   {
    "id": "pit__patch_earth_007",
    "zone": "pit_yard",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@pit_yard",
    "x": 11.647,
    "z": 8.549,
    "yaw": 179.5,
@@ -326,7 +599,7 @@
   {
    "id": "pit__patch_earth_008",
    "zone": "pit_yard",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@pit_yard",
    "x": 0.282,
    "z": 20.943,
    "yaw": 139.3,
@@ -339,7 +612,7 @@
   {
    "id": "pit__patch_earth_009",
    "zone": "pit_yard",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@pit_yard",
    "x": 12.289,
    "z": 16.932,
    "yaw": 126.0,
@@ -352,7 +625,7 @@
   {
    "id": "pit__patch_ash_010",
    "zone": "pit_yard",
-   "tex": "patch_ash_b",
+   "tex": "patch_ash_b@pit_yard",
    "x": -11.387,
    "z": 18.797,
    "yaw": 172.4,
@@ -365,7 +638,7 @@
   {
    "id": "pit__patch_ash_011",
    "zone": "pit_yard",
-   "tex": "patch_ash_b",
+   "tex": "patch_ash_b@pit_yard",
    "x": -4.121,
    "z": 19.739,
    "yaw": 320.1,
@@ -378,7 +651,7 @@
   {
    "id": "pit__patch_ash_012",
    "zone": "pit_yard",
-   "tex": "patch_ash_b",
+   "tex": "patch_ash_b@pit_yard",
    "x": 8.107,
    "z": 11.992,
    "yaw": 243.5,
@@ -391,7 +664,7 @@
   {
    "id": "pit__patch_ash_013",
    "zone": "pit_yard",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@pit_yard",
    "x": -12.747,
    "z": 11.648,
    "yaw": 28.0,
@@ -404,7 +677,7 @@
   {
    "id": "pit__patch_ash_014",
    "zone": "pit_yard",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@pit_yard",
    "x": -12.36,
    "z": 11.777,
    "yaw": 67.7,
@@ -417,7 +690,7 @@
   {
    "id": "pit__patch_ash_015",
    "zone": "pit_yard",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@pit_yard",
    "x": -3.551,
    "z": 3.429,
    "yaw": 293.8,
@@ -430,7 +703,7 @@
   {
    "id": "sobe_patch_earth_000",
    "zone": "sobek_reach",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@sobek_reach",
    "x": -4.475,
    "z": 50.177,
    "yaw": 127.3,
@@ -443,7 +716,7 @@
   {
    "id": "sobe_patch_earth_001",
    "zone": "sobek_reach",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@sobek_reach",
    "x": 10.47,
    "z": 45.491,
    "yaw": 15.2,
@@ -456,7 +729,7 @@
   {
    "id": "sobe_patch_earth_002",
    "zone": "sobek_reach",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@sobek_reach",
    "x": 10.767,
    "z": 51.245,
    "yaw": 348.6,
@@ -469,7 +742,7 @@
   {
    "id": "sobe_patch_earth_003",
    "zone": "sobek_reach",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@sobek_reach",
    "x": -5.822,
    "z": 50.503,
    "yaw": 219.0,
@@ -482,7 +755,7 @@
   {
    "id": "sobe_patch_earth_004",
    "zone": "sobek_reach",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@sobek_reach",
    "x": 1.395,
    "z": 57.313,
    "yaw": 248.6,
@@ -495,7 +768,7 @@
   {
    "id": "sobe_patch_earth_005",
    "zone": "sobek_reach",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@sobek_reach",
    "x": 9.979,
    "z": 50.96,
    "yaw": 5.8,
@@ -508,7 +781,7 @@
   {
    "id": "sobe_patch_earth_006",
    "zone": "sobek_reach",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@sobek_reach",
    "x": 3.333,
    "z": 47.559,
    "yaw": 103.4,
@@ -521,7 +794,7 @@
   {
    "id": "sobe_patch_earth_007",
    "zone": "sobek_reach",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@sobek_reach",
    "x": -6.671,
    "z": 39.295,
    "yaw": 75.2,
@@ -534,7 +807,7 @@
   {
    "id": "sobe_patch_moss_008",
    "zone": "sobek_reach",
-   "tex": "patch_moss_b",
+   "tex": "patch_moss_b@sobek_reach",
    "x": -11.445,
    "z": 39.421,
    "yaw": 263.3,
@@ -547,7 +820,7 @@
   {
    "id": "sobe_patch_moss_009",
    "zone": "sobek_reach",
-   "tex": "patch_moss_b",
+   "tex": "patch_moss_b@sobek_reach",
    "x": -12.534,
    "z": 46.166,
    "yaw": 183.7,
@@ -560,7 +833,7 @@
   {
    "id": "sobe_patch_moss_010",
    "zone": "sobek_reach",
-   "tex": "patch_moss_b",
+   "tex": "patch_moss_b@sobek_reach",
    "x": 11.998,
    "z": 48.473,
    "yaw": 163.0,
@@ -573,7 +846,7 @@
   {
    "id": "sobe_patch_moss_011",
    "zone": "sobek_reach",
-   "tex": "patch_moss_a",
+   "tex": "patch_moss_a@sobek_reach",
    "x": -12.365,
    "z": 57.595,
    "yaw": 126.7,
@@ -586,7 +859,7 @@
   {
    "id": "sobe_patch_moss_012",
    "zone": "sobek_reach",
-   "tex": "patch_moss_b",
+   "tex": "patch_moss_b@sobek_reach",
    "x": 12.448,
    "z": 44.028,
    "yaw": 339.9,
@@ -599,7 +872,7 @@
   {
    "id": "sobe_patch_moss_013",
    "zone": "sobek_reach",
-   "tex": "patch_moss_b",
+   "tex": "patch_moss_b@sobek_reach",
    "x": -12.629,
    "z": 48.875,
    "yaw": 342.1,
@@ -612,7 +885,7 @@
   {
    "id": "sobe_patch_moss_014",
    "zone": "sobek_reach",
-   "tex": "patch_moss_b",
+   "tex": "patch_moss_b@sobek_reach",
    "x": 11.691,
    "z": 49.993,
    "yaw": 290.4,
@@ -625,7 +898,7 @@
   {
    "id": "sobe_patch_moss_015",
    "zone": "sobek_reach",
-   "tex": "patch_moss_b",
+   "tex": "patch_moss_b@sobek_reach",
    "x": 12.649,
    "z": 54.949,
    "yaw": 188.3,
@@ -638,7 +911,7 @@
   {
    "id": "sobe_patch_ash_016",
    "zone": "sobek_reach",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@sobek_reach",
    "x": 1.14,
    "z": 57.714,
    "yaw": 341.2,
@@ -651,7 +924,7 @@
   {
    "id": "sobe_patch_ash_017",
    "zone": "sobek_reach",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@sobek_reach",
    "x": 10.945,
    "z": 51.405,
    "yaw": 12.7,
@@ -664,7 +937,7 @@
   {
    "id": "hub__patch_earth_000",
    "zone": "hub_camp",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@hub_camp",
    "x": 6.687,
    "z": 86.042,
    "yaw": 37.4,
@@ -677,7 +950,7 @@
   {
    "id": "hub__patch_earth_001",
    "zone": "hub_camp",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@hub_camp",
    "x": 0.455,
    "z": 78.261,
    "yaw": 126.1,
@@ -690,7 +963,7 @@
   {
    "id": "hub__patch_earth_002",
    "zone": "hub_camp",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@hub_camp",
    "x": -9.514,
    "z": 91.28,
    "yaw": 265.6,
@@ -703,7 +976,7 @@
   {
    "id": "hub__patch_earth_003",
    "zone": "hub_camp",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@hub_camp",
    "x": -6.913,
    "z": 94.939,
    "yaw": 88.1,
@@ -716,7 +989,7 @@
   {
    "id": "hub__patch_earth_004",
    "zone": "hub_camp",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@hub_camp",
    "x": 8.365,
    "z": 98.046,
    "yaw": 276.6,
@@ -729,7 +1002,7 @@
   {
    "id": "hub__patch_earth_005",
    "zone": "hub_camp",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@hub_camp",
    "x": -9.101,
    "z": 90.647,
    "yaw": 77.2,
@@ -742,7 +1015,7 @@
   {
    "id": "hub__patch_earth_006",
    "zone": "hub_camp",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@hub_camp",
    "x": 7.64,
    "z": 91.274,
    "yaw": 168.2,
@@ -755,7 +1028,7 @@
   {
    "id": "hub__patch_earth_007",
    "zone": "hub_camp",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@hub_camp",
    "x": -3.674,
    "z": 88.785,
    "yaw": 99.5,
@@ -768,7 +1041,7 @@
   {
    "id": "hub__patch_earth_008",
    "zone": "hub_camp",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@hub_camp",
    "x": 6.232,
    "z": 93.091,
    "yaw": 130.4,
@@ -781,7 +1054,7 @@
   {
    "id": "hub__patch_earth_009",
    "zone": "hub_camp",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@hub_camp",
    "x": 9.827,
    "z": 83.488,
    "yaw": 227.7,
@@ -794,7 +1067,7 @@
   {
    "id": "hub__patch_ash_010",
    "zone": "hub_camp",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@hub_camp",
    "x": 3.121,
    "z": 85.844,
    "yaw": 143.7,
@@ -807,7 +1080,7 @@
   {
    "id": "hub__patch_ash_011",
    "zone": "hub_camp",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@hub_camp",
    "x": 5.949,
    "z": 78.664,
    "yaw": 164.0,
@@ -820,7 +1093,7 @@
   {
    "id": "hub__patch_ash_012",
    "zone": "hub_camp",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@hub_camp",
    "x": 6.211,
    "z": 93.103,
    "yaw": 342.1,
@@ -833,7 +1106,7 @@
   {
    "id": "hub__patch_ash_013",
    "zone": "hub_camp",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@hub_camp",
    "x": -7.801,
    "z": 89.38,
    "yaw": 78.0,
@@ -846,7 +1119,7 @@
   {
    "id": "gren_patch_bone_000",
    "zone": "grendel",
-   "tex": "patch_bone_a",
+   "tex": "patch_bone_a@grendel",
    "x": 2.148,
    "z": 152.466,
    "yaw": 202.3,
@@ -859,7 +1132,7 @@
   {
    "id": "gren_patch_bone_001",
    "zone": "grendel",
-   "tex": "patch_bone_b",
+   "tex": "patch_bone_b@grendel",
    "x": -6.928,
    "z": 146.616,
    "yaw": 344.5,
@@ -872,7 +1145,7 @@
   {
    "id": "gren_patch_bone_002",
    "zone": "grendel",
-   "tex": "patch_bone_b",
+   "tex": "patch_bone_b@grendel",
    "x": 4.284,
    "z": 164.94,
    "yaw": 17.7,
@@ -885,7 +1158,7 @@
   {
    "id": "gren_patch_bone_003",
    "zone": "grendel",
-   "tex": "patch_bone_b",
+   "tex": "patch_bone_b@grendel",
    "x": -10.331,
    "z": 163.506,
    "yaw": 324.1,
@@ -898,7 +1171,7 @@
   {
    "id": "gren_patch_bone_004",
    "zone": "grendel",
-   "tex": "patch_bone_b",
+   "tex": "patch_bone_b@grendel",
    "x": -12.195,
    "z": 132.11,
    "yaw": 177.5,
@@ -911,7 +1184,7 @@
   {
    "id": "gren_patch_bone_005",
    "zone": "grendel",
-   "tex": "patch_bone_b",
+   "tex": "patch_bone_b@grendel",
    "x": -9.136,
    "z": 135.042,
    "yaw": 175.7,
@@ -924,7 +1197,7 @@
   {
    "id": "gren_patch_bone_006",
    "zone": "grendel",
-   "tex": "patch_bone_a",
+   "tex": "patch_bone_a@grendel",
    "x": -7.857,
    "z": 140.197,
    "yaw": 92.7,
@@ -937,7 +1210,7 @@
   {
    "id": "gren_patch_bone_007",
    "zone": "grendel",
-   "tex": "patch_bone_a",
+   "tex": "patch_bone_a@grendel",
    "x": -6.663,
    "z": 159.456,
    "yaw": 314.5,
@@ -950,7 +1223,7 @@
   {
    "id": "gren_patch_bone_008",
    "zone": "grendel",
-   "tex": "patch_bone_a",
+   "tex": "patch_bone_a@grendel",
    "x": 8.804,
    "z": 144.113,
    "yaw": 344.5,
@@ -963,7 +1236,7 @@
   {
    "id": "gren_patch_bone_009",
    "zone": "grendel",
-   "tex": "patch_bone_a",
+   "tex": "patch_bone_a@grendel",
    "x": -0.824,
    "z": 168.078,
    "yaw": 79.9,
@@ -976,7 +1249,7 @@
   {
    "id": "gren_patch_bone_010",
    "zone": "grendel",
-   "tex": "patch_bone_a",
+   "tex": "patch_bone_a@grendel",
    "x": -8.477,
    "z": 117.069,
    "yaw": 344.4,
@@ -989,7 +1262,7 @@
   {
    "id": "gren_patch_bone_011",
    "zone": "grendel",
-   "tex": "patch_bone_b",
+   "tex": "patch_bone_b@grendel",
    "x": 13.776,
    "z": 150.771,
    "yaw": 334.2,
@@ -1002,7 +1275,7 @@
   {
    "id": "gren_patch_earth_012",
    "zone": "grendel",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@grendel",
    "x": -3.039,
    "z": 147.416,
    "yaw": 180.5,
@@ -1015,7 +1288,7 @@
   {
    "id": "gren_patch_earth_013",
    "zone": "grendel",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@grendel",
    "x": 12.534,
    "z": 121.4,
    "yaw": 175.1,
@@ -1028,7 +1301,7 @@
   {
    "id": "gren_patch_earth_014",
    "zone": "grendel",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@grendel",
    "x": 7.608,
    "z": 123.017,
    "yaw": 122.5,
@@ -1041,7 +1314,7 @@
   {
    "id": "gren_patch_earth_015",
    "zone": "grendel",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@grendel",
    "x": -8.765,
    "z": 169.687,
    "yaw": 138.0,
@@ -1054,7 +1327,7 @@
   {
    "id": "gren_patch_earth_016",
    "zone": "grendel",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@grendel",
    "x": 5.974,
    "z": 151.688,
    "yaw": 61.3,
@@ -1067,7 +1340,7 @@
   {
    "id": "gren_patch_earth_017",
    "zone": "grendel",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@grendel",
    "x": -5.033,
    "z": 124.133,
    "yaw": 73.3,
@@ -1080,7 +1353,7 @@
   {
    "id": "gren_patch_ash_018",
    "zone": "grendel",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@grendel",
    "x": 4.209,
    "z": 145.58,
    "yaw": 139.7,
@@ -1093,7 +1366,7 @@
   {
    "id": "gren_patch_ash_019",
    "zone": "grendel",
-   "tex": "patch_ash_b",
+   "tex": "patch_ash_b@grendel",
    "x": -5.324,
    "z": 147.933,
    "yaw": 107.7,
@@ -1106,7 +1379,7 @@
   {
    "id": "z5_h_patch_needles_000",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_b",
+   "tex": "patch_needles_b@z5_humbaba",
    "x": 19.545,
    "z": 182.719,
    "yaw": 321.0,
@@ -1119,7 +1392,7 @@
   {
    "id": "z5_h_patch_needles_001",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_a",
+   "tex": "patch_needles_a@z5_humbaba",
    "x": -7.405,
    "z": 238.956,
    "yaw": 229.8,
@@ -1132,7 +1405,7 @@
   {
    "id": "z5_h_patch_needles_002",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_a",
+   "tex": "patch_needles_a@z5_humbaba",
    "x": -19.381,
    "z": 187.386,
    "yaw": 100.7,
@@ -1145,7 +1418,7 @@
   {
    "id": "z5_h_patch_needles_003",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_b",
+   "tex": "patch_needles_b@z5_humbaba",
    "x": 3.955,
    "z": 190.866,
    "yaw": 77.2,
@@ -1158,7 +1431,7 @@
   {
    "id": "z5_h_patch_needles_004",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_a",
+   "tex": "patch_needles_a@z5_humbaba",
    "x": -7.672,
    "z": 210.151,
    "yaw": 196.1,
@@ -1171,7 +1444,7 @@
   {
    "id": "z5_h_patch_needles_005",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_b",
+   "tex": "patch_needles_b@z5_humbaba",
    "x": 0.84,
    "z": 235.272,
    "yaw": 276.7,
@@ -1184,7 +1457,7 @@
   {
    "id": "z5_h_patch_needles_006",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_b",
+   "tex": "patch_needles_b@z5_humbaba",
    "x": -5.097,
    "z": 185.231,
    "yaw": 301.7,
@@ -1197,7 +1470,7 @@
   {
    "id": "z5_h_patch_needles_007",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_b",
+   "tex": "patch_needles_b@z5_humbaba",
    "x": -12.788,
    "z": 201.287,
    "yaw": 14.6,
@@ -1210,7 +1483,7 @@
   {
    "id": "z5_h_patch_needles_008",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_b",
+   "tex": "patch_needles_b@z5_humbaba",
    "x": 13.839,
    "z": 229.737,
    "yaw": 154.5,
@@ -1223,7 +1496,7 @@
   {
    "id": "z5_h_patch_needles_009",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_b",
+   "tex": "patch_needles_b@z5_humbaba",
    "x": -18.248,
    "z": 205.702,
    "yaw": 43.4,
@@ -1236,7 +1509,7 @@
   {
    "id": "z5_h_patch_needles_010",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_b",
+   "tex": "patch_needles_b@z5_humbaba",
    "x": 5.23,
    "z": 193.977,
    "yaw": 56.7,
@@ -1249,7 +1522,7 @@
   {
    "id": "z5_h_patch_needles_011",
    "zone": "z5_humbaba",
-   "tex": "patch_needles_b",
+   "tex": "patch_needles_b@z5_humbaba",
    "x": -10.579,
    "z": 200.547,
    "yaw": 39.8,
@@ -1262,7 +1535,7 @@
   {
    "id": "z5_h_patch_earth_012",
    "zone": "z5_humbaba",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@z5_humbaba",
    "x": -17.8,
    "z": 210.246,
    "yaw": 221.2,
@@ -1275,7 +1548,7 @@
   {
    "id": "z5_h_patch_earth_013",
    "zone": "z5_humbaba",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@z5_humbaba",
    "x": -13.55,
    "z": 179.739,
    "yaw": 165.3,
@@ -1288,7 +1561,7 @@
   {
    "id": "z5_h_patch_earth_014",
    "zone": "z5_humbaba",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@z5_humbaba",
    "x": -10.256,
    "z": 223.05,
    "yaw": 29.3,
@@ -1301,7 +1574,7 @@
   {
    "id": "z5_h_patch_earth_015",
    "zone": "z5_humbaba",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@z5_humbaba",
    "x": -8.967,
    "z": 184.985,
    "yaw": 282.0,
@@ -1314,7 +1587,7 @@
   {
    "id": "z5_h_patch_earth_016",
    "zone": "z5_humbaba",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@z5_humbaba",
    "x": 10.464,
    "z": 231.818,
    "yaw": 244.3,
@@ -1327,7 +1600,7 @@
   {
    "id": "z5_h_patch_earth_017",
    "zone": "z5_humbaba",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@z5_humbaba",
    "x": 16.495,
    "z": 197.449,
    "yaw": 341.5,
@@ -1340,7 +1613,7 @@
   {
    "id": "z5_h_patch_moss_018",
    "zone": "z5_humbaba",
-   "tex": "patch_moss_b",
+   "tex": "patch_moss_b@z5_humbaba",
    "x": 14.24,
    "z": 224.623,
    "yaw": 34.6,
@@ -1353,7 +1626,7 @@
   {
    "id": "z5_h_patch_moss_019",
    "zone": "z5_humbaba",
-   "tex": "patch_moss_b",
+   "tex": "patch_moss_b@z5_humbaba",
    "x": -11.903,
    "z": 213.544,
    "yaw": 243.4,
@@ -1366,7 +1639,7 @@
   {
    "id": "z5_h_patch_moss_020",
    "zone": "z5_humbaba",
-   "tex": "patch_moss_b",
+   "tex": "patch_moss_b@z5_humbaba",
    "x": -15.096,
    "z": 190.261,
    "yaw": 125.2,
@@ -1379,7 +1652,7 @@
   {
    "id": "z6_e_patch_ash_000",
    "zone": "z6_erlking",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@z6_erlking",
    "x": -11.772,
    "z": 263.241,
    "yaw": 130.9,
@@ -1392,7 +1665,7 @@
   {
    "id": "z6_e_patch_ash_001",
    "zone": "z6_erlking",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@z6_erlking",
    "x": 0.336,
    "z": 253.83,
    "yaw": 259.8,
@@ -1405,7 +1678,7 @@
   {
    "id": "z6_e_patch_ash_002",
    "zone": "z6_erlking",
-   "tex": "patch_ash_b",
+   "tex": "patch_ash_b@z6_erlking",
    "x": -8.013,
    "z": 252.598,
    "yaw": 340.5,
@@ -1418,7 +1691,7 @@
   {
    "id": "z6_e_patch_ash_003",
    "zone": "z6_erlking",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@z6_erlking",
    "x": -1.342,
    "z": 295.555,
    "yaw": 12.9,
@@ -1431,7 +1704,7 @@
   {
    "id": "z6_e_patch_ash_004",
    "zone": "z6_erlking",
-   "tex": "patch_ash_b",
+   "tex": "patch_ash_b@z6_erlking",
    "x": -7.1,
    "z": 279.601,
    "yaw": 351.8,
@@ -1444,7 +1717,7 @@
   {
    "id": "z6_e_patch_ash_005",
    "zone": "z6_erlking",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@z6_erlking",
    "x": -2.004,
    "z": 283.728,
    "yaw": 175.1,
@@ -1457,7 +1730,7 @@
   {
    "id": "z6_e_patch_ash_006",
    "zone": "z6_erlking",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@z6_erlking",
    "x": 12.003,
    "z": 250.915,
    "yaw": 81.5,
@@ -1470,7 +1743,7 @@
   {
    "id": "z6_e_patch_ash_007",
    "zone": "z6_erlking",
-   "tex": "patch_ash_b",
+   "tex": "patch_ash_b@z6_erlking",
    "x": 12.682,
    "z": 292.028,
    "yaw": 332.0,
@@ -1483,7 +1756,7 @@
   {
    "id": "z6_e_patch_ash_008",
    "zone": "z6_erlking",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@z6_erlking",
    "x": 9.871,
    "z": 265.248,
    "yaw": 68.2,
@@ -1496,7 +1769,7 @@
   {
    "id": "z6_e_patch_ash_009",
    "zone": "z6_erlking",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@z6_erlking",
    "x": 5.525,
    "z": 275.346,
    "yaw": 261.1,
@@ -1509,7 +1782,7 @@
   {
    "id": "z6_e_patch_ash_010",
    "zone": "z6_erlking",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@z6_erlking",
    "x": -16.177,
    "z": 264.169,
    "yaw": 268.7,
@@ -1522,7 +1795,7 @@
   {
    "id": "z6_e_patch_ash_011",
    "zone": "z6_erlking",
-   "tex": "patch_ash_b",
+   "tex": "patch_ash_b@z6_erlking",
    "x": 12.337,
    "z": 275.515,
    "yaw": 292.8,
@@ -1535,7 +1808,7 @@
   {
    "id": "z6_e_patch_earth_012",
    "zone": "z6_erlking",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@z6_erlking",
    "x": -0.233,
    "z": 289.851,
    "yaw": 132.3,
@@ -1548,7 +1821,7 @@
   {
    "id": "z6_e_patch_earth_013",
    "zone": "z6_erlking",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@z6_erlking",
    "x": -16.551,
    "z": 249.424,
    "yaw": 146.7,
@@ -1561,7 +1834,7 @@
   {
    "id": "z6_e_patch_earth_014",
    "zone": "z6_erlking",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@z6_erlking",
    "x": -6.238,
    "z": 260.08,
    "yaw": 117.5,
@@ -1574,7 +1847,7 @@
   {
    "id": "z6_e_patch_earth_015",
    "zone": "z6_erlking",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@z6_erlking",
    "x": 19.571,
    "z": 291.795,
    "yaw": 324.9,
@@ -1587,7 +1860,7 @@
   {
    "id": "z6_e_patch_earth_016",
    "zone": "z6_erlking",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@z6_erlking",
    "x": -10.739,
    "z": 289.208,
    "yaw": 102.3,
@@ -1600,7 +1873,7 @@
   {
    "id": "z6_e_patch_earth_017",
    "zone": "z6_erlking",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@z6_erlking",
    "x": 0.88,
    "z": 285.939,
    "yaw": 31.6,
@@ -1613,7 +1886,7 @@
   {
    "id": "z7_m_patch_earth_000",
    "zone": "z7_market2",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@z7_market2",
    "x": -5.309,
    "z": 354.247,
    "yaw": 216.1,
@@ -1626,7 +1899,7 @@
   {
    "id": "z7_m_patch_earth_001",
    "zone": "z7_market2",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@z7_market2",
    "x": 8.21,
    "z": 352.093,
    "yaw": 220.6,
@@ -1639,7 +1912,7 @@
   {
    "id": "z7_m_patch_earth_002",
    "zone": "z7_market2",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@z7_market2",
    "x": 1.707,
    "z": 330.741,
    "yaw": 346.8,
@@ -1652,7 +1925,7 @@
   {
    "id": "z7_m_patch_earth_003",
    "zone": "z7_market2",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@z7_market2",
    "x": 8.914,
    "z": 326.579,
    "yaw": 240.2,
@@ -1665,7 +1938,7 @@
   {
    "id": "z7_m_patch_earth_004",
    "zone": "z7_market2",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@z7_market2",
    "x": -6.844,
    "z": 355.958,
    "yaw": 35.0,
@@ -1678,7 +1951,7 @@
   {
    "id": "z7_m_patch_earth_005",
    "zone": "z7_market2",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@z7_market2",
    "x": 3.243,
    "z": 328.875,
    "yaw": 298.1,
@@ -1691,7 +1964,7 @@
   {
    "id": "z7_m_patch_earth_006",
    "zone": "z7_market2",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@z7_market2",
    "x": -6.59,
    "z": 325.673,
    "yaw": 205.0,
@@ -1704,7 +1977,7 @@
   {
    "id": "z7_m_patch_earth_007",
    "zone": "z7_market2",
-   "tex": "patch_earth_a",
+   "tex": "patch_earth_a@z7_market2",
    "x": -2.772,
    "z": 336.176,
    "yaw": 24.1,
@@ -1717,7 +1990,7 @@
   {
    "id": "z7_m_patch_earth_008",
    "zone": "z7_market2",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@z7_market2",
    "x": -6.697,
    "z": 324.722,
    "yaw": 13.4,
@@ -1730,7 +2003,7 @@
   {
    "id": "z7_m_patch_earth_009",
    "zone": "z7_market2",
-   "tex": "patch_earth_b",
+   "tex": "patch_earth_b@z7_market2",
    "x": 5.216,
    "z": 348.265,
    "yaw": 128.0,
@@ -1743,7 +2016,7 @@
   {
    "id": "z7_m_patch_ash_010",
    "zone": "z7_market2",
-   "tex": "patch_ash_b",
+   "tex": "patch_ash_b@z7_market2",
    "x": -3.383,
    "z": 358.46,
    "yaw": 143.6,
@@ -1756,7 +2029,7 @@
   {
    "id": "z7_m_patch_ash_011",
    "zone": "z7_market2",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@z7_market2",
    "x": 3.09,
    "z": 327.183,
    "yaw": 2.2,
@@ -1769,7 +2042,7 @@
   {
    "id": "z7_m_patch_ash_012",
    "zone": "z7_market2",
-   "tex": "patch_ash_b",
+   "tex": "patch_ash_b@z7_market2",
    "x": -6.577,
    "z": 336.951,
    "yaw": 224.5,
@@ -1782,7 +2055,7 @@
   {
    "id": "z7_m_patch_ash_013",
    "zone": "z7_market2",
-   "tex": "patch_ash_a",
+   "tex": "patch_ash_a@z7_market2",
    "x": 4.853,
    "z": 351.712,
    "yaw": 214.9,
@@ -1792,5 +2065,6 @@
    "opacity": 0.36,
    "dd": 48.0
   }
- ]
+ ],
+ "_v4_note": "laneV4V6 V4 T1: per-zone tint entries tex@zone, rows retargeted, colour only (depthM/liftM untouched). --off restores the backup."
 }

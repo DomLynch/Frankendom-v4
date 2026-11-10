@@ -150,6 +150,32 @@
         0.015,
         0.004
       ]
+    },
+    {
+      "name": "pebbles",
+      "screenHeights": [
+        0.06,
+        0.02,
+        0.007
+      ]
+    },
+    {
+      "name": "sky_ridge",
+      "screenHeights": [
+        20.0,
+        10.0,
+        0.0
+      ],
+      "_about": "LOD0/LOD1 can never be selected (screen height cannot exceed 1 for a ridge in view at 10x), so every ridge is the 2.5-3.2k tri LOD2 and is never culled by size"
+    },
+    {
+      "name": "sky_ruin",
+      "screenHeights": [
+        1.2,
+        0.3,
+        0.0
+      ],
+      "_about": "far_ruin LOD1 (2.6-3.3k tris) while a tower fills > 30 % of the screen height, else LOD2 (0.75-1.2k tris); LOD0 (20 MB glb) only if one fills the whole screen"
     }
   ],
   "groups": [
@@ -433,7 +459,8 @@
         "zone7",
         "camp",
         "hearth"
-      ]
+      ],
+      "sinkFraction": 0.03
     },
     {
       "id": "z7_bench_n",
@@ -459,7 +486,8 @@
         "zone7",
         "camp",
         "bench"
-      ]
+      ],
+      "sinkFraction": 0.02
     },
     {
       "id": "z7_bench_e",
@@ -485,7 +513,8 @@
         "zone7",
         "camp",
         "bench"
-      ]
+      ],
+      "sinkFraction": 0.02
     },
     {
       "id": "z7_counter_a_0",
@@ -512,7 +541,8 @@
         "camp",
         "counter",
         "stall"
-      ]
+      ],
+      "sinkFraction": 0.01
     },
     {
       "id": "z7_counter_a_1",
@@ -539,7 +569,8 @@
         "camp",
         "counter",
         "stall"
-      ]
+      ],
+      "sinkFraction": 0.01
     },
     {
       "id": "z7_ware_a",
@@ -592,7 +623,8 @@
         "camp",
         "counter",
         "stall"
-      ]
+      ],
+      "sinkFraction": 0.01
     },
     {
       "id": "z7_counter_b_1",
@@ -619,7 +651,8 @@
         "camp",
         "counter",
         "stall"
-      ]
+      ],
+      "sinkFraction": 0.01
     },
     {
       "id": "z7_ware_b",
@@ -671,7 +704,8 @@
         "zone7",
         "camp",
         "tent"
-      ]
+      ],
+      "sinkFraction": 0.004
     },
     {
       "id": "z7_tent_w",
@@ -697,7 +731,8 @@
         "zone7",
         "camp",
         "tent"
-      ]
+      ],
+      "sinkFraction": 0.004
     },
     {
       "id": "z7_ware_shield",
@@ -854,7 +889,8 @@
         "camp",
         "pole",
         "lantern"
-      ]
+      ],
+      "sinkFraction": 0.01
     },
     {
       "id": "z7_pole_b",
@@ -881,7 +917,8 @@
         "camp",
         "pole",
         "lantern"
-      ]
+      ],
+      "sinkFraction": 0.01
     },
     {
       "id": "z7_pole_c",
@@ -908,7 +945,8 @@
         "camp",
         "pole",
         "lantern"
-      ]
+      ],
+      "sinkFraction": 0.01
     },
     {
       "id": "z7_wagon_a_standin",
@@ -936,7 +974,8 @@
         "standin",
         "wagon_slot"
       ],
-      "swapTo": "camp_wagon_a"
+      "swapTo": "camp_wagon_a",
+      "sinkFraction": 0.004
     },
     {
       "id": "z7_wagon_b_standin",
@@ -964,7 +1003,8 @@
         "standin",
         "wagon_slot"
       ],
-      "swapTo": "camp_wagon_b"
+      "swapTo": "camp_wagon_b",
+      "sinkFraction": 0.004
     },
     {
       "id": "z7_gate_arch",
@@ -2093,6 +2133,2599 @@
         "ring",
         "zone7",
         "density"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_00",
+      "group": "Z7Ring1",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.51,
+        -0.1,
+        325.51
+      ],
+      "rotEuler": [
+        0,
+        208.2,
+        0
+      ],
+      "scale": 0.434,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_01",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        11.47,
+        -0.1,
+        325.86
+      ],
+      "rotEuler": [
+        0,
+        290.7,
+        0
+      ],
+      "scale": 0.479,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_02",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        11.91,
+        -0.1,
+        325.57
+      ],
+      "rotEuler": [
+        0,
+        8.6,
+        0
+      ],
+      "scale": 0.444,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_03",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.3,
+        -0.1,
+        324.79
+      ],
+      "rotEuler": [
+        0,
+        326.3,
+        0
+      ],
+      "scale": 0.483,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_04",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -11.67,
+        -0.1,
+        369.28
+      ],
+      "rotEuler": [
+        0,
+        174.5,
+        0
+      ],
+      "scale": 0.264,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_05",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -13.25,
+        -0.1,
+        368.29
+      ],
+      "rotEuler": [
+        0,
+        31.9,
+        0
+      ],
+      "scale": 0.35,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_06",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -10.68,
+        -0.1,
+        325.86
+      ],
+      "rotEuler": [
+        0,
+        262.8,
+        0
+      ],
+      "scale": 0.433,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_07",
+      "group": "Z7Ring1",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -10.74,
+        -0.1,
+        326.51
+      ],
+      "rotEuler": [
+        0,
+        312.3,
+        0
+      ],
+      "scale": 0.445,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_08",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -10.23,
+        -0.1,
+        344.25
+      ],
+      "rotEuler": [
+        0,
+        113.2,
+        0
+      ],
+      "scale": 0.279,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_09",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -10.99,
+        -0.1,
+        345.1
+      ],
+      "rotEuler": [
+        0,
+        172.9,
+        0
+      ],
+      "scale": 0.249,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_10",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -9.57,
+        -0.1,
+        345.43
+      ],
+      "rotEuler": [
+        0,
+        215.7,
+        0
+      ],
+      "scale": 0.417,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_11",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        7.92,
+        -0.1,
+        368.68
+      ],
+      "rotEuler": [
+        0,
+        244.8,
+        0
+      ],
+      "scale": 0.34,
+      "shadowsOff": false,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_12",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        8.22,
+        -0.1,
+        367.67
+      ],
+      "rotEuler": [
+        0,
+        74.9,
+        0
+      ],
+      "scale": 0.442,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_13",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        8.76,
+        -0.1,
+        369.11
+      ],
+      "rotEuler": [
+        0,
+        85.0,
+        0
+      ],
+      "scale": 0.274,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_14",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        11.37,
+        -0.1,
+        349.19
+      ],
+      "rotEuler": [
+        0,
+        356.5,
+        0
+      ],
+      "scale": 0.395,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_15",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.09,
+        -0.1,
+        348.65
+      ],
+      "rotEuler": [
+        0,
+        314.9,
+        0
+      ],
+      "scale": 0.479,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_16",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        12.13,
+        -0.1,
+        350.03
+      ],
+      "rotEuler": [
+        0,
+        256.4,
+        0
+      ],
+      "scale": 0.396,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_17",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        9.85,
+        -0.1,
+        365.94
+      ],
+      "rotEuler": [
+        0,
+        1.3,
+        0
+      ],
+      "scale": 0.511,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_18",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        9.71,
+        -0.1,
+        366.67
+      ],
+      "rotEuler": [
+        0,
+        35.4,
+        0
+      ],
+      "scale": 0.339,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_19",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -12.85,
+        -0.1,
+        350.22
+      ],
+      "rotEuler": [
+        0,
+        309.3,
+        0
+      ],
+      "scale": 0.299,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v9s_z7_market2_20",
+      "group": "Z7Ring0",
+      "library": "rocks",
+      "asset": "rock_boulder_E",
+      "lodProfile": "pebbles",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -12.85,
+        -0.1,
+        349.69
+      ],
+      "rotEuler": [
+        0,
+        188.1,
+        0
+      ],
+      "scale": 0.336,
+      "shadowsOff": true,
+      "tags": [
+        "v9scatter",
+        "z7_market2"
+      ]
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_L0",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -101.74,
+        -3,
+        521.53
+      ],
+      "rotEuler": [
+        0.0,
+        226.6,
+        0.0
+      ],
+      "scale": 16.131,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.6584
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_L1",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -122.77,
+        -3,
+        535.4
+      ],
+      "rotEuler": [
+        0.0,
+        276.4,
+        0.0
+      ],
+      "scale": 13.875,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.7665
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_L2",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -128.7,
+        -3,
+        510.54
+      ],
+      "rotEuler": [
+        0.0,
+        265.0,
+        0.0
+      ],
+      "scale": 12.777,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.785
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_L3",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -135.96,
+        -3,
+        497.27
+      ],
+      "rotEuler": [
+        0.0,
+        322.7,
+        0.0
+      ],
+      "scale": 16.294,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.5429
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_L4",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -181.46,
+        -3,
+        512.14
+      ],
+      "rotEuler": [
+        0.0,
+        263.7,
+        0.0
+      ],
+      "scale": 14.73,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.5414
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_L5",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -207.53,
+        -3,
+        504.82
+      ],
+      "rotEuler": [
+        0.0,
+        314.4,
+        0.0
+      ],
+      "scale": 9.588,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.9117
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_L6",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -256.11,
+        -3,
+        515.67
+      ],
+      "rotEuler": [
+        0.0,
+        180.9,
+        0.0
+      ],
+      "scale": 10.169,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 1.0314
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_R0",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        99.82,
+        -3,
+        498.26
+      ],
+      "rotEuler": [
+        0.0,
+        217.8,
+        0.0
+      ],
+      "scale": 14.384,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.487
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_R1",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        117.99,
+        -3,
+        529.64
+      ],
+      "rotEuler": [
+        0.0,
+        357.5,
+        0.0
+      ],
+      "scale": 17.434,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.5457
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_R2",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        140.63,
+        -3,
+        523.6
+      ],
+      "rotEuler": [
+        0.0,
+        182.8,
+        0.0
+      ],
+      "scale": 15.89,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.507
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_R3",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        152.95,
+        -3,
+        507.26
+      ],
+      "rotEuler": [
+        0.0,
+        36.0,
+        0.0
+      ],
+      "scale": 11.868,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.7734
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_R4",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        188.88,
+        -3,
+        507.4
+      ],
+      "rotEuler": [
+        0.0,
+        257.6,
+        0.0
+      ],
+      "scale": 14.108,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.8265
+    },
+    {
+      "id": "v10sky_z7_market2_plinth_R5",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_B",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        226.81,
+        -3,
+        498.45
+      ],
+      "rotEuler": [
+        0.0,
+        292.0,
+        0.0
+      ],
+      "scale": 12.387,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.5814
+    },
+    {
+      "id": "v10sky_z7_market2_far_L0",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -138.02,
+        -10,
+        685.01
+      ],
+      "rotEuler": [
+        0.0,
+        217.8,
+        0.0
+      ],
+      "scale": 43.213,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.3748
+    },
+    {
+      "id": "v10sky_z7_market2_far_L1",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -154.16,
+        -10,
+        675.04
+      ],
+      "rotEuler": [
+        0.0,
+        264.5,
+        0.0
+      ],
+      "scale": 41.908,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.3931
+    },
+    {
+      "id": "v10sky_z7_market2_far_L2",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -196.29,
+        -10,
+        630.78
+      ],
+      "rotEuler": [
+        0.0,
+        312.9,
+        0.0
+      ],
+      "scale": 32.906,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.7695
+    },
+    {
+      "id": "v10sky_z7_market2_far_L3",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -292.51,
+        -10,
+        680.49
+      ],
+      "rotEuler": [
+        0.0,
+        30.5,
+        0.0
+      ],
+      "scale": 38.598,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.7658
+    },
+    {
+      "id": "v10sky_z7_market2_far_R0",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        130.75,
+        -10,
+        640.17
+      ],
+      "rotEuler": [
+        0.0,
+        101.8,
+        0.0
+      ],
+      "scale": 34.631,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.7441
+    },
+    {
+      "id": "v10sky_z7_market2_far_R1",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        137.56,
+        -10,
+        686.29
+      ],
+      "rotEuler": [
+        0.0,
+        202.6,
+        0.0
+      ],
+      "scale": 34.757,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.7567
+    },
+    {
+      "id": "v10sky_z7_market2_far_R2",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        190.51,
+        -10,
+        669.24
+      ],
+      "rotEuler": [
+        0.0,
+        184.1,
+        0.0
+      ],
+      "scale": 36.13,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.6692
+    },
+    {
+      "id": "v10sky_z7_market2_far_R3",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_A",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        232.81,
+        -10,
+        642.23
+      ],
+      "rotEuler": [
+        0.0,
+        289.3,
+        0.0
+      ],
+      "scale": 38.81,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "mound"
+      ],
+      "scaleYMul": 0.4597
+    },
+    {
+      "id": "v10sky_z7_market2_mound_0",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -144.78,
+        -3.0,
+        629.04
+      ],
+      "rotEuler": [
+        0.0,
+        254.6,
+        0.0
+      ],
+      "scale": 25.741,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "skirt"
+      ],
+      "scaleYMul": 0.3673
+    },
+    {
+      "id": "v10sky_z7_market2_tower_0",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_facade",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -144.78,
+        3.7,
+        629.04
+      ],
+      "rotEuler": [
+        0,
+        254.6,
+        0
+      ],
+      "scale": 0.685,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "tower"
+      ]
+    },
+    {
+      "id": "v10sky_z7_market2_mound_1",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        221.6,
+        -3.0,
+        617.09
+      ],
+      "rotEuler": [
+        0.0,
+        354.9,
+        0.0
+      ],
+      "scale": 17.895,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "skirt"
+      ],
+      "scaleYMul": 0.6128
+    },
+    {
+      "id": "v10sky_z7_market2_tower_1",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_arches",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        221.6,
+        4.53,
+        617.09
+      ],
+      "rotEuler": [
+        0,
+        354.9,
+        0
+      ],
+      "scale": 0.669,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "tower"
+      ]
+    },
+    {
+      "id": "v10sky_z7_market2_mound_2",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -162.98,
+        -3.0,
+        508.42
+      ],
+      "rotEuler": [
+        0.0,
+        356.6,
+        0.0
+      ],
+      "scale": 25.527,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "skirt"
+      ],
+      "scaleYMul": 0.4796
+    },
+    {
+      "id": "v10sky_z7_market2_tower_2",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_gatehouse",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -162.98,
+        5.23,
+        508.42
+      ],
+      "rotEuler": [
+        0,
+        356.6,
+        0
+      ],
+      "scale": 0.782,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "tower"
+      ]
+    },
+    {
+      "id": "v10sky_z7_market2_mound_3",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        143.92,
+        -3.0,
+        529.87
+      ],
+      "rotEuler": [
+        0.0,
+        247.3,
+        0.0
+      ],
+      "scale": 44.383,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "skirt"
+      ],
+      "scaleYMul": 0.219
+    },
+    {
+      "id": "v10sky_z7_market2_tower_3",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_viaduct",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        143.92,
+        3.85,
+        529.87
+      ],
+      "rotEuler": [
+        0,
+        247.3,
+        0
+      ],
+      "scale": 0.861,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "tower"
+      ]
+    },
+    {
+      "id": "v10sky_z7_market2_mound_4",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -127.98,
+        -3.0,
+        616.55
+      ],
+      "rotEuler": [
+        0.0,
+        103.6,
+        0.0
+      ],
+      "scale": 15.422,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "skirt"
+      ],
+      "scaleYMul": 0.7638
+    },
+    {
+      "id": "v10sky_z7_market2_tower_4",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_spire",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -127.98,
+        4.98,
+        616.55
+      ],
+      "rotEuler": [
+        0,
+        103.6,
+        0
+      ],
+      "scale": 0.706,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "tower"
+      ]
+    },
+    {
+      "id": "v10sky_z7_market2_mound_5",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        224.43,
+        -3.0,
+        647.1
+      ],
+      "rotEuler": [
+        0.0,
+        337.3,
+        0.0
+      ],
+      "scale": 27.543,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "skirt"
+      ],
+      "scaleYMul": 0.3349
+    },
+    {
+      "id": "v10sky_z7_market2_tower_5",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_tower_a",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        224.43,
+        3.57,
+        647.1
+      ],
+      "rotEuler": [
+        0,
+        337.3,
+        0
+      ],
+      "scale": 0.913,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "tower"
+      ]
+    },
+    {
+      "id": "v10sky_z7_market2_mound_6",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -182.78,
+        -3.0,
+        545.02
+      ],
+      "rotEuler": [
+        0.0,
+        179.1,
+        0.0
+      ],
+      "scale": 15.798,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "skirt"
+      ],
+      "scaleYMul": 0.7318
+    },
+    {
+      "id": "v10sky_z7_market2_tower_6",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_tower_b",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -182.78,
+        4.86,
+        545.02
+      ],
+      "rotEuler": [
+        0,
+        179.1,
+        0
+      ],
+      "scale": 0.685,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "tower"
+      ]
+    },
+    {
+      "id": "v10sky_z7_market2_mound_7",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        155.99,
+        -3.0,
+        531.65
+      ],
+      "rotEuler": [
+        0.0,
+        357.2,
+        0.0
+      ],
+      "scale": 24.229,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "skirt"
+      ],
+      "scaleYMul": 0.4769
+    },
+    {
+      "id": "v10sky_z7_market2_tower_7",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_stub",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        155.99,
+        4.85,
+        531.65
+      ],
+      "rotEuler": [
+        0,
+        357.2,
+        0
+      ],
+      "scale": 0.846,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "tower"
+      ]
+    },
+    {
+      "id": "v10sky_z7_market2_mound_8",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -114.71,
+        -3.0,
+        506.23
+      ],
+      "rotEuler": [
+        0.0,
+        135.2,
+        0.0
+      ],
+      "scale": 22.748,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "skirt"
+      ],
+      "scaleYMul": 0.4276
+    },
+    {
+      "id": "v10sky_z7_market2_tower_8",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_facade",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -114.71,
+        3.85,
+        506.23
+      ],
+      "rotEuler": [
+        0,
+        135.2,
+        0
+      ],
+      "scale": 0.585,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "tower"
+      ]
+    },
+    {
+      "id": "v10sky_z7_market2_mound_9",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        111.77,
+        -3.0,
+        618.62
+      ],
+      "rotEuler": [
+        0.0,
+        1.2,
+        0.0
+      ],
+      "scale": 20.573,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "skirt"
+      ],
+      "scaleYMul": 0.4572
+    },
+    {
+      "id": "v10sky_z7_market2_tower_9",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_arches",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        111.77,
+        3.67,
+        618.62
+      ],
+      "rotEuler": [
+        0,
+        1.2,
+        0
+      ],
+      "scale": 0.81,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "tower"
+      ]
+    },
+    {
+      "id": "v10sky_z7_market2_mound_10",
+      "group": "Z7Ring2",
+      "library": "rocks",
+      "asset": "rock_boulder_D",
+      "lodProfile": "sky_ridge",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -122.8,
+        -3.0,
+        554.41
+      ],
+      "rotEuler": [
+        0.0,
+        261.5,
+        0.0
+      ],
+      "scale": 21.454,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "skirt"
+      ],
+      "scaleYMul": 0.4607
+    },
+    {
+      "id": "v10sky_z7_market2_tower_10",
+      "group": "Z7Ring2",
+      "library": "world_far",
+      "asset": "far_ruin_gatehouse",
+      "lodProfile": "sky_ruin",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -122.8,
+        3.94,
+        554.41
+      ],
+      "rotEuler": [
+        0,
+        261.5,
+        0
+      ],
+      "scale": 0.626,
+      "shadowsOff": true,
+      "tags": [
+        "world",
+        "skyline",
+        "v10sky",
+        "z7_market2",
+        "tower"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_e_0",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        3.211,
+        0.0,
+        335.259
+      ],
+      "rotEuler": [
+        0,
+        115.6,
+        0
+      ],
+      "scale": 0.217,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_e_1",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.777,
+        0.0,
+        335.188
+      ],
+      "rotEuler": [
+        0,
+        175.5,
+        0
+      ],
+      "scale": 0.266,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_e_2",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.83,
+        0.0,
+        340.843
+      ],
+      "rotEuler": [
+        0,
+        197.5,
+        0
+      ],
+      "scale": 0.228,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_e_3",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        3.039,
+        0.0,
+        340.721
+      ],
+      "rotEuler": [
+        0,
+        185.9,
+        0
+      ],
+      "scale": 0.207,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_e_4",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        6.419,
+        0.0,
+        335.207
+      ],
+      "rotEuler": [
+        0,
+        334.6,
+        0
+      ],
+      "scale": 0.242,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_e_5",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        6.306,
+        0.0,
+        340.649
+      ],
+      "rotEuler": [
+        0,
+        84.0,
+        0
+      ],
+      "scale": 0.256,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_e_6",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        2.973,
+        0.0,
+        338.065
+      ],
+      "rotEuler": [
+        0,
+        325.5,
+        0
+      ],
+      "scale": 0.213,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_e_7",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.688,
+        0.0,
+        338.14
+      ],
+      "rotEuler": [
+        0,
+        226.1,
+        0
+      ],
+      "scale": 0.312,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_w_0",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.165,
+        0.0,
+        349.749
+      ],
+      "rotEuler": [
+        0,
+        131.4,
+        0
+      ],
+      "scale": 0.238,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_w_1",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -3.123,
+        0.0,
+        349.691
+      ],
+      "rotEuler": [
+        0,
+        18.4,
+        0
+      ],
+      "scale": 0.322,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_w_2",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -3.075,
+        0.0,
+        355.386
+      ],
+      "rotEuler": [
+        0,
+        312.9,
+        0
+      ],
+      "scale": 0.238,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_w_3",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.105,
+        0.0,
+        355.333
+      ],
+      "rotEuler": [
+        0,
+        119.8,
+        0
+      ],
+      "scale": 0.209,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_w_4",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.725,
+        0.0,
+        349.464
+      ],
+      "rotEuler": [
+        0,
+        13.7,
+        0
+      ],
+      "scale": 0.287,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_w_5",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -6.68,
+        0.0,
+        355.489
+      ],
+      "rotEuler": [
+        0,
+        315.7,
+        0
+      ],
+      "scale": 0.262,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_w_6",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.268,
+        0.0,
+        352.638
+      ],
+      "rotEuler": [
+        0,
+        156.5,
+        0
+      ],
+      "scale": 0.217,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_tent_w_7",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -3.07,
+        0.0,
+        352.381
+      ],
+      "rotEuler": [
+        0,
+        278.4,
+        0
+      ],
+      "scale": 0.329,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_a_standin_0",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.226,
+        0.0,
+        339.994
+      ],
+      "rotEuler": [
+        0,
+        66.0,
+        0
+      ],
+      "scale": 0.22,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_a_standin_1",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -4.974,
+        0.0,
+        339.861
+      ],
+      "rotEuler": [
+        0,
+        337.2,
+        0
+      ],
+      "scale": 0.257,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_a_standin_2",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -5.189,
+        0.0,
+        343.915
+      ],
+      "rotEuler": [
+        0,
+        109.2,
+        0
+      ],
+      "scale": 0.236,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_a_standin_3",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.252,
+        0.0,
+        344.094
+      ],
+      "rotEuler": [
+        0,
+        248.9,
+        0
+      ],
+      "scale": 0.236,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_a_standin_4",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -7.657,
+        0.0,
+        340.062
+      ],
+      "rotEuler": [
+        0,
+        68.4,
+        0
+      ],
+      "scale": 0.179,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_a_standin_5",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -7.66,
+        0.0,
+        344.01
+      ],
+      "rotEuler": [
+        0,
+        178.0,
+        0
+      ],
+      "scale": 0.209,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_a_standin_6",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -10.098,
+        0.0,
+        342.121
+      ],
+      "rotEuler": [
+        0,
+        186.6,
+        0
+      ],
+      "scale": 0.163,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_a_standin_7",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        -5.097,
+        0.0,
+        341.871
+      ],
+      "rotEuler": [
+        0,
+        295.2,
+        0
+      ],
+      "scale": 0.237,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_b_standin_0",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        5.294,
+        0.0,
+        346.947
+      ],
+      "rotEuler": [
+        0,
+        96.2,
+        0
+      ],
+      "scale": 0.179,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_b_standin_1",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.899,
+        0.0,
+        347.069
+      ],
+      "rotEuler": [
+        0,
+        23.8,
+        0
+      ],
+      "scale": 0.186,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_b_standin_2",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.796,
+        0.0,
+        350.821
+      ],
+      "rotEuler": [
+        0,
+        158.7,
+        0
+      ],
+      "scale": 0.263,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_b_standin_3",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        5.293,
+        0.0,
+        350.876
+      ],
+      "rotEuler": [
+        0,
+        31.0,
+        0
+      ],
+      "scale": 0.166,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_b_standin_4",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        7.717,
+        0.0,
+        347.02
+      ],
+      "rotEuler": [
+        0,
+        251.7,
+        0
+      ],
+      "scale": 0.185,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_b_standin_5",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        7.587,
+        0.0,
+        350.867
+      ],
+      "rotEuler": [
+        0,
+        80.2,
+        0
+      ],
+      "scale": 0.183,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_b_standin_6",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        5.249,
+        0.0,
+        349.148
+      ],
+      "rotEuler": [
+        0,
+        77.1,
+        0
+      ],
+      "scale": 0.183,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
+      ]
+    },
+    {
+      "id": "v13skirt_z7_wagon_b_standin_7",
+      "group": "Z7Ring0",
+      "library": "props",
+      "asset": "hero_debris_rubble",
+      "lodProfile": "props",
+      "ground": "bottom",
+      "yBase": "platformTop",
+      "pos": [
+        9.906,
+        0.0,
+        349.14
+      ],
+      "rotEuler": [
+        0,
+        51.0,
+        0
+      ],
+      "scale": 0.216,
+      "sinkFraction": 0.3,
+      "shadowsOff": true,
+      "tags": [
+        "v13_skirt",
+        "contact"
       ]
     }
   ],
