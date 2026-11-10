@@ -258,9 +258,9 @@
    "zone": "z5",
    "type": "spot",
    "pos": [
-    -10.5,
+    21.28,
     3.6,
-    190.0
+    246.17
    ],
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
@@ -292,9 +292,9 @@
    "zone": "z5",
    "type": "spot",
    "pos": [
-    12.5,
+    -47.17,
     3.6,
-    190.5
+    173.19
    ],
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
@@ -326,9 +326,9 @@
    "zone": "z5",
    "type": "spot",
    "pos": [
-    -11.0,
+    23.18,
     3.6,
-    229.0
+    208.06
    ],
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
@@ -360,9 +360,9 @@
    "zone": "z5",
    "type": "spot",
    "pos": [
-    21.04,
+    42.4,
     3.6,
-    209.29
+    243.45
    ],
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
@@ -394,9 +394,9 @@
    "zone": "z6",
    "type": "spot",
    "pos": [
-    -18.66,
+    43.94,
     4.5,
-    256.36
+    292.99
    ],
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
@@ -428,9 +428,9 @@
    "zone": "z6",
    "type": "spot",
    "pos": [
-    21.4,
+    23.49,
     4.5,
-    280.15
+    262.43
    ],
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
@@ -462,9 +462,9 @@
    "zone": "z6",
    "type": "spot",
    "pos": [
-    -10.33,
+    29.43,
     4.5,
-    263.04
+    301.11
    ],
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
@@ -496,9 +496,9 @@
    "zone": "z6",
    "type": "spot",
    "pos": [
-    23.18,
+    35.81,
     4.5,
-    268.94
+    269.82
    ],
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
@@ -537,7 +537,7 @@
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
    "kelvin": 2000,
-   "candela": 30000,
+   "candela": 150000,
    "range": 14,
    "spotAngleDeg": 85.0,
    "innerPct": 45.0,
@@ -571,7 +571,7 @@
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
    "kelvin": 2000,
-   "candela": 30000,
+   "candela": 90000,
    "range": 14,
    "spotAngleDeg": 85.0,
    "innerPct": 45.0,
@@ -605,13 +605,13 @@
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
    "kelvin": 1800,
-   "candela": 30000,
+   "candela": 10000,
    "range": 14,
    "spotAngleDeg": 85.0,
    "innerPct": 45.0,
    "cookie": "accent_pool_cookie",
    "volumetricDimmer": 0.0,
-   "activeRadiusM": 34.0,
+   "activeRadiusM": 0.0,
    "layerMask": 65439,
    "shadow": false,
    "flicker": {
@@ -625,7 +625,9 @@
    },
    "anchor": "in-view pool for the Camp standard camera",
    "bossDistM": null,
-   "fpsEstMs": 0.15
+   "fpsEstMs": 0.15,
+   "seamOrigRadius": 34.0,
+   "seamDisabledBy": "AccW21S_hanging_lantern_tree"
   },
   {
    "name": "AccV_Grendel_A",
@@ -639,7 +641,7 @@
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
    "kelvin": 10500,
-   "candela": 30000,
+   "candela": 100000,
    "range": 14,
    "spotAngleDeg": 85.0,
    "innerPct": 45.0,
@@ -673,7 +675,7 @@
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
    "kelvin": 10500,
-   "candela": 30000,
+   "candela": 40000,
    "range": 14,
    "spotAngleDeg": 85.0,
    "innerPct": 45.0,
@@ -707,7 +709,7 @@
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
    "kelvin": 1700,
-   "candela": 30000,
+   "candela": 150000,
    "range": 14,
    "spotAngleDeg": 85.0,
    "innerPct": 45.0,
@@ -741,13 +743,13 @@
    "aimPitchDeg": 90.0,
    "aimYawDeg": 0.0,
    "kelvin": 1700,
-   "candela": 30000,
+   "candela": 60000,
    "range": 14,
    "spotAngleDeg": 85.0,
    "innerPct": 45.0,
    "cookie": "accent_pool_cookie",
    "volumetricDimmer": 0.0,
-   "activeRadiusM": 34.0,
+   "activeRadiusM": 0.0,
    "layerMask": 65439,
    "shadow": false,
    "flicker": {
@@ -761,7 +763,9 @@
    },
    "anchor": "in-view pool for the Humbaba standard camera",
    "bossDistM": null,
-   "fpsEstMs": 0.15
+   "fpsEstMs": 0.15,
+   "seamOrigRadius": 34.0,
+   "seamDisabledBy": "AccW21S_crystal_fungus_cluster"
   },
   {
    "name": "AccV_Erlking_A",
@@ -830,6 +834,400 @@
    "anchor": "in-view pool for the Erlking standard camera",
    "bossDistM": null,
    "fpsEstMs": 0.15
+  },
+  {
+   "name": "AccW21_starfall_obelisk_starfall_core_pt",
+   "zone": "z7",
+   "type": "point",
+   "pos": [
+    -28.9,
+    4.92,
+    324.3
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 21.6,
+   "kelvin": 6500,
+   "candela": 9000,
+   "range": 10,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_starfall_obelisk (cool white-gold core (brief); no emissive in the delivered GLB)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15
+  },
+  {
+   "name": "AccW21S_hanging_lantern_tree_pt_A",
+   "zone": "z3",
+   "type": "point",
+   "pos": [
+    16.31,
+    2.93,
+    95.49
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 112.6,
+   "kelvin": 2200,
+   "candela": 18900,
+   "range": 8.1,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_hanging_lantern_tree (group A of 4 lanterns)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15
+  },
+  {
+   "name": "AccW21S_hanging_lantern_tree_pt_B",
+   "zone": "z3",
+   "type": "point",
+   "pos": [
+    15.94,
+    4.72,
+    99.4
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 112.6,
+   "kelvin": 2200,
+   "candela": 18900,
+   "range": 11.7,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_hanging_lantern_tree (group B of 1 lanterns)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15
+  },
+  {
+   "name": "AccW21S_hanging_lantern_tree_pt_C",
+   "zone": "z3",
+   "type": "point",
+   "pos": [
+    16.2,
+    3.39,
+    102.69
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 112.6,
+   "kelvin": 2200,
+   "candela": 18900,
+   "range": 9.1,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_hanging_lantern_tree (group C of 4 lanterns)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15
+  },
+  {
+   "name": "AccW21S_hanging_lantern_tree_pool",
+   "zone": "z3",
+   "type": "spot",
+   "pos": [
+    16.22,
+    3.33,
+    99.13
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 112.6,
+   "kelvin": 2200,
+   "candela": 145400,
+   "range": 8.9,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "accent_pool_cookie",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_hanging_lantern_tree (amber ground pool under the lanterns)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15
+  },
+  {
+   "name": "AccW21S_slag_furnace_mouth_mouth_pt",
+   "zone": "z1",
+   "type": "point",
+   "pos": [
+    -21.9,
+    -0.73,
+    4.12
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 90.0,
+   "kelvin": 1800,
+   "candela": 11500,
+   "range": 7.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_slag_furnace_mouth (in front of the furnace mouth opening)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15
+  },
+  {
+   "name": "AccW21S_slag_furnace_mouth_pool",
+   "zone": "z1",
+   "type": "spot",
+   "pos": [
+    -20.56,
+    1.52,
+    4.27
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 90.0,
+   "kelvin": 1800,
+   "candela": 64300,
+   "range": 7.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "accent_pool_cookie",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_slag_furnace_mouth (ground pool on the apron in front of the mouth)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15
+  },
+  {
+   "name": "AccW21S_crystal_fungus_cluster_tip1",
+   "zone": "z5",
+   "type": "point",
+   "pos": [
+    -12.34,
+    2.77,
+    172.59
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 334.9,
+   "kelvin": 7500,
+   "candela": 11500,
+   "range": 7.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_crystal_fungus_cluster (crystal tip 1 (height 0.57 norm))",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    0.62,
+    0.95,
+    0.78
+   ]
+  },
+  {
+   "name": "AccW21S_crystal_fungus_cluster_tip2",
+   "zone": "z5",
+   "type": "point",
+   "pos": [
+    -11.94,
+    2.31,
+    174.39
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 334.9,
+   "kelvin": 7500,
+   "candela": 11500,
+   "range": 7.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_crystal_fungus_cluster (crystal tip 2 (height 0.51 norm))",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    0.62,
+    0.95,
+    0.78
+   ]
+  },
+  {
+   "name": "AccW21S_crystal_fungus_cluster_tip3",
+   "zone": "z5",
+   "type": "point",
+   "pos": [
+    -13.75,
+    1.5,
+    173.44
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 334.9,
+   "kelvin": 7500,
+   "candela": 11500,
+   "range": 7.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_crystal_fungus_cluster (crystal tip 3 (height 0.36 norm))",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    0.62,
+    0.95,
+    0.78
+   ]
+  },
+  {
+   "name": "AccW21S_crystal_fungus_cluster_pool",
+   "zone": "z5",
+   "type": "spot",
+   "pos": [
+    -12.58,
+    3.12,
+    173.47
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 334.9,
+   "kelvin": 7500,
+   "candela": 74100,
+   "range": 7.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "accent_pool_cookie",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_crystal_fungus_cluster (cold ground pool under the tips)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    0.62,
+    0.95,
+    0.78
+   ]
   }
  ]
 }

@@ -24,6 +24,7 @@ public class FootGround : MonoBehaviour
         public float levelWeight = 1f;       // foot levelled to the ground normal while planted
         public float toeFlatWeight = 1f;     // toe segment flattened while planted
         public float axisPitchDeg = 0f;      // FEETQC: dip (deg, nose down) of her heel-to-toe axis in the BIND pose that levelling aims at; 0 = flat axis = the old behaviour. Joan: 40.6 (her boot sole is flat in bind, the foot->ToeBase axis is -40.6)
+        public float levelMaxDeg = 0f;       // FEETFIX: never straighten a foot (or toe) that is more than this many degrees off the flat target (full strength below 0.6x, none at 1x); stops a toe-off foot (axis near vertical) being twisted/rolled flat. 0 = off = the old behaviour. Joan: 20
         public float stateBlend = 0.1f;      // seconds to ease the per-state weight
         public StateRow[] states;            // unlisted states use `weight` only
     }
@@ -177,6 +178,14 @@ public class FootGround : MonoBehaviour
     // FEETQC: the target direction for the heel-to-toe axis = the ground-plane direction tilted nose-down by row.axisPitchDeg (0 = unchanged)
     Vector3 Tilt(Vector3 flat, Vector3 n) { if (row.axisPitchDeg == 0f || flat.sqrMagnitude < 1e-8f) return flat; return Quaternion.AngleAxis(row.axisPitchDeg, Vector3.Cross(n, flat).normalized) * flat; }
 
+    // FEETFIX: 1 = straighten fully, fading to 0 as the foot/toe axis is further than row.levelMaxDeg from its flat target (0 = gate off = 1 always)
+    float LevelGate(Vector3 from, Vector3 to)
+    {
+        if (row.levelMaxDeg <= 0f) return 1f;
+        float x = Mathf.Clamp01((Vector3.Angle(from, to) - row.levelMaxDeg * 0.6f) / (row.levelMaxDeg * 0.4f));
+        return 1f - x * x * (3f - 2f * x);
+    }
+
     void Plant(Transform up, Transform leg, Transform foot, Transform toe, Transform toeEnd, float W)
     {
         var f = Measure(foot); if (!f.hit) return;
@@ -197,14 +206,14 @@ public class FootGround : MonoBehaviour
             Vector3 fd = toe.position - foot.position;
             Vector3 flat = Tilt(Vector3.ProjectOnPlane(fd, f.n), f.n);
             if (fd.sqrMagnitude > 1e-8f && flat.sqrMagnitude > 1e-8f)
-                foot.rotation = Quaternion.Slerp(Quaternion.identity, Quaternion.FromToRotation(fd, flat), w * row.levelWeight) * foot.rotation;
+                foot.rotation = Quaternion.Slerp(Quaternion.identity, Quaternion.FromToRotation(fd, flat), w * row.levelWeight * LevelGate(fd, flat)) * foot.rotation;
         }
         if (toe != null && toeEnd != null && row.toeFlatWeight > 0f)
         {
             Vector3 td = toeEnd.position - toe.position;
             Vector3 flat = Tilt(Vector3.ProjectOnPlane(td, f.n), f.n);
             if (td.sqrMagnitude > 1e-8f && flat.sqrMagnitude > 1e-8f)
-                toe.rotation = Quaternion.Slerp(Quaternion.identity, Quaternion.FromToRotation(td, flat), w * row.toeFlatWeight) * toe.rotation;
+                toe.rotation = Quaternion.Slerp(Quaternion.identity, Quaternion.FromToRotation(td, flat), w * row.toeFlatWeight * LevelGate(td, flat)) * toe.rotation;
         }
     }
 }

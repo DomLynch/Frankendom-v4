@@ -1,0 +1,241 @@
+{
+  "_about": "APVZONES v2 (laneAPV 2026-11-10). Data plan for the EDITOR JOB Assets/Editor/ApvBakeZones.cs. Nothing at runtime reads it. Estimates, not measured: volume extents (zone_span offsets 36/72/108/177/244/315, terrain xHalf 32/42, y -2..16), light names, static root names. profile final = 1 m probes, fast = 2 m (smoke test). RE-BAKE after every zone build.",
+  "enabled": true,
+  "profile": "fast",
+  "scene": "Assets/Scenes/HadesSlice.unity",
+  "bakingSetName": "HadesSlice_APV",
+  "outputDir": "Assets/Scenes/ApvBakes/hadesslice",
+  "lightmapper": "ProgressiveCPU",
+  "directSamples": 32,
+  "indirectSamples": 256,
+  "bounces": 2,
+  "densityFinal": {
+    "minDistanceBetweenProbes": 1.0,
+    "simplificationLevels": 3,
+    "virtualOffset": true,
+    "dilation": true,
+    "skyOcclusion": false
+  },
+  "densityFast": {
+    "minDistanceBetweenProbes": 2.0,
+    "simplificationLevels": 3,
+    "virtualOffset": true,
+    "dilation": true,
+    "skyOcclusion": false
+  },
+  "volumes": [
+    {
+      "id": "pit_yard",
+      "zone": "pit_yard",
+      "enabled": true,
+      "center": [
+        0.0,
+        7.0,
+        14.0
+      ],
+      "size": [
+        64.0,
+        18.0,
+        44.0
+      ],
+      "note": "z -8..36 world, x +-32 (zone_span offsets / terrain xHalf), y -2..16"
+    },
+    {
+      "id": "sobek_reach",
+      "zone": "sobek_reach",
+      "enabled": true,
+      "center": [
+        0.0,
+        7.0,
+        54.0
+      ],
+      "size": [
+        64.0,
+        18.0,
+        36.0
+      ],
+      "note": "z 36..72 world, x +-32 (zone_span offsets / terrain xHalf), y -2..16"
+    },
+    {
+      "id": "hub_camp",
+      "zone": "hub_camp",
+      "enabled": true,
+      "center": [
+        0.0,
+        7.0,
+        90.0
+      ],
+      "size": [
+        64.0,
+        18.0,
+        36.0
+      ],
+      "note": "z 72..108 world, x +-32 (zone_span offsets / terrain xHalf), y -2..16"
+    },
+    {
+      "id": "grendel",
+      "zone": "grendel",
+      "enabled": true,
+      "center": [
+        0.0,
+        7.0,
+        142.5
+      ],
+      "size": [
+        64.0,
+        18.0,
+        69.0
+      ],
+      "note": "z 108..177 world, x +-32 (zone_span offsets / terrain xHalf), y -2..16"
+    },
+    {
+      "id": "z5_humbaba",
+      "zone": "z5_humbaba",
+      "enabled": true,
+      "center": [
+        0.0,
+        7.0,
+        210.5
+      ],
+      "size": [
+        84.0,
+        18.0,
+        67.0
+      ],
+      "note": "z 177..244 world, x +-42 (zone_span offsets / terrain xHalf), y -2..16"
+    },
+    {
+      "id": "z6_erlking",
+      "zone": "z6_erlking",
+      "enabled": true,
+      "center": [
+        0.0,
+        7.0,
+        279.5
+      ],
+      "size": [
+        84.0,
+        18.0,
+        71.0
+      ],
+      "note": "z 244..315 world, x +-42 (zone_span offsets / terrain xHalf), y -2..16"
+    },
+    {
+      "id": "z7_market2",
+      "zone": "z7_market2",
+      "enabled": true,
+      "center": [
+        0.0,
+        7.0,
+        343.5
+      ],
+      "size": [
+        84.0,
+        18.0,
+        57.0
+      ],
+      "note": "z 315..372 world, x +-42 (zone_span offsets / terrain xHalf), y -2..16"
+    }
+  ],
+  "activateRoots": [
+    "Zone2",
+    "HubZone",
+    "Zone4",
+    "Zone5",
+    "Zone6",
+    "Zone7"
+  ],
+  "activateDepth": 2,
+  "hideRows": [
+    "boulder_12_E",
+    "hero_skull_pile_a",
+    "worldbehind_arch_fragment_9a_7",
+    "worldbehind_fallen_pillar_3_15",
+    "worldbehind_fallen_pillar_3_16",
+    "worldbehind_fallen_pillar_3_18",
+    "worldbehind_hero_debris_rubble_17",
+    "worldbehind_mid_buttress_stub_13",
+    "worldbehind_rock_boulder_A_61",
+    "worldbehind_rock_boulder_A_63",
+    "worldbehind_rock_boulder_A_64",
+    "worldbehind_rock_boulder_A_65",
+    "worldbehind_rock_boulder_A_66",
+    "worldbehind_rock_boulder_A_67",
+    "worldbehind_rock_boulder_A_68",
+    "worldbehind_rock_boulder_A_70",
+    "worldbehind_rock_boulder_B_61",
+    "worldbehind_rock_boulder_B_69",
+    "worldbehind_rock_boulder_C_67",
+    "worldbehind_rock_boulder_C_68",
+    "worldbehind_rock_boulder_C_69",
+    "worldbehind_rock_boulder_D_59",
+    "worldbehind_rock_boulder_D_63",
+    "worldbehind_rock_boulder_E_58",
+    "worldbehind_rock_boulder_E_59",
+    "worldbehind_rock_boulder_E_63",
+    "worldbehind_standing_ruin_pillar_4_11",
+    "worldbehind_standing_ruin_pillar_4_13",
+    "worldedge_fallen_pillar_3_21",
+    "worldedge_hero_debris_rubble_23",
+    "worldedge_mid_slab_heap_a_18",
+    "worldedge_rock_boulder_A_71",
+    "worldfar_far_ruin_facade_1",
+    "worldmid_mid_buttress_stub_0",
+    "worldmid_mid_slab_heap_a_1",
+    "worldmid_mid_slab_heap_b_2",
+    "worldmid_rock_boulder_B_30",
+    "worldnear_rock_boulder_C_17",
+    "worldnear_rock_boulder_C_7",
+    "worldnear_rock_boulder_D_1",
+    "worldnear_rock_boulder_E_22",
+    "worldnear_rock_boulder_E_3"
+  ],
+  "staticRoots": [
+    "Arena",
+    "Zone2",
+    "HubZone",
+    "Zone4",
+    "Zone5",
+    "Zone6",
+    "Zone7",
+    "WorldTerrain"
+  ],
+  "excludeNodes": [
+    "WorldFar*",
+    "GroundFog*",
+    "*Fog*",
+    "GatewayRift*",
+    "*Rift*",
+    "*Decal*",
+    "*Motes*",
+    "*Cloud*",
+    "ShadowProxy*",
+    "Joan*",
+    "Player*",
+    "Enemy*"
+  ],
+  "setReceiveGiProbes": true,
+  "lightsMixed": [
+    "Key_ColdSun",
+    "MoonFill",
+    "FillCool",
+    "MoonRim",
+    "DoorWarmLight",
+    "DoorSpill",
+    "DoorShadowWarm"
+  ],
+  "staticSky": {
+    "mode": "auto",
+    "hdriExposure": -999.0,
+    "gradientMultiplier": 0.0,
+    "ultraFile": "Assets/Data/hdrp_lighting_ultra.json"
+  },
+  "gates": {
+    "expectVolumes": 7,
+    "minBytes": 65536,
+    "maxMB": 64.0,
+    "maxBakeMinutes": 40.0
+  },
+  "proxyLanterns": false,
+  "campLightsFile": "Assets/Data/camp_lights.json"
+}

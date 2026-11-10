@@ -16,7 +16,7 @@
   "keyMaxBoost": 1.8,
   "keyMinElevationDeg": 12.0,
   "hero": {
-    "rimCharacterLux": 400.0,
+    "rimCharacterLux": 700.0,
     "_about": "item 18: Rim_Character (directional, Character layer, follows the camera) 0 -> 400 lux = the laneJOANFRONT value Dom OK'd. Rim_Player / Fill_Player / Rim_Enemy spot rigs already exist (hdrp_fixes.json rimRigs) and are NOT changed."
   },
   "defaults": {

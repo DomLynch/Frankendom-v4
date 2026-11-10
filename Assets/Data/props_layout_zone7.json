@@ -1,4733 +1,4857 @@
 {
-  "_notes": "ZONE7 DRAFT v1 (pool-laneZONE7, NOT APPLIED, nothing in Assets). Zone 7 (z7_market2) second market camp, offset z 315.0 (env-dev zones47 plan: zone 6 offset 238 + gate 60 + 11). Rows in WORLD metres, same schema as props_layout_hub.json; ids z7_*, groups Z7Ring0/1/2. Same libraries and lodProfiles as camp 1: every mesh and material is SHARED with camp 1 / zone 1, no new draw-call kinds. Stand-in rows (tag standin) are replaced by Dom's Tripo GLBs via swapTo.",
-  "version": 2,
-  "coordinateSpace": "unity world metres",
-  "constants": {
-    "waterY": -0.9,
-    "platformTop": 0.0
+ "_notes": "ZONE7 DRAFT v1 (pool-laneZONE7, NOT APPLIED, nothing in Assets). Zone 7 (z7_market2) second market camp, offset z 315.0 (env-dev zones47 plan: zone 6 offset 238 + gate 60 + 11). Rows in WORLD metres, same schema as props_layout_hub.json; ids z7_*, groups Z7Ring0/1/2. Same libraries and lodProfiles as camp 1: every mesh and material is SHARED with camp 1 / zone 1, no new draw-call kinds. Stand-in rows (tag standin) are replaced by Dom's Tripo GLBs via swapTo. NATURAL v1 (laneNATURAL/relayout_hub_z7, seeded 20276955): movable dressing re-laid in clusters of 3/5, banners out of the walk lane, no mirrored pairs, ids/groups/counts unchanged; re-apply with apply_natural.py --reapply if this file is regenerated.",
+ "version": 2,
+ "coordinateSpace": "unity world metres",
+ "constants": {
+  "waterY": -0.9,
+  "platformTop": 0.0
+ },
+ "libraries": [
+  {
+   "name": "hero7",
+   "pattern": "Assets/Env/Hero/{asset}/{asset}_LOD{lod}.glb"
   },
-  "libraries": [
-    {
-      "name": "hero7",
-      "pattern": "Assets/Env/Hero/{asset}/{asset}_LOD{lod}.glb"
-    },
-    {
-      "name": "props",
-      "pattern": "Assets/Env/Props/{asset}/{asset}_LOD{lod}.glb"
-    },
-    {
-      "name": "rocks",
-      "pattern": "Assets/Env/Rocks/{asset}_LOD{lod}.glb"
-    },
-    {
-      "name": "world_mid",
-      "pattern": "Assets/Env/World/Mid/{asset}/{asset}_LOD{lod}.glb"
-    },
-    {
-      "name": "world_far",
-      "pattern": "Assets/Env/World/Far/{asset}/{asset}_LOD{lod}.glb"
-    },
-    {
-      "name": "world_trench",
-      "pattern": "Assets/Env/World/Trench/{asset}/{asset}_LOD{lod}.glb"
-    },
-    {
-      "name": "world_bridge",
-      "pattern": "Assets/Env/World/Bridge/{asset}/{asset}_LOD{lod}.glb"
-    },
-    {
-      "name": "balu2",
-      "pattern": "Assets/Env/Balu2/{asset}_LOD{lod}.glb"
-    },
-    {
-      "name": "world_ground",
-      "pattern": "Assets/Env/World/Ground/{asset}/{asset}_LOD{lod}.glb"
-    },
-    {
-      "name": "blocks",
-      "pattern": "Assets/Env/Blocks/{asset}.glb",
-      "status": "live files, no LOD files: the one GLB serves all three LOD slots"
-    },
-    {
-      "name": "camp",
-      "pattern": "Assets/Env/Camp/{asset}/{asset}_LOD{lod}.glb",
-      "status": "NEW: built by tools/build_camp_assets.py, copied in by apply_camp.py"
-    }
-  ],
-  "lodProfiles": [
-    {
-      "name": "hero7_church",
-      "screenHeights": [
-        0.3,
-        0.1,
-        0.01
-      ]
-    },
-    {
-      "name": "props",
-      "screenHeights": [
-        0.25,
-        0.08,
-        0.02
-      ]
-    },
-    {
-      "name": "trees",
-      "screenHeights": [
-        1.7,
-        0.35,
-        0.03
-      ]
-    },
-    {
-      "name": "boulders",
-      "screenHeights": [
-        0.3,
-        0.1,
-        0.03
-      ]
-    },
-    {
-      "name": "islet",
-      "screenHeights": [
-        0.2,
-        0.06,
-        0.015
-      ]
-    },
-    {
-      "name": "far_ruin",
-      "screenHeights": [
-        0.1,
-        0.03,
-        0.01
-      ]
-    },
-    {
-      "name": "shoreline",
-      "screenHeights": [
-        0.12,
-        0.04,
-        0.01
-      ]
-    },
-    {
-      "name": "debris",
-      "screenHeights": [
-        0.05,
-        0.02,
-        0.0
-      ]
-    },
-    {
-      "name": "hero_heavy",
-      "screenHeights": [
-        0.3,
-        0.1,
-        0.03
-      ]
-    },
-    {
-      "name": "mid_ruin",
-      "screenHeights": [
-        0.15,
-        0.05,
-        0.015
-      ]
-    },
-    {
-      "name": "far_ruin_world",
-      "screenHeights": [
-        0.12,
-        0.04,
-        0.012
-      ]
-    },
-    {
-      "name": "near_hq",
-      "screenHeights": [
-        0.06,
-        0.015,
-        0.004
-      ]
-    },
-    {
-      "name": "pebbles",
-      "screenHeights": [
-        0.06,
-        0.02,
-        0.007
-      ]
-    },
-    {
-      "name": "sky_ridge",
-      "screenHeights": [
-        20.0,
-        10.0,
-        0.0
-      ],
-      "_about": "LOD0/LOD1 can never be selected (screen height cannot exceed 1 for a ridge in view at 10x), so every ridge is the 2.5-3.2k tri LOD2 and is never culled by size"
-    },
-    {
-      "name": "sky_ruin",
-      "screenHeights": [
-        1.2,
-        0.3,
-        0.0
-      ],
-      "_about": "far_ruin LOD1 (2.6-3.3k tris) while a tower fills > 30 % of the screen height, else LOD2 (0.75-1.2k tris); LOD0 (20 MB glb) only if one fills the whole screen"
-    }
-  ],
-  "groups": [
-    "Z7Ring0",
-    "Z7Ring1",
-    "Z7Ring2"
-  ],
-  "heroSlots": [
-    {
-      "id": "HERO_WAGON_A",
-      "asset": "camp_wagon_a",
-      "library": "camp",
-      "pos": [
-        -7.4,
-        27.0
-      ],
-      "yaw": 90,
-      "footprint": {
-        "alongZ": 5.2,
-        "acrossX": 2.6,
-        "height": 3.0
-      },
-      "clearBox": {
-        "x": [
-          -9.0,
-          -5.8
-        ],
-        "z": [
-          24.2,
-          29.8
-        ]
-      },
-      "pivot": "floor centre of the wagon bed",
-      "faces": "+x (open side to the lane, vendor_1 stands at x -3.6)",
-      "standIn": "z7_wagon_a_standin (camp_tent_a, scale 0.7)",
-      "status": "PENDING Dom Tripo (likely the covered caravan wagon)"
-    },
-    {
-      "id": "HERO_WAGON_B",
-      "asset": "camp_wagon_b",
-      "library": "camp",
-      "pos": [
-        7.4,
-        34.0
-      ],
-      "yaw": 270,
-      "footprint": {
-        "alongZ": 5.2,
-        "acrossX": 2.6,
-        "height": 3.0
-      },
-      "clearBox": {
-        "x": [
-          5.8,
-          9.0
-        ],
-        "z": [
-          31.2,
-          36.8
-        ]
-      },
-      "pivot": "floor centre of the wagon bed",
-      "faces": "-x (vendor_2 stands at x 3.6)",
-      "standIn": "z7_wagon_b_standin (camp_tent_b, scale 0.7)",
-      "status": "PENDING Dom Tripo (2nd hero piece, or stays a tent)"
-    },
-    {
-      "id": "HERO_GREAT_GATE",
-      "asset": "camp_great_gate",
-      "library": "camp",
-      "pos": [
-        0.0,
-        49.0
-      ],
-      "yaw": 180,
-      "footprint": {
-        "alongZ": 12.6,
-        "acrossX": 16.0,
-        "height": 11.0
-      },
-      "clearBox": {
-        "x": [
-          -8.0,
-          8.0
-        ],
-        "z": [
-          43.0,
-          56.0
-        ]
-      },
-      "pivot": "floor centre of the threshold",
-      "faces": "the player (+z walker looks at it)",
-      "standIn": "z7_gate_arch + z7_gate_leaf + z7_gate_chain_* (rock_arch_8 x1.8, causeway slab on edge, 2 chains)",
-      "status": "OPTIONAL hero; stand-in is already a gate"
-    }
-  ],
-  "props": [
-    {
-      "id": "z7h_z7_ruined_church",
-      "group": "Z7Ring1",
-      "library": "hero7",
-      "asset": "z7_ruined_church",
-      "lodProfile": "hero7_church",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        25.0,
-        -0.3,
-        343.0
-      ],
-      "rotEuler": [
-        0,
-        270.0,
-        0
-      ],
-      "scale": 22.378,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "hero7",
-        "hero"
-      ]
-    },
-    {
-      "id": "z7_ground_paving_0",
-      "group": "Z7Ring0",
-      "library": "world_ground",
-      "asset": "ground_paving",
-      "lodProfile": "mid_ruin",
-      "ground": "pivot",
-      "yBase": "world",
-      "pos": [
-        0.0,
-        0.0,
-        315.0
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "world",
-        "ground",
-        "floor"
-      ],
-      "rationale": "camp 1 flagstone strip copied: stone tops average y 0, x +-4, z 0..22.6; copies at z 22 and 41 close the street to the gate (z 63.6)."
-    },
-    {
-      "id": "z7_ground_paving_1",
-      "group": "Z7Ring0",
-      "library": "world_ground",
-      "asset": "ground_paving",
-      "lodProfile": "mid_ruin",
-      "ground": "pivot",
-      "yBase": "world",
-      "pos": [
-        0.0,
-        0.0,
-        337.0
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "world",
-        "ground",
-        "floor"
-      ],
-      "rationale": "camp 1 flagstone strip copied: stone tops average y 0, x +-4, z 0..22.6; copies at z 22 and 41 close the street to the gate (z 63.6)."
-    },
-    {
-      "id": "z7_ground_paving_2",
-      "group": "Z7Ring0",
-      "library": "world_ground",
-      "asset": "ground_paving",
-      "lodProfile": "mid_ruin",
-      "ground": "pivot",
-      "yBase": "world",
-      "pos": [
-        0.0,
-        0.0,
-        356.0
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "world",
-        "ground",
-        "floor"
-      ],
-      "rationale": "camp 1 flagstone strip copied: stone tops average y 0, x +-4, z 0..22.6; copies at z 22 and 41 close the street to the gate (z 63.6)."
-    },
-    {
-      "id": "z7_banner_L",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_banner_pole",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -3.1,
-        0.0,
-        323.8
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "banner"
-      ]
-    },
-    {
-      "id": "z7_banner_R",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_banner_pole",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        3.1,
-        0.0,
-        323.8
-      ],
-      "rotEuler": [
-        0,
-        180,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "banner"
-      ]
-    },
-    {
-      "id": "z7_firepit",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_firepit",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        3.0,
-        0.0,
-        330.5
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "hearth"
-      ],
-      "sinkFraction": 0.03
-    },
-    {
-      "id": "z7_bench_n",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_bench",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        3.0,
-        0.0,
-        328.25
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "bench"
-      ],
-      "sinkFraction": 0.02
-    },
-    {
-      "id": "z7_bench_e",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_bench",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        5.25,
-        0.0,
-        330.5
-      ],
-      "rotEuler": [
-        0,
-        90,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "bench"
-      ],
-      "sinkFraction": 0.02
-    },
-    {
-      "id": "z7_counter_a_0",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_counter",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -3.45,
-        0.0,
-        341.0
-      ],
-      "rotEuler": [
-        0,
-        90,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "counter",
-        "stall"
-      ],
-      "sinkFraction": 0.01
-    },
-    {
-      "id": "z7_counter_a_1",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_counter",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -3.45,
-        0.0,
-        343.0
-      ],
-      "rotEuler": [
-        0,
-        90,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "counter",
-        "stall"
-      ],
-      "sinkFraction": 0.01
-    },
-    {
-      "id": "z7_ware_a",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_weapon_sword",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -3.45,
-        1.05,
-        341.0
-      ],
-      "rotEuler": [
-        0,
-        90,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "artefact",
-        "ware"
-      ]
-    },
-    {
-      "id": "z7_counter_b_0",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_counter",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        3.45,
-        0.0,
-        348.0
-      ],
-      "rotEuler": [
-        0,
-        270,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "counter",
-        "stall"
-      ],
-      "sinkFraction": 0.01
-    },
-    {
-      "id": "z7_counter_b_1",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_counter",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        3.45,
-        0.0,
-        350.0
-      ],
-      "rotEuler": [
-        0,
-        270,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "counter",
-        "stall"
-      ],
-      "sinkFraction": 0.01
-    },
-    {
-      "id": "z7_ware_b",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_weapon_halberd",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        3.45,
-        1.05,
-        350.0
-      ],
-      "rotEuler": [
-        0,
-        90,
-        0
-      ],
-      "scale": 0.9,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "artefact",
-        "ware"
-      ]
-    },
-    {
-      "id": "z7_tent_e",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_tent_b",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        6.4,
-        0.0,
-        338.0
-      ],
-      "rotEuler": [
-        0,
-        270,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "tent"
-      ],
-      "sinkFraction": 0.004
-    },
-    {
-      "id": "z7_tent_w",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_tent_a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -6.6,
-        0.0,
-        352.5
-      ],
-      "rotEuler": [
-        0,
-        90,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "tent"
-      ],
-      "sinkFraction": 0.004
-    },
-    {
-      "id": "z7_ware_shield",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_weapon_shield",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -2.9,
-        0.0,
-        351.6
-      ],
-      "rotEuler": [
-        0,
-        60,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "artefact",
-        "ware"
-      ]
-    },
-    {
-      "id": "z7_hitch_a_0",
-      "group": "Z7Ring0",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -8.2,
-        0.0,
-        345.7
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "artefact",
-        "hitch"
-      ]
-    },
-    {
-      "id": "z7_hitch_a_1",
-      "group": "Z7Ring0",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -6.6,
-        0.0,
-        345.7
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "artefact",
-        "hitch"
-      ]
-    },
-    {
-      "id": "z7_hitch_b_0",
-      "group": "Z7Ring0",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        6.6,
-        0.0,
-        352.7
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "artefact",
-        "hitch"
-      ]
-    },
-    {
-      "id": "z7_hitch_b_1",
-      "group": "Z7Ring0",
-      "library": "balu2",
-      "asset": "post_capped",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        8.2,
-        0.0,
-        352.7
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "artefact",
-        "hitch"
-      ]
-    },
-    {
-      "id": "z7_pole_a",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_pole",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -2.4,
-        0.0,
-        339.3
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "pole",
-        "lantern"
-      ],
-      "sinkFraction": 0.01
-    },
-    {
-      "id": "z7_pole_b",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_pole",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        2.4,
-        0.0,
-        346.4
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "pole",
-        "lantern"
-      ],
-      "sinkFraction": 0.01
-    },
-    {
-      "id": "z7_pole_c",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_pole",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -2.2,
-        0.0,
-        351.3
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "pole",
-        "lantern"
-      ],
-      "sinkFraction": 0.01
-    },
-    {
-      "id": "z7_wagon_a_standin",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_tent_a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -7.6,
-        0.0,
-        342.0
-      ],
-      "rotEuler": [
-        0,
-        90,
-        0
-      ],
-      "scale": 0.7,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "standin",
-        "wagon_slot"
-      ],
-      "swapTo": "camp_wagon_a",
-      "sinkFraction": 0.004
-    },
-    {
-      "id": "z7_wagon_b_standin",
-      "group": "Z7Ring0",
-      "library": "camp",
-      "asset": "camp_tent_b",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        7.6,
-        0.0,
-        349.0
-      ],
-      "rotEuler": [
-        0,
-        270,
-        0
-      ],
-      "scale": 0.7,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "camp",
-        "standin",
-        "wagon_slot"
-      ],
-      "swapTo": "camp_wagon_b",
-      "sinkFraction": 0.004
-    },
-    {
-      "id": "z7_gate_arch",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "rock_arch_8",
-      "lodProfile": "hero_heavy",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        0.0,
-        0.0,
-        364.5
-      ],
-      "rotEuler": [
-        0,
-        180,
-        0
-      ],
-      "scale": 1.8,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "gate",
-        "gate_frame"
-      ]
-    },
-    {
-      "id": "z7_gate_leaf",
-      "group": "Z7Ring0",
-      "library": "blocks",
-      "asset": "causeway_slab_2x4x0.4",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        0.0,
-        0.0,
-        363.7
-      ],
-      "rotEuler": [
-        90,
-        0,
-        0
-      ],
-      "scale": 1.55,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "gate",
-        "gate_leaf",
-        "standin"
-      ],
-      "note": "slab stood on edge: 3.15 w x 6.2 h x 0.68 t, sealed leaf stand-in"
-    },
-    {
-      "id": "z7_gate_chain_0",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_chain_a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -0.7,
-        1.0,
-        363.3
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.8,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "gate",
-        "chain"
-      ]
-    },
-    {
-      "id": "z7_gate_chain_1",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_chain_a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        0.7,
-        1.0,
-        363.3
-      ],
-      "rotEuler": [
-        0,
-        0,
-        0
-      ],
-      "scale": 1.8,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "gate",
-        "chain"
-      ]
-    },
-    {
-      "id": "z7_gate_chaincoil",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_chain_b",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        0.4,
-        0.0,
-        362.4
-      ],
-      "rotEuler": [
-        0,
-        20,
-        0
-      ],
-      "scale": 1.3,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "gate",
-        "chain"
-      ]
-    },
-    {
-      "id": "z7_gate_skulls",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_skull_pile_c",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -2.6,
-        0.0,
-        362.5
-      ],
-      "rotEuler": [
-        0,
-        200,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "gate",
-        "bones"
-      ]
-    },
-    {
-      "id": "z7_gate_bones",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        2.4,
-        0.0,
-        362.9
-      ],
-      "rotEuler": [
-        0,
-        40,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "gate",
-        "bones"
-      ]
-    },
-    {
-      "id": "z7_backdrop_a",
-      "group": "Z7Ring2",
-      "library": "camp",
-      "asset": "camp_backdrop_a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -52.099,
-        -9.04,
-        379.95
-      ],
-      "rotEuler": [
-        0,
-        136.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "backdrop"
-      ]
-    },
-    {
-      "id": "z7_backdrop_b",
-      "group": "Z7Ring2",
-      "library": "camp",
-      "asset": "camp_backdrop_b",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        0.0,
-        -9.04,
-        401.0
-      ],
-      "rotEuler": [
-        0,
-        180.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "backdrop"
-      ]
-    },
-    {
-      "id": "z7_backdrop_c",
-      "group": "Z7Ring2",
-      "library": "camp",
-      "asset": "camp_backdrop_c",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        52.099,
-        -9.04,
-        379.95
-      ],
-      "rotEuler": [
-        0,
-        224.0,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": false,
-      "tags": [
-        "zone7",
-        "backdrop"
-      ]
-    },
-    {
-      "id": "z7_rock_1",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -28.815,
-        0.0,
-        358.264
-      ],
-      "rotEuler": [
-        0,
-        241.25,
-        0
-      ],
-      "scale": 1.17,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_rock_2",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -20.869,
-        0.0,
-        334.717
-      ],
-      "rotEuler": [
-        0,
-        50.67,
-        0
-      ],
-      "scale": 0.88,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_rock_3",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        19.222,
-        0.0,
-        365.663
-      ],
-      "rotEuler": [
-        0,
-        133.79,
-        0
-      ],
-      "scale": 0.83,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_rock_4",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        29.716,
-        0.0,
-        354.714
-      ],
-      "rotEuler": [
-        0,
-        140.81,
-        0
-      ],
-      "scale": 0.79,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_rock_5",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        18.283,
-        0.0,
-        340.212
-      ],
-      "rotEuler": [
-        0,
-        7.48,
-        0
-      ],
-      "scale": 0.79,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_rock_6",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -19.346,
-        0.0,
-        367.188
-      ],
-      "rotEuler": [
-        0,
-        269.6,
-        0
-      ],
-      "scale": 0.85,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_rock_7",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_C",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -21.961,
-        0.0,
-        320.653
-      ],
-      "rotEuler": [
-        0,
-        147.31,
-        0
-      ],
-      "scale": 0.94,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_rock_8",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        23.148,
-        0.0,
-        315.333
-      ],
-      "rotEuler": [
-        0,
-        339.22,
-        0
-      ],
-      "scale": 1.24,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_rock_9",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        17.286,
-        0.0,
-        324.809
-      ],
-      "rotEuler": [
-        0,
-        151.41,
-        0
-      ],
-      "scale": 1.19,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_rock_10",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        21.946,
-        0.0,
-        347.073
-      ],
-      "rotEuler": [
-        0,
-        161.31,
-        0
-      ],
-      "scale": 1.1,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_far_1",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_tower_b",
-      "lodProfile": "far_ruin_world",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        64.8,
-        0.0,
-        337.5
-      ],
-      "rotEuler": [
-        0,
-        47,
-        0
-      ],
-      "scale": 1.2,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_far_2",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_stub",
-      "lodProfile": "far_ruin_world",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -68.8,
-        0.0,
-        329.5
-      ],
-      "rotEuler": [
-        0,
-        273,
-        0
-      ],
-      "scale": 1.1,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_far_3",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_arches",
-      "lodProfile": "far_ruin_world",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        40.2,
-        0.0,
-        332.5
-      ],
-      "rotEuler": [
-        0,
-        330,
-        0
-      ],
-      "scale": 1.0,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7_far_4",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_arches",
-      "lodProfile": "far_ruin_world",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -60.3,
-        0.0,
-        381.4
-      ],
-      "rotEuler": [
-        0,
-        267,
-        0
-      ],
-      "scale": 1.3,
-      "shadowsOff": true,
-      "tags": [
-        "zone7",
-        "far"
-      ]
-    },
-    {
-      "id": "z7d_remains_bone_fragments_7_1",
-      "group": "Z7Ring1",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -10.1,
-        0.0,
-        320.71
-      ],
-      "rotEuler": [
-        0,
-        61.8,
-        0
-      ],
-      "scale": 1.19,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_remains_bone_fragments_7_2",
-      "group": "Z7Ring1",
-      "library": "props",
-      "asset": "bone_fragments_7",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        26.15,
-        0.0,
-        351.35
-      ],
-      "rotEuler": [
-        0,
-        207.7,
-        0
-      ],
-      "scale": 0.91,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_remains_hero_skull_pile_c_3",
-      "group": "Z7Ring1",
-      "library": "props",
-      "asset": "hero_skull_pile_c",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        19.09,
-        0.0,
-        344.61
-      ],
-      "rotEuler": [
-        0,
-        72.4,
-        0
-      ],
-      "scale": 1.17,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_remains_hero_skull_pile_c_4",
-      "group": "Z7Ring1",
-      "library": "props",
-      "asset": "hero_skull_pile_c",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -14.5,
-        0.0,
-        320.83
-      ],
-      "rotEuler": [
-        0,
-        58.0,
-        0
-      ],
-      "scale": 1.09,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_war_hero_weapon_sword_5",
-      "group": "Z7Ring1",
-      "library": "props",
-      "asset": "hero_weapon_sword",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -13.06,
-        0.0,
-        334.45
-      ],
-      "rotEuler": [
-        0,
-        340.6,
-        0
-      ],
-      "scale": 1.15,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_war_hero_weapon_halberd_6",
-      "group": "Z7Ring1",
-      "library": "props",
-      "asset": "hero_weapon_halberd",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -30.16,
-        0.0,
-        348.86
-      ],
-      "rotEuler": [
-        0,
-        92.7,
-        0
-      ],
-      "scale": 1.19,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_war_hero_chain_a_7",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_chain_a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        13.61,
-        0.0,
-        359.51
-      ],
-      "rotEuler": [
-        0,
-        308.9,
-        0
-      ],
-      "scale": 0.91,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_war_hero_chain_a_8",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_chain_a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        14.32,
-        0.0,
-        343.45
-      ],
-      "rotEuler": [
-        0,
-        118.8,
-        0
-      ],
-      "scale": 0.9,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_war_hero_banner_pole_9",
-      "group": "Z7Ring1",
-      "library": "props",
-      "asset": "hero_banner_pole",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -25.4,
-        0.0,
-        340.55
-      ],
-      "rotEuler": [
-        0,
-        139.5,
-        0
-      ],
-      "scale": 0.95,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_ruin_mid_arch_broken_a_10",
-      "group": "Z7Ring1",
-      "library": "world_mid",
-      "asset": "mid_arch_broken_a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        25.37,
-        0.0,
-        327.94
-      ],
-      "rotEuler": [
-        0,
-        207.7,
-        0
-      ],
-      "scale": 0.83,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_ruin_mid_column_cluster_11",
-      "group": "Z7Ring1",
-      "library": "world_mid",
-      "asset": "mid_column_cluster",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -22.19,
-        0.0,
-        342.44
-      ],
-      "rotEuler": [
-        0,
-        50.6,
-        0
-      ],
-      "scale": 0.74,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_ruin_mid_slab_heap_a_12",
-      "group": "Z7Ring1",
-      "library": "world_mid",
-      "asset": "mid_slab_heap_a",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -21.09,
-        0.0,
-        348.1
-      ],
-      "rotEuler": [
-        0,
-        44.2,
-        0
-      ],
-      "scale": 0.98,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_ruin_mid_buttress_stub_13",
-      "group": "Z7Ring2",
-      "library": "world_mid",
-      "asset": "mid_buttress_stub",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        21.68,
-        0.0,
-        319.36
-      ],
-      "rotEuler": [
-        0,
-        160.8,
-        0
-      ],
-      "scale": 0.98,
-      "shadowsOff": true,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_dead_tree_dead_tree_1b_14",
-      "group": "Z7Ring1",
-      "library": "props",
-      "asset": "dead_tree_1b",
-      "lodProfile": "trees",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -16.13,
-        0.0,
-        361.1
-      ],
-      "rotEuler": [
-        0,
-        181.8,
-        0
-      ],
-      "scale": 1.47,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_dead_tree_dead_tree_1a_15",
-      "group": "Z7Ring1",
-      "library": "props",
-      "asset": "dead_tree_1a",
-      "lodProfile": "trees",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        10.61,
-        0.0,
-        319.1
-      ],
-      "rotEuler": [
-        0,
-        58.3,
-        0
-      ],
-      "scale": 0.97,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_dead_tree_dead_tree_1a_16",
-      "group": "Z7Ring1",
-      "library": "props",
-      "asset": "dead_tree_1a",
-      "lodProfile": "trees",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        32.12,
-        0.0,
-        358.38
-      ],
-      "rotEuler": [
-        0,
-        311.2,
-        0
-      ],
-      "scale": 1.5,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_boulder_rock_boulder_D_17",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -14.82,
-        0.0,
-        312.66
-      ],
-      "rotEuler": [
-        0,
-        220.5,
-        0
-      ],
-      "scale": 1.63,
-      "shadowsOff": true,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_boulder_rock_boulder_B_18",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        19.17,
-        0.0,
-        334.78
-      ],
-      "rotEuler": [
-        0,
-        297.7,
-        0
-      ],
-      "scale": 1.33,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_boulder_rock_boulder_E_19",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        21.0,
-        0.0,
-        322.96
-      ],
-      "rotEuler": [
-        0,
-        176.7,
-        0
-      ],
-      "scale": 1.24,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "z7d_boulder_rock_boulder_E_20",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "boulders",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        17.89,
-        0.0,
-        358.7
-      ],
-      "rotEuler": [
-        0,
-        135.9,
-        0
-      ],
-      "scale": 1.35,
-      "shadowsOff": false,
-      "tags": [
-        "ring",
-        "zone7",
-        "density"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_00",
-      "group": "Z7Ring1",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        12.51,
-        -0.1,
-        325.51
-      ],
-      "rotEuler": [
-        0,
-        208.2,
-        0
-      ],
-      "scale": 0.434,
-      "shadowsOff": false,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_01",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        11.47,
-        -0.1,
-        325.86
-      ],
-      "rotEuler": [
-        0,
-        290.7,
-        0
-      ],
-      "scale": 0.479,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_02",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        11.91,
-        -0.1,
-        325.57
-      ],
-      "rotEuler": [
-        0,
-        8.6,
-        0
-      ],
-      "scale": 0.444,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_03",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        12.3,
-        -0.1,
-        324.79
-      ],
-      "rotEuler": [
-        0,
-        326.3,
-        0
-      ],
-      "scale": 0.483,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_04",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -11.67,
-        -0.1,
-        369.28
-      ],
-      "rotEuler": [
-        0,
-        174.5,
-        0
-      ],
-      "scale": 0.264,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_05",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -13.25,
-        -0.1,
-        368.29
-      ],
-      "rotEuler": [
-        0,
-        31.9,
-        0
-      ],
-      "scale": 0.35,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_06",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -10.68,
-        -0.1,
-        325.86
-      ],
-      "rotEuler": [
-        0,
-        262.8,
-        0
-      ],
-      "scale": 0.433,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_07",
-      "group": "Z7Ring1",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -10.74,
-        -0.1,
-        326.51
-      ],
-      "rotEuler": [
-        0,
-        312.3,
-        0
-      ],
-      "scale": 0.445,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_08",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -10.23,
-        -0.1,
-        344.25
-      ],
-      "rotEuler": [
-        0,
-        113.2,
-        0
-      ],
-      "scale": 0.279,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_09",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -10.99,
-        -0.1,
-        345.1
-      ],
-      "rotEuler": [
-        0,
-        172.9,
-        0
-      ],
-      "scale": 0.249,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_10",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -9.57,
-        -0.1,
-        345.43
-      ],
-      "rotEuler": [
-        0,
-        215.7,
-        0
-      ],
-      "scale": 0.417,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_11",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        7.92,
-        -0.1,
-        368.68
-      ],
-      "rotEuler": [
-        0,
-        244.8,
-        0
-      ],
-      "scale": 0.34,
-      "shadowsOff": false,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_12",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        8.22,
-        -0.1,
-        367.67
-      ],
-      "rotEuler": [
-        0,
-        74.9,
-        0
-      ],
-      "scale": 0.442,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_13",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        8.76,
-        -0.1,
-        369.11
-      ],
-      "rotEuler": [
-        0,
-        85.0,
-        0
-      ],
-      "scale": 0.274,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_14",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        11.37,
-        -0.1,
-        349.19
-      ],
-      "rotEuler": [
-        0,
-        356.5,
-        0
-      ],
-      "scale": 0.395,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_15",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        12.09,
-        -0.1,
-        348.65
-      ],
-      "rotEuler": [
-        0,
-        314.9,
-        0
-      ],
-      "scale": 0.479,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_16",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        12.13,
-        -0.1,
-        350.03
-      ],
-      "rotEuler": [
-        0,
-        256.4,
-        0
-      ],
-      "scale": 0.396,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_17",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        9.85,
-        -0.1,
-        365.94
-      ],
-      "rotEuler": [
-        0,
-        1.3,
-        0
-      ],
-      "scale": 0.511,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_18",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        9.71,
-        -0.1,
-        366.67
-      ],
-      "rotEuler": [
-        0,
-        35.4,
-        0
-      ],
-      "scale": 0.339,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_19",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -12.85,
-        -0.1,
-        350.22
-      ],
-      "rotEuler": [
-        0,
-        309.3,
-        0
-      ],
-      "scale": 0.299,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v9s_z7_market2_20",
-      "group": "Z7Ring0",
-      "library": "rocks",
-      "asset": "rock_boulder_E",
-      "lodProfile": "pebbles",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -12.85,
-        -0.1,
-        349.69
-      ],
-      "rotEuler": [
-        0,
-        188.1,
-        0
-      ],
-      "scale": 0.336,
-      "shadowsOff": true,
-      "tags": [
-        "v9scatter",
-        "z7_market2"
-      ]
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_L0",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -101.74,
-        -3,
-        521.53
-      ],
-      "rotEuler": [
-        0.0,
-        226.6,
-        0.0
-      ],
-      "scale": 16.131,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.6584
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_L1",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -122.77,
-        -3,
-        535.4
-      ],
-      "rotEuler": [
-        0.0,
-        276.4,
-        0.0
-      ],
-      "scale": 13.875,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.7665
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_L2",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -128.7,
-        -3,
-        510.54
-      ],
-      "rotEuler": [
-        0.0,
-        265.0,
-        0.0
-      ],
-      "scale": 12.777,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.785
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_L3",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -135.96,
-        -3,
-        497.27
-      ],
-      "rotEuler": [
-        0.0,
-        322.7,
-        0.0
-      ],
-      "scale": 16.294,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.5429
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_L4",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -181.46,
-        -3,
-        512.14
-      ],
-      "rotEuler": [
-        0.0,
-        263.7,
-        0.0
-      ],
-      "scale": 14.73,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.5414
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_L5",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -207.53,
-        -3,
-        504.82
-      ],
-      "rotEuler": [
-        0.0,
-        314.4,
-        0.0
-      ],
-      "scale": 9.588,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.9117
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_L6",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -256.11,
-        -3,
-        515.67
-      ],
-      "rotEuler": [
-        0.0,
-        180.9,
-        0.0
-      ],
-      "scale": 10.169,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 1.0314
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_R0",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        99.82,
-        -3,
-        498.26
-      ],
-      "rotEuler": [
-        0.0,
-        217.8,
-        0.0
-      ],
-      "scale": 14.384,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.487
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_R1",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        117.99,
-        -3,
-        529.64
-      ],
-      "rotEuler": [
-        0.0,
-        357.5,
-        0.0
-      ],
-      "scale": 17.434,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.5457
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_R2",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        140.63,
-        -3,
-        523.6
-      ],
-      "rotEuler": [
-        0.0,
-        182.8,
-        0.0
-      ],
-      "scale": 15.89,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.507
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_R3",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        152.95,
-        -3,
-        507.26
-      ],
-      "rotEuler": [
-        0.0,
-        36.0,
-        0.0
-      ],
-      "scale": 11.868,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.7734
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_R4",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        188.88,
-        -3,
-        507.4
-      ],
-      "rotEuler": [
-        0.0,
-        257.6,
-        0.0
-      ],
-      "scale": 14.108,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.8265
-    },
-    {
-      "id": "v10sky_z7_market2_plinth_R5",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_B",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        226.81,
-        -3,
-        498.45
-      ],
-      "rotEuler": [
-        0.0,
-        292.0,
-        0.0
-      ],
-      "scale": 12.387,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.5814
-    },
-    {
-      "id": "v10sky_z7_market2_far_L0",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -138.02,
-        -10,
-        685.01
-      ],
-      "rotEuler": [
-        0.0,
-        217.8,
-        0.0
-      ],
-      "scale": 43.213,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.3748
-    },
-    {
-      "id": "v10sky_z7_market2_far_L1",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -154.16,
-        -10,
-        675.04
-      ],
-      "rotEuler": [
-        0.0,
-        264.5,
-        0.0
-      ],
-      "scale": 41.908,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.3931
-    },
-    {
-      "id": "v10sky_z7_market2_far_L2",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -196.29,
-        -10,
-        630.78
-      ],
-      "rotEuler": [
-        0.0,
-        312.9,
-        0.0
-      ],
-      "scale": 32.906,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.7695
-    },
-    {
-      "id": "v10sky_z7_market2_far_L3",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -292.51,
-        -10,
-        680.49
-      ],
-      "rotEuler": [
-        0.0,
-        30.5,
-        0.0
-      ],
-      "scale": 38.598,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.7658
-    },
-    {
-      "id": "v10sky_z7_market2_far_R0",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        130.75,
-        -10,
-        640.17
-      ],
-      "rotEuler": [
-        0.0,
-        101.8,
-        0.0
-      ],
-      "scale": 34.631,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.7441
-    },
-    {
-      "id": "v10sky_z7_market2_far_R1",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        137.56,
-        -10,
-        686.29
-      ],
-      "rotEuler": [
-        0.0,
-        202.6,
-        0.0
-      ],
-      "scale": 34.757,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.7567
-    },
-    {
-      "id": "v10sky_z7_market2_far_R2",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        190.51,
-        -10,
-        669.24
-      ],
-      "rotEuler": [
-        0.0,
-        184.1,
-        0.0
-      ],
-      "scale": 36.13,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.6692
-    },
-    {
-      "id": "v10sky_z7_market2_far_R3",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_A",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        232.81,
-        -10,
-        642.23
-      ],
-      "rotEuler": [
-        0.0,
-        289.3,
-        0.0
-      ],
-      "scale": 38.81,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "mound"
-      ],
-      "scaleYMul": 0.4597
-    },
-    {
-      "id": "v10sky_z7_market2_mound_0",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -144.78,
-        -3.0,
-        629.04
-      ],
-      "rotEuler": [
-        0.0,
-        254.6,
-        0.0
-      ],
-      "scale": 25.741,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "skirt"
-      ],
-      "scaleYMul": 0.3673
-    },
-    {
-      "id": "v10sky_z7_market2_tower_0",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_facade",
-      "lodProfile": "sky_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -144.78,
-        3.7,
-        629.04
-      ],
-      "rotEuler": [
-        0,
-        254.6,
-        0
-      ],
-      "scale": 0.685,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "tower"
-      ]
-    },
-    {
-      "id": "v10sky_z7_market2_mound_1",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        221.6,
-        -3.0,
-        617.09
-      ],
-      "rotEuler": [
-        0.0,
-        354.9,
-        0.0
-      ],
-      "scale": 17.895,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "skirt"
-      ],
-      "scaleYMul": 0.6128
-    },
-    {
-      "id": "v10sky_z7_market2_tower_1",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_arches",
-      "lodProfile": "sky_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        221.6,
-        4.53,
-        617.09
-      ],
-      "rotEuler": [
-        0,
-        354.9,
-        0
-      ],
-      "scale": 0.669,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "tower"
-      ]
-    },
-    {
-      "id": "v10sky_z7_market2_mound_2",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -162.98,
-        -3.0,
-        508.42
-      ],
-      "rotEuler": [
-        0.0,
-        356.6,
-        0.0
-      ],
-      "scale": 25.527,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "skirt"
-      ],
-      "scaleYMul": 0.4796
-    },
-    {
-      "id": "v10sky_z7_market2_tower_2",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_gatehouse",
-      "lodProfile": "sky_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -162.98,
-        5.23,
-        508.42
-      ],
-      "rotEuler": [
-        0,
-        356.6,
-        0
-      ],
-      "scale": 0.782,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "tower"
-      ]
-    },
-    {
-      "id": "v10sky_z7_market2_mound_3",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        143.92,
-        -3.0,
-        529.87
-      ],
-      "rotEuler": [
-        0.0,
-        247.3,
-        0.0
-      ],
-      "scale": 44.383,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "skirt"
-      ],
-      "scaleYMul": 0.219
-    },
-    {
-      "id": "v10sky_z7_market2_tower_3",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_viaduct",
-      "lodProfile": "sky_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        143.92,
-        3.85,
-        529.87
-      ],
-      "rotEuler": [
-        0,
-        247.3,
-        0
-      ],
-      "scale": 0.861,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "tower"
-      ]
-    },
-    {
-      "id": "v10sky_z7_market2_mound_4",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -127.98,
-        -3.0,
-        616.55
-      ],
-      "rotEuler": [
-        0.0,
-        103.6,
-        0.0
-      ],
-      "scale": 15.422,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "skirt"
-      ],
-      "scaleYMul": 0.7638
-    },
-    {
-      "id": "v10sky_z7_market2_tower_4",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_spire",
-      "lodProfile": "sky_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -127.98,
-        4.98,
-        616.55
-      ],
-      "rotEuler": [
-        0,
-        103.6,
-        0
-      ],
-      "scale": 0.706,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "tower"
-      ]
-    },
-    {
-      "id": "v10sky_z7_market2_mound_5",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        224.43,
-        -3.0,
-        647.1
-      ],
-      "rotEuler": [
-        0.0,
-        337.3,
-        0.0
-      ],
-      "scale": 27.543,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "skirt"
-      ],
-      "scaleYMul": 0.3349
-    },
-    {
-      "id": "v10sky_z7_market2_tower_5",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_tower_a",
-      "lodProfile": "sky_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        224.43,
-        3.57,
-        647.1
-      ],
-      "rotEuler": [
-        0,
-        337.3,
-        0
-      ],
-      "scale": 0.913,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "tower"
-      ]
-    },
-    {
-      "id": "v10sky_z7_market2_mound_6",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -182.78,
-        -3.0,
-        545.02
-      ],
-      "rotEuler": [
-        0.0,
-        179.1,
-        0.0
-      ],
-      "scale": 15.798,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "skirt"
-      ],
-      "scaleYMul": 0.7318
-    },
-    {
-      "id": "v10sky_z7_market2_tower_6",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_tower_b",
-      "lodProfile": "sky_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -182.78,
-        4.86,
-        545.02
-      ],
-      "rotEuler": [
-        0,
-        179.1,
-        0
-      ],
-      "scale": 0.685,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "tower"
-      ]
-    },
-    {
-      "id": "v10sky_z7_market2_mound_7",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        155.99,
-        -3.0,
-        531.65
-      ],
-      "rotEuler": [
-        0.0,
-        357.2,
-        0.0
-      ],
-      "scale": 24.229,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "skirt"
-      ],
-      "scaleYMul": 0.4769
-    },
-    {
-      "id": "v10sky_z7_market2_tower_7",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_stub",
-      "lodProfile": "sky_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        155.99,
-        4.85,
-        531.65
-      ],
-      "rotEuler": [
-        0,
-        357.2,
-        0
-      ],
-      "scale": 0.846,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "tower"
-      ]
-    },
-    {
-      "id": "v10sky_z7_market2_mound_8",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -114.71,
-        -3.0,
-        506.23
-      ],
-      "rotEuler": [
-        0.0,
-        135.2,
-        0.0
-      ],
-      "scale": 22.748,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "skirt"
-      ],
-      "scaleYMul": 0.4276
-    },
-    {
-      "id": "v10sky_z7_market2_tower_8",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_facade",
-      "lodProfile": "sky_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -114.71,
-        3.85,
-        506.23
-      ],
-      "rotEuler": [
-        0,
-        135.2,
-        0
-      ],
-      "scale": 0.585,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "tower"
-      ]
-    },
-    {
-      "id": "v10sky_z7_market2_mound_9",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        111.77,
-        -3.0,
-        618.62
-      ],
-      "rotEuler": [
-        0.0,
-        1.2,
-        0.0
-      ],
-      "scale": 20.573,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "skirt"
-      ],
-      "scaleYMul": 0.4572
-    },
-    {
-      "id": "v10sky_z7_market2_tower_9",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_arches",
-      "lodProfile": "sky_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        111.77,
-        3.67,
-        618.62
-      ],
-      "rotEuler": [
-        0,
-        1.2,
-        0
-      ],
-      "scale": 0.81,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "tower"
-      ]
-    },
-    {
-      "id": "v10sky_z7_market2_mound_10",
-      "group": "Z7Ring2",
-      "library": "rocks",
-      "asset": "rock_boulder_D",
-      "lodProfile": "sky_ridge",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -122.8,
-        -3.0,
-        554.41
-      ],
-      "rotEuler": [
-        0.0,
-        261.5,
-        0.0
-      ],
-      "scale": 21.454,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "skirt"
-      ],
-      "scaleYMul": 0.4607
-    },
-    {
-      "id": "v10sky_z7_market2_tower_10",
-      "group": "Z7Ring2",
-      "library": "world_far",
-      "asset": "far_ruin_gatehouse",
-      "lodProfile": "sky_ruin",
-      "ground": "bottom",
-      "yBase": "world",
-      "pos": [
-        -122.8,
-        3.94,
-        554.41
-      ],
-      "rotEuler": [
-        0,
-        261.5,
-        0
-      ],
-      "scale": 0.626,
-      "shadowsOff": true,
-      "tags": [
-        "world",
-        "skyline",
-        "v10sky",
-        "z7_market2",
-        "tower"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_e_0",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        3.211,
-        0.0,
-        335.259
-      ],
-      "rotEuler": [
-        0,
-        115.6,
-        0
-      ],
-      "scale": 0.217,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_e_1",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        9.777,
-        0.0,
-        335.188
-      ],
-      "rotEuler": [
-        0,
-        175.5,
-        0
-      ],
-      "scale": 0.266,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_e_2",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        9.83,
-        0.0,
-        340.843
-      ],
-      "rotEuler": [
-        0,
-        197.5,
-        0
-      ],
-      "scale": 0.228,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_e_3",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        3.039,
-        0.0,
-        340.721
-      ],
-      "rotEuler": [
-        0,
-        185.9,
-        0
-      ],
-      "scale": 0.207,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_e_4",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        6.419,
-        0.0,
-        335.207
-      ],
-      "rotEuler": [
-        0,
-        334.6,
-        0
-      ],
-      "scale": 0.242,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_e_5",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        6.306,
-        0.0,
-        340.649
-      ],
-      "rotEuler": [
-        0,
-        84.0,
-        0
-      ],
-      "scale": 0.256,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_e_6",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        2.973,
-        0.0,
-        338.065
-      ],
-      "rotEuler": [
-        0,
-        325.5,
-        0
-      ],
-      "scale": 0.213,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_e_7",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        9.688,
-        0.0,
-        338.14
-      ],
-      "rotEuler": [
-        0,
-        226.1,
-        0
-      ],
-      "scale": 0.312,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_w_0",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -10.165,
-        0.0,
-        349.749
-      ],
-      "rotEuler": [
-        0,
-        131.4,
-        0
-      ],
-      "scale": 0.238,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_w_1",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -3.123,
-        0.0,
-        349.691
-      ],
-      "rotEuler": [
-        0,
-        18.4,
-        0
-      ],
-      "scale": 0.322,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_w_2",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -3.075,
-        0.0,
-        355.386
-      ],
-      "rotEuler": [
-        0,
-        312.9,
-        0
-      ],
-      "scale": 0.238,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_w_3",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -10.105,
-        0.0,
-        355.333
-      ],
-      "rotEuler": [
-        0,
-        119.8,
-        0
-      ],
-      "scale": 0.209,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_w_4",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -6.725,
-        0.0,
-        349.464
-      ],
-      "rotEuler": [
-        0,
-        13.7,
-        0
-      ],
-      "scale": 0.287,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_w_5",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -6.68,
-        0.0,
-        355.489
-      ],
-      "rotEuler": [
-        0,
-        315.7,
-        0
-      ],
-      "scale": 0.262,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_w_6",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -10.268,
-        0.0,
-        352.638
-      ],
-      "rotEuler": [
-        0,
-        156.5,
-        0
-      ],
-      "scale": 0.217,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_tent_w_7",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -3.07,
-        0.0,
-        352.381
-      ],
-      "rotEuler": [
-        0,
-        278.4,
-        0
-      ],
-      "scale": 0.329,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_a_standin_0",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -10.226,
-        0.0,
-        339.994
-      ],
-      "rotEuler": [
-        0,
-        66.0,
-        0
-      ],
-      "scale": 0.22,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_a_standin_1",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -4.974,
-        0.0,
-        339.861
-      ],
-      "rotEuler": [
-        0,
-        337.2,
-        0
-      ],
-      "scale": 0.257,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_a_standin_2",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -5.189,
-        0.0,
-        343.915
-      ],
-      "rotEuler": [
-        0,
-        109.2,
-        0
-      ],
-      "scale": 0.236,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_a_standin_3",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -10.252,
-        0.0,
-        344.094
-      ],
-      "rotEuler": [
-        0,
-        248.9,
-        0
-      ],
-      "scale": 0.236,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_a_standin_4",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -7.657,
-        0.0,
-        340.062
-      ],
-      "rotEuler": [
-        0,
-        68.4,
-        0
-      ],
-      "scale": 0.179,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_a_standin_5",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -7.66,
-        0.0,
-        344.01
-      ],
-      "rotEuler": [
-        0,
-        178.0,
-        0
-      ],
-      "scale": 0.209,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_a_standin_6",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -10.098,
-        0.0,
-        342.121
-      ],
-      "rotEuler": [
-        0,
-        186.6,
-        0
-      ],
-      "scale": 0.163,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_a_standin_7",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        -5.097,
-        0.0,
-        341.871
-      ],
-      "rotEuler": [
-        0,
-        295.2,
-        0
-      ],
-      "scale": 0.237,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_b_standin_0",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        5.294,
-        0.0,
-        346.947
-      ],
-      "rotEuler": [
-        0,
-        96.2,
-        0
-      ],
-      "scale": 0.179,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_b_standin_1",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        9.899,
-        0.0,
-        347.069
-      ],
-      "rotEuler": [
-        0,
-        23.8,
-        0
-      ],
-      "scale": 0.186,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_b_standin_2",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        9.796,
-        0.0,
-        350.821
-      ],
-      "rotEuler": [
-        0,
-        158.7,
-        0
-      ],
-      "scale": 0.263,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_b_standin_3",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        5.293,
-        0.0,
-        350.876
-      ],
-      "rotEuler": [
-        0,
-        31.0,
-        0
-      ],
-      "scale": 0.166,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_b_standin_4",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        7.717,
-        0.0,
-        347.02
-      ],
-      "rotEuler": [
-        0,
-        251.7,
-        0
-      ],
-      "scale": 0.185,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_b_standin_5",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        7.587,
-        0.0,
-        350.867
-      ],
-      "rotEuler": [
-        0,
-        80.2,
-        0
-      ],
-      "scale": 0.183,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_b_standin_6",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        5.249,
-        0.0,
-        349.148
-      ],
-      "rotEuler": [
-        0,
-        77.1,
-        0
-      ],
-      "scale": 0.183,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    },
-    {
-      "id": "v13skirt_z7_wagon_b_standin_7",
-      "group": "Z7Ring0",
-      "library": "props",
-      "asset": "hero_debris_rubble",
-      "lodProfile": "props",
-      "ground": "bottom",
-      "yBase": "platformTop",
-      "pos": [
-        9.906,
-        0.0,
-        349.14
-      ],
-      "rotEuler": [
-        0,
-        51.0,
-        0
-      ],
-      "scale": 0.216,
-      "sinkFraction": 0.3,
-      "shadowsOff": true,
-      "tags": [
-        "v13_skirt",
-        "contact"
-      ]
-    }
-  ],
-  "scatter": []
+  {
+   "name": "props",
+   "pattern": "Assets/Env/Props/{asset}/{asset}_LOD{lod}.glb"
+  },
+  {
+   "name": "rocks",
+   "pattern": "Assets/Env/Rocks/{asset}_LOD{lod}.glb"
+  },
+  {
+   "name": "world_mid",
+   "pattern": "Assets/Env/World/Mid/{asset}/{asset}_LOD{lod}.glb"
+  },
+  {
+   "name": "world_far",
+   "pattern": "Assets/Env/World/Far/{asset}/{asset}_LOD{lod}.glb"
+  },
+  {
+   "name": "world_trench",
+   "pattern": "Assets/Env/World/Trench/{asset}/{asset}_LOD{lod}.glb"
+  },
+  {
+   "name": "world_bridge",
+   "pattern": "Assets/Env/World/Bridge/{asset}/{asset}_LOD{lod}.glb"
+  },
+  {
+   "name": "balu2",
+   "pattern": "Assets/Env/Balu2/{asset}_LOD{lod}.glb"
+  },
+  {
+   "name": "world_ground",
+   "pattern": "Assets/Env/World/Ground/{asset}/{asset}_LOD{lod}.glb"
+  },
+  {
+   "name": "blocks",
+   "pattern": "Assets/Env/Blocks/{asset}.glb",
+   "status": "live files, no LOD files: the one GLB serves all three LOD slots"
+  },
+  {
+   "name": "camp",
+   "pattern": "Assets/Env/Camp/{asset}/{asset}_LOD{lod}.glb",
+   "status": "NEW: built by tools/build_camp_assets.py, copied in by apply_camp.py"
+  },
+  {
+   "name": "wow21",
+   "pattern": "Assets/Env/Props/wow21/{asset}_LOD{lod}.glb",
+   "status": "WOW21 hero props, converted LOD files from laneWOW21LOD; a missing LODn is skipped by PropsLayout.PlaceOne"
+  }
+ ],
+ "lodProfiles": [
+  {
+   "name": "hero7_church",
+   "screenHeights": [
+    0.3,
+    0.1,
+    0.01
+   ]
+  },
+  {
+   "name": "props",
+   "screenHeights": [
+    0.25,
+    0.08,
+    0.02
+   ]
+  },
+  {
+   "name": "trees",
+   "screenHeights": [
+    1.7,
+    0.35,
+    0.03
+   ]
+  },
+  {
+   "name": "boulders",
+   "screenHeights": [
+    0.3,
+    0.1,
+    0.03
+   ]
+  },
+  {
+   "name": "islet",
+   "screenHeights": [
+    0.2,
+    0.06,
+    0.015
+   ]
+  },
+  {
+   "name": "far_ruin",
+   "screenHeights": [
+    0.1,
+    0.03,
+    0.01
+   ]
+  },
+  {
+   "name": "shoreline",
+   "screenHeights": [
+    0.12,
+    0.04,
+    0.01
+   ]
+  },
+  {
+   "name": "debris",
+   "screenHeights": [
+    0.05,
+    0.02,
+    0.0
+   ]
+  },
+  {
+   "name": "hero_heavy",
+   "screenHeights": [
+    0.3,
+    0.1,
+    0.03
+   ]
+  },
+  {
+   "name": "mid_ruin",
+   "screenHeights": [
+    0.15,
+    0.05,
+    0.015
+   ]
+  },
+  {
+   "name": "far_ruin_world",
+   "screenHeights": [
+    0.12,
+    0.04,
+    0.012
+   ]
+  },
+  {
+   "name": "near_hq",
+   "screenHeights": [
+    0.06,
+    0.015,
+    0.004
+   ]
+  },
+  {
+   "name": "pebbles",
+   "screenHeights": [
+    0.06,
+    0.02,
+    0.007
+   ]
+  },
+  {
+   "name": "sky_ridge",
+   "screenHeights": [
+    20.0,
+    10.0,
+    0.0
+   ],
+   "_about": "LOD0/LOD1 can never be selected (screen height cannot exceed 1 for a ridge in view at 10x), so every ridge is the 2.5-3.2k tri LOD2 and is never culled by size"
+  },
+  {
+   "name": "sky_ruin",
+   "screenHeights": [
+    1.2,
+    0.3,
+    0.0
+   ],
+   "_about": "far_ruin LOD1 (2.6-3.3k tris) while a tower fills > 30 % of the screen height, else LOD2 (0.75-1.2k tris); LOD0 (20 MB glb) only if one fills the whole screen"
+  },
+  {
+   "name": "wow21_lod0only",
+   "screenHeights": [
+    0.01
+   ]
+  },
+  {
+   "name": "wow21_three",
+   "screenHeights": [
+    0.2,
+    0.06,
+    0.01
+   ]
+  }
+ ],
+ "groups": [
+  "Z7Ring0",
+  "Z7Ring1",
+  "Z7Ring2"
+ ],
+ "heroSlots": [
+  {
+   "id": "HERO_WAGON_A",
+   "asset": "camp_wagon_a",
+   "library": "camp",
+   "pos": [
+    -7.4,
+    27.0
+   ],
+   "yaw": 90,
+   "footprint": {
+    "alongZ": 5.2,
+    "acrossX": 2.6,
+    "height": 3.0
+   },
+   "clearBox": {
+    "x": [
+     -9.0,
+     -5.8
+    ],
+    "z": [
+     24.2,
+     29.8
+    ]
+   },
+   "pivot": "floor centre of the wagon bed",
+   "faces": "+x (open side to the lane, vendor_1 stands at x -3.6)",
+   "standIn": "z7_wagon_a_standin (camp_tent_a, scale 0.7)",
+   "status": "PENDING Dom Tripo (likely the covered caravan wagon)"
+  },
+  {
+   "id": "HERO_WAGON_B",
+   "asset": "camp_wagon_b",
+   "library": "camp",
+   "pos": [
+    7.4,
+    34.0
+   ],
+   "yaw": 270,
+   "footprint": {
+    "alongZ": 5.2,
+    "acrossX": 2.6,
+    "height": 3.0
+   },
+   "clearBox": {
+    "x": [
+     5.8,
+     9.0
+    ],
+    "z": [
+     31.2,
+     36.8
+    ]
+   },
+   "pivot": "floor centre of the wagon bed",
+   "faces": "-x (vendor_2 stands at x 3.6)",
+   "standIn": "z7_wagon_b_standin (camp_tent_b, scale 0.7)",
+   "status": "PENDING Dom Tripo (2nd hero piece, or stays a tent)"
+  },
+  {
+   "id": "HERO_GREAT_GATE",
+   "asset": "camp_great_gate",
+   "library": "camp",
+   "pos": [
+    0.0,
+    49.0
+   ],
+   "yaw": 180,
+   "footprint": {
+    "alongZ": 12.6,
+    "acrossX": 16.0,
+    "height": 11.0
+   },
+   "clearBox": {
+    "x": [
+     -8.0,
+     8.0
+    ],
+    "z": [
+     43.0,
+     56.0
+    ]
+   },
+   "pivot": "floor centre of the threshold",
+   "faces": "the player (+z walker looks at it)",
+   "standIn": "z7_gate_arch + z7_gate_leaf + z7_gate_chain_* (rock_arch_8 x1.8, causeway slab on edge, 2 chains)",
+   "status": "OPTIONAL hero; stand-in is already a gate"
+  }
+ ],
+ "props": [
+  {
+   "id": "z7h_z7_ruined_church",
+   "group": "Z7Ring1",
+   "library": "hero7",
+   "asset": "z7_ruined_church",
+   "lodProfile": "hero7_church",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    25.0,
+    -0.3,
+    343.0
+   ],
+   "rotEuler": [
+    0,
+    270.0,
+    0
+   ],
+   "scale": 22.378,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "hero7",
+    "hero"
+   ]
+  },
+  {
+   "id": "z7_ground_paving_0",
+   "group": "Z7Ring0",
+   "library": "world_ground",
+   "asset": "ground_paving",
+   "lodProfile": "mid_ruin",
+   "ground": "pivot",
+   "yBase": "world",
+   "pos": [
+    0.0,
+    0.0,
+    315.0
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "world",
+    "ground",
+    "floor"
+   ],
+   "rationale": "camp 1 flagstone strip copied: stone tops average y 0, x +-4, z 0..22.6; copies at z 22 and 41 close the street to the gate (z 63.6)."
+  },
+  {
+   "id": "z7_ground_paving_1",
+   "group": "Z7Ring0",
+   "library": "world_ground",
+   "asset": "ground_paving",
+   "lodProfile": "mid_ruin",
+   "ground": "pivot",
+   "yBase": "world",
+   "pos": [
+    0.0,
+    0.0,
+    337.0
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "world",
+    "ground",
+    "floor"
+   ],
+   "rationale": "camp 1 flagstone strip copied: stone tops average y 0, x +-4, z 0..22.6; copies at z 22 and 41 close the street to the gate (z 63.6)."
+  },
+  {
+   "id": "z7_ground_paving_2",
+   "group": "Z7Ring0",
+   "library": "world_ground",
+   "asset": "ground_paving",
+   "lodProfile": "mid_ruin",
+   "ground": "pivot",
+   "yBase": "world",
+   "pos": [
+    0.0,
+    0.0,
+    356.0
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "world",
+    "ground",
+    "floor"
+   ],
+   "rationale": "camp 1 flagstone strip copied: stone tops average y 0, x +-4, z 0..22.6; copies at z 22 and 41 close the street to the gate (z 63.6)."
+  },
+  {
+   "id": "z7_banner_L",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_banner_pole",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -4.55,
+    0.0,
+    322.5
+   ],
+   "rotEuler": [
+    1.65,
+    8.0,
+    0.13
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "banner"
+   ]
+  },
+  {
+   "id": "z7_banner_R",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_banner_pole",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    4.9,
+    0.0,
+    325.4
+   ],
+   "rotEuler": [
+    -1.33,
+    197.0,
+    2.72
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "banner"
+   ]
+  },
+  {
+   "id": "z7_firepit",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_firepit",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    3.0,
+    0.0,
+    330.5
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "hearth"
+   ],
+   "sinkFraction": 0.03
+  },
+  {
+   "id": "z7_bench_n",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_bench",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    3.0,
+    0.0,
+    328.25
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "bench"
+   ],
+   "sinkFraction": 0.02
+  },
+  {
+   "id": "z7_bench_e",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_bench",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    5.25,
+    0.0,
+    330.5
+   ],
+   "rotEuler": [
+    0,
+    90,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "bench"
+   ],
+   "sinkFraction": 0.02
+  },
+  {
+   "id": "z7_counter_a_0",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_counter",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -3.45,
+    0.0,
+    341.0
+   ],
+   "rotEuler": [
+    0,
+    90,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "counter",
+    "stall"
+   ],
+   "sinkFraction": 0.01
+  },
+  {
+   "id": "z7_counter_a_1",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_counter",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -3.45,
+    0.0,
+    343.0
+   ],
+   "rotEuler": [
+    0,
+    90,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "counter",
+    "stall"
+   ],
+   "sinkFraction": 0.01
+  },
+  {
+   "id": "z7_ware_a",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_weapon_sword",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -3.45,
+    1.05,
+    341.0
+   ],
+   "rotEuler": [
+    0,
+    90,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "artefact",
+    "ware"
+   ]
+  },
+  {
+   "id": "z7_counter_b_0",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_counter",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    3.45,
+    0.0,
+    348.0
+   ],
+   "rotEuler": [
+    0,
+    270,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "counter",
+    "stall"
+   ],
+   "sinkFraction": 0.01
+  },
+  {
+   "id": "z7_counter_b_1",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_counter",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    3.45,
+    0.0,
+    350.0
+   ],
+   "rotEuler": [
+    0,
+    270,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "counter",
+    "stall"
+   ],
+   "sinkFraction": 0.01
+  },
+  {
+   "id": "z7_ware_b",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_weapon_halberd",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    3.45,
+    1.05,
+    350.0
+   ],
+   "rotEuler": [
+    0,
+    90,
+    0
+   ],
+   "scale": 0.9,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "artefact",
+    "ware"
+   ]
+  },
+  {
+   "id": "z7_tent_e",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_tent_b",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    6.4,
+    0.0,
+    338.0
+   ],
+   "rotEuler": [
+    0,
+    270,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "tent"
+   ],
+   "sinkFraction": 0.004
+  },
+  {
+   "id": "z7_tent_w",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_tent_a",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -6.6,
+    0.0,
+    352.5
+   ],
+   "rotEuler": [
+    0,
+    90,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "tent"
+   ],
+   "sinkFraction": 0.004
+  },
+  {
+   "id": "z7_ware_shield",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_weapon_shield",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -2.9,
+    0.0,
+    351.6
+   ],
+   "rotEuler": [
+    0,
+    60,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "artefact",
+    "ware"
+   ]
+  },
+  {
+   "id": "z7_hitch_a_0",
+   "group": "Z7Ring0",
+   "library": "balu2",
+   "asset": "post_capped",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -8.2,
+    0.0,
+    345.7
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "artefact",
+    "hitch"
+   ]
+  },
+  {
+   "id": "z7_hitch_a_1",
+   "group": "Z7Ring0",
+   "library": "balu2",
+   "asset": "post_capped",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -6.6,
+    0.0,
+    345.7
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "artefact",
+    "hitch"
+   ]
+  },
+  {
+   "id": "z7_hitch_b_0",
+   "group": "Z7Ring0",
+   "library": "balu2",
+   "asset": "post_capped",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    6.6,
+    0.0,
+    352.7
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "artefact",
+    "hitch"
+   ]
+  },
+  {
+   "id": "z7_hitch_b_1",
+   "group": "Z7Ring0",
+   "library": "balu2",
+   "asset": "post_capped",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    8.2,
+    0.0,
+    352.7
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "artefact",
+    "hitch"
+   ]
+  },
+  {
+   "id": "z7_pole_a",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_pole",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -2.4,
+    0.0,
+    339.3
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "pole",
+    "lantern"
+   ],
+   "sinkFraction": 0.01
+  },
+  {
+   "id": "z7_pole_b",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_pole",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    2.4,
+    0.0,
+    346.4
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "pole",
+    "lantern"
+   ],
+   "sinkFraction": 0.01
+  },
+  {
+   "id": "z7_pole_c",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_pole",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -2.2,
+    0.0,
+    351.3
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "pole",
+    "lantern"
+   ],
+   "sinkFraction": 0.01
+  },
+  {
+   "id": "z7_wagon_a_standin",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_tent_a",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -7.6,
+    0.0,
+    342.0
+   ],
+   "rotEuler": [
+    0,
+    90,
+    0
+   ],
+   "scale": 0.7,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "standin",
+    "wagon_slot"
+   ],
+   "swapTo": "camp_wagon_a",
+   "sinkFraction": 0.004
+  },
+  {
+   "id": "z7_wagon_b_standin",
+   "group": "Z7Ring0",
+   "library": "camp",
+   "asset": "camp_tent_b",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    7.6,
+    0.0,
+    349.0
+   ],
+   "rotEuler": [
+    0,
+    270,
+    0
+   ],
+   "scale": 0.7,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "camp",
+    "standin",
+    "wagon_slot"
+   ],
+   "swapTo": "camp_wagon_b",
+   "sinkFraction": 0.004
+  },
+  {
+   "id": "z7_gate_arch",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "rock_arch_8",
+   "lodProfile": "hero_heavy",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    0.0,
+    0.0,
+    364.5
+   ],
+   "rotEuler": [
+    0,
+    180,
+    0
+   ],
+   "scale": 1.8,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "gate",
+    "gate_frame"
+   ]
+  },
+  {
+   "id": "z7_gate_leaf",
+   "group": "Z7Ring0",
+   "library": "blocks",
+   "asset": "causeway_slab_2x4x0.4",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    0.0,
+    0.0,
+    363.7
+   ],
+   "rotEuler": [
+    90,
+    0,
+    0
+   ],
+   "scale": 1.55,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "gate",
+    "gate_leaf",
+    "standin"
+   ],
+   "note": "slab stood on edge: 3.15 w x 6.2 h x 0.68 t, sealed leaf stand-in"
+  },
+  {
+   "id": "z7_gate_chain_0",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_chain_a",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -0.7,
+    1.0,
+    363.3
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.8,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "gate",
+    "chain"
+   ]
+  },
+  {
+   "id": "z7_gate_chain_1",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_chain_a",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    0.7,
+    1.0,
+    363.3
+   ],
+   "rotEuler": [
+    0,
+    0,
+    0
+   ],
+   "scale": 1.8,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "gate",
+    "chain"
+   ]
+  },
+  {
+   "id": "z7_gate_chaincoil",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_chain_b",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    0.4,
+    0.0,
+    362.4
+   ],
+   "rotEuler": [
+    0,
+    20,
+    0
+   ],
+   "scale": 1.3,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "gate",
+    "chain"
+   ]
+  },
+  {
+   "id": "z7_gate_skulls",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_skull_pile_c",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -2.6,
+    0.0,
+    362.5
+   ],
+   "rotEuler": [
+    0,
+    200,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "gate",
+    "bones"
+   ]
+  },
+  {
+   "id": "z7_gate_bones",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "bone_fragments_7",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    2.4,
+    0.0,
+    362.9
+   ],
+   "rotEuler": [
+    0,
+    40,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "gate",
+    "bones"
+   ]
+  },
+  {
+   "id": "z7_backdrop_a",
+   "group": "Z7Ring2",
+   "library": "camp",
+   "asset": "camp_backdrop_a",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -61.499,
+    -9.04,
+    382.95
+   ],
+   "rotEuler": [
+    0.0,
+    130.0,
+    0.0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "backdrop"
+   ]
+  },
+  {
+   "id": "z7_backdrop_b",
+   "group": "Z7Ring2",
+   "library": "camp",
+   "asset": "camp_backdrop_b",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -23.0,
+    -9.04,
+    404.0
+   ],
+   "rotEuler": [
+    0.0,
+    172.0,
+    0.0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "backdrop"
+   ]
+  },
+  {
+   "id": "z7_backdrop_c",
+   "group": "Z7Ring2",
+   "library": "camp",
+   "asset": "camp_backdrop_c",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    38.499,
+    -9.04,
+    375.95
+   ],
+   "rotEuler": [
+    0.0,
+    229.0,
+    0.0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "zone7",
+    "backdrop"
+   ]
+  },
+  {
+   "id": "z7_rock_1",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_A",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    34.608,
+    -0.312,
+    359.564
+   ],
+   "rotEuler": [
+    -0.55,
+    291.87,
+    7.61
+   ],
+   "scale": 1.17,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_rock_2",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_C",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -33.902,
+    -0.227,
+    315.549
+   ],
+   "rotEuler": [
+    2.64,
+    250.81,
+    5.55
+   ],
+   "scale": 0.88,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_rock_3",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_A",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    8.922,
+    -0.111,
+    327.534
+   ],
+   "rotEuler": [
+    -8.25,
+    56.47,
+    1.03
+   ],
+   "scale": 0.83,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_rock_4",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    30.144,
+    -0.125,
+    360.072
+   ],
+   "rotEuler": [
+    -5.43,
+    77.8,
+    0.58
+   ],
+   "scale": 0.79,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_rock_5",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    19.863,
+    -0.082,
+    363.306
+   ],
+   "rotEuler": [
+    4.96,
+    223.49,
+    7.26
+   ],
+   "scale": 0.79,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_rock_6",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_A",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    8.081,
+    -0.167,
+    370.76
+   ],
+   "rotEuler": [
+    5.1,
+    131.94,
+    -4.32
+   ],
+   "scale": 0.85,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_rock_7",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_C",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    37.623,
+    -0.228,
+    366.113
+   ],
+   "rotEuler": [
+    5.2,
+    120.9,
+    3.66
+   ],
+   "scale": 0.94,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_rock_8",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    13.731,
+    -0.215,
+    340.036
+   ],
+   "rotEuler": [
+    -1.64,
+    6.07,
+    -1.16
+   ],
+   "scale": 1.24,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_rock_9",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    30.964,
+    -0.215,
+    362.524
+   ],
+   "rotEuler": [
+    0.31,
+    97.96,
+    -3.71
+   ],
+   "scale": 1.19,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_rock_10",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_B",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    34.502,
+    -0.185,
+    365.597
+   ],
+   "rotEuler": [
+    -0.23,
+    24.91,
+    -6.98
+   ],
+   "scale": 1.1,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_far_1",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_tower_b",
+   "lodProfile": "far_ruin_world",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    64.8,
+    0.0,
+    337.5
+   ],
+   "rotEuler": [
+    0,
+    47,
+    0
+   ],
+   "scale": 1.2,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_far_2",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_stub",
+   "lodProfile": "far_ruin_world",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -68.8,
+    0.0,
+    329.5
+   ],
+   "rotEuler": [
+    0,
+    273,
+    0
+   ],
+   "scale": 1.1,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_far_3",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_arches",
+   "lodProfile": "far_ruin_world",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -36.5,
+    0.0,
+    334.5
+   ],
+   "rotEuler": [
+    0.0,
+    28.0,
+    0.0
+   ],
+   "scale": 1.0,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7_far_4",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_arches",
+   "lodProfile": "far_ruin_world",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -60.3,
+    0.0,
+    381.4
+   ],
+   "rotEuler": [
+    0,
+    267,
+    0
+   ],
+   "scale": 1.3,
+   "shadowsOff": true,
+   "tags": [
+    "zone7",
+    "far"
+   ]
+  },
+  {
+   "id": "z7d_remains_bone_fragments_7_1",
+   "group": "Z7Ring1",
+   "library": "props",
+   "asset": "bone_fragments_7",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    18.163,
+    -0.068,
+    331.726
+   ],
+   "rotEuler": [
+    3.74,
+    343.02,
+    7.79
+   ],
+   "scale": 1.19,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_remains_bone_fragments_7_2",
+   "group": "Z7Ring1",
+   "library": "props",
+   "asset": "bone_fragments_7",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -25.537,
+    -0.039,
+    318.429
+   ],
+   "rotEuler": [
+    1.87,
+    153.17,
+    3.56
+   ],
+   "scale": 0.91,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_remains_hero_skull_pile_c_3",
+   "group": "Z7Ring1",
+   "library": "props",
+   "asset": "hero_skull_pile_c",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    17.408,
+    -0.077,
+    367.478
+   ],
+   "rotEuler": [
+    -7.16,
+    339.04,
+    -1.1
+   ],
+   "scale": 1.17,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_remains_hero_skull_pile_c_4",
+   "group": "Z7Ring1",
+   "library": "props",
+   "asset": "hero_skull_pile_c",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    12.709,
+    -0.063,
+    343.591
+   ],
+   "rotEuler": [
+    -8.29,
+    328.49,
+    6.3
+   ],
+   "scale": 1.09,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_war_hero_weapon_sword_5",
+   "group": "Z7Ring1",
+   "library": "props",
+   "asset": "hero_weapon_sword",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    13.824,
+    -0.029,
+    330.506
+   ],
+   "rotEuler": [
+    -4.58,
+    131.42,
+    7.92
+   ],
+   "scale": 1.15,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_war_hero_weapon_halberd_6",
+   "group": "Z7Ring1",
+   "library": "props",
+   "asset": "hero_weapon_halberd",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    37.627,
+    -0.045,
+    353.998
+   ],
+   "rotEuler": [
+    -6.21,
+    157.63,
+    3.26
+   ],
+   "scale": 1.19,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_war_hero_chain_a_7",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_chain_a",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    11.032,
+    -0.041,
+    370.854
+   ],
+   "rotEuler": [
+    0.07,
+    12.92,
+    2.11
+   ],
+   "scale": 0.91,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_war_hero_chain_a_8",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_chain_a",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    17.14,
+    -0.044,
+    361.072
+   ],
+   "rotEuler": [
+    -0.82,
+    249.05,
+    -4.92
+   ],
+   "scale": 0.9,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_war_hero_banner_pole_9",
+   "group": "Z7Ring1",
+   "library": "props",
+   "asset": "hero_banner_pole",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    18.74,
+    -0.005,
+    364.219
+   ],
+   "rotEuler": [
+    -0.88,
+    58.55,
+    -1.34
+   ],
+   "scale": 0.95,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_ruin_mid_arch_broken_a_10",
+   "group": "Z7Ring1",
+   "library": "world_mid",
+   "asset": "mid_arch_broken_a",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    14.736,
+    -0.216,
+    336.926
+   ],
+   "rotEuler": [
+    -0.09,
+    340.26,
+    4.31
+   ],
+   "scale": 0.83,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_ruin_mid_column_cluster_11",
+   "group": "Z7Ring1",
+   "library": "world_mid",
+   "asset": "mid_column_cluster",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -28.741,
+    -0.187,
+    320.549
+   ],
+   "rotEuler": [
+    -4.16,
+    120.09,
+    -1.15
+   ],
+   "scale": 0.74,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_ruin_mid_slab_heap_a_12",
+   "group": "Z7Ring1",
+   "library": "world_mid",
+   "asset": "mid_slab_heap_a",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -22.527,
+    -0.333,
+    327.669
+   ],
+   "rotEuler": [
+    4.66,
+    74.71,
+    2.78
+   ],
+   "scale": 0.98,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_ruin_mid_buttress_stub_13",
+   "group": "Z7Ring2",
+   "library": "world_mid",
+   "asset": "mid_buttress_stub",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -31.842,
+    -0.282,
+    317.264
+   ],
+   "rotEuler": [
+    -1.59,
+    242.09,
+    0.32
+   ],
+   "scale": 0.98,
+   "shadowsOff": true,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_dead_tree_dead_tree_1b_14",
+   "group": "Z7Ring1",
+   "library": "props",
+   "asset": "dead_tree_1b",
+   "lodProfile": "trees",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    12.352,
+    -0.499,
+    364.238
+   ],
+   "rotEuler": [
+    -0.77,
+    254.29,
+    -3.64
+   ],
+   "scale": 1.47,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_dead_tree_dead_tree_1a_15",
+   "group": "Z7Ring1",
+   "library": "props",
+   "asset": "dead_tree_1a",
+   "lodProfile": "trees",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -16.535,
+    -0.321,
+    355.284
+   ],
+   "rotEuler": [
+    4.82,
+    321.83,
+    -0.12
+   ],
+   "scale": 0.97,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_dead_tree_dead_tree_1a_16",
+   "group": "Z7Ring1",
+   "library": "props",
+   "asset": "dead_tree_1a",
+   "lodProfile": "trees",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    36.965,
+    -0.247,
+    360.166
+   ],
+   "rotEuler": [
+    -3.92,
+    75.8,
+    -0.64
+   ],
+   "scale": 1.5,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_boulder_rock_boulder_D_17",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "boulders",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    15.469,
+    -0.205,
+    362.787
+   ],
+   "rotEuler": [
+    8.07,
+    188.29,
+    2.84
+   ],
+   "scale": 1.63,
+   "shadowsOff": true,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_boulder_rock_boulder_B_18",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_B",
+   "lodProfile": "boulders",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -34.097,
+    -0.274,
+    319.281
+   ],
+   "rotEuler": [
+    5.45,
+    198.21,
+    -2.31
+   ],
+   "scale": 1.33,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_boulder_rock_boulder_E_19",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "boulders",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -7.655,
+    -0.057,
+    336.068
+   ],
+   "rotEuler": [
+    4.29,
+    248.43,
+    -4.95
+   ],
+   "scale": 1.24,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "z7d_boulder_rock_boulder_E_20",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "boulders",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    8.753,
+    -0.031,
+    332.521
+   ],
+   "rotEuler": [
+    0.35,
+    240.65,
+    5.46
+   ],
+   "scale": 1.35,
+   "shadowsOff": false,
+   "tags": [
+    "ring",
+    "zone7",
+    "density"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_00",
+   "group": "Z7Ring1",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    15.972,
+    -0.158,
+    359.884
+   ],
+   "rotEuler": [
+    1.9,
+    193.21,
+    -4.8
+   ],
+   "scale": 0.434,
+   "shadowsOff": false,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_01",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -8.535,
+    -0.109,
+    324.124
+   ],
+   "rotEuler": [
+    0.71,
+    46.84,
+    2.22
+   ],
+   "scale": 0.479,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_02",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -32.98,
+    -0.112,
+    322.779
+   ],
+   "rotEuler": [
+    -0.07,
+    95.86,
+    5.87
+   ],
+   "scale": 0.444,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_03",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.312,
+    -0.114,
+    366.043
+   ],
+   "rotEuler": [
+    0.54,
+    313.43,
+    2.63
+   ],
+   "scale": 0.483,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_04",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -13.143,
+    -0.106,
+    347.244
+   ],
+   "rotEuler": [
+    -4.13,
+    303.88,
+    2.2
+   ],
+   "scale": 0.264,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_05",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -26.181,
+    -0.108,
+    318.867
+   ],
+   "rotEuler": [
+    4.05,
+    257.13,
+    -1.94
+   ],
+   "scale": 0.35,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_06",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -5.527,
+    -0.119,
+    355.916
+   ],
+   "rotEuler": [
+    0.56,
+    52.67,
+    2.74
+   ],
+   "scale": 0.433,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_07",
+   "group": "Z7Ring1",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -13.603,
+    -0.116,
+    358.048
+   ],
+   "rotEuler": [
+    -4.82,
+    244.24,
+    -0.0
+   ],
+   "scale": 0.445,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_08",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    19.674,
+    -0.111,
+    334.076
+   ],
+   "rotEuler": [
+    3.57,
+    43.4,
+    -1.58
+   ],
+   "scale": 0.279,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_09",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -32.032,
+    -0.107,
+    330.629
+   ],
+   "rotEuler": [
+    -6.27,
+    96.94,
+    0.4
+   ],
+   "scale": 0.249,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_10",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.675,
+    -0.119,
+    345.205
+   ],
+   "rotEuler": [
+    -6.01,
+    35.85,
+    4.68
+   ],
+   "scale": 0.417,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_11",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -13.238,
+    -0.134,
+    356.74
+   ],
+   "rotEuler": [
+    -1.44,
+    49.66,
+    3.93
+   ],
+   "scale": 0.34,
+   "shadowsOff": false,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_12",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    32.9,
+    -0.108,
+    355.8
+   ],
+   "rotEuler": [
+    -5.23,
+    293.12,
+    0.48
+   ],
+   "scale": 0.442,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_13",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    15.82,
+    -0.107,
+    358.359
+   ],
+   "rotEuler": [
+    -3.34,
+    118.77,
+    -4.12
+   ],
+   "scale": 0.274,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_14",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    7.409,
+    -0.118,
+    326.699
+   ],
+   "rotEuler": [
+    -2.33,
+    232.05,
+    -1.47
+   ],
+   "scale": 0.395,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_15",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -23.362,
+    -0.109,
+    322.427
+   ],
+   "rotEuler": [
+    -6.33,
+    287.89,
+    -0.92
+   ],
+   "scale": 0.479,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_16",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    18.275,
+    -0.116,
+    363.023
+   ],
+   "rotEuler": [
+    1.36,
+    135.73,
+    8.17
+   ],
+   "scale": 0.396,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_17",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -9.551,
+    -0.116,
+    319.517
+   ],
+   "rotEuler": [
+    -1.51,
+    40.89,
+    1.36
+   ],
+   "scale": 0.511,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_18",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -7.381,
+    -0.112,
+    328.588
+   ],
+   "rotEuler": [
+    2.45,
+    229.18,
+    -0.92
+   ],
+   "scale": 0.339,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_19",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    8.453,
+    -0.113,
+    341.601
+   ],
+   "rotEuler": [
+    1.81,
+    205.1,
+    3.23
+   ],
+   "scale": 0.299,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v9s_z7_market2_20",
+   "group": "Z7Ring0",
+   "library": "rocks",
+   "asset": "rock_boulder_E",
+   "lodProfile": "pebbles",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    4.985,
+    -0.106,
+    342.373
+   ],
+   "rotEuler": [
+    -0.94,
+    219.3,
+    2.76
+   ],
+   "scale": 0.336,
+   "shadowsOff": true,
+   "tags": [
+    "v9scatter",
+    "z7_market2"
+   ]
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_L0",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_B",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -101.74,
+    -3,
+    521.53
+   ],
+   "rotEuler": [
+    0.0,
+    226.6,
+    0.0
+   ],
+   "scale": 16.131,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.6584
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_L1",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -122.77,
+    -3,
+    535.4
+   ],
+   "rotEuler": [
+    0.0,
+    276.4,
+    0.0
+   ],
+   "scale": 13.875,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.7665
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_L2",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_B",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -128.7,
+    -3,
+    510.54
+   ],
+   "rotEuler": [
+    0.0,
+    265.0,
+    0.0
+   ],
+   "scale": 12.777,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.785
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_L3",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_B",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -135.96,
+    -3,
+    497.27
+   ],
+   "rotEuler": [
+    0.0,
+    322.7,
+    0.0
+   ],
+   "scale": 16.294,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.5429
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_L4",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_B",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -181.46,
+    -3,
+    512.14
+   ],
+   "rotEuler": [
+    0.0,
+    263.7,
+    0.0
+   ],
+   "scale": 14.73,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.5414
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_L5",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -207.53,
+    -3,
+    504.82
+   ],
+   "rotEuler": [
+    0.0,
+    314.4,
+    0.0
+   ],
+   "scale": 9.588,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.9117
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_L6",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -256.11,
+    -3,
+    515.67
+   ],
+   "rotEuler": [
+    0.0,
+    180.9,
+    0.0
+   ],
+   "scale": 10.169,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 1.0314
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_R0",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_B",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    99.82,
+    -3,
+    498.26
+   ],
+   "rotEuler": [
+    0.0,
+    217.8,
+    0.0
+   ],
+   "scale": 14.384,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.487
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_R1",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_B",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    117.99,
+    -3,
+    529.64
+   ],
+   "rotEuler": [
+    0.0,
+    357.5,
+    0.0
+   ],
+   "scale": 17.434,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.5457
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_R2",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_B",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    140.63,
+    -3,
+    523.6
+   ],
+   "rotEuler": [
+    0.0,
+    182.8,
+    0.0
+   ],
+   "scale": 15.89,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.507
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_R3",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    152.95,
+    -3,
+    507.26
+   ],
+   "rotEuler": [
+    0.0,
+    36.0,
+    0.0
+   ],
+   "scale": 11.868,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.7734
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_R4",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    188.88,
+    -3,
+    507.4
+   ],
+   "rotEuler": [
+    0.0,
+    257.6,
+    0.0
+   ],
+   "scale": 14.108,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.8265
+  },
+  {
+   "id": "v10sky_z7_market2_plinth_R5",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_B",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    226.81,
+    -3,
+    498.45
+   ],
+   "rotEuler": [
+    0.0,
+    292.0,
+    0.0
+   ],
+   "scale": 12.387,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.5814
+  },
+  {
+   "id": "v10sky_z7_market2_far_L0",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_A",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -138.02,
+    -10,
+    685.01
+   ],
+   "rotEuler": [
+    0.0,
+    217.8,
+    0.0
+   ],
+   "scale": 43.213,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.3748
+  },
+  {
+   "id": "v10sky_z7_market2_far_L1",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_A",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -154.16,
+    -10,
+    675.04
+   ],
+   "rotEuler": [
+    0.0,
+    264.5,
+    0.0
+   ],
+   "scale": 41.908,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.3931
+  },
+  {
+   "id": "v10sky_z7_market2_far_L2",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -196.29,
+    -10,
+    630.78
+   ],
+   "rotEuler": [
+    0.0,
+    312.9,
+    0.0
+   ],
+   "scale": 32.906,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.7695
+  },
+  {
+   "id": "v10sky_z7_market2_far_L3",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -292.51,
+    -10,
+    680.49
+   ],
+   "rotEuler": [
+    0.0,
+    30.5,
+    0.0
+   ],
+   "scale": 38.598,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.7658
+  },
+  {
+   "id": "v10sky_z7_market2_far_R0",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    130.75,
+    -10,
+    640.17
+   ],
+   "rotEuler": [
+    0.0,
+    101.8,
+    0.0
+   ],
+   "scale": 34.631,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.7441
+  },
+  {
+   "id": "v10sky_z7_market2_far_R1",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    137.56,
+    -10,
+    686.29
+   ],
+   "rotEuler": [
+    0.0,
+    202.6,
+    0.0
+   ],
+   "scale": 34.757,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.7567
+  },
+  {
+   "id": "v10sky_z7_market2_far_R2",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    190.51,
+    -10,
+    669.24
+   ],
+   "rotEuler": [
+    0.0,
+    184.1,
+    0.0
+   ],
+   "scale": 36.13,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.6692
+  },
+  {
+   "id": "v10sky_z7_market2_far_R3",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_A",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    232.81,
+    -10,
+    642.23
+   ],
+   "rotEuler": [
+    0.0,
+    289.3,
+    0.0
+   ],
+   "scale": 38.81,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "mound"
+   ],
+   "scaleYMul": 0.4597
+  },
+  {
+   "id": "v10sky_z7_market2_mound_0",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -144.78,
+    -3.0,
+    629.04
+   ],
+   "rotEuler": [
+    0.0,
+    254.6,
+    0.0
+   ],
+   "scale": 25.741,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "skirt"
+   ],
+   "scaleYMul": 0.3673
+  },
+  {
+   "id": "v10sky_z7_market2_tower_0",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_facade",
+   "lodProfile": "sky_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -144.78,
+    3.7,
+    629.04
+   ],
+   "rotEuler": [
+    0,
+    254.6,
+    0
+   ],
+   "scale": 0.685,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "tower"
+   ]
+  },
+  {
+   "id": "v10sky_z7_market2_mound_1",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    221.6,
+    -3.0,
+    617.09
+   ],
+   "rotEuler": [
+    0.0,
+    354.9,
+    0.0
+   ],
+   "scale": 17.895,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "skirt"
+   ],
+   "scaleYMul": 0.6128
+  },
+  {
+   "id": "v10sky_z7_market2_tower_1",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_arches",
+   "lodProfile": "sky_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    221.6,
+    4.53,
+    617.09
+   ],
+   "rotEuler": [
+    0,
+    354.9,
+    0
+   ],
+   "scale": 0.669,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "tower"
+   ]
+  },
+  {
+   "id": "v10sky_z7_market2_mound_2",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -162.98,
+    -3.0,
+    508.42
+   ],
+   "rotEuler": [
+    0.0,
+    356.6,
+    0.0
+   ],
+   "scale": 25.527,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "skirt"
+   ],
+   "scaleYMul": 0.4796
+  },
+  {
+   "id": "v10sky_z7_market2_tower_2",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_gatehouse",
+   "lodProfile": "sky_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -162.98,
+    5.23,
+    508.42
+   ],
+   "rotEuler": [
+    0,
+    356.6,
+    0
+   ],
+   "scale": 0.782,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "tower"
+   ]
+  },
+  {
+   "id": "v10sky_z7_market2_mound_3",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    143.92,
+    -3.0,
+    529.87
+   ],
+   "rotEuler": [
+    0.0,
+    247.3,
+    0.0
+   ],
+   "scale": 44.383,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "skirt"
+   ],
+   "scaleYMul": 0.219
+  },
+  {
+   "id": "v10sky_z7_market2_tower_3",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_viaduct",
+   "lodProfile": "sky_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    143.92,
+    3.85,
+    529.87
+   ],
+   "rotEuler": [
+    0,
+    247.3,
+    0
+   ],
+   "scale": 0.861,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "tower"
+   ]
+  },
+  {
+   "id": "v10sky_z7_market2_mound_4",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -127.98,
+    -3.0,
+    616.55
+   ],
+   "rotEuler": [
+    0.0,
+    103.6,
+    0.0
+   ],
+   "scale": 15.422,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "skirt"
+   ],
+   "scaleYMul": 0.7638
+  },
+  {
+   "id": "v10sky_z7_market2_tower_4",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_spire",
+   "lodProfile": "sky_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -127.98,
+    4.98,
+    616.55
+   ],
+   "rotEuler": [
+    0,
+    103.6,
+    0
+   ],
+   "scale": 0.706,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "tower"
+   ]
+  },
+  {
+   "id": "v10sky_z7_market2_mound_5",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    224.43,
+    -3.0,
+    647.1
+   ],
+   "rotEuler": [
+    0.0,
+    337.3,
+    0.0
+   ],
+   "scale": 27.543,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "skirt"
+   ],
+   "scaleYMul": 0.3349
+  },
+  {
+   "id": "v10sky_z7_market2_tower_5",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_tower_a",
+   "lodProfile": "sky_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    224.43,
+    3.57,
+    647.1
+   ],
+   "rotEuler": [
+    0,
+    337.3,
+    0
+   ],
+   "scale": 0.913,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "tower"
+   ]
+  },
+  {
+   "id": "v10sky_z7_market2_mound_6",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -182.78,
+    -3.0,
+    545.02
+   ],
+   "rotEuler": [
+    0.0,
+    179.1,
+    0.0
+   ],
+   "scale": 15.798,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "skirt"
+   ],
+   "scaleYMul": 0.7318
+  },
+  {
+   "id": "v10sky_z7_market2_tower_6",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_tower_b",
+   "lodProfile": "sky_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -182.78,
+    4.86,
+    545.02
+   ],
+   "rotEuler": [
+    0,
+    179.1,
+    0
+   ],
+   "scale": 0.685,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "tower"
+   ]
+  },
+  {
+   "id": "v10sky_z7_market2_mound_7",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    155.99,
+    -3.0,
+    531.65
+   ],
+   "rotEuler": [
+    0.0,
+    357.2,
+    0.0
+   ],
+   "scale": 24.229,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "skirt"
+   ],
+   "scaleYMul": 0.4769
+  },
+  {
+   "id": "v10sky_z7_market2_tower_7",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_stub",
+   "lodProfile": "sky_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    155.99,
+    4.85,
+    531.65
+   ],
+   "rotEuler": [
+    0,
+    357.2,
+    0
+   ],
+   "scale": 0.846,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "tower"
+   ]
+  },
+  {
+   "id": "v10sky_z7_market2_mound_8",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -114.71,
+    -3.0,
+    506.23
+   ],
+   "rotEuler": [
+    0.0,
+    135.2,
+    0.0
+   ],
+   "scale": 22.748,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "skirt"
+   ],
+   "scaleYMul": 0.4276
+  },
+  {
+   "id": "v10sky_z7_market2_tower_8",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_facade",
+   "lodProfile": "sky_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -114.71,
+    3.85,
+    506.23
+   ],
+   "rotEuler": [
+    0,
+    135.2,
+    0
+   ],
+   "scale": 0.585,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "tower"
+   ]
+  },
+  {
+   "id": "v10sky_z7_market2_mound_9",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    111.77,
+    -3.0,
+    618.62
+   ],
+   "rotEuler": [
+    0.0,
+    1.2,
+    0.0
+   ],
+   "scale": 20.573,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "skirt"
+   ],
+   "scaleYMul": 0.4572
+  },
+  {
+   "id": "v10sky_z7_market2_tower_9",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_arches",
+   "lodProfile": "sky_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    111.77,
+    3.67,
+    618.62
+   ],
+   "rotEuler": [
+    0,
+    1.2,
+    0
+   ],
+   "scale": 0.81,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "tower"
+   ]
+  },
+  {
+   "id": "v10sky_z7_market2_mound_10",
+   "group": "Z7Ring2",
+   "library": "rocks",
+   "asset": "rock_boulder_D",
+   "lodProfile": "sky_ridge",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -122.8,
+    -3.0,
+    554.41
+   ],
+   "rotEuler": [
+    0.0,
+    261.5,
+    0.0
+   ],
+   "scale": 21.454,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "skirt"
+   ],
+   "scaleYMul": 0.4607
+  },
+  {
+   "id": "v10sky_z7_market2_tower_10",
+   "group": "Z7Ring2",
+   "library": "world_far",
+   "asset": "far_ruin_gatehouse",
+   "lodProfile": "sky_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -122.8,
+    3.94,
+    554.41
+   ],
+   "rotEuler": [
+    0,
+    261.5,
+    0
+   ],
+   "scale": 0.626,
+   "shadowsOff": true,
+   "tags": [
+    "world",
+    "skyline",
+    "v10sky",
+    "z7_market2",
+    "tower"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_e_0",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    7.331,
+    -0.04,
+    340.863
+   ],
+   "rotEuler": [
+    -7.39,
+    46.93,
+    -0.29
+   ],
+   "scale": 0.252,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_e_1",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    3.977,
+    -0.035,
+    335.528
+   ],
+   "rotEuler": [
+    4.08,
+    37.1,
+    9.75
+   ],
+   "scale": 0.232,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_e_2",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    6.637,
+    -0.029,
+    334.549
+   ],
+   "rotEuler": [
+    -2.38,
+    135.48,
+    -8.55
+   ],
+   "scale": 0.254,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_e_3",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    10.01,
+    -0.022,
+    340.03
+   ],
+   "rotEuler": [
+    -0.59,
+    330.33,
+    -9.56
+   ],
+   "scale": 0.228,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_e_4",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    10.141,
+    -0.021,
+    337.059
+   ],
+   "rotEuler": [
+    4.38,
+    82.41,
+    -10.77
+   ],
+   "scale": 0.263,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_e_5",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    6.306,
+    -0.039,
+    340.649
+   ],
+   "rotEuler": [
+    1.58,
+    73.44,
+    4.01
+   ],
+   "scale": 0.256,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_e_6",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    5.81,
+    -0.029,
+    341.184
+   ],
+   "rotEuler": [
+    8.63,
+    106.92,
+    0.41
+   ],
+   "scale": 0.188,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_e_7",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    8.78,
+    -0.033,
+    335.472
+   ],
+   "rotEuler": [
+    -1.16,
+    136.24,
+    -11.28
+   ],
+   "scale": 0.307,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_w_0",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -8.402,
+    -0.036,
+    349.285
+   ],
+   "rotEuler": [
+    5.91,
+    75.03,
+    -4.94
+   ],
+   "scale": 0.23,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_w_1",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -9.485,
+    -0.04,
+    355.429
+   ],
+   "rotEuler": [
+    9.6,
+    155.67,
+    -4.63
+   ],
+   "scale": 0.338,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_w_2",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -6.652,
+    -0.031,
+    349.18
+   ],
+   "rotEuler": [
+    4.63,
+    193.89,
+    -3.29
+   ],
+   "scale": 0.225,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_w_3",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -10.489,
+    -0.02,
+    353.355
+   ],
+   "rotEuler": [
+    2.52,
+    161.88,
+    -1.96
+   ],
+   "scale": 0.219,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_w_4",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -10.672,
+    -0.038,
+    351.285
+   ],
+   "rotEuler": [
+    -4.02,
+    215.8,
+    -3.21
+   ],
+   "scale": 0.326,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_w_5",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -4.123,
+    -0.04,
+    349.696
+   ],
+   "rotEuler": [
+    2.99,
+    289.66,
+    -3.68
+   ],
+   "scale": 0.334,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_w_6",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -7.531,
+    -0.036,
+    355.664
+   ],
+   "rotEuler": [
+    -0.46,
+    354.87,
+    4.47
+   ],
+   "scale": 0.255,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_tent_w_7",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -4.894,
+    -0.035,
+    355.357
+   ],
+   "rotEuler": [
+    1.37,
+    128.61,
+    6.16
+   ],
+   "scale": 0.433,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_a_standin_0",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -10.327,
+    -0.019,
+    341.43
+   ],
+   "rotEuler": [
+    -10.15,
+    9.24,
+    -5.36
+   ],
+   "scale": 0.222,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_a_standin_1",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -7.334,
+    -0.04,
+    344.518
+   ],
+   "rotEuler": [
+    -4.71,
+    141.52,
+    -8.66
+   ],
+   "scale": 0.296,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_a_standin_2",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -10.407,
+    -0.033,
+    342.62
+   ],
+   "rotEuler": [
+    6.04,
+    106.65,
+    7.6
+   ],
+   "scale": 0.274,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_a_standin_3",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -5.939,
+    -0.04,
+    344.224
+   ],
+   "rotEuler": [
+    4.16,
+    110.04,
+    -11.14
+   ],
+   "scale": 0.241,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_a_standin_4",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -6.651,
+    -0.018,
+    339.913
+   ],
+   "rotEuler": [
+    4.09,
+    12.33,
+    3.61
+   ],
+   "scale": 0.222,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_a_standin_5",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -9.12,
+    -0.028,
+    344.009
+   ],
+   "rotEuler": [
+    -2.84,
+    90.79,
+    7.33
+   ],
+   "scale": 0.278,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_a_standin_6",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -4.962,
+    -0.028,
+    340.085
+   ],
+   "rotEuler": [
+    -7.07,
+    294.58,
+    -5.15
+   ],
+   "scale": 0.169,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_a_standin_7",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    -8.932,
+    -0.04,
+    339.498
+   ],
+   "rotEuler": [
+    -5.66,
+    337.81,
+    3.94
+   ],
+   "scale": 0.257,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_b_standin_0",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    8.646,
+    -0.017,
+    350.896
+   ],
+   "rotEuler": [
+    1.18,
+    272.19,
+    -4.4
+   ],
+   "scale": 0.154,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_b_standin_1",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    6.625,
+    -0.036,
+    346.301
+   ],
+   "rotEuler": [
+    7.67,
+    248.64,
+    -5.19
+   ],
+   "scale": 0.229,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_b_standin_2",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    5.908,
+    -0.037,
+    351.202
+   ],
+   "rotEuler": [
+    4.39,
+    92.36,
+    -4.48
+   ],
+   "scale": 0.287,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_b_standin_3",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    7.538,
+    -0.029,
+    351.267
+   ],
+   "rotEuler": [
+    -0.58,
+    123.68,
+    4.34
+   ],
+   "scale": 0.163,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_b_standin_4",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    9.839,
+    -0.023,
+    348.215
+   ],
+   "rotEuler": [
+    -5.65,
+    85.86,
+    5.25
+   ],
+   "scale": 0.247,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_b_standin_5",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    7.991,
+    -0.033,
+    346.755
+   ],
+   "rotEuler": [
+    -3.58,
+    249.1,
+    -6.82
+   ],
+   "scale": 0.205,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_b_standin_6",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    9.685,
+    -0.034,
+    347.085
+   ],
+   "rotEuler": [
+    7.84,
+    271.96,
+    6.53
+   ],
+   "scale": 0.222,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "v13skirt_z7_wagon_b_standin_7",
+   "group": "Z7Ring0",
+   "library": "props",
+   "asset": "hero_debris_rubble",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "platformTop",
+   "pos": [
+    9.746,
+    -0.026,
+    350.098
+   ],
+   "rotEuler": [
+    1.94,
+    34.89,
+    -3.36
+   ],
+   "scale": 0.216,
+   "sinkFraction": 0.3,
+   "shadowsOff": true,
+   "tags": [
+    "v13_skirt",
+    "contact"
+   ]
+  },
+  {
+   "id": "wow21_starfall_obelisk",
+   "group": "Z7Ring0",
+   "library": "wow21",
+   "asset": "starfall_obelisk",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -28.901,
+    -0.027,
+    324.299
+   ],
+   "rotEuler": [
+    -1.45,
+    21.61,
+    -1.68
+   ],
+   "scale": 9.165,
+   "shadowsOff": false,
+   "tags": [
+    "wow21",
+    "z7",
+    "B_landmark",
+    "z7_starfall_obelisk",
+    "natural"
+   ],
+   "collision": {
+    "kind": "cylinder"
+   },
+   "note": "WOW21 z7_starfall_obelisk | bbox centre (17.0,351.0) | placement stage 1 | converted LOD0",
+   "disabled": false,
+   "seamBaseY": -0.027,
+   "seamDy": -0.0
+  },
+  {
+   "id": "wow21_rose_window",
+   "group": "Z7Ring1",
+   "library": "wow21",
+   "asset": "rose_window",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -20.378,
+    -0.48,
+    351.943
+   ],
+   "rotEuler": [
+    -2.15,
+    101.03,
+    1.32
+   ],
+   "scale": 13.423,
+   "shadowsOff": false,
+   "tags": [
+    "wow21",
+    "z7",
+    "B_landmark",
+    "z7_rose_window_wall",
+    "natural"
+   ],
+   "collision": {
+    "kind": "box"
+   },
+   "note": "WOW21 z7_rose_window_wall | bbox centre (-20.0,344.0) | placement stage 1 | converted LOD0",
+   "disabled": false,
+   "seamBaseY": -0.48,
+   "seamDy": -0.0
+  },
+  {
+   "id": "wow21_merchant_stall",
+   "group": "Z7Ring1",
+   "library": "wow21",
+   "asset": "merchant_stall",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -25.194,
+    -0.314,
+    332.215
+   ],
+   "rotEuler": [
+    -0.81,
+    98.86,
+    0.64
+   ],
+   "scale": 7.832,
+   "shadowsOff": false,
+   "tags": [
+    "wow21",
+    "z7",
+    "C_breakup",
+    "z7_merchant_stalls",
+    "natural"
+   ],
+   "collision": {
+    "kind": "boxes"
+   },
+   "note": "WOW21 z7_merchant_stalls | bbox centre (16.0,322.0) | placement stage 1 | converted LOD0",
+   "disabled": false,
+   "seamBaseY": -0.164,
+   "seamDy": -0.15
+  }
+ ],
+ "scatter": []
 }

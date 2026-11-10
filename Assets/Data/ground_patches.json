@@ -424,6 +424,552 @@
    "affectNormal": true,
    "affectSmoothness": true,
    "affectAO": false
+  },
+  {
+   "id": "w21seam_bog_pool_a",
+   "name": "vis_w21seam_bog_pool_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_bog_pool_b",
+   "name": "vis_w21seam_bog_pool_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_caravan_wreck_a",
+   "name": "vis_w21seam_caravan_wreck_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_caravan_wreck_b",
+   "name": "vis_w21seam_caravan_wreck_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_cedar_spirit_totem_a",
+   "name": "vis_w21seam_cedar_spirit_totem_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_cedar_spirit_totem_b",
+   "name": "vis_w21seam_cedar_spirit_totem_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_chain_gantry_a",
+   "name": "vis_w21seam_chain_gantry_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_chain_gantry_b",
+   "name": "vis_w21seam_chain_gantry_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_crystal_fungus_cluster_a",
+   "name": "vis_w21seam_crystal_fungus_cluster_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_crystal_fungus_cluster_b",
+   "name": "vis_w21seam_crystal_fungus_cluster_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_drowned_colossus_head_a",
+   "name": "vis_w21seam_drowned_colossus_head_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_drowned_colossus_head_b",
+   "name": "vis_w21seam_drowned_colossus_head_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_fallen_petrified_giant_a",
+   "name": "vis_w21seam_fallen_petrified_giant_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_fallen_petrified_giant_b",
+   "name": "vis_w21seam_fallen_petrified_giant_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_hanging_lantern_tree_a",
+   "name": "vis_w21seam_hanging_lantern_tree_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_hanging_lantern_tree_b",
+   "name": "vis_w21seam_hanging_lantern_tree_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_hieroglyph_pylon_pair_a",
+   "name": "vis_w21seam_hieroglyph_pylon_pair_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_hieroglyph_pylon_pair_b",
+   "name": "vis_w21seam_hieroglyph_pylon_pair_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_hunter_gibbet_a",
+   "name": "vis_w21seam_hunter_gibbet_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_hunter_gibbet_b",
+   "name": "vis_w21seam_hunter_gibbet_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_hunting_horn_arch_a",
+   "name": "vis_w21seam_hunting_horn_arch_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_hunting_horn_arch_b",
+   "name": "vis_w21seam_hunting_horn_arch_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_lion_shrine_altar_a",
+   "name": "vis_w21seam_lion_shrine_altar_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_lion_shrine_altar_b",
+   "name": "vis_w21seam_lion_shrine_altar_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_merchant_stall_a",
+   "name": "vis_w21seam_merchant_stall_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_merchant_stall_b",
+   "name": "vis_w21seam_merchant_stall_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_pitborn_trophy_wall_a",
+   "name": "vis_w21seam_pitborn_trophy_wall_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_pitborn_trophy_wall_b",
+   "name": "vis_w21seam_pitborn_trophy_wall_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_reed_hide_canoe_wreck_a",
+   "name": "vis_w21seam_reed_hide_canoe_wreck_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_reed_hide_canoe_wreck_b",
+   "name": "vis_w21seam_reed_hide_canoe_wreck_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_rose_window_a",
+   "name": "vis_w21seam_rose_window_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_rose_window_b",
+   "name": "vis_w21seam_rose_window_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_slag_furnace_mouth_a",
+   "name": "vis_w21seam_slag_furnace_mouth_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_slag_furnace_mouth_b",
+   "name": "vis_w21seam_slag_furnace_mouth_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_spear_skull_palisade_a",
+   "name": "vis_w21seam_spear_skull_palisade_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_spear_skull_palisade_b",
+   "name": "vis_w21seam_spear_skull_palisade_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_stag_skull_totem_a",
+   "name": "vis_w21seam_stag_skull_totem_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_stag_skull_totem_b",
+   "name": "vis_w21seam_stag_skull_totem_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_starfall_obelisk_a",
+   "name": "vis_w21seam_starfall_obelisk_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_starfall_obelisk_b",
+   "name": "vis_w21seam_starfall_obelisk_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_wrecked_longship_a",
+   "name": "vis_w21seam_wrecked_longship_a",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "w21seam_wrecked_longship_b",
+   "name": "vis_w21seam_wrecked_longship_b",
+   "smoothness": 0.18,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
   }
  ],
  "zones": [
@@ -489,6 +1035,195 @@
    "yTolM": 0.4,
    "enabled": true,
    "maxRows": 100
+  },
+  {
+   "id": "w21_bog_pool",
+   "zMin": 105.6,
+   "zMax": 142.8,
+   "yExpect": -1.004,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_caravan_wreck",
+   "zMin": 55.3,
+   "zMax": 90.0,
+   "yExpect": -1.039,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_cedar_spirit_totem",
+   "zMin": 190.3,
+   "zMax": 227.8,
+   "yExpect": 0.02,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_chain_gantry",
+   "zMin": -8.5,
+   "zMax": 38.9,
+   "yExpect": -0.31,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_crystal_fungus_cluster",
+   "zMin": 156.6,
+   "zMax": 187.2,
+   "yExpect": -0.07,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_drowned_colossus_head",
+   "zMin": 25.1,
+   "zMax": 59.5,
+   "yExpect": -0.521,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_fallen_petrified_giant",
+   "zMin": 163.0,
+   "zMax": 206.3,
+   "yExpect": -0.565,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_hanging_lantern_tree",
+   "zMin": 79.5,
+   "zMax": 117.4,
+   "yExpect": -1.142,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_hieroglyph_pylon_pair",
+   "zMin": 46.9,
+   "zMax": 85.2,
+   "yExpect": -0.996,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_hunter_gibbet",
+   "zMin": 266.1,
+   "zMax": 295.6,
+   "yExpect": -0.06,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_hunting_horn_arch",
+   "zMin": 271.4,
+   "zMax": 315.2,
+   "yExpect": 0.389,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_lion_shrine_altar",
+   "zMin": 69.7,
+   "zMax": 97.3,
+   "yExpect": -0.538,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_merchant_stall",
+   "zMin": 315.5,
+   "zMax": 348.6,
+   "yExpect": -0.0,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_pitborn_trophy_wall",
+   "zMin": 3.0,
+   "zMax": 42.0,
+   "yExpect": -0.72,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_reed_hide_canoe_wreck",
+   "zMin": 20.3,
+   "zMax": 54.0,
+   "yExpect": -1.353,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_rose_window",
+   "zMin": 330.3,
+   "zMax": 373.0,
+   "yExpect": -0.0,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_slag_furnace_mouth",
+   "zMin": -12.2,
+   "zMax": 20.0,
+   "yExpect": -1.45,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_spear_skull_palisade",
+   "zMin": 125.3,
+   "zMax": 168.2,
+   "yExpect": -0.763,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_stag_skull_totem",
+   "zMin": 253.3,
+   "zMax": 278.8,
+   "yExpect": 0.161,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_starfall_obelisk",
+   "zMin": 308.7,
+   "zMax": 340.5,
+   "yExpect": 0.243,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
+  },
+  {
+   "id": "w21_wrecked_longship",
+   "zMin": 116.5,
+   "zMax": 157.4,
+   "yExpect": -1.092,
+   "yTolM": 1.0,
+   "enabled": true,
+   "maxRows": 8
   }
  ],
  "rows": [
@@ -2064,6 +2799,643 @@
    "depth": 0.0,
    "opacity": 0.36,
    "dd": 48.0
+  },
+  {
+   "id": "w21seam_bog_pool_0_0",
+   "zone": "w21_bog_pool",
+   "tex": "w21seam_bog_pool_a",
+   "x": 41.097,
+   "z": 123.805,
+   "yaw": 19.7,
+   "w": 16.34,
+   "h": 15.9,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_bog_pool_0_1",
+   "zone": "w21_bog_pool",
+   "tex": "w21seam_bog_pool_b",
+   "x": 40.444,
+   "z": 124.59,
+   "yaw": 56.7,
+   "w": 13.4,
+   "h": 13.04,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_caravan_wreck_0_0",
+   "zone": "w21_caravan_wreck",
+   "tex": "w21seam_caravan_wreck_a",
+   "x": 16.07,
+   "z": 72.299,
+   "yaw": 14.0,
+   "w": 14.04,
+   "h": 13.36,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_caravan_wreck_0_1",
+   "zone": "w21_caravan_wreck",
+   "tex": "w21seam_caravan_wreck_b",
+   "x": 15.579,
+   "z": 73.027,
+   "yaw": 51.0,
+   "w": 11.51,
+   "h": 10.96,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_cedar_spirit_totem_0_0",
+   "zone": "w21_cedar_spirit_totem",
+   "tex": "w21seam_cedar_spirit_totem_a",
+   "x": 30.192,
+   "z": 209.526,
+   "yaw": 171.1,
+   "w": 16.47,
+   "h": 15.87,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_cedar_spirit_totem_0_1",
+   "zone": "w21_cedar_spirit_totem",
+   "tex": "w21seam_cedar_spirit_totem_b",
+   "x": 30.39,
+   "z": 208.516,
+   "yaw": 28.1,
+   "w": 13.5,
+   "h": 13.02,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_chain_gantry_0_0",
+   "zone": "w21_chain_gantry",
+   "tex": "w21seam_chain_gantry_a",
+   "x": -19.745,
+   "z": 21.65,
+   "yaw": 116.6,
+   "w": 14.48,
+   "h": 4.86,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_chain_gantry_0_1",
+   "zone": "w21_chain_gantry",
+   "tex": "w21seam_chain_gantry_b",
+   "x": -20.367,
+   "z": 20.992,
+   "yaw": 153.6,
+   "w": 11.88,
+   "h": 3.98,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_chain_gantry_1_0",
+   "zone": "w21_chain_gantry",
+   "tex": "w21seam_chain_gantry_a",
+   "x": -19.836,
+   "z": 12.98,
+   "yaw": 39.2,
+   "w": 10.95,
+   "h": 4.12,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_chain_gantry_1_1",
+   "zone": "w21_chain_gantry",
+   "tex": "w21seam_chain_gantry_b",
+   "x": -20.424,
+   "z": 13.33,
+   "yaw": 76.2,
+   "w": 8.98,
+   "h": 3.38,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_chain_gantry_2_0",
+   "zone": "w21_chain_gantry",
+   "tex": "w21seam_chain_gantry_a",
+   "x": -14.248,
+   "z": 8.702,
+   "yaw": 3.1,
+   "w": 10.32,
+   "h": 3.03,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_chain_gantry_2_1",
+   "zone": "w21_chain_gantry",
+   "tex": "w21seam_chain_gantry_b",
+   "x": -14.501,
+   "z": 9.296,
+   "yaw": 40.1,
+   "w": 8.46,
+   "h": 2.48,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_crystal_fungus_cluster_0_0",
+   "zone": "w21_crystal_fungus_cluster",
+   "tex": "w21seam_crystal_fungus_cluster_a",
+   "x": -12.309,
+   "z": 172.191,
+   "yaw": 177.4,
+   "w": 9.92,
+   "h": 9.37,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_crystal_fungus_cluster_0_1",
+   "zone": "w21_crystal_fungus_cluster",
+   "tex": "w21seam_crystal_fungus_cluster_b",
+   "x": -12.124,
+   "z": 171.599,
+   "yaw": 34.4,
+   "w": 8.13,
+   "h": 7.68,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_drowned_colossus_head_0_0",
+   "zone": "w21_drowned_colossus_head",
+   "tex": "w21seam_drowned_colossus_head_a",
+   "x": -20.692,
+   "z": 42.711,
+   "yaw": 158.2,
+   "w": 13.49,
+   "h": 13.2,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_drowned_colossus_head_0_1",
+   "zone": "w21_drowned_colossus_head",
+   "tex": "w21seam_drowned_colossus_head_b",
+   "x": -20.718,
+   "z": 41.869,
+   "yaw": 15.2,
+   "w": 11.06,
+   "h": 10.82,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_fallen_petrified_giant_0_0",
+   "zone": "w21_fallen_petrified_giant",
+   "tex": "w21seam_fallen_petrified_giant_a",
+   "x": -29.967,
+   "z": 185.344,
+   "yaw": 95.1,
+   "w": 22.0,
+   "h": 22.0,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_fallen_petrified_giant_0_1",
+   "zone": "w21_fallen_petrified_giant",
+   "tex": "w21seam_fallen_petrified_giant_b",
+   "x": -32.784,
+   "z": 184.024,
+   "yaw": 132.1,
+   "w": 18.04,
+   "h": 18.04,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_hanging_lantern_tree_0_0",
+   "zone": "w21_hanging_lantern_tree",
+   "tex": "w21seam_hanging_lantern_tree_a",
+   "x": 16.601,
+   "z": 98.765,
+   "yaw": 102.9,
+   "w": 17.34,
+   "h": 16.12,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_hanging_lantern_tree_0_1",
+   "zone": "w21_hanging_lantern_tree",
+   "tex": "w21seam_hanging_lantern_tree_b",
+   "x": 15.691,
+   "z": 98.176,
+   "yaw": 139.9,
+   "w": 14.22,
+   "h": 13.22,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_hieroglyph_pylon_pair_0_0",
+   "zone": "w21_hieroglyph_pylon_pair",
+   "tex": "w21seam_hieroglyph_pylon_pair_a",
+   "x": -24.225,
+   "z": 66.069,
+   "yaw": 75.6,
+   "w": 18.18,
+   "h": 17.32,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_hieroglyph_pylon_pair_0_1",
+   "zone": "w21_hieroglyph_pylon_pair",
+   "tex": "w21seam_hieroglyph_pylon_pair_b",
+   "x": -25.356,
+   "z": 65.959,
+   "yaw": 112.6,
+   "w": 14.9,
+   "h": 14.21,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_hunter_gibbet_0_0",
+   "zone": "w21_hunter_gibbet",
+   "tex": "w21seam_hunter_gibbet_a",
+   "x": -20.88,
+   "z": 279.607,
+   "yaw": 96.5,
+   "w": 6.71,
+   "h": 4.33,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_hunter_gibbet_0_1",
+   "zone": "w21_hunter_gibbet",
+   "tex": "w21seam_hunter_gibbet_b",
+   "x": -21.255,
+   "z": 279.42,
+   "yaw": 133.5,
+   "w": 5.5,
+   "h": 3.55,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_hunter_gibbet_1_0",
+   "zone": "w21_hunter_gibbet",
+   "tex": "w21seam_hunter_gibbet_a",
+   "x": -24.928,
+   "z": 282.23,
+   "yaw": 126.8,
+   "w": 5.68,
+   "h": 4.22,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_hunter_gibbet_1_1",
+   "zone": "w21_hunter_gibbet",
+   "tex": "w21seam_hunter_gibbet_b",
+   "x": -25.122,
+   "z": 281.933,
+   "yaw": 163.8,
+   "w": 4.66,
+   "h": 3.46,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_hunting_horn_arch_0_0",
+   "zone": "w21_hunting_horn_arch",
+   "tex": "w21seam_hunting_horn_arch_a",
+   "x": 30.966,
+   "z": 294.163,
+   "yaw": 154.1,
+   "w": 22.0,
+   "h": 10.44,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_hunting_horn_arch_0_1",
+   "zone": "w21_hunting_horn_arch",
+   "tex": "w21seam_hunting_horn_arch_b",
+   "x": 30.786,
+   "z": 292.423,
+   "yaw": 11.1,
+   "w": 18.04,
+   "h": 8.56,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_lion_shrine_altar_0_0",
+   "zone": "w21_lion_shrine_altar",
+   "tex": "w21seam_lion_shrine_altar_a",
+   "x": -14.596,
+   "z": 82.109,
+   "yaw": 148.3,
+   "w": 4.28,
+   "h": 2.93,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_lion_shrine_altar_0_1",
+   "zone": "w21_lion_shrine_altar",
+   "tex": "w21seam_lion_shrine_altar_b",
+   "x": -14.642,
+   "z": 81.886,
+   "yaw": 5.3,
+   "w": 3.51,
+   "h": 2.4,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_lion_shrine_altar_1_0",
+   "zone": "w21_lion_shrine_altar",
+   "tex": "w21seam_lion_shrine_altar_a",
+   "x": -15.497,
+   "z": 85.208,
+   "yaw": 158.1,
+   "w": 3.94,
+   "h": 2.7,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_lion_shrine_altar_1_1",
+   "zone": "w21_lion_shrine_altar",
+   "tex": "w21seam_lion_shrine_altar_b",
+   "x": -15.503,
+   "z": 85.013,
+   "yaw": 15.1,
+   "w": 3.23,
+   "h": 2.21,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_merchant_stall_0_0",
+   "zone": "w21_merchant_stall",
+   "tex": "w21seam_merchant_stall_a",
+   "x": -25.151,
+   "z": 332.234,
+   "yaw": 99.2,
+   "w": 12.74,
+   "h": 7.91,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_merchant_stall_0_1",
+   "zone": "w21_merchant_stall",
+   "tex": "w21seam_merchant_stall_b",
+   "x": -25.846,
+   "z": 331.846,
+   "yaw": 136.2,
+   "w": 10.45,
+   "h": 6.49,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_pitborn_trophy_wall_0_0",
+   "zone": "w21_pitborn_trophy_wall",
+   "tex": "w21seam_pitborn_trophy_wall_a",
+   "x": 21.304,
+   "z": 22.582,
+   "yaw": 76.3,
+   "w": 18.84,
+   "h": 12.66,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_pitborn_trophy_wall_0_1",
+   "zone": "w21_pitborn_trophy_wall",
+   "tex": "w21seam_pitborn_trophy_wall_b",
+   "x": 20.133,
+   "z": 22.452,
+   "yaw": 113.3,
+   "w": 15.45,
+   "h": 10.38,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_reed_hide_canoe_wreck_0_0",
+   "zone": "w21_reed_hide_canoe_wreck",
+   "tex": "w21seam_reed_hide_canoe_wreck_a",
+   "x": 19.048,
+   "z": 37.397,
+   "yaw": 114.6,
+   "w": 13.14,
+   "h": 12.86,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_reed_hide_canoe_wreck_0_1",
+   "zone": "w21_reed_hide_canoe_wreck",
+   "tex": "w21seam_reed_hide_canoe_wreck_b",
+   "x": 18.464,
+   "z": 36.821,
+   "yaw": 151.6,
+   "w": 10.77,
+   "h": 10.55,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_rose_window_0_0",
+   "zone": "w21_rose_window",
+   "tex": "w21seam_rose_window_a",
+   "x": -20.274,
+   "z": 352.046,
+   "yaw": 100.7,
+   "w": 22.0,
+   "h": 12.4,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_rose_window_0_1",
+   "zone": "w21_rose_window",
+   "tex": "w21seam_rose_window_b",
+   "x": -21.512,
+   "z": 351.312,
+   "yaw": 137.7,
+   "w": 18.04,
+   "h": 10.17,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_slag_furnace_mouth_0_0",
+   "zone": "w21_slag_furnace_mouth",
+   "tex": "w21seam_slag_furnace_mouth_a",
+   "x": -22.983,
+   "z": 4.006,
+   "yaw": 87.7,
+   "w": 12.01,
+   "h": 11.52,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_slag_furnace_mouth_0_1",
+   "zone": "w21_slag_furnace_mouth",
+   "tex": "w21seam_slag_furnace_mouth_b",
+   "x": -23.698,
+   "z": 3.778,
+   "yaw": 124.7,
+   "w": 9.84,
+   "h": 9.44,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_spear_skull_palisade_0_0",
+   "zone": "w21_spear_skull_palisade",
+   "tex": "w21seam_spear_skull_palisade_a",
+   "x": 36.065,
+   "z": 147.196,
+   "yaw": 106.6,
+   "w": 22.0,
+   "h": 9.15,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_spear_skull_palisade_0_1",
+   "zone": "w21_spear_skull_palisade",
+   "tex": "w21seam_spear_skull_palisade_b",
+   "x": 34.911,
+   "z": 146.34,
+   "yaw": 143.6,
+   "w": 18.04,
+   "h": 7.5,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_stag_skull_totem_0_0",
+   "zone": "w21_stag_skull_totem",
+   "tex": "w21seam_stag_skull_totem_a",
+   "x": 33.388,
+   "z": 266.071,
+   "yaw": 49.9,
+   "w": 5.46,
+   "h": 2.59,
+   "depth": 0.6,
+   "opacity": 0.45,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_starfall_obelisk_0_0",
+   "zone": "w21_starfall_obelisk",
+   "tex": "w21seam_starfall_obelisk_a",
+   "x": -28.92,
+   "z": 324.337,
+   "yaw": 21.2,
+   "w": 11.23,
+   "h": 10.19,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_starfall_obelisk_0_1",
+   "zone": "w21_starfall_obelisk",
+   "tex": "w21seam_starfall_obelisk_b",
+   "x": -29.382,
+   "z": 324.866,
+   "yaw": 58.2,
+   "w": 9.21,
+   "h": 8.35,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_wrecked_longship_0_0",
+   "zone": "w21_wrecked_longship",
+   "tex": "w21seam_wrecked_longship_a",
+   "x": -25.546,
+   "z": 137.457,
+   "yaw": 121.5,
+   "w": 19.94,
+   "h": 14.06,
+   "depth": 0.6,
+   "opacity": 0.6,
+   "dd": 45.0
+  },
+  {
+   "id": "w21seam_wrecked_longship_0_1",
+   "zone": "w21_wrecked_longship",
+   "tex": "w21seam_wrecked_longship_b",
+   "x": -26.322,
+   "z": 136.482,
+   "yaw": 158.5,
+   "w": 16.35,
+   "h": 11.53,
+   "depth": 0.6,
+   "opacity": 0.55,
+   "dd": 45.0
   }
  ],
  "_v4_note": "laneV4V6 V4 T1: per-zone tint entries tex@zone, rows retargeted, colour only (depthM/liftM untouched). --off restores the backup."

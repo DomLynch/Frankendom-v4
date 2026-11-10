@@ -465,10 +465,10 @@
       "avoidRects": [
         {
           "id": "antler_arch",
-          "xMin": -10.8,
-          "xMax": 10.8,
-          "zMin": 251.9,
-          "zMax": 260.1
+          "xMin": -28.0,
+          "xMax": -6.4,
+          "zMin": 238.6,
+          "zMax": 246.8
         }
       ]
     }
