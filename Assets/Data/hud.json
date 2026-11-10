@@ -56,9 +56,9 @@
     "nameFrom": "target", "enabled": true, "w": 720, "top": 30, "sideMargin": 30,
     "nameSize": 24, "nameSmall": 18, "nameTracking": 3.2, "nameGap": 12, "titleSize": 17, "titleGap": 4, "titleColor": [0.80, 0.76, 0.68, 1.0], "showTitle": true, "cueSize": 17, "cueGap": 8,
     "showPosture": true, "showStamina": false,
-    "hp": { "h": 14, "taper": 20, "w": 400, "gap": 8 },
+    "hp": { "h": 10, "taper": 14, "w": 400, "gap": 8 },
     "stamina": { "w": 420, "h": 5, "taper": 8, "gap": 9 },
-    "posture": { "w": 420, "h": 4, "taper": 7, "gap": 9 },
+    "posture": { "w": 420, "h": 3, "taper": 5, "gap": 9 },
     "second": { "_about": "laneTWOFIGHT v1: with two enemies on the player, a small second bar (name + hp) under the boss block for the enemy that is not the target (GameHUD.DrawSecond). enabled false = nothing is drawn; a look change, needs Dom's LOOK OK to turn on. widthScale / heightScale / nameScale multiply the boss values, gap = px under the boss block.", "enabled": false, "gap": 10, "widthScale": 0.55, "heightScale": 0.6, "nameScale": 0.7, "ticks": false },
     "subtitle": {"_about": "HUDALIGN v1: the ladder title (opponents.json row title) beside the boss name. inline true = same line as the name ('PITBORN  The Gate Warden'), false = the old second line. gap px after the name; size 0 = boss.titleSize; descent = font descent as a fraction of the font size (baseline match: the subtitle box is moved by descent x (nameSmall - size) so both sit on the small-cap baseline; also used by align.nameBaseline); dy extra px (+ down). Font, italic, colour and size are the unchanged boss.title* values.", "inline": true, "gap": 14, "size": 0, "italic": true, "descent": 0.2, "dy": 0},
     "align": {"_about": "HUDALIGN v1: opponent bar placed from Joan's block (hud.json player). enabled false = old layout (boss.top, nameGap). barPivot 0 = bar tops equal, 0.5 = bar centres equal, 1 = bottoms equal; barDy extra px; nameBaseline true = the boss name sits on Joan's name baseline (the gap above the bar is then implied; with a subtitle on its own line the whole block is shifted up so the bar still lands at the target). Everything stays in the boss block, so the cue, posture bar and second-enemy bar follow.", "enabled": true, "barPivot": 0.5, "barDy": 0, "nameBaseline": true}
