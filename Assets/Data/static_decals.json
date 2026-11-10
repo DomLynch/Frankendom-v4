@@ -18,7 +18,7 @@
   "rayDownM": 6.0,
   "anisoLevel": 4.0,
   "spawnPerFrame": 6,
-  "retryPolls": 6,
+  "retryPolls": 600,
   "maxTotal": 700,
   "decalLayer": -1,
   "textures": [
@@ -278,7 +278,7 @@
       "zMin": 315.0,
       "zMax": 362.0,
       "yExpect": -0.05,
-      "yTolM": 0.4,
+      "yTolM": 0.6,
       "enabled": true,
       "maxRows": 100
     }

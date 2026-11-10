@@ -33,6 +33,66 @@
     {
       "id": "BanditMelee",
       "silver": 2
+    },
+    {
+      "id": "NpcPitGladiator",
+      "silver": 2
+    },
+    {
+      "id": "NpcChainWarden",
+      "silver": 2
+    },
+    {
+      "id": "NpcSlagCrossbowman",
+      "silver": 1
+    },
+    {
+      "id": "NpcCrocWarrior",
+      "silver": 2
+    },
+    {
+      "id": "NpcReedSkirmisher",
+      "silver": 2
+    },
+    {
+      "id": "NpcEmbalmerCultist",
+      "silver": 2
+    },
+    {
+      "id": "NpcMereRaider",
+      "silver": 2
+    },
+    {
+      "id": "NpcBogHag",
+      "silver": 2
+    },
+    {
+      "id": "NpcDrownedThane",
+      "silver": 2
+    },
+    {
+      "id": "NpcBarkSentinel",
+      "silver": 2
+    },
+    {
+      "id": "NpcCedarArcher",
+      "silver": 1
+    },
+    {
+      "id": "NpcRootDruid",
+      "silver": 2
+    },
+    {
+      "id": "NpcHuntsman",
+      "silver": 1
+    },
+    {
+      "id": "NpcHoundMaster",
+      "silver": 2
+    },
+    {
+      "id": "NpcAntlerKnight",
+      "silver": 2
     }
   ],
   "text": {

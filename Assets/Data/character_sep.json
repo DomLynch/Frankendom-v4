@@ -58,10 +58,10 @@
    "playerRimMul": 1.5,
    "enemyRimColor": [
     1.0,
-    0.566,
-    0.38
+    0.5,
+    0.36
    ],
-   "enemyRimMul": 2.4,
+   "enemyRimMul": 3.46,
    "fillColor": [
     0.675,
     0.81,
@@ -131,11 +131,11 @@
    ],
    "playerRimMul": 1.5,
    "enemyRimColor": [
-    0.38,
-    0.693,
+    0.4,
+    0.62,
     1.0
    ],
-   "enemyRimMul": 2.4,
+   "enemyRimMul": 2.83,
    "fillColor": [
     0.95,
     0.61,
@@ -169,10 +169,10 @@
    "playerRimMul": 1.5,
    "enemyRimColor": [
     1.0,
-    0.566,
-    0.38
+    0.66,
+    0.3
    ],
-   "enemyRimMul": 2.4,
+   "enemyRimMul": 3.14,
    "fillColor": [
     0.7,
     0.8,
@@ -205,11 +205,11 @@
    ],
    "playerRimMul": 1.6,
    "enemyRimColor": [
-    0.38,
-    1.0,
+    0.36,
+    0.8,
     1.0
    ],
-   "enemyRimMul": 2.6,
+   "enemyRimMul": 4.09,
    "fillColor": [
     0.95,
     0.61,

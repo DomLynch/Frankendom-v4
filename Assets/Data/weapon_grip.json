@@ -81,7 +81,159 @@
     "blendSeconds": 0.1
   },
   {
+    "name": "NpcAntlerKnight",
+    "enabled": true,
+    "hand": "RightHand",
+    "socket": "WeaponSocket_R",
+    "socketOffset": [
+      -0.013,
+      0.025,
+      0.009
+    ],
+    "socketEuler": [
+      0,
+      0,
+      20
+    ],
+    "slide": 0.05,
+    "debugLog": false,
+    "blendSeconds": 0.1
+  },
+  {
+    "name": "NpcPitGladiator",
+    "enabled": true,
+    "hand": "RightHand",
+    "socket": "WeaponSocket_R",
+    "socketOffset": [
+      -0.013,
+      0.025,
+      0.009
+    ],
+    "socketEuler": [
+      0,
+      0,
+      20
+    ],
+    "slide": 0.05,
+    "debugLog": false,
+    "blendSeconds": 0.1
+  },
+  {
+    "name": "NpcEmbalmerCultist",
+    "enabled": true,
+    "hand": "RightHand",
+    "socket": "WeaponSocket_R",
+    "socketOffset": [
+      -0.013,
+      0.025,
+      0.009
+    ],
+    "socketEuler": [
+      0,
+      0,
+      20
+    ],
+    "slide": 0.05,
+    "debugLog": false,
+    "blendSeconds": 0.1
+  },
+  {
+    "name": "NpcMereRaider",
+    "enabled": true,
+    "hand": "RightHand",
+    "socket": "WeaponSocket_R",
+    "socketOffset": [
+      -0.013,
+      0.025,
+      0.009
+    ],
+    "socketEuler": [
+      0,
+      0,
+      20
+    ],
+    "slide": 0.05,
+    "debugLog": false,
+    "blendSeconds": 0.1
+  },
+  {
+    "name": "NpcDrownedThane",
+    "enabled": true,
+    "hand": "RightHand",
+    "socket": "WeaponSocket_R",
+    "socketOffset": [
+      -0.013,
+      0.025,
+      0.009
+    ],
+    "socketEuler": [
+      0,
+      0,
+      20
+    ],
+    "slide": 0.05,
+    "debugLog": false,
+    "blendSeconds": 0.1
+  },
+  {
     "name": "BanditAssassin",
+    "enabled": true,
+    "hand": "RightHand",
+    "socket": "WeaponSocket_R",
+    "socketOffset": [
+      -0.013,
+      0.025,
+      0.009
+    ],
+    "socketEuler": [
+      0,
+      0,
+      20
+    ],
+    "slide": 0.05,
+    "debugLog": false,
+    "blendSeconds": 0.1
+  },
+  {
+    "name": "NpcChainWarden",
+    "enabled": true,
+    "hand": "RightHand",
+    "socket": "WeaponSocket_R",
+    "socketOffset": [
+      -0.013,
+      0.025,
+      0.009
+    ],
+    "socketEuler": [
+      0,
+      0,
+      20
+    ],
+    "slide": 0.05,
+    "debugLog": false,
+    "blendSeconds": 0.1
+  },
+  {
+    "name": "NpcReedSkirmisher",
+    "enabled": true,
+    "hand": "RightHand",
+    "socket": "WeaponSocket_R",
+    "socketOffset": [
+      -0.013,
+      0.025,
+      0.009
+    ],
+    "socketEuler": [
+      0,
+      0,
+      20
+    ],
+    "slide": 0.05,
+    "debugLog": false,
+    "blendSeconds": 0.1
+  },
+  {
+    "name": "NpcHoundMaster",
     "enabled": true,
     "hand": "RightHand",
     "socket": "WeaponSocket_R",

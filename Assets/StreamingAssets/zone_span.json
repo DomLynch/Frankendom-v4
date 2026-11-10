@@ -260,7 +260,7 @@
       "rings": [
         {
           "group": "Z5Ring0",
-          "rows": 30
+          "rows": 32
         },
         {
           "group": "Z5Ring1",
@@ -356,11 +356,11 @@
       "rings": [
         {
           "group": "Z7Ring0",
-          "rows": 46
+          "rows": 47
         },
         {
           "group": "Z7Ring1",
-          "rows": 18
+          "rows": 19
         },
         {
           "group": "Z7Ring2",

@@ -22,6 +22,15 @@
     {"id": "bandit_assassin_z5", "character": "BanditAssassin", "name": "HOODED CUTTHROAT", "title": "Knife in the Dark", "hpMul": 1.12, "damageMul": 0.7561, "difficulty": 6, "inLadder": false},
     {"id": "bandit_assassin_z6", "character": "BanditAssassin", "name": "HOODED CUTTHROAT", "title": "Knife in the Dark", "hpMul": 1.3846, "damageMul": 0.9361, "difficulty": 6, "inLadder": false},
     {"id": "bandit_melee_z6", "character": "BanditMelee", "name": "HOODED BRIGAND", "title": "Roadside Bandit", "hpMul": 1.3846, "damageMul": 0.819, "difficulty": 4, "inLadder": false},
-    {"id": "bandit_archer_z6", "character": "BanditArcher", "name": "HOODED ARCHER", "title": "Bowman of the Wood", "hpMul": 1.3846, "damageMul": 0.7019, "difficulty": 4, "inLadder": false}
+    {"id": "bandit_archer_z6", "character": "BanditArcher", "name": "HOODED ARCHER", "title": "Bowman of the Wood", "hpMul": 1.3846, "damageMul": 0.7019, "difficulty": 4, "inLadder": false},
+    {"id": "npcmereraider_z4", "character": "NpcMereRaider", "name": "MERE RAIDER", "title": "Axe of the Marsh", "hpMul": 1.0, "damageMul": 0.6142, "difficulty": 4, "inLadder": false},
+    {"id": "npcboghag_z4", "character": "NpcBogHag", "name": "BOG HAG", "title": "Mother of the Mere", "hpMul": 1.0, "damageMul": 0.7021, "difficulty": 6, "inLadder": false},
+    {"id": "npcdrownedthane_z4", "character": "NpcDrownedThane", "name": "DROWNED THANE", "title": "Oath-Broken Lord", "hpMul": 1.0, "damageMul": 0.6142, "difficulty": 4, "inLadder": false},
+    {"id": "npcbarksentinel_z5", "character": "NpcBarkSentinel", "name": "BARK SENTINEL", "title": "Warden of the Cedar", "hpMul": 1.12, "damageMul": 0.6615, "difficulty": 4, "inLadder": false},
+    {"id": "npccedararcher_z5", "character": "NpcCedarArcher", "name": "CEDAR ARCHER", "title": "Bow of the Grove", "hpMul": 1.12, "damageMul": 0.5669, "difficulty": 4, "inLadder": false},
+    {"id": "npcrootdruid_z5", "character": "NpcRootDruid", "name": "ROOT DRUID", "title": "Tangle-Handed Seer", "hpMul": 1.12, "damageMul": 0.7561, "difficulty": 6, "inLadder": false},
+    {"id": "npchuntsman_z6", "character": "NpcHuntsman", "name": "HUNTSMAN", "title": "Horn and Arrow", "hpMul": 1.3846, "damageMul": 0.7019, "difficulty": 4, "inLadder": false},
+    {"id": "npchoundmaster_z6", "character": "NpcHoundMaster", "name": "HOUND MASTER", "title": "Leash of the Wild Hunt", "hpMul": 1.3846, "damageMul": 0.9361, "difficulty": 6, "inLadder": false},
+    {"id": "npcantlerknight_z6", "character": "NpcAntlerKnight", "name": "ANTLER KNIGHT", "title": "Hound of the Erlking", "hpMul": 1.3846, "damageMul": 0.819, "difficulty": 4, "inLadder": false}
   ]
 }

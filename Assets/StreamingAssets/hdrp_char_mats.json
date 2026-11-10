@@ -208,6 +208,306 @@
       }
     ],
     "_note": "laneMONSTER6 (Erlking): ONE material (single mesh Erlking_Body). Dom's rule (2026-11-07): his supplied textures ship as designed at FULL 4K, source colours, nothing added to the albedo (no tint, no re-light); base = his source albedo, mr = his source roughness + baked AO in R + metallic 0, normal = his normal UDN-composited with the bake of the decimation."
+  },
+  {
+    "id": "NpcPitGladiator",
+    "glb": "Assets/Characters/NpcPitGladiator/NpcPitGladiator_combat.glb",
+    "texDir": "Assets/Characters/NpcPitGladiator/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcpitgladiator_body",
+        "maskOut": "npcpitgladiator_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcpitgladiator_body_base.jpg",
+            "normal": "npcpitgladiator_body_normal.jpg",
+            "mr": "npcpitgladiator_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcpitgladiator_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcChainWarden",
+    "glb": "Assets/Characters/NpcChainWarden/NpcChainWarden_combat.glb",
+    "texDir": "Assets/Characters/NpcChainWarden/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcchainwarden_body",
+        "maskOut": "npcchainwarden_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcchainwarden_body_base.jpg",
+            "normal": "npcchainwarden_body_normal.jpg",
+            "mr": "npcchainwarden_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcchainwarden_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcSlagCrossbowman",
+    "glb": "Assets/Characters/NpcSlagCrossbowman/NpcSlagCrossbowman_combat.glb",
+    "texDir": "Assets/Characters/NpcSlagCrossbowman/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcslagcrossbowman_body",
+        "maskOut": "npcslagcrossbowman_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcslagcrossbowman_body_base.jpg",
+            "normal": "npcslagcrossbowman_body_normal.jpg",
+            "mr": "npcslagcrossbowman_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcslagcrossbowman_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcCrocWarrior",
+    "glb": "Assets/Characters/NpcCrocWarrior/NpcCrocWarrior_combat.glb",
+    "texDir": "Assets/Characters/NpcCrocWarrior/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npccrocwarrior_body",
+        "maskOut": "npccrocwarrior_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npccrocwarrior_body_base.jpg",
+            "normal": "npccrocwarrior_body_normal.jpg",
+            "mr": "npccrocwarrior_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npccrocwarrior_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcReedSkirmisher",
+    "glb": "Assets/Characters/NpcReedSkirmisher/NpcReedSkirmisher_combat.glb",
+    "texDir": "Assets/Characters/NpcReedSkirmisher/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcreedskirmisher_body",
+        "maskOut": "npcreedskirmisher_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcreedskirmisher_body_base.jpg",
+            "normal": "npcreedskirmisher_body_normal.jpg",
+            "mr": "npcreedskirmisher_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcreedskirmisher_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcEmbalmerCultist",
+    "glb": "Assets/Characters/NpcEmbalmerCultist/NpcEmbalmerCultist_combat.glb",
+    "texDir": "Assets/Characters/NpcEmbalmerCultist/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcembalmercultist_body",
+        "maskOut": "npcembalmercultist_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcembalmercultist_body_base.jpg",
+            "normal": "npcembalmercultist_body_normal.jpg",
+            "mr": "npcembalmercultist_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcembalmercultist_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcMereRaider",
+    "glb": "Assets/Characters/NpcMereRaider/NpcMereRaider_combat.glb",
+    "texDir": "Assets/Characters/NpcMereRaider/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcmereraider_body",
+        "maskOut": "npcmereraider_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcmereraider_body_base.jpg",
+            "normal": "npcmereraider_body_normal.jpg",
+            "mr": "npcmereraider_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcmereraider_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcBogHag",
+    "glb": "Assets/Characters/NpcBogHag/NpcBogHag_combat.glb",
+    "texDir": "Assets/Characters/NpcBogHag/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcboghag_body",
+        "maskOut": "npcboghag_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcboghag_body_base.jpg",
+            "normal": "npcboghag_body_normal.jpg",
+            "mr": "npcboghag_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcboghag_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcDrownedThane",
+    "glb": "Assets/Characters/NpcDrownedThane/NpcDrownedThane_combat.glb",
+    "texDir": "Assets/Characters/NpcDrownedThane/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcdrownedthane_body",
+        "maskOut": "npcdrownedthane_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcdrownedthane_body_base.jpg",
+            "normal": "npcdrownedthane_body_normal.jpg",
+            "mr": "npcdrownedthane_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcdrownedthane_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcBarkSentinel",
+    "glb": "Assets/Characters/NpcBarkSentinel/NpcBarkSentinel_combat.glb",
+    "texDir": "Assets/Characters/NpcBarkSentinel/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcbarksentinel_body",
+        "maskOut": "npcbarksentinel_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcbarksentinel_body_base.jpg",
+            "normal": "npcbarksentinel_body_normal.jpg",
+            "mr": "npcbarksentinel_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcbarksentinel_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcCedarArcher",
+    "glb": "Assets/Characters/NpcCedarArcher/NpcCedarArcher_combat.glb",
+    "texDir": "Assets/Characters/NpcCedarArcher/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npccedararcher_body",
+        "maskOut": "npccedararcher_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npccedararcher_body_base.jpg",
+            "normal": "npccedararcher_body_normal.jpg",
+            "mr": "npccedararcher_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npccedararcher_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcRootDruid",
+    "glb": "Assets/Characters/NpcRootDruid/NpcRootDruid_combat.glb",
+    "texDir": "Assets/Characters/NpcRootDruid/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcrootdruid_body",
+        "maskOut": "npcrootdruid_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcrootdruid_body_base.jpg",
+            "normal": "npcrootdruid_body_normal.jpg",
+            "mr": "npcrootdruid_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcrootdruid_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcHuntsman",
+    "glb": "Assets/Characters/NpcHuntsman/NpcHuntsman_combat.glb",
+    "texDir": "Assets/Characters/NpcHuntsman/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npchuntsman_body",
+        "maskOut": "npchuntsman_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npchuntsman_body_base.jpg",
+            "normal": "npchuntsman_body_normal.jpg",
+            "mr": "npchuntsman_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npchuntsman_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcHoundMaster",
+    "glb": "Assets/Characters/NpcHoundMaster/NpcHoundMaster_combat.glb",
+    "texDir": "Assets/Characters/NpcHoundMaster/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npchoundmaster_body",
+        "maskOut": "npchoundmaster_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npchoundmaster_body_base.jpg",
+            "normal": "npchoundmaster_body_normal.jpg",
+            "mr": "npchoundmaster_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npchoundmaster_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcAntlerKnight",
+    "glb": "Assets/Characters/NpcAntlerKnight/NpcAntlerKnight_combat.glb",
+    "texDir": "Assets/Characters/NpcAntlerKnight/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcantlerknight_body",
+        "maskOut": "npcantlerknight_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcantlerknight_body_base.jpg",
+            "normal": "npcantlerknight_body_normal.jpg",
+            "mr": "npcantlerknight_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcantlerknight_body by stage_npc15.py"
   }
  ],
  "copy": [
@@ -427,6 +727,186 @@
     "smoothnessMin": -1,
     "smoothnessMax": 0.35,
     "materialId": 1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcPitGladiator/Mats/npcpitgladiator_body_0.mat",
+    "mask": "Assets/Characters/NpcPitGladiator/Tex/npcpitgladiator_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcChainWarden/Mats/npcchainwarden_body_0.mat",
+    "mask": "Assets/Characters/NpcChainWarden/Tex/npcchainwarden_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcSlagCrossbowman/Mats/npcslagcrossbowman_body_0.mat",
+    "mask": "Assets/Characters/NpcSlagCrossbowman/Tex/npcslagcrossbowman_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcCrocWarrior/Mats/npccrocwarrior_body_0.mat",
+    "mask": "Assets/Characters/NpcCrocWarrior/Tex/npccrocwarrior_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcReedSkirmisher/Mats/npcreedskirmisher_body_0.mat",
+    "mask": "Assets/Characters/NpcReedSkirmisher/Tex/npcreedskirmisher_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcEmbalmerCultist/Mats/npcembalmercultist_body_0.mat",
+    "mask": "Assets/Characters/NpcEmbalmerCultist/Tex/npcembalmercultist_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcMereRaider/Mats/npcmereraider_body_0.mat",
+    "mask": "Assets/Characters/NpcMereRaider/Tex/npcmereraider_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcBogHag/Mats/npcboghag_body_0.mat",
+    "mask": "Assets/Characters/NpcBogHag/Tex/npcboghag_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcDrownedThane/Mats/npcdrownedthane_body_0.mat",
+    "mask": "Assets/Characters/NpcDrownedThane/Tex/npcdrownedthane_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcBarkSentinel/Mats/npcbarksentinel_body_0.mat",
+    "mask": "Assets/Characters/NpcBarkSentinel/Tex/npcbarksentinel_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcCedarArcher/Mats/npccedararcher_body_0.mat",
+    "mask": "Assets/Characters/NpcCedarArcher/Tex/npccedararcher_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcRootDruid/Mats/npcrootdruid_body_0.mat",
+    "mask": "Assets/Characters/NpcRootDruid/Tex/npcrootdruid_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcHuntsman/Mats/npchuntsman_body_0.mat",
+    "mask": "Assets/Characters/NpcHuntsman/Tex/npchuntsman_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcHoundMaster/Mats/npchoundmaster_body_0.mat",
+    "mask": "Assets/Characters/NpcHoundMaster/Tex/npchoundmaster_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
+    "baseColor": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "mat": "Assets/Characters/NpcAntlerKnight/Mats/npcantlerknight_body_0.mat",
+    "mask": "Assets/Characters/NpcAntlerKnight/Tex/npcantlerknight_body_mask.png",
+    "sheen": "off",
+    "sheenIntensity": 1,
+    "materialId": -1,
     "baseColor": [
       1.0,
       1.0,

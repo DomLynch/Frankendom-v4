@@ -271,6 +271,426 @@
       }
     ],
     "note": "BANDITS v1 (melee, hooded): materials = HDRP/Lit rows from bandits.json import.materials in hooded mode (Tex/<tex>_base + _normal.jpg must be in Assets/Characters/<Id>/Tex first: tools install_bandit_tex.py), empty in placeholder mode. keepWeapon True (true clones the TEMPLATE's weapon socket: Pitborn's maul unless templateId says otherwise). hideNodePrefixes ['Layer_', 'Icosphere']."
+  },
+  {
+    "id": "NpcPitGladiator",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npcpitgladiator_body",
+        "mat": "Assets/Characters/NpcPitGladiator/Mats/npcpitgladiator_body_0.mat",
+        "tex": "npcpitgladiator_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (melee): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcPitGladiator/NpcPitGladiator_combat.glb by stage_npc15.py --apply; materials from Tex/npcpitgladiator_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon True (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcChainWarden",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npcchainwarden_body",
+        "mat": "Assets/Characters/NpcChainWarden/Mats/npcchainwarden_body_0.mat",
+        "tex": "npcchainwarden_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (assassin): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcChainWarden/NpcChainWarden_combat.glb by stage_npc15.py --apply; materials from Tex/npcchainwarden_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon True (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcSlagCrossbowman",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": false,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npcslagcrossbowman_body",
+        "mat": "Assets/Characters/NpcSlagCrossbowman/Mats/npcslagcrossbowman_body_0.mat",
+        "tex": "npcslagcrossbowman_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (archer): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcSlagCrossbowman/NpcSlagCrossbowman_combat.glb by stage_npc15.py --apply; materials from Tex/npcslagcrossbowman_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon False (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcCrocWarrior",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": false,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npccrocwarrior_body",
+        "mat": "Assets/Characters/NpcCrocWarrior/Mats/npccrocwarrior_body_0.mat",
+        "tex": "npccrocwarrior_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (melee): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcCrocWarrior/NpcCrocWarrior_combat.glb by stage_npc15.py --apply; materials from Tex/npccrocwarrior_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon False (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcReedSkirmisher",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npcreedskirmisher_body",
+        "mat": "Assets/Characters/NpcReedSkirmisher/Mats/npcreedskirmisher_body_0.mat",
+        "tex": "npcreedskirmisher_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (assassin): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcReedSkirmisher/NpcReedSkirmisher_combat.glb by stage_npc15.py --apply; materials from Tex/npcreedskirmisher_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon True (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcEmbalmerCultist",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npcembalmercultist_body",
+        "mat": "Assets/Characters/NpcEmbalmerCultist/Mats/npcembalmercultist_body_0.mat",
+        "tex": "npcembalmercultist_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (melee): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcEmbalmerCultist/NpcEmbalmerCultist_combat.glb by stage_npc15.py --apply; materials from Tex/npcembalmercultist_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon True (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcMereRaider",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npcmereraider_body",
+        "mat": "Assets/Characters/NpcMereRaider/Mats/npcmereraider_body_0.mat",
+        "tex": "npcmereraider_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (melee): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcMereRaider/NpcMereRaider_combat.glb by stage_npc15.py --apply; materials from Tex/npcmereraider_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon True (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcBogHag",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": false,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npcboghag_body",
+        "mat": "Assets/Characters/NpcBogHag/Mats/npcboghag_body_0.mat",
+        "tex": "npcboghag_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (assassin): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcBogHag/NpcBogHag_combat.glb by stage_npc15.py --apply; materials from Tex/npcboghag_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon False (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcDrownedThane",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npcdrownedthane_body",
+        "mat": "Assets/Characters/NpcDrownedThane/Mats/npcdrownedthane_body_0.mat",
+        "tex": "npcdrownedthane_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (melee): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcDrownedThane/NpcDrownedThane_combat.glb by stage_npc15.py --apply; materials from Tex/npcdrownedthane_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon True (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcBarkSentinel",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": false,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npcbarksentinel_body",
+        "mat": "Assets/Characters/NpcBarkSentinel/Mats/npcbarksentinel_body_0.mat",
+        "tex": "npcbarksentinel_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (melee): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcBarkSentinel/NpcBarkSentinel_combat.glb by stage_npc15.py --apply; materials from Tex/npcbarksentinel_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon False (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcCedarArcher",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": false,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npccedararcher_body",
+        "mat": "Assets/Characters/NpcCedarArcher/Mats/npccedararcher_body_0.mat",
+        "tex": "npccedararcher_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (archer): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcCedarArcher/NpcCedarArcher_combat.glb by stage_npc15.py --apply; materials from Tex/npccedararcher_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon False (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcRootDruid",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": false,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npcrootdruid_body",
+        "mat": "Assets/Characters/NpcRootDruid/Mats/npcrootdruid_body_0.mat",
+        "tex": "npcrootdruid_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (assassin): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcRootDruid/NpcRootDruid_combat.glb by stage_npc15.py --apply; materials from Tex/npcrootdruid_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon False (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcHuntsman",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": false,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npchuntsman_body",
+        "mat": "Assets/Characters/NpcHuntsman/Mats/npchuntsman_body_0.mat",
+        "tex": "npchuntsman_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (archer): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcHuntsman/NpcHuntsman_combat.glb by stage_npc15.py --apply; materials from Tex/npchuntsman_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon False (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcHoundMaster",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npchoundmaster_body",
+        "mat": "Assets/Characters/NpcHoundMaster/Mats/npchoundmaster_body_0.mat",
+        "tex": "npchoundmaster_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (assassin): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcHoundMaster/NpcHoundMaster_combat.glb by stage_npc15.py --apply; materials from Tex/npchoundmaster_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon True (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
+  },
+  {
+    "id": "NpcAntlerKnight",
+    "sourceGlb": "",
+    "sourceAnimGlb": "",
+    "templateId": "",
+    "scene": "",
+    "inPlace": false,
+    "pruneOthers": true,
+    "keepWeapon": true,
+    "rightHand": "mixamorig:RightHand",
+    "middle": "mixamorig:RightHandMiddle1",
+    "socket": "WeaponSocket_R",
+    "socketReach": 0.55,
+    "glbHeightM": 0.0,
+    "hideNodePrefixes": [],
+    "materials": [
+      {
+        "glbMaterial": "npcantlerknight_body",
+        "mat": "Assets/Characters/NpcAntlerKnight/Mats/npcantlerknight_body_0.mat",
+        "tex": "npcantlerknight_body",
+        "ext": "jpg",
+        "smoothness": 0.25,
+        "alphaClip": 0.0,
+        "doubleSided": false
+      }
+    ],
+    "note": "NPC15 (melee): sourceGlb empty, the combat glb is installed as Assets/Characters/NpcAntlerKnight/NpcAntlerKnight_combat.glb by stage_npc15.py --apply; materials from Tex/npcantlerknight_body_base.jpg + _normal.jpg (char_tex_install.py). keepWeapon True (true clones the template WeaponSocket_R onto the right hand; the loadout item is parented there by WeaponSwap)."
   }
 ],
   "_example_row_not_used": {

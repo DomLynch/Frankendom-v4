@@ -224,6 +224,345 @@
       "loadout": [
         "bandit_sword"
       ]
+    },
+    {
+      "id": "NpcPitGladiator",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Pit Gladiator",
+      "objectName": "NpcPitGladiator",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcPitGladiator.controller",
+      "modelGlb": "Assets/Characters/NpcPitGladiator/NpcPitGladiator_combat.glb",
+      "animGlb": "Assets/Characters/NpcPitGladiator/NpcPitGladiator_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcPitGladiator.mask",
+      "finisherClipFolder": "Assets/Characters/NpcPitGladiator/FinisherClips",
+      "heightM": 1.85,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (melee, pit_yard): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditMelee.",
+      "loadout": [
+        "bandit_sword"
+      ]
+    },
+    {
+      "id": "NpcChainWarden",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Chain Warden",
+      "objectName": "NpcChainWarden",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcChainWarden.controller",
+      "modelGlb": "Assets/Characters/NpcChainWarden/NpcChainWarden_combat.glb",
+      "animGlb": "Assets/Characters/NpcChainWarden/NpcChainWarden_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcChainWarden.mask",
+      "finisherClipFolder": "Assets/Characters/NpcChainWarden/FinisherClips",
+      "heightM": 1.85,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (assassin, pit_yard): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditAssassin.",
+      "loadout": [
+        "bandit_axe"
+      ]
+    },
+    {
+      "id": "NpcSlagCrossbowman",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Slag Crossbowman",
+      "objectName": "NpcSlagCrossbowman",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcSlagCrossbowman.controller",
+      "modelGlb": "Assets/Characters/NpcSlagCrossbowman/NpcSlagCrossbowman_combat.glb",
+      "animGlb": "Assets/Characters/NpcSlagCrossbowman/NpcSlagCrossbowman_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcSlagCrossbowman.mask",
+      "finisherClipFolder": "Assets/Characters/NpcSlagCrossbowman/FinisherClips",
+      "heightM": 1.75,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (archer, pit_yard): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditArcher.",
+      "loadout": []
+    },
+    {
+      "id": "NpcCrocWarrior",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Croc Warrior",
+      "objectName": "NpcCrocWarrior",
+      "weapon": "claws",
+      "controller": "Assets/Characters/NpcCrocWarrior.controller",
+      "modelGlb": "Assets/Characters/NpcCrocWarrior/NpcCrocWarrior_combat.glb",
+      "animGlb": "Assets/Characters/NpcCrocWarrior/NpcCrocWarrior_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcCrocWarrior.mask",
+      "finisherClipFolder": "Assets/Characters/NpcCrocWarrior/FinisherClips",
+      "heightM": 1.9,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (melee, sobek_reach): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states + Grendel claw states. UNMEASURED: grip, foot, head clamp rows are clones of BanditMelee.",
+      "loadout": [
+        "pitborn_claws"
+      ]
+    },
+    {
+      "id": "NpcReedSkirmisher",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Reed Skirmisher",
+      "objectName": "NpcReedSkirmisher",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcReedSkirmisher.controller",
+      "modelGlb": "Assets/Characters/NpcReedSkirmisher/NpcReedSkirmisher_combat.glb",
+      "animGlb": "Assets/Characters/NpcReedSkirmisher/NpcReedSkirmisher_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcReedSkirmisher.mask",
+      "finisherClipFolder": "Assets/Characters/NpcReedSkirmisher/FinisherClips",
+      "heightM": 1.75,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (assassin, sobek_reach): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditAssassin.",
+      "loadout": [
+        "boar_spear"
+      ]
+    },
+    {
+      "id": "NpcEmbalmerCultist",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Embalmer Cultist",
+      "objectName": "NpcEmbalmerCultist",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcEmbalmerCultist.controller",
+      "modelGlb": "Assets/Characters/NpcEmbalmerCultist/NpcEmbalmerCultist_combat.glb",
+      "animGlb": "Assets/Characters/NpcEmbalmerCultist/NpcEmbalmerCultist_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcEmbalmerCultist.mask",
+      "finisherClipFolder": "Assets/Characters/NpcEmbalmerCultist/FinisherClips",
+      "heightM": 1.75,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (melee, sobek_reach): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditMelee.",
+      "loadout": [
+        "bandit_dagger"
+      ]
+    },
+    {
+      "id": "NpcMereRaider",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Mere Raider",
+      "objectName": "NpcMereRaider",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcMereRaider.controller",
+      "modelGlb": "Assets/Characters/NpcMereRaider/NpcMereRaider_combat.glb",
+      "animGlb": "Assets/Characters/NpcMereRaider/NpcMereRaider_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcMereRaider.mask",
+      "finisherClipFolder": "Assets/Characters/NpcMereRaider/FinisherClips",
+      "heightM": 1.8,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (melee, grendel): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditMelee.",
+      "loadout": [
+        "bandit_axe"
+      ]
+    },
+    {
+      "id": "NpcBogHag",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Bog Hag",
+      "objectName": "NpcBogHag",
+      "weapon": "claws",
+      "controller": "Assets/Characters/NpcBogHag.controller",
+      "modelGlb": "Assets/Characters/NpcBogHag/NpcBogHag_combat.glb",
+      "animGlb": "Assets/Characters/NpcBogHag/NpcBogHag_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcBogHag.mask",
+      "finisherClipFolder": "Assets/Characters/NpcBogHag/FinisherClips",
+      "heightM": 1.7,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (assassin, grendel): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states + Grendel claw states. UNMEASURED: grip, foot, head clamp rows are clones of BanditAssassin.",
+      "loadout": [
+        "pitborn_claws"
+      ]
+    },
+    {
+      "id": "NpcDrownedThane",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Drowned Thane",
+      "objectName": "NpcDrownedThane",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcDrownedThane.controller",
+      "modelGlb": "Assets/Characters/NpcDrownedThane/NpcDrownedThane_combat.glb",
+      "animGlb": "Assets/Characters/NpcDrownedThane/NpcDrownedThane_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcDrownedThane.mask",
+      "finisherClipFolder": "Assets/Characters/NpcDrownedThane/FinisherClips",
+      "heightM": 1.9,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (melee, grendel): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditMelee.",
+      "loadout": [
+        "bandit_sword"
+      ]
+    },
+    {
+      "id": "NpcBarkSentinel",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Bark Sentinel",
+      "objectName": "NpcBarkSentinel",
+      "weapon": "claws",
+      "controller": "Assets/Characters/NpcBarkSentinel.controller",
+      "modelGlb": "Assets/Characters/NpcBarkSentinel/NpcBarkSentinel_combat.glb",
+      "animGlb": "Assets/Characters/NpcBarkSentinel/NpcBarkSentinel_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcBarkSentinel.mask",
+      "finisherClipFolder": "Assets/Characters/NpcBarkSentinel/FinisherClips",
+      "heightM": 2.1,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (melee, z5_humbaba): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states + Grendel claw states. UNMEASURED: grip, foot, head clamp rows are clones of BanditMelee.",
+      "loadout": [
+        "pitborn_claws"
+      ]
+    },
+    {
+      "id": "NpcCedarArcher",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Cedar Archer",
+      "objectName": "NpcCedarArcher",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcCedarArcher.controller",
+      "modelGlb": "Assets/Characters/NpcCedarArcher/NpcCedarArcher_combat.glb",
+      "animGlb": "Assets/Characters/NpcCedarArcher/NpcCedarArcher_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcCedarArcher.mask",
+      "finisherClipFolder": "Assets/Characters/NpcCedarArcher/FinisherClips",
+      "heightM": 1.8,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (archer, z5_humbaba): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditArcher.",
+      "loadout": []
+    },
+    {
+      "id": "NpcRootDruid",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Root Druid",
+      "objectName": "NpcRootDruid",
+      "weapon": "claws",
+      "controller": "Assets/Characters/NpcRootDruid.controller",
+      "modelGlb": "Assets/Characters/NpcRootDruid/NpcRootDruid_combat.glb",
+      "animGlb": "Assets/Characters/NpcRootDruid/NpcRootDruid_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcRootDruid.mask",
+      "finisherClipFolder": "Assets/Characters/NpcRootDruid/FinisherClips",
+      "heightM": 1.75,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (assassin, z5_humbaba): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states + Grendel claw states. UNMEASURED: grip, foot, head clamp rows are clones of BanditAssassin.",
+      "loadout": [
+        "pitborn_claws"
+      ]
+    },
+    {
+      "id": "NpcHuntsman",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Huntsman",
+      "objectName": "NpcHuntsman",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcHuntsman.controller",
+      "modelGlb": "Assets/Characters/NpcHuntsman/NpcHuntsman_combat.glb",
+      "animGlb": "Assets/Characters/NpcHuntsman/NpcHuntsman_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcHuntsman.mask",
+      "finisherClipFolder": "Assets/Characters/NpcHuntsman/FinisherClips",
+      "heightM": 1.8,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (archer, z6_erlking): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditArcher.",
+      "loadout": []
+    },
+    {
+      "id": "NpcHoundMaster",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Hound Master",
+      "objectName": "NpcHoundMaster",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcHoundMaster.controller",
+      "modelGlb": "Assets/Characters/NpcHoundMaster/NpcHoundMaster_combat.glb",
+      "animGlb": "Assets/Characters/NpcHoundMaster/NpcHoundMaster_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcHoundMaster.mask",
+      "finisherClipFolder": "Assets/Characters/NpcHoundMaster/FinisherClips",
+      "heightM": 1.8,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (assassin, z6_erlking): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditAssassin.",
+      "loadout": [
+        "bandit_dagger"
+      ]
+    },
+    {
+      "id": "NpcAntlerKnight",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Antler Knight",
+      "objectName": "NpcAntlerKnight",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcAntlerKnight.controller",
+      "modelGlb": "Assets/Characters/NpcAntlerKnight/NpcAntlerKnight_combat.glb",
+      "animGlb": "Assets/Characters/NpcAntlerKnight/NpcAntlerKnight_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcAntlerKnight.mask",
+      "finisherClipFolder": "Assets/Characters/NpcAntlerKnight/FinisherClips",
+      "heightM": 1.9,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (melee, z6_erlking): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditMelee.",
+      "loadout": [
+        "bandit_sword"
+      ]
     }
   ],
   "scene": "Assets/Scenes/HadesSlice.unity",

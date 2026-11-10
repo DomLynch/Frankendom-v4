@@ -1,0 +1,2 @@
+
+00:04 pool-laneS1 READY C:\Users\dom12\Documents\unity_test_hdrp\_agents\laneS1\READY.md - THE GROUND BITE (surprise, zone 2) STAGED DARK, nothing applied: CODE+HOT (new GroundBite.cs + SurpriseGate.cs + 2 one-line hooks in BurrowCroc.cs / ZoneRuntime.cs), Roslyn 0 errors with and without FRANKEN_NO_HARNESS, hc_gate PASS, apply/--off rehearsed byte-identical; harness -s1:0[w][d][f], proof rows in laneS1\proof; UNPROVEN in Unity; audio missing: jaw snap, sand burst, croc hiss, reed rustle.

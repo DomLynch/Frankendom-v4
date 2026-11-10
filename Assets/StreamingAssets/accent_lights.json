@@ -4,7 +4,7 @@
  "log": true,
  "allowShadow": false,
  "shadowResolution": 1024,
- "maxLive": 6,
+ "maxLive": 11,
  "maxShadowLive": 1,
  "pollSeconds": 0.25,
  "waitFrames": 20,
@@ -983,7 +983,7 @@
    "aimPitchDeg": 90.0,
    "aimYawDeg": 112.6,
    "kelvin": 3500,
-   "candela": 45000,
+   "candela": 80400,
    "range": 7.0,
    "spotAngleDeg": 85.0,
    "innerPct": 45.0,
@@ -1228,6 +1228,653 @@
     0.95,
     0.78
    ]
+  },
+  {
+   "name": "AccL9_Z4_BogGlow",
+   "zone": "z4",
+   "type": "point",
+   "pos": [
+    19.5,
+    1.03,
+    147.5
+   ],
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 0.0,
+   "kelvin": 16000,
+   "candela": 11000,
+   "range": 12.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "",
+   "volumetricDimmer": 0.8,
+   "activeRadiusM": 42.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_bog_pool (water centre 19.5, 147.5)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    0.55,
+    0.88,
+    0.86
+   ],
+   "_look9": "cold foxfire glow in the lying mist at the pool, I = target*K/(a*sigma*L)*r^2/phase-free single scatter"
+  },
+  {
+   "name": "AccL9_Z4_BogPool",
+   "zone": "z4",
+   "type": "spot",
+   "pos": [
+    17.33,
+    5.83,
+    143.56
+   ],
+   "aimPitchDeg": 49.67,
+   "aimYawDeg": 28.78,
+   "kelvin": 16000,
+   "candela": 150000,
+   "range": 16.0,
+   "spotAngleDeg": 70.0,
+   "innerPct": 40.0,
+   "cookie": "accent_pool_cookie",
+   "volumetricDimmer": 0.3,
+   "activeRadiusM": 42.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wow21_bog_pool, camera side",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    0.55,
+    0.88,
+    0.86
+   ],
+   "_look9": "pool of cold light on the water and the dead trees from the camera side, off the trees' crowns"
+  },
+  {
+   "name": "AccL9_Z2_MoonGlint",
+   "zone": "z2",
+   "type": "spot",
+   "pos": [
+    -7.49,
+    2.05,
+    57.79
+   ],
+   "aimPitchDeg": 13.11,
+   "aimYawDeg": 157.17,
+   "kelvin": 14000,
+   "candela": 6000,
+   "range": 22.0,
+   "spotAngleDeg": 14.0,
+   "innerPct": 25.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 40.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "wet patch at (-4.0, 49.5)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    0.62,
+    0.82,
+    1.0
+   ],
+   "_look9": "mirror geometry: light on the reflected view ray (camera 2.4 m up, 40 m, ground point P, light 11 m beyond P at height s*slope) so the specular lobe of the wet patch shows the moon-cold glint at P; thin cone so it does not touch the boss (boss stand 9 m away, off axis)"
+  },
+  {
+   "name": "AccL9_Z5_Shaft",
+   "zone": "z5",
+   "type": "spot",
+   "pos": [
+    14.0,
+    13.0,
+    230.0
+   ],
+   "aimPitchDeg": 33.8,
+   "aimYawDeg": 214.51,
+   "kelvin": 3400,
+   "candela": 300000,
+   "range": 34.0,
+   "spotAngleDeg": 20.0,
+   "innerPct": 55.0,
+   "cookie": "",
+   "volumetricDimmer": 1.0,
+   "activeRadiusM": 60.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "humbaba_cedar low branch",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    1.0,
+    0.86,
+    0.45
+   ],
+   "_look9": "green-gold shaft from the cedar's low branch (humbaba_cedar at 18.5, 239.5, scale 38) across the clearing to the boss's left front; non-shadow cone in local fog"
+  },
+  {
+   "name": "AccL9_Z2_BossKick",
+   "zone": "z2",
+   "type": "spot",
+   "pos": [
+    4.5,
+    3.15,
+    56.5
+   ],
+   "aimPitchDeg": 15.68,
+   "aimYawDeg": 232.13,
+   "kelvin": 2600,
+   "candela": 31100,
+   "range": 12.0,
+   "spotAngleDeg": 80.0,
+   "innerPct": 50.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 64,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "boss stand (0, 53)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    1.0,
+    0.5,
+    0.36
+   ],
+   "_look9": "boss kicker: behind-and-side backlight on the enemy light layer only, colour = the zone complement; target edge display 0.055 on albedo 0.20 at cos 0.79"
+  },
+  {
+   "name": "AccL9_Z4_BossKick",
+   "zone": "z4",
+   "type": "spot",
+   "pos": [
+    -4.5,
+    3.15,
+    128.5
+   ],
+   "aimPitchDeg": 15.68,
+   "aimYawDeg": 127.87,
+   "kelvin": 12000,
+   "candela": 25400,
+   "range": 12.0,
+   "spotAngleDeg": 80.0,
+   "innerPct": 50.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 64,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "boss stand (0, 125)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    0.4,
+    0.62,
+    1.0
+   ],
+   "_look9": "boss kicker: behind-and-side backlight on the enemy light layer only, colour = the zone complement; target edge display 0.045 on albedo 0.20 at cos 0.79"
+  },
+  {
+   "name": "AccL9_Z5_BossKick",
+   "zone": "z5",
+   "type": "spot",
+   "pos": [
+    4.5,
+    3.1,
+    214.5
+   ],
+   "aimPitchDeg": 15.68,
+   "aimYawDeg": 232.13,
+   "kelvin": 3400,
+   "candela": 28300,
+   "range": 12.0,
+   "spotAngleDeg": 80.0,
+   "innerPct": 50.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 64,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "boss stand (0, 211)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    1.0,
+    0.66,
+    0.3
+   ],
+   "_look9": "boss kicker: behind-and-side backlight on the enemy light layer only, colour = the zone complement; target edge display 0.050 on albedo 0.20 at cos 0.79"
+  },
+  {
+   "name": "AccL9_Z6_BossKick",
+   "zone": "z6",
+   "type": "spot",
+   "pos": [
+    -4.5,
+    3.1,
+    289.5
+   ],
+   "aimPitchDeg": 15.68,
+   "aimYawDeg": 127.87,
+   "kelvin": 12000,
+   "candela": 36700,
+   "range": 12.0,
+   "spotAngleDeg": 80.0,
+   "innerPct": 50.0,
+   "cookie": "",
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 64,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 5.1,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "boss stand (0, 286)",
+   "bossDistM": null,
+   "fpsEstMs": 0.15,
+   "colorRGB": [
+    0.36,
+    0.8,
+    1.0
+   ],
+   "_look9": "boss kicker: behind-and-side backlight on the enemy light layer only, colour = the zone complement; target edge display 0.065 on albedo 0.20 at cos 0.79"
+  },
+  {
+   "name": "L10_Z1_FurnaceEntry",
+   "zone": "z1",
+   "type": "spot",
+   "pos": [
+    8.5,
+    4.2,
+    6.0
+   ],
+   "kelvin": 1800,
+   "candela": 42000,
+   "range": 12.0,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 7.7,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "L10 spot: furnace-orange pool on the yard shoulder at the arena entrance (palette: slag furnace 1800 K, same as AccW21S furnace)",
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 0.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "accent_pool_cookie"
+  },
+  {
+   "name": "L10_Z1_FurnaceRim",
+   "zone": "z1",
+   "type": "point",
+   "pos": [
+    -2.5,
+    4.0,
+    23.0
+   ],
+   "kelvin": 2100,
+   "candela": 16000,
+   "range": 9.0,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65503,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 7.7,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "L10 rim: ember back-light behind Pitborn (boss stand z 16)"
+  },
+  {
+   "name": "L10_Z2_LanternEntry",
+   "zone": "z2",
+   "type": "spot",
+   "pos": [
+    7.5,
+    4.5,
+    40.0
+   ],
+   "kelvin": 2300,
+   "candela": 45000,
+   "range": 12.0,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 7.7,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "L10 spot: warm lantern pool on the moat edge at the entrance: amber against the teal grade",
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 0.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "accent_pool_cookie"
+  },
+  {
+   "name": "L10_Z2_MoonRim",
+   "zone": "z2",
+   "type": "point",
+   "pos": [
+    2.5,
+    4.0,
+    60.0
+   ],
+   "kelvin": 7200,
+   "candela": 14000,
+   "range": 9.0,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 7.7,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "L10 rim: cold rim behind Sobek (boss stand z 53), reads on the water"
+  },
+  {
+   "name": "L10_Z3_CampLantern",
+   "zone": "z3",
+   "type": "spot",
+   "pos": [
+    -8.5,
+    4.2,
+    79.0
+   ],
+   "kelvin": 2600,
+   "candela": 38000,
+   "range": 11.0,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 7.7,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "L10 spot: camp approach lantern (no boss in z3, one row only)",
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 0.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "accent_pool_cookie"
+  },
+  {
+   "name": "L10_Z4_MarshEntry",
+   "zone": "z4",
+   "type": "spot",
+   "pos": [
+    -8.5,
+    5.5,
+    117.0
+   ],
+   "kelvin": 9500,
+   "candela": 48000,
+   "range": 12.0,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 7.7,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "L10 spot: cold marsh-lantern pool, entrance of the hall, complementary to the sepia grade",
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 0.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "accent_pool_cookie"
+  },
+  {
+   "name": "L10_Z4_FoxfireRim",
+   "zone": "z4",
+   "type": "point",
+   "pos": [
+    2.5,
+    4.5,
+    143.0
+   ],
+   "kelvin": 7800,
+   "candela": 15000,
+   "range": 9.0,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 7.7,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "L10 rim: pale back-light behind Grendel (boss stand z 134)"
+  },
+  {
+   "name": "L10_Z5_FungusEntry",
+   "zone": "z5",
+   "type": "spot",
+   "pos": [
+    -8.5,
+    4.2,
+    194.0
+   ],
+   "kelvin": 7000,
+   "candela": 42000,
+   "range": 12.0,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 7.7,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "L10 spot: cold fungus glow at the cedar glade entrance against the green grade",
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 0.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "accent_pool_cookie"
+  },
+  {
+   "name": "L10_Z5_AmberRim",
+   "zone": "z5",
+   "type": "point",
+   "pos": [
+    2.5,
+    4.0,
+    218.0
+   ],
+   "kelvin": 1900,
+   "candela": 16000,
+   "range": 9.0,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 7.7,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "L10 rim: amber back-light behind Humbaba (boss stand z 211)"
+  },
+  {
+   "name": "L10_Z6_PaleEntry",
+   "zone": "z6",
+   "type": "spot",
+   "pos": [
+    8.5,
+    4.5,
+    267.0
+   ],
+   "kelvin": 8500,
+   "candela": 45000,
+   "range": 12.0,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 7.7,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "L10 spot: pale cold pool at the court entrance against the red grade",
+   "aimPitchDeg": 90.0,
+   "aimYawDeg": 0.0,
+   "spotAngleDeg": 85.0,
+   "innerPct": 45.0,
+   "cookie": "accent_pool_cookie"
+  },
+  {
+   "name": "L10_Z6_EmberRim",
+   "zone": "z6",
+   "type": "point",
+   "pos": [
+    -2.5,
+    4.0,
+    293.0
+   ],
+   "kelvin": 2200,
+   "candela": 16000,
+   "range": 9.0,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 34.0,
+   "layerMask": 65439,
+   "shadow": false,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.0,
+    "frequency": 1.0,
+    "octaves": 1,
+    "seed": 7.7,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   },
+   "anchor": "L10 rim: ember back-light behind the Erlking (boss stand z 286)"
   }
  ]
 }

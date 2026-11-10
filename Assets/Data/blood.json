@@ -84,13 +84,103 @@
     "flash": false
   },
   {
+    "match": "NpcAntlerKnight",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcPitGladiator",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcCrocWarrior",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcEmbalmerCultist",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcMereRaider",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcDrownedThane",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcBarkSentinel",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
     "match": "BanditAssassin",
     "bloodScale": 1.0,
     "sparks": false,
     "flash": false
   },
   {
+    "match": "NpcChainWarden",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcReedSkirmisher",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcBogHag",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcRootDruid",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcHoundMaster",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
     "match": "BanditArcher",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcSlagCrossbowman",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcCedarArcher",
+    "bloodScale": 1.0,
+    "sparks": false,
+    "flash": false
+  },
+  {
+    "match": "NpcHuntsman",
     "bloodScale": 1.0,
     "sparks": false,
     "flash": false

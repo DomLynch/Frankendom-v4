@@ -23,7 +23,7 @@ using UnityEngine;
 [Serializable] public class HbHit { public float halfLengthM = 0.9f, radiusM = 0.45f, reachPadM = 0.45f, assistArcDeg = 25f; public bool whileEngaged = false; }
 [Serializable] public class HbSkit
 {
-    public bool onHit = true; public float fleeMps = 8f, fleeJitter = 0.1f, accelMps2 = 9f, decelMps2 = 7f, turnDegPerS = 240f, startleS = 0.25f, startlePitchDeg = 10f, panicMinS = 3.5f, panicMaxS = 6f, fleeMinM = 16f, calmPauseS = 2.5f, alignDeg = 60f, awayJitterDeg = 25f;
+    public bool onHit = true; public float fleeMps = 8f, fleeJitter = 0.1f, accelMps2 = 9f, decelMps2 = 7f, turnDegPerS = 240f, startleS = 0.25f, startlePitchDeg = 10f, panicMinS = 3.5f, panicMaxS = 6f, fleeMinM = 16f, calmPauseS = 2.5f, alignDeg = 60f, awayJitterDeg = 25f, spaceM = 3f, spaceMps = 2.2f, mountSinkM = 0.07f;   /* MOUNTWALK v1 */
     public float nearPadM = 6f, lookAheadM = 5f, clearanceM = 1.4f, steerEveryS = 0.1f, fanStepDeg = 20f, fanMaxDeg = 140f, boundsMarginM = 8f, groundCheckStepM = 2.5f;
 }
 [Serializable] public class HbMove { public float rigScanS = 0.25f, rigRescanS = 1f, walkAccelMps2 = 4f, walkDecelMps2 = 5f, turnStepMpsPerDeg = 0.012f, standMps = 0.05f, settleMps = 0.4f, gaitBlendS = 0.3f, hysteresisMps = 0.4f, reach = 0.985f, bodyDropRateMps = 12f, maxDropM = 0.45f, animFarM = 70f, boundsPadM = 0.6f, resumeGapS = 1.5f, groundSampleM = 0f; }
@@ -129,6 +129,7 @@ public sealed partial class AmbientHorses
     void HbStroll(Horse h, HbHorse b, AhHerd herd, HerdState s, HbCfg C, DuelFighter p, ref float desired, ref float wantYaw)
     {
         var G = K.gait; float dt = Time.deltaTime;
+        if (HbSpace(h, p, C, ref desired, ref wantYaw)) return;   /* MOUNTWALK v1: personal space */
         if (h.walking)
         {
             var d = h.target - h.pos; d.y = 0f; float dist = d.magnitude;
@@ -177,7 +178,7 @@ public sealed partial class AmbientHorses
             for (int q = 1; q <= steps && ground; q++) { var pt = h.pos + dir * (k.lookAheadM * q / steps); if (!Ground(pt.x, pt.z, h.pos.y, out gy)) ground = false; }
             if (!ground) continue; best = yaw; found = true;
         }
-        if (!found) { b.st = HbS.Calm; b.calmAt = 0f; Debug.Log("[HorseBehav] flee " + h.go.name + " boxed in (no clear heading), calming down"); return; }
+        if (!found) { float rb; if (HbSteerRelax(h, b, herd, C, out rb)) { b.fleeYaw = rb; if (C.debugLog || hbDebug) Debug.Log("[HorseBehav] flee " + h.go.name + " no clear heading, best ground heading " + rb.ToString("F0")); return; } b.st = HbS.Calm; b.calmAt = 0f; Debug.Log("[HorseBehav] flee " + h.go.name + " boxed in (no ground ahead on any heading), calming down"); return; }   /* MOUNTWALK v1 */
         if (Mathf.Abs(Mathf.DeltaAngle(best, b.fleeYaw)) > HbEps && (C.debugLog || hbDebug)) Debug.Log("[HorseBehav] steer " + h.go.name + " yaw " + b.fleeYaw.ToString("F0") + " -> " + best.ToString("F0") + " (circles near " + hbNear.Count + ")");
         b.fleeYaw = best;
     }

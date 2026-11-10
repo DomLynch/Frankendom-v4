@@ -57,6 +57,10 @@
    "name": "wow21",
    "pattern": "Assets/Env/Props/wow21/{asset}_LOD{lod}.glb",
    "status": "WOW21 hero props, converted LOD files from laneWOW21LOD; a missing LODn is skipped by PropsLayout.PlaceOne"
+  },
+  {
+   "name": "camps",
+   "pattern": "Assets/Env/Props/camps/{asset}_LOD{lod}.glb"
   }
  ],
  "lodProfiles": [
@@ -426,7 +430,10 @@
     "zone7",
     "camp",
     "banner"
-   ]
+   ],
+   "disabled": true,
+   "camps2Off": "replaced",
+   "camps2ReplacedBy": "camps2_c2_banner_armour"
   },
   {
    "id": "z7_banner_R",
@@ -452,7 +459,10 @@
     "zone7",
     "camp",
     "banner"
-   ]
+   ],
+   "disabled": true,
+   "camps2Off": "replaced",
+   "camps2ReplacedBy": "camps2_c2_banner_blade"
   },
   {
    "id": "z7_firepit",
@@ -506,7 +516,10 @@
     "camp",
     "bench"
    ],
-   "sinkFraction": 0.02
+   "sinkFraction": 0.02,
+   "disabled": true,
+   "camps2Off": "replaced",
+   "camps2ReplacedBy": "camps2_c2_bench_a"
   },
   {
    "id": "z7_bench_e",
@@ -533,7 +546,10 @@
     "camp",
     "bench"
    ],
-   "sinkFraction": 0.02
+   "sinkFraction": 0.02,
+   "disabled": true,
+   "camps2Off": "replaced",
+   "camps2ReplacedBy": "camps2_c2_bench_b"
   },
   {
    "id": "z7_counter_a_0",
@@ -561,7 +577,10 @@
     "counter",
     "stall"
    ],
-   "sinkFraction": 0.01
+   "sinkFraction": 0.01,
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_armourer"
   },
   {
    "id": "z7_counter_a_1",
@@ -589,7 +608,10 @@
     "counter",
     "stall"
    ],
-   "sinkFraction": 0.01
+   "sinkFraction": 0.01,
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_armourer"
   },
   {
    "id": "z7_ware_a",
@@ -615,7 +637,10 @@
     "zone7",
     "artefact",
     "ware"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_armourer"
   },
   {
    "id": "z7_counter_b_0",
@@ -643,7 +668,10 @@
     "counter",
     "stall"
    ],
-   "sinkFraction": 0.01
+   "sinkFraction": 0.01,
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_weaponsmith"
   },
   {
    "id": "z7_counter_b_1",
@@ -671,7 +699,10 @@
     "counter",
     "stall"
    ],
-   "sinkFraction": 0.01
+   "sinkFraction": 0.01,
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_weaponsmith"
   },
   {
    "id": "z7_ware_b",
@@ -697,7 +728,10 @@
     "zone7",
     "artefact",
     "ware"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_weaponsmith"
   },
   {
    "id": "z7_tent_e",
@@ -724,7 +758,10 @@
     "camp",
     "tent"
    ],
-   "sinkFraction": 0.004
+   "sinkFraction": 0.004,
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_apothecary"
   },
   {
    "id": "z7_tent_w",
@@ -751,7 +788,10 @@
     "camp",
     "tent"
    ],
-   "sinkFraction": 0.004
+   "sinkFraction": 0.004,
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_grand_market_tent"
   },
   {
    "id": "z7_ware_shield",
@@ -777,7 +817,10 @@
     "zone7",
     "artefact",
     "ware"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_armourer"
   },
   {
    "id": "z7_hitch_a_0",
@@ -788,9 +831,9 @@
    "ground": "bottom",
    "yBase": "platformTop",
    "pos": [
-    -8.2,
+    -5.455,
     0.0,
-    345.7
+    352.905
    ],
    "rotEuler": [
     0,
@@ -803,6 +846,10 @@
     "zone7",
     "artefact",
     "hitch"
+   ],
+   "campsOldPos": [
+    -8.2,
+    345.7
    ]
   },
   {
@@ -814,9 +861,9 @@
    "ground": "bottom",
    "yBase": "platformTop",
    "pos": [
-    -6.6,
+    -5.374,
     0.0,
-    345.7
+    351.347
    ],
    "rotEuler": [
     0,
@@ -829,6 +876,10 @@
     "zone7",
     "artefact",
     "hitch"
+   ],
+   "campsOldPos": [
+    -6.6,
+    345.7
    ]
   },
   {
@@ -840,9 +891,9 @@
    "ground": "bottom",
    "yBase": "platformTop",
    "pos": [
-    6.6,
+    -5.292,
     0.0,
-    352.7
+    349.789
    ],
    "rotEuler": [
     0,
@@ -855,6 +906,10 @@
     "zone7",
     "artefact",
     "hitch"
+   ],
+   "campsOldPos": [
+    6.6,
+    352.7
    ]
   },
   {
@@ -866,9 +921,9 @@
    "ground": "bottom",
    "yBase": "platformTop",
    "pos": [
-    8.2,
+    -5.21,
     0.0,
-    352.7
+    348.231
    ],
    "rotEuler": [
     0,
@@ -881,6 +936,10 @@
     "zone7",
     "artefact",
     "hitch"
+   ],
+   "campsOldPos": [
+    8.2,
+    352.7
    ]
   },
   {
@@ -909,7 +968,10 @@
     "pole",
     "lantern"
    ],
-   "sinkFraction": 0.01
+   "sinkFraction": 0.01,
+   "disabled": true,
+   "camps2Off": "replaced",
+   "camps2ReplacedBy": "camps2_c2_banner_armour"
   },
   {
    "id": "z7_pole_b",
@@ -937,7 +999,10 @@
     "pole",
     "lantern"
    ],
-   "sinkFraction": 0.01
+   "sinkFraction": 0.01,
+   "disabled": true,
+   "camps2Off": "replaced",
+   "camps2ReplacedBy": "camps2_c2_banner_blade"
   },
   {
    "id": "z7_pole_c",
@@ -965,7 +1030,10 @@
     "pole",
     "lantern"
    ],
-   "sinkFraction": 0.01
+   "sinkFraction": 0.01,
+   "disabled": true,
+   "camps2Off": "replaced",
+   "camps2ReplacedBy": "camps2_c2_banner_flask"
   },
   {
    "id": "z7_wagon_a_standin",
@@ -994,7 +1062,10 @@
     "wagon_slot"
    ],
    "swapTo": "camp_wagon_a",
-   "sinkFraction": 0.004
+   "sinkFraction": 0.004,
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_stable"
   },
   {
    "id": "z7_wagon_b_standin",
@@ -1023,7 +1094,10 @@
     "wagon_slot"
    ],
    "swapTo": "camp_wagon_b",
-   "sinkFraction": 0.004
+   "sinkFraction": 0.004,
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_canopy"
   },
   {
    "id": "z7_gate_arch",
@@ -2126,7 +2200,9 @@
     "ring",
     "zone7",
     "density"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "clutter:grand_market_tent"
   },
   {
    "id": "z7d_boulder_rock_boulder_E_20",
@@ -2627,7 +2703,9 @@
    "tags": [
     "v9scatter",
     "z7_market2"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "clutter:grand_market_tent"
   },
   {
    "id": "v9s_z7_market2_19",
@@ -3939,7 +4017,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_apothecary"
   },
   {
    "id": "v13skirt_z7_tent_e_1",
@@ -3965,7 +4046,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_apothecary"
   },
   {
    "id": "v13skirt_z7_tent_e_2",
@@ -3991,7 +4075,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_apothecary"
   },
   {
    "id": "v13skirt_z7_tent_e_3",
@@ -4017,7 +4104,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_apothecary"
   },
   {
    "id": "v13skirt_z7_tent_e_4",
@@ -4043,7 +4133,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_apothecary"
   },
   {
    "id": "v13skirt_z7_tent_e_5",
@@ -4069,7 +4162,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_apothecary"
   },
   {
    "id": "v13skirt_z7_tent_e_6",
@@ -4095,7 +4191,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_apothecary"
   },
   {
    "id": "v13skirt_z7_tent_e_7",
@@ -4121,7 +4220,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_apothecary"
   },
   {
    "id": "v13skirt_z7_tent_w_0",
@@ -4147,7 +4249,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_grand_market_tent"
   },
   {
    "id": "v13skirt_z7_tent_w_1",
@@ -4173,7 +4278,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_grand_market_tent"
   },
   {
    "id": "v13skirt_z7_tent_w_2",
@@ -4199,7 +4307,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_grand_market_tent"
   },
   {
    "id": "v13skirt_z7_tent_w_3",
@@ -4225,7 +4336,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_grand_market_tent"
   },
   {
    "id": "v13skirt_z7_tent_w_4",
@@ -4251,7 +4365,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_grand_market_tent"
   },
   {
    "id": "v13skirt_z7_tent_w_5",
@@ -4277,7 +4394,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_grand_market_tent"
   },
   {
    "id": "v13skirt_z7_tent_w_6",
@@ -4303,7 +4423,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_grand_market_tent"
   },
   {
    "id": "v13skirt_z7_tent_w_7",
@@ -4329,7 +4452,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_grand_market_tent"
   },
   {
    "id": "v13skirt_z7_wagon_a_standin_0",
@@ -4355,7 +4481,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_stable"
   },
   {
    "id": "v13skirt_z7_wagon_a_standin_1",
@@ -4381,7 +4510,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_stable"
   },
   {
    "id": "v13skirt_z7_wagon_a_standin_2",
@@ -4407,7 +4539,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_stable"
   },
   {
    "id": "v13skirt_z7_wagon_a_standin_3",
@@ -4433,7 +4568,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_stable"
   },
   {
    "id": "v13skirt_z7_wagon_a_standin_4",
@@ -4459,7 +4597,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_stable"
   },
   {
    "id": "v13skirt_z7_wagon_a_standin_5",
@@ -4485,7 +4626,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_stable"
   },
   {
    "id": "v13skirt_z7_wagon_a_standin_6",
@@ -4511,7 +4655,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_stable"
   },
   {
    "id": "v13skirt_z7_wagon_a_standin_7",
@@ -4537,7 +4684,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_stable"
   },
   {
    "id": "v13skirt_z7_wagon_b_standin_0",
@@ -4563,7 +4713,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_canopy"
   },
   {
    "id": "v13skirt_z7_wagon_b_standin_1",
@@ -4589,7 +4742,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_canopy"
   },
   {
    "id": "v13skirt_z7_wagon_b_standin_2",
@@ -4615,7 +4771,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_canopy"
   },
   {
    "id": "v13skirt_z7_wagon_b_standin_3",
@@ -4641,7 +4800,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_canopy"
   },
   {
    "id": "v13skirt_z7_wagon_b_standin_4",
@@ -4667,7 +4829,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_canopy"
   },
   {
    "id": "v13skirt_z7_wagon_b_standin_5",
@@ -4693,7 +4858,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_canopy"
   },
   {
    "id": "v13skirt_z7_wagon_b_standin_6",
@@ -4719,7 +4887,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_canopy"
   },
   {
    "id": "v13skirt_z7_wagon_b_standin_7",
@@ -4745,7 +4916,10 @@
    "tags": [
     "v13_skirt",
     "contact"
-   ]
+   ],
+   "disabled": true,
+   "campsOff": "replaced",
+   "replacedBy": "camps_c2_canopy"
   },
   {
    "id": "wow21_starfall_obelisk",
@@ -4778,6 +4952,43 @@
     "kind": "cylinder"
    },
    "note": "WOW21 z7_starfall_obelisk | bbox centre (17.0,351.0) | placement stage 1 | converted LOD0",
+   "disabled": false,
+   "seamBaseY": -0.027,
+   "seamDy": -0.0
+  },
+  {
+   "id": "wow21s2_starfall_obelisk_1",
+   "group": "Z7Ring0",
+   "library": "wow21",
+   "asset": "starfall_obelisk",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    11.0,
+    -0.026,
+    358.0
+   ],
+   "rotEuler": [
+    -1.45,
+    180.8,
+    -1.68
+   ],
+   "scale": 9.165,
+   "shadowsOff": false,
+   "tags": [
+    "wow21",
+    "z7",
+    "B_landmark",
+    "z7_starfall_obelisk",
+    "natural",
+    "sight2",
+    "dup_of_starfall_obelisk"
+   ],
+   "collision": {
+    "kind": "cylinder"
+   },
+   "note": "WOW21 z7_starfall_obelisk | bbox centre (17.0,351.0) | placement stage 1 | converted LOD0 | SIGHT2 hero set piece (arrive) duplicate of wow21_starfall_obelisk",
    "disabled": false,
    "seamBaseY": -0.027,
    "seamDy": -0.0
@@ -4851,6 +5062,1196 @@
    "disabled": false,
    "seamBaseY": -0.164,
    "seamDy": -0.15
+  },
+  {
+   "id": "wow21s2_merchant_stall_1",
+   "group": "Z7Ring1",
+   "library": "wow21",
+   "asset": "merchant_stall",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -13.0,
+    -0.314,
+    363.0
+   ],
+   "rotEuler": [
+    -0.81,
+    193.5,
+    0.64
+   ],
+   "scale": 7.832,
+   "shadowsOff": false,
+   "tags": [
+    "wow21",
+    "z7",
+    "C_breakup",
+    "z7_merchant_stalls",
+    "natural",
+    "sight2",
+    "dup_of_merchant_stall"
+   ],
+   "collision": {
+    "kind": "boxes"
+   },
+   "note": "WOW21 z7_merchant_stalls | bbox centre (16.0,322.0) | placement stage 1 | converted LOD0 | SIGHT2 hero set piece (arrive) duplicate of wow21_merchant_stall",
+   "disabled": false,
+   "seamBaseY": -0.164,
+   "seamDy": -0.15
+  },
+  {
+   "id": "camps_c2_gate_arch",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_gate_arch",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    0.6,
+    -0.08,
+    316.6
+   ],
+   "rotEuler": [
+    0,
+    180.0,
+    0
+   ],
+   "scale": 1.25,
+   "scaleYMul": 0.85,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "zone7",
+    "camp",
+    "arch",
+    "gate_arch"
+   ],
+   "collision": {
+    "kind": "box",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider (see REPORT)"
+   },
+   "note": "CAMPSPLACE gate_arch | z7_market2 | footprint 5.80x1.16 h 4.78 | replaces - | stone pillars + iron arch, 4.6x0.9x4.5 -> 5.8x1.15x3.8; the opening (3.0 -> 3.75 m) is the walk",
+   "disabled": false
+  },
+  {
+   "id": "camps_c2_grand_market_tent",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_grand_market_tent",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -10.6,
+    -0.08,
+    331.5
+   ],
+   "rotEuler": [
+    0,
+    78.0,
+    0
+   ],
+   "scale": 1.15,
+   "scaleYMul": 0.9,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "zone7",
+    "camp",
+    "market_tent",
+    "grand_market_tent"
+   ],
+   "collision": {
+    "kind": "box",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider (see REPORT)"
+   },
+   "note": "CAMPSPLACE grand_market_tent | z7_market2 | footprint 7.45x7.45 h 4.97 | replaces z7_tent_w | round striped pavilion 6.5 dia -> 7.45 dia (brief 8x6), height x0.9 (4.8 -> 5.0). Centrepiece decor; round so front is cosmetic",
+   "disabled": false
+  },
+  {
+   "id": "camps_c2_armourer",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_armourer_pavilion",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -5.68,
+    -0.08,
+    343.597
+   ],
+   "rotEuler": [
+    0,
+    93.0,
+    0
+   ],
+   "scale": 1.25,
+   "scaleYMul": 0.9,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "zone7",
+    "camp",
+    "stall",
+    "armourer"
+   ],
+   "collision": {
+    "kind": "box",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider (see REPORT)"
+   },
+   "note": "CAMPSPLACE armourer | z7_market2 | footprint 4.68x3.82 h 3.82 | replaces z7_counter_a_0,z7_counter_a_1,z7_ware_a,z7_ware_shield | counter z 0.6..1.2, back wall z -1.2 (measured); scaled 1.25 (3.7x3.1 -> 4.7x3.8, brief 5x3.5), height 3.4 -> 3.8",
+   "disabled": false
+  },
+  {
+   "id": "camps_c2_stable",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_stable_hall",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -7.104,
+    -0.08,
+    350.537
+   ],
+   "rotEuler": [
+    0,
+    87.0,
+    0
+   ],
+   "scale": 1.2,
+   "scaleYMul": 0.9,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "zone7",
+    "camp",
+    "stable",
+    "stable"
+   ],
+   "collision": {
+    "kind": "box",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider (see REPORT)"
+   },
+   "note": "CAMPSPLACE stable | z7_market2 | footprint 7.18x4.17 h 3.78 | replaces z7_wagon_a_standin | open hall, 3 bays, bell post; scaled 1.2 (6.0x3.5 -> 7.2x4.2, brief 8x4). Orm outside the front at the left end; the 4 hitch posts of the old camp sit along the front",
+   "disabled": false
+  },
+  {
+   "id": "camps_c2_weaponsmith",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_weaponsmith_pavilion",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    5.51,
+    -0.08,
+    349.372
+   ],
+   "rotEuler": [
+    0,
+    266.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "zone7",
+    "camp",
+    "stall",
+    "weaponsmith"
+   ],
+   "collision": {
+    "kind": "box",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider (see REPORT)"
+   },
+   "note": "CAMPSPLACE weaponsmith | z7_market2 | footprint 4.48x3.42 h 3.40 | replaces z7_counter_b_0,z7_counter_b_1,z7_ware_b | 4.5x3.4 already matches the brief 5x3.5; counter table z 0.1..0.95, wall rack z -1.5",
+   "disabled": false
+  },
+  {
+   "id": "camps_c2_apothecary",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_apothecary_tent",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.199,
+    -0.08,
+    334.183
+   ],
+   "rotEuler": [
+    0,
+    275.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "zone7",
+    "camp",
+    "stall",
+    "apothecary"
+   ],
+   "collision": {
+    "kind": "box",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider (see REPORT)"
+   },
+   "note": "CAMPSPLACE apothecary | z7_market2 | footprint 3.64x3.22 h 3.60 | replaces z7_tent_e | hex closed pavilion, door arch at +z, censer stand at z +1.5 on the axis: Sister Ember stands outside the door, off-axis by 0.85",
+   "disabled": false
+  },
+  {
+   "id": "camps_c2_canopy",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_canopy_large",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.899,
+    -0.08,
+    341.969
+   ],
+   "rotEuler": [
+    0,
+    261.0,
+    0
+   ],
+   "scale": 1.2,
+   "scaleYMul": 0.85,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "zone7",
+    "camp",
+    "canopy",
+    "canopy"
+   ],
+   "collision": {
+    "kind": "box",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider (see REPORT)"
+   },
+   "note": "CAMPSPLACE canopy | z7_market2 | footprint 4.84x5.81 h 3.67 | replaces z7_wagon_b_standin | square cloth canopy on 4 curved poles (4.0x4.8 -> 4.8x5.8), vendor_5 (bric-a-brac) stands under it near the lane edge",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_bench_a",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_bench_a",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    3.0,
+    -0.08,
+    328.0
+   ],
+   "rotEuler": [
+    0,
+    0.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "bench",
+    "bench_a"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE bench_a | z7_market2 | hearth | footprint 1.08x0.41 h 0.45 | replaces z7_bench_n",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_bench_b",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_bench_b",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    5.4,
+    -0.08,
+    330.5
+   ],
+   "rotEuler": [
+    0,
+    270.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "bench",
+    "bench_b"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE bench_b | z7_market2 | hearth | footprint 0.71x0.35 h 0.45 | replaces z7_bench_e",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_trestle_table",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_trestle_table",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.4,
+    -0.08,
+    322.0
+   ],
+   "rotEuler": [
+    0,
+    270.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "table",
+    "trestle_table"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE trestle_table | z7_market2 | free | footprint 3.11x1.10 h 0.90 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_canopy_small_w",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_canopy_small",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -6.2,
+    -0.08,
+    322.2
+   ],
+   "rotEuler": [
+    0,
+    90.0,
+    0
+   ],
+   "scale": 1.15,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "canopy",
+    "canopy_small_w"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE canopy_small_w | z7_market2 | free | footprint 2.91x3.01 h 3.22 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_counter_iron_b_1",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_counter_iron_b",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -6.2,
+    -0.08,
+    322.2
+   ],
+   "rotEuler": [
+    0,
+    90.0,
+    0
+   ],
+   "scale": 1.2,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "counter",
+    "counter_iron_b_1"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE counter_iron_b_1 | z7_market2 | free | footprint 1.87x0.95 h 1.32 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_counter_iron_a_1",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_counter_iron_a",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -4.9,
+    -0.08,
+    326.2
+   ],
+   "rotEuler": [
+    0,
+    90.0,
+    0
+   ],
+   "scale": 1.15,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "counter",
+    "counter_iron_a_1"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE counter_iron_a_1 | z7_market2 | free | footprint 2.25x1.12 h 1.26 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_canopy_small_e",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_canopy_small",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.6,
+    -0.08,
+    356.2
+   ],
+   "rotEuler": [
+    0,
+    270.0,
+    0
+   ],
+   "scale": 1.15,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "canopy",
+    "canopy_small_e"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE canopy_small_e | z7_market2 | free | footprint 2.91x3.01 h 3.22 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_counter_iron_b_2",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_counter_iron_b",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.6,
+    -0.08,
+    356.2
+   ],
+   "rotEuler": [
+    0,
+    270.0,
+    0
+   ],
+   "scale": 1.2,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "counter",
+    "counter_iron_b_2"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE counter_iron_b_2 | z7_market2 | free | footprint 1.87x0.95 h 1.32 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_counter_iron_a_2",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_counter_iron_a",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    5.6,
+    -0.08,
+    359.4
+   ],
+   "rotEuler": [
+    0,
+    270.0,
+    0
+   ],
+   "scale": 1.15,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "counter",
+    "counter_iron_a_2"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE counter_iron_a_2 | z7_market2 | free | footprint 2.25x1.12 h 1.26 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_shield_rack",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "shield_rack",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -4.7,
+    -0.08,
+    329.5
+   ],
+   "rotEuler": [
+    0,
+    90.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "rack",
+    "shield_rack"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE shield_rack | z7_market2 | free | footprint 1.90x0.83 h 1.60 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_armour_dummy",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "armour_dummy_stand",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -4.5,
+    -0.08,
+    332.3
+   ],
+   "rotEuler": [
+    0,
+    90.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "stand",
+    "armour_dummy"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE armour_dummy | z7_market2 | free | footprint 1.19x0.70 h 2.00 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_helm_stand",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "helm_stand",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -4.5,
+    -0.08,
+    334.6
+   ],
+   "rotEuler": [
+    0,
+    90.0,
+    0
+   ],
+   "scale": 0.75,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "stand",
+    "helm_stand"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE helm_stand | z7_market2 | free | footprint 0.51x0.51 h 1.12 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_weapon_rack",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "weapon_rack",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -4.7,
+    -0.08,
+    337.0
+   ],
+   "rotEuler": [
+    0,
+    90.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "rack",
+    "weapon_rack"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE weapon_rack | z7_market2 | free | footprint 1.90x1.14 h 1.80 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_brazier_brass",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_brazier_brass",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -4.4,
+    -0.08,
+    319.2
+   ],
+   "rotEuler": [
+    0,
+    0.0,
+    0
+   ],
+   "scale": 0.65,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "brazier",
+    "brazier_brass"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE brazier_brass | z7_market2 | free | footprint 1.17x1.17 h 0.78 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_brazier_iron",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_brazier_iron",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    4.7,
+    -0.08,
+    319.2
+   ],
+   "rotEuler": [
+    0,
+    0.0,
+    0
+   ],
+   "scale": 0.8,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "brazier",
+    "brazier_iron"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE brazier_iron | z7_market2 | free | footprint 1.17x1.17 h 0.96 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_censer",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_censer_stand",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    4.631,
+    -0.08,
+    333.467
+   ],
+   "rotEuler": [
+    0,
+    275.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "stand",
+    "censer"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE censer | z7_market2 | free | footprint 0.80x0.72 h 1.80 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_banner_armour",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_banner_armour",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -3.9,
+    -0.08,
+    340.1
+   ],
+   "rotEuler": [
+    0,
+    90.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "banner",
+    "banner_armour"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE banner_armour | z7_market2 | free | footprint 1.33x0.27 h 3.00 | replaces z7_pole_a,z7_banner_L",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_banner_blade",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_banner_blade",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    3.9,
+    -0.08,
+    352.6
+   ],
+   "rotEuler": [
+    0,
+    270.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "banner",
+    "banner_blade"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE banner_blade | z7_market2 | free | footprint 1.39x0.21 h 3.00 | replaces z7_pole_b,z7_banner_R",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_banner_flask",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_banner_flask",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    3.85,
+    -0.08,
+    337.3
+   ],
+   "rotEuler": [
+    0,
+    270.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "banner",
+    "banner_flask"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE banner_flask | z7_market2 | free | footprint 1.37x0.23 h 3.00 | replaces z7_pole_c",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_banner_horse",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_banner_horse",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -3.9,
+    -0.08,
+    356.4
+   ],
+   "rotEuler": [
+    0,
+    90.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "banner",
+    "banner_horse"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE banner_horse | z7_market2 | free | footprint 1.20x0.21 h 3.00 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_pallet_set",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "camp2_pallet_set",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    8.0,
+    -0.08,
+    360.0
+   ],
+   "rotEuler": [
+    0,
+    262.0,
+    0
+   ],
+   "scale": 1.2,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "clutter",
+    "pallet_set"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE pallet_set | z7_market2 | free | footprint 1.67x1.49 h 1.44 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_crate_a",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "crate_a",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    9.5,
+    -0.08,
+    354.7
+   ],
+   "rotEuler": [
+    0,
+    15.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "clutter",
+    "crate_a"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE crate_a | z7_market2 | free | footprint 0.77x0.76 h 0.80 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_crate_b_long",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "crate_b_long",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    9.0,
+    -0.08,
+    352.9
+   ],
+   "rotEuler": [
+    0,
+    275.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "clutter",
+    "crate_b_long"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE crate_b_long | z7_market2 | free | footprint 1.35x0.66 h 0.50 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_crate_c_open",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "crate_c_open",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    9.8,
+    -0.08,
+    360.0
+   ],
+   "rotEuler": [
+    0,
+    200.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "clutter",
+    "crate_c_open"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE crate_c_open | z7_market2 | free | footprint 0.80x0.80 h 0.70 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_barrel_a",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "barrel_a",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    4.4,
+    -0.08,
+    354.2
+   ],
+   "rotEuler": [
+    0,
+    30.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "clutter",
+    "barrel_a"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE barrel_a | z7_market2 | free | footprint 0.70x0.72 h 0.90 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "camps2_c2_barrel_b_cask",
+   "group": "Z7Ring0",
+   "library": "camps",
+   "asset": "barrel_b_cask",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    9.6,
+    -0.08,
+    350.4
+   ],
+   "rotEuler": [
+    0,
+    95.0,
+    0
+   ],
+   "scale": 1.0,
+   "shadowsOff": false,
+   "tags": [
+    "camps",
+    "camps2",
+    "zone7",
+    "camp",
+    "clutter",
+    "barrel_b_cask"
+   ],
+   "collision": {
+    "kind": "none",
+    "note": "documentation only: PropsLayout.PlaceOne adds no collider"
+   },
+   "note": "CAMPS2PLACE barrel_b_cask | z7_market2 | free | footprint 0.70x0.41 h 0.60 | replaces -",
+   "disabled": false
   }
  ],
  "scatter": []

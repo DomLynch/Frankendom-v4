@@ -35,11 +35,11 @@
             "layerBit": 6,
             "kelvin": 6800,
             "lux": 800,
-            "behind": 2.8,
-            "above": 3.0,
-            "side": -0.6,
+            "behind": 2.2,
+            "above": 2.8,
+            "side": -3.4,
             "aimHeight": 1.6,
-            "spotAngle": 55,
+            "spotAngle": 70,
             "range": 9,
             "volumetricDimmer": 0
         }
@@ -195,7 +195,7 @@
         {
             "match": "rock_boulder",
             "normalScale": 1.0,
-            "tiling": 2.5,
+            "tiling": 1.0,
             "metallicMax": -1,
             "smoothnessMax": -1,
             "smoothnessMin": -1,

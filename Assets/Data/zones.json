@@ -522,8 +522,8 @@
         {
           "id": "stall_1",
           "pos": [
-            -2.5,
-            89.0
+            -3.44,
+            90
           ],
           "yaw": 90,
           "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
@@ -531,8 +531,8 @@
         {
           "id": "npc_trader",
           "pos": [
-            -3.7,
-            89.5
+            -5.34,
+            90
           ],
           "yaw": 90,
           "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
@@ -540,8 +540,8 @@
         {
           "id": "npc_keeper",
           "pos": [
-            3.0,
-            90.0
+            5.71,
+            92.6
           ],
           "yaw": 180,
           "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
@@ -549,8 +549,8 @@
         {
           "id": "npc_traveller",
           "pos": [
-            -2.6,
-            82.5
+            -5.38,
+            86
           ],
           "yaw": 90,
           "note": "CAMPSET v1: PLACEHOLDER until measured in the built zone (camp_rows.json)"
@@ -576,8 +576,8 @@
         {
           "id": "npc_horse",
           "pos": [
-            -6.4,
-            87.0
+            -6.81,
+            77.7
           ],
           "yaw": 90,
           "note": "laneHORSE v2: static warhorse, 3.8 m west of the trader on flat ground, facing the walk path (+x). PLACEHOLDER until looked at in the built camp."
@@ -585,8 +585,8 @@
         {
           "id": "npc_stable",
           "pos": [
-            -5.6,
-            85.4
+            -4.21,
+            80.6
           ],
           "yaw": 90,
           "note": "laneSTALLS vend v2: Stablemaster beside the static horse. PLACEHOLDER until walked."
@@ -594,8 +594,8 @@
         {
           "id": "npc_misc",
           "pos": [
-            5.0,
-            83.3
+            4.67,
+            82
           ],
           "yaw": 270,
           "note": "laneSTALLS vend v2: Bric-a-brac. PLACEHOLDER until walked."
@@ -1376,8 +1376,8 @@
         {
           "id": "stall_1",
           "pos": [
-            -3.45,
-            342.0
+            -3.34,
+            343.6
           ],
           "yaw": 90,
           "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
@@ -1385,8 +1385,8 @@
         {
           "id": "npc_keeper",
           "pos": [
-            3.0,
-            333.0
+            4.33,
+            335.2
           ],
           "yaw": 180,
           "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
@@ -1394,8 +1394,8 @@
         {
           "id": "vendor_1",
           "pos": [
-            -3.6,
-            342.0
+            -5.74,
+            343.6
           ],
           "yaw": 90,
           "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
@@ -1403,8 +1403,8 @@
         {
           "id": "vendor_2",
           "pos": [
-            3.6,
-            349.0
+            5.91,
+            349.4
           ],
           "yaw": 270,
           "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
@@ -1412,8 +1412,8 @@
         {
           "id": "vendor_3",
           "pos": [
-            -3.0,
-            352.1
+            -4.45,
+            353.8
           ],
           "yaw": 90,
           "note": "ZONE7 v1: PLACEHOLDER until measured in the built zone"
@@ -1439,8 +1439,8 @@
         {
           "id": "vendor_5",
           "pos": [
-            3.6,
-            340.0
+            5.83,
+            341.8
           ],
           "yaw": 270,
           "note": "laneSTALLS vend v2: Bric-a-brac. PLACEHOLDER until walked."

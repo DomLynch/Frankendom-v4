@@ -71,4 +71,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HadesSlice_NpcHoundMaster.unity
     guid: d9730f5ee9011a543a0d65b67022e092
+  - enabled: 1
+    path: Assets/Scenes/HadesSlice_NpcAntlerKnight.unity
+    guid: 512c9032e78e61e47a95eafe70f61446
   m_configObjects: {}

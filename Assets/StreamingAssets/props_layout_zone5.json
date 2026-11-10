@@ -3988,6 +3988,78 @@
    "seamDy": -0.449
   },
   {
+   "id": "wow21s2_crystal_fungus_cluster_2",
+   "group": "Z5Ring0",
+   "library": "wow21",
+   "asset": "crystal_fungus_cluster",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    11.0,
+    -0.669,
+    231.0
+   ],
+   "rotEuler": [
+    -2.6,
+    196.3,
+    -5.5
+   ],
+   "scale": 6.531,
+   "shadowsOff": false,
+   "tags": [
+    "wow21",
+    "z5",
+    "A_light",
+    "z5_crystal_fungus",
+    "sight2",
+    "dup_of_crystal_fungus_cluster"
+   ],
+   "collision": {
+    "kind": "none"
+   },
+   "note": "WOW21 z5_crystal_fungus | bbox centre (-20.0,214.0) | placement stage 1 | converted LOD0 | SIGHT2 hero set piece (back) duplicate of wow21_crystal_fungus_cluster",
+   "disabled": false,
+   "seamBaseY": -0.22,
+   "seamDy": -0.449
+  },
+  {
+   "id": "wow21s2_crystal_fungus_cluster_1",
+   "group": "Z5Ring0",
+   "library": "wow21",
+   "asset": "crystal_fungus_cluster",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -12.0,
+    -0.669,
+    236.0
+   ],
+   "rotEuler": [
+    -2.6,
+    194.2,
+    -5.5
+   ],
+   "scale": 6.531,
+   "shadowsOff": false,
+   "tags": [
+    "wow21",
+    "z5",
+    "A_light",
+    "z5_crystal_fungus",
+    "sight2",
+    "dup_of_crystal_fungus_cluster"
+   ],
+   "collision": {
+    "kind": "none"
+   },
+   "note": "WOW21 z5_crystal_fungus | bbox centre (-20.0,214.0) | placement stage 1 | converted LOD0 | SIGHT2 hero set piece (back) duplicate of wow21_crystal_fungus_cluster",
+   "disabled": false,
+   "seamBaseY": -0.22,
+   "seamDy": -0.449
+  },
+  {
    "id": "wow21_fallen_petrified_giant",
    "group": "WorldFar",
    "library": "wow21",

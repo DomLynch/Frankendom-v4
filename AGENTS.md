@@ -28,8 +28,20 @@ Updated by Strategy 2026-11-06: a 9/10 AAA duel, Joan vs the Pitborn at the Hade
 7. Back up before rewriting someone else's work (`Tools\_backup_<agent>_<HHMM>\`).
 8. No deploys, pushes or uploads. Only Dom says deploy.
 
+## Fast releases (Dom's standing rule, restated 2026-11-10 23:30: "fast release builds no need to rebuild all game each time")
+A release takes 10-15 minutes. Never rebuild the whole game for a change that a smaller path can ship.
+1. **Classify every kit before a round: HOT, CODE or CHAIN**, and split the round: hot release now, chain later.
+   - **HOT** (seconds, no Editor): runtime data and runtime-loaded GLBs: mounts and ambient animals, lights, decals, look rows, spawn/patrol rows, zone_shots. `_agents\laneBUILDSPEED\deploy_data.ps1 -v <tag> -Base HDRP_<live> -Apply`.
+   - **CODE** (about 90 s): C# only. `Tools\build_<name>.ps1` (HdrpBatch.Build).
+   - **CHAIN** (only when unavoidable): layout baked into the scene, new prefabs/controllers, new imports. `chain_timed.ps1`, and skip what did not change: `-SkipMonster` unless NPC/boss prefabs changed; no Zone2Build when no baked layout changed.
+   - **Known BAKED items (Lead correction 2026-11-10 23:35, always CHAIN, never hot):** props_layout_*.json rows and prop GLB/LOD swaps, lod_tex_map.json, zone_span.json terrain (flat/flatY), CampBackdrop rows, hdrp_fixes.json matAdjust (rock facets), camp structure rows. A disabled baked row does not leave an already-baked scene: only a moved row propagates. New NPC bodies need BanditsBatch (prefabs, controllers): spawn/patrol rows are HOT only when they point at ids whose prefabs and controllers already exist (a new NPC id enabled without them showed white T-pose figures). Hot edits to a build must also be written back to Assets\Data.
+2. **Short release gate:** boot smoke (hard fails: no player fighter, no zone-loaded line, under 10 s) + the five play-camera shots from behind Joan + the changed items' shots, shot FIRST while Joan is alive. Not broken and not worse = release. Roll-back is always `PLAY_PREV.bat`.
+3. **The full shot set, FRAMEAUDIT and the Lead/COO audits run AFTER the release** on a copy; they can order a roll-back, they do not block.
+4. **A round over 20 minutes without a release is a defect**: post a SWEEP BLOCKER line with the cause.
+5. A kit that fails is switched off by data and the rest ships; never two rounds on the same failure.
+
 ## Current shared direction (open to proposals)
-- **Mood:** dark, ominous, restrained. No braziers at the gate; Dom found them cheesy. The gate doorway reads as a furnace beyond: black interior, low hot glow, slow embers.
+- **Mood:** dark, ominous, restrained. No braziers at the gate; Dom found them cheesy. The gate doorway reads as a furnace beyond: black interior, low hot glow; embers/sparks OFF per Dom (recorded in doorway.json: he ordered the orange sparks removed) unless he re-enables them. Slow ash/ember specks low over scorched ground away from the doorway are allowed (BPIT, 2026-11-11).
 - **Camera:** Frankendom V3 lock cam, ported 1:1 (`CameraRig.cs`). Don't change it without a PROPOSE.
 - **Combat feel:** port V3 first, then improve. Plan: `kits_out\3d\combat_audit\V3_TO_UNITY.md` + `V3_TO_UNITY_VERIFY.md` (section F is the order). Unity dev is on item 3 (flinch + blood).
 - **Hit VFX:** streaky sparks on metal or guard contact. Dark, non-glowing blood droplets on flesh. Brief flashes only, no long full-body glows.

@@ -2233,6 +2233,46 @@
         "ikWeight": 1.0,
         "ikBlendSeconds": 0.15
       }
+    },
+    {
+      "id": "bandit_axe",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Bandit's hatchet",
+      "slot": "mainHand",
+      "glb": "Gear/bandit_sword_LOD2.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 3.0
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "notes": "laneNPC15INT: stats from bandits.json weaponItems bandit_axe; NO small axe model exists, the visual is the bandit sword glb until art exists (same rule as bandit_dagger).",
+      "weapon": {
+        "id": "bandit_axe",
+        "twoHanded": false,
+        "damageMul": 1.05,
+        "speedMul": 1.1,
+        "reachMul": 0.85,
+        "postureMul": 1.1,
+        "cueWeapon": "sword",
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1.0,
+        "ikBlendSeconds": 0.15
+      }
     }
   ]
 }

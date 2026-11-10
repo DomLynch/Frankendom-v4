@@ -158,7 +158,7 @@ public sealed class MountRider : MonoBehaviour
 
     async Task LoadHorse()
     {
-        cur = MountData.Variant(); stam = St.max; string file = MountData.GlbFile(H); if (file == null) { Debug.LogWarning("[Mount] horse glb not found (mount.json horse.glb under StreamingAssets): no mount"); return; }
+        cur = MountData.Variant(); stam = St.max; string file = MountData.GlbFile(H); if (file != null) file = MountLegs.RigFile(file); /* MOUNTWALK v1 */ if (file == null) { Debug.LogWarning("[Mount] horse glb not found (mount.json horse.glb under StreamingAssets): no mount"); return; }
         try
         {
             var root = new GameObject("MountHorse"); DontDestroyOnLoad(root); root.SetActive(false);
@@ -214,7 +214,7 @@ public sealed class MountRider : MonoBehaviour
         if (df.moveDir.sqrMagnitude > 0.01f) { float want = Mathf.Atan2(df.moveDir.x, df.moveDir.z) * Mathf.Rad2Deg; horseYaw = Mathf.MoveTowardsAngle(horseYaw, want, K.turnDegPerS * Time.deltaTime); }   // hc:ok 0.01 = move threshold / divide guard
         var rot = Quaternion.Euler(0f, horseYaw + H.yawOffsetDeg, 0f);
         horse.transform.SetPositionAndRotation(p + rot * Vector3.forward * (H.seatBackM * sc), rot);   // glb pivot = hooves, centre of the barrel; the saddle sits seatBackM behind it
-        if (hBody != null) { hBody.localPosition = Vector3.up * bob; hBody.localRotation = Quaternion.Euler(pitch, 0f, roll); }
+        if (hBody != null) { hBody.localPosition = Vector3.up * bob; hBody.localRotation = Quaternion.Euler(pitch, 0f, roll); MountLegs.Apply(hBody, speedNow, Time.deltaTime); /* MOUNTWALK v1 */ }
         if (fi != null && fi.model != null) fi.model.localPosition = baseModelPos + Vector3.up * (H.seatRaiseM * sc / Mathf.Max(0.01f, df.transform.lossyScale.y) + bob);   // hc:ok 0.01 = move threshold / divide guard
     }
 }

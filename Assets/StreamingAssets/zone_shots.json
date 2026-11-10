@@ -1,2132 +1,3966 @@
 {
- "_about": "CAMPGROUND v1: -zoneshot:<dir> shots (ZoneShot.cs). 'stand' = zones.json spot the player is teleported to (rings / NPCs / creature wake there as in play); cam / look = zones.json spot + [x,y,z] metre offset (spot ground height from a down ray). Game camera into a RenderTexture, no screen grab. flipY only if a build proves the PNG upside down (sidecar logs top / bottom luma).",
- "width": 1920,
- "height": 1080,
- "msaa": 1,
- "flipY": false,
- "quit": true,
- "startWaitSeconds": 60.0,
- "groundWaitSeconds": 20.0,
- "shots": [
-  {
-   "id": "grendel_low_a",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "grendel_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "look": {
-    "spot": "grendel_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "fov": 42.0,
-   "settleSeconds": 8.0,
-   "aimFighters": true,
-   "sideM": 9.0,
-   "camY": 0.5,
-   "lookY": 0.8,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "grendel_low_b",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "grendel_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "look": {
-    "spot": "grendel_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "fov": 42.0,
-   "settleSeconds": 8.0,
-   "aimFighters": true,
-   "sideM": -9.0,
-   "camY": 0.5,
-   "lookY": 0.8,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "z4flat_right",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "grendel_stand",
-    "off": [
-     11,
-     1.7,
-     5
-    ]
-   },
-   "look": {
-    "spot": "grendel_stand",
-    "off": [
-     11,
-     1.0,
-     20
-    ]
-   },
-   "fov": 60.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "z4flat_left",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "grendel_stand",
-    "off": [
-     -11,
-     1.7,
-     5
-    ]
-   },
-   "look": {
-    "spot": "grendel_stand",
-    "off": [
-     -11,
-     1.0,
-     20
-    ]
-   },
-   "fov": 60.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "z4flat_far",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "grendel_stand",
-    "off": [
-     0,
-     1.7,
-     12
-    ]
-   },
-   "look": {
-    "spot": "grendel_stand",
-    "off": [
-     0,
-     1.0,
-     28
-    ]
-   },
-   "fov": 60.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "sobek_stand",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "arrive_from_pit",
-    "off": [
-     2.5,
-     1.7,
-     2.0
-    ]
-   },
-   "look": {
-    "spot": "sobek_stand",
-    "off": [
-     0.0,
-     1.5,
-     0.0
-    ]
-   },
-   "fov": 38.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "camp_entry",
-   "zone": "hub_camp",
-   "stand": "gate_prev",
-   "cam": {
-    "spot": "gate_prev",
-    "off": [
-     1.5,
-     1.7,
-     -2.5
-    ]
-   },
-   "look": {
-    "spot": "hearth",
-    "off": [
-     0.0,
-     1.2,
-     0.0
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "trader",
-   "zone": "hub_camp",
-   "stand": "stall_1",
-   "cam": {
-    "spot": "npc_trader",
-    "off": [
-     3.2,
-     1.7,
-     -0.6
-    ]
-   },
-   "look": {
-    "spot": "npc_trader",
-    "off": [
-     0.0,
-     1.4,
-     0.0
-    ]
-   },
-   "fov": 35.0,
-   "settleSeconds": 2.0,
-   "waitNpcSeconds": 15.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "sobek_side_a",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "sobek_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "look": {
-    "spot": "sobek_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "fov": 42.0,
-   "settleSeconds": 6.0,
-   "aimFighters": true,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "sobek_side_b",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "sobek_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "look": {
-    "spot": "sobek_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "fov": 42.0,
-   "settleSeconds": 10.0,
-   "aimFighters": true,
-   "sideM": -9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "pitborn_head_close",
-   "zone": "pit_yard",
-   "stand": "hearth",
-   "cam": {
-    "spot": "hearth",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "look": {
-    "spot": "hearth",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "fov": 38.0,
-   "settleSeconds": 8.0,
-   "waitNpcSeconds": 0.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": true,
-   "closeM": 2.6,
-   "headY": 1.95
-  },
-  {
-   "id": "freecam_camp_cur",
-   "zone": "hub_camp",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.5,
-     2.059,
-     -3.268
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.5,
-     1.6,
-     0.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 4.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "note": "FREECAM v1: free camera pose cur from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
-  },
-  {
-   "id": "freecam_camp_A",
-   "zone": "hub_camp",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.6,
-     2.221,
-     -4.06
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.6,
-     1.65,
-     0.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 4.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "note": "FREECAM v1: free camera pose A from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
-  },
-  {
-   "id": "freecam_camp_B",
-   "zone": "hub_camp",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.7,
-     2.376,
-     -4.456
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.7,
-     1.75,
-     0.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 4.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "note": "FREECAM v1: free camera pose B from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
-  },
-  {
-   "id": "freecam_camp_C",
-   "zone": "hub_camp",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.8,
-     2.518,
-     -4.753
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.8,
-     1.85,
-     0.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 4.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "note": "FREECAM v1: free camera pose C from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
-  },
-  {
-   "id": "freecam_sobek_cur",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.5,
-     2.059,
-     -3.268
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.5,
-     1.6,
-     0.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 4.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "note": "FREECAM v1: free camera pose cur from behind Joan, Sobek 9 m ahead"
-  },
-  {
-   "id": "freecam_sobek_A",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.6,
-     2.221,
-     -4.06
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.6,
-     1.65,
-     0.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 4.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "note": "FREECAM v1: free camera pose A from behind Joan, Sobek 9 m ahead"
-  },
-  {
-   "id": "freecam_sobek_B",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.7,
-     2.376,
-     -4.456
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.7,
-     1.75,
-     0.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 4.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "note": "FREECAM v1: free camera pose B from behind Joan, Sobek 9 m ahead"
-  },
-  {
-   "id": "grendel_stand",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     2.5,
-     1.7,
-     2.0
-    ]
-   },
-   "look": {
-    "spot": "grendel_stand",
-    "off": [
-     0.0,
-     1.5,
-     0.0
-    ]
-   },
-   "fov": 38.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "grendel_side_a",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "grendel_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "look": {
-    "spot": "grendel_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "fov": 42.0,
-   "settleSeconds": 6.0,
-   "aimFighters": true,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "grendel_side_b",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "grendel_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "look": {
-    "spot": "grendel_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "fov": 42.0,
-   "settleSeconds": 10.0,
-   "aimFighters": true,
-   "sideM": -9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "humbaba_stand",
-   "zone": "z5_humbaba",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     2.5,
-     1.7,
-     2.0
-    ]
-   },
-   "look": {
-    "spot": "boss_stand",
-    "off": [
-     0.0,
-     1.5,
-     0.0
-    ]
-   },
-   "fov": 38.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "humbaba_side_a",
-   "zone": "z5_humbaba",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "boss_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "look": {
-    "spot": "boss_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "fov": 42.0,
-   "settleSeconds": 6.0,
-   "aimFighters": true,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "humbaba_side_b",
-   "zone": "z5_humbaba",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "boss_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "look": {
-    "spot": "boss_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "fov": 42.0,
-   "settleSeconds": 10.0,
-   "aimFighters": true,
-   "sideM": -9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "erlking_stand",
-   "zone": "z6_erlking",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     2.5,
-     1.7,
-     2.0
-    ]
-   },
-   "look": {
-    "spot": "boss_stand",
-    "off": [
-     0.0,
-     1.5,
-     0.0
-    ]
-   },
-   "fov": 38.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "erlking_side_a",
-   "zone": "z6_erlking",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "boss_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "look": {
-    "spot": "boss_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "fov": 42.0,
-   "settleSeconds": 6.0,
-   "aimFighters": true,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "erlking_side_b",
-   "zone": "z6_erlking",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "boss_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "look": {
-    "spot": "boss_stand",
-    "off": [
-     0,
-     0,
-     0
-    ]
-   },
-   "fov": 42.0,
-   "settleSeconds": 10.0,
-   "aimFighters": true,
-   "sideM": -9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "z1_gate",
-   "zone": "pit_yard",
-   "stand": "arrive_from_sobek",
-   "cam": {
-    "spot": "arrive_from_sobek",
-    "off": [
-     1.5,
-     1.7,
-     -3.5
-    ]
-   },
-   "look": {
-    "spot": "gate_sobek",
-    "off": [
-     0.0,
-     1.8,
-     0.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 4.0,
-   "waitNpcSeconds": 0.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "z7_entry",
-   "zone": "z7_market2",
-   "stand": "gate_prev",
-   "cam": {
-    "spot": "gate_prev",
-    "off": [
-     1.5,
-     1.7,
-     -2.5
-    ]
-   },
-   "look": {
-    "spot": "hearth",
-    "off": [
-     0.0,
-     1.2,
-     0.0
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "waitNpcSeconds": 0.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "z7_vendor",
-   "zone": "z7_market2",
-   "stand": "stall_1",
-   "cam": {
-    "spot": "vendor_1",
-    "off": [
-     3.2,
-     1.7,
-     -0.6
-    ]
-   },
-   "look": {
-    "spot": "vendor_1",
-    "off": [
-     0.0,
-     1.4,
-     0.0
-    ]
-   },
-   "fov": 35.0,
-   "settleSeconds": 3.0,
-   "waitNpcSeconds": 6.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "z7_alpha_end",
-   "zone": "z7_market2",
-   "stand": "vendor_2",
-   "cam": {
-    "spot": "gate_alpha_end",
-    "off": [
-     1.5,
-     1.7,
-     -6.0
-    ]
-   },
-   "look": {
-    "spot": "beyond_stand",
-    "off": [
-     0.0,
-     1.5,
-     0.0
-    ]
-   },
-   "fov": 45.0,
-   "settleSeconds": 3.0,
-   "waitNpcSeconds": 0.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "joan_front",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.5,
-     1.65,
-     2.6
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.0,
-     1.55,
-     0.0
-    ]
-   },
-   "fov": 30.0,
-   "settleSeconds": 4.0,
-   "waitNpcSeconds": 0.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "joan_back",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.4,
-     1.7,
-     -2.4
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.0,
-     1.55,
-     0.0
-    ]
-   },
-   "fov": 30.0,
-   "settleSeconds": 4.0,
-   "waitNpcSeconds": 0.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "joan_legs_side",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "arrive_from_pit",
-    "off": [
-     1.3,
-     0.35,
-     0.0
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.0,
-     0.2,
-     0.0
-    ]
-   },
-   "fov": 30.0,
-   "settleSeconds": 6.0,
-   "waitNpcSeconds": 0.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "joan_legs_back",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.3,
-     0.4,
-     -1.3
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.0,
-     0.2,
-     0.0
-    ]
-   },
-   "fov": 30.0,
-   "settleSeconds": 6.0,
-   "waitNpcSeconds": 0.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "joan_legs_front",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.3,
-     0.4,
-     1.3
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.0,
-     0.2,
-     0.0
-    ]
-   },
-   "fov": 30.0,
-   "settleSeconds": 6.0,
-   "waitNpcSeconds": 0.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "play_sobek",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.0,
-     2.4,
-     -4.0
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.0,
-     1.4,
-     8.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "play_camp",
-   "zone": "hub_camp",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     2.4,
-     -4.0
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     1.4,
-     8.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "play_grendel",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     2.4,
-     -4.0
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     1.4,
-     8.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "play_humbaba",
-   "zone": "z5_humbaba",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     2.4,
-     -4.0
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     1.4,
-     8.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "play_erlking",
-   "zone": "z6_erlking",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     2.4,
-     -4.0
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     1.4,
-     8.0
-    ]
-   },
-   "fov": 50.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "wide_sobek",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.0,
-     7.0,
-     -16.0
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_pit",
-    "off": [
-     0.0,
-     1.5,
-     14.0
-    ]
-   },
-   "fov": 60.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "wide_camp",
-   "zone": "hub_camp",
-   "stand": "gate_prev",
-   "cam": {
-    "spot": "gate_prev",
-    "off": [
-     0.0,
-     7.0,
-     -16.0
-    ]
-   },
-   "look": {
-    "spot": "gate_prev",
-    "off": [
-     0.0,
-     1.5,
-     14.0
-    ]
-   },
-   "fov": 60.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "wide_grendel",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     7.0,
-     -16.0
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     1.5,
-     14.0
-    ]
-   },
-   "fov": 60.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "wide_humbaba",
-   "zone": "z5_humbaba",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     7.0,
-     -16.0
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     1.5,
-     14.0
-    ]
-   },
-   "fov": 60.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "wide_erlking",
-   "zone": "z6_erlking",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     7.0,
-     -16.0
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     0.0,
-     1.5,
-     14.0
-    ]
-   },
-   "fov": 60.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95
-  },
-  {
-   "id": "seam_bog_pool",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "bandit_g4_before_1",
-    "off": [
-     27.78,
-     0.6,
-     10.8
-    ]
-   },
-   "look": {
-    "spot": "bandit_g4_before_1",
-    "off": [
-     31.84,
-     0.75,
-     10.8
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_caravan_wreck",
-   "zone": "hub_camp",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "npc_misc",
-    "off": [
-     3.44,
-     0.6,
-     -11.0
-    ]
-   },
-   "look": {
-    "spot": "npc_misc",
-    "off": [
-     7.36,
-     0.75,
-     -11.0
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_cedar_spirit_totem",
-   "zone": "z5_humbaba",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "boss_stand",
-    "off": [
-     21.86,
-     0.6,
-     -1.47
-    ]
-   },
-   "look": {
-    "spot": "boss_stand",
-    "off": [
-     25.93,
-     0.75,
-     -1.47
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_chain_gantry",
-   "zone": "pit_yard",
-   "stand": "hearth",
-   "cam": {
-    "spot": "hearth",
-    "off": [
-     -0.62,
-     0.6,
-     7.58
-    ]
-   },
-   "look": {
-    "spot": "hearth",
-    "off": [
-     -6.25,
-     0.75,
-     7.58
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_crystal_fungus_cluster",
-   "zone": "z5_humbaba",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "gate_prev",
-    "off": [
-     -6.08,
-     0.6,
-     -4.81
-    ]
-   },
-   "look": {
-    "spot": "gate_prev",
-    "off": [
-     -9.72,
-     0.75,
-     -4.81
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_drowned_colossus_head",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "burrow_croc_home",
-    "off": [
-     -5.33,
-     0.6,
-     1.21
-    ]
-   },
-   "look": {
-    "spot": "burrow_croc_home",
-    "off": [
-     -9.21,
-     0.75,
-     1.21
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_fallen_petrified_giant",
-   "zone": "z5_humbaba",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "bandit_g5_before_1",
-    "off": [
-     -7.15,
-     0.6,
-     -2.36
-    ]
-   },
-   "look": {
-    "spot": "bandit_g5_before_1",
-    "off": [
-     -13.39,
-     0.75,
-     -2.36
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_hanging_lantern_tree",
-   "zone": "hub_camp",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "npc_keeper",
-    "off": [
-     5.04,
-     0.6,
-     8.76
-    ]
-   },
-   "look": {
-    "spot": "npc_keeper",
-    "off": [
-     9.16,
-     0.75,
-     8.76
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_hieroglyph_pylon_pair",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "gate_next",
-    "off": [
-     -14.8,
-     0.6,
-     5.07
-    ]
-   },
-   "look": {
-    "spot": "gate_next",
-    "off": [
-     -19.09,
-     0.75,
-     5.07
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_hunter_gibbet",
-   "zone": "z6_erlking",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "boss_stand",
-    "off": [
-     -15.27,
-     0.6,
-     -5.13
-    ]
-   },
-   "look": {
-    "spot": "boss_stand",
-    "off": [
-     -19.18,
-     0.75,
-     -5.13
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_hunting_horn_arch",
-   "zone": "z6_erlking",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_next",
-    "off": [
-     20.06,
-     0.6,
-     -5.84
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_next",
-    "off": [
-     24.64,
-     0.75,
-     -5.84
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_lion_shrine_altar",
-   "zone": "hub_camp",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "npc_horse",
-    "off": [
-     -2.55,
-     0.6,
-     -3.6
-    ]
-   },
-   "look": {
-    "spot": "npc_horse",
-    "off": [
-     -6.15,
-     0.75,
-     -3.6
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_merchant_stall",
-   "zone": "z7_market2",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "vendor_1",
-    "off": [
-     -14.66,
-     0.6,
-     -9.77
-    ]
-   },
-   "look": {
-    "spot": "vendor_1",
-    "off": [
-     -18.44,
-     0.75,
-     -9.77
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_pitborn_trophy_wall",
-   "zone": "pit_yard",
-   "stand": "hearth",
-   "cam": {
-    "spot": "arrive_from_sobek",
-    "off": [
-     11.97,
-     0.6,
-     1.58
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_sobek",
-    "off": [
-     16.24,
-     0.75,
-     1.58
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_reed_hide_canoe_wreck",
-   "zone": "sobek_reach",
-   "stand": "arrive_from_pit",
-   "cam": {
-    "spot": "gate_pit",
-    "off": [
-     11.7,
-     0.6,
-     1.4
-    ]
-   },
-   "look": {
-    "spot": "gate_pit",
-    "off": [
-     15.57,
-     0.75,
-     1.4
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_rose_window",
-   "zone": "z7_market2",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "vendor_3",
-    "off": [
-     -7.55,
-     0.6,
-     -0.05
-    ]
-   },
-   "look": {
-    "spot": "vendor_3",
-    "off": [
-     -11.89,
-     0.75,
-     -0.05
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_slag_furnace_mouth",
-   "zone": "pit_yard",
-   "stand": "hearth",
-   "cam": {
-    "spot": "hearth",
-    "off": [
-     -13.6,
-     0.6,
-     -5.99
-    ]
-   },
-   "look": {
-    "spot": "hearth",
-    "off": [
-     -17.38,
-     0.75,
-     -5.99
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_spear_skull_palisade",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "bandit_g4_after_2",
-    "off": [
-     21.74,
-     0.6,
-     -4.6
-    ]
-   },
-   "look": {
-    "spot": "bandit_g4_after_2",
-    "off": [
-     26.12,
-     0.75,
-     -4.6
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_stag_skull_totem",
-   "zone": "z6_erlking",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "approach_edge",
-    "off": [
-     29.56,
-     0.6,
-     -0.93
-    ]
-   },
-   "look": {
-    "spot": "approach_edge",
-    "off": [
-     32.72,
-     0.75,
-     -0.93
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_starfall_obelisk",
-   "zone": "z7_market2",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "arrive_from_prev",
-    "off": [
-     -22.34,
-     0.6,
-     1.34
-    ]
-   },
-   "look": {
-    "spot": "arrive_from_prev",
-    "off": [
-     -26.06,
-     0.75,
-     1.34
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  },
-  {
-   "id": "seam_wrecked_longship",
-   "zone": "grendel",
-   "stand": "arrive_from_prev",
-   "cam": {
-    "spot": "bandit_g4_after_1",
-    "off": [
-     -11.82,
-     0.6,
-     -13.24
-    ]
-   },
-   "look": {
-    "spot": "bandit_g4_after_1",
-    "off": [
-     -16.17,
-     0.75,
-     -13.24
-    ]
-   },
-   "fov": 55.0,
-   "settleSeconds": 3.0,
-   "aimFighters": false,
-   "sideM": 9.0,
-   "camY": 1.6,
-   "lookY": 1.3,
-   "midBias": 0.0,
-   "headCloseUp": false,
-   "closeM": 2.4,
-   "headY": 1.95,
-   "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
-  }
- ],
- "renders": 5,
- "freeze": true,
- "noMotionBlur": true,
- "noTaa": true
+  "_about": "CAMPGROUND v1: -zoneshot:<dir> shots (ZoneShot.cs). 'stand' = zones.json spot the player is teleported to (rings / NPCs / creature wake there as in play); cam / look = zones.json spot + [x,y,z] metre offset (spot ground height from a down ray). Game camera into a RenderTexture, no screen grab. flipY only if a build proves the PNG upside down (sidecar logs top / bottom luma).",
+  "width": 1920,
+  "height": 1080,
+  "msaa": 1,
+  "flipY": false,
+  "quit": true,
+  "startWaitSeconds": 60.0,
+  "groundWaitSeconds": 20.0,
+  "shots": [
+    {
+      "id": "grendel_low_a",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 8.0,
+      "aimFighters": true,
+      "sideM": 9.0,
+      "camY": 0.5,
+      "lookY": 0.8,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "grendel_low_b",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 8.0,
+      "aimFighters": true,
+      "sideM": -9.0,
+      "camY": 0.5,
+      "lookY": 0.8,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "z4flat_right",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "grendel_stand",
+        "off": [
+          11,
+          1.7,
+          5
+        ]
+      },
+      "look": {
+        "spot": "grendel_stand",
+        "off": [
+          11,
+          1.0,
+          20
+        ]
+      },
+      "fov": 60.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "z4flat_left",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "grendel_stand",
+        "off": [
+          -11,
+          1.7,
+          5
+        ]
+      },
+      "look": {
+        "spot": "grendel_stand",
+        "off": [
+          -11,
+          1.0,
+          20
+        ]
+      },
+      "fov": 60.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "z4flat_far",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          1.7,
+          12
+        ]
+      },
+      "look": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          1.0,
+          28
+        ]
+      },
+      "fov": 60.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "sobek_stand",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          2.5,
+          1.7,
+          2.0
+        ]
+      },
+      "look": {
+        "spot": "sobek_stand",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "camp_entry",
+      "zone": "hub_camp",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "gate_prev",
+        "off": [
+          1.5,
+          1.7,
+          -2.5
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "trader",
+      "zone": "hub_camp",
+      "stand": "stall_1",
+      "cam": {
+        "spot": "npc_trader",
+        "off": [
+          2.8,
+          1.65,
+          0.0
+        ]
+      },
+      "look": {
+        "spot": "npc_trader",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 2.0,
+      "waitNpcSeconds": 15.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 2.8 m out at 1.65 m height"
+    },
+    {
+      "id": "sobek_side_a",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "sobek_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "sobek_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 6.0,
+      "aimFighters": true,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "sobek_side_b",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "sobek_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "sobek_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 10.0,
+      "aimFighters": true,
+      "sideM": -9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "pitborn_head_close",
+      "zone": "pit_yard",
+      "stand": "hearth",
+      "cam": {
+        "spot": "hearth",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 8.0,
+      "waitNpcSeconds": 0.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": true,
+      "closeM": 2.6,
+      "headY": 1.95
+    },
+    {
+      "id": "freecam_camp_cur",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.5,
+          2.059,
+          -3.268
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.5,
+          1.6,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose cur from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
+    },
+    {
+      "id": "freecam_camp_A",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.6,
+          2.221,
+          -4.06
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.6,
+          1.65,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose A from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
+    },
+    {
+      "id": "freecam_camp_B",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.7,
+          2.376,
+          -4.456
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.7,
+          1.75,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose B from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
+    },
+    {
+      "id": "freecam_camp_C",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.8,
+          2.518,
+          -4.753
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.8,
+          1.85,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose C from behind Joan in the camp (Joan yaw 0, fov 50, pitch 8)"
+    },
+    {
+      "id": "freecam_sobek_cur",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.5,
+          2.059,
+          -3.268
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.5,
+          1.6,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose cur from behind Joan, Sobek 9 m ahead"
+    },
+    {
+      "id": "freecam_sobek_A",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.6,
+          2.221,
+          -4.06
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.6,
+          1.65,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose A from behind Joan, Sobek 9 m ahead"
+    },
+    {
+      "id": "freecam_sobek_B",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.7,
+          2.376,
+          -4.456
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.7,
+          1.75,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "FREECAM v1: free camera pose B from behind Joan, Sobek 9 m ahead"
+    },
+    {
+      "id": "grendel_stand",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          2.5,
+          1.7,
+          2.0
+        ]
+      },
+      "look": {
+        "spot": "grendel_stand",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "grendel_side_a",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 6.0,
+      "aimFighters": true,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "grendel_side_b",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "grendel_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 10.0,
+      "aimFighters": true,
+      "sideM": -9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "humbaba_stand",
+      "zone": "z5_humbaba",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          2.5,
+          1.7,
+          2.0
+        ]
+      },
+      "look": {
+        "spot": "boss_stand",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "humbaba_side_a",
+      "zone": "z5_humbaba",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "boss_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "boss_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 6.0,
+      "aimFighters": true,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "humbaba_side_b",
+      "zone": "z5_humbaba",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "boss_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "boss_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 10.0,
+      "aimFighters": true,
+      "sideM": -9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "erlking_stand",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          2.5,
+          1.7,
+          2.0
+        ]
+      },
+      "look": {
+        "spot": "boss_stand",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "erlking_side_a",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "boss_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "boss_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 6.0,
+      "aimFighters": true,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "erlking_side_b",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "boss_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "look": {
+        "spot": "boss_stand",
+        "off": [
+          0,
+          0,
+          0
+        ]
+      },
+      "fov": 42.0,
+      "settleSeconds": 10.0,
+      "aimFighters": true,
+      "sideM": -9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "z1_gate",
+      "zone": "pit_yard",
+      "stand": "arrive_from_sobek",
+      "cam": {
+        "spot": "arrive_from_sobek",
+        "off": [
+          1.5,
+          1.7,
+          -3.5
+        ]
+      },
+      "look": {
+        "spot": "gate_sobek",
+        "off": [
+          0.0,
+          1.8,
+          0.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 4.0,
+      "waitNpcSeconds": 0.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "z7_entry",
+      "zone": "z7_market2",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "gate_prev",
+        "off": [
+          1.5,
+          1.7,
+          -2.5
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          0.0,
+          1.2,
+          0.0
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 0.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "z7_vendor",
+      "zone": "z7_market2",
+      "stand": "stall_1",
+      "cam": {
+        "spot": "vendor_1",
+        "off": [
+          2.8,
+          1.65,
+          0.0
+        ]
+      },
+      "look": {
+        "spot": "vendor_1",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 6.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 2.8 m out at 1.65 m height"
+    },
+    {
+      "id": "z7_alpha_end",
+      "zone": "z7_market2",
+      "stand": "vendor_2",
+      "cam": {
+        "spot": "gate_alpha_end",
+        "off": [
+          1.5,
+          1.7,
+          -6.0
+        ]
+      },
+      "look": {
+        "spot": "beyond_stand",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "fov": 45.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 0.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "joan_front",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.5,
+          1.65,
+          2.6
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.0,
+          1.55,
+          0.0
+        ]
+      },
+      "fov": 30.0,
+      "settleSeconds": 4.0,
+      "waitNpcSeconds": 0.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "joan_back",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.4,
+          1.7,
+          -2.4
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.0,
+          1.55,
+          0.0
+        ]
+      },
+      "fov": 30.0,
+      "settleSeconds": 4.0,
+      "waitNpcSeconds": 0.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "joan_legs_side",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          1.3,
+          0.35,
+          0.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.0,
+          0.2,
+          0.0
+        ]
+      },
+      "fov": 30.0,
+      "settleSeconds": 6.0,
+      "waitNpcSeconds": 0.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "joan_legs_back",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.3,
+          0.4,
+          -1.3
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.0,
+          0.2,
+          0.0
+        ]
+      },
+      "fov": 30.0,
+      "settleSeconds": 6.0,
+      "waitNpcSeconds": 0.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "joan_legs_front",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.3,
+          0.4,
+          1.3
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.0,
+          0.2,
+          0.0
+        ]
+      },
+      "fov": 30.0,
+      "settleSeconds": 6.0,
+      "waitNpcSeconds": 0.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "play_sobek",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.0,
+          2.4,
+          -4.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.0,
+          1.4,
+          8.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "play_camp",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          2.4,
+          -4.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          1.4,
+          8.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "play_grendel",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          2.4,
+          -4.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          1.4,
+          8.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "play_humbaba",
+      "zone": "z5_humbaba",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          2.4,
+          -4.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          1.4,
+          8.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "play_erlking",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          2.4,
+          -4.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          1.4,
+          8.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "wide_sobek",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.0,
+          7.0,
+          -16.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_pit",
+        "off": [
+          0.0,
+          1.5,
+          14.0
+        ]
+      },
+      "fov": 60.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "wide_camp",
+      "zone": "hub_camp",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "gate_prev",
+        "off": [
+          0.0,
+          7.0,
+          -16.0
+        ]
+      },
+      "look": {
+        "spot": "gate_prev",
+        "off": [
+          0.0,
+          1.5,
+          14.0
+        ]
+      },
+      "fov": 60.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "wide_grendel",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          7.0,
+          -16.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          1.5,
+          14.0
+        ]
+      },
+      "fov": 60.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "wide_humbaba",
+      "zone": "z5_humbaba",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          7.0,
+          -16.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          1.5,
+          14.0
+        ]
+      },
+      "fov": 60.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "wide_erlking",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          7.0,
+          -16.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          1.5,
+          14.0
+        ]
+      },
+      "fov": 60.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "seam_bog_pool",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "bandit_g4_before_1",
+        "off": [
+          6.19,
+          0.6,
+          34.47
+        ]
+      },
+      "look": {
+        "spot": "bandit_g4_before_1",
+        "off": [
+          10.25,
+          0.75,
+          34.47
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_caravan_wreck",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "npc_misc",
+        "off": [
+          3.44,
+          0.6,
+          -11.0
+        ]
+      },
+      "look": {
+        "spot": "npc_misc",
+        "off": [
+          7.36,
+          0.75,
+          -11.0
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_cedar_spirit_totem",
+      "zone": "z5_humbaba",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "boss_stand",
+        "off": [
+          12.47,
+          1.5,
+          4.41
+        ]
+      },
+      "look": {
+        "spot": "boss_stand",
+        "off": [
+          30.18,
+          3.14,
+          -1.51
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)",
+      "_note2": "DEFECTS2: re-aimed, camera 18.7 m (1.8 x width 10.4) from the prop centre, y 1.5; was 8.3 m (frame mean luma 2.4)"
+    },
+    {
+      "id": "seam_chain_gantry",
+      "zone": "pit_yard",
+      "stand": "hearth",
+      "cam": {
+        "spot": "hearth",
+        "off": [
+          -0.62,
+          0.6,
+          7.58
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          -6.25,
+          0.75,
+          7.58
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_crystal_fungus_cluster",
+      "zone": "z5_humbaba",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "gate_prev",
+        "off": [
+          -7.38,
+          1.5,
+          -15.24
+        ]
+      },
+      "look": {
+        "spot": "gate_prev",
+        "off": [
+          -12.28,
+          1.2,
+          -4.79
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)",
+      "_note2": "DEFECTS2: re-aimed, camera 11.5 m (1.8 x width 6.4) from the prop centre, y 1.5; was 6.2 m (frame mean luma 13.1)"
+    },
+    {
+      "id": "seam_drowned_colossus_head",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "burrow_croc_home",
+        "off": [
+          -5.33,
+          0.6,
+          1.21
+        ]
+      },
+      "look": {
+        "spot": "burrow_croc_home",
+        "off": [
+          -9.21,
+          0.75,
+          1.21
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_fallen_petrified_giant",
+      "zone": "z5_humbaba",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "bandit_g5_before_1",
+        "off": [
+          -7.15,
+          0.6,
+          -2.36
+        ]
+      },
+      "look": {
+        "spot": "bandit_g5_before_1",
+        "off": [
+          -13.39,
+          0.75,
+          -2.36
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_hanging_lantern_tree",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "npc_keeper",
+        "off": [
+          5.04,
+          0.6,
+          8.76
+        ]
+      },
+      "look": {
+        "spot": "npc_keeper",
+        "off": [
+          9.16,
+          0.75,
+          8.76
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_hieroglyph_pylon_pair",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "gate_next",
+        "off": [
+          -4.19,
+          1.5,
+          10.34
+        ]
+      },
+      "look": {
+        "spot": "gate_next",
+        "off": [
+          -24.56,
+          1.84,
+          4.96
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)",
+      "_note2": "DEFECTS2: re-aimed, camera 21.1 m (1.8 x width 11.7) from the prop centre, y 1.5; was 9.8 m (frame mean luma 12.2)"
+    },
+    {
+      "id": "seam_hunter_gibbet",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "boss_stand",
+        "off": [
+          -15.13,
+          1.5,
+          5.36
+        ]
+      },
+      "look": {
+        "spot": "boss_stand",
+        "off": [
+          -22.89,
+          2.68,
+          -5.16
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)",
+      "_note2": "DEFECTS2: re-aimed, camera 13.1 m (1.8 x width 7.3) from the prop centre, y 1.5; was 7.6 m (frame mean luma 0.0)"
+    },
+    {
+      "id": "seam_hunting_horn_arch",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_next",
+        "off": [
+          20.06,
+          0.6,
+          -5.84
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_next",
+        "off": [
+          24.64,
+          0.75,
+          -5.84
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_lion_shrine_altar",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "npc_horse",
+        "off": [
+          -2.55,
+          0.6,
+          -3.6
+        ]
+      },
+      "look": {
+        "spot": "npc_horse",
+        "off": [
+          -6.15,
+          0.75,
+          -3.6
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_merchant_stall",
+      "zone": "z7_market2",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "vendor_1",
+        "off": [
+          -7.94,
+          1.5,
+          -11.91
+        ]
+      },
+      "look": {
+        "spot": "vendor_1",
+        "off": [
+          -21.59,
+          2.42,
+          -9.79
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)",
+      "_note2": "DEFECTS2: re-aimed, camera 13.8 m (1.8 x width 7.7) from the prop centre, y 1.5; was 6.9 m (frame mean luma 7.0)"
+    },
+    {
+      "id": "seam_pitborn_trophy_wall",
+      "zone": "pit_yard",
+      "stand": "hearth",
+      "cam": {
+        "spot": "arrive_from_sobek",
+        "off": [
+          11.97,
+          0.6,
+          1.58
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_sobek",
+        "off": [
+          16.24,
+          0.75,
+          1.58
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_reed_hide_canoe_wreck",
+      "zone": "sobek_reach",
+      "stand": "arrive_from_pit",
+      "cam": {
+        "spot": "gate_pit",
+        "off": [
+          11.7,
+          0.6,
+          1.4
+        ]
+      },
+      "look": {
+        "spot": "gate_pit",
+        "off": [
+          15.57,
+          0.75,
+          1.4
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_rose_window",
+      "zone": "z7_market2",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "vendor_3",
+        "off": [
+          -7.55,
+          0.6,
+          -0.05
+        ]
+      },
+      "look": {
+        "spot": "vendor_3",
+        "off": [
+          -11.89,
+          0.75,
+          -0.05
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_slag_furnace_mouth",
+      "zone": "pit_yard",
+      "stand": "hearth",
+      "cam": {
+        "spot": "hearth",
+        "off": [
+          -13.6,
+          0.6,
+          -5.99
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          -17.38,
+          0.75,
+          -5.99
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_spear_skull_palisade",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "bandit_g4_after_2",
+        "off": [
+          9.84,
+          0.6,
+          4.66
+        ]
+      },
+      "look": {
+        "spot": "bandit_g4_after_2",
+        "off": [
+          14.22,
+          0.75,
+          4.66
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "seam_stag_skull_totem",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "approach_edge",
+        "off": [
+          23.03,
+          1.5,
+          18.77
+        ]
+      },
+      "look": {
+        "spot": "approach_edge",
+        "off": [
+          33.9,
+          4.48,
+          -1.49
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)",
+      "_note2": "DEFECTS2: re-aimed, camera 23.0 m (1.8 x width 12.8) from the prop centre, y 1.5; was 4.4 m (frame mean luma 3.4)"
+    },
+    {
+      "id": "seam_starfall_obelisk",
+      "zone": "z7_market2",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -24.29,
+          1.5,
+          12.94
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -28.9,
+          4.48,
+          1.3
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)",
+      "_note2": "DEFECTS2: re-aimed, camera 12.5 m (1.8 x width 7.0) from the prop centre, y 1.5; was 6.6 m (frame mean luma 15.3)"
+    },
+    {
+      "id": "seam_wrecked_longship",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "bandit_g4_after_1",
+        "off": [
+          -0.46,
+          0.6,
+          -8.29
+        ]
+      },
+      "look": {
+        "spot": "bandit_g4_after_1",
+        "off": [
+          -4.81,
+          0.75,
+          -8.29
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "_note": "ground-level camera 0.6 m, 3.0 m from the disc rim, looking at the base; y offset is relative to the spot ground (unverified: terrain height at the prop vs the spot is not known)"
+    },
+    {
+      "id": "mounts15_z6",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          11.0,
+          -4.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          0.0,
+          28.0
+        ]
+      },
+      "fov": 75.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts15_z6n",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -6.0,
+          4.0,
+          0.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -21.0,
+          0.8,
+          14.0
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts15_z4",
+      "zone": "grendel",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "gate_prev",
+        "off": [
+          0.0,
+          11.0,
+          -10.0
+        ]
+      },
+      "look": {
+        "spot": "gate_prev",
+        "off": [
+          0.0,
+          0.0,
+          27.0
+        ]
+      },
+      "fov": 75.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts15_z4n",
+      "zone": "grendel",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "gate_prev",
+        "off": [
+          0.0,
+          4.0,
+          -6.0
+        ]
+      },
+      "look": {
+        "spot": "gate_prev",
+        "off": [
+          -12.0,
+          0.8,
+          2.0
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts15_z5",
+      "zone": "z5_humbaba",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          11.0,
+          -10.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          14.0,
+          0.0,
+          20.0
+        ]
+      },
+      "fov": 75.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts15_z5n",
+      "zone": "z5_humbaba",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          4.0,
+          4.0,
+          -6.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          21.0,
+          0.8,
+          2.0
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts15_z1",
+      "zone": "pit_yard",
+      "stand": "arrive_from_sobek",
+      "cam": {
+        "spot": "arrive_from_sobek",
+        "off": [
+          0.0,
+          5.0,
+          3.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_sobek",
+        "off": [
+          0.0,
+          0.0,
+          29.0
+        ]
+      },
+      "fov": 70.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts15_z1n",
+      "zone": "pit_yard",
+      "stand": "arrive_from_sobek",
+      "cam": {
+        "spot": "arrive_from_sobek",
+        "off": [
+          6.0,
+          4.0,
+          4.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_sobek",
+        "off": [
+          19.0,
+          0.8,
+          28.0
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts15_z2",
+      "zone": "sobek_reach",
+      "stand": "gate_pit",
+      "cam": {
+        "spot": "gate_pit",
+        "off": [
+          0.0,
+          6.0,
+          2.0
+        ]
+      },
+      "look": {
+        "spot": "gate_pit",
+        "off": [
+          0.0,
+          0.0,
+          26.0
+        ]
+      },
+      "fov": 75.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts15_z2n",
+      "zone": "sobek_reach",
+      "stand": "gate_pit",
+      "cam": {
+        "spot": "gate_pit",
+        "off": [
+          6.0,
+          4.0,
+          4.0
+        ]
+      },
+      "look": {
+        "spot": "gate_pit",
+        "off": [
+          19.0,
+          0.8,
+          26.0
+        ]
+      },
+      "fov": 55.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "zone": "hub_camp",
+      "stand": "hearth",
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 15.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_trader_front",
+      "cam": {
+        "spot": "npc_trader",
+        "off": [
+          2.8,
+          1.65,
+          0.0
+        ]
+      },
+      "look": {
+        "spot": "npc_trader",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 2.8 m out at 1.65 m height"
+    },
+    {
+      "zone": "hub_camp",
+      "stand": "hearth",
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 15.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_trader_wide",
+      "cam": {
+        "spot": "npc_trader",
+        "off": [
+          5.5,
+          1.7,
+          -1.0
+        ]
+      },
+      "look": {
+        "spot": "npc_trader",
+        "off": [
+          0.0,
+          1.3,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 5.5 m out at 1.70 m height"
+    },
+    {
+      "zone": "hub_camp",
+      "stand": "hearth",
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 15.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_keeper_front",
+      "cam": {
+        "spot": "npc_keeper",
+        "off": [
+          -2.8,
+          1.65,
+          -0.0
+        ]
+      },
+      "look": {
+        "spot": "npc_keeper",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 270), 2.8 m out at 1.65 m height"
+    },
+    {
+      "zone": "hub_camp",
+      "stand": "hearth",
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 15.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_keeper_wide",
+      "cam": {
+        "spot": "npc_keeper",
+        "off": [
+          -5.5,
+          1.7,
+          1.0
+        ]
+      },
+      "look": {
+        "spot": "npc_keeper",
+        "off": [
+          0.0,
+          1.3,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 270), 5.5 m out at 1.70 m height"
+    },
+    {
+      "zone": "hub_camp",
+      "stand": "hearth",
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 15.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_traveller_front",
+      "cam": {
+        "spot": "npc_traveller",
+        "off": [
+          2.8,
+          1.65,
+          0.0
+        ]
+      },
+      "look": {
+        "spot": "npc_traveller",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 2.8 m out at 1.65 m height"
+    },
+    {
+      "zone": "hub_camp",
+      "stand": "hearth",
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 15.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_traveller_wide",
+      "cam": {
+        "spot": "npc_traveller",
+        "off": [
+          5.5,
+          1.7,
+          -1.0
+        ]
+      },
+      "look": {
+        "spot": "npc_traveller",
+        "off": [
+          0.0,
+          1.3,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 5.5 m out at 1.70 m height"
+    },
+    {
+      "zone": "hub_camp",
+      "stand": "hearth",
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 15.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_stablemaster_front",
+      "cam": {
+        "spot": "npc_stable",
+        "off": [
+          2.8,
+          1.65,
+          0.0
+        ]
+      },
+      "look": {
+        "spot": "npc_stable",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 2.8 m out at 1.65 m height"
+    },
+    {
+      "zone": "hub_camp",
+      "stand": "hearth",
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 15.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_stablemaster_wide",
+      "cam": {
+        "spot": "npc_stable",
+        "off": [
+          5.5,
+          1.7,
+          -1.0
+        ]
+      },
+      "look": {
+        "spot": "npc_stable",
+        "off": [
+          0.0,
+          1.3,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 5.5 m out at 1.70 m height"
+    },
+    {
+      "zone": "z7_market2",
+      "stand": "hearth",
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 8.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_vendor_1_front",
+      "cam": {
+        "spot": "vendor_1",
+        "off": [
+          2.8,
+          1.65,
+          0.0
+        ]
+      },
+      "look": {
+        "spot": "vendor_1",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 2.8 m out at 1.65 m height"
+    },
+    {
+      "zone": "z7_market2",
+      "stand": "hearth",
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 8.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_vendor_1_wide",
+      "cam": {
+        "spot": "vendor_1",
+        "off": [
+          5.5,
+          1.7,
+          -1.0
+        ]
+      },
+      "look": {
+        "spot": "vendor_1",
+        "off": [
+          0.0,
+          1.3,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 5.5 m out at 1.70 m height"
+    },
+    {
+      "zone": "z7_market2",
+      "stand": "hearth",
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 8.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_vendor_2_front",
+      "cam": {
+        "spot": "vendor_2",
+        "off": [
+          -2.8,
+          1.65,
+          -0.0
+        ]
+      },
+      "look": {
+        "spot": "vendor_2",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 270), 2.8 m out at 1.65 m height"
+    },
+    {
+      "zone": "z7_market2",
+      "stand": "hearth",
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 8.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_vendor_2_wide",
+      "cam": {
+        "spot": "vendor_2",
+        "off": [
+          -5.5,
+          1.7,
+          1.0
+        ]
+      },
+      "look": {
+        "spot": "vendor_2",
+        "off": [
+          0.0,
+          1.3,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 270), 5.5 m out at 1.70 m height"
+    },
+    {
+      "zone": "z7_market2",
+      "stand": "hearth",
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 8.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_vendor_3_front",
+      "cam": {
+        "spot": "vendor_3",
+        "off": [
+          2.8,
+          1.65,
+          0.0
+        ]
+      },
+      "look": {
+        "spot": "vendor_3",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 2.8 m out at 1.65 m height"
+    },
+    {
+      "zone": "z7_market2",
+      "stand": "hearth",
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 8.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_vendor_3_wide",
+      "cam": {
+        "spot": "vendor_3",
+        "off": [
+          5.5,
+          1.7,
+          -1.0
+        ]
+      },
+      "look": {
+        "spot": "vendor_3",
+        "off": [
+          0.0,
+          1.3,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 90), 5.5 m out at 1.70 m height"
+    },
+    {
+      "zone": "z7_market2",
+      "stand": "hearth",
+      "fov": 38.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 8.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_keeper_z7_front",
+      "cam": {
+        "spot": "npc_keeper",
+        "off": [
+          -2.8,
+          1.65,
+          -0.0
+        ]
+      },
+      "look": {
+        "spot": "npc_keeper",
+        "off": [
+          0.0,
+          1.5,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 270), 2.8 m out at 1.65 m height"
+    },
+    {
+      "zone": "z7_market2",
+      "stand": "hearth",
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "waitNpcSeconds": 8.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "id": "int_vendor_keeper_z7_wide",
+      "cam": {
+        "spot": "npc_keeper",
+        "off": [
+          -5.5,
+          1.7,
+          1.0
+        ]
+      },
+      "look": {
+        "spot": "npc_keeper",
+        "off": [
+          0.0,
+          1.3,
+          0.0
+        ]
+      },
+      "hf4": "camera re-aimed on the vendor facing axis (row yaw 270), 5.5 m out at 1.70 m height"
+    },
+    {
+      "zone": "z6_erlking",
+      "stand": "approach_edge",
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 0.0,
+      "id": "int_hound_z6_sw",
+      "cam": {
+        "spot": "approach_edge",
+        "off": [
+          -10,
+          1.6,
+          -6
+        ]
+      },
+      "look": {
+        "spot": "approach_edge",
+        "off": [
+          -22,
+          0.9,
+          4
+        ]
+      },
+      "fov": 45.0,
+      "settleSeconds": 20.0
+    },
+    {
+      "zone": "z6_erlking",
+      "stand": "approach_edge",
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 0.0,
+      "id": "int_hound_z6_sw_b",
+      "cam": {
+        "spot": "approach_edge",
+        "off": [
+          -10,
+          1.6,
+          -6
+        ]
+      },
+      "look": {
+        "spot": "approach_edge",
+        "off": [
+          -22,
+          0.9,
+          4
+        ]
+      },
+      "fov": 45.0,
+      "settleSeconds": 40.0
+    },
+    {
+      "zone": "z6_erlking",
+      "stand": "approach_edge",
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 0.0,
+      "id": "int_hound_z6_se",
+      "cam": {
+        "spot": "approach_edge",
+        "off": [
+          12,
+          1.6,
+          12
+        ]
+      },
+      "look": {
+        "spot": "approach_edge",
+        "off": [
+          26,
+          0.9,
+          19
+        ]
+      },
+      "fov": 45.0,
+      "settleSeconds": 20.0
+    },
+    {
+      "zone": "z6_erlking",
+      "stand": "approach_edge",
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 0.0,
+      "id": "int_hound_z6_ne",
+      "cam": {
+        "spot": "boss_stand",
+        "off": [
+          8,
+          1.6,
+          6
+        ]
+      },
+      "look": {
+        "spot": "boss_stand",
+        "off": [
+          23,
+          0.9,
+          18
+        ]
+      },
+      "fov": 45.0,
+      "settleSeconds": 20.0
+    },
+    {
+      "zone": "z6_erlking",
+      "stand": "approach_edge",
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "waitNpcSeconds": 0.0,
+      "id": "int_hound_z6_ne_b",
+      "cam": {
+        "spot": "boss_stand",
+        "off": [
+          8,
+          1.6,
+          6
+        ]
+      },
+      "look": {
+        "spot": "boss_stand",
+        "off": [
+          23,
+          0.9,
+          18
+        ]
+      },
+      "fov": 45.0,
+      "settleSeconds": 40.0
+    },
+    {
+      "id": "camps2_c1_wide_south",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          3.6,
+          -5.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          1.0,
+          8.5
+        ]
+      },
+      "fov": 64.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: camp 1 wide from the entry side (all props, both stall rows, hearth ring). Joan stands at arrive_from_prev, camera 5.0 m behind her looking at the cluster at (0.0, 88.5); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c1_wide_north",
+      "zone": "hub_camp",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "gate_next",
+        "off": [
+          0.0,
+          3.4,
+          4.0
+        ]
+      },
+      "look": {
+        "spot": "gate_next",
+        "off": [
+          0.0,
+          1.0,
+          -12.0
+        ]
+      },
+      "fov": 64.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: camp 1 wide from the far door looking back. Joan stands at gate_next, camera 4.0 m behind her looking at the cluster at (0.0, 85.0); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c1_hearth",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -1.3,
+          2.2,
+          -2.7
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          3.58,
+          0.5,
+          7.43
+        ]
+      },
+      "fov": 46.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: hearth cluster: fire pit, 4 log seats, plank bench, stool set. Joan stands at arrive_from_prev, camera 3.0 m behind her looking at the cluster at (3.6, 87.4); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c1_west_displays",
+      "zone": "hub_camp",
+      "stand": "hearth",
+      "cam": {
+        "spot": "hearth",
+        "off": [
+          2.46,
+          2.0,
+          -1.71
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          -7.26,
+          1.0,
+          5.05
+        ]
+      },
+      "fov": 46.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: west stalls: timber counter, weapon rack, armour dummy, anvil sign. Joan stands at hearth, camera 3.0 m behind her looking at the cluster at (-4.3, 92.5); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c1_storage",
+      "zone": "hub_camp",
+      "stand": "hearth",
+      "cam": {
+        "spot": "hearth",
+        "off": [
+          -2.85,
+          2.0,
+          -0.93
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          5.8,
+          0.8,
+          1.9
+        ]
+      },
+      "fov": 46.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: storage under the east canopy: pallet set, crates, barrels. Joan stands at hearth, camera 3.0 m behind her looking at the cluster at (8.8, 89.4); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c1_entry",
+      "zone": "hub_camp",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.17,
+          2.0,
+          3.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -0.27,
+          1.0,
+          -4.67
+        ]
+      },
+      "fov": 52.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: entry corner: crate bench, horse sign, timber counter b. Joan stands at arrive_from_prev, camera 3.0 m behind her looking at the cluster at (-0.3, 75.3); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c1_flask_sign",
+      "zone": "hub_camp",
+      "stand": "hearth",
+      "cam": {
+        "spot": "hearth",
+        "off": [
+          -0.78,
+          2.0,
+          -2.9
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          1.38,
+          1.2,
+          5.08
+        ]
+      },
+      "fov": 46.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: apothecary flask sign and stool set. Joan stands at hearth, camera 3.0 m behind her looking at the cluster at (4.4, 92.6); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c2_wide_south",
+      "zone": "z7_market2",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          3.8,
+          -5.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          1.0,
+          15.0
+        ]
+      },
+      "fov": 66.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: camp 2 wide from the entry gate. Joan stands at arrive_from_prev, camera 5.0 m behind her looking at the cluster at (0.0, 338.0); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c2_wide_north",
+      "zone": "z7_market2",
+      "stand": "gate_alpha_end",
+      "cam": {
+        "spot": "gate_alpha_end",
+        "off": [
+          0.0,
+          3.8,
+          4.0
+        ]
+      },
+      "look": {
+        "spot": "gate_alpha_end",
+        "off": [
+          0.0,
+          1.0,
+          -23.2
+        ]
+      },
+      "fov": 66.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: camp 2 wide from the far gate looking back. Joan stands at gate_alpha_end, camera 4.0 m behind her looking at the cluster at (0.0, 338.0); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c2_entry_west",
+      "zone": "z7_market2",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          2.98,
+          2.2,
+          0.3
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -5.43,
+          1.0,
+          -0.55
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: west entry bay: small canopy, iron counters, brass brazier. Joan stands at arrive_from_prev, camera 3.0 m behind her looking at the cluster at (-5.4, 322.4); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c2_entry_east",
+      "zone": "z7_market2",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -2.75,
+          2.2,
+          1.19
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          5.55,
+          0.8,
+          -2.4
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: east entry bay: trestle table and iron brazier. Joan stands at arrive_from_prev, camera 3.0 m behind her looking at the cluster at (5.6, 320.6); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c2_hearth",
+      "zone": "z7_market2",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -1.67,
+          2.0,
+          -2.49
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          4.2,
+          0.4,
+          6.25
+        ]
+      },
+      "fov": 46.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: hearth benches. Joan stands at arrive_from_prev, camera 3.0 m behind her looking at the cluster at (4.2, 329.2); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c2_displays",
+      "zone": "z7_market2",
+      "stand": "hearth",
+      "cam": {
+        "spot": "hearth",
+        "off": [
+          2.81,
+          2.0,
+          -1.05
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          -7.6,
+          1.0,
+          2.85
+        ]
+      },
+      "fov": 48.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: west displays: shield rack, armour dummy, helm stand, weapon rack. Joan stands at hearth, camera 3.0 m behind her looking at the cluster at (-4.6, 333.4); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c2_apothecary",
+      "zone": "z7_market2",
+      "stand": "hearth",
+      "cam": {
+        "spot": "hearth",
+        "off": [
+          -0.74,
+          2.0,
+          -2.91
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          1.24,
+          1.3,
+          4.88
+        ]
+      },
+      "fov": 46.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: censer stand at the apothecary door and the flask banner. Joan stands at hearth, camera 3.0 m behind her looking at the cluster at (4.2, 335.4); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c2_banners_west",
+      "zone": "z7_market2",
+      "stand": "hearth",
+      "cam": {
+        "spot": "hearth",
+        "off": [
+          1.09,
+          2.2,
+          -2.8
+        ]
+      },
+      "look": {
+        "spot": "hearth",
+        "off": [
+          -6.9,
+          1.5,
+          17.75
+        ]
+      },
+      "fov": 58.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: armour and horse banners at the west stalls. Joan stands at hearth, camera 3.0 m behind her looking at the cluster at (-3.9, 348.2); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "camps2_c2_yard",
+      "zone": "z7_market2",
+      "stand": "vendor_2",
+      "cam": {
+        "spot": "vendor_2",
+        "off": [
+          -0.78,
+          2.2,
+          -2.9
+        ]
+      },
+      "look": {
+        "spot": "vendor_2",
+        "off": [
+          1.77,
+          1.0,
+          6.6
+        ]
+      },
+      "fov": 52.0,
+      "settleSeconds": 3.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "CAMPS2PLACE proof shot: east supply yard: canopy, iron counters, pallet set, crates, barrels. Joan stands at vendor_2, camera 3.0 m behind her looking at the cluster at (7.7, 356.0); y offsets are relative to the spot ground."
+    },
+    {
+      "id": "mounts10_z6",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          3.5,
+          -6.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -14.0,
+          0.8,
+          6.0
+        ]
+      },
+      "fov": 65.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts10_z4",
+      "zone": "grendel",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          0.0,
+          3.5,
+          -6.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -18.0,
+          0.8,
+          22.0
+        ]
+      },
+      "fov": 65.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts10_z5",
+      "zone": "z5_humbaba",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "gate_prev",
+        "off": [
+          0.0,
+          3.5,
+          -6.0
+        ]
+      },
+      "look": {
+        "spot": "gate_prev",
+        "off": [
+          -1.0,
+          0.8,
+          3.0
+        ]
+      },
+      "fov": 65.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts10_z1",
+      "zone": "sobek_reach",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "gate_next",
+        "off": [
+          0.0,
+          3.5,
+          -6.0
+        ]
+      },
+      "look": {
+        "spot": "gate_next",
+        "off": [
+          -19.0,
+          0.8,
+          16.0
+        ]
+      },
+      "fov": 70.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mounts10_z2",
+      "zone": "sobek_reach",
+      "stand": "gate_next",
+      "cam": {
+        "spot": "gate_next",
+        "off": [
+          0.0,
+          3.5,
+          -6.0
+        ]
+      },
+      "look": {
+        "spot": "gate_next",
+        "off": [
+          7.0,
+          0.8,
+          11.0
+        ]
+      },
+      "fov": 70.0,
+      "settleSeconds": 10.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95
+    },
+    {
+      "id": "mountlow_z1",
+      "zone": "sobek_reach",
+      "stand": "gate_pit",
+      "cam": {
+        "spot": "gate_pit",
+        "off": [
+          17.54,
+          1.6,
+          15.85
+        ]
+      },
+      "look": {
+        "spot": "gate_pit",
+        "off": [
+          19.0,
+          0.9,
+          9.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 12.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "HOTFIX4 low mount shot: Joan eye height 1.6 m, 7.0 m from the centre of box mt_z1_3 (pitborn_chain-caparisoned-destrier, LIVE enabled), props clear >= 5.4 m, 100% of box sample points in line of sight (cylinder test, not seen in-engine). settle 12 s: the animal position is random inside the box."
+    },
+    {
+      "id": "mountlow_z2",
+      "zone": "sobek_reach",
+      "stand": "gate_pit",
+      "cam": {
+        "spot": "gate_pit",
+        "off": [
+          0.0,
+          1.6,
+          36.0
+        ]
+      },
+      "look": {
+        "spot": "gate_pit",
+        "off": [
+          7.0,
+          0.9,
+          36.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 12.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "HOTFIX4 low mount shot: Joan eye height 1.6 m, 7.0 m from the centre of box mt2_z2_1 (sobek_mourning-barge, LIVE enabled), props clear >= 5.1 m, 100% of box sample points in line of sight (cylinder test, not seen in-engine). settle 12 s: the animal position is random inside the box."
+    },
+    {
+      "id": "mountlow_z4",
+      "zone": "grendel",
+      "stand": "gate_prev",
+      "cam": {
+        "spot": "gate_prev",
+        "off": [
+          11.0,
+          1.6,
+          22.0
+        ]
+      },
+      "look": {
+        "spot": "gate_prev",
+        "off": [
+          18.0,
+          0.9,
+          22.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 12.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "HOTFIX4 low mount shot: Joan eye height 1.6 m, 7.0 m from the centre of box mt_z4_2 (grendel_longship-warhorse, LIVE enabled), props clear >= 6.6 m, 100% of box sample points in line of sight (cylinder test, not seen in-engine). settle 12 s: the animal position is random inside the box."
+    },
+    {
+      "id": "mountlow_z5",
+      "zone": "z5_humbaba",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          14.0,
+          1.6,
+          -3.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          21.0,
+          0.9,
+          -3.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 12.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "HOTFIX4 low mount shot: Joan eye height 1.6 m, 7.0 m from the centre of box mt_z5_1 (humbaba_cedar-mare, LIVE enabled), props clear >= 14.9 m, 100% of box sample points in line of sight (cylinder test, not seen in-engine). settle 12 s: the animal position is random inside the box."
+    },
+    {
+      "id": "mountlow_z6",
+      "zone": "z6_erlking",
+      "stand": "arrive_from_prev",
+      "cam": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -7.0,
+          1.6,
+          6.0
+        ]
+      },
+      "look": {
+        "spot": "arrive_from_prev",
+        "off": [
+          -14.0,
+          0.9,
+          6.0
+        ]
+      },
+      "fov": 50.0,
+      "settleSeconds": 12.0,
+      "aimFighters": false,
+      "sideM": 9.0,
+      "camY": 1.6,
+      "lookY": 1.3,
+      "midBias": 0.0,
+      "headCloseUp": false,
+      "closeM": 2.4,
+      "headY": 1.95,
+      "note": "HOTFIX4 low mount shot: Joan eye height 1.6 m, 7.0 m from the centre of box mt2_z6_2 (erlking_uninvited-guest, LIVE enabled), props clear >= 9.5 m, 100% of box sample points in line of sight (cylinder test, not seen in-engine). settle 12 s: the animal position is random inside the box."
+    }
+  ],
+  "renders": 5,
+  "freeze": true,
+  "noMotionBlur": true,
+  "noTaa": true
 }

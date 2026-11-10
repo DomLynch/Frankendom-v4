@@ -8,9 +8,9 @@
   {
    "name": "CampLantern_Trader",
    "pos": [
-    -2.9,
+    -4.54,
     1.75,
-    89.5
+    90
    ],
    "kelvin": 3200.0,
    "candela": 3200.0,
@@ -331,12 +331,12 @@
    "name": "V2_Z3Firepit",
    "pos": [
     3.0,
-    0.7,
+    1.0,
     87.5
    ],
    "kelvin": 1800.0,
-   "candela": 18000.0,
-   "range": 11.0,
+   "candela": 60000,
+   "range": 13.0,
    "volumetricDimmer": 0.0,
    "activeRadiusM": 22.0,
    "layerMask": 65535,
@@ -369,6 +369,190 @@
     "frequency": 2.0,
     "octaves": 2,
     "seed": 27.9,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   }
+  },
+  {
+   "name": "HF4_c1_weaponsmith",
+   "pos": [
+    -4.04,
+    1.9,
+    90.0
+   ],
+   "kelvin": 2400.0,
+   "candela": 3500.0,
+   "range": 4.5,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 7.0,
+   "layerMask": 65535,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.05,
+    "frequency": 1.4,
+    "octaves": 2,
+    "seed": 31.0,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   }
+  },
+  {
+   "name": "HF4_c1_armourer",
+   "pos": [
+    -4.08,
+    1.9,
+    86.0
+   ],
+   "kelvin": 2400.0,
+   "candela": 3500.0,
+   "range": 4.5,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 7.0,
+   "layerMask": 65535,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.05,
+    "frequency": 1.4,
+    "octaves": 2,
+    "seed": 35.3,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   }
+  },
+  {
+   "name": "HF4_c1_apothecary",
+   "pos": [
+    4.41,
+    1.9,
+    92.6
+   ],
+   "kelvin": 2400.0,
+   "candela": 3500.0,
+   "range": 4.5,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 7.0,
+   "layerMask": 65535,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.05,
+    "frequency": 1.4,
+    "octaves": 2,
+    "seed": 39.6,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   }
+  },
+  {
+   "name": "HF4_c1_stablemaster",
+   "pos": [
+    -2.91,
+    1.9,
+    80.6
+   ],
+   "kelvin": 2400.0,
+   "candela": 3500.0,
+   "range": 4.5,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 7.0,
+   "layerMask": 65535,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.05,
+    "frequency": 1.4,
+    "octaves": 2,
+    "seed": 43.9,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   }
+  },
+  {
+   "name": "HF4_c2_armourer",
+   "pos": [
+    -4.44,
+    1.9,
+    343.6
+   ],
+   "kelvin": 2900.0,
+   "candela": 4500.0,
+   "range": 4.5,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 7.0,
+   "layerMask": 65535,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.05,
+    "frequency": 1.4,
+    "octaves": 2,
+    "seed": 48.2,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   }
+  },
+  {
+   "name": "HF4_c2_weaponsmith",
+   "pos": [
+    4.61,
+    1.9,
+    349.4
+   ],
+   "kelvin": 2900.0,
+   "candela": 4500.0,
+   "range": 4.5,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 7.0,
+   "layerMask": 65535,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.05,
+    "frequency": 1.4,
+    "octaves": 2,
+    "seed": 52.5,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   }
+  },
+  {
+   "name": "HF4_c2_apothecary",
+   "pos": [
+    3.03,
+    1.9,
+    335.2
+   ],
+   "kelvin": 2900.0,
+   "candela": 4500.0,
+   "range": 4.5,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 7.0,
+   "layerMask": 65535,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.05,
+    "frequency": 1.4,
+    "octaves": 2,
+    "seed": 56.8,
+    "lacunarity": 2.0,
+    "gain": 0.5
+   }
+  },
+  {
+   "name": "HF4_c2_stablemaster",
+   "pos": [
+    -3.15,
+    1.9,
+    353.8
+   ],
+   "kelvin": 2900.0,
+   "candela": 4500.0,
+   "range": 4.5,
+   "volumetricDimmer": 0.0,
+   "activeRadiusM": 7.0,
+   "layerMask": 65535,
+   "flicker": {
+    "baseValue": 1.0,
+    "amplitude": 0.05,
+    "frequency": 1.4,
+    "octaves": 2,
+    "seed": 61.1,
     "lacunarity": 2.0,
     "gain": 0.5
    }

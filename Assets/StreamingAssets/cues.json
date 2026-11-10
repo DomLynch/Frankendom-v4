@@ -12,11 +12,71 @@
     "weapon": "sword"
   },
   {
+    "character": "NpcAntlerKnight",
+    "weapon": "sword"
+  },
+  {
+    "character": "NpcPitGladiator",
+    "weapon": "sword"
+  },
+  {
+    "character": "NpcCrocWarrior",
+    "weapon": "claws"
+  },
+  {
+    "character": "NpcEmbalmerCultist",
+    "weapon": "sword"
+  },
+  {
+    "character": "NpcMereRaider",
+    "weapon": "sword"
+  },
+  {
+    "character": "NpcDrownedThane",
+    "weapon": "sword"
+  },
+  {
+    "character": "NpcBarkSentinel",
+    "weapon": "claws"
+  },
+  {
     "character": "BanditAssassin",
     "weapon": "sword"
   },
   {
+    "character": "NpcChainWarden",
+    "weapon": "sword"
+  },
+  {
+    "character": "NpcReedSkirmisher",
+    "weapon": "sword"
+  },
+  {
+    "character": "NpcBogHag",
+    "weapon": "claws"
+  },
+  {
+    "character": "NpcRootDruid",
+    "weapon": "claws"
+  },
+  {
+    "character": "NpcHoundMaster",
+    "weapon": "sword"
+  },
+  {
     "character": "BanditArcher",
+    "weapon": "sword"
+  },
+  {
+    "character": "NpcSlagCrossbowman",
+    "weapon": "sword"
+  },
+  {
+    "character": "NpcCedarArcher",
+    "weapon": "sword"
+  },
+  {
+    "character": "NpcHuntsman",
     "weapon": "sword"
   },
   {
@@ -58,11 +118,71 @@
     "surface": "flesh"
   },
   {
+    "character": "NpcAntlerKnight",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcPitGladiator",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcCrocWarrior",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcEmbalmerCultist",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcMereRaider",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcDrownedThane",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcBarkSentinel",
+    "surface": "flesh"
+  },
+  {
     "character": "BanditAssassin",
     "surface": "flesh"
   },
   {
+    "character": "NpcChainWarden",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcReedSkirmisher",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcBogHag",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcRootDruid",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcHoundMaster",
+    "surface": "flesh"
+  },
+  {
     "character": "BanditArcher",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcSlagCrossbowman",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcCedarArcher",
+    "surface": "flesh"
+  },
+  {
+    "character": "NpcHuntsman",
     "surface": "flesh"
   },
   {
@@ -104,11 +224,71 @@
     "rate": 1.0
   },
   {
+    "character": "NpcAntlerKnight",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcPitGladiator",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcCrocWarrior",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcEmbalmerCultist",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcMereRaider",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcDrownedThane",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcBarkSentinel",
+    "rate": 1.0
+  },
+  {
     "character": "BanditAssassin",
     "rate": 1.0
   },
   {
+    "character": "NpcChainWarden",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcReedSkirmisher",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcBogHag",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcRootDruid",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcHoundMaster",
+    "rate": 1.0
+  },
+  {
     "character": "BanditArcher",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcSlagCrossbowman",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcCedarArcher",
+    "rate": 1.0
+  },
+  {
+    "character": "NpcHuntsman",
     "rate": 1.0
   },
   {

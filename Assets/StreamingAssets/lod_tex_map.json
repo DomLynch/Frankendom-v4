@@ -3232,6 +3232,2182 @@
    },
    "maskRepoint": true,
    "maskFromLod0Material": "tripo_material_a7a4b5fb-a316-4ddf-bafe-470c813c2c41"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/armour_dummy_stand_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/armour_dummy_stand_LOD0.glb",
+   "material": "tripo_material_d4cb8512-3747-478f-bfd7-65b2d7e0bc29",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d4cb8512-3747-478f-bfd7-65b2d7e0bc29",
+     "md5": "e6b718a91600bc9e7e97160132c8e9be",
+     "lodMd5": "efc2109d95c7536790216c2405f7ecd4",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d4cb8512-3747-478f-bfd7-65b2d7e0bc29",
+     "md5": "18f4e49166ba0fc5b64c5294f2460006",
+     "lodMd5": "bb374be5715401af8fbc7e3dc3b2e169",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d4cb8512-3747-478f-bfd7-65b2d7e0bc29",
+     "md5": "9c8574b996d19cb894afe1c895e81d92",
+     "lodMd5": "d289d96c056af09413e0909f04d3962d",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d4cb8512-3747-478f-bfd7-65b2d7e0bc29",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/armour_dummy_stand_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/armour_dummy_stand_LOD0.glb",
+   "material": "tripo_material_d4cb8512-3747-478f-bfd7-65b2d7e0bc29",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d4cb8512-3747-478f-bfd7-65b2d7e0bc29",
+     "md5": "e6b718a91600bc9e7e97160132c8e9be",
+     "lodMd5": "efc2109d95c7536790216c2405f7ecd4",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d4cb8512-3747-478f-bfd7-65b2d7e0bc29",
+     "md5": "18f4e49166ba0fc5b64c5294f2460006",
+     "lodMd5": "bb374be5715401af8fbc7e3dc3b2e169",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d4cb8512-3747-478f-bfd7-65b2d7e0bc29",
+     "md5": "9c8574b996d19cb894afe1c895e81d92",
+     "lodMd5": "d289d96c056af09413e0909f04d3962d",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d4cb8512-3747-478f-bfd7-65b2d7e0bc29",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/barrel_a_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/barrel_a_LOD0.glb",
+   "material": "tripo_material_d3bb9943-7d4b-4018-82f7-efe9951297f4",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d3bb9943-7d4b-4018-82f7-efe9951297f4",
+     "md5": "646fc5118e48649e0ac52d20841b90be",
+     "lodMd5": "de58bdb176525341c763dc2313a5fb90",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d3bb9943-7d4b-4018-82f7-efe9951297f4",
+     "md5": "ef9e7130013c89f6b1f14640b75b37c1",
+     "lodMd5": "8236a82ee88a217e2a2c62ce5aff4457",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d3bb9943-7d4b-4018-82f7-efe9951297f4",
+     "md5": "ceebf7ba63c9978733642e608c91ddb0",
+     "lodMd5": "9d683a64f3546bc2a876d7874e2bee1a",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d3bb9943-7d4b-4018-82f7-efe9951297f4",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/barrel_a_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/barrel_a_LOD0.glb",
+   "material": "tripo_material_d3bb9943-7d4b-4018-82f7-efe9951297f4",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d3bb9943-7d4b-4018-82f7-efe9951297f4",
+     "md5": "646fc5118e48649e0ac52d20841b90be",
+     "lodMd5": "de58bdb176525341c763dc2313a5fb90",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d3bb9943-7d4b-4018-82f7-efe9951297f4",
+     "md5": "ef9e7130013c89f6b1f14640b75b37c1",
+     "lodMd5": "8236a82ee88a217e2a2c62ce5aff4457",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d3bb9943-7d4b-4018-82f7-efe9951297f4",
+     "md5": "ceebf7ba63c9978733642e608c91ddb0",
+     "lodMd5": "9d683a64f3546bc2a876d7874e2bee1a",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d3bb9943-7d4b-4018-82f7-efe9951297f4",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/barrel_b_cask_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/barrel_b_cask_LOD0.glb",
+   "material": "tripo_material_1773fc6d-4bad-4846-a525-004d3f83103e",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_1773fc6d-4bad-4846-a525-004d3f83103e",
+     "md5": "187b732b47701360016e76416c881d8e",
+     "lodMd5": "1623ca62281552bf3e1521ee1d777fd9",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_1773fc6d-4bad-4846-a525-004d3f83103e",
+     "md5": "3f0db13356aae43b4ff848beddf9a593",
+     "lodMd5": "5c59e647b14a89160a8a55d1ccc571d1",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_1773fc6d-4bad-4846-a525-004d3f83103e",
+     "md5": "d5ef4ed6b483717223e0aa3fe6403c09",
+     "lodMd5": "31500799a8cb1c7ea6f669ddbeb8b372",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_1773fc6d-4bad-4846-a525-004d3f83103e",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/barrel_b_cask_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/barrel_b_cask_LOD0.glb",
+   "material": "tripo_material_1773fc6d-4bad-4846-a525-004d3f83103e",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_1773fc6d-4bad-4846-a525-004d3f83103e",
+     "md5": "187b732b47701360016e76416c881d8e",
+     "lodMd5": "1623ca62281552bf3e1521ee1d777fd9",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_1773fc6d-4bad-4846-a525-004d3f83103e",
+     "md5": "3f0db13356aae43b4ff848beddf9a593",
+     "lodMd5": "5c59e647b14a89160a8a55d1ccc571d1",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_1773fc6d-4bad-4846-a525-004d3f83103e",
+     "md5": "d5ef4ed6b483717223e0aa3fe6403c09",
+     "lodMd5": "31500799a8cb1c7ea6f669ddbeb8b372",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_1773fc6d-4bad-4846-a525-004d3f83103e",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_bench_plank_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_bench_plank_LOD0.glb",
+   "material": "tripo_material_786ef5a0-a3ac-4c0a-beac-b691f717cd45",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_786ef5a0-a3ac-4c0a-beac-b691f717cd45",
+     "md5": "8650d1babaa0c08dfc8c1bae304d7fb9",
+     "lodMd5": "af6065e683aea029ceb455cad36cc287",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_786ef5a0-a3ac-4c0a-beac-b691f717cd45",
+     "md5": "7be90a422e241d67238e26127585b865",
+     "lodMd5": "2a0881175936a2162e6c4192d2c176de",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_786ef5a0-a3ac-4c0a-beac-b691f717cd45",
+     "md5": "337b7c0d5b5d125ffef933a5eb66a57a",
+     "lodMd5": "d1ae3f91ec71a7e2ec3657cfbdb496cc",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_786ef5a0-a3ac-4c0a-beac-b691f717cd45",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_bench_plank_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_bench_plank_LOD0.glb",
+   "material": "tripo_material_786ef5a0-a3ac-4c0a-beac-b691f717cd45",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_786ef5a0-a3ac-4c0a-beac-b691f717cd45",
+     "md5": "8650d1babaa0c08dfc8c1bae304d7fb9",
+     "lodMd5": "af6065e683aea029ceb455cad36cc287",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_786ef5a0-a3ac-4c0a-beac-b691f717cd45",
+     "md5": "7be90a422e241d67238e26127585b865",
+     "lodMd5": "2a0881175936a2162e6c4192d2c176de",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_786ef5a0-a3ac-4c0a-beac-b691f717cd45",
+     "md5": "337b7c0d5b5d125ffef933a5eb66a57a",
+     "lodMd5": "d1ae3f91ec71a7e2ec3657cfbdb496cc",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_786ef5a0-a3ac-4c0a-beac-b691f717cd45",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_counter_timber_a_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_counter_timber_a_LOD0.glb",
+   "material": "tripo_material_e452c9a5-1abb-48f0-94b6-6dc37eb9c2ac",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_e452c9a5-1abb-48f0-94b6-6dc37eb9c2ac",
+     "md5": "3a94ba1b17830643c45b069c44080d42",
+     "lodMd5": "697974d1949ef86c24e0bec5aa6d8cc9",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_e452c9a5-1abb-48f0-94b6-6dc37eb9c2ac",
+     "md5": "0b1142a3d24cf2bb128a9fdc665b2f49",
+     "lodMd5": "945ba9140e7f945698bee9251fda4190",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_e452c9a5-1abb-48f0-94b6-6dc37eb9c2ac",
+     "md5": "0d44f0d2b2bddec99916001c798be92a",
+     "lodMd5": "304b615b7f260cb528bddf481d060567",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_e452c9a5-1abb-48f0-94b6-6dc37eb9c2ac",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_counter_timber_a_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_counter_timber_a_LOD0.glb",
+   "material": "tripo_material_e452c9a5-1abb-48f0-94b6-6dc37eb9c2ac",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_e452c9a5-1abb-48f0-94b6-6dc37eb9c2ac",
+     "md5": "3a94ba1b17830643c45b069c44080d42",
+     "lodMd5": "697974d1949ef86c24e0bec5aa6d8cc9",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_e452c9a5-1abb-48f0-94b6-6dc37eb9c2ac",
+     "md5": "0b1142a3d24cf2bb128a9fdc665b2f49",
+     "lodMd5": "945ba9140e7f945698bee9251fda4190",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_e452c9a5-1abb-48f0-94b6-6dc37eb9c2ac",
+     "md5": "0d44f0d2b2bddec99916001c798be92a",
+     "lodMd5": "304b615b7f260cb528bddf481d060567",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_e452c9a5-1abb-48f0-94b6-6dc37eb9c2ac",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_counter_timber_b_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_counter_timber_b_LOD0.glb",
+   "material": "tripo_material_f16714bc-07db-455a-9899-c536e5b37817",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_f16714bc-07db-455a-9899-c536e5b37817",
+     "md5": "a4bc04052d4b5ab3e9197b012bfabb5c",
+     "lodMd5": "8e463cbecf5cb0e3df8a1af7d60cbfed",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_f16714bc-07db-455a-9899-c536e5b37817",
+     "md5": "e3cac1722e7435a61b425e8aa1332255",
+     "lodMd5": "34122b0893e4b600e709e5b8130f34e3",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_f16714bc-07db-455a-9899-c536e5b37817",
+     "md5": "6600cb083d968f055cf211bbc67a09f8",
+     "lodMd5": "4699acec4473832c89102fc9d85000a0",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_f16714bc-07db-455a-9899-c536e5b37817",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_counter_timber_b_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_counter_timber_b_LOD0.glb",
+   "material": "tripo_material_f16714bc-07db-455a-9899-c536e5b37817",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_f16714bc-07db-455a-9899-c536e5b37817",
+     "md5": "a4bc04052d4b5ab3e9197b012bfabb5c",
+     "lodMd5": "8e463cbecf5cb0e3df8a1af7d60cbfed",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_f16714bc-07db-455a-9899-c536e5b37817",
+     "md5": "e3cac1722e7435a61b425e8aa1332255",
+     "lodMd5": "34122b0893e4b600e709e5b8130f34e3",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_f16714bc-07db-455a-9899-c536e5b37817",
+     "md5": "6600cb083d968f055cf211bbc67a09f8",
+     "lodMd5": "4699acec4473832c89102fc9d85000a0",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_f16714bc-07db-455a-9899-c536e5b37817",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_crate_bench_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_crate_bench_LOD0.glb",
+   "material": "tripo_material_d7fa66ea-8b37-4937-85b5-34876c00f46e",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d7fa66ea-8b37-4937-85b5-34876c00f46e",
+     "md5": "37c44f9f278e1ef7c800071f17c277e8",
+     "lodMd5": "999fc24dc184a56bc83ffe1027cdd81d",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d7fa66ea-8b37-4937-85b5-34876c00f46e",
+     "md5": "915782b48e10fc514bf5d1dd58cf6d4d",
+     "lodMd5": "68fe42410afb9d79c04e0b0e6137e2a0",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d7fa66ea-8b37-4937-85b5-34876c00f46e",
+     "md5": "47d22ace1de375696c5fa2d3340f157b",
+     "lodMd5": "2a774102d7d943775956a7bcdcb8668c",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d7fa66ea-8b37-4937-85b5-34876c00f46e",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_crate_bench_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_crate_bench_LOD0.glb",
+   "material": "tripo_material_d7fa66ea-8b37-4937-85b5-34876c00f46e",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d7fa66ea-8b37-4937-85b5-34876c00f46e",
+     "md5": "37c44f9f278e1ef7c800071f17c277e8",
+     "lodMd5": "999fc24dc184a56bc83ffe1027cdd81d",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d7fa66ea-8b37-4937-85b5-34876c00f46e",
+     "md5": "915782b48e10fc514bf5d1dd58cf6d4d",
+     "lodMd5": "68fe42410afb9d79c04e0b0e6137e2a0",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d7fa66ea-8b37-4937-85b5-34876c00f46e",
+     "md5": "47d22ace1de375696c5fa2d3340f157b",
+     "lodMd5": "2a774102d7d943775956a7bcdcb8668c",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d7fa66ea-8b37-4937-85b5-34876c00f46e",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_fire_pit_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_fire_pit_LOD0.glb",
+   "material": "tripo_material_ea05a95b-1bf2-4762-b7b2-08ff33fe5d29",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_ea05a95b-1bf2-4762-b7b2-08ff33fe5d29",
+     "md5": "31b564963fe5a5dd781eeadb953311bf",
+     "lodMd5": "c4d19544f001037907a43df08911fb5c",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_ea05a95b-1bf2-4762-b7b2-08ff33fe5d29",
+     "md5": "3c7e65f597482361c858c50acb062598",
+     "lodMd5": "3221ad7e1bf58a56cafb1b264b340c48",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_ea05a95b-1bf2-4762-b7b2-08ff33fe5d29",
+     "md5": "af3c1e7f0ba789ea1563fbe6f7f7af10",
+     "lodMd5": "f9cc21feba4d03420070ec661f77a6e6",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_ea05a95b-1bf2-4762-b7b2-08ff33fe5d29",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_fire_pit_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_fire_pit_LOD0.glb",
+   "material": "tripo_material_ea05a95b-1bf2-4762-b7b2-08ff33fe5d29",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_ea05a95b-1bf2-4762-b7b2-08ff33fe5d29",
+     "md5": "31b564963fe5a5dd781eeadb953311bf",
+     "lodMd5": "c4d19544f001037907a43df08911fb5c",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_ea05a95b-1bf2-4762-b7b2-08ff33fe5d29",
+     "md5": "3c7e65f597482361c858c50acb062598",
+     "lodMd5": "3221ad7e1bf58a56cafb1b264b340c48",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_ea05a95b-1bf2-4762-b7b2-08ff33fe5d29",
+     "md5": "af3c1e7f0ba789ea1563fbe6f7f7af10",
+     "lodMd5": "f9cc21feba4d03420070ec661f77a6e6",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_ea05a95b-1bf2-4762-b7b2-08ff33fe5d29",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_log_seat_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_log_seat_LOD0.glb",
+   "material": "tripo_material_4281fbbd-1dde-4add-9524-a84845e98e04",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_4281fbbd-1dde-4add-9524-a84845e98e04",
+     "md5": "0c57a3d4d88410c4eb5284b68dba6588",
+     "lodMd5": "aad75465aec5748b78daef2f46493c68",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_4281fbbd-1dde-4add-9524-a84845e98e04",
+     "md5": "7982e8c739b0de66e5063e0d83399235",
+     "lodMd5": "dd330f4b77c7d62f751468430af0f720",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_4281fbbd-1dde-4add-9524-a84845e98e04",
+     "md5": "04158ec2cc179cf4ca233263cc818a0c",
+     "lodMd5": "eb85aa7928ec6d107d2bfdc70fc9bd22",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_4281fbbd-1dde-4add-9524-a84845e98e04",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_log_seat_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_log_seat_LOD0.glb",
+   "material": "tripo_material_4281fbbd-1dde-4add-9524-a84845e98e04",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_4281fbbd-1dde-4add-9524-a84845e98e04",
+     "md5": "0c57a3d4d88410c4eb5284b68dba6588",
+     "lodMd5": "aad75465aec5748b78daef2f46493c68",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_4281fbbd-1dde-4add-9524-a84845e98e04",
+     "md5": "7982e8c739b0de66e5063e0d83399235",
+     "lodMd5": "dd330f4b77c7d62f751468430af0f720",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_4281fbbd-1dde-4add-9524-a84845e98e04",
+     "md5": "04158ec2cc179cf4ca233263cc818a0c",
+     "lodMd5": "eb85aa7928ec6d107d2bfdc70fc9bd22",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_4281fbbd-1dde-4add-9524-a84845e98e04",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_pallet_set_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_pallet_set_LOD0.glb",
+   "material": "tripo_material_51f4f975-5596-459b-b8c3-dfb79e73d463",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_51f4f975-5596-459b-b8c3-dfb79e73d463",
+     "md5": "3ce8e26850082388162c59a0ae880263",
+     "lodMd5": "0ad8f71c8360f07577f09523d0d0d1a8",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_51f4f975-5596-459b-b8c3-dfb79e73d463",
+     "md5": "19da08d858e38a9f06973b77181e42dc",
+     "lodMd5": "afc0883e8b525241545cb2165f0bdcaa",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_51f4f975-5596-459b-b8c3-dfb79e73d463",
+     "md5": "43aff2af98a49b8768daf9f98fabe057",
+     "lodMd5": "d87bc0e741f99d3b37ebe4866917d0cc",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_51f4f975-5596-459b-b8c3-dfb79e73d463",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_pallet_set_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_pallet_set_LOD0.glb",
+   "material": "tripo_material_51f4f975-5596-459b-b8c3-dfb79e73d463",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_51f4f975-5596-459b-b8c3-dfb79e73d463",
+     "md5": "3ce8e26850082388162c59a0ae880263",
+     "lodMd5": "0ad8f71c8360f07577f09523d0d0d1a8",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_51f4f975-5596-459b-b8c3-dfb79e73d463",
+     "md5": "19da08d858e38a9f06973b77181e42dc",
+     "lodMd5": "afc0883e8b525241545cb2165f0bdcaa",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_51f4f975-5596-459b-b8c3-dfb79e73d463",
+     "md5": "43aff2af98a49b8768daf9f98fabe057",
+     "lodMd5": "d87bc0e741f99d3b37ebe4866917d0cc",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_51f4f975-5596-459b-b8c3-dfb79e73d463",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_sign_anvil_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_sign_anvil_LOD0.glb",
+   "material": "tripo_material_0fbd1914-155a-4065-9b53-e8a4cefb8507",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_0fbd1914-155a-4065-9b53-e8a4cefb8507",
+     "md5": "2964e1f91966ce9264b6f19a56e7fc97",
+     "lodMd5": "81663c6c3acef5ed5dd4f6b8bf1784cd",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_0fbd1914-155a-4065-9b53-e8a4cefb8507",
+     "md5": "05a8d1c894b97cd7d1ec43279fc54d2f",
+     "lodMd5": "dced835a9ac9cd3311a7a80fee1ef7c0",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_0fbd1914-155a-4065-9b53-e8a4cefb8507",
+     "md5": "61b02a5f6c2cbe3926d1b3624cfbfc56",
+     "lodMd5": "cf301085a1fc3c522e5ac6b6657d0622",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_0fbd1914-155a-4065-9b53-e8a4cefb8507",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_sign_anvil_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_sign_anvil_LOD0.glb",
+   "material": "tripo_material_0fbd1914-155a-4065-9b53-e8a4cefb8507",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_0fbd1914-155a-4065-9b53-e8a4cefb8507",
+     "md5": "2964e1f91966ce9264b6f19a56e7fc97",
+     "lodMd5": "81663c6c3acef5ed5dd4f6b8bf1784cd",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_0fbd1914-155a-4065-9b53-e8a4cefb8507",
+     "md5": "05a8d1c894b97cd7d1ec43279fc54d2f",
+     "lodMd5": "dced835a9ac9cd3311a7a80fee1ef7c0",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_0fbd1914-155a-4065-9b53-e8a4cefb8507",
+     "md5": "61b02a5f6c2cbe3926d1b3624cfbfc56",
+     "lodMd5": "cf301085a1fc3c522e5ac6b6657d0622",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_0fbd1914-155a-4065-9b53-e8a4cefb8507",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_sign_flask_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_sign_flask_LOD0.glb",
+   "material": "tripo_material_fdd0768d-0feb-4057-a265-6d2c07a69385",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_fdd0768d-0feb-4057-a265-6d2c07a69385",
+     "md5": "929464419463fe63715d4cecff153a8c",
+     "lodMd5": "37df50d0ddb9fdf718367669094529ae",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_fdd0768d-0feb-4057-a265-6d2c07a69385",
+     "md5": "7778ca56962250d10833505250d3f625",
+     "lodMd5": "cf126824940fa2668cc220e515ee8d4e",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_fdd0768d-0feb-4057-a265-6d2c07a69385",
+     "md5": "ca1659db28532a8306af5583f13ac0c3",
+     "lodMd5": "768e40d0d2a882f8c565948497849bd0",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_fdd0768d-0feb-4057-a265-6d2c07a69385",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_sign_flask_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_sign_flask_LOD0.glb",
+   "material": "tripo_material_fdd0768d-0feb-4057-a265-6d2c07a69385",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_fdd0768d-0feb-4057-a265-6d2c07a69385",
+     "md5": "929464419463fe63715d4cecff153a8c",
+     "lodMd5": "37df50d0ddb9fdf718367669094529ae",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_fdd0768d-0feb-4057-a265-6d2c07a69385",
+     "md5": "7778ca56962250d10833505250d3f625",
+     "lodMd5": "cf126824940fa2668cc220e515ee8d4e",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_fdd0768d-0feb-4057-a265-6d2c07a69385",
+     "md5": "ca1659db28532a8306af5583f13ac0c3",
+     "lodMd5": "768e40d0d2a882f8c565948497849bd0",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_fdd0768d-0feb-4057-a265-6d2c07a69385",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_sign_horse_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_sign_horse_LOD0.glb",
+   "material": "tripo_material_3b6feff1-2b3d-4f05-9cc4-14d71ef4217a",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_3b6feff1-2b3d-4f05-9cc4-14d71ef4217a",
+     "md5": "707ba04d92e1ae9a56236aee16ed3714",
+     "lodMd5": "c2f39a627b9bb5e433fb2ac677852f7c",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_3b6feff1-2b3d-4f05-9cc4-14d71ef4217a",
+     "md5": "6b0d72b72b185cdfca498bc8b4c6debf",
+     "lodMd5": "429619aa969b249596cac425739eb3ce",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_3b6feff1-2b3d-4f05-9cc4-14d71ef4217a",
+     "md5": "efc688662d78d85d013dd7b27b37e943",
+     "lodMd5": "6a3e37d0b668d7468ccb7e410e61c5ab",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_3b6feff1-2b3d-4f05-9cc4-14d71ef4217a",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_sign_horse_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_sign_horse_LOD0.glb",
+   "material": "tripo_material_3b6feff1-2b3d-4f05-9cc4-14d71ef4217a",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_3b6feff1-2b3d-4f05-9cc4-14d71ef4217a",
+     "md5": "707ba04d92e1ae9a56236aee16ed3714",
+     "lodMd5": "c2f39a627b9bb5e433fb2ac677852f7c",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_3b6feff1-2b3d-4f05-9cc4-14d71ef4217a",
+     "md5": "6b0d72b72b185cdfca498bc8b4c6debf",
+     "lodMd5": "429619aa969b249596cac425739eb3ce",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_3b6feff1-2b3d-4f05-9cc4-14d71ef4217a",
+     "md5": "efc688662d78d85d013dd7b27b37e943",
+     "lodMd5": "6a3e37d0b668d7468ccb7e410e61c5ab",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_3b6feff1-2b3d-4f05-9cc4-14d71ef4217a",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_stool_set_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_stool_set_LOD0.glb",
+   "material": "tripo_material_2a303b9c-cc90-4711-a729-8c83de7065dc",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_2a303b9c-cc90-4711-a729-8c83de7065dc",
+     "md5": "914bc62264bee4c37252e38d3fb98b9c",
+     "lodMd5": "6830627d1bd4d72f00f29142e1e4f62a",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_2a303b9c-cc90-4711-a729-8c83de7065dc",
+     "md5": "65ff5749db01cdc2418bf3e6017a1a4b",
+     "lodMd5": "d2926d9883a7690a8244532d43a83388",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_2a303b9c-cc90-4711-a729-8c83de7065dc",
+     "md5": "f84a9331fc450af949e6c8c08eb8a19a",
+     "lodMd5": "fed272d672d4f666f361d5fc20438bf0",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_2a303b9c-cc90-4711-a729-8c83de7065dc",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp1_stool_set_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp1_stool_set_LOD0.glb",
+   "material": "tripo_material_2a303b9c-cc90-4711-a729-8c83de7065dc",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_2a303b9c-cc90-4711-a729-8c83de7065dc",
+     "md5": "914bc62264bee4c37252e38d3fb98b9c",
+     "lodMd5": "6830627d1bd4d72f00f29142e1e4f62a",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_2a303b9c-cc90-4711-a729-8c83de7065dc",
+     "md5": "65ff5749db01cdc2418bf3e6017a1a4b",
+     "lodMd5": "d2926d9883a7690a8244532d43a83388",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_2a303b9c-cc90-4711-a729-8c83de7065dc",
+     "md5": "f84a9331fc450af949e6c8c08eb8a19a",
+     "lodMd5": "fed272d672d4f666f361d5fc20438bf0",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_2a303b9c-cc90-4711-a729-8c83de7065dc",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_banner_armour_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_banner_armour_LOD0.glb",
+   "material": "tripo_material_1f403bf0-7099-4dd3-bb4b-e639ccfa65d5",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_1f403bf0-7099-4dd3-bb4b-e639ccfa65d5",
+     "md5": "0225c56e7250e2c4459c6bf0e54b731c",
+     "lodMd5": "23c5c1f713aa7c4ffa9d9ad8028dba2c",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_1f403bf0-7099-4dd3-bb4b-e639ccfa65d5",
+     "md5": "86cd635ce873f343ca1c7cc61e075326",
+     "lodMd5": "7333b059bb2317916075214f8e76a3e9",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_1f403bf0-7099-4dd3-bb4b-e639ccfa65d5",
+     "md5": "8e5bb13509afcd2995255a721044fcf8",
+     "lodMd5": "b26e5f210f092a066470f1a557e7522f",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_1f403bf0-7099-4dd3-bb4b-e639ccfa65d5",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_banner_armour_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_banner_armour_LOD0.glb",
+   "material": "tripo_material_1f403bf0-7099-4dd3-bb4b-e639ccfa65d5",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_1f403bf0-7099-4dd3-bb4b-e639ccfa65d5",
+     "md5": "0225c56e7250e2c4459c6bf0e54b731c",
+     "lodMd5": "23c5c1f713aa7c4ffa9d9ad8028dba2c",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_1f403bf0-7099-4dd3-bb4b-e639ccfa65d5",
+     "md5": "86cd635ce873f343ca1c7cc61e075326",
+     "lodMd5": "7333b059bb2317916075214f8e76a3e9",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_1f403bf0-7099-4dd3-bb4b-e639ccfa65d5",
+     "md5": "8e5bb13509afcd2995255a721044fcf8",
+     "lodMd5": "b26e5f210f092a066470f1a557e7522f",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_1f403bf0-7099-4dd3-bb4b-e639ccfa65d5",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_banner_blade_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_banner_blade_LOD0.glb",
+   "material": "tripo_material_8b1bc3af-83f3-4c3d-b22d-4f4c898a2852",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_8b1bc3af-83f3-4c3d-b22d-4f4c898a2852",
+     "md5": "25f437ae3e38a88f8a21fd8f66a54883",
+     "lodMd5": "f2f5055a60f85679a37037ad3998ae79",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_8b1bc3af-83f3-4c3d-b22d-4f4c898a2852",
+     "md5": "ee83884064670f0a60e20a72c2c57830",
+     "lodMd5": "170017c9ecf32ed375c69f765c4ac021",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_8b1bc3af-83f3-4c3d-b22d-4f4c898a2852",
+     "md5": "2d6598cfa4683ff4c5a5ec9c51fc2932",
+     "lodMd5": "d4441e806a6181ce0689f5c924030617",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_8b1bc3af-83f3-4c3d-b22d-4f4c898a2852",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_banner_blade_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_banner_blade_LOD0.glb",
+   "material": "tripo_material_8b1bc3af-83f3-4c3d-b22d-4f4c898a2852",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_8b1bc3af-83f3-4c3d-b22d-4f4c898a2852",
+     "md5": "25f437ae3e38a88f8a21fd8f66a54883",
+     "lodMd5": "f2f5055a60f85679a37037ad3998ae79",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_8b1bc3af-83f3-4c3d-b22d-4f4c898a2852",
+     "md5": "ee83884064670f0a60e20a72c2c57830",
+     "lodMd5": "170017c9ecf32ed375c69f765c4ac021",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_8b1bc3af-83f3-4c3d-b22d-4f4c898a2852",
+     "md5": "2d6598cfa4683ff4c5a5ec9c51fc2932",
+     "lodMd5": "d4441e806a6181ce0689f5c924030617",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_8b1bc3af-83f3-4c3d-b22d-4f4c898a2852",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_banner_flask_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_banner_flask_LOD0.glb",
+   "material": "tripo_material_85bce3e3-b615-402f-b2c4-f1a5e60385d1",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_85bce3e3-b615-402f-b2c4-f1a5e60385d1",
+     "md5": "21662e68bad1745e8032463c94f716c8",
+     "lodMd5": "8dd93b5cc4e4a2d19f0f4eb3d5db5466",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_85bce3e3-b615-402f-b2c4-f1a5e60385d1",
+     "md5": "13f864c47b630ae10afa812036357cf6",
+     "lodMd5": "3da24cc1ab0d7dd2a3ce4a64a39e6201",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_85bce3e3-b615-402f-b2c4-f1a5e60385d1",
+     "md5": "fa68bf184c4200d602d5a47a8fe5b12d",
+     "lodMd5": "b50e4acedd9667179431aa5b68800585",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_85bce3e3-b615-402f-b2c4-f1a5e60385d1",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_banner_flask_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_banner_flask_LOD0.glb",
+   "material": "tripo_material_85bce3e3-b615-402f-b2c4-f1a5e60385d1",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_85bce3e3-b615-402f-b2c4-f1a5e60385d1",
+     "md5": "21662e68bad1745e8032463c94f716c8",
+     "lodMd5": "8dd93b5cc4e4a2d19f0f4eb3d5db5466",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_85bce3e3-b615-402f-b2c4-f1a5e60385d1",
+     "md5": "13f864c47b630ae10afa812036357cf6",
+     "lodMd5": "3da24cc1ab0d7dd2a3ce4a64a39e6201",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_85bce3e3-b615-402f-b2c4-f1a5e60385d1",
+     "md5": "fa68bf184c4200d602d5a47a8fe5b12d",
+     "lodMd5": "b50e4acedd9667179431aa5b68800585",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_85bce3e3-b615-402f-b2c4-f1a5e60385d1",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_banner_horse_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_banner_horse_LOD0.glb",
+   "material": "tripo_material_51af46e3-0991-444b-bc82-489bf7c91729",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_51af46e3-0991-444b-bc82-489bf7c91729",
+     "md5": "a8f0818e5a6b012e452dfa82136b7e70",
+     "lodMd5": "2f1c87128165f8b5ff4d70d3de0f4a87",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_51af46e3-0991-444b-bc82-489bf7c91729",
+     "md5": "efca555fba2db1966964e14c271eb9d5",
+     "lodMd5": "fceb4836c221ea4d0213bdd31a617457",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_51af46e3-0991-444b-bc82-489bf7c91729",
+     "md5": "b468aa2e84439694587c3006fc9601d9",
+     "lodMd5": "f4f179beb58fbeaa69983f50831d6a4e",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_51af46e3-0991-444b-bc82-489bf7c91729",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_banner_horse_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_banner_horse_LOD0.glb",
+   "material": "tripo_material_51af46e3-0991-444b-bc82-489bf7c91729",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_51af46e3-0991-444b-bc82-489bf7c91729",
+     "md5": "a8f0818e5a6b012e452dfa82136b7e70",
+     "lodMd5": "2f1c87128165f8b5ff4d70d3de0f4a87",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_51af46e3-0991-444b-bc82-489bf7c91729",
+     "md5": "efca555fba2db1966964e14c271eb9d5",
+     "lodMd5": "fceb4836c221ea4d0213bdd31a617457",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_51af46e3-0991-444b-bc82-489bf7c91729",
+     "md5": "b468aa2e84439694587c3006fc9601d9",
+     "lodMd5": "f4f179beb58fbeaa69983f50831d6a4e",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_51af46e3-0991-444b-bc82-489bf7c91729",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_bench_a_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_bench_a_LOD0.glb",
+   "material": "tripo_material_f4e9c3c6-ec12-4352-859b-9b8de6eba21d",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_f4e9c3c6-ec12-4352-859b-9b8de6eba21d",
+     "md5": "36c6f41965c960cc71235ff2576f9730",
+     "lodMd5": "06fe30f8edf97eb859476a2bc0f0dab5",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_f4e9c3c6-ec12-4352-859b-9b8de6eba21d",
+     "md5": "4076272c28859c51b0fde5b37e12571e",
+     "lodMd5": "46d5550b4749702ed04f0dd65c062603",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_f4e9c3c6-ec12-4352-859b-9b8de6eba21d",
+     "md5": "30d5946229abed8f730ae37bc01fadf9",
+     "lodMd5": "3ce08133109eadf2aa99b96c9f348ab1",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_f4e9c3c6-ec12-4352-859b-9b8de6eba21d",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_bench_a_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_bench_a_LOD0.glb",
+   "material": "tripo_material_f4e9c3c6-ec12-4352-859b-9b8de6eba21d",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_f4e9c3c6-ec12-4352-859b-9b8de6eba21d",
+     "md5": "36c6f41965c960cc71235ff2576f9730",
+     "lodMd5": "06fe30f8edf97eb859476a2bc0f0dab5",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_f4e9c3c6-ec12-4352-859b-9b8de6eba21d",
+     "md5": "4076272c28859c51b0fde5b37e12571e",
+     "lodMd5": "46d5550b4749702ed04f0dd65c062603",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_f4e9c3c6-ec12-4352-859b-9b8de6eba21d",
+     "md5": "30d5946229abed8f730ae37bc01fadf9",
+     "lodMd5": "3ce08133109eadf2aa99b96c9f348ab1",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_f4e9c3c6-ec12-4352-859b-9b8de6eba21d",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_bench_b_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_bench_b_LOD0.glb",
+   "material": "tripo_material_c027fa20-9dda-424a-8b09-a6ed747f80c2",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_c027fa20-9dda-424a-8b09-a6ed747f80c2",
+     "md5": "d0ca39059feb820fd0b037f5910783cb",
+     "lodMd5": "57c6f512b2bd1cfcf2033c9e6d2d52e6",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_c027fa20-9dda-424a-8b09-a6ed747f80c2",
+     "md5": "d68f04fa078ec8b2e824f97d0c05935b",
+     "lodMd5": "1dc0faa28495cae66c7ae072a5827c23",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_c027fa20-9dda-424a-8b09-a6ed747f80c2",
+     "md5": "73521ffda2c5ffa5070ae0268df4f57d",
+     "lodMd5": "4c7430c4955a9b8149a0b6867d4c1b9a",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_c027fa20-9dda-424a-8b09-a6ed747f80c2",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_bench_b_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_bench_b_LOD0.glb",
+   "material": "tripo_material_c027fa20-9dda-424a-8b09-a6ed747f80c2",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_c027fa20-9dda-424a-8b09-a6ed747f80c2",
+     "md5": "d0ca39059feb820fd0b037f5910783cb",
+     "lodMd5": "57c6f512b2bd1cfcf2033c9e6d2d52e6",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_c027fa20-9dda-424a-8b09-a6ed747f80c2",
+     "md5": "d68f04fa078ec8b2e824f97d0c05935b",
+     "lodMd5": "1dc0faa28495cae66c7ae072a5827c23",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_c027fa20-9dda-424a-8b09-a6ed747f80c2",
+     "md5": "73521ffda2c5ffa5070ae0268df4f57d",
+     "lodMd5": "4c7430c4955a9b8149a0b6867d4c1b9a",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_c027fa20-9dda-424a-8b09-a6ed747f80c2",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_brazier_brass_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_brazier_brass_LOD0.glb",
+   "material": "tripo_material_23ef0eba-db93-4bf9-8427-e05298e4134d",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_23ef0eba-db93-4bf9-8427-e05298e4134d",
+     "md5": "2e7071a2c08ebb1ff2c7e69d2dacc332",
+     "lodMd5": "bd87956edcd16fc7d70e46d94226e058",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_23ef0eba-db93-4bf9-8427-e05298e4134d",
+     "md5": "1f0e4eff2bc7e8ba0dd6f7449c811eb7",
+     "lodMd5": "ba1e319e7f0da5c7a2fb96995093abd9",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_23ef0eba-db93-4bf9-8427-e05298e4134d",
+     "md5": "25962a7d0ba5564cdb56927712a5bba0",
+     "lodMd5": "94f29d72365cc60d8d7fda981c011edf",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_23ef0eba-db93-4bf9-8427-e05298e4134d",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_brazier_brass_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_brazier_brass_LOD0.glb",
+   "material": "tripo_material_23ef0eba-db93-4bf9-8427-e05298e4134d",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_23ef0eba-db93-4bf9-8427-e05298e4134d",
+     "md5": "2e7071a2c08ebb1ff2c7e69d2dacc332",
+     "lodMd5": "bd87956edcd16fc7d70e46d94226e058",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_23ef0eba-db93-4bf9-8427-e05298e4134d",
+     "md5": "1f0e4eff2bc7e8ba0dd6f7449c811eb7",
+     "lodMd5": "ba1e319e7f0da5c7a2fb96995093abd9",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_23ef0eba-db93-4bf9-8427-e05298e4134d",
+     "md5": "25962a7d0ba5564cdb56927712a5bba0",
+     "lodMd5": "94f29d72365cc60d8d7fda981c011edf",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_23ef0eba-db93-4bf9-8427-e05298e4134d",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_brazier_iron_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_brazier_iron_LOD0.glb",
+   "material": "tripo_material_0210a13a-2e26-46e9-a276-841c2c2b43d3",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_0210a13a-2e26-46e9-a276-841c2c2b43d3",
+     "md5": "8c4cb05dd7524c225c8552465c41fdcc",
+     "lodMd5": "79405e2032eefa97ca82974b12ea1ffc",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_0210a13a-2e26-46e9-a276-841c2c2b43d3",
+     "md5": "2469554d90e5b3b4ff21b63357977879",
+     "lodMd5": "7ecb644c8c6e28476ed80935df1462bd",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_0210a13a-2e26-46e9-a276-841c2c2b43d3",
+     "md5": "2c0804c86bb7f4bb5066950e93646a9e",
+     "lodMd5": "54dce02e0c7ca518a476c8dba635f78f",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_0210a13a-2e26-46e9-a276-841c2c2b43d3",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_brazier_iron_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_brazier_iron_LOD0.glb",
+   "material": "tripo_material_0210a13a-2e26-46e9-a276-841c2c2b43d3",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_0210a13a-2e26-46e9-a276-841c2c2b43d3",
+     "md5": "8c4cb05dd7524c225c8552465c41fdcc",
+     "lodMd5": "79405e2032eefa97ca82974b12ea1ffc",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_0210a13a-2e26-46e9-a276-841c2c2b43d3",
+     "md5": "2469554d90e5b3b4ff21b63357977879",
+     "lodMd5": "7ecb644c8c6e28476ed80935df1462bd",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_0210a13a-2e26-46e9-a276-841c2c2b43d3",
+     "md5": "2c0804c86bb7f4bb5066950e93646a9e",
+     "lodMd5": "54dce02e0c7ca518a476c8dba635f78f",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_0210a13a-2e26-46e9-a276-841c2c2b43d3",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_canopy_small_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_canopy_small_LOD0.glb",
+   "material": "tripo_material_a8a1bc59-40e9-4e75-b437-3b70d1ce69db",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a8a1bc59-40e9-4e75-b437-3b70d1ce69db",
+     "md5": "345412068f1097de5620027e76ca5826",
+     "lodMd5": "923fb691463549fb3cf668b10a539cf2",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a8a1bc59-40e9-4e75-b437-3b70d1ce69db",
+     "md5": "fab4b88fc9730ba92f70dba2ba95b7d4",
+     "lodMd5": "81ee4e2c4b6ef2bd959a359f36f750d9",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_a8a1bc59-40e9-4e75-b437-3b70d1ce69db",
+     "md5": "4f4b8d5d735fe8deee140a8bb00cac86",
+     "lodMd5": "d88702f233a6fbbf10ef506ad06e4318",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a8a1bc59-40e9-4e75-b437-3b70d1ce69db",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_canopy_small_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_canopy_small_LOD0.glb",
+   "material": "tripo_material_a8a1bc59-40e9-4e75-b437-3b70d1ce69db",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a8a1bc59-40e9-4e75-b437-3b70d1ce69db",
+     "md5": "345412068f1097de5620027e76ca5826",
+     "lodMd5": "923fb691463549fb3cf668b10a539cf2",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a8a1bc59-40e9-4e75-b437-3b70d1ce69db",
+     "md5": "fab4b88fc9730ba92f70dba2ba95b7d4",
+     "lodMd5": "81ee4e2c4b6ef2bd959a359f36f750d9",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_a8a1bc59-40e9-4e75-b437-3b70d1ce69db",
+     "md5": "4f4b8d5d735fe8deee140a8bb00cac86",
+     "lodMd5": "d88702f233a6fbbf10ef506ad06e4318",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a8a1bc59-40e9-4e75-b437-3b70d1ce69db",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_censer_stand_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_censer_stand_LOD0.glb",
+   "material": "tripo_material_d824d55a-3f0c-4ddd-8325-83176112801c",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d824d55a-3f0c-4ddd-8325-83176112801c",
+     "md5": "2c58871b7080f4c621045a91163f2519",
+     "lodMd5": "660059d91bb41fb89cb71ed704c85f8b",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d824d55a-3f0c-4ddd-8325-83176112801c",
+     "md5": "e2adf85bc77638a1e49ae67b05e8eb8a",
+     "lodMd5": "8587449c7f01bbcbba139c7c9df75e6e",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d824d55a-3f0c-4ddd-8325-83176112801c",
+     "md5": "ccd228d05fc9d46bc03786aa6d3ab409",
+     "lodMd5": "4e2fc635a83b8a83e48f04eed27cf63f",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d824d55a-3f0c-4ddd-8325-83176112801c",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_censer_stand_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_censer_stand_LOD0.glb",
+   "material": "tripo_material_d824d55a-3f0c-4ddd-8325-83176112801c",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d824d55a-3f0c-4ddd-8325-83176112801c",
+     "md5": "2c58871b7080f4c621045a91163f2519",
+     "lodMd5": "660059d91bb41fb89cb71ed704c85f8b",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d824d55a-3f0c-4ddd-8325-83176112801c",
+     "md5": "e2adf85bc77638a1e49ae67b05e8eb8a",
+     "lodMd5": "8587449c7f01bbcbba139c7c9df75e6e",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d824d55a-3f0c-4ddd-8325-83176112801c",
+     "md5": "ccd228d05fc9d46bc03786aa6d3ab409",
+     "lodMd5": "4e2fc635a83b8a83e48f04eed27cf63f",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d824d55a-3f0c-4ddd-8325-83176112801c",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_counter_iron_a_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_counter_iron_a_LOD0.glb",
+   "material": "tripo_material_1eef4840-d7bb-4259-a88e-2b1cc0d517ab",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_1eef4840-d7bb-4259-a88e-2b1cc0d517ab",
+     "md5": "af7f62d6ac24cf3734006073b567c6a8",
+     "lodMd5": "580c2dac376ab859985a8dcec165c49c",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_1eef4840-d7bb-4259-a88e-2b1cc0d517ab",
+     "md5": "396da68e1b7f12f84d1cb507f0d5d016",
+     "lodMd5": "e2fec883b23ab161b2c67e432f0f1318",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_1eef4840-d7bb-4259-a88e-2b1cc0d517ab",
+     "md5": "96954f64b62eebfbdd025e3879986122",
+     "lodMd5": "c1a3fdb13293d63784c282373fa5daa9",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_1eef4840-d7bb-4259-a88e-2b1cc0d517ab",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_counter_iron_a_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_counter_iron_a_LOD0.glb",
+   "material": "tripo_material_1eef4840-d7bb-4259-a88e-2b1cc0d517ab",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_1eef4840-d7bb-4259-a88e-2b1cc0d517ab",
+     "md5": "af7f62d6ac24cf3734006073b567c6a8",
+     "lodMd5": "580c2dac376ab859985a8dcec165c49c",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_1eef4840-d7bb-4259-a88e-2b1cc0d517ab",
+     "md5": "396da68e1b7f12f84d1cb507f0d5d016",
+     "lodMd5": "e2fec883b23ab161b2c67e432f0f1318",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_1eef4840-d7bb-4259-a88e-2b1cc0d517ab",
+     "md5": "96954f64b62eebfbdd025e3879986122",
+     "lodMd5": "c1a3fdb13293d63784c282373fa5daa9",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_1eef4840-d7bb-4259-a88e-2b1cc0d517ab",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_counter_iron_b_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_counter_iron_b_LOD0.glb",
+   "material": "tripo_material_73b644e4-8736-4ff9-b291-702512293b91",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_73b644e4-8736-4ff9-b291-702512293b91",
+     "md5": "bfcaf932664b5a3167e4bfcfecd6f24c",
+     "lodMd5": "d0d4a729e5eb67bc3bde9b6b96b74b23",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_73b644e4-8736-4ff9-b291-702512293b91",
+     "md5": "6773541ab7692a452ecf407d397e7034",
+     "lodMd5": "c17aa3fbd33f58b0e15ffe2cc686248a",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_73b644e4-8736-4ff9-b291-702512293b91",
+     "md5": "bfcd02ac75b9e8bcdf48f32a82a42a03",
+     "lodMd5": "d9350c382c0b137ea6a88128591c1429",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_73b644e4-8736-4ff9-b291-702512293b91",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_counter_iron_b_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_counter_iron_b_LOD0.glb",
+   "material": "tripo_material_73b644e4-8736-4ff9-b291-702512293b91",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_73b644e4-8736-4ff9-b291-702512293b91",
+     "md5": "bfcaf932664b5a3167e4bfcfecd6f24c",
+     "lodMd5": "d0d4a729e5eb67bc3bde9b6b96b74b23",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_73b644e4-8736-4ff9-b291-702512293b91",
+     "md5": "6773541ab7692a452ecf407d397e7034",
+     "lodMd5": "c17aa3fbd33f58b0e15ffe2cc686248a",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_73b644e4-8736-4ff9-b291-702512293b91",
+     "md5": "bfcd02ac75b9e8bcdf48f32a82a42a03",
+     "lodMd5": "d9350c382c0b137ea6a88128591c1429",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_73b644e4-8736-4ff9-b291-702512293b91",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_pallet_set_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_pallet_set_LOD0.glb",
+   "material": "tripo_material_d6a5c5d5-64e8-42da-88e2-daf113d54cb2",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d6a5c5d5-64e8-42da-88e2-daf113d54cb2",
+     "md5": "d11a6bcad648f5d36d20a0109f8810b1",
+     "lodMd5": "d198849d3e71fc04e26376352c3571f5",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d6a5c5d5-64e8-42da-88e2-daf113d54cb2",
+     "md5": "996b3b5f5a492b2876de235b402a59e0",
+     "lodMd5": "f31a8e192ed67632db7f4c5abd4d38ec",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d6a5c5d5-64e8-42da-88e2-daf113d54cb2",
+     "md5": "009749763848d191a2d6c13f61e953de",
+     "lodMd5": "995210f5723ef6eddd86b29af65a57f0",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d6a5c5d5-64e8-42da-88e2-daf113d54cb2",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_pallet_set_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_pallet_set_LOD0.glb",
+   "material": "tripo_material_d6a5c5d5-64e8-42da-88e2-daf113d54cb2",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d6a5c5d5-64e8-42da-88e2-daf113d54cb2",
+     "md5": "d11a6bcad648f5d36d20a0109f8810b1",
+     "lodMd5": "d198849d3e71fc04e26376352c3571f5",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d6a5c5d5-64e8-42da-88e2-daf113d54cb2",
+     "md5": "996b3b5f5a492b2876de235b402a59e0",
+     "lodMd5": "f31a8e192ed67632db7f4c5abd4d38ec",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d6a5c5d5-64e8-42da-88e2-daf113d54cb2",
+     "md5": "009749763848d191a2d6c13f61e953de",
+     "lodMd5": "995210f5723ef6eddd86b29af65a57f0",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d6a5c5d5-64e8-42da-88e2-daf113d54cb2",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_trestle_table_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_trestle_table_LOD0.glb",
+   "material": "tripo_material_51360621-4ddb-4b57-93b8-ad03f730e43d",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_51360621-4ddb-4b57-93b8-ad03f730e43d",
+     "md5": "2fe210c1185ec3c7c974801eee2c578f",
+     "lodMd5": "4cc7431c76d11aaa3d18b4f2e3570f5b",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_51360621-4ddb-4b57-93b8-ad03f730e43d",
+     "md5": "95a4de1d736bd749309e875948f33a71",
+     "lodMd5": "f63c8f0803bddb099c78459ad54c22a8",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_51360621-4ddb-4b57-93b8-ad03f730e43d",
+     "md5": "d258640f1b325fc3042ddf6fe1aea6b1",
+     "lodMd5": "ddc13cf5e96f721d3ef97433f15a3c84",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_51360621-4ddb-4b57-93b8-ad03f730e43d",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/camp2_trestle_table_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/camp2_trestle_table_LOD0.glb",
+   "material": "tripo_material_51360621-4ddb-4b57-93b8-ad03f730e43d",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_51360621-4ddb-4b57-93b8-ad03f730e43d",
+     "md5": "2fe210c1185ec3c7c974801eee2c578f",
+     "lodMd5": "4cc7431c76d11aaa3d18b4f2e3570f5b",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_51360621-4ddb-4b57-93b8-ad03f730e43d",
+     "md5": "95a4de1d736bd749309e875948f33a71",
+     "lodMd5": "f63c8f0803bddb099c78459ad54c22a8",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_51360621-4ddb-4b57-93b8-ad03f730e43d",
+     "md5": "d258640f1b325fc3042ddf6fe1aea6b1",
+     "lodMd5": "ddc13cf5e96f721d3ef97433f15a3c84",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_51360621-4ddb-4b57-93b8-ad03f730e43d",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/crate_a_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/crate_a_LOD0.glb",
+   "material": "tripo_material_4a462ea6-a53e-4f0e-b3bc-bd1bbe55bcce",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_4a462ea6-a53e-4f0e-b3bc-bd1bbe55bcce",
+     "md5": "a05b7a6701582494ca2bb3ebcd1e2dba",
+     "lodMd5": "10959fe7321e2bb46165166a0041dbdd",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_4a462ea6-a53e-4f0e-b3bc-bd1bbe55bcce",
+     "md5": "05bbf7b7e77619aaa415fcb9a761208f",
+     "lodMd5": "4c428ca38560c1f0be225339d86cb52e",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_4a462ea6-a53e-4f0e-b3bc-bd1bbe55bcce",
+     "md5": "86271ec148aac4c196436d0b0b83d4f7",
+     "lodMd5": "8f19342a3e93c56668d2161857f07bf8",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_4a462ea6-a53e-4f0e-b3bc-bd1bbe55bcce",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/crate_a_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/crate_a_LOD0.glb",
+   "material": "tripo_material_4a462ea6-a53e-4f0e-b3bc-bd1bbe55bcce",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_4a462ea6-a53e-4f0e-b3bc-bd1bbe55bcce",
+     "md5": "a05b7a6701582494ca2bb3ebcd1e2dba",
+     "lodMd5": "10959fe7321e2bb46165166a0041dbdd",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_4a462ea6-a53e-4f0e-b3bc-bd1bbe55bcce",
+     "md5": "05bbf7b7e77619aaa415fcb9a761208f",
+     "lodMd5": "4c428ca38560c1f0be225339d86cb52e",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_4a462ea6-a53e-4f0e-b3bc-bd1bbe55bcce",
+     "md5": "86271ec148aac4c196436d0b0b83d4f7",
+     "lodMd5": "8f19342a3e93c56668d2161857f07bf8",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_4a462ea6-a53e-4f0e-b3bc-bd1bbe55bcce",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/crate_b_long_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/crate_b_long_LOD0.glb",
+   "material": "tripo_material_39bf9beb-e4d2-4b8a-a1fa-c60d2d3b4a1f",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_39bf9beb-e4d2-4b8a-a1fa-c60d2d3b4a1f",
+     "md5": "6f33c7cb8be80797e573794b58e228c4",
+     "lodMd5": "ae74f38d171454aeaca56adb709b0044",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_39bf9beb-e4d2-4b8a-a1fa-c60d2d3b4a1f",
+     "md5": "5653307c622a2ec1c178e487874c4022",
+     "lodMd5": "7f9fc01c4d86c9274501fa565e39e761",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_39bf9beb-e4d2-4b8a-a1fa-c60d2d3b4a1f",
+     "md5": "8259f55a0ff2544ea5c429f0e54e7742",
+     "lodMd5": "45c5f4012895fc8cc101dbfe3230b533",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_39bf9beb-e4d2-4b8a-a1fa-c60d2d3b4a1f",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/crate_b_long_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/crate_b_long_LOD0.glb",
+   "material": "tripo_material_39bf9beb-e4d2-4b8a-a1fa-c60d2d3b4a1f",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_39bf9beb-e4d2-4b8a-a1fa-c60d2d3b4a1f",
+     "md5": "6f33c7cb8be80797e573794b58e228c4",
+     "lodMd5": "ae74f38d171454aeaca56adb709b0044",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_39bf9beb-e4d2-4b8a-a1fa-c60d2d3b4a1f",
+     "md5": "5653307c622a2ec1c178e487874c4022",
+     "lodMd5": "7f9fc01c4d86c9274501fa565e39e761",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_39bf9beb-e4d2-4b8a-a1fa-c60d2d3b4a1f",
+     "md5": "8259f55a0ff2544ea5c429f0e54e7742",
+     "lodMd5": "45c5f4012895fc8cc101dbfe3230b533",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_39bf9beb-e4d2-4b8a-a1fa-c60d2d3b4a1f",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/crate_c_open_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/crate_c_open_LOD0.glb",
+   "material": "tripo_material_73f52396-d6d1-4849-b5ef-a60433f8b8eb",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_73f52396-d6d1-4849-b5ef-a60433f8b8eb",
+     "md5": "0360f0a460c1786d761678a2369cf9ed",
+     "lodMd5": "2856c1976c3336a983b7fed192124c33",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_73f52396-d6d1-4849-b5ef-a60433f8b8eb",
+     "md5": "f46e797ab86d1fd10c5dc6ed8abea295",
+     "lodMd5": "29c409e822af2c069d4d41680daf2c8c",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_73f52396-d6d1-4849-b5ef-a60433f8b8eb",
+     "md5": "02acf97d5d2e3873dad7b9a5ee1be236",
+     "lodMd5": "1d644e853990473ebccd262eb4018f48",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_73f52396-d6d1-4849-b5ef-a60433f8b8eb",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/crate_c_open_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/crate_c_open_LOD0.glb",
+   "material": "tripo_material_73f52396-d6d1-4849-b5ef-a60433f8b8eb",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_73f52396-d6d1-4849-b5ef-a60433f8b8eb",
+     "md5": "0360f0a460c1786d761678a2369cf9ed",
+     "lodMd5": "2856c1976c3336a983b7fed192124c33",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_73f52396-d6d1-4849-b5ef-a60433f8b8eb",
+     "md5": "f46e797ab86d1fd10c5dc6ed8abea295",
+     "lodMd5": "29c409e822af2c069d4d41680daf2c8c",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_73f52396-d6d1-4849-b5ef-a60433f8b8eb",
+     "md5": "02acf97d5d2e3873dad7b9a5ee1be236",
+     "lodMd5": "1d644e853990473ebccd262eb4018f48",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_73f52396-d6d1-4849-b5ef-a60433f8b8eb",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/helm_stand_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/helm_stand_LOD0.glb",
+   "material": "tripo_material_def5751f-91fb-4773-a04b-e027db63711e",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_def5751f-91fb-4773-a04b-e027db63711e",
+     "md5": "285d8d82ccc1aa1f03e2258aeb1ed7da",
+     "lodMd5": "5fc7464921ac07c55c58f275cd6917ea",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_def5751f-91fb-4773-a04b-e027db63711e",
+     "md5": "bbcb7ac85dba00a3766be48da9500021",
+     "lodMd5": "dff336f539863739a9f583a2e599eff8",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_def5751f-91fb-4773-a04b-e027db63711e",
+     "md5": "f2c10f051b5c9cfed50dbbb5e7cadb93",
+     "lodMd5": "f7b3115507b65f70f8e63df16e1b9a06",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_def5751f-91fb-4773-a04b-e027db63711e",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/helm_stand_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/helm_stand_LOD0.glb",
+   "material": "tripo_material_def5751f-91fb-4773-a04b-e027db63711e",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_def5751f-91fb-4773-a04b-e027db63711e",
+     "md5": "285d8d82ccc1aa1f03e2258aeb1ed7da",
+     "lodMd5": "5fc7464921ac07c55c58f275cd6917ea",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_def5751f-91fb-4773-a04b-e027db63711e",
+     "md5": "bbcb7ac85dba00a3766be48da9500021",
+     "lodMd5": "dff336f539863739a9f583a2e599eff8",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_def5751f-91fb-4773-a04b-e027db63711e",
+     "md5": "f2c10f051b5c9cfed50dbbb5e7cadb93",
+     "lodMd5": "f7b3115507b65f70f8e63df16e1b9a06",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_def5751f-91fb-4773-a04b-e027db63711e",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/shield_rack_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/shield_rack_LOD0.glb",
+   "material": "tripo_material_a0303abe-c9b5-4a13-8f23-b7e4ed5e1c6f",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a0303abe-c9b5-4a13-8f23-b7e4ed5e1c6f",
+     "md5": "82cbebfa1a3f76ad4b2139478aca06ee",
+     "lodMd5": "d2b205d8883194f55e1f743cae917a3f",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a0303abe-c9b5-4a13-8f23-b7e4ed5e1c6f",
+     "md5": "5faaa9fb9be38e89637773bdd5a4fdd3",
+     "lodMd5": "a339a64da241f1cabf05f2a6c122bdbd",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_a0303abe-c9b5-4a13-8f23-b7e4ed5e1c6f",
+     "md5": "189f64af1a2bdd1c7256f143efc6bc8a",
+     "lodMd5": "0aef1f6da270d3c73dce17b086ecf74f",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a0303abe-c9b5-4a13-8f23-b7e4ed5e1c6f",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/shield_rack_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/shield_rack_LOD0.glb",
+   "material": "tripo_material_a0303abe-c9b5-4a13-8f23-b7e4ed5e1c6f",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a0303abe-c9b5-4a13-8f23-b7e4ed5e1c6f",
+     "md5": "82cbebfa1a3f76ad4b2139478aca06ee",
+     "lodMd5": "d2b205d8883194f55e1f743cae917a3f",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a0303abe-c9b5-4a13-8f23-b7e4ed5e1c6f",
+     "md5": "5faaa9fb9be38e89637773bdd5a4fdd3",
+     "lodMd5": "a339a64da241f1cabf05f2a6c122bdbd",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_a0303abe-c9b5-4a13-8f23-b7e4ed5e1c6f",
+     "md5": "189f64af1a2bdd1c7256f143efc6bc8a",
+     "lodMd5": "0aef1f6da270d3c73dce17b086ecf74f",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a0303abe-c9b5-4a13-8f23-b7e4ed5e1c6f",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/weapon_rack_LOD1.glb",
+   "lod0": "Assets/Env/Props/camps/weapon_rack_LOD0.glb",
+   "material": "tripo_material_8beab1a9-acd7-46f7-a726-ce6af07aff4c",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_8beab1a9-acd7-46f7-a726-ce6af07aff4c",
+     "md5": "84dd900ad6177e97f8c94ee926e0d0ec",
+     "lodMd5": "a1a27f2af3842b3541d7f303ee2e6da4",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_8beab1a9-acd7-46f7-a726-ce6af07aff4c",
+     "md5": "971715eb99f5f9db37279a116c190c04",
+     "lodMd5": "c63196dff4860eb5216144ff3ec191ab",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_8beab1a9-acd7-46f7-a726-ce6af07aff4c",
+     "md5": "f4f1e08ba0372b8dbf5696de03e040f2",
+     "lodMd5": "2d2c5ba11dbba6dfda6cdf78bfd9b8f0",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_8beab1a9-acd7-46f7-a726-ce6af07aff4c",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/camps/weapon_rack_LOD2.glb",
+   "lod0": "Assets/Env/Props/camps/weapon_rack_LOD0.glb",
+   "material": "tripo_material_8beab1a9-acd7-46f7-a726-ce6af07aff4c",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_8beab1a9-acd7-46f7-a726-ce6af07aff4c",
+     "md5": "84dd900ad6177e97f8c94ee926e0d0ec",
+     "lodMd5": "a1a27f2af3842b3541d7f303ee2e6da4",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_8beab1a9-acd7-46f7-a726-ce6af07aff4c",
+     "md5": "971715eb99f5f9db37279a116c190c04",
+     "lodMd5": "c63196dff4860eb5216144ff3ec191ab",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_8beab1a9-acd7-46f7-a726-ce6af07aff4c",
+     "md5": "f4f1e08ba0372b8dbf5696de03e040f2",
+     "lodMd5": "2d2c5ba11dbba6dfda6cdf78bfd9b8f0",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_8beab1a9-acd7-46f7-a726-ce6af07aff4c",
+   "camps2": true,
+   "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
   }
  ]
 }

@@ -16,13 +16,103 @@
       "parryWindowTicks": 0
     },
     {
+      "key": "NpcAntlerKnight",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcPitGladiator",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcCrocWarrior",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcEmbalmerCultist",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcMereRaider",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcDrownedThane",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcBarkSentinel",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
       "key": "BanditAssassin",
       "maxStamina": 100,
       "regenMul": 1.0,
       "parryWindowTicks": 0
     },
     {
+      "key": "NpcChainWarden",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcReedSkirmisher",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcBogHag",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcRootDruid",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcHoundMaster",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
       "key": "BanditArcher",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcSlagCrossbowman",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcCedarArcher",
+      "maxStamina": 100,
+      "regenMul": 1.0,
+      "parryWindowTicks": 0
+    },
+    {
+      "key": "NpcHuntsman",
       "maxStamina": 100,
       "regenMul": 1.0,
       "parryWindowTicks": 0

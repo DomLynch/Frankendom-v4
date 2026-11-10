@@ -141,33 +141,26 @@
         "radius": 2.2
       },
       "body": {
-        "status": "camp_character",
-        "bodyId": "arissa",
-        "character": "Arissa",
-        "source": "kits_out\\3d\\camp_npcs\\arissa.glb (copy of the VPS file, read-only)",
-        "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Armature root)",
-        "clipsInGlb": 12,
-        "idle": "Idle, 4.0 s, embedded in the glb",
-        "tris": 10411,
-        "textures": "3 x 512x512 PNG (diffuse, normal, specular)",
-        "lookNote": "chosen by Dom: Arissa. The old brief (broad, patient, apron over a travel coat) is superseded; she carries a weapon mesh and a cloak of her own.",
-        "final": "Dom chose this character (2026-11-06). 512 px phone-tier textures are the placeholder level for the camp; upgrade path: the 52-joint originals with bigger textures on the VPS (laneCAMPNPC MANIFEST section 6)."
+        "status": "dom_asset",
+        "bodyId": "c1_weaponsmith",
+        "character": "Ysolt Ironhand",
+        "source": "Dom Tripo session 2026-11-10: _agents\\incoming_tripo_20261110\\vendors_scaled\\vendor_c1_weaponsmith.glb -> laneVENDORS4 decimate (50k LOD0) -> bind to psyche-106 (laneNPC15 bindrun)",
+        "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Rig root, same hierarchy as the old npc_trader.glb)",
+        "idle": "none embedded: runtime.clipGlb Npc/npc_idle_rig.glb (Mixamo idle rebased onto the Rig hierarchy by laneTRADEFIN, same as the old trader/traveller)",
+        "lookNote": "tall lean woman, cropped hair, goggles up, green jerkin, bare arms, smith apron/belts, two empty scabbards fused on the back",
+        "heightM": 1.8,
+        "nativeHeightM": 1.773,
+        "scaleNote": "scale = design height / bound native height (1.800 / 1.773)",
+        "replaces": "Arissa (camp_arissa.glb)"
       },
       "runtime": {
-        "glb": "Npc/camp_arissa.glb",
+        "glb": "Npc/vendor_c1_weaponsmith.glb",
         "sources": [],
-        "hideNodes": [
-          "Layer_Tunic",
-          "Layer_Helmet",
-          "Layer_Bracers",
-          "Layer_Greaves",
-          "Layer_Sword",
-          "Layer_Scabbard"
-        ],
-        "scale": 1.0,
-        "clipGlb": "",
+        "hideNodes": [],
+        "scale": 1.015,
+        "clipGlb": "Npc/npc_idle_rig.glb",
         "clipSources": [],
-        "clipName": "Idle"
+        "clipName": ""
       },
       "enabled": true
     },
@@ -185,33 +178,26 @@
         "radius": 2.2
       },
       "body": {
-        "status": "camp_character",
-        "bodyId": "goblin",
-        "character": "Goblin D Shareyko",
-        "source": "OpenTrident site\\models\\temp1\\mx-goblin-d-shareyko-full-phone-mixamorig.glb (read-only copy, VENDORS v1)",
-        "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Armature root)",
-        "clipsInGlb": 12,
-        "idle": "Idle, embedded in the glb",
-        "tris": 16463,
-        "textures": "3 x PNG (see the glb)",
-        "lookNote": "VENDORS v1 (Strategy pick): the grizzled hooded keeper by the hearth, furs and horns, facing the fire (yaw 180). Flavour only, the hearth heals by standing near it. Measured top 1.93-1.99 m native, runtime.scale 0.74 = 1.45 m (hunched) next to Joan 1.58 m.",
-        "final": "Mixamo Goblin D Shareyko on the 106 rig."
+        "status": "dom_asset",
+        "bodyId": "c1_apothecary",
+        "character": "Old Marl (regenerated v2)",
+        "source": "Dom Tripo session 2026-11-10: _agents\\incoming_tripo_20261110\\vendors_scaled\\vendor_c1_apothecary.glb -> laneVENDORS4 decimate (50k LOD0) -> bind to psyche-106 (laneNPC15 bindrun)",
+        "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Rig root, same hierarchy as the old npc_trader.glb)",
+        "idle": "none embedded: runtime.clipGlb Npc/npc_idle_rig.glb (Mixamo idle rebased onto the Rig hierarchy by laneTRADEFIN, same as the old trader/traveller)",
+        "lookNote": "round-2 regenerated, arms out, hooded elder, vial bandolier (fused), no cape",
+        "heightM": 1.58,
+        "nativeHeightM": 1.773,
+        "scaleNote": "scale = design height / bound native height (1.580 / 1.773)",
+        "replaces": "Goblin D Shareyko (camp_goblin.glb, scale 0.74)"
       },
       "runtime": {
-        "glb": "Npc/camp_goblin.glb",
+        "glb": "Npc/vendor_c1_apothecary.glb",
         "sources": [],
-        "hideNodes": [
-          "Layer_Tunic",
-          "Layer_Helmet",
-          "Layer_Bracers",
-          "Layer_Greaves",
-          "Layer_Sword",
-          "Layer_Scabbard"
-        ],
-        "scale": 0.74,
-        "clipGlb": "",
+        "hideNodes": [],
+        "scale": 0.891,
+        "clipGlb": "Npc/npc_idle_rig.glb",
         "clipSources": [],
-        "clipName": "Idle"
+        "clipName": ""
       },
       "enabled": true
     },
@@ -229,34 +215,26 @@
         "radius": 2.2
       },
       "body": {
-        "status": "camp_character",
-        "bodyId": "kachujin",
-        "character": "Kachujin G Rosales",
-        "source": "OpenTrident site\\models\\temp1\\mx-kachujin-g-rosales-full-phone-mixamorig.glb (read-only copy, VENDORS v1)",
-        "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Armature root)",
-        "clipsInGlb": 12,
-        "idle": "Idle, embedded in the glb",
-        "tris": 17356,
-        "textures": "4 x PNG (see the glb)",
-        "lookNote": "VENDORS v1 (Strategy pick): the woman trader in a red robe at the west tent. Measured top 1.97 m native (hair bun), runtime.scale 0.84 = 1.66 m. Her material kachujin_MAT_ (403 tris) is alphaMode BLEND: GearMaterials makes it opaque, look at it once in the build.",
-        "final": "Mixamo Kachujin G Rosales on the 106 rig."
+        "status": "dom_asset",
+        "bodyId": "c1_armourer",
+        "character": "Brannoch the Mender",
+        "source": "Dom Tripo session 2026-11-10: _agents\\incoming_tripo_20261110\\vendors_scaled\\vendor_c1_armourer.glb -> laneVENDORS4 decimate (50k LOD0) -> bind to psyche-106 (laneNPC15 bindrun)",
+        "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Rig root, same hierarchy as the old npc_trader.glb)",
+        "idle": "none embedded: runtime.clipGlb Npc/npc_idle_rig.glb (Mixamo idle rebased onto the Rig hierarchy by laneTRADEFIN, same as the old trader/traveller)",
+        "lookNote": "broad stocky bald older man, grey braided beard, leather+mail repair apron over navy tunic",
+        "heightM": 1.7,
+        "nativeHeightM": 1.773,
+        "scaleNote": "scale = design height / bound native height (1.700 / 1.773)",
+        "replaces": "Kachujin (camp_kachujin_sombre.glb, scale 0.84)"
       },
       "runtime": {
-        "glb": "Npc/camp_kachujin_sombre.glb",
+        "glb": "Npc/vendor_c1_armourer.glb",
         "sources": [],
-        "hideNodes": [
-          "Layer_Tunic",
-          "Layer_Helmet",
-          "Layer_Bracers",
-          "Layer_Greaves",
-          "Layer_Sword",
-          "Layer_Scabbard",
-          "Layer_Cape"
-        ],
-        "scale": 0.84,
-        "clipGlb": "",
+        "hideNodes": [],
+        "scale": 0.959,
+        "clipGlb": "Npc/npc_idle_rig.glb",
         "clipSources": [],
-        "clipName": "Idle"
+        "clipName": ""
       },
       "enabled": true
     },
@@ -275,20 +253,26 @@
         "radius": 2.2
       },
       "runtime": {
-        "glb": "Npc/camp_akai_olive.glb",
+        "glb": "Npc/vendor_c1_stablemaster.glb",
         "sources": [],
-        "hideNodes": [
-          "Layer_Tunic",
-          "Layer_Helmet",
-          "Layer_Bracers",
-          "Layer_Greaves",
-          "Layer_Sword",
-          "Layer_Scabbard"
-        ],
-        "scale": 1.0,
-        "clipGlb": "",
+        "hideNodes": [],
+        "scale": 1.038,
+        "clipGlb": "Npc/npc_idle_rig.glb",
         "clipSources": [],
-        "clipName": "Idle"
+        "clipName": ""
+      },
+      "body": {
+        "status": "dom_asset",
+        "bodyId": "c1_stablemaster",
+        "character": "Hesk of the Reins",
+        "source": "Dom Tripo session 2026-11-10: _agents\\incoming_tripo_20261110\\vendors_scaled\\vendor_c1_stablemaster.glb -> laneVENDORS4 decimate (50k LOD0) -> bind to psyche-106 (laneNPC15 bindrun)",
+        "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Rig root, same hierarchy as the old npc_trader.glb)",
+        "idle": "none embedded: runtime.clipGlb Npc/npc_idle_rig.glb (Mixamo idle rebased onto the Rig hierarchy by laneTRADEFIN, same as the old trader/traveller)",
+        "lookNote": "wiry rider, wide-brim felt hat (height 1.84 includes the hat; brief stature 1.76), long split riding coat, rope coil, spurs",
+        "heightM": 1.84,
+        "nativeHeightM": 1.773,
+        "scaleNote": "scale = design height / bound native height (1.840 / 1.773)",
+        "replaces": "Akai (camp_akai_olive.glb)"
       }
     },
     {
@@ -586,20 +570,26 @@
             "radius": 3.0
           },
           "runtime": {
-            "glb": "Npc/camp_akai_olive.glb",
+            "glb": "Npc/vendor_c2_armourer.glb",
             "sources": [],
-            "hideNodes": [
-              "Layer_Tunic",
-              "Layer_Helmet",
-              "Layer_Bracers",
-              "Layer_Greaves",
-              "Layer_Sword",
-              "Layer_Scabbard"
-            ],
-            "scale": 1.0,
-            "clipGlb": "",
+            "hideNodes": [],
+            "scale": 1.043,
+            "clipGlb": "Npc/npc_idle_rig.glb",
             "clipSources": [],
-            "clipName": "Idle"
+            "clipName": ""
+          },
+          "body": {
+            "status": "dom_asset",
+            "bodyId": "c2_armourer",
+            "character": "Dame Corvane",
+            "source": "Dom Tripo session 2026-11-10: _agents\\incoming_tripo_20261110\\vendors_scaled\\vendor_c2_armourer.glb -> laneVENDORS4 decimate (50k LOD0) -> bind to psyche-106 (laneNPC15 bindrun)",
+            "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Rig root, same hierarchy as the old npc_trader.glb)",
+            "idle": "none embedded: runtime.clipGlb Npc/npc_idle_rig.glb (Mixamo idle rebased onto the Rig hierarchy by laneTRADEFIN, same as the old trader/traveller)",
+            "lookNote": "imposing heavy woman, blackened half-plate over oxblood gambeson, gilt pauldron",
+            "heightM": 1.85,
+            "nativeHeightM": 1.773,
+            "scaleNote": "scale = design height / bound native height (1.850 / 1.773)",
+            "replaces": "Akai (camp_akai_olive.glb)"
           }
         },
         {
@@ -617,20 +607,26 @@
             "radius": 3.0
           },
           "runtime": {
-            "glb": "Npc/camp_erika_olive.glb",
+            "glb": "Npc/vendor_c2_weaponsmith.glb",
             "sources": [],
-            "hideNodes": [
-              "Layer_Tunic",
-              "Layer_Helmet",
-              "Layer_Bracers",
-              "Layer_Greaves",
-              "Layer_Sword",
-              "Layer_Scabbard"
-            ],
-            "scale": 1.0,
-            "clipGlb": "",
+            "hideNodes": [],
+            "scale": 1.027,
+            "clipGlb": "Npc/npc_idle_rig.glb",
             "clipSources": [],
-            "clipName": "Idle"
+            "clipName": ""
+          },
+          "body": {
+            "status": "dom_asset",
+            "bodyId": "c2_weaponsmith",
+            "character": "Vael the Bladeseller",
+            "source": "Dom Tripo session 2026-11-10: _agents\\incoming_tripo_20261110\\vendors_scaled\\vendor_c2_weaponsmith.glb -> laneVENDORS4 decimate (50k LOD0) -> bind to psyche-106 (laneNPC15 bindrun)",
+            "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Rig root, same hierarchy as the old npc_trader.glb)",
+            "idle": "none embedded: runtime.clipGlb Npc/npc_idle_rig.glb (Mixamo idle rebased onto the Rig hierarchy by laneTRADEFIN, same as the old trader/traveller)",
+            "lookNote": "elegant thin man, charcoal brocade hip coat, white high collar, rings, empty scabbards on the belt",
+            "heightM": 1.82,
+            "nativeHeightM": 1.773,
+            "scaleNote": "scale = design height / bound native height (1.820 / 1.773)",
+            "replaces": "Erika (camp_erika_olive.glb)"
           }
         },
         {
@@ -648,20 +644,26 @@
             "radius": 3.0
           },
           "runtime": {
-            "glb": "Npc/camp_kachujin_sombre.glb",
+            "glb": "Npc/vendor_c2_stablemaster.glb",
             "sources": [],
-            "hideNodes": [
-              "Layer_Tunic",
-              "Layer_Helmet",
-              "Layer_Bracers",
-              "Layer_Greaves",
-              "Layer_Sword",
-              "Layer_Scabbard"
-            ],
-            "scale": 0.84,
-            "clipGlb": "",
+            "hideNodes": [],
+            "scale": 1.083,
+            "clipGlb": "Npc/npc_idle_rig.glb",
             "clipSources": [],
-            "clipName": "Idle"
+            "clipName": ""
+          },
+          "body": {
+            "status": "dom_asset",
+            "bodyId": "c2_stablemaster",
+            "character": "Orm Houndfather",
+            "source": "Dom Tripo session 2026-11-10: _agents\\incoming_tripo_20261110\\vendors_scaled\\vendor_c2_stablemaster.glb -> laneVENDORS4 decimate (50k LOD0) -> bind to psyche-106 (laneNPC15 bindrun)",
+            "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Rig root, same hierarchy as the old npc_trader.glb)",
+            "idle": "none embedded: runtime.clipGlb Npc/npc_idle_rig.glb (Mixamo idle rebased onto the Rig hierarchy by laneTRADEFIN, same as the old trader/traveller)",
+            "lookNote": "huge bearded man, bear-fur mantle, leather jerkin, corded forearms, coiled whip on hip",
+            "heightM": 1.92,
+            "nativeHeightM": 1.773,
+            "scaleNote": "scale = design height / bound native height (1.920 / 1.773)",
+            "replaces": "Kachujin (camp_kachujin_sombre.glb, scale 0.84)"
           }
         },
         {
@@ -710,20 +712,26 @@
             "radius": 3.0
           },
           "runtime": {
-            "glb": "Npc/camp_goblin.glb",
+            "glb": "Npc/vendor_c2_apothecary.glb",
             "sources": [],
-            "hideNodes": [
-              "Layer_Tunic",
-              "Layer_Helmet",
-              "Layer_Bracers",
-              "Layer_Greaves",
-              "Layer_Sword",
-              "Layer_Scabbard"
-            ],
-            "scale": 0.74,
-            "clipGlb": "",
+            "hideNodes": [],
+            "scale": 0.948,
+            "clipGlb": "Npc/npc_idle_rig.glb",
             "clipSources": [],
-            "clipName": "Idle"
+            "clipName": ""
+          },
+          "body": {
+            "status": "dom_asset",
+            "bodyId": "c2_apothecary",
+            "character": "Sister Ember",
+            "source": "Dom Tripo session 2026-11-10: _agents\\incoming_tripo_20261110\\vendors_scaled\\vendor_c2_apothecary.glb -> laneVENDORS4 decimate (50k LOD0) -> bind to psyche-106 (laneNPC15 bindrun)",
+            "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Rig root, same hierarchy as the old npc_trader.glb)",
+            "idle": "none embedded: runtime.clipGlb Npc/npc_idle_rig.glb (Mixamo idle rebased onto the Rig hierarchy by laneTRADEFIN, same as the old trader/traveller)",
+            "lookNote": "poised woman, shaved tattooed head, oxblood/charcoal robe, tiers of phials, censer chain",
+            "heightM": 1.68,
+            "nativeHeightM": 1.773,
+            "scaleNote": "scale = design height / bound native height (1.680 / 1.773)",
+            "replaces": "Goblin (camp_goblin.glb, scale 0.74)"
           }
         }
       ]

@@ -133,6 +133,391 @@
           "debugEvery": 20
         },
         {
+          "name": "NpcAntlerKnight",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcPitGladiator",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcCrocWarrior",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcEmbalmerCultist",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcMereRaider",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcDrownedThane",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcBarkSentinel",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
           "name": "BanditAssassin",
           "enabled": false,
           "handedSign": -1,
@@ -188,7 +573,447 @@
           "debugEvery": 20
         },
         {
+          "name": "NpcChainWarden",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcReedSkirmisher",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcBogHag",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcRootDruid",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcHoundMaster",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
           "name": "BanditArcher",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcSlagCrossbowman",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcCedarArcher",
+          "enabled": false,
+          "handedSign": -1,
+          "footYaw": [
+            29,
+            -29
+          ],
+          "armTilt": [
+            -8,
+            -12
+          ],
+          "armAxis": [
+            1,
+            0,
+            0
+          ],
+          "armWeight": 1,
+          "categories": [
+            {
+              "id": "locomotion",
+              "states": [
+                "walk",
+                "run",
+                "strafe_L",
+                "strafe_R",
+                "backstep",
+                "roll_forward"
+              ],
+              "footYaw": [
+                25,
+                -25
+              ],
+              "armWeight": 1
+            },
+            {
+              "id": "idle",
+              "states": [
+                "idle",
+                "guard_idle",
+                "guard_left",
+                "guard_right",
+                "guard_up",
+                "guard_hit"
+              ],
+              "footYaw": [
+                26,
+                -26
+              ],
+              "armWeight": 1
+            }
+          ],
+          "debug": false,
+          "debugEvery": 20
+        },
+        {
+          "name": "NpcHuntsman",
           "enabled": false,
           "handedSign": -1,
           "footYaw": [

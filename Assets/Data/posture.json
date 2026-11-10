@@ -18,6 +18,55 @@
       "deathblowMinHealthFrac": 0.6
     },
     {
+      "key": "NpcAntlerKnight",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcPitGladiator",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcCrocWarrior",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcEmbalmerCultist",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcMereRaider",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcDrownedThane",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcBarkSentinel",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
       "key": "BanditAssassin",
       "max": 100,
       "holdTicks": 0,
@@ -25,7 +74,63 @@
       "deathblowMinHealthFrac": 0.6
     },
     {
+      "key": "NpcChainWarden",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcReedSkirmisher",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcBogHag",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcRootDruid",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcHoundMaster",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
       "key": "BanditArcher",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcSlagCrossbowman",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcCedarArcher",
+      "max": 100,
+      "holdTicks": 0,
+      "decayPerSecond": -1,
+      "deathblowMinHealthFrac": 0.6
+    },
+    {
+      "key": "NpcHuntsman",
       "max": 100,
       "holdTicks": 0,
       "decayPerSecond": -1,

@@ -990,9 +990,9 @@
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        -15.71,
-        -0.096,
-        144.13
+        -20.04,
+        -0.025,
+        146.63
       ],
       "rotEuler": [
         2.5,
@@ -1068,8 +1068,8 @@
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        14.74,
-        -0.803,
+        12.24,
+        -0.618,
         147.74
       ],
       "rotEuler": [
@@ -1187,7 +1187,9 @@
         "zone4",
         "look",
         "hall_wall"
-      ]
+      ],
+      "disabled": true,
+      "note": "DEFECTS2: disabled, exposed flat grey top slab = grey plate in z4flat_right"
     },
     {
       "id": "z4look_hero_column_a_9",
@@ -4256,14 +4258,14 @@
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        -25.36,
-        -2.123,
-        138.05
+        -14.0,
+        -1.19,
+        143.0
       ],
       "rotEuler": [
-        -1.1,
-        304.0,
-        -6.6
+        -4.5,
+        110.0,
+        -1.9
       ],
       "scale": 16.343,
       "shadowsOff": false,
@@ -4272,15 +4274,16 @@
         "B_landmark",
         "z4_wrecked_longship",
         "z4",
-        "cluster_large"
+        "cluster_large",
+        "look9"
       ],
       "collision": {
         "kind": "box"
       },
-      "note": "WOW21 z4_wrecked_longship | bbox centre (-29.0,131.0) | placement stage 2 | converted LOD0",
+      "note": "WOW21 z4_wrecked_longship | bbox centre (-29.0,131.0) | placement stage 2 | converted LOD0 | LOOK9: repositioned into the play-camera cone, un-buried",
       "disabled": false,
-      "seamBaseY": -1.973,
-      "seamDy": -0.813
+      "seamBaseY": -1.19,
+      "seamDy": 0.0
     },
     {
       "id": "wow21_spear_skull_palisade",
@@ -4291,14 +4294,14 @@
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        35.9,
-        -1.409,
-        147.24
+        24.0,
+        -1.04,
+        156.5
       ],
       "rotEuler": [
-        2.8,
-        105.4,
-        0.8
+        0.1,
+        35.0,
+        1.6
       ],
       "scale": 14.242,
       "shadowsOff": false,
@@ -4307,15 +4310,16 @@
         "C_breakup",
         "z4_skull_palisade",
         "z4",
-        "cluster_large"
+        "cluster_large",
+        "look9"
       ],
       "collision": {
         "kind": "box"
       },
-      "note": "WOW21 z4_skull_palisade | bbox centre (-28.0,149.0) | placement stage 1 | converted LOD0",
+      "note": "WOW21 z4_skull_palisade | bbox centre (-28.0,149.0) | placement stage 1 | converted LOD0 | LOOK9: repositioned into the play-camera cone, un-buried",
       "disabled": false,
-      "seamBaseY": -1.264,
-      "seamDy": -0.336
+      "seamBaseY": -1.04,
+      "seamDy": 0.0
     },
     {
       "id": "wow21_bog_pool",
@@ -4326,14 +4330,14 @@
       "ground": "bottom",
       "yBase": "world",
       "pos": [
-        41.09,
-        -2.215,
-        123.83
+        19.5,
+        -1.525,
+        147.5
       ],
       "rotEuler": [
-        -0.2,
+        0.0,
         331.7,
-        -0.1
+        0.0
       ],
       "scale": 10.182,
       "shadowsOff": false,
@@ -4342,15 +4346,16 @@
         "C_breakup",
         "z4_runed_bog_stone",
         "z4",
-        "cluster_large"
+        "cluster_large",
+        "look9"
       ],
       "collision": {
         "kind": "cylinder"
       },
-      "note": "WOW21 z4_runed_bog_stone | bbox centre (24.0,123.0) | placement stage 2 | converted LOD0",
+      "note": "WOW21 z4_runed_bog_stone | bbox centre (24.0,123.0) | placement stage 2 | converted LOD0 | LOOK9: repositioned into the play-camera cone, un-buried",
       "disabled": false,
-      "seamBaseY": -1.964,
-      "seamDy": -0.251
+      "seamBaseY": -1.525,
+      "seamDy": 0.0
     }
   ]
 }

@@ -477,9 +477,9 @@
         32.0
       ],
       "albedo": [
-        0.594,
-        0.544,
-        0.495
+        0.42,
+        0.58,
+        0.6
       ],
       "meanFreePath": 6.0,
       "positiveFade": [
@@ -675,9 +675,9 @@
         40.0
       ],
       "albedo": [
-        0.5,
-        0.46,
-        0.41
+        0.42,
+        0.58,
+        0.6
       ],
       "meanFreePath": 11.0,
       "positiveFade": [
@@ -708,9 +708,9 @@
         40.0
       ],
       "albedo": [
-        0.5,
-        0.46,
-        0.41
+        0.42,
+        0.58,
+        0.6
       ],
       "meanFreePath": 11.0,
       "positiveFade": [
@@ -741,9 +741,9 @@
         10.0
       ],
       "albedo": [
-        0.5,
-        0.46,
-        0.41
+        0.42,
+        0.58,
+        0.6
       ],
       "meanFreePath": 11.0,
       "positiveFade": [
@@ -944,6 +944,105 @@
         0.46
       ],
       "meanFreePath": 12.0,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 60.0,
+      "raycastGround": true
+    },
+    {
+      "id": "look9_z4_pool_mist",
+      "zone": "grendel",
+      "center": [
+        19.5,
+        0.0,
+        147.5
+      ],
+      "groundY": 0.0,
+      "size": [
+        18.0,
+        2.2,
+        18.0
+      ],
+      "albedo": [
+        0.42,
+        0.62,
+        0.6
+      ],
+      "meanFreePath": 6.5,
+      "positiveFade": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "negativeFade": [
+        0.5,
+        0.0,
+        0.5
+      ],
+      "activeRadiusM": 55.0,
+      "raycastGround": true
+    },
+    {
+      "id": "look9_z4_far_mist",
+      "zone": "grendel",
+      "center": [
+        0.0,
+        0.0,
+        150.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        56.0,
+        2.6,
+        16.0
+      ],
+      "albedo": [
+        0.4,
+        0.56,
+        0.6
+      ],
+      "meanFreePath": 9.0,
+      "positiveFade": [
+        0.4,
+        1.0,
+        0.4
+      ],
+      "negativeFade": [
+        0.4,
+        0.0,
+        0.4
+      ],
+      "activeRadiusM": 60.0,
+      "raycastGround": true
+    },
+    {
+      "id": "look9_z5_shaft_fog",
+      "zone": "z5_humbaba",
+      "center": [
+        6.0,
+        0.0,
+        222.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        22.0,
+        15.0,
+        26.0
+      ],
+      "albedo": [
+        0.52,
+        0.6,
+        0.32
+      ],
+      "meanFreePath": 14.0,
       "positiveFade": [
         0.5,
         1.0,
