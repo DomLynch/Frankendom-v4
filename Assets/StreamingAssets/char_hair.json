@@ -8,8 +8,13 @@
   "instanceSuffix": " (Instance)",
   "cloneSuffix": " (charmat)",
   "twinMarker": "_aniso",
-  "copyTextures": ["_BaseColorMap", "_MainTex"],
-  "copyColors": ["_BaseColor"],
+  "copyTextures": [
+    "_BaseColorMap",
+    "_MainTex"
+  ],
+  "copyColors": [
+    "_BaseColor"
+  ],
   "copyFloats": [],
   "resourcesDir": "Assets/Resources",
   "rows": [
@@ -17,15 +22,51 @@
       "character": "Joan",
       "enabled": true,
       "materials": [
-        { "match": "joan_hairshell_0", "twin": "CharTwin/joan_hairshell_0_aniso" },
-        { "match": "joan_hair_0", "twin": "CharTwin/joan_hair_0_aniso" }
+        {
+          "match": "joan_hairshell_0",
+          "twin": "CharTwin/joan_hairshell_0_aniso"
+        },
+        {
+          "match": "joan_hair_0",
+          "twin": "CharTwin/joan_hair_0_aniso"
+        }
       ]
     }
   ],
   "author": [
-    { "twin": "CharTwin/joan_hairshell_0_aniso", "from": "joan_hairshell_0", "fromFolder": "/Characters/Joan/", "materialType": "Aniso", "diffusionProfileGuid": "",
-      "floats": [ { "name": "_Anisotropy", "value": 0.7 }, { "name": "_SmoothnessRemapMax", "value": 0.45 } ] },
-    { "twin": "CharTwin/joan_hair_0_aniso", "from": "joan_hair_0", "fromFolder": "/Characters/Joan/", "materialType": "Aniso", "diffusionProfileGuid": "",
-      "floats": [ { "name": "_Anisotropy", "value": 0.7 }, { "name": "_SmoothnessRemapMax", "value": 0.45 } ] }
+    {
+      "twin": "CharTwin/joan_hairshell_0_aniso",
+      "from": "joan_hairshell_0",
+      "fromFolder": "/Characters/Joan/",
+      "materialType": "Aniso",
+      "diffusionProfileGuid": "",
+      "floats": [
+        {
+          "name": "_Anisotropy",
+          "value": 0.85
+        },
+        {
+          "name": "_SmoothnessRemapMax",
+          "value": 0.6
+        }
+      ]
+    },
+    {
+      "twin": "CharTwin/joan_hair_0_aniso",
+      "from": "joan_hair_0",
+      "fromFolder": "/Characters/Joan/",
+      "materialType": "Aniso",
+      "diffusionProfileGuid": "",
+      "floats": [
+        {
+          "name": "_Anisotropy",
+          "value": 0.85
+        },
+        {
+          "name": "_SmoothnessRemapMax",
+          "value": 0.6
+        }
+      ]
+    }
   ]
 }

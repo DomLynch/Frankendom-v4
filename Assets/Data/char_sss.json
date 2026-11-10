@@ -8,8 +8,13 @@
   "instanceSuffix": " (Instance)",
   "cloneSuffix": " (charmat)",
   "twinMarker": "_sss",
-  "copyTextures": ["_BaseColorMap", "_MainTex"],
-  "copyColors": ["_BaseColor"],
+  "copyTextures": [
+    "_BaseColorMap",
+    "_MainTex"
+  ],
+  "copyColors": [
+    "_BaseColor"
+  ],
   "copyFloats": [],
   "resourcesDir": "Assets/Resources",
   "rows": [
@@ -17,7 +22,12 @@
       "character": "Joan",
       "enabled": true,
       "_why": "face, ears, neck (joan_head_0). The body atlas (joan_body_0) also holds armour, leather and cloth: SSS on it needs a skin-only _SubsurfaceMaskMap, so the hands are NOT in v1 (see MANIFEST).",
-      "materials": [ { "match": "joan_head_0", "twin": "CharTwin/joan_head_0_sss" } ]
+      "materials": [
+        {
+          "match": "joan_head_0",
+          "twin": "CharTwin/joan_head_0_sss"
+        }
+      ]
     },
     {
       "character": "Grendel",
@@ -30,43 +40,170 @@
       "enabled": false,
       "_why": "OFF until Dom picks the grey/slate A/B. SSS does not touch his albedo, but it changes how the flesh is lit, which is part of that pick.",
       "materials": [
-        { "match": "pitborn_Body", "twin": "CharTwin/pitborn_Body_0_sss" },
-        { "match": "pitborn_head", "twin": "CharTwin/pitborn_head_0_sss" }
+        {
+          "match": "pitborn_Body",
+          "twin": "CharTwin/pitborn_Body_0_sss"
+        },
+        {
+          "match": "pitborn_head",
+          "twin": "CharTwin/pitborn_head_0_sss"
+        }
       ]
     },
     {
       "character": "Humbaba",
       "enabled": true,
-      "materials": [ { "match": "creature5_body", "twin": "CharTwin/creature5_body_0_sss" } ]
+      "materials": [
+        {
+          "match": "creature5_body",
+          "twin": "CharTwin/creature5_body_0_sss"
+        }
+      ]
     },
     {
       "character": "Erlking",
       "enabled": true,
-      "materials": [ { "match": "erlking_body", "twin": "CharTwin/erlking_body_0_sss" } ]
+      "materials": [
+        {
+          "match": "erlking_body",
+          "twin": "CharTwin/erlking_body_0_sss"
+        }
+      ]
     },
     {
       "character": "Sobek",
       "enabled": true,
       "materials": [
-        { "match": "sobek_body", "twin": "CharTwin/sobek_body_0_sss" },
-        { "match": "sobek_head", "twin": "CharTwin/sobek_head_0_sss" }
+        {
+          "match": "sobek_body",
+          "twin": "CharTwin/sobek_body_0_sss"
+        },
+        {
+          "match": "sobek_head",
+          "twin": "CharTwin/sobek_head_0_sss"
+        }
       ]
     }
   ],
   "author": [
-    { "twin": "CharTwin/joan_head_0_sss", "from": "joan_head_0", "fromFolder": "/Characters/Joan/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
-      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 1.0 } ] },
-    { "twin": "CharTwin/pitborn_Body_0_sss", "from": "pitborn_Body_0", "fromFolder": "/Characters/Pitborn/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
-      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] },
-    { "twin": "CharTwin/pitborn_head_0_sss", "from": "pitborn_head_0", "fromFolder": "/Characters/Pitborn/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
-      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] },
-    { "twin": "CharTwin/creature5_body_0_sss", "from": "creature5_body_0", "fromFolder": "/Characters/Humbaba/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
-      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] },
-    { "twin": "CharTwin/erlking_body_0_sss", "from": "erlking_body_0", "fromFolder": "/Characters/Erlking/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
-      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] },
-    { "twin": "CharTwin/sobek_body_0_sss", "from": "sobek_body_0", "fromFolder": "/Characters/Sobek/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
-      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] },
-    { "twin": "CharTwin/sobek_head_0_sss", "from": "sobek_head_0", "fromFolder": "/Characters/Sobek/", "materialType": "SSS", "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
-      "floats": [ { "name": "_TransmissionEnable", "value": 0 }, { "name": "_SubsurfaceMask", "value": 0.7 } ] }
+    {
+      "twin": "CharTwin/joan_head_0_sss",
+      "from": "joan_head_0",
+      "fromFolder": "/Characters/Joan/",
+      "materialType": "SSS",
+      "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [
+        {
+          "name": "_TransmissionEnable",
+          "value": 0
+        },
+        {
+          "name": "_SubsurfaceMask",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "twin": "CharTwin/pitborn_Body_0_sss",
+      "from": "pitborn_Body_0",
+      "fromFolder": "/Characters/Pitborn/",
+      "materialType": "SSS",
+      "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [
+        {
+          "name": "_TransmissionEnable",
+          "value": 0
+        },
+        {
+          "name": "_SubsurfaceMask",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "twin": "CharTwin/pitborn_head_0_sss",
+      "from": "pitborn_head_0",
+      "fromFolder": "/Characters/Pitborn/",
+      "materialType": "SSS",
+      "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [
+        {
+          "name": "_TransmissionEnable",
+          "value": 0
+        },
+        {
+          "name": "_SubsurfaceMask",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "twin": "CharTwin/creature5_body_0_sss",
+      "from": "creature5_body_0",
+      "fromFolder": "/Characters/Humbaba/",
+      "materialType": "SSS",
+      "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [
+        {
+          "name": "_TransmissionEnable",
+          "value": 0
+        },
+        {
+          "name": "_SubsurfaceMask",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "twin": "CharTwin/erlking_body_0_sss",
+      "from": "erlking_body_0",
+      "fromFolder": "/Characters/Erlking/",
+      "materialType": "SSS",
+      "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [
+        {
+          "name": "_TransmissionEnable",
+          "value": 0
+        },
+        {
+          "name": "_SubsurfaceMask",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "twin": "CharTwin/sobek_body_0_sss",
+      "from": "sobek_body_0",
+      "fromFolder": "/Characters/Sobek/",
+      "materialType": "SSS",
+      "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [
+        {
+          "name": "_TransmissionEnable",
+          "value": 0
+        },
+        {
+          "name": "_SubsurfaceMask",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "twin": "CharTwin/sobek_head_0_sss",
+      "from": "sobek_head_0",
+      "fromFolder": "/Characters/Sobek/",
+      "materialType": "SSS",
+      "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "floats": [
+        {
+          "name": "_TransmissionEnable",
+          "value": 0
+        },
+        {
+          "name": "_SubsurfaceMask",
+          "value": 1.0
+        }
+      ]
+    }
   ]
 }
