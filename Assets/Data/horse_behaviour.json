@@ -1,0 +1,29 @@
+{
+  "_about": "laneHORSEBEHAV v1, read by Assets/Scripts/Mount/HorseBehaviour.cs (partial of AmbientHorses). enabled=false or this file missing = AmbientHorses exactly as before. rigMap swaps a breed glb for its rigged copy (the originals have no skeleton and no clips: 9 leg joints are skinned in by tools/make_rigs.py). gaits: the leg curves per speed (minMps = speed from which the gait is used, strideM = distance covered per full leg cycle, duty = share of the cycle a hoof is on the ground, liftM = hoof lift in the swing, offsets = leg phase FL FR HL HR; walk = lateral sequence, trot = diagonal pairs, gallop = transverse). Cycle rate = speed / strideM, so the planted hoof moves back exactly at the body speed. life: mode hits = hp / hitsToKill x weight per connecting swing (heavy swings count heavyWeight), mode damage = the move's own damage; respawnS is real time (UTC clock like the zone spawns), session only, nothing is written to a save. skit: the first hit sends the horse away from the attacker (startle, then gallop at fleeMps around props / arena / spot circles of every herd, inside its rectangle + boundsMarginM, stops after panicMinS..panicMaxS once fleeMinM away, stands calmPauseS, strolls again). roam: stroll targets stay edgeInsetM inside the herd rectangle and are pulled centerBias towards laneX. hit: capsule along the horse (halfLengthM, radiusM) judged with the Duel.Resolve reach / arc maths (+ assistArcDeg). target: soft lock (camera lock-on + marker + hp bar) on the nearest living horse in rangeM / coneDeg while Joan has no fight. Debug: command line -horsebehavdebug (or debugHitKey) = a virtual light hit on the targeted / nearest horse.",
+  "enabled": true,
+  "debugLog": false,
+  "logSlip": true,
+  "slipLogEveryS": 3.0,
+  "debugRangeM": 12.0,
+  "debugHitKey": "",
+  "rigMap": [
+    { "from": "Mount/horse_lod.glb", "to": "Mount/horse_rig_lod.glb" },
+    { "from": "Mount/horse_mid.glb", "to": "Mount/horse_rig_mid.glb" },
+    { "from": "Mount/warhorse_lod.glb", "to": "Mount/warhorse_rig_lod.glb" },
+    { "from": "Mount/warhorse_mid.glb", "to": "Mount/warhorse_rig_mid.glb" },
+    { "from": "Mount/skeletal_camel_lod.glb", "to": "Mount/skeletal_camel_rig_lod.glb" },
+    { "from": "Mount/skeletal_camel_mid.glb", "to": "Mount/skeletal_camel_rig_mid.glb" }
+  ],
+  "gaits": [
+    { "name": "walk", "minMps": 0.0, "strideM": 1.1, "duty": 0.62, "liftM": 0.10, "bobM": 0.0, "pitchDeg": 1.2, "rollDeg": 1.2, "offsets": [0.25, 0.75, 0.0, 0.5] },
+    { "name": "trot", "minMps": 2.4, "strideM": 2.6, "duty": 0.36, "liftM": 0.16, "bobM": 0.02, "pitchDeg": 1.5, "rollDeg": 1.0, "offsets": [0.0, 0.5, 0.5, 0.0] },
+    { "name": "gallop", "minMps": 5.6, "strideM": 3.6, "duty": 0.27, "liftM": 0.26, "bobM": 0.04, "pitchDeg": 3.5, "rollDeg": 2.0, "offsets": [0.64, 0.5, 0.14, 0.0] }
+  ],
+  "roam": { "edgeInsetM": 6.0, "centerBias": 0.25, "laneX": 0.0, "laneBiasM": 0.0 },
+  "life": { "mode": "hits", "hp": 100.0, "hitsToKill": 4.0, "heavyWeight": 2.0, "damageMul": 1.0, "respawnS": 180.0, "corpseS": 25.0, "dieFallS": 0.9, "dieRollDeg": 85.0, "limpRate": 6.0, "deathPivotX": 0.35, "respawnMinPlayerM": 25.0, "weights": [] },
+  "hit": { "halfLengthM": 0.9, "radiusM": 0.45, "reachPadM": 0.45, "assistArcDeg": 25.0, "whileEngaged": false },
+  "skit": { "onHit": true, "fleeMps": 8.0, "fleeJitter": 0.1, "accelMps2": 9.0, "decelMps2": 7.0, "turnDegPerS": 240.0, "startleS": 0.25, "startlePitchDeg": 10.0, "panicMinS": 3.5, "panicMaxS": 6.0, "fleeMinM": 16.0, "calmPauseS": 2.5, "alignDeg": 60.0, "awayJitterDeg": 25.0, "nearPadM": 6.0, "lookAheadM": 5.0, "clearanceM": 1.4, "steerEveryS": 0.1, "fanStepDeg": 20.0, "fanMaxDeg": 140.0, "boundsMarginM": 8.0, "groundCheckStepM": 2.5 },
+  "move": { "rigScanS": 0.25, "rigRescanS": 1.0, "walkAccelMps2": 4.0, "walkDecelMps2": 5.0, "turnStepMpsPerDeg": 0.012, "standMps": 0.05, "settleMps": 0.4, "gaitBlendS": 0.3, "hysteresisMps": 0.4, "reach": 0.985, "bodyDropRateMps": 12.0, "maxDropM": 0.45, "animFarM": 70.0, "boundsPadM": 0.6, "resumeGapS": 1.5 },
+  "target": { "enabled": true, "lockCamera": true, "rangeM": 9.0, "coneDeg": 80.0, "keepRangeMul": 1.3, "keepConeMul": 1.4, "retargetMarginM": 1.5 },
+  "hud": { "enabled": true, "refHeightPx": 1080.0, "markerPx": 12.0, "barWidthPx": 90.0, "barHeightPx": 8.0, "headUpM": 0.6, "markerColor": [1.0, 0.85, 0.3, 1.0], "barColor": [0.8, 0.15, 0.1, 0.95] }
+}

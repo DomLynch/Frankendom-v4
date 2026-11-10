@@ -33,10 +33,10 @@ using UnityEngine;
     public AhGait gait = new AhGait(); public AhBreed[] breeds = new AhBreed[0]; public AhHerd[] herds = new AhHerd[0];
 }
 
-public sealed class AmbientHorses : MonoBehaviour
+public sealed partial class AmbientHorses : MonoBehaviour
 {
     static AhCfg K; static AmbientHorses Inst; static RaycastHit[] hits = new RaycastHit[8];   // resized to hitBuffer when the config loads
-    class Horse { public Renderer[] fullR, midR; public bool midOn; public GameObject go; public Transform body; public AhHerd herd; public Vector3 pos, target; public float yaw, wait, phase, breath, speed, amp, bob, pitch, roll, spawnY; public bool walking, placed; public System.Random rnd; public Renderer midMain; public Transform midNode; }
+    class Horse { public Renderer[] fullR, midR; public bool midOn; public GameObject go; public Transform body; public AhHerd herd; public Vector3 pos, target; public float yaw, wait, phase, breath, speed, amp, bob, pitch, roll, spawnY; public bool walking, placed; public System.Random rnd; public Renderer midMain; public Transform midNode; public HbHorse hb; }
     class Loaded { public GltfHold hold; }
     class GltfHold { public GLTFast.GltfImport imp; }
     class HerdState { public List<Horse> horses = new List<Horse>(); public bool loading, tried, asleep, traced; public List<Material> mats = new List<Material>(); public List<GltfHold> holds = new List<GltfHold>(); public int gen; public List<KeyValuePair<Horse, AhBreed>> up = new List<KeyValuePair<Horse, AhBreed>>(); }
@@ -69,7 +69,7 @@ public sealed class AmbientHorses : MonoBehaviour
     }
 
     static AhBreed Breed(string id) { foreach (var b in K.breeds) if (b != null && b.id == id) return b; return null; }
-    static string File(AhBreed b) { try { var p = System.IO.Path.Combine(Application.streamingAssetsPath, b.glb); return System.IO.File.Exists(p) ? p : null; } catch (Exception) { return null; } }
+    static string File(AhBreed b) { b = HB_RigOf(b); try { var p = System.IO.Path.Combine(Application.streamingAssetsPath, b.glb); return System.IO.File.Exists(p) ? p : null; } catch (Exception) { return null; } }
 
     void Update()
     {
@@ -221,8 +221,8 @@ public sealed class AmbientHorses : MonoBehaviour
 
     static bool LocalBounds(Transform space, Renderer r, out Bounds b)
     {
-        b = default(Bounds); var mf = r.GetComponent<MeshFilter>(); if (mf == null || mf.sharedMesh == null) return false;
-        var m = space.worldToLocalMatrix * mf.transform.localToWorldMatrix; var mb = mf.sharedMesh.bounds; b = new Bounds(m.MultiplyPoint3x4(mb.center), Vector3.zero);
+        b = default(Bounds); Mesh hbm; Transform hbt; if (!HB_MeshOf(r, out hbm, out hbt)) return false;
+        var m = space.worldToLocalMatrix * hbt.localToWorldMatrix; var mb = hbm.bounds; b = new Bounds(m.MultiplyPoint3x4(mb.center), Vector3.zero);
         for (int i = 0; i < 8; i++) b.Encapsulate(m.MultiplyPoint3x4(mb.center + Vector3.Scale(mb.extents, new Vector3((i & 1) == 0 ? -1f : 1f, (i & 2) == 0 ? -1f : 1f, (i & 4) == 0 ? -1f : 1f))));   // hc:ok box corner signs
         return true;
     }
@@ -261,6 +261,7 @@ public sealed class AmbientHorses : MonoBehaviour
 
     void Step(Horse h, AhHerd herd, HerdState s, float dt, DuelFighter p)
     {
+        if (HB_Step(h, herd, s, dt, p)) return;   // laneHORSEBEHAV H4
         var G = K.gait; var pp = p != null ? p.transform.position : Vector3.zero;
         if (!h.placed) { float y; if (Ground(h.pos.x, h.pos.z, p != null ? pp.y : K.fallbackY, out y)) { h.pos.y = y; h.placed = true; } else return; }   // ring still off: wait for ground
         float spd = 0f;

@@ -405,6 +405,15 @@
           ],
           "yaw": 0,
           "note": "ZONESPAN: the far gate (the next zone)"
+        },
+        {
+          "id": "burrow_croc_home",
+          "pos": [
+            -8.0,
+            41.5
+          ],
+          "yaw": 90.0,
+          "note": "BURROWCROC: home of the burrowing croc, centre of its side-lane box (west of the fight lane); the croc idol is at x -5.5 z 54, the boss stand at 0 / 53"
         }
       ],
       "spawns": [
@@ -426,6 +435,25 @@
           "hpMul": 1.0,
           "damageMul": 1.0,
           "difficulty": 11
+        },
+        {
+          "id": "z2_burrow_croc",
+          "enabled": true,
+          "spot": "burrow_croc_home",
+          "picks": [
+            {
+              "creature": "Sobek",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "",
+          "respawnMinS": 180,
+          "respawnMaxS": 180,
+          "aggro": 7.0,
+          "leash": 9.5,
+          "hpMul": 0.2,
+          "damageMul": 0.4,
+          "difficulty": 4
         }
       ],
       "services": [],
