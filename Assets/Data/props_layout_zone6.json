@@ -6549,66 +6549,6 @@
    ],
    "note": "CLUTTER single | z6_erlking | footprint 0.68x0.28 h 0.40 | foot range 0.00 | seen by arrive_from_prev at 17 m ndcy -0.14",
    "disabled": false
-  },
-  {
-   "id": "vcomp_fg_z6_1",
-   "group": "Z6Ring1",
-   "library": "props",
-   "asset": "fallen_pillar_3",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "world",
-   "pos": [
-    -5.8,
-    -0.13,
-    256.5
-   ],
-   "rotEuler": [
-    0,
-    180.0,
-    0
-   ],
-   "scale": 1.782,
-   "shadowsOff": false,
-   "tags": [
-    "ring_fallen",
-    "ring",
-    "zone6",
-    "vcomp_fg",
-    "foreground"
-   ],
-   "note": "VIS_COMP foreground hero prop: copy of z6_fallen_pillar_3_0 x1.15 | play cam ndc (-0.90, -0.45) at 8.7 m | footprint 5.1x3.9 h 5.3",
-   "disabled": false
-  },
-  {
-   "id": "vcomp_fg_z6_2",
-   "group": "Z6Ring1",
-   "library": "props",
-   "asset": "fallen_pillar_3",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "world",
-   "pos": [
-    6.0,
-    -0.13,
-    255.5
-   ],
-   "rotEuler": [
-    0,
-    270.0,
-    0
-   ],
-   "scale": 1.55,
-   "shadowsOff": false,
-   "tags": [
-    "ring_fallen",
-    "ring",
-    "zone6",
-    "vcomp_fg",
-    "foreground"
-   ],
-   "note": "VIS_COMP foreground hero prop: copy of z6_fallen_pillar_3_0 x1.00 | play cam ndc (1.05, -0.53) at 7.7 m | footprint 4.5x3.4 h 4.6",
-   "disabled": false
   }
  ],
  "scatter": []

@@ -7020,65 +7020,6 @@
    ],
    "note": "CLUTTER cluster 3 | sobek_reach | footprint 0.68x0.28 h 0.40 | foot range 0.07 | seen by arrive_from_prev at 28 m ndcy -0.12 | base of z2_worldnear_arch_fragment_9b_0",
    "disabled": false
-  },
-  {
-   "id": "vcomp_fg_z2_1",
-   "group": "Z2Ring0",
-   "library": "props",
-   "asset": "standing_ruin_pillar_4",
-   "lodProfile": "props",
-   "ground": "bottom",
-   "yBase": "world",
-   "pos": [
-    12.0,
-    -0.502,
-    55.0
-   ],
-   "rotEuler": [
-    0,
-    0.0,
-    0
-   ],
-   "scale": 1.15,
-   "shadowsOff": true,
-   "tags": [
-    "bank",
-    "zone2",
-    "zone2",
-    "vcomp_fg",
-    "foreground"
-   ],
-   "note": "VIS_COMP foreground hero prop: copy of z2_standing_ruin_pillar_4_0 x1.15 | play cam ndc (1.06, -0.23) at 15.2 m | footprint 4.3x4.5 h 5.7",
-   "disabled": false
-  },
-  {
-   "id": "vcomp_fg_z2_2",
-   "group": "Z2Ring0",
-   "library": "hero2",
-   "asset": "sobek_obelisk",
-   "lodProfile": "boulders",
-   "ground": "bottom",
-   "yBase": "world",
-   "pos": [
-    -12.0,
-    -0.45,
-    55.0
-   ],
-   "rotEuler": [
-    0,
-    180.0,
-    0
-   ],
-   "scale": 4.989,
-   "shadowsOff": false,
-   "tags": [
-    "zone2",
-    "hero2",
-    "vcomp_fg",
-    "foreground"
-   ],
-   "note": "VIS_COMP foreground hero prop: copy of z2h_sobek_obelisk x1.00 | play cam ndc (-1.06, -0.23) at 15.2 m | footprint 3.0x3.3 h 4.9",
-   "disabled": false
   }
  ]
 }

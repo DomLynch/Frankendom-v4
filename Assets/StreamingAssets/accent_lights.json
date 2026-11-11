@@ -2121,6 +2121,84 @@
       ],
       "_camBearingDeg": -19.1,
       "_camDistM": 27.5
+    },
+    {
+      "name": "ZL_Z2_TorchE",
+      "zone": "z2",
+      "type": "point",
+      "pos": [
+        12.5,
+        1.5,
+        40.5
+      ],
+      "kelvin": 1900,
+      "candela": 6000,
+      "range": 10,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 34.0,
+      "layerMask": 65439,
+      "shadow": false,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.1,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 2.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "ZL_Z2_TorchW",
+      "zone": "z2",
+      "type": "point",
+      "pos": [
+        -11.5,
+        1.4,
+        38.0
+      ],
+      "kelvin": 1900,
+      "candela": 6000,
+      "range": 10,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 34.0,
+      "layerMask": 65439,
+      "shadow": false,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.1,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 2.9,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "ZL_Z2_TorchIdol",
+      "zone": "z2",
+      "type": "point",
+      "pos": [
+        -12.5,
+        1.2,
+        58.0
+      ],
+      "kelvin": 2000,
+      "candela": 4500,
+      "range": 8,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 34.0,
+      "layerMask": 65439,
+      "shadow": false,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.1,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.1,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
     }
   ]
 }

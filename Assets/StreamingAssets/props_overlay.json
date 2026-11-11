@@ -35,118 +35,27 @@
   "_rowShape": "id (unique new id for op add; the baked wrapper name for move and disable), op (add | move | disable), src (add only: the name of a baked prop wrapper to clone, e.g. a worldmid_..., z4_..., z2back_... id: ONLY ids that exist in the build), zone (zone_span.json zone id: sobek_reach, hub_camp, grendel, z5_humbaba, z6_erlking, z7_market2; or main for the Arena), ring (0..2, the ring group the clone joins, default 1; main uses group), group (main only: Arena child group name, e.g. WorldNear), pos [x,y,z] (same meaning as props_layout: y = bottom of the prop; move with pos [] keeps the baked position), rotEuler [x,y,z] ([] keeps), scale (props_layout scale when scaleMode=absolute, or a multiplier on the source scale when relative; 0 keeps), scaleYMul (0 keeps), lod (-1 = the baked LODGroup, 0..2 = force that LOD), ground (bottom | pivot | snap: snap = bottom on the ray hit + pos[1]), enabled (false = the row does nothing).",
   "rows": [
     {
-      "id": "vcomp_fg_z2_1",
-      "op": "move",
-      "zone": "sobek_reach",
-      "enabled": true,
-      "pos": [
-        12.0,
-        -60,
-        55.0
-      ],
-      "scale": 0.01,
-      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
-    },
-    {
-      "id": "vcomp_fg_z2_2",
-      "op": "move",
-      "zone": "sobek_reach",
-      "enabled": true,
-      "pos": [
-        -12.0,
-        -60,
-        55.0
-      ],
-      "scale": 0.01,
-      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
-    },
-    {
-      "id": "vcomp_fg_z4_1",
-      "op": "move",
-      "zone": "grendel",
-      "enabled": true,
-      "pos": [
-        -14.4,
-        -60,
-        130.0
-      ],
-      "scale": 0.01,
-      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
-    },
-    {
-      "id": "vcomp_fg_z4_2",
-      "op": "move",
-      "zone": "grendel",
-      "enabled": true,
-      "pos": [
-        15.0,
-        -60,
-        132.0
-      ],
-      "scale": 0.01,
-      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
-    },
-    {
-      "id": "vcomp_fg_z5_1",
-      "op": "move",
-      "zone": "z5_humbaba",
-      "enabled": true,
-      "pos": [
-        8.2,
-        -60,
-        192.0
-      ],
-      "scale": 0.01,
-      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
-    },
-    {
-      "id": "vcomp_fg_z6_1",
-      "op": "move",
-      "zone": "z6_erlking",
-      "enabled": true,
-      "pos": [
-        -5.8,
-        -60,
-        256.5
-      ],
-      "scale": 0.01,
-      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
-    },
-    {
-      "id": "vcomp_fg_z6_2",
-      "op": "move",
-      "zone": "z6_erlking",
-      "enabled": true,
-      "pos": [
-        6.0,
-        -60,
-        255.5
-      ],
-      "scale": 0.01,
-      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
-    },
-    {
       "id": "gcomp_near_L1",
       "op": "add",
       "src": "z4_worldnear_hero_column_a_0",
       "zone": "grendel",
       "ring": 1,
       "pos": [
-        -19,
+        -10,
         -0.43,
-        137
+        140
       ],
       "rotEuler": [
         0,
-        20,
+        25,
         0
       ],
-      "scale": 1.2,
+      "scale": 1.3,
       "scaleYMul": 0,
       "lod": -1,
       "ground": "bottom",
-      "enabled": true,
-      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 4.1 m): FLAG, replace with -terrainheight sample"
+      "enabled": false,
+      "note": "cube-stack LOD column at close range: off 20:50"
     },
     {
       "id": "gcomp_near_L2",
@@ -155,16 +64,16 @@
       "zone": "grendel",
       "ring": 1,
       "pos": [
-        -26,
-        -0.21,
-        141
+        -14,
+        -0.3,
+        149
       ],
       "rotEuler": [
         0,
-        70,
+        80,
         0
       ],
-      "scale": 1.3,
+      "scale": 1.2,
       "scaleYMul": 0,
       "lod": -1,
       "ground": "bottom",
@@ -191,8 +100,8 @@
       "scaleYMul": 0,
       "lod": -1,
       "ground": "bottom",
-      "enabled": true,
-      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 4.7 m): FLAG, replace with -terrainheight sample"
+      "enabled": false,
+      "note": "cube-stack LOD column at close range: off 20:50"
     },
     {
       "id": "gcomp_near_R1",
@@ -214,8 +123,8 @@
       "scaleYMul": 0,
       "lod": -1,
       "ground": "bottom",
-      "enabled": true,
-      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 6.2 m): FLAG, replace with -terrainheight sample"
+      "enabled": false,
+      "note": "cube-stack LOD column at close range: off 20:50"
     },
     {
       "id": "gcomp_near_R2",
@@ -260,8 +169,8 @@
       "scaleYMul": 0,
       "lod": -1,
       "ground": "bottom",
-      "enabled": true,
-      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 15.2 m): FLAG, replace with -terrainheight sample"
+      "enabled": false,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 15.2 m): FLAG, replace with -terrainheight sample | disabled 20:40: mid rows made a flat cube / tower on the Grendel->Humbaba seam"
     },
     {
       "id": "gcomp_mid_C1",
@@ -270,21 +179,21 @@
       "zone": "grendel",
       "ring": 2,
       "pos": [
-        -12,
+        -14,
         -0.4,
-        168
+        160
       ],
       "rotEuler": [
         0,
-        170,
+        200,
         0
       ],
       "scale": 0.9,
       "scaleYMul": 0,
       "lod": -1,
       "ground": "bottom",
-      "enabled": true,
-      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 1.8 m): FLAG, replace with -terrainheight sample"
+      "enabled": false,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 1.8 m): FLAG, replace with -terrainheight sample | disabled 20:40: mid rows made a flat cube / tower on the Grendel->Humbaba seam"
     },
     {
       "id": "gcomp_mid_R1",
@@ -306,8 +215,8 @@
       "scaleYMul": 0,
       "lod": -1,
       "ground": "bottom",
-      "enabled": true,
-      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 6.2 m): FLAG, replace with -terrainheight sample"
+      "enabled": false,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 6.2 m): FLAG, replace with -terrainheight sample | disabled 20:40: mid rows made a flat cube / tower on the Grendel->Humbaba seam"
     },
     {
       "id": "gcomp_mid_R2",
@@ -316,9 +225,9 @@
       "zone": "grendel",
       "ring": 2,
       "pos": [
-        14,
+        20,
         -0.61,
-        173
+        164
       ],
       "rotEuler": [
         0,
@@ -329,8 +238,8 @@
       "scaleYMul": 0,
       "lod": -1,
       "ground": "bottom",
-      "enabled": true,
-      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 9.8 m): FLAG, replace with -terrainheight sample"
+      "enabled": false,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 9.8 m): FLAG, replace with -terrainheight sample | disabled 20:40: mid rows made a flat cube / tower on the Grendel->Humbaba seam"
     },
     {
       "id": "gcomp_mid_R3",
@@ -352,8 +261,44 @@
       "scaleYMul": 0,
       "lod": -1,
       "ground": "bottom",
+      "enabled": false,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 0.4 m): FLAG, replace with -terrainheight sample | disabled 20:40: mid rows made a flat cube / tower on the Grendel->Humbaba seam"
+    },
+    {
+      "id": "gcomp_axis_tower",
+      "op": "add",
+      "src": "z4look_far_ruin_tower_b_40",
+      "zone": "grendel",
+      "ring": 2,
+      "pos": [
+        6,
+        -0.55,
+        154
+      ],
+      "rotEuler": [
+        0,
+        330,
+        0
+      ],
+      "scale": 1.1,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": false,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 9.8 m): FLAG, replace with -terrainheight sample | disabled 20:40: mid rows made a flat cube / tower on the Grendel->Humbaba seam"
+    },
+    {
+      "id": "g4v_sil_wreck_d",
+      "op": "move",
+      "zone": "grendel",
       "enabled": true,
-      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 0.4 m): FLAG, replace with -terrainheight sample"
+      "pos": [
+        3.0,
+        -60,
+        184.0
+      ],
+      "scale": 0.01,
+      "clearance_note": "moved by overlay: baked caravan wreck x9 sat on Humbaba arrival spot"
     }
   ]
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -15,7 +15,7 @@ public class NpcLife : MonoBehaviour
     [Serializable] class Row { public string id = ""; public Entry[] ambient = new Entry[0]; }
     [Serializable] class Cfg { public bool enabled = true, log = true; public float pollSeconds = 1f, nearM = 3.5f, minGapBetweenAmbientS = 4f; public int maxNpcsActive = 6; public Row[] rows = new Row[0]; }
 
-    class State { public Row row; public Animation an; public float nextAt, endAt, backAt; public bool playing, backed; public string cur; public Dictionary<string, float> cd = new Dictionary<string, float>(); }
+    class State { public Row row; public Animation an; public float nextAt, endAt, backAt; public bool playing, backed; public string cur, idle; public Dictionary<string, float> cd = new Dictionary<string, float>(); }
 
     Cfg C; float nextPoll, lastAnyAt = -99f; readonly Dictionary<Animation, State> states = new Dictionary<Animation, State>();
     static readonly Dictionary<string, AnimationClip> clips = new Dictionary<string, AnimationClip>(); static readonly HashSet<string> loading = new HashSet<string>();
@@ -44,8 +44,10 @@ public class NpcLife : MonoBehaviour
             if (an == null) continue; var key = an; if (states.ContainsKey(key)) continue;
             var p = an.transform.parent; if (p == null || !p.name.StartsWith("npc_")) continue;
             Row row = null; foreach (var r in C.rows) if (p.name == "npc_" + r.id) { row = r; break; }
-            if (row == null || row.ambient.Length == 0 || an["idle"] == null) continue;
-            var st = new State { row = row, an = an, nextAt = Time.unscaledTime + UnityEngine.Random.Range(3f, 12f) }; states[key] = st;
+            if (row == null || row.ambient.Length == 0) continue;
+            string idleN = null; foreach (AnimationState s0 in an) if (string.Equals(s0.name, "idle", StringComparison.OrdinalIgnoreCase)) { idleN = s0.name; break; }
+            if (idleN == null) continue;
+            var st = new State { row = row, an = an, idle = idleN, nextAt = Time.unscaledTime + UnityEngine.Random.Range(3f, 12f) }; states[key] = st;
             foreach (var e in row.ambient) Load(e);
             if (C.log) Debug.Log("[NpcLife] " + row.id + ": " + row.ambient.Length + " ambient clips queued");
         }
@@ -74,7 +76,7 @@ public class NpcLife : MonoBehaviour
             if (!st.an.gameObject.activeInHierarchy) continue;
             if (st.playing)
             {
-                if (!st.backed && now >= st.backAt) { st.an.CrossFade("idle", Mathf.Max(0.05f, FindEntry(st, st.cur) != null ? FindEntry(st, st.cur).blendOutS : 0.4f)); st.backed = true; }
+                if (!st.backed && now >= st.backAt) { st.an.CrossFade(st.idle, Mathf.Max(0.05f, FindEntry(st, st.cur) != null ? FindEntry(st, st.cur).blendOutS : 0.4f)); st.backed = true; }
                 if (now >= st.endAt) { st.playing = false; active--; var e0 = FindEntry(st, st.cur); st.nextAt = now + (e0 != null ? UnityEngine.Random.Range(e0.minIntervalS, e0.maxIntervalS) : 15f); }
                 continue;
             }

@@ -87,19 +87,19 @@
       "enabled": true,
       "mix": 1.0,
       "tint": [
-        1.0,
-        1.0,
-        1.0
+        0.8,
+        0.76,
+        0.72
       ],
       "smoothMin": 0.0,
       "smoothMax": 0.5,
       "normalScale": 1.3,
-      "detailAlbedo": 2.0,
+      "detailAlbedo": 1.0,
       "detailNormal": -1,
       "detailSmooth": -1,
       "detailTilingMul": 0.25,
       "tilingMul": 1.45,
-      "baseColorMap": "camp_dirt_albedo.png",
+      "baseColorMap": "trodden_earth_albedo.png",
       "normalMap": "trodden_earth_normal.png",
       "maskMap": "trodden_earth_mask.png",
       "_look": "trodden warm earth, rough, ruts come from decals"
@@ -295,7 +295,7 @@
       "_look": "wet teal-brown mud, whole ground smoothness 0.90-0.97 so SSR (default min 0.9) mirrors the eclipse and the horizon at grazing angles; puddle decals sit on top",
       "targetRoot": "WorldTerrain",
       "zMin": 30,
-      "zMax": 78,
+      "zMax": 64,
       "unlessActive": []
     },
     {
@@ -310,25 +310,25 @@
       "enabled": true,
       "mix": 1.0,
       "tint": [
-        1.0,
-        1.0,
-        1.0
+        0.8,
+        0.76,
+        0.72
       ],
       "smoothMin": 0.0,
       "smoothMax": 0.5,
       "normalScale": 1.3,
-      "detailAlbedo": 2.0,
+      "detailAlbedo": 1.0,
       "detailNormal": -1,
       "detailSmooth": -1,
       "detailTilingMul": 0.25,
       "tilingMul": 1.45,
-      "baseColorMap": "camp_dirt_albedo.png",
+      "baseColorMap": "trodden_earth_albedo.png",
       "normalMap": "trodden_earth_normal.png",
       "maskMap": "trodden_earth_mask.png",
       "_look": "trodden warm earth, rough, ruts come from decals",
       "targetRoot": "WorldTerrain",
-      "zMin": 78,
-      "zMax": 112,
+      "zMin": 64,
+      "zMax": 104,
       "unlessActive": []
     },
     {
@@ -343,9 +343,9 @@
       "enabled": true,
       "mix": 1.0,
       "tint": [
-        1.0,
-        1.0,
-        1.0
+        0.5,
+        0.48,
+        0.46
       ],
       "smoothMin": 0.0,
       "smoothMax": 0.45,
@@ -360,8 +360,8 @@
       "maskMap": "grendel_silt_mask.png",
       "_look": "v2 pre-graded pale wet bone-grey silt; tint neutral 1.0, grade is in the albedo",
       "targetRoot": "WorldTerrain",
-      "zMin": 112,
-      "zMax": 180,
+      "zMin": 104,
+      "zMax": 172,
       "unlessActive": []
     },
     {
@@ -393,8 +393,8 @@
       "maskMap": "roots_moss_mask.png",
       "_look": "needle duff and roots, rust-olive, roots-moss set",
       "targetRoot": "WorldTerrain",
-      "zMin": 180,
-      "zMax": 248,
+      "zMin": 172,
+      "zMax": 238,
       "unlessActive": []
     },
     {
@@ -426,8 +426,8 @@
       "maskMap": "ash_leaves_mask.png",
       "_look": "pale ash and dead leaves under the red light",
       "targetRoot": "WorldTerrain",
-      "zMin": 248,
-      "zMax": 320,
+      "zMin": 238,
+      "zMax": 312,
       "unlessActive": []
     },
     {
@@ -440,11 +440,11 @@
         "Triplanar"
       ],
       "enabled": true,
-      "mix": 0.8,
+      "mix": 1.0,
       "tint": [
-        4.982,
-        4.482,
-        3.527
+        1.7,
+        1.45,
+        1.1
       ],
       "smoothMin": 0.0,
       "smoothMax": 0.3,
@@ -459,7 +459,7 @@
       "maskMap": "market_dust_mask.png",
       "_look": "market_dust from river_mud as-is (fit only); tint gain solved so albedo median after mix ~(104, 88, 68); tilingMul 2.5 dial by eye",
       "targetRoot": "WorldTerrain",
-      "zMin": 320,
+      "zMin": 312,
       "zMax": 380,
       "unlessActive": []
     }

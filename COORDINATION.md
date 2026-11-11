@@ -1972,3 +1972,45 @@ PLAN, will start 17:10 unless someone says a bench is running: ONE Blender job, 
 19:14 OpenTrident-ashling STAGE 1 DONE champions\ashling_base\lod\ashling_base_lod0.glb (106+tail_1..8, 38.8k tris, emissive wired, 22 clips incl idle/walk/run/melee/shoot/dodge/hit/death); see STAGE_1.txt. LOD1/2 + QA + contact sheet next. Unity untested.
 
 19:19 OpenTrident-ashling DONE champions\ashling_base: LOD0/1/2 38,798/16,488/8,244 tris, emissive wired, 22 clips, contact sheet, README, champions.json (STAGE_2.txt). Gaps: no cast clip, Roll/Death/dive arms through floor, fingers rigid, Unity untested. No Blender left running from me.
+
+19:27 OpenTrident-ashling CLAIM champions\ashling_mid then ashling_full (rig/LOD/clips/emissive, same layout as ashling_base; scripts in work\ashling_dev; one Blender of mine at a time, BelowNormal, 2 threads; also fixing prone-clip arm-through-floor, backups of any base file touched). No Assets/Builds.
+
+19:38 OpenTrident-angels DONE (stage 1 + 2) kits_out\opentrident_for_armagedom\champions\heaven_vanguard + fallen_herald: rigged on p106 + wing_L/R_1..3 (112 joints), wings split from body, LOD0/1/2 38.8k/16.5k/8.2k tris, 39 clips in LOD0 (30 body + procedural cast_forward + 8 wing incl. wing_half_folded), clips GLBs, contact_sheet with BACK view, README, champions.json. Gaps: cast is procedural, wing angles first-pass, Scorched fingers rough, Unity untested. No Blender left running from me.
+
+19:40 OpenTrident-ashling STAGE1 champions\ashling_mid\lod\ashling_mid_lod0.glb (MID, 38,798 tris, 106+tail_1..9, 22 clips, emissive wired, STAGE_1.txt); LOD1/2 + QA + contact sheet next, then ashling_full. Unity untested.
+
+19:49 OpenTrident-V2tiers PROGRESS: metal fix DONE on all 18 bodies (B=0 except Steel); heraklios Layer_Tunic stripped + regenerated + installed; 8-body UV retry (Blender Data Transfer UV restore) re-running after a gear-atlas bug in the first attempt; installed folders for those 8 are TEMPORARILY the bad attempt until the rerun lands (backup: tiers_png_v2_bak_20261111_1756). Do not use the 8 bodies from tiers_png_v2 for the next ~40 min.
+
+20:01 OpenTrident-ashling DONE champions\ashling_mid: LOD0/1/2 38,798/16,488/8,244 tris, 106+tail_1..9, emissive wired, 22 clips with prone floor clamp, contact sheet, README, champions.json (STAGE_2.txt). ashling_full next. No Blender of mine running.
+
+20:02 OpenTrident-ashling DONE champions\ashling_full: LOD0/1/2 38,798/16,488/8,244 tris, 106+tail_1..11, emissive wired, 22 clips with floor clamp, contact sheet, README, champions.json (STAGE_2.txt). Now updating ashling_base prone clips (python only, backups in ashling_base\_backup_prefloorfix). No Blender running.
+
+20:05 OpenTrident-ashling DONE ashling_base prone-clip floor clamp (lod0, clips glb, master, clips json replaced; backups champions\ashling_base\_backup_prefloorfix). All three ashling stages delivered. No Blender running.
+
+20:25 OpenTrident-demons CLAIM kits_out\opentrident_for_armagedom\champions\demon_pit_brute then demon_cinder_harpy (new, outputs only) - Tripo demons bound to p106 (+tail if any / wing_L/R_1..3 on harpy), emissive crack mask boosted, LOD0/1/2, 22 clips + cast clip, contact sheets. Blender headless CPU --threads 2 BelowNormal, one at a time, RAM gate 14/20 GB. Nothing in Assets/Builds.
+
+20:26 OpenTrident-angels2 CLAIM kits_out\opentrident_for_armagedom\champions\angel_seraph_archon then angel_inquisitor (new, outputs only) - Armagedom London bosses: bind to p106 + 18 wing joints (seraph) / 6 (inquisitor), halo, emissive, LOD0/1/2, clips + cast + wing clips, contact sheet. Blender headless CPU --threads 2 BelowNormal, one at a time, RAM gate 14/20/10 GB, tools kits_out\opentrident_tools_zdev\angels. Nothing in Assets/Builds.
+
+20:37 OpenTrident-V2tiers DONE tiers_png_v2 (backup tiers_png_v2_bak_20261111_1756): (1) metal B=0 on all 18 bodies except Steel (verified by re-read, 3 render checks); (2) heraklios Layer_Tunic stripped, tris 12380/7158/3792; (3) UV retry on 8 bodies installed, lod_allowed.json v2: clean LODs now ch07/08/13 lod0-3, ch12/31/33/remy lod0-2, copzombie lod0-1 (lod3/lod2 still drift). The earlier 'do not use the 8 bodies' warning is lifted. No Blender of mine running. Unity untested.
+
+20:38 OpenTrident-demons STAGE1 champions\demon_pit_brute\lod\demon_pit_brute_lod0.glb (106+tail_1..8 = 114 joints, 38,765 tris, crack emissive boosted x4 strength, 23 clips incl NEW cast_spell, p99 stretch <=1.98, STAGE_1.txt). LOD1/2 + sheet + README next. Unity untested.
+
+20:46 OpenTrident-demons DONE champions\demon_pit_brute: LOD0/1/2 38,765/16,475/8,236 tris, 106+tail_1..8 (114 joints), crack emissive BOOSTED (dilated mask x6 + emissive strength 4) in all LODs, 23 clips incl NEW cast_spell, contact sheet w/ back view, README, champions.json (STAGE_2.txt). Gaps: Idle head turned on hunched mesh, Unity untested. Cinder harpy next. No Blender running.
+
+20:59 OpenTrident-angels2 STAGE1 champions\angel_seraph_archon\lod\angel_seraph_archon_lod0.glb (SERAPH ARCHON, 38,763 tris, 106+18 wing joints = 124, halo on Head, emissive halo wired, 39 clips incl cast_spell + wing_half_folded, STAGE_1.txt). LOD1/2 exist; clips glbs + QA + contact sheet + README next. Unity untested.
+
+21:02 OpenTrident-angels2 DONE champions\angel_seraph_archon (act boss): LOD0/1/2 38,763/16,473/8,234 tris, 124 joints (106 + wing_p1..p3_L/R_1..3, halo on Head), emissive halo wired all LODs, 39 clips incl cast_spell + 8 wing clips (wing_half_folded for top-down), clips glbs, champions.json, README, contact sheet with BACK (good), STAGE_1/2. Gaps: cast procedural, wing angles first-pass, robe splits with legs, Unity untested. No Blender of mine running; inquisitor next.
+
+21:03 OpenTrident-demons DONE champions\demon_cinder_harpy: LOD0/1/2 38,764/16,475/8,237 tris, 128 joints (106 + tail_1..8 + wing_L/R_1..3 + 4 finger joints per wing), 29 clips (22 + cast_spell + wing_idle/flap/fold/spread/half_fold + wing_compact), contact sheet w/ back view, README, champions.json (STAGE_1/2). Gaps: wings weight-bound not a separate mesh, ember glow faint (texture has little glow), fold clips over stretch gate, Unity untested. Both demons delivered. No Blender running.
+
+21:09 guardlow-clip CLAIM kits_out\opentrident_for_frankendom\guard_low (new, outputs only) - guard_low pose clip for Joan (+p106 body) per laneGUARDDESIGN DESIGN.md: derived from Joan guard_idle with world-rot ops, numpy build, gates, one CPU Blender preview (BelowNormal, --threads 2, RAM gate 14/20/10 GB). Joan files read-only. Nothing in Assets/Builds.
+
+21:10 OpenTrident-angels2 DONE champions\angel_inquisitor: LOD0/1/2 38,763/16,473/8,234 tris, 112 joints (106 + wing_L/R_1..3, hood static), no emissive, 39 clips incl cast_spell + 8 wing clips, clips glbs, champions.json, README, contact sheet with BACK (fair/good), STAGE_1/2. Gaps: cast procedural, wing angles first-pass, floating sleeve thread, robe/sleeves no cloth joints, Unity untested. Both angels2 jobs done; no Blender of mine running.
+
+21:12 OpenTrident-ashling-upright CLAIM champions ashling_base, ashling_mid, ashling_full (own folders only): re-bind with straightened spine and neck (upright), charcoal albedo, vein-only emissive, all LODs and clips; backups in _backup_pre_upright; one Blender at a time, BelowNormal, 2 threads, RAM-gated; nothing under game Assets or Builds
+
+21:13 guardlow-clip DONE kits_out\opentrident_for_frankendom\guard_low - guard_low clip: clips\joan\guard_low.glb (Joan rig, 45 fr, 1.833 s loop, md5 82443e75...) + clips\p106\guard_low.glb, guard_low_meta.json, gates.json (seam 0.003 deg, slide 2.2 cm, bones 0 missing, all PASS), renders\contact_guard_low.png (front/side/3-4 vs guard_idle), README with clip_build.json rows + 0.2 s blends. Sword/shield in the sheet are proxies. Unity untested. No Blender of mine running.
+
+21:21 OpenTrident-ashling-upright DONE champions ashling_base: upright re-bind (head 0.37 to 0.16 m ahead of hips at Idle f0), LOD0/1/2 38,798/16,488/8,244 tris, 114 joints, 22 clips, charcoal albedo, vein-only emissive in all LODs, DIAGNOSIS_upright.md and render_upright stills; mid and full next; Unity untested
+
+21:37 OpenTrident-ashling-upright DONE champions ashling_mid and ashling_full: upright re-bind, LOD0/1/2 38,798/16,488/8,244 tris, 22 clips each, charcoal albedo + vein-only emissive, stills in render_upright, backups in _backup_pre_upright; Unity untested

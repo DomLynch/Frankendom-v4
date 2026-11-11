@@ -334,8 +334,8 @@
         1.7,
         87.5
       ],
-      "kelvin": 1800,
-      "candela": 12000,
+      "kelvin": 1700,
+      "candela": 22000,
       "range": 13.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 22.0,
@@ -1036,6 +1036,167 @@
         "frequency": 0.9,
         "octaves": 2,
         "seed": 161.0,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "ZL_Z7_StallA",
+      "pos": [
+        -5.2,
+        2.4,
+        326.2
+      ],
+      "kelvin": 2200.0,
+      "candela": 6000.0,
+      "range": 12.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 22.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "ZL_Z7_StallB",
+      "pos": [
+        4.6,
+        2.4,
+        336.0
+      ],
+      "kelvin": 2200.0,
+      "candela": 5000.0,
+      "range": 12.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 22.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "ZL_Z7_StallC",
+      "pos": [
+        -5.2,
+        2.4,
+        346.0
+      ],
+      "kelvin": 2200.0,
+      "candela": 5000.0,
+      "range": 12.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 22.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "ZL_Z7_StallD",
+      "pos": [
+        5.4,
+        2.4,
+        353.0
+      ],
+      "kelvin": 2200.0,
+      "candela": 5500.0,
+      "range": 12.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 22.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "ZL_Z7_StallE",
+      "pos": [
+        5.4,
+        2.4,
+        359.0
+      ],
+      "kelvin": 2200.0,
+      "candela": 6000.0,
+      "range": 12.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 22.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "ZL_Z7_StallF",
+      "pos": [
+        -4.5,
+        2.4,
+        358.0
+      ],
+      "kelvin": 2200.0,
+      "candela": 5000.0,
+      "range": 12.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 22.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "ZL_Z7_StallG",
+      "pos": [
+        -5.0,
+        2.4,
+        332.0
+      ],
+      "kelvin": 2200.0,
+      "candela": 4500.0,
+      "range": 12.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 22.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 1.6,
+        "octaves": 2,
+        "seed": 3.7,
         "lacunarity": 2.0,
         "gain": 0.5
       }
