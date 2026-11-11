@@ -1,586 +1,606 @@
 {
- "_about": "DATAWATCH v1 (laneDATA1), read by Scripts/DataWatcher.cs. enabled false = the component never starts (shipped default); the launch arg -datawatch turns it on without editing this file. pollSeconds = file-time poll, settleSeconds = a changed file must keep the same write time for this long before it is reloaded (half-written files). rows: file -> the existing static Reload* the owner system already has (type is the class name, method is parameterless static, only names starting with Reload are ever called). skip: files that must NOT be reloaded live and why (documentation, never read by code). Both data copies (Assets/Data and StreamingAssets) are watched, newest write time wins.",
- "enabled": false,
- "log": true,
- "reloadOnFirstSight": false,
- "pollSeconds": 0.5,
- "settleSeconds": 0.4,
- "rows": [
-  {
-   "file": "audio_mix.json",
-   "calls": [
+  "_about": "DATAWATCH v1 (laneDATA1), read by Scripts/DataWatcher.cs. enabled false = the component never starts (shipped default); the launch arg -datawatch turns it on without editing this file. pollSeconds = file-time poll, settleSeconds = a changed file must keep the same write time for this long before it is reloaded (half-written files). rows: file -> the existing static Reload* the owner system already has (type is the class name, method is parameterless static, only names starting with Reload are ever called). skip: files that must NOT be reloaded live and why (documentation, never read by code). Both data copies (Assets/Data and StreamingAssets) are watched, newest write time wins.",
+  "enabled": false,
+  "log": true,
+  "reloadOnFirstSight": false,
+  "pollSeconds": 0.5,
+  "settleSeconds": 0.4,
+  "rows": [
     {
-     "type": "AudioMix",
-     "method": "Reload"
-    }
-   ],
-   "note": "loaded=false, cue cache cleared; next cue reads the new mix"
-  },
-  {
-   "file": "ai_adapt.json",
-   "calls": [
-    {
-     "type": "AiAdapt",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy: cfg=null, next access reloads"
-  },
-  {
-   "file": "ai_rows.json",
-   "calls": [
-    {
-     "type": "AiRows",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy singleton reset (class AiRows in Combat/AiDial.cs); fighters already holding a row keep it until their brain re-inits"
-  },
-  {
-   "file": "anim_blend.json",
-   "calls": [
-    {
-     "type": "AnimBlend",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "attack_clips.json",
-   "calls": [
-    {
-     "type": "AttackClipTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "audio_manifest.json",
-   "calls": [
-    {
-     "type": "AudioManifest",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy"
-  },
-  {
-   "file": "belly_bite.json",
-   "calls": [
-    {
-     "type": "BellyBite",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy"
-  },
-  {
-   "file": "blood_shapes.json",
-   "calls": [
-    {
-     "type": "BloodShapes",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy"
-  },
-  {
-   "file": "blood.json",
-   "calls": [
-    {
-     "type": "BloodTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "bow.json",
-   "calls": [
-    {
-     "type": "BowCfg",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "clash_fx.json",
-   "calls": [
-    {
-     "type": "ClashFxTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once (class ClashFxTable in Combat/ClashFx.cs)"
-  },
-  {
-   "file": "combat_classes.json",
-   "calls": [
-    {
-     "type": "CombatClass",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy"
-  },
-  {
-   "file": "cancel.json",
-   "calls": [
-    {
-     "type": "CombatFeel",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "controls.json",
-   "calls": [
-    {
-     "type": "ControlsTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once; key bindings already copied into InputMap rows may need the pause menu to refresh"
-  },
-  {
-   "file": "cues.json",
-   "calls": [
-    {
-     "type": "CueTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "death.json",
-   "calls": [
-    {
-     "type": "DeathTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "dodge.json",
-   "calls": [
-    {
-     "type": "DodgeTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "flow.json",
-   "calls": [
-    {
-     "type": "FlowTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "fx_materials.json",
-   "calls": [
-    {
-     "type": "FxMaterialTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once (class FxMaterialTable in Combat/FxMaterials.cs); materials already built keep their old values"
-  },
-  {
-   "file": "hit_feel.json",
-   "calls": [
-    {
-     "type": "HitFeelTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once (class HitFeelTable in Combat/HitFeel.cs)"
-  },
-  {
-   "file": "hit_flash.json",
-   "calls": [
-    {
-     "type": "HitFlashTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy (class HitFlashTable in Combat/HitFlash.cs)"
-  },
-  {
-   "file": "hit_fx.json",
-   "calls": [
-    {
-     "type": "HitFxTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once (class HitFxTable in Combat/HitFx.cs)"
-  },
-  {
-   "file": "hit_reactions.json",
-   "calls": [
-    {
-     "type": "HitReactionTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "state cache cleared, reloads at once"
-  },
-  {
-   "file": "hit_vfx.json",
-   "calls": [
-    {
-     "type": "HitVfxCfg",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy"
-  },
-  {
-   "file": "camera_impact.json",
-   "calls": [
-    {
-     "type": "ImpactTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once (the camera-impact DATA table only, no camera code touched)"
-  },
-  {
-   "file": "poise.json",
-   "calls": [
-    {
-     "type": "PoiseTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "posture.json",
-   "calls": [
-    {
-     "type": "PostureTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy"
-  },
-  {
-   "file": "ragdoll.json",
-   "calls": [
-    {
-     "type": "RagdollDeath",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once; a ragdoll already falling keeps its values"
-  },
-  {
-   "file": "shove.json",
-   "calls": [
-    {
-     "type": "ShoveTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "stamina.json",
-   "calls": [
-    {
-     "type": "StaminaTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy: sd and pd cleared (also covers parry.json)"
-  },
-  {
-   "file": "parry.json",
-   "calls": [
-    {
-     "type": "StaminaTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy: same call as stamina.json"
-  },
-  {
-   "file": "stances.json",
-   "calls": [
-    {
-     "type": "StanceLayer",
-     "method": "Reload"
-    }
-   ],
-   "note": "loaded=false, lazy"
-  },
-  {
-   "file": "wounds.json",
-   "calls": [
-    {
-     "type": "WoundTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "finishers.json",
-   "calls": [
-    {
-     "type": "FinisherConfig",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy (RTFinisher.ReloadConfig is the same call); a finisher already playing keeps its values"
-  },
-  {
-   "file": "gateway.json",
-   "calls": [
-    {
-     "type": "GatewayTable",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "gear.json",
-   "calls": [
-    {
-     "type": "GearTable",
-     "method": "Reload"
+      "file": "audio_mix.json",
+      "calls": [
+        {
+          "type": "AudioMix",
+          "method": "Reload"
+        }
+      ],
+      "note": "loaded=false, cue cache cleared; next cue reads the new mix"
     },
     {
-     "type": "LootCfg",
-     "method": "Reload"
-    }
-   ],
-   "note": "gear rows reload at once and the loot catalog is reset; items already equipped keep the materials they were applied with until re-equipped"
-  },
-  {
-   "file": "weapon_drop.json",
-   "calls": [
-    {
-     "type": "WeaponDrop",
-     "method": "Reload"
-    }
-   ],
-   "note": "reloads at once"
-  },
-  {
-   "file": "hub.json",
-   "calls": [
-    {
-     "type": "HubCfg",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy; hub objects already built keep their values"
-  },
-  {
-   "file": "hud.json",
-   "calls": [
-    {
-     "type": "HudCfg",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy; HUD widgets re-read on their next draw"
-  },
-  {
-   "file": "difficulty.json",
-   "calls": [
-    {
-     "type": "GameLoop",
-     "method": "ReloadData"
-    }
-   ],
-   "note": "GameLoop.ReloadData: clears the row table and HudCfg; the new row applies to the NEXT fight, not the one in progress"
-  },
-  {
-   "file": "look.json",
-   "calls": [
-    {
-     "type": "LookData",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy cache reset; exposure and volumes were applied at boot by RuntimeQuality/HdrpScene, so no visible change until something re-applies them"
-  },
-  {
-   "file": "atmosphere.json",
-   "calls": [
-    {
-     "type": "LookData",
-     "method": "Reload"
-    }
-   ],
-   "note": "same call as look.json; fog boxes and flicker lights are baked into the scene, so data only"
-  },
-  {
-   "file": "loot_ui.json",
-   "calls": [
-    {
-     "type": "LootCfg",
-     "method": "Reload"
-    }
-   ],
-   "note": "loaded=false + catalog reset; a screen already open keeps its layout until reopened"
-  },
-  {
-   "file": "market.json",
-   "calls": [
-    {
-     "type": "MarketCfg",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy; an open market screen keeps its rows until reopened"
-  },
-  {
-   "file": "menu.json",
-   "calls": [
-    {
-     "type": "MenuCfg",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy; the menu is built once, shows on next open"
-  },
-  {
-   "file": "menu_layout.json",
-   "calls": [
-    {
-     "type": "MenuLayoutCfg",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy; shows on next menu open"
-  },
-  {
-   "file": "physics.json",
-   "calls": [
-    {
-     "type": "PhysicsCfg",
-     "method": "Reload"
+      "file": "ai_adapt.json",
+      "calls": [
+        {
+          "type": "AiAdapt",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy: cfg=null, next access reloads"
     },
     {
-     "type": "FinPhys",
-     "method": "Reload"
+      "file": "ai_rows.json",
+      "calls": [
+        {
+          "type": "AiRows",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy singleton reset (class AiRows in Combat/AiDial.cs); fighters already holding a row keep it until their brain re-inits"
     },
     {
-     "type": "HitReact",
-     "method": "Reload"
-    }
-   ],
-   "note": "three readers of one file, all lazy; Physics.gravity was set at boot by PhysicsClock, so a gravity change needs a restart"
-  },
-  {
-   "file": "hit_physics.json",
-   "calls": [
+      "file": "anim_blend.json",
+      "calls": [
+        {
+          "type": "AnimBlend",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
     {
-     "type": "HitPhysics",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy"
-  },
-  {
-   "file": "physweapon.json",
-   "calls": [
+      "file": "attack_clips.json",
+      "calls": [
+        {
+          "type": "AttackClipTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
     {
-     "type": "PhysWeapon",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy"
-  },
-  {
-   "file": "consumables.json",
-   "calls": [
+      "file": "audio_manifest.json",
+      "calls": [
+        {
+          "type": "AudioManifest",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy"
+    },
     {
-     "type": "PotionCfg",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy"
-  },
-  {
-   "file": "steer.json",
-   "calls": [
+      "file": "belly_bite.json",
+      "calls": [
+        {
+          "type": "BellyBite",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy"
+    },
     {
-     "type": "STSteer",
-     "method": "ReloadConfig"
-    }
-   ],
-   "note": "cfgText=null, lazy; agents already steering re-read on their next plan"
-  },
-  {
-   "file": "zone_ui.json",
-   "calls": [
+      "file": "blood_shapes.json",
+      "calls": [
+        {
+          "type": "BloodShapes",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy"
+    },
     {
-     "type": "ZoneUiCfg",
-     "method": "Reload"
-    }
-   ],
-   "note": "lazy"
-  },
-  {
-   "file": "camp_lights.json",
-   "calls": [
+      "file": "blood.json",
+      "calls": [
+        {
+          "type": "BloodTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
     {
-     "type": "CampLights",
-     "method": "Reload"
+      "file": "bow.json",
+      "calls": [
+        {
+          "type": "BowCfg",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
+    {
+      "file": "clash_fx.json",
+      "calls": [
+        {
+          "type": "ClashFxTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once (class ClashFxTable in Combat/ClashFx.cs)"
+    },
+    {
+      "file": "combat_classes.json",
+      "calls": [
+        {
+          "type": "CombatClass",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy"
+    },
+    {
+      "file": "cancel.json",
+      "calls": [
+        {
+          "type": "CombatFeel",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
+    {
+      "file": "controls.json",
+      "calls": [
+        {
+          "type": "ControlsTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once; key bindings already copied into InputMap rows may need the pause menu to refresh"
+    },
+    {
+      "file": "cues.json",
+      "calls": [
+        {
+          "type": "CueTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
+    {
+      "file": "death.json",
+      "calls": [
+        {
+          "type": "DeathTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
+    {
+      "file": "dodge.json",
+      "calls": [
+        {
+          "type": "DodgeTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
+    {
+      "file": "flow.json",
+      "calls": [
+        {
+          "type": "FlowTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
+    {
+      "file": "fx_materials.json",
+      "calls": [
+        {
+          "type": "FxMaterialTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once (class FxMaterialTable in Combat/FxMaterials.cs); materials already built keep their old values"
+    },
+    {
+      "file": "hit_feel.json",
+      "calls": [
+        {
+          "type": "HitFeelTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once (class HitFeelTable in Combat/HitFeel.cs)"
+    },
+    {
+      "file": "hit_flash.json",
+      "calls": [
+        {
+          "type": "HitFlashTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy (class HitFlashTable in Combat/HitFlash.cs)"
+    },
+    {
+      "file": "hit_fx.json",
+      "calls": [
+        {
+          "type": "HitFxTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once (class HitFxTable in Combat/HitFx.cs)"
+    },
+    {
+      "file": "hit_reactions.json",
+      "calls": [
+        {
+          "type": "HitReactionTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "state cache cleared, reloads at once"
+    },
+    {
+      "file": "hit_vfx.json",
+      "calls": [
+        {
+          "type": "HitVfxCfg",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy"
+    },
+    {
+      "file": "camera_impact.json",
+      "calls": [
+        {
+          "type": "ImpactTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once (the camera-impact DATA table only, no camera code touched)"
+    },
+    {
+      "file": "poise.json",
+      "calls": [
+        {
+          "type": "PoiseTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
+    {
+      "file": "posture.json",
+      "calls": [
+        {
+          "type": "PostureTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy"
+    },
+    {
+      "file": "ragdoll.json",
+      "calls": [
+        {
+          "type": "RagdollDeath",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once; a ragdoll already falling keeps its values"
+    },
+    {
+      "file": "shove.json",
+      "calls": [
+        {
+          "type": "ShoveTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
+    {
+      "file": "stamina.json",
+      "calls": [
+        {
+          "type": "StaminaTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy: sd and pd cleared (also covers parry.json)"
+    },
+    {
+      "file": "parry.json",
+      "calls": [
+        {
+          "type": "StaminaTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy: same call as stamina.json"
+    },
+    {
+      "file": "stances.json",
+      "calls": [
+        {
+          "type": "StanceLayer",
+          "method": "Reload"
+        }
+      ],
+      "note": "loaded=false, lazy"
+    },
+    {
+      "file": "wounds.json",
+      "calls": [
+        {
+          "type": "WoundTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
+    {
+      "file": "finishers.json",
+      "calls": [
+        {
+          "type": "FinisherConfig",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy (RTFinisher.ReloadConfig is the same call); a finisher already playing keeps its values"
+    },
+    {
+      "file": "gateway.json",
+      "calls": [
+        {
+          "type": "GatewayTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
+    {
+      "file": "gear.json",
+      "calls": [
+        {
+          "type": "GearTable",
+          "method": "Reload"
+        },
+        {
+          "type": "LootCfg",
+          "method": "Reload"
+        }
+      ],
+      "note": "gear rows reload at once and the loot catalog is reset; items already equipped keep the materials they were applied with until re-equipped"
+    },
+    {
+      "file": "weapon_drop.json",
+      "calls": [
+        {
+          "type": "WeaponDrop",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once"
+    },
+    {
+      "file": "hub.json",
+      "calls": [
+        {
+          "type": "HubCfg",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy; hub objects already built keep their values"
+    },
+    {
+      "file": "hud.json",
+      "calls": [
+        {
+          "type": "HudCfg",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy; HUD widgets re-read on their next draw"
+    },
+    {
+      "file": "difficulty.json",
+      "calls": [
+        {
+          "type": "GameLoop",
+          "method": "ReloadData"
+        }
+      ],
+      "note": "GameLoop.ReloadData: clears the row table and HudCfg; the new row applies to the NEXT fight, not the one in progress"
+    },
+    {
+      "file": "look.json",
+      "calls": [
+        {
+          "type": "LookData",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy cache reset; exposure and volumes were applied at boot by RuntimeQuality/HdrpScene, so no visible change until something re-applies them"
+    },
+    {
+      "file": "atmosphere.json",
+      "calls": [
+        {
+          "type": "LookData",
+          "method": "Reload"
+        }
+      ],
+      "note": "same call as look.json; fog boxes and flicker lights are baked into the scene, so data only"
+    },
+    {
+      "file": "loot_ui.json",
+      "calls": [
+        {
+          "type": "LootCfg",
+          "method": "Reload"
+        }
+      ],
+      "note": "loaded=false + catalog reset; a screen already open keeps its layout until reopened"
+    },
+    {
+      "file": "market.json",
+      "calls": [
+        {
+          "type": "MarketCfg",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy; an open market screen keeps its rows until reopened"
+    },
+    {
+      "file": "menu.json",
+      "calls": [
+        {
+          "type": "MenuCfg",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy; the menu is built once, shows on next open"
+    },
+    {
+      "file": "menu_layout.json",
+      "calls": [
+        {
+          "type": "MenuLayoutCfg",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy; shows on next menu open"
+    },
+    {
+      "file": "physics.json",
+      "calls": [
+        {
+          "type": "PhysicsCfg",
+          "method": "Reload"
+        },
+        {
+          "type": "FinPhys",
+          "method": "Reload"
+        },
+        {
+          "type": "HitReact",
+          "method": "Reload"
+        }
+      ],
+      "note": "three readers of one file, all lazy; Physics.gravity was set at boot by PhysicsClock, so a gravity change needs a restart"
+    },
+    {
+      "file": "hit_physics.json",
+      "calls": [
+        {
+          "type": "HitPhysics",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy"
+    },
+    {
+      "file": "physweapon.json",
+      "calls": [
+        {
+          "type": "PhysWeapon",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy"
+    },
+    {
+      "file": "consumables.json",
+      "calls": [
+        {
+          "type": "PotionCfg",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy"
+    },
+    {
+      "file": "steer.json",
+      "calls": [
+        {
+          "type": "STSteer",
+          "method": "ReloadConfig"
+        }
+      ],
+      "note": "cfgText=null, lazy; agents already steering re-read on their next plan"
+    },
+    {
+      "file": "zone_ui.json",
+      "calls": [
+        {
+          "type": "ZoneUiCfg",
+          "method": "Reload"
+        }
+      ],
+      "note": "lazy"
+    },
+    {
+      "file": "camp_lights.json",
+      "calls": [
+        {
+          "type": "CampLights",
+          "method": "Reload"
+        }
+      ],
+      "note": "NEW Reload added by this kit (Zones/CampLightsReload.cs): lights destroyed and rebuilt from the file, shows about 0.3 s later"
+    },
+    {
+      "file": "foot_fx.json",
+      "calls": [
+        {
+          "type": "FootFx",
+          "method": "Reload"
+        }
+      ],
+      "note": "surfaces, thresholds, pool: re-applied live"
+    },
+    {
+      "file": "zone_ground_mat.json",
+      "calls": [
+        {
+          "type": "FootFx",
+          "method": "ReloadZones"
+        }
+      ],
+      "note": "surface rows only"
     }
-   ],
-   "note": "NEW Reload added by this kit (Zones/CampLightsReload.cs): lights destroyed and rebuilt from the file, shows about 0.3 s later"
-  }
- ],
- "skip": [
-  {
-   "file": "roster.json",
-   "reason": "Roster.Reload() replaces the whole roster object and defEnemy; live fighters, the ladder and ZoneRuntime hold the old RosterCharacter rows and ids, so a swap mid-run can leave player/enemy ids that no fighter matches. Restart."
-  },
-  {
-   "file": "zones.json",
-   "reason": "ZoneData.Reload() nulls the table while ZoneRuntime iterates spots/spawns/gates it already resolved and holds spawned creatures by reference: half-new state (spawns, engage rules, respawn timers). Restart."
-  },
-  {
-   "file": "zones_save.json",
-   "reason": "SAVE FILE written by the game itself (ZoneSave): never watch or reload, a reload would fight the autosave."
-  },
-  {
-   "file": "loot_save.json",
-   "reason": "SAVE FILE written by the game itself (loot save): never watch or reload."
-  },
-  {
-   "file": "zone_span.json",
-   "reason": "SpanData.Reload() resets terrain numbers, but the terrain and zone offsets are BAKED (flat/flatY) and ZoneSpan.Live streams by them: a live change would disagree with the baked scene. CHAIN item, restart."
-  },
-  {
-   "file": "character_materials.json",
-   "reason": "already watched by CharMatOverride and MonsterLook (their own file-time pollers call their internal Reload); a second caller would double-apply."
-  },
-  {
-   "file": "(GameLoop.ReloadForStart)",
-   "reason": "restarts the fight (the ladder start reload), not a data reload: never call it from a watcher."
-  },
-  {
-   "file": "props_layout*.json, lod_tex_map.json, hdrp_fixes.json, camp_backdrop.json",
-   "reason": "BAKED into the scene by the chain: no runtime reader, no Reload (AGENTS.md Known BAKED items)."
-  }
- ]
+  ],
+  "skip": [
+    {
+      "file": "roster.json",
+      "reason": "Roster.Reload() replaces the whole roster object and defEnemy; live fighters, the ladder and ZoneRuntime hold the old RosterCharacter rows and ids, so a swap mid-run can leave player/enemy ids that no fighter matches. Restart."
+    },
+    {
+      "file": "zones.json",
+      "reason": "ZoneData.Reload() nulls the table while ZoneRuntime iterates spots/spawns/gates it already resolved and holds spawned creatures by reference: half-new state (spawns, engage rules, respawn timers). Restart."
+    },
+    {
+      "file": "zones_save.json",
+      "reason": "SAVE FILE written by the game itself (ZoneSave): never watch or reload, a reload would fight the autosave."
+    },
+    {
+      "file": "loot_save.json",
+      "reason": "SAVE FILE written by the game itself (loot save): never watch or reload."
+    },
+    {
+      "file": "zone_span.json",
+      "reason": "SpanData.Reload() resets terrain numbers, but the terrain and zone offsets are BAKED (flat/flatY) and ZoneSpan.Live streams by them: a live change would disagree with the baked scene. CHAIN item, restart."
+    },
+    {
+      "file": "character_materials.json",
+      "reason": "already watched by CharMatOverride and MonsterLook (their own file-time pollers call their internal Reload); a second caller would double-apply."
+    },
+    {
+      "file": "(GameLoop.ReloadForStart)",
+      "reason": "restarts the fight (the ladder start reload), not a data reload: never call it from a watcher."
+    },
+    {
+      "file": "props_layout*.json, lod_tex_map.json, hdrp_fixes.json, camp_backdrop.json",
+      "reason": "BAKED into the scene by the chain: no runtime reader, no Reload (AGENTS.md Known BAKED items)."
+    }
+  ]
 }

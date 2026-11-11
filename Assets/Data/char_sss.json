@@ -145,7 +145,7 @@
       "from": "creature5_body_0",
       "fromFolder": "/Characters/Humbaba/",
       "materialType": "SSS",
-      "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "diffusionProfileGuid": "473de80c4e925d649ad1151e0edc515e",
       "floats": [
         {
           "name": "_TransmissionEnable",
@@ -154,6 +154,10 @@
         {
           "name": "_SubsurfaceMask",
           "value": 1.0
+        },
+        {
+          "name": "_Thickness",
+          "value": 0.35
         }
       ]
     },
@@ -162,7 +166,7 @@
       "from": "erlking_body_0",
       "fromFolder": "/Characters/Erlking/",
       "materialType": "SSS",
-      "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "diffusionProfileGuid": "19a1756900055e8c845303f193eb657e",
       "floats": [
         {
           "name": "_TransmissionEnable",
@@ -171,6 +175,10 @@
         {
           "name": "_SubsurfaceMask",
           "value": 1.0
+        },
+        {
+          "name": "_Thickness",
+          "value": 0.35
         }
       ]
     },
@@ -179,7 +187,7 @@
       "from": "sobek_body_0",
       "fromFolder": "/Characters/Sobek/",
       "materialType": "SSS",
-      "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "diffusionProfileGuid": "54d3a0167a2b5aea87017404f71c62ed",
       "floats": [
         {
           "name": "_TransmissionEnable",
@@ -188,6 +196,10 @@
         {
           "name": "_SubsurfaceMask",
           "value": 1.0
+        },
+        {
+          "name": "_Thickness",
+          "value": 0.5
         }
       ]
     },
@@ -196,7 +208,7 @@
       "from": "sobek_head_0",
       "fromFolder": "/Characters/Sobek/",
       "materialType": "SSS",
-      "diffusionProfileGuid": "404820c4cf36ad944862fa59c56064f0",
+      "diffusionProfileGuid": "54d3a0167a2b5aea87017404f71c62ed",
       "floats": [
         {
           "name": "_TransmissionEnable",
@@ -205,6 +217,10 @@
         {
           "name": "_SubsurfaceMask",
           "value": 1.0
+        },
+        {
+          "name": "_Thickness",
+          "value": 0.5
         }
       ]
     }

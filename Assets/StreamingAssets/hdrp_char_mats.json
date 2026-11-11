@@ -524,6 +524,22 @@
  ],
  "linearTextures": [
   {
+   "path": "Assets/Characters/Humbaba/Tex/creature5_body_mask.png",
+   "maxSize": 2048
+  },
+  {
+   "path": "Assets/Characters/Erlking/Tex/erlking_body_mask.png",
+   "maxSize": 2048
+  },
+  {
+   "path": "Assets/Characters/Sobek/Tex/sobek_body_mask.png",
+   "maxSize": 2048
+  },
+  {
+   "path": "Assets/Characters/Sobek/Tex/sobek_head_mask.png",
+   "maxSize": 2048
+  },
+  {
    "path": "Assets/Characters/Dracula/Tex/dracula_atlas_mask.png",
    "maxSize": 2048
   },
@@ -660,7 +676,7 @@
    "sheen": "off",
    "sheenIntensity": 1,
    "smoothnessMin": -1,
-   "smoothnessMax": 0.35,
+   "smoothnessMax": 0.8,
    "materialId": 1,
    "baseColor": [
     1.0,
@@ -674,7 +690,7 @@
    "sheen": "off",
    "sheenIntensity": 1,
    "smoothnessMin": -1,
-   "smoothnessMax": 0.35,
+   "smoothnessMax": 0.8,
    "materialId": 1,
    "baseColor": [
     1.0,
@@ -711,7 +727,7 @@
     "sheen": "off",
     "sheenIntensity": 1,
     "smoothnessMin": -1,
-    "smoothnessMax": 0.35,
+    "smoothnessMax": 0.9,
     "materialId": 1,
     "baseColor": [
       1.0,
@@ -725,7 +741,7 @@
     "sheen": "off",
     "sheenIntensity": 1,
     "smoothnessMin": -1,
-    "smoothnessMax": 0.35,
+    "smoothnessMax": 0.85,
     "materialId": 1,
     "baseColor": [
       1.0,

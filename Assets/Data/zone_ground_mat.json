@@ -263,7 +263,8 @@
       "targetRoot": "WorldTerrain",
       "unlessActive": [],
       "zMin": -30,
-      "zMax": 30
+      "zMax": 30,
+      "surface": "ash"
     },
     {
       "id": "t_z2_sobek_wet_mud",
@@ -296,7 +297,8 @@
       "targetRoot": "WorldTerrain",
       "zMin": 30,
       "zMax": 64,
-      "unlessActive": []
+      "unlessActive": [],
+      "surface": "mud"
     },
     {
       "id": "t_z3_camp_trodden_earth",
@@ -329,7 +331,8 @@
       "targetRoot": "WorldTerrain",
       "zMin": 64,
       "zMax": 104,
-      "unlessActive": []
+      "unlessActive": [],
+      "surface": "dust"
     },
     {
       "id": "t_z4_grendel_bone_silt",
@@ -362,7 +365,8 @@
       "targetRoot": "WorldTerrain",
       "zMin": 104,
       "zMax": 172,
-      "unlessActive": []
+      "unlessActive": [],
+      "surface": "silt"
     },
     {
       "id": "t_z5_humbaba_duff_roots",
@@ -395,7 +399,8 @@
       "targetRoot": "WorldTerrain",
       "zMin": 172,
       "zMax": 238,
-      "unlessActive": []
+      "unlessActive": [],
+      "surface": "leafmould"
     },
     {
       "id": "t_z6_erlking_ash",
@@ -428,7 +433,8 @@
       "targetRoot": "WorldTerrain",
       "zMin": 238,
       "zMax": 312,
-      "unlessActive": []
+      "unlessActive": [],
+      "surface": "ash"
     },
     {
       "id": "t_z7_market_worn_earth",
@@ -461,7 +467,8 @@
       "targetRoot": "WorldTerrain",
       "zMin": 312,
       "zMax": 380,
-      "unlessActive": []
+      "unlessActive": [],
+      "surface": "dust"
     }
   ]
 }

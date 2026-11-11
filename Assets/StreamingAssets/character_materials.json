@@ -151,39 +151,11 @@
     },
     {
       "character": "Humbaba",
-      "materials": [
-        {
-          "match": "creature5_body",
-          "baseColor": [
-            1,
-            1,
-            1
-          ],
-          "smoothness": 0.22,
-          "metallic": -1,
-          "albedoBlob": "",
-          "albedoTexture": "",
-          "_vis_boss": true
-        }
-      ]
+      "materials": []
     },
     {
       "character": "Erlking",
-      "materials": [
-        {
-          "match": "erlking_body",
-          "baseColor": [
-            1,
-            1,
-            1
-          ],
-          "smoothness": 0.28,
-          "metallic": -1,
-          "albedoBlob": "",
-          "albedoTexture": "",
-          "_vis_boss": true
-        }
-      ]
+      "materials": []
     }
   ],
   "lookGlobal": {

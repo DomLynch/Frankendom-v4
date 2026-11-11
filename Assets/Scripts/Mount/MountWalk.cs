@@ -92,6 +92,7 @@ public static class MountLegs
                 tgt[i] = new Vector3(slot.x, sink + y, z);   // sink: hoof marker under the collider plane = the visible floor
                 float lr = (rig.l1[i] + rig.l2[i]) * sc * C.move.reach, dz = z - rig.pivot[i].z * sc; if (lr * lr > dz * dz) { float cap = tgt[i].y - rig.pivot[i].y * sc + Mathf.Sqrt(lr * lr - dz * dz); if (cap < byMax) byMax = cap; }
             }
+            FootFx.MountTick(go, phase, off, dutyC, tgt, sc, speed);   // FOOTFX v1: hoof plant = stance start of a leg
             byMax = Mathf.Max(byMax, -C.move.maxDropM); bodyY = Mathf.MoveTowards(bodyY, byMax, C.move.bodyDropRateMps * dt); body.localPosition += Vector3.up * bodyY;
             for (int i = 0; i < 4; i++)
             {

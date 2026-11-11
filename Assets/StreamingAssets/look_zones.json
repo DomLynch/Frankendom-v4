@@ -130,7 +130,7 @@
         1.0,
         0.95
       ],
-      "postExposure": 0.036,
+      "postExposure": 0.3,
       "temperature": -6.0,
       "tint": -8.0,
       "saturation": -12.0,
@@ -160,7 +160,7 @@
         0.62,
         0.52
       ],
-      "bounceLux": 640.0,
+      "bounceLux": 800.0,
       "bouncePitchDeg": 35.0,
       "bounceYawDeg": 195.0,
       "moonRimColor": [
@@ -239,9 +239,9 @@
       "contrast": 38.0,
       "vignette": 0.48,
       "fogAlbedo": [
-        0.55,
+        0.5,
         0.54,
-        0.52
+        0.58
       ],
       "fogTint": [
         0.95,
@@ -266,9 +266,9 @@
       "bouncePitchDeg": 30.0,
       "bounceYawDeg": 190.0,
       "moonRimColor": [
-        0.8,
-        0.74,
-        0.7
+        0.95,
+        0.72,
+        0.55
       ],
       "bloomIntensity": 0.22,
       "bloomThreshold": 0.92,
@@ -283,7 +283,7 @@
         1.0,
         0.92
       ],
-      "postExposure": 0.027,
+      "postExposure": 0.3,
       "temperature": -2.0,
       "tint": -10.0,
       "saturation": -8.0,
@@ -313,7 +313,7 @@
         0.6,
         0.35
       ],
-      "bounceLux": 800.0,
+      "bounceLux": 1000.0,
       "bouncePitchDeg": 55.0,
       "bounceYawDeg": 185.0,
       "moonRimColor": [
@@ -381,14 +381,14 @@
       "zFrom": 305.0,
       "zTo": 100000.0,
       "colorFilter": [
-        1.0,
+        0.97,
         0.95,
-        0.89
+        0.91
       ],
       "postExposure": 0.064,
       "temperature": 9.0,
       "tint": 0.0,
-      "saturation": -8.0,
+      "saturation": -16.0,
       "contrast": 30.0,
       "vignette": 0.48,
       "fogAlbedo": [

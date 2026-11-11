@@ -13,6 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _DISABLE_SSR_TRANSPARENT
+  - _MASKMAP
   - _MATERIAL_FEATURE_SUBSURFACE_SCATTERING
   - _MATERIAL_FEATURE_TRANSMISSION
   - _NORMALMAP
@@ -78,7 +79,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: ba4c8880a547de34ebf33580991e32a5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
@@ -156,7 +157,7 @@ Material:
     - _DetailNormalScale: 1
     - _DetailSmoothnessScale: 1
     - _DiffusionProfile: 0
-    - _DiffusionProfileHash: 2.4138284
+    - _DiffusionProfileHash: 3.1257317
     - _DisplacementLockObjectScale: 1
     - _DisplacementLockTilingScale: 1
     - _DisplacementMode: 0
@@ -188,7 +189,7 @@ Material:
     - _IridescenceThickness: 1
     - _LinkDetailsWithBase: 1
     - _MaterialID: 0
-    - _Metallic: 0
+    - _Metallic: 1
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
     - _NormalMapSpace: 0
@@ -206,8 +207,8 @@ Material:
     - _ReceivesSSR: 1
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
-    - _Smoothness: 0.25
-    - _SmoothnessRemapMax: 0.35
+    - _Smoothness: 1
+    - _SmoothnessRemapMax: 0.85
     - _SmoothnessRemapMin: 0
     - _SpecularAAScreenSpaceVariance: 0.1
     - _SpecularAAThreshold: 0.2
@@ -226,7 +227,7 @@ Material:
     - _SurfaceType: 0
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
-    - _Thickness: 1
+    - _Thickness: 0.35
     - _TransmissionEnable: 1
     - _TransmissionMask: 1
     - _TransparentBackfaceEnable: 0
@@ -248,7 +249,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DiffusionProfileAsset: {r: -641.1289, g: -1.7490154e-26, b: 8.8096007e+15, a: -2.8271828e+29}
+    - _DiffusionProfileAsset: {r: 1.8559224e+25, g: -1.7103763e-31, b: -6.50296e+29, a: 7.6404096e+37}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
@@ -276,7 +277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEditor.Rendering.HighDefinition.MaterialExternalReferences
   m_DiffusionProfileReferences:
-  - {fileID: 11400000, guid: 404820c4cf36ad944862fa59c56064f0, type: 2}
+  - {fileID: 11400000, guid: 19a1756900055e8c845303f193eb657e, type: 2}
   m_MaterialReferences: []
 --- !u!114 &4042589642788368749
 MonoBehaviour:

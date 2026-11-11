@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Runtime::UnityEditor.Rendering.HighDefinition.MaterialExternalReferences
   m_DiffusionProfileReferences:
-  - {fileID: 11400000, guid: 404820c4cf36ad944862fa59c56064f0, type: 2}
+  - {fileID: 11400000, guid: 54d3a0167a2b5aea87017404f71c62ed, type: 2}
   m_MaterialReferences: []
 --- !u!21 &2100000
 Material:
@@ -172,7 +172,7 @@ Material:
     - _DetailNormalScale: 1
     - _DetailSmoothnessScale: 1
     - _DiffusionProfile: 0
-    - _DiffusionProfileHash: 2.4138284
+    - _DiffusionProfileHash: 2.1508276
     - _DisplacementLockObjectScale: 1
     - _DisplacementLockTilingScale: 1
     - _DisplacementMode: 0
@@ -223,7 +223,7 @@ Material:
     - _ReceivesSSRTransparent: 0
     - _RefractionModel: 0
     - _Smoothness: 1
-    - _SmoothnessRemapMax: 0.35
+    - _SmoothnessRemapMax: 0.8
     - _SmoothnessRemapMin: 0
     - _SpecularAAScreenSpaceVariance: 0.1
     - _SpecularAAThreshold: 0.2
@@ -242,7 +242,7 @@ Material:
     - _SurfaceType: 0
     - _TexWorldScale: 1
     - _TexWorldScaleEmissive: 1
-    - _Thickness: 1
+    - _Thickness: 0.5
     - _TransmissionEnable: 1
     - _TransmissionMask: 1
     - _TransparentBackfaceEnable: 0
@@ -264,7 +264,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DiffusionProfileAsset: {r: -641.1289, g: -1.7490154e-26, b: 8.8096007e+15, a: -2.8271828e+29}
+    - _DiffusionProfileAsset: {r: 2.598276e-25, g: -6.5937785e+25, b: 2.8682763e-36, a: -4.3736643e+27}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
