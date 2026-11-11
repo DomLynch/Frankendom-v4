@@ -1961,3 +1961,14 @@ PLAN, will start 17:10 unless someone says a bench is running: ONE Blender job, 
 18:16 OpenTrident-champions DONE kits_out\opentrident_for_armagedom\champions (pitborn/grendel/erlking/dracula): masters + LOD0/1/2 + clip GLBs + champions.json + contact sheets + README. Gaps: Dracula LOD1/2 over cap (cloak stalls), Pitborn mouth shape keys dropped. Unity import untested. Nothing in Assets/Builds touched.
 
 18:22 OpenTrident DONE NPC LIFE kit: C:\Users\dom12\Documents\kits_out\opentrident_for_frankendom\npc_life\ (README.md, npc_life_assign.json, clip_meta.json, GATES.md, clips\p106 x33 + clips\erika x35 single GLBs, packs\, renders\contact_*.png). Hub NPCs trader/keeper/traveller/stablemaster (p106) + bricabrac (erika body) get idle/look/weight-shift/talk/work clips; sit + lean stances staged off; npc_horse has no rig so no clips. Offline gates pass (bone names, loop seam 0.29 deg, slide <=3.9 cm, not T-pose); Blender CPU renders only. UNPROVEN in Unity (no reader for the JSON exists, nothing imported). Nothing in Assets or Builds.
+18:39 OpenTrident DONE models3d 26 pending Armagedom props: web GLBs + thumbs made (2 needed a second decimate pass), models3d.json 288 of 288 ready, 576 live files sha256 == local, repo main 4f09cd8c. No Blender left running from me.
+
+18:51 OpenTrident-ashling CLAIM kits_out\opentrident_for_armagedom\champions\ashling_base (new, outputs only) - Armagedom hero Ashling BASE: bind to p106 + tail chain, emissive mask, LOD0/1/2 PNG tiers, hero clips, contact sheet. Blender headless CPU --threads 2 BelowNormal, one at a time, RAM gate 14/10 GB. Source = Downloads\ashling_base_scaled.glb (read-only). Nothing in Assets/Builds.
+
+19:02 OpenTrident-angels CLAIM kits_out\opentrident_for_armagedom\champions\heaven_vanguard + fallen_herald (new, outputs only) - Tripo angels bound to p106 + wing joints wing_L/R_1..3, wing clips, LOD0/1/2, contact sheets. Blender headless CPU --threads 2 BelowNormal, one at a time, RAM gate 14/10 GB, tools in kits_out\opentrident_tools_zdev\angels. Nothing in Assets/Builds.
+
+19:06 OpenTrident DONE/PARKED _agents\laneHAIRCARDS - Joan hair cards stopped per Dom (v1 sheet showed existing shell is the better asset). Files kept as is (gen_hair_cards.py, Joan_hair_cards.glb, sheets); no further Blender runs, nothing sent to Unity. Lane closed.
+
+19:14 OpenTrident-ashling STAGE 1 DONE champions\ashling_base\lod\ashling_base_lod0.glb (106+tail_1..8, 38.8k tris, emissive wired, 22 clips incl idle/walk/run/melee/shoot/dodge/hit/death); see STAGE_1.txt. LOD1/2 + QA + contact sheet next. Unity untested.
+
+19:19 OpenTrident-ashling DONE champions\ashling_base: LOD0/1/2 38,798/16,488/8,244 tris, emissive wired, 22 clips, contact sheet, README, champions.json (STAGE_2.txt). Gaps: no cast clip, Roll/Death/dive arms through floor, fingers rigid, Unity untested. No Blender left running from me.

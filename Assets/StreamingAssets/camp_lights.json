@@ -331,11 +331,11 @@
       "name": "V2_Z3Firepit",
       "pos": [
         3.0,
-        1.0,
+        1.7,
         87.5
       ],
-      "kelvin": 1800.0,
-      "candela": 60000,
+      "kelvin": 1800,
+      "candela": 12000,
       "range": 13.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 22.0,
@@ -814,11 +814,11 @@
       "name": "V16L_Z3FireWide",
       "pos": [
         3.0,
-        2.6,
+        2.8,
         87.5
       ],
       "kelvin": 2400.0,
-      "candela": 26000,
+      "candela": 9000,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 26.0,

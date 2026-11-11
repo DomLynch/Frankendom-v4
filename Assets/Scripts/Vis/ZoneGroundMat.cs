@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -17,7 +17,7 @@ public sealed class ZoneGroundMat : MonoBehaviour
 {
     [Serializable] public class Row
     {
-        public string id, zoneRoot, targetRoot = ""; public string[] unlessActive; public float zMin = -1e9f, zMax = 1e9f; public string[] matchMaterial, excludeMaterial; public bool enabled = true; public float mix = 1f;
+        public string id, zoneRoot, targetRoot = ""; public string[] unlessActive; public float zMin = -1e9f, zMax = 1e9f; public string[] matchMaterial, excludeMaterial, excludeRenderer;   /* unity-dev2: excludeRenderer = renderer GameObject name substrings left untouched (a strip mesh with bad UVs for the world projection) */ public bool enabled = true; public float mix = 1f;
         public float[] tint; public float smoothMin = -1f, smoothMax = -1f, normalScale = -1f, detailAlbedo = -1f, detailNormal = -1f, detailSmooth = -1f, detailTilingMul = 1f, tilingMul = 1f;
         public string baseColorMap = "", normalMap = "", maskMap = "";
     }
@@ -95,6 +95,8 @@ public sealed class ZoneGroundMat : MonoBehaviour
         done.RemoveWhere(k => k.Item2 == row); settled = 0;
     }
 
+    static bool ExcludedRenderer(Row row, Renderer r) { string n = r.gameObject.name; foreach (var x in row.excludeRenderer) if (!string.IsNullOrEmpty(x) && n.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0) return true; return false; }
+
     static string Base(string n) { bool ch = true; while (ch) { ch = false; foreach (var s in Suffixes) if (n.EndsWith(s)) { n = n.Substring(0, n.Length - s.Length); ch = true; } } return n; }
 
     static bool Match(Row r, string name)
@@ -116,15 +118,16 @@ public sealed class ZoneGroundMat : MonoBehaviour
             if (!Gate(row)) continue;
             var g = Root(string.IsNullOrEmpty(row.targetRoot) ? row.zoneRoot : row.targetRoot); if (g == null) continue;
             var rs = g.GetComponentsInChildren<Renderer>(true);
-            var seen = new HashSet<string>();
+            var seen = new HashSet<string>(); var rnames = new List<string>();
             foreach (var r in rs)
             {
-                if (r == null) continue; var key = (r, row);
+                if (r == null) continue; if (row.excludeRenderer != null && row.excludeRenderer.Length > 0 && ExcludedRenderer(row, r)) continue; var key = (r, row);
                 var arr = r.sharedMaterials; bool ch = false;
                 for (int i = 0; i < arr.Length; i++)
                 {
                     var m = arr[i]; if (m == null) continue; string bn = Base(m.name);
                     if (c.log && (r.gameObject.name.IndexOf("ground", StringComparison.OrdinalIgnoreCase) >= 0 || bn.IndexOf("terrain", StringComparison.OrdinalIgnoreCase) >= 0 || bn.IndexOf("paving", StringComparison.OrdinalIgnoreCase) >= 0)) seen.Add(bn + "[" + (m.shader != null ? m.shader.name : "?") + "]");
+                    if (c.log && !string.IsNullOrEmpty(row.targetRoot) && Match(row, m.name)) rnames.Add(r.gameObject.name + "@" + r.bounds.center.ToString("F0") + "/" + r.bounds.size.ToString("F0"));
                     if (done.Contains(key) || budget <= 0 || !Match(row, m.name)) continue;
                     if (!m.HasProperty("_BaseColor")) continue;   // not an HDRP/Lit-style material: left alone
                     Material cl; var ck = (row, bn);
@@ -133,6 +136,7 @@ public sealed class ZoneGroundMat : MonoBehaviour
                 }
                 if (!done.Contains(key) && budget > 0) { done.Add(key); if (ch) { if (!orig.ContainsKey(r)) orig[r] = r.sharedMaterials; r.sharedMaterials = arr; changed.Add(key); touched++; budget--; } }
             }
+            if (c.log && rnames.Count > 0 && scanLogged.Add(row.id + "#r")) Debug.Log("ZONEGROUNDMAT renderers " + row.id + ": " + string.Join(" | ", rnames.ToArray()));
             if (c.log && scanLogged.Add(row.id)) Debug.Log("ZONEGROUNDMAT scan " + row.id + " (" + (string.IsNullOrEmpty(row.targetRoot) ? row.zoneRoot : row.targetRoot) + "): " + rs.Length + " renderers; ground-like materials: " + string.Join(", ", new List<string>(seen).ToArray()));
         }
         if (c.log && !logged && touched > 0) { logged = true; Debug.Log("ZONEGROUNDMAT " + File_ + ": " + touched + " renderers, " + clones.Count + " material clones"); }
@@ -181,3 +185,5 @@ public sealed class ZoneGroundMat : MonoBehaviour
         if (keyword == "_NORMALMAP" || keyword == "_MASKMAP") m.EnableKeyword(keyword);   // both are already on for the ground materials; harmless when so
     }
 }
+
+

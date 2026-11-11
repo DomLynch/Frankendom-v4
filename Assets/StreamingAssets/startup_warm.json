@@ -1,4 +1,4 @@
-{
+﻿{
  "_about": "STARTUP v102 (laneSTARTUP). Read by Scripts/StartupWarm.cs (HudCfg.ReadData). The first rendered frames of the real HDRP scene cost 0.8-1.4 s (D3D12 pipeline states, volumetric fog, shadow atlas, SSGI: the same in v100 and v101, see _agents/laneSTARTUP/MANIFEST.md). This pays that cost on purpose, once, in the first frames after the scene load: Camera.main.Render() warmRenders times, behind an opaque cover, instead of in the middle of the first gameplay frames. Nothing here touches the sim: no tick, no RNG. enabled=false or -nostartupwarm = off (today's behaviour).",
  "enabled": true,
  "warmRenders": 2,
@@ -13,7 +13,7 @@
   "b": 0.0,
   "holdFramesAfter": 24,
   "waitForGear": true,
-  "gearCapSeconds": 12.0,
+  "gearCapSeconds": 25.0,
   "gearAttachFrames": 20
  },
  "holdSim": {

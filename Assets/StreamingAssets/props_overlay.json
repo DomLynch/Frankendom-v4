@@ -124,6 +124,236 @@
       ],
       "scale": 0.01,
       "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
+    },
+    {
+      "id": "gcomp_near_L1",
+      "op": "add",
+      "src": "z4_worldnear_hero_column_a_0",
+      "zone": "grendel",
+      "ring": 1,
+      "pos": [
+        -19,
+        -0.43,
+        137
+      ],
+      "rotEuler": [
+        0,
+        20,
+        0
+      ],
+      "scale": 1.2,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 4.1 m): FLAG, replace with -terrainheight sample"
+    },
+    {
+      "id": "gcomp_near_L2",
+      "op": "add",
+      "src": "z4_rock_arch_8_0",
+      "zone": "grendel",
+      "ring": 1,
+      "pos": [
+        -26,
+        -0.21,
+        141
+      ],
+      "rotEuler": [
+        0,
+        70,
+        0
+      ],
+      "scale": 1.3,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 6.9 m): FLAG, replace with -terrainheight sample"
+    },
+    {
+      "id": "gcomp_near_L3",
+      "op": "add",
+      "src": "z4_worldnear_hero_column_b_0",
+      "zone": "grendel",
+      "ring": 1,
+      "pos": [
+        -23,
+        -0.39,
+        134
+      ],
+      "rotEuler": [
+        0,
+        200,
+        0
+      ],
+      "scale": 1.15,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 4.7 m): FLAG, replace with -terrainheight sample"
+    },
+    {
+      "id": "gcomp_near_R1",
+      "op": "add",
+      "src": "z4_worldnear_hero_column_b_0",
+      "zone": "grendel",
+      "ring": 1,
+      "pos": [
+        21,
+        -0.74,
+        136
+      ],
+      "rotEuler": [
+        0,
+        310,
+        0
+      ],
+      "scale": 1.2,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 6.2 m): FLAG, replace with -terrainheight sample"
+    },
+    {
+      "id": "gcomp_near_R2",
+      "op": "add",
+      "src": "z4_rock_arch_8_0",
+      "zone": "grendel",
+      "ring": 1,
+      "pos": [
+        27,
+        -0.51,
+        142
+      ],
+      "rotEuler": [
+        0,
+        250,
+        0
+      ],
+      "scale": 1.4,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 3.4 m): FLAG, replace with -terrainheight sample"
+    },
+    {
+      "id": "gcomp_mid_L2",
+      "op": "add",
+      "src": "z4_worldnear_hero_column_a_0",
+      "zone": "grendel",
+      "ring": 2,
+      "pos": [
+        -30,
+        -0.28,
+        170
+      ],
+      "rotEuler": [
+        0,
+        140,
+        0
+      ],
+      "scale": 1.4,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 15.2 m): FLAG, replace with -terrainheight sample"
+    },
+    {
+      "id": "gcomp_mid_C1",
+      "op": "add",
+      "src": "z4h_grendel_ruined_house",
+      "zone": "grendel",
+      "ring": 2,
+      "pos": [
+        -12,
+        -0.4,
+        168
+      ],
+      "rotEuler": [
+        0,
+        170,
+        0
+      ],
+      "scale": 0.9,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 1.8 m): FLAG, replace with -terrainheight sample"
+    },
+    {
+      "id": "gcomp_mid_R1",
+      "op": "add",
+      "src": "z4_worldnear_hero_column_a_0",
+      "zone": "grendel",
+      "ring": 2,
+      "pos": [
+        31,
+        -0.8,
+        168
+      ],
+      "rotEuler": [
+        0,
+        95,
+        0
+      ],
+      "scale": 1.3,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 6.2 m): FLAG, replace with -terrainheight sample"
+    },
+    {
+      "id": "gcomp_mid_R2",
+      "op": "add",
+      "src": "z4look_far_ruin_tower_b_40",
+      "zone": "grendel",
+      "ring": 2,
+      "pos": [
+        14,
+        -0.61,
+        173
+      ],
+      "rotEuler": [
+        0,
+        300,
+        0
+      ],
+      "scale": 0.9,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 9.8 m): FLAG, replace with -terrainheight sample"
+    },
+    {
+      "id": "gcomp_mid_R3",
+      "op": "add",
+      "src": "z4_rock_arch_8_0",
+      "zone": "grendel",
+      "ring": 2,
+      "pos": [
+        30,
+        -0.3,
+        158
+      ],
+      "rotEuler": [
+        0,
+        40,
+        0
+      ],
+      "scale": 1.6,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "gcomp; y = IDW of nearest baked row ground y (nearest 0.4 m): FLAG, replace with -terrainheight sample"
     }
   ]
 }

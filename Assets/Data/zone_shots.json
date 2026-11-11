@@ -1165,7 +1165,7 @@
     ]
    },
    "fov": 50.0,
-   "settleSeconds": 18.0,
+   "settleSeconds": 20.0,
    "aimFighters": false,
    "sideM": 9.0,
    "camY": 1.6,
@@ -1196,7 +1196,7 @@
     ]
    },
    "fov": 50.0,
-   "settleSeconds": 12.0,
+   "settleSeconds": 20.0,
    "aimFighters": false,
    "sideM": 9.0,
    "camY": 1.6,
@@ -1227,7 +1227,7 @@
     ]
    },
    "fov": 50.0,
-   "settleSeconds": 12.0,
+   "settleSeconds": 20.0,
    "aimFighters": false,
    "sideM": 9.0,
    "camY": 1.6,
@@ -1258,7 +1258,7 @@
     ]
    },
    "fov": 50.0,
-   "settleSeconds": 12.0,
+   "settleSeconds": 20.0,
    "aimFighters": false,
    "sideM": 9.0,
    "camY": 1.6,
@@ -1289,7 +1289,7 @@
     ]
    },
    "fov": 50.0,
-   "settleSeconds": 12.0,
+   "settleSeconds": 20.0,
    "aimFighters": false,
    "sideM": 9.0,
    "camY": 1.6,
@@ -1320,7 +1320,7 @@
     ]
    },
    "fov": 60.0,
-   "settleSeconds": 12.0,
+   "settleSeconds": 20.0,
    "aimFighters": false,
    "sideM": 9.0,
    "camY": 1.6,
@@ -1351,7 +1351,7 @@
     ]
    },
    "fov": 60.0,
-   "settleSeconds": 12.0,
+   "settleSeconds": 20.0,
    "aimFighters": false,
    "sideM": 9.0,
    "camY": 1.6,
@@ -1382,7 +1382,7 @@
     ]
    },
    "fov": 60.0,
-   "settleSeconds": 12.0,
+   "settleSeconds": 20.0,
    "aimFighters": false,
    "sideM": 9.0,
    "camY": 1.6,
@@ -1413,7 +1413,7 @@
     ]
    },
    "fov": 60.0,
-   "settleSeconds": 12.0,
+   "settleSeconds": 20.0,
    "aimFighters": false,
    "sideM": 9.0,
    "camY": 1.6,
@@ -1444,7 +1444,7 @@
     ]
    },
    "fov": 60.0,
-   "settleSeconds": 12.0,
+   "settleSeconds": 20.0,
    "aimFighters": false,
    "sideM": 9.0,
    "camY": 1.6,
@@ -4852,7 +4852,7 @@
     ]
    },
    "fov": 50.0,
-   "settleSeconds": 12.0,
+   "settleSeconds": 20.0,
    "aimFighters": false,
    "sideM": 9.0,
    "camY": 1.6,
@@ -4867,5 +4867,5 @@
  "freeze": true,
  "noMotionBlur": true,
  "noTaa": true,
- "_gate_note": "unity-dev2: play_* and wide_* gate shots use settleSeconds >= 12 (Joan armour appears ~10 s after load in the harness; at 22 s+ the fight starts and the camera loses Joan)."
+ "_gate_note": "unity-dev2: play_* and wide_* gate shots use settleSeconds 20 (Joan armour after ~10-16 s in the harness; Grendel zone loads later). Beyond ~25 s the fight starts."
 }
