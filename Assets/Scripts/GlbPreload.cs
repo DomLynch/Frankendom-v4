@@ -18,14 +18,16 @@ public static class GlbPreload
 
     static readonly Dictionary<string, Task<GLTFast.GltfImport>> cache = new Dictionary<string, Task<GLTFast.GltfImport>>(StringComparer.OrdinalIgnoreCase);
     public static int Started, Done, Failed, Taken; public static float Seconds;   // for the log line / perfbench
+    public static bool Expected, Tier0Done;   // v3: StartupWarm holds its cover until Joan's gear tier is parsed (Expected = a preload runner was started)
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cache.Clear(); Started = Done = Failed = Taken = 0; Seconds = 0f; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cache.Clear(); Started = Done = Failed = Taken = 0; Seconds = 0f; Expected = Tier0Done = false; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
         if (!PerfFixes.On("C3")) return;
         if (PerfFlags.HarnessRun() && !PerfFixes.C.C3.inHarness) return;
+        Expected = true;
         var go = new GameObject("GlbPreload"); UnityEngine.Object.DontDestroyOnLoad(go); go.AddComponent<GlbPreloadRunner>();
     }
 
@@ -113,10 +115,12 @@ public class GlbPreloadRunner : MonoBehaviour
                 for (int i = 0; i < Mathf.Max(1, c.eagerFramesBetween); i++) yield return null;
             }
             foreach (var t in pending) while (!t.IsCompleted) yield return null;
+            GlbPreload.Tier0Done = true;
             Debug.Log("[GlbPreload] tier0 (Joan gear) " + eager.Count + " files, " + (used / 1048576f).ToString("0.0") + " MB, " + (Time.realtimeSinceStartup - te).ToString("0.0") + " s");
             for (int i = 0; i < Mathf.Max(0, c.lateDelayFrames); i++) yield return null;
         }
         else for (int i = 0; i < Mathf.Max(0, c.startDelayFrames); i++) yield return null;
+        GlbPreload.Tier0Done = true;   // (also when there is no tier 0)
         var files = GlbPreload.Wanted(); int gap = eager.Count > 0 ? Mathf.Max(1, c.lateFramesBetween) : Mathf.Max(1, c.framesBetweenFiles);
         foreach (var f in files)
         {

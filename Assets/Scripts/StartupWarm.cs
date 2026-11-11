@@ -12,7 +12,8 @@ using Debug = UnityEngine.Debug;
 // Log lines: "[StartupWarm] render <i> <ms> ms" and "[StartupWarm] done ...".
 public class StartupWarm : MonoBehaviour
 {
-    [Serializable] public class CoverC { public bool enabled = true; public float r = 0f, g = 0f, b = 0f; public int holdFramesAfter = 2; }
+    [Serializable] public class CoverC { public bool enabled = true; public float r = 0f, g = 0f, b = 0f; public int holdFramesAfter = 2;
+        public bool waitForGear = false; public float gearCapSeconds = 12f; public int gearAttachFrames = 20; }   // v3: hold the cover until Joan's gear tier of GlbPreload is parsed (+ gearAttachFrames for the attach), hard cap gearCapSeconds
     [Serializable] public class HoldC { public bool enabled = false; }
     [Serializable] public class HarnessC { public bool warmRenders = true; }
     [Serializable]
@@ -68,6 +69,13 @@ public class StartupWarm : MonoBehaviour
             for (int k = 0; k < c.framesBetweenRenders; k++) yield return null;
         }
         for (int i = 0; i < c.cover.holdFramesAfter && cover; i++) yield return null;
+        if (cover && c.cover.waitForGear && GlbPreload.Expected)
+        {
+            float tg = Time.realtimeSinceStartup; bool capped = false;
+            while (!GlbPreload.Tier0Done) { if (Time.realtimeSinceStartup - tg > Mathf.Max(1f, c.cover.gearCapSeconds)) { capped = true; break; } yield return null; }
+            if (!capped) for (int i = 0; i < c.cover.gearAttachFrames; i++) yield return null;
+            Debug.Log(capped ? "[Cover] reveal without gear (cap " + c.cover.gearCapSeconds.ToString("0") + " s)" : "[Cover] reveal after gear tier parsed (" + (Time.realtimeSinceStartup - tg).ToString("0.0") + " s wait)");
+        }
         Debug.Log("[StartupWarm] done renders " + done + " (first " + first.ToString("0") + " ms, last " + last.ToString("0") + " ms, total " + total.ToString("0") + " ms), " + (Time.realtimeSinceStartup - t0).ToString("0.00") + " s wall, cover " + cover + ", sim hold " + froze + ", harness " + harness);
         Release();
     }

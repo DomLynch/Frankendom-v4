@@ -202,6 +202,17 @@
             "aoStrength": -1,
             "emissiveScale": -1
         },
+      {
+            "match": "clutter_",
+            "normalScale": -1,
+            "color": [0.58, 0.54, 0.5],
+        "tiling": -1,
+            "metallicMax": -1,
+            "smoothnessMax": -1,
+            "smoothnessMin": -1,
+            "aoStrength": -1,
+            "emissiveScale": -1
+        },
         {
             "match": "post_capped",
             "color": [
