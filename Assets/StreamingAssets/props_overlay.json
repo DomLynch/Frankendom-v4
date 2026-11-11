@@ -299,6 +299,58 @@
       ],
       "scale": 0.01,
       "clearance_note": "moved by overlay: baked caravan wreck x9 sat on Humbaba arrival spot"
+    },
+    {
+      "id": "g4v_sil_deadtree_e",
+      "op": "move",
+      "zone": "grendel",
+      "enabled": true,
+      "pos": [
+        14.5,
+        -60,
+        178.5
+      ],
+      "scale": 0.01,
+      "note": "15 m rule: Grendel/Humbaba seam row hidden (baked)"
+    },
+    {
+      "id": "g4v_sil_stones_c",
+      "op": "move",
+      "zone": "grendel",
+      "enabled": true,
+      "pos": [
+        24.0,
+        -60,
+        172.5
+      ],
+      "scale": 0.01,
+      "note": "15 m rule: Grendel/Humbaba seam row hidden (baked)"
+    },
+    {
+      "id": "g4v_sil_stones_b",
+      "op": "move",
+      "zone": "grendel",
+      "enabled": true,
+      "pos": [
+        21.0,
+        -60,
+        168.0
+      ],
+      "scale": 0.01,
+      "note": "15 m rule: Grendel/Humbaba seam row hidden (baked)"
+    },
+    {
+      "id": "g4v_sil_deadtree_a",
+      "op": "move",
+      "zone": "grendel",
+      "enabled": true,
+      "pos": [
+        -8.0,
+        -60,
+        171.0
+      ],
+      "scale": 0.01,
+      "note": "15 m rule: Grendel/Humbaba seam row hidden (baked)"
     }
   ]
 }

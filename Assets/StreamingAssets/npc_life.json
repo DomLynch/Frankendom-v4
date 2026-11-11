@@ -647,6 +647,510 @@
   {
    "id": "npc_horse",
    "ambient": []
+  },
+  {
+   "id": "npc_vendor_1",
+   "ambient": [
+    {
+     "clip": "weight_shift_b",
+     "file": "Npc/life/p106/weight_shift_b.glb",
+     "weight": 3,
+     "minIntervalS": 8,
+     "maxIntervalS": 18,
+     "near": false,
+     "durationS": 3.0,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "weight_shift_c",
+     "file": "Npc/life/p106/weight_shift_c.glb",
+     "weight": 2,
+     "minIntervalS": 8,
+     "maxIntervalS": 18,
+     "near": false,
+     "durationS": 5.1,
+     "blendInS": 0.39,
+     "blendOutS": 0.39,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "look_scan_c",
+     "file": "Npc/life/p106/look_scan_c.glb",
+     "weight": 3,
+     "minIntervalS": 12,
+     "maxIntervalS": 30,
+     "near": false,
+     "durationS": 11.267,
+     "blendInS": 0.35,
+     "blendOutS": 0.35,
+     "cooldownS": 34.0
+    },
+    {
+     "clip": "arm_stretch",
+     "file": "Npc/life/p106/arm_stretch.glb",
+     "weight": 2,
+     "minIntervalS": 60,
+     "maxIntervalS": 150,
+     "near": false,
+     "durationS": 8.867,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "shoulder_rub",
+     "file": "Npc/life/p106/shoulder_rub.glb",
+     "weight": 2,
+     "minIntervalS": 60,
+     "maxIntervalS": 150,
+     "near": false,
+     "durationS": 5.833,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "neck_stretch",
+     "file": "Npc/life/p106/neck_stretch.glb",
+     "weight": 1,
+     "minIntervalS": 60,
+     "maxIntervalS": 150,
+     "near": false,
+     "durationS": 3.2,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "shrug",
+     "file": "Npc/life/p106/shrug.glb",
+     "weight": 1,
+     "minIntervalS": 25,
+     "maxIntervalS": 60,
+     "near": false,
+     "durationS": 2.0,
+     "blendInS": 0.42,
+     "blendOutS": 0.42,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "talk_b",
+     "file": "Npc/life/p106/talk_b.glb",
+     "weight": 3,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 3.933,
+     "blendInS": 0.47,
+     "blendOutS": 0.47,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "talk_c",
+     "file": "Npc/life/p106/talk_c.glb",
+     "weight": 2,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 10.267,
+     "blendInS": 0.43,
+     "blendOutS": 0.43,
+     "cooldownS": 31.0
+    },
+    {
+     "clip": "gesture_hands_forward",
+     "file": "Npc/life/p106/gesture_hands_forward.glb",
+     "weight": 2,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 3.1,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "point_wares",
+     "file": "Npc/life/p106/point_wares.glb",
+     "weight": 2,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 3.6,
+     "blendInS": 0.41,
+     "blendOutS": 0.41,
+     "cooldownS": 30.0
+    }
+   ],
+   "_clones": "npc_traveller"
+  },
+  {
+   "id": "npc_vendor_2",
+   "ambient": [
+    {
+     "clip": "weight_shift_a",
+     "file": "Npc/life/p106/weight_shift_a.glb",
+     "weight": 3,
+     "minIntervalS": 8,
+     "maxIntervalS": 18,
+     "near": false,
+     "durationS": 8.767,
+     "blendInS": 0.4,
+     "blendOutS": 0.4,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "weight_shift_b",
+     "file": "Npc/life/p106/weight_shift_b.glb",
+     "weight": 3,
+     "minIntervalS": 8,
+     "maxIntervalS": 18,
+     "near": false,
+     "durationS": 3.0,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "look_scan_c",
+     "file": "Npc/life/p106/look_scan_c.glb",
+     "weight": 3,
+     "minIntervalS": 12,
+     "maxIntervalS": 30,
+     "near": false,
+     "durationS": 11.267,
+     "blendInS": 0.35,
+     "blendOutS": 0.35,
+     "cooldownS": 34.0
+    },
+    {
+     "clip": "look_around_c",
+     "file": "Npc/life/p106/look_around_c.glb",
+     "weight": 1,
+     "minIntervalS": 25,
+     "maxIntervalS": 55,
+     "near": false,
+     "durationS": 8.0,
+     "blendInS": 0.37,
+     "blendOutS": 0.37,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "bored_fidget",
+     "file": "Npc/life/p106/bored_fidget.glb",
+     "weight": 1,
+     "minIntervalS": 40,
+     "maxIntervalS": 90,
+     "near": false,
+     "durationS": 10.667,
+     "blendInS": 0.43,
+     "blendOutS": 0.43,
+     "cooldownS": 32.0
+    },
+    {
+     "clip": "arm_stretch",
+     "file": "Npc/life/p106/arm_stretch.glb",
+     "weight": 1,
+     "minIntervalS": 60,
+     "maxIntervalS": 150,
+     "near": false,
+     "durationS": 8.867,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "shoulder_rub",
+     "file": "Npc/life/p106/shoulder_rub.glb",
+     "weight": 1,
+     "minIntervalS": 60,
+     "maxIntervalS": 150,
+     "near": false,
+     "durationS": 5.833,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "neck_stretch",
+     "file": "Npc/life/p106/neck_stretch.glb",
+     "weight": 1,
+     "minIntervalS": 60,
+     "maxIntervalS": 150,
+     "near": false,
+     "durationS": 3.2,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "talk_a",
+     "file": "Npc/life/p106/talk_a.glb",
+     "weight": 3,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 5.933,
+     "blendInS": 0.6,
+     "blendOutS": 0.6,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "talk_b",
+     "file": "Npc/life/p106/talk_b.glb",
+     "weight": 2,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 3.933,
+     "blendInS": 0.47,
+     "blendOutS": 0.47,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "gesture_hands_forward",
+     "file": "Npc/life/p106/gesture_hands_forward.glb",
+     "weight": 2,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 3.1,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "point_wares",
+     "file": "Npc/life/p106/point_wares.glb",
+     "weight": 2,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 3.6,
+     "blendInS": 0.41,
+     "blendOutS": 0.41,
+     "cooldownS": 30.0
+    }
+   ],
+   "_clones": "npc_trader"
+  },
+  {
+   "id": "npc_vendor_3",
+   "ambient": [
+    {
+     "clip": "look_around_c",
+     "file": "Npc/life/p106/look_around_c.glb",
+     "weight": 3,
+     "minIntervalS": 12,
+     "maxIntervalS": 30,
+     "near": false,
+     "durationS": 8.0,
+     "blendInS": 0.37,
+     "blendOutS": 0.37,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "look_scan_c",
+     "file": "Npc/life/p106/look_scan_c.glb",
+     "weight": 3,
+     "minIntervalS": 12,
+     "maxIntervalS": 30,
+     "near": false,
+     "durationS": 11.267,
+     "blendInS": 0.35,
+     "blendOutS": 0.35,
+     "cooldownS": 34.0
+    },
+    {
+     "clip": "weight_shift_c",
+     "file": "Npc/life/p106/weight_shift_c.glb",
+     "weight": 3,
+     "minIntervalS": 8,
+     "maxIntervalS": 18,
+     "near": false,
+     "durationS": 5.1,
+     "blendInS": 0.39,
+     "blendOutS": 0.39,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "bored_fidget",
+     "file": "Npc/life/p106/bored_fidget.glb",
+     "weight": 1,
+     "minIntervalS": 40,
+     "maxIntervalS": 90,
+     "near": false,
+     "durationS": 10.667,
+     "blendInS": 0.43,
+     "blendOutS": 0.43,
+     "cooldownS": 32.0
+    },
+    {
+     "clip": "arm_stretch",
+     "file": "Npc/life/p106/arm_stretch.glb",
+     "weight": 1,
+     "minIntervalS": 60,
+     "maxIntervalS": 150,
+     "near": false,
+     "durationS": 8.867,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "talk_a",
+     "file": "Npc/life/p106/talk_a.glb",
+     "weight": 3,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 5.933,
+     "blendInS": 0.6,
+     "blendOutS": 0.6,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "point_wares",
+     "file": "Npc/life/p106/point_wares.glb",
+     "weight": 2,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 3.6,
+     "blendInS": 0.41,
+     "blendOutS": 0.41,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "shrug",
+     "file": "Npc/life/p106/shrug.glb",
+     "weight": 1,
+     "minIntervalS": 25,
+     "maxIntervalS": 60,
+     "near": false,
+     "durationS": 2.0,
+     "blendInS": 0.42,
+     "blendOutS": 0.42,
+     "cooldownS": 30.0
+    }
+   ],
+   "_clones": "npc_stablemaster"
+  },
+  {
+   "id": "npc_keeper_z7",
+   "ambient": [
+    {
+     "clip": "weight_shift_a",
+     "file": "Npc/life/p106/weight_shift_a.glb",
+     "weight": 2,
+     "minIntervalS": 8,
+     "maxIntervalS": 18,
+     "near": false,
+     "durationS": 8.767,
+     "blendInS": 0.4,
+     "blendOutS": 0.4,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "look_scan_c",
+     "file": "Npc/life/p106/look_scan_c.glb",
+     "weight": 3,
+     "minIntervalS": 12,
+     "maxIntervalS": 30,
+     "near": false,
+     "durationS": 11.267,
+     "blendInS": 0.35,
+     "blendOutS": 0.35,
+     "cooldownS": 34.0
+    },
+    {
+     "clip": "shrug",
+     "file": "Npc/life/p106/shrug.glb",
+     "weight": 1,
+     "minIntervalS": 25,
+     "maxIntervalS": 60,
+     "near": false,
+     "durationS": 2.0,
+     "blendInS": 0.42,
+     "blendOutS": 0.42,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "nod_yes",
+     "file": "Npc/life/p106/nod_yes.glb",
+     "weight": 1,
+     "minIntervalS": 25,
+     "maxIntervalS": 60,
+     "near": false,
+     "durationS": 2.6,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "shoulder_rub",
+     "file": "Npc/life/p106/shoulder_rub.glb",
+     "weight": 1,
+     "minIntervalS": 60,
+     "maxIntervalS": 150,
+     "near": false,
+     "durationS": 5.833,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "neck_stretch",
+     "file": "Npc/life/p106/neck_stretch.glb",
+     "weight": 1,
+     "minIntervalS": 60,
+     "maxIntervalS": 150,
+     "near": false,
+     "durationS": 3.2,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "talk_c",
+     "file": "Npc/life/p106/talk_c.glb",
+     "weight": 3,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 10.267,
+     "blendInS": 0.43,
+     "blendOutS": 0.43,
+     "cooldownS": 31.0
+    },
+    {
+     "clip": "gesture_happy",
+     "file": "Npc/life/p106/gesture_happy.glb",
+     "weight": 2,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 2.933,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "point_wares",
+     "file": "Npc/life/p106/point_wares.glb",
+     "weight": 2,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 3.6,
+     "blendInS": 0.41,
+     "blendOutS": 0.41,
+     "cooldownS": 30.0
+    }
+   ],
+   "_clones": "npc_keeper"
   }
  ]
 }

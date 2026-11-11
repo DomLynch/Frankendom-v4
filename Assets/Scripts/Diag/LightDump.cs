@@ -20,10 +20,10 @@ public class LightDump : MonoBehaviour
         var sb = new StringBuilder("[LightDump] camera " + c.ToString("F1") + "\n");
         foreach (var l in FindObjectsByType<Light>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
         {
-            if (!l.enabled) continue; float d = Vector3.Distance(l.transform.position, c); if (d > 80f) continue;
+            if (!l.enabled) continue; float d = Vector3.Distance(l.transform.position, c); if (d > 80f && l.type != LightType.Directional) continue;
             var hd = l.GetComponent<UnityEngine.Rendering.HighDefinition.HDAdditionalLightData>();
             string path = l.name; var t = l.transform.parent; for (int i = 0; i < 3 && t != null; i++) { path = t.name + "/" + path; t = t.parent; }
-            sb.AppendLine("  d=" + d.ToString("F0") + " " + l.type + " " + path + " pos " + l.transform.position.ToString("F1") + " int " + (hd != null ? hd.intensity : l.intensity) + " range " + l.range + " col " + l.color + " mask " + l.renderingLayerMask);
+            sb.AppendLine("  d=" + d.ToString("F0") + " " + l.type + " " + path + " pos " + l.transform.position.ToString("F1") + " int " + (hd != null ? hd.intensity : l.intensity) + " range " + l.range + " col " + l.color + " mask " + l.renderingLayerMask + " rot " + l.transform.eulerAngles.ToString("F0") + " shadows " + l.shadows);
         }
         Debug.Log(sb.ToString());
     }

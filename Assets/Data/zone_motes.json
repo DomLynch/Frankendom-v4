@@ -1,280 +1,280 @@
 {
- "_about": "laneVIS2 item 7 (STAGED, not shipped). Read by the NEW Scripts/Zones/ZoneMotes.cs (kit\\code). enabled=false, an absent file or -zonemotes:off = nothing. One ParticleSystem per zone row, only the current zone emits (the others fade out over fadeSeconds). colour = display-referred rgba on the existing Furnace/Particle 'dust' role (premultiplied alpha: dark colours darken what is behind them; NOT lit by the scene, tune by eye per zone). count = steady-state live motes, box = emitter box [x, y, z] metres centred forwardM ahead of the camera on the ground, drift = m/s world velocity, noise* = Shuriken noise (Low quality). maxTotalParticles caps one system.",
- "enabled": true,
- "log": true,
- "prewarm": true,
- "pollSeconds": 0.25,
- "fadeSeconds": 3.0,
- "fadeInFrac": 0.15,
- "fadeOutFrac": 0.25,
- "sortingOrder": 0,
- "waitFrames": 40,
- "maxTotalParticles": 600,
- "rows": [
-  {
-   "id": "pit_yard",
-   "role": "dust",
-   "zFrom": -100000.0,
-   "zTo": 26.0,
-   "color": [
-    0.62,
-    0.55,
-    0.5,
-    0.85
-   ],
-   "sizeMin": 0.09,
-   "sizeMax": 0.24,
-   "count": 150,
-   "lifeMin": 16,
-   "lifeMax": 24,
-   "box": [
-    20,
-    8,
-    20
-   ],
-   "drift": [
-    0.02,
-    -0.07,
-    0.01
-   ],
-   "forwardM": 8.0,
-   "bottomM": -0.5,
-   "noiseStrength": 0.18,
-   "noiseFrequency": 0.12,
-   "noiseScroll": 0.08,
-   "softDistance": 0.0
-  },
-  {
-   "id": "sobek_reach",
-   "role": "dust",
-   "zFrom": 26.0,
-   "zTo": 62.0,
-   "color": [
-    0.7,
-    0.8,
-    0.74,
-    0.8
-   ],
-   "sizeMin": 0.07,
-   "sizeMax": 0.17,
-   "count": 150,
-   "lifeMin": 18,
-   "lifeMax": 26,
-   "box": [
-    22,
-    6,
-    22
-   ],
-   "drift": [
-    0.0,
-    0.035,
-    0.0
-   ],
-   "forwardM": 8.0,
-   "bottomM": -0.5,
-   "noiseStrength": 0.14,
-   "noiseFrequency": 0.1,
-   "noiseScroll": 0.06,
-   "softDistance": 0.0
-  },
-  {
-   "id": "hub_camp",
-   "role": "dust",
-   "zFrom": 62.0,
-   "zTo": 98.0,
-   "color": [
-    0.78,
-    0.64,
-    0.46,
-    0.8
-   ],
-   "sizeMin": 0.07,
-   "sizeMax": 0.15,
-   "count": 90,
-   "lifeMin": 16,
-   "lifeMax": 24,
-   "box": [
-    14,
-    5,
-    14
-   ],
-   "drift": [
-    0.0,
-    0.0,
-    0.0
-   ],
-   "forwardM": 6.0,
-   "bottomM": -0.5,
-   "noiseStrength": 0.1,
-   "noiseFrequency": 0.1,
-   "noiseScroll": 0.06,
-   "softDistance": 0.0
-  },
-  {
-   "id": "grendel",
-   "role": "dust",
-   "zFrom": 98.0,
-   "zTo": 167.0,
-   "color": [
-    0.74,
-    0.8,
-    0.84,
-    0.75
-   ],
-   "sizeMin": 0.08,
-   "sizeMax": 0.17,
-   "count": 190,
-   "lifeMin": 14,
-   "lifeMax": 22,
-   "box": [
-    26,
-    9,
-    26
-   ],
-   "drift": [
-    0.12,
-    -0.1,
-    0.03
-   ],
-   "forwardM": 8.0,
-   "bottomM": -0.5,
-   "noiseStrength": 0.3,
-   "noiseFrequency": 0.15,
-   "noiseScroll": 0.1,
-   "softDistance": 0.0
-  },
-  {
-   "id": "z5_humbaba",
-   "role": "dust",
-   "zFrom": 167.0,
-   "zTo": 234.0,
-   "color": [
-    0.7,
-    0.84,
-    0.4,
-    0.8
-   ],
-   "sizeMin": 0.09,
-   "sizeMax": 0.22,
-   "count": 170,
-   "lifeMin": 18,
-   "lifeMax": 28,
-   "box": [
-    24,
-    10,
-    24
-   ],
-   "drift": [
-    0.0,
-    0.04,
-    0.0
-   ],
-   "forwardM": 8.0,
-   "bottomM": -0.5,
-   "noiseStrength": 0.35,
-   "noiseFrequency": 0.12,
-   "noiseScroll": 0.1,
-   "softDistance": 0.0
-  },
-  {
-   "id": "z6_erlking",
-   "role": "dust",
-   "zFrom": 234.0,
-   "zTo": 305.0,
-   "color": [
-    0.95,
-    0.3,
-    0.22,
-    0.85
-   ],
-   "sizeMin": 0.09,
-   "sizeMax": 0.22,
-   "count": 180,
-   "lifeMin": 16,
-   "lifeMax": 24,
-   "box": [
-    24,
-    9,
-    24
-   ],
-   "drift": [
-    0.0,
-    0.06,
-    0.0
-   ],
-   "forwardM": 8.0,
-   "bottomM": -0.5,
-   "noiseStrength": 0.2,
-   "noiseFrequency": 0.1,
-   "noiseScroll": 0.08,
-   "softDistance": 0.0
-  },
-  {
-   "id": "z7_market2",
-   "role": "dust",
-   "zFrom": 305.0,
-   "zTo": 100000.0,
-   "color": [
-    0.78,
-    0.64,
-    0.46,
-    0.8
-   ],
-   "sizeMin": 0.07,
-   "sizeMax": 0.15,
-   "count": 90,
-   "lifeMin": 16,
-   "lifeMax": 24,
-   "box": [
-    14,
-    5,
-    14
-   ],
-   "drift": [
-    0.0,
-    0.0,
-    0.0
-   ],
-   "forwardM": 6.0,
-   "bottomM": -0.5,
-   "noiseStrength": 0.1,
-   "noiseFrequency": 0.1,
-   "noiseScroll": 0.06,
-   "softDistance": 0.0
-  },
-  {
-   "id": "pit_yard_embers",
-   "role": "spark",
-   "zFrom": -100000.0,
-   "zTo": 26.0,
-   "color": [
-    1.0,
-    0.4,
-    0.12,
-    0.8
-   ],
-   "sizeMin": 0.05,
-   "sizeMax": 0.11,
-   "count": 40,
-   "lifeMin": 7,
-   "lifeMax": 11,
-   "box": [
-    26,
-    6,
-    22
-   ],
-   "drift": [
-    0.0,
-    0.12,
-    0.03
-   ],
-   "forwardM": 14.0,
-   "bottomM": -0.2,
-   "noiseStrength": 0.25,
-   "noiseFrequency": 0.2,
-   "noiseScroll": 0.1,
-   "softDistance": 0.0
-  }
- ],
- "_vis_sky": "VIS_SKY 2026-11-11: motes were dark mid-grey on a dark scene (premultiplied 'dust' darkens, no contrast). Pale ash colours at alpha 0.75-0.85, sizes about 1.6-2x, counts 1.2-1.7x, cap 600. pit_yard_embers (role spark, additive) needs the ZoneMotes.cs RowOn patch (kit\\Assets\\Scripts\\Zones\\ZoneMotes.cs) to emit; without it the row is ignored (zero risk). Doorway embers/sparks stay OFF (doorway.json untouched). Colours/sizes NOT verified in a player: judge by eye from play frames, then tune color alpha first."
+  "_about": "laneVIS2 item 7 (STAGED, not shipped). Read by the NEW Scripts/Zones/ZoneMotes.cs (kit\\code). enabled=false, an absent file or -zonemotes:off = nothing. One ParticleSystem per zone row, only the current zone emits (the others fade out over fadeSeconds). colour = display-referred rgba on the existing Furnace/Particle 'dust' role (premultiplied alpha: dark colours darken what is behind them; NOT lit by the scene, tune by eye per zone). count = steady-state live motes, box = emitter box [x, y, z] metres centred forwardM ahead of the camera on the ground, drift = m/s world velocity, noise* = Shuriken noise (Low quality). maxTotalParticles caps one system.",
+  "enabled": true,
+  "log": true,
+  "prewarm": true,
+  "pollSeconds": 0.25,
+  "fadeSeconds": 3.0,
+  "fadeInFrac": 0.15,
+  "fadeOutFrac": 0.25,
+  "sortingOrder": 0,
+  "waitFrames": 40,
+  "maxTotalParticles": 600,
+  "rows": [
+    {
+      "id": "pit_yard",
+      "role": "dust",
+      "zFrom": -100000.0,
+      "zTo": 26.0,
+      "color": [
+        0.62,
+        0.55,
+        0.5,
+        0.4
+      ],
+      "sizeMin": 0.015,
+      "sizeMax": 0.04,
+      "count": 150,
+      "lifeMin": 16,
+      "lifeMax": 24,
+      "box": [
+        20,
+        8,
+        20
+      ],
+      "drift": [
+        0.02,
+        -0.07,
+        0.01
+      ],
+      "forwardM": 14.0,
+      "bottomM": -0.5,
+      "noiseStrength": 0.18,
+      "noiseFrequency": 0.12,
+      "noiseScroll": 0.08,
+      "softDistance": 0.0
+    },
+    {
+      "id": "sobek_reach",
+      "role": "dust",
+      "zFrom": 26.0,
+      "zTo": 62.0,
+      "color": [
+        0.7,
+        0.8,
+        0.74,
+        0.4
+      ],
+      "sizeMin": 0.015,
+      "sizeMax": 0.04,
+      "count": 150,
+      "lifeMin": 18,
+      "lifeMax": 26,
+      "box": [
+        22,
+        6,
+        22
+      ],
+      "drift": [
+        0.0,
+        0.035,
+        0.0
+      ],
+      "forwardM": 14.0,
+      "bottomM": -0.5,
+      "noiseStrength": 0.14,
+      "noiseFrequency": 0.1,
+      "noiseScroll": 0.06,
+      "softDistance": 0.0
+    },
+    {
+      "id": "hub_camp",
+      "role": "dust",
+      "zFrom": 62.0,
+      "zTo": 98.0,
+      "color": [
+        0.78,
+        0.64,
+        0.46,
+        0.4
+      ],
+      "sizeMin": 0.015,
+      "sizeMax": 0.04,
+      "count": 90,
+      "lifeMin": 16,
+      "lifeMax": 24,
+      "box": [
+        14,
+        5,
+        14
+      ],
+      "drift": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "forwardM": 14.0,
+      "bottomM": -0.5,
+      "noiseStrength": 0.1,
+      "noiseFrequency": 0.1,
+      "noiseScroll": 0.06,
+      "softDistance": 0.0
+    },
+    {
+      "id": "grendel",
+      "role": "dust",
+      "zFrom": 98.0,
+      "zTo": 167.0,
+      "color": [
+        0.74,
+        0.8,
+        0.84,
+        0.4
+      ],
+      "sizeMin": 0.015,
+      "sizeMax": 0.04,
+      "count": 190,
+      "lifeMin": 14,
+      "lifeMax": 22,
+      "box": [
+        26,
+        9,
+        26
+      ],
+      "drift": [
+        0.12,
+        -0.1,
+        0.03
+      ],
+      "forwardM": 14.0,
+      "bottomM": -0.5,
+      "noiseStrength": 0.3,
+      "noiseFrequency": 0.15,
+      "noiseScroll": 0.1,
+      "softDistance": 0.0
+    },
+    {
+      "id": "z5_humbaba",
+      "role": "dust",
+      "zFrom": 167.0,
+      "zTo": 234.0,
+      "color": [
+        0.72,
+        0.76,
+        0.66,
+        0.4
+      ],
+      "sizeMin": 0.015,
+      "sizeMax": 0.04,
+      "count": 170,
+      "lifeMin": 18,
+      "lifeMax": 28,
+      "box": [
+        24,
+        10,
+        24
+      ],
+      "drift": [
+        0.0,
+        0.04,
+        0.0
+      ],
+      "forwardM": 14.0,
+      "bottomM": -0.5,
+      "noiseStrength": 0.35,
+      "noiseFrequency": 0.12,
+      "noiseScroll": 0.1,
+      "softDistance": 0.0
+    },
+    {
+      "id": "z6_erlking",
+      "role": "dust",
+      "zFrom": 234.0,
+      "zTo": 305.0,
+      "color": [
+        0.8,
+        0.62,
+        0.56,
+        0.4
+      ],
+      "sizeMin": 0.015,
+      "sizeMax": 0.04,
+      "count": 180,
+      "lifeMin": 16,
+      "lifeMax": 24,
+      "box": [
+        24,
+        9,
+        24
+      ],
+      "drift": [
+        0.0,
+        0.06,
+        0.0
+      ],
+      "forwardM": 14.0,
+      "bottomM": -0.5,
+      "noiseStrength": 0.2,
+      "noiseFrequency": 0.1,
+      "noiseScroll": 0.08,
+      "softDistance": 0.0
+    },
+    {
+      "id": "z7_market2",
+      "role": "dust",
+      "zFrom": 305.0,
+      "zTo": 100000.0,
+      "color": [
+        0.78,
+        0.64,
+        0.46,
+        0.4
+      ],
+      "sizeMin": 0.015,
+      "sizeMax": 0.04,
+      "count": 90,
+      "lifeMin": 16,
+      "lifeMax": 24,
+      "box": [
+        14,
+        5,
+        14
+      ],
+      "drift": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "forwardM": 14.0,
+      "bottomM": -0.5,
+      "noiseStrength": 0.1,
+      "noiseFrequency": 0.1,
+      "noiseScroll": 0.06,
+      "softDistance": 0.0
+    },
+    {
+      "id": "pit_yard_embers",
+      "role": "spark",
+      "zFrom": -100000.0,
+      "zTo": 26.0,
+      "color": [
+        1.0,
+        0.4,
+        0.12,
+        0.8
+      ],
+      "sizeMin": 0.05,
+      "sizeMax": 0.11,
+      "count": 40,
+      "lifeMin": 7,
+      "lifeMax": 11,
+      "box": [
+        26,
+        6,
+        22
+      ],
+      "drift": [
+        0.0,
+        0.12,
+        0.03
+      ],
+      "forwardM": 14.0,
+      "bottomM": -0.2,
+      "noiseStrength": 0.25,
+      "noiseFrequency": 0.2,
+      "noiseScroll": 0.1,
+      "softDistance": 0.0
+    }
+  ],
+  "_vis_sky": "VIS_SKY 2026-11-11: motes were dark mid-grey on a dark scene (premultiplied 'dust' darkens, no contrast). Pale ash colours at alpha 0.75-0.85, sizes about 1.6-2x, counts 1.2-1.7x, cap 600. pit_yard_embers (role spark, additive) needs the ZoneMotes.cs RowOn patch (kit\\Assets\\Scripts\\Zones\\ZoneMotes.cs) to emit; without it the row is ignored (zero risk). Doorway embers/sparks stay OFF (doorway.json untouched). Colours/sizes NOT verified in a player: judge by eye from play frames, then tune color alpha first."
 }

@@ -301,8 +301,8 @@
       ],
       "fogMeanFreePath": 120.0,
       "fogMaxHeight": 70.0,
-      "keyElevationDeg": 40.0,
-      "keyYawOffsetDeg": 0.0,
+      "keyElevationDeg": 28.0,
+      "keyYawOffsetDeg": 30.0,
       "keyColor": [
         0.65,
         0.68,
