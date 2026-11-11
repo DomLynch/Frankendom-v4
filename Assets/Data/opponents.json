@@ -31,6 +31,12 @@
     {"id": "npcrootdruid_z5", "character": "NpcRootDruid", "name": "ROOT DRUID", "title": "Tangle-Handed Seer", "hpMul": 1.12, "damageMul": 0.7561, "difficulty": 6, "inLadder": false},
     {"id": "npchuntsman_z6", "character": "NpcHuntsman", "name": "HUNTSMAN", "title": "Horn and Arrow", "hpMul": 1.3846, "damageMul": 0.7019, "difficulty": 4, "inLadder": false},
     {"id": "npchoundmaster_z6", "character": "NpcHoundMaster", "name": "HOUND MASTER", "title": "Leash of the Wild Hunt", "hpMul": 1.3846, "damageMul": 0.9361, "difficulty": 6, "inLadder": false},
-    {"id": "npcantlerknight_z6", "character": "NpcAntlerKnight", "name": "ANTLER KNIGHT", "title": "Hound of the Erlking", "hpMul": 1.3846, "damageMul": 0.819, "difficulty": 4, "inLadder": false}
+    {"id": "npcantlerknight_z6", "character": "NpcAntlerKnight", "name": "ANTLER KNIGHT", "title": "Hound of the Erlking", "hpMul": 1.3846, "damageMul": 0.819, "difficulty": 4, "inLadder": false},
+    {"id": "npcchainwarden_z1", "character": "NpcChainWarden", "name": "CHAIN WARDEN", "title": "Keeper of the Yard", "hpMul": 0.8, "damageMul": 0.36, "difficulty": 6, "inLadder": false},
+    {"id": "npcslagcrossbowman_z1", "character": "NpcSlagCrossbowman", "name": "SLAG CROSSBOWMAN", "title": "Bolt from the Furnace", "hpMul": 0.8, "damageMul": 0.27, "difficulty": 4, "inLadder": false},
+    {"id": "npcpitgladiator_z1", "character": "NpcPitGladiator", "name": "PIT GLADIATOR", "title": "Sand-Sworn Brawler", "hpMul": 0.8, "damageMul": 0.315, "difficulty": 4, "inLadder": false},
+    {"id": "npcreedskirmisher_z2", "character": "NpcReedSkirmisher", "name": "REED SKIRMISHER", "title": "Spear of the Reeds", "hpMul": 0.8492, "damageMul": 0.648, "difficulty": 6, "inLadder": false},
+    {"id": "npccrocwarrior_z2", "character": "NpcCrocWarrior", "name": "CROC WARRIOR", "title": "Sobek's Spawn", "hpMul": 0.8492, "damageMul": 0.567, "difficulty": 4, "inLadder": false},
+    {"id": "npcembalmercultist_z2", "character": "NpcEmbalmerCultist", "name": "EMBALMER CULTIST", "title": "Knife of the Dead", "hpMul": 0.8492, "damageMul": 0.567, "difficulty": 4, "inLadder": false}
   ]
 }

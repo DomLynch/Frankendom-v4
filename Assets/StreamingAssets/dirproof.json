@@ -1,0 +1,40 @@
+{
+  "_about": "laneDIRPROOF v1: thresholds and move rows of the directed-input proof driver (DirProof.cs, harness arg -dirproof:<names>). Nothing here is read without the arg. kind: attack | guard | parry | dodge | hitreact. Every row is selected by its name in the -dirproof list. attack: dir = attack.sectors name fed through controls.json attack.map (the same move pick as DirectionalInput.MoveFor); heavy true = the heavy list; expectDirs = MoveDef.direction values accepted; allowResults = contact types that count as a landed result; reactStates = foe states accepted as a hit reaction (empty = not checked). guard: side = guard.sides name or alias (centre aliases = side id 0); the verdict is judged per contact the foe makes while the guard is up (covers true must be Blocked/Parried, covers false must be Hit/GuardBroken). parry: raise the guard (side = best cover of the foe's swing) when the foe wind-up has raiseWhenWindupLeftTicks left. dodge: press = roll | backstep | sidestepL | sidestepR. hitreact: guard down, wait for a hit on Joan.",
+  "enabled": true,
+  "general": {
+    "waitEngageS": 90.0,
+    "prepTimeoutS": 12.0,
+    "prepStaminaMinFrac": 0.5,
+    "approachGapM": 2.2,
+    "attackGapM": 2.6,
+    "hpFloorFrac": 0.9,
+    "clipSampleEveryFrames": 1,
+    "badClips": ["", "idle", "Idle", "walk", "run", "loco"],
+    "settleTicksBetweenMoves": 45,
+    "writeCsv": true,
+    "csvName": "dirproof.csv",
+    "summaryName": "dirproof_summary.txt",
+    "doneName": "dirproof_done.txt",
+    "quitWhenDone": true,
+    "defaultOutDir": "",
+    "maxTotalS": 240.0
+  },
+  "rows": [
+    { "name": "overhead", "kind": "attack", "dir": "overhead", "heavy": false, "expectDirs": ["overhead"], "allowResults": ["Hit", "Blocked", "Parried", "GuardBroken"], "missIs": "FAIL", "startWithinTicks": 20, "observeTicks": 150, "reactDelayTicks": 8, "reactStates": [], "minOppDamage": 0.0, "maxAttempts": 3, "requireClip": true },
+    { "name": "thrust", "kind": "attack", "dir": "stab", "heavy": false, "expectDirs": ["thrust"], "allowResults": ["Hit", "Blocked", "Parried", "GuardBroken"], "missIs": "FAIL", "startWithinTicks": 20, "observeTicks": 150, "reactDelayTicks": 8, "reactStates": [], "minOppDamage": 0.0, "maxAttempts": 3, "requireClip": true },
+    { "name": "slashL", "kind": "attack", "dir": "left", "heavy": false, "expectDirs": ["left"], "allowResults": ["Hit", "Blocked", "Parried", "GuardBroken"], "missIs": "FAIL", "startWithinTicks": 20, "observeTicks": 150, "reactDelayTicks": 8, "reactStates": [], "minOppDamage": 0.0, "maxAttempts": 3, "requireClip": true },
+    { "name": "slashR", "kind": "attack", "dir": "right", "heavy": false, "expectDirs": ["right"], "allowResults": ["Hit", "Blocked", "Parried", "GuardBroken"], "missIs": "FAIL", "startWithinTicks": 20, "observeTicks": 150, "reactDelayTicks": 8, "reactStates": [], "minOppDamage": 0.0, "maxAttempts": 3, "requireClip": true },
+    { "name": "heavyOverhead", "kind": "attack", "dir": "overhead", "heavy": true, "expectDirs": ["overhead"], "allowResults": ["Hit", "Blocked", "Parried", "GuardBroken"], "missIs": "FAIL", "startWithinTicks": 20, "observeTicks": 200, "reactDelayTicks": 8, "reactStates": [], "minOppDamage": 0.0, "maxAttempts": 2, "requireClip": true },
+    { "name": "guardL", "kind": "guard", "side": "left", "holdS": 16.0, "minContacts": 2, "enterWithinTicks": 20, "poseClipContains": "guard", "recheckGuardTicks": 6 },
+    { "name": "guardR", "kind": "guard", "side": "right", "holdS": 16.0, "minContacts": 2, "enterWithinTicks": 20, "poseClipContains": "guard", "recheckGuardTicks": 6 },
+    { "name": "guardUp", "kind": "guard", "side": "top", "holdS": 16.0, "minContacts": 2, "enterWithinTicks": 20, "poseClipContains": "guard", "recheckGuardTicks": 6 },
+    { "name": "guardLow", "kind": "guard", "side": "low", "holdS": 16.0, "minContacts": 2, "enterWithinTicks": 20, "poseClipContains": "guard", "recheckGuardTicks": 6, "expectDistinctSide": true },
+    { "name": "guardC", "kind": "guard", "side": "centre", "holdS": 16.0, "minContacts": 2, "enterWithinTicks": 20, "poseClipContains": "guard", "recheckGuardTicks": 6 },
+    { "name": "parry", "kind": "parry", "holdS": 30.0, "maxAttempts": 4, "raiseWhenWindupLeftTicks": 8, "holdAfterTicks": 40, "allowResults": ["Parried"], "needBlockedIsFail": true },
+    { "name": "dodge", "kind": "dodge", "press": "roll", "dirName": "forward", "expectKind": "roll", "stateWithinTicks": 12, "observeTicks": 60, "minTravelM": 1.5, "maxAttempts": 2 },
+    { "name": "backstep", "kind": "dodge", "press": "backstep", "dirName": "back", "expectKind": "backstep", "stateWithinTicks": 12, "observeTicks": 60, "minTravelM": 0.8, "maxAttempts": 2 },
+    { "name": "sidestepL", "kind": "dodge", "press": "sidestepL", "dirName": "left", "expectKind": "sidestep", "stateWithinTicks": 12, "observeTicks": 60, "minTravelM": 0.8, "maxAttempts": 2 },
+    { "name": "sidestepR", "kind": "dodge", "press": "sidestepR", "dirName": "right", "expectKind": "sidestep", "stateWithinTicks": 12, "observeTicks": 60, "minTravelM": 0.8, "maxAttempts": 2 },
+    { "name": "hitreact", "kind": "hitreact", "holdS": 25.0, "reactWithinTicks": 20, "reactStates": ["Stagger", "Down"], "needDirection": true }
+  ]
+}

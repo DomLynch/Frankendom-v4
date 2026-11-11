@@ -181,7 +181,7 @@ public static class FlowTable
             if (rig && InputMap.AnyDown("lock", Keys(ref lockKeys, ref lockKeysSrc, d.lockOn.keys, new[] { KeyCode.Tab }))) ToggleLock(rig, df);
             if (df) df.lockFacing = FacingLocked(rig, df);
         }
-        if (d.enabled && d.riposte.enabled && df && InputMap.AnyDown("riposte", Keys(ref ripKeys, ref ripKeysSrc, d.riposte.keys, new[] { KeyCode.B }))) df.PressRiposte();
+        LockSwitch.PlayerInput(rig, df); /* LOCKON v1 */ if (d.enabled && d.riposte.enabled && df && InputMap.AnyDown("riposte", Keys(ref ripKeys, ref ripKeysSrc, d.riposte.keys, new[] { KeyCode.B }))) df.PressRiposte();
     }
 
     static KeyCode[] lockKeys, ripKeys; static string[] lockKeysSrc, ripKeysSrc;

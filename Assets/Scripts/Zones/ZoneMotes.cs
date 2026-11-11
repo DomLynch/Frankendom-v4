@@ -48,7 +48,8 @@ public sealed class ZoneMotes : MonoBehaviour
     void Start() { StartCoroutine(Wait()); }
     System.Collections.IEnumerator Wait() { for (int i = 0; i < Mathf.Max(1, D.waitFrames); i++) yield return null; ready = true; }
 
-    int ZoneIndex(float z) { int n = D.rows.Length, i = 0; for (; i < n - 1; i++) if (z < D.rows[i].zTo) break; return i; }
+    int ZoneIndex(float z) { int n = D.rows.Length, i = 0; for (; i < n - 1; i++) if (z < D.rows[i].zTo) break; return i; }   // first match, kept for logs
+    bool RowOn(int i, float z) { var r = D.rows[i]; return z >= r.zFrom && (i == D.rows.Length - 1 || z < r.zTo); }   // VIS_SKY: a row emits inside its OWN [zFrom, zTo): two rows may share a range (dust + ember)
 
     Sys Make(ZoneMoteRow r)
     {
@@ -80,23 +81,23 @@ public sealed class ZoneMotes : MonoBehaviour
     {
         if (!ready || Time.unscaledTime < next) return; next = Time.unscaledTime + Mathf.Max(MinPoll, D.pollSeconds);
         var p = GameLoop.Player; bool live = p != null && ZoneRuntime.Owns && ZoneSpan.Live;
-        int cur = live ? ZoneIndex(p.transform.position.z) : -1;
+        float pz = live ? p.transform.position.z : 0f;
         if (live && sys.Count == 0) for (int i = 0; i < D.rows.Length; i++) sys.Add(null);
         var cam = Camera.main; Vector3 anchor = live ? p.transform.position : Vector3.zero; Vector3 fwd = Vector3.forward;
         if (cam != null) { anchor = cam.transform.position; fwd = cam.transform.forward; fwd.y = 0f; fwd = fwd.sqrMagnitude > SqrEps ? fwd.normalized : Vector3.forward; }
         float dt = Mathf.Max(MinPoll, D.pollSeconds), fade = Mathf.Max(MinFade, D.fadeSeconds);
         for (int i = 0; i < sys.Count; i++)
         {
-            var row = D.rows[i]; var s = sys[i];
+            var row = D.rows[i]; var s = sys[i]; bool on = live && RowOn(i, pz);
             if (s == null)
             {
-                if (i != cur) continue;
+                if (!on) continue;
                 if (failed.Contains(i)) continue; s = Make(row); if (s == null) { failed.Add(i); continue; }
                 sys[i] = s;
             }
-            float want = i == cur ? 1f : 0f; s.mul = Mathf.MoveTowards(s.mul, want, dt / fade);
+            float want = on ? 1f : 0f; s.mul = Mathf.MoveTowards(s.mul, want, dt / fade);
             var em = s.ps.emission; em.rateOverTimeMultiplier = s.baseRate * s.mul;
-            if (i == cur || s.mul > 0f)
+            if (on || s.mul > 0f)
             {
                 Vector3 c = anchor + fwd * s.row.forwardM; float gy = live ? p.transform.position.y : anchor.y;
                 s.ps.transform.position = new Vector3(c.x, gy, c.z);

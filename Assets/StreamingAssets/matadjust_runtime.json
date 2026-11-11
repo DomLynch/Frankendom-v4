@@ -1,0 +1,28 @@
+{
+    "_note": "MATADJUST runtime (laneDATA4). Applies the matAdjust rows of the 'source' json (hdrp_fixes.json) to the loaded materials at runtime, so a rock facet / clutter tint / colour / smoothness / normal edit is a HOT data copy instead of a scene chain. Absolute values (same as HdrpFixes), so a material that already has them (baked by the chain) is left untouched. enabled:false or this file missing = the code does nothing.",
+    "enabled": true,
+    "source": "hdrp_fixes.json",
+    "rows": [],
+    "_rowsNote": "optional extra rows with the same fields as hdrp_fixes.json matAdjust (match, color, normalScale, tiling, metallicMax, smoothnessMax, smoothnessMin, aoStrength, emissiveScale); applied AFTER the source rows, so they win.",
+    "caseSensitive": true,
+    "stripSuffixes": [" (Instance)"],
+    "epsilon": 0.0015,
+    "filePollSeconds": 1.0,
+    "fastPollSeconds": 0.5,
+    "fastSeconds": 8.0,
+    "rescanSeconds": 5.0,
+    "applyInEditor": false,
+    "cloneSuffix": " (MatAdjust)",
+    "logScans": true,
+    "props": {
+        "baseColor": ["_BaseColor"],
+        "normalScale": ["_NormalScale"],
+        "textures": ["_BaseColorMap", "_NormalMap", "_MaskMap", "_HeightMap"],
+        "metallicMax": ["_MetallicRemapMax"],
+        "smoothnessMax": ["_SmoothnessRemapMax"],
+        "smoothnessMin": ["_SmoothnessRemapMin"],
+        "aoMin": ["_AORemapMin"],
+        "emissiveColor": ["_EmissiveColor"],
+        "emissiveMap": ["_EmissiveColorMap"]
+    }
+}

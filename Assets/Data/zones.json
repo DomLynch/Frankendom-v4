@@ -376,6 +376,33 @@
             25.0
           ],
           "yaw": 0
+        },
+        {
+          "id": "bandit_z1_a_1",
+          "pos": [
+            6.47,
+            20.95
+          ],
+          "yaw": 224.8,
+          "note": "NPC15PLACE z1_a member 1 (NpcChainWarden): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\")"
+        },
+        {
+          "id": "bandit_z1_a_2",
+          "pos": [
+            6.09,
+            18.88
+          ],
+          "yaw": 227.5,
+          "note": "NPC15PLACE z1_a member 2 (NpcSlagCrossbowman): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\")"
+        },
+        {
+          "id": "bandit_z1_a_3",
+          "pos": [
+            9.0,
+            18.6
+          ],
+          "yaw": 212.0,
+          "note": "NPC15PLACE z1_a member 3 (NpcPitGladiator): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\") | NPC6ROWS fixup: moved from [9.17, 20.67] (clutter cluster added to props_layout after the Z12 solve)"
         }
       ],
       "spawns": [
@@ -415,6 +442,66 @@
           "needs": "a second spot and a second Pitborn instance room; Dom decision: stronger Pitborn rows as roaming camp, or new weaker creatures (see MANIFEST)",
           "hpMul": 1,
           "damageMul": 1
+        },
+        {
+          "id": "bandit_z1_a_1",
+          "enabled": true,
+          "spot": "bandit_z1_a_1",
+          "picks": [
+            {
+              "creature": "NpcChainWarden",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcchainwarden_z1",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 0.8,
+          "damageMul": 0.36,
+          "difficulty": 6,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcChainWarden.prefab; wakes only after the z1_pitborn boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z1_a_2",
+          "enabled": true,
+          "spot": "bandit_z1_a_2",
+          "picks": [
+            {
+              "creature": "NpcSlagCrossbowman",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcslagcrossbowman_z1",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 0.8,
+          "damageMul": 0.27,
+          "difficulty": 4,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcSlagCrossbowman.prefab; wakes only after the z1_pitborn boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z1_a_3",
+          "enabled": true,
+          "spot": "bandit_z1_a_3",
+          "picks": [
+            {
+              "creature": "NpcPitGladiator",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcpitgladiator_z1",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 0.8,
+          "damageMul": 0.315,
+          "difficulty": 4,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcPitGladiator.prefab; wakes only after the z1_pitborn boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         }
       ],
       "services": [
@@ -582,6 +669,33 @@
           ],
           "yaw": 0.0,
           "note": "S1 GROUNDBITE candidate ambush spot (lane x +-1.2, z 38.6..44.4: before the boss ring z 45.7, boss stand 0/53)"
+        },
+        {
+          "id": "bandit_z2_a_1",
+          "pos": [
+            -5.74,
+            42.11
+          ],
+          "yaw": 146.5,
+          "note": "NPC15PLACE z2_a member 1 (NpcReedSkirmisher): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
+        },
+        {
+          "id": "bandit_z2_a_2",
+          "pos": [
+            -8.24,
+            42.15
+          ],
+          "yaw": 99.9,
+          "note": "NPC15PLACE z2_a member 2 (NpcCrocWarrior): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
+        },
+        {
+          "id": "bandit_z2_a_3",
+          "pos": [
+            -7.91,
+            39.95
+          ],
+          "yaw": 111.0,
+          "note": "NPC15PLACE z2_a member 3 (NpcEmbalmerCultist): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
         }
       ],
       "spawns": [
@@ -598,7 +712,7 @@
           "ladderRow": "sobek",
           "respawnMinS": 180,
           "respawnMaxS": 180,
-          "aggro": 8.0,
+          "aggro": 5.5,
           "leash": 26.0,
           "hpMul": 1.0,
           "damageMul": 1.0,
@@ -622,6 +736,66 @@
           "hpMul": 0.2,
           "damageMul": 0.4,
           "difficulty": 4
+        },
+        {
+          "id": "bandit_z2_a_1",
+          "enabled": true,
+          "spot": "bandit_z2_a_1",
+          "picks": [
+            {
+              "creature": "NpcReedSkirmisher",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcreedskirmisher_z2",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 0.8492,
+          "damageMul": 0.648,
+          "difficulty": 6,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcReedSkirmisher.prefab; wakes only after the z2_sobek boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z2_a_2",
+          "enabled": true,
+          "spot": "bandit_z2_a_2",
+          "picks": [
+            {
+              "creature": "NpcCrocWarrior",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npccrocwarrior_z2",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 0.8492,
+          "damageMul": 0.567,
+          "difficulty": 4,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcCrocWarrior.prefab; wakes only after the z2_sobek boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z2_a_3",
+          "enabled": true,
+          "spot": "bandit_z2_a_3",
+          "picks": [
+            {
+              "creature": "NpcEmbalmerCultist",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcembalmercultist_z2",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 0.8492,
+          "damageMul": 0.567,
+          "difficulty": 4,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcEmbalmerCultist.prefab; wakes only after the z2_sobek boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         }
       ],
       "services": [],
@@ -970,7 +1144,7 @@
           "ladderRow": "grendel",
           "respawnMinS": 180,
           "respawnMaxS": 180,
-          "aggro": 8.0,
+          "aggro": 5.5,
           "leash": 26.0,
           "hpMul": 1.0,
           "damageMul": 1.0,
@@ -1286,7 +1460,7 @@
           "ladderRow": "humbaba",
           "respawnMinS": 180,
           "respawnMaxS": 180,
-          "aggro": 9.0,
+          "aggro": 7.5,
           "leash": 30.0,
           "hpMul": 1.0,
           "damageMul": 1.0,

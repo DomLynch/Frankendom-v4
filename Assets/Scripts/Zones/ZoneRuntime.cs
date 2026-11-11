@@ -292,7 +292,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         Live cur = TargetOk(player.opponent) ? Find(player.opponent) : null, best = null; float bd = float.MaxValue, cd = cur != null ? Flat(player.transform.position, cur.df.transform.position) : float.MaxValue;
         foreach (var q in live.Values) { if (q.df == null || q.df.Dead || !Fighting(q)) continue; float d = Flat(player.transform.position, q.df.transform.position);   /* TWOFIGHT v1 */ if (d < bd) { bd = d; best = q; } }
         if (best == null) return;
-        if (cur != null && best != cur && bd + T.engage.retargetMarginM > cd) best = cur;
+        if (cur != null && best != cur && bd + T.engage.retargetMarginM > cd) best = cur; best = LockPinOverride(best);   /* LOCKON v1 */
         if (best.df == player.opponent && !force) return;
         player.opponent = best.df; GameLoop.Enemy = best.df; FoeId = best.creature;   // TWOFIGHT v1
         var rg = FindFirstObjectByType<CameraRig>(); if (rg != null) { rg.enemy = best.df.transform; rg.enemyHp = best.df.GetComponent<Health>(); }

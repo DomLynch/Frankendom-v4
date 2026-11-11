@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 [Serializable] public class CampLightRow { public string name = ""; public float[] pos; public float kelvin = 2200f, candela = 3500f, range = 5f, volumetricDimmer = 0f, activeRadiusM = 16f; public int layerMask = 65535; public FurnaceFlicker.Noise flicker; }
 [Serializable] public class CampLightData { public bool enabled = false, log = true; public int waitFrames = 20; public float pollSeconds = 0.25f; public CampLightRow[] rows = new CampLightRow[0]; }
 
-public sealed class CampLights : MonoBehaviour
+public sealed partial class CampLights : MonoBehaviour
 {
     static CampLights inst; CampLightData D; readonly List<GameObject> made = new List<GameObject>(); readonly List<CampLightRow> rowOf = new List<CampLightRow>(); float next;
 

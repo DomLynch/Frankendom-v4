@@ -205,7 +205,7 @@
       {
             "match": "clutter_",
             "normalScale": -1,
-            "color": [0.58, 0.54, 0.5],
+            "color": [0.3, 0.26, 0.21],
         "tiling": -1,
             "metallicMax": -1,
             "smoothnessMax": -1,
@@ -218,8 +218,8 @@
             "normalScale": -1,
             "color": [0.3, 0.22, 0.15],
         "tiling": -1,
-            "metallicMax": -1,
-            "smoothnessMax": -1,
+            "metallicMax": 0.05,
+            "smoothnessMax": 0.4,
             "smoothnessMin": -1,
             "aoStrength": -1,
             "emissiveScale": -1

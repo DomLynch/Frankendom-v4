@@ -1,0 +1,467 @@
+{
+  "_about": "laneVIS_ground v1 (ZoneGroundMat.cs, CODE once then HOT). Per-zone ground MATERIAL: under each zoneRoot the renderers whose material name contains matchMaterial (and not excludeMaterial) get ONE shared clone with ABSOLUTE _BaseColor = tint (the original assets are _BaseColor 1,1,1, so this also replaces the wetness.json 0.6 darkening on the ground), smoothness remap min/max, normal scale, detail albedo/normal/smoothness scale (the _DETAIL_MAP keyword is already on both ground materials: macro blotches, no shader variant), tiling multipliers (relative to the existing _BaseColorMap_ST / _DetailMap_ST) and an optional texture swap from StreamingAssets/groundmat. mix 0..1 blends tint and tiling from today (log-space) so Dom can dial a look. -1 = leave. enabled=false ships dark.",
+  "enabled": true,
+  "log": true,
+  "rescanSeconds": 3.0,
+  "settledRescanSeconds": 20.0,
+  "maxPerPoll": 60,
+  "texDir": "groundmat",
+  "cloneSuffix": " (zgm)",
+  "rows": [
+    {
+      "id": "z1_pit_ash_slag",
+      "zoneRoot": "Arena",
+      "matchMaterial": [
+        "M_WorldTerrain",
+        "plate_top",
+        "ground_paving"
+      ],
+      "excludeMaterial": [
+        "plate_side",
+        "Triplanar"
+      ],
+      "enabled": false,
+      "mix": 1.0,
+      "tint": [
+        0.95,
+        0.85,
+        0.75
+      ],
+      "smoothMin": 0.0,
+      "smoothMax": 0.3,
+      "normalScale": -1,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 1.0,
+      "baseColorMap": "",
+      "normalMap": "",
+      "maskMap": "",
+      "_look": "charcoal ash and slag, cracked paving stays (Hades gate art target): macro blotches + a warm cool-slag tint only"
+    },
+    {
+      "id": "z2_sobek_wet_mud",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "M_WorldTerrain",
+        "plate_top",
+        "ground_paving"
+      ],
+      "excludeMaterial": [
+        "plate_side",
+        "Triplanar"
+      ],
+      "enabled": false,
+      "mix": 1.0,
+      "tint": [
+        1.22,
+        1.39,
+        1.13
+      ],
+      "smoothMin": 0.85,
+      "smoothMax": 1.0,
+      "normalScale": 0.9,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 1.45,
+      "baseColorMap": "mud_albedo.png",
+      "normalMap": "mud_normal.png",
+      "maskMap": "mud_mask.png",
+      "_look": "wet teal-brown mud, whole ground smoothness 0.90-0.97 so SSR (default min 0.9) mirrors the eclipse and the horizon at grazing angles; puddle decals sit on top"
+    },
+    {
+      "id": "z3_camp_trodden_earth",
+      "zoneRoot": "HubZone",
+      "matchMaterial": [
+        "M_WorldTerrain",
+        "plate_top",
+        "ground_paving"
+      ],
+      "excludeMaterial": [
+        "plate_side",
+        "Triplanar"
+      ],
+      "enabled": true,
+      "mix": 1.0,
+      "tint": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "smoothMin": 0.0,
+      "smoothMax": 0.5,
+      "normalScale": 1.3,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 1.45,
+      "baseColorMap": "camp_dirt_albedo.png",
+      "normalMap": "trodden_earth_normal.png",
+      "maskMap": "trodden_earth_mask.png",
+      "_look": "trodden warm earth, rough, ruts come from decals"
+    },
+    {
+      "id": "z4_grendel_bone_silt",
+      "zoneRoot": "Zone4",
+      "matchMaterial": [
+        "M_WorldTerrain",
+        "plate_top",
+        "ground_paving"
+      ],
+      "excludeMaterial": [
+        "plate_side",
+        "Triplanar"
+      ],
+      "enabled": false,
+      "mix": 1.0,
+      "tint": [
+        4.5,
+        5.85,
+        6.12
+      ],
+      "smoothMin": 0.0,
+      "smoothMax": 0.45,
+      "normalScale": 0.9,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 1.45,
+      "baseColorMap": "mud_albedo.png",
+      "normalMap": "mud_normal.png",
+      "maskMap": "mud_mask.png",
+      "_look": "bone-white silt (mud set relit pale), bog/peat decal pools (ENV2D) read darker on it"
+    },
+    {
+      "id": "z5_humbaba_duff_roots",
+      "zoneRoot": "Zone5",
+      "matchMaterial": [
+        "M_WorldTerrain",
+        "plate_top",
+        "ground_paving"
+      ],
+      "excludeMaterial": [
+        "plate_side",
+        "Triplanar"
+      ],
+      "enabled": false,
+      "mix": 1.0,
+      "tint": [
+        0.58,
+        0.5,
+        0.38
+      ],
+      "smoothMin": 0.0,
+      "smoothMax": 0.25,
+      "normalScale": 1.3,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 1.45,
+      "baseColorMap": "roots_moss_albedo.png",
+      "normalMap": "roots_moss_normal.png",
+      "maskMap": "roots_moss_mask.png",
+      "_look": "needle duff and roots, rust-olive, roots-moss set"
+    },
+    {
+      "id": "z6_erlking_ash",
+      "zoneRoot": "Zone6",
+      "matchMaterial": [
+        "M_WorldTerrain",
+        "plate_top",
+        "ground_paving"
+      ],
+      "excludeMaterial": [
+        "plate_side",
+        "Triplanar"
+      ],
+      "enabled": false,
+      "mix": 1.0,
+      "tint": [
+        1.54,
+        1.49,
+        1.44
+      ],
+      "smoothMin": 0.0,
+      "smoothMax": 1.0,
+      "normalScale": 0.9,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 1.45,
+      "baseColorMap": "ash_leaves_albedo.png",
+      "normalMap": "ash_leaves_normal.png",
+      "maskMap": "ash_leaves_mask.png",
+      "_look": "pale ash and dead leaves under the red light"
+    },
+    {
+      "id": "z7_market_worn_earth",
+      "zoneRoot": "Zone7",
+      "matchMaterial": [
+        "M_WorldTerrain",
+        "plate_top",
+        "ground_paving"
+      ],
+      "excludeMaterial": [
+        "plate_side",
+        "Triplanar"
+      ],
+      "enabled": true,
+      "mix": 1.0,
+      "tint": [
+        0.95,
+        0.8,
+        0.62
+      ],
+      "smoothMin": 0.0,
+      "smoothMax": 0.3,
+      "normalScale": -1,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 2.5,
+      "baseColorMap": "market_dust_albedo.png",
+      "normalMap": "market_dust_normal.png",
+      "maskMap": "market_dust_mask.png",
+      "_look": "worn earth over flagstone, paving kept (z7 market), tint + macro only"
+    },
+    {
+      "id": "t_z1_pit_ash_slag",
+      "zoneRoot": "Arena",
+      "matchMaterial": [
+        "M_WorldTerrain"
+      ],
+      "excludeMaterial": [
+        "Triplanar"
+      ],
+      "enabled": true,
+      "mix": 1.0,
+      "tint": [
+        0.222,
+        0.173,
+        0.16
+      ],
+      "smoothMin": 0.05,
+      "smoothMax": 0.4,
+      "normalScale": 0.9,
+      "detailAlbedo": 1.5,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 3.0,
+      "tilingMul": 4.4,
+      "baseColorMap": "pit_basalt_albedo.png",
+      "normalMap": "pit_basalt_normal.png",
+      "maskMap": "pit_basalt_mask.png",
+      "_look": "scorched basalt flagstones, furnace-lit slag (Hades gate art target): arena_flagstone set, ~1.8 m slabs (terrain UV 1 = 64 m; tilingMul 4.4 -> 14.5 m texture, 8 slabs across), albedo median 52/45/40 warm, dark joints, smoothness 0.05-0.40 dry. Judge from the lock cam; mix 0.6 dials back toward the old slab; tilingMul 3 = 2.7 m slabs.",
+      "targetRoot": "WorldTerrain",
+      "unlessActive": [],
+      "zMin": -30,
+      "zMax": 30
+    },
+    {
+      "id": "t_z2_sobek_wet_mud",
+      "zoneRoot": "Zone2",
+      "matchMaterial": [
+        "M_WorldTerrain"
+      ],
+      "excludeMaterial": [
+        "Triplanar"
+      ],
+      "enabled": true,
+      "mix": 0.8,
+      "tint": [
+        1.22,
+        1.39,
+        1.13
+      ],
+      "smoothMin": 0.85,
+      "smoothMax": 1.0,
+      "normalScale": 0.9,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 1.45,
+      "baseColorMap": "mud_albedo.png",
+      "normalMap": "mud_normal.png",
+      "maskMap": "mud_mask.png",
+      "_look": "wet teal-brown mud, whole ground smoothness 0.90-0.97 so SSR (default min 0.9) mirrors the eclipse and the horizon at grazing angles; puddle decals sit on top",
+      "targetRoot": "WorldTerrain",
+      "zMin": 30,
+      "zMax": 78,
+      "unlessActive": []
+    },
+    {
+      "id": "t_z3_camp_trodden_earth",
+      "zoneRoot": "HubZone",
+      "matchMaterial": [
+        "M_WorldTerrain"
+      ],
+      "excludeMaterial": [
+        "Triplanar"
+      ],
+      "enabled": true,
+      "mix": 1.0,
+      "tint": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "smoothMin": 0.0,
+      "smoothMax": 0.5,
+      "normalScale": 1.3,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 1.45,
+      "baseColorMap": "camp_dirt_albedo.png",
+      "normalMap": "trodden_earth_normal.png",
+      "maskMap": "trodden_earth_mask.png",
+      "_look": "trodden warm earth, rough, ruts come from decals",
+      "targetRoot": "WorldTerrain",
+      "zMin": 78,
+      "zMax": 112,
+      "unlessActive": []
+    },
+    {
+      "id": "t_z4_grendel_bone_silt",
+      "zoneRoot": "Zone4",
+      "matchMaterial": [
+        "M_WorldTerrain"
+      ],
+      "excludeMaterial": [
+        "Triplanar"
+      ],
+      "enabled": true,
+      "mix": 1.0,
+      "tint": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "smoothMin": 0.0,
+      "smoothMax": 0.45,
+      "normalScale": 0.9,
+      "detailAlbedo": 0.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 3.0,
+      "baseColorMap": "grendel_silt_albedo_v3.png",
+      "normalMap": "grendel_silt_normal.png",
+      "maskMap": "grendel_silt_mask.png",
+      "_look": "v2 pre-graded pale wet bone-grey silt; tint neutral 1.0, grade is in the albedo",
+      "targetRoot": "WorldTerrain",
+      "zMin": 112,
+      "zMax": 180,
+      "unlessActive": []
+    },
+    {
+      "id": "t_z5_humbaba_duff_roots",
+      "zoneRoot": "Zone5",
+      "matchMaterial": [
+        "M_WorldTerrain"
+      ],
+      "excludeMaterial": [
+        "Triplanar"
+      ],
+      "enabled": true,
+      "mix": 1.0,
+      "tint": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "smoothMin": 0.0,
+      "smoothMax": 0.3,
+      "normalScale": 1.4,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 1.45,
+      "baseColorMap": "humbaba_litter_albedo.png",
+      "normalMap": "roots_moss_normal.png",
+      "maskMap": "roots_moss_mask.png",
+      "_look": "needle duff and roots, rust-olive, roots-moss set",
+      "targetRoot": "WorldTerrain",
+      "zMin": 180,
+      "zMax": 248,
+      "unlessActive": []
+    },
+    {
+      "id": "t_z6_erlking_ash",
+      "zoneRoot": "Zone6",
+      "matchMaterial": [
+        "M_WorldTerrain"
+      ],
+      "excludeMaterial": [
+        "Triplanar"
+      ],
+      "enabled": true,
+      "mix": 1.0,
+      "tint": [
+        0.4,
+        0.4,
+        0.4
+      ],
+      "smoothMin": 0.0,
+      "smoothMax": 0.25,
+      "normalScale": 0.9,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 1.45,
+      "baseColorMap": "ash_leaves_albedo.png",
+      "normalMap": "ash_leaves_normal.png",
+      "maskMap": "ash_leaves_mask.png",
+      "_look": "pale ash and dead leaves under the red light",
+      "targetRoot": "WorldTerrain",
+      "zMin": 248,
+      "zMax": 320,
+      "unlessActive": []
+    },
+    {
+      "id": "t_z7_market_worn_earth",
+      "zoneRoot": "Zone7",
+      "matchMaterial": [
+        "M_WorldTerrain"
+      ],
+      "excludeMaterial": [
+        "Triplanar"
+      ],
+      "enabled": true,
+      "mix": 0.8,
+      "tint": [
+        4.982,
+        4.482,
+        3.527
+      ],
+      "smoothMin": 0.0,
+      "smoothMax": 0.3,
+      "normalScale": -1,
+      "detailAlbedo": 2.0,
+      "detailNormal": -1,
+      "detailSmooth": -1,
+      "detailTilingMul": 0.25,
+      "tilingMul": 2.5,
+      "baseColorMap": "market_dust_albedo.png",
+      "normalMap": "market_dust_normal.png",
+      "maskMap": "market_dust_mask.png",
+      "_look": "market_dust from river_mud as-is (fit only); tint gain solved so albedo median after mix ~(104, 88, 68); tilingMul 2.5 dial by eye",
+      "targetRoot": "WorldTerrain",
+      "zMin": 320,
+      "zMax": 380,
+      "unlessActive": []
+    }
+  ]
+}

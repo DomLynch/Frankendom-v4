@@ -818,7 +818,7 @@
         87.5
       ],
       "kelvin": 2400.0,
-      "candela": 40000.0,
+      "candela": 26000,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 26.0,
@@ -898,6 +898,144 @@
         "frequency": 1.8,
         "octaves": 2,
         "seed": 105.0,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V16R_Z4_BossRimL",
+      "pos": [
+        -5.0,
+        3.3,
+        132.0
+      ],
+      "kelvin": 12000.0,
+      "candela": 18000.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 34.0,
+      "layerMask": 64,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.0,
+        "frequency": 1.0,
+        "octaves": 1,
+        "seed": 126.0,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V16R_Z4_BossRimR",
+      "pos": [
+        5.0,
+        3.3,
+        132.0
+      ],
+      "kelvin": 12000.0,
+      "candela": 18000.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 34.0,
+      "layerMask": 64,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.0,
+        "frequency": 1.0,
+        "octaves": 1,
+        "seed": 129.0,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V17P_Z6Pool_0",
+      "pos": [
+        26.01,
+        3.2,
+        301.78
+      ],
+      "kelvin": 2400.0,
+      "candela": 60000.0,
+      "range": 14.0,
+      "volumetricDimmer": 0.5,
+      "activeRadiusM": 70.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.05,
+        "frequency": 0.9,
+        "octaves": 2,
+        "seed": 121.0,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V17P_Z6Pool_1",
+      "pos": [
+        37.51,
+        3.2,
+        293.61
+      ],
+      "kelvin": 2400.0,
+      "candela": 60000.0,
+      "range": 14.0,
+      "volumetricDimmer": 0.5,
+      "activeRadiusM": 70.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.05,
+        "frequency": 0.9,
+        "octaves": 2,
+        "seed": 125.1,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V17P_Z6Pool_2",
+      "pos": [
+        26.98,
+        2.6,
+        270.12
+      ],
+      "kelvin": 2400.0,
+      "candela": 45000.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.5,
+      "activeRadiusM": 45.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.05,
+        "frequency": 0.9,
+        "octaves": 2,
+        "seed": 129.2,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "V17P_Z6GibbetPool",
+      "pos": [
+        -20.95,
+        2.6,
+        280.35
+      ],
+      "kelvin": 2400.0,
+      "candela": 45000.0,
+      "range": 11.0,
+      "volumetricDimmer": 0.5,
+      "activeRadiusM": 50.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.06,
+        "frequency": 0.9,
+        "octaves": 2,
+        "seed": 161.0,
         "lacunarity": 2.0,
         "gain": 0.5
       }

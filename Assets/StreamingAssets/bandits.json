@@ -1106,6 +1106,60 @@
         ],
         "minFightDistM": 0.0
       }
+    },
+    {
+      "id": "z1_a",
+      "zone": "pit_yard",
+      "side": "mid",
+      "anchor": "none (placed by laneNPC15PLACE)",
+      "members": [
+        {
+          "type": "NpcChainWarden"
+        },
+        {
+          "type": "NpcSlagCrossbowman"
+        },
+        {
+          "type": "NpcPitGladiator"
+        }
+      ],
+      "needsGate": true,
+      "placed": {
+        "by": "laneNPC15PLACE",
+        "ladderStep": "z1 ring 6 (arrive 8, core 2)",
+        "anchor": [
+          7.5,
+          20.0
+        ],
+        "minFightDistM": 0.0
+      }
+    },
+    {
+      "id": "z2_a",
+      "zone": "sobek_reach",
+      "side": "mid",
+      "anchor": "none (placed by laneNPC15PLACE)",
+      "members": [
+        {
+          "type": "NpcReedSkirmisher"
+        },
+        {
+          "type": "NpcCrocWarrior"
+        },
+        {
+          "type": "NpcEmbalmerCultist"
+        }
+      ],
+      "needsGate": true,
+      "placed": {
+        "by": "laneNPC15PLACE",
+        "ladderStep": "z2 ring 11.5 (arrive 8 from gate_pit, core 2)",
+        "anchor": [
+          -7.0,
+          41.5
+        ],
+        "minFightDistM": 0.0
+      }
     }
   ],
   "weaponTemplate": "knight_sword",

@@ -18990,13 +18990,13 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -7.879,
-    -0.08,
-    13.793
+    -7.66,
+    -0.147,
+    11.775
    ],
    "rotEuler": [
     0,
-    226.9,
+    4.1,
     0
    ],
    "scale": 0.963,
@@ -19007,28 +19007,28 @@
     "zone1",
     "cluster"
    ],
-   "note": "CLUTTER cluster 0 | pit_yard | footprint 0.80x0.33 h 0.39 | foot range 0.00 | seen by arrive_from_sobek at 14 m ndcy -0.25 | base of hero_boulder_B",
+   "note": "CLUTTER cluster 0 | pit_yard | footprint 0.80x0.33 h 0.39 | foot range 0.00 | seen by arrive_from_sobek at 15 m ndcy -0.19 | base of hero_boulder_A",
    "disabled": false
   },
   {
    "id": "clutter_z1_2",
    "group": "Props",
    "library": "clutter",
-   "asset": "clutter_bone_pile",
+   "asset": "clutter_rubble",
    "lodProfile": "near_hq",
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -8.183,
-    -0.083,
-    13.171
+    -8.357,
+    -0.132,
+    11.651
    ],
    "rotEuler": [
     0,
-    211.0,
+    135.6,
     0
    ],
-   "scale": 1.014,
+   "scale": 0.548,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -19036,7 +19036,7 @@
     "zone1",
     "cluster"
    ],
-   "note": "CLUTTER cluster 0 | pit_yard | footprint 0.60x0.25 h 0.35 | foot range 0.00 | seen by arrive_from_sobek at 14 m ndcy -0.24 | base of hero_boulder_B",
+   "note": "CLUTTER cluster 0 | pit_yard | footprint 0.55x0.33 h 0.33 | foot range 0.01 | seen by arrive_from_sobek at 16 m ndcy -0.19 | base of hero_boulder_A",
    "disabled": false
   },
   {
@@ -19048,16 +19048,16 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    8.811,
-    -0.107,
-    20.861
+    7.8,
+    -0.173,
+    9.92
    ],
    "rotEuler": [
     0,
-    168.3,
+    306.1,
     0
    ],
-   "scale": 1.07,
+   "scale": 0.99,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -19065,7 +19065,7 @@
     "zone1",
     "cluster"
    ],
-   "note": "CLUTTER cluster 1 | pit_yard | footprint 1.07x0.65 h 0.64 | foot range 0.03 | seen by start at 18 m ndcy -0.12 | base of hero_barricade_stakes",
+   "note": "CLUTTER cluster 1 | pit_yard | footprint 0.99x0.60 h 0.59 | foot range 0.00 | seen by arrive_from_sobek at 17 m ndcy -0.13 | base of hero_boulder_C",
    "disabled": false
   },
   {
@@ -19077,16 +19077,16 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    8.616,
-    -0.095,
-    21.793
+    7.514,
+    -0.13,
+    9.303
    ],
    "rotEuler": [
     0,
-    94.3,
+    182.3,
     0
    ],
-   "scale": 1.131,
+   "scale": 1.158,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -19094,40 +19094,11 @@
     "zone1",
     "cluster"
    ],
-   "note": "CLUTTER cluster 1 | pit_yard | footprint 0.67x0.28 h 0.40 | foot range 0.01 | seen by start at 19 m ndcy -0.11 | base of hero_barricade_stakes",
+   "note": "CLUTTER cluster 1 | pit_yard | footprint 0.69x0.28 h 0.41 | foot range 0.00 | seen by arrive_from_sobek at 17 m ndcy -0.13 | base of hero_boulder_C",
    "disabled": false
   },
   {
    "id": "clutter_z1_5",
-   "group": "Props",
-   "library": "clutter",
-   "asset": "clutter_sword_lying",
-   "lodProfile": "near_hq",
-   "ground": "bottom",
-   "yBase": "world",
-   "pos": [
-    7.729,
-    -0.08,
-    21.301
-   ],
-   "rotEuler": [
-    0,
-    55.9,
-    0
-   ],
-   "scale": 0.863,
-   "shadowsOff": false,
-   "tags": [
-    "clutter",
-    "clutterkit",
-    "zone1",
-    "cluster"
-   ],
-   "note": "CLUTTER cluster 1 | pit_yard | footprint 0.86x0.41 h 0.15 | foot range 0.00 | seen by start at 18 m ndcy -0.14 | base of hero_barricade_stakes",
-   "disabled": false
-  },
-  {
-   "id": "clutter_z1_6",
    "group": "Props",
    "library": "clutter",
    "asset": "clutter_bone_pile_big",
@@ -19135,24 +19106,53 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    10.537,
-    -0.263,
-    7.98
+    8.348,
+    -0.154,
+    22.61
    ],
    "rotEuler": [
     0,
-    282.2,
+    3.3,
     0
    ],
-   "scale": 0.9,
+   "scale": 1.115,
    "shadowsOff": false,
    "tags": [
     "clutter",
     "clutterkit",
     "zone1",
-    "scatter"
+    "cluster"
    ],
-   "note": "CLUTTER single | pit_yard | footprint 0.75x0.31 h 0.36 | foot range 0.06 | seen by arrive_from_sobek at 20 m ndcy -0.13",
+   "note": "CLUTTER cluster 2 | pit_yard | footprint 0.93x0.38 h 0.45 | foot range 0.01 | seen by start at 20 m ndcy -0.10 | base of hero_barricade_stakes",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z1_6",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    8.445,
+    -0.123,
+    23.319
+   ],
+   "rotEuler": [
+    0,
+    272.7,
+    0
+   ],
+   "scale": 1.189,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 2 | pit_yard | footprint 0.71x0.29 h 0.42 | foot range 0.01 | seen by start at 20 m ndcy -0.09 | base of hero_barricade_stakes",
    "disabled": false
   },
   {
@@ -19164,57 +19164,28 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -8.456,
-    -0.09,
-    18.501
+    -11.766,
+    -0.333,
+    6.28
    ],
    "rotEuler": [
     0,
-    67.9,
+    233.1,
     0
    ],
-   "scale": 0.972,
+   "scale": 0.939,
    "shadowsOff": false,
    "tags": [
     "clutter",
     "clutterkit",
     "zone1",
-    "scatter"
+    "cluster"
    ],
-   "note": "CLUTTER single | pit_yard | footprint 0.81x0.33 h 0.39 | foot range 0.01 | seen by start at 16 m ndcy -0.18",
+   "note": "CLUTTER cluster 3 | pit_yard | footprint 0.78x0.32 h 0.38 | foot range 0.13 | seen by arrive_from_sobek at 22 m ndcy -0.11 | base of worldnear_hero_boulder_B_lite_1",
    "disabled": false
   },
   {
    "id": "clutter_z1_8",
-   "group": "Props",
-   "library": "clutter",
-   "asset": "clutter_rubble",
-   "lodProfile": "near_hq",
-   "ground": "bottom",
-   "yBase": "world",
-   "pos": [
-    -10.551,
-    -0.182,
-    7.185
-   ],
-   "rotEuler": [
-    0,
-    337.0,
-    0
-   ],
-   "scale": 0.78,
-   "shadowsOff": false,
-   "tags": [
-    "clutter",
-    "clutterkit",
-    "zone1",
-    "scatter"
-   ],
-   "note": "CLUTTER single | pit_yard | footprint 0.78x0.47 h 0.47 | foot range 0.02 | seen by arrive_from_sobek at 21 m ndcy -0.10",
-   "disabled": false
-  },
-  {
-   "id": "clutter_z1_9",
    "group": "Props",
    "library": "clutter",
    "asset": "clutter_bone_pile",
@@ -19222,16 +19193,74 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -7.42,
-    -0.08,
-    23.972
+    -12.18,
+    -0.383,
+    5.778
    ],
    "rotEuler": [
     0,
-    218.7,
+    139.7,
     0
    ],
-   "scale": 1.138,
+   "scale": 0.997,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 3 | pit_yard | footprint 0.59x0.25 h 0.35 | foot range 0.03 | seen by arrive_from_sobek at 23 m ndcy -0.11 | base of worldnear_hero_boulder_B_lite_1",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z1_9",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -11.559,
+    -0.359,
+    5.613
+   ],
+   "rotEuler": [
+    0,
+    80.1,
+    0
+   ],
+   "scale": 0.698,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 3 | pit_yard | footprint 0.70x0.42 h 0.42 | foot range 0.04 | seen by arrive_from_sobek at 23 m ndcy -0.10 | base of worldnear_hero_boulder_B_lite_1",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z1_10",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    7.557,
+    -0.145,
+    16.597
+   ],
+   "rotEuler": [
+    0,
+    285.3,
+    0
+   ],
+   "scale": 0.634,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -19239,7 +19268,7 @@
     "zone1",
     "scatter"
    ],
-   "note": "CLUTTER single | pit_yard | footprint 0.68x0.28 h 0.40 | foot range 0.00 | seen by start at 20 m ndcy -0.08",
+   "note": "CLUTTER single | pit_yard | footprint 0.63x0.39 h 0.38 | foot range 0.00 | seen by start at 14 m ndcy -0.24",
    "disabled": false
   }
  ],

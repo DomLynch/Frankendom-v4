@@ -6453,6 +6453,256 @@
    "seamDy": -0.0
   },
   {
+   "id": "z2back_worldmid_mid_spire_fallen_4",
+   "group": "Z2Ring1",
+   "library": "world_mid",
+   "asset": "mid_spire_fallen",
+   "lodProfile": "mid_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -40.04,
+    -1.3,
+    114.08
+   ],
+   "rotEuler": [
+    -0.6,
+    97.5,
+    0.6
+   ],
+   "scale": 0.948,
+   "shadowsOff": false,
+   "tags": [
+    "zone2",
+    "restore_dn"
+   ]
+  },
+  {
+   "id": "z2back_worldmid_mid_arch_broken_b_0",
+   "group": "Z2Ring1",
+   "library": "world_mid",
+   "asset": "mid_arch_broken_b",
+   "lodProfile": "mid_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -21.41,
+    -1.3,
+    78.73
+   ],
+   "rotEuler": [
+    -0.5,
+    338.2,
+    2.2
+   ],
+   "scale": 0.873,
+   "shadowsOff": false,
+   "tags": [
+    "zone2",
+    "restore_dn"
+   ]
+  },
+  {
+   "id": "z2back_worldmid_mid_slab_heap_a_5",
+   "group": "Z2Ring1",
+   "library": "world_mid",
+   "asset": "mid_slab_heap_a",
+   "lodProfile": "mid_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    35.34,
+    -1.3,
+    92.95
+   ],
+   "rotEuler": [
+    2.7,
+    341.8,
+    2.6
+   ],
+   "scale": 1.188,
+   "shadowsOff": false,
+   "tags": [
+    "zone2",
+    "restore_dn"
+   ]
+  },
+  {
+   "id": "z2back_worldbehind_mid_wall_lancets_12",
+   "group": "Z2Ring1",
+   "library": "world_mid",
+   "asset": "mid_wall_lancets",
+   "lodProfile": "mid_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -26.87,
+    -1.16,
+    125.98
+   ],
+   "rotEuler": [
+    -2.1,
+    77.1,
+    2.0
+   ],
+   "scale": 0.903,
+   "shadowsOff": true,
+   "tags": [
+    "zone2",
+    "restore_dn"
+   ]
+  },
+  {
+   "id": "z2back_worldbehind_mid_tower_stump_12",
+   "group": "Z2Ring1",
+   "library": "world_mid",
+   "asset": "mid_tower_stump",
+   "lodProfile": "mid_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    52.06,
+    -1.15,
+    108.21
+   ],
+   "rotEuler": [
+    -1.8,
+    48.1,
+    2.0
+   ],
+   "scale": 1.174,
+   "shadowsOff": true,
+   "tags": [
+    "zone2",
+    "restore_dn"
+   ]
+  },
+  {
+   "id": "z2back_worldbehind_mid_slab_heap_b_15",
+   "group": "Z2Ring1",
+   "library": "world_mid",
+   "asset": "mid_slab_heap_b",
+   "lodProfile": "mid_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    49.49,
+    -1.3,
+    119.72
+   ],
+   "rotEuler": [
+    0.6,
+    203.0,
+    -0.6
+   ],
+   "scale": 1.163,
+   "shadowsOff": true,
+   "tags": [
+    "zone2",
+    "restore_dn"
+   ]
+  },
+  {
+   "id": "z2back_worldbehind_mid_column_cluster_19",
+   "group": "Z2Ring1",
+   "library": "world_mid",
+   "asset": "mid_column_cluster",
+   "lodProfile": "mid_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -56.11,
+    -1.3,
+    117.86
+   ],
+   "rotEuler": [
+    0.6,
+    227.8,
+    -3.7
+   ],
+   "scale": 0.891,
+   "shadowsOff": true,
+   "tags": [
+    "zone2",
+    "restore_dn"
+   ]
+  },
+  {
+   "id": "z2back_worldbehind_mid_buttress_stub_13",
+   "group": "Z2Ring1",
+   "library": "world_mid",
+   "asset": "mid_buttress_stub",
+   "lodProfile": "mid_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    14.38,
+    -1.25,
+    94.13
+   ],
+   "rotEuler": [
+    -3.2,
+    291.2,
+    -0.6
+   ],
+   "scale": 1.134,
+   "shadowsOff": true,
+   "tags": [
+    "zone2",
+    "restore_dn"
+   ]
+  },
+  {
+   "id": "z2back_worldbehind_mid_arch_broken_b_15",
+   "group": "Z2Ring1",
+   "library": "world_mid",
+   "asset": "mid_arch_broken_b",
+   "lodProfile": "mid_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    22.43,
+    -1.11,
+    125.31
+   ],
+   "rotEuler": [
+    0.6,
+    210.8,
+    -1.7
+   ],
+   "scale": 1.137,
+   "shadowsOff": true,
+   "tags": [
+    "zone2",
+    "restore_dn"
+   ]
+  },
+  {
+   "id": "z2back_worldbehind_mid_arch_broken_b_14",
+   "group": "Z2Ring1",
+   "library": "world_mid",
+   "asset": "mid_arch_broken_b",
+   "lodProfile": "mid_ruin",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    22.48,
+    -1.3,
+    92.36
+   ],
+   "rotEuler": [
+    -1.4,
+    17.0,
+    1.3
+   ],
+   "scale": 0.897,
+   "shadowsOff": true,
+   "tags": [
+    "zone2",
+    "restore_dn"
+   ]
+  },
+  {
    "id": "clutter_z2_1",
    "group": "Z2Ring0",
    "library": "clutter",
@@ -6461,16 +6711,16 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    11.039,
-    -0.3,
-    60.053
+    -10.773,
+    -0.393,
+    55.178
    ],
    "rotEuler": [
     0,
-    150.0,
+    161.5,
     0
    ],
-   "scale": 0.963,
+   "scale": 1.2,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -6478,11 +6728,40 @@
     "zone2",
     "cluster"
    ],
-   "note": "CLUTTER cluster 0 | sobek_reach | footprint 0.96x0.59 h 0.58 | foot range 0.07 | seen by arrive_from_prev at 23 m ndcy -0.08 | base of z2h_sobek_obelisk",
+   "note": "CLUTTER cluster 0 | sobek_reach | footprint 1.20x0.73 h 0.72 | foot range 0.08 | seen by arrive_from_prev at 19 m ndcy -0.15 | base of vcomp_fg_z2_2",
    "disabled": false
   },
   {
    "id": "clutter_z2_2",
+   "group": "Z2Ring0",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -11.201,
+    -0.383,
+    56.048
+   ],
+   "rotEuler": [
+    0,
+    233.5,
+    0
+   ],
+   "scale": 1.284,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | sobek_reach | footprint 0.76x0.32 h 0.45 | foot range 0.06 | seen by arrive_from_prev at 20 m ndcy -0.15 | base of vcomp_fg_z2_2",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_3",
    "group": "Z2Ring0",
    "library": "clutter",
    "asset": "clutter_rubble",
@@ -6490,16 +6769,16 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    11.438,
-    -0.34,
-    59.226
+    -10.343,
+    -0.251,
+    56.054
    ],
    "rotEuler": [
     0,
-    176.9,
+    29.5,
     0
    ],
-   "scale": 0.594,
+   "scale": 0.676,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -6507,57 +6786,86 @@
     "zone2",
     "cluster"
    ],
-   "note": "CLUTTER cluster 0 | sobek_reach | footprint 0.59x0.36 h 0.36 | foot range 0.04 | seen by arrive_from_prev at 22 m ndcy -0.11 | base of z2h_sobek_obelisk",
-   "disabled": false
-  },
-  {
-   "id": "clutter_z2_3",
-   "group": "Z2Ring1",
-   "library": "clutter",
-   "asset": "clutter_bone_pile_big",
-   "lodProfile": "near_hq",
-   "ground": "bottom",
-   "yBase": "world",
-   "pos": [
-    6.102,
-    -0.08,
-    63.616
-   ],
-   "rotEuler": [
-    0,
-    178.6,
-    0
-   ],
-   "scale": 1.054,
-   "shadowsOff": false,
-   "tags": [
-    "clutter",
-    "clutterkit",
-    "zone2",
-    "cluster"
-   ],
-   "note": "CLUTTER cluster 1 | sobek_reach | footprint 0.88x0.36 h 0.42 | foot range 0.00 | seen by arrive_from_prev at 24 m ndcy -0.03 | base of z2_boulder_08_D",
+   "note": "CLUTTER cluster 0 | sobek_reach | footprint 0.68x0.41 h 0.41 | foot range 0.04 | seen by arrive_from_prev at 19 m ndcy -0.14 | base of vcomp_fg_z2_2",
    "disabled": false
   },
   {
    "id": "clutter_z2_4",
-   "group": "Z2Ring1",
+   "group": "Z2Ring0",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    11.954,
+    -0.451,
+    61.379
+   ],
+   "rotEuler": [
+    0,
+    289.1,
+    0
+   ],
+   "scale": 0.851,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | sobek_reach | footprint 0.85x0.52 h 0.51 | foot range 0.07 | seen by arrive_from_prev at 24 m ndcy -0.08 | base of z2h_sobek_obelisk",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_5",
+   "group": "Z2Ring0",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    11.98,
+    -0.457,
+    61.922
+   ],
+   "rotEuler": [
+    0,
+    48.7,
+    0
+   ],
+   "scale": 0.534,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | sobek_reach | footprint 0.53x0.32 h 0.32 | foot range 0.04 | seen by arrive_from_prev at 25 m ndcy -0.08 | base of z2h_sobek_obelisk",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_6",
+   "group": "Z2Ring0",
    "library": "clutter",
    "asset": "clutter_bone_pile",
    "lodProfile": "near_hq",
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    6.846,
-    -0.08,
-    63.408
+    11.31,
+    -0.365,
+    61.907
    ],
    "rotEuler": [
     0,
-    248.9,
+    180.9,
     0
    ],
-   "scale": 1.113,
+   "scale": 1.032,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -6565,11 +6873,11 @@
     "zone2",
     "cluster"
    ],
-   "note": "CLUTTER cluster 1 | sobek_reach | footprint 0.66x0.27 h 0.39 | foot range 0.00 | seen by arrive_from_prev at 24 m ndcy -0.03 | base of z2_boulder_08_D",
+   "note": "CLUTTER cluster 1 | sobek_reach | footprint 0.61x0.25 h 0.36 | foot range 0.05 | seen by arrive_from_prev at 25 m ndcy -0.07 | base of z2h_sobek_obelisk",
    "disabled": false
   },
   {
-   "id": "clutter_z2_5",
+   "id": "clutter_z2_7",
    "group": "Z2Ring2",
    "library": "clutter",
    "asset": "clutter_root_crown",
@@ -6577,16 +6885,16 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -11.119,
-    -0.319,
-    63.725
+    -7.882,
+    -0.161,
+    63.718
    ],
    "rotEuler": [
     0,
-    248.8,
+    312.0,
     0
    ],
-   "scale": 0.655,
+   "scale": 0.746,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -6594,69 +6902,69 @@
     "zone2",
     "cluster"
    ],
-   "note": "CLUTTER cluster 2 | sobek_reach | footprint 0.94x0.81 h 0.59 | foot range 0.07 | seen by arrive_from_prev at 26 m ndcy -0.04 | base of z2_arch_fragment_9a_0",
-   "disabled": false
-  },
-  {
-   "id": "clutter_z2_6",
-   "group": "Z2Ring2",
-   "library": "clutter",
-   "asset": "clutter_rubble",
-   "lodProfile": "near_hq",
-   "ground": "bottom",
-   "yBase": "world",
-   "pos": [
-    -11.267,
-    -0.326,
-    62.776
-   ],
-   "rotEuler": [
-    0,
-    166.5,
-    0
-   ],
-   "scale": 0.501,
-   "shadowsOff": false,
-   "tags": [
-    "clutter",
-    "clutterkit",
-    "zone2",
-    "cluster"
-   ],
-   "note": "CLUTTER cluster 2 | sobek_reach | footprint 0.50x0.30 h 0.30 | foot range 0.04 | seen by arrive_from_prev at 25 m ndcy -0.06 | base of z2_arch_fragment_9a_0",
-   "disabled": false
-  },
-  {
-   "id": "clutter_z2_7",
-   "group": "Z2Ring2",
-   "library": "clutter",
-   "asset": "clutter_rubble",
-   "lodProfile": "near_hq",
-   "ground": "bottom",
-   "yBase": "world",
-   "pos": [
-    -4.651,
-    -0.08,
-    63.889
-   ],
-   "rotEuler": [
-    0,
-    108.6,
-    0
-   ],
-   "scale": 0.65,
-   "shadowsOff": false,
-   "tags": [
-    "clutter",
-    "clutterkit",
-    "zone2",
-    "scatter"
-   ],
-   "note": "CLUTTER single | sobek_reach | footprint 0.65x0.40 h 0.39 | foot range 0.00 | seen by arrive_from_prev at 24 m ndcy -0.03",
+   "note": "CLUTTER cluster 2 | sobek_reach | footprint 1.07x0.93 h 0.67 | foot range 0.00 | seen by arrive_from_prev at 25 m ndcy -0.02 | base of z2_arch_fragment_9a_0",
    "disabled": false
   },
   {
    "id": "clutter_z2_8",
+   "group": "Z2Ring2",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -7.384,
+    -0.11,
+    63.284
+   ],
+   "rotEuler": [
+    0,
+    295.6,
+    0
+   ],
+   "scale": 0.947,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 2 | sobek_reach | footprint 0.56x0.23 h 0.33 | foot range 0.00 | seen by arrive_from_prev at 24 m ndcy -0.03 | base of z2_arch_fragment_9a_0",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_9",
+   "group": "Z2Ring1",
+   "library": "clutter",
+   "asset": "clutter_root_crown",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -16.09,
+    -1.142,
+    63.96
+   ],
+   "rotEuler": [
+    0,
+    174.0,
+    0
+   ],
+   "scale": 0.797,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 3 | sobek_reach | footprint 1.14x0.99 h 0.72 | foot range 0.07 | seen by arrive_from_prev at 29 m ndcy -0.09 | base of z2_worldnear_arch_fragment_9b_0",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_10",
    "group": "Z2Ring1",
    "library": "clutter",
    "asset": "clutter_rubble",
@@ -6664,53 +6972,112 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -10.817,
-    -0.271,
-    56.968
+    -15.187,
+    -1.027,
+    63.975
    ],
    "rotEuler": [
     0,
-    145.7,
+    241.9,
     0
    ],
-   "scale": 0.586,
+   "scale": 0.588,
    "shadowsOff": false,
    "tags": [
     "clutter",
     "clutterkit",
     "zone2",
-    "scatter"
+    "cluster"
    ],
-   "note": "CLUTTER single | sobek_reach | footprint 0.59x0.36 h 0.35 | foot range 0.04 | seen by arrive_from_prev at 20 m ndcy -0.13",
+   "note": "CLUTTER cluster 3 | sobek_reach | footprint 0.59x0.36 h 0.35 | foot range 0.05 | seen by arrive_from_prev at 28 m ndcy -0.11 | base of z2_worldnear_arch_fragment_9b_0",
    "disabled": false
   },
   {
-   "id": "clutter_z2_9",
-   "group": "Z2Ring0",
+   "id": "clutter_z2_11",
+   "group": "Z2Ring1",
    "library": "clutter",
    "asset": "clutter_bone_pile",
    "lodProfile": "near_hq",
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -14.28,
-    -0.815,
-    63.504
+    -15.61,
+    -1.136,
+    63.27
    ],
    "rotEuler": [
     0,
-    214.5,
+    190.3,
     0
    ],
-   "scale": 0.942,
+   "scale": 1.139,
    "shadowsOff": false,
    "tags": [
     "clutter",
     "clutterkit",
     "zone2",
-    "scatter"
+    "cluster"
    ],
-   "note": "CLUTTER single | sobek_reach | footprint 0.56x0.23 h 0.33 | foot range 0.06 | seen by arrive_from_prev at 28 m ndcy -0.10",
+   "note": "CLUTTER cluster 3 | sobek_reach | footprint 0.68x0.28 h 0.40 | foot range 0.07 | seen by arrive_from_prev at 28 m ndcy -0.12 | base of z2_worldnear_arch_fragment_9b_0",
+   "disabled": false
+  },
+  {
+   "id": "vcomp_fg_z2_1",
+   "group": "Z2Ring0",
+   "library": "props",
+   "asset": "standing_ruin_pillar_4",
+   "lodProfile": "props",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    12.0,
+    -0.502,
+    55.0
+   ],
+   "rotEuler": [
+    0,
+    0.0,
+    0
+   ],
+   "scale": 1.15,
+   "shadowsOff": true,
+   "tags": [
+    "bank",
+    "zone2",
+    "zone2",
+    "vcomp_fg",
+    "foreground"
+   ],
+   "note": "VIS_COMP foreground hero prop: copy of z2_standing_ruin_pillar_4_0 x1.15 | play cam ndc (1.06, -0.23) at 15.2 m | footprint 4.3x4.5 h 5.7",
+   "disabled": false
+  },
+  {
+   "id": "vcomp_fg_z2_2",
+   "group": "Z2Ring0",
+   "library": "hero2",
+   "asset": "sobek_obelisk",
+   "lodProfile": "boulders",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -12.0,
+    -0.45,
+    55.0
+   ],
+   "rotEuler": [
+    0,
+    180.0,
+    0
+   ],
+   "scale": 4.989,
+   "shadowsOff": false,
+   "tags": [
+    "zone2",
+    "hero2",
+    "vcomp_fg",
+    "foreground"
+   ],
+   "note": "VIS_COMP foreground hero prop: copy of z2h_sobek_obelisk x1.00 | play cam ndc (-1.06, -0.23) at 15.2 m | footprint 3.0x3.3 h 4.9",
    "disabled": false
   }
  ]

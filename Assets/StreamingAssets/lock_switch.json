@@ -1,0 +1,21 @@
+{
+  "_about": "LOCKON v1 (LockSwitch.cs, zones only). enabled=false or file missing = no switch. keys.next / keys.prev = Unity KeyCode names (Mouse3 / Mouse4 = side buttons); pad.next / pad.prev = JoystickButtonN names (empty: LB / RB / R3 are taken by DirectionalInput and the lock toggle; a Dom decision). These keys are not in the Controls menu (no InputMap row yet). classes = switch priority, higher first; ids = exact zone creature ids, prefixes = id starts-with; anything else gets otherPriority; priority <= 0 or a name starting with ignoreNamePrefixes is never a target (ambient animals and mounts are not DuelFighters and never reach the list anyway). order = priority (class, then distance) or angle (screen left to right). wrap = last -> first. rangeM must be <= camera_pose.json zone.targetMaxGapM (9), else CamZone drops the target again. releaseMul = pin kept to rangeM * releaseMul. pinSeconds 0 = the pick stays until the target dies / stops fighting / leaves. cooldownS = min seconds between two presses. autoBossFirst true = the AUTOMATIC pick (ZoneRuntime.Retarget) prefers the higher class over the nearer one (default false = nearest, unchanged). harness = -lockswitchproof defaults.",
+  "enabled": true,
+  "log": true,
+  "keys": { "next": ["Period", "Mouse4"], "prev": ["Comma", "Mouse3"] },
+  "pad": { "next": [], "prev": [] },
+  "classes": [
+    { "id": "boss", "priority": 3, "ids": ["Pitborn", "Sobek", "Grendel", "Humbaba", "Erlking"], "prefixes": [] },
+    { "id": "human", "priority": 2, "ids": [], "prefixes": ["Bandit", "Npc"] }
+  ],
+  "otherPriority": 1,
+  "ignoreNamePrefixes": ["AmbientHorse", "Mount", "Horse"],
+  "order": "priority",
+  "wrap": true,
+  "rangeM": 9.0,
+  "releaseMul": 1.2,
+  "pinSeconds": 0.0,
+  "cooldownS": 0.25,
+  "autoBossFirst": false,
+  "harness": { "startDelayS": 4.0, "settleS": 1.6, "maxYawErrDeg": 40.0, "timeoutS": 240.0, "seq": "next,next,prev,prev" }
+}

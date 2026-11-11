@@ -258,11 +258,11 @@
         0.95
       ],
       "bounceColor": [
-        0.9,
-        0.22,
-        0.16
+        0.35,
+        0.55,
+        0.62
       ],
-      "bounceLux": 630.0,
+      "bounceLux": 700.0,
       "bouncePitchDeg": 30.0,
       "bounceYawDeg": 190.0,
       "moonRimColor": [
@@ -299,21 +299,21 @@
         1.0,
         0.9
       ],
-      "fogMeanFreePath": 96.5,
+      "fogMeanFreePath": 120.0,
       "fogMaxHeight": 70.0,
-      "keyElevationDeg": 26.0,
+      "keyElevationDeg": 40.0,
       "keyYawOffsetDeg": 0.0,
       "keyColor": [
-        0.92,
-        0.97,
-        0.96
+        0.65,
+        0.68,
+        0.68
       ],
       "bounceColor": [
         0.4,
         0.6,
         0.35
       ],
-      "bounceLux": 560.0,
+      "bounceLux": 800.0,
       "bouncePitchDeg": 55.0,
       "bounceYawDeg": 185.0,
       "moonRimColor": [

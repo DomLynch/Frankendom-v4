@@ -7035,21 +7035,21 @@
    "id": "clutter_z3_1",
    "group": "HubRing0",
    "library": "clutter",
-   "asset": "clutter_sword_lying",
+   "asset": "clutter_root_crown",
    "lodProfile": "near_hq",
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -4.489,
-    -0.231,
-    82.831
+    6.756,
+    -0.3,
+    88.17
    ],
    "rotEuler": [
     0,
-    132.7,
+    320.1,
     0
    ],
-   "scale": 0.891,
+   "scale": 0.82,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -7057,7 +7057,7 @@
     "zone3",
     "cluster"
    ],
-   "note": "CLUTTER cluster 0 | hub_camp | footprint 0.88x0.42 h 0.16 | foot range 0.01 | seen by arrive_from_prev at 8 m ndcy -0.60 | base of camps2_c1_sign_anvil",
+   "note": "CLUTTER cluster 0 | hub_camp | footprint 1.17x1.02 h 0.74 | foot range 0.01 | seen by arrive_from_prev at 14 m ndcy -0.22 | base of z3_dead_tree_1b_1",
    "disabled": false
   },
   {
@@ -7069,16 +7069,16 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -4.771,
-    -0.234,
-    83.81
+    5.691,
+    -0.243,
+    88.454
    ],
    "rotEuler": [
     0,
-    156.6,
+    87.4,
     0
    ],
-   "scale": 0.949,
+   "scale": 0.921,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -7086,40 +7086,11 @@
     "zone3",
     "cluster"
    ],
-   "note": "CLUTTER cluster 0 | hub_camp | footprint 0.94x0.45 h 0.17 | foot range 0.01 | seen by arrive_from_prev at 9 m ndcy -0.51 | base of camps2_c1_sign_anvil",
+   "note": "CLUTTER cluster 0 | hub_camp | footprint 0.91x0.44 h 0.16 | foot range 0.01 | seen by arrive_from_prev at 14 m ndcy -0.26 | base of z3_dead_tree_1b_1",
    "disabled": false
   },
   {
    "id": "clutter_z3_3",
-   "group": "HubRing0",
-   "library": "clutter",
-   "asset": "clutter_root_crown",
-   "lodProfile": "near_hq",
-   "ground": "bottom",
-   "yBase": "world",
-   "pos": [
-    6.23,
-    -0.248,
-    90.246
-   ],
-   "rotEuler": [
-    0,
-    357.7,
-    0
-   ],
-   "scale": 0.625,
-   "shadowsOff": false,
-   "tags": [
-    "clutter",
-    "clutterkit",
-    "zone3",
-    "cluster"
-   ],
-   "note": "CLUTTER cluster 1 | hub_camp | footprint 0.89x0.78 h 0.56 | foot range 0.01 | seen by arrive_from_prev at 16 m ndcy -0.18 | base of camps_c1_canopy",
-   "disabled": false
-  },
-  {
-   "id": "clutter_z3_4",
    "group": "HubRing0",
    "library": "clutter",
    "asset": "clutter_sword_lying",
@@ -7127,16 +7098,16 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    5.762,
-    -0.244,
-    89.321
+    6.462,
+    -0.251,
+    87.169
    ],
    "rotEuler": [
     0,
-    71.2,
+    25.3,
     0
    ],
-   "scale": 0.965,
+   "scale": 0.972,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -7144,11 +7115,98 @@
     "zone3",
     "cluster"
    ],
-   "note": "CLUTTER cluster 1 | hub_camp | footprint 0.96x0.46 h 0.17 | foot range 0.01 | seen by arrive_from_prev at 14 m ndcy -0.23 | base of camps_c1_canopy",
+   "note": "CLUTTER cluster 0 | hub_camp | footprint 0.96x0.46 h 0.17 | foot range 0.01 | seen by arrive_from_prev at 13 m ndcy -0.31 | base of z3_dead_tree_1b_1",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z3_4",
+   "group": "HubRing0",
+   "library": "clutter",
+   "asset": "clutter_root_crown",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    4.468,
+    -0.285,
+    96.186
+   ],
+   "rotEuler": [
+    0,
+    242.0,
+    0
+   ],
+   "scale": 0.753,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone3",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | hub_camp | footprint 1.08x0.93 h 0.68 | foot range 0.01 | seen by arrive_from_prev at 21 m ndcy -0.06 | base of z3_hub_pole",
    "disabled": false
   },
   {
    "id": "clutter_z3_5",
+   "group": "HubRing0",
+   "library": "clutter",
+   "asset": "clutter_sword_lying",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    5.089,
+    -0.237,
+    97.025
+   ],
+   "rotEuler": [
+    0,
+    261.2,
+    0
+   ],
+   "scale": 0.896,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone3",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | hub_camp | footprint 0.89x0.43 h 0.16 | foot range 0.01 | seen by arrive_from_prev at 22 m ndcy -0.08 | base of z3_hub_pole",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z3_6",
+   "group": "HubRing0",
+   "library": "clutter",
+   "asset": "clutter_root_crown",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -10.302,
+    -0.5,
+    91.947
+   ],
+   "rotEuler": [
+    0,
+    89.5,
+    0
+   ],
+   "scale": 0.802,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone3",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 2 | hub_camp | footprint 1.15x0.99 h 0.72 | foot range 0.04 | seen by arrive_from_prev at 19 m ndcy -0.15 | base of camps_c1_camp_tent",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z3_7",
    "group": "HubRing0",
    "library": "clutter",
    "asset": "clutter_rubble",
@@ -7156,53 +7214,53 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -6.987,
-    -0.255,
-    87.401
+    -10.776,
+    -0.509,
+    92.539
    ],
    "rotEuler": [
     0,
-    138.0,
+    272.6,
     0
    ],
-   "scale": 0.542,
+   "scale": 0.656,
    "shadowsOff": false,
    "tags": [
     "clutter",
     "clutterkit",
     "zone3",
-    "scatter"
+    "cluster"
    ],
-   "note": "CLUTTER single | hub_camp | footprint 0.54x0.33 h 0.33 | foot range 0.00 | seen by arrive_from_prev at 13 m ndcy -0.28",
+   "note": "CLUTTER cluster 2 | hub_camp | footprint 0.66x0.40 h 0.39 | foot range 0.05 | seen by arrive_from_prev at 20 m ndcy -0.16 | base of camps_c1_camp_tent",
    "disabled": false
   },
   {
-   "id": "clutter_z3_6",
+   "id": "clutter_z3_8",
    "group": "HubRing0",
    "library": "clutter",
-   "asset": "clutter_bone_pile",
+   "asset": "clutter_sword_lying",
    "lodProfile": "near_hq",
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    5.4,
-    -0.24,
-    85.857
+    -9.546,
+    -0.36,
+    91.279
    ],
    "rotEuler": [
     0,
-    205.2,
+    75.9,
     0
    ],
-   "scale": 1.066,
+   "scale": 0.955,
    "shadowsOff": false,
    "tags": [
     "clutter",
     "clutterkit",
     "zone3",
-    "scatter"
+    "cluster"
    ],
-   "note": "CLUTTER single | hub_camp | footprint 0.63x0.26 h 0.37 | foot range 0.00 | seen by arrive_from_prev at 11 m ndcy -0.35",
+   "note": "CLUTTER cluster 2 | hub_camp | footprint 0.95x0.46 h 0.17 | foot range 0.03 | seen by arrive_from_prev at 18 m ndcy -0.19 | base of camps_c1_camp_tent",
    "disabled": false
   }
  ],

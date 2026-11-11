@@ -6261,21 +6261,21 @@
    "id": "clutter_z7_1",
    "group": "Z7Ring0",
    "library": "clutter",
-   "asset": "clutter_bone_pile",
+   "asset": "clutter_rubble",
    "lodProfile": "near_hq",
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -4.021,
-    -0.08,
-    324.538
+    -7.141,
+    -0.131,
+    330.939
    ],
    "rotEuler": [
     0,
-    89.5,
+    281.4,
     0
    ],
-   "scale": 1.125,
+   "scale": 1.163,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -6283,7 +6283,7 @@
     "zone7",
     "cluster"
    ],
-   "note": "CLUTTER cluster 0 | z7_market2 | footprint 0.67x0.28 h 0.39 | foot range 0.00 | seen by arrive_from_prev at 7 m ndcy -0.68 | base of camps2_c2_counter_iron_a_1",
+   "note": "CLUTTER cluster 0 | z7_market2 | footprint 1.16x0.71 h 0.70 | foot range 0.00 | seen by arrive_from_prev at 14 m ndcy -0.20 | base of camps_c2_grand_market_tent",
    "disabled": false
   },
   {
@@ -6295,16 +6295,16 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -4.311,
-    -0.08,
-    331.059
+    -7.268,
+    -0.108,
+    330.19
    ],
    "rotEuler": [
     0,
-    287.1,
+    184.7,
     0
    ],
-   "scale": 0.775,
+   "scale": 0.506,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -6312,40 +6312,11 @@
     "zone7",
     "cluster"
    ],
-   "note": "CLUTTER cluster 1 | z7_market2 | footprint 0.78x0.47 h 0.47 | foot range 0.00 | seen by arrive_from_prev at 13 m ndcy -0.22 | base of camps2_c2_armour_dummy",
+   "note": "CLUTTER cluster 0 | z7_market2 | footprint 0.51x0.31 h 0.30 | foot range 0.00 | seen by arrive_from_prev at 13 m ndcy -0.26 | base of camps_c2_grand_market_tent",
    "disabled": false
   },
   {
    "id": "clutter_z7_3",
-   "group": "Z7Ring0",
-   "library": "clutter",
-   "asset": "clutter_rubble",
-   "lodProfile": "near_hq",
-   "ground": "bottom",
-   "yBase": "world",
-   "pos": [
-    4.383,
-    -0.08,
-    327.844
-   ],
-   "rotEuler": [
-    0,
-    48.3,
-    0
-   ],
-   "scale": 0.717,
-   "shadowsOff": false,
-   "tags": [
-    "clutter",
-    "clutterkit",
-    "zone7",
-    "scatter"
-   ],
-   "note": "CLUTTER single | z7_market2 | footprint 0.72x0.44 h 0.43 | foot range 0.00 | seen by arrive_from_prev at 10 m ndcy -0.36",
-   "disabled": false
-  },
-  {
-   "id": "clutter_z7_4",
    "group": "Z7Ring0",
    "library": "clutter",
    "asset": "clutter_sword_lying",
@@ -6353,57 +6324,57 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    9.234,
+    -6.549,
     -0.08,
-    337.038
+    331.707
    ],
    "rotEuler": [
     0,
-    95.3,
+    188.1,
     0
    ],
-   "scale": 0.85,
+   "scale": 0.888,
    "shadowsOff": false,
    "tags": [
     "clutter",
     "clutterkit",
     "zone7",
-    "scatter"
+    "cluster"
    ],
-   "note": "CLUTTER single | z7_market2 | footprint 0.84x0.41 h 0.15 | foot range 0.00 | seen by arrive_from_prev at 20 m ndcy -0.11",
+   "note": "CLUTTER cluster 0 | z7_market2 | footprint 0.88x0.42 h 0.16 | foot range 0.00 | seen by arrive_from_prev at 14 m ndcy -0.22 | base of camps_c2_grand_market_tent",
    "disabled": false
   },
   {
-   "id": "clutter_z7_5",
-   "group": "Z7Ring1",
+   "id": "clutter_z7_4",
+   "group": "Z7Ring0",
    "library": "clutter",
-   "asset": "clutter_rubble",
+   "asset": "clutter_root_crown",
    "lodProfile": "near_hq",
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    8.806,
-    -0.08,
-    333.824
+    7.134,
+    -0.177,
+    332.566
    ],
    "rotEuler": [
     0,
-    114.0,
+    200.1,
     0
    ],
-   "scale": 0.595,
+   "scale": 0.726,
    "shadowsOff": false,
    "tags": [
     "clutter",
     "clutterkit",
     "zone7",
-    "scatter"
+    "cluster"
    ],
-   "note": "CLUTTER single | z7_market2 | footprint 0.60x0.36 h 0.36 | foot range 0.00 | seen by arrive_from_prev at 17 m ndcy -0.15",
+   "note": "CLUTTER cluster 1 | z7_market2 | footprint 1.04x0.90 h 0.65 | foot range 0.00 | seen by arrive_from_prev at 15 m ndcy -0.16 | base of camps_c2_apothecary",
    "disabled": false
   },
   {
-   "id": "clutter_z7_6",
+   "id": "clutter_z7_5",
    "group": "Z7Ring0",
    "library": "clutter",
    "asset": "clutter_bone_pile",
@@ -6411,16 +6382,103 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    4.7,
-    -0.08,
-    331.884
+    6.313,
+    -0.133,
+    332.879
    ],
    "rotEuler": [
     0,
-    243.1,
+    17.7,
     0
    ],
-   "scale": 1.006,
+   "scale": 1.147,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone7",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | z7_market2 | footprint 0.68x0.28 h 0.40 | foot range 0.00 | seen by arrive_from_prev at 15 m ndcy -0.17 | base of camps_c2_apothecary",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z7_6",
+   "group": "Z7Ring0",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    7.55,
+    -0.102,
+    333.225
+   ],
+   "rotEuler": [
+    0,
+    260.0,
+    0
+   ],
+   "scale": 0.58,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone7",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | z7_market2 | footprint 0.58x0.35 h 0.35 | foot range 0.00 | seen by arrive_from_prev at 16 m ndcy -0.17 | base of camps_c2_apothecary",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z7_7",
+   "group": "Z7Ring1",
+   "library": "clutter",
+   "asset": "clutter_root_crown",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    10.952,
+    -0.195,
+    336.168
+   ],
+   "rotEuler": [
+    0,
+    158.8,
+    0
+   ],
+   "scale": 0.716,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone7",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 2 | z7_market2 | footprint 1.02x0.89 h 0.64 | foot range 0.00 | seen by arrive_from_prev at 20 m ndcy -0.09 | base of z7d_ruin_mid_arch_broken_a_10",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z7_8",
+   "group": "Z7Ring0",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -10.121,
+    -0.147,
+    337.419
+   ],
+   "rotEuler": [
+    0,
+    227.0,
+    0
+   ],
+   "scale": 1.092,
    "shadowsOff": false,
    "tags": [
     "clutter",
@@ -6428,7 +6486,7 @@
     "zone7",
     "scatter"
    ],
-   "note": "CLUTTER single | z7_market2 | footprint 0.60x0.25 h 0.35 | foot range 0.00 | seen by arrive_from_prev at 14 m ndcy -0.20",
+   "note": "CLUTTER single | z7_market2 | footprint 0.65x0.27 h 0.38 | foot range 0.00 | seen by arrive_from_prev at 21 m ndcy -0.09",
    "disabled": false
   }
  ],

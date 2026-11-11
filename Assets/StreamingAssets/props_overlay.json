@@ -1,0 +1,129 @@
+{
+  "_about": "PROPSOVERLAY v1 (laneDATA3), read by Assets/Scripts/Zones/PropsOverlay.cs. Runtime overlay on top of the BAKED props_layout_*.json scene objects: added, moved and disabled rows apply on zone load AFTER the baked objects exist, so ordinary prop edits are HOT (copy this file into the build's StreamingAssets, no scene chain). Ships enabled=false with no rows = the code does nothing. A missing file does nothing. Edit the Assets/Data and StreamingAssets twins together.",
+  "enabled": true,
+  "version": 1,
+  "mainRoot": "Arena",
+  "scaleMode": "relative",
+  "layouts": [
+    "props_layout.json",
+    "props_layout_hub.json",
+    "props_layout_zone2.json",
+    "props_layout_grendel.json",
+    "props_layout_zone5.json",
+    "props_layout_zone6.json",
+    "props_layout_zone7.json"
+  ],
+  "apply": {
+    "delayFrames": 3,
+    "waitRootsS": 20.0,
+    "pollSeconds": 0.5,
+    "minPollS": 0.1,
+    "watchFileS": 2.0
+  },
+  "snap": {
+    "rayUpM": 0,
+    "rayDownM": 0,
+    "sinkM": -1,
+    "_about": "0 and -1 = take the value from zone_ground.json (rayUpM 3, rayDownM 12, sinkM 0.03), else 3 / 12 / 0.03. Same algorithm as ZoneRowGround.Snap: the first collider under the row that is not a prop wrapper and not a character."
+  },
+  "clearance": {
+    "enabled": false,
+    "clearM": 1.5,
+    "lane": true,
+    "_about": "Rows with a position (add and move) whose x,z fall inside a play_areas.json area (disc or rect, grown by clearM) or, when lane=true, inside its lane band (|x - laneX| <= laneHalfX + clearM) are REJECTED and logged. Zones without a play_areas row (Pit Yard, Sobek, camp) have no check."
+  },
+  "_rowShape": "id (unique new id for op add; the baked wrapper name for move and disable), op (add | move | disable), src (add only: the name of a baked prop wrapper to clone, e.g. a worldmid_..., z4_..., z2back_... id: ONLY ids that exist in the build), zone (zone_span.json zone id: sobek_reach, hub_camp, grendel, z5_humbaba, z6_erlking, z7_market2; or main for the Arena), ring (0..2, the ring group the clone joins, default 1; main uses group), group (main only: Arena child group name, e.g. WorldNear), pos [x,y,z] (same meaning as props_layout: y = bottom of the prop; move with pos [] keeps the baked position), rotEuler [x,y,z] ([] keeps), scale (props_layout scale when scaleMode=absolute, or a multiplier on the source scale when relative; 0 keeps), scaleYMul (0 keeps), lod (-1 = the baked LODGroup, 0..2 = force that LOD), ground (bottom | pivot | snap: snap = bottom on the ray hit + pos[1]), enabled (false = the row does nothing).",
+  "rows": [
+    {
+      "id": "vcomp_fg_z2_1",
+      "op": "move",
+      "zone": "sobek_reach",
+      "enabled": true,
+      "pos": [
+        12.0,
+        -60,
+        55.0
+      ],
+      "scale": 0.01,
+      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
+    },
+    {
+      "id": "vcomp_fg_z2_2",
+      "op": "move",
+      "zone": "sobek_reach",
+      "enabled": true,
+      "pos": [
+        -12.0,
+        -60,
+        55.0
+      ],
+      "scale": 0.01,
+      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
+    },
+    {
+      "id": "vcomp_fg_z4_1",
+      "op": "move",
+      "zone": "grendel",
+      "enabled": true,
+      "pos": [
+        -14.4,
+        -60,
+        130.0
+      ],
+      "scale": 0.01,
+      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
+    },
+    {
+      "id": "vcomp_fg_z4_2",
+      "op": "move",
+      "zone": "grendel",
+      "enabled": true,
+      "pos": [
+        15.0,
+        -60,
+        132.0
+      ],
+      "scale": 0.01,
+      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
+    },
+    {
+      "id": "vcomp_fg_z5_1",
+      "op": "move",
+      "zone": "z5_humbaba",
+      "enabled": true,
+      "pos": [
+        8.2,
+        -60,
+        192.0
+      ],
+      "scale": 0.01,
+      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
+    },
+    {
+      "id": "vcomp_fg_z6_1",
+      "op": "move",
+      "zone": "z6_erlking",
+      "enabled": true,
+      "pos": [
+        -5.8,
+        -60,
+        256.5
+      ],
+      "scale": 0.01,
+      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
+    },
+    {
+      "id": "vcomp_fg_z6_2",
+      "op": "move",
+      "zone": "z6_erlking",
+      "enabled": true,
+      "pos": [
+        6.0,
+        -60,
+        255.5
+      ],
+      "scale": 0.01,
+      "note": "VCOMPFIX: hidden by sinking+shrinking (SetActive(false) is re-enabled by zone streaming)"
+    }
+  ]
+}

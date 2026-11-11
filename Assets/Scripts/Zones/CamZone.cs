@@ -79,7 +79,7 @@ public static class CamZone
         if (rig.enemy == null && t != null) snapPending = true;
         rig.enemy = t; rig.enemyHp = t != null ? t.GetComponent<Health>() : null;
     }
-    static void Accept(Transform t) { accTr = t; accAt = Time.unscaledTime; heldTr = t; }
+    static void Accept(Transform t) { accTr = t; accAt = Time.unscaledTime; heldTr = t; } /* LOCKON v1 */ public static void ForceAccept(Transform t) { accTr = t; accAt = Time.unscaledTime; heldTr = t; deadTr = null; }
 
     /// <summary>CameraRig.LateUpdate, before the lock test. Never touches the player's own target (hits, HUD): only which enemy the CAMERA frames.</summary>
     public static void Pick(Row z, CameraRig rig, Transform player)
