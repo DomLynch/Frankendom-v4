@@ -52,6 +52,22 @@
     "enabled": true,
     "inHarness": false,
     "fromGearJson": true,
+    "eagerFiles": [
+      "Gear/cuirass_joan.glb",
+      "Gear/shield_joan_LOD0.glb",
+      "Gear/arms_joan_R.glb",
+      "Gear/legs_joan_R.glb",
+      "Gear/joan_tabard.glb",
+      "Gear/joan_boots.glb",
+      "Gear/pauldron_joan_R.glb",
+      "Gear/vambrace_joan_R.glb",
+      "Gear/gorget_joan_R.glb",
+      "Gear/greave_joan_R.glb"
+    ],
+    "eagerStartFrames": 120,
+    "eagerFramesBetween": 2,
+    "lateDelayFrames": 600,
+    "lateFramesBetween": 20,
     "files": [
       "Gear/cuirass_joan.glb",
       "Gear/shield_joan_LOD0.glb",

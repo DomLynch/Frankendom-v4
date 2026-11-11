@@ -5408,6 +5408,326 @@
    "maskFromLod0Material": "tripo_material_8beab1a9-acd7-46f7-a726-ce6af07aff4c",
    "camps2": true,
    "note": "CAMPS2PLACE: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder), so the LOD is textured even if this row is not used; the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/clutter/clutter_bone_pile_LOD1.glb",
+   "lod0": "Assets/Env/Props/clutter/clutter_bone_pile_LOD0.glb",
+   "material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "b917d47287ab43fc64d74f978418e488",
+     "lodMd5": "85726055eb76966ab533fa9194d4ef84",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "25ef7f870aebf28dd7a439b7009c5901",
+     "lodMd5": "22268e02a4a1e38b49a990063d70b59b",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "82bbb4c745758490fcd719e909ff0b57",
+     "lodMd5": "9142f8e68c010ee01e787c027205901e",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+   "clutterkit": true,
+   "note": "CLUTTER: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder); the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/clutter/clutter_bone_pile_LOD2.glb",
+   "lod0": "Assets/Env/Props/clutter/clutter_bone_pile_LOD0.glb",
+   "material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "b917d47287ab43fc64d74f978418e488",
+     "lodMd5": "85726055eb76966ab533fa9194d4ef84",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "25ef7f870aebf28dd7a439b7009c5901",
+     "lodMd5": "22268e02a4a1e38b49a990063d70b59b",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "82bbb4c745758490fcd719e909ff0b57",
+     "lodMd5": "9142f8e68c010ee01e787c027205901e",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+   "clutterkit": true,
+   "note": "CLUTTER: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder); the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/clutter/clutter_bone_pile_big_LOD1.glb",
+   "lod0": "Assets/Env/Props/clutter/clutter_bone_pile_big_LOD0.glb",
+   "material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "b917d47287ab43fc64d74f978418e488",
+     "lodMd5": "85726055eb76966ab533fa9194d4ef84",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "25ef7f870aebf28dd7a439b7009c5901",
+     "lodMd5": "22268e02a4a1e38b49a990063d70b59b",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "82bbb4c745758490fcd719e909ff0b57",
+     "lodMd5": "9142f8e68c010ee01e787c027205901e",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+   "clutterkit": true,
+   "note": "CLUTTER: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder); the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/clutter/clutter_bone_pile_big_LOD2.glb",
+   "lod0": "Assets/Env/Props/clutter/clutter_bone_pile_big_LOD0.glb",
+   "material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "b917d47287ab43fc64d74f978418e488",
+     "lodMd5": "85726055eb76966ab533fa9194d4ef84",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "25ef7f870aebf28dd7a439b7009c5901",
+     "lodMd5": "22268e02a4a1e38b49a990063d70b59b",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+     "md5": "82bbb4c745758490fcd719e909ff0b57",
+     "lodMd5": "9142f8e68c010ee01e787c027205901e",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_a137eb54-4e57-4147-9e00-148ce910bd53",
+   "clutterkit": true,
+   "note": "CLUTTER: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder); the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/clutter/clutter_rubble_LOD1.glb",
+   "lod0": "Assets/Env/Props/clutter/clutter_rubble_LOD0.glb",
+   "material": "tripo_material_4e45e53d-f01b-49ba-98e9-1a12a4e94696",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_4e45e53d-f01b-49ba-98e9-1a12a4e94696",
+     "md5": "0fcf0c361ad8eadbd5d1a29b04b97c93",
+     "lodMd5": "5b628ec5160a6c42d4cec6819d8eba36",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_4e45e53d-f01b-49ba-98e9-1a12a4e94696",
+     "md5": "f1440692b067c1234ab33e49e5d36d9c",
+     "lodMd5": "5f5a3dd483fbf2ea7bbefa7c1d047f45",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_4e45e53d-f01b-49ba-98e9-1a12a4e94696",
+     "md5": "263a89ea6efdfa76dc20d036ed16b114",
+     "lodMd5": "a46d02c8f95c0ec56ba3a1f1ee2c688e",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_4e45e53d-f01b-49ba-98e9-1a12a4e94696",
+   "clutterkit": true,
+   "note": "CLUTTER: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder); the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/clutter/clutter_rubble_LOD2.glb",
+   "lod0": "Assets/Env/Props/clutter/clutter_rubble_LOD0.glb",
+   "material": "tripo_material_4e45e53d-f01b-49ba-98e9-1a12a4e94696",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_4e45e53d-f01b-49ba-98e9-1a12a4e94696",
+     "md5": "0fcf0c361ad8eadbd5d1a29b04b97c93",
+     "lodMd5": "5b628ec5160a6c42d4cec6819d8eba36",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_4e45e53d-f01b-49ba-98e9-1a12a4e94696",
+     "md5": "f1440692b067c1234ab33e49e5d36d9c",
+     "lodMd5": "5f5a3dd483fbf2ea7bbefa7c1d047f45",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_4e45e53d-f01b-49ba-98e9-1a12a4e94696",
+     "md5": "263a89ea6efdfa76dc20d036ed16b114",
+     "lodMd5": "a46d02c8f95c0ec56ba3a1f1ee2c688e",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_4e45e53d-f01b-49ba-98e9-1a12a4e94696",
+   "clutterkit": true,
+   "note": "CLUTTER: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder); the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/clutter/clutter_root_crown_LOD1.glb",
+   "lod0": "Assets/Env/Props/clutter/clutter_root_crown_LOD0.glb",
+   "material": "tripo_material_3dd645e5-c46e-4e34-9bfb-bc5e1c344dab",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_3dd645e5-c46e-4e34-9bfb-bc5e1c344dab",
+     "md5": "beede20ccd4bc4468d85fb3c77dd40aa",
+     "lodMd5": "5cbc6902b3f28423b7ffd6fd04626299",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_3dd645e5-c46e-4e34-9bfb-bc5e1c344dab",
+     "md5": "0a295b09b03002e65e619d1e0c0cea4d",
+     "lodMd5": "7a9205de4bc14a97b5dbc8c19a27006a",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_3dd645e5-c46e-4e34-9bfb-bc5e1c344dab",
+     "md5": "cd391292b12daa44c8fdca3a95ded80e",
+     "lodMd5": "4844e81b7fc584c8977b243d17591e3a",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_3dd645e5-c46e-4e34-9bfb-bc5e1c344dab",
+   "clutterkit": true,
+   "note": "CLUTTER: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder); the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/clutter/clutter_root_crown_LOD2.glb",
+   "lod0": "Assets/Env/Props/clutter/clutter_root_crown_LOD0.glb",
+   "material": "tripo_material_3dd645e5-c46e-4e34-9bfb-bc5e1c344dab",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_3dd645e5-c46e-4e34-9bfb-bc5e1c344dab",
+     "md5": "beede20ccd4bc4468d85fb3c77dd40aa",
+     "lodMd5": "5cbc6902b3f28423b7ffd6fd04626299",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_3dd645e5-c46e-4e34-9bfb-bc5e1c344dab",
+     "md5": "0a295b09b03002e65e619d1e0c0cea4d",
+     "lodMd5": "7a9205de4bc14a97b5dbc8c19a27006a",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_3dd645e5-c46e-4e34-9bfb-bc5e1c344dab",
+     "md5": "cd391292b12daa44c8fdca3a95ded80e",
+     "lodMd5": "4844e81b7fc584c8977b243d17591e3a",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_3dd645e5-c46e-4e34-9bfb-bc5e1c344dab",
+   "clutterkit": true,
+   "note": "CLUTTER: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder); the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/clutter/clutter_sword_lying_LOD1.glb",
+   "lod0": "Assets/Env/Props/clutter/clutter_sword_lying_LOD0.glb",
+   "material": "tripo_material_d3bc635c-ad29-4885-aa2a-9886348de5c6",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d3bc635c-ad29-4885-aa2a-9886348de5c6",
+     "md5": "e3d074fe512f267b2eee79984a6ade68",
+     "lodMd5": "903c3cd15f53ba486223d9949ab3abef",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d3bc635c-ad29-4885-aa2a-9886348de5c6",
+     "md5": "4a9ad457c72603ef28374b114f1f2a23",
+     "lodMd5": "d05d27319b9e6f0a0916f25dc9fbf256",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d3bc635c-ad29-4885-aa2a-9886348de5c6",
+     "md5": "6eaa83b2a77de2df8b94ca256b14e4cf",
+     "lodMd5": "4abcc70d1c256eedc935ee75e22cf35c",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d3bc635c-ad29-4885-aa2a-9886348de5c6",
+   "clutterkit": true,
+   "note": "CLUTTER: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder); the row only shares the LOD0 2048 texture"
+  },
+  {
+   "glb": "Assets/Env/Props/clutter/clutter_sword_lying_LOD2.glb",
+   "lod0": "Assets/Env/Props/clutter/clutter_sword_lying_LOD0.glb",
+   "material": "tripo_material_d3bc635c-ad29-4885-aa2a-9886348de5c6",
+   "slots": {
+    "base": {
+     "lod0Material": "tripo_material_d3bc635c-ad29-4885-aa2a-9886348de5c6",
+     "md5": "e3d074fe512f267b2eee79984a6ade68",
+     "lodMd5": "903c3cd15f53ba486223d9949ab3abef",
+     "lodImage": 1,
+     "lod0Image": 1
+    },
+    "normal": {
+     "lod0Material": "tripo_material_d3bc635c-ad29-4885-aa2a-9886348de5c6",
+     "md5": "4a9ad457c72603ef28374b114f1f2a23",
+     "lodMd5": "d05d27319b9e6f0a0916f25dc9fbf256",
+     "lodImage": 0,
+     "lod0Image": 0
+    },
+    "mr": {
+     "lod0Material": "tripo_material_d3bc635c-ad29-4885-aa2a-9886348de5c6",
+     "md5": "6eaa83b2a77de2df8b94ca256b14e4cf",
+     "lodMd5": "4abcc70d1c256eedc935ee75e22cf35c",
+     "lodImage": 2,
+     "lod0Image": 2
+    }
+   },
+   "maskRepoint": true,
+   "maskFromLod0Material": "tripo_material_d3bc635c-ad29-4885-aa2a-9886348de5c6",
+   "clutterkit": true,
+   "note": "CLUTTER: LOD image is a real 1024 box-filtered copy (not a 1x1 placeholder); the row only shares the LOD0 2048 texture"
   }
  ]
 }

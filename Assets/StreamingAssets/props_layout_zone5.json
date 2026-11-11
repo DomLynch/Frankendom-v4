@@ -47,6 +47,10 @@
    "name": "wow21",
    "pattern": "Assets/Env/Props/wow21/{asset}_LOD{lod}.glb",
    "status": "WOW21 hero props, converted LOD files from laneWOW21LOD; a missing LODn is skipped by PropsLayout.PlaceOne"
+  },
+  {
+   "name": "clutter",
+   "pattern": "Assets/Env/Props/clutter/{asset}_LOD{lod}.glb"
   }
  ],
  "lodProfiles": [
@@ -4127,6 +4131,270 @@
    "disabled": false,
    "seamBaseY": -0.26,
    "seamDy": -0.097
+  },
+  {
+   "id": "clutter_z5_1",
+   "group": "Z5Ring1",
+   "library": "clutter",
+   "asset": "clutter_root_crown",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    7.874,
+    -0.13,
+    193.274
+   ],
+   "rotEuler": [
+    0,
+    116.9,
+    0
+   ],
+   "scale": 0.755,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone5",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | z5_humbaba | footprint 1.08x0.94 h 0.68 | foot range 0.00 | seen by arrive_from_prev at 15 m ndcy -0.20",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z5_2",
+   "group": "Z5Ring1",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    7.567,
+    -0.13,
+    192.221
+   ],
+   "rotEuler": [
+    0,
+    237.4,
+    0
+   ],
+   "scale": 1.058,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone5",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | z5_humbaba | footprint 0.63x0.26 h 0.37 | foot range 0.00 | seen by arrive_from_prev at 14 m ndcy -0.26",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z5_3",
+   "group": "Z5Ring1",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    8.278,
+    -0.13,
+    192.535
+   ],
+   "rotEuler": [
+    0,
+    196.3,
+    0
+   ],
+   "scale": 0.69,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone5",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | z5_humbaba | footprint 0.69x0.42 h 0.41 | foot range 0.00 | seen by arrive_from_prev at 14 m ndcy -0.25",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z5_4",
+   "group": "Z5Ring1",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -5.413,
+    -0.13,
+    190.106
+   ],
+   "rotEuler": [
+    0,
+    288.8,
+    0
+   ],
+   "scale": 1.206,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone5",
+    "scatter"
+   ],
+   "note": "CLUTTER single | z5_humbaba | footprint 0.72x0.30 h 0.42 | foot range 0.00 | seen by arrive_from_prev at 11 m ndcy -0.36",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z5_5",
+   "group": "Z5Ring1",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    3.649,
+    -0.13,
+    186.365
+   ],
+   "rotEuler": [
+    0,
+    149.9,
+    0
+   ],
+   "scale": 0.547,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone5",
+    "scatter"
+   ],
+   "note": "CLUTTER single | z5_humbaba | footprint 0.55x0.33 h 0.33 | foot range 0.00 | seen by arrive_from_prev at 6 m ndcy -0.74",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z5_6",
+   "group": "Z5Ring0",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    3.487,
+    -0.13,
+    192.792
+   ],
+   "rotEuler": [
+    0,
+    170.5,
+    0
+   ],
+   "scale": 1.159,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone5",
+    "scatter"
+   ],
+   "note": "CLUTTER single | z5_humbaba | footprint 0.69x0.29 h 0.41 | foot range 0.00 | seen by arrive_from_prev at 12 m ndcy -0.24",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z5_7",
+   "group": "Z5Ring1",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -5.588,
+    -0.13,
+    193.651
+   ],
+   "rotEuler": [
+    0,
+    67.8,
+    0
+   ],
+   "scale": 0.705,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone5",
+    "scatter"
+   ],
+   "note": "CLUTTER single | z5_humbaba | footprint 0.71x0.43 h 0.42 | foot range 0.00 | seen by arrive_from_prev at 14 m ndcy -0.21",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z5_8",
+   "group": "Z5Ring1",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    10.645,
+    -0.13,
+    196.089
+   ],
+   "rotEuler": [
+    0,
+    50.1,
+    0
+   ],
+   "scale": 0.763,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone5",
+    "scatter"
+   ],
+   "note": "CLUTTER single | z5_humbaba | footprint 0.76x0.46 h 0.46 | foot range 0.00 | seen by arrive_from_prev at 18 m ndcy -0.15",
+   "disabled": false
+  },
+  {
+   "id": "hf4_lion_shrine_altar_z5",
+   "group": "Z5Ring0",
+   "library": "wow21",
+   "asset": "lion_shrine_altar",
+   "lodProfile": "wow21_three",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -8.0,
+    0.18,
+    194.0
+   ],
+   "rotEuler": [
+    0.0,
+    150.0,
+    0.0
+   ],
+   "scale": 2.97,
+   "shadowsOff": false,
+   "tags": [
+    "wow21",
+    "z5",
+    "hotfix4",
+    "foreground"
+   ],
+   "collision": {
+    "kind": "box"
+   },
+   "note": "HOTFIX4 CHAIN: near-left foreground prop for the Humbaba play frame (arrive pose cam 0,2.4,181, lens 50), ground y estimated like SIGHT2 (source y + footprint ground difference), snap check needed in the built zone",
+   "disabled": false
   }
  ],
  "scatter": []

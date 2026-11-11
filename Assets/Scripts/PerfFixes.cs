@@ -53,6 +53,13 @@ public static class PerfFixes
         public int framesBetweenFiles = 20;                    // one file at a time, spread over the intro
         public float maxTotalMb = 128f;                        // parsed imports stay in RAM until the loader takes them: files past this total are not preloaded
         public bool inHarness = false;
+        // v2 (2026-11-11, startup stall fix): TIER 0 = eagerFiles (Joan's worn gear) parsed first, eagerStartFrames after the scene load, eagerFramesBetween frames apart;
+        // TIER 1 = everything else (vendors, camp NPCs, monster looks, boss weapons, other gear) only after lateDelayFrames more frames, lateFramesBetween apart. eagerFiles empty = the old single tier.
+        public string[] eagerFiles = new string[0];
+        public int eagerStartFrames = 5;
+        public int eagerFramesBetween = 2;
+        public int lateDelayFrames = 600;
+        public int lateFramesBetween = 20;
     }
     [Serializable] public class D1Cfg { public bool enabled = true; public float epsilonRel = 0.002f; public float epsilonEmissiveRel = 0.002f; public string note; }   // write only when the value moved by more than epsilon x the base (0 = any change)
     [Serializable] public class D1bCfg { public bool enabled = true; public string note; }

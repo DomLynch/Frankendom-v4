@@ -211,6 +211,111 @@
       "scene": "HadesSlice_BanditArcher",
       "path": "Creatures/BanditArcher",
       "_about": "BANDITS v1: Resources/Creatures/BanditArcher.prefab, made by Hades > Zones > Save creature prefabs from its enemy scene (UNITY_DEV_CHECKLIST.md). Until it exists its spawn rows are skipped with one log line."
+    },
+    {
+      "id": "NpcPitGladiator",
+      "source": "resources",
+      "scene": "HadesSlice_NpcPitGladiator",
+      "path": "Creatures/NpcPitGladiator",
+      "_about": "NPC15: Resources/Creatures/NpcPitGladiator.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcChainWarden",
+      "source": "resources",
+      "scene": "HadesSlice_NpcChainWarden",
+      "path": "Creatures/NpcChainWarden",
+      "_about": "NPC15: Resources/Creatures/NpcChainWarden.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcSlagCrossbowman",
+      "source": "resources",
+      "scene": "HadesSlice_NpcSlagCrossbowman",
+      "path": "Creatures/NpcSlagCrossbowman",
+      "_about": "NPC15: Resources/Creatures/NpcSlagCrossbowman.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcCrocWarrior",
+      "source": "resources",
+      "scene": "HadesSlice_NpcCrocWarrior",
+      "path": "Creatures/NpcCrocWarrior",
+      "_about": "NPC15: Resources/Creatures/NpcCrocWarrior.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcReedSkirmisher",
+      "source": "resources",
+      "scene": "HadesSlice_NpcReedSkirmisher",
+      "path": "Creatures/NpcReedSkirmisher",
+      "_about": "NPC15: Resources/Creatures/NpcReedSkirmisher.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcEmbalmerCultist",
+      "source": "resources",
+      "scene": "HadesSlice_NpcEmbalmerCultist",
+      "path": "Creatures/NpcEmbalmerCultist",
+      "_about": "NPC15: Resources/Creatures/NpcEmbalmerCultist.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcMereRaider",
+      "source": "resources",
+      "scene": "HadesSlice_NpcMereRaider",
+      "path": "Creatures/NpcMereRaider",
+      "_about": "NPC15: Resources/Creatures/NpcMereRaider.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcBogHag",
+      "source": "resources",
+      "scene": "HadesSlice_NpcBogHag",
+      "path": "Creatures/NpcBogHag",
+      "_about": "NPC15: Resources/Creatures/NpcBogHag.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcDrownedThane",
+      "source": "resources",
+      "scene": "HadesSlice_NpcDrownedThane",
+      "path": "Creatures/NpcDrownedThane",
+      "_about": "NPC15: Resources/Creatures/NpcDrownedThane.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcBarkSentinel",
+      "source": "resources",
+      "scene": "HadesSlice_NpcBarkSentinel",
+      "path": "Creatures/NpcBarkSentinel",
+      "_about": "NPC15: Resources/Creatures/NpcBarkSentinel.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcCedarArcher",
+      "source": "resources",
+      "scene": "HadesSlice_NpcCedarArcher",
+      "path": "Creatures/NpcCedarArcher",
+      "_about": "NPC15: Resources/Creatures/NpcCedarArcher.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcRootDruid",
+      "source": "resources",
+      "scene": "HadesSlice_NpcRootDruid",
+      "path": "Creatures/NpcRootDruid",
+      "_about": "NPC15: Resources/Creatures/NpcRootDruid.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcHuntsman",
+      "source": "resources",
+      "scene": "HadesSlice_NpcHuntsman",
+      "path": "Creatures/NpcHuntsman",
+      "_about": "NPC15: Resources/Creatures/NpcHuntsman.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcHoundMaster",
+      "source": "resources",
+      "scene": "HadesSlice_NpcHoundMaster",
+      "path": "Creatures/NpcHoundMaster",
+      "_about": "NPC15: Resources/Creatures/NpcHoundMaster.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcAntlerKnight",
+      "source": "resources",
+      "scene": "HadesSlice_NpcAntlerKnight",
+      "path": "Creatures/NpcAntlerKnight",
+      "_about": "NPC15: Resources/Creatures/NpcAntlerKnight.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
     }
   ],
   "zones": [
@@ -732,6 +837,60 @@
           "pos": [5.2, 156.4],
           "yaw": 220.9,
           "note": "BANDITS v1 g4_after member 4 (BanditArcher): anchor arrive_from_next along -3.75 lateral -0.75 formation (2.5, 1.7); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_z4_a_1",
+          "pos": [
+            -8.12,
+            144.41
+          ],
+          "yaw": 165.2,
+          "note": "NPC15PLACE z4_a member 1 (NpcMereRaider): patrol group z4_a, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
+        },
+        {
+          "id": "bandit_z4_a_2",
+          "pos": [
+            -7.16,
+            141.61
+          ],
+          "yaw": 159.8,
+          "note": "NPC15PLACE z4_a member 2 (NpcDrownedThane): patrol group z4_a, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
+        },
+        {
+          "id": "bandit_z4_a_3",
+          "pos": [
+            -4.8,
+            142.94
+          ],
+          "yaw": 150.5,
+          "note": "NPC15PLACE z4_a member 3 (NpcBogHag): patrol group z4_a, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
+        },
+        {
+          "id": "bandit_z4_b_1",
+          "pos": [
+            2.12,
+            149.24
+          ],
+          "yaw": 204.6,
+          "note": "NPC15PLACE z4_b member 1 (NpcDrownedThane): patrol group z4_b, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
+        },
+        {
+          "id": "bandit_z4_b_2",
+          "pos": [
+            4.19,
+            147.84
+          ],
+          "yaw": 204.0,
+          "note": "NPC15PLACE z4_b member 2 (NpcBogHag): patrol group z4_b, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
+        },
+        {
+          "id": "bandit_z4_b_3",
+          "pos": [
+            4.53,
+            150.44
+          ],
+          "yaw": 168.9,
+          "note": "NPC15PLACE z4_b member 3 (NpcMereRaider): patrol group z4_b, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
         }
       ],
       "spawns": [
@@ -755,124 +914,124 @@
           "difficulty": 12
         },
         {
-          "id": "bandit_g4_before_1",
+          "id": "bandit_z4_a_1",
           "enabled": false,
-          "spot": "bandit_g4_before_1",
+          "spot": "bandit_z4_a_1",
           "picks": [
             {
-              "creature": "BanditAssassin",
+              "creature": "NpcMereRaider",
               "weight": 1
             }
           ],
-          "ladderRow": "bandit_assassin_z4",
+          "ladderRow": "npcmereraider_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 5,
-          "leash": 17,
-          "hpMul": 1.0,
-          "damageMul": 0.7021,
-          "difficulty": 6,
-          "needs": "BANDITS v1: Resources/Creatures/BanditAssassin.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
-        },
-        {
-          "id": "bandit_g4_before_2",
-          "enabled": false,
-          "spot": "bandit_g4_before_2",
-          "picks": [
-            {
-              "creature": "BanditMelee",
-              "weight": 1
-            }
-          ],
-          "ladderRow": "bandit_melee_z4",
-          "respawnMinS": 240,
-          "respawnMaxS": 420,
-          "aggro": 5.5,
-          "leash": 17.5,
+          "aggro": 0.5,
+          "leash": 12.5,
           "hpMul": 1.0,
           "damageMul": 0.6142,
           "difficulty": 4,
-          "needs": "BANDITS v1: Resources/Creatures/BanditMelee.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+          "needs": "NPC15PLACE: Resources/Creatures/NpcMereRaider.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
         {
-          "id": "bandit_g4_after_1",
+          "id": "bandit_z4_a_2",
           "enabled": true,
-          "spot": "bandit_g4_after_1",
+          "spot": "bandit_z4_a_2",
           "picks": [
             {
-              "creature": "BanditMelee",
+              "creature": "NpcDrownedThane",
               "weight": 1
             }
           ],
-          "ladderRow": "bandit_melee_z4",
+          "ladderRow": "npcdrownedthane_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 2.1,
-          "leash": 14.1,
+          "aggro": 0.5,
+          "leash": 12.5,
           "hpMul": 1.0,
           "damageMul": 0.6142,
           "difficulty": 4,
-          "needs": "BANDITS v1: Resources/Creatures/BanditMelee.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z4_grendel is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
+          "needs": "NPC15PLACE: Resources/Creatures/NpcDrownedThane.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
         {
-          "id": "bandit_g4_after_2",
+          "id": "bandit_z4_a_3",
           "enabled": true,
-          "spot": "bandit_g4_after_2",
+          "spot": "bandit_z4_a_3",
           "picks": [
             {
-              "creature": "BanditAssassin",
+              "creature": "NpcBogHag",
               "weight": 1
             }
           ],
-          "ladderRow": "bandit_assassin_z4",
+          "ladderRow": "npcboghag_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 3.3,
-          "leash": 15.3,
+          "aggro": 0.5,
+          "leash": 12.5,
           "hpMul": 1.0,
           "damageMul": 0.7021,
           "difficulty": 6,
-          "needs": "BANDITS v1: Resources/Creatures/BanditAssassin.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z4_grendel is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
+          "needs": "NPC15PLACE: Resources/Creatures/NpcBogHag.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
         {
-          "id": "bandit_g4_after_3",
-          "enabled": false,
-          "spot": "bandit_g4_after_3",
+          "id": "bandit_z4_b_1",
+          "enabled": true,
+          "spot": "bandit_z4_b_1",
           "picks": [
             {
-              "creature": "BanditArcher",
+              "creature": "NpcDrownedThane",
               "weight": 1
             }
           ],
-          "ladderRow": "bandit_archer_z4",
+          "ladderRow": "npcdrownedthane_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 5.5,
-          "leash": 15.5,
+          "aggro": 0.5,
+          "leash": 12.5,
           "hpMul": 1.0,
-          "damageMul": 0.5264,
+          "damageMul": 0.6142,
           "difficulty": 4,
-          "needs": "BANDITS v1: Resources/Creatures/BanditArcher.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z4_grendel is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
+          "needs": "NPC15PLACE: Resources/Creatures/NpcDrownedThane.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
         {
-          "id": "bandit_g4_after_4",
-          "enabled": false,
-          "spot": "bandit_g4_after_4",
+          "id": "bandit_z4_b_2",
+          "enabled": true,
+          "spot": "bandit_z4_b_2",
           "picks": [
             {
-              "creature": "BanditArcher",
+              "creature": "NpcBogHag",
               "weight": 1
             }
           ],
-          "ladderRow": "bandit_archer_z4",
+          "ladderRow": "npcboghag_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 7.9,
-          "leash": 17.9,
+          "aggro": 0.5,
+          "leash": 12.5,
           "hpMul": 1.0,
-          "damageMul": 0.5264,
+          "damageMul": 0.7021,
+          "difficulty": 6,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcBogHag.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z4_b_3",
+          "enabled": true,
+          "spot": "bandit_z4_b_3",
+          "picks": [
+            {
+              "creature": "NpcMereRaider",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcmereraider_z4",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 1.0,
+          "damageMul": 0.6142,
           "difficulty": 4,
-          "needs": "BANDITS v1: Resources/Creatures/BanditArcher.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z4_grendel is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
+          "needs": "NPC15PLACE: Resources/Creatures/NpcMereRaider.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         }
       ],
       "services": [],
@@ -994,6 +1153,60 @@
           "pos": [3.9, 225.9],
           "yaw": 213,
           "note": "BANDITS v1 g5_after member 2 (BanditAssassin): anchor arrive_from_next along -2.50 lateral 1.00 formation (1.2, 1.4); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_z5_a_1",
+          "pos": [
+            -11.61,
+            209.32
+          ],
+          "yaw": 122.6,
+          "note": "NPC15PLACE z5_a member 1 (NpcCedarArcher): patrol group z5_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
+        },
+        {
+          "id": "bandit_z5_a_2",
+          "pos": [
+            -13.42,
+            211.25
+          ],
+          "yaw": 148.6,
+          "note": "NPC15PLACE z5_a member 2 (NpcRootDruid): patrol group z5_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
+        },
+        {
+          "id": "bandit_z5_a_3",
+          "pos": [
+            -13.46,
+            208.18
+          ],
+          "yaw": 147.9,
+          "note": "NPC15PLACE z5_a member 3 (NpcBarkSentinel): patrol group z5_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
+        },
+        {
+          "id": "bandit_z5_b_1",
+          "pos": [
+            6.71,
+            199.71
+          ],
+          "yaw": 231.9,
+          "note": "NPC15PLACE z5_b member 1 (NpcRootDruid): patrol group z5_b, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
+        },
+        {
+          "id": "bandit_z5_b_2",
+          "pos": [
+            9.13,
+            198.25
+          ],
+          "yaw": 243.9,
+          "note": "NPC15PLACE z5_b member 2 (NpcBarkSentinel): patrol group z5_b, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
+        },
+        {
+          "id": "bandit_z5_b_3",
+          "pos": [
+            8.34,
+            200.89
+          ],
+          "yaw": 197.6,
+          "note": "NPC15PLACE z5_b member 3 (NpcCedarArcher): patrol group z5_b, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
         }
       ],
       "spawns": [
@@ -1019,76 +1232,56 @@
           "note": "ZONE5 v1 DRAFT numbers (creature id, ladderRow, difficulty 13) are laneMONSTER5 / Strategy decisions. aggro 9 starts the fight at the clearing edge; leash 30 covers the 30 m circle plus the path. Skipped at run time until Resources/Creatures/Humbaba exists."
         },
         {
-          "id": "bandit_g5_before_1",
-          "enabled": false,
-          "spot": "bandit_g5_before_1",
+          "id": "bandit_z5_a_1",
+          "enabled": true,
+          "spot": "bandit_z5_a_1",
           "picks": [
             {
-              "creature": "BanditMelee",
+              "creature": "NpcCedarArcher",
               "weight": 1
             }
           ],
-          "ladderRow": "bandit_melee_z5",
+          "ladderRow": "npccedararcher_z5",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 6,
-          "leash": 18,
-          "hpMul": 1.12,
-          "damageMul": 0.6615,
-          "difficulty": 4,
-          "needs": "BANDITS v1: Resources/Creatures/BanditMelee.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
-        },
-        {
-          "id": "bandit_g5_before_2",
-          "enabled": false,
-          "spot": "bandit_g5_before_2",
-          "picks": [
-            {
-              "creature": "BanditArcher",
-              "weight": 1
-            }
-          ],
-          "ladderRow": "bandit_archer_z5",
-          "respawnMinS": 240,
-          "respawnMaxS": 420,
-          "aggro": 10,
-          "leash": 20,
+          "aggro": 0.5,
+          "leash": 12.5,
           "hpMul": 1.12,
           "damageMul": 0.5669,
           "difficulty": 4,
-          "needs": "BANDITS v1: Resources/Creatures/BanditArcher.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+          "needs": "NPC15PLACE: Resources/Creatures/NpcCedarArcher.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
         {
-          "id": "bandit_g5_before_3",
-          "enabled": false,
-          "spot": "bandit_g5_before_3",
+          "id": "bandit_z5_a_2",
+          "enabled": true,
+          "spot": "bandit_z5_a_2",
           "picks": [
             {
-              "creature": "BanditAssassin",
+              "creature": "NpcRootDruid",
               "weight": 1
             }
           ],
-          "ladderRow": "bandit_assassin_z5",
+          "ladderRow": "npcrootdruid_z5",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 8,
-          "leash": 20,
+          "aggro": 0.5,
+          "leash": 12.5,
           "hpMul": 1.12,
           "damageMul": 0.7561,
           "difficulty": 6,
-          "needs": "BANDITS v1: Resources/Creatures/BanditAssassin.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+          "needs": "NPC15PLACE: Resources/Creatures/NpcRootDruid.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
         {
-          "id": "bandit_g5_after_1",
-          "enabled": true,
-          "spot": "bandit_g5_after_1",
+          "id": "bandit_z5_a_3",
+          "enabled": false,
+          "spot": "bandit_z5_a_3",
           "picks": [
             {
-              "creature": "BanditMelee",
+              "creature": "NpcBarkSentinel",
               "weight": 1
             }
           ],
-          "ladderRow": "bandit_melee_z5",
+          "ladderRow": "npcbarksentinel_z5",
           "respawnMinS": 240,
           "respawnMaxS": 420,
           "aggro": 0.5,
@@ -1096,27 +1289,67 @@
           "hpMul": 1.12,
           "damageMul": 0.6615,
           "difficulty": 4,
-          "needs": "BANDITS v1: Resources/Creatures/BanditMelee.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z5_humbaba is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
+          "needs": "NPC15PLACE: Resources/Creatures/NpcBarkSentinel.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
         {
-          "id": "bandit_g5_after_2",
+          "id": "bandit_z5_b_1",
           "enabled": true,
-          "spot": "bandit_g5_after_2",
+          "spot": "bandit_z5_b_1",
           "picks": [
             {
-              "creature": "BanditAssassin",
+              "creature": "NpcRootDruid",
               "weight": 1
             }
           ],
-          "ladderRow": "bandit_assassin_z5",
+          "ladderRow": "npcrootdruid_z5",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 0.8,
-          "leash": 12.8,
+          "aggro": 0.5,
+          "leash": 12.5,
           "hpMul": 1.12,
           "damageMul": 0.7561,
           "difficulty": 6,
-          "needs": "BANDITS v1: Resources/Creatures/BanditAssassin.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs); wakes only after z5_humbaba is dead when BanditArcher.cs is in (afterGate), aggro held at the capped value until then"
+          "needs": "NPC15PLACE: Resources/Creatures/NpcRootDruid.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z5_b_2",
+          "enabled": false,
+          "spot": "bandit_z5_b_2",
+          "picks": [
+            {
+              "creature": "NpcBarkSentinel",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcbarksentinel_z5",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 1.12,
+          "damageMul": 0.6615,
+          "difficulty": 4,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcBarkSentinel.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z5_b_3",
+          "enabled": true,
+          "spot": "bandit_z5_b_3",
+          "picks": [
+            {
+              "creature": "NpcCedarArcher",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npccedararcher_z5",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 1.12,
+          "damageMul": 0.5669,
+          "difficulty": 4,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcCedarArcher.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         }
       ],
       "services": [],
@@ -1226,6 +1459,60 @@
           "pos": [3.8, 249.9],
           "yaw": 212.3,
           "note": "BANDITS v1 g6_before member 3 (BanditArcher): anchor arrive_from_prev along -3.50 lateral 0.00 formation (2.4, 0.2); computed by plan_bandits.py, ground by the runtime raycast."
+        },
+        {
+          "id": "bandit_z6_a_1",
+          "pos": [
+            5.7,
+            273.61
+          ],
+          "yaw": 184.7,
+          "note": "NPC15PLACE z6_a member 1 (BanditMelee): patrol group z6_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
+        },
+        {
+          "id": "bandit_z6_a_2",
+          "pos": [
+            8.0,
+            272.19
+          ],
+          "yaw": 235.2,
+          "note": "NPC15PLACE z6_a member 2 (NpcHuntsman): patrol group z6_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
+        },
+        {
+          "id": "bandit_z6_a_3",
+          "pos": [
+            9.1,
+            275.01
+          ],
+          "yaw": 224.8,
+          "note": "NPC15PLACE z6_a member 3 (NpcHoundMaster): patrol group z6_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
+        },
+        {
+          "id": "bandit_z6_b_1",
+          "pos": [
+            -3.66,
+            271.23
+          ],
+          "yaw": 139.1,
+          "note": "NPC15PLACE z6_b member 1 (NpcHoundMaster): patrol group z6_b, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
+        },
+        {
+          "id": "bandit_z6_b_2",
+          "pos": [
+            -2.61,
+            273.2
+          ],
+          "yaw": 178.0,
+          "note": "NPC15PLACE z6_b member 2 (BanditMelee): patrol group z6_b, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
+        },
+        {
+          "id": "bandit_z6_b_3",
+          "pos": [
+            -5.79,
+            274.28
+          ],
+          "yaw": 174.3,
+          "note": "NPC15PLACE z6_b member 3 (NpcHuntsman): patrol group z6_b, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
         }
       ],
       "spawns": [
@@ -1250,64 +1537,124 @@
           "needs": "laneMONSTER6 roster row + Resources/Creatures/Erlking.prefab; respawn 30 to 45 min is a Dom decision (final boss)"
         },
         {
-          "id": "bandit_g6_before_1",
-          "enabled": false,
-          "spot": "bandit_g6_before_1",
+          "id": "bandit_z6_a_1",
+          "enabled": true,
+          "spot": "bandit_z6_a_1",
           "picks": [
             {
-              "creature": "BanditAssassin",
+              "creature": "NpcAntlerKnight",
               "weight": 1
             }
           ],
-          "ladderRow": "bandit_assassin_z6",
+          "ladderRow": "npcantlerknight_z6",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 6.5,
-          "leash": 18.5,
-          "hpMul": 1.3846,
-          "damageMul": 0.9361,
-          "difficulty": 6,
-          "needs": "BANDITS v1: Resources/Creatures/BanditAssassin.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
-        },
-        {
-          "id": "bandit_g6_before_2",
-          "enabled": false,
-          "spot": "bandit_g6_before_2",
-          "picks": [
-            {
-              "creature": "BanditMelee",
-              "weight": 1
-            }
-          ],
-          "ladderRow": "bandit_melee_z6",
-          "respawnMinS": 240,
-          "respawnMaxS": 420,
-          "aggro": 6,
-          "leash": 18,
+          "aggro": 0.5,
+          "leash": 12.5,
           "hpMul": 1.3846,
           "damageMul": 0.819,
           "difficulty": 4,
-          "needs": "BANDITS v1: Resources/Creatures/BanditMelee.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+          "needs": "NPC15PLACE: Resources/Creatures/NpcAntlerKnight.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
         {
-          "id": "bandit_g6_before_3",
-          "enabled": false,
-          "spot": "bandit_g6_before_3",
+          "id": "bandit_z6_a_2",
+          "enabled": true,
+          "spot": "bandit_z6_a_2",
           "picks": [
             {
-              "creature": "BanditArcher",
+              "creature": "NpcHuntsman",
               "weight": 1
             }
           ],
-          "ladderRow": "bandit_archer_z6",
+          "ladderRow": "npchuntsman_z6",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 7.5,
-          "leash": 17.5,
+          "aggro": 0.5,
+          "leash": 12.5,
           "hpMul": 1.3846,
           "damageMul": 0.7019,
           "difficulty": 4,
-          "needs": "BANDITS v1: Resources/Creatures/BanditArcher.prefab (Hades > Enemy 1+2, Hades > Zones > Save creature prefabs)"
+          "needs": "NPC15PLACE: Resources/Creatures/NpcHuntsman.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z6_a_3",
+          "enabled": true,
+          "spot": "bandit_z6_a_3",
+          "picks": [
+            {
+              "creature": "NpcHoundMaster",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npchoundmaster_z6",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 1.3846,
+          "damageMul": 0.9361,
+          "difficulty": 6,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcHoundMaster.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z6_b_1",
+          "enabled": true,
+          "spot": "bandit_z6_b_1",
+          "picks": [
+            {
+              "creature": "NpcHoundMaster",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npchoundmaster_z6",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 1.3846,
+          "damageMul": 0.9361,
+          "difficulty": 6,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcHoundMaster.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z6_b_2",
+          "enabled": true,
+          "spot": "bandit_z6_b_2",
+          "picks": [
+            {
+              "creature": "NpcAntlerKnight",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcantlerknight_z6",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 1.3846,
+          "damageMul": 0.819,
+          "difficulty": 4,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcAntlerKnight.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z6_b_3",
+          "enabled": true,
+          "spot": "bandit_z6_b_3",
+          "picks": [
+            {
+              "creature": "NpcHuntsman",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npchuntsman_z6",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 0.5,
+          "leash": 12.5,
+          "hpMul": 1.3846,
+          "damageMul": 0.7019,
+          "difficulty": 4,
+          "needs": "NPC15PLACE: Resources/Creatures/NpcHuntsman.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         }
       ],
       "services": [],

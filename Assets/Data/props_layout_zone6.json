@@ -52,6 +52,10 @@
    "name": "wow21",
    "pattern": "Assets/Env/Props/wow21/{asset}_LOD{lod}.glb",
    "status": "WOW21 hero props, converted LOD files from laneWOW21LOD; a missing LODn is skipped by PropsLayout.PlaceOne"
+  },
+  {
+   "name": "clutter",
+   "pattern": "Assets/Env/Props/clutter/{asset}_LOD{lod}.glb"
   }
  ],
  "lodProfiles": [
@@ -6313,6 +6317,267 @@
    "disabled": false,
    "seamBaseY": -1.01,
    "seamDy": -0.0
+  },
+  {
+   "id": "clutter_z6_1",
+   "group": "Z6Ring1",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -7.812,
+    -0.13,
+    266.484
+   ],
+   "rotEuler": [
+    0,
+    264.6,
+    0
+   ],
+   "scale": 1.022,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone6",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | z6_erlking | footprint 1.02x0.62 h 0.61 | foot range 0.00 | seen by arrive_from_prev at 20 m ndcy -0.08",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z6_2",
+   "group": "Z6Ring1",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -7.319,
+    -0.13,
+    267.4
+   ],
+   "rotEuler": [
+    0,
+    166.9,
+    0
+   ],
+   "scale": 1.154,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone6",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | z6_erlking | footprint 0.69x0.28 h 0.40 | foot range 0.00 | seen by arrive_from_prev at 21 m ndcy -0.08",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z6_3",
+   "group": "Z6Ring2",
+   "library": "clutter",
+   "asset": "clutter_bone_pile_big",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    5.516,
+    -0.13,
+    258.604
+   ],
+   "rotEuler": [
+    0,
+    72.1,
+    0
+   ],
+   "scale": 1.072,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone6",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | z6_erlking | footprint 0.89x0.37 h 0.43 | foot range 0.00 | seen by arrive_from_prev at 12 m ndcy -0.28",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z6_4",
+   "group": "Z6Ring2",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.325,
+    -0.13,
+    258.399
+   ],
+   "rotEuler": [
+    0,
+    215.9,
+    0
+   ],
+   "scale": 1.244,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone6",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | z6_erlking | footprint 0.74x0.31 h 0.44 | foot range 0.00 | seen by arrive_from_prev at 12 m ndcy -0.29",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z6_5",
+   "group": "Z6Ring2",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.058,
+    -0.13,
+    259.284
+   ],
+   "rotEuler": [
+    0,
+    100.9,
+    0
+   ],
+   "scale": 0.516,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone6",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | z6_erlking | footprint 0.52x0.31 h 0.31 | foot range 0.00 | seen by arrive_from_prev at 13 m ndcy -0.27",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z6_6",
+   "group": "Z6Ring2",
+   "library": "clutter",
+   "asset": "clutter_root_crown",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -3.667,
+    -0.13,
+    259.703
+   ],
+   "rotEuler": [
+    0,
+    79.7,
+    0
+   ],
+   "scale": 0.655,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone6",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 2 | z6_erlking | footprint 0.94x0.81 h 0.59 | foot range 0.00 | seen by arrive_from_prev at 12 m ndcy -0.23",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z6_7",
+   "group": "Z6Ring2",
+   "library": "clutter",
+   "asset": "clutter_sword_lying",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -3.495,
+    -0.13,
+    260.847
+   ],
+   "rotEuler": [
+    0,
+    192.9,
+    0
+   ],
+   "scale": 0.926,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone6",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 2 | z6_erlking | footprint 0.92x0.44 h 0.16 | foot range 0.00 | seen by arrive_from_prev at 13 m ndcy -0.23",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z6_8",
+   "group": "Z6Ring2",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -4.379,
+    -0.13,
+    260.514
+   ],
+   "rotEuler": [
+    0,
+    70.0,
+    0
+   ],
+   "scale": 1.181,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone6",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 2 | z6_erlking | footprint 0.70x0.29 h 0.41 | foot range 0.00 | seen by arrive_from_prev at 13 m ndcy -0.22",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z6_9",
+   "group": "Z6Ring1",
+   "library": "clutter",
+   "asset": "clutter_bone_pile_big",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -4.178,
+    -0.13,
+    254.471
+   ],
+   "rotEuler": [
+    0,
+    63.4,
+    0
+   ],
+   "scale": 0.902,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone6",
+    "scatter"
+   ],
+   "note": "CLUTTER single | z6_erlking | footprint 0.75x0.31 h 0.36 | foot range 0.00 | seen by arrive_from_prev at 8 m ndcy -0.58",
+   "disabled": false
   }
  ],
  "scatter": []

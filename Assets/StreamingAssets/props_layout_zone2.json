@@ -47,6 +47,10 @@
    "name": "wow21",
    "pattern": "Assets/Env/Props/wow21/{asset}_LOD{lod}.glb",
    "status": "WOW21 hero props, converted LOD files from laneWOW21LOD; a missing LODn is skipped by PropsLayout.PlaceOne"
+  },
+  {
+   "name": "clutter",
+   "pattern": "Assets/Env/Props/clutter/{asset}_LOD{lod}.glb"
   }
  ],
  "lodProfiles": [
@@ -6447,6 +6451,267 @@
    "disabled": false,
    "seamBaseY": -1.926,
    "seamDy": -0.0
+  },
+  {
+   "id": "clutter_z2_1",
+   "group": "Z2Ring0",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    11.039,
+    -0.3,
+    60.053
+   ],
+   "rotEuler": [
+    0,
+    150.0,
+    0
+   ],
+   "scale": 0.963,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | sobek_reach | footprint 0.96x0.59 h 0.58 | foot range 0.07 | seen by arrive_from_prev at 23 m ndcy -0.08 | base of z2h_sobek_obelisk",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_2",
+   "group": "Z2Ring0",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    11.438,
+    -0.34,
+    59.226
+   ],
+   "rotEuler": [
+    0,
+    176.9,
+    0
+   ],
+   "scale": 0.594,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | sobek_reach | footprint 0.59x0.36 h 0.36 | foot range 0.04 | seen by arrive_from_prev at 22 m ndcy -0.11 | base of z2h_sobek_obelisk",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_3",
+   "group": "Z2Ring1",
+   "library": "clutter",
+   "asset": "clutter_bone_pile_big",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.102,
+    -0.08,
+    63.616
+   ],
+   "rotEuler": [
+    0,
+    178.6,
+    0
+   ],
+   "scale": 1.054,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | sobek_reach | footprint 0.88x0.36 h 0.42 | foot range 0.00 | seen by arrive_from_prev at 24 m ndcy -0.03 | base of z2_boulder_08_D",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_4",
+   "group": "Z2Ring1",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.846,
+    -0.08,
+    63.408
+   ],
+   "rotEuler": [
+    0,
+    248.9,
+    0
+   ],
+   "scale": 1.113,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | sobek_reach | footprint 0.66x0.27 h 0.39 | foot range 0.00 | seen by arrive_from_prev at 24 m ndcy -0.03 | base of z2_boulder_08_D",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_5",
+   "group": "Z2Ring2",
+   "library": "clutter",
+   "asset": "clutter_root_crown",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -11.119,
+    -0.319,
+    63.725
+   ],
+   "rotEuler": [
+    0,
+    248.8,
+    0
+   ],
+   "scale": 0.655,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 2 | sobek_reach | footprint 0.94x0.81 h 0.59 | foot range 0.07 | seen by arrive_from_prev at 26 m ndcy -0.04 | base of z2_arch_fragment_9a_0",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_6",
+   "group": "Z2Ring2",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -11.267,
+    -0.326,
+    62.776
+   ],
+   "rotEuler": [
+    0,
+    166.5,
+    0
+   ],
+   "scale": 0.501,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 2 | sobek_reach | footprint 0.50x0.30 h 0.30 | foot range 0.04 | seen by arrive_from_prev at 25 m ndcy -0.06 | base of z2_arch_fragment_9a_0",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_7",
+   "group": "Z2Ring2",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -4.651,
+    -0.08,
+    63.889
+   ],
+   "rotEuler": [
+    0,
+    108.6,
+    0
+   ],
+   "scale": 0.65,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "scatter"
+   ],
+   "note": "CLUTTER single | sobek_reach | footprint 0.65x0.40 h 0.39 | foot range 0.00 | seen by arrive_from_prev at 24 m ndcy -0.03",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_8",
+   "group": "Z2Ring1",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -10.817,
+    -0.271,
+    56.968
+   ],
+   "rotEuler": [
+    0,
+    145.7,
+    0
+   ],
+   "scale": 0.586,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "scatter"
+   ],
+   "note": "CLUTTER single | sobek_reach | footprint 0.59x0.36 h 0.35 | foot range 0.04 | seen by arrive_from_prev at 20 m ndcy -0.13",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z2_9",
+   "group": "Z2Ring0",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -14.28,
+    -0.815,
+    63.504
+   ],
+   "rotEuler": [
+    0,
+    214.5,
+    0
+   ],
+   "scale": 0.942,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone2",
+    "scatter"
+   ],
+   "note": "CLUTTER single | sobek_reach | footprint 0.56x0.23 h 0.33 | foot range 0.06 | seen by arrive_from_prev at 28 m ndcy -0.10",
+   "disabled": false
   }
  ]
 }

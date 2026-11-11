@@ -1010,12 +1010,12 @@
    "zone": "z1",
    "type": "point",
    "pos": [
-    -21.9,
-    -0.73,
-    4.12
+    -15.45,
+    -0.52,
+    35.05
    ],
    "aimPitchDeg": 90.0,
-   "aimYawDeg": 90.0,
+   "aimYawDeg": 150.0,
    "kelvin": 1800,
    "candela": 11500,
    "range": 7.0,
@@ -1044,12 +1044,12 @@
    "zone": "z1",
    "type": "spot",
    "pos": [
-    -20.56,
-    1.52,
-    4.27
+    -14.78,
+    1.73,
+    33.89
    ],
    "aimPitchDeg": 90.0,
-   "aimYawDeg": 90.0,
+   "aimYawDeg": 150.0,
    "kelvin": 1800,
    "candela": 64300,
    "range": 7.0,

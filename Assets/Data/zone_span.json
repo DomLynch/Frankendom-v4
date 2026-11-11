@@ -72,15 +72,15 @@
       "rings": [
         {
           "group": "Z2Ring0",
-          "rows": 47
+          "rows": 50
         },
         {
           "group": "Z2Ring1",
-          "rows": 133
+          "rows": 136
         },
         {
           "group": "Z2Ring2",
-          "rows": 41
+          "rows": 44
         }
       ],
       "hideRows": [
@@ -150,7 +150,7 @@
       "rings": [
         {
           "group": "HubRing0",
-          "rows": 90
+          "rows": 96
         },
         {
           "group": "HubRing1",
@@ -213,11 +213,11 @@
         },
         {
           "group": "Z4Ring1",
-          "rows": 51
+          "rows": 54
         },
         {
           "group": "Z4Ring2",
-          "rows": 82
+          "rows": 88
         }
       ],
       "hideRows": [
@@ -260,11 +260,11 @@
       "rings": [
         {
           "group": "Z5Ring0",
-          "rows": 32
+          "rows": 34
         },
         {
           "group": "Z5Ring1",
-          "rows": 23
+          "rows": 30
         },
         {
           "group": "Z5Ring2",
@@ -311,11 +311,11 @@
         },
         {
           "group": "Z6Ring1",
-          "rows": 48
+          "rows": 51
         },
         {
           "group": "Z6Ring2",
-          "rows": 71
+          "rows": 77
         }
       ],
       "hideRows": [
@@ -356,11 +356,11 @@
       "rings": [
         {
           "group": "Z7Ring0",
-          "rows": 47
+          "rows": 52
         },
         {
           "group": "Z7Ring1",
-          "rows": 19
+          "rows": 20
         },
         {
           "group": "Z7Ring2",

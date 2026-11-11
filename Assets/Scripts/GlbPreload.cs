@@ -54,9 +54,18 @@ public static class GlbPreload
         return null;
     }
 
+    /// <summary>TIER 0 (v2): Joan's worn gear (C3.eagerFiles), parsed first and fast. Empty when the config has no eagerFiles (old single-tier behaviour).</summary>
+    internal static List<string> WantedEager()
+    {
+        var c = PerfFixes.C.C3; var list = new List<string>(); var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        if (c.eagerFiles != null) foreach (var g in c.eagerFiles) { string f = FindFile(g); if (f != null && seen.Add(Key(f))) list.Add(f); }
+        return list;
+    }
+
     internal static List<string> Wanted()
     {
         var c = PerfFixes.C.C3; var list = new List<string>(); var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        if (c.eagerFiles != null) foreach (var g in c.eagerFiles) { string f = FindFile(g); if (f != null) seen.Add(Key(f)); }   // tier 0 files are not listed again
         Action<string> add = g => { string f = FindFile(g); if (f != null && seen.Add(Key(f))) list.Add(f); };
         foreach (var f in c.files) add(f);
         foreach (var f in MonsterLook.PreloadFiles()) add(f);   // MONSTERLOOK v1: the look glbs of every enabled monster row are parsed during the intro too
@@ -89,15 +98,33 @@ public class GlbPreloadRunner : MonoBehaviour
     IEnumerator Start()
     {
         var c = PerfFixes.C.C3; float t0 = Time.realtimeSinceStartup;
-        for (int i = 0; i < Mathf.Max(0, c.startDelayFrames); i++) yield return null;
-        var files = GlbPreload.Wanted(); long budget = (long)(Mathf.Max(1f, c.maxTotalMb) * 1048576f), used = 0; var pending = new List<Task<GLTFast.GltfImport>>();
+        long budget = (long)(Mathf.Max(1f, c.maxTotalMb) * 1048576f), used = 0; var pending = new List<Task<GLTFast.GltfImport>>();
+        var eager = GlbPreload.WantedEager();
+        if (eager.Count > 0)
+        {   // TIER 0: Joan's worn gear first, a couple of frames apart, so the armour is on within seconds of the first frame
+            for (int i = 0; i < Mathf.Max(0, c.eagerStartFrames); i++) yield return null;
+            float te = Time.realtimeSinceStartup;
+            foreach (var f in eager)
+            {
+                long len = 0; try { len = new FileInfo(f).Length; } catch (Exception) { }
+                if (used + len > budget) { Debug.Log("[GlbPreload] skipped (budget " + c.maxTotalMb + " MB): " + f); continue; }
+                used += len;
+                var t = GlbPreload.LoadAsync(f); GlbPreload.Add(f, t); pending.Add(t);
+                for (int i = 0; i < Mathf.Max(1, c.eagerFramesBetween); i++) yield return null;
+            }
+            foreach (var t in pending) while (!t.IsCompleted) yield return null;
+            Debug.Log("[GlbPreload] tier0 (Joan gear) " + eager.Count + " files, " + (used / 1048576f).ToString("0.0") + " MB, " + (Time.realtimeSinceStartup - te).ToString("0.0") + " s");
+            for (int i = 0; i < Mathf.Max(0, c.lateDelayFrames); i++) yield return null;
+        }
+        else for (int i = 0; i < Mathf.Max(0, c.startDelayFrames); i++) yield return null;
+        var files = GlbPreload.Wanted(); int gap = eager.Count > 0 ? Mathf.Max(1, c.lateFramesBetween) : Mathf.Max(1, c.framesBetweenFiles);
         foreach (var f in files)
         {
             long len = 0; try { len = new FileInfo(f).Length; } catch (Exception) { }
             if (used + len > budget) { Debug.Log("[GlbPreload] skipped (budget " + c.maxTotalMb + " MB): " + f); continue; }
             used += len;
             var t = GlbPreload.LoadAsync(f); GlbPreload.Add(f, t); pending.Add(t);
-            for (int i = 0; i < Mathf.Max(1, c.framesBetweenFiles); i++) yield return null;
+            for (int i = 0; i < gap; i++) yield return null;
         }
         foreach (var t in pending) while (!t.IsCompleted) yield return null;
         GlbPreload.Seconds = Time.realtimeSinceStartup - t0;

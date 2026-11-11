@@ -99,6 +99,45 @@
    "affectNormal": false,
    "affectSmoothness": true,
    "affectAO": false
+  },
+  {
+   "id": "e2d_puddle_a",
+   "name": "e2d_puddle_a",
+   "smoothness": 0.97,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "e2d_puddle_b",
+   "name": "e2d_puddle_b",
+   "smoothness": 0.97,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
+  },
+  {
+   "id": "e2d_puddle_c",
+   "name": "e2d_puddle_c",
+   "smoothness": 0.97,
+   "tint": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "affectNormal": false,
+   "affectSmoothness": true,
+   "affectAO": false
   }
  ],
  "zones": [
@@ -1039,8 +1078,126 @@
    "depth": 0.0,
    "opacity": 0.93,
    "dd": 45.0
+  },
+  {
+   "id": "e2d_sobe_puddle_008",
+   "zone": "sobek_reach",
+   "tex": "e2d_puddle_a",
+   "x": -3.328,
+   "z": 56.732,
+   "yaw": 240.1,
+   "w": 2.22,
+   "h": 1.57,
+   "depth": 0.0,
+   "opacity": 0.96,
+   "dd": 45.0
+  },
+  {
+   "id": "e2d_sobe_puddle_009",
+   "zone": "sobek_reach",
+   "tex": "e2d_puddle_b",
+   "x": 2.805,
+   "z": 59.726,
+   "yaw": 124.0,
+   "w": 2.35,
+   "h": 1.76,
+   "depth": 0.0,
+   "opacity": 0.91,
+   "dd": 45.0
+  },
+  {
+   "id": "e2d_sobe_puddle_010",
+   "zone": "sobek_reach",
+   "tex": "e2d_puddle_c",
+   "x": 3.925,
+   "z": 54.999,
+   "yaw": 264.1,
+   "w": 1.98,
+   "h": 1.29,
+   "depth": 0.0,
+   "opacity": 0.96,
+   "dd": 45.0
+  },
+  {
+   "id": "e2d_sobe_puddle_011",
+   "zone": "sobek_reach",
+   "tex": "e2d_puddle_a",
+   "x": -4.272,
+   "z": 51.905,
+   "yaw": 166.2,
+   "w": 1.99,
+   "h": 1.41,
+   "depth": 0.0,
+   "opacity": 0.92,
+   "dd": 45.0
+  },
+  {
+   "id": "e2d_gren_puddle_022",
+   "zone": "grendel",
+   "tex": "e2d_puddle_a",
+   "x": -12.069,
+   "z": 110.246,
+   "yaw": 321.1,
+   "w": 4.18,
+   "h": 2.96,
+   "depth": 0.0,
+   "opacity": 0.94,
+   "dd": 45.0
+  },
+  {
+   "id": "e2d_gren_puddle_023",
+   "zone": "grendel",
+   "tex": "e2d_puddle_c",
+   "x": -25.553,
+   "z": 121.927,
+   "yaw": 137.3,
+   "w": 2.73,
+   "h": 1.78,
+   "depth": 0.0,
+   "opacity": 0.91,
+   "dd": 45.0
+  },
+  {
+   "id": "e2d_gren_puddle_024",
+   "zone": "grendel",
+   "tex": "e2d_puddle_a",
+   "x": -22.21,
+   "z": 111.134,
+   "yaw": 85.2,
+   "w": 3.72,
+   "h": 2.63,
+   "depth": 0.0,
+   "opacity": 0.97,
+   "dd": 45.0
+  },
+  {
+   "id": "e2d_gren_puddle_025",
+   "zone": "grendel",
+   "tex": "e2d_puddle_b",
+   "x": -25.938,
+   "z": 114.865,
+   "yaw": 247.9,
+   "w": 2.74,
+   "h": 2.05,
+   "depth": 0.0,
+   "opacity": 0.96,
+   "dd": 45.0
+  },
+  {
+   "id": "e2d_gren_puddle_026",
+   "zone": "grendel",
+   "tex": "e2d_puddle_b",
+   "x": -23.196,
+   "z": 118.023,
+   "yaw": 26.1,
+   "w": 3.41,
+   "h": 2.55,
+   "depth": 0.0,
+   "opacity": 0.94,
+   "dd": 45.0
   }
  ],
  "_v4_note": "laneV4V6 V4 T1: per-zone tint entries tex@zone, rows retargeted, colour only (depthM/liftM untouched). --off restores the backup.",
- "_gid_note": "laneGROUNDID gen_groundid.py: gid_/gidI_ rows + textures appended; --off removes them by id prefix."
+ "_gid_note": "laneGROUNDID gen_groundid.py: gid_/gidI_ rows + textures appended; --off removes them by id prefix.",
+ "_e2d_note": "laneENV2D build_env2d.py: e2d_ rows + textures; --off removes them by id prefix."
 }

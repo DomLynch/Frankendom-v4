@@ -43,6 +43,10 @@
    "name": "wow21",
    "pattern": "Assets/Env/Props/wow21/{asset}_LOD{lod}.glb",
    "status": "WOW21 hero props, converted LOD files from laneWOW21LOD; a missing LODn is skipped by PropsLayout.PlaceOne"
+  },
+  {
+   "name": "clutter",
+   "pattern": "Assets/Env/Props/clutter/{asset}_LOD{lod}.glb"
   }
  ],
  "lodProfiles": [
@@ -18882,13 +18886,13 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -23.0,
-    -1.736,
-    4.0
+    -16.0,
+    -1.525,
+    36.0
    ],
    "rotEuler": [
     0,
-    90.0,
+    150.0,
     0
    ],
    "scale": 7.508,
@@ -18903,7 +18907,7 @@
     "kind": "box",
     "note": "brief: box"
    },
-   "note": "WOW21 z1_slag_furnace | bbox centre (-23.0,4.0) | placement stage 1 | converted LOD0",
+   "note": "WOW21 z1_slag_furnace | bbox centre (-23.0,4.0) | placement stage 1 | converted LOD0 | BPIT: moved into the lock-cam start view (was [-23.0, -1.736, 4.0, 90.0])",
    "disabled": false,
    "seamBaseY": -1.45,
    "seamDy": -0.286
@@ -18917,9 +18921,9 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    -16.0,
-    -1.211,
-    17.0
+    -13.0,
+    -0.75,
+    24.5
    ],
    "rotEuler": [
     0,
@@ -18938,7 +18942,7 @@
     "kind": "box",
     "note": "footing only"
    },
-   "note": "WOW21 z1_chain_gantry | bbox centre (-16.0,17.0) | placement stage 2 | converted LOD0",
+   "note": "WOW21 z1_chain_gantry | bbox centre (-16.0,17.0) | placement stage 2 | converted LOD0 | BPIT: moved into the lock-cam start view (was [-16.0, -1.211, 17.0, 90.0])",
    "disabled": false,
    "seamBaseY": -0.31,
    "seamDy": -0.901
@@ -18952,13 +18956,13 @@
    "ground": "bottom",
    "yBase": "world",
    "pos": [
-    22.0,
-    -0.93,
-    23.0
+    14.0,
+    -0.423,
+    27.0
    ],
    "rotEuler": [
     0,
-    -90.0,
+    -118.0,
     0
    ],
    "scale": 12.195,
@@ -18972,10 +18976,271 @@
    "collision": {
     "kind": "box"
    },
-   "note": "WOW21 z1_trophy_wall | bbox centre (22.0,23.0) | placement stage 2 | converted LOD0",
+   "note": "WOW21 z1_trophy_wall | bbox centre (22.0,23.0) | placement stage 2 | converted LOD0 | BPIT: moved into the lock-cam start view (was [22.0, -0.93, 23.0, -90.0])",
    "disabled": false,
    "seamBaseY": -0.72,
    "seamDy": -0.21
+  },
+  {
+   "id": "clutter_z1_1",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_bone_pile_big",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -7.879,
+    -0.08,
+    13.793
+   ],
+   "rotEuler": [
+    0,
+    226.9,
+    0
+   ],
+   "scale": 0.963,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | pit_yard | footprint 0.80x0.33 h 0.39 | foot range 0.00 | seen by arrive_from_sobek at 14 m ndcy -0.25 | base of hero_boulder_B",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z1_2",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -8.183,
+    -0.083,
+    13.171
+   ],
+   "rotEuler": [
+    0,
+    211.0,
+    0
+   ],
+   "scale": 1.014,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | pit_yard | footprint 0.60x0.25 h 0.35 | foot range 0.00 | seen by arrive_from_sobek at 14 m ndcy -0.24 | base of hero_boulder_B",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z1_3",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    8.811,
+    -0.107,
+    20.861
+   ],
+   "rotEuler": [
+    0,
+    168.3,
+    0
+   ],
+   "scale": 1.07,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | pit_yard | footprint 1.07x0.65 h 0.64 | foot range 0.03 | seen by start at 18 m ndcy -0.12 | base of hero_barricade_stakes",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z1_4",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    8.616,
+    -0.095,
+    21.793
+   ],
+   "rotEuler": [
+    0,
+    94.3,
+    0
+   ],
+   "scale": 1.131,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | pit_yard | footprint 0.67x0.28 h 0.40 | foot range 0.01 | seen by start at 19 m ndcy -0.11 | base of hero_barricade_stakes",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z1_5",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_sword_lying",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    7.729,
+    -0.08,
+    21.301
+   ],
+   "rotEuler": [
+    0,
+    55.9,
+    0
+   ],
+   "scale": 0.863,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | pit_yard | footprint 0.86x0.41 h 0.15 | foot range 0.00 | seen by start at 18 m ndcy -0.14 | base of hero_barricade_stakes",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z1_6",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_bone_pile_big",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    10.537,
+    -0.263,
+    7.98
+   ],
+   "rotEuler": [
+    0,
+    282.2,
+    0
+   ],
+   "scale": 0.9,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "scatter"
+   ],
+   "note": "CLUTTER single | pit_yard | footprint 0.75x0.31 h 0.36 | foot range 0.06 | seen by arrive_from_sobek at 20 m ndcy -0.13",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z1_7",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_bone_pile_big",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -8.456,
+    -0.09,
+    18.501
+   ],
+   "rotEuler": [
+    0,
+    67.9,
+    0
+   ],
+   "scale": 0.972,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "scatter"
+   ],
+   "note": "CLUTTER single | pit_yard | footprint 0.81x0.33 h 0.39 | foot range 0.01 | seen by start at 16 m ndcy -0.18",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z1_8",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -10.551,
+    -0.182,
+    7.185
+   ],
+   "rotEuler": [
+    0,
+    337.0,
+    0
+   ],
+   "scale": 0.78,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "scatter"
+   ],
+   "note": "CLUTTER single | pit_yard | footprint 0.78x0.47 h 0.47 | foot range 0.02 | seen by arrive_from_sobek at 21 m ndcy -0.10",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z1_9",
+   "group": "Props",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -7.42,
+    -0.08,
+    23.972
+   ],
+   "rotEuler": [
+    0,
+    218.7,
+    0
+   ],
+   "scale": 1.138,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone1",
+    "scatter"
+   ],
+   "note": "CLUTTER single | pit_yard | footprint 0.68x0.28 h 0.40 | foot range 0.00 | seen by start at 20 m ndcy -0.08",
+   "disabled": false
   }
  ],
  "scatter": [

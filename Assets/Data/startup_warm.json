@@ -11,11 +11,11 @@
     "r": 0.0,
     "g": 0.0,
     "b": 0.0,
-    "holdFramesAfter": 8
+    "holdFramesAfter": 24
   },
   "holdSim": {
     "_about": "true = Duel.Frozen while the warm renders run, so the fight does not start behind the cover. OFF by default: the harness frame counts and simhash must not move. Turn on only after the A/B of warmRenders alone.",
-    "enabled": false
+    "enabled": true
   },
   "inHarness": {
     "_about": "Proof / balance / camproof / flowproof runs: the warm renders still happen (render-only, so the first-hitch numbers in their logs are comparable with a player run); the cover and the sim hold never do.",

@@ -1,874 +1,877 @@
 ﻿{
-    "_about": "FootGround.cs: per-foot ground raycast + two-bone leg IK + pelvis offset (lowest foot defines the hips) + foot levelling + toe flattening, in LateUpdate after the Animator. ankleHeight = Foot bone height above the sole when flat (m); plantSnap/maxLift = ankle height above its ground within which the foot is fully planted / released (m); pelvisDownMax/UpMax = hips travel limits (m); pelvisSmooth = seconds; ignoreLayers = physics layers the rays skip (8 characters, 9 other fighters); states[] = per Animator state weight 0..1 (roll tucks, so weighted down); unlisted states use the global weight. enabled=false switches it off.",
-    "characters": [
-        {
-            "name": "Dracula",
-            "enabled": true,
-            "debug": false,
-            "debugEvery": 60,
-            "weight": 1.0,
-            "ankleHeight": 0.09,
-            "rayUp": 0.6,
-            "rayDown": 0.9,
-            "ignoreLayers": [
-                8,
-                9
-            ],
-            "pelvisDownMax": 0.25,
-            "pelvisUpMax": 0.1,
-            "pelvisSmooth": 0.06,
-            "plantSnap": 0.02,
-            "maxLift": 0.16,
-            "levelWeight": 1.0,
-            "toeFlatWeight": 1.0,
-            "stateBlend": 0.1,
-            "states": [
-                {
-                    "states": [
-                        "roll_forward",
-                        "death",
-                        "knockdown",
-                        "get_up",
-                        "hit_heavy"
-                    ],
-                    "weight": 0.25
-                }
-            ]
-        },
-        {
-          "name": "BanditMelee",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.09,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcAntlerKnight",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.137,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcPitGladiator",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.133,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcCrocWarrior",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.137,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcEmbalmerCultist",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.126,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcMereRaider",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.13,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcDrownedThane",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.137,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcBarkSentinel",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.151,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "BanditAssassin",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.09,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcChainWarden",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.133,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcReedSkirmisher",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.126,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcBogHag",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.123,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcRootDruid",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.126,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcHoundMaster",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.128,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "BanditArcher",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.09,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcSlagCrossbowman",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.126,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcCedarArcher",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.13,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-          "name": "NpcHuntsman",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.13,
-          "rayUp": 0.6,
-          "rayDown": 0.9,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.25,
-          "pelvisUpMax": 0.1,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.02,
-          "maxLift": 0.16,
-          "levelWeight": 1.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "roll_forward",
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ]
-        },
-        {
-            "name": "Joan",
-            "enabled": true,
-            "debug": false,
-            "debugEvery": 60,
-            "weight": 1.0,
-            "ankleHeight": 0.111,
-            "rayUp": 0.6,
-            "rayDown": 0.9,
-            "ignoreLayers": [
-                8,
-                9
-            ],
-            "pelvisDownMax": 0.2306,
-            "pelvisUpMax": 0.0922,
-            "pelvisSmooth": 0.06,
-            "plantSnap": 0.0184,
-            "maxLift": 0.1476,
-            "axisPitchDeg": 40.6,
-            "levelMaxDeg": 20,
-            "levelWeight": 1.0,
-            "toeFlatWeight": 1.0,
-            "stateBlend": 0.1,
-            "states": [
-                {
-                    "states": [
-                        "roll_forward",
-                        "death",
-                        "knockdown",
-                        "get_up",
-                        "hit_heavy"
-                    ],
-                    "weight": 0.25
-                }
-            ]
-        },
-        {
-            "name": "Pitborn",
-            "enabled": true,
-            "debug": false,
-            "debugEvery": 60,
-            "weight": 1.0,
-            "ankleHeight": 0.22,
-            "rayUp": 0.8,
-            "rayDown": 1.2,
-            "ignoreLayers": [
-                8,
-                9
-            ],
-            "pelvisDownMax": 0.385,
-            "pelvisUpMax": 0.165,
-            "pelvisSmooth": 0.06,
-            "plantSnap": 0.033,
-            "maxLift": 0.264,
-            "levelWeight": 0.0,
-            "toeFlatWeight": 1.0,
-            "stateBlend": 0.1,
-            "states": [
-                {
-                    "states": [
-                        "death",
-                        "knockdown",
-                        "get_up",
-                        "hit_heavy"
-                    ],
-                    "weight": 0.25
-                }
-            ]
-        },
-        {
-            "name": "Sobek",
-            "enabled": true,
-            "debug": false,
-            "debugEvery": 60,
-            "weight": 1.0,
-            "ankleHeight": 0.27,
-            "rayUp": 0.674,
-            "rayDown": 1.01,
-            "ignoreLayers": [
-                8,
-                9
-            ],
-            "pelvisDownMax": 0.42,
-            "pelvisUpMax": 0.21,
-            "pelvisSmooth": 0.06,
-            "plantSnap": 0.0253,
-            "maxLift": 0.337,
-            "levelWeight": 0.0,
-            "toeFlatWeight": 1.0,
-            "stateBlend": 0.1,
-            "states": [
-                {
-                    "states": [
-                        "death",
-                        "knockdown",
-                        "get_up",
-                        "hit_heavy"
-                    ],
-                    "weight": 0.25
-                }
-            ],
-            "note": "LOCOMONSTER v1: measured, verify in Unity. ankleHeight 0.27 = world ankle-to-sole at model scale 0.7125 (3.12 m / Unity bounds 4.378 m); the SOBEKDATA guess 0.333 lifted the pelvis about 6 cm (a float). The other limits are the old values x 0.27/0.333. Independent of loco_dir.json (--off does not touch it)."
-        },
-        {
-            "name": "*",
-            "enabled": false,
-            "debugEvery": 10,
-            "weight": 1,
-            "ankleHeight": 0.10,
-            "rayUp": 0.6,
-            "rayDown": 0.9,
-            "ignoreLayers": [8, 9],
-            "pelvisDownMax": 0.25,
-            "pelvisUpMax": 0.10,
-            "pelvisSmooth": 0.06,
-            "plantSnap": 0.02,
-            "maxLift": 0.16,
-            "levelWeight": 1,
-            "toeFlatWeight": 1,
-            "stateBlend": 0.1
-        },
-        {
-          "name": "Grendel",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.255,
-          "rayUp": 0.864,
-          "rayDown": 1.296,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.06,
-          "pelvisUpMax": 0.06,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.0324,
-          "maxLift": 0.432,
-          "levelWeight": 0.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ],
-          "note": "laneMONSTER3 (Grendel): ankleHeight 0.255 = MEASURED in Unity (v109n FootGround log: idle ankle 3.0/3.6 cm above ground with the 0.222 row, so the world ankle is 0.252-0.258); pelvisDownMax/UpMax capped at 6 cm so the leg IK cannot sink the hips (v109n showed -13..-30 cm); other lengths = Sobek x 1.0385. Re-measure if heightM changes."
-        },
-        {
-          "name": "Humbaba",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.355,
-          "rayUp": 0.674,
-          "rayDown": 1.01,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.42,
-          "pelvisUpMax": 0.21,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.0253,
-          "maxLift": 0.337,
-          "levelWeight": 0.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ],
-          "note": "laneMONSTER5 (Humbaba): ankleHeight = Foot joint height of the bound rig (0.3553 m, measured); the other lengths = Sobek (same heightM)."
-        },
-        {
-          "name": "Erlking",
-          "enabled": true,
-          "debug": false,
-          "debugEvery": 60,
-          "weight": 1.0,
-          "ankleHeight": 0.4355,
-          "rayUp": 1.083,
-          "rayDown": 1.624,
-          "ignoreLayers": [
-            8,
-            9
-          ],
-          "pelvisDownMax": 0.677,
-          "pelvisUpMax": 0.338,
-          "pelvisSmooth": 0.06,
-          "plantSnap": 0.0406,
-          "maxLift": 0.541,
-          "levelWeight": 0.0,
-          "toeFlatWeight": 1.0,
-          "stateBlend": 0.1,
-          "states": [
-            {
-              "states": [
-                "death",
-                "knockdown",
-                "get_up",
-                "hit_heavy"
-              ],
-              "weight": 0.25
-            }
-          ],
-          "note": "laneMONSTER6 (Erlking): ankleHeight 0.4355 = Foot joint height of the bound rig (0.08 raw x 5.444); lengths = Sobek x 1.301."
-        }
-    ]
+ "_about": "FootGround.cs: per-foot ground raycast + two-bone leg IK + pelvis offset (lowest foot defines the hips) + foot levelling + toe flattening, in LateUpdate after the Animator. ankleHeight = Foot bone height above the sole when flat (m); plantSnap/maxLift = ankle height above its ground within which the foot is fully planted / released (m); pelvisDownMax/UpMax = hips travel limits (m); pelvisSmooth = seconds; ignoreLayers = physics layers the rays skip (8 characters, 9 other fighters); states[] = per Animator state weight 0..1 (roll tucks, so weighted down); unlisted states use the global weight. enabled=false switches it off.",
+ "characters": [
+  {
+   "name": "Dracula",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.09,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "BanditMelee",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.09,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcAntlerKnight",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.137,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcPitGladiator",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.133,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcCrocWarrior",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.137,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcEmbalmerCultist",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.126,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcMereRaider",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.13,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcDrownedThane",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.137,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcBarkSentinel",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.151,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "BanditAssassin",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.09,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcChainWarden",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.133,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcReedSkirmisher",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.126,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcBogHag",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.123,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcRootDruid",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.155,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcHoundMaster",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.128,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "BanditArcher",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.09,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcSlagCrossbowman",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.126,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcCedarArcher",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.159,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "NpcHuntsman",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.13,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "Joan",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.111,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.2306,
+   "pelvisUpMax": 0.0922,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.0184,
+   "maxLift": 0.1476,
+   "axisPitchDeg": 40.6,
+   "levelMaxDeg": 20,
+   "levelWeight": 1.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "roll_forward",
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "Pitborn",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.22,
+   "rayUp": 0.8,
+   "rayDown": 1.2,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.385,
+   "pelvisUpMax": 0.165,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.033,
+   "maxLift": 0.264,
+   "levelWeight": 0.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ]
+  },
+  {
+   "name": "Sobek",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.27,
+   "rayUp": 0.674,
+   "rayDown": 1.01,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.42,
+   "pelvisUpMax": 0.21,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.0253,
+   "maxLift": 0.337,
+   "levelWeight": 0.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ],
+   "note": "LOCOMONSTER v1: measured, verify in Unity. ankleHeight 0.27 = world ankle-to-sole at model scale 0.7125 (3.12 m / Unity bounds 4.378 m); the SOBEKDATA guess 0.333 lifted the pelvis about 6 cm (a float). The other limits are the old values x 0.27/0.333. Independent of loco_dir.json (--off does not touch it)."
+  },
+  {
+   "name": "*",
+   "enabled": false,
+   "debugEvery": 10,
+   "weight": 1,
+   "ankleHeight": 0.1,
+   "rayUp": 0.6,
+   "rayDown": 0.9,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.25,
+   "pelvisUpMax": 0.1,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.02,
+   "maxLift": 0.16,
+   "levelWeight": 1,
+   "toeFlatWeight": 1,
+   "stateBlend": 0.1
+  },
+  {
+   "name": "Grendel",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.255,
+   "rayUp": 0.864,
+   "rayDown": 1.296,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.06,
+   "pelvisUpMax": 0.06,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.0324,
+   "maxLift": 0.432,
+   "levelWeight": 0.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ],
+   "note": "laneMONSTER3 (Grendel): ankleHeight 0.255 = MEASURED in Unity (v109n FootGround log: idle ankle 3.0/3.6 cm above ground with the 0.222 row, so the world ankle is 0.252-0.258); pelvisDownMax/UpMax capped at 6 cm so the leg IK cannot sink the hips (v109n showed -13..-30 cm); other lengths = Sobek x 1.0385. Re-measure if heightM changes."
+  },
+  {
+   "name": "Humbaba",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.355,
+   "rayUp": 0.674,
+   "rayDown": 1.01,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.42,
+   "pelvisUpMax": 0.21,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.0253,
+   "maxLift": 0.337,
+   "levelWeight": 0.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ],
+   "note": "laneMONSTER5 (Humbaba): ankleHeight = Foot joint height of the bound rig (0.3553 m, measured); the other lengths = Sobek (same heightM)."
+  },
+  {
+   "name": "Erlking",
+   "enabled": true,
+   "debug": false,
+   "debugEvery": 60,
+   "weight": 1.0,
+   "ankleHeight": 0.4355,
+   "rayUp": 1.083,
+   "rayDown": 1.624,
+   "ignoreLayers": [
+    8,
+    9
+   ],
+   "pelvisDownMax": 0.677,
+   "pelvisUpMax": 0.338,
+   "pelvisSmooth": 0.06,
+   "plantSnap": 0.0406,
+   "maxLift": 0.541,
+   "levelWeight": 0.0,
+   "toeFlatWeight": 1.0,
+   "stateBlend": 0.1,
+   "states": [
+    {
+     "states": [
+      "death",
+      "knockdown",
+      "get_up",
+      "hit_heavy"
+     ],
+     "weight": 0.25
+    }
+   ],
+   "note": "laneMONSTER6 (Erlking): ankleHeight 0.4355 = Foot joint height of the bound rig (0.08 raw x 5.444); lengths = Sobek x 1.301."
+  }
+ ]
 }

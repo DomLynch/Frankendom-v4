@@ -377,11 +377,11 @@
    "name": "HF4_c1_weaponsmith",
    "pos": [
     -4.04,
-    1.9,
+    2.2,
     90.0
    ],
-   "kelvin": 2400.0,
-   "candela": 3500.0,
+   "kelvin": 3400.0,
+   "candela": 900.0,
    "range": 4.5,
    "volumetricDimmer": 0.0,
    "activeRadiusM": 7.0,
@@ -400,11 +400,11 @@
    "name": "HF4_c1_armourer",
    "pos": [
     -4.08,
-    1.9,
+    2.2,
     86.0
    ],
-   "kelvin": 2400.0,
-   "candela": 3500.0,
+   "kelvin": 3400.0,
+   "candela": 900.0,
    "range": 4.5,
    "volumetricDimmer": 0.0,
    "activeRadiusM": 7.0,
@@ -423,11 +423,11 @@
    "name": "HF4_c1_apothecary",
    "pos": [
     4.41,
-    1.9,
+    2.2,
     92.6
    ],
-   "kelvin": 2400.0,
-   "candela": 3500.0,
+   "kelvin": 3400.0,
+   "candela": 900.0,
    "range": 4.5,
    "volumetricDimmer": 0.0,
    "activeRadiusM": 7.0,
@@ -446,11 +446,11 @@
    "name": "HF4_c1_stablemaster",
    "pos": [
     -2.91,
-    1.9,
+    2.2,
     80.6
    ],
-   "kelvin": 2400.0,
-   "candela": 3500.0,
+   "kelvin": 3400.0,
+   "candela": 900.0,
    "range": 4.5,
    "volumetricDimmer": 0.0,
    "activeRadiusM": 7.0,
@@ -469,11 +469,11 @@
    "name": "HF4_c2_armourer",
    "pos": [
     -4.44,
-    1.9,
+    2.2,
     343.6
    ],
-   "kelvin": 2900.0,
-   "candela": 4500.0,
+   "kelvin": 4000.0,
+   "candela": 900.0,
    "range": 4.5,
    "volumetricDimmer": 0.0,
    "activeRadiusM": 7.0,
@@ -492,11 +492,11 @@
    "name": "HF4_c2_weaponsmith",
    "pos": [
     4.61,
-    1.9,
+    2.2,
     349.4
    ],
-   "kelvin": 2900.0,
-   "candela": 4500.0,
+   "kelvin": 4000.0,
+   "candela": 900.0,
    "range": 4.5,
    "volumetricDimmer": 0.0,
    "activeRadiusM": 7.0,
@@ -515,11 +515,11 @@
    "name": "HF4_c2_apothecary",
    "pos": [
     3.03,
-    1.9,
+    2.2,
     335.2
    ],
-   "kelvin": 2900.0,
-   "candela": 4500.0,
+   "kelvin": 4000.0,
+   "candela": 900.0,
    "range": 4.5,
    "volumetricDimmer": 0.0,
    "activeRadiusM": 7.0,
@@ -538,11 +538,11 @@
    "name": "HF4_c2_stablemaster",
    "pos": [
     -3.15,
-    1.9,
+    2.2,
     353.8
    ],
-   "kelvin": 2900.0,
-   "candela": 4500.0,
+   "kelvin": 4000.0,
+   "candela": 900.0,
    "range": 4.5,
    "volumetricDimmer": 0.0,
    "activeRadiusM": 7.0,

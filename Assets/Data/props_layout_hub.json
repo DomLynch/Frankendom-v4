@@ -61,6 +61,10 @@
   {
    "name": "camps",
    "pattern": "Assets/Env/Props/camps/{asset}_LOD{lod}.glb"
+  },
+  {
+   "name": "clutter",
+   "pattern": "Assets/Env/Props/clutter/{asset}_LOD{lod}.glb"
   }
  ],
  "lodProfiles": [
@@ -7025,6 +7029,180 @@
     "note": "documentation only: PropsLayout.PlaceOne adds no collider"
    },
    "note": "CAMPS2PLACE barrel_b_cask | hub_camp | free | footprint 0.70x0.41 h 0.60 | replaces -",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z3_1",
+   "group": "HubRing0",
+   "library": "clutter",
+   "asset": "clutter_sword_lying",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -4.489,
+    -0.231,
+    82.831
+   ],
+   "rotEuler": [
+    0,
+    132.7,
+    0
+   ],
+   "scale": 0.891,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone3",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | hub_camp | footprint 0.88x0.42 h 0.16 | foot range 0.01 | seen by arrive_from_prev at 8 m ndcy -0.60 | base of camps2_c1_sign_anvil",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z3_2",
+   "group": "HubRing0",
+   "library": "clutter",
+   "asset": "clutter_sword_lying",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -4.771,
+    -0.234,
+    83.81
+   ],
+   "rotEuler": [
+    0,
+    156.6,
+    0
+   ],
+   "scale": 0.949,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone3",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 0 | hub_camp | footprint 0.94x0.45 h 0.17 | foot range 0.01 | seen by arrive_from_prev at 9 m ndcy -0.51 | base of camps2_c1_sign_anvil",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z3_3",
+   "group": "HubRing0",
+   "library": "clutter",
+   "asset": "clutter_root_crown",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    6.23,
+    -0.248,
+    90.246
+   ],
+   "rotEuler": [
+    0,
+    357.7,
+    0
+   ],
+   "scale": 0.625,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone3",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | hub_camp | footprint 0.89x0.78 h 0.56 | foot range 0.01 | seen by arrive_from_prev at 16 m ndcy -0.18 | base of camps_c1_canopy",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z3_4",
+   "group": "HubRing0",
+   "library": "clutter",
+   "asset": "clutter_sword_lying",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    5.762,
+    -0.244,
+    89.321
+   ],
+   "rotEuler": [
+    0,
+    71.2,
+    0
+   ],
+   "scale": 0.965,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone3",
+    "cluster"
+   ],
+   "note": "CLUTTER cluster 1 | hub_camp | footprint 0.96x0.46 h 0.17 | foot range 0.01 | seen by arrive_from_prev at 14 m ndcy -0.23 | base of camps_c1_canopy",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z3_5",
+   "group": "HubRing0",
+   "library": "clutter",
+   "asset": "clutter_rubble",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    -6.987,
+    -0.255,
+    87.401
+   ],
+   "rotEuler": [
+    0,
+    138.0,
+    0
+   ],
+   "scale": 0.542,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone3",
+    "scatter"
+   ],
+   "note": "CLUTTER single | hub_camp | footprint 0.54x0.33 h 0.33 | foot range 0.00 | seen by arrive_from_prev at 13 m ndcy -0.28",
+   "disabled": false
+  },
+  {
+   "id": "clutter_z3_6",
+   "group": "HubRing0",
+   "library": "clutter",
+   "asset": "clutter_bone_pile",
+   "lodProfile": "near_hq",
+   "ground": "bottom",
+   "yBase": "world",
+   "pos": [
+    5.4,
+    -0.24,
+    85.857
+   ],
+   "rotEuler": [
+    0,
+    205.2,
+    0
+   ],
+   "scale": 1.066,
+   "shadowsOff": false,
+   "tags": [
+    "clutter",
+    "clutterkit",
+    "zone3",
+    "scatter"
+   ],
+   "note": "CLUTTER single | hub_camp | footprint 0.63x0.26 h 0.37 | foot range 0.00 | seen by arrive_from_prev at 11 m ndcy -0.35",
    "disabled": false
   }
  ],

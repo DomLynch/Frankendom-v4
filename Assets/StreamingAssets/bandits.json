@@ -84,6 +84,96 @@
       "heightHintM": 1.81,
       "tris106": 22347,
       "note": "the bow is part of the mesh, so the archer needs no weapon item"
+    },
+    "t15_pitgladiator": {
+      "v2_106": "Assets/Characters/NpcPitGladiator/NpcPitGladiator_combat.glb",
+      "heightHintM": 1.85,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_chainwarden": {
+      "v2_106": "Assets/Characters/NpcChainWarden/NpcChainWarden_combat.glb",
+      "heightHintM": 1.85,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_slagcrossbowman": {
+      "v2_106": "Assets/Characters/NpcSlagCrossbowman/NpcSlagCrossbowman_combat.glb",
+      "heightHintM": 1.75,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_crocwarrior": {
+      "v2_106": "Assets/Characters/NpcCrocWarrior/NpcCrocWarrior_combat.glb",
+      "heightHintM": 1.9,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_reedskirmisher": {
+      "v2_106": "Assets/Characters/NpcReedSkirmisher/NpcReedSkirmisher_combat.glb",
+      "heightHintM": 1.75,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_embalmercultist": {
+      "v2_106": "Assets/Characters/NpcEmbalmerCultist/NpcEmbalmerCultist_combat.glb",
+      "heightHintM": 1.75,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_mereraider": {
+      "v2_106": "Assets/Characters/NpcMereRaider/NpcMereRaider_combat.glb",
+      "heightHintM": 1.8,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_boghag": {
+      "v2_106": "Assets/Characters/NpcBogHag/NpcBogHag_combat.glb",
+      "heightHintM": 1.7,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_drownedthane": {
+      "v2_106": "Assets/Characters/NpcDrownedThane/NpcDrownedThane_combat.glb",
+      "heightHintM": 1.9,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_barksentinel": {
+      "v2_106": "Assets/Characters/NpcBarkSentinel/NpcBarkSentinel_combat.glb",
+      "heightHintM": 2.1,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_cedararcher": {
+      "v2_106": "Assets/Characters/NpcCedarArcher/NpcCedarArcher_combat.glb",
+      "heightHintM": 1.8,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_rootdruid": {
+      "v2_106": "Assets/Characters/NpcRootDruid/NpcRootDruid_combat.glb",
+      "heightHintM": 1.75,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_huntsman": {
+      "v2_106": "Assets/Characters/NpcHuntsman/NpcHuntsman_combat.glb",
+      "heightHintM": 1.8,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_houndmaster": {
+      "v2_106": "Assets/Characters/NpcHoundMaster/NpcHoundMaster_combat.glb",
+      "heightHintM": 1.8,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
+    },
+    "t15_antlerknight": {
+      "v2_106": "Assets/Characters/NpcAntlerKnight/NpcAntlerKnight_combat.glb",
+      "heightHintM": 1.9,
+      "tris106": 50000,
+      "note": "NPC15 Tripo body (laneNPC15), measured on import"
     }
   },
   "delivered": {
@@ -221,11 +311,14 @@
       "hpTypeMul": 1.0,
       "dmgTypeMul": 1.0,
       "difficulty": 4,
-      "aggro": 7.0,
+      "aggro": 14.0,
       "leashExtra": 12.0,
       "respawnMinS": 240,
       "respawnMaxS": 420,
-      "silver": 2
+      "silver": 2,
+      "deliveredStem": "arissa",
+      "off": true,
+      "note": "NPC15: off, no group member uses this type any more (BanditsBatch refuses a non-off type without rows)."
     },
     {
       "id": "BanditAssassin",
@@ -248,7 +341,10 @@
       "leashExtra": 12.0,
       "respawnMinS": 240,
       "respawnMaxS": 420,
-      "silver": 2
+      "silver": 2,
+      "deliveredStem": "akai",
+      "off": true,
+      "note": "NPC15: off, no group member uses this type any more (BanditsBatch refuses a non-off type without rows). NPC15: off, no group member uses this type any more (BanditsBatch refuses a non-off type without rows)."
     },
     {
       "id": "BanditArcher",
@@ -289,7 +385,10 @@
         "losHeightM": 1.3,
         "windupMaxS": 1.5,
         "turnDegPerS": 360
-      }
+      },
+      "deliveredStem": "erika_bow",
+      "off": true,
+      "note": "NPC15: off, no group member uses this type any more (BanditsBatch refuses a non-off type without rows). NPC15: off, no group member uses this type any more (BanditsBatch refuses a non-off type without rows)."
     },
     {
       "id": "BanditAxe",
@@ -315,6 +414,366 @@
       "respawnMaxS": 420,
       "silver": 2,
       "note": "OFF: the small one-hand axe has no model (SPAWN_AUDIT section 4) and the id would need its own scene + prefab. Remove \"off\" and add it to a group once the model exists."
+    },
+    {
+      "id": "NpcPitGladiator",
+      "role": "melee",
+      "displayName": "Pit Gladiator",
+      "hudName": "PIT GLADIATOR",
+      "hudTitle": "Sand-Sworn Brawler",
+      "body": "t15_pitgladiator",
+      "heightM": 1.85,
+      "weapon": "sword",
+      "weaponItem": "bandit_sword",
+      "loadout": [
+        "bandit_sword"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 1.0,
+      "dmgTypeMul": 1.0,
+      "difficulty": 4,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcChainWarden",
+      "role": "assassin",
+      "displayName": "Chain Warden",
+      "hudName": "CHAIN WARDEN",
+      "hudTitle": "Keeper of the Yard",
+      "body": "t15_chainwarden",
+      "heightM": 1.85,
+      "weapon": "sword",
+      "weaponItem": "bandit_axe",
+      "loadout": [
+        "bandit_axe"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 0.7,
+      "dmgTypeMul": 1.143,
+      "difficulty": 6,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcSlagCrossbowman",
+      "role": "archer",
+      "displayName": "Slag Crossbowman",
+      "hudName": "SLAG CROSSBOWMAN",
+      "hudTitle": "Bolt from the Furnace",
+      "body": "t15_slagcrossbowman",
+      "heightM": 1.75,
+      "weapon": "sword",
+      "weaponItem": "",
+      "loadout": [],
+      "keepWeapon": false,
+      "hpTypeMul": 0.6,
+      "dmgTypeMul": 0.857,
+      "difficulty": 4,
+      "aggro": 14.0,
+      "leashExtra": 10.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 1,
+      "ranged": {
+        "minM": 5.0,
+        "maxM": 15.0,
+        "cooldownS": 2.6,
+        "windupS": 0.7,
+        "speedCmS": 700,
+        "missChance": 0.15,
+        "needLos": true,
+        "kiteBelowM": 4.0,
+        "moveId": "thrust",
+        "arrowDamageMul": 1.0,
+        "tint": "#e8d9a8",
+        "losHeightM": 1.3,
+        "windupMaxS": 1.5,
+        "turnDegPerS": 360
+      }
+    },
+    {
+      "id": "NpcCrocWarrior",
+      "role": "melee",
+      "displayName": "Croc Warrior",
+      "hudName": "CROC WARRIOR",
+      "hudTitle": "Sobek's Spawn",
+      "body": "t15_crocwarrior",
+      "heightM": 1.9,
+      "weapon": "sword",
+      "weaponItem": "pitborn_claws",
+      "loadout": [
+        "pitborn_claws"
+      ],
+      "keepWeapon": false,
+      "hpTypeMul": 1.0,
+      "dmgTypeMul": 1.0,
+      "difficulty": 4,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcReedSkirmisher",
+      "role": "assassin",
+      "displayName": "Reed Skirmisher",
+      "hudName": "REED SKIRMISHER",
+      "hudTitle": "Spear of the Reeds",
+      "body": "t15_reedskirmisher",
+      "heightM": 1.75,
+      "weapon": "sword",
+      "weaponItem": "boar_spear",
+      "loadout": [
+        "boar_spear"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 0.7,
+      "dmgTypeMul": 1.143,
+      "difficulty": 6,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcEmbalmerCultist",
+      "role": "melee",
+      "displayName": "Embalmer Cultist",
+      "hudName": "EMBALMER CULTIST",
+      "hudTitle": "Knife of the Dead",
+      "body": "t15_embalmercultist",
+      "heightM": 1.75,
+      "weapon": "sword",
+      "weaponItem": "bandit_dagger",
+      "loadout": [
+        "bandit_dagger"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 1.0,
+      "dmgTypeMul": 1.0,
+      "difficulty": 4,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcMereRaider",
+      "role": "melee",
+      "displayName": "Mere Raider",
+      "hudName": "MERE RAIDER",
+      "hudTitle": "Axe of the Marsh",
+      "body": "t15_mereraider",
+      "heightM": 1.8,
+      "weapon": "sword",
+      "weaponItem": "bandit_axe",
+      "loadout": [
+        "bandit_axe"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 1.0,
+      "dmgTypeMul": 1.0,
+      "difficulty": 4,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcBogHag",
+      "role": "assassin",
+      "displayName": "Bog Hag",
+      "hudName": "BOG HAG",
+      "hudTitle": "Mother of the Mere",
+      "body": "t15_boghag",
+      "heightM": 1.7,
+      "weapon": "sword",
+      "weaponItem": "pitborn_claws",
+      "loadout": [
+        "pitborn_claws"
+      ],
+      "keepWeapon": false,
+      "hpTypeMul": 0.7,
+      "dmgTypeMul": 1.143,
+      "difficulty": 6,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcDrownedThane",
+      "role": "melee",
+      "displayName": "Drowned Thane",
+      "hudName": "DROWNED THANE",
+      "hudTitle": "Oath-Broken Lord",
+      "body": "t15_drownedthane",
+      "heightM": 1.9,
+      "weapon": "sword",
+      "weaponItem": "bandit_sword",
+      "loadout": [
+        "bandit_sword"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 1.0,
+      "dmgTypeMul": 1.0,
+      "difficulty": 4,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcBarkSentinel",
+      "role": "melee",
+      "displayName": "Bark Sentinel",
+      "hudName": "BARK SENTINEL",
+      "hudTitle": "Warden of the Cedar",
+      "body": "t15_barksentinel",
+      "heightM": 2.1,
+      "weapon": "sword",
+      "weaponItem": "pitborn_claws",
+      "loadout": [
+        "pitborn_claws"
+      ],
+      "keepWeapon": false,
+      "hpTypeMul": 1.0,
+      "dmgTypeMul": 1.0,
+      "difficulty": 4,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcCedarArcher",
+      "role": "melee",
+      "displayName": "Cedar Archer",
+      "hudName": "CEDAR ARCHER",
+      "hudTitle": "Bow of the Grove",
+      "body": "t15_cedararcher",
+      "heightM": 2.2,
+      "weapon": "sword",
+      "weaponItem": "bandit_sword",
+      "loadout": [
+        "bandit_sword"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 0.6,
+      "dmgTypeMul": 0.857,
+      "difficulty": 4,
+      "aggro": 14.0,
+      "leashExtra": 10.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 1
+    },
+    {
+      "id": "NpcRootDruid",
+      "role": "assassin",
+      "displayName": "Root Druid",
+      "hudName": "ROOT DRUID",
+      "hudTitle": "Tangle-Handed Seer",
+      "body": "t15_rootdruid",
+      "heightM": 2.15,
+      "weapon": "sword",
+      "weaponItem": "pitborn_claws",
+      "loadout": [
+        "pitborn_claws"
+      ],
+      "keepWeapon": false,
+      "hpTypeMul": 0.7,
+      "dmgTypeMul": 1.143,
+      "difficulty": 6,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcHuntsman",
+      "role": "melee",
+      "displayName": "Huntsman",
+      "hudName": "HUNTSMAN",
+      "hudTitle": "Horn and Arrow",
+      "body": "t15_huntsman",
+      "heightM": 1.8,
+      "weapon": "sword",
+      "weaponItem": "bandit_sword",
+      "loadout": [
+        "bandit_sword"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 0.6,
+      "dmgTypeMul": 0.857,
+      "difficulty": 4,
+      "aggro": 14.0,
+      "leashExtra": 10.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 1
+    },
+    {
+      "id": "NpcHoundMaster",
+      "role": "assassin",
+      "displayName": "Hound Master",
+      "hudName": "HOUND MASTER",
+      "hudTitle": "Leash of the Wild Hunt",
+      "body": "t15_houndmaster",
+      "heightM": 1.8,
+      "weapon": "sword",
+      "weaponItem": "bandit_dagger",
+      "loadout": [
+        "bandit_dagger"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 0.7,
+      "dmgTypeMul": 1.143,
+      "difficulty": 6,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcAntlerKnight",
+      "role": "melee",
+      "displayName": "Antler Knight",
+      "hudName": "ANTLER KNIGHT",
+      "hudTitle": "Hound of the Erlking",
+      "body": "t15_antlerknight",
+      "heightM": 1.9,
+      "weapon": "sword",
+      "weaponItem": "bandit_sword",
+      "loadout": [
+        "bandit_sword"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 1.0,
+      "dmgTypeMul": 1.0,
+      "difficulty": 4,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2,
+      "deliveredStem": "arissa"
     }
   ],
   "weaponItems": [
@@ -487,287 +946,165 @@
   },
   "groups": [
     {
-      "id": "g4_before",
+      "id": "z4_a",
       "zone": "grendel",
-      "side": "before",
-      "anchor": "arrive_from_prev",
-      "alongM": -3.75,
-      "lateralM": 0.0,
-      "yaw": 180,
+      "side": "mid",
+      "anchor": "none (placed by laneNPC15PLACE)",
       "members": [
         {
-          "type": "BanditAssassin",
-          "dx": -1.2,
-          "dz": 0.0
+          "type": "NpcMereRaider"
         },
         {
-          "type": "BanditMelee",
-          "dx": 1.2,
-          "dz": 1.4
+          "type": "NpcDrownedThane"
+        },
+        {
+          "type": "NpcBogHag"
         }
       ],
-      "prefer": {
-        "alongM": 99.0,
-        "lateralM": 0.0
-      },
-      "needsGate": false,
-      "planned": {
-        "minMarginM": 0.35,
-        "freeCorridorM": 4.29,
-        "members": [
-          {
-            "x": -1.2,
-            "z": 112.25,
-            "aggro": 9.0
-          },
-          {
-            "x": 1.2,
-            "z": 113.65,
-            "aggro": 7.0
-          }
-        ]
+      "needsGate": true,
+      "placed": {
+        "by": "laneNPC15PLACE",
+        "ladderStep": "strict",
+        "anchor": [
+          -7.0,
+          143.0
+        ],
+        "minFightDistM": 0.0
       }
     },
     {
-      "id": "g4_after",
+      "id": "z4_b",
       "zone": "grendel",
-      "side": "after",
-      "anchor": "arrive_from_next",
-      "alongM": -3.75,
-      "lateralM": -0.75,
-      "yaw": 180,
+      "side": "mid",
+      "anchor": "none (placed by laneNPC15PLACE)",
       "members": [
         {
-          "type": "BanditMelee",
-          "dx": -2.4,
-          "dz": 0.0
+          "type": "NpcDrownedThane"
         },
         {
-          "type": "BanditAssassin",
-          "dx": -0.8,
-          "dz": 1.7
+          "type": "NpcBogHag"
         },
         {
-          "type": "BanditArcher",
-          "dx": 0.9,
-          "dz": 0.1
-        },
-        {
-          "type": "BanditArcher",
-          "dx": 2.5,
-          "dz": 1.7
+          "type": "NpcMereRaider"
         }
       ],
-      "prefer": {
-        "alongM": 99.0,
-        "lateralM": 0.0
-      },
       "needsGate": true,
-      "planned": {
-        "minMarginM": 0.306,
-        "freeCorridorM": 2.34,
-        "members": [
-          {
-            "x": -3.15,
-            "z": 158.25,
-            "aggro": 7.0
-          },
-          {
-            "x": -1.55,
-            "z": 159.95,
-            "aggro": 9.0
-          },
-          {
-            "x": 0.15,
-            "z": 158.35,
-            "aggro": 9.8
-          },
-          {
-            "x": 1.75,
-            "z": 159.95,
-            "aggro": 11.4
-          }
-        ]
+      "placed": {
+        "by": "laneNPC15PLACE",
+        "ladderStep": "strict",
+        "anchor": [
+          3.5,
+          149.5
+        ],
+        "minFightDistM": 0.84
       }
     },
     {
-      "id": "g5_before",
+      "id": "z5_a",
       "zone": "z5_humbaba",
-      "side": "before",
-      "anchor": "arrive_from_prev",
-      "alongM": 3.75,
-      "lateralM": -0.75,
-      "yaw": 180,
+      "side": "mid",
+      "anchor": "none (placed by laneNPC15PLACE)",
       "members": [
         {
-          "type": "BanditMelee",
-          "dx": -2.2,
-          "dz": 0.0
+          "type": "NpcCedarArcher"
         },
         {
-          "type": "BanditArcher",
-          "dx": 0.4,
-          "dz": 1.2
+          "type": "NpcRootDruid"
         },
         {
-          "type": "BanditAssassin",
-          "dx": 2.4,
-          "dz": 0.2
+          "type": "NpcBarkSentinel"
         }
       ],
-      "prefer": {
-        "alongM": 99.0,
-        "lateralM": 0.0
-      },
-      "needsGate": false,
-      "planned": {
-        "minMarginM": 0.305,
-        "freeCorridorM": 3.33,
-        "members": [
-          {
-            "x": -2.95,
-            "z": 188.75,
-            "aggro": 7.0
-          },
-          {
-            "x": -0.35,
-            "z": 189.95,
-            "aggro": 16.0
-          },
-          {
-            "x": 1.65,
-            "z": 188.95,
-            "aggro": 9.0
-          }
-        ]
+      "needsGate": true,
+      "placed": {
+        "by": "laneNPC15PLACE",
+        "ladderStep": "arrive 14, next 8",
+        "anchor": [
+          -13.0,
+          209.5
+        ],
+        "minFightDistM": 0.0
       }
     },
     {
-      "id": "g5_after",
+      "id": "z5_b",
       "zone": "z5_humbaba",
-      "side": "after",
-      "anchor": "arrive_from_next",
-      "alongM": -2.5,
-      "lateralM": 1.0,
-      "yaw": 180,
+      "side": "mid",
+      "anchor": "none (placed by laneNPC15PLACE)",
       "members": [
         {
-          "type": "BanditMelee",
-          "dx": -1.2,
-          "dz": 0.0
+          "type": "NpcRootDruid"
         },
         {
-          "type": "BanditAssassin",
-          "dx": 1.2,
-          "dz": 1.4
+          "type": "NpcBarkSentinel"
+        },
+        {
+          "type": "NpcCedarArcher"
         }
       ],
-      "prefer": {
-        "alongM": 99.0,
-        "lateralM": 0.0
-      },
       "needsGate": true,
-      "planned": {
-        "minMarginM": 0.332,
-        "freeCorridorM": 3.01,
-        "members": [
-          {
-            "x": -0.2,
-            "z": 226.5,
-            "aggro": 1.0
-          },
-          {
-            "x": 2.2,
-            "z": 227.9,
-            "aggro": 2.5
-          }
-        ]
+      "placed": {
+        "by": "laneNPC15PLACE",
+        "ladderStep": "arrive 14, next 8",
+        "anchor": [
+          8.5,
+          199.5
+        ],
+        "minFightDistM": 0.0
       }
     },
     {
-      "id": "g6_before",
+      "id": "z6_a",
       "zone": "z6_erlking",
-      "side": "before",
-      "anchor": "arrive_from_prev",
-      "alongM": -3.5,
-      "lateralM": 0.0,
-      "yaw": 180,
+      "side": "mid",
+      "anchor": "none (placed by laneNPC15PLACE)",
       "members": [
         {
-          "type": "BanditAssassin",
-          "dx": -2.2,
-          "dz": 0.0
+          "type": "NpcAntlerKnight"
         },
         {
-          "type": "BanditMelee",
-          "dx": 0.4,
-          "dz": 1.2
+          "type": "NpcHuntsman"
         },
         {
-          "type": "BanditArcher",
-          "dx": 2.4,
-          "dz": 0.2
+          "type": "NpcHoundMaster"
         }
       ],
-      "prefer": {
-        "alongM": 99.0,
-        "lateralM": 0.0
-      },
-      "needsGate": false,
-      "planned": {
-        "minMarginM": 0.335,
-        "freeCorridorM": 1.65,
-        "members": [
-          {
-            "x": -2.2,
-            "z": 248.5,
-            "aggro": 9.0
-          },
-          {
-            "x": 0.4,
-            "z": 249.7,
-            "aggro": 7.0
-          },
-          {
-            "x": 2.4,
-            "z": 248.7,
-            "aggro": 16.0
-          }
-        ]
+      "needsGate": true,
+      "placed": {
+        "by": "laneNPC15PLACE",
+        "ladderStep": "arrive 18.5 (= aggro + walk + 1)",
+        "anchor": [
+          7.5,
+          273.5
+        ],
+        "minFightDistM": 0.0
       }
     },
     {
-      "id": "g6_after",
+      "id": "z6_b",
       "zone": "z6_erlking",
-      "side": "after",
-      "anchor": "arrive_from_next",
-      "alongM": 0.0,
-      "lateralM": 0.0,
-      "yaw": 180,
+      "side": "mid",
+      "anchor": "none (placed by laneNPC15PLACE)",
       "members": [
         {
-          "type": "BanditMelee",
-          "dx": -1.2,
-          "dz": 0.0
+          "type": "NpcHoundMaster"
         },
         {
-          "type": "BanditAssassin",
-          "dx": 1.2,
-          "dz": 1.4
+          "type": "NpcAntlerKnight"
+        },
+        {
+          "type": "NpcHuntsman"
         }
       ],
-      "prefer": {
-        "alongM": 99.0,
-        "lateralM": 0.0
-      },
       "needsGate": true,
-      "skip": true,
-      "skipReason": "NO ROOM under the layout rules: z6 has 8 m between the arena rim (z 297) and the exit gate (z 304), with the exit pillars at z 298.9, the arrival spot at z 300 and gate clearance. Planner result with gateClearM 1.5, arriveClearM 1.0, clearanceM 1.2, corridorMinM 1.0 (all relaxed): two men fit between the pillars and leave a 1.15 m lane; NOT used because nothing may shut the player. Dom decision: relax the rules, drop the group, or shift the exit.",
-      "skipCandidateOverride": {
-        "gateClearM": 1.5,
-        "arriveClearM": 1.0,
-        "clearanceM": 1.2,
-        "corridorMinM": 1.0
+      "placed": {
+        "by": "laneNPC15PLACE",
+        "ladderStep": "arrive 18.5 (= aggro + walk + 1)",
+        "anchor": [
+          -4.0,
+          273.0
+        ],
+        "minFightDistM": 0.0
       }
     }
   ],

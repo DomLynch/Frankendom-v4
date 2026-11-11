@@ -2,8 +2,8 @@
   "_notes": "lanePREWARM v92. Read by Scripts/Prewarm92.cs (HudCfg.ReadData). Extends FxPrewarm (C1 caps + piece stub, GoreFx, ClashFx...) with the parts it did not cover: finisher cleave materials, finisher Volume overrides (NoMotionBlur / Vignette / Exposure), finisher + all Animator clips touched, ragdoll joint stub, wound decal materials, loot pillar/ground materials+textures, loot IMGUI fonts+glyphs, plus a hitch watcher that logs any frame longer than hitchMs. Every step has its own switch. Sub-pixel size / distance / draw frames come from perf.json (prewarmSize, prewarmDistance, prewarmFrames). Command line: -noprewarm92 (all off, for the A/B), -prewarm92harness (also in proof/loop runs). Batch mode: always off.",
   "enabled": true,
   "inHarness": false,
-  "startDelaySeconds": 1.5,
-  "framesBetweenSteps": 3,
+  "startDelaySeconds": 0.0,
+  "framesBetweenSteps": 1,
   "drawFrames": 3,
   "steps": {
     "cleave": true,

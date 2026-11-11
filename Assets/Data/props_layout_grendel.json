@@ -47,6 +47,10 @@
       "name": "wow21",
       "pattern": "Assets/Env/Props/wow21/{asset}_LOD{lod}.glb",
       "status": "WOW21 hero props, converted LOD files from laneWOW21LOD; a missing LODn is skipped by PropsLayout.PlaceOne"
+    },
+    {
+      "name": "clutter",
+      "pattern": "Assets/Env/Props/clutter/{asset}_LOD{lod}.glb"
     }
   ],
   "lodProfiles": [
@@ -4356,6 +4360,267 @@
       "disabled": false,
       "seamBaseY": -1.525,
       "seamDy": 0.0
+    },
+    {
+      "id": "clutter_z4_1",
+      "group": "Z4Ring2",
+      "library": "clutter",
+      "asset": "clutter_rubble",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        16.464,
+        -0.949,
+        136.476
+      ],
+      "rotEuler": [
+        0,
+        83.6,
+        0
+      ],
+      "scale": 1.208,
+      "shadowsOff": false,
+      "tags": [
+        "clutter",
+        "clutterkit",
+        "zone4",
+        "cluster"
+      ],
+      "note": "CLUTTER cluster 0 | grendel | footprint 1.21x0.73 h 0.73 | foot range 0.08 | seen by arrive_from_prev at 30 m ndcy -0.08",
+      "disabled": false
+    },
+    {
+      "id": "clutter_z4_2",
+      "group": "Z4Ring2",
+      "library": "clutter",
+      "asset": "clutter_bone_pile",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        17.301,
+        -1.011,
+        136.864
+      ],
+      "rotEuler": [
+        0,
+        123.4,
+        0
+      ],
+      "scale": 0.917,
+      "shadowsOff": false,
+      "tags": [
+        "clutter",
+        "clutterkit",
+        "zone4",
+        "cluster"
+      ],
+      "note": "CLUTTER cluster 0 | grendel | footprint 0.55x0.23 h 0.32 | foot range 0.03 | seen by arrive_from_prev at 30 m ndcy -0.10",
+      "disabled": false
+    },
+    {
+      "id": "clutter_z4_3",
+      "group": "Z4Ring2",
+      "library": "clutter",
+      "asset": "clutter_rubble",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        16.679,
+        -0.926,
+        135.412
+      ],
+      "rotEuler": [
+        0,
+        21.9,
+        0
+      ],
+      "scale": 0.708,
+      "shadowsOff": false,
+      "tags": [
+        "clutter",
+        "clutterkit",
+        "zone4",
+        "cluster"
+      ],
+      "note": "CLUTTER cluster 0 | grendel | footprint 0.71x0.43 h 0.43 | foot range 0.04 | seen by arrive_from_prev at 29 m ndcy -0.11",
+      "disabled": false
+    },
+    {
+      "id": "clutter_z4_4",
+      "group": "Z4Ring1",
+      "library": "clutter",
+      "asset": "clutter_rubble",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -15.076,
+        -0.954,
+        134.018
+      ],
+      "rotEuler": [
+        0,
+        185.7,
+        0
+      ],
+      "scale": 1.227,
+      "shadowsOff": false,
+      "tags": [
+        "clutter",
+        "clutterkit",
+        "zone4",
+        "cluster"
+      ],
+      "note": "CLUTTER cluster 1 | grendel | footprint 1.23x0.75 h 0.74 | foot range 0.12 | seen by arrive_from_prev at 27 m ndcy -0.11",
+      "disabled": false
+    },
+    {
+      "id": "clutter_z4_5",
+      "group": "Z4Ring1",
+      "library": "clutter",
+      "asset": "clutter_bone_pile",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        -14.868,
+        -0.884,
+        133.153
+      ],
+      "rotEuler": [
+        0,
+        167.7,
+        0
+      ],
+      "scale": 0.996,
+      "shadowsOff": false,
+      "tags": [
+        "clutter",
+        "clutterkit",
+        "zone4",
+        "cluster"
+      ],
+      "note": "CLUTTER cluster 1 | grendel | footprint 0.59x0.25 h 0.35 | foot range 0.06 | seen by arrive_from_prev at 26 m ndcy -0.13",
+      "disabled": false
+    },
+    {
+      "id": "clutter_z4_6",
+      "group": "Z4Ring2",
+      "library": "clutter",
+      "asset": "clutter_bone_pile",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        14.951,
+        -0.808,
+        140.296
+      ],
+      "rotEuler": [
+        0,
+        190.1,
+        0
+      ],
+      "scale": 1.116,
+      "shadowsOff": false,
+      "tags": [
+        "clutter",
+        "clutterkit",
+        "zone4",
+        "scatter"
+      ],
+      "note": "CLUTTER single | grendel | footprint 0.66x0.27 h 0.39 | foot range 0.06 | seen by arrive_from_prev at 32 m ndcy -0.05",
+      "disabled": false
+    },
+    {
+      "id": "clutter_z4_7",
+      "group": "Z4Ring2",
+      "library": "clutter",
+      "asset": "clutter_rubble",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        17.961,
+        -1.137,
+        140.306
+      ],
+      "rotEuler": [
+        0,
+        102.8,
+        0
+      ],
+      "scale": 0.556,
+      "shadowsOff": false,
+      "tags": [
+        "clutter",
+        "clutterkit",
+        "zone4",
+        "scatter"
+      ],
+      "note": "CLUTTER single | grendel | footprint 0.56x0.34 h 0.33 | foot range 0.02 | seen by arrive_from_prev at 34 m ndcy -0.08",
+      "disabled": false
+    },
+    {
+      "id": "clutter_z4_8",
+      "group": "Z4Ring1",
+      "library": "clutter",
+      "asset": "clutter_bone_pile",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        13.644,
+        -0.61,
+        131.625
+      ],
+      "rotEuler": [
+        0,
+        324.1,
+        0
+      ],
+      "scale": 1.287,
+      "shadowsOff": false,
+      "tags": [
+        "clutter",
+        "clutterkit",
+        "zone4",
+        "scatter"
+      ],
+      "note": "CLUTTER single | grendel | footprint 0.77x0.32 h 0.45 | foot range 0.05 | seen by arrive_from_prev at 24 m ndcy -0.12",
+      "disabled": false
+    },
+    {
+      "id": "clutter_z4_9",
+      "group": "Z4Ring2",
+      "library": "clutter",
+      "asset": "clutter_rubble",
+      "lodProfile": "near_hq",
+      "ground": "bottom",
+      "yBase": "world",
+      "pos": [
+        13.359,
+        -0.566,
+        142.863
+      ],
+      "rotEuler": [
+        0,
+        198.2,
+        0
+      ],
+      "scale": 0.655,
+      "shadowsOff": false,
+      "tags": [
+        "clutter",
+        "clutterkit",
+        "zone4",
+        "scatter"
+      ],
+      "note": "CLUTTER single | grendel | footprint 0.66x0.40 h 0.39 | foot range 0.05 | seen by arrive_from_prev at 34 m ndcy -0.01",
+      "disabled": false
     }
   ]
 }
