@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 // and Duel.cs (the 60 Hz core), DuelFighter, the sim and its hash are untouched. Even with zones on it never writes into the sim's decision path: it changes WHO is registered/active (spawn, despawn,
 // engage = enable that creature's AIBrain and set opponent), the player's hp at a gate/hearth (counted in sim ticks, see TickRegen) and the player's position under the gate flash.
 // UNPROVEN IN UNITY. Checkpoints for the Unity dev are listed in MANIFEST.md section 9.
-public sealed class ZoneRuntime : MonoBehaviour
+public sealed partial class ZoneRuntime : MonoBehaviour
 {
     public static ZoneRuntime Inst;
     /// <summary>GameLoopDriver stands down while this is true (no victory card, no scene reload per fight).</summary>
@@ -17,6 +17,7 @@ public sealed class ZoneRuntime : MonoBehaviour
     sealed class Live { public ZSpawn row; public string creature; public int gen; public GameObject go; public DuelFighter df; public AIBrain brain; public Vector3 home; public float homeYaw; public bool engaged, killed; public float deadAt; public string zoneId; public ChaseAgent chase; /* CHASE v1 */ }
 
     bool on; int lastRebind = -1;
+    public string ZoneIdNow { get { return zone != null ? zone.id : ""; } }   // FAKEDEATH v1
     ZoneTable T; ZZone zone; string lastSpot = ""; Phase phase; float phaseT, cover, arriveGraceUntil, nextPoll, nextSave, holdT; Color coverColor = Color.white;
     DuelFighter player; GatewayRift rift; bool riftOpen; ZGate crossGate; int lastTick, combatTicks; bool downHandled;
     readonly Dictionary<string, Live> live = new Dictionary<string, Live>();
@@ -233,6 +234,24 @@ public sealed class ZoneRuntime : MonoBehaviour
         if (diff > 0 && br != null) { var dr = GameLoop.DifficultyRowFor(diff); if (dr != null) br.diff = dr; }
     }
 
+    // S9 (pool-laneS9): the camp impostor. ONE ad-hoc hostile at a world point, the same steps as SpawnOne, engaged at once. Its id is not in zone.spawns, so LookSpawns never respawns it (KillWatch still writes a kill record under the id).
+    public string CurZoneId { get { return zone != null ? zone.id : ""; } }
+    public static DuelFighter SpawnExtra(string id, string creature, Vector3 at, float yaw, string ladderRow, float hpMul, float damageMul, int difficulty, float aggro, float leash)
+    {
+        var z = Inst; if (z == null || !z.on || z.zone == null || z.player == null || z.live.ContainsKey(id)) return null;
+        var tpl = z.Template(creature); if (tpl == null) return null;
+        var row = new ZSpawn { id = id, enabled = false, ladderRow = ladderRow, hpMul = hpMul, damageMul = damageMul, difficulty = difficulty, aggro = aggro, leash = leash };
+        var go = Instantiate(tpl, at, Quaternion.Euler(0f, yaw, 0f)); go.name = Roster.Get(creature).objectName + "#" + id;
+        var df = go.GetComponent<DuelFighter>(); var br = go.GetComponent<AIBrain>(); if (df == null) { Destroy(go); return null; }
+        if (br != null) br.enabled = false;
+        { var zc = ZoneData.Creature(creature); if (zc != null && zc.source == "resources") AttachRuntime(go); }
+        ApplyRow(df, br, row);
+        if (go.GetComponent<ArenaLimits>() == null && go.GetComponent<CharacterController>() != null) go.AddComponent<ArenaLimits>();
+        go.SetActive(true); RagdollDeath.PrebuildOne(go);
+        var lv = new Live { row = row, creature = creature, gen = 0, go = go, df = df, brain = br, home = at, homeYaw = yaw, zoneId = z.zone.id };
+        { var cr = ChaseTable.Enabled ? ChaseTable.Row(creature) : null; if (cr != null) { lv.chase = go.AddComponent<ChaseAgent>(); lv.chase.Init(df, z.player, at, row.leash, cr, false); } }
+        z.live[id] = lv; z.Engage(lv); return df;
+    }
     // ------------------------------------------------------------------ fights begin when you approach
     // MULTI v1 (INT107, Dom 08:19): with engage.maxEngaged > 1 the player's TARGET (hits, lock camera, HUD bar and name, finisher victim) is the nearest engaged enemy; it switches only when another is nearer
     // by engage.retargetMarginM, or the target is gone / dead. No lock-switch input exists in CameraRig / PlayerBrain, so none is invented. With one engaged enemy this is the old behaviour exactly.
@@ -265,7 +284,7 @@ public sealed class ZoneRuntime : MonoBehaviour
     /// <summary>hub.json safe.monsters.chasers.atThreshold = stopAndGoHome: while the player is in a safe zone every engaged chaser drops aggro and walks home (nothing in code read that row; they stood at the door and kept the HUD bar and the regen lock).</summary>
     void SafeZoneGiveUp()
     {
-        if (zone == null || !(zone.safe || HubSafe.PlayerInside())) return;
+        if (zone == null || TraderKnows.AmbushLive || !(zone.safe || HubSafe.PlayerInside())) return;   // S9
         foreach (var l in live.Values) if (l.engaged && !l.killed && l.df != null && !l.df.Dead && l.chase != null && l.chase.GiveUp()) Debug.Log("[Zones] safe zone: " + l.row.id + " drops aggro and walks home");
     }
     void Retarget(bool force)
@@ -320,6 +339,7 @@ public sealed class ZoneRuntime : MonoBehaviour
         Retarget(true);   // MULTI v1 (Engage)
         Debug.Log("[Zones] engage " + l.row.id + " (" + l.creature + ", life " + l.gen + ")");
     }
+    public static bool ForceDisengage(string spawnId) { if (Inst == null || !Inst.on) return false; Live l; if (!Inst.live.TryGetValue(spawnId, out l) || l.df == null || l.killed) return false; Inst.Disengage(l); return true; }   // S1 GROUNDBITE: a diving ambusher goes home like a leash reset
     void Disengage(Live l)
     {
         l.engaged = false; if (l.brain != null) l.brain.enabled = false;

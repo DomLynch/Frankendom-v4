@@ -226,6 +226,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             case FState.ParryRecover: if (t >= ParryRecoverLen()) { parryWhiffLen = 0; ToLoco(); } break;   // lanePARRY
             case FState.Stagger: if (t >= staggerTicks) ToLoco(); break;
             case FState.Down:
+                if (fakeOn) { FakeTick(); break; }   // FAKEDEATH v1
                 if (t == 54) PlayClip("get_up", 36);
                 if (t >= R("posture.stun", 90)) ToLoco(); break;
         }
@@ -466,6 +467,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     }
     public void Die()
     {
+        if (FakeDeath.On) { if (!fakeOn && !RTFinisher.Busy && FakeDeathTry()) return; if (fakeOn) FakeCancelForDie(); }   // FAKEDEATH v1: a boss falls instead of dying (once per run), a real death while it is down wins
         FState diedFrom = state;   // DEATHFIX v92: the state the killing blow found (Down = already on the floor)
         atkOn = false; fadeOutLen = 0f; state = FState.Dead; t = 0; health = 0f; hp.current = 0f; ContactRelay.Killed(this, move);
         DeathPlay(diedFrom); f.holdLast = true;   // DEATHFIX v92: was PlayClip("death", 0, 0.08f), which played the clip's ~1.1 s upright lead-in at 0 HP

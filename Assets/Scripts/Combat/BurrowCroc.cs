@@ -111,7 +111,8 @@ public sealed class BurrowCroc : MonoBehaviour
     void OnDisable() { All.Remove(this); ContactRelay.OnEvent -= OnContact; EndFlash(); }
     void OnDestroy() { All.Remove(this); }
 
-    bool Engaged { get { return df != null && !df.Dead && brain != null && brain.enabled; } }
+    public bool forceUp;   // S1 GROUNDBITE: the ambush holds the croc surfaced while its brain is off
+    bool Engaged { get { return df != null && !df.Dead && ((brain != null && brain.enabled) || forceUp); } }
 
     void Update()
     {
@@ -140,7 +141,7 @@ public sealed class BurrowCroc : MonoBehaviour
         BossWatch(K);
 
         if (dead) { Release(); return; }
-        if (engaged) { Lunge(K, player); return; }
+        if (engaged) { if (forceUp) { Stand(); return; } Lunge(K, player); return; }   // S1 GROUNDBITE: no lunge during the clamp
         if (df.state != FState.Loco && df.state != FState.Guard) { Release(); return; }   // hit / stagger / an attack: the machine owns it
         if (Duel.FrozenFor(df)) { Release(); return; }
         Roam(K, player, pos, dt);

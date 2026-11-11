@@ -70,7 +70,34 @@
     },
     {
       "character": "Sobek",
-      "materials": [],
+      "materials": [
+        {
+          "match": "sobek_body",
+          "baseColor": [
+            1,
+            1,
+            1
+          ],
+          "smoothness": 0.8,
+          "metallic": -1,
+          "albedoBlob": "",
+          "albedoTexture": "",
+          "_vis_boss": true
+        },
+        {
+          "match": "sobek_head",
+          "baseColor": [
+            1,
+            1,
+            1
+          ],
+          "smoothness": 0.8,
+          "metallic": -1,
+          "albedoBlob": "",
+          "albedoTexture": "",
+          "_vis_boss": true
+        }
+      ],
       "look": {
         "enabled": false,
         "model": "MonsterLook/Sobek/Sobek_look.glb",
@@ -119,6 +146,42 @@
           "metallic": -1,
           "albedoBlob": "CharTex/grendel_body_base_graded.bc7",
           "albedoTexture": ""
+        }
+      ]
+    },
+    {
+      "character": "Humbaba",
+      "materials": [
+        {
+          "match": "creature5_body",
+          "baseColor": [
+            1,
+            1,
+            1
+          ],
+          "smoothness": 0.22,
+          "metallic": -1,
+          "albedoBlob": "",
+          "albedoTexture": "",
+          "_vis_boss": true
+        }
+      ]
+    },
+    {
+      "character": "Erlking",
+      "materials": [
+        {
+          "match": "erlking_body",
+          "baseColor": [
+            1,
+            1,
+            1
+          ],
+          "smoothness": 0.28,
+          "metallic": -1,
+          "albedoBlob": "",
+          "albedoTexture": "",
+          "_vis_boss": true
         }
       ]
     }

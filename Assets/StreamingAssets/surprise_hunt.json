@@ -1,0 +1,97 @@
+{
+  "_about": "S6 THE ERLKING'S HUNT v1 (pool-laneS6, STAGED DARK, UNPROVEN in Unity). Read by Assets/Scripts/Surprise/SurpriseHunt.cs. enabled=false = nothing runs. Joan lingers in the zone for a seeded time (timer starts on entering, resets on leaving) -> a distant horn (placeholder: a pitched-down slice of the existing audio sprite via CueBus) -> after leadS the pack appears at a seeded horizon entry point on the zone edge and runs at Joan; she can run for the gate or stand and fight. The pack members are INJECTED as zone spawn rows + spots into the in-memory zones.json table at the moment of the trigger (existing ZoneRuntime does spawn / aggro / chase / kill / drops), so no spawn code is new. Once per run (maxPerRun), one pack, never more than one surprise per zone visit through SurpriseGate.TryClaim(zone, key). Every number below is read by the script, none is in code. Launcher: -s6:1 forces on, -s6:0 forces off, -s6t:<seconds> forces the timer (proof: 5).",
+  "enabled": false,
+  "version": 1,
+  "zone": "z6_erlking",
+  "gateKey": "z6_hunt",
+  "args": { "enable": "-s6:", "timer": "-s6t:" },
+  "seedSalt": 6061,
+  "pollSeconds": 0.25,
+  "maxPerRun": 1,
+  "timer": {
+    "secondsMin": 150.0,
+    "secondsMax": 300.0,
+    "resetOnLeave": true,
+    "_about": "seconds in zone before the horn, seeded per visit (seed from surprise_director.json xor seedSalt, plus the visit index). The clock is paused (not reset) while Joan fights anything within engagedMaxM or stands inside the boss arena footprint pauseLocalZ (zone-local z, offsetZ added at run time: 23..53 = world 267..297 for z6)."
+  },
+  "pause": { "engagedMaxM": 40.0, "pauseLocalZMin": 23.0, "pauseLocalZMax": 53.0, "pauseWhileGroundHold": true },
+  "horn": {
+    "cue": "charge_foe",
+    "gain": 1.0,
+    "rate": 0.45,
+    "repeat": 2,
+    "gapS": 1.8,
+    "leadS": 3.5,
+    "_about": "PLACEHOLDER from existing audio (audio_manifest.json cue charge_foe played with CueBus.Play at rate 0.45 = pitched-down low blast). MISSING AUDIO to author later: a real far hunting horn (2 calls, 3 to 4 s each, long reverb tail) and a hound bay; put the files under StreamingAssets/Audio and add a cue id, then change horn.cue only."
+  },
+  "entry": {
+    "halfWidthX": 32.0,
+    "insetM": 4.0,
+    "minDistFromPlayerM": 34.0,
+    "_about": "horizon entry points on the zone edges, computed from zone_span.json (offsetZ + laneZMin / laneZMax) and halfWidthX (the same +-32 m the z6 ambient horse boxes use). edge = far | near | west | east, along = -1..1 along that edge (x for far / near, z for west / east). insetM = metres inside the edge. A point closer than minDistFromPlayerM is skipped (ZoneRuntime.CanAppear wants spawnMinDistance 30 anyway); if none is far enough the farthest wins. Far-edge points sit at x +-27 so the run does not cross the Erlking arena mouth.",
+    "points": [
+      { "id": "far_w", "edge": "far", "along": -0.85 },
+      { "id": "far_e", "edge": "far", "along": 0.85 },
+      { "id": "west_mid", "edge": "west", "along": 0.4 },
+      { "id": "east_mid", "edge": "east", "along": 0.4 }
+    ]
+  },
+  "useNpcBodies": false,
+  "_useNpcBodies_about": "false until _agents\\laneNPCFIX2\\verify_npc.py says 15/15 OK (NpcHuntsman and NpcHoundMaster at least). While false every rider uses fallbackCreature (existing dark bandit BanditMelee). true: npcCreature is used when its Resources prefab loads, else the fallback is used anyway (logged).",
+  "creatures": [
+    { "id": "NpcHuntsman", "path": "Creatures/NpcHuntsman" },
+    { "id": "NpcHoundMaster", "path": "Creatures/NpcHoundMaster" }
+  ],
+  "_creatures_about": "ZoneData creature rows added in memory ONLY when useNpcBodies is true and zones.json has no row with that id (zones.json is not edited). BanditMelee is already a zones.json creature.",
+  "spawnRow": {
+    "aggroM": 140.0,
+    "leashExtraM": 30.0,
+    "respawnMinS": 3600,
+    "respawnMaxS": 3600,
+    "difficulty": 0,
+    "verifyS": 6.0,
+    "_about": "aggroM large = the pack engages as soon as it appears and runs in under the ordinary AIBrain / ChaseAgent rules (chase.json speedMul if that file is on). The row is disabled again the moment its body exists so a dead rider never respawns in the same run."
+  },
+  "mount": {
+    "enabled": false,
+    "breedId": "war",
+    "_about": "v1 = the riders RUN IN. The roaming mounts (AmbientHorses / HorseBehaviour, rigged horse-rig animals walking by procedural IK, no seat, no rider socket) cannot carry a DuelFighter cheaply: the NPC has a CharacterController and a brain that move the root, the horse is moved by its own gait step. Carrying a rider needs a mount-follow component (NPC root parented to a horse seat bone, controller off, brain still drives attacks) = a separate CODE lane. This key is the future switch; the script ignores it today."
+  },
+  "pack": [
+    {
+      "id": "huntsman",
+      "kind": "rider",
+      "npcCreature": "NpcHuntsman",
+      "fallbackCreature": "BanditMelee",
+      "ladderRowNpc": "npchuntsman_z6",
+      "ladderRowFallback": "bandit_melee_z6",
+      "lateralM": -2.6,
+      "backM": 0.0,
+      "speedMps": 0.0,
+      "_speedMps_about": "0 = leave walkSpeed / runSpeed as the roster row has them; > 0 overrides runSpeed (and walkSpeed = runSpeed x walkOfRun) on the spawned DuelFighter."
+    },
+    {
+      "id": "houndmaster",
+      "kind": "rider",
+      "npcCreature": "NpcHoundMaster",
+      "fallbackCreature": "BanditMelee",
+      "ladderRowNpc": "npchoundmaster_z6",
+      "ladderRowFallback": "bandit_melee_z6",
+      "lateralM": 2.6,
+      "backM": 3.0,
+      "speedMps": 0.0
+    },
+    {
+      "id": "hound",
+      "kind": "ambient",
+      "breed": "ghost_hound",
+      "count": 1,
+      "lateralM": 0.0,
+      "backM": 2.0,
+      "stripWidthM": 6.0,
+      "stopShortM": 6.0,
+      "_about": "v1: the ghost hound is a roaming skittish animal with no attack. In the pack it is an AmbientHorses herd row injected at the trigger whose box is the strip between the entry point and Joan (so it appears and trots about among the riders); it does no damage. A directed run-alongside needs one hook in AmbientHorses.Step (target override): CODE lane, not in v1."
+    }
+  ],
+  "walkOfRun": 0.4
+}

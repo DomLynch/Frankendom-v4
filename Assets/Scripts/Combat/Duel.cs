@@ -50,7 +50,7 @@ public class Duel : MonoBehaviour
     // returns true when the strike made contact (hit, block, parry): the move then stops checking
     public static bool Resolve(DuelFighter a, DuelFighter d, MoveDef m, float chargeMul)
     {
-        if (d.Dead || FrozenFor(d) || FrozenFor(a) /* FINREALTIME v1 H2b */ || HubSafe.NoHit(d)) return false;   // laneNPCSPAWN: the player in a safe camp takes no strike (health, posture, stamina stay)
+        if (d.Dead || FrozenFor(d) || FrozenFor(a) /* FINREALTIME v1 H2b */ || HubSafe.NoHit(d) || d.FakeImmune /* FAKEDEATH v1 */) return false;   // laneNPCSPAWN: the player in a safe camp takes no strike (health, posture, stamina stay)
         if (!RangedNow && BowHooks.Handles(a, m)) return BowHooks.Release(a, d, m, chargeMul);   // BOW v2: a bow-mode swing throws the arrow (BowShot judges it on arrival through this same method)
         Vector3 ad = d.transform.position - a.transform.position; ad.y = 0f;
         float dist = ad.magnitude;
@@ -111,6 +111,7 @@ public class Duel : MonoBehaviour
         if (db && d.health > 0f && RTFinisher.DeathblowFinishes && RTFinisher.TryBegin(a, d, m, true)) return true;   // V61B: a posture-break deathblow ALWAYS starts a finisher (finishers.json rt.deathblowFinishes), lethal or not; the scene's Die() is the kill
         if (d.health <= 0f)
         {
+            if (!db && FakeDeath.On && d.FakeDeathTry()) { Fire(a, d, "Hit", heavy, false); return true; }   // FAKEDEATH v1: the boss that rises once falls here, before any finisher; a deathblow stays a real kill
             if (RTFinisher.TryBegin(a, d, m, db)) return true;   // FN1: killing-blow finisher scene (finishers.json enableFinishers, default false); the plain death below is the fallback
             d.Die(); Fire(a, d, "Hit", heavy, false); return true;
         }

@@ -9,7 +9,7 @@
  "fadeOutFrac": 0.25,
  "sortingOrder": 0,
  "waitFrames": 40,
- "maxTotalParticles": 400,
+ "maxTotalParticles": 600,
  "rows": [
   {
    "id": "pit_yard",
@@ -17,14 +17,14 @@
    "zFrom": -100000.0,
    "zTo": 26.0,
    "color": [
-    0.28,
-    0.24,
-    0.22,
-    0.8
+    0.62,
+    0.55,
+    0.5,
+    0.85
    ],
-   "sizeMin": 0.06,
-   "sizeMax": 0.15,
-   "count": 104,
+   "sizeMin": 0.09,
+   "sizeMax": 0.24,
+   "count": 150,
    "lifeMin": 16,
    "lifeMax": 24,
    "box": [
@@ -50,14 +50,14 @@
    "zFrom": 26.0,
    "zTo": 62.0,
    "color": [
-    0.52,
-    0.62,
-    0.58,
-    0.56
+    0.7,
+    0.8,
+    0.74,
+    0.8
    ],
-   "sizeMin": 0.045,
-   "sizeMax": 0.105,
-   "count": 114,
+   "sizeMin": 0.07,
+   "sizeMax": 0.17,
+   "count": 150,
    "lifeMin": 18,
    "lifeMax": 26,
    "box": [
@@ -83,14 +83,14 @@
    "zFrom": 62.0,
    "zTo": 98.0,
    "color": [
-    0.52,
-    0.4,
-    0.28,
-    0.52
+    0.78,
+    0.64,
+    0.46,
+    0.8
    ],
-   "sizeMin": 0.045,
-   "sizeMax": 0.09,
-   "count": 52,
+   "sizeMin": 0.07,
+   "sizeMax": 0.15,
+   "count": 90,
    "lifeMin": 16,
    "lifeMax": 24,
    "box": [
@@ -116,14 +116,14 @@
    "zFrom": 98.0,
    "zTo": 167.0,
    "color": [
-    0.55,
-    0.62,
-    0.66,
-    0.42
+    0.74,
+    0.8,
+    0.84,
+    0.75
    ],
-   "sizeMin": 0.05,
-   "sizeMax": 0.1,
-   "count": 150,
+   "sizeMin": 0.08,
+   "sizeMax": 0.17,
+   "count": 190,
    "lifeMin": 14,
    "lifeMax": 22,
    "box": [
@@ -149,14 +149,14 @@
    "zFrom": 167.0,
    "zTo": 234.0,
    "color": [
-    0.54,
-    0.66,
-    0.3,
-    0.64
+    0.7,
+    0.84,
+    0.4,
+    0.8
    ],
-   "sizeMin": 0.06,
-   "sizeMax": 0.15,
-   "count": 130,
+   "sizeMin": 0.09,
+   "sizeMax": 0.22,
+   "count": 170,
    "lifeMin": 18,
    "lifeMax": 28,
    "box": [
@@ -182,14 +182,14 @@
    "zFrom": 234.0,
    "zTo": 305.0,
    "color": [
-    0.76,
-    0.18,
-    0.14,
-    0.76
+    0.95,
+    0.3,
+    0.22,
+    0.85
    ],
-   "sizeMin": 0.06,
-   "sizeMax": 0.15,
-   "count": 143,
+   "sizeMin": 0.09,
+   "sizeMax": 0.22,
+   "count": 180,
    "lifeMin": 16,
    "lifeMax": 24,
    "box": [
@@ -215,14 +215,14 @@
    "zFrom": 305.0,
    "zTo": 100000.0,
    "color": [
-    0.52,
-    0.4,
-    0.28,
-    0.52
+    0.78,
+    0.64,
+    0.46,
+    0.8
    ],
-   "sizeMin": 0.045,
-   "sizeMax": 0.09,
-   "count": 52,
+   "sizeMin": 0.07,
+   "sizeMax": 0.15,
+   "count": 90,
    "lifeMin": 16,
    "lifeMax": 24,
    "box": [
@@ -249,13 +249,13 @@
    "zTo": 26.0,
    "color": [
     1.0,
-    0.32,
-    0.07,
-    0.55
+    0.4,
+    0.12,
+    0.8
    ],
-   "sizeMin": 0.018,
-   "sizeMax": 0.04,
-   "count": 34,
+   "sizeMin": 0.05,
+   "sizeMax": 0.11,
+   "count": 40,
    "lifeMin": 7,
    "lifeMax": 11,
    "box": [
@@ -275,5 +275,6 @@
    "noiseScroll": 0.1,
    "softDistance": 0.0
   }
- ]
+ ],
+ "_vis_sky": "VIS_SKY 2026-11-11: motes were dark mid-grey on a dark scene (premultiplied 'dust' darkens, no contrast). Pale ash colours at alpha 0.75-0.85, sizes about 1.6-2x, counts 1.2-1.7x, cap 600. pit_yard_embers (role spark, additive) needs the ZoneMotes.cs RowOn patch (kit\\Assets\\Scripts\\Zones\\ZoneMotes.cs) to emit; without it the row is ignored (zero risk). Doorway embers/sparks stay OFF (doorway.json untouched). Colours/sizes NOT verified in a player: judge by eye from play frames, then tune color alpha first."
 }

@@ -1055,6 +1055,138 @@
       ],
       "activeRadiusM": 60.0,
       "raycastGround": true
+    },
+    {
+      "id": "v16_haze04_z2",
+      "zone": "sobek_reach",
+      "center": [
+        0.0,
+        0.0,
+        50.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        16.0,
+        0.8,
+        26.0
+      ],
+      "albedo": [
+        0.4,
+        0.6,
+        0.54
+      ],
+      "meanFreePath": 3.0,
+      "positiveFade": [
+        0.35,
+        1.0,
+        0.35
+      ],
+      "negativeFade": [
+        0.35,
+        0.0,
+        0.35
+      ],
+      "activeRadiusM": 45.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v16_haze04_z4",
+      "zone": "grendel",
+      "center": [
+        0.0,
+        0.0,
+        132.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        26.0,
+        0.8,
+        32.0
+      ],
+      "albedo": [
+        0.42,
+        0.58,
+        0.6
+      ],
+      "meanFreePath": 3.0,
+      "positiveFade": [
+        0.35,
+        1.0,
+        0.35
+      ],
+      "negativeFade": [
+        0.35,
+        0.0,
+        0.35
+      ],
+      "activeRadiusM": 45.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v16_haze04_z5",
+      "zone": "z5_humbaba",
+      "center": [
+        0.0,
+        0.0,
+        209.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        32.0,
+        0.8,
+        32.0
+      ],
+      "albedo": [
+        0.447,
+        0.596,
+        0.417
+      ],
+      "meanFreePath": 3.0,
+      "positiveFade": [
+        0.35,
+        1.0,
+        0.35
+      ],
+      "negativeFade": [
+        0.35,
+        0.0,
+        0.35
+      ],
+      "activeRadiusM": 45.0,
+      "raycastGround": true
+    },
+    {
+      "id": "v16_haze04_z6",
+      "zone": "z6_erlking",
+      "center": [
+        0.0,
+        0.0,
+        282.0
+      ],
+      "groundY": 0.0,
+      "size": [
+        32.0,
+        0.8,
+        32.0
+      ],
+      "albedo": [
+        0.726,
+        0.504,
+        0.504
+      ],
+      "meanFreePath": 3.0,
+      "positiveFade": [
+        0.35,
+        1.0,
+        0.35
+      ],
+      "negativeFade": [
+        0.35,
+        0.0,
+        0.35
+      ],
+      "activeRadiusM": 45.0,
+      "raycastGround": true
     }
   ],
   "_v6_note": "laneV4V6 V6 T1: i9 true carries bloom intensity/threshold per zone (ZoneLook applies them); vignette pinned to the live 0.48 so ONLY bloom changes; bloomScatter is staged data for a 3-line ZoneLook change (JsonUtility ignores it today)."

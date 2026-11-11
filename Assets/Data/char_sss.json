@@ -15,7 +15,10 @@
   "copyColors": [
     "_BaseColor"
   ],
-  "copyFloats": [],
+  "copyFloats": [
+    "_Smoothness",
+    "_SmoothnessRemapMax"
+  ],
   "resourcesDir": "Assets/Resources",
   "rows": [
     {

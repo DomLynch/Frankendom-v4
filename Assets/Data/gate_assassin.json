@@ -1,0 +1,34 @@
+{
+  "_about": "S2 THE GATE ASSASSIN (pool-laneS2, STAGED DARK). Written by apply_s2.py to Assets/Data and Assets/StreamingAssets (identical copies, StreamingAssets read first). Read by GateAssassin.cs + ZoneRuntime.Surprise.cs (partial). enabled false = nothing runs. Joan walks through a gate (zone arrival through a gate row listed in gates[]); on a LATER pass (passIndex >= minPassIndex, never the first pass of the run) a seeded roll (chance) decides whether a hooded assassin (the existing BanditAssassin prefab / AIBrain, hp+damage+difficulty copied from its zones.json spawn row) strikes from the dark doorway behind her. Sequence: Joan walks minWalkM away from the gate, the boot-scrape tell plays, tell.leadS later the assassin is engaged (spawned at the doorway side, behind her). A parry of its first blow ends in the existing finisher kill-cam (RTFinisher.TryBegin, the same call Duel makes on a lethal blow). One per zone visit through the shared SurpriseGate (surprise_director.json), plus caps.perRun here. Every number and name below is data.",
+  "enabled": false,
+  "version": 1,
+  "minPassIndex": 2,
+  "chance": 0.35,
+  "seed": { "salt": "s2_gate_assassin", "useDirectorSeed": true, "directorFile": "surprise_director.json", "directorDataRel": "Data/surprise_director.json" },
+  "gateKey": "gate_assassin",
+  "gates": [
+    { "zone": "hub_camp",     "arriveSpot": "arrive_from_prev", "gateSpot": "gate_prev", "enabled": true },
+    { "zone": "hub_camp",     "arriveSpot": "arrive_from_next", "gateSpot": "gate_next", "enabled": true },
+    { "zone": "grendel",      "arriveSpot": "arrive_from_prev", "gateSpot": "gate_prev", "enabled": true },
+    { "zone": "grendel",      "arriveSpot": "arrive_from_next", "gateSpot": "gate_next", "enabled": true },
+    { "zone": "z5_humbaba",   "arriveSpot": "arrive_from_prev", "gateSpot": "gate_prev", "enabled": true },
+    { "zone": "z5_humbaba",   "arriveSpot": "arrive_from_next", "gateSpot": "gate_next", "enabled": true },
+    { "zone": "z6_erlking",   "arriveSpot": "arrive_from_prev", "gateSpot": "gate_prev", "enabled": true },
+    { "zone": "z6_erlking",   "arriveSpot": "arrive_from_next", "gateSpot": "gate_next", "enabled": true },
+    { "zone": "z7_market2",   "arriveSpot": "arrive_from_prev", "gateSpot": "gate_prev", "enabled": true }
+  ],
+  "caps": { "perRun": 1, "persistAcrossLaunches": false },
+  "trigger": { "minWalkM": 7.0, "maxWalkM": 30.0, "timeoutS": 25.0, "pollS": 0.2, "waitOffscreen": true, "viewMargin": 0.1, "skipWhileEngaged": true, "skipWhileFinisher": true, "skipWhileDown": true },
+  "tell": { "cue": "backstep", "gain": 1.0, "rate": 0.8, "repeat": 2, "repeatGapS": 0.12, "leadS": 0.5, "missingCueNote": "No boot-scrape cue exists in audio_manifest.json (cues: whoosh_*, draw, hit_*, block, parry, roll, backstep ...). The existing 'backstep' slices (0.15 s foot slides) pitched down x2 stand in. Dedicated cue wanted: boot_scrape (gravel / leather drag, ~0.4 s, 3 variants)." },
+  "spawn": { "behindM": 6.0, "minBehindM": 3.5, "insideM": 1.5, "hideUntilEngage": true },
+  "assassin": { "creature": "BanditAssassin", "copyRowFromCreature": true, "hpMul": -1.0, "damageMul": -1.0, "difficulty": -1, "aggro": -1.0, "leash": 60.0, "rowId": "gate_assassin" },
+  "parry": { "finisher": true, "delayS": 0.1, "forceEnable": true, "forceId": "", "setHealthZero": true, "restoreIfRefused": true, "onlyFirstBlow": true, "firstBlowWindowS": 6.0 },
+  "harness": {
+    "arg": "-s2:", "off": "0", "on": "1",
+    "force": { "zone": "grendel", "arriveSpot": "arrive_from_prev" },
+    "chance": 1.0, "ignorePassRule": true, "ignoreEnabled": true, "ignoreCaps": true, "ignoreDirector": true
+  },
+  "log": true,
+  "missingAudio": ["boot_scrape (dedicated cue; 'backstep' stand-in used)"]
+}
+

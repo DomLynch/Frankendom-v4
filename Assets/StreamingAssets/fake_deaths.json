@@ -1,0 +1,144 @@
+{
+  "_about": "pool-laneS7 FAKE DEATHS v1 (FakeDeath.cs, DuelFighterFake.cs). SHIPS DARK: enabled=false (no file = today's game). boss = ONE boss per run (seeded pick among pickIds, saved in fake_deaths_state.json) gets back up ONCE from zero hp; corpse = a dead bandit grabs Joan's ankle when she loots beside it (rare, seeded, capped). Both go through SurpriseGate (surprise_director.json: one surprise per zone visit). Every clip is an EXISTING animator state: knockdown / get_up (no lying-reach clip exists: the reach is the first part of get_up). Cues are existing cue ids. Proof flags: -s7:0 off, -s7:1 force both, -s7corpse:1, -s7boss:1, -s7boss:<RosterId>.",
+  "enabled": false,
+  "log": true,
+  "seed": 7331,
+  "stateFile": "fake_deaths_state.json",
+  "boss": {
+    "enabled": true,
+    "pickIds": [
+      "Pitborn",
+      "Sobek",
+      "Grendel",
+      "Humbaba",
+      "Erlking"
+    ],
+    "maxPerRun": 1,
+    "chance": 1.0,
+    "riseHpFrac": 0.3,
+    "holdHp": 1.0,
+    "damageMulAfter": 1.0,
+    "gateKey": "fakedeath_boss",
+    "idleClip": "idle",
+    "idleFade": 0.1,
+    "steps": [
+      {
+        "clip": "death",
+        "deathRow": true,
+        "hold": true,
+        "seconds": 3.0
+      },
+      {
+        "clip": "",
+        "hold": true,
+        "seconds": 1.6
+      },
+      {
+        "clip": "get_up",
+        "startS": 0.0,
+        "speed": 1.0,
+        "seconds": 1.2,
+        "fade": 0.1,
+        "hold": false,
+        "cue": "effort_voice",
+        "cueGain": 0.9,
+        "cueRate": 0.7,
+        "cueDelay": 0.0,
+        "shake": "special",
+        "shakeMul": 0.8
+      }
+    ]
+  },
+  "corpse": {
+    "enabled": true,
+    "chancePerLoot": 0.12,
+    "maxPerRun": 2,
+    "gateKey": "fakedeath_corpse",
+    "matchPrefixes": [
+      "Bandit"
+    ],
+    "zones": [],
+    "lootRadiusM": 4.0,
+    "anklePlaceM": 0.9,
+    "reviveWaitS": 1.5,
+    "reviveHpFrac": 0.1,
+    "holdS": 2.2,
+    "kickFromS": 0.5,
+    "kickToS": 1.7,
+    "kickAction": "kick",
+    "kickKnock": 4.0,
+    "freeKicks": true,
+    "damage": 14.0,
+    "nonLethal": true,
+    "minHp": 1.0,
+    "hurtClip": "hit_heavy",
+    "hurtStaggerTicks": 24,
+    "idleClip": "idle",
+    "idleFade": 0.1,
+    "corpseSteps": [
+      {
+        "clip": "knockdown",
+        "startS": 0.9,
+        "speed": 0.0,
+        "seconds": 0.4,
+        "fade": 0.0,
+        "hold": true
+      },
+      {
+        "clip": "get_up",
+        "startS": 0.0,
+        "speed": 0.4,
+        "seconds": 0.9,
+        "fade": 0.1,
+        "hold": false
+      },
+      {
+        "clip": "get_up",
+        "startS": 0.36,
+        "speed": 0.0,
+        "seconds": 1.8,
+        "fade": 0.0,
+        "hold": true
+      }
+    ],
+    "playerSteps": [
+      {
+        "clip": "hit_heavy",
+        "startS": 0.0,
+        "speed": 0.0,
+        "seconds": 2.6,
+        "fade": 0.05,
+        "hold": true
+      }
+    ],
+    "grabCue": {
+      "cue": "effort_voice",
+      "gain": 0.8,
+      "rate": 0.75,
+      "delay": 0.0,
+      "shake": "special",
+      "shakeMul": 0.3
+    },
+    "freeCue": {
+      "cue": "effort_voice",
+      "gain": 0.7,
+      "rate": 1.1,
+      "delay": 0.0,
+      "shake": "",
+      "shakeMul": 1.0
+    },
+    "hurtCue": {
+      "cue": "effort_voice",
+      "gain": 0.8,
+      "rate": 0.9,
+      "delay": 0.0,
+      "shake": "",
+      "shakeMul": 1.0
+    }
+  },
+  "proof": {
+    "autoAfterS": 6.0,
+    "deadWaitS": 2.5,
+    "scanEveryS": 1.0
+  }
+}

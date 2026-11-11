@@ -80,7 +80,7 @@
     "maxEngaged": 2,
     "retargetMarginM": 1.5,
     "finisherWithOthers": false,
-    "graceAfterArriveSeconds": 3.0,
+    "graceAfterArriveSeconds": 8.0,
     "corpseSeconds": 25,
     "spawnMinDistance": 30,
     "_about": "INT107 (Dom): maxEngaged 2 = Pitborn and Sobek can be on you together (both brains attack the player; target = nearest engaged, switches when another is nearer by retargetMarginM; finisherWithOthers false = plain death while another enemy is engaged). 1 = the duel stays 1 v 1 (the sim and the camera are tuned for it); a camp of 2 is a later Dom decision. spawnMinDistance: a creature whose timer ran out while you stand in its zone appears only when you are at least this far from its spot, or when you arrive through a gate (hidden by the flash); in a small arena that means it appears when you arrive, never in front of you."
@@ -519,6 +519,69 @@
           ],
           "yaw": 90.0,
           "note": "BURROWCROC: home of the burrowing croc, centre of its side-lane box (west of the fight lane); the croc idol is at x -5.5 z 54, the boss stand at 0 / 53"
+        },
+        {
+          "id": "ground_bite_0",
+          "pos": [
+            0.0,
+            40.2
+          ],
+          "yaw": 0.0,
+          "note": "S1 GROUNDBITE candidate ambush spot (lane x +-1.2, z 38.6..44.4: before the boss ring z 45.7, boss stand 0/53)"
+        },
+        {
+          "id": "ground_bite_1",
+          "pos": [
+            -1.0,
+            38.6
+          ],
+          "yaw": 0.0,
+          "note": "S1 GROUNDBITE candidate ambush spot (lane x +-1.2, z 38.6..44.4: before the boss ring z 45.7, boss stand 0/53)"
+        },
+        {
+          "id": "ground_bite_2",
+          "pos": [
+            1.1,
+            39.6
+          ],
+          "yaw": 0.0,
+          "note": "S1 GROUNDBITE candidate ambush spot (lane x +-1.2, z 38.6..44.4: before the boss ring z 45.7, boss stand 0/53)"
+        },
+        {
+          "id": "ground_bite_3",
+          "pos": [
+            -0.6,
+            41.3
+          ],
+          "yaw": 0.0,
+          "note": "S1 GROUNDBITE candidate ambush spot (lane x +-1.2, z 38.6..44.4: before the boss ring z 45.7, boss stand 0/53)"
+        },
+        {
+          "id": "ground_bite_4",
+          "pos": [
+            0.9,
+            42.4
+          ],
+          "yaw": 0.0,
+          "note": "S1 GROUNDBITE candidate ambush spot (lane x +-1.2, z 38.6..44.4: before the boss ring z 45.7, boss stand 0/53)"
+        },
+        {
+          "id": "ground_bite_5",
+          "pos": [
+            -1.1,
+            43.6
+          ],
+          "yaw": 0.0,
+          "note": "S1 GROUNDBITE candidate ambush spot (lane x +-1.2, z 38.6..44.4: before the boss ring z 45.7, boss stand 0/53)"
+        },
+        {
+          "id": "ground_bite_6",
+          "pos": [
+            0.3,
+            44.4
+          ],
+          "yaw": 0.0,
+          "note": "S1 GROUNDBITE candidate ambush spot (lane x +-1.2, z 38.6..44.4: before the boss ring z 45.7, boss stand 0/53)"
         }
       ],
       "spawns": [
@@ -1529,7 +1592,7 @@
           "ladderRow": "erlking",
           "respawnMinS": 180,
           "respawnMaxS": 180,
-          "aggro": 16.0,
+          "aggro": 13.0,
           "leash": 30.0,
           "hpMul": 1.0,
           "damageMul": 1.0,

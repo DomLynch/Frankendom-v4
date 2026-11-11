@@ -1,0 +1,70 @@
+{
+  "_about": "VENDORREVEAL v1 (Dom V21): vendor face goes see-through for a glimpse, skull behind it. enabled=false ships dark. Every number lives here. vendors[] = one row per vendor (npcId = hub.json npcs[].id). Local = head-joint local space of the bound vendor GLB (metres at the bound 1.773 m body, before runtime.scale). Placeholder skull = primitive parts (no usable single-skull prop exists), Dom judges the clip first.",
+  "enabled": false,
+  "log": true,
+  "pollSeconds": 0.2,
+  "rescanSeconds": 1.0,
+  "distanceFrom": "player",
+  "eclipseType": "EclipseAlive",
+  "eclipseProp": "FlareActive",
+  "minAmount": 0.001,
+  "fade": {
+    "mode": "transparent",
+    "renderQueue": 3000,
+    "clipCutoff": 0.5,
+    "alphaBlend": [5, 10, 1, 10],
+    "blendProps": ["_SrcBlend", "_DstBlend", "_AlphaSrcBlend", "_AlphaDstBlend"],
+    "renderTypeTag": "RenderType",
+    "renderTypeValue": "Transparent",
+    "disablePasses": ["GBuffer", "DepthOnly", "MotionVectors", "DepthForwardOnly"],
+    "keywordsOn": ["_SURFACE_TYPE_TRANSPARENT", "_BLENDMODE_ALPHA", "_ENABLE_FOG_ON_TRANSPARENT"],
+    "keywordsOff": ["_ALPHATEST_ON"],
+    "colorProp": "_BaseColor",
+    "surfaceProp": "_SurfaceType",
+    "zWriteProp": "_ZWrite",
+    "cutoffProp": "_AlphaCutoff",
+    "cutoffEnableProp": "_AlphaCutoffEnable",
+    "blendModeProp": "_BlendMode",
+    "_note": "mode 'clip' = robust fallback: keywordsOn becomes irrelevant, set keywordsOn to ['_ALPHATEST_ON'] and keywordsOff to [] when switching to clip; the face then vanishes with a hard edge at the moment alpha crosses clipCutoff."
+  },
+  "skull": {
+    "mode": "proxy",
+    "glb": "",
+    "glbScale": [1, 1, 1],
+    "shader": "HDRP/Lit",
+    "colorProp": "_BaseColor",
+    "smoothProp": "_Smoothness",
+    "shaderFallbacks": ["Universal Render Pipeline/Lit", "Standard"],
+    "parts": [
+      { "shape": "sphere",  "pos": [0.000,  0.040, 0.000], "scale": [0.160, 0.190, 0.200], "color": [0.80, 0.77, 0.68], "smoothness": 0.25 },
+      { "shape": "capsule", "pos": [0.000, -0.060, 0.050], "scale": [0.100, 0.045, 0.100], "color": [0.74, 0.71, 0.62], "smoothness": 0.20 },
+      { "shape": "sphere",  "pos": [-0.040, 0.020, 0.085], "scale": [0.048, 0.056, 0.040], "color": [0.02, 0.02, 0.02], "smoothness": 0.05 },
+      { "shape": "sphere",  "pos": [ 0.040, 0.020, 0.085], "scale": [0.048, 0.056, 0.040], "color": [0.02, 0.02, 0.02], "smoothness": 0.05 },
+      { "shape": "sphere",  "pos": [ 0.000, -0.020, 0.095], "scale": [0.022, 0.034, 0.030], "color": [0.03, 0.03, 0.03], "smoothness": 0.05 }
+    ]
+  },
+  "vendors": [
+    {
+      "npcId": "npc_keeper",
+      "enabled": true,
+      "headBone": "mixamorig:Head",
+      "faceSubmesh": 1,
+      "triggerM": 3.0,
+      "peripheralDeg": 25.0,
+      "maxPeripheralDeg": 75.0,
+      "minFacing": 0.2,
+      "useEclipse": true,
+      "usePeripheral": true,
+      "revealSeconds": 1.5,
+      "easeInFrac": 0.3,
+      "easeOutFrac": 0.4,
+      "cooldownSeconds": 45.0,
+      "firstDelaySeconds": 5.0,
+      "faceCenterLocal": [0.007, 0.074, 0.200],
+      "faceForwardLocal": [0.0, 0.0, 1.0],
+      "skullSeatLocal": [0.007, 0.060, 0.090],
+      "skullYawDeg": 0.0,
+      "skullScale": 1.0
+    }
+  ]
+}

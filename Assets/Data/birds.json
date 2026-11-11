@@ -1,0 +1,127 @@
+{
+  "_about": "laneBIRDS v1: far sparse crows circling over one landmark per zone (STAGED DARK, enabled=false). -birds:1 forces on, -birds:0 forces off, -birdstime:<s> time offset, -birdsseed:<n> fixed seed (0 = random per run). Landmark centre is read from the zone's props_layout row (layout+id) so the circle sits above it; 'fallback' is used only if the row is missing. Heights are metres above the landmark row y. Distances in metres. Draw = one dynamic quad mesh, one Furnace/Particle material (premultiplied blend, no shadows, no audio). Cost: CALCULATED, not measured. Revert = apply_birds.py --off. More zones: add a flock row (zone, landmark layout+id).",
+  "enabled": false,
+  "debugLog": false,
+  "atlas": "Birds/crow_atlas.png",
+  "shader": "Furnace/Particle",
+  "atlasCols": 2,
+  "atlasRows": 2,
+  "atlasWidthPx": 512,
+  "atlasHeightPx": 256,
+  "cellInsetPx": 2.0,
+  "cycle": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "glideFrame": 1,
+  "contentAspect": 1.5878,
+  "wingspanMin": 1.4,
+  "wingspanMax": 2.0,
+  "flapHzMin": 1.6,
+  "flapHzMax": 2.6,
+  "bankDeg": 12.0,
+  "headingDt": 0.05,
+  "visibleRadiusM": 140.0,
+  "maxDistanceM": 140.0,
+  "farFadeM": 40.0,
+  "nearHideM": 4.0,
+  "nearFadeM": 8.0,
+  "darkenNearM": 40.0,
+  "darkenFarM": 140.0,
+  "darkenNear": 1.0,
+  "darkenFar": 0.7,
+  "propTex": "_MainTex",
+  "propTint": "_Tint",
+  "propIntensity": "_Intensity",
+  "propExposure": "_ExposureWeight",
+  "propSoft": "_SoftDistance",
+  "propSrc": "_SrcBlend",
+  "propDst": "_DstBlend",
+  "intensity": 1.0,
+  "exposureWeight": 0.0,
+  "softDistanceM": 0.0,
+  "minAlpha": 0.003,
+  "minAspect": 0.1,
+  "tint": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "timeOffsetS": 0.0,
+  "seed": 0,
+  "seedStride": 7919,
+  "flocks": [
+    {
+      "id": "z6_gibbet_crows",
+      "zone": "z6_erlking",
+      "enabled": true,
+      "landmark": {
+        "layout": "props_layout_zone6.json",
+        "id": "wow21_hunter_gibbet",
+        "offset": [
+          0,
+          0,
+          0
+        ],
+        "fallback": [
+          -22.89,
+          -0.319,
+          280.84
+        ]
+      },
+      "countMin": 6,
+      "countMax": 10,
+      "radiusMin": 25.0,
+      "radiusMax": 55.0,
+      "heightMin": 28.0,
+      "heightMax": 45.0,
+      "speedMin": 5.0,
+      "speedMax": 9.0,
+      "ratioMin": 0.85,
+      "ratioMax": 1.0,
+      "wobbleM": 3.0,
+      "wobbleHz": 0.12,
+      "bobM": 1.2,
+      "bobHz": 0.25,
+      "ccwFraction": 0.5,
+      "glideFraction": 0.35
+    },
+    {
+      "id": "z4_palisade_crows",
+      "zone": "z4_grendel",
+      "enabled": true,
+      "landmark": {
+        "layout": "props_layout_grendel.json",
+        "id": "wow21_spear_skull_palisade",
+        "offset": [
+          0,
+          0,
+          0
+        ],
+        "fallback": [
+          24.0,
+          -1.04,
+          156.5
+        ]
+      },
+      "countMin": 5,
+      "countMax": 9,
+      "radiusMin": 25.0,
+      "radiusMax": 50.0,
+      "heightMin": 26.0,
+      "heightMax": 42.0,
+      "speedMin": 5.0,
+      "speedMax": 8.5,
+      "ratioMin": 0.85,
+      "ratioMax": 1.0,
+      "wobbleM": 3.0,
+      "wobbleHz": 0.12,
+      "bobM": 1.2,
+      "bobHz": 0.25,
+      "ccwFraction": 0.5,
+      "glideFraction": 0.35
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "_about": "HUMBABA'S FACE IS WATCHING v1 (pool lane S4, HumbabaWatch.cs, UNPROVEN IN UNITY). enabled false = nothing runs. eyes.faces[].eyes[] = iris socket positions as FRACTIONS of the prop's own renderer bounds (u across, v up, w depth of the eye surface, all measured on the glTF mesh in headless Blender: eyes centred at x -0.017 / +0.050, y 0.379 / 0.380 up of 0.737, surface depth 0.131 / 0.140 of a 0.964 deep box; the face is not centred on the trunk, its centre line is x +0.017). flipX true because glTFast mirrors X on import (if the proof shot shows the irises on the wrong sockets, flip this one value). irisWidthFrac = iris width as a fraction of the box width; maxOffsetFrac = largest offset inside the socket as a fraction of the iris width; maxYawDeg / maxPitchDeg = gaze angle that gives the full offset; standoffFrac = how far in front of the eye surface the quad sits (fraction of box depth). eyes.followSpeed 1/s exponential. heavy: a Hit event by the player on bossId with the heavy flag and at least minDamage health lost. groan: an EXISTING cue (effort_voice) pitched down = placeholder (missing: a real wood groan, see READY.md). branch: sourceProp = an EXISTING scene prop that is cloned (z5_root_log_NW, fallen_pillar_3), scaled to targetLengthM, colliders stripped; telegraphS = ground mark time before the landing; radiusM = mark size, damageRadiusM = hurt radius (Joan only unless hurtBoss); dodge i-frames avoid it; nonLethal keeps Joan at 1 HP minimum; maxPerFight and cooldownS cap it (and the shared SurpriseGate allows one surprise per zone visit when useGate is true). proof.forceAtS = harness only (-s4:1): seconds after boss and Joan exist until a scripted heavy hit.",
+  "enabled": false,
+  "log": true,
+  "useGate": true,
+  "refreshS": 0.5,
+  "zone": "zone5",
+  "gateKey": "humbaba_branch",
+  "bossId": "Humbaba",
+  "eyes": {
+    "enabled": true,
+    "followSpeed": 6,
+    "rangeM": 60,
+    "hideBeyondM": 140,
+    "playerHeadM": 1.6,
+    "idleIntensity": 0.6,
+    "activeIntensity": 1.6,
+    "tint": [1.0, 0.6, 0.2],
+    "texSize": 64,
+    "lobePower": 3,
+    "lobeRadiusFrac": 0.9,
+    "shader": "Furnace/Particle",
+    "fallbackShader": "HDRP/Unlit",
+    "faces": [
+      {
+        "propId": "z5h_humbaba_cedar",
+        "enabled": true,
+        "flipX": true,
+        "boundsChild": "LOD0",
+        "eyes": [
+          { "u": 0.4826, "v": 0.515, "w": 0.636 },
+          { "u": 0.5510, "v": 0.515, "w": 0.645 }
+        ],
+        "irisWidthFrac": 0.018,
+        "irisAspect": 1.0,
+        "standoffFrac": 0.004,
+        "maxOffsetFrac": 0.3,
+        "maxYawDeg": 35,
+        "maxPitchDeg": 30
+      }
+    ]
+  },
+  "heavy": {
+    "needHeavyFlag": true,
+    "minDamage": 0,
+    "chance": 1.0
+  },
+  "groan": {
+    "cue": "effort_voice",
+    "gain": 0.9,
+    "rate": 0.4,
+    "delayS": 0,
+    "shake": "hitHeavy",
+    "shakeMul": 1.0
+  },
+  "branch": {
+    "sourceProp": "z5_root_log_NW",
+    "targetLengthM": 4.0,
+    "telegraphS": 1.2,
+    "radiusM": 2.2,
+    "damageRadiusM": 1.9,
+    "yTolM": 2.0,
+    "leadS": 0.6,
+    "jitterM": 0.8,
+    "startHeightM": 14,
+    "crownOffsetFrac": 0.8,
+    "spinDeg": 200,
+    "damage": 14,
+    "knockM": 2.0,
+    "nonLethal": true,
+    "hurtPlayer": true,
+    "hurtBoss": false,
+    "staggerTicks": 24,
+    "staggerClip": "hit_heavy",
+    "lingerS": 3.0,
+    "sinkS": 1.0,
+    "groundProbeM": 40,
+    "landShake": "hitHeavy",
+    "landShakeMul": 1.5,
+    "maxPerFight": 2,
+    "cooldownS": 8,
+    "decal": {
+      "refMaterial": "WoundDecalRef",
+      "texSize": 128,
+      "ringRadiusFrac": 0.85,
+      "ringWidthFrac": 0.1,
+      "innerFill": 0.35,
+      "drawDistanceM": 120,
+      "depthM": 6,
+      "maxOpacity": 0.9,
+      "tint": [0.03, 0.02, 0.02]
+    }
+  },
+  "proof": {
+    "forceAtS": 6,
+    "poseAtS": 2,
+    "poseProbeM": 40,
+    "poses": [
+      { "name": "left",   "x": 9.3,  "z": 217.5 },
+      { "name": "centre", "x": 2.9,  "z": 223.9 },
+      { "name": "right",  "x": -3.5, "z": 230.3 }
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "_about": "S1 THE GROUND BITE v1 (pool lane S1, STAGED DARK, UNPROVEN IN UNITY). ONE authoring file read by GroundBite.cs; apply_s1.py also compiles `spots` into zones.json spots (ground_bite_<i>) so zone_shot rows can name them. enabled false = nothing runs. Needs burrow_croc.json enabled (the biter is the burrow croc fighter) and surprise_director.json enabled (or the -s1 proof arg). All numbers and names below; no literals in the C#.",
+  "enabled": false,
+  "version": 1,
+  "debugLog": false,
+
+  "zone": {
+    "_about": "the visit box in world metres (Sobek lane, in front of the boss ring which starts at z about 45.7). Entering it (from outside) starts a visit: SurpriseGate.Reset, new seeded spot pick and chance roll. zoneKey is the SurpriseGate zone name.",
+    "zoneKey": "sobek_reach",
+    "enterZFrom": 36.0,
+    "enterZTo": 45.0,
+    "enterXHalf": 3.0
+  },
+
+  "roll": {
+    "_about": "per visit: chance (0..1) that an ambush is armed at all, armDelayS after entering before it can fire, maxPerRun caps ambushes in one game run (0 = no cap), spotsSalt keys the seeded stream.",
+    "chance": 0.7,
+    "armDelayS": 1.5,
+    "maxPerRun": 3,
+    "salt": "s1_ground_bite"
+  },
+
+  "spots": [
+    { "x":  0.0, "z": 40.2 },
+    { "x": -1.0, "z": 38.6 },
+    { "x":  1.1, "z": 39.6 },
+    { "x": -0.6, "z": 41.3 },
+    { "x":  0.9, "z": 42.4 },
+    { "x": -1.1, "z": 43.6 },
+    { "x":  0.3, "z": 44.4 }
+  ],
+  "spotYaw": 0.0,
+  "spotNote": "S1 GROUNDBITE candidate ambush spot (lane x +-1.2, z 38.6..44.4: before the boss ring z 45.7, boss stand 0/53)",
+
+  "croc": {
+    "_about": "the biter is the existing burrow croc fighter (spawn id from burrow_croc.json / zones.json). It must be alive and not engaged, else the ambush does not fire (and the gate is not claimed). Placed at the spot + (rightM, forwardM) in Joan's own frame at the moment of the grab (negative rightM = her shield side, the left arm).",
+    "spawnId": "z2_burrow_croc",
+    "rightM": -0.7,
+    "forwardM": 0.5
+  },
+
+  "trigger": {
+    "_about": "Joan within radiusM (flat) of the spot AND armed, not inside a dodge i-frame window (a well-timed roll over the spot beats it for now: the spot stays armed).",
+    "radiusM": 0.9,
+    "skipIFrames": true
+  },
+
+  "tell": {
+    "_about": "BEFORE: faint ripple ring + a few dust puffs at the spot every intervalS (+- jitterFrac) once Joan is within radiusM of it. Existing BurrowCrocFx particle / decal assets. (No reed prop exists: the reed twitch is listed as missing.)",
+    "enabled": true,
+    "radiusM": 7.0,
+    "intervalS": 1.1,
+    "jitterFrac": 0.4,
+    "ringSizeMul": 0.5,
+    "dustCount": 5,
+    "dustSizeMul": 0.6,
+    "dustSpeedMul": 0.5,
+    "dustSpreadM": 0.3
+  },
+
+  "bite": {
+    "_about": "the clamp: Joan is held (DuelFighter.Stagger for holdS, clip holdClip) while the croc is forced up (BurrowCroc.forceUp) with an eruption burst + double ring. The held-down croc brain is switched off for the window so it cannot add its own bites. missDamage x the croc's DamageScaleNow is taken on a miss (nonLethal keeps 1 hp, like the belly bite). ticksPerSecond = the duel tick rate.",
+    "holdS": 1.3,
+    "ticksPerSecond": 60,
+    "holdClip": "hit_heavy",
+    "freeClip": "hit_light_front",
+    "missClip": "hit_heavy",
+    "missDamage": 18.0,
+    "nonLethal": true,
+    "knockDownOnMiss": false,
+    "missKnock": 2.0,
+    "eruptSizeMul": 1.8,
+    "freeKnock": 1.5
+  },
+
+  "wrench": {
+    "_about": "ONE beat: press ANY of these actions (existing InputMap ids; fallbackKeys = the legacy KeyCode when no rebind, same order) after graceS and before holdS ends to wrench free. strike = attack, dodge = roll key.",
+    "graceS": 0.15,
+    "actions": ["strike", "dodge"],
+    "fallbackKeys": ["Mouse0", "Space"]
+  },
+
+  "after": {
+    "_about": "what the croc does once Joan is free (or after the miss): mode fight = it stays up and fights (the burrow croc: 96 hp, claws only), dive = it sinks (diveDelayS = burrowS) then ZoneRuntime.ForceDisengage puts it home and burrowed again, random = dive with probability diveChance (seeded).",
+    "mode": "random",
+    "diveChance": 0.4,
+    "diveDelayS": 0.9
+  },
+
+  "cues": {
+    "_about": "placeholders from the existing cues.json cue names (CueBus.Play); empty = silent. Real jaw snap / sand burst / croc hiss are missing audio.",
+    "tell": "",
+    "erupt": "hit_heavy",
+    "clamp": "bone_crack",
+    "free": "whoosh_heavy",
+    "miss": "flesh_tear",
+    "gain": 0.3
+  },
+
+  "proof": {
+    "_about": "harness only (compiled out with FRANKEN_NO_HARNESS). Arg `-s1:<n><flags>`: n = spot index forced (forces the gate open, ignores chance / armDelay / maxPerRun / seed), flags: w = auto wrench press at autoWrenchS (free path; without w the miss path runs), d = croc dives after, f = croc fights after (neither = the data mode). `-s1:off` = master off. holdS replaces bite.holdS so stills can catch the clamp. The camera / walk is the proof recipe in READY.md.",
+    "argPrefix": "-s1:",
+    "argOff": "off",
+    "flagWrench": "w",
+    "flagDive": "d",
+    "flagFight": "f",
+    "holdS": 4.0,
+    "autoWrenchS": 2.0
+  }
+}

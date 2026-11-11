@@ -1,0 +1,6 @@
+{
+  "_about": "SURPRISE DIRECTOR v1 (pool lanes S1..). Read by SurpriseGate.cs. enabled false = no surprise fires anywhere (every surprise also has its own json with enabled false). maxPerVisit = surprises allowed per zone visit (a visit starts when Joan enters the zone). seed 0 = a different stream every run; any other number = fixed (for tests). Every surprise lane copies this identical file.",
+  "enabled": false,
+  "maxPerVisit": 1,
+  "seed": 0
+}

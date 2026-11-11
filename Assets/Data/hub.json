@@ -134,7 +134,7 @@
       "spot": "npc_trader",
       "yaw": 90,
       "clip": "Idle",
-      "phaseSeconds": 0.0,
+      "phaseSeconds": 10.28,
       "interact": {
         "kind": "shop",
         "shop": "hub_trade",
@@ -162,7 +162,8 @@
         "clipSources": [],
         "clipName": ""
       },
-      "enabled": true
+      "enabled": true,
+      "_phase_pre_vischar": 0.0
     },
     {
       "id": "npc_keeper",
@@ -171,7 +172,7 @@
       "spot": "npc_keeper",
       "yaw": 270,
       "clip": "Idle",
-      "phaseSeconds": 1.3,
+      "phaseSeconds": 3.93,
       "interact": {
         "kind": "shop",
         "shop": "hub_trade_d",
@@ -191,7 +192,7 @@
         "replaces": "Goblin D Shareyko (camp_goblin.glb, scale 0.74)"
       },
       "runtime": {
-        "glb": "Npc/vendor_c1_apothecary.glb",
+        "glb": "Npc/vendor_c1_apothecary_reveal.glb",
         "sources": [],
         "hideNodes": [],
         "scale": 0.891,
@@ -199,7 +200,8 @@
         "clipSources": [],
         "clipName": ""
       },
-      "enabled": true
+      "enabled": true,
+      "_phase_pre_vischar": 1.3
     },
     {
       "id": "npc_traveller",
@@ -208,7 +210,7 @@
       "spot": "npc_traveller",
       "yaw": 90,
       "clip": "Idle",
-      "phaseSeconds": 2.6,
+      "phaseSeconds": 14.2,
       "interact": {
         "kind": "shop",
         "shop": "hub_trade_a",
@@ -236,7 +238,8 @@
         "clipSources": [],
         "clipName": ""
       },
-      "enabled": true
+      "enabled": true,
+      "_phase_pre_vischar": 2.6
     },
     {
       "id": "npc_stablemaster",
@@ -246,7 +249,7 @@
       "yaw": 90,
       "clip": "Idle",
       "enabled": true,
-      "phaseSeconds": 0.9,
+      "phaseSeconds": 7.85,
       "interact": {
         "kind": "shop",
         "shop": "hub_trade_c",
@@ -273,7 +276,8 @@
         "nativeHeightM": 1.773,
         "scaleNote": "scale = design height / bound native height (1.840 / 1.773)",
         "replaces": "Akai (camp_akai_olive.glb)"
-      }
+      },
+      "_phase_pre_vischar": 0.9
     },
     {
       "id": "npc_bricabrac",
@@ -283,7 +287,7 @@
       "yaw": 270,
       "clip": "Idle",
       "enabled": true,
-      "phaseSeconds": 2.1,
+      "phaseSeconds": 1.5,
       "interact": {
         "kind": "shop",
         "shop": "hub_trade_e",
@@ -304,7 +308,8 @@
         "clipGlb": "",
         "clipSources": [],
         "clipName": "Idle"
-      }
+      },
+      "_phase_pre_vischar": 2.1
     },
     {
       "id": "npc_horse",
@@ -563,7 +568,7 @@
           "yaw": 90,
           "clip": "Idle",
           "enabled": true,
-          "phaseSeconds": 0.0,
+          "phaseSeconds": 11.78,
           "interact": {
             "kind": "shop",
             "shop": "z7_trade_a",
@@ -590,7 +595,8 @@
             "nativeHeightM": 1.773,
             "scaleNote": "scale = design height / bound native height (1.850 / 1.773)",
             "replaces": "Akai (camp_akai_olive.glb)"
-          }
+          },
+          "_phase_pre_vischar": 0.0
         },
         {
           "id": "npc_vendor_2",
@@ -600,7 +606,7 @@
           "yaw": 270,
           "clip": "Idle",
           "enabled": true,
-          "phaseSeconds": 1.3,
+          "phaseSeconds": 5.43,
           "interact": {
             "kind": "shop",
             "shop": "z7_trade_b",
@@ -627,7 +633,8 @@
             "nativeHeightM": 1.773,
             "scaleNote": "scale = design height / bound native height (1.820 / 1.773)",
             "replaces": "Erika (camp_erika_olive.glb)"
-          }
+          },
+          "_phase_pre_vischar": 1.3
         },
         {
           "id": "npc_vendor_3",
@@ -637,7 +644,7 @@
           "yaw": 90,
           "clip": "Idle",
           "enabled": true,
-          "phaseSeconds": 2.6,
+          "phaseSeconds": 15.7,
           "interact": {
             "kind": "shop",
             "shop": "z7_trade_c",
@@ -664,7 +671,8 @@
             "nativeHeightM": 1.773,
             "scaleNote": "scale = design height / bound native height (1.920 / 1.773)",
             "replaces": "Kachujin (camp_kachujin_sombre.glb, scale 0.84)"
-          }
+          },
+          "_phase_pre_vischar": 2.6
         },
         {
           "id": "npc_vendor_5",
@@ -673,7 +681,7 @@
           "spot": "vendor_5",
           "yaw": 270,
           "clip": "Idle",
-          "phaseSeconds": 1.9,
+          "phaseSeconds": 9.35,
           "interact": {
             "kind": "shop",
             "shop": "z7_trade_e",
@@ -695,7 +703,8 @@
             "clipSources": [],
             "clipName": "Idle"
           },
-          "enabled": true
+          "enabled": true,
+          "_phase_pre_vischar": 1.9
         },
         {
           "id": "npc_keeper_z7",
@@ -705,7 +714,7 @@
           "yaw": 270,
           "clip": "Idle",
           "enabled": true,
-          "phaseSeconds": 0.7,
+          "phaseSeconds": 3.0,
           "interact": {
             "kind": "shop",
             "shop": "z7_trade_d",
@@ -732,7 +741,8 @@
             "nativeHeightM": 1.773,
             "scaleNote": "scale = design height / bound native height (1.680 / 1.773)",
             "replaces": "Goblin (camp_goblin.glb, scale 0.74)"
-          }
+          },
+          "_phase_pre_vischar": 0.7
         }
       ]
     }

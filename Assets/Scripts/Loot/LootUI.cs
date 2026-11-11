@@ -185,6 +185,7 @@ public sealed class LootUI : MonoBehaviour
     {
         var T = LootCfg.Get().text; live.Remove(p); near = null; PickupInReach = false;
         WeaponDrop.OnLootCollected(p.itemId);   // WEAPONDROP v1: the dropped weapon for this item goes away with the pickup
+        FakeDeath.OnLoot(p.Anchor);   // FAKEDEATH v1: a dead bandit beside the pillar may grab her ankle (dark by data)
         p.Collect(); bool fresh = LootSave.Add(p.itemId);
         toastItem = p.item; toastName = p.item != null ? p.item.name : LootCfg.Pretty(p.itemId); toastSub = T.acquiredSub; toastAt = Time.unscaledTime;
         Debug.Log("[LootUI] picked up '" + p.itemId + "'" + (fresh ? "" : " (already carried)") + " -> " + LootSave.Path_);

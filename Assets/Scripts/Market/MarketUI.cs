@@ -70,11 +70,11 @@ public sealed class MarketUI : MonoBehaviour
         playerPos = pl.transform.position;
         var A = C.stall.area; area.zMin = A.zMin; area.zMax = A.zMax; area.xHalf = A.xHalf; area.enterPad = A.enterPad; area.leavePad = A.leavePad;
         inArea = PickStall(C) >= 0;   // MARKET2 v1: with stalls[] empty this is exactly area.Update on the main rectangle
-        MarketSafe.NoCombat = C.safe.noCombat && inArea;
+        MarketSafe.NoCombat = C.safe.noCombat && inArea && !TraderKnows.AmbushLive;   // S9
         MarketWorld.StallXZ(stl, out stallX, out stallZ); dist = MarketArea.Dist(playerPos.x, playerPos.z, stallX, stallZ);
 
         InReach = inArea && !Open && dist <= stl.radius && !LootScreen.Open && !RTFinisher.Busy && !GameLoopDriver.Transitioning && !Duel.Frozen && Time.frameCount != LootScreen.ClosedFrame;
-        if (InReach && MarketCfg.AnyDown(kInteract)) OpenUi();
+        if (InReach && (MarketCfg.AnyDown(kInteract) || TraderKnows.ProofPress(stl.id))) { if (!TraderKnows.Intercept(stl.id)) OpenUi(); }   // S9: the impostor takes the press at its stall (dark: Intercept is false)
         else if (Open) TickOpen(C);
     }
 
@@ -96,7 +96,7 @@ public sealed class MarketUI : MonoBehaviour
     void OpenUi()
     {
         EnsureShop(); if (!LootSave.Applied) LootSave.Apply();   // what is worn must be on the wearer before the list is built (same as the equip screen)
-        shop.Open(); Open = true; openFrame = Time.frameCount; openAt = Time.unscaledTime; unfreezeFrame = -1; lastDy = 0; InReach = false;
+        TraderKnows.OnOpen(stl.id); /* S9: greeting + sell-back line, before the stock is built */ shop.Open(); Open = true; openFrame = Time.frameCount; openAt = Time.unscaledTime; unfreezeFrame = -1; lastDy = 0; InReach = false;
         if (!Duel.Frozen) { Duel.Frozen = true; ownFreeze = true; }
     }
     void CloseUi()
@@ -245,6 +245,7 @@ public sealed class MarketUI : MonoBehaviour
             string msg = shop.NoteKey == "boughtStack" || shop.NoteKey == "soldStack" ? PotionCfg.NoteText(shop.NoteKey, shop.NoteItem, shop.NoteCoins) /* POTIONS v1 */ : shop.NoteKey == "bought" ? string.Format(MarketBuyRules.Cur.bought, shop.NoteItem, shop.NoteCoins) : shop.NoteKey == "sold" ? string.Format(T.sold, shop.NoteItem, shop.NoteCoins) : shop.NoteKey == "armed" ? string.Format(shop.BuyTab && MarketBuyRules.Cur.armedBuy.Length > 0 ? MarketBuyRules.Cur.armedBuy : T.armed, shop.NoteItem, shop.NoteCoins) : MarketCfg.Code(shop.NoteKey);
             HudDraw.Text(new Rect(d.x, d.yMax - L.messageSize * ML.detail.msgK, d.width, L.messageSize * ML.detail.msgK), msg, "serif", L.messageSize, TextAnchor.LowerLeft, true, MarketCfg.Col(shop.NoteGood ? C.colors.good : C.colors.bad));
         }
+        else if (TraderKnows.Greeting.Length > 0) HudDraw.Text(new Rect(d.x, d.yMax - L.messageSize * ML.detail.msgK, d.width, L.messageSize * ML.detail.msgK), TraderKnows.Greeting, "serif", L.messageSize, TextAnchor.LowerLeft, true, dim);   // S9: the trader knows (shown in the note line when no note is up)
         // footer: the three hints
         Rect f = R(lay.footer); float w3 = f.width / 3f;
         HudDraw.Text(new Rect(f.x, f.y, w3, f.height), UiStr.Up(MarketBuyRules.Cur.HintMove(T.hintMove)), "serif", L.hintSize, TextAnchor.MiddleLeft, false, dim);

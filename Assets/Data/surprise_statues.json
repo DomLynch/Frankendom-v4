@@ -1,0 +1,35 @@
+{
+ "_about": "laneS5 v1 STATUES THAT AREN'T. Ships DARK (enabled:false). The camp stone lion changes pose only while unseen, a little more each camp visit; saved in surprise_statues_save.json next to the other saves (sandbox dir under -savePath, never the real save while RunMode.RealSaveBlocked). Harness args: -s5:1 / -s5:0, -s5step:N (show step N, no gate, no save), -s5sweep:<seconds per step> (proof clip). A visit = walk into enterRadiusM of campCenter after being beyond leaveRadiusM for leaveSeconds; visit 1 = base pose, then every advanceEveryVisits visits arms ONE step; applied when the statue (bounds grown by frustumMarginM) was outside the camera frustum for unseenSeconds and the camera is >= minDistanceM away and SurpriseGate.TryClaim passes. Steps: towardFrac = how far the yaw turns from the row's own yaw toward lookAt (camp hearth x,z); forwardYawOffsetDeg = the GLB's own forward axis vs +Z (PROOF CALIBRATION: unknown until seen); towardM = metres moved toward lookAt; offsetM = extra world x,y,z; hide = renderers off + plinth stub. Last step = empty plinth.",
+ "enabled": false,
+ "log": true,
+ "zone": "hub_camp",
+ "useGate": true,
+ "gateKey": "s5_statue",
+ "resetOnVisit": false,
+ "saveFile": "surprise_statues_save.json",
+ "seed": 0,
+ "pollSeconds": 0.25,
+ "campCenter": [3.0, 87.5],
+ "enterRadiusM": 30.0,
+ "leaveRadiusM": 45.0,
+ "leaveSeconds": 8.0,
+ "findRadiusM": 60.0,
+ "visibility": { "frustumMarginM": 3.0, "unseenSeconds": 1.5, "minDistanceM": 6.0 },
+ "jitter": { "yawDeg": 1.5, "offsetM": 0.03 },
+ "plinth": { "enabled": true, "radiusFrac": 0.5, "heightFrac": 0.12, "name": "S5_PlinthStub" },
+ "targets": [
+  {
+   "id": "z3h_hub_lion_statue",
+   "lookAt": [3.0, 87.5],
+   "forwardYawOffsetDeg": 0.0,
+   "advanceEveryVisits": 1,
+   "steps": [
+    { "note": "head a few degrees toward the fire", "towardFrac": 0.12, "yawDeg": 0.0, "pitchDeg": 0.0, "rollDeg": 0.0, "towardM": 0.0, "offsetM": [0.0, 0.0, 0.0], "hide": false },
+    { "note": "turned a quarter of the way", "towardFrac": 0.3, "yawDeg": 0.0, "pitchDeg": -0.8, "rollDeg": 0.0, "towardM": 0.05, "offsetM": [0.0, 0.0, 0.0], "hide": false },
+    { "note": "facing the camp, paws shifted", "towardFrac": 0.65, "yawDeg": 0.0, "pitchDeg": -1.5, "rollDeg": 0.0, "towardM": 0.18, "offsetM": [0.0, 0.0, 0.0], "hide": false },
+    { "note": "squarely at the hearth, forward of the plinth mark", "towardFrac": 1.0, "yawDeg": 0.0, "pitchDeg": -2.5, "rollDeg": 0.0, "towardM": 0.4, "offsetM": [0.0, 0.0, 0.0], "hide": false },
+    { "note": "the plinth is empty", "towardFrac": 1.0, "yawDeg": 0.0, "pitchDeg": -2.5, "rollDeg": 0.0, "towardM": 0.4, "offsetM": [0.0, 0.0, 0.0], "hide": true }
+   ]
+  }
+ ]
+}

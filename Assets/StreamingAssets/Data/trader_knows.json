@@ -1,0 +1,787 @@
+{
+  "_about": "S9 THE TRADER WHO KNOWS (pool-laneS9), DARK. Read by Scripts/Surprise/TraderKnows.cs (StreamingAssets first, then Assets/Data). enabled=false = nothing runs. greeting: one line per camp visit per vendor in the shop panel's own message line, from the last death record (trader_deaths.json in the save dir; the game kept no death record before this). A line matches when every field it names matches (killer = creature id of whoever killed Joan, zone = zone id, weapon = item id the killer held, minCount = deaths to that killer in that zone); most matched fields wins, ties by weight with the seeded stream. {killer} {zone} {weapon} {mine} {count} {total} are filled from the names tables (unknown ids print greeting.unknown). sellBack: on the stalls in stallIds the Buy tab also lists the item Joan held in `slot` when she last died, only if she no longer owns it (sources in order; add killerWeapon to also offer what killed her); priceRows gives a market price to items with no market.json row (placeholder balance, Dom to set). impostor: seeded roll once per run (chancePerRun) picks one vendor by impostorWeight; at that stall the interact key spawns the creature (existing prefab) at the vendor and hides the vendor body; the corpse of the real vendor lies behind the stall (corpse.behindM) corpse.delayS after the impostor is dead; Joan leaving the camp restores the vendor. One surprise per zone visit through surprise_director.json (SurpriseGate). proof: harness args -s9:1 greeting with fakeDeath, -s9:2 impostor forced at impostorNpcId, -s9:3 both; the interact key is pressed for you after autoOpenAfterS in reach of the stall.",
+  "enabled": false,
+  "log": true,
+  "ledgerFile": "trader_deaths.json",
+  "greeting": {
+    "enabled": true,
+    "visitResetSeconds": 20.0,
+    "tokKiller": "{killer}",
+    "tokZone": "{zone}",
+    "tokWeapon": "{weapon}",
+    "tokMine": "{mine}",
+    "tokCount": "{count}",
+    "tokTotal": "{total}",
+    "unknown": "something"
+  },
+  "killers": [
+    {
+      "id": "Pitborn",
+      "name": "the Pitborn"
+    },
+    {
+      "id": "Sobek",
+      "name": "Sobek"
+    },
+    {
+      "id": "Grendel",
+      "name": "Grendel"
+    },
+    {
+      "id": "Humbaba",
+      "name": "Humbaba"
+    },
+    {
+      "id": "Erlking",
+      "name": "the Erlking"
+    },
+    {
+      "id": "BanditAssassin",
+      "name": "a cutthroat"
+    },
+    {
+      "id": "BanditMelee",
+      "name": "a bandit"
+    },
+    {
+      "id": "BanditArcher",
+      "name": "an archer"
+    },
+    {
+      "id": "Dracula",
+      "name": "the Count"
+    }
+  ],
+  "zones": [
+    {
+      "id": "pit_yard",
+      "name": "the Pit Yard"
+    },
+    {
+      "id": "sobek_reach",
+      "name": "the Reach"
+    },
+    {
+      "id": "hub_camp",
+      "name": "the camp"
+    },
+    {
+      "id": "grendel",
+      "name": "the Mere"
+    },
+    {
+      "id": "z5_humbaba",
+      "name": "the Petrified Wood"
+    },
+    {
+      "id": "z6_erlking",
+      "name": "the Hunting Ground"
+    },
+    {
+      "id": "z7_market2",
+      "name": "the Caravan Camp"
+    }
+  ],
+  "weapons": [
+    {
+      "id": "knight_sword",
+      "name": "the knight's sword"
+    },
+    {
+      "id": "war_axe",
+      "name": "the war axe"
+    },
+    {
+      "id": "iron_maul",
+      "name": "the iron maul"
+    },
+    {
+      "id": "boar_spear",
+      "name": "the boar spear"
+    },
+    {
+      "id": "pitborn_maul",
+      "name": "the Pitborn's maul"
+    },
+    {
+      "id": "sobek_trident",
+      "name": "the trident"
+    },
+    {
+      "id": "hunting_bow",
+      "name": "the hunting bow"
+    },
+    {
+      "id": "joan_bow",
+      "name": "the bow"
+    },
+    {
+      "id": "bandit_dagger",
+      "name": "a bandit's dagger"
+    },
+    {
+      "id": "bandit_sword",
+      "name": "a bandit's sword"
+    },
+    {
+      "id": "bandit_axe",
+      "name": "a hatchet"
+    }
+  ],
+  "vendors": [
+    {
+      "stallId": "hub_trade",
+      "npcId": "npc_trader",
+      "role": "weaponsmith",
+      "impostorWeight": 1.0,
+      "lines": [
+        {
+          "killer": "",
+          "zone": "grendel",
+          "weapon": "",
+          "minCount": 2,
+          "weight": 1.0,
+          "text": "The bog took you again, girl. Mind your footing."
+        },
+        {
+          "killer": "Grendel",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "Grendel again. A longer blade next time, girl."
+        },
+        {
+          "killer": "Sobek",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "Sobek's teeth leave a mark. I can see it on you."
+        },
+        {
+          "killer": "Humbaba",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "Humbaba's roar carried all the way here. You went quiet after."
+        },
+        {
+          "killer": "Erlking",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "The Erlking keeps what he takes. Do not carry your best blade to him."
+        },
+        {
+          "killer": "Pitborn",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "The Pitborn's maul, was it. I know that sound."
+        },
+        {
+          "killer": "BanditAssassin",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "A cutthroat in the dark. Cheap steel, and it still found you."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 3,
+          "weight": 1.0,
+          "text": "{count} times {killer} has had you. I am keeping count so you do not have to."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 0.5,
+          "text": "{killer} in {zone}. Sit. Spend."
+        }
+      ],
+      "fallback": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "You look like you died recently. Sit. Spend."
+        }
+      ]
+    },
+    {
+      "stallId": "hub_trade_a",
+      "npcId": "npc_traveller",
+      "role": "armourer",
+      "impostorWeight": 1.0,
+      "lines": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 1,
+          "weight": 1.0,
+          "text": "{killer} went through your plate like paper. Let me fix that."
+        },
+        {
+          "killer": "Grendel",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "Grendel's claws, was it. I can see the rents from here."
+        },
+        {
+          "killer": "",
+          "zone": "grendel",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "The Mere is hard on leather. Harder on whoever wears it."
+        },
+        {
+          "killer": "Erlking",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "The Erlking's antlers. No mail turns that, but more of it helps."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 3,
+          "weight": 1.0,
+          "text": "{count} deaths to {killer}. Buy something heavier."
+        }
+      ],
+      "fallback": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "You look like you died recently. Sit. Spend."
+        }
+      ]
+    },
+    {
+      "stallId": "hub_trade_c",
+      "npcId": "npc_stablemaster",
+      "role": "stablemaster",
+      "impostorWeight": 1.0,
+      "lines": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 1,
+          "weight": 1.0,
+          "text": "Even the horses heard about {zone}. They will not go near it."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 2,
+          "weight": 1.0,
+          "text": "{killer} again? The warhorse would have carried you out of it."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 0.5,
+          "text": "You died in {zone}. My animals know the smell on you."
+        }
+      ],
+      "fallback": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "You look like you died recently. Sit. Spend."
+        }
+      ]
+    },
+    {
+      "stallId": "hub_trade_d",
+      "npcId": "npc_keeper",
+      "role": "apothecary",
+      "impostorWeight": 1.0,
+      "lines": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 1,
+          "weight": 1.0,
+          "text": "{killer}. In {zone}. You were not carrying enough of my tonics."
+        },
+        {
+          "killer": "",
+          "zone": "grendel",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "The Mere's fever, or Grendel's claws. Either way, the red bottle."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 0.5,
+          "text": "You smell of {zone}. Drink first, talk after."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 4,
+          "weight": 1.0,
+          "text": "{count} times. I should charge you a standing fee."
+        }
+      ],
+      "fallback": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "You look like you died recently. Sit. Spend."
+        }
+      ]
+    },
+    {
+      "stallId": "hub_trade_e",
+      "npcId": "npc_bricabrac",
+      "role": "bricabrac",
+      "impostorWeight": 1.0,
+      "lines": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 1,
+          "weight": 1.0,
+          "text": "Heard about {zone}. I have just the thing for you. Do not ask what it is."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 0.6,
+          "text": "Dying in {zone}, was it? Everything in here has died at least once."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 2,
+          "weight": 1.0,
+          "text": "{killer} took you. Pity, you were my best customer."
+        }
+      ],
+      "fallback": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "You look like you died recently. Sit. Spend."
+        }
+      ]
+    },
+    {
+      "stallId": "z7_trade_a",
+      "npcId": "npc_vendor_1",
+      "role": "armourer",
+      "impostorWeight": 1.0,
+      "lines": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 1,
+          "weight": 1.0,
+          "text": "{killer} went through your plate like paper. Let me fix that."
+        },
+        {
+          "killer": "Grendel",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "Grendel's claws, was it. I can see the rents from here."
+        },
+        {
+          "killer": "",
+          "zone": "grendel",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "The Mere is hard on leather. Harder on whoever wears it."
+        },
+        {
+          "killer": "Erlking",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "The Erlking's antlers. No mail turns that, but more of it helps."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 3,
+          "weight": 1.0,
+          "text": "{count} deaths to {killer}. Buy something heavier."
+        }
+      ],
+      "fallback": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "You look like you died recently. Sit. Spend."
+        }
+      ]
+    },
+    {
+      "stallId": "z7_trade_b",
+      "npcId": "npc_vendor_2",
+      "role": "weaponsmith",
+      "impostorWeight": 1.0,
+      "lines": [
+        {
+          "killer": "",
+          "zone": "grendel",
+          "weapon": "",
+          "minCount": 2,
+          "weight": 1.0,
+          "text": "The bog took you again, girl. Mind your footing."
+        },
+        {
+          "killer": "Grendel",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "Grendel again. A longer blade next time, girl."
+        },
+        {
+          "killer": "Sobek",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "Sobek's teeth leave a mark. I can see it on you."
+        },
+        {
+          "killer": "Humbaba",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "Humbaba's roar carried all the way here. You went quiet after."
+        },
+        {
+          "killer": "Erlking",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "The Erlking keeps what he takes. Do not carry your best blade to him."
+        },
+        {
+          "killer": "Pitborn",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "The Pitborn's maul, was it. I know that sound."
+        },
+        {
+          "killer": "BanditAssassin",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "A cutthroat in the dark. Cheap steel, and it still found you."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 3,
+          "weight": 1.0,
+          "text": "{count} times {killer} has had you. I am keeping count so you do not have to."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 0.5,
+          "text": "{killer} in {zone}. Sit. Spend."
+        }
+      ],
+      "fallback": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "You look like you died recently. Sit. Spend."
+        }
+      ]
+    },
+    {
+      "stallId": "z7_trade_c",
+      "npcId": "npc_vendor_3",
+      "role": "stablemaster",
+      "impostorWeight": 1.0,
+      "lines": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 1,
+          "weight": 1.0,
+          "text": "Even the horses heard about {zone}. They will not go near it."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 2,
+          "weight": 1.0,
+          "text": "{killer} again? The warhorse would have carried you out of it."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 0.5,
+          "text": "You died in {zone}. My animals know the smell on you."
+        }
+      ],
+      "fallback": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "You look like you died recently. Sit. Spend."
+        }
+      ]
+    },
+    {
+      "stallId": "z7_trade_d",
+      "npcId": "npc_keeper_z7",
+      "role": "apothecary",
+      "impostorWeight": 1.0,
+      "lines": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 1,
+          "weight": 1.0,
+          "text": "{killer}. In {zone}. You were not carrying enough of my tonics."
+        },
+        {
+          "killer": "",
+          "zone": "grendel",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "The Mere's fever, or Grendel's claws. Either way, the red bottle."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 0.5,
+          "text": "You smell of {zone}. Drink first, talk after."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 4,
+          "weight": 1.0,
+          "text": "{count} times. I should charge you a standing fee."
+        }
+      ],
+      "fallback": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "You look like you died recently. Sit. Spend."
+        }
+      ]
+    },
+    {
+      "stallId": "z7_trade_e",
+      "npcId": "npc_vendor_5",
+      "role": "bricabrac",
+      "impostorWeight": 1.0,
+      "lines": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 1,
+          "weight": 1.0,
+          "text": "Heard about {zone}. I have just the thing for you. Do not ask what it is."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 0.6,
+          "text": "Dying in {zone}, was it? Everything in here has died at least once."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 2,
+          "weight": 1.0,
+          "text": "{killer} took you. Pity, you were my best customer."
+        }
+      ],
+      "fallback": [
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "You look like you died recently. Sit. Spend."
+        }
+      ]
+    }
+  ],
+  "sellBack": {
+    "enabled": true,
+    "requireNotOwned": true,
+    "slot": "mainHand",
+    "stallIds": [
+      "hub_trade",
+      "z7_trade_b"
+    ],
+    "sources": [
+      "playerWeapon"
+    ],
+    "priceRows": [
+      {
+        "item": "knight_sword",
+        "buyValue": 30
+      },
+      {
+        "item": "war_axe",
+        "buyValue": 45
+      },
+      {
+        "item": "iron_maul",
+        "buyValue": 55
+      },
+      {
+        "item": "boar_spear",
+        "buyValue": 25
+      },
+      {
+        "item": "pitborn_maul",
+        "buyValue": 60
+      },
+      {
+        "item": "sobek_trident",
+        "buyValue": 60
+      },
+      {
+        "item": "hunting_bow",
+        "buyValue": 17
+      }
+    ]
+  },
+  "impostor": {
+    "enabled": true,
+    "chancePerRun": 0.1,
+    "maxPerRun": 1,
+    "gateKey": "s9_impostor",
+    "creature": "BanditAssassin",
+    "ladderRow": "bandit_assassin_z4",
+    "spawnId": "s9_impostor",
+    "hpMul": 1.0,
+    "damageMul": 0.7021,
+    "difficulty": 6,
+    "aggro": 30.0,
+    "leash": 40.0,
+    "restoreOnLeave": true,
+    "despawnOnPlayerDeath": true,
+    "corpse": {
+      "delayS": 2.0,
+      "behindM": 1.5,
+      "waitForImpostor": true,
+      "clipGlb": "Npc/camp_arissa.glb",
+      "clipName": "Death",
+      "alias": "s9dead",
+      "idleAlias": "idle",
+      "probeBone": "mixamorig:Hips",
+      "probeS": 0.6,
+      "minMoveM": 0.05,
+      "fallbackEuler": [
+        -90.0,
+        0.0,
+        0.0
+      ],
+      "fallbackLiftM": 0.12
+    }
+  },
+  "proof": {
+    "fakeDeath": {
+      "zone": "grendel",
+      "killer": "Grendel",
+      "move": "light",
+      "killerWeapon": "grendel_claws",
+      "playerWeapon": "pitborn_maul",
+      "utc": "2026-11-10T00:00:00Z",
+      "count": 3
+    },
+    "stallId": "hub_trade",
+    "impostorNpcId": "npc_trader",
+    "autoOpenAfterS": 9.0
+  }
+}

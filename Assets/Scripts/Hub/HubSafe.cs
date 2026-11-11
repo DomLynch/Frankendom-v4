@@ -27,7 +27,7 @@ public static class HubSafe
     public static bool PlayerInside()
     {
         if (!On) return false;
-        var p = GameLoop.Player; if (p == null) return false;
+        if (TraderKnows.AmbushLive) return false; /* S9: the camp is not safe while the impostor lives */ var p = GameLoop.Player; if (p == null) return false;
         var t = p.transform.position; if (HubArea.Contains(t.x, t.z, A.zMin, A.zMax, A.xHalf)) return true;
         for (int i = 0; i < X.Length; i++) if (HubArea.Contains(t.x, t.z, X[i].zMin, X[i].zMax, X[i].xHalf)) return true;   // MARKET2 v1: nothing in X unless a camp is enabled
         return false;
