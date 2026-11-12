@@ -77,6 +77,6 @@
 "spaceMps": 2.2,
 "mountSinkM": 0.07, "nearPadM": 6.0, "lookAheadM": 5.0, "clearanceM": 1.4, "steerEveryS": 0.1, "fanStepDeg": 20.0, "fanMaxDeg": 140.0, "boundsMarginM": 8.0, "groundCheckStepM": 2.5 },
   "move": { "rigScanS": 0.25, "rigRescanS": 1.0, "walkAccelMps2": 4.0, "walkDecelMps2": 5.0, "turnStepMpsPerDeg": 0.012, "standMps": 0.05, "settleMps": 0.4, "gaitBlendS": 0.3, "hysteresisMps": 0.4, "reach": 0.985, "bodyDropRateMps": 12.0, "maxDropM": 0.45, "animFarM": 70.0, "boundsPadM": 0.6, "resumeGapS": 1.5 },
-  "target": { "enabled": true, "lockCamera": false, "rangeM": 9.0, "coneDeg": 80.0, "keepRangeMul": 1.3, "keepConeMul": 1.4, "retargetMarginM": 1.5 },
+  "target": { "enabled": false, "lockCamera": false, "rangeM": 9.0, "coneDeg": 80.0, "keepRangeMul": 1.3, "keepConeMul": 1.4, "retargetMarginM": 1.5 },
   "hud": { "enabled": true, "refHeightPx": 1080.0, "markerPx": 12.0, "barWidthPx": 90.0, "barHeightPx": 8.0, "headUpM": 0.6, "markerColor": [1.0, 0.85, 0.3, 1.0], "barColor": [0.8, 0.15, 0.1, 0.95] }
 }
