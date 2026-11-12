@@ -25,7 +25,7 @@ public static class Code2Cfg
         public bool enabled = false, log = true; public SnapRow[] rows = new SnapRow[0];
         public SnapRow Find(string zone) { if (rows == null) return null; for (int i = 0; i < rows.Length; i++) { var r = rows[i]; if (r != null && r.enabled && r.zone == zone) return r; } return null; }
     }
-    [Serializable] public class BanditGroundBlock { public bool enabled = false, log = true, capsuleFix = false; public string idPrefix = "bandit_"; public float checkEveryS = 0.25f, maxAboveM = 0.6f, rayDownM = 40f, returnUpM = 0.05f, sideGapM = 0.15f; public int confirmChecks = 2; }   // BANDITGROUND v1
+    [Serializable] public class BanditGroundBlock { public bool enabled = false, log = true, capsuleFix = false, enemyNoCollide = false; public string idPrefix = "bandit_"; public float checkEveryS = 0.25f, maxAboveM = 0.6f, rayDownM = 40f, returnUpM = 0.05f, sideGapM = 0.15f; public int confirmChecks = 2, confirmChecksOnFighter = 2; }   // BANDITGROUND v1
     [Serializable] public class BossBarBlock { public bool enabled = false; public float lingerS = 4f; }   // BOSSBAR v1
     [Serializable] public class File { public bool enabled = true; public TetherBlock tether = new TetherBlock(); public RigCloneBlock rigClone = new RigCloneBlock(); public SnapBlock npcSnap = new SnapBlock(); public BanditGroundBlock banditGround = new BanditGroundBlock(); public BossBarBlock bossBar = new BossBarBlock(); }
 

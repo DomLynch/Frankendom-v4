@@ -8,10 +8,30 @@ public sealed partial class ZoneRuntime
     float nextBanditGround; readonly System.Collections.Generic.Dictionary<DuelFighter, int> bgCount = new System.Collections.Generic.Dictionary<DuelFighter, int>();
     static bool BgWanted(Code2Cfg.BanditGroundBlock B, Live l) { return l != null && l.row != null && (B.idPrefix.Length == 0 || l.row.id.StartsWith(B.idPrefix, System.StringComparison.Ordinal)); }
 
+    // ENEMYNOCOLLIDE v1: no two non-Joan fighters collide (they cannot stand on each other); Joan collides with all. One IgnoreCollision pass per new pair.
+    readonly System.Collections.Generic.Dictionary<DuelFighter, System.Collections.Generic.HashSet<DuelFighter>> encPairs = new System.Collections.Generic.Dictionary<DuelFighter, System.Collections.Generic.HashSet<DuelFighter>>();
+    readonly System.Collections.Generic.List<DuelFighter> encTmp = new System.Collections.Generic.List<DuelFighter>();
+    void EnemyNoCollideStep(Code2Cfg.BanditGroundBlock B)
+    {
+        encTmp.Clear();
+        foreach (var l in live.Values) { if (l == null || l.df == null || l.go == null || l.df == GameLoop.Player) continue; encTmp.Add(l.df); }
+        for (int i = 0; i < encTmp.Count; i++)
+            for (int j = i + 1; j < encTmp.Count; j++)
+            {
+                System.Collections.Generic.HashSet<DuelFighter> seen;
+                if (!encPairs.TryGetValue(encTmp[i], out seen)) { seen = new System.Collections.Generic.HashSet<DuelFighter>(); encPairs[encTmp[i]] = seen; }
+                if (!seen.Add(encTmp[j])) continue;
+                var ca = encTmp[i].GetComponentsInChildren<Collider>(true); var cb = encTmp[j].GetComponentsInChildren<Collider>(true); int n = 0;
+                foreach (var x in ca) { if (x == null || x.isTrigger) continue; foreach (var y in cb) { if (y == null || y.isTrigger) continue; Physics.IgnoreCollision(x, y, true); n++; } }
+                if (B.log) Debug.Log("[code2] enemyNoCollide: " + encTmp[i].name + " x " + encTmp[j].name + " (" + n + " collider pairs)");
+            }
+    }
+
     void BanditGroundStep()
     {
         var C = Code2Cfg.Get(); if (C == null || !C.banditGround.enabled) return; var B = C.banditGround;
         if (Time.unscaledTime < nextBanditGround) return; nextBanditGround = Time.unscaledTime + Mathf.Max(0.05f, B.checkEveryS);
+        if (B.enemyNoCollide) EnemyNoCollideStep(B);   // ENEMYNOCOLLIDE v1
         foreach (var l in live.Values)
         {
             if (l == null || l.df == null || l.killed || l.df.Dead || l.go == null || !l.go.activeInHierarchy || !BgWanted(B, l)) continue;
@@ -28,7 +48,7 @@ public sealed partial class ZoneRuntime
             }
             int n; bgCount.TryGetValue(l.df, out n);
             if (float.IsNaN(gy) || p.y - gy <= B.maxAboveM) { if (n != 0) bgCount[l.df] = 0; continue; }
-            if (++n < Mathf.Max(1, B.confirmChecks)) { bgCount[l.df] = n; continue; }
+            if (++n < Mathf.Max(1, under != null ? B.confirmChecksOnFighter : B.confirmChecks)) {   /* PITFLOAT: ON a fighter = quick, no fighter under = slow (possible leap) */ bgCount[l.df] = n; continue; }
             bgCount[l.df] = 0; Vector3 to = new Vector3(p.x, gy + B.returnUpM, p.z);
             if (under != null)   // step off sideways so it does not land inside the one below
             {
