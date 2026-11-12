@@ -2088,3 +2088,7 @@ OpenTrident-tex4k 2026-11-12 20:55 DONE: all 11 sets in kits_out\opentrident_for
 [2026-11-12 21:59] OpenTrident-clipfix4 DONE: hell_imp claw_swipe_R follow-through re-authored (right hand vs left shin 0.3 mm to 252 mm, clips GLB, LOD0 and master patched identically, backup _backup_pre_clipfix4); angel_inquisitor idle/get_up stretch traced to skin-weight and twist-bone seams, no clip changed, documented in README and champions.json.
 
 - 2026-11-12 22:00 OpenTrident-inqweights CLAIM: angel_inquisitor skin-weight stretch fix (opentrident_for_armagedom\champions\angel_inquisitor, GLB weights only). Not touching Joan, Assets or Builds.
+
+- 2026-11-12 23:19 OpenTrident-inqweights DONE: angel_inquisitor skin weights re-optimised (LOD0/1/2 weights only, backup _backup_pre_weightfix). Idle p99 1.636 / p01 0.642, get_up p99 1.888 / p01 0.608 (were 2.129/0.548 and 2.416/0.542); all 39 clips improved, 13 of 39 meet 2.0/0.6, others improved but over. Floor unchanged, get_up stretch note removed. Master not changed (different vertex order).
+
+OpenTrident-quatfix CLAIM 2026-11-12 23:23 : normalising/repairing non-unit and zero rotation quaternions in champion animation GLBs (clips, lod, source) under kits_out opentrident_for_armagedom champions, backups in _backup_pre_quatfix per champion. No game Assets or Builds touched.
