@@ -1128,8 +1128,8 @@
         "by": "laneNPC15PLACE",
         "ladderStep": "z1 ring 6 (arrive 8, core 2)",
         "anchor": [
-          7.5,
-          20.0
+          8.1,
+          19.2
         ],
         "minFightDistM": 0.0
       }

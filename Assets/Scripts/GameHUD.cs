@@ -22,13 +22,19 @@ public class GameHUD : MonoBehaviour
     bool camArg; string fpsTxt; float fpsTxtFor = -1f; string[] lblK = new string[2], lblS = new string[2], lblT = new string[2]; static readonly string[] nums = new string[128];   // UIDATA_A v1: caches, OnGUI allocates nothing per frame
     static string Num(int n) { if (n < 0 || n >= nums.Length) return n.ToString(); return nums[n] ?? (nums[n] = n.ToString()); }
     // HUDBUG v1 (zones): with zones on the scene enemy is an inactive template and every enemy is a clone, so enemy/ef (set by BuildSlice) never moved. Zones off: untouched.
-    Health zEnemyHp; DuelFighter zEnemyDf; float zPlayerLast = -1f, zEnemyLast = -1f; DuelFighter zEnemyLogged;
+    Health zEnemyHp; DuelFighter zEnemyDf; float zPlayerLast = -1f, zEnemyLast = -1f, zBarLastEngaged = -1f; DuelFighter zEnemyLogged;
     void ZonesBind()
     {
         if (!ZoneRuntime.Owns || pf == null && player == null) return;   // steer mode detaches the HUD (pf and player null): leave it
         var e = GameLoop.Enemy; if (e != zEnemyDf) { zEnemyDf = e; if (ZoneData.Get().twoFight.resetBarOnSwitch) lagE = new CombatHudBars.Lag(); /* TWOFIGHT v1: a switch from a full bar to a hurt one drew the whole difference as a fresh damage trail */ zEnemyHp = e != null ? e.GetComponent<Health>() : null; }
         ef = zEnemyDf; enemy = zEnemyHp;
         if (GameLoop.Player != null && GameLoop.Player != pf) { pf = GameLoop.Player; player = pf.GetComponent<Health>(); }
+        // dev2 BOSSBAR v1 (code2.json bossBar): the enemy bar is drawn only while that fighter is engaged with Joan, plus lingerS after the last engaged moment (death card, hand-over); never for a fighter that stands idle / in the safe camp.
+        var bb = Code2Cfg.Get(); if (bb != null && bb.bossBar.enabled && ef != null)
+        {
+            if (!ef.Dead && ef.opponent != null && ef.opponent == GameLoop.Player) zBarLastEngaged = Time.unscaledTime;
+            if (zBarLastEngaged < 0f || Time.unscaledTime - zBarLastEngaged > bb.bossBar.lingerS) { ef = null; enemy = null; }
+        }
         ZonesHpLog();
     }
     // exact -zones proof: one log line per change of the HUD's two health numbers

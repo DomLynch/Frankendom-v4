@@ -127,7 +127,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         if (phase == Phase.Play || phase == Phase.CoverOut)
         {
             if (player.Dead) { BeginDown(); }
-            else { Engagement(); KillWatch(); TetherStep(); /* CODE2 v1 */ TickRegen(); if (phase == Phase.Play) CheckGates(); }
+            else { Engagement(); KillWatch(); TetherStep(); /* CODE2 v1 */ BanditGroundStep(); /* BANDITGROUND v1 */ TickRegen(); if (phase == Phase.Play) CheckGates(); }
         }
         if (ZoneEndScreen.Active) EndScreenStep();   // ENDALPHA v1
         if (Time.unscaledTime >= nextPoll) { nextPoll = Time.unscaledTime + T.pollSeconds; Poll(); }
@@ -609,6 +609,18 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     static Color ColorOf(float[] c) { return c != null && c.Length >= 3 ? new Color(c[0], c[1], c[2], 1f) : Color.white; }
     void Warn(string key, string msg) { if (warned.Add(key)) Debug.LogWarning(msg); }
     /// <summary>[x, z] spot to a world point; ground height from a raycast down from just above the reference point, else the reference height.</summary>
+    /// <summary>dev2: like SpotPos but the lowest surface within 12 m below the probe that is not part of a fighter (a character collider, a prop on top of the ground, rubble): the ground itself.</summary>
+    static Vector3 SpotPosGround(ZSpot s, Vector3 refPos)
+    {
+        if (s == null || s.pos == null || s.pos.Length < 2) return refPos;
+        Vector3 o = new Vector3(s.pos[0], refPos.y + 3f, s.pos[1]); float low = float.NaN;
+        foreach (var h in Physics.RaycastAll(o, Vector3.down, 12f, ~0, QueryTriggerInteraction.Ignore))
+        {
+            if (h.collider == null || h.collider.GetComponentInParent<DuelFighter>() != null) continue;
+            if (float.IsNaN(low) || h.point.y < low) low = h.point.y;
+        }
+        return new Vector3(s.pos[0], float.IsNaN(low) ? refPos.y : low, s.pos[1]);
+    }
     static Vector3 SpotPos(ZSpot s, Vector3 refPos)
     {
         if (s == null || s.pos == null || s.pos.Length < 2) return refPos;

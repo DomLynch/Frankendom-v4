@@ -167,7 +167,8 @@ public sealed class ZoneCamScene : MonoBehaviour
         foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
         {
             if (f == null || f.name.IndexOf('#') < 0 || f.IsPlayer) continue; var p = f.transform.position; float gy = float.NaN;
-            RaycastHit h; if (Physics.Raycast(p + Vector3.up * 4f, Vector3.down, out h, 40f, ~0, QueryTriggerInteraction.Ignore)) gy = h.point.y;
+            var hits = Physics.RaycastAll(p + Vector3.up * 0.3f, Vector3.down, 40f, ~0, QueryTriggerInteraction.Ignore); float bestD = 1e9f;   // origin just above the feet, own colliders skipped: the first foreign surface below
+            foreach (var h in hits) { if (h.collider == null || h.collider.transform.IsChildOf(f.transform)) continue; if (h.distance < bestD) { bestD = h.distance; gy = h.point.y; } }
             Debug.Log("[BanditY] " + f.name + " t " + Time.realtimeSinceStartup.ToString("F0") + " pos " + p.x.ToString("F1") + "," + p.y.ToString("F2") + "," + p.z.ToString("F1") + " ground " + (float.IsNaN(gy) ? "none" : gy.ToString("F2")) + " dy " + (float.IsNaN(gy) ? "n/a" : (p.y - gy).ToString("F2")) + " state " + f.state + " dead " + f.Dead + " active " + f.gameObject.activeInHierarchy);
         }
     }

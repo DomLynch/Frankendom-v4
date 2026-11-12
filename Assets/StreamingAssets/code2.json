@@ -21,5 +21,14 @@
       { "zone": "hub_camp",   "enabled": true, "yOffset": -0.05, "lowestHitBandM": 0.0, "maxDropM": 0.2 },
       { "zone": "z7_market2", "enabled": true, "yOffset": -0.05, "lowestHitBandM": 0.0, "maxDropM": 0.2 }
     ]
+  },
+  "banditGround": {
+    "_about": "BANDITGROUND v1 (ZoneRuntime.BanditGround.cs). capsuleFix: ball capsule (height < 2 x radius) raised so its bottom is at the root (root 0.12-0.22 m high before, 0.08 like the bosses after). maxAboveM > 0: a bandit this far above the nearest non-fighter surface for confirmChecks checks is put down beside the fighter it stood on. idPrefix '' = every zone spawn.",
+    "enabled": true, "log": true, "capsuleFix": true, "idPrefix": "",
+    "checkEveryS": 0.25, "maxAboveM": 0.6, "rayDownM": 40.0, "returnUpM": 0.05, "sideGapM": 0.15, "confirmChecks": 6
+  },
+  "bossBar": {
+    "_about": "BOSSBAR v1 (GameHUD.ZonesBind): the enemy health bar and name are drawn only while that fighter is engaged with Joan, plus lingerS seconds after the last engaged moment (kill card, hand-over). enabled false = the old behaviour (bar follows GameLoop.Enemy always).",
+    "enabled": true, "lingerS": 4.0
   }
 }

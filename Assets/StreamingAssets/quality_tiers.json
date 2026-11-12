@@ -32,7 +32,7 @@
     { "name": "ultra2k", "label": "Ultra Native", "level": "Ultra", "suggest": false, "note": "native render scale 100 = the window's own resolution (2560x1600 here; 1920x1080 and 2560x1440 for other players), SSGI off, fog quality 1. SHIPPED DEFAULT since v108c (Dom 2026-11-06). Measured about 34 ms at 2560x1600 in the 15:08 ladder (one run), target 30 fps; smaller windows cost less (unmeasured)", "minVramMb": 14000, "targetFps": 30,
       "flags": { "clouds": true, "volumetricFog": true, "ssgi": false, "ssr": true, "ssao": true, "contactShadows": true, "shadows": true,
                  "ssgiQuality": 2, "ssgiFullRes": true, "ssrQuality": 1, "fogQuality": 1, "ssaoQuality": 1, "bloomQuality": 1,
-                 "cascades": 2, "shadowDistance": 40, "renderScale": 100, "motionBlur": 0.05, "asyncCompute": 0, "particleScale": 1.0, "lodBiasMul": 1.0,
+                 "cascades": 2, "shadowDistance": 40, "renderScale": 67, "upscaler": "fsr2", "motionBlur": 0.05, "asyncCompute": 0, "particleScale": 1.0, "lodBiasMul": 1.0,
                  "hideMHHead": true, "bounceFill": false, "fogLook": false } }
   ]
 }
