@@ -26,7 +26,7 @@ public class RagdollRig : MonoBehaviour
 
     static readonly List<RagdollRig> All = new List<RagdollRig>();
     static int live;
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { All.Clear(); live = 0; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { All.Clear(); live = 0; cloneHeals = 0; }
 
     public DuelFighter df; public Fighter fighter;
     public readonly List<Part> parts = new List<Part>();
@@ -68,13 +68,20 @@ public class RagdollRig : MonoBehaviour
     // KILLBUG v1: a CLONE (ZoneRuntime Instantiate of the inactive scene template that RagdollDeath.PrebuildAll already built) copies the serialized 'Built = true' but not 'parts' (Part is not
     // Serializable) nor the sampler ring: Built with zero parts, so the first death threw ArgumentOutOfRangeException at ZonePart() parts[0]. Heal = drop the cloned joints, forget the build, rebuild in Start
     // (still the rest pose: before the first Animator update). Never true for a rig that was built in place, so zones off is unchanged.
-    bool cloneRebuild;
+    bool cloneRebuild; static int cloneHeals;   // CODE2 v1: heals this run (log cap)
     bool Heal()
     {
         if (!Built || parts.Count > 0) return false;
         var js = GetComponentsInChildren<ConfigurableJoint>(true);
         for (int i = 0; i < js.Length; i++) if (js[i] != null) DestroyImmediate(js[i]);
         Built = false; BuildFailed = false; ringP = null; ringQ = null; ringHead = -1; ringCount = 0;
+        var c2 = Code2Cfg.Get();   // CODE2 v1 (code2.json rigClone)
+        if (c2 != null && c2.rigClone.enabled)
+        {
+            Converted = false; Frozen = false; SimTime = 0f; slowTicks = 0; finCuts.Clear(); RestShifted = false; RestHingeMaxDeg = 0f;
+            if (++cloneHeals <= Mathf.Max(0, c2.rigClone.logMax)) Debug.Log("[killbug] " + name + ": cloned RagdollRig had no parts (Built copied, lists not); rig rebuilt (heal " + cloneHeals + (cloneHeals == c2.rigClone.logMax ? ", further heals not logged" : "") + ")");
+            return true;
+        }
         Debug.Log("[killbug] " + name + ": cloned RagdollRig had no parts (Built copied, lists not); rig rebuilt");
         return true;
     }

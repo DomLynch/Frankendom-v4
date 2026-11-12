@@ -127,7 +127,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         if (phase == Phase.Play || phase == Phase.CoverOut)
         {
             if (player.Dead) { BeginDown(); }
-            else { Engagement(); KillWatch(); TickRegen(); if (phase == Phase.Play) CheckGates(); }
+            else { Engagement(); KillWatch(); TetherStep(); /* CODE2 v1 */ TickRegen(); if (phase == Phase.Play) CheckGates(); }
         }
         if (ZoneEndScreen.Active) EndScreenStep();   // ENDALPHA v1
         if (Time.unscaledTime >= nextPoll) { nextPoll = Time.unscaledTime + T.pollSeconds; Poll(); }
@@ -300,6 +300,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     }
     float nextStaleLog;   // OPPSTALE v1
     int EngagedCount() { int n = 0; foreach (var l in live.Values) if (l.engaged && !l.killed && l.df != null && !l.df.Dead) n++; return n; }
+    int CapCount() { if (!T.twoFight.givenUpNoSlot) return EngagedCount(); int n = 0; foreach (var l in live.Values) if (l.engaged && !l.killed && l.df != null && !l.df.Dead && !(l.chase != null && l.chase.GivingUpNow)) n++; return n; }   // CODE4 v1
     void Engagement()
     {
         if (phase != Phase.Play) return;
@@ -318,11 +319,13 @@ public sealed partial class ZoneRuntime : MonoBehaviour
             if (l.df == null || l.killed) continue;
             if (l.engaged)
             {
-                if (l.chase != null) { if (l.chase.Done) { if (l.chase.foreign) Vanish(l); else Disengage(l); } continue; }   // CHASE v1: gives up by gap / time, walks home, then resets
+                // dev2 (item 1, Humbaba never engaged): a creature still "engaged" more than max(leash, 45 m) from Joan (left behind in an earlier zone, its chase never ended) kept counting against engage.maxEngaged, so the next boss could not engage. Drop it.
+                if (Flat(pp, l.df.transform.position) > Mathf.Max(l.row.leash, 45f)) { if (l.chase != null && l.chase.foreign) Vanish(l); else Disengage(l); continue; }
+                if (l.chase != null) { if (l.chase.Done) { if (l.chase.foreign) Vanish(l); else Disengage(l); } else if (T.twoFight.vanishGaveUpOffZone && l.chase.GivingUpNow && zone != null && l.zoneId != zone.id) Vanish(l); /* CODE4 v1 */ continue; }   // CHASE v1: gives up by gap / time, walks home, then resets
                 if (Flat(pp, l.home) > l.row.leash) Disengage(l);   // leash: it forgets you, resets to full and walks home (teleport)
                 continue;
             }
-            if (Time.unscaledTime < arriveGraceUntil || EngagedCount() >= T.engage.maxEngaged) continue;
+            if (Time.unscaledTime < arriveGraceUntil || CapCount() >= T.engage.maxEngaged) continue;
             if (Flat(pp, l.df.transform.position) <= l.row.aggro) Engage(l);
         }
         if (T.engage.maxEngaged > 1 && EngagedCount() > 1) Retarget(false);   // MULTI v1 (Poll)
@@ -451,6 +454,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     bool RespawnStep(float dt)
     {
         var R = RespCfg; if (R == null || !R.enabled || reviveGaveUp) return false;
+        phaseT += dt;   // dev2 (item 4a): the Down phase clock only ran in the old DownStep path, so the in-world respawn waited on phaseT < hold forever (Joan never stood up)
         float hold = Mathf.Max(0.1f, R.delayS), cs = Mathf.Max(0.05f, R.coverS);   // hc:ok divide-by-zero guards; the values are hp.respawn.delayS / coverS
         if (!reviveAsked)
         {

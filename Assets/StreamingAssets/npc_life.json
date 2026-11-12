@@ -1039,6 +1039,143 @@
    "_clones": "npc_stablemaster"
   },
   {
+   "id": "npc_vendor_5",
+   "ambient": [
+    {
+     "clip": "counter_work",
+     "file": "Npc/life/erika/counter_work.glb",
+     "weight": 3,
+     "minIntervalS": 15,
+     "maxIntervalS": 40,
+     "near": false,
+     "durationS": 13.567,
+     "blendInS": 0.47,
+     "blendOutS": 0.47,
+     "cooldownS": 41.0
+    },
+    {
+     "clip": "look_around_a",
+     "file": "Npc/life/erika/look_around_a.glb",
+     "weight": 2,
+     "minIntervalS": 12,
+     "maxIntervalS": 30,
+     "near": false,
+     "durationS": 6.333,
+     "blendInS": 0.41,
+     "blendOutS": 0.41,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "look_scan_c",
+     "file": "Npc/life/erika/look_scan_c.glb",
+     "weight": 2,
+     "minIntervalS": 12,
+     "maxIntervalS": 30,
+     "near": false,
+     "durationS": 11.267,
+     "blendInS": 0.35,
+     "blendOutS": 0.35,
+     "cooldownS": 34.0
+    },
+    {
+     "clip": "weight_shift_a",
+     "file": "Npc/life/erika/weight_shift_a.glb",
+     "weight": 2,
+     "minIntervalS": 8,
+     "maxIntervalS": 18,
+     "near": false,
+     "durationS": 8.767,
+     "blendInS": 0.4,
+     "blendOutS": 0.4,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "weight_shift_c",
+     "file": "Npc/life/erika/weight_shift_c.glb",
+     "weight": 2,
+     "minIntervalS": 8,
+     "maxIntervalS": 18,
+     "near": false,
+     "durationS": 5.1,
+     "blendInS": 0.39,
+     "blendOutS": 0.39,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "bored_fidget",
+     "file": "Npc/life/erika/bored_fidget.glb",
+     "weight": 1,
+     "minIntervalS": 40,
+     "maxIntervalS": 90,
+     "near": false,
+     "durationS": 10.667,
+     "blendInS": 0.43,
+     "blendOutS": 0.43,
+     "cooldownS": 32.0
+    },
+    {
+     "clip": "shrug",
+     "file": "Npc/life/erika/shrug.glb",
+     "weight": 1,
+     "minIntervalS": 25,
+     "maxIntervalS": 60,
+     "near": false,
+     "durationS": 2.0,
+     "blendInS": 0.42,
+     "blendOutS": 0.42,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "talk_a",
+     "file": "Npc/life/erika/talk_a.glb",
+     "weight": 3,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 5.933,
+     "blendInS": 0.6,
+     "blendOutS": 0.6,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "talk_b",
+     "file": "Npc/life/erika/talk_b.glb",
+     "weight": 2,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 3.933,
+     "blendInS": 0.47,
+     "blendOutS": 0.47,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "gesture_happy",
+     "file": "Npc/life/erika/gesture_happy.glb",
+     "weight": 2,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 2.933,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    },
+    {
+     "clip": "nod_yes",
+     "file": "Npc/life/erika/nod_yes.glb",
+     "weight": 1,
+     "minIntervalS": 6,
+     "maxIntervalS": 14,
+     "near": true,
+     "durationS": 2.6,
+     "blendInS": 0.38,
+     "blendOutS": 0.38,
+     "cooldownS": 30.0
+    }
+   ]
+  },
+  {
    "id": "npc_keeper_z7",
    "ambient": [
     {

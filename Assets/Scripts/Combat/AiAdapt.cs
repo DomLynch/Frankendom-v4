@@ -127,6 +127,7 @@ public class AiAdapt
             if (brain.diff == null) { if (r.bot) pick = r; }
             else if (!r.bot && brain.diff.id >= r.minDiff && brain.diff.id <= r.maxDiff) pick = r;
         }
+        Debug.Log("[AiAdapt] " + brain.name + " key " + key + " -> profile " + (pick == null ? "(none)" : pick.id));   // dev2: which profile row won, per fighter (first match wins)
         return pick == null ? null : new AiAdapt(brain, C, pick);
     }
 

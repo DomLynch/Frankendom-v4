@@ -351,6 +351,23 @@
       ],
       "scale": 0.01,
       "note": "15 m rule: Grendel/Humbaba seam row hidden (baked)"
+    },
+    {
+      "id": "wow21_lion_shrine_altar",
+      "op": "move",
+      "zone": "hub_camp",
+      "enabled": true,
+      "pos": [
+        -15.079,
+        -1.0,
+        83.59
+      ],
+      "rotEuler": [],
+      "scale": 0,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "clearance_note": "8a: terrain -1.06, row sat 0.32 m high"
     }
   ]
 }

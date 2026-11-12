@@ -654,8 +654,10 @@
         "poise": 6,
         "weight": 4
       },
-      "dropFrom": [],
-      "dropChance": 0.0,
+      "dropFrom": [
+        "Humbaba"
+      ],
+      "dropChance": 1.0,
       "materials": {
         "*": {
           "smoothness": 0.5,
@@ -1490,8 +1492,10 @@
         "poise": 0,
         "weight": 0
       },
-      "dropFrom": [],
-      "dropChance": 0.0,
+      "dropFrom": [
+        "Grendel"
+      ],
+      "dropChance": 1.0,
       "notes": "laneMONSTER3 (Grendel): Dom: Grendel dual-wields two curved bone swords (his model, mirrored for the left hand, 3,500 tris, source textures baked at full 4K: base colour, roughness, normal). glb '' = the real model has not arrived: while empty the weapon block says unarmed true (WeaponSwap hides the template maul, the swing trail rides tipBone + tipOffsetM, the hands show his claws); to switch the real blade in, set glb to Gear/<file>.glb and unarmed to false (grip node = origin, +Y along the blade, nodes tip / grip). reachMul computed from the stand-offs of sw_probe.py (real sword, tip within 0.15 m of Joan's chest): hit limit = move reach x reachMul + 1.395 m must cover each stand-off + 0.1 m. LEFT blade: slot offHand, socket WeaponSocket_L: the runtime loads only mainHand weapons and a shield offHand today (code gap, MANIFEST section 'what cannot work').",
       "weapon": {
         "id": "grendel_blade_R",
@@ -1643,8 +1647,10 @@
         "poise": 0,
         "weight": 9
       },
-      "dropFrom": [],
-      "dropChance": 0.0,
+      "dropFrom": [
+        "Erlking"
+      ],
+      "dropChance": 1.0,
       "notes": "laneMONSTER6 (Erlking): Dom's designed antler great-axe (primitive axe 3d model.glb), 5000 tris, FULL 4K base / roughness / normal (his source albedo untouched, metallic 0), 1.80 m, grip node = origin (right hand, middle wrap), grip_off = the left hand (butt wrap, 0.74 m behind), tip = crescent edge, +Y = haft toward the big crescent. twoHanded true = TwoHandIK holds grip_off with the left hand. Swap by replacing the glb + data\\erlking_weapon.json.",
       "weapon": {
         "id": "erlking_axe",

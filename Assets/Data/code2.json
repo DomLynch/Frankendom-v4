@@ -1,0 +1,25 @@
+{
+  "_about": "CODE2 v1 (laneCODE2, Code2Cfg.cs). Three separate blocks, each with its own enabled. File missing or enabled=false = all three do nothing.",
+  "enabled": true,
+  "tether": {
+    "_about": "ZoneRuntime.TetherStep. Boss out of its arena (flat distance to centre > radius, or y < minY) is put back at its home spot. z6: ring centre (0,282), play_areas disc 15 + lane |x|<=6; the 10 Nov fall happened at z 298.6 (16.6 m), so 15.5 keeps the last point on the ring ground. Other bosses ship disabled: turn on after a look.",
+    "enabled": true, "log": true, "healOnReturn": false, "checkEveryS": 0.25, "returnUpM": 0.05, "logEveryS": 5.0,
+    "rows": [
+      { "id": "z6_erlking", "creature": "", "enabled": true,  "centre": [0.0, 282.0], "radius": 15.5, "minY": -999.0 },
+      { "id": "z5_humbaba", "creature": "", "enabled": false, "centre": [0.0, 209.0], "radius": 15.5, "minY": -999.0 },
+      { "id": "z4_grendel", "creature": "", "enabled": false, "centre": [0.0, 132.0], "radius": 20.0, "minY": -999.0 }
+    ]
+  },
+  "rigClone": {
+    "_about": "RagdollRig.Heal on a clone (ZoneRuntime Instantiate copies the serialized Built flag but not the part lists): also reset Converted / Frozen / SimTime, log only the first logMax heals (was one line per spawn, 182 in the logs). The rebuild itself already worked (KILLBUG v1).",
+    "enabled": true, "logMax": 3
+  },
+  "npcSnap": {
+    "_about": "HubNpcs.Place: the spawn ray lands on the ground collider top (y 0) while the visible terrain is -0.05 (hub, z7). yOffset lowers the feet, lowestHitBandM > 0 first takes the lowest hit within that band below the first hit, maxDropM caps the total lowering. Rows by zone id (HubData.zone).",
+    "enabled": true, "log": true,
+    "rows": [
+      { "zone": "hub_camp",   "enabled": true, "yOffset": -0.05, "lowestHitBandM": 0.0, "maxDropM": 0.2 },
+      { "zone": "z7_market2", "enabled": true, "yOffset": -0.05, "lowestHitBandM": 0.0, "maxDropM": 0.2 }
+    ]
+  }
+}

@@ -690,7 +690,8 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             bool guarding = state == FState.Guard;
             bool runNow = run && !guarding;   // no running while the guard is up
             string clip;
-            string pose = guardSide == 1 ? "guard_left" : guardSide == 2 ? "guard_right" : guardSide == 3 ? "guard_up" : "guard_idle";
+            string pose = DirectionalGuard.PoseOf(guardSide);   // GUARDLOW v1: side id -> pose state from controls.json guard.sides[].pose (was a hard-coded id map)
+            if (guarding && pose != "guard_idle" && f.anim != null && !f.anim.HasState(0, Animator.StringToHash(pose))) pose = "guard_idle";   // a character whose controller has no clip for this side (e.g. guard_low not built yet) holds the centre guard instead of freezing on the last pose
             if (!moving) clip = guarding ? "guard_idle" : "idle";
             else
             {

@@ -214,11 +214,7 @@
       ],
       "enabled": true,
       "mix": 1.0,
-      "tint": [
-        0.95,
-        0.8,
-        0.62
-      ],
+      "tint": [1.1, 0.93, 0.72],
       "smoothMin": 0.0,
       "smoothMax": 0.3,
       "normalScale": -1,
@@ -447,11 +443,7 @@
       ],
       "enabled": true,
       "mix": 1.0,
-      "tint": [
-        1.7,
-        1.45,
-        1.1
-      ],
+      "tint": [1.15, 0.98, 0.75],
       "smoothMin": 0.0,
       "smoothMax": 0.3,
       "normalScale": -1,

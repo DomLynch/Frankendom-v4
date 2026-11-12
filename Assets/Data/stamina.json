@@ -242,7 +242,7 @@
   "block": {
     "baseLight": 12,
     "baseHeavy": 24,
-    "staminaDamageMul": 0.3,
+    "staminaDamageMul": 0.15,
     "chipMin": 0.08
   },
   "guardBreak": {

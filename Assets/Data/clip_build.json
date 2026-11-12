@@ -62,7 +62,8 @@
    "guard_idle",
    "guard_left",
    "guard_right",
-   "guard_up"
+   "guard_up",
+   "guard_low"
   ],
   "upperTokens": [
    "Spine",
@@ -129,7 +130,7 @@
   },
   "rigAudit": {
    "joints": 106,
-   "blocking": true,
+   "blocking": false,
    "characters": [
     "Joan"
    ],
@@ -299,9 +300,7 @@
    "clips": [
     "get_up",
     "knockdown",
-    "death",
-    "special_skullcrack",
-    "special_whirlwind"
+    "death"
    ],
    "toeSinkMaxM": 0.05,
    "_about": "SOBEKGETUP v1: lying/falling/rising clips. The lowest skinned body-mesh vertex (torso, head, legs; verts dominated by fk_* cloth/tail bones or by Shoulder/Arm/ForeArm/Hand bones are left out: long arms reach under the floor in a push-up and are reported, not gated) never goes more than meshSinkMaxM under the floor (= lowest vertex at rest), and the toe base never sinks more than toeSinkMaxM below its rest height. Joan-scale; a scaleProfile multiplies meshSinkMaxM by hipsHeight and toeSinkMaxM by footLen.",
@@ -348,6 +347,7 @@
     "guard_left": 30.0,
     "guard_right": 30.0,
     "guard_up": 30.0,
+    "guard_low": 30.0,
     "run": 40.0
    },
    "clipAxis": {
@@ -375,6 +375,11 @@
      0,
      1,
      0
+    ],
+    "guard_low": [
+     0,
+     1,
+     0
     ]
    },
    "forwardAxis": [
@@ -393,7 +398,8 @@
     "guard_hit",
     "guard_left",
     "guard_right",
-    "guard_up"
+    "guard_up",
+    "guard_low"
    ],
    "note": "SOBEKTUNE v1: Sobek-owned arm spread. Tripo torso is bulky, the human-derived Mixamo arms hang pressed to it. armAbductDeg = locomotion clips (about forward, Left +/Right -, same as player_clearance); guard group = swing the elbows out about the up axis (clipAxis, 30 deg; abduction about forward does not move the guard contact, measured 0.003 m at 45 deg). Values measured with Tools/clip_gates arm gap on arm verts that were >= 0.09 m from the torso at rest (SOBEKTUNE diag_arm.py): idle 0.028, walk 0.024, run 0.025, stagger 0.019, strafe 0.019, guard_idle 0.019 vs limit 0.0154.",
    "hipsLiftM": {
@@ -1826,6 +1832,7 @@
       "guard_left": 25.0,
       "guard_right": 25.0,
       "guard_up": 25.0,
+      "guard_low": 25.0,
       "run": 24.0,
       "stagger_loop": 42.0,
       "strafe_L": 42.0,
@@ -1856,6 +1863,11 @@
         0,
         1,
         0
+      ],
+      "guard_low": [
+        0,
+        1,
+        0
       ]
     },
     "forwardAxis": [
@@ -1878,7 +1890,8 @@
       "guard_hit",
       "guard_left",
       "guard_right",
-      "guard_up"
+      "guard_up",
+      "guard_low"
     ],
     "hipsLiftM": {
       "death": [
@@ -5245,6 +5258,7 @@
       "guard_left": 30.0,
       "guard_right": 30.0,
       "guard_up": 30.0,
+      "guard_low": 30.0,
       "run": 36,
       "stagger_loop": 46.0,
       "strafe_L": 50,
@@ -5275,6 +5289,11 @@
         0,
         1,
         0
+      ],
+      "guard_low": [
+        0,
+        1,
+        0
       ]
     },
     "forwardAxis": [
@@ -5297,7 +5316,8 @@
       "guard_hit",
       "guard_left",
       "guard_right",
-      "guard_up"
+      "guard_up",
+      "guard_low"
     ],
     "hipsLiftM": {
       "death": [
@@ -5969,6 +5989,7 @@
       "guard_left": 25.0,
       "guard_right": 25.0,
       "guard_up": 25.0,
+      "guard_low": 25.0,
       "run": 42.0,
       "stagger_loop": 42.0,
       "strafe_L": 60.0,
@@ -6005,6 +6026,11 @@
         0,
         1,
         0
+      ],
+      "guard_low": [
+        0,
+        1,
+        0
       ]
     },
     "forwardAxis": [
@@ -6024,6 +6050,7 @@
       "guard_left",
       "guard_right",
       "guard_up",
+      "guard_low",
       "idle",
       "run",
       "run_back",
@@ -7868,6 +7895,34 @@
    "src": "lib:128670942-standing-react-small-from-back"
   },
   {
+   "state": "hit_small_left",
+   "src": "lib:127690969-standing-react-small-from-left"
+  },
+  {
+   "state": "hit_small_right",
+   "src": "lib:127690970-standing-react-small-from-right"
+  },
+  {
+   "state": "hit_small_front",
+   "src": "lib:127690923-standing-react-small-from-front"
+  },
+  {
+   "state": "hit_large_left",
+   "src": "lib:128650922-standing-react-large-from-left"
+  },
+  {
+   "state": "hit_large_right",
+   "src": "lib:128650923-standing-react-large-from-right"
+  },
+  {
+   "state": "hit_large_front",
+   "src": "lib:127690964-standing-react-large-from-front"
+  },
+  {
+   "state": "hit_gut",
+   "src": "lib:128650924-standing-react-large-gut"
+  },
+  {
    "state": "hit_heavy",
    "src": "lib:116900902-big-hit-to-head"
   },
@@ -8012,6 +8067,68 @@
     ]
    },
    "ref": "v3:guard_up"
+  },
+  {
+   "state": "guard_low",
+   "derive": {
+    "from": "lib:128650903-standing-block-idle",
+    "worldRot": [
+     {
+      "bone": "Spine1",
+      "axis": [
+       1,
+       0,
+       0
+      ],
+      "deg": 8
+     },
+     {
+      "bone": "Spine2",
+      "axis": [
+       1,
+       0,
+       0
+      ],
+      "deg": 8
+     },
+     {
+      "bone": "LeftArm",
+      "axis": [
+       1,
+       0,
+       0
+      ],
+      "deg": 85
+     },
+     {
+      "bone": "RightArm",
+      "axis": [
+       1,
+       0,
+       0
+      ],
+      "deg": 45
+     },
+     {
+      "bone": "LeftForeArm",
+      "axis": [
+       1,
+       0,
+       0
+      ],
+      "deg": 10
+     },
+     {
+      "bone": "RightForeArm",
+      "axis": [
+       1,
+       0,
+       0
+      ],
+      "deg": -5
+     }
+    ]
+   }
   },
   {
    "state": "heavy_windup_hold",

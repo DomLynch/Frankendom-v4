@@ -52,7 +52,7 @@ using UnityEngine;
 [Serializable] public class ZCrossing { public ZCover cover = new ZCover(); public bool allowWhileEngaged = false; public float preloadDistance = 14f; public bool freePassage = false; /* ALPHAFLOW v1 */ }
 
 // TWOFIGHT v1 (laneTWOFIGHT): zones.json "twoFight" = the switches of the two-enemy rules (all rows in data; defaults here = the shipped rows)
-[Serializable] public class ZTwoFight { public bool skipGivingUp = true, healTarget = true, noEngageInFinisher = true, killerExempt = true, safeZoneGiveUp = true, resetBarOnSwitch = true, clearStaleOpponent = false; public float staleMaxM = 0f; }   /* OPPSTALE v1 */
+[Serializable] public class ZTwoFight { public bool skipGivingUp = true, healTarget = true, noEngageInFinisher = true, killerExempt = true, safeZoneGiveUp = true, resetBarOnSwitch = true, clearStaleOpponent = false, givenUpNoSlot = false, vanishGaveUpOffZone = false; public float staleMaxM = 0f; }   /* CODE4 v1 */   /* OPPSTALE v1 */
 [Serializable] public class ZoneTable
 {
     public bool enabled = false; public int version = 1; public float pollSeconds = 0.5f;

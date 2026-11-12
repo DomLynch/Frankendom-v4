@@ -862,7 +862,7 @@
     "propNearM": 8.0,
     "acceptMarginM": 0.3
   },
-  "zones": [
+  "zones": [ {"id": "sobek_reach", "short": "z2", "boss": {"spawn": "z2_sobek", "creature": "Sobek", "ladderRow": "sobek"}, "_note": "dev2: runtime Gate() reads id + boss; with the hk gate rule (boss killed record) the z2_a group stays asleep until Sobek has actually died"},  {"id": "pit_yard", "short": "z1", "boss": {"spawn": "z1_pitborn", "creature": "Pitborn", "ladderRow": "pitborn"}, "_note": "dev2 12 Nov: runtime Gate() only reads id + boss; without this row the z1_a group never woke after Pitborn died (aggro stayed 0.5)"}, 
     {
       "id": "grendel",
       "short": "z4",
@@ -1145,9 +1145,6 @@
         },
         {
           "type": "NpcCrocWarrior"
-        },
-        {
-          "type": "NpcEmbalmerCultist"
         }
       ],
       "needsGate": true,

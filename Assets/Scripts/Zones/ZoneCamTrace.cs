@@ -33,11 +33,14 @@ using UnityEngine;
 [Serializable] public class CtStep
 {
     public string id = "", kind = "", zone = "", spot = "", name = ""; public float[] pos = new float[0]; public bool run = true;
-    public float seconds, timeoutS = 60f, arriveM = 1.5f, untilGapM; public int untilEngaged; public string[] revive = new string[0];
+    public float seconds, timeoutS = 60f, arriveM = 1.5f, untilGapM; public int untilEngaged; public bool cycle; public string[] revive = new string[0];
+    public string startZone = "", startSpot = "", boss = ""; public float killAfter, killWaitS = 120f, gapS = 1.5f; public int count = 1;   // CODE5 v1: startZone/startSpot = begin at a zone spot (copy save); boss+killAfter = kill that spawn N s after it engages; kind forceDeath: count deaths of Joan
+    public string stall = "", action = "", item = "";   // CLOSE5B v1: kind trade (stall id of market.json, action sell|buy, item gear id, '' = first sellable / buyable line), kind equip (item, '' = last picked up / bought; action unequip), kind pickup (item, '' = nearest)
 }
 [Serializable] public class CtScene
 {
     public bool enabled = true, quit = true; public float globalTimeoutS = 240f, startWaitS = 90f, hpFloorFrac = 0.5f, approachGapM = 2.2f, attackGapM = 2.6f, strikeIntervalS = 0.55f, staminaMinFrac = 0.2f; public int readyExtraFrames = 30;
+    public float stuckS = 60f, reviveWaitS = 40f; public bool evtLog = true; public string startZone = "", startSpot = "";   // CODE5 v1: STUCK watchdog (0 = off), forceDeath revive wait, [CamScene-EVT] lines, scene start spot
     public CtStep[] steps = new CtStep[0];
 }
 [Serializable] public class CtCfg { public bool enabled = true; public CtCsv csv = new CtCsv(); public CtFrames frames = new CtFrames(); public CtPass passRule = new CtPass(); public CtScene scene = new CtScene(); }
@@ -100,7 +103,7 @@ public sealed class ZoneCamTrace : MonoBehaviour
     void V(StringBuilder s, Vector3 v, int d) { F(s, v.x, d); s.Append(','); F(s, v.y, d); s.Append(','); F(s, v.z, d); }
     static float Flat(Vector3 a, Vector3 b) { a.y = 0f; b.y = 0f; return (a - b).magnitude; }
     string Nm(UnityEngine.Object o) { if (o == null) return "-"; string n; if (!names.TryGetValue(o, out n)) { n = o.name.Replace(",", "_").Replace(" (Clone)", "").Replace("(Clone)", ""); names[o] = n; } return n; }
-    static string Zone()
+    public static string Zone()
     {
         var zr = ZoneRuntime.Inst; if (zr == null) return "-";
         if (!zoneFieldTried) { zoneFieldTried = true; try { zoneField = typeof(ZoneRuntime).GetField("zone", BindingFlags.Instance | BindingFlags.NonPublic); } catch (Exception) { } }

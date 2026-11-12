@@ -19,7 +19,7 @@ public static class ControlsTable
         public string strikeFire = "release"; public float holdHeavyMs = 220f, heavyGraceMs = 100f, heavyHoldMsInCounterWindow = 80f; public bool useCounterHeavyHold = false;
         public string noSlideDir = "stab"; public Sector[] sectors = new Sector[0]; public DirMap[] map = new DirMap[0];
     }
-    [Serializable] public class GuardSide { public string name = ""; public int id = 0; public float deg = 0f, halfWidthDeg = 45f; public string[] aliases = new string[0]; }
+    [Serializable] public class GuardSide { public string name = ""; public int id = 0; public float deg = 0f, halfWidthDeg = 45f; public string[] aliases = new string[0]; public string pose = ""; /* GUARDLOW v1: Animator state of this side (controls.json guard.sides[].pose); "" = the legacy id map in DirectionalGuard.PoseOf */ }
     [Serializable] public class GuardMatch { public string attack = ""; public string[] guards = new string[0]; }
     [Serializable] public class EaseRow { public string cls = "light"; public float bonusMs = 0f; }
     [Serializable] public class GuardCfg

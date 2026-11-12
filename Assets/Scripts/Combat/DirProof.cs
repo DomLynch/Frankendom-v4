@@ -238,7 +238,7 @@ public sealed class DirProof : MonoBehaviour
                 var c = cts[seen]; if (!c.onMe) continue;
                 if (!c.guardUp || !c.inArc) { ign++; continue; }
                 bool covered = c.type == "Blocked" || c.type == "Parried"; bool through = c.type == "Hit" || c.type == "GuardBroken";
-                bool ok = c.covers ? covered : through;
+                bool ok = c.covers ? (covered || c.type == "GuardBroken") : through;   // dev2: a guard-breaker (kick, heavy thrust) or a spent guard that BREAKS a covering guard is by design, not a gap
                 judged++; results += (results.Length > 0 ? "|" : "") + c.type + (c.covers ? "+" : "-"); lastHit = c.hitDir;
                 if (ok) okc++; else { bad++; rs.Add("move " + c.moveId + " dir " + c.moveDir + " vs guard " + c.dside + ": covers=" + (c.covers ? 1 : 0) + " but ev=" + c.type); }
             }

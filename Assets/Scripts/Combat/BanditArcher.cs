@@ -160,6 +160,9 @@ public sealed class BanditArcher : MonoBehaviour
                 string bossId = null; foreach (var zr in k.zones) if (zr != null && zr.id == g.zone && zr.boss != null) bossId = zr.boss.creature;
                 if (string.IsNullOrEmpty(bossId)) continue;
                 bool bossAlive = false; foreach (var f in all) if (f != null && !f.Dead && f.CharacterId == bossId) { bossAlive = true; break; }
+                // dev2: 'boss not loaded' used to count as 'boss gone' (z4-z6 groups woke at boot, the z2 group met Djoan before Sobek). The gate now opens only while the boss's kill record shows a pending respawn.
+                string bossSpawn = null; foreach (var zr in k.zones) if (zr != null && zr.id == g.zone && zr.boss != null) bossSpawn = zr.boss.spawn;
+                if (!bossAlive && !string.IsNullOrEmpty(bossSpawn)) { var brec = ZoneSave.Rec(g.zone, bossSpawn); bool killedPending = brec != null && brec.respawnAtMs > ZoneCore.NowMs(); if (!killedPending) bossAlive = true; }
                 var zone = ZoneData.Zone(g.zone); if (zone == null) continue;
                 for (int i = 0; i < g.members.Length; i++)
                 {

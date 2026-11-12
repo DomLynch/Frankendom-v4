@@ -15,20 +15,6 @@ AvatarMask:
     m_Weight: 0
   - m_Path: Armature/root/mixamorig:Hips
     m_Weight: 0
-  - m_Path: Armature/root/mixamorig:Hips/fk_skirt_b
-    m_Weight: 0
-  - m_Path: Armature/root/mixamorig:Hips/fk_skirt_b/fk_cape_01
-    m_Weight: 0
-  - m_Path: Armature/root/mixamorig:Hips/fk_skirt_b/fk_cape_01/fk_cape_02
-    m_Weight: 0
-  - m_Path: Armature/root/mixamorig:Hips/fk_skirt_b/fk_cape_01/fk_cape_02/fk_cape_03
-    m_Weight: 0
-  - m_Path: Armature/root/mixamorig:Hips/fk_skirt_b/fk_cape_01/fk_cape_02/fk_cape_03/fk_hair_back_1
-    m_Weight: 0
-  - m_Path: Armature/root/mixamorig:Hips/fk_skirt_b/fk_cape_01/fk_cape_02/fk_cape_03/fk_hair_back_1/fk_hair_back_2
-    m_Weight: 0
-  - m_Path: Armature/root/mixamorig:Hips/fk_skirt_b/fk_cape_01/fk_cape_02/fk_cape_03/fk_hair_back_1/fk_hair_back_2/fk_hair_back_3
-    m_Weight: 0
   - m_Path: Armature/root/mixamorig:Hips/mixamorig:LeftUpLeg
     m_Weight: 0
   - m_Path: Armature/root/mixamorig:Hips/mixamorig:LeftUpLeg/mixamorig:LeftLeg

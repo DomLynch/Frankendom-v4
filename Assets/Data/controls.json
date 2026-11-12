@@ -51,11 +51,12 @@
     "snap": "latch",
     "deadBandDeg": 15.0,
     "centreName": "centre",
-    "centreAliases": [ "straight", "thrust", "low", "none" ],
+    "centreAliases": [ "straight", "thrust", "none" ],
     "sides": [
-      { "name": "top",   "id": 3, "deg": 0.0,   "halfWidthDeg": 50.0, "aliases": [ "overhead", "up" ] },
-      { "name": "left",  "id": 1, "deg": -90.0, "halfWidthDeg": 90.0, "aliases": [] },
-      { "name": "right", "id": 2, "deg": 90.0,  "halfWidthDeg": 90.0, "aliases": [] }
+      { "name": "low",   "id": 4, "deg": 180.0, "halfWidthDeg": 45.0, "aliases": [ "down" ], "pose": "guard_low" },
+      { "name": "top",   "id": 3, "deg": 0.0,   "halfWidthDeg": 50.0, "aliases": [ "overhead", "up" ], "pose": "guard_up" },
+      { "name": "left",  "id": 1, "deg": -90.0, "halfWidthDeg": 90.0, "aliases": [], "pose": "guard_left" },
+      { "name": "right", "id": 2, "deg": 90.0,  "halfWidthDeg": 90.0, "aliases": [], "pose": "guard_right" }
     ],
     "match": [
       { "attack": "right",    "guards": [ "left" ] },

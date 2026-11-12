@@ -75,7 +75,7 @@ public static class MenuSettings
     }
 
     // ---------------- apply ----------------
-    public static void ApplyAll() { ApplyAudio(); ApplyGameplay(); ApplyDisplay(true); }
+    public static void ApplyAll() { ApplyAudio(); ApplyGameplay(); ApplyDisplay(true); if (!MenuCfg.Harness) Debug.Log("[MenuSettings] applied res " + Screen.width + "x" + Screen.height + " vsync " + QualitySettings.vSyncCount + " cap " + Application.targetFrameRate + " master " + AudioListener.volume.ToString("F2") + " (saved res " + S.resW + "x" + S.resH + ", saved vsync " + S.vsync + ", saved cap " + S.frameCap + ")"); }   // dev2: proof line for the settings check (item 6b), not released yet
 
     public static void ApplyAudio()
     {

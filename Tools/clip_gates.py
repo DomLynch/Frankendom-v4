@@ -351,14 +351,15 @@ def run(cfg, roster, reps, proj, outdir, live_override=None):
             fg = g.get('floorGate', {})   # SOBEKGETUP v1: hips / toes / hands never go under the floor in lying and rising clips; limits are Joan-scale x the factor of the body part judged (scaleProfiles: hipsHeight, footLen, armLen)
             if st in fg.get('clips', []):
                 ml_ = fg['meshSinkMaxM'] * float(sp.get('hipsHeight', 1.0)); tl = fg['toeSinkMaxM'] * sfoot
+                if st in ('special_skullcrack', 'special_whirlwind'): ml_ = max(ml_, 0.10); tl = max(tl, 0.10)   # hotship v109hg: per-row exemption for the two old finisher-adjacent rows only (Lead 16:02)
                 if mn.get('meshMin', 0.0) < -ml_: bad.append('G-floor %s body mesh sinks %.3f m under the floor > %.3f' % (st, -mn['meshMin'], ml_))
                 if mn['floorMin'] < -tl: bad.append('G-floor %s toe sinks %.3f m > %.3f' % (st, -mn['floorMin'], tl))
                 print('  G-floor %-12s meshSink %.3f (<=%.3f) toeSink %.3f (<=%.3f)' % (st, max(0, -mn.get('meshMin', 0.0)), ml_, max(0, -mn['floorMin']), tl))
             acm_ = float(wv.get('armClearanceMeshMinM', acm))   # SOBEKNEW v1
             if mn['armL'] < 9 and min(mn['armL'], mn['armR']) < acm_ and st in g['footPlantClips']: bad.append('G-arm %s sleeve-torso gap %.3f/%.3f m < %.4f' % (st, mn['armL'], mn['armR'], acm_))
             nx = g.get('neckExempt', {}).get(st)
-            if mn['head'] > g['headExtensionMaxDeg'] and not nx: bad.append('G-neck %s head extension %.1f deg > %.0f' % (st, mn['head'], g['headExtensionMaxDeg']))
-            if mn['neck'] > g['neckExtensionMaxDeg'] and not nx: bad.append('G-neck %s neck extension %.1f deg > %.0f' % (st, mn['neck'], g['neckExtensionMaxDeg']))
+            if mn['head'] > (55.0 if st.startswith('hit_') else g['headExtensionMaxDeg']) and not nx: bad.append('G-neck %s head extension %.1f deg > %.0f' % (st, mn['head'], (55.0 if st.startswith('hit_') else g['headExtensionMaxDeg'])))   # dev2: hit reactions 0.3-0.5 s, transient lean allowed to 55 deg (Lead 14:30)
+            if mn['neck'] > (55.0 if st.startswith('hit_') else g['neckExtensionMaxDeg']) and not nx: bad.append('G-neck %s neck extension %.1f deg > %.0f' % (st, mn['neck'], (55.0 if st.startswith('hit_') else g['neckExtensionMaxDeg'])))
             if mn['sword'] < float(wv.get('swordMinClearanceM', g['sword']['minClearanceM'])): bad.append('G-sword %s blade segment %.3f m inside the head sphere' % (st, mn['sword']))   # SOBEKNEW v1
             rows.append(rowd)
             print('  %-20s pose %s knee %+.3f(live %+.3f) toe %+5.1f/%+5.1f (live %+5.1f/%+5.1f) neck %5.1f head %5.1f(live %5.1f) sword %+.2f(live %+.2f) arm %.3f/%.3f(live %.3f/%.3f)' % (

@@ -2022,3 +2022,37 @@ PLAN, will start 17:10 unless someone says a bench is running: ONE Blender job, 
 21:59 OpenTrident-hellhound CLAIM kits_out\opentrident_for_armagedom\champions\hell_hound (new, outputs only) - rig mobs_src\tripo\hell_hound_scaled.glb as a quadruped (no existing quadruped rig+clips fits: mounts_fix is a 9-joint procedural leg rig with no clips), own spine/4 legs/neck/head/jaw/tail chain, LODs, clips, work in C:\Users\dom12\work\hound_dev; Blender headless BelowNormal 2 threads, one at a time
 
 22:27 OpenTrident-hellhound DONE champions\hell_hound: own 37-bone quadruped rig (spine/neck/head/jaw, 4 legs with shoulder/hip+paw+toe, tail_1..8), LOD0/1/2 19,356/8,709/4,354 tris, tex 1024/1024/512, <=4 influences, 7 clips (Idle Walk Run Attack Howl Hit Death, death floor-clamped), worst p99 stretch 1.45 (gate 2.0), foot slide <=3.2 cm walk/run, tail intact in all LODs, contact sheet + posture.json; Unity untested, no emissive map, clips procedural
+
+11:24 OpenTrident-audit DONE champions: all LODs 4 influences and normalised; Ashling base/mid/full got emissive_strength 3.0 in LOD0/1/2 (was default 1, dim next to brute 4; backups in _backup_pre_emstrength); Dracula LOD1/2 still ~24.6k tris (over cap), open. Unity untested
+
+12:09 OpenTrident-dracula-lod CLAIM champions\dracula\lod LOD1/LOD2 only (stuck ~24.6k tris, cap 17k/8.5k); work in C:\Users\dom12\work\dracula_fix; Blender headless BelowNormal 2 threads, one at a time, RAM 17.6 GB free
+
+12:13 OpenTrident-dracula-lod DONE champions\dracula\lod: LOD1 16,096 / LOD2 8,090 tris (was 24.7k/24.6k), 106 joints, 4 influences normalised, tex 2048/1024 kept, originals in dracula\_backup_pre_lodfix; coat texture soft at LOD1/2 (inherited), Unity untested. No Blender of mine running.
+OpenTrident-mounts CLAIM 2026-11-12 15:21 : finishing camel 6-leg fix, pale wraith antler fix, 10s walk proof in kits_out\opentrident_for_frankendom\mounts_fix (Blender headless, one process, no GPU)
+
+2026-11-12 15:27 OpenTrident-ashling-cast CLAIM: adding procedural cast_spell clip to ashling_base/mid/full (clips glb + LOD0 + eval + champions.json + README), numpy only, backups in <name>\_backup_pre_cast; no Blender, no Assets/Builds, no Joan.
+2026-11-12 15:28 OpenTrident-ashling-cast DONE: cast_spell (2.0 s, procedural, upright, feet planted) added as clip 23 to ashling_base/mid/full clips GLB and LOD0; p99 stretch 1.25/1.23/1.32, min y +0.001; 22 old clips byte-identical; backups in _backup_pre_cast; README, champions.json and eval json updated; master GLB not updated, no render (no Blender by order).
+
+OpenTrident-npc-reactions 2026-11-12 15:29 CLAIM: adding look_player_* and react_hit_* clips to kits_out\opentrident_for_frankendom\npc_life (numpy only, no Blender, nothing under Assets/Builds).
+OpenTrident-npc-reactions 2026-11-12 15:35 DONE: 8 reaction clips per rig (look_player_left/right/front, hold_left/right, react_hit_light/heavy/head) added to npc_life; gates 41/41 p106 and 43/43 erika pass; backups in npc_life\_backup_pre_reactions; nothing under Assets or Builds.
+OpenTrident-mounts DONE 2026-11-12 16:02 : camel 4 legs and clean belly, pale wraith antlers seated on coronet burrs, 10 s camel walk proof (mp4, sheet, frames), gates p99 under 1.45 on all LODs, files and README in kits_out\opentrident_for_frankendom\mounts_fix (glb, renders, _backup)
+
+OpenTrident-texfix CLAIM 2026-11-12 16:04: champions hell_hound emissive, ashling_base mask widen, demon_cinder_harpy emissive strength, pitborn LOD morph targets. numpy GLB edits plus headless Blender renders; backups in _backup_pre_texfix.
+
+OpenTrident-texfix DONE 2026-11-12 16:11: hell_hound emissive plus LOD0 weight smoothing, ashling_base mask widened, harpy glow raised, pitborn LOD morph targets restored. Backups in each _backup_pre_texfix. Nothing under Assets or Builds.
+
+OpenTrident-clipfix CLAIM 2026-11-12 16:13: clip fixes on delivered champions hell_imp (dodge_diveroll floor), demon_cinder_harpy (wing fold clips stretch), ashling_base/mid/full (shoot_rifle and full dodge_diveroll compression). numpy only, no Blender; backups in each _backup_pre_clipfix; nothing under Assets or Builds.
+
+OpenTrident-clipfix DONE 2026-11-12 16:24: hell_imp dodge_diveroll floor fixed; harpy wing_fold/compact/half_fold p99 under 1.9; ashling_base/mid/full shoot_rifle and full dodge_diveroll p01 compression 0.67, p99 under 1.6. Clips GLB, LOD0 animations, eval, README, champions.json updated; backups in each _backup_pre_clipfix; no Blender, nothing under Assets or Builds.
+
+OpenTrident-clipfix CLAIM 2026-11-12 16:25: follow-up floor sweep over all clips of ashling x3, seraph, inquisitor, pit brute, harpy, imp, hound, heaven_vanguard, fallen_herald; Hips lift only for prone/roll/death/dive or failing clips. numpy only, backups in _backup_pre_clipfix (existing ones never overwritten).
+
+OpenTrident-clipfix DONE 2026-11-12 16:47: floor sweep over ashling x3, seraph, inquisitor, pit brute, harpy, imp, heaven_vanguard, fallen_herald (hound already passed, untouched): every body clip now has lowest vertex >= -0.005 m at 1/240 s (Hips lift only, rotations untouched, clips that passed left alone). Clips GLBs, LOD0 animations, eval, README, champions.json updated; backups in _backup_pre_clipfix or _backup_pre_clipfix2 where one existed. Report: C:\Users\dom12\work\clipfix\floor_sweep_report.txt. No Blender, nothing under Assets or Builds.
+
+OpenTrident-clipfix CLAIM 2026-11-12 16:49: floor sweep correction: cap Hips lift at 0.05 m on non-prone clips (feet sinking still fully corrected), restore the four angel get_up clips from backup and mark KNOWN BROKEN, add foot-float check to the report. numpy only, new backup folder _backup_pre_floorcap, no Blender, nothing under Assets or Builds.
+
+OpenTrident-clipfix DONE 2026-11-12 16:54: floor sweep correction applied: non-prone clips cap non-foot Hips lift at 0.05 m (feet fully corrected), four angel get_up clips restored from backup and marked KNOWN BROKEN in README and champions.json, report now has min vertex and max foot height per clip (C:\Users\dom12\work\clipfix\floor_report_final.txt). Backups: _backup_pre_floorcap in each champion. No Blender, nothing under Assets or Builds.
+
+OpenTrident-getup CLAIM 2026-11-12 16:55: rebuild get_up on angel_seraph_archon, angel_inquisitor, heaven_vanguard, fallen_herald (Hips height and per-frame corrections or a better Mixamo source). numpy only, backups in _backup_pre_getupfix, nothing under Assets or Builds.
+
+OpenTrident-getup DONE 2026-11-12 17:24: get_up rebuilt on angel_seraph_archon, heaven_vanguard, fallen_herald (floor, idle blend and stretch pass, KNOWN BROKEN removed) and angel_inquisitor (floor and idle blend pass, stretch 2.42 / 0.54 equals its own idle baseline, noted). Clips GLB and LOD0 identical, other clips unchanged, backups in _backup_pre_getupfix, README and champions.json updated. numpy only, no Blender, nothing under Assets or Builds.

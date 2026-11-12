@@ -253,6 +253,7 @@ public sealed class HubNpcs : MonoBehaviour
             if (hits[i].distance < best) { best = hits[i].distance; y = hits[i].point.y; found = true; }
         }
         if (!found) Debug.LogWarning("[Hub] npc " + n.row.id + ": no ground under x " + x.ToString("F1") + " z " + z.ToString("F1") + " (ray from y " + (py + S.groundRayUpM).ToString("F1") + "), standing at fallbackY " + S.fallbackY.ToString("F2"));   // CAMPGROUND v1
+        if (found) y = Code2Cfg.SnapNpcY(K.zone, n.row.id, y, hits, cnt, p != null ? p.transform : null);   // CODE2 v1: feet from the collider top to the visible floor (code2.json npcSnap, off = unchanged)
         n.go.transform.SetPositionAndRotation(new Vector3(x, y, z), Quaternion.Euler(0f, n.row.yaw + S.yawOffsetDeg, 0f));
         n.go.SetActive(true);
     }

@@ -40,6 +40,14 @@ public static class DirectionalGuard
         return G.centreName;
     }
 
+    // GUARDLOW v1: Animator state (pose clip) of a guard side id: controls.json guard.sides[].pose; no row / empty pose = the legacy ids (1 left, 2 right, 3 up), else guard_idle
+    public static string PoseOf(int id)
+    {
+        var G = ControlsTable.Get().guard;
+        if (G.sides != null) for (int i = 0; i < G.sides.Length; i++) { var s = G.sides[i]; if (s != null && s.id == id && !string.IsNullOrEmpty(s.pose)) return s.pose; }
+        return id == 1 ? "guard_left" : id == 2 ? "guard_right" : id == 3 ? "guard_up" : "guard_idle";
+    }
+
     // guard names that cover an attack direction (MoveDef.direction); null = no row = any guard covers it
     public static string[] Covering(string attackDir)
     {

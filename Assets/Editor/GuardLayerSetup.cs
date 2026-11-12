@@ -13,7 +13,7 @@ public static class GuardLayerSetup
 {
     const string LayerName = "GuardUpper";
     // controllers + mask paths: roster.json rows (controller, guardMask); a row without guardMask gets Assets/Characters/GuardUpper_<controller name>.mask
-    static readonly string[] GuardStates = { "guard_idle", "guard_left", "guard_right", "guard_up" };
+    static readonly string[] GuardStates = { "guard_idle", "guard_left", "guard_right", "guard_up", "guard_low" };
     // a bone path is "upper body" when it contains one of these (everything under the spine chain: shoulders, arms, hands, neck, head, cape) ...
     static readonly string[] UpperTokens = { "Spine", "ik_hand" };
     // ... and none of these (hips, legs, feet, skirt)
