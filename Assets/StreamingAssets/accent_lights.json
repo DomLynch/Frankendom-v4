@@ -1552,15 +1552,15 @@
                  {
                      "name":  "L10_Z1_FurnaceEntry",
                      "zone":  "z1",
-                     "type":  "spot",
+                     "type":  "point",
                      "pos":  [
-                                 8.5,
-                                 4.2,
-                                 6.0
+                                 0.0,
+                                 1.4,
+                                 26.5
                              ],
                      "kelvin":  1800,
-                     "candela":  0,
-                     "range":  12.0,
+                     "candela":  6000,
+                     "range":  10.0,
                      "volumetricDimmer":  0.0,
                      "activeRadiusM":  34.0,
                      "layerMask":  65439,
