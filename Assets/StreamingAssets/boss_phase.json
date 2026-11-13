@@ -32,8 +32,8 @@
      0.65
     ],
     "seconds": 0.35,
-    "strength": 0.28,
-    "emissiveNits": 60.0
+    "strength": 0.0,
+    "emissiveNits": 0.0
    },
    "telegraph": {},
    "summon": []
@@ -65,8 +65,8 @@
      0.85
     ],
     "seconds": 0.35,
-    "strength": 0.28,
-    "emissiveNits": 60.0
+    "strength": 0.0,
+    "emissiveNits": 0.0
    },
    "telegraph": {
     "radiusM": 2.4,
@@ -103,8 +103,8 @@
      0.7
     ],
     "seconds": 0.35,
-    "strength": 0.28,
-    "emissiveNits": 60.0
+    "strength": 0.0,
+    "emissiveNits": 0.0
    },
    "telegraph": {
     "radiusM": 2.8,
@@ -141,8 +141,8 @@
      0.7
     ],
     "seconds": 0.35,
-    "strength": 0.28,
-    "emissiveNits": 60.0
+    "strength": 0.0,
+    "emissiveNits": 0.0
    },
    "telegraph": {},
    "summon": []
@@ -174,8 +174,8 @@
      0.75
     ],
     "seconds": 0.35,
-    "strength": 0.28,
-    "emissiveNits": 60.0
+    "strength": 0.0,
+    "emissiveNits": 0.0
    },
    "telegraph": {
     "radiusM": 3.2,
