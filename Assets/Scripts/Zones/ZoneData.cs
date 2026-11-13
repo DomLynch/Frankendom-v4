@@ -22,12 +22,15 @@ using UnityEngine;
 }
 [Serializable] public class ZService { public string id = "", kind = "", spot = "", needs = ""; public bool enabled = false; }
 [Serializable] public class ZLimits { public float zMax = float.NaN; }
+// BOSSHOLD v1 (laneBOSSHOLD): zones[].bossHold. enabled false (default, key absent) = nothing changes. boss = the zone spawn row id of the boss (e.g. z4_grendel). waveGroups = bandits.json group ids of the pre-boss wave
+// (e.g. z4_p): every enabled spawn row whose id starts with wavePrefix + group + "_" is a wave member. maxHoldS > 0 = release the boss after that many seconds even if the wave still lives (0 = wait for the wave).
+[Serializable] public class ZBossHold { public bool enabled = false; public string boss = "", wavePrefix = "bandit_"; public string[] waveGroups = new string[0]; public float maxHoldS = 0f; }
 [Serializable] public class ZZone
 {
     public string id = "", name = "", scene = "", mode = "inplace";
     public bool safe, start;
     public string[] sceneRoots = new string[0];
-    public ZLimits limits = new ZLimits();
+    public ZLimits limits = new ZLimits(); public ZBossHold bossHold = new ZBossHold();   // BOSSHOLD v1
     public ZSpot[] spots = new ZSpot[0]; public ZSpawn[] spawns = new ZSpawn[0]; public ZGate[] gates = new ZGate[0]; public ZService[] services = new ZService[0];
 }
 [Serializable] public class ZCreature { public string id = "", source = "scene", path = "", scene = "";   /* ZONES-ATTACH v1: enemy scene the prefab is saved from (empty = the zone scene) */ }
@@ -92,6 +95,7 @@ public static class ZoneData
             if (z == null) continue;
             if (z.spots == null) z.spots = new ZSpot[0]; if (z.spawns == null) z.spawns = new ZSpawn[0]; if (z.gates == null) z.gates = new ZGate[0]; if (z.services == null) z.services = new ZService[0];
             if (z.sceneRoots == null) z.sceneRoots = new string[0]; if (z.limits == null) z.limits = new ZLimits();
+            if (z.bossHold == null) z.bossHold = new ZBossHold(); if (z.bossHold.waveGroups == null) z.bossHold.waveGroups = new string[0]; if (z.bossHold.wavePrefix == null) z.bossHold.wavePrefix = "bandit_"; if (z.bossHold.boss == null) z.bossHold.boss = "";   // BOSSHOLD v1
             foreach (var s in z.spawns) if (s != null) { if (s.picks == null) s.picks = new ZPick[0]; s.respawnMinS = Mathf.Max(1, s.respawnMinS); s.respawnMaxS = Mathf.Max(s.respawnMinS, s.respawnMaxS); s.leash = Mathf.Max(s.leash, s.aggro + 1f); }
         }
     }

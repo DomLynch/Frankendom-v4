@@ -65,6 +65,7 @@ public sealed class ChaseAgent : MonoBehaviour
     void Update()
     {
         if (row == null || df == null || player == null || df.Dead) return;
+        if (ZoneRuntime.HoldsBoss(df)) { if (Owning) { df.moveDir = Vector3.zero; df.run = false; } st = new ChaseState(); lastTick = Duel.TickCount; return; }   // BOSSHOLD v1: a held boss stands idle (no auto-walk to Joan)
         int now = Duel.TickCount, n = now - lastTick; if (n < 0) n = 0; lastTick = now;
         if (Duel.FrozenFor(df) /* FINREALTIME v1 H5 */) { if (Owning) { df.moveDir = Vector3.zero; df.run = false; } return; }
         bool free = df.state == FState.Loco || df.state == FState.Guard;

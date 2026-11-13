@@ -116,7 +116,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     void Update()
     {
         if (!on || player == null) return;
-        float dt = Time.unscaledDeltaTime; Hud(); FoeResetStep();   // REVIVE v1
+        float dt = Time.unscaledDeltaTime; BossHoldTick(); /* BOSSHOLD v1 */ Hud(); FoeResetStep();   // REVIVE v1
         switch (phase)
         {
             case Phase.CoverIn: phaseT += dt; cover = Mathf.Clamp01(phaseT / Mathf.Max(0.01f, T.crossing.cover.inSeconds)); if (cover >= 1f) { phase = Phase.Hold; holdT = 0f; coverColor = ColorOf(T.crossing.cover.color); } break;
@@ -144,7 +144,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         {
             if (l.df == null) continue;
             if (l.engaged && !l.killed && (player.opponent == null || l.df == player.opponent)) { best = l; break; }   // MULTI v1 (Hud): the HUD enemy is the player's target
-            float d = Flat(player.transform.position, l.df.transform.position); if (!l.killed && d < bd) { bd = d; best = l; }
+            float d = Flat(player.transform.position, l.df.transform.position); if (!l.killed && !IsHeld(l) /* BOSSHOLD v1: a held boss is not the HUD enemy */ && d < bd) { bd = d; best = l; }
         }
         if (best != null && (GameLoop.Enemy == null || EngagedCount() > 0 || !GameLoop.Enemy.Dead)) GameLoop.Enemy = best.df;
     }
@@ -325,6 +325,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
                 if (Flat(pp, l.home) > l.row.leash) Disengage(l);   // leash: it forgets you, resets to full and walks home (teleport)
                 continue;
             }
+            if (IsHeld(l)) continue;   // BOSSHOLD v1: the zone boss stays dormant (no engage, no brain) while its pre-boss wave lives
             if (Time.unscaledTime < arriveGraceUntil || CapCount() >= T.engage.maxEngaged) continue;
             if (Flat(pp, l.df.transform.position) <= l.row.aggro) Engage(l);
         }

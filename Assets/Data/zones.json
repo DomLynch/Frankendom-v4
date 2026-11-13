@@ -979,6 +979,10 @@
     },
     {
       "id": "grendel",
+      "bossHold": {
+        "_about": "BOSSHOLD v1: while any enabled bandit_z4_p_<n> row lives, z4_grendel stays idle (no engage, no auto-walk, no boss bar); released when the wave is dead or after maxHoldS. enabled false = today.",
+        "enabled": true, "boss": "z4_grendel", "wavePrefix": "bandit_", "waveGroups": ["z4_p"], "maxHoldS": 150
+      },
       "name": "The Mere",
       "safe": false,
       "start": false,
@@ -1127,10 +1131,10 @@
         {
           "id": "bandit_z4_p_1",
           "pos": [
-            3.5,
-            112.6
+            5.5,
+            112.0
           ],
-          "yaw": 314.2,
+          "yaw": 306.0,
           "note": "ENCOUNTERS v1 pre-boss fodder z4_p member 1 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
         },
         {
@@ -1285,7 +1289,7 @@
         },
         {
           "id": "bandit_z4_p_1",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_z4_p_1",
           "picks": [
             {
