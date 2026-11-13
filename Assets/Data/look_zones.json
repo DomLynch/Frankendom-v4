@@ -185,7 +185,7 @@
                      "temperature":  7.0,
                      "tint":  0.0,
                      "saturation":  -6.0,
-                     "contrast":  30.0,
+                     "contrast":  36.0,
                      "vignette":  0.48,
                      "fogAlbedo":  [
                                        0.61,
@@ -199,7 +199,7 @@
                                  ],
                      "fogMeanFreePath":  114.5,
                      "fogMaxHeight":  70.0,
-                     "keyElevationDeg":  -1.0,
+                     "keyElevationDeg":  24.0,
                      "keyYawOffsetDeg":  0.0,
                      "keyColor":  [
                                       1.0,
@@ -211,7 +211,7 @@
                                          0.64,
                                          0.3
                                      ],
-                     "bounceLux":  440.0,
+                     "bounceLux":  520.0,
                      "bouncePitchDeg":  -999.0,
                      "bounceYawDeg":  -999.0,
                      "moonRimColor":  [
@@ -381,15 +381,15 @@
                      "zFrom":  305.0,
                      "zTo":  100000.0,
                      "colorFilter":  [
-                                         0.97,
                                          0.95,
-                                         0.91
+                                         0.95,
+                                         0.94
                                      ],
                      "postExposure":  0.064,
-                     "temperature":  9.0,
+                     "temperature":  4.0,
                      "tint":  0.0,
                      "saturation":  -16.0,
-                     "contrast":  30.0,
+                     "contrast":  36.0,
                      "vignette":  0.48,
                      "fogAlbedo":  [
                                        0.637,
@@ -403,7 +403,7 @@
                                  ],
                      "fogMeanFreePath":  114.5,
                      "fogMaxHeight":  70.0,
-                     "keyElevationDeg":  -1.0,
+                     "keyElevationDeg":  26.0,
                      "keyYawOffsetDeg":  0.0,
                      "keyColor":  [
                                       1.0,
