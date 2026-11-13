@@ -25,6 +25,8 @@ public class AdaptEnrage
 {
     public bool enabled; public float hpFrac = 0.5f, speedMul = 1f, waitMul = 1f, reactionMul = 1f, comboAdd, punishAdd, diversify;
     public AdaptFx fx = new AdaptFx();
+    public AdaptCombo[] combos = new AdaptCombo[0];   // BOSSPHASES C5: extra combos while enraged (ai_adapt.json profiles[].enrage.combos), appended to the profile combos
+    public AdaptAlt[] alts = new AdaptAlt[0];         // BOSSPHASES C5: share-cap substitutes tried FIRST while enraged (enrage.alts), then the profile alts
 }
 [Serializable] public class AdaptAlt { public string from; public string[] to = new string[0]; }
 [Serializable]
@@ -329,18 +331,19 @@ public class AiAdapt
             }
         }
         // combo start
-        if (plan == null && (action == "light" || action == "heavy") && P.combos.Length > 0)
+        var ecb = enraged ? P.enrage.combos : null; int nBase = P.combos.Length, nAll = nBase + (ecb != null ? ecb.Length : 0);   // BOSSPHASES C5: phase combos are appended while enraged
+        if (plan == null && (action == "light" || action == "heavy") && nAll > 0)
         {
             float cc = P.comboChance + comboAdd;
             if (cc > 0f && Roll() < cc)
             {
-                float wsum = 0f; for (int i = 0; i < P.combos.Length; i++) if (P.combos[i].steps.Length > 1 && P.combos[i].steps[0] == action) wsum += P.combos[i].weight;
+                float wsum = 0f; for (int i = 0; i < nAll; i++) { var c0 = i < nBase ? P.combos[i] : ecb[i - nBase]; if (c0 != null && c0.steps.Length > 1 && c0.steps[0] == action) wsum += c0.weight; }
                 if (wsum > 0f)
                 {
                     float x = Roll() * wsum;
-                    for (int i = 0; i < P.combos.Length; i++)
+                    for (int i = 0; i < nAll; i++)
                     {
-                        var cb = P.combos[i]; if (cb.steps.Length < 2 || cb.steps[0] != action) continue;
+                        var cb = i < nBase ? P.combos[i] : ecb[i - nBase]; if (cb == null || cb.steps.Length < 2 || cb.steps[0] != action) continue;
                         x -= cb.weight; if (x <= 0f) { plan = cb.steps; planIdx = 1; nCombos++; break; }
                     }
                 }
@@ -372,10 +375,15 @@ public class AiAdapt
     }
     string Sub(string from, bool rL, bool rH, bool rT, bool rK, int tick)
     {
-        for (int i = 0; i < P.alts.Length; i++)
+        if (enraged && P.enrage.alts != null && P.enrage.alts.Length > 0) { string e = SubFrom(P.enrage.alts, from, rL, rH, rT, rK, tick); if (e != from) return e; }   // BOSSPHASES C5: phase substitutes first
+        return SubFrom(P.alts, from, rL, rH, rT, rK, tick);
+    }
+    string SubFrom(AdaptAlt[] alts, string from, bool rL, bool rH, bool rT, bool rK, int tick)
+    {
+        for (int i = 0; i < alts.Length; i++)
         {
-            if (P.alts[i] == null || P.alts[i].from != from) continue;
-            foreach (string c in P.alts[i].to)
+            if (alts[i] == null || alts[i].from != from) continue;
+            foreach (string c in alts[i].to)
             {
                 bool ok = c == "light" ? rL : c == "heavy" ? rH : c == "thrust" ? rT : c == "kick" ? rK && !KickBlocked(tick) : false;
                 if (ok && !ShareFull(c)) return c;

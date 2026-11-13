@@ -178,24 +178,24 @@
       "zTo": 98.0,
       "colorFilter": [
         1.0,
-        0.95,
-        0.9
+        0.965,
+        0.925
       ],
-      "postExposure": 0.063,
-      "temperature": 10.0,
+      "postExposure": 0.05,
+      "temperature": 7.0,
       "tint": 0.0,
-      "saturation": -8.0,
+      "saturation": -6.0,
       "contrast": 30.0,
       "vignette": 0.48,
       "fogAlbedo": [
-        0.637,
-        0.538,
-        0.428
+        0.61,
+        0.545,
+        0.465
       ],
       "fogTint": [
-        1.0,
-        0.92,
-        0.8
+        0.98,
+        0.925,
+        0.83
       ],
       "fogMeanFreePath": 114.5,
       "fogMaxHeight": 70.0,
@@ -215,9 +215,9 @@
       "bouncePitchDeg": -999.0,
       "bounceYawDeg": -999.0,
       "moonRimColor": [
-        0.8,
+        0.6,
         0.7,
-        0.62
+        0.85
       ],
       "bloomIntensity": 0.65,
       "bloomThreshold": 0.35,
@@ -279,47 +279,47 @@
       "zFrom": 167.0,
       "zTo": 234.0,
       "colorFilter": [
-        0.94,
-        1.0,
-        0.92
+        0.98,
+        0.99,
+        0.96
       ],
-      "postExposure": 0.3,
-      "temperature": -2.0,
-      "tint": -10.0,
-      "saturation": -8.0,
+      "postExposure": 0.22,
+      "temperature": 2.0,
+      "tint": -3.0,
+      "saturation": -6.0,
       "contrast": 33.0,
       "vignette": 0.48,
       "fogAlbedo": [
-        0.447,
-        0.596,
-        0.417
+        0.5,
+        0.57,
+        0.48
       ],
       "fogTint": [
-        0.92,
+        0.94,
         1.0,
-        0.9
+        0.92
       ],
       "fogMeanFreePath": 120.0,
       "fogMaxHeight": 70.0,
       "keyElevationDeg": 28.0,
       "keyYawOffsetDeg": 30.0,
       "keyColor": [
-        0.65,
-        0.68,
-        0.68
+        0.85,
+        0.84,
+        0.78
       ],
       "bounceColor": [
-        0.4,
-        0.6,
-        0.35
+        0.35,
+        0.55,
+        0.55
       ],
       "bounceLux": 1000.0,
       "bouncePitchDeg": 55.0,
       "bounceYawDeg": 185.0,
       "moonRimColor": [
-        0.7,
-        0.76,
-        0.7
+        0.62,
+        0.72,
+        0.8
       ],
       "bloomIntensity": 0.22,
       "bloomThreshold": 0.92,
@@ -1189,5 +1189,6 @@
       "raycastGround": true
     }
   ],
-  "_v6_note": "laneV4V6 V6 T1: i9 true carries bloom intensity/threshold per zone (ZoneLook applies them); vignette pinned to the live 0.48 so ONLY bloom changes; bloomScatter is staged data for a 3-line ZoneLook change (JsonUtility ignores it today)."
+  "_v6_note": "laneV4V6 V6 T1: i9 true carries bloom intensity/threshold per zone (ZoneLook applies them); vignette pinned to the live 0.48 so ONLY bloom changes; bloomScatter is staged data for a 3-line ZoneLook change (JsonUtility ignores it today).",
+  "_wash_note": "13 Nov zone wash (Dom via Lead): z5_humbaba and hub_camp rows de-saturated toward neutral highlights; the tint stays in fog/shadow (fogAlbedo/fogTint), key neutral-warm, bounce cool teal (z5) / warm orange (hub) vs a cool moon rim for local warm/cool separation. Revert = the previous rows (look_zones.json in PLAY_PREV build) or ZoneLook off via enabled false. 13 Nov 09:50: hub row brought about halfway back toward warm (Lead): temperature 4 -> 7 (authored 10), fogAlbedo/fogTint/colorFilter midway between the authored warm and the neutral values; neutral highlights and the cool moon rim kept."
 }

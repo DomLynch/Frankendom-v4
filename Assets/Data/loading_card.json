@@ -2,7 +2,7 @@
   "_about": "LOADINGCARD v1 (dev2): black full-screen card with the game name over the HUD until Prewarm92 is done AND the frames are calm (calmForS seconds under calmFrameS), then a fade. Read by Scripts/HUD/LoadingCard.cs. enabled false or no file = nothing. Never in harness runs.",
   "enabled": true,
   "title": "FRANKENDOM",
-  "sub": "loading",
+  "sub": "the world is loading, the first start can take up to half a minute",
   "extraAfterPrewarmS": 8.0,
   "fadeS": 0.6,
   "minSeconds": 3.0,

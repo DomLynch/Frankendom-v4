@@ -6,7 +6,7 @@
   "specialEventTypes": ["Hit"],
   "tiers": [
     { "id": "hitLight",   "frames": 0, "ms": 40 },
-    { "id": "hitHeavy",   "frames": 0, "ms": 80 },
+    { "id": "hitHeavy",   "frames": 0, "ms": 100 },
     { "id": "blockLight", "frames": 0, "ms": 20 },
     { "id": "blockHeavy", "frames": 0, "ms": 30 },
     { "id": "parry",      "frames": 0, "ms": 40 },

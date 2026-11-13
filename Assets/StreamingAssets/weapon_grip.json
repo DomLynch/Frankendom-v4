@@ -1,336 +1,577 @@
 {
- "_about": "Data for Assets/Scripts/WeaponGrip.cs: re-poses WeaponSocket_R relative to the hand bone every LateUpdate (absolute). socketOffset = metres in the hand-bone frame; socketEuler = degrees on the socket's original rotation; slide = metres the hand moves along the shaft towards the head. Pitborn x35 / z-120: head forward at the light impact, up and forward at the heavy impact; GripPose (absolute curl) wraps the fingers. Dracula z20 + offset + slide 0.05 seats the hilt in the fist. Joan (laneJOANGRIP v78): the grip axis lies across the palm diagonal (heel of the hand to the index knuckle), found by transferring Dracula's grip by hand landmarks, then fitted so the fingers wrap the grip, the hand sits mid-grip (not against the guard) and the blade follows the forearm (rows fitted in Blender on the Joan rig, socket maths mirrored from WeaponGrip.cs/BuildSliceWeapons.cs). Joan locomotion row (laneSWORDGRIP): states idle/walk/run/strafe_L/strafe_R carry the sword up and forward (blade pitch about +45 deg in idle, grip axis within 40 deg of the knuckle line); every other Joan state keeps the combat row above (guards and attacks unchanged). Fitted in Blender on Joan_combat.glb with the WeaponGrip.cs socket maths.",
- "characters": [
-  {
-   "name": "Pitborn",
-   "enabled": true,
-   "hand": "RightHand",
-   "socket": "WeaponSocket_R",
-   "socketOffset": [
-    0,
-    0.04,
-    0.02
-   ],
-   "socketEuler": [
-    35,
-    0,
-    -120
-   ],
-   "slide": 0.0,
-   "debugLog": false,
-   "blendSeconds": 0.1
-  },
-  {
-   "name": "Pitborn",
-   "enabled": true,
-   "hand": "RightHand",
-   "socket": "WeaponSocket_R",
-   "socketOffset": [
-    0,
-    0.04,
-    0.02
-   ],
-   "socketEuler": [
-    0,
-    0,
-    -90
-   ],
-   "slide": 0.0,
-   "blendSeconds": 0.1,
-   "states": [
-    "atk_heavy"
-   ],
-   "debugLog": false
-  },
-  {
-   "name": "Dracula",
-   "enabled": true,
-   "hand": "RightHand",
-   "socket": "WeaponSocket_R",
-   "socketOffset": [
-    -0.013,
-    0.025,
-    0.009
-   ],
-   "socketEuler": [
-    0,
-    0,
-    20
-   ],
-   "slide": 0.05,
-   "debugLog": false,
-   "blendSeconds": 0.1
-  },
-  {
-    "name": "BanditMelee",
-    "enabled": true,
-    "hand": "RightHand",
-    "socket": "WeaponSocket_R",
-    "socketOffset": [
-      -0.013,
-      0.025,
-      0.009
-    ],
-    "socketEuler": [
-      0,
-      0,
-      20
-    ],
-    "slide": 0.05,
-    "debugLog": false,
-    "blendSeconds": 0.1
-  },
-  {
-    "name": "NpcAntlerKnight",
-    "enabled": true,
-    "hand": "RightHand",
-    "socket": "WeaponSocket_R",
-    "socketOffset": [
-      -0.013,
-      0.025,
-      0.009
-    ],
-    "socketEuler": [
-      0,
-      0,
-      20
-    ],
-    "slide": 0.05,
-    "debugLog": false,
-    "blendSeconds": 0.1
-  },
-  {
-    "name": "NpcPitGladiator",
-    "enabled": true,
-    "hand": "RightHand",
-    "socket": "WeaponSocket_R",
-    "socketOffset": [
-      -0.013,
-      0.025,
-      0.009
-    ],
-    "socketEuler": [
-      0,
-      0,
-      20
-    ],
-    "slide": 0.05,
-    "debugLog": false,
-    "blendSeconds": 0.1
-  },
-  {
-    "name": "NpcEmbalmerCultist",
-    "enabled": true,
-    "hand": "RightHand",
-    "socket": "WeaponSocket_R",
-    "socketOffset": [
-      -0.013,
-      0.025,
-      0.009
-    ],
-    "socketEuler": [
-      0,
-      0,
-      20
-    ],
-    "slide": 0.05,
-    "debugLog": false,
-    "blendSeconds": 0.1
-  },
-  {
-    "name": "NpcMereRaider",
-    "enabled": true,
-    "hand": "RightHand",
-    "socket": "WeaponSocket_R",
-    "socketOffset": [
-      -0.013,
-      0.025,
-      0.009
-    ],
-    "socketEuler": [
-      0,
-      0,
-      20
-    ],
-    "slide": 0.05,
-    "debugLog": false,
-    "blendSeconds": 0.1
-  },
-  {
-    "name": "NpcDrownedThane",
-    "enabled": true,
-    "hand": "RightHand",
-    "socket": "WeaponSocket_R",
-    "socketOffset": [
-      -0.013,
-      0.025,
-      0.009
-    ],
-    "socketEuler": [
-      0,
-      0,
-      20
-    ],
-    "slide": 0.05,
-    "debugLog": false,
-    "blendSeconds": 0.1
-  },
-  {
-    "name": "BanditAssassin",
-    "enabled": true,
-    "hand": "RightHand",
-    "socket": "WeaponSocket_R",
-    "socketOffset": [
-      -0.013,
-      0.025,
-      0.009
-    ],
-    "socketEuler": [
-      0,
-      0,
-      20
-    ],
-    "slide": 0.05,
-    "debugLog": false,
-    "blendSeconds": 0.1
-  },
-  {
-    "name": "NpcChainWarden",
-    "enabled": true,
-    "hand": "RightHand",
-    "socket": "WeaponSocket_R",
-    "socketOffset": [
-      -0.013,
-      0.025,
-      0.009
-    ],
-    "socketEuler": [
-      0,
-      0,
-      20
-    ],
-    "slide": 0.05,
-    "debugLog": false,
-    "blendSeconds": 0.1
-  },
-  {
-    "name": "NpcReedSkirmisher",
-    "enabled": true,
-    "hand": "RightHand",
-    "socket": "WeaponSocket_R",
-    "socketOffset": [
-      -0.013,
-      0.025,
-      0.009
-    ],
-    "socketEuler": [
-      0,
-      0,
-      20
-    ],
-    "slide": 0.05,
-    "debugLog": false,
-    "blendSeconds": 0.1
-  },
-  {
-    "name": "NpcHoundMaster",
-    "enabled": true,
-    "hand": "RightHand",
-    "socket": "WeaponSocket_R",
-    "socketOffset": [
-      -0.013,
-      0.025,
-      0.009
-    ],
-    "socketEuler": [
-      0,
-      0,
-      20
-    ],
-    "slide": 0.05,
-    "debugLog": false,
-    "blendSeconds": 0.1
-  },
-  {
-   "name": "Joan",
-   "enabled": true,
-   "hand": "RightHand",
-   "socket": "WeaponSocket_R",
-   "socketOffset": [
-    -0.0149,
-    0.0137,
-    0.0355
-   ],
-   "socketEuler": [
-    4.42,
-    -2.18,
-    20.51
-   ],
-   "slide": -0.0346,
-   "debugLog": false,
-   "blendSeconds": 0.1
-  },
-  {
-   "name": "Joan",
-   "enabled": true,
-   "hand": "RightHand",
-   "socket": "WeaponSocket_R",
-   "socketOffset": [
-    0.0167,
-    0.012,
-    0.0347
-   ],
-   "socketEuler": [
-    -51.2,
-    152.18,
-    -107.79
-   ],
-   "slide": -0.0475,
-   "blendSeconds": 0.15,
-   "states": [
-    "idle",
-    "walk",
-    "run",
-    "strafe_L",
-    "strafe_R"
-   ],
-   "debugLog": false
-  },
-  {
-   "name": "*",
-   "enabled": false,
-   "hand": "RightHand",
-   "socket": "WeaponSocket_R",
-   "socketOffset": [0, 0, 0],
-   "socketEuler": [0, 0, 0],
-   "blendSeconds": 0.1
-  },
-  {
-   "name": "Joan",
-   "weapon": "pitborn_maul",
-   "enabled": true,
-   "hand": "RightHand",
-   "socket": "WeaponSocket_R",
-   "socketOffset": [
-    -0.0093,
-    -0.0006,
-    0.0387
-   ],
-   "socketEuler": [
-    6.49,
-    -15.0,
-    19.9
-   ],
-   "slide": -0.0437,
-   "debugLog": false,
-   "_fit": "laneDROPPIT v2 (Blender fit on joan_v6b with the game's socket maths, shaft radius 2.68 cm). Used while the pitborn_maul visual is on the socket (WeaponSwap.IdOf).",
-   "blendSeconds": 0.1
-  },
-  {"name": "Sobek", "weapon": "sobek_trident", "enabled": true, "hand": "RightHand", "socket": "WeaponSocket_R", "socketOffset": [-0.03131, -0.04407, -0.1329], "socketEuler": [358.3401, 175.3163, 250.9878], "slide": 0, "blendSeconds": 0.1, "debugLog": false, "_gen": "SOBEKUNITY v1", "_group": "default"},
-  {"name": "Sobek", "weapon": "sobek_trident", "enabled": true, "hand": "RightHand", "socket": "WeaponSocket_R", "socketOffset": [-0.03131, -0.04407, -0.1329], "socketEuler": [358.3401, 175.3163, 250.9878], "slide": 0, "blendSeconds": 0.1, "debugLog": false, "states": ["heavy_windup", "heavy_release", "heavy_windup_hold", "atk_heavy_R", "atk_heavy_L", "atk_heavy_thrust"], "_gen": "SOBEKUNITY v1", "_group": "heavy"},
-  {"name": "Sobek", "weapon": "sobek_trident", "enabled": true, "hand": "RightHand", "socket": "WeaponSocket_R", "socketOffset": [-0.02131, 0.04593, -0.0829], "socketEuler": [0.90094, 175.1136, 280.8815], "slide": 0, "blendSeconds": 0.1, "debugLog": false, "states": ["guard_idle", "guard_hit", "parry", "guard_left", "guard_right", "guard_up"], "_gen": "SOBEKUNITY v1", "_group": "guard"},
-  {"name": "Grendel", "weapon": "grendel_blade_R", "enabled": false, "hand": "RightHand", "socket": "WeaponSocket_R", "socketOffset": [-0.1022, -0.0751, -0.088], "socketEuler": [-0.557, -126.368, -82.1], "slide": 0.0, "blendSeconds": 0.1, "debugLog": false, "_gen": "laneMONSTER3", "_group": "default"},
-  {"name": "Erlking", "weapon": "erlking_axe", "enabled": false, "hand": "RightHand", "socket": "WeaponSocket_R", "socketOffset": [0.0533, -0.0772, 0.2133], "socketEuler": [-16.062, -86.528, 110.184], "slide": 0.0, "blendSeconds": 0.1, "debugLog": false, "_gen": "laneMONSTER6", "_group": "default", "_about": "laneMONSTER6 (Erlking): bone-HEAD-relative, XYZ degrees (grip_rows6.py from the PCA fist fit, flip flip180_roll+1, blade out of the pinky side); the batch recomputes socket values from the real frame."},
-  {"name": "Humbaba", "enabled": false, "hand": "RightHand", "socket": "WeaponSocket_R", "socketOffset": [0, 0, 0], "socketEuler": [0, 0, 0], "blendSeconds": 0.1, "weapon": "humbaba_claws", "_about": "Humbaba is unarmed (claws + maw bite): an explicit OFF row, same as the \"*\" default, so data_gates no longer WARNs \"uses the * row\". laneBOSSGAP v1"}
- ]
+  "_about": "Data for Assets/Scripts/WeaponGrip.cs: re-poses WeaponSocket_R relative to the hand bone every LateUpdate (absolute). socketOffset = metres in the hand-bone frame; socketEuler = degrees on the socket's original rotation; slide = metres the hand moves along the shaft towards the head. Pitborn x35 / z-120: head forward at the light impact, up and forward at the heavy impact; GripPose (absolute curl) wraps the fingers. Dracula z20 + offset + slide 0.05 seats the hilt in the fist. Joan (laneJOANGRIP v78): the grip axis lies across the palm diagonal (heel of the hand to the index knuckle), found by transferring Dracula's grip by hand landmarks, then fitted so the fingers wrap the grip, the hand sits mid-grip (not against the guard) and the blade follows the forearm (rows fitted in Blender on the Joan rig, socket maths mirrored from WeaponGrip.cs/BuildSliceWeapons.cs). Joan locomotion row (laneSWORDGRIP): states idle/walk/run/strafe_L/strafe_R carry the sword up and forward (blade pitch about +45 deg in idle, grip axis within 40 deg of the knuckle line); every other Joan state keeps the combat row above (guards and attacks unchanged). Fitted in Blender on Joan_combat.glb with the WeaponGrip.cs socket maths.",
+  "characters": [
+    {
+      "name": "Pitborn",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        0,
+        0.04,
+        0.02
+      ],
+      "socketEuler": [
+        35,
+        0,
+        -120
+      ],
+      "slide": 0.0,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "Pitborn",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        0,
+        0.04,
+        0.02
+      ],
+      "socketEuler": [
+        0,
+        0,
+        -90
+      ],
+      "slide": 0.0,
+      "blendSeconds": 0.1,
+      "states": [
+        "atk_heavy"
+      ],
+      "debugLog": false
+    },
+    {
+      "name": "Dracula",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.013,
+        0.025,
+        0.009
+      ],
+      "socketEuler": [
+        0,
+        0,
+        20
+      ],
+      "slide": 0.05,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "BanditMelee",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.013,
+        0.025,
+        0.009
+      ],
+      "socketEuler": [
+        0,
+        0,
+        20
+      ],
+      "slide": 0.05,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "NpcAntlerKnight",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.013,
+        0.025,
+        0.009
+      ],
+      "socketEuler": [
+        0,
+        0,
+        20
+      ],
+      "slide": 0.05,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "NpcPitGladiator",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.013,
+        0.025,
+        0.009
+      ],
+      "socketEuler": [
+        0,
+        0,
+        20
+      ],
+      "slide": 0.05,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "NpcEmbalmerCultist",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.013,
+        0.025,
+        0.009
+      ],
+      "socketEuler": [
+        0,
+        0,
+        20
+      ],
+      "slide": 0.05,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "NpcMereRaider",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.013,
+        0.025,
+        0.009
+      ],
+      "socketEuler": [
+        0,
+        0,
+        20
+      ],
+      "slide": 0.05,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "NpcDrownedThane",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.013,
+        0.025,
+        0.009
+      ],
+      "socketEuler": [
+        0,
+        0,
+        20
+      ],
+      "slide": 0.05,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "BanditAssassin",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.013,
+        0.025,
+        0.009
+      ],
+      "socketEuler": [
+        0,
+        0,
+        20
+      ],
+      "slide": 0.05,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "NpcChainWarden",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.013,
+        0.025,
+        0.009
+      ],
+      "socketEuler": [
+        0,
+        0,
+        20
+      ],
+      "slide": 0.05,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "NpcReedSkirmisher",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.013,
+        0.025,
+        0.009
+      ],
+      "socketEuler": [
+        0,
+        0,
+        20
+      ],
+      "slide": 0.05,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "NpcHoundMaster",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.013,
+        0.025,
+        0.009
+      ],
+      "socketEuler": [
+        0,
+        0,
+        20
+      ],
+      "slide": 0.05,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "Joan",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.0149,
+        0.0137,
+        0.0355
+      ],
+      "socketEuler": [
+        4.42,
+        -2.18,
+        20.51
+      ],
+      "slide": -0.0346,
+      "debugLog": false,
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "Joan",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        0.0167,
+        0.012,
+        0.0347
+      ],
+      "socketEuler": [
+        -51.2,
+        152.18,
+        -107.79
+      ],
+      "slide": -0.0475,
+      "blendSeconds": 0.15,
+      "states": [
+        "idle",
+        "walk",
+        "run",
+        "strafe_L",
+        "strafe_R"
+      ],
+      "debugLog": false
+    },
+    {
+      "name": "*",
+      "enabled": false,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        0,
+        0,
+        0
+      ],
+      "socketEuler": [
+        0,
+        0,
+        0
+      ],
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "Joan",
+      "weapon": "pitborn_maul",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.0093,
+        -0.0006,
+        0.0387
+      ],
+      "socketEuler": [
+        6.49,
+        -15.0,
+        19.9
+      ],
+      "slide": -0.0437,
+      "debugLog": false,
+      "_fit": "laneDROPPIT v2 (Blender fit on joan_v6b with the game's socket maths, shaft radius 2.68 cm). Used while the pitborn_maul visual is on the socket (WeaponSwap.IdOf).",
+      "blendSeconds": 0.1
+    },
+    {
+      "name": "Joan",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.0093,
+        -0.0006,
+        0.0387
+      ],
+      "socketEuler": [
+        6.49,
+        -15.0,
+        19.9
+      ],
+      "slide": -0.0437,
+      "blendSeconds": 0.1,
+      "debugLog": false,
+      "weapon": "iron_maul",
+      "_gen": "laneALPHAPACK weapons v1",
+      "_fit": "CLONE of the Joan pitborn_maul row (laneDROPPIT v2, fitted): iron_maul loads the SAME glb (pitborn_maul_joan_LOD0.glb, grip node = origin, +Y shaft) so the fit applies as is."
+    },
+    {
+      "name": "Joan",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.0093,
+        -0.0006,
+        0.0387
+      ],
+      "socketEuler": [
+        6.49,
+        -15.0,
+        19.9
+      ],
+      "slide": -0.0437,
+      "blendSeconds": 0.1,
+      "debugLog": false,
+      "weapon": "war_axe",
+      "_gen": "laneALPHAPACK weapons v1",
+      "_fit": "UNPROVEN GUESS: the pitborn_maul row cloned. Erlking_axe.glb also has grip = origin and +Y along the haft, but the haft thickness is unmeasured on Joan's hand. Fit by one frame (equip -weapon war_axe) then edit the 3 numbers."
+    },
+    {
+      "name": "Sobek",
+      "weapon": "sobek_trident",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.03131,
+        -0.04407,
+        -0.1329
+      ],
+      "socketEuler": [
+        358.3401,
+        175.3163,
+        250.9878
+      ],
+      "slide": 0,
+      "blendSeconds": 0.1,
+      "debugLog": false,
+      "_gen": "SOBEKUNITY v1",
+      "_group": "default"
+    },
+    {
+      "name": "Sobek",
+      "weapon": "sobek_trident",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.03131,
+        -0.04407,
+        -0.1329
+      ],
+      "socketEuler": [
+        358.3401,
+        175.3163,
+        250.9878
+      ],
+      "slide": 0,
+      "blendSeconds": 0.1,
+      "debugLog": false,
+      "states": [
+        "heavy_windup",
+        "heavy_release",
+        "heavy_windup_hold",
+        "atk_heavy_R",
+        "atk_heavy_L",
+        "atk_heavy_thrust"
+      ],
+      "_gen": "SOBEKUNITY v1",
+      "_group": "heavy"
+    },
+    {
+      "name": "Sobek",
+      "weapon": "sobek_trident",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.02131,
+        0.04593,
+        -0.0829
+      ],
+      "socketEuler": [
+        0.90094,
+        175.1136,
+        280.8815
+      ],
+      "slide": 0,
+      "blendSeconds": 0.1,
+      "debugLog": false,
+      "states": [
+        "guard_idle",
+        "guard_hit",
+        "parry",
+        "guard_left",
+        "guard_right",
+        "guard_up"
+      ],
+      "_gen": "SOBEKUNITY v1",
+      "_group": "guard"
+    },
+    {
+      "name": "Grendel",
+      "weapon": "grendel_blade_R",
+      "enabled": false,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.1022,
+        -0.0751,
+        -0.088
+      ],
+      "socketEuler": [
+        -0.557,
+        -126.368,
+        -82.1
+      ],
+      "slide": 0.0,
+      "blendSeconds": 0.1,
+      "debugLog": false,
+      "_gen": "laneMONSTER3",
+      "_group": "default"
+    },
+    {
+      "name": "Erlking",
+      "weapon": "erlking_axe",
+      "enabled": false,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        0.0533,
+        -0.0772,
+        0.2133
+      ],
+      "socketEuler": [
+        -16.062,
+        -86.528,
+        110.184
+      ],
+      "slide": 0.0,
+      "blendSeconds": 0.1,
+      "debugLog": false,
+      "_gen": "laneMONSTER6",
+      "_group": "default",
+      "_about": "laneMONSTER6 (Erlking): bone-HEAD-relative, XYZ degrees (grip_rows6.py from the PCA fist fit, flip flip180_roll+1, blade out of the pinky side); the batch recomputes socket values from the real frame."
+    },
+    {
+      "name": "Humbaba",
+      "enabled": false,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        0,
+        0,
+        0
+      ],
+      "socketEuler": [
+        0,
+        0,
+        0
+      ],
+      "blendSeconds": 0.1,
+      "weapon": "humbaba_claws",
+      "_about": "Humbaba is unarmed (claws + maw bite): an explicit OFF row, same as the \"*\" default, so data_gates no longer WARNs \"uses the * row\". laneBOSSGAP v1"
+    },
+    {
+      "name": "Joan",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.0149,
+        0.0137,
+        0.0355
+      ],
+      "socketEuler": [
+        4.42,
+        -2.18,
+        20.51
+      ],
+      "slide": -0.0346,
+      "debugLog": false,
+      "blendSeconds": 0.1,
+      "weapon": "boar_spear",
+      "_gen": "13 Nov spear attempt A: combat grip row cloned from the Joan sword default"
+    },
+    {
+      "name": "Joan",
+      "enabled": true,
+      "hand": "RightHand",
+      "socket": "WeaponSocket_R",
+      "socketOffset": [
+        -0.0149,
+        0.0137,
+        0.0355
+      ],
+      "socketEuler": [
+        4.42,
+        -2.18,
+        20.51
+      ],
+      "slide": -0.0346,
+      "blendSeconds": 0.15,
+      "states": [
+        "idle",
+        "walk",
+        "run",
+        "strafe_L",
+        "strafe_R"
+      ],
+      "debugLog": false,
+      "weapon": "boar_spear",
+      "_gen": "13 Nov spear attempt A: carry (idle/walk/run/strafe) uses the combat euler so the shaft points forward, not up"
+    }
+  ]
 }

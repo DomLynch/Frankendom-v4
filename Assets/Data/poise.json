@@ -295,7 +295,7 @@
           },
           {
             "move": "heavy*",
-            "fromTick": 5,
+            "fromTick": 7,
             "recoveryTicks": 0,
             "damageMul": 1.0,
             "knockMul": 0.1,
@@ -304,7 +304,7 @@
           },
           {
             "move": "critical",
-            "fromTick": 5,
+            "fromTick": 7,
             "recoveryTicks": 0,
             "damageMul": 1.0,
             "knockMul": 0.1,
@@ -313,7 +313,7 @@
           },
           {
             "move": "skill_*",
-            "fromTick": 4,
+            "fromTick": 6,
             "recoveryTicks": 0,
             "damageMul": 1.0,
             "knockMul": 0.1,
@@ -363,36 +363,36 @@
       {
         "key": "Sobek",
         "enabled": true,
-        "hits": 4,
+        "hits": 3,
         "windowTicks": 180,
-        "breakOutTicks": 48,
+        "breakOutTicks": 54,
         "absorbDamageMul": -1,
         "graceDamageMul": -1
       },
       {
         "key": "Grendel",
         "enabled": true,
-        "hits": 4,
+        "hits": 3,
         "windowTicks": 180,
-        "breakOutTicks": 48,
+        "breakOutTicks": 54,
         "absorbDamageMul": -1,
         "graceDamageMul": -1
       },
       {
         "key": "Humbaba",
         "enabled": true,
-        "hits": 5,
+        "hits": 3,
         "windowTicks": 180,
-        "breakOutTicks": 50,
+        "breakOutTicks": 54,
         "absorbDamageMul": -1,
         "graceDamageMul": -1
       },
       {
         "key": "Erlking",
         "enabled": true,
-        "hits": 6,
+        "hits": 3,
         "windowTicks": 180,
-        "breakOutTicks": 54,
+        "breakOutTicks": 60,
         "absorbDamageMul": -1,
         "graceDamageMul": -1
       }

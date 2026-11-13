@@ -16,7 +16,9 @@ public sealed class MountProof : MonoBehaviour
     static void Boot() { if (!Has("-mountproof") || MenuCfg.Harness) return; var go = new GameObject("MountProof"); DontDestroyOnLoad(go); go.AddComponent<MountProof>(); }
 
     DuelFighter df; float t0 = -1f, nextBind, nextLog, phaseT, moved0; int stage; string dir; Vector3 startPos; float minY = 1e9f, maxDropY;
-    const float WarmS = 6f, LoadMaxS = 60f, WalkS = 5f, GallopS = 4f, StopS = 1.5f;   // hc:ok proof timeline in seconds (test tool, not a gameplay value)
+    const float LoadMaxS = 60f, GallopS = 4f;   // hc:ok proof timeline in seconds (test tool, not a gameplay value)
+    static float ArgF(string pre, float d) { var v = Arg(pre); float f; return v != null && float.TryParse(v, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out f) ? f : d; }   // QA: -proofwarm:<s> -proofwalk:<s> -proofstop:<s> (the world is black and the sim frozen for ~30 s after a start)
+    static readonly float WarmS = ArgF("-proofwarm:", 6f), WalkS = ArgF("-proofwalk:", 5f), StopS = ArgF("-proofstop:", 1.5f);   // hc:ok proof timeline in seconds (test tool, not a gameplay value)
 
     void Awake() { dir = Arg("-out:") ?? Path.Combine(Application.dataPath, "..", "MountProof"); try { Directory.CreateDirectory(dir); } catch (Exception) { } MountRider.ProofOwn = true; Debug.Log("[MountProof] armed, frames -> " + dir); }
 

@@ -1,13 +1,112 @@
 {
   "_about": "V65CAM gameplay slow-mo (CombatSlowMo.cs). ONE dip at a time (a second request merges: lower scale, longer hold up to maxSeconds in total; never stacked), all timers on unscaled time, cooldownS between dips, never while a finisher owns the clock (finisher slow-mo curves stay in finishers.json). scale = Time.timeScale at the hold; easeInS / holdS / easeOutS in unscaled seconds; minScale = the floor for every class; delayS = wait after the contact; watchdogS = a sub-1 timeScale that nobody owns is forced back to 1 after that long; attackerPlayerOnly = only when the player lands the blow. laneHITFX v81: delayS = the hit-stop freeze (hit_feel.json parry 100 ms, crit ~80-110, deathblow ~120) so the freeze plays first and the dip is not eaten by it. Parry 0.35 for ~0.35 s all in, crit 0.45, deathblow (only when no finisher takes it over) 0.25.",
-  "enabled": false,   "_finfix": "FINFIX v93: false = no gameplay slow-mo at all (online-safe, no Time.timeScale); the code path stays, set true for the old parry / crit / deathblow dips",
+  "enabled": true,
+  "_finfix": "FINFIX v93: false = no gameplay slow-mo at all (online-safe, no Time.timeScale); the code path stays, set true for the old parry / crit / deathblow dips",
+  "_feelboss": "FEELBOSS 13 Nov: kill / kill_<victim id> rows = the KILLING blow dip (victim Dead on the Hit event), read only after the 3-line CombatSlowMo.OnEvent change in PLAN.md; today deathblow = the hit that consumes a posture-break window (NOT necessarily the kill) and stays as it was. Hold + ease <= maxSeconds 0.9: Erlking 0.03+0.34 hold, 0.40 ease = 0.77 s.",
   "minScale": 0.2,
   "maxSeconds": 0.9,
   "cooldownS": 1.2,
   "watchdogS": 2.0,
   "classes": [
-    {"id": "parry",     "scale": 0.35, "holdS": 0.10, "easeInS": 0.03, "easeOutS": 0.22, "delayS": 0.10, "attackerPlayerOnly": false},
-    {"id": "crit",      "scale": 0.45, "holdS": 0.10, "easeInS": 0.03, "easeOutS": 0.20, "delayS": 0.08, "attackerPlayerOnly": true},
-    {"id": "deathblow", "scale": 0.25, "holdS": 0.22, "easeInS": 0.04, "easeOutS": 0.30, "delayS": 0.12, "attackerPlayerOnly": false}
-  ]
+    {
+      "id": "parry",
+      "scale": 1.0,
+      "holdS": 0.1,
+      "easeInS": 0.03,
+      "easeOutS": 0.22,
+      "delayS": 0.1,
+      "attackerPlayerOnly": false
+    },
+    {
+      "id": "crit",
+      "scale": 1.0,
+      "holdS": 0.1,
+      "easeInS": 0.03,
+      "easeOutS": 0.2,
+      "delayS": 0.08,
+      "attackerPlayerOnly": true
+    },
+    {
+      "id": "deathblow",
+      "scale": 1.0,
+      "holdS": 0.22,
+      "easeInS": 0.04,
+      "easeOutS": 0.3,
+      "delayS": 0.12,
+      "attackerPlayerOnly": false
+    },
+    {
+      "id": "kill",
+      "scale": 0.45,
+      "holdS": 0.08,
+      "easeInS": 0.03,
+      "easeOutS": 0.2,
+      "delayS": 0.11,
+      "attackerPlayerOnly": false
+    },
+    {
+      "id": "kill_Pitborn",
+      "scale": 0.25,
+      "holdS": 0.22,
+      "easeInS": 0.03,
+      "easeOutS": 0.3,
+      "delayS": 0.11,
+      "attackerPlayerOnly": false
+    },
+    {
+      "id": "kill_Sobek",
+      "scale": 0.22,
+      "holdS": 0.28,
+      "easeInS": 0.03,
+      "easeOutS": 0.35,
+      "delayS": 0.11,
+      "attackerPlayerOnly": false
+    },
+    {
+      "id": "kill_Grendel",
+      "scale": 0.22,
+      "holdS": 0.26,
+      "easeInS": 0.03,
+      "easeOutS": 0.35,
+      "delayS": 0.11,
+      "attackerPlayerOnly": false
+    },
+    {
+      "id": "kill_Humbaba",
+      "scale": 0.22,
+      "holdS": 0.28,
+      "easeInS": 0.03,
+      "easeOutS": 0.35,
+      "delayS": 0.11,
+      "attackerPlayerOnly": false
+    },
+    {
+      "id": "kill_Erlking",
+      "scale": 0.2,
+      "holdS": 0.34,
+      "easeInS": 0.03,
+      "easeOutS": 0.4,
+      "delayS": 0.11,
+      "attackerPlayerOnly": false
+    },
+    {
+      "id": "kill_Joan",
+      "scale": 0.25,
+      "holdS": 0.3,
+      "easeInS": 0.03,
+      "easeOutS": 0.4,
+      "delayS": 0.11,
+      "attackerPlayerOnly": false
+    },
+    {
+      "id": "bossPhase",
+      "scale": 0.35,
+      "holdS": 0.16,
+      "easeInS": 0.04,
+      "easeOutS": 0.3,
+      "delayS": 0.0,
+      "attackerPlayerOnly": false
+    }
+  ],
+  "_bossphases": "BOSSPHASES 13 Nov: class bossPhase (0.35 for 0.16 s, ease out 0.30 s = about 0.5 s, under maxSeconds 0.9) is read ONLY when BossPhase.Enter calls CombatSlowMo.Request(\"bossPhase\") (code C1). Inert today. Online-safe option: leave boss_phase.json slowMo \"\"."
 }

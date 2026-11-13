@@ -110,6 +110,7 @@
     },
     "allowWhileEngaged": true,
     "freePassage": true,
+    "endRequiresBossKill": true,
     "preloadDistance": 14.0,
     "_about": "cover = the gate's flash: a full-screen ember-white overlay in OnGUI, over the frame where the swap happens. The camera is never cut: it is moved by the same offset and turn as the player. Player input is never locked (no code path locks it). holdMaxSeconds: if an additive zone scene is not ready by then the cover stays up (a heavy hold, never a loading bar)."
   },
@@ -1122,6 +1123,24 @@
           ],
           "yaw": 168.9,
           "note": "NPC15PLACE z4_b member 3 (NpcMereRaider): patrol group z4_b, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
+        },
+        {
+          "id": "bandit_z4_p_1",
+          "pos": [
+            3.5,
+            112.6
+          ],
+          "yaw": 314.2,
+          "note": "ENCOUNTERS v1 pre-boss fodder z4_p member 1 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
+        },
+        {
+          "id": "bandit_z4_p_2",
+          "pos": [
+            -2.0,
+            111.0
+          ],
+          "yaw": 21.8,
+          "note": "ENCOUNTERS v1 pre-boss fodder z4_p member 2 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
         }
       ],
       "spawns": [
@@ -1146,7 +1165,7 @@
         },
         {
           "id": "bandit_z4_a_1",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_z4_a_1",
           "picks": [
             {
@@ -1263,6 +1282,46 @@
           "damageMul": 0.6142,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcMereRaider.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z4_p_1",
+          "enabled": false,
+          "spot": "bandit_z4_p_1",
+          "picks": [
+            {
+              "creature": "NpcMereRaider",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcmereraider_z4",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 9.0,
+          "leash": 12.5,
+          "hpMul": 1.0,
+          "damageMul": 0.6142,
+          "difficulty": 4,
+          "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 9.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
+        },
+        {
+          "id": "bandit_z4_p_2",
+          "enabled": false,
+          "spot": "bandit_z4_p_2",
+          "picks": [
+            {
+              "creature": "NpcDrownedThane",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcdrownedthane_z4",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 9.0,
+          "leash": 12.5,
+          "hpMul": 1.0,
+          "damageMul": 0.6142,
+          "difficulty": 4,
+          "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 9.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
         }
       ],
       "services": [],
@@ -1438,6 +1497,33 @@
           ],
           "yaw": 197.6,
           "note": "NPC15PLACE z5_b member 3 (NpcCedarArcher): patrol group z5_b, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
+        },
+        {
+          "id": "bandit_z5_p_1",
+          "pos": [
+            -3.0,
+            191.5
+          ],
+          "yaw": 155.2,
+          "note": "ENCOUNTERS v1 pre-boss fodder z5_p member 1 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
+        },
+        {
+          "id": "bandit_z5_p_2",
+          "pos": [
+            1.5,
+            189.5
+          ],
+          "yaw": 198.4,
+          "note": "ENCOUNTERS v1 pre-boss fodder z5_p member 2 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
+        },
+        {
+          "id": "bandit_z5_p_3",
+          "pos": [
+            -0.5,
+            195.5
+          ],
+          "yaw": 177.3,
+          "note": "ENCOUNTERS v1 pre-boss fodder z5_p member 3 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
         }
       ],
       "spawns": [
@@ -1504,7 +1590,7 @@
         },
         {
           "id": "bandit_z5_a_3",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_z5_a_3",
           "picks": [
             {
@@ -1544,7 +1630,7 @@
         },
         {
           "id": "bandit_z5_b_2",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_z5_b_2",
           "picks": [
             {
@@ -1581,6 +1667,66 @@
           "damageMul": 0.5669,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcCedarArcher.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z5_p_1",
+          "enabled": true,
+          "spot": "bandit_z5_p_1",
+          "picks": [
+            {
+              "creature": "NpcBarkSentinel",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcbarksentinel_z5",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 12.0,
+          "leash": 14.0,
+          "hpMul": 1.12,
+          "damageMul": 0.6615,
+          "difficulty": 4,
+          "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 12.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
+        },
+        {
+          "id": "bandit_z5_p_2",
+          "enabled": true,
+          "spot": "bandit_z5_p_2",
+          "picks": [
+            {
+              "creature": "NpcRootDruid",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcrootdruid_z5",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 12.0,
+          "leash": 14.0,
+          "hpMul": 1.12,
+          "damageMul": 0.7561,
+          "difficulty": 6,
+          "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 12.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
+        },
+        {
+          "id": "bandit_z5_p_3",
+          "enabled": true,
+          "spot": "bandit_z5_p_3",
+          "picks": [
+            {
+              "creature": "NpcCedarArcher",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npccedararcher_z5",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 12.0,
+          "leash": 14.0,
+          "hpMul": 1.12,
+          "damageMul": 0.5669,
+          "difficulty": 4,
+          "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 12.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
         }
       ],
       "services": [],
@@ -1744,6 +1890,33 @@
           ],
           "yaw": 174.3,
           "note": "NPC15PLACE z6_b member 3 (NpcHuntsman): patrol group z6_b, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
+        },
+        {
+          "id": "bandit_z6_p_1",
+          "pos": [
+            -3.0,
+            259.0
+          ],
+          "yaw": 156.8,
+          "note": "ENCOUNTERS v1 pre-boss fodder z6_p member 1 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
+        },
+        {
+          "id": "bandit_z6_p_2",
+          "pos": [
+            3.0,
+            261.0
+          ],
+          "yaw": 198.4,
+          "note": "ENCOUNTERS v1 pre-boss fodder z6_p member 2 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
+        },
+        {
+          "id": "bandit_z6_p_3",
+          "pos": [
+            0.0,
+            264.5
+          ],
+          "yaw": 180.0,
+          "note": "ENCOUNTERS v1 pre-boss fodder z6_p member 3 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
         }
       ],
       "spawns": [
@@ -1886,6 +2059,66 @@
           "damageMul": 0.7019,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcHuntsman.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "bandit_z6_p_1",
+          "enabled": true,
+          "spot": "bandit_z6_p_1",
+          "picks": [
+            {
+              "creature": "NpcAntlerKnight",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcantlerknight_z6",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 13.0,
+          "leash": 15.5,
+          "hpMul": 1.3846,
+          "damageMul": 0.819,
+          "difficulty": 4,
+          "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 13.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
+        },
+        {
+          "id": "bandit_z6_p_2",
+          "enabled": true,
+          "spot": "bandit_z6_p_2",
+          "picks": [
+            {
+              "creature": "NpcHoundMaster",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npchoundmaster_z6",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 13.0,
+          "leash": 15.5,
+          "hpMul": 1.3846,
+          "damageMul": 0.9361,
+          "difficulty": 6,
+          "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 13.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
+        },
+        {
+          "id": "bandit_z6_p_3",
+          "enabled": true,
+          "spot": "bandit_z6_p_3",
+          "picks": [
+            {
+              "creature": "NpcHuntsman",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npchuntsman_z6",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 13.0,
+          "leash": 15.5,
+          "hpMul": 1.3846,
+          "damageMul": 0.7019,
+          "difficulty": 4,
+          "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 13.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
         }
       ],
       "services": [],
@@ -2074,11 +2307,11 @@
           "radius": 2.0,
           "toZone": "z7_market2",
           "toSpot": "arrive_from_prev",
-          "unlockKilledSpawn": "z7_beyond_warden",
+          "unlockKilledSpawn": "z6_erlking",
           "sticky": true,
           "visual": "none",
           "endScreen": "alpha_end",
-          "note": "LOCKED FOR THE ALPHA: GateOpen() = ZoneSave.GateUnlocked(id), set only when z7_beyond_warden is killed; that spawn is disabled, so the gate never opens. Data only, no code."
+          "note": "LOCKED FOR THE ALPHA: GateOpen() = ZoneSave.GateUnlocked(id), ENDKILL v1: with crossing.endRequiresBossKill true the end screen needs z6_erlking killed (sticky unlock, or the spawn is dead now); false = always open."
         }
       ]
     }

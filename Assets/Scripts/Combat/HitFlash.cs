@@ -73,6 +73,13 @@ public class HitFlash : MonoBehaviour
     public static bool IsFlashing(DuelFighter f) { State s; return inst != null && f != null && inst.states.TryGetValue(f, out s) && s.active; }
     public static float Amount(DuelFighter f) { State s; return inst != null && f != null && inst.states.TryGetValue(f, out s) && s.active ? s.k : 0f; }
 
+    // BOSSPHASES C1: flash a fighter with a synthetic row (BossPhase roar). No-op when hit_flash is off or the runner does not exist yet. Same restore path as a hit flash.
+    public static void Flash(DuelFighter f, HitFlashTable.Row row)
+    {
+        if (inst == null || f == null || row == null || !HitFlashTable.Get().enabled) return;
+        inst.Begin(f, row);
+    }
+
     void OnEvent(CombatEvent e)
     {
         var D = HitFlashTable.Get(); if (!D.enabled || e.type != "Hit" || e.target == null) return;

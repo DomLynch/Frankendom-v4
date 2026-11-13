@@ -33,8 +33,8 @@ using UnityEngine;
 [Serializable] public class CtStep
 {
     public string id = "", kind = "", zone = "", spot = "", name = ""; public float[] pos = new float[0]; public bool run = true;
-    public float seconds, timeoutS = 60f, arriveM = 1.5f, untilGapM; public int untilEngaged; public bool cycle; public string[] revive = new string[0];
-    public string startZone = "", startSpot = "", boss = ""; public float killAfter, killWaitS = 120f, gapS = 1.5f; public int count = 1;   // CODE5 v1: startZone/startSpot = begin at a zone spot (copy save); boss+killAfter = kill that spawn N s after it engages; kind forceDeath: count deaths of Joan
+    public float seconds, timeoutS = 60f, arriveM = 1.5f, untilGapM; public int untilEngaged; public bool cycle, heavy; public string special = ""; public float specialEveryS = 2.5f;   /* SPECIALSTEP (QA): special = "special1".."special3": press that ability slot when in range (every specialEveryS s) instead of the normal strike */    /* HEAVYSTEP: dev2 QA, step.heavy = charge and release heavy_overhead instead of the light/cycle strike */ public string[] revive = new string[0];
+    public string startZone = "", startSpot = "", boss = ""; public float killAfter, killWaitS = 120f, gapS = 1.5f, hpLeft;   /* HPLEFT v1 (QA): > 0 = at killAfter leave the boss at this many hit points and let Joan's own blow kill it (a real killing blow: kill slow-mo, kill stop) */ public int count = 1;   // CODE5 v1: startZone/startSpot = begin at a zone spot (copy save); boss+killAfter = kill that spawn N s after it engages; kind forceDeath: count deaths of Joan
     public string stall = "", action = "", item = "";   // CLOSE5B v1: kind trade (stall id of market.json, action sell|buy, item gear id, '' = first sellable / buyable line), kind equip (item, '' = last picked up / bought; action unequip), kind pickup (item, '' = nearest)
 }
 [Serializable] public class CtScene

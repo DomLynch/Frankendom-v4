@@ -129,5 +129,12 @@
       }
     ],
     "requireClips": true
+  },
+  "phase2": {
+    "_about": "BOSSPHASES: INERT until BellyBite.ai reads BossPhase.IsOn(df) (code C3). Phase 2 = the grab is hungrier. TUNING.",
+    "chance": 0.4,
+    "cooldownTicks": 300,
+    "minGap": 1.2,
+    "maxGap": 2.8
   }
 }

@@ -1,0 +1,670 @@
+{
+  "_about": "ABILITIES v1 (laneABILITIES, STAGED, UNPROVEN). One row = one ability. Read by the new Combat\\AbilityTable.cs (hot reloadable via data_watcher.json). Default / missing file = today's two specials, nothing else. slot 0,1 = the weapon specials (keys 1/Z, 2/X: DuelFighter special1Cd / special2Cd), slot 2,3 = the always-on pair (C shield bash, B riposte/counter). weapons[] = weapon ids (WeaponStats.id; '' = no weapon item = default sword; '*' = every weapon); characters[] = who may use it (Joan only: no abilities for monsters). moveId = the id in move-defs.json (or the inline 'move' block, merged as a new MoveDef when the id is not in move-defs.json). clip = animator state fallback; attackClip = the attack_clips.json row (contact-synced) staged in staged_attack_clips_rows.json. cooldownS seconds, staminaCost 0 + exactToday = today's free special (refund path), >0 = charged on start and refused below it. feel = id into feel[] (hit-stop ms, camera weight, cue ids, reaction location), expanded into the staged rows of hit_stop / camera_impact / cues / hit_reactions. arcDeg 0 = the global hit arc.",
+  "enabled": true,
+  "fallbackWeapon": "knight_sword",
+  "initialCooldownTicks": 120,
+  "swapLockTicks": 120,
+  "evade": {
+    "roll": 80,
+    "sidestep": 60,
+    "backstep": 45,
+    "moveId": "skill_dodgestrike",
+    "keyAliasOfRiposteKey": true
+  },
+  "abilities": [
+    {
+      "id": "skull_crack",
+      "name": "Skull Crack",
+      "slot": 0,
+      "weapons": [
+        "",
+        "knight_sword",
+        "bandit_sword"
+      ],
+      "characters": [
+        "Joan"
+      ],
+      "moveId": "skill_cleave",
+      "glyph": "slash",
+      "icon": "",
+      "key": "1",
+      "keyPad": "JoystickButton3",
+      "clip": "special_skullcrack",
+      "cooldownS": 9.0,
+      "staminaCost": 0,
+      "trigger": "press",
+      "feel": "fl_sword_overhead",
+      "move": null,
+      "attackClip": null,
+      "exactToday": true,
+      "note": "EXACT today: move row skill_cleave in move-defs.json (32/5/31, dmg 22, posture 32, stagger 28, reach 1.6, overhead, stepIn .55). cooldownS 9 = rules-defs special.cooldownTicks 540. staminaCost 0 = today (DuelFighter.cs:268 refunds the move's stamina). No attack_clips row: plays the animator state special_skullcrack by whole-clip squash (ClipFor), as today.",
+      "flags": []
+    },
+    {
+      "id": "whirlwind",
+      "name": "Whirlwind",
+      "slot": 1,
+      "weapons": [
+        "",
+        "knight_sword",
+        "bandit_sword"
+      ],
+      "characters": [
+        "Joan"
+      ],
+      "moveId": "skill_reaping",
+      "glyph": "crescent",
+      "icon": "",
+      "key": "2",
+      "keyPad": "JoystickButton2",
+      "clip": "special_whirlwind",
+      "cooldownS": 9.0,
+      "staminaCost": 0,
+      "trigger": "press",
+      "feel": "fl_sword_wide",
+      "move": null,
+      "attackClip": null,
+      "exactToday": true,
+      "note": "EXACT today: move row skill_reaping (32/5/31, dmg 28, posture 32, stagger 28, reach 2.0, direction right, poise 24, chip .6). Same cooldown / free cost / clip path as Skull Crack.",
+      "flags": []
+    },
+    {
+      "id": "spear_lunge",
+      "name": "Lunge",
+      "slot": 0,
+      "weapons": [
+        "boar_spear"
+      ],
+      "characters": [
+        "Joan"
+      ],
+      "moveId": "skill_spear_lunge",
+      "glyph": "spear",
+      "icon": "",
+      "key": "1",
+      "keyPad": "JoystickButton3",
+      "clip": "thrust",
+      "cooldownS": 6.0,
+      "staminaCost": 26,
+      "trigger": "press",
+      "feel": "fl_spear_lunge",
+      "move": {
+        "direction": "thrust",
+        "windup": 14,
+        "active": 5,
+        "recovery": 22,
+        "damage": 20,
+        "stamina": 0,
+        "staminaDamage": 20,
+        "stagger": 30,
+        "poise": 0,
+        "poiseFrom": 0,
+        "breaksGuard": false,
+        "chip": 0.4,
+        "parryable": true,
+        "knockback": 8,
+        "stepIn": 1.6,
+        "feintUntil": 0,
+        "reach": 3.1,
+        "vsGuard": null,
+        "posture": 26,
+        "chamber": null,
+        "charges": false,
+        "arcDeg": 0
+      },
+      "attackClip": {
+        "clip": "atk_thrust",
+        "startTime": 0.05,
+        "contactTime": 0.4,
+        "endTime": 0.95,
+        "stepIn": 1.6,
+        "maxStep": 1.9,
+        "note": "reuses Joan thrust clip, longer step-in"
+      },
+      "exactToday": false,
+      "note": "fast, long, narrow: 41 ticks, 3.1 m, thrust (guard centre/top). Dodgeable sideways. Replaces the thin skill_lunge row (that id stays for NPCs).",
+      "flags": []
+    },
+    {
+      "id": "spear_sweep",
+      "name": "Sweep",
+      "slot": 1,
+      "weapons": [
+        "boar_spear"
+      ],
+      "characters": [
+        "Joan"
+      ],
+      "moveId": "skill_spear_sweep",
+      "glyph": "arc",
+      "icon": "",
+      "key": "2",
+      "keyPad": "JoystickButton2",
+      "clip": "light_attack_L",
+      "cooldownS": 7.0,
+      "staminaCost": 22,
+      "trigger": "press",
+      "feel": "fl_spear_sweep",
+      "move": {
+        "direction": "left",
+        "windup": 26,
+        "active": 9,
+        "recovery": 26,
+        "damage": 14,
+        "stamina": 0,
+        "staminaDamage": 20,
+        "stagger": 40,
+        "poise": 0,
+        "poiseFrom": 0,
+        "breaksGuard": false,
+        "chip": 0.4,
+        "parryable": true,
+        "knockback": 14,
+        "stepIn": 0.0,
+        "feintUntil": 0,
+        "reach": 2.6,
+        "vsGuard": null,
+        "posture": 22,
+        "chamber": null,
+        "charges": false,
+        "arcDeg": 150
+      },
+      "attackClip": {
+        "clip": "atk_cut_in",
+        "startTime": 0.8,
+        "contactTime": 1.32,
+        "endTime": 1.7,
+        "stepIn": 0.0,
+        "maxStep": 0.0,
+        "note": "reuses the left cut clip"
+      },
+      "exactToday": false,
+      "note": "wide 9-tick active window, big knockback 14 to push the foe out of the spear's dead zone; low damage. Wants arcDeg 150 (needs the 1-line MoveDef.arcDeg seam; without it the global hit arc applies).",
+      "flags": [
+        "arcDeg 150 needs MoveDef.arcDeg seam (Duel.cs:57)",
+        "clip reused from light_left (no dedicated sweep clip)"
+      ]
+    },
+    {
+      "id": "axe_cleave",
+      "name": "Cleave",
+      "slot": 0,
+      "weapons": [
+        "war_axe"
+      ],
+      "characters": [
+        "Joan"
+      ],
+      "moveId": "skill_axe_cleave",
+      "glyph": "axe",
+      "icon": "",
+      "key": "1",
+      "keyPad": "JoystickButton3",
+      "clip": "atk_cut_out",
+      "cooldownS": 10.0,
+      "staminaCost": 34,
+      "trigger": "press",
+      "feel": "fl_axe_cleave",
+      "move": {
+        "direction": "right",
+        "windup": 40,
+        "active": 7,
+        "recovery": 38,
+        "damage": 30,
+        "stamina": 0,
+        "staminaDamage": 40,
+        "stagger": 36,
+        "poise": 20,
+        "poiseFrom": 20,
+        "breaksGuard": false,
+        "chip": 0.6,
+        "parryable": true,
+        "knockback": 9,
+        "stepIn": 0.4,
+        "feintUntil": 0,
+        "reach": 2.0,
+        "vsGuard": null,
+        "posture": 48,
+        "chamber": null,
+        "charges": false,
+        "arcDeg": 0
+      },
+      "attackClip": {
+        "clip": "atk_cut_out",
+        "startTime": 0.35,
+        "contactTime": 0.85,
+        "endTime": 1.5,
+        "stepIn": 0.4,
+        "maxStep": 0.6,
+        "note": "reuses the right cut clip (heavy_right timings)"
+      },
+      "exactToday": false,
+      "note": "horizontal heavy cut, hyper-armour from tick 20 (poise 20), 85 ticks committed.",
+      "flags": [
+        "clip reused from heavy_right"
+      ]
+    },
+    {
+      "id": "axe_chop",
+      "name": "Chop",
+      "slot": 1,
+      "weapons": [
+        "war_axe"
+      ],
+      "characters": [
+        "Joan"
+      ],
+      "moveId": "skill_axe_chop",
+      "glyph": "chop",
+      "icon": "",
+      "key": "2",
+      "keyPad": "JoystickButton2",
+      "clip": "atk_heavy",
+      "cooldownS": 13.0,
+      "staminaCost": 48,
+      "trigger": "press",
+      "feel": "fl_axe_chop",
+      "move": {
+        "direction": "overhead",
+        "windup": 52,
+        "active": 6,
+        "recovery": 46,
+        "damage": 38,
+        "stamina": 0,
+        "staminaDamage": 45,
+        "stagger": 50,
+        "poise": 30,
+        "poiseFrom": 30,
+        "breaksGuard": true,
+        "chip": 0.4,
+        "parryable": true,
+        "knockback": 6,
+        "stepIn": 0.5,
+        "feintUntil": 0,
+        "reach": 1.9,
+        "vsGuard": null,
+        "posture": 62,
+        "chamber": null,
+        "charges": false,
+        "arcDeg": 0
+      },
+      "attackClip": {
+        "clip": "atk_heavy",
+        "startTime": 0.0,
+        "contactTime": 0.7,
+        "endTime": 1.0,
+        "stepIn": 0.5,
+        "maxStep": 0.7,
+        "note": "reuses the heavy overhead clip"
+      },
+      "exactToday": false,
+      "note": "slowest axe move (104 ticks), breaksGuard (the overhead's top guard is broken, not just chipped), highest damage of the bar.",
+      "flags": []
+    },
+    {
+      "id": "maul_slam",
+      "name": "Ground Slam",
+      "slot": 0,
+      "weapons": [
+        "iron_maul"
+      ],
+      "characters": [
+        "Joan"
+      ],
+      "moveId": "skill_maul_slam",
+      "glyph": "hammer",
+      "icon": "",
+      "key": "1",
+      "keyPad": "JoystickButton3",
+      "clip": "atk_heavy",
+      "cooldownS": 11.0,
+      "staminaCost": 40,
+      "trigger": "press",
+      "feel": "fl_maul_slam",
+      "move": {
+        "direction": "low",
+        "windup": 46,
+        "active": 8,
+        "recovery": 52,
+        "damage": 26,
+        "stamina": 0,
+        "staminaDamage": 40,
+        "stagger": 44,
+        "poise": 24,
+        "poiseFrom": 24,
+        "breaksGuard": false,
+        "chip": 0.4,
+        "parryable": true,
+        "knockback": 12,
+        "stepIn": 0.0,
+        "feintUntil": 0,
+        "reach": 2.2,
+        "vsGuard": null,
+        "posture": 54,
+        "chamber": null,
+        "charges": false,
+        "arcDeg": 120
+      },
+      "attackClip": {
+        "clip": "atk_heavy",
+        "startTime": 0.35,
+        "contactTime": 0.72,
+        "endTime": 1.15,
+        "stepIn": 0.0,
+        "maxStep": 0.0,
+        "note": "closest existing clip: light_overhead timings"
+      },
+      "exactToday": false,
+      "note": "direction low = any guard covers it (controls.json guard.match low = '*'): the slam is answered by timing, not by side. Hits legs (reaction row like skill_stomp).",
+      "flags": [
+        "NO ground-slam clip: overhead clip used, needs a slam clip for the look"
+      ]
+    },
+    {
+      "id": "maul_smash",
+      "name": "Smash",
+      "slot": 1,
+      "weapons": [
+        "iron_maul"
+      ],
+      "characters": [
+        "Joan"
+      ],
+      "moveId": "skill_maul_smash",
+      "glyph": "quake",
+      "icon": "",
+      "key": "2",
+      "keyPad": "JoystickButton2",
+      "clip": "atk_heavy",
+      "cooldownS": 16.0,
+      "staminaCost": 56,
+      "trigger": "press",
+      "feel": "fl_maul_smash",
+      "move": {
+        "direction": "overhead",
+        "windup": 64,
+        "active": 8,
+        "recovery": 60,
+        "damage": 48,
+        "stamina": 0,
+        "staminaDamage": 60,
+        "stagger": 60,
+        "poise": 40,
+        "poiseFrom": 40,
+        "breaksGuard": true,
+        "chip": 0.4,
+        "parryable": true,
+        "knockback": 18,
+        "stepIn": 0.3,
+        "feintUntil": 0,
+        "reach": 1.9,
+        "vsGuard": null,
+        "posture": 80,
+        "chamber": null,
+        "charges": false,
+        "arcDeg": 0
+      },
+      "attackClip": {
+        "clip": "atk_heavy",
+        "startTime": 0.0,
+        "contactTime": 0.7,
+        "endTime": 1.0,
+        "stepIn": 0.3,
+        "maxStep": 0.5,
+        "note": "heavy overhead clip, long windup ticks slow it down"
+      },
+      "exactToday": false,
+      "note": "v1 = fixed 64-tick telegraph (1.07 s), the biggest hit in the game; true hold-to-charge would need a charge hook (not in v1).",
+      "flags": [
+        "hold-to-charge is NOT built; fixed long windup instead",
+        "clip is the stock heavy overhead stretched by the 64-tick windup"
+      ]
+    },
+    {
+      "id": "shield_bash",
+      "name": "Shield Bash",
+      "slot": 2,
+      "weapons": [
+        "",
+        "knight_sword",
+        "boar_spear",
+        "bandit_sword"
+      ],
+      "characters": [
+        "Joan"
+      ],
+      "moveId": "skill_shieldbash",
+      "glyph": "shield",
+      "icon": "",
+      "key": "C",
+      "keyPad": "JoystickButton8",
+      "clip": "kick",
+      "cooldownS": 5.0,
+      "staminaCost": 22,
+      "trigger": "press",
+      "feel": "fl_bash",
+      "move": {
+        "direction": "thrust",
+        "windup": 14,
+        "active": 3,
+        "recovery": 24,
+        "damage": 6,
+        "stamina": 0,
+        "staminaDamage": 30,
+        "stagger": 55,
+        "poise": 0,
+        "poiseFrom": 0,
+        "breaksGuard": false,
+        "chip": 0.0,
+        "parryable": false,
+        "knockback": 10,
+        "stepIn": 0.5,
+        "feintUntil": 0,
+        "reach": 1.25,
+        "vsGuard": {
+          "stagger": 60,
+          "staminaDamage": 50
+        },
+        "posture": 34,
+        "chamber": null,
+        "charges": false,
+        "arcDeg": 0
+      },
+      "attackClip": null,
+      "exactToday": false,
+      "note": "fast 41-tick stagger tool: the foe staggers 55 ticks on a clean hit and 60 on a block (vsGuard, like the kick). Direction thrust: a centre/top guard still stops the damage (Dom's directional rule holds) but not the stagger. Key C (the kick key); on cooldown C falls back to the plain kick.",
+      "flags": [
+        "NO shield-bash clip: uses the kick state (a leg kick, not a shield push)",
+        "pad: no free face button, JoystickButton8 (L3) proposed"
+      ]
+    },
+    {
+      "id": "riposte_counter",
+      "name": "Riposte",
+      "slot": 3,
+      "weapons": [
+        "*"
+      ],
+      "characters": [
+        "Joan"
+      ],
+      "moveId": "riposte",
+      "glyph": "diamond",
+      "icon": "",
+      "key": "B",
+      "keyPad": "JoystickButton1",
+      "clip": "atk_riposte",
+      "cooldownS": 0.0,
+      "staminaCost": 0,
+      "trigger": "window",
+      "feel": "fl_riposte_today",
+      "move": null,
+      "attackClip": null,
+      "exactToday": false,
+      "note": "slot 4 is gated by TIMING not a cooldown, two windows on the one key B: (a) after a parry (riposteTicks > 0, FlowRiposteFree today) = move 'riposte'; (b) after a dodge that ate a swing (new evade window) = move 'skill_dodgestrike'. Icon lights only while a window is open.",
+      "flags": []
+    },
+    {
+      "id": "dodge_strike",
+      "name": "Dodge Strike",
+      "slot": 3,
+      "weapons": [
+        "*"
+      ],
+      "characters": [
+        "Joan"
+      ],
+      "moveId": "skill_dodgestrike",
+      "glyph": "diamond",
+      "icon": "",
+      "key": "B",
+      "keyPad": "JoystickButton1",
+      "clip": "atk_light_R",
+      "cooldownS": 0.0,
+      "staminaCost": 10,
+      "trigger": "evade",
+      "feel": "fl_dodgestrike",
+      "move": {
+        "direction": "right",
+        "windup": 10,
+        "active": 5,
+        "recovery": 20,
+        "damage": 28,
+        "stamina": 0,
+        "staminaDamage": 0,
+        "stagger": 30,
+        "poise": 0,
+        "poiseFrom": 0,
+        "breaksGuard": false,
+        "chip": 0.0,
+        "parryable": true,
+        "knockback": 4,
+        "stepIn": 0.55,
+        "feintUntil": 0,
+        "reach": 1.9,
+        "vsGuard": null,
+        "posture": 40,
+        "chamber": null,
+        "charges": false,
+        "arcDeg": 0
+      },
+      "attackClip": {
+        "clip": "atk_light_R",
+        "startTime": 0.1,
+        "contactTime": 0.6,
+        "endTime": 1.2,
+        "stepIn": 0.55,
+        "maxStep": 0.8,
+        "note": "the riposte-family slash clip"
+      },
+      "exactToday": false,
+      "note": "35 ticks, 28 dmg, 40 posture: only available for evadeWindow ticks after an i-frame swallowed a blow (roll 80, sidestep 60, backstep 45). Pressing B outside both windows does nothing (today's behaviour).",
+      "flags": [],
+      "altOf": "riposte_counter"
+    }
+  ],
+  "feel": {
+    "fl_sword_overhead": {
+      "note": "today's Skull Crack feel (special tier: 4 frames, camera special x1.3)",
+      "stopMs": 0,
+      "cam": 1.3,
+      "start": "whoosh_heavy",
+      "hit": "hit_heavy",
+      "extra": "",
+      "loc": "head",
+      "side": ""
+    },
+    "fl_sword_wide": {
+      "note": "today's Whirlwind feel",
+      "stopMs": 0,
+      "cam": 1.3,
+      "start": "whoosh_heavy",
+      "hit": "hit_heavy",
+      "extra": "",
+      "loc": "arm",
+      "side": "right"
+    },
+    "fl_spear_lunge": {
+      "stopMs": 55,
+      "cam": 0.9,
+      "start": "whoosh_light",
+      "hit": "flesh_stab",
+      "extra": "",
+      "loc": "torso",
+      "side": ""
+    },
+    "fl_spear_sweep": {
+      "stopMs": 60,
+      "cam": 1.0,
+      "start": "whoosh_heavy",
+      "hit": "hit_flesh",
+      "extra": "",
+      "loc": "arm",
+      "side": "left"
+    },
+    "fl_axe_cleave": {
+      "stopMs": 90,
+      "cam": 1.4,
+      "start": "whoosh_heavy",
+      "hit": "hit_heavy",
+      "extra": "flesh_cut",
+      "loc": "arm",
+      "side": "right"
+    },
+    "fl_axe_chop": {
+      "stopMs": 120,
+      "cam": 1.7,
+      "start": "whoosh_heavy",
+      "hit": "hit_heavy",
+      "extra": "bone_crack",
+      "loc": "head",
+      "side": ""
+    },
+    "fl_maul_slam": {
+      "stopMs": 110,
+      "cam": 1.8,
+      "start": "whoosh_heavy",
+      "hit": "hit_heavy",
+      "extra": "bone_crack",
+      "loc": "legs",
+      "side": ""
+    },
+    "fl_maul_smash": {
+      "stopMs": 140,
+      "cam": 2.1,
+      "start": "charge_foe",
+      "hit": "hit_heavy",
+      "extra": "bone_crack",
+      "loc": "head",
+      "side": ""
+    },
+    "fl_bash": {
+      "stopMs": 70,
+      "cam": 1.0,
+      "start": "whoosh_light",
+      "hit": "hit_kick",
+      "extra": "block",
+      "loc": "torso",
+      "side": ""
+    },
+    "fl_riposte_today": {
+      "note": "today (hit_stop riposte 55 ms, camera riposte 1.0): unchanged",
+      "stopMs": 55,
+      "cam": 1.0,
+      "start": "",
+      "hit": "",
+      "extra": "",
+      "loc": "torso",
+      "side": ""
+    },
+    "fl_dodgestrike": {
+      "stopMs": 60,
+      "cam": 1.1,
+      "start": "whoosh_light",
+      "hit": "flesh_cut",
+      "extra": "",
+      "loc": "arm",
+      "side": "right"
+    }
+  }
+}

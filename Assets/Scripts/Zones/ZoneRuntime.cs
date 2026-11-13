@@ -504,7 +504,12 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     // ------------------------------------------------------------------ gates
     bool GateOpen(ZGate g)
     {
-        if (g.endScreen.Length > 0) return true;   // ENDALPHA v1: the end gate is always open, it shows a screen instead of crossing
+        if (g.endScreen.Length > 0)   // ENDALPHA v1: the end gate shows a screen instead of crossing; ENDKILL v1: with crossing.endRequiresBossKill it needs its unlockKilledSpawn killed (sticky unlock, or the spawn is dead right now)
+        {
+            if (!T.crossing.endRequiresBossKill || g.unlockKilledSpawn.Length == 0) return true;
+            if (ZoneSave.GateUnlocked(g.id)) return true;
+            ZZone ez; var es = ZoneData.FindSpawn(g.unlockKilledSpawn, out ez); return es != null && !ZoneCore.Look(ZoneSave.Rec(ez.id, es.id), ZoneCore.NowMs()).alive;
+        }
         if (g.unlockKilledSpawn.Length == 0) return true;
         if (g.sticky) return ZoneSave.GateUnlocked(g.id);
         ZZone uz; var s = ZoneData.FindSpawn(g.unlockKilledSpawn, out uz); if (s == null) return false;

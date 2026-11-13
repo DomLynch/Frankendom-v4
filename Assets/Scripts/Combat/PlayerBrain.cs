@@ -72,7 +72,7 @@ public class PlayerBrain : MonoBehaviour
         }
         if (InputMap.Down("heavy", KeyCode.G)) df.Press("heavy");
         if (InputMap.Down("thrust", KeyCode.T)) df.Press("thrust");
-        if (InputMap.Down("kick", KeyCode.C)) df.Press("kick");
+        if (InputMap.Down("kick", KeyCode.C)) df.Press(df.SlotReady(2) ? "special3" : "kick");   // ABILITIES v1: C = shield bash while it is ready (abilities on), else the plain kick as today
         if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Z)) df.Press("special1");
         if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.X)) df.Press("special2");
         // dodge keys (dodge.json input): "immediate" = the key decides on key-down (roll / sidestep by the held direction, see DodgeFromKey);

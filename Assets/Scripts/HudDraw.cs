@@ -125,6 +125,11 @@ public static class HudDraw
         t.SetPixels32(px); t.Apply(false, false); texs[key] = t; return t;
     }
     static float Cov(float d) { return Mathf.Clamp01(0.5f - d); }
+    static Texture2D UnionGlyph(string key, params Vector2[][] polys)   // ABILITYICONS v1: union of convex CCW polygons in the 128 box
+    {
+        var ns = new Vector2[polys.Length][]; for (int i = 0; i < polys.Length; i++) PolyNormals(polys[i], out ns[i]);
+        return Make(key, 128, 128, (x, y) => { float a = 0f; for (int i = 0; i < polys.Length; i++) a = Mathf.Max(a, Cov(PolyD(polys[i], ns[i], x, y))); return a; });
+    }
 
     // convex polygon (CCW, y up) signed distance in texels: > 0 outside
     static float PolyD(Vector2[] p, Vector2[] n, float x, float y)
@@ -229,6 +234,14 @@ public static class HudDraw
                     var B = new[] { new Vector2(104f, 10f), new Vector2(118f, 24f), new Vector2(24f, 118f), new Vector2(10f, 104f) }; Vector2[] NA, NB; PolyNormals(A, out NA); PolyNormals(B, out NB);
                     return Make("g_cross", 128, 128, (x, y) => Mathf.Max(Cov(PolyD(A, NA, x, y)), Cov(PolyD(B, NB, x, y))));
                 }
+            case "spear": return UnionGlyph("g_spear", new[] { new Vector2(14f, 22f), new Vector2(22f, 14f), new Vector2(96f, 88f), new Vector2(88f, 96f) }, new[] { new Vector2(78f, 100f), new Vector2(100f, 78f), new Vector2(120f, 120f) });   // ABILITYICONS v1
+            case "axe": return UnionGlyph("g_axe", new[] { new Vector2(18f, 30f), new Vector2(30f, 18f), new Vector2(104f, 92f), new Vector2(92f, 104f) }, new[] { new Vector2(62f, 84f), new Vector2(100f, 60f), new Vector2(116f, 100f), new Vector2(76f, 110f) });
+            case "chop": return UnionGlyph("g_chop", new[] { new Vector2(58f, 18f), new Vector2(70f, 36f), new Vector2(30f, 112f), new Vector2(12f, 100f) }, new[] { new Vector2(116f, 100f), new Vector2(98f, 112f), new Vector2(58f, 36f), new Vector2(70f, 18f) });
+            case "hammer": return UnionGlyph("g_hammer", new[] { new Vector2(18f, 26f), new Vector2(26f, 18f), new Vector2(80f, 72f), new Vector2(72f, 80f) }, new[] { new Vector2(60f, 100f), new Vector2(100f, 60f), new Vector2(116f, 76f), new Vector2(76f, 116f) });
+            case "quake": return UnionGlyph("g_quake", new[] { new Vector2(20f, 14f), new Vector2(34f, 14f), new Vector2(28f, 70f) }, new[] { new Vector2(57f, 14f), new Vector2(71f, 14f), new Vector2(64f, 110f) }, new[] { new Vector2(94f, 14f), new Vector2(108f, 14f), new Vector2(101f, 70f) });
+            case "shield": return UnionGlyph("g_shield", new[] { new Vector2(24f, 64f), new Vector2(64f, 14f), new Vector2(104f, 64f), new Vector2(104f, 108f), new Vector2(24f, 108f) });
+            case "arc":
+                return Make("g_arc", 128, 128, (x, y) => { float d = Mathf.Abs(Mathf.Sqrt((x - 64f) * (x - 64f) + (y - 96f) * (y - 96f)) - 56f) - 9f; return Mathf.Min(Cov(d), Cov(y - 92f)); });
             default:
                 {
                     var Q = new[] { new Vector2(10f, 64f), new Vector2(64f, 10f), new Vector2(118f, 64f), new Vector2(64f, 118f) }; Vector2[] N; PolyNormals(Q, out N);

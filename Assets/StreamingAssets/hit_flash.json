@@ -10,13 +10,13 @@
   "rows": [
     {
       "match": "Pitborn",
-      "enabled": false,
-      "onlyDeathblow": true,
-      "onlyHeavy": false,
+      "enabled": true,
+      "onlyDeathblow": false,
+      "onlyHeavy": true,
       "skipOnKill": true,
       "seconds": 0.1,
       "riseSeconds": 0.02,
-      "strength": 0.45,
+      "strength": 0.70,
       "color": [
         1.0,
         0.82,
@@ -58,9 +58,9 @@
     },
     {
       "match": "Sobek",
-      "enabled": false,
-      "onlyDeathblow": true,
-      "onlyHeavy": false,
+      "enabled": true,
+      "onlyDeathblow": false,
+      "onlyHeavy": true,
       "skipOnKill": true,
       "seconds": 0.1,
       "riseSeconds": 0.02,
@@ -74,9 +74,9 @@
     },
     {
       "match": "*",
-      "enabled": false,
-      "onlyDeathblow": true,
-      "onlyHeavy": false,
+      "enabled": true,
+      "onlyDeathblow": false,
+      "onlyHeavy": true,
       "skipOnKill": true,
       "seconds": 0.1,
       "riseSeconds": 0.02,

@@ -368,6 +368,1731 @@
       "lod": -1,
       "ground": "bottom",
       "clearance_note": "8a: terrain -1.06, row sat 0.32 m high"
+    },
+    {
+      "id": "dress_z5_00_stone",
+      "op": "add",
+      "src": "z6_standing_ruin_pillar_4_0",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        31.44,
+        -0.15,
+        180.59
+      ],
+      "rotEuler": [
+        -2.5,
+        163.6,
+        -1.3
+      ],
+      "scale": 0.42,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 0: standing_ruin_pillar_4 abs scale 0.483 (src z6_standing_ruin_pillar_4_0 x 1.150), footprint r 0.86 m"
+    },
+    {
+      "id": "dress_z5_01_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        27.92,
+        -0.05,
+        183.61
+      ],
+      "rotEuler": [
+        -0.5,
+        339.1,
+        1.5
+      ],
+      "scale": 3.376,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 0: clutter_root_crown abs scale 2.768 (src clutter_z3_1 x 0.820), footprint r 1.78 m"
+    },
+    {
+      "id": "dress_z5_02_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        32.09,
+        -0.02,
+        184.53
+      ],
+      "rotEuler": [
+        0.0,
+        31.3,
+        0.0
+      ],
+      "scale": 1.687,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 0: clutter_bone_pile abs scale 2.063 (src clutter_z4_2 x 1.223), footprint r 0.55 m"
+    },
+    {
+      "id": "dress_z5_03_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 2,
+      "pos": [
+        35.97,
+        -0.03,
+        180.17
+      ],
+      "rotEuler": [
+        -0.3,
+        112.5,
+        -2.3
+      ],
+      "scale": 1.523,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 0: hero_debris_rubble abs scale 1.462 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.10 m"
+    },
+    {
+      "id": "dress_z5_04_stump",
+      "op": "add",
+      "src": "z5d_stump_mid_tower_stump_21",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        -30.35,
+        -0.12,
+        214.39
+      ],
+      "rotEuler": [
+        1.3,
+        171.2,
+        0.5
+      ],
+      "scale": 0.307,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 1: mid_tower_stump abs scale 0.335 (src z5d_stump_mid_tower_stump_21 x 1.090), footprint r 1.74 m"
+    },
+    {
+      "id": "dress_z5_05_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -27.19,
+        -0.02,
+        212.06
+      ],
+      "rotEuler": [
+        0.0,
+        145.5,
+        0.0
+      ],
+      "scale": 1.316,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 1: clutter_bone_pile abs scale 1.609 (src clutter_z4_2 x 1.223), footprint r 0.43 m"
+    },
+    {
+      "id": "dress_z5_06_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "z5_humbaba",
+      "ring": 2,
+      "pos": [
+        -33.63,
+        -0.02,
+        216.68
+      ],
+      "rotEuler": [
+        0.0,
+        315.6,
+        0.0
+      ],
+      "scale": 1.833,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 1: clutter_bone_pile abs scale 2.242 (src clutter_z4_2 x 1.223), footprint r 0.60 m"
+    },
+    {
+      "id": "dress_z5_07_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -33.25,
+        -0.03,
+        210.49
+      ],
+      "rotEuler": [
+        -1.9,
+        118.2,
+        -1.2
+      ],
+      "scale": 2.191,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 1: hero_debris_rubble abs scale 2.103 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.58 m"
+    },
+    {
+      "id": "dress_z5_08_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 2,
+      "pos": [
+        -31.23,
+        -0.03,
+        218.47
+      ],
+      "rotEuler": [
+        1.7,
+        218.9,
+        -1.7
+      ],
+      "scale": 1.729,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 1: hero_debris_rubble abs scale 1.660 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.25 m"
+    },
+    {
+      "id": "dress_z5_09_log",
+      "op": "add",
+      "src": "z5_wall_trunk_W",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        20.53,
+        -0.12,
+        182.64
+      ],
+      "rotEuler": [
+        -2.0,
+        251.9,
+        2.3
+      ],
+      "scale": 0.252,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 2: mid_spire_fallen abs scale 0.189 (src z5_wall_trunk_W x 0.750), footprint r 2.39 m"
+    },
+    {
+      "id": "dress_z5_10_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        15.99,
+        -0.03,
+        183.94
+      ],
+      "rotEuler": [
+        2.6,
+        175.2,
+        -2.7
+      ],
+      "scale": 2.04,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 2: hero_debris_rubble abs scale 1.958 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.48 m"
+    },
+    {
+      "id": "dress_z5_11_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        19.73,
+        -0.03,
+        187.62
+      ],
+      "rotEuler": [
+        -0.1,
+        288.6,
+        -2.1
+      ],
+      "scale": 1.398,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 2: hero_debris_rubble abs scale 1.342 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.01 m"
+    },
+    {
+      "id": "dress_z5_12_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        23.21,
+        -0.02,
+        185.97
+      ],
+      "rotEuler": [
+        0.0,
+        126.3,
+        0.0
+      ],
+      "scale": 1.876,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 2: clutter_bone_pile abs scale 2.294 (src clutter_z4_2 x 1.223), footprint r 0.62 m"
+    },
+    {
+      "id": "dress_z5_13_slab",
+      "op": "add",
+      "src": "z5d_fallen_mid_slab_heap_a_23",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -23.73,
+        -0.1,
+        212.19
+      ],
+      "rotEuler": [
+        1.3,
+        16.8,
+        2.0
+      ],
+      "scale": 0.461,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 3: mid_slab_heap_a abs scale 0.318 (src z5d_fallen_mid_slab_heap_a_23 x 0.690), footprint r 1.54 m"
+    },
+    {
+      "id": "dress_z5_14_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        -19.69,
+        -0.05,
+        212.32
+      ],
+      "rotEuler": [
+        1.3,
+        122.9,
+        -0.8
+      ],
+      "scale": 2.871,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 3: clutter_root_crown abs scale 2.354 (src clutter_z3_1 x 0.820), footprint r 1.52 m"
+    },
+    {
+      "id": "dress_z5_15_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -22.28,
+        -0.05,
+        208.25
+      ],
+      "rotEuler": [
+        -0.5,
+        201.6,
+        1.2
+      ],
+      "scale": 2.356,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 3: clutter_root_crown abs scale 1.932 (src clutter_z3_1 x 0.820), footprint r 1.24 m"
+    },
+    {
+      "id": "dress_z5_16_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        -26.16,
+        -0.03,
+        215.69
+      ],
+      "rotEuler": [
+        -1.2,
+        42.5,
+        -0.2
+      ],
+      "scale": 1.673,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 3: hero_debris_rubble abs scale 1.606 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.21 m"
+    },
+    {
+      "id": "dress_z5_17_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        -22.65,
+        -0.02,
+        216.13
+      ],
+      "rotEuler": [
+        0.0,
+        357.5,
+        0.0
+      ],
+      "scale": 1.73,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 3: clutter_bone_pile abs scale 2.116 (src clutter_z4_2 x 1.223), footprint r 0.57 m"
+    },
+    {
+      "id": "dress_z5_18_stone",
+      "op": "add",
+      "src": "z6_standing_ruin_pillar_4_0",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        31.55,
+        -0.15,
+        191.4
+      ],
+      "rotEuler": [
+        -0.6,
+        221.9,
+        1.2
+      ],
+      "scale": 0.343,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 4: standing_ruin_pillar_4 abs scale 0.395 (src z6_standing_ruin_pillar_4_0 x 1.150), footprint r 0.70 m"
+    },
+    {
+      "id": "dress_z5_19_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        28.97,
+        -0.02,
+        191.8
+      ],
+      "rotEuler": [
+        0.0,
+        172.3,
+        0.0
+      ],
+      "scale": 1.675,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 4: clutter_bone_pile abs scale 2.048 (src clutter_z4_2 x 1.223), footprint r 0.55 m"
+    },
+    {
+      "id": "dress_z5_20_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        35.63,
+        -0.02,
+        191.32
+      ],
+      "rotEuler": [
+        0.0,
+        73.6,
+        0.0
+      ],
+      "scale": 1.641,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 4: clutter_bone_pile abs scale 2.007 (src clutter_z4_2 x 1.223), footprint r 0.54 m"
+    },
+    {
+      "id": "dress_z5_21_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        29.85,
+        -0.03,
+        195.77
+      ],
+      "rotEuler": [
+        0.4,
+        273.9,
+        -3.0
+      ],
+      "scale": 2.159,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 4: hero_debris_rubble abs scale 2.073 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.56 m"
+    },
+    {
+      "id": "dress_z5_22_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -35.38,
+        -0.05,
+        213.63
+      ],
+      "rotEuler": [
+        -0.9,
+        131.2,
+        0.6
+      ],
+      "scale": 2.439,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 5: clutter_root_crown abs scale 2.000 (src clutter_z3_1 x 0.820), footprint r 1.29 m"
+    },
+    {
+      "id": "dress_z5_23_stone",
+      "op": "add",
+      "src": "z6_standing_ruin_pillar_4_0",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        32.45,
+        -0.15,
+        231.63
+      ],
+      "rotEuler": [
+        -0.5,
+        127.0,
+        1.7
+      ],
+      "scale": 0.314,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 6: standing_ruin_pillar_4 abs scale 0.361 (src z6_standing_ruin_pillar_4_0 x 1.150), footprint r 0.64 m"
+    },
+    {
+      "id": "dress_z5_24_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        29.44,
+        -0.03,
+        230.0
+      ],
+      "rotEuler": [
+        -0.8,
+        222.8,
+        1.0
+      ],
+      "scale": 2.043,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 6: hero_debris_rubble abs scale 1.961 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.48 m"
+    },
+    {
+      "id": "dress_z5_25_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        32.37,
+        -0.05,
+        226.73
+      ],
+      "rotEuler": [
+        2.0,
+        87.1,
+        -0.8
+      ],
+      "scale": 2.52,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 6: clutter_root_crown abs scale 2.066 (src clutter_z3_1 x 0.820), footprint r 1.33 m"
+    },
+    {
+      "id": "dress_z5_26_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        35.28,
+        -0.05,
+        229.38
+      ],
+      "rotEuler": [
+        0.8,
+        121.4,
+        -0.3
+      ],
+      "scale": 3.132,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 6: clutter_root_crown abs scale 2.568 (src clutter_z3_1 x 0.820), footprint r 1.65 m"
+    },
+    {
+      "id": "dress_z5_27_stump",
+      "op": "add",
+      "src": "z5d_stump_mid_tower_stump_21",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -30.07,
+        -0.12,
+        195.36
+      ],
+      "rotEuler": [
+        0.3,
+        328.8,
+        1.7
+      ],
+      "scale": 0.278,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 7: mid_tower_stump abs scale 0.303 (src z5d_stump_mid_tower_stump_21 x 1.090), footprint r 1.57 m"
+    },
+    {
+      "id": "dress_z5_28_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -26.51,
+        -0.05,
+        197.02
+      ],
+      "rotEuler": [
+        -1.4,
+        137.1,
+        -1.1
+      ],
+      "scale": 2.393,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 7: clutter_root_crown abs scale 1.962 (src clutter_z3_1 x 0.820), footprint r 1.26 m"
+    },
+    {
+      "id": "dress_z5_29_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -30.22,
+        -0.02,
+        198.83
+      ],
+      "rotEuler": [
+        0.0,
+        41.6,
+        0.0
+      ],
+      "scale": 1.717,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 7: clutter_bone_pile abs scale 2.100 (src clutter_z4_2 x 1.223), footprint r 0.56 m"
+    },
+    {
+      "id": "dress_z5_30_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -34.4,
+        -0.05,
+        194.85
+      ],
+      "rotEuler": [
+        2.0,
+        23.5,
+        1.3
+      ],
+      "scale": 2.437,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 7: clutter_root_crown abs scale 1.998 (src clutter_z3_1 x 0.820), footprint r 1.29 m"
+    },
+    {
+      "id": "dress_z5_31_log",
+      "op": "add",
+      "src": "z5_wall_trunk_W",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        22.76,
+        -0.12,
+        191.52
+      ],
+      "rotEuler": [
+        2.6,
+        8.3,
+        0.4
+      ],
+      "scale": 0.203,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 8: mid_spire_fallen abs scale 0.152 (src z5_wall_trunk_W x 0.750), footprint r 1.92 m"
+    },
+    {
+      "id": "dress_z5_32_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        23.17,
+        -0.03,
+        196.07
+      ],
+      "rotEuler": [
+        -2.9,
+        213.7,
+        -2.5
+      ],
+      "scale": 1.675,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 8: hero_debris_rubble abs scale 1.608 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.21 m"
+    },
+    {
+      "id": "dress_z5_33_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        18.98,
+        -0.05,
+        194.13
+      ],
+      "rotEuler": [
+        1.8,
+        251.5,
+        2.0
+      ],
+      "scale": 2.76,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 8: clutter_root_crown abs scale 2.263 (src clutter_z3_1 x 0.820), footprint r 1.46 m"
+    },
+    {
+      "id": "dress_z5_34_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        26.55,
+        -0.05,
+        189.32
+      ],
+      "rotEuler": [
+        0.1,
+        186.1,
+        1.1
+      ],
+      "scale": 2.682,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 8: clutter_root_crown abs scale 2.199 (src clutter_z3_1 x 0.820), footprint r 1.42 m"
+    },
+    {
+      "id": "dress_z5_35_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        18.29,
+        -0.03,
+        190.44
+      ],
+      "rotEuler": [
+        -0.1,
+        338.8,
+        -2.6
+      ],
+      "scale": 1.358,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 8: hero_debris_rubble abs scale 1.304 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 0.98 m"
+    },
+    {
+      "id": "dress_z5_36_slab",
+      "op": "add",
+      "src": "z5d_fallen_mid_slab_heap_a_23",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -24.27,
+        -0.1,
+        193.25
+      ],
+      "rotEuler": [
+        -0.7,
+        138.6,
+        1.4
+      ],
+      "scale": 0.454,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 9: mid_slab_heap_a abs scale 0.313 (src z5d_fallen_mid_slab_heap_a_23 x 0.690), footprint r 1.51 m"
+    },
+    {
+      "id": "dress_z5_37_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -21.07,
+        -0.05,
+        196.13
+      ],
+      "rotEuler": [
+        1.1,
+        29.8,
+        0.5
+      ],
+      "scale": 3.067,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 9: clutter_root_crown abs scale 2.515 (src clutter_z3_1 x 0.820), footprint r 1.62 m"
+    },
+    {
+      "id": "dress_z5_38_stone",
+      "op": "add",
+      "src": "z6_standing_ruin_pillar_4_0",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        11.56,
+        -0.15,
+        180.77
+      ],
+      "rotEuler": [
+        2.9,
+        318.9,
+        1.3
+      ],
+      "scale": 0.317,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 10: standing_ruin_pillar_4 abs scale 0.364 (src z6_standing_ruin_pillar_4_0 x 1.150), footprint r 0.65 m"
+    },
+    {
+      "id": "dress_z5_39_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        10.3,
+        -0.03,
+        185.16
+      ],
+      "rotEuler": [
+        0.3,
+        263.7,
+        -0.2
+      ],
+      "scale": 1.66,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 10: hero_debris_rubble abs scale 1.594 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.20 m"
+    },
+    {
+      "id": "dress_z5_40_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        16.59,
+        -0.03,
+        180.0
+      ],
+      "rotEuler": [
+        -2.4,
+        326.4,
+        -1.0
+      ],
+      "scale": 1.718,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 10: hero_debris_rubble abs scale 1.649 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.24 m"
+    },
+    {
+      "id": "dress_z5_41_log",
+      "op": "add",
+      "src": "z5_wall_trunk_W",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -27.47,
+        -0.12,
+        203.74
+      ],
+      "rotEuler": [
+        -2.8,
+        197.9,
+        0.1
+      ],
+      "scale": 0.227,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 11: mid_spire_fallen abs scale 0.170 (src z5_wall_trunk_W x 0.750), footprint r 2.15 m"
+    },
+    {
+      "id": "dress_z5_42_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -28.51,
+        -0.05,
+        208.37
+      ],
+      "rotEuler": [
+        0.3,
+        266.0,
+        0.1
+      ],
+      "scale": 2.496,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 11: clutter_root_crown abs scale 2.047 (src clutter_z3_1 x 0.820), footprint r 1.32 m"
+    },
+    {
+      "id": "dress_z5_43_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -32.22,
+        -0.03,
+        206.75
+      ],
+      "rotEuler": [
+        -2.7,
+        38.6,
+        2.3
+      ],
+      "scale": 1.504,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS z5_humbaba cluster 11: hero_debris_rubble abs scale 1.444 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.09 m"
+    },
+    {
+      "id": "dress_hub_00_stone",
+      "op": "add",
+      "src": "z6_standing_ruin_pillar_4_0",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        21.6,
+        -0.15,
+        76.62
+      ],
+      "rotEuler": [
+        -1.4,
+        256.8,
+        1.9
+      ],
+      "scale": 0.31,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 0: standing_ruin_pillar_4 abs scale 0.356 (src z6_standing_ruin_pillar_4_0 x 1.150), footprint r 0.63 m"
+    },
+    {
+      "id": "dress_hub_01_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        20.43,
+        -0.03,
+        80.18
+      ],
+      "rotEuler": [
+        -0.6,
+        247.6,
+        -0.2
+      ],
+      "scale": 1.879,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 0: hero_debris_rubble abs scale 1.804 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.36 m"
+    },
+    {
+      "id": "dress_hub_02_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        23.23,
+        -0.05,
+        74.0
+      ],
+      "rotEuler": [
+        -1.1,
+        236.0,
+        -1.6
+      ],
+      "scale": 2.401,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 0: clutter_root_crown abs scale 1.969 (src clutter_z3_1 x 0.820), footprint r 1.27 m"
+    },
+    {
+      "id": "dress_hub_03_stump",
+      "op": "add",
+      "src": "z5d_stump_mid_tower_stump_21",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        -22.11,
+        -0.12,
+        96.75
+      ],
+      "rotEuler": [
+        -0.3,
+        50.1,
+        -0.1
+      ],
+      "scale": 0.357,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 1: mid_tower_stump abs scale 0.389 (src z5d_stump_mid_tower_stump_21 x 1.090), footprint r 2.02 m"
+    },
+    {
+      "id": "dress_hub_04_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        -19.45,
+        -0.03,
+        93.35
+      ],
+      "rotEuler": [
+        0.2,
+        113.9,
+        2.5
+      ],
+      "scale": 1.541,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 1: hero_debris_rubble abs scale 1.479 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.11 m"
+    },
+    {
+      "id": "dress_hub_05_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        -23.22,
+        -0.05,
+        91.88
+      ],
+      "rotEuler": [
+        1.6,
+        251.4,
+        1.5
+      ],
+      "scale": 2.921,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 1: clutter_root_crown abs scale 2.395 (src clutter_z3_1 x 0.820), footprint r 1.54 m"
+    },
+    {
+      "id": "dress_hub_06_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "hub_camp",
+      "ring": 1,
+      "pos": [
+        23.44,
+        -0.02,
+        77.96
+      ],
+      "rotEuler": [
+        0.0,
+        271.6,
+        0.0
+      ],
+      "scale": 1.428,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 2: clutter_bone_pile abs scale 1.746 (src clutter_z4_2 x 1.223), footprint r 0.47 m"
+    },
+    {
+      "id": "dress_hub_07_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        20.86,
+        -0.02,
+        84.35
+      ],
+      "rotEuler": [
+        0.0,
+        65.3,
+        0.0
+      ],
+      "scale": 1.409,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 2: clutter_bone_pile abs scale 1.723 (src clutter_z4_2 x 1.223), footprint r 0.46 m"
+    },
+    {
+      "id": "dress_hub_08_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        18.95,
+        -0.02,
+        77.22
+      ],
+      "rotEuler": [
+        0.0,
+        171.6,
+        0.0
+      ],
+      "scale": 2.055,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 2: clutter_bone_pile abs scale 2.513 (src clutter_z4_2 x 1.223), footprint r 0.67 m"
+    },
+    {
+      "id": "dress_hub_09_slab",
+      "op": "add",
+      "src": "z5d_fallen_mid_slab_heap_a_23",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        -15.65,
+        -0.1,
+        95.44
+      ],
+      "rotEuler": [
+        1.2,
+        200.2,
+        -1.5
+      ],
+      "scale": 0.516,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 3: mid_slab_heap_a abs scale 0.356 (src z5d_fallen_mid_slab_heap_a_23 x 0.690), footprint r 1.72 m"
+    },
+    {
+      "id": "dress_hub_10_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        -16.82,
+        -0.02,
+        91.68
+      ],
+      "rotEuler": [
+        0.0,
+        293.8,
+        0.0
+      ],
+      "scale": 1.976,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 3: clutter_bone_pile abs scale 2.417 (src clutter_z4_2 x 1.223), footprint r 0.65 m"
+    },
+    {
+      "id": "dress_hub_11_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        -20.34,
+        -0.02,
+        87.81
+      ],
+      "rotEuler": [
+        0.0,
+        74.9,
+        0.0
+      ],
+      "scale": 1.417,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 5: clutter_bone_pile abs scale 1.733 (src clutter_z4_2 x 1.223), footprint r 0.47 m"
+    },
+    {
+      "id": "dress_hub_12_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "hub_camp",
+      "ring": 1,
+      "pos": [
+        -22.44,
+        -0.02,
+        88.14
+      ],
+      "rotEuler": [
+        0.0,
+        351.0,
+        0.0
+      ],
+      "scale": 1.357,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 5: clutter_bone_pile abs scale 1.659 (src clutter_z4_2 x 1.223), footprint r 0.45 m"
+    },
+    {
+      "id": "dress_hub_13_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        -19.65,
+        -0.02,
+        90.01
+      ],
+      "rotEuler": [
+        0.0,
+        176.5,
+        0.0
+      ],
+      "scale": 1.622,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 5: clutter_bone_pile abs scale 1.984 (src clutter_z4_2 x 1.223), footprint r 0.53 m"
+    },
+    {
+      "id": "dress_hub_14_stone",
+      "op": "add",
+      "src": "z6_standing_ruin_pillar_4_0",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        18.02,
+        -0.15,
+        84.24
+      ],
+      "rotEuler": [
+        -2.3,
+        334.8,
+        -1.0
+      ],
+      "scale": 0.4,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 6: standing_ruin_pillar_4 abs scale 0.460 (src z6_standing_ruin_pillar_4_0 x 1.150), footprint r 0.82 m"
+    },
+    {
+      "id": "dress_hub_15_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "hub_camp",
+      "ring": 1,
+      "pos": [
+        23.89,
+        -0.02,
+        80.04
+      ],
+      "rotEuler": [
+        0.0,
+        291.5,
+        0.0
+      ],
+      "scale": 1.659,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 8: clutter_bone_pile abs scale 2.029 (src clutter_z4_2 x 1.223), footprint r 0.54 m"
+    },
+    {
+      "id": "dress_hub_16_slab",
+      "op": "add",
+      "src": "z5d_fallen_mid_slab_heap_a_23",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        -23.96,
+        -0.1,
+        76.52
+      ],
+      "rotEuler": [
+        1.7,
+        282.4,
+        -1.3
+      ],
+      "scale": 0.523,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 9: mid_slab_heap_a abs scale 0.361 (src z5d_fallen_mid_slab_heap_a_23 x 0.690), footprint r 1.75 m"
+    },
+    {
+      "id": "dress_hub_17_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        -20.11,
+        -0.02,
+        76.93
+      ],
+      "rotEuler": [
+        0.0,
+        67.7,
+        0.0
+      ],
+      "scale": 1.856,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 9: clutter_bone_pile abs scale 2.270 (src clutter_z4_2 x 1.223), footprint r 0.61 m"
+    },
+    {
+      "id": "dress_hub_18_rubble",
+      "op": "add",
+      "src": "z5d_rubble_hero_debris_rubble_29",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        -23.99,
+        -0.03,
+        81.56
+      ],
+      "rotEuler": [
+        -2.6,
+        36.6,
+        0.5
+      ],
+      "scale": 1.622,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 9: hero_debris_rubble abs scale 1.557 (src z5d_rubble_hero_debris_rubble_29 x 0.960), footprint r 1.17 m"
+    },
+    {
+      "id": "dress_hub_19_bones",
+      "op": "add",
+      "src": "clutter_z4_2",
+      "zone": "hub_camp",
+      "ring": 0,
+      "pos": [
+        17.2,
+        -0.02,
+        81.07
+      ],
+      "rotEuler": [
+        0.0,
+        95.1,
+        0.0
+      ],
+      "scale": 1.487,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS hub_camp cluster 10: clutter_bone_pile abs scale 1.818 (src clutter_z4_2 x 1.223), footprint r 0.49 m"
+    },
+    {
+      "id": "dress2_z5_00_stone",
+      "op": "add",
+      "src": "z6_standing_ruin_pillar_4_0",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        17,
+        -0.05,
+        211
+      ],
+      "rotEuler": [
+        -2.5,
+        224.2,
+        -1.3
+      ],
+      "scale": 0.42,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_00_stone"
+    },
+    {
+      "id": "dress2_z5_01_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        14.5,
+        -0.05,
+        205
+      ],
+      "rotEuler": [
+        1.3,
+        267.0,
+        -0.8
+      ],
+      "scale": 2.871,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_14_root"
+    },
+    {
+      "id": "dress2_z5_02_log",
+      "op": "add",
+      "src": "z5_wall_trunk_W",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        15.5,
+        -0.05,
+        217
+      ],
+      "rotEuler": [
+        2.6,
+        286.3,
+        0.4
+      ],
+      "scale": 0.203,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_31_log"
+    },
+    {
+      "id": "dress2_z5_03_stump",
+      "op": "add",
+      "src": "z5d_stump_mid_tower_stump_21",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        13.5,
+        -0.05,
+        194.5
+      ],
+      "rotEuler": [
+        1.3,
+        339.3,
+        0.5
+      ],
+      "scale": 0.307,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_04_stump"
+    },
+    {
+      "id": "dress2_z5_04_slab",
+      "op": "add",
+      "src": "z5d_fallen_mid_slab_heap_a_23",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        12,
+        -0.05,
+        224
+      ],
+      "rotEuler": [
+        1.3,
+        266.4,
+        2.0
+      ],
+      "scale": 0.461,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_13_slab"
+    },
+    {
+      "id": "dress2_z5_05_stone",
+      "op": "add",
+      "src": "z6_standing_ruin_pillar_4_0",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -17.5,
+        -0.05,
+        201
+      ],
+      "rotEuler": [
+        -2.5,
+        332.0,
+        -1.3
+      ],
+      "scale": 0.42,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_00_stone"
+    },
+    {
+      "id": "dress2_z5_06_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        -18.5,
+        -0.05,
+        206.5
+      ],
+      "rotEuler": [
+        1.3,
+        10.4,
+        -0.8
+      ],
+      "scale": 2.871,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_14_root"
+    },
+    {
+      "id": "dress2_z5_07_root",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        -16.5,
+        -0.05,
+        216
+      ],
+      "rotEuler": [
+        1.3,
+        167.6,
+        -0.8
+      ],
+      "scale": 2.871,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_14_root"
+    },
+    {
+      "id": "dress2_z5_08_log",
+      "op": "add",
+      "src": "z5_wall_trunk_W",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -15,
+        -0.05,
+        222
+      ],
+      "rotEuler": [
+        2.6,
+        339.6,
+        0.4
+      ],
+      "scale": 0.203,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_31_log"
+    },
+    {
+      "id": "dress2_z5_09_stump",
+      "op": "add",
+      "src": "z5d_stump_mid_tower_stump_21",
+      "zone": "z5_humbaba",
+      "ring": 0,
+      "pos": [
+        -13.5,
+        -0.05,
+        196.5
+      ],
+      "rotEuler": [
+        1.3,
+        233.6,
+        0.5
+      ],
+      "scale": 0.307,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_04_stump"
+    },
+    {
+      "id": "dress2_z5_10_slab",
+      "op": "add",
+      "src": "z5d_fallen_mid_slab_heap_a_23",
+      "zone": "z5_humbaba",
+      "ring": 1,
+      "pos": [
+        -10.5,
+        -0.05,
+        224
+      ],
+      "rotEuler": [
+        1.3,
+        324.3,
+        2.0
+      ],
+      "scale": 0.461,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "snap",
+      "enabled": true,
+      "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_13_slab"
     }
   ]
 }

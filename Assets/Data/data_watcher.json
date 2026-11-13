@@ -567,6 +567,16 @@
         }
       ],
       "note": "surface rows only"
+    },
+    {
+      "file": "abilities.json",
+      "calls": [
+        {
+          "type": "AbilityTable",
+          "method": "Reload"
+        }
+      ],
+      "note": "reloads at once; a fighter mid-swing keeps its move object, cooldown seconds are read at cast time, inline move rows are served by MoveTable.Get -> AbilityTable.ExtraMove so a hot-added row works"
     }
   ],
   "skip": [

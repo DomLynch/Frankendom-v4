@@ -2,7 +2,7 @@
   "_about": "laneHITFX v81 AAA hit feel (Scripts/Combat/HitFeel.cs + HitFeelTable; BloodBurst and CombatVFX read blood{}). Every number lives here. Missing file = HitFeel off and the v69 look (code defaults). visual-qc must gate any change (spark intensity, flash lumen, blood colours).",
   "version": 1,
   "enabled": 1,
-  "guardSparkScale": 0.0,
+  "guardSparkScale": 1.0,
   "hitstop": {
     "_about": "ms = lerp(minMs, maxMs, clamp01((damage - dmgLo) / (dmgHi - dmgLo))), damage = health the victim lost on this contact (1 when dmgHi <= dmgLo, so minMs..maxMs collapse to maxMs; use minMs = maxMs for a fixed stop). Dracula/Pitborn move damage: light 14, thrust 11, riposte 24, heavy_overhead 18, heavy_counter 20, heavy_riposte 30, critical 40 (x damage mults). PresentationClock keeps the longest request, so hit_stop.json (the old floor) never adds on top. Not requested while a finisher owns the clock; x duringSlowMoMul while CombatSlowMo runs. slow_mo.json delayS (parry 0.10, deathblow 0.12, crit 0.08) makes the dip start after the freeze.",
     "enabled": 1,
@@ -26,7 +26,7 @@
     "enabled": 1,
     "suppressInFinisher": 1, "poolSize": 320, "glintPool": 24, "cooldown": 0.03,
     "intensity": 4.0, "glintIntensity": 2.0, "kelvin": 1800, "coolKelvin": 1300, "coolAt": 0.35, "glintWhiteMix": 0.1, "opacity": 1.0,
-    "countBase": 7, "countPerStrength": 6, "countRandom": 0.25, "countScaleHeavy": 1.15,
+    "countBase": 10, "countPerStrength": 6, "countRandom": 0.25, "countScaleHeavy": 1.5,
     "anchorHeight": 1.1, "anchorBack": 0.4, "anchorJitter": 0.1,
     "alongBias": 0.3, "alongScale": 1.1, "sideSpread": 0.9, "upMin": 0.1, "upRange": 0.8, "towardCamera": 0.7,
     "speedMin": 2.5, "speedRange": 5.0, "speedPerStrength": 0.35,
@@ -57,7 +57,7 @@
   ],
   "blood": {
     "_about": "B1 fixes. lengthScale 1.6 (droplets, not needles; was 3.2 before v69), wet dark colour (0.35,0.02,0.02) fading to endColor, softDistance 0.15 on the bloodStrands material (-1 = leave the fx_materials.json value), velocityScale = small flight stretch, sizeScale / countScale x the BloodBurst V3 numbers. dropColor / mistColor = CombatVFX BloodDrops / BloodMist start colours (were 0.145,0.008,0.008 and 0.22,0.015,0.015).",
-    "lengthScale": 1.6, "velocityScale": 0.02, "softDistance": 0.15, "sizeScale": 1.15, "countScale": 1.0,
+    "lengthScale": 1.6, "velocityScale": 0.02, "softDistance": 0.15, "sizeScale": 2.20, "countScale": 3.00,
     "startColor": { "r": 0.35, "g": 0.02, "b": 0.02, "a": 1.0 },
     "endColor":   { "r": 0.14, "g": 0.01, "b": 0.01, "a": 1.0 },
     "dropColor":  { "r": 0.22, "g": 0.012, "b": 0.012, "a": 1.0 },

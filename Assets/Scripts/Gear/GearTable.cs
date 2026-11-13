@@ -36,9 +36,20 @@ public static class GearTable
         public bool IsPair { get { return glbMirror.Length > 0; } }
     }
     // WEAPONSWAP v88: items[].weapon = the weapon block of a mainHand item (WeaponSwap.cs): the numbers are multipliers on the wearer's DEFAULT weapon (the sword = 1 / 1 / 1 / 1)
+    // WEAPONMOVES v1: gear.json items[].weapon.moves[]: per-weapon overrides of the base move table (see DuelFighter.WeaponMove). Absent keys keep the initialisers (neutral).
+    [Serializable]
+    public class MoveOverride
+    {
+        public string[] ids = new string[0];                        // move ids this row applies to ("*" = every attack not listed by an earlier row)
+        public int windup, active, recovery; public float reach;     // absolute override, 0 = keep (the chained row scales by the same ratio)
+        public float windupMul = 1f, activeMul = 1f, recoveryMul = 1f, reachMul = 1f;
+        public float damageMul = 1f, staminaMul = 1f, postureMul = 1f, staggerMul = 1f, staminaDamageMul = 1f, knockbackMul = 1f;
+    }
+
     [Serializable]
     public class WeaponDef
     {
+        public MoveOverride[] moves = new MoveOverride[0];   // WEAPONMOVES v1
         public string id = "";                         // weapon id ("" = not a weapon item). WeaponGrip.cs / GripPose.cs rows carry the same id in "weapon"
         public float damageMul = 1f, speedMul = 1f, reachMul = 1f, postureMul = 1f;   // damage dealt, move speed (0.75 = every windup / active / recovery 1.33x as many ticks), hit reach, posture put on the defender
         public bool twoHanded = false;                 // left-arm IK (TwoHandIK.cs) onto offHandNode
@@ -47,7 +58,7 @@ public static class GearTable
         public float ikWeight = 1f, ikBlendSeconds = 0.15f;   // two-hand IK weight (0..1) and the seconds it takes to blend in / out
         public bool unarmed = false;                   // SOBEKCLAWS: no weapon glb, the wearer's own claws are the weapon (WeaponSwap hides the template weapon, the swing trail follows tipBone + tipOffsetM)
         public string tipBone = ""; public float[] tipOffsetM = new float[0];   // unarmed: the claw tip = this bone + this offset in metres in the bone frame (like weapon_grip socketOffset: divided by the bone's lossy scale)
-        public void Fix() { if (tipBone == null) tipBone = ""; if (tipOffsetM == null) tipOffsetM = new float[0]; if (id == null) id = ""; if (cueWeapon == null) cueWeapon = ""; if (gripNode == null) gripNode = ""; if (tipNode == null) tipNode = ""; if (offHandNode == null) offHandNode = ""; }
+        public void Fix() { if (moves == null) moves = new MoveOverride[0]; if (tipBone == null) tipBone = ""; if (tipOffsetM == null) tipOffsetM = new float[0]; if (id == null) id = ""; if (cueWeapon == null) cueWeapon = ""; if (gripNode == null) gripNode = ""; if (tipNode == null) tipNode = ""; if (offHandNode == null) offHandNode = ""; }
     }
     // SHIELD v1: items[].shield = the shield block of an offHand item (ShieldMount.cs, ShieldHooks). Absent / id "" = not a shield = no rule at all (today's guard).
     // cover rows: while the wearer holds guard side `guard` (guard side names of controls.json guard.sides + centre), a swing whose MoveDef.direction is in `attacks` counts as COVERED even if controls.json guard.match says

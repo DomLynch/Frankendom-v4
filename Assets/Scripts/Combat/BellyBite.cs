@@ -8,6 +8,7 @@ using UnityEngine;
 public static class BellyBite
 {
     [Serializable] public class Ai { public bool enabled = false; public float minGap = 1.2f, maxGap = 2.6f; public int cooldownTicks = 420, firstTick = 600; public float chance = 0.25f; public float maxPlayerHpFrac = 1.0f; }
+    [Serializable] public class Phase2 { public float chance = -1f, minGap = -1f, maxGap = -1f; public int cooldownTicks = -1; }   // BOSSPHASES C3: belly_bite.json phase2{}; every value < 0 (absent) = the ai{} value; read only while BossPhase.IsOn(grabber)
     [Serializable] public class Mouth { public bool enabled = true; public float openAtWindupFrac = 0.35f, openFull = 1f, clench = 1f, clenchTicks = 8, relaxTicks = 20; public string openShape = "mouth_open", clenchShape = "mouth_clench"; }
     // BELLYGRAB v1: the paired grab scene (finishers.json entry belly_bite, survive = true). enabled=false (or no block) = the headless grab of BELLYBITE exactly.
     [Serializable] public class MouthKey { public float t, open, clench; }
@@ -21,6 +22,7 @@ public static class BellyBite
         public bool knockDown = true;
         public bool blockable = false, parryable = true, dodgeable = true;           // parryable: only a perfect parry window beats it
         public Ai ai = new Ai(); public Mouth mouth = new Mouth(); public SceneCfg scene = new SceneCfg();   // BELLYGRAB v1
+        public Phase2 phase2 = new Phase2();   // BOSSPHASES C3
     }
     static Data d; static bool loaded;
     public static Data Cfg
@@ -119,12 +121,15 @@ public static class BellyBite
     {
         var c = Cfg; if (c == null || !c.enabled || !c.ai.enabled || df == null || o == null) return false;
         if (df.CharacterId != c.character || df.moves == null || df.moves.Get(c.moveId) == null) return false;
-        if (gap < c.ai.minGap || gap > c.ai.maxGap) return false;
+        var p2 = c.phase2 != null && BossPhase.IsOn(df) ? c.phase2 : null;   // BOSSPHASES C3: the hungrier phase-2 numbers (a value < 0 keeps the ai{} one)
+        float minGap = p2 != null && p2.minGap >= 0f ? p2.minGap : c.ai.minGap, maxGap = p2 != null && p2.maxGap >= 0f ? p2.maxGap : c.ai.maxGap, chance = p2 != null && p2.chance >= 0f ? p2.chance : c.ai.chance;
+        int cooldown = p2 != null && p2.cooldownTicks >= 0 ? p2.cooldownTicks : c.ai.cooldownTicks;
+        if (gap < minGap || gap > maxGap) return false;
         if (o.maxHealth > 0f && o.health / o.maxHealth > c.ai.maxPlayerHpFrac) return false;
         int id = System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(df); int next; if (!nextAi.TryGetValue(id, out next)) { next = c.ai.firstTick; nextAi[id] = next; if (df.GetComponent<BellyMouthDriver>() == null) df.gameObject.AddComponent<BellyMouthDriver>(); }
         if (tick < next) return false;
-        uint h = (uint)(tick * 2654435761u); if ((h >> 8) % 1000u >= (uint)(c.ai.chance * 1000f)) return false;
-        nextAi[id] = tick + c.ai.cooldownTicks; return true;
+        uint h = (uint)(tick * 2654435761u); if ((h >> 8) % 1000u >= (uint)(chance * 1000f)) return false;
+        nextAi[id] = tick + cooldown; return true;
     }
 }
 

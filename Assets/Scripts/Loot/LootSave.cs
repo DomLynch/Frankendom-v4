@@ -26,7 +26,7 @@ public static class LootSave
     /// <summary>Keep a timestamped copy (loot_save.json.bad.&lt;stamp&gt;, last 3) before a reset can overwrite a file this build cannot use as it is.</summary>
     static void Keep(string p, string why) { if (Blocked()) return; if (File.Exists(p) && SafeFile.Quarantine(p, "bad", why) == null) { overwriteUnsafe = true; SafeFile.WarnOnce("lootunsafe", "[LootUI] " + why + " and no copy could be made: loot_save.json will not be overwritten this session"); } }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)] static void HookErase() { SaveSlot.OnErase += Erase; }   // REBIND v100: New game forgets the carried items
-    static void Erase() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = true; Applied = false; overwriteUnsafe = false; startPaid = MarketCfg.Get().enabled; ledger.Coins = StartCoins(); try { if (File.Exists(Path_)) { if (Blocked()) return; SafeFile.Quarantine(Path_, "erased", "was erased by New game"); File.Delete(Path_); } SafeFile.Discard(Path_); /* ERASEFIX v1 */ } catch (Exception e) { LastError = e.Message; } }   // FIXSAVE v1: harness guard + the last 3 erased saves stay as .erased.<stamp>
+    static void Erase() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = true; Applied = false; overwriteUnsafe = false; startPaid = MarketCfg.Get().enabled; ledger.Coins = StartCoins(); PotionStore.GrantStart(); /* STARTSTACKS v1 */ try { if (File.Exists(Path_)) { if (Blocked()) return; SafeFile.Quarantine(Path_, "erased", "was erased by New game"); File.Delete(Path_); } SafeFile.Discard(Path_); /* ERASEFIX v1 */ } catch (Exception e) { LastError = e.Message; } }   // FIXSAVE v1: harness guard + the last 3 erased saves stay as .erased.<stamp>
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = false; Applied = false; LastError = ""; startPaid = false; overwriteUnsafe = false; }
 
@@ -108,7 +108,7 @@ public static class LootSave
     public static void EnsureLoaded()
     {
         if (loaded) return;
-        loaded = true; PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); wanted.Clear(); ledger.Clear(); ledger.Coins = StartCoins(); startPaid = MarketCfg.Get().enabled;   // INT108 v1: new save
+        loaded = true; PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); wanted.Clear(); ledger.Clear(); ledger.Coins = StartCoins(); PotionStore.GrantStart(); /* STARTSTACKS v1 */ startPaid = MarketCfg.Get().enabled;   // INT108 v1: new save
         if (!LootCfg.Get().save.enabled) return;
         try
         {

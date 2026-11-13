@@ -24,6 +24,9 @@ public partial class DuelFighter
     public int flowChains, flowRipostes; public string flowLastChain = ""; public float flowMaxTurnWindup, flowMaxTurnActive, flowMaxTurnRecovery; public bool flowMagnetUsed; public string flowDodgeDir = "";
     public int DodgeIFrameStart => dodgeIS; public int DodgeIFrameEnd => dodgeIE; public float DodgeDistance => dodgeDist; public int DodgeKind => dodgeKind; public int RiposteLeft => riposteTicks; public bool HitDone => hitDone;
     public int MoveT => t;
+    // ABILITIES v1: the dodge-strike window (AbilityTable evade row). NoteEvade is called by Duel.Resolve when this fighter's i-frames swallowed a swing; evadeLeft ticks down in Tick. Closed (0) when abilities are off.
+    public bool EvadeOpen => evadeLeft > 0 && AbilityTable.EvadeMove(this) != null;
+    public void NoteEvade() { int w = AbilityTable.EvadeWindow(this, dodgeKind); if (w > evadeLeft) evadeLeft = w; }
     public void FlowResetTurnStats() { flowMaxTurnWindup = flowMaxTurnActive = flowMaxTurnRecovery = 0f; }
 
     int pRipo, flowLinks; string pendDir = "";
@@ -34,7 +37,7 @@ public partial class DuelFighter
     public void PressRiposte()
     {
         if (IsPlayer && MarketSafe.Refuses("riposte")) return;   // STALL v1
-        if (state == FState.Dead || riposteTicks <= 0 || !FlowTable.Applies(this) || !FlowTable.Get().riposte.enabled) return;
+        if (state == FState.Dead || (riposteTicks <= 0 && !EvadeOpen /* ABILITIES v1 */) || !FlowTable.Applies(this) || !FlowTable.Get().riposte.enabled) return;
         pRipo = Mathf.Max(2, CombatFeel.QueueTtl(this, (int)R("bufferTtl", 11)));
     }
     // the direction label of the next dodge (forward | back | left | right | free), set by PlayerBrain right before Press / PressSidestep; consumed by the dodge that starts
@@ -78,12 +81,13 @@ public partial class DuelFighter
     // ---------------- riposte ----------------
     bool FlowRiposteFree()
     {
-        if (pRipo <= 0 || riposteTicks <= 0) return false;
+        if (pRipo <= 0 || (riposteTicks <= 0 && !EvadeOpen /* ABILITIES v1 */)) return false;
         pRipo = 0;
         if (!FlowTable.Applies(this)) return false;
         var Rp = FlowTable.Get().riposte; if (!Rp.enabled) return false;
         string mv = !string.IsNullOrEmpty(Rp.move) && moves.Get(Rp.move) != null ? Rp.move : "riposte";
-        if (Rp.consume) riposteTicks = 0;
+        if (riposteTicks <= 0) { mv = AbilityTable.EvadeMove(this); if (mv == null || AbilityPoor(mv) || moves.Get(mv) == null) return false; evadeLeft = 0; }   // ABILITIES v1: no parry window open: the dodge strike (a parry window wins, so the parry riposte is exactly today's)
+        else if (Rp.consume) riposteTicks = 0;
         flowRipostes++;
         StartMove(mv, false);
         return true;

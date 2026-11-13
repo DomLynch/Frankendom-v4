@@ -70,9 +70,43 @@
   },
   "specials": {
     "_about": "Bottom-right: the two special-move icons (special 1, special 2 of the player's DuelFighter). Round dark icon, thin ring (gold when ready), glyph (slash, crescent, cross, anything else = diamond), a clockwise pie + seconds while cooling down, a flash ring when ready again. cooldownTicks = the full cooldown the pie is measured against (the larger of this and the biggest value seen is used); ticksPerSecond = sim rate (60 Hz).",
-    "enabled": true, "right": 52, "bottom": 72, "size": 62, "gap": 54, "ringPx": 2.2, "glyphScale": 0.62, "ticksPerSecond": 60, "cooldownTicks": 540, "readyFlashS": 0.55,
-    "keySize": 16, "cdSize": 19, "keyDy": 6, "pieSteps": 48,
-    "items": [ { "key": "1", "glyph": "slash", "label": "Skull Crack" }, { "key": "2", "glyph": "crescent", "label": "Whirlwind" } ]
+    "enabled": true,
+    "right": 52,
+    "bottom": 72,
+    "size": 56,
+    "gap": 92,
+    "ringPx": 2.2,
+    "glyphScale": 0.62,
+    "ticksPerSecond": 60,
+    "cooldownTicks": 540,
+    "readyFlashS": 0.55,
+    "keySize": 13,
+    "cdSize": 19,
+    "keyDy": 6,
+    "pieSteps": 48,
+    "items": [
+      {
+        "key": "1",
+        "glyph": "slash",
+        "label": "Skull Crack"
+      },
+      {
+        "key": "2",
+        "glyph": "crescent",
+        "label": "Whirlwind"
+      },
+      {
+        "key": "C",
+        "glyph": "arc",
+        "label": "Kick"
+      },
+      {
+        "key": "B",
+        "glyph": "diamond",
+        "label": "Riposte"
+      }
+    ],
+    "pairGap": 20
   },
   "guardDir": {
     "_about": "Guard-direction indicator around the PLAYER (STEERUI v93: anchored to the projected body; sideDistFrac / topDistFrac = arc apex distance from the body centre, arcRadiusFrac = arc curvature, centreFrac = body centre height, all fractions of the on-screen player height; anchorPlayer false = screen centre; ringFrac 0 = no faint ring; radius only for the pre-v93 layout), shown only while the guard is up (and the scene requires a guard side, controls.json guard.guardRequiresSide). One thin tapered arc per guard side of controls.json guard.sides (placed by the side's deg: top 0, left -90, right 90); the held side is lit (gold during the parry window, with a pulse), the others dim; the centre diamond is lit when no side is held. radius = distance of the arcs from the centre, arcDeg = their length, thickness = band width as a fraction of the texture half-size. Replaces the old guard bar of controls.json marker while enabled (the attack marker is unchanged).",

@@ -83,6 +83,50 @@
    "_about": "laneDROPPIT closed fist for the 5.4 cm maul handle (curl 64 / 45 / 31 deg). WEAPONSWAP v88: leftStates [] = the left fist is closed in every state while TwoHandIK holds the shaft (it opens when the IK weight falls)."
   },
   {
+    "name": "Joan",
+    "weapon": "iron_maul",
+    "fingerDeg": 64,
+    "thumbDeg": 35,
+    "thumbWeight": 0.7,
+    "falloff": 0.7,
+    "fingerAxis": [
+      0,
+      0,
+      1
+    ],
+    "thumbAxis": [
+      0,
+      1,
+      0
+    ],
+    "leftHand": true,
+    "leftWeight": 1.0,
+    "leftStates": [],
+    "_about": "laneALPHAPACK weapons v1: clone of the Joan pitborn_maul fist (same glb, handle 5.4 cm)."
+  },
+  {
+    "name": "Joan",
+    "weapon": "war_axe",
+    "fingerDeg": 64,
+    "thumbDeg": 35,
+    "thumbWeight": 0.7,
+    "falloff": 0.7,
+    "fingerAxis": [
+      0,
+      0,
+      1
+    ],
+    "thumbAxis": [
+      0,
+      1,
+      0
+    ],
+    "leftHand": true,
+    "leftWeight": 1.0,
+    "leftStates": [],
+    "_about": "laneALPHAPACK weapons v1: UNPROVEN: pitborn_maul fist cloned (curl 64 / 45 / 31). The antler axe haft is not measured for Joan; Erlking uses fingerDeg 55."
+  },
+  {
     "name": "Grendel",
     "weapon": "grendel_blade_R",
     "fingerDeg": 50.0,

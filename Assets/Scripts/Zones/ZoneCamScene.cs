@@ -178,16 +178,18 @@ public sealed class ZoneCamScene : MonoBehaviour
     IEnumerator Fight(CtScene S, CtStep st)
     {
         drive = true; float t0 = Time.realtimeSinceStartup, nextHit = 0f;
-        string[] cyc = { "light_overhead", "thrust", "light_left", "light_right" }; int thrown = 0, landed = 0, ci = 0; float lastHp = -1f; DuelFighter lastT = null;   // dev2: step.cycle = 4-direction cycling, thrown / landed counters
+        float heavyUntil = 0f, nextSp = 0f; string[] cyc = { "light_overhead", "thrust", "light_left", "light_right" }; int thrown = 0, landed = 0, ci = 0; float lastHp = -1f; DuelFighter lastT = null;   // dev2: step.cycle = 4-direction cycling, thrown / landed counters
         while (Time.realtimeSinceStartup - t0 < st.seconds)
         {
             var m = Me(); var t = m != null ? m.opponent : null;
             if (t != lastT) { lastT = t; lastHp = t != null ? t.health : -1f; }
             else if (t != null) { if (t.health < lastHp - 0.01f) landed++; lastHp = t.health; }
             if (m == null || t == null || t.Dead) { wantDir = Vector3.zero; wantRun = false; yield return null; continue; }
+            if (st.heavy && m.heavyHeld && Time.realtimeSinceStartup > heavyUntil) m.heavyHeld = false;   // HEAVYSTEP: release the charge after 0.35 s
             Vector3 to = t.transform.position - m.transform.position; to.y = 0f; float d = to.magnitude;
             wantRun = false; wantDir = d > S.approachGapM ? to / Mathf.Max(0.01f, d) : Vector3.zero;
-            if (d <= S.attackGapM && Time.realtimeSinceStartup >= nextHit && (m.maxStamina <= 0f || m.stamina / m.maxStamina >= S.staminaMinFrac)) { if (st.cycle) m.PressDirected(cyc[ci++ % cyc.Length]); else m.Press("light"); thrown++; nextHit = Time.realtimeSinceStartup + S.strikeIntervalS; }
+            if (st.special != null && st.special.Length > 0 && d <= S.attackGapM && Time.realtimeSinceStartup >= nextSp) { m.Press(st.special); nextSp = Time.realtimeSinceStartup + Mathf.Max(0.5f, st.specialEveryS); thrown++; nextHit = Time.realtimeSinceStartup + S.strikeIntervalS; }   // SPECIALSTEP
+            else if (d <= S.attackGapM && Time.realtimeSinceStartup >= nextHit && (m.maxStamina <= 0f || m.stamina / m.maxStamina >= S.staminaMinFrac)) { if (st.heavy) { m.PressDirected("heavy_overhead"); m.heavyHeld = true; heavyUntil = Time.realtimeSinceStartup + 0.35f; } else if (st.cycle) m.PressDirected(cyc[ci++ % cyc.Length]); else m.Press("light"); thrown++; nextHit = Time.realtimeSinceStartup + S.strikeIntervalS; }
             yield return null;
         }
         Debug.Log("[CamScene] fight " + st.id + ": strikes thrown " + thrown + ", hits landed (foe hp drops) " + landed + (st.cycle ? " (4-direction cycle)" : " (light)"));
@@ -238,6 +240,7 @@ public sealed class ZoneCamScene : MonoBehaviour
         if (foe == null) { Note("killAfter " + st.id + ": " + st.boss + " never engaged within " + st.killWaitS.ToString("F0") + " s, no kill"); yield break; }
         Note(st.boss + " engaged, killing in " + st.killAfter.ToString("F1") + " s"); yield return new WaitForSeconds(st.killAfter);
         if (foe == null || foe.Dead) yield break;
+        if (st.hpLeft > 0f) { Evt("hpLeft " + st.boss + " (hp " + foe.health.ToString("F0") + " -> " + st.hpLeft.ToString("F0") + ")"); foe.health = st.hpLeft; var h0 = foe.GetComponent<Health>(); if (h0 != null) h0.current = st.hpLeft; float tw = Time.realtimeSinceStartup; while (foe != null && !foe.Dead && Time.realtimeSinceStartup - tw < 25f) yield return null; yield break; }   // HPLEFT v1
         Evt("kill " + st.boss + " (hp " + foe.health.ToString("F0") + " -> 0)"); foe.health = 0f; var h = foe.GetComponent<Health>(); if (h != null) h.current = 0f;
         float tk = Time.realtimeSinceStartup; while (foe != null && !foe.Dead && Time.realtimeSinceStartup - tk < 3f) yield return null;
         if (foe != null && !foe.Dead) { Note("sim did not call Die() within 3 s, calling it (same as ZoneRouteBot die step)"); foe.Die(); }

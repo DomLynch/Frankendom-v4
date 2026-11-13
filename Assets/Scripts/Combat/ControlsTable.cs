@@ -10,7 +10,7 @@ public static class ControlsTable
     [Serializable] public class PadCfg
     {
         public bool enabled = true; public string stickX = "RightStickX", stickY = "RightStickY"; public bool invertY = false; public float deadZone = 0.35f; public bool guardLatch = true;
-        public string[] attackKeys = { "JoystickButton5" }, guardKeys = { "JoystickButton4" }, special1Keys = { "JoystickButton3" }, special2Keys = { "JoystickButton2" };
+        public string[] attackKeys = { "JoystickButton5" }, guardKeys = { "JoystickButton4" }, special1Keys = { "JoystickButton3" }, special2Keys = { "JoystickButton2" }, special3Keys = { };   // ABILITIES v1: special3Keys (shield bash) empty = unbound: L3 / JoystickButton8 is already the run key (controls.json run.pad)
     }
     [Serializable] public class Sector { public string name = ""; public float deg = 0f, halfWidthDeg = 45f; }
     [Serializable] public class DirMap { public string dir = ""; public string[] light = new string[0], heavy = new string[0]; }

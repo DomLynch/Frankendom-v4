@@ -14,7 +14,7 @@ using UnityEngine;
 // Hooks: Duel.Resolve (apply_v64p.py) -> PoiseTable.Evaluate; DuelFighter.Tick -> PoiseTick (DuelFighterPoise.cs).
 public static class PoiseTable
 {
-    [Serializable] public class ArmourRow { public string move = "*"; public bool armour = true; public int fromTick = 1, recoveryTicks = 0; public float damageMul = 1f, knockMul = 0.25f, postureMul = 0.5f; }
+    [Serializable] public class ArmourRow { public string move = "*"; public bool armour = true; public int fromTick = 1, recoveryTicks = 0; public float damageMul = 1f, knockMul = 0.25f, postureMul = 0.5f; public string phase = ""; /* BOSSPHASES C5: "" = always, "phase2" / "on" = only while BossPhase.IsOn(fighter), "phase1" / "off" = only while not; anything else = row skipped */ }
     [Serializable] public class ArmourFighter { public string key = ""; public ArmourRow[] moves = new ArmourRow[0]; }
     [Serializable] public class ArmourCfg { public bool enabled = true; public ArmourFighter[] fighters = new ArmourFighter[0]; }
 
@@ -63,6 +63,18 @@ public static class PoiseTable
         return false;
     }
 
+    // BOSSPHASES C5: does an armour row apply to this fighter in its current boss phase
+    static bool PhaseOk(DuelFighter d, string phase)
+    {
+        if (string.IsNullOrEmpty(phase)) return true;
+        switch (phase)
+        {
+            case "phase2": case "on": return BossPhase.IsOn(d);
+            case "phase1": case "off": return !BossPhase.IsOn(d);
+            default: return false;
+        }
+    }
+
     // the armour row that protects fighter d right now (null = none)
     public static ArmourRow ArmourNow(DuelFighter d)
     {
@@ -73,7 +85,7 @@ public static class PoiseTable
         string id = d.CurrentMove.id; FState s = d.state;
         for (int i = 0; i < af.moves.Length; i++)
         {
-            var r = af.moves[i]; if (r == null || !MatchMove(r.move, id)) continue;
+            var r = af.moves[i]; if (r == null || !MatchMove(r.move, id) || !PhaseOk(d, r.phase)) continue;
             if (!r.armour) return null;
             bool inside = s == FState.Active || (s == FState.Windup && d.t >= r.fromTick) || (s == FState.Recovery && d.t <= r.recoveryTicks);
             return inside ? r : null;
@@ -89,7 +101,7 @@ public static class PoiseTable
         if (af == null || af.moves == null) return false;
         for (int i = 0; i < af.moves.Length; i++)
         {
-            var r = af.moves[i]; if (r == null || !MatchMove(r.move, moveId)) continue;
+            var r = af.moves[i]; if (r == null || !MatchMove(r.move, moveId) || !PhaseOk(d, r.phase)) continue;
             if (!r.armour) return false;
             fromTick = r.fromTick; return true;
         }

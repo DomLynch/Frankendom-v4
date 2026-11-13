@@ -12,6 +12,9 @@ public class MoveDef
     public int chainWindow; public string[] chainFollow;
     public float damage, stamina, staminaDamage, stagger, poise, poiseFrom, chip, knockback, stepIn, reach, posture, chamber;
     public bool breaksGuard, parryable, charges;
+    public float weaponStaminaMul;   // WEAPONMOVES v1: 0 = 1 (not an initialiser, so Moves.asset rows without the field read as neutral)
+    public float arcDeg;   // ABILITIES v1: per-move hit arc in degrees, 0 = the global a.HitArcDeg (Duel.Resolve)
+    public MoveDef Copy() { return (MoveDef)MemberwiseClone(); }
     public bool hasVsGuard; public float vsGuardStagger, vsGuardStaminaDamage;
     public int Windup(bool chained) { return chained && hasChained ? chainedWindup : windup; }
     public int Active(bool chained) { return chained && hasChained ? chainedActive : active; }

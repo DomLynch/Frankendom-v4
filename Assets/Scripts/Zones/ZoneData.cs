@@ -49,7 +49,7 @@ using UnityEngine;
 }
 [Serializable] public class ZEngage { public int maxEngaged = 1; public float retargetMarginM = 1.5f; public bool finisherWithOthers = false;   /* MULTI v1 */ public float graceAfterArriveSeconds = 3f, corpseSeconds = 25f, spawnMinDistance = 30f; }
 [Serializable] public class ZCover { public float[] color = new float[] { 1f, 0.84f, 0.58f }; public float inSeconds = 0.3f, holdMinSeconds = 0.1f, outSeconds = 0.55f, holdMaxSeconds = 8f; }
-[Serializable] public class ZCrossing { public ZCover cover = new ZCover(); public bool allowWhileEngaged = false; public float preloadDistance = 14f; public bool freePassage = false; /* ALPHAFLOW v1 */ }
+[Serializable] public class ZCrossing { public ZCover cover = new ZCover(); public bool allowWhileEngaged = false; public float preloadDistance = 14f; public bool freePassage = false; /* ALPHAFLOW v1 */ public bool endRequiresBossKill = false; /* ENDKILL v1: an end-screen gate opens only after its unlockKilledSpawn (z6_erlking) was killed; false = old behaviour (always open) */ }
 
 // TWOFIGHT v1 (laneTWOFIGHT): zones.json "twoFight" = the switches of the two-enemy rules (all rows in data; defaults here = the shipped rows)
 [Serializable] public class ZTwoFight { public bool skipGivingUp = true, healTarget = true, noEngageInFinisher = true, killerExempt = true, safeZoneGiveUp = true, resetBarOnSwitch = true, clearStaleOpponent = false, givenUpNoSlot = false, vanishGaveUpOffZone = false; public float staleMaxM = 0f; }   /* CODE4 v1 */   /* OPPSTALE v1 */

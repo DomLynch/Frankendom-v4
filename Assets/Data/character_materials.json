@@ -38,6 +38,24 @@
   },
   "rows": [
     {
+      "character": "Joan",
+      "_why": "13 Nov, Dom via Lead: Joan's hair read as a flat glowing orange blob. The hair albedo averages RGB 153/64/32 (saturated orange). baseColor multiplies it to about 84/40/22 (deep auburn) so it shades like hair and stops glowing. Revert = delete this row or set baseColor to 1,1,1. 13 Nov 11:20: a further step to 0.42/0.50/0.60 changed nothing measurable in the pit (red-light dominated), reverted to 0.55/0.62/0.70.",
+      "materials": [
+        {
+          "match": "joan_hair",
+          "baseColor": [
+            0.55,
+            0.62,
+            0.7
+          ],
+          "smoothness": -1,
+          "metallic": -1,
+          "albedoBlob": "",
+          "albedoTexture": ""
+        }
+      ]
+    },
+    {
       "character": "Pitborn",
       "_why": "Dom 2026-11-08: Pitborn back to his ORIGINAL pinkish-purple flesh. Body material was multiplied by 0.52/0.60/0.47 (green, -43 percent luminance); the head texture had been darkened and tinted green at 2K by HEADSWAP. Head uses Dom's own 4096 head albedo as a BC7 blob (same UV atlas as the head mesh); the jpg is the fallback.",
       "materials": [

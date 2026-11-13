@@ -94,7 +94,15 @@ public class BowHud : MonoBehaviour
                 HudDraw.Fill(new Rect(x + g, y + g + b - t, b, t), c); HudDraw.Fill(new Rect(x + g + b - t, y + g, t, b), c);
             }
         }
-        string chip = bow ? (BowCfg.Get().quiverOn ? H.chipBow + H.chipAmmoSep + ammo : H.chipBow) : H.chipSword;
+        string chip = bow ? (BowCfg.Get().quiverOn ? H.chipBow + H.chipAmmoSep + ammo : H.chipBow) : WeaponChip(f, H.chipSword);   // WEAPONTAG v1
         HudDraw.Text(new Rect(Screen.width - H.chipRightPx - H.chipWidthPx, Screen.height - H.chipBottomPx, H.chipWidthPx, H.chipFontPx * H.chipLineH), chip, "serif", H.chipFontPx, TextAnchor.MiddleRight, false, c);
+    }
+    static string wcId = null, wcName = "";
+    static string WeaponChip(DuelFighter f, string dflt)   // WEAPONTAG v1: equipped weapon display name, cached per id
+    {
+        var ws = WeaponHooks.Of(f); string id = ws != null && ws.id != null ? ws.id : "";
+        if (id.Length == 0 || id == "knight_sword" || id == "bandit_sword") return dflt;
+        if (id != wcId) { wcId = id; var it = GearTable.Find(id); wcName = it != null && !string.IsNullOrEmpty(it.name) ? it.name.ToUpperInvariant() : id.ToUpperInvariant(); }
+        return wcName;
     }
 }

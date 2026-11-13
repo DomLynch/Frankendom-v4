@@ -9,6 +9,9 @@ using UnityEngine;
 // No new move, clip, weapon or art. Data: Assets/Data/boss_phase.json (StreamingAssets copy). The master "enabled" ships false, and no file = no object = today's behaviour exactly.
 // Reads only public state; edits no existing file. A phase that ends (the boss heals past the enrage release) undoes its damage step. Keyed per DuelFighter, so a respawned clone starts fresh.
 [Serializable] public class BpCue { public string cue = ""; public float gain = 0f, rate = 1f, delay = 0f; }
+[Serializable] public class BpStagger { public int ticks = 0; public string clip = "hit_heavy"; public bool bossTakesDamage = true; }   // BOSSPHASES C1: ticks 0 = no roar recoil
+[Serializable] public class BpFlash { public float[] color = null; public float seconds = 0f, strength = 0f, emissiveNits = 0f, riseSeconds = 0.05f; }   // BOSSPHASES C1: strength or seconds 0 = no flash
+[Serializable] public class BpTelegraph { public float radiusM = 0f, seconds = 0f; }   // BOSSPHASES C2: radiusM or seconds 0 = no ground ring
 [Serializable]
 public class BpRow
 {
@@ -17,19 +20,35 @@ public class BpRow
     public float damageMul = 1f;    // multiplies DuelFighter.damageScale while the phase is on (1 = no change)
     public BpCue cue = new BpCue();
     public string shake = ""; public float shakeMul = 1f;   // a camera_impact.json shake class id ("" = none)
+    public string slowMo = "";                      // BOSSPHASES C1: a slow_mo.json class id (e.g. "bossPhase"), "" = no dip
+    public BpStagger stagger = new BpStagger();     // BOSSPHASES C1: the roar recoil (existing clip, DuelFighter.Stagger)
+    public BpFlash flash = new BpFlash();           // BOSSPHASES C1: a HitFlash on the boss
+    public BpTelegraph telegraph = new BpTelegraph();   // BOSSPHASES C2: a GroundRing at the boss feet
 }
 [Serializable] public class BpFile { public bool enabled = false; public float pollSeconds = 0.25f, refreshSeconds = 2f; public bool log = true; public BpRow[] rows = new BpRow[0]; }
 
 public class BossPhase : MonoBehaviour
 {
     const float MinPoll = 0.02f, MinRefresh = 0.1f;   // floors so a bad json cannot make the poll run every frame
-    static BpFile cfg; static bool loaded;
+    static BpFile cfg; static bool loaded; static BossPhase inst; static bool warnedInvuln;
     public static int Fired; public static string LastId = "";   // proof counters (harness / log)
     class St { public bool on; public float applied = 1f; }
     readonly Dictionary<DuelFighter, St> st = new Dictionary<DuelFighter, St>();
     AIBrain[] brains = new AIBrain[0]; float nextPoll, nextRefresh; CueBus bus;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cfg = null; loaded = false; Fired = 0; LastId = ""; }
+
+    void OnEnable() { inst = this; }
+    void OnDisable() { if (inst == this) inst = null; }
+
+    // BOSSPHASES C3 / C4 / C5: is this fighter in its boss phase right now. Follows AiAdapt.enraged (sim ticks, deterministic in a headless run) and falls back to this object's own state
+    // for a fighter with no AiAdapt profile. False for null, the player, and every fighter without a phase.
+    public static bool IsOn(DuelFighter df)
+    {
+        if (df == null) return false;
+        var a = AiAdapt.Of(df); if (a != null) return a.enraged;
+        St s; return inst != null && inst.st.TryGetValue(df, out s) && s.on;
+    }
 
     static BpFile Cfg()
     {
@@ -90,7 +109,31 @@ public class BossPhase : MonoBehaviour
             if (bus != null) bus.Play(q.cue, q.gain, q.delay, q.rate <= 0f ? 1f : q.rate);
         }
         if (!string.IsNullOrEmpty(row.shake)) CamShake.Trigger(row.shake, row.shakeMul);
+        Roar(row, df);   // BOSSPHASES C1 / C2
         if (c.log) Debug.Log("[BossPhase] " + row.id + " enters its phase (health " + df.health.ToString("F0") + "/" + df.maxHealth.ToString("F0") + ", damageScale " + df.damageScale.ToString("F2") + ")");
+    }
+
+    // BOSSPHASES C1 + C2: the part of the phase change the player SEES. Every key absent / empty / 0 = nothing happens (today's behaviour).
+    //  stagger  = recoil pose: df.Stagger(ticks, clip) with an existing clip (the roar). Skipped while a finisher scene runs or the boss is down.
+    //  flash    = HitFlash.Flash with a synthetic row (colour, strength, seconds, emissiveNits).
+    //  telegraph= GroundRing.Show at the boss feet, tinted with the flash colour.
+    //  slowMo   = CombatSlowMo.Request(class): the short beat (refused by CombatSlowMo itself during a finisher / cooldown / pause).
+    static void Roar(BpRow row, DuelFighter df)
+    {
+        bool busy = RTFinisher.Busy;
+        var sg = row.stagger;
+        if (sg != null && sg.ticks > 0 && !busy && df.state != FState.Down && df.state != FState.Dead)
+        {
+            df.Stagger(sg.ticks, string.IsNullOrEmpty(sg.clip) ? "hit_heavy" : sg.clip);
+            if (!sg.bossTakesDamage && !warnedInvuln) { warnedInvuln = true; Debug.LogWarning("[BossPhase] stagger.bossTakesDamage=false is not implemented (no invulnerability flag exists): the boss takes damage during the roar"); }
+        }
+        var fl = row.flash; bool hasCol = fl != null && fl.color != null && fl.color.Length >= 3;
+        if (fl != null && fl.strength > 0f && fl.seconds > 0f)
+            HitFlash.Flash(df, new HitFlashTable.Row { color = fl.color, seconds = fl.seconds, riseSeconds = fl.riseSeconds, strength = fl.strength, emissiveNits = fl.emissiveNits, onlyDeathblow = false, skipOnKill = false });
+        var tg = row.telegraph;
+        if (tg != null && tg.radiusM > 0f && tg.seconds > 0f)
+            GroundRing.Show(df.transform.position, tg.radiusM, tg.seconds, hasCol ? new Color(fl.color[0], fl.color[1], fl.color[2], 1f) : new Color(1f, 0.55f, 0.25f, 1f));
+        if (!string.IsNullOrEmpty(row.slowMo) && !busy) CombatSlowMo.Request(row.slowMo);
     }
 
     static void Leave(DuelFighter df, St s)

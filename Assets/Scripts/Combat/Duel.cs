@@ -54,10 +54,10 @@ public class Duel : MonoBehaviour
         if (!RangedNow && BowHooks.Handles(a, m)) return BowHooks.Release(a, d, m, chargeMul);   // BOW v2: a bow-mode swing throws the arrow (BowShot judges it on arrival through this same method)
         Vector3 ad = d.transform.position - a.transform.position; ad.y = 0f;
         float dist = ad.magnitude;
-        float arc = m.id == "kick" ? a.Rule("kickArc", Mathf.PI / 4f) * Mathf.Rad2Deg : a.HitArcDeg; /* DATALAYER b11 */
+        float arc = m.id == "kick" ? a.Rule("kickArc", Mathf.PI / 4f) * Mathf.Rad2Deg : (m.arcDeg > 0f ? m.arcDeg : a.HitArcDeg) /* ABILITIES v1: per-move arc, 0 = the global arc */; /* DATALAYER b11 */
         if (!RangedNow /* BOW v2 */ && dist > m.reach * a.ReachScale /* WEAPONSWAP v88: weapon reach */ + a.radius + d.radius + 0.45f) return false;
         if (!RangedNow /* BOW v2 */ && Angle(a.transform.forward, ad) > arc) return false;
-        if (d.IFrames && !d.SidestepIgnoresIFrames(m)) return false;   // rolled through it (lanePARRY: a sidestep does not beat an overhead, parry.json sidestep)
+        if (d.IFrames && !d.SidestepIgnoresIFrames(m)) { d.NoteEvade(); return false; }   /* ABILITIES v1: opens the dodge-strike window */   // rolled through it (lanePARRY: a sidestep does not beat an overhead, parry.json sidestep)
         HitReactionTable.Last = null;   // P2: set again below only for a clean hit
         if (BellyBite.Handles(a, m)) { var bgR = BellyBite.Resolve(a, d); if (bgR == BellyBite.Result.Landed) { Fire(a, d, "Hit", true, false); return true; } if (bgR == BellyBite.Result.Scene) return true; /* BELLYGRAB v1 */ }   // BELLYBITE v1: unblockable grab (data belly_bite.json, master switch off = never true)
 

@@ -606,7 +606,7 @@
     "boom":  {
                  "cue":  "gateway_open",
                  "cueGain":  1.0,
-                 "procedural":  false,
+                 "procedural":  true,
                  "gain":  0.9,
                  "seconds":  2.8,
                  "f0":  62,

@@ -17,9 +17,9 @@ public class GameHUD : MonoBehaviour
     bool showFps, hintOn, hintPinned; float fpsAcc, fpsShown; int fpsN; float hintA, startT; KeyCode toggleKey = KeyCode.F1; string toggleKeyName = "";
     readonly CombatHudBars.Lag lagP = new CombatHudBars.Lag(); CombatHudBars.Lag lagE = new CombatHudBars.Lag(), lagS = new CombatHudBars.Lag();   // TWOFIGHT v1: lagE restarts on a target switch, lagS = the second bar
     DuelFighter zSecondDf; Health zSecondHp; string zSecondName = ""; float bossBottom;   // TWOFIGHT v1
-    float guardA; float[] cdMax = new float[2]; float[] readyT = new float[2]; bool[] wasReady = new bool[2];
+    float guardA; float[] cdMax = new float[4]; float[] readyT = new float[4]; bool[] wasReady = new bool[4];   // ABILITIES v1: 4 slots
     float lastNow;
-    bool camArg; string fpsTxt; float fpsTxtFor = -1f; string[] lblK = new string[2], lblS = new string[2], lblT = new string[2]; static readonly string[] nums = new string[128];   // UIDATA_A v1: caches, OnGUI allocates nothing per frame
+    bool camArg; string fpsTxt; float fpsTxtFor = -1f; string[] lblK = new string[4], lblS = new string[4], lblT = new string[4]; static readonly string[] nums = new string[128];   // UIDATA_A v1: caches, OnGUI allocates nothing per frame
     static string Num(int n) { if (n < 0 || n >= nums.Length) return n.ToString(); return nums[n] ?? (nums[n] = n.ToString()); }
     // HUDBUG v1 (zones): with zones on the scene enemy is an inactive template and every enemy is a clone, so enemy/ef (set by BuildSlice) never moved. Zones off: untouched.
     Health zEnemyHp; DuelFighter zEnemyDf; float zPlayerLast = -1f, zEnemyLast = -1f, zBarLastEngaged = -1f; DuelFighter zEnemyLogged;
@@ -214,34 +214,36 @@ hp.center.x, hp.yMax + H.bars.framePad + Bc.posture.gap, 0.5f, ef, false, Bc.sta
     void DrawSpecials(HudCfg.Data H, float vw, float vh, float now)
     {
         var S = H.specials; if (!S.enabled || pf == null || S.items == null) return;
-        int n = Mathf.Min(2, S.items.Length);
+        int n = Mathf.Min(2, S.items.Length); int an = AbilityTable.SlotCount(pf); if (an > 0) n = an;   // ABILITIES v1: a bar of up to 4 while ability rows apply (off: the two hud.json icons, as today)
         float total = n * S.size + (n - 1) * S.gap, x0 = vw - S.right - total, y0 = vh - S.bottom - S.size;
         for (int i = 0; i < n; i++)
         {
-            var it = S.items[i]; if (it == null) continue;
-            int cd = i == 0 ? pf.special1Cd : pf.special2Cd;
+            var it = i < S.items.Length ? S.items[i] : null; var ab = an > 0 ? AbilityTable.For(pf, i) : null; if (it == null && ab == null) continue;   // ABILITIES v1: ab null = hud.json icon
+            int cd = pf.SlotCd(i);
             if (cd > cdMax[i]) cdMax[i] = cd;
-            float tot = Mathf.Max(1f, S.cooldownTicks, cdMax[i]);
-            bool ready = cd <= 0; if (ready && !wasReady[i]) readyT[i] = now; wasReady[i] = ready;
+            float tot = Mathf.Max(1f, ab != null && ab.cooldownS > 0f ? ab.cooldownS * S.ticksPerSecond : S.cooldownTicks, cdMax[i]);
+            bool ready = ab != null && ab.trigger == "window" ? (pf.RiposteLeft > 0 || pf.EvadeOpen) : cd <= 0; bool lit = ready && !(ab != null && ab.staminaCost > 0f && pf.stamina < ab.staminaCost); /* ABILITIES v1: window slot lights only while a window is open; a priced ability dims below its cost */ if (ready && !wasReady[i]) readyT[i] = now; wasReady[i] = ready;
             if (ready) cdMax[i] = 0f;
             var r = new Rect(x0 + i * (S.size + S.gap), y0, S.size, S.size);
             Color readyCol = HudCfg.Col(H.colors.ready), coolCol = HudCfg.Col(H.colors.cooling);
             HudDraw.Tex(r, HudDraw.Disc(), new Color(H.layout.iconBack[0], H.layout.iconBack[1], H.layout.iconBack[2], H.layout.iconBack[3]));
-            HudDraw.Tex(r, HudDraw.Ring(S.ringPx), ready ? readyCol : HudCfg.Col(H.colors.frameDim));
+            HudDraw.Tex(r, HudDraw.Ring(S.ringPx), lit ? readyCol : HudCfg.Col(H.colors.frameDim));
+            bool waitWin = ab != null && ab.trigger == "window" && !ready;   // ABILITYICONS v1: a window ability (riposte / dodge strike) waits for its window: a slow pulsing gold ring + "(parry)" instead of a plain dim slot
+            if (waitWin) { var wc = readyCol; wc.a *= 0.22f + 0.28f * (0.5f + 0.5f * Mathf.Sin(now * 3.2f)); HudDraw.Tex(new Rect(r.x - 3f, r.y - 3f, r.width + 6f, r.height + 6f), HudDraw.Ring(S.ringPx), wc); }
             float gs = S.size * S.glyphScale; var gr = new Rect(r.center.x - gs * 0.5f, r.center.y - gs * 0.5f, gs, gs);
-            HudDraw.Tex(gr, HudDraw.Glyph(it.glyph), ready ? HudCfg.Col(H.colors.ink, H.layout.iconInk) : new Color(coolCol.r, coolCol.g, coolCol.b, H.layout.iconCoolAlpha));
-            if (!ready)
+            HudDraw.Tex(gr, HudDraw.Glyph(ab != null ? ab.glyph : it.glyph), lit ? HudCfg.Col(H.colors.ink, H.layout.iconInk) : new Color(coolCol.r, coolCol.g, coolCol.b, H.layout.iconCoolAlpha));
+            if (!ready && cd > 0)
             {
                 var pie = HudDraw.Pie(cd / tot, S.pieSteps); if (pie != null) HudDraw.Tex(r, pie, new Color(H.layout.pieShade[0], H.layout.pieShade[1], H.layout.pieShade[2], H.layout.pieShade[3]));
                 HudDraw.Text(r, Num(Mathf.CeilToInt(cd / Mathf.Max(1f, S.ticksPerSecond))), "title", S.cdSize, TextAnchor.MiddleCenter, true, HudCfg.Col(H.colors.ink, H.layout.cdInk));
             }
-            else
+            else if (ready)
             {
                 float k = 1f - (now - readyT[i]) / Mathf.Max(HudLayout.Get().game.readyFlashMinS, S.readyFlashS);
                 if (k > 0f) { float g = S.size * (H.layout.flashBase + H.layout.flashGrow * (1f - k)); HudDraw.Tex(new Rect(r.center.x - g * 0.5f, r.center.y - g * 0.5f, g, g), HudDraw.Ring(S.ringPx), new Color(readyCol.r, readyCol.g, readyCol.b, k)); }
             }
-            string label = it.key; if (!string.IsNullOrEmpty(it.label)) { string sl = BowHooks.SpecialLabel(pf, i, it.label); if (lblT[i] == null || !string.Equals(lblK[i], it.key) || !string.Equals(lblS[i], sl)) { lblK[i] = it.key; lblS[i] = sl; lblT[i] = it.key + "  " + sl; } label = lblT[i]; } /* BOW v2 */ /* UIDATA_A v1: cached concat */
-            HudDraw.Text(new Rect(r.x - H.layout.keyLabelPad, r.yMax + S.keyDy, S.size + 2f * H.layout.keyLabelPad, S.keySize * H.layout.keyLabelBox), label, "serif", S.keySize, TextAnchor.UpperCenter, false, ready ? HudCfg.Col(H.colors.ink, H.layout.keyLabelInk) : HudCfg.Col(H.colors.dim));
+            string kS = ab != null ? ab.key : it.key, lS = ab != null ? ab.name : it.label; string label = kS; if (!string.IsNullOrEmpty(lS)) { string sl = ab != null ? lS : BowHooks.SpecialLabel(pf, i, lS); if (lblT[i] == null || !string.Equals(lblK[i], kS) || !string.Equals(lblS[i], sl)) { lblK[i] = kS; lblS[i] = sl; lblT[i] = kS + "  " + sl; } label = lblT[i]; if (ab != null && ab.trigger == "window" && !ready) label += " (waiting)"; } /* BOW v2 */ /* UIDATA_A v1: cached concat */
+            HudDraw.Text(new Rect(r.x - H.layout.keyLabelPad, r.yMax + S.keyDy, S.size + 2f * H.layout.keyLabelPad, S.keySize * H.layout.keyLabelBox), label, "serif", S.keySize, TextAnchor.UpperCenter, false, lit ? HudCfg.Col(H.colors.ink, H.layout.keyLabelInk) : HudCfg.Col(H.colors.dim));
         }
     }
 

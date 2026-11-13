@@ -69,9 +69,11 @@ public static class CombatSlowMo
                 if (now > seen) cls = "deathblow";
             }
             if (cls == null && CombatClass.IsCrit(e)) cls = CombatClass.Crit;   // HCKIT4 v95
+            if (cls == null && e.target != null && e.target.Dead) cls = "kill_" + HitReactionTable.CharOf(e.target);   // KILLSLOWMO v1: the killing blow only: row kill_<victim> else kill
         }
         if (cls == null) return;
-        var c = Find(cls); if (c == null) return;
+        var c = Find(cls); if (c == null && cls.StartsWith("kill_")) { cls = CombatClass.Kill; c = Find(cls); }   // KILLSLOWMO v1
+        if (c == null) return;
         if (c.attackerPlayerOnly && !IsPlayer(e.actor)) return;
         pending = cls; pendingAt = Time.unscaledTime + Mathf.Max(0f, c.delayS);   // starts from Tick (next frame): by then a finisher that took over the deathblow is visible
     }
@@ -94,7 +96,7 @@ public static class CombatSlowMo
         if (Time.timeScale < 0.999f) { Skipped++; return false; }   // somebody else (pause, harness) owns the clock
         owns = true; scale = sc; age = 0f; easeIn = Mathf.Max(0.001f, c.easeInS); easeOut = Mathf.Max(0.001f, c.easeOutS);
         holdEnd = Mathf.Min(Mathf.Max(0f, r.maxSeconds - easeOut), easeIn + Mathf.Max(0f, c.holdS));
-        lastStart = Time.unscaledTime; Started++; LastClass = cls; return true;
+        lastStart = Time.unscaledTime; Started++; LastClass = cls; Debug.Log("[CombatSlowMo] dip " + cls + " scale " + sc.ToString("F2") + " hold " + c.holdS.ToString("F2") + " ease " + easeIn.ToString("F2") + "/" + easeOut.ToString("F2") + " clk=" + Time.unscaledTime.ToString("F2")); return true;
     }
 
     static void End()

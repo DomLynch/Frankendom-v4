@@ -214,7 +214,11 @@
       ],
       "enabled": true,
       "mix": 1.0,
-      "tint": [1.1, 0.93, 0.72],
+      "tint": [
+        1.1,
+        0.93,
+        0.72
+      ],
       "smoothMin": 0.0,
       "smoothMax": 0.3,
       "normalScale": -1,
@@ -260,7 +264,9 @@
       "unlessActive": [],
       "zMin": -30,
       "zMax": 30,
-      "surface": "ash"
+      "surface": "ash",
+      "_dress": "laneCHAIN: macro detail layer (ground_macro_detail.png) retuned: period 64/(0.73*2.3)=38 m (was 29 m = 2.0x the 14.5 m slab tile, so it repeated in lock step), albedo scale 2.0 (max). Revert = 1.5 / 3.0.",
+      "_dress_revert": "13 Nov (Lead): back to the pre-dressing detailAlbedo 1.5 / detailTilingMul 3.0 (the retune 2.0 / 2.3 produced a white light pool under Joan on the pit floor)"
     },
     {
       "id": "t_z2_sobek_wet_mud",
@@ -328,7 +334,9 @@
       "zMin": 64,
       "zMax": 104,
       "unlessActive": [],
-      "surface": "dust"
+      "surface": "dust",
+      "_dress": "laneCHAIN: detail macro layer was 0.25 (350 m period = flat colour). 2.6 -> 34 m blotches. Revert = 2.0 / 0.25.",
+      "_dress_revert": "13 Nov: detailAlbedo / detailTilingMul back to the pre-dressing values (tiling 2.6 gave chalk speckle on the floor)"
     },
     {
       "id": "t_z4_grendel_bone_silt",
@@ -396,7 +404,9 @@
       "zMin": 172,
       "zMax": 238,
       "unlessActive": [],
-      "surface": "leafmould"
+      "surface": "leafmould",
+      "_dress": "laneCHAIN: detail macro layer was 0.25 (350 m period = flat colour). 2.6 -> 34 m blotches over the clearing. Revert = 2.0 / 0.25.",
+      "_dress_revert": "13 Nov: detailAlbedo / detailTilingMul back to the pre-dressing values (tiling 2.6 gave chalk speckle on the floor)"
     },
     {
       "id": "t_z6_erlking_ash",
@@ -443,7 +453,11 @@
       ],
       "enabled": true,
       "mix": 1.0,
-      "tint": [1.15, 0.98, 0.75],
+      "tint": [
+        1.15,
+        0.98,
+        0.75
+      ],
       "smoothMin": 0.0,
       "smoothMax": 0.3,
       "normalScale": -1,

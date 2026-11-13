@@ -61,7 +61,7 @@ public static class HudCfg
     {
         public bool enabled = true; public float right = 52f, bottom = 56f, size = 62f, gap = 20f, ringPx = 2.2f, glyphScale = 0.62f, ticksPerSecond = 60f, cooldownTicks = 540f, readyFlashS = 0.55f;
         public int keySize = 13, cdSize = 21; public float keyDy = 5f; public int pieSteps = 48;
-        public SpecialItemC[] items = { new SpecialItemC { key = "1", glyph = "slash" }, new SpecialItemC { key = "2", glyph = "crescent" } };
+        public SpecialItemC[] items = { new SpecialItemC { key = "1", glyph = "slash" }, new SpecialItemC { key = "2", glyph = "crescent" }, new SpecialItemC { key = "C", glyph = "cross", label = "Shield Bash" }, new SpecialItemC { key = "B", glyph = "diamond", label = "Riposte" } };   // ABILITIES v1: items 3 / 4 are only drawn while AbilityTable has rows (GameHUD.DrawSpecials)
     }
     [Serializable] public class GuardDirC
     {

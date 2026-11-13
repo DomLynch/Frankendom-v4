@@ -9,7 +9,7 @@
     "id": "silver",
     "name": "Silver",
     "cap": 9999,
-    "startCoins": 100,
+    "startCoins": 200,
     "_about": "cap = the most the purse holds; a sale that would pass it is refused (wallet-full). Saved inside loot_save.json (version 2)."
   },
   "rules": {
@@ -501,7 +501,10 @@
         "arms_joan",
         "legarmour_joan",
         "joan_shield",
-        "bascinet_joan"
+        "bascinet_joan",
+        "joan_helmet",
+        "joan_bracers",
+        "joan_greaves"
       ]
     },
     {
@@ -610,7 +613,10 @@
         "arms_joan",
         "legarmour_joan",
         "joan_shield",
-        "bascinet_joan"
+        "bascinet_joan",
+        "joan_helmet",
+        "joan_bracers",
+        "joan_greaves"
       ]
     },
     {

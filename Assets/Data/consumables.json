@@ -49,6 +49,7 @@
     "descStamina": "Restores {0}% of your stamina",
     "descCooldown": "    Ready again after {0} s"
   },
+  "startStacks": [{ "id": "potion_health", "qty": 2 }, { "id": "potion_stamina", "qty": 1 }],
   "potions": [
     {
       "id": "potion_health_minor",

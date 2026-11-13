@@ -28,12 +28,13 @@ public static class PotionCfg
             bought = "Bought {0} for {1} silver.", sold = "Sold {0} for {1} silver.", refuseNone = "No potions left.", refuseCooldown = "Not ready yet.", refuseFull = "Already full.", refuseBusy = "Not now.",
             descHealFlat = "Restores {0} health", descHealFrac = "Restores {0}% of your health", descOver = " over {0} s", descStamina = "Restores {0}% of your stamina", descCooldown = "    Ready again after {0} s";
     }
+    [Serializable] public class StartStackC { public string id = ""; public int qty; }   // STARTSTACKS v1: potions a NEW save starts with (consumables.json startStacks); empty = none (old behaviour)
     [Serializable]
     public class Data
     {
         public int version = 2; public bool enabled = false, debugLog = false;
         public string[] useKeys = { "H", "JoystickButton6" }, cycleKeys = { "J" };
-        public RulesC rules = new RulesC(); public HudC hud = new HudC(); public TextC text = new TextC(); public PotionC[] potions = new PotionC[0];
+        public RulesC rules = new RulesC(); public HudC hud = new HudC(); public TextC text = new TextC(); public PotionC[] potions = new PotionC[0]; public StartStackC[] startStacks = new StartStackC[0];
     }
 
     static Data data; static bool loaded; static KeyCode[] useK, cycleK; static FState[] blockSt;

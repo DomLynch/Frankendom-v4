@@ -18,7 +18,7 @@ public class DirectionalInput : MonoBehaviour
     const int N = 256;
     readonly float[] mt = new float[N]; readonly Vector2[] md = new Vector2[N], ps = new Vector2[N]; int head = -1, count;
     Vector2 mouseNow, stickNow; bool padOk, padChecked; int sampleFrame = -9;
-    KeyCode[] kAtk, kGuard, kSp1, kSp2; object keySrc;
+    KeyCode[] kAtk, kGuard, kSp1, kSp2, kSp3; object keySrc;
 
     // strike
     float pressT = -1f, heavyT; bool fromPad, heavyFired, lightOnDown; string firedDir = "", firedId;
@@ -54,6 +54,7 @@ public class DirectionalInput : MonoBehaviour
         {
             if (AnyDown(kSp1)) df.Press("special1");
             if (AnyDown(kSp2)) df.Press("special2");
+            if (AnyDown(kSp3) && df.SlotReady(2)) df.Press("special3");   // ABILITIES v1: pad shield bash (controls.json pad.special3Keys, empty = unbound)
         }
     }
 
@@ -75,7 +76,7 @@ public class DirectionalInput : MonoBehaviour
     {
         if (ReferenceEquals(keySrc, C)) return;
         keySrc = C;
-        kAtk = ControlsTable.Keys(C.pad.attackKeys); kGuard = ControlsTable.Keys(C.pad.guardKeys); kSp1 = ControlsTable.Keys(C.pad.special1Keys); kSp2 = ControlsTable.Keys(C.pad.special2Keys);
+        kAtk = ControlsTable.Keys(C.pad.attackKeys); kGuard = ControlsTable.Keys(C.pad.guardKeys); kSp1 = ControlsTable.Keys(C.pad.special1Keys); kSp2 = ControlsTable.Keys(C.pad.special2Keys); kSp3 = ControlsTable.Keys(C.pad.special3Keys);
     }
     static bool AnyDown(KeyCode[] ks) { if (ks == null) return false; for (int i = 0; i < ks.Length; i++) if (Input.GetKeyDown(ks[i])) return true; return false; }
     static bool AnyHeld(KeyCode[] ks) { if (ks == null) return false; for (int i = 0; i < ks.Length; i++) if (Input.GetKey(ks[i])) return true; return false; }

@@ -193,7 +193,7 @@
   },
   {
    "match": "Pitborn",
-   "bloodScale": 1.0,
+   "bloodScale": 2.00,
    "sparks": false,
    "flash": false
   },

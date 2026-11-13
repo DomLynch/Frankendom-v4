@@ -17,7 +17,7 @@ public static class MoveDefsOverlay
         public string id, direction, path;
         public int windup, active, recovery;
         public Chained chained; public Chain chain; public VsGuard vsGuard;
-        public float damage, stamina, staminaDamage, stagger, poise, poiseFrom, chip, knockback, stepIn, reach, posture, chamber;
+        public float damage, stamina, staminaDamage, stagger, poise, poiseFrom, chip, knockback, stepIn, reach, posture, chamber, arcDeg;   // ABILITIES v1: arcDeg
         public bool breaksGuard, parryable, charges;
     }
     [Serializable] class MovesJ { public MoveJ[] moves; }
@@ -40,7 +40,7 @@ public static class MoveDefsOverlay
                     {
                         id = m.id, direction = m.direction, path = m.path, windup = m.windup, active = m.active, recovery = m.recovery,
                         damage = m.damage, stamina = m.stamina, staminaDamage = m.staminaDamage, stagger = m.stagger, poise = m.poise, poiseFrom = m.poiseFrom,
-                        chip = m.chip, knockback = m.knockback, stepIn = m.stepIn, reach = m.reach, posture = m.posture, chamber = m.chamber,
+                        chip = m.chip, knockback = m.knockback, stepIn = m.stepIn, reach = m.reach, posture = m.posture, chamber = m.chamber, arcDeg = m.arcDeg,
                         breaksGuard = m.breaksGuard, parryable = m.parryable, charges = m.charges
                     };
                     if (m.chained != null && m.chained.windup > 0) { d.hasChained = true; d.chainedWindup = m.chained.windup; d.chainedActive = m.chained.active; d.chainedRecovery = m.chained.recovery; }

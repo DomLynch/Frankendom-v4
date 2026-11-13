@@ -39,6 +39,12 @@ public static class PotionStore
         if (!q.ContainsKey(id)) order.Add(id);
         q[id] = n;
     }
+    /// <summary>STARTSTACKS v1: a NEW save (no file / New game) starts with consumables.json startStacks. Only known, implemented potions; the quantity is cut to maxCarry. Empty list or potions off = nothing.</summary>
+    public static void GrantStart()
+    {
+        if (!PotionCfg.On) return; var rows = PotionCfg.Get().startStacks; if (rows == null) return;
+        foreach (var r in rows) { if (r == null || string.IsNullOrEmpty(r.id) || r.qty < 1) continue; var p = PotionCfg.Find(r.id); if (!PotionCfg.Implemented(p)) continue; Set(r.id, p.maxCarry >= 1 ? Math.Min(r.qty, p.maxCarry) : r.qty); }
+    }
     public static void Add(string id, int n) { Set(id, Qty(id) + n); }
     public static bool CanAdd(string id, int n, int maxCarry) { return n >= 1 && (long)Qty(id) + n <= Math.Max(1, maxCarry); }
     /// <summary>Take one. False when none is carried.</summary>

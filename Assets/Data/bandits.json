@@ -1157,6 +1157,84 @@
         ],
         "minFightDistM": 0.0
       }
+    },
+    {
+      "id": "z4_p",
+      "zone": "grendel",
+      "side": "before",
+      "anchor": "none (ENCOUNTERS v1: PRE-boss, spots bandit_z4_p_<n> in zones.json)",
+      "members": [
+        {
+          "type": "NpcMereRaider"
+        },
+        {
+          "type": "NpcDrownedThane"
+        }
+      ],
+      "needsGate": false,
+      "placed": {
+        "by": "laneENCOUNTERS",
+        "ladderStep": "pre-boss, 4-5 m behind arrive_from_prev (z 116), boss stand z 125 is 11+ m away",
+        "anchor": [
+          0.7,
+          111.8
+        ],
+        "minFightDistM": 0.0
+      }
+    },
+    {
+      "id": "z5_p",
+      "zone": "z5_humbaba",
+      "side": "before",
+      "anchor": "none (ENCOUNTERS v1: PRE-boss, spots bandit_z5_p_<n> in zones.json)",
+      "members": [
+        {
+          "type": "NpcBarkSentinel"
+        },
+        {
+          "type": "NpcRootDruid"
+        },
+        {
+          "type": "NpcCedarArcher"
+        }
+      ],
+      "needsGate": false,
+      "placed": {
+        "by": "laneENCOUNTERS",
+        "ladderStep": "pre-boss, z 189-196 between arrive 185 and approach_edge 199, boss stand z 211",
+        "anchor": [
+          -0.7,
+          192.2
+        ],
+        "minFightDistM": 0.0
+      }
+    },
+    {
+      "id": "z6_p",
+      "zone": "z6_erlking",
+      "side": "before",
+      "anchor": "none (ENCOUNTERS v1: PRE-boss, spots bandit_z6_p_<n> in zones.json)",
+      "members": [
+        {
+          "type": "NpcAntlerKnight"
+        },
+        {
+          "type": "NpcHoundMaster"
+        },
+        {
+          "type": "NpcHuntsman"
+        }
+      ],
+      "needsGate": false,
+      "placed": {
+        "by": "laneENCOUNTERS",
+        "ladderStep": "pre-boss, z 259-265 between arrive 252 and approach_edge 267, boss stand z 286",
+        "anchor": [
+          0.0,
+          261.5
+        ],
+        "minFightDistM": 0.0
+      }
     }
   ],
   "weaponTemplate": "knight_sword",

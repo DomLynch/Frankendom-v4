@@ -35,6 +35,7 @@ public class HwBranch
     public int maxPerFight = 2; public float cooldownS = 8f;
     public HwDecal decal = new HwDecal();
 }
+[Serializable] public class HwPhase2 { public float telegraphS = -1f, cooldownS = -1f, groanGain = -1f; }   // BOSSPHASES C4: humbaba_watch.json phase2{}; a value < 0 (absent) = the normal one; read only while BossPhase.IsOn(boss)   // hc:ok algorithm constant / guard / log (reviewed)
 [Serializable] public class HwPose { public string name = ""; public float x, z; }
 [Serializable] public class HwProof { public float forceAtS = 6f, poseAtS = 2f, poseProbeM = 40f; public HwPose[] poses = new HwPose[0]; }
 [Serializable]
@@ -42,6 +43,7 @@ public class HwFile
 {
     public bool enabled = false, log = true, useGate = true; public float refreshS = 0.5f; public string zone = "zone5", gateKey = "humbaba_branch", bossId = "Humbaba";
     public HwEyes eyes = new HwEyes(); public HwHeavy heavy = new HwHeavy(); public HwGroan groan = new HwGroan(); public HwBranch branch = new HwBranch(); public HwProof proof = new HwProof();
+    public HwPhase2 phase2 = new HwPhase2();   // BOSSPHASES C4
 }
 
 public class HumbabaWatch : MonoBehaviour
@@ -152,7 +154,7 @@ public class HumbabaWatch : MonoBehaviour
         var B = c.branch; float now = Time.time;
         if (joan == null || joan.Dead) return;
         int n; perFight.TryGetValue(boss, out n); if (n >= B.maxPerFight) return;
-        if (!forced && now - lastDrop < B.cooldownS) return;
+        if (!forced && now - lastDrop < P2(c, boss, B.cooldownS, 1)) return;   // BOSSPHASES C4
         if (rng == null) rng = new System.Random((int)SurpriseGate.Seed("humbaba_watch"));   // hc:ok algorithm constant / guard / log (reviewed)
         if (!forced && rng.NextDouble() > c.heavy.chance) return;
         if (c.useGate && !SurpriseGate.TryClaim(c.zone, c.gateKey)) return;
@@ -160,10 +162,18 @@ public class HumbabaWatch : MonoBehaviour
         Groan(c, boss); StartDrop(c, boss);
     }
 
+    // BOSSPHASES C4: the phase-2 override of a branch / groan number (key 0 telegraphS, 1 cooldownS, 2 groanGain); the normal value while the boss is not in its phase or the key is absent
+    static float P2(HwFile c, DuelFighter boss, float baseV, int key)
+    {
+        var q = c.phase2; if (q == null || boss == null || !BossPhase.IsOn(boss)) return baseV;
+        float v = key == 0 ? q.telegraphS : key == 1 ? q.cooldownS : q.groanGain; return v >= 0f ? v : baseV;
+    }
+
     void Groan(HwFile c, DuelFighter boss)
     {
         var G = c.groan; Groans++;
-        if (!string.IsNullOrEmpty(G.cue) && G.gain > 0f) { if (bus == null) bus = FindFirstObjectByType<CueBus>(); if (bus != null) bus.Play(G.cue, G.gain, G.delayS, G.rate <= 0f ? 1f : G.rate); }   // hc:ok algorithm constant / guard / log (reviewed)
+        float gain = P2(c, boss, G.gain, 2);   // BOSSPHASES C4
+        if (!string.IsNullOrEmpty(G.cue) && gain > 0f) { if (bus == null) bus = FindFirstObjectByType<CueBus>(); if (bus != null) bus.Play(G.cue, gain, G.delayS, G.rate <= 0f ? 1f : G.rate); }   // hc:ok algorithm constant / guard / log (reviewed)
         if (!string.IsNullOrEmpty(G.shake)) CamShake.Trigger(G.shake, G.shakeMul);
         if (c.log) Debug.Log("[HumbabaWatch] the tree groans (cue " + G.cue + " x" + G.rate.ToString("F2") + ")");   // hc:ok algorithm constant / guard / log (reviewed)
     }
@@ -178,7 +188,7 @@ public class HumbabaWatch : MonoBehaviour
         double a = rng.NextDouble() * Math.PI * 2.0, r = rng.NextDouble() * B.jitterM;   // hc:ok algorithm constant / guard / log (reviewed)
         p += new Vector3((float)(Math.Cos(a) * r), 0f, (float)(Math.Sin(a) * r));   // hc:ok algorithm constant / guard / log (reviewed)
         RaycastHit hit; if (Physics.Raycast(p + Vector3.up * B.groundProbeM, Vector3.down, out hit, B.groundProbeM * 2f, ~0, QueryTriggerInteraction.Ignore)) p.y = hit.point.y;   // hc:ok algorithm constant / guard / log (reviewed)
-        D.p = p; D.t0 = Time.time; D.tel = Mathf.Max(0.1f, B.telegraphS); D.yaw = (float)(rng.NextDouble() * 360.0);   // hc:ok algorithm constant / guard / log (reviewed)
+        D.p = p; D.t0 = Time.time; D.tel = Mathf.Max(0.1f, P2(c, boss, B.telegraphS, 0)); D.yaw = (float)(rng.NextDouble() * 360.0);   // hc:ok algorithm constant / guard / log (reviewed)
         D.axis = new Vector3((float)(rng.NextDouble() - 0.5), 0f, (float)(rng.NextDouble() - 0.5)); if (D.axis.sqrMagnitude < 1e-4f) D.axis = Vector3.right; D.axis.Normalize();   // hc:ok algorithm constant / guard / log (reviewed)
         // start: above the tree crown (the face-tree prop) when it exists, else straight above the mark
         Vector3 crown = p + Vector3.up * B.startHeightM; var treeRoot = sets.Count > 0 ? sets[0].root : null;   // hc:ok algorithm constant / guard / log (reviewed)
@@ -206,23 +216,12 @@ public class HumbabaWatch : MonoBehaviour
             var refMat = Resources.Load<Material>(K.refMaterial); if (refMat == null) { Debug.LogWarning("[HumbabaWatch] no decal material '" + K.refMaterial + "': no ground telegraph"); return; }   // hc:ok algorithm constant / guard / log (reviewed)
             decalMat = new Material(refMat); decalMat.name = "humbaba_mark"; decalMat.hideFlags = HideFlags.DontUnloadUnusedAsset; decalMat.EnableKeyword("_COLORMAP"); decalMat.SetTexture(BaseColorMap, MakeRing(K)); decalMat.SetColor("_BaseColor", Color.white);   // hc:ok algorithm constant / guard / log (reviewed)
         }
-        D.decal = new GameObject("HumbabaMark"); D.decal.transform.position = D.p + Vector3.up * (K.depthM * 0.5f); D.decal.transform.rotation = Quaternion.Euler(90f, D.yaw, 0f);   // hc:ok algorithm constant / guard / log (reviewed)
-        D.proj = D.decal.AddComponent<DecalProjector>(); D.proj.material = decalMat; D.proj.pivot = Vector3.zero; D.proj.size = new Vector3(c.branch.radiusM * 2f, c.branch.radiusM * 2f, K.depthM); D.proj.drawDistance = K.drawDistanceM; D.proj.fadeFactor = 0f;   // hc:ok algorithm constant / guard / log (reviewed)
+        D.proj = GroundRing.CreateProjector(decalMat, D.p, D.yaw, c.branch.radiusM, K.depthM, K.drawDistanceM, "HumbabaMark", out D.decal);   // BOSSPHASES C2: the projector set-up now lives in GroundRing (same position, rotation, size, fade 0)
     }
 
     static Texture2D MakeRing(HwDecal K)   // hc:ok algorithm constant / guard / log (reviewed)
-    {
-        int n = Mathf.Clamp(K.texSize, 16, 512); var tex = new Texture2D(n, n, TextureFormat.RGBA32, true); tex.name = "HumbabaMark"; tex.wrapMode = TextureWrapMode.Clamp;   // hc:ok algorithm constant / guard / log (reviewed)
-        var px = new Color32[n * n]; var tn = K.tint != null && K.tint.Length >= 3 ? new Color(K.tint[0], K.tint[1], K.tint[2], 1f) : Color.black; float w = Mathf.Max(0.01f, K.ringWidthFrac);   // hc:ok algorithm constant / guard / log (reviewed)
-        for (int y = 0; y < n; y++)   // hc:ok algorithm constant / guard / log (reviewed)
-            for (int x = 0; x < n; x++)   // hc:ok algorithm constant / guard / log (reviewed)
-            {
-                float u = (x + 0.5f) / n * 2f - 1f, v = (y + 0.5f) / n * 2f - 1f, r = Mathf.Sqrt(u * u + v * v);   // hc:ok algorithm constant / guard / log (reviewed)
-                float ring = Mathf.Exp(-((r - K.ringRadiusFrac) / w) * ((r - K.ringRadiusFrac) / w)), fill = K.innerFill * Mathf.Clamp01(1f - r), edge = Mathf.Clamp01((1f - r) / w);   // hc:ok algorithm constant / guard / log (reviewed)
-                float al = Mathf.Clamp01(ring + fill) * edge;   // hc:ok algorithm constant / guard / log (reviewed)
-                px[y * n + x] = new Color32((byte)Mathf.RoundToInt(tn.r * 255f), (byte)Mathf.RoundToInt(tn.g * 255f), (byte)Mathf.RoundToInt(tn.b * 255f), (byte)Mathf.RoundToInt(al * 255f));   // hc:ok algorithm constant / guard / log (reviewed)
-            }
-        tex.SetPixels32(px); tex.Apply(true, true); return tex;   // hc:ok algorithm constant / guard / log (reviewed)
+    {   // BOSSPHASES C2: the ring builder moved to GroundRing.BuildRingTexture (same algorithm and numbers)
+        return GroundRing.BuildRingTexture("HumbabaMark", K.texSize, K.ringRadiusFrac, K.ringWidthFrac, K.innerFill, K.tint != null && K.tint.Length >= 3 ? new Color(K.tint[0], K.tint[1], K.tint[2], 1f) : Color.black);   // hc:ok algorithm constant / guard / log (reviewed)
     }
 
     void UpdateDrops(HwFile c)

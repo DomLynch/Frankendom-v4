@@ -15,6 +15,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     int regenWait, postureHold, guardAge, parryCd, riposteTicks, blockFlash; bool parryWindow;
     public Vector3 moveDir; public bool run, guardHeld, heavyHeld; public int guardSide;   // 0 centre, 1 left, 2 right, 3 up
     int pLight, pHeavy, pThrust, pKick, pRoll, pBack, pMoveTtl; string pMove; public int special1Cd = 120, special2Cd = 120;   // specials: first available at 2 s, 9 s cooldown, no stamina cost
+    public int special3Cd, special4Cd, evadeLeft;   // ABILITIES v1 (AbilityTable.cs): slot 3 (shield bash) cooldown, slot 4 spare, ticks left of the dodge-strike window (0 = closed)
     bool backstep; bool lastLightRight; Vector3 rollDir, knock; bool paused;
     // dodge.json: the current evasive move (state Roll covers roll, backstep and sidestep; dodgeKind tells them apart) and the moving-guard layer
     int pSide, sideDir, dodgeCd, dodgeKind, dodgeTicks = 36, dodgeIS = 4, dodgeIE = 20, dodgeCdTicks; float dodgeDist = 3.2f, dodgePow = 1f, dodgeAge, dodgeTurn = 30f;   // dodgeKind 0 roll, 1 backstep, 2 sidestep
@@ -28,7 +29,11 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
 
     float R(string k, float d) { return rules ? rules.N(k, d) : d; }
     string[] specialIds; /* DATALAYER b6 */
-    public string SpecialId(int slot) { string bowId = BowHooks.SpecialIdFor(this, slot); if (bowId != null) return bowId; /* BOW v2 */ if (specialIds == null) { var rc = Roster.Get(Roster.IdOf(this)); specialIds = rc != null && rc.specials != null && rc.specials.Length >= 2 ? rc.specials : new[] { "skill_cleave", "skill_reaping" }; } return specialIds[slot]; } /* DATALAYER b6 */
+    public string SpecialId(int slot) { string bowId = BowHooks.SpecialIdFor(this, slot); if (bowId != null) return bowId; /* BOW v2 */ var abr = AbilityTable.For(this, slot); if (abr != null) return abr.moveId; /* ABILITIES v1: weapon-aware slot row */ if (slot > 1) return null; if (specialIds == null) { var rc = Roster.Get(Roster.IdOf(this)); specialIds = rc != null && rc.specials != null && rc.specials.Length >= 2 ? rc.specials : new[] { "skill_cleave", "skill_reaping" }; } return specialIds[slot]; } /* DATALAYER b6 */
+    // ABILITIES v1: slot cooldowns 0..3 (special1Cd / special2Cd stay the fields the AI, FightBalance, STTactics and FinisherPlayer read), readiness, price check. All false / unchanged when AbilityTable is off.
+    public int SlotCd(int i) { return i == 0 ? special1Cd : i == 1 ? special2Cd : i == 2 ? special3Cd : special4Cd; }
+    public bool SlotReady(int i) { var r = AbilityTable.For(this, i); return r != null && SlotCd(i) <= 0 && !AbilityPoor(r.moveId); }
+    bool AbilityPoor(string id) { float c = AbilityTable.CostOf(this, id, -1f); return c > 0f && stamina < c * StanceLayer.AttackCostMul(this); }
     public bool Dead => state == FState.Dead;
     public MoveDef CurrentMove => move;
     public int WindupLeft => state == FState.Windup && move != null ? Tk(move.Windup(chained)) - t : 99;
@@ -46,7 +51,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         if (IsPlayer && MarketSafe.Refuses(what)) return;   // STALL v1: no attack presses in the camp (dodges stay)
         int ttl = CombatFeel.QueueTtl(this, (int)R("bufferTtl", 11));   // P1: while a move / dodge / stagger runs, the press lives until the move can take it (cancel.json queue)
         if (ShoveTable.IsMove(what)) { pMove = what; pMoveTtl = ttl; return; }   // SHOVE v1: a shove.json move id is queued like a special; TickFree starts it (no special cooldown, no stamina refund)
-        if (what == "special1" || what == "special2" || BellyBite.IsPress(what) /* BELLYBITE v1 */ || what == "light_left" || what == "light_right" || what == "heavy_overhead") { pMove = what == "special1" ? SpecialId(0) : what == "special2" ? SpecialId(1) : what; /* DATALAYER b6 */ pMoveTtl = ttl; return; }
+        if (what == "special1" || what == "special2" || what == "special3" /* ABILITIES v1 */ || BellyBite.IsPress(what) /* BELLYBITE v1 */ || what == "light_left" || what == "light_right" || what == "heavy_overhead") { pMove = what == "special1" ? SpecialId(0) : what == "special2" ? SpecialId(1) : what == "special3" ? SpecialId(2) : what; /* DATALAYER b6 */ pMoveTtl = ttl; return; }
         switch (what) { case "sidestep": sideDir = 0; pSide = ttl; break; case "backstep": pBack = ttl; break; case "light": pLight = ttl; break; case "heavy": pHeavy = ttl; break; case "thrust": pThrust = ttl; break; case "kick": pKick = ttl; break; case "roll": pRoll = ttl; break; }
     }
 
@@ -209,7 +214,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         if (parryCd > 0) parryCd--;
         if (riposteTicks > 0) riposteTicks--;
         if (blockFlash > 0) blockFlash--;
-        if (special1Cd > 0) special1Cd--; if (special2Cd > 0) special2Cd--; if (pMoveTtl > 0) pMoveTtl--; else pMove = null; if (pBack > 0) pBack--;
+        if (special1Cd > 0) special1Cd--; if (special2Cd > 0) special2Cd--; if (special3Cd > 0) special3Cd--; if (special4Cd > 0) special4Cd--; if (evadeLeft > 0) evadeLeft--; /* ABILITIES v1 */ if (pMoveTtl > 0) pMoveTtl--; else pMove = null; if (pBack > 0) pBack--;
         if (pLight > 0) pLight--; if (pHeavy > 0) pHeavy--; if (pThrust > 0) pThrust--; if (pKick > 0) pKick--; if (pRoll > 0) pRoll--;
         if (pSide > 0) pSide--; if (dodgeCd > 0 && state != FState.Roll) dodgeCd--;
         if (state == FState.Guard) { float gd = DodgeTable.Get().guard.staminaDrainPerSecond; if (gd > 0f) stamina = Mathf.Max(0f, stamina - gd / 60f); }   // data, OFF at 0
@@ -262,10 +267,12 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         if (pMove != null && ShoveTable.IsMove(pMove)) { string shoveId = pMove; pMove = null; StartMove(shoveId, false); return; }   // SHOVE v1
         if (pMove != null)
         {
-            string id = pMove; pMove = null;
+            string id = pMove; pMove = null; var abr = AbilityTable.RowOfMove(this, id); int asl = abr != null ? abr.slot : -1;   // ABILITIES v1: abr null = not an ability (off, a monster, any other move): the old path, unchanged
             if (id == SpecialId(0) && special1Cd > 0) { } /* DATALAYER b6 */
             else if (id == SpecialId(1) && special2Cd > 0) { } /* DATALAYER b6 */
-            else { if (id == SpecialId(0)) special1Cd = (int)R("special.cooldownTicks", 540); else if (id == SpecialId(1)) special2Cd = (int)R("special.cooldownTicks", 540); /* DATALAYER b6 */ stamina += moves.Get(id) != null ? moves.Get(id).stamina : 0; StartMove(id, false); return; }
+            else if (asl == 2 && special3Cd > 0) { }   // ABILITIES v1: shield bash cooling down
+            else if (asl >= 0 && AbilityPoor(id)) { }   // ABILITIES v1: priced ability, not enough stamina: refused like a cooling one
+            else { int acd = AbilityTable.CooldownTicks(abr, (int)R("special.cooldownTicks", 540)); if (id == SpecialId(0)) special1Cd = acd; else if (id == SpecialId(1)) special2Cd = acd; else if (asl == 2) special3Cd = acd; /* DATALAYER b6 */ stamina += moves.Get(id) != null ? moves.Get(id).stamina : 0; StartMove(id, false); return; }
         }
         if (dodgeCd <= 0)
         {
@@ -373,7 +380,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
 
     void StartMove(string id, bool isChained)
     {
-        var m = moves.Get(id); if (m == null) return;
+        var m = WeaponMove(id); if (m == null) return;   // WEAPONMOVES v1
         move = m; chained = isChained; state = FState.Windup; t = 0; hitDone = false; charge = 0;
         pLight = pHeavy = pThrust = pKick = 0;
         if (id == "light_right") lastLightRight = true; else if (id == "light_left") lastLightRight = false;
@@ -381,7 +388,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         int total = Tk(m.Windup(isChained)) + Tk(m.Active(isChained)) + Tk(m.Recovery(isChained));
         var arow = AttackClipTable.Get().enabled ? AttackClipTable.Find(CharKey(), id) : null;
         fadeOutLen = 0f;
-        if (!BeginAttackClip(arow, m, isChained)) PlayClip(ClipFor(id), total, R("blend.attackSquashS", 0.06f)) /* DATALAYER b10 */;   // no row / state: old whole-clip squash
+        if (!BeginAttackClip(arow, m, isChained)) PlayClip(AbilityTable.ClipOf(this, id) ?? ClipFor(id) /* ABILITIES v1 */, total, R("blend.attackSquashS", 0.06f)) /* DATALAYER b10 */;   // no row / state: old whole-clip squash
         FlowAttackStart(m);   // V64FLOW
         ContactRelay.AttackStarted(this, m);
         LatencyProbe.Started(this, "attack", id);
@@ -439,7 +446,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         bool queued = pMove != null || pHeavy > 0 || pLight > 0 || pThrust > 0 || pKick > 0;
         if (!queued && guardHeld && stamina > 0f && Can(mid, "guard", out e)) { statCancelGuard++; ToLoco(); TickFree(); return true; }   // V64P   // TickFree enters Guard
         bool atk;
-        if (pMove != null) atk = Can(mid, "special", out e) && (pMove == SpecialId(0) ? special1Cd <= 0 : pMove == SpecialId(1) ? special2Cd <= 0 : true) /* DATALAYER b6 */;
+        if (pMove != null) atk = Can(mid, "special", out e) && (pMove == SpecialId(0) ? special1Cd <= 0 : pMove == SpecialId(1) ? special2Cd <= 0 : pMove == SpecialId(2) ? special3Cd <= 0 /* ABILITIES v1 */ : true) /* DATALAYER b6 */;
         else atk = (pHeavy > 0 && Can(mid, "heavy", out e)) || (pLight > 0 && Can(mid, "light", out e)) || (pThrust > 0 && Can(mid, "thrust", out e)) || (pKick > 0 && Can(mid, "kick", out e));
         if (atk) { statCancelAtk++; ToLoco(); TickFree(); return true; }   // V64P   // TickFree starts the buffered move (riposte / heavy / light / thrust / kick / special)
         return false;
@@ -512,7 +519,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     float ParrySelfRecovery() { var P = StaminaTable.Parry(); return P.enabled ? P.selfRecoveryTicks : R("parryRecovery", 8); }
     int ParryRiposteWindow() { var P = StaminaTable.Parry(); return P.enabled ? P.riposteWindowTicks : (int)R("parryStun", 90); }
     void ParryNote() { var P = StaminaTable.Parry(); if (P.enabled) { stamina = Mathf.Clamp(stamina - P.staminaCost + P.staminaGain, 0f, Mathf.Max(stamina, maxStamina)); if (P.staminaCost > 0f) regenWait = RegenDelay(); } parryOkFlash = StaminaTable.Get().hud.parryFlashTicks; statParries++; }   // lanePARRY: staminaGain = the parry reward
-    float MoveCost(MoveDef m) { return StaminaTable.MoveCost(m) * StanceLayer.AttackCostMul(this); }   // STANCE2 v81: stances.json attackCostMul
+    float MoveCost(MoveDef m) { float ac = AbilityTable.CostOf(this, m.id, -1f); /* ABILITIES v1: -1 = not a priced ability */ return (ac >= 0f ? ac : StaminaTable.MoveCost(m)) * StanceLayer.AttackCostMul(this) * (m.weaponStaminaMul > 0f ? m.weaponStaminaMul : 1f); }   // WEAPONMOVES v1   // STANCE2 v81: stances.json attackCostMul
     public float MoveMulNow => SpeedMulExhausted();   // CHASE v1: the player's effective run speed is the chase speed reference
     float SpeedMulExhausted() { return (exhausted ? StaminaTable.Get().exhausted.walkMul : 1f) * WoundSystem.MoveMul(this) * StanceLayer.MoveSpeedMul(this); }   /* STANCE2 v81: stances.json moveSpeedMul */   // lane WOUND: limp (HP stages) and leg-hit slow, 1 when healthy / off
     public float DamageScaleNow => damageScale * (exhausted ? StaminaTable.Get().exhausted.damageMul : 1f) * WeaponHooks.DamageMul(this); /* WEAPONSWAP v88: weapon damage */

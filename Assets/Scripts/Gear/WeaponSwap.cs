@@ -20,6 +20,7 @@ public class WeaponStats
     public string id = "";
     public float damageMul = 1f, speedMul = 1f, reachMul = 1f, postureMul = 1f;
     public bool twoHanded;
+    public GearTable.MoveOverride[] moves; public System.Collections.Generic.Dictionary<string, MoveDef> cache;   // WEAPONMOVES v1
 }
 
 // the seam: any component on a fighter root that can say which weapon stats apply (WeaponSwap does)
@@ -106,7 +107,7 @@ public class WeaponSwap : MonoBehaviour, IGearWeaponSource
         if (root == null) root = transform.root;
         if (it == null || it.weapon == null || string.IsNullOrEmpty(it.weapon.id)) return;   // not a weapon item: GearSlots keeps its stats, the sword stays
         item = it; def = it.weapon;
-        stats = new WeaponStats { id = def.id, damageMul = def.damageMul, speedMul = def.speedMul, reachMul = def.reachMul, postureMul = def.postureMul, twoHanded = def.twoHanded };
+        stats = new WeaponStats { id = def.id, damageMul = def.damageMul, speedMul = def.speedMul, reachMul = def.reachMul, postureMul = def.postureMul, twoHanded = def.twoHanded, moves = def.moves };
         string cid = gs != null ? gs.CharacterId : ""; if (cid.Length > 0 && def.cueWeapon.Length > 0) cueByCharacter[cid] = def.cueWeapon;
         GearTable.Log(name + " weapon " + def.id + ": damage x" + def.damageMul + " speed x" + def.speedMul + " reach x" + def.reachMul + " posture x" + def.postureMul + (def.twoHanded ? " two-handed" : ""));
         if (def.unarmed) { UnarmedOn(); return; }   // SOBEKCLAWS
