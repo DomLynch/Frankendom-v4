@@ -58,6 +58,16 @@
             "knockMul": 0.2,
             "postureMul": 0.5,
             "armour": true
+          },
+          {
+            "move": "light*",
+            "armour": true,
+            "fromTick": 6,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.2,
+            "postureMul": 0.5,
+            "phase": "phase2"
           }
         ]
       },
@@ -151,6 +161,16 @@
             "knockMul": 0.2,
             "postureMul": 0.5,
             "armour": true
+          },
+          {
+            "move": "light*",
+            "armour": true,
+            "fromTick": 6,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.2,
+            "postureMul": 0.5,
+            "phase": "phase2"
           }
         ]
       },
@@ -207,6 +227,16 @@
             "knockMul": 0.2,
             "postureMul": 0.5,
             "armour": true
+          },
+          {
+            "move": "light*",
+            "armour": true,
+            "fromTick": 6,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.2,
+            "postureMul": 0.5,
+            "phase": "phase2"
           }
         ]
       },
@@ -263,6 +293,16 @@
             "knockMul": 0.15,
             "postureMul": 0.4,
             "armour": true
+          },
+          {
+            "move": "light*",
+            "armour": true,
+            "fromTick": 6,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.15,
+            "postureMul": 0.4,
+            "phase": "phase2"
           }
         ]
       },

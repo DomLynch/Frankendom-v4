@@ -173,7 +173,28 @@
           "stab": 0.15,
           "kick": 0.1,
           "interrupt": 0.15
-        }
+        },
+        "combos": [
+          {
+            "id": "lllh",
+            "steps": [
+              "light",
+              "light",
+              "light",
+              "heavy"
+            ],
+            "weight": 0.5
+          }
+        ],
+        "alts": [
+          {
+            "from": "light",
+            "to": [
+              "heavy",
+              "thrust"
+            ]
+          }
+        ]
       },
       "note": "BOSSPHASES: PIN ONLY. Knobs identical to enemy_d7_10 (what Pitborn resolves to today, boss_phase.json note). minDiff 7 = the same range as enemy_d7_10, so a Pitborn clone on a lower difficulty (z1_veteran) resolves exactly as today. A named row so the Pitborn phase cannot drift if the generic ladder rows are retuned. enrage hpFrac 0.5."
     },
@@ -279,7 +300,19 @@
           "kick": 0.0,
           "dash": 0.2,
           "circle": 0.1
-        }
+        },
+        "combos": [
+          {
+            "id": "lllh",
+            "steps": [
+              "light",
+              "light",
+              "light",
+              "heavy"
+            ],
+            "weight": 0.5
+          }
+        ]
       },
       "note": "SOBEKMOVES (guess): keep-distance poker. thrust-first combos (poke, poke, sweep/lunge), whiff punish dashes in from 2.4 m, no more than 38 percent thrust (balance_auto maxMoveShare 0.4), kick at most once per 30 s, enrage at 60 percent HP (hpFrac 0.6, see SOBEKBAL): faster tempo, no speed change. Proof: -balanceauto move counts per fight (>= 4 distinct moves, no move > 40 percent). SOBEKAI v1: Sobek claws AI: see _agents/laneSOBEKAI/MANIFEST.md (combo / punish / dash / share / enrage keys). SOBEKBAL v1: Joan won 5/5 on v109f; see _agents/laneSOBEKBAL/MANIFEST.md (maxShare .38 -> .30, enrage hpFrac .5 -> .6, waitMul .8 -> .7). | BOSSPHASES: phase 2 = more lunges (fx.stab .15 -> .25) and more closing dashes (fx.dash .1 -> .2, circle 0 -> .1): the keep-distance poker turns into a hunter."
     },
@@ -384,7 +417,19 @@
           "stab": 0.15,
           "kick": 0.0,
           "dash": 0.25
-        }
+        },
+        "combos": [
+          {
+            "id": "lllh",
+            "steps": [
+              "light",
+              "light",
+              "light",
+              "heavy"
+            ],
+            "weight": 0.5
+          }
+        ]
       },
       "note": "laneBOSSDATA (Grendel, as laneMONSTER3 drafted it): cloned from sobek_hunter, same combos / punish / enrage numbers; retune after the proof run. | BOSSPHASES: phase 2 = charge-and-follow-up (dash .1 -> .25, comboAdd .15 -> .25, aggression +.05)."
     },
@@ -488,7 +533,26 @@
           "stab": 0.3,
           "kick": 0.0,
           "dash": 0.1
-        }
+        },
+        "combos": [
+          {
+            "id": "lh",
+            "steps": [
+              "light",
+              "heavy"
+            ],
+            "weight": 0.8
+          },
+          {
+            "id": "llh",
+            "steps": [
+              "light",
+              "light",
+              "heavy"
+            ],
+            "weight": 0.6
+          }
+        ]
       },
       "note": "laneBOSSDATA: Humbaba, lunging bite (thrust = the maw lunge) and grab. thrust-first combos, thrust share up to 45 percent, wider whiff-punish dash. The GRAB is not a move in move-defs yet (Pitborn's belly_grab in belly_bite.json is the reference); until it exists the bite lunge is the only closing move. Retune after the proof run. | BOSSPHASES: phase 2 = more maw lunges (stab .15 -> .30, comboAdd .15 -> .20)."
     },
