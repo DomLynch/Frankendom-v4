@@ -591,7 +591,42 @@
           "stab": 0.15,
           "kick": 0.0,
           "dash": 0.1
-        }
+        },
+        "combos": [
+          {
+            "id": "hhh",
+            "steps": [
+              "heavy",
+              "heavy",
+              "heavy"
+            ],
+            "weight": 0.5
+          },
+          {
+            "id": "lhh",
+            "steps": [
+              "light",
+              "heavy",
+              "heavy"
+            ],
+            "weight": 0.6
+          }
+        ],
+        "alts": [
+          {
+            "from": "light",
+            "to": [
+              "heavy",
+              "thrust"
+            ]
+          },
+          {
+            "from": "thrust",
+            "to": [
+              "heavy"
+            ]
+          }
+        ]
       },
       "note": "laneBOSSDATA: Erlking, slow and heavy with long reach: heavy-first, long waits, wide punish dash for the charge, hyper-armour on heavies and skills (poise.json). Cadence is low on purpose (aggression .62), so his damage per hit is the highest on the ladder. Retune after the proof run. | BOSSPHASES: phase 2 = more heavy-heavy chains (comboAdd .1 -> .2, aggression +.02), same tempo (speed 1.1, waits .78)."
     },

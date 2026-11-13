@@ -319,6 +319,16 @@
             "knockMul": 0.1,
             "postureMul": 0.3,
             "armour": true
+          },
+          {
+            "move": "light*",
+            "armour": true,
+            "fromTick": 6,
+            "recoveryTicks": 0,
+            "damageMul": 1.0,
+            "knockMul": 0.1,
+            "postureMul": 0.3,
+            "phase": "phase2"
           }
         ]
       }
