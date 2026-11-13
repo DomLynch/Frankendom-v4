@@ -3,12 +3,12 @@
   "enabled": true,
   "title": "FRANKENDOM",
   "sub": "the world is loading, the first start can take up to half a minute",
-  "extraAfterPrewarmS": 8.0,
+  "extraAfterPrewarmS": 1.0,
   "fadeS": 0.6,
   "minSeconds": 3.0,
   "maxSeconds": 38.0,
   "calmFrameS": 0.06,
-  "calmForS": 3.0,
+  "calmForS": 1.5,
   "titleSize": 54,
   "subSize": 20
 }
