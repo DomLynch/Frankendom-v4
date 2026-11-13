@@ -1,1194 +1,1228 @@
 {
-  "_about": "laneVIS1 v1 (STAGED, not shipped). Read by the NEW Scripts/Zones/ZoneLook.cs (kit\\code\\ZoneLook.cs, UNCOMPILED). One global runtime Volume (priority 20) + by-name edits of the existing key / fill / rim lights + runtime local-fog boxes, all driven by the player's world z. enabled=false or an absent file = nothing. Switches i2 grade, i3 key+bounce light, i5 aerial perspective fog, i6 arena ground haze, i9 bloom+vignette, i18 hero rim. Args: -zonelook:off | -zonelook:2,3,9 (item list; wins over the switches) for same-exe A/B frames. -999 = inherit the default row. Row units: colorFilter linear rgb multiplier, postExposure EV (cancels the filter's luminance change), temperature/tint HDRP WhiteBalance -100..100, saturation/contrast ColorAdjustments -100..100, fogAlbedo volumetric albedo, fogTint = Fog.tint (colours the sky-derived far fog), fogMaxHeight/fogMeanFreePath = height fog (density kept equal at 2 m eye height), keyElevationDeg absolute sun pitch (-1 = leave), keyYawOffsetDeg added to the authored yaw, bounce = the existing FillCool directional (no shadows) re-coloured and re-aimed (-999 = keep authored aim), moonRimColor = MoonRim tint.",
-  "enabled": true,
-  "log": true,
-  "pollSeconds": 0.1,
-  "blendM": 14.0,
-  "smoothSeconds": 1.5,
-  "waitFrames": 4,
-  "i2": true,
-  "i3": true,
-  "i5": true,
-  "i6": true,
-  "i9": true,
-  "i18": true,
-  "keyGroundMul": 0.95,
-  "keyMaxBoost": 1.8,
-  "keyMinElevationDeg": 12.0,
-  "hero": {
-    "rimCharacterLux": 700.0,
-    "_about": "item 18: Rim_Character (directional, Character layer, follows the camera) 0 -> 400 lux = the laneJOANFRONT value Dom OK'd. Rim_Player / Fill_Player / Rim_Enemy spot rigs already exist (hdrp_fixes.json rimRigs) and are NOT changed."
-  },
-  "defaults": {
-    "id": "default",
-    "zFrom": -100000.0,
-    "zTo": 100000.0,
-    "colorFilter": [
-      1.0,
-      1.0,
-      1.0
-    ],
-    "postExposure": 0.0,
-    "temperature": 0.0,
-    "tint": 0.0,
-    "saturation": -10.0,
-    "contrast": 33.0,
-    "vignette": 0.48,
-    "bloomIntensity": 0.22,
-    "bloomThreshold": 0.92,
-    "fogAlbedo": [
-      0.55,
-      0.62,
-      0.72
-    ],
-    "fogTint": [
-      1.0,
-      1.0,
-      1.0
-    ],
-    "fogMeanFreePath": 112.0,
-    "fogMaxHeight": 90.0,
-    "keyElevationDeg": -1.0,
-    "keyYawOffsetDeg": 0.0,
-    "keyColor": [
-      0.95,
-      0.96,
-      1
-    ],
-    "bounceColor": [
-      0.6,
-      0.55,
-      0.55
-    ],
-    "bounceLux": 900.0,
-    "bouncePitchDeg": -999.0,
-    "bounceYawDeg": -999.0,
-    "moonRimColor": [
-      0.75,
-      0.7,
-      0.72
-    ]
-  },
-  "rows": [
-    {
-      "id": "pit_yard",
-      "zFrom": -100000.0,
-      "zTo": 26.0,
-      "colorFilter": [
-        1.0,
-        0.93,
-        0.87
-      ],
-      "postExposure": 0.088,
-      "temperature": 8.0,
-      "tint": 0.0,
-      "saturation": -6.0,
-      "contrast": 36.0,
-      "vignette": 0.48,
-      "fogAlbedo": [
-        0.67,
-        0.528,
-        0.427
-      ],
-      "fogTint": [
-        1.0,
-        0.92,
-        0.82
-      ],
-      "fogMeanFreePath": 112.0,
-      "fogMaxHeight": 90.0,
-      "keyElevationDeg": 26.0,
-      "keyYawOffsetDeg": 0.0,
-      "keyColor": [
-        1.0,
-        0.95,
-        0.88
-      ],
-      "bounceColor": [
-        1.0,
-        0.4,
-        0.1
-      ],
-      "bounceLux": 500.0,
-      "bouncePitchDeg": 20.0,
-      "bounceYawDeg": 195.0,
-      "moonRimColor": [
-        0.78,
-        0.66,
-        0.6
-      ],
-      "bloomIntensity": 0.22,
-      "bloomThreshold": 0.92,
-      "bloomScatter": 0.7
-    },
-    {
-      "id": "sobek_reach",
-      "zFrom": 26.0,
-      "zTo": 62.0,
-      "colorFilter": [
-        0.9,
-        1.0,
-        0.95
-      ],
-      "postExposure": 0.3,
-      "temperature": -6.0,
-      "tint": -8.0,
-      "saturation": -12.0,
-      "contrast": 34.0,
-      "vignette": 0.48,
-      "fogAlbedo": [
-        0.399,
-        0.598,
-        0.538
-      ],
-      "fogTint": [
-        0.9,
-        1.0,
-        0.96
-      ],
-      "fogMeanFreePath": 102.0,
-      "fogMaxHeight": 80.0,
-      "keyElevationDeg": 24.0,
-      "keyYawOffsetDeg": 0.0,
-      "keyColor": [
-        0.88,
-        0.97,
-        0.98
-      ],
-      "bounceColor": [
-        0.35,
-        0.62,
-        0.52
-      ],
-      "bounceLux": 800.0,
-      "bouncePitchDeg": 35.0,
-      "bounceYawDeg": 195.0,
-      "moonRimColor": [
-        0.62,
-        0.72,
-        0.7
-      ],
-      "bloomIntensity": 0.6,
-      "bloomThreshold": 0.4,
-      "bloomScatter": 0.6
-    },
-    {
-      "id": "hub_camp",
-      "zFrom": 62.0,
-      "zTo": 98.0,
-      "colorFilter": [
-        1.0,
-        0.965,
-        0.925
-      ],
-      "postExposure": 0.05,
-      "temperature": 7.0,
-      "tint": 0.0,
-      "saturation": -6.0,
-      "contrast": 30.0,
-      "vignette": 0.48,
-      "fogAlbedo": [
-        0.61,
-        0.545,
-        0.465
-      ],
-      "fogTint": [
-        0.98,
-        0.925,
-        0.83
-      ],
-      "fogMeanFreePath": 114.5,
-      "fogMaxHeight": 70.0,
-      "keyElevationDeg": -1.0,
-      "keyYawOffsetDeg": 0.0,
-      "keyColor": [
-        1.0,
-        0.96,
-        0.9
-      ],
-      "bounceColor": [
-        1.0,
-        0.64,
-        0.3
-      ],
-      "bounceLux": 440.0,
-      "bouncePitchDeg": -999.0,
-      "bounceYawDeg": -999.0,
-      "moonRimColor": [
-        0.6,
-        0.7,
-        0.85
-      ],
-      "bloomIntensity": 0.65,
-      "bloomThreshold": 0.35,
-      "bloomScatter": 0.75
-    },
-    {
-      "id": "grendel",
-      "zFrom": 98.0,
-      "zTo": 167.0,
-      "colorFilter": [
-        0.97,
-        0.98,
-        1.0
-      ],
-      "postExposure": 0.027,
-      "temperature": -2.0,
-      "tint": 0.0,
-      "saturation": -14.0,
-      "contrast": 38.0,
-      "vignette": 0.48,
-      "fogAlbedo": [
-        0.5,
-        0.54,
-        0.58
-      ],
-      "fogTint": [
-        0.95,
-        0.97,
-        0.98
-      ],
-      "fogMeanFreePath": 113.5,
-      "fogMaxHeight": 100.0,
-      "keyElevationDeg": 22.0,
-      "keyYawOffsetDeg": 0.0,
-      "keyColor": [
-        0.85,
-        0.9,
-        0.95
-      ],
-      "bounceColor": [
-        0.35,
-        0.55,
-        0.62
-      ],
-      "bounceLux": 700.0,
-      "bouncePitchDeg": 30.0,
-      "bounceYawDeg": 190.0,
-      "moonRimColor": [
-        0.95,
-        0.72,
-        0.55
-      ],
-      "bloomIntensity": 0.22,
-      "bloomThreshold": 0.92,
-      "bloomScatter": 0.7
-    },
-    {
-      "id": "z5_humbaba",
-      "zFrom": 167.0,
-      "zTo": 234.0,
-      "colorFilter": [
-        0.98,
-        0.99,
-        0.96
-      ],
-      "postExposure": 0.22,
-      "temperature": 2.0,
-      "tint": -3.0,
-      "saturation": -6.0,
-      "contrast": 33.0,
-      "vignette": 0.48,
-      "fogAlbedo": [
-        0.5,
-        0.57,
-        0.48
-      ],
-      "fogTint": [
-        0.94,
-        1.0,
-        0.92
-      ],
-      "fogMeanFreePath": 120.0,
-      "fogMaxHeight": 70.0,
-      "keyElevationDeg": 28.0,
-      "keyYawOffsetDeg": 30.0,
-      "keyColor": [
-        0.85,
-        0.84,
-        0.78
-      ],
-      "bounceColor": [
-        0.35,
-        0.55,
-        0.55
-      ],
-      "bounceLux": 1000.0,
-      "bouncePitchDeg": 55.0,
-      "bounceYawDeg": 185.0,
-      "moonRimColor": [
-        0.62,
-        0.72,
-        0.8
-      ],
-      "bloomIntensity": 0.22,
-      "bloomThreshold": 0.92,
-      "bloomScatter": 0.7
-    },
-    {
-      "id": "z6_erlking",
-      "zFrom": 234.0,
-      "zTo": 305.0,
-      "colorFilter": [
-        1.0,
-        0.96,
-        0.96
-      ],
-      "postExposure": 0.04,
-      "temperature": 2.0,
-      "tint": 2.0,
-      "saturation": -14.0,
-      "contrast": 38.0,
-      "vignette": 0.48,
-      "fogAlbedo": [
-        0.6,
-        0.52,
-        0.52
-      ],
-      "fogTint": [
-        1.0,
-        0.94,
-        0.94
-      ],
-      "fogMeanFreePath": 115.0,
-      "fogMaxHeight": 110.0,
-      "keyElevationDeg": 38.0,
-      "keyYawOffsetDeg": 0.0,
-      "keyColor": [
-        0.92,
-        0.92,
-        0.98
-      ],
-      "bounceColor": [
-        0.7,
-        0.3,
-        0.26
-      ],
-      "bounceLux": 700.0,
-      "bouncePitchDeg": 50.0,
-      "bounceYawDeg": 180.0,
-      "moonRimColor": [
-        0.86,
-        0.66,
-        0.66
-      ],
-      "bloomIntensity": 0.3,
-      "bloomThreshold": 0.65,
-      "bloomScatter": 0.7
-    },
-    {
-      "id": "z7_market2",
-      "zFrom": 305.0,
-      "zTo": 100000.0,
-      "colorFilter": [
-        0.97,
-        0.95,
-        0.91
-      ],
-      "postExposure": 0.064,
-      "temperature": 9.0,
-      "tint": 0.0,
-      "saturation": -16.0,
-      "contrast": 30.0,
-      "vignette": 0.48,
-      "fogAlbedo": [
-        0.637,
-        0.538,
-        0.428
-      ],
-      "fogTint": [
-        1.0,
-        0.92,
-        0.8
-      ],
-      "fogMeanFreePath": 114.5,
-      "fogMaxHeight": 70.0,
-      "keyElevationDeg": -1.0,
-      "keyYawOffsetDeg": 0.0,
-      "keyColor": [
-        1.0,
-        0.96,
-        0.9
-      ],
-      "bounceColor": [
-        1.0,
-        0.64,
-        0.3
-      ],
-      "bounceLux": 440.0,
-      "bouncePitchDeg": -999.0,
-      "bounceYawDeg": -999.0,
-      "moonRimColor": [
-        0.8,
-        0.7,
-        0.62
-      ],
-      "bloomIntensity": 0.22,
-      "bloomThreshold": 0.92,
-      "bloomScatter": 0.7
-    }
-  ],
-  "haze": [
-    {
-      "id": "haze_z2",
-      "zone": "sobek_reach",
-      "center": [
-        0.0,
-        0.0,
-        50.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        16.0,
-        2.8,
-        26.0
-      ],
-      "albedo": [
-        0.4,
-        0.6,
-        0.54
-      ],
-      "meanFreePath": 6.0,
-      "positiveFade": [
-        0.35,
-        1.0,
-        0.35
-      ],
-      "negativeFade": [
-        0.35,
-        0.0,
-        0.35
-      ],
-      "activeRadiusM": 45.0,
-      "raycastGround": true
-    },
-    {
-      "id": "haze_z4",
-      "zone": "grendel",
-      "center": [
-        0.0,
-        0.0,
-        132.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        26.0,
-        2.8,
-        32.0
-      ],
-      "albedo": [
-        0.42,
-        0.58,
-        0.6
-      ],
-      "meanFreePath": 6.0,
-      "positiveFade": [
-        0.35,
-        1.0,
-        0.35
-      ],
-      "negativeFade": [
-        0.35,
-        0.0,
-        0.35
-      ],
-      "activeRadiusM": 45.0,
-      "raycastGround": true
-    },
-    {
-      "id": "haze_z5",
-      "zone": "z5_humbaba",
-      "center": [
-        0.0,
-        0.0,
-        209.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        32.0,
-        2.8,
-        32.0
-      ],
-      "albedo": [
-        0.447,
-        0.596,
-        0.417
-      ],
-      "meanFreePath": 6.0,
-      "positiveFade": [
-        0.35,
-        1.0,
-        0.35
-      ],
-      "negativeFade": [
-        0.35,
-        0.0,
-        0.35
-      ],
-      "activeRadiusM": 45.0,
-      "raycastGround": true
-    },
-    {
-      "id": "haze_z6",
-      "zone": "z6_erlking",
-      "center": [
-        0.0,
-        0.0,
-        282.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        32.0,
-        2.8,
-        32.0
-      ],
-      "albedo": [
-        0.726,
-        0.504,
-        0.504
-      ],
-      "meanFreePath": 6.0,
-      "positiveFade": [
-        0.35,
-        1.0,
-        0.35
-      ],
-      "negativeFade": [
-        0.35,
-        0.0,
-        0.35
-      ],
-      "activeRadiusM": 45.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z1_furnace_smoke",
-      "zone": "pit_yard",
-      "center": [
-        0.0,
-        0.0,
-        26.5
-      ],
-      "groundY": 0.0,
-      "size": [
-        8.0,
-        10.0,
-        5.0
-      ],
-      "albedo": [
-        0.05,
-        0.045,
-        0.045
-      ],
-      "meanFreePath": 14.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 40.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z2_moat_L",
-      "zone": "sobek_reach",
-      "center": [
-        -17.5,
-        0.0,
-        48.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        10.0,
-        2.0,
-        30.0
-      ],
-      "albedo": [
-        0.4,
-        0.6,
-        0.54
-      ],
-      "meanFreePath": 12.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 55.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z2_moat_R",
-      "zone": "sobek_reach",
-      "center": [
-        14.0,
-        0.0,
-        48.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        10.0,
-        2.0,
-        30.0
-      ],
-      "albedo": [
-        0.4,
-        0.6,
-        0.54
-      ],
-      "meanFreePath": 12.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 55.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z4_flank_L",
-      "zone": "grendel",
-      "center": [
-        -19.0,
-        0.0,
-        132.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        10.0,
-        2.2,
-        40.0
-      ],
-      "albedo": [
-        0.42,
-        0.58,
-        0.6
-      ],
-      "meanFreePath": 11.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 55.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z4_flank_R",
-      "zone": "grendel",
-      "center": [
-        19.0,
-        0.0,
-        132.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        10.0,
-        2.2,
-        40.0
-      ],
-      "albedo": [
-        0.42,
-        0.58,
-        0.6
-      ],
-      "meanFreePath": 11.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 55.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z4_back",
-      "zone": "grendel",
-      "center": [
-        0.0,
-        0.0,
-        155.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        30.0,
-        2.6,
-        10.0
-      ],
-      "albedo": [
-        0.42,
-        0.58,
-        0.6
-      ],
-      "meanFreePath": 11.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 55.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z5_trunks_W",
-      "zone": "z5_humbaba",
-      "center": [
-        -23.0,
-        0.0,
-        209.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        10.0,
-        14.0,
-        36.0
-      ],
-      "albedo": [
-        0.4,
-        0.54,
-        0.38
-      ],
-      "meanFreePath": 28.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 60.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z5_trunks_E",
-      "zone": "z5_humbaba",
-      "center": [
-        23.0,
-        0.0,
-        209.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        10.0,
-        14.0,
-        36.0
-      ],
-      "albedo": [
-        0.4,
-        0.54,
-        0.38
-      ],
-      "meanFreePath": 28.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 60.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z5_trunks_N",
-      "zone": "z5_humbaba",
-      "center": [
-        0.0,
-        0.0,
-        229.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        34.0,
-        14.0,
-        8.0
-      ],
-      "albedo": [
-        0.4,
-        0.54,
-        0.38
-      ],
-      "meanFreePath": 28.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 60.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z6_ring_L",
-      "zone": "z6_erlking",
-      "center": [
-        -23.0,
-        0.0,
-        282.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        10.0,
-        2.4,
-        36.0
-      ],
-      "albedo": [
-        0.7,
-        0.46,
-        0.46
-      ],
-      "meanFreePath": 12.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 60.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z6_ring_R",
-      "zone": "z6_erlking",
-      "center": [
-        23.0,
-        0.0,
-        282.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        10.0,
-        2.4,
-        36.0
-      ],
-      "albedo": [
-        0.7,
-        0.46,
-        0.46
-      ],
-      "meanFreePath": 12.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 60.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v12_z6_ring_N",
-      "zone": "z6_erlking",
-      "center": [
-        0.0,
-        0.0,
-        301.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        30.0,
-        2.4,
-        6.0
-      ],
-      "albedo": [
-        0.7,
-        0.46,
-        0.46
-      ],
-      "meanFreePath": 12.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 60.0,
-      "raycastGround": true
-    },
-    {
-      "id": "look9_z4_pool_mist",
-      "zone": "grendel",
-      "center": [
-        19.5,
-        0.0,
-        147.5
-      ],
-      "groundY": 0.0,
-      "size": [
-        18.0,
-        2.2,
-        18.0
-      ],
-      "albedo": [
-        0.42,
-        0.62,
-        0.6
-      ],
-      "meanFreePath": 6.5,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 55.0,
-      "raycastGround": true
-    },
-    {
-      "id": "look9_z4_far_mist",
-      "zone": "grendel",
-      "center": [
-        0.0,
-        0.0,
-        150.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        56.0,
-        2.6,
-        16.0
-      ],
-      "albedo": [
-        0.4,
-        0.56,
-        0.6
-      ],
-      "meanFreePath": 9.0,
-      "positiveFade": [
-        0.4,
-        1.0,
-        0.4
-      ],
-      "negativeFade": [
-        0.4,
-        0.0,
-        0.4
-      ],
-      "activeRadiusM": 60.0,
-      "raycastGround": true
-    },
-    {
-      "id": "look9_z5_shaft_fog",
-      "zone": "z5_humbaba",
-      "center": [
-        6.0,
-        0.0,
-        222.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        22.0,
-        15.0,
-        26.0
-      ],
-      "albedo": [
-        0.52,
-        0.6,
-        0.32
-      ],
-      "meanFreePath": 14.0,
-      "positiveFade": [
-        0.5,
-        1.0,
-        0.5
-      ],
-      "negativeFade": [
-        0.5,
-        0.0,
-        0.5
-      ],
-      "activeRadiusM": 60.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v16_haze04_z2",
-      "zone": "sobek_reach",
-      "center": [
-        0.0,
-        0.0,
-        50.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        16.0,
-        0.8,
-        26.0
-      ],
-      "albedo": [
-        0.4,
-        0.6,
-        0.54
-      ],
-      "meanFreePath": 3.0,
-      "positiveFade": [
-        0.35,
-        1.0,
-        0.35
-      ],
-      "negativeFade": [
-        0.35,
-        0.0,
-        0.35
-      ],
-      "activeRadiusM": 45.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v16_haze04_z4",
-      "zone": "grendel",
-      "center": [
-        0.0,
-        0.0,
-        132.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        26.0,
-        0.8,
-        32.0
-      ],
-      "albedo": [
-        0.42,
-        0.58,
-        0.6
-      ],
-      "meanFreePath": 3.0,
-      "positiveFade": [
-        0.35,
-        1.0,
-        0.35
-      ],
-      "negativeFade": [
-        0.35,
-        0.0,
-        0.35
-      ],
-      "activeRadiusM": 45.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v16_haze04_z5",
-      "zone": "z5_humbaba",
-      "center": [
-        0.0,
-        0.0,
-        209.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        32.0,
-        0.8,
-        32.0
-      ],
-      "albedo": [
-        0.447,
-        0.596,
-        0.417
-      ],
-      "meanFreePath": 3.0,
-      "positiveFade": [
-        0.35,
-        1.0,
-        0.35
-      ],
-      "negativeFade": [
-        0.35,
-        0.0,
-        0.35
-      ],
-      "activeRadiusM": 45.0,
-      "raycastGround": true
-    },
-    {
-      "id": "v16_haze04_z6",
-      "zone": "z6_erlking",
-      "center": [
-        0.0,
-        0.0,
-        282.0
-      ],
-      "groundY": 0.0,
-      "size": [
-        32.0,
-        0.8,
-        32.0
-      ],
-      "albedo": [
-        0.726,
-        0.504,
-        0.504
-      ],
-      "meanFreePath": 3.0,
-      "positiveFade": [
-        0.35,
-        1.0,
-        0.35
-      ],
-      "negativeFade": [
-        0.35,
-        0.0,
-        0.35
-      ],
-      "activeRadiusM": 45.0,
-      "raycastGround": true
-    }
-  ],
-  "_v6_note": "laneV4V6 V6 T1: i9 true carries bloom intensity/threshold per zone (ZoneLook applies them); vignette pinned to the live 0.48 so ONLY bloom changes; bloomScatter is staged data for a 3-line ZoneLook change (JsonUtility ignores it today).",
-  "_wash_note": "13 Nov zone wash (Dom via Lead): z5_humbaba and hub_camp rows de-saturated toward neutral highlights; the tint stays in fog/shadow (fogAlbedo/fogTint), key neutral-warm, bounce cool teal (z5) / warm orange (hub) vs a cool moon rim for local warm/cool separation. Revert = the previous rows (look_zones.json in PLAY_PREV build) or ZoneLook off via enabled false. 13 Nov 09:50: hub row brought about halfway back toward warm (Lead): temperature 4 -> 7 (authored 10), fogAlbedo/fogTint/colorFilter midway between the authored warm and the neutral values; neutral highlights and the cool moon rim kept."
+    "_about":  "laneVIS1 v1 (STAGED, not shipped). Read by the NEW Scripts/Zones/ZoneLook.cs (kit\\code\\ZoneLook.cs, UNCOMPILED). One global runtime Volume (priority 20) + by-name edits of the existing key / fill / rim lights + runtime local-fog boxes, all driven by the player\u0027s world z. enabled=false or an absent file = nothing. Switches i2 grade, i3 key+bounce light, i5 aerial perspective fog, i6 arena ground haze, i9 bloom+vignette, i18 hero rim. Args: -zonelook:off | -zonelook:2,3,9 (item list; wins over the switches) for same-exe A/B frames. -999 = inherit the default row. Row units: colorFilter linear rgb multiplier, postExposure EV (cancels the filter\u0027s luminance change), temperature/tint HDRP WhiteBalance -100..100, saturation/contrast ColorAdjustments -100..100, fogAlbedo volumetric albedo, fogTint = Fog.tint (colours the sky-derived far fog), fogMaxHeight/fogMeanFreePath = height fog (density kept equal at 2 m eye height), keyElevationDeg absolute sun pitch (-1 = leave), keyYawOffsetDeg added to the authored yaw, bounce = the existing FillCool directional (no shadows) re-coloured and re-aimed (-999 = keep authored aim), moonRimColor = MoonRim tint.",
+    "enabled":  true,
+    "log":  true,
+    "pollSeconds":  0.1,
+    "blendM":  14.0,
+    "smoothSeconds":  1.5,
+    "waitFrames":  4,
+    "i2":  true,
+    "i3":  true,
+    "i5":  true,
+    "i6":  true,
+    "i9":  true,
+    "i18":  true,
+    "keyGroundMul":  0.95,
+    "keyMaxBoost":  1.8,
+    "keyMinElevationDeg":  12.0,
+    "hero":  {
+                 "rimCharacterLux":  700.0,
+                 "_about":  "item 18: Rim_Character (directional, Character layer, follows the camera) 0 -\u003e 400 lux = the laneJOANFRONT value Dom OK\u0027d. Rim_Player / Fill_Player / Rim_Enemy spot rigs already exist (hdrp_fixes.json rimRigs) and are NOT changed."
+             },
+    "defaults":  {
+                     "id":  "default",
+                     "zFrom":  -100000.0,
+                     "zTo":  100000.0,
+                     "colorFilter":  [
+                                         1.0,
+                                         1.0,
+                                         1.0
+                                     ],
+                     "postExposure":  0.0,
+                     "temperature":  0.0,
+                     "tint":  0.0,
+                     "saturation":  -10.0,
+                     "contrast":  33.0,
+                     "vignette":  0.48,
+                     "bloomIntensity":  0.22,
+                     "bloomThreshold":  0.92,
+                     "fogAlbedo":  [
+                                       0.55,
+                                       0.62,
+                                       0.72
+                                   ],
+                     "fogTint":  [
+                                     1.0,
+                                     1.0,
+                                     1.0
+                                 ],
+                     "fogMeanFreePath":  112.0,
+                     "fogMaxHeight":  90.0,
+                     "keyElevationDeg":  -1.0,
+                     "keyYawOffsetDeg":  0.0,
+                     "keyColor":  [
+                                      0.95,
+                                      0.96,
+                                      1
+                                  ],
+                     "bounceColor":  [
+                                         0.6,
+                                         0.55,
+                                         0.55
+                                     ],
+                     "bounceLux":  900.0,
+                     "bouncePitchDeg":  -999.0,
+                     "bounceYawDeg":  -999.0,
+                     "moonRimColor":  [
+                                          0.75,
+                                          0.7,
+                                          0.72
+                                      ]
+                 },
+    "rows":  [
+                 {
+                     "id":  "pit_yard",
+                     "zFrom":  -100000.0,
+                     "zTo":  26.0,
+                     "colorFilter":  [
+                                         1,
+                                         1,
+                                         1
+                                     ],
+                     "postExposure":  -0.25,
+                     "temperature":  0.0,
+                     "tint":  0.0,
+                     "saturation":  -24.0,
+                     "contrast":  36.0,
+                     "vignette":  0.48,
+                     "fogAlbedo":  [
+                                       0.66,
+                                       0.67,
+                                       0.69
+                                   ],
+                     "fogTint":  [
+                                     0.86,
+                                     0.88,
+                                     0.92
+                                 ],
+                     "fogMeanFreePath":  52.0,
+                     "fogMaxHeight":  16.0,
+                     "keyElevationDeg":  26.0,
+                     "keyYawOffsetDeg":  0.0,
+                     "keyColor":  [
+                                      0.93,
+                                      0.95,
+                                      1
+                                  ],
+                     "bounceColor":  [
+                                         0.7,
+                                         0.7,
+                                         0.72
+                                     ],
+                     "bounceLux":  380.0,
+                     "bouncePitchDeg":  20.0,
+                     "bounceYawDeg":  195.0,
+                     "moonRimColor":  [
+                                          0.74,
+                                          0.77,
+                                          0.84
+                                      ],
+                     "bloomIntensity":  0.22,
+                     "bloomThreshold":  0.92,
+                     "bloomScatter":  0.7
+                 },
+                 {
+                     "id":  "sobek_reach",
+                     "zFrom":  26.0,
+                     "zTo":  62.0,
+                     "colorFilter":  [
+                                         0.9,
+                                         1.0,
+                                         0.95
+                                     ],
+                     "postExposure":  0.3,
+                     "temperature":  -6.0,
+                     "tint":  -8.0,
+                     "saturation":  -12.0,
+                     "contrast":  34.0,
+                     "vignette":  0.48,
+                     "fogAlbedo":  [
+                                       0.399,
+                                       0.598,
+                                       0.538
+                                   ],
+                     "fogTint":  [
+                                     0.9,
+                                     1.0,
+                                     0.96
+                                 ],
+                     "fogMeanFreePath":  102.0,
+                     "fogMaxHeight":  80.0,
+                     "keyElevationDeg":  24.0,
+                     "keyYawOffsetDeg":  0.0,
+                     "keyColor":  [
+                                      0.88,
+                                      0.97,
+                                      0.98
+                                  ],
+                     "bounceColor":  [
+                                         0.35,
+                                         0.62,
+                                         0.52
+                                     ],
+                     "bounceLux":  800.0,
+                     "bouncePitchDeg":  35.0,
+                     "bounceYawDeg":  195.0,
+                     "moonRimColor":  [
+                                          0.62,
+                                          0.72,
+                                          0.7
+                                      ],
+                     "bloomIntensity":  0.6,
+                     "bloomThreshold":  0.4,
+                     "bloomScatter":  0.6
+                 },
+                 {
+                     "id":  "hub_camp",
+                     "zFrom":  62.0,
+                     "zTo":  98.0,
+                     "colorFilter":  [
+                                         1.0,
+                                         0.965,
+                                         0.925
+                                     ],
+                     "postExposure":  0.05,
+                     "temperature":  7.0,
+                     "tint":  0.0,
+                     "saturation":  -6.0,
+                     "contrast":  30.0,
+                     "vignette":  0.48,
+                     "fogAlbedo":  [
+                                       0.61,
+                                       0.545,
+                                       0.465
+                                   ],
+                     "fogTint":  [
+                                     0.98,
+                                     0.925,
+                                     0.83
+                                 ],
+                     "fogMeanFreePath":  114.5,
+                     "fogMaxHeight":  70.0,
+                     "keyElevationDeg":  -1.0,
+                     "keyYawOffsetDeg":  0.0,
+                     "keyColor":  [
+                                      1.0,
+                                      0.96,
+                                      0.9
+                                  ],
+                     "bounceColor":  [
+                                         1.0,
+                                         0.64,
+                                         0.3
+                                     ],
+                     "bounceLux":  440.0,
+                     "bouncePitchDeg":  -999.0,
+                     "bounceYawDeg":  -999.0,
+                     "moonRimColor":  [
+                                          0.6,
+                                          0.7,
+                                          0.85
+                                      ],
+                     "bloomIntensity":  0.65,
+                     "bloomThreshold":  0.35,
+                     "bloomScatter":  0.75
+                 },
+                 {
+                     "id":  "grendel",
+                     "zFrom":  98.0,
+                     "zTo":  167.0,
+                     "colorFilter":  [
+                                         0.97,
+                                         0.98,
+                                         1.0
+                                     ],
+                     "postExposure":  0.027,
+                     "temperature":  -2.0,
+                     "tint":  0.0,
+                     "saturation":  -14.0,
+                     "contrast":  38.0,
+                     "vignette":  0.48,
+                     "fogAlbedo":  [
+                                       0.5,
+                                       0.54,
+                                       0.58
+                                   ],
+                     "fogTint":  [
+                                     0.95,
+                                     0.97,
+                                     0.98
+                                 ],
+                     "fogMeanFreePath":  113.5,
+                     "fogMaxHeight":  100.0,
+                     "keyElevationDeg":  22.0,
+                     "keyYawOffsetDeg":  0.0,
+                     "keyColor":  [
+                                      0.85,
+                                      0.9,
+                                      0.95
+                                  ],
+                     "bounceColor":  [
+                                         0.35,
+                                         0.55,
+                                         0.62
+                                     ],
+                     "bounceLux":  700.0,
+                     "bouncePitchDeg":  30.0,
+                     "bounceYawDeg":  190.0,
+                     "moonRimColor":  [
+                                          0.95,
+                                          0.72,
+                                          0.55
+                                      ],
+                     "bloomIntensity":  0.22,
+                     "bloomThreshold":  0.92,
+                     "bloomScatter":  0.7
+                 },
+                 {
+                     "id":  "z5_humbaba",
+                     "zFrom":  167.0,
+                     "zTo":  234.0,
+                     "colorFilter":  [
+                                         0.98,
+                                         0.99,
+                                         0.96
+                                     ],
+                     "postExposure":  0.22,
+                     "temperature":  2.0,
+                     "tint":  -3.0,
+                     "saturation":  -6.0,
+                     "contrast":  33.0,
+                     "vignette":  0.48,
+                     "fogAlbedo":  [
+                                       0.5,
+                                       0.57,
+                                       0.48
+                                   ],
+                     "fogTint":  [
+                                     0.94,
+                                     1.0,
+                                     0.92
+                                 ],
+                     "fogMeanFreePath":  120.0,
+                     "fogMaxHeight":  70.0,
+                     "keyElevationDeg":  28.0,
+                     "keyYawOffsetDeg":  30.0,
+                     "keyColor":  [
+                                      0.85,
+                                      0.84,
+                                      0.78
+                                  ],
+                     "bounceColor":  [
+                                         0.35,
+                                         0.55,
+                                         0.55
+                                     ],
+                     "bounceLux":  1000.0,
+                     "bouncePitchDeg":  55.0,
+                     "bounceYawDeg":  185.0,
+                     "moonRimColor":  [
+                                          0.62,
+                                          0.72,
+                                          0.8
+                                      ],
+                     "bloomIntensity":  0.22,
+                     "bloomThreshold":  0.92,
+                     "bloomScatter":  0.7
+                 },
+                 {
+                     "id":  "z6_erlking",
+                     "zFrom":  234.0,
+                     "zTo":  305.0,
+                     "colorFilter":  [
+                                         1.0,
+                                         0.96,
+                                         0.96
+                                     ],
+                     "postExposure":  0.04,
+                     "temperature":  2.0,
+                     "tint":  2.0,
+                     "saturation":  -14.0,
+                     "contrast":  38.0,
+                     "vignette":  0.48,
+                     "fogAlbedo":  [
+                                       0.6,
+                                       0.52,
+                                       0.52
+                                   ],
+                     "fogTint":  [
+                                     1.0,
+                                     0.94,
+                                     0.94
+                                 ],
+                     "fogMeanFreePath":  115.0,
+                     "fogMaxHeight":  110.0,
+                     "keyElevationDeg":  38.0,
+                     "keyYawOffsetDeg":  0.0,
+                     "keyColor":  [
+                                      0.92,
+                                      0.92,
+                                      0.98
+                                  ],
+                     "bounceColor":  [
+                                         0.7,
+                                         0.3,
+                                         0.26
+                                     ],
+                     "bounceLux":  700.0,
+                     "bouncePitchDeg":  50.0,
+                     "bounceYawDeg":  180.0,
+                     "moonRimColor":  [
+                                          0.86,
+                                          0.66,
+                                          0.66
+                                      ],
+                     "bloomIntensity":  0.3,
+                     "bloomThreshold":  0.65,
+                     "bloomScatter":  0.7
+                 },
+                 {
+                     "id":  "z7_market2",
+                     "zFrom":  305.0,
+                     "zTo":  100000.0,
+                     "colorFilter":  [
+                                         0.97,
+                                         0.95,
+                                         0.91
+                                     ],
+                     "postExposure":  0.064,
+                     "temperature":  9.0,
+                     "tint":  0.0,
+                     "saturation":  -16.0,
+                     "contrast":  30.0,
+                     "vignette":  0.48,
+                     "fogAlbedo":  [
+                                       0.637,
+                                       0.538,
+                                       0.428
+                                   ],
+                     "fogTint":  [
+                                     1.0,
+                                     0.92,
+                                     0.8
+                                 ],
+                     "fogMeanFreePath":  114.5,
+                     "fogMaxHeight":  70.0,
+                     "keyElevationDeg":  -1.0,
+                     "keyYawOffsetDeg":  0.0,
+                     "keyColor":  [
+                                      1.0,
+                                      0.96,
+                                      0.9
+                                  ],
+                     "bounceColor":  [
+                                         1.0,
+                                         0.64,
+                                         0.3
+                                     ],
+                     "bounceLux":  440.0,
+                     "bouncePitchDeg":  -999.0,
+                     "bounceYawDeg":  -999.0,
+                     "moonRimColor":  [
+                                          0.8,
+                                          0.7,
+                                          0.62
+                                      ],
+                     "bloomIntensity":  0.22,
+                     "bloomThreshold":  0.92,
+                     "bloomScatter":  0.7
+                 }
+             ],
+    "haze":  [
+                 {
+                     "id":  "b2_z1_lowfog",
+                     "zone":  "pit_yard",
+                     "_about":  "PIT B2: visible low fog bank over the yard (z 4..24, |x| \u003c= 11), stops short of v12_z1_furnace_smoke at the gate. Tune at the play camera: size[1] (height) and meanFreePath (lower = thicker). Revert = lanePITB2 b2kit.py revert.",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    14.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  22,
+                                  4.5,
+                                  20
+                              ],
+                     "albedo":  [
+                                    0.6,
+                                    0.62,
+                                    0.66
+                                ],
+                     "meanFreePath":  5,
+                     "positiveFade":  [
+                                          0.35,
+                                          1.0,
+                                          0.35
+                                      ],
+                     "negativeFade":  [
+                                          0.35,
+                                          0.0,
+                                          0.35
+                                      ],
+                     "activeRadiusM":  45.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "haze_z2",
+                     "zone":  "sobek_reach",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    50.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  16.0,
+                                  2.8,
+                                  26.0
+                              ],
+                     "albedo":  [
+                                    0.4,
+                                    0.6,
+                                    0.54
+                                ],
+                     "meanFreePath":  6.0,
+                     "positiveFade":  [
+                                          0.35,
+                                          1.0,
+                                          0.35
+                                      ],
+                     "negativeFade":  [
+                                          0.35,
+                                          0.0,
+                                          0.35
+                                      ],
+                     "activeRadiusM":  45.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "haze_z4",
+                     "zone":  "grendel",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    132.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  26.0,
+                                  2.8,
+                                  32.0
+                              ],
+                     "albedo":  [
+                                    0.42,
+                                    0.58,
+                                    0.6
+                                ],
+                     "meanFreePath":  6.0,
+                     "positiveFade":  [
+                                          0.35,
+                                          1.0,
+                                          0.35
+                                      ],
+                     "negativeFade":  [
+                                          0.35,
+                                          0.0,
+                                          0.35
+                                      ],
+                     "activeRadiusM":  45.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "haze_z5",
+                     "zone":  "z5_humbaba",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    209.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  32.0,
+                                  2.8,
+                                  32.0
+                              ],
+                     "albedo":  [
+                                    0.447,
+                                    0.596,
+                                    0.417
+                                ],
+                     "meanFreePath":  6.0,
+                     "positiveFade":  [
+                                          0.35,
+                                          1.0,
+                                          0.35
+                                      ],
+                     "negativeFade":  [
+                                          0.35,
+                                          0.0,
+                                          0.35
+                                      ],
+                     "activeRadiusM":  45.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "haze_z6",
+                     "zone":  "z6_erlking",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    282.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  32.0,
+                                  2.8,
+                                  32.0
+                              ],
+                     "albedo":  [
+                                    0.726,
+                                    0.504,
+                                    0.504
+                                ],
+                     "meanFreePath":  6.0,
+                     "positiveFade":  [
+                                          0.35,
+                                          1.0,
+                                          0.35
+                                      ],
+                     "negativeFade":  [
+                                          0.35,
+                                          0.0,
+                                          0.35
+                                      ],
+                     "activeRadiusM":  45.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z1_furnace_smoke",
+                     "zone":  "pit_yard",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    26.5
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  8.0,
+                                  10.0,
+                                  5.0
+                              ],
+                     "albedo":  [
+                                    0.05,
+                                    0.045,
+                                    0.045
+                                ],
+                     "meanFreePath":  14.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  40.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z2_moat_L",
+                     "zone":  "sobek_reach",
+                     "center":  [
+                                    -17.5,
+                                    0.0,
+                                    48.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  10.0,
+                                  2.0,
+                                  30.0
+                              ],
+                     "albedo":  [
+                                    0.4,
+                                    0.6,
+                                    0.54
+                                ],
+                     "meanFreePath":  12.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  55.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z2_moat_R",
+                     "zone":  "sobek_reach",
+                     "center":  [
+                                    14.0,
+                                    0.0,
+                                    48.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  10.0,
+                                  2.0,
+                                  30.0
+                              ],
+                     "albedo":  [
+                                    0.4,
+                                    0.6,
+                                    0.54
+                                ],
+                     "meanFreePath":  12.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  55.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z4_flank_L",
+                     "zone":  "grendel",
+                     "center":  [
+                                    -19.0,
+                                    0.0,
+                                    132.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  10.0,
+                                  2.2,
+                                  40.0
+                              ],
+                     "albedo":  [
+                                    0.42,
+                                    0.58,
+                                    0.6
+                                ],
+                     "meanFreePath":  11.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  55.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z4_flank_R",
+                     "zone":  "grendel",
+                     "center":  [
+                                    19.0,
+                                    0.0,
+                                    132.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  10.0,
+                                  2.2,
+                                  40.0
+                              ],
+                     "albedo":  [
+                                    0.42,
+                                    0.58,
+                                    0.6
+                                ],
+                     "meanFreePath":  11.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  55.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z4_back",
+                     "zone":  "grendel",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    155.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  30.0,
+                                  2.6,
+                                  10.0
+                              ],
+                     "albedo":  [
+                                    0.42,
+                                    0.58,
+                                    0.6
+                                ],
+                     "meanFreePath":  11.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  55.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z5_trunks_W",
+                     "zone":  "z5_humbaba",
+                     "center":  [
+                                    -23.0,
+                                    0.0,
+                                    209.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  10.0,
+                                  14.0,
+                                  36.0
+                              ],
+                     "albedo":  [
+                                    0.4,
+                                    0.54,
+                                    0.38
+                                ],
+                     "meanFreePath":  28.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  60.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z5_trunks_E",
+                     "zone":  "z5_humbaba",
+                     "center":  [
+                                    23.0,
+                                    0.0,
+                                    209.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  10.0,
+                                  14.0,
+                                  36.0
+                              ],
+                     "albedo":  [
+                                    0.4,
+                                    0.54,
+                                    0.38
+                                ],
+                     "meanFreePath":  28.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  60.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z5_trunks_N",
+                     "zone":  "z5_humbaba",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    229.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  34.0,
+                                  14.0,
+                                  8.0
+                              ],
+                     "albedo":  [
+                                    0.4,
+                                    0.54,
+                                    0.38
+                                ],
+                     "meanFreePath":  28.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  60.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z6_ring_L",
+                     "zone":  "z6_erlking",
+                     "center":  [
+                                    -23.0,
+                                    0.0,
+                                    282.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  10.0,
+                                  2.4,
+                                  36.0
+                              ],
+                     "albedo":  [
+                                    0.7,
+                                    0.46,
+                                    0.46
+                                ],
+                     "meanFreePath":  12.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  60.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z6_ring_R",
+                     "zone":  "z6_erlking",
+                     "center":  [
+                                    23.0,
+                                    0.0,
+                                    282.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  10.0,
+                                  2.4,
+                                  36.0
+                              ],
+                     "albedo":  [
+                                    0.7,
+                                    0.46,
+                                    0.46
+                                ],
+                     "meanFreePath":  12.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  60.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v12_z6_ring_N",
+                     "zone":  "z6_erlking",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    301.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  30.0,
+                                  2.4,
+                                  6.0
+                              ],
+                     "albedo":  [
+                                    0.7,
+                                    0.46,
+                                    0.46
+                                ],
+                     "meanFreePath":  12.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  60.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "look9_z4_pool_mist",
+                     "zone":  "grendel",
+                     "center":  [
+                                    19.5,
+                                    0.0,
+                                    147.5
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  18.0,
+                                  2.2,
+                                  18.0
+                              ],
+                     "albedo":  [
+                                    0.42,
+                                    0.62,
+                                    0.6
+                                ],
+                     "meanFreePath":  6.5,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  55.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "look9_z4_far_mist",
+                     "zone":  "grendel",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    150.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  56.0,
+                                  2.6,
+                                  16.0
+                              ],
+                     "albedo":  [
+                                    0.4,
+                                    0.56,
+                                    0.6
+                                ],
+                     "meanFreePath":  9.0,
+                     "positiveFade":  [
+                                          0.4,
+                                          1.0,
+                                          0.4
+                                      ],
+                     "negativeFade":  [
+                                          0.4,
+                                          0.0,
+                                          0.4
+                                      ],
+                     "activeRadiusM":  60.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "look9_z5_shaft_fog",
+                     "zone":  "z5_humbaba",
+                     "center":  [
+                                    6.0,
+                                    0.0,
+                                    222.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  22.0,
+                                  15.0,
+                                  26.0
+                              ],
+                     "albedo":  [
+                                    0.52,
+                                    0.6,
+                                    0.32
+                                ],
+                     "meanFreePath":  14.0,
+                     "positiveFade":  [
+                                          0.5,
+                                          1.0,
+                                          0.5
+                                      ],
+                     "negativeFade":  [
+                                          0.5,
+                                          0.0,
+                                          0.5
+                                      ],
+                     "activeRadiusM":  60.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v16_haze04_z2",
+                     "zone":  "sobek_reach",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    50.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  16.0,
+                                  0.8,
+                                  26.0
+                              ],
+                     "albedo":  [
+                                    0.4,
+                                    0.6,
+                                    0.54
+                                ],
+                     "meanFreePath":  3.0,
+                     "positiveFade":  [
+                                          0.35,
+                                          1.0,
+                                          0.35
+                                      ],
+                     "negativeFade":  [
+                                          0.35,
+                                          0.0,
+                                          0.35
+                                      ],
+                     "activeRadiusM":  45.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v16_haze04_z4",
+                     "zone":  "grendel",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    132.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  26.0,
+                                  0.8,
+                                  32.0
+                              ],
+                     "albedo":  [
+                                    0.42,
+                                    0.58,
+                                    0.6
+                                ],
+                     "meanFreePath":  3.0,
+                     "positiveFade":  [
+                                          0.35,
+                                          1.0,
+                                          0.35
+                                      ],
+                     "negativeFade":  [
+                                          0.35,
+                                          0.0,
+                                          0.35
+                                      ],
+                     "activeRadiusM":  45.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v16_haze04_z5",
+                     "zone":  "z5_humbaba",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    209.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  32.0,
+                                  0.8,
+                                  32.0
+                              ],
+                     "albedo":  [
+                                    0.447,
+                                    0.596,
+                                    0.417
+                                ],
+                     "meanFreePath":  3.0,
+                     "positiveFade":  [
+                                          0.35,
+                                          1.0,
+                                          0.35
+                                      ],
+                     "negativeFade":  [
+                                          0.35,
+                                          0.0,
+                                          0.35
+                                      ],
+                     "activeRadiusM":  45.0,
+                     "raycastGround":  true
+                 },
+                 {
+                     "id":  "v16_haze04_z6",
+                     "zone":  "z6_erlking",
+                     "center":  [
+                                    0.0,
+                                    0.0,
+                                    282.0
+                                ],
+                     "groundY":  0.0,
+                     "size":  [
+                                  32.0,
+                                  0.8,
+                                  32.0
+                              ],
+                     "albedo":  [
+                                    0.726,
+                                    0.504,
+                                    0.504
+                                ],
+                     "meanFreePath":  3.0,
+                     "positiveFade":  [
+                                          0.35,
+                                          1.0,
+                                          0.35
+                                      ],
+                     "negativeFade":  [
+                                          0.35,
+                                          0.0,
+                                          0.35
+                                      ],
+                     "activeRadiusM":  45.0,
+                     "raycastGround":  true
+                 }
+             ],
+    "_v6_note":  "laneV4V6 V6 T1: i9 true carries bloom intensity/threshold per zone (ZoneLook applies them); vignette pinned to the live 0.48 so ONLY bloom changes; bloomScatter is staged data for a 3-line ZoneLook change (JsonUtility ignores it today).",
+    "_wash_note":  "13 Nov zone wash (Dom via Lead): z5_humbaba and hub_camp rows de-saturated toward neutral highlights; the tint stays in fog/shadow (fogAlbedo/fogTint), key neutral-warm, bounce cool teal (z5) / warm orange (hub) vs a cool moon rim for local warm/cool separation. Revert = the previous rows (look_zones.json in PLAY_PREV build) or ZoneLook off via enabled false. 13 Nov 09:50: hub row brought about halfway back toward warm (Lead): temperature 4 -\u003e 7 (authored 10), fogAlbedo/fogTint/colorFilter midway between the authored warm and the neutral values; neutral highlights and the cool moon rim kept."
 }

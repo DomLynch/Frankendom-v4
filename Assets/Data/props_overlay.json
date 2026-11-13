@@ -2093,6 +2093,702 @@
       "ground": "snap",
       "enabled": true,
       "note": "DRESS2 (Lead 13 Nov): prop inside the arrival view / around the boss circle edge; >= 4 m from every spawn spot, gate and the lane; clone of dress_z5_13_slab"
+    },
+    {
+      "id": "pitdress_slab_0W",
+      "op": "add",
+      "src": "z7_gate_leaf",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -1.032,
+        -0.426,
+        5.914
+      ],
+      "rotEuler": [
+        -0.1,
+        0.6,
+        -0.1
+      ],
+      "scale": 0.6452,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway slab row 0 (flush paving in the lane, visual only, no collider; top y 0.018 above the y 0.0 ground collider); clone of z7_gate_leaf laid flat"
+    },
+    {
+      "id": "pitdress_slab_0E",
+      "op": "add",
+      "src": "z7_gate_leaf",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        1.032,
+        -0.426,
+        5.904
+      ],
+      "rotEuler": [
+        -0.0,
+        0.1,
+        -0.2
+      ],
+      "scale": 0.6452,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway slab row 0 (flush paving in the lane, visual only, no collider; top y 0.019 above the y 0.0 ground collider); clone of z7_gate_leaf laid flat"
+    },
+    {
+      "id": "pitdress_slab_1W",
+      "op": "add",
+      "src": "z7_gate_leaf",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -1.032,
+        -0.425,
+        9.968
+      ],
+      "rotEuler": [
+        -0.0,
+        1.3,
+        -0.0
+      ],
+      "scale": 0.6452,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway slab row 1 (flush paving in the lane, visual only, no collider; top y 0.019 above the y 0.0 ground collider); clone of z7_gate_leaf laid flat"
+    },
+    {
+      "id": "pitdress_slab_1E",
+      "op": "add",
+      "src": "z7_gate_leaf",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        1.032,
+        -0.429,
+        9.981
+      ],
+      "rotEuler": [
+        -0.1,
+        0.9,
+        -0.0
+      ],
+      "scale": 0.6452,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway slab row 1 (flush paving in the lane, visual only, no collider; top y 0.015 above the y 0.0 ground collider); clone of z7_gate_leaf laid flat"
+    },
+    {
+      "id": "pitdress_slab_2W",
+      "op": "add",
+      "src": "z7_gate_leaf",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -1.032,
+        -0.424,
+        14.046
+      ],
+      "rotEuler": [
+        -0.1,
+        0.9,
+        0.2
+      ],
+      "scale": 0.6452,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway slab row 2 (flush paving in the lane, visual only, no collider; top y 0.020 above the y 0.0 ground collider); clone of z7_gate_leaf laid flat"
+    },
+    {
+      "id": "pitdress_slab_2E",
+      "op": "add",
+      "src": "z7_gate_leaf",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        1.032,
+        -0.419,
+        14.041
+      ],
+      "rotEuler": [
+        -0.2,
+        1.3,
+        -0.2
+      ],
+      "scale": 0.6452,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway slab row 2 (flush paving in the lane, visual only, no collider; top y 0.025 above the y 0.0 ground collider); clone of z7_gate_leaf laid flat"
+    },
+    {
+      "id": "pitdress_slab_3W",
+      "op": "add",
+      "src": "z7_gate_leaf",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -1.032,
+        -0.417,
+        18.058
+      ],
+      "rotEuler": [
+        -0.2,
+        1.3,
+        0.0
+      ],
+      "scale": 0.6452,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway slab row 3 (flush paving in the lane, visual only, no collider; top y 0.027 above the y 0.0 ground collider); clone of z7_gate_leaf laid flat"
+    },
+    {
+      "id": "pitdress_slab_3E",
+      "op": "add",
+      "src": "z7_gate_leaf",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        1.032,
+        -0.427,
+        18.051
+      ],
+      "rotEuler": [
+        0.1,
+        -1.1,
+        0.2
+      ],
+      "scale": 0.6452,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway slab row 3 (flush paving in the lane, visual only, no collider; top y 0.017 above the y 0.0 ground collider); clone of z7_gate_leaf laid flat"
+    },
+    {
+      "id": "pitdress_slab_4W",
+      "op": "add",
+      "src": "z7_gate_leaf",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -1.032,
+        -0.428,
+        22.123
+      ],
+      "rotEuler": [
+        0.1,
+        1.1,
+        0.2
+      ],
+      "scale": 0.6452,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway slab row 4 (flush paving in the lane, visual only, no collider; top y 0.016 above the y 0.0 ground collider); clone of z7_gate_leaf laid flat"
+    },
+    {
+      "id": "pitdress_slab_4E",
+      "op": "add",
+      "src": "z7_gate_leaf",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        1.032,
+        -0.43,
+        22.127
+      ],
+      "rotEuler": [
+        -0.1,
+        -0.9,
+        -0.1
+      ],
+      "scale": 0.6452,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway slab row 4 (flush paving in the lane, visual only, no collider; top y 0.014 above the y 0.0 ground collider); clone of z7_gate_leaf laid flat"
+    },
+    {
+      "id": "pitdress_par_S_W_0_post",
+      "op": "add",
+      "src": "z7_hitch_a_0",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -5.593,
+        -0.1,
+        0.713
+      ],
+      "rotEuler": [
+        -0.5,
+        303.1,
+        0.4
+      ],
+      "scale": 1.25,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway parapet S_W (post_capped, abs scale 1.25, 0.62 m long/wide, 1.38 m high); >= 4 m (edge) from every spot, outside the Pitborn aggro circle, >= 1.5 m outside the walk clamp; clone of z7_hitch_a_0"
+    },
+    {
+      "id": "pitdress_par_S_W_2_post",
+      "op": "add",
+      "src": "z7_hitch_a_0",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -5.585,
+        -0.1,
+        3.757
+      ],
+      "rotEuler": [
+        -1.0,
+        56.8,
+        -0.7
+      ],
+      "scale": 1.25,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway parapet S_W (post_capped, abs scale 1.25, 0.62 m long/wide, 1.38 m high); >= 4 m (edge) from every spot, outside the Pitborn aggro circle, >= 1.5 m outside the walk clamp; clone of z7_hitch_a_0"
+    },
+    {
+      "id": "pitdress_par_S_W_3_wallA",
+      "op": "add",
+      "src": "z4look_wall_2m_broken_A_2",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -5.629,
+        -0.1,
+        5.33
+      ],
+      "rotEuler": [
+        0.0,
+        90.9,
+        0.9
+      ],
+      "scale": 0.4167,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway parapet S_W (wall_2m_broken_A, abs scale 1.25, 2.50 m long/wide, 0.92 m high); >= 4 m (edge) from every spot, outside the Pitborn aggro circle, >= 1.5 m outside the walk clamp; clone of z4look_wall_2m_broken_A_2"
+    },
+    {
+      "id": "pitdress_par_S_E_0_post",
+      "op": "add",
+      "src": "z7_hitch_a_0",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        5.617,
+        -0.1,
+        0.713
+      ],
+      "rotEuler": [
+        0.0,
+        71.7,
+        0.8
+      ],
+      "scale": 1.25,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway parapet S_E (post_capped, abs scale 1.25, 0.62 m long/wide, 1.38 m high); >= 4 m (edge) from every spot, outside the Pitborn aggro circle, >= 1.5 m outside the walk clamp; clone of z7_hitch_a_0"
+    },
+    {
+      "id": "pitdress_par_S_E_1_wallB",
+      "op": "add",
+      "src": "z4look_wall_2m_broken_B_7",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        5.623,
+        -0.1,
+        2.285
+      ],
+      "rotEuler": [
+        0.0,
+        88.6,
+        -1.0
+      ],
+      "scale": 0.4167,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway parapet S_E (wall_2m_broken_B, abs scale 1.25, 2.50 m long/wide, 0.62 m high); >= 4 m (edge) from every spot, outside the Pitborn aggro circle, >= 1.5 m outside the walk clamp; clone of z4look_wall_2m_broken_B_7"
+    },
+    {
+      "id": "pitdress_par_S_E_2_post",
+      "op": "add",
+      "src": "z7_hitch_a_0",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        5.597,
+        -0.1,
+        3.857
+      ],
+      "rotEuler": [
+        0.0,
+        183.1,
+        -0.0
+      ],
+      "scale": 1.25,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway parapet S_E (post_capped, abs scale 1.25, 0.62 m long/wide, 1.38 m high); >= 4 m (edge) from every spot, outside the Pitborn aggro circle, >= 1.5 m outside the walk clamp; clone of z7_hitch_a_0"
+    },
+    {
+      "id": "pitdress_par_S_E_3_wall",
+      "op": "add",
+      "src": "z4look_wall_2m_1",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        5.624,
+        -0.1,
+        5.38
+      ],
+      "rotEuler": [
+        -1.1,
+        268.3,
+        -0.6
+      ],
+      "scale": 0.4,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway parapet S_E (wall_2m, abs scale 1.20, 2.40 m long/wide, 0.72 m high); >= 4 m (edge) from every spot, outside the Pitborn aggro circle, >= 1.5 m outside the walk clamp; clone of z4look_wall_2m_1"
+    },
+    {
+      "id": "pitdress_par_N_W_0_wallA",
+      "op": "add",
+      "src": "z4look_wall_2m_broken_A_2",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -5.872,
+        -0.1,
+        19.1
+      ],
+      "rotEuler": [
+        0.3,
+        88.5,
+        0.4
+      ],
+      "scale": 0.4,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway parapet N_W (wall_2m_broken_A, abs scale 1.20, 2.40 m long/wide, 0.89 m high); >= 4 m (edge) from every spot, outside the Pitborn aggro circle, >= 1.5 m outside the walk clamp; clone of z4look_wall_2m_broken_A_2"
+    },
+    {
+      "id": "pitdress_par_N_W_1_post",
+      "op": "add",
+      "src": "z7_hitch_a_0",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -5.905,
+        -0.1,
+        20.622
+      ],
+      "rotEuler": [
+        -1.4,
+        178.6,
+        -0.9
+      ],
+      "scale": 1.25,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway parapet N_W (post_capped, abs scale 1.25, 0.62 m long/wide, 1.38 m high); >= 4 m (edge) from every spot, outside the Pitborn aggro circle, >= 1.5 m outside the walk clamp; clone of z7_hitch_a_0"
+    },
+    {
+      "id": "pitdress_par_N_W_2_wall",
+      "op": "add",
+      "src": "z4look_wall_2m_1",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -5.875,
+        -0.1,
+        22.145
+      ],
+      "rotEuler": [
+        0.0,
+        91.7,
+        1.0
+      ],
+      "scale": 0.4,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS causeway parapet N_W (wall_2m, abs scale 1.20, 2.40 m long/wide, 0.72 m high); >= 4 m (edge) from every spot, outside the Pitborn aggro circle, >= 1.5 m outside the walk clamp; clone of z4look_wall_2m_1"
+    },
+    {
+      "id": "pitdress_tree_0_treeA",
+      "op": "add",
+      "src": "dead_tree_1a_0",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -12.475,
+        -0.893,
+        12.818
+      ],
+      "rotEuler": [
+        2.2,
+        72.1,
+        2.0
+      ],
+      "scale": 1.1376,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS dead tree 0 (dead_tree_1a abs scale 1.14, canopy r 3.6 m): >= 4 m (edge) from every spot, the Pitborn aggro circle, the walk envelope and the gate block; y = stamped floor profile -0.44 minus 0.45 m root sink; clone of dead_tree_1a_0"
+    },
+    {
+      "id": "pitdress_tree_1_treeB",
+      "op": "add",
+      "src": "dead_tree_1b_1",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -21.983,
+        -1.62,
+        4.085
+      ],
+      "rotEuler": [
+        1.9,
+        63.2,
+        1.1
+      ],
+      "scale": 0.9843,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS dead tree 1 (dead_tree_1b abs scale 1.28, canopy r 6.1 m): >= 4 m (edge) from every spot, the Pitborn aggro circle, the walk envelope and the gate block; y = stamped floor profile -1.17 minus 0.45 m root sink; clone of dead_tree_1b_1"
+    },
+    {
+      "id": "pitdress_tree_2_treeA",
+      "op": "add",
+      "src": "dead_tree_1a_0",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        23.0,
+        -1.575,
+        14.186
+      ],
+      "rotEuler": [
+        0.7,
+        60.4,
+        0.7
+      ],
+      "scale": 1.2259,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS dead tree 2 (dead_tree_1a abs scale 1.23, canopy r 3.9 m): >= 4 m (edge) from every spot, the Pitborn aggro circle, the walk envelope and the gate block; y = stamped floor profile -1.12 minus 0.45 m root sink; clone of dead_tree_1a_0"
+    },
+    {
+      "id": "pitdress_root_0",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -10.934,
+        -0.364,
+        10.934
+      ],
+      "rotEuler": [
+        0.0,
+        303.3,
+        0.0
+      ],
+      "scale": 2.7524,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS root crown 0 at the foot of tree 0 (abs scale 2.26, 3.2 m wide); y = floor profile -0.24 minus 0.12; clone of clutter_z3_1"
+    },
+    {
+      "id": "pitdress_root_1",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -20.486,
+        -1.198,
+        7.78
+      ],
+      "rotEuler": [
+        0.0,
+        90.1,
+        0.0
+      ],
+      "scale": 3.1774,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS root crown 1 at the foot of tree 1 (abs scale 2.61, 3.7 m wide); y = floor profile -1.08 minus 0.12; clone of clutter_z3_1"
+    },
+    {
+      "id": "pitdress_root_2",
+      "op": "add",
+      "src": "clutter_z3_1",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        25.635,
+        -1.236,
+        13.656
+      ],
+      "rotEuler": [
+        0.0,
+        56.9,
+        0.0
+      ],
+      "scale": 3.3797,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS root crown 2 at the foot of tree 2 (abs scale 2.77, 4.0 m wide); y = floor profile -1.12 minus 0.12; clone of clutter_z3_1"
+    },
+    {
+      "id": "pitdress_rubble_0",
+      "op": "add",
+      "src": "clutter_z1_3",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -7.523,
+        -0.12,
+        -0.522
+      ],
+      "rotEuler": [
+        0.0,
+        204.2,
+        0.0
+      ],
+      "scale": 1.6093,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS rubble at the S_W parapet end (clutter_rubble abs scale 1.59, 1.6 m); clone of clutter_z1_3"
+    },
+    {
+      "id": "pitdress_rubble_1",
+      "op": "add",
+      "src": "clutter_z1_3",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        -6.91,
+        -0.12,
+        4.502
+      ],
+      "rotEuler": [
+        0.0,
+        208.1,
+        0.0
+      ],
+      "scale": 1.5532,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS rubble at the S_W parapet end (clutter_rubble abs scale 1.54, 1.5 m); clone of clutter_z1_3"
+    },
+    {
+      "id": "pitdress_rubble_2",
+      "op": "add",
+      "src": "clutter_z1_3",
+      "zone": "main",
+      "group": "Props",
+      "ring": 1,
+      "pos": [
+        6.663,
+        -0.12,
+        5.325
+      ],
+      "rotEuler": [
+        0.0,
+        141.2,
+        0.0
+      ],
+      "scale": 1.9169,
+      "scaleYMul": 0,
+      "lod": -1,
+      "ground": "bottom",
+      "enabled": true,
+      "note": "PITDRESS rubble at the S_E parapet end (clutter_rubble abs scale 1.90, 1.9 m); clone of clutter_z1_3"
     }
   ]
 }
