@@ -54,7 +54,6 @@
     "fromGearJson": true,
     "eagerFiles": [
       "Gear/cuirass_joan.glb",
-      "Gear/shield_joan_LOD0.glb",
       "Gear/arms_joan_R.glb",
       "Gear/legs_joan_R.glb",
       "Gear/joan_tabard.glb",

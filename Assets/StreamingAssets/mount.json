@@ -136,8 +136,8 @@
     }
   ],
   "camera": {
-    "backMul": 1.25,
-    "heightMul": 1.15
+    "backMul": 1.6,
+    "heightMul": 1.25
   },
   "gait": {
     "walkCyclesPerM": 0.55,
