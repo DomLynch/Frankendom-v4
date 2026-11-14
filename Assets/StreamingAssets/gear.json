@@ -2298,13 +2298,19 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
-      "notes": "laneMARKET v1 vendor weapon. NEEDS THE BOW COMBAT PORT: ranged attack, projectile, aim, draw/release clips and a glb do not exist. Held back from stock by default; equipped today it would act as a sword.",
+      "rarity": "fine",
+      "statList": [
+        { "stat": "damage", "value": 1.0 },
+        { "stat": "speed", "value": 0.85 },
+        { "stat": "posture", "value": 1.0 }
+      ],
+      "notes": "laneMARKET v1 vendor weapon, made real by K3c. Equipped in the main hand it puts Joan in BOW mode (BowEquip.cs, bow.json equipItemId): strikes become auto-aimed arrows, specials are the bow's, stats come from bow.json gearWeapon while the bow is up (the statList below mirrors them). The weapon block is only the sword fallback (guard up, dry quiver, bow off with key 5): reachMul 1.0 on purpose. glb empty is fine: BowVisual draws Gear/joan_bow_LOD0.glb on the left hand. No icon table exists (rows are text only).",
       "weapon": {
         "id": "hunting_bow",
         "twoHanded": true,
         "damageMul": 0.8,
         "speedMul": 1.0,
-        "reachMul": 6.0,
+        "reachMul": 1.0,
         "postureMul": 0.5,
         "cueWeapon": "bow",
         "gripNode": "grip",

@@ -80,9 +80,8 @@
         },
         {
           "item": "hunting_bow",
-          "ready": false,
-          "price": 17,
-          "needs": "bow combat port (ranged attack, projectile, aim, clips, glb); then rerun with --with-bow"
+          "ready": true,
+          "price": 40
         }
       ]
     },
