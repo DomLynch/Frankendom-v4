@@ -35,7 +35,7 @@
     "strength": 0.0,
     "emissiveNits": 0.0
    },
-   "telegraph": {},
+   "telegraph": { "radiusM": 2.4, "seconds": 0.6 },
    "summon": []
   },
   {
@@ -144,7 +144,7 @@
     "strength": 0.0,
     "emissiveNits": 0.0
    },
-   "telegraph": {},
+   "telegraph": { "radiusM": 3.0, "seconds": 0.7 },
    "summon": []
   },
   {
