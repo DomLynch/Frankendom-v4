@@ -352,7 +352,7 @@
                                  ],
                      "fogMeanFreePath":  115.0,
                      "fogMaxHeight":  110.0,
-                     "keyElevationDeg":  38.0,
+                     "keyElevationDeg":  30.0,
                      "keyYawOffsetDeg":  0.0,
                      "keyColor":  [
                                       0.92,
@@ -364,7 +364,7 @@
                                          0.3,
                                          0.26
                                      ],
-                     "bounceLux":  700.0,
+                     "bounceLux":  250.0,
                      "bouncePitchDeg":  50.0,
                      "bounceYawDeg":  180.0,
                      "moonRimColor":  [
