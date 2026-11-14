@@ -31,6 +31,7 @@ using UnityEngine;
     public MtHorse horse = new MtHorse(); public MtSpeed speed = new MtSpeed(); public MtStamina stamina = new MtStamina(); public MtSummon summon = new MtSummon(); public MtDismount dismount = new MtDismount();
     public MtZ[] noMountZ = new MtZ[0]; public MtCam camera = new MtCam(); public MtGait gait = new MtGait();
     public MtVariant[] variants = new MtVariant[0];   // hades-env variants v1
+    public bool hideWeaponWhileMounted = false; public string[] hideSockets = { "WeaponSocket_R" };   // HIDEWEAPON v1: mounted = the carried weapon renderers (under these socket names) are switched off, back on at dismount; default off
 }
 
 public static class MountData
@@ -87,6 +88,7 @@ public sealed class MountRider : MonoBehaviour
     MtVariant cur; MtHorse H { get { return cur != null ? cur.horse : K.horse; } } MtStamina St { get { return cur != null ? cur.stamina : K.stamina; } }   // hades-env variants v1: cur = the owned variant (null = plain)
     MountCfg K; DuelFighter df; Fighter fi; GameObject horse; Transform hBody; GLTFast.GltfImport imp; List<Material> mats;
     bool mounted, exhausted, modelSaved, loadStarted, loaded, haveLast; float stam, nextSummon, baseWalk, baseRun, horseYaw, phase, ampBlend, speedNow, breath, bob, pitch, roll; Vector3 baseModelPos, lastPos;
+    readonly List<Renderer> hiddenW = new List<Renderer>(); float nextHideScan;   // HIDEWEAPON v1
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Inst = null; }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -139,6 +141,7 @@ public sealed class MountRider : MonoBehaviour
             if (df.run) { if (exhausted || stam <= 0f) df.run = false; else { stam -= St.gallopDrainPerS * dt; if (stam <= 0f) { stam = 0f; exhausted = true; df.run = false; } } }
             else { stam = Mathf.Min(St.max, stam + St.regenPerS * dt); if (exhausted && stam >= St.minToGallop) exhausted = false; }
             df.guardHeld = false;   // v1: no fighting from the saddle
+            if (K.hideWeaponWhileMounted && Time.unscaledTime >= nextHideScan) { nextHideScan = Time.unscaledTime + 0.5f; HideWeapon(); }   // HIDEWEAPON v1: a weapon swap while riding is caught within 0.5 s
             Gait(dt);
         }
         else if (key && Time.time >= nextSummon)
@@ -182,16 +185,32 @@ public sealed class MountRider : MonoBehaviour
         /* FIX2 v1: the multiplier is MountRider.SpeedMul on the sim tick, no field write */
         if (fi != null && fi.model != null) { baseModelPos = fi.model.localPosition; modelSaved = true; }
         horseYaw = df.transform.eulerAngles.y; horse.SetActive(true);
+        nextHideScan = 0f; HideWeapon();   // HIDEWEAPON v1
         PlaceHorse(); if (K.debugLog) Debug.Log("[Mount] mounted " + H.id);
     }
 
     void Dismount(string why)
     {
         mounted = false; /* FIX2 v1: nothing to restore, the fields were never written */
+        ShowWeapon();   // HIDEWEAPON v1
         if (modelSaved && fi != null && fi.model != null) fi.model.localPosition = baseModelPos;
         if (horse != null) horse.SetActive(false);
         if (K.debugLog) Debug.Log("[Mount] dismounted: " + why);
     }
+
+    /// <summary>HIDEWEAPON v1: switch off every enabled Renderer under the named weapon sockets of the player (data: mount.json hideWeaponWhileMounted, hideSockets). Only renderers this call switched off are switched back on.</summary>
+    void HideWeapon()
+    {
+        if (!K.hideWeaponWhileMounted || df == null || K.hideSockets == null) return;
+        foreach (var tr in df.GetComponentsInChildren<Transform>(true))
+        {
+            bool hit = false; for (int i = 0; i < K.hideSockets.Length; i++) if (tr.name == K.hideSockets[i]) { hit = true; break; }
+            if (!hit) continue;
+            foreach (var r in tr.GetComponentsInChildren<Renderer>(true)) if (r.enabled) { r.enabled = false; hiddenW.Add(r); }
+        }
+    }
+
+    void ShowWeapon() { for (int i = 0; i < hiddenW.Count; i++) if (hiddenW[i] != null) hiddenW[i].enabled = true; hiddenW.Clear(); }
 
     /// <summary>Procedural gait (the glb has no rig): phase advances with the ground speed, bob / pitch / roll blend with how fast the horse moves.</summary>
     void Gait(float dt)
