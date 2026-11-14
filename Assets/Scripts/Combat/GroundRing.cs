@@ -12,7 +12,7 @@ public static class GroundRing
     {
         public string refMaterial = "WoundDecalRef"; public int texSize = 128;
         public float ringRadiusFrac = 0.85f, ringWidthFrac = 0.1f, innerFill = 0.35f, drawDistanceM = 120f, depthM = 6f, maxOpacity = 0.9f;
-        public float probeUpM = 0.3f, probeM = 4f, fadeInFrac = 0.2f, fadeOutFrac = 0.35f; public float dropM = 0f;   /* RINGDROP v1: the projector box is lowered by dropM (0 = old box, bottom at pos.y; a floor below pos.y, e.g. flat terrain -0.05, was outside it) */   // ground snap: ray from probeUpM above pos, probeM long (starts inside the boss capsule so it only sees the ground)
+        public float probeUpM = 0.3f, probeM = 4f, fadeInFrac = 0.2f, fadeOutFrac = 0.35f; public float dropM = 0f; public bool albedoOnly = false;   /* RINGEDGE v1: true = the ring decal changes only the floor colour (no smoothness over the whole box: removes the dark box edge) */   /* RINGDROP v1: the projector box is lowered by dropM (0 = old box, bottom at pos.y; a floor below pos.y, e.g. flat terrain -0.05, was outside it) */   // ground snap: ray from probeUpM above pos, probeM long (starts inside the boss capsule so it only sees the ground)
     }
     public static readonly Style Default = new Style();
     public static int Shown; public static string LastLog = "";   // proof counters (harness / log)
@@ -39,11 +39,12 @@ public static class GroundRing
     }
 
     // A decal material cloned from the reference material, with the ring texture and a base colour. null (and one warning) when the reference material is missing.
-    public static Material BuildMaterial(string refMaterial, Texture2D tex, Color baseColor, string name)
+    public static Material BuildMaterial(string refMaterial, Texture2D tex, Color baseColor, string name, bool albedoOnly = false)
     {
         var refMat = Resources.Load<Material>(refMaterial);
         if (refMat == null) { if (!warnedMat) { warnedMat = true; Debug.LogWarning("[GroundRing] no decal material '" + refMaterial + "': no ground ring"); } return null; }
         var m = new Material(refMat); m.name = name; m.hideFlags = HideFlags.DontUnloadUnusedAsset; m.EnableKeyword("_COLORMAP"); m.SetTexture(IdBaseColorMap, tex); m.SetColor(IdBaseColor, baseColor);
+        if (albedoOnly) { m.SetFloat("_MaskBlendSrc", 0f); m.SetFloat("_NormalBlendSrc", 0f); m.SetFloat("_AffectSmoothness", 0f); m.SetFloat("_AffectNormal", 0f); m.SetFloat("_AffectAlbedo", 1f); }   // RINGEDGE v2 (+ COO: albedo only, smoothness and normal off): smoothness / normal blend by the ring texture ALPHA (base opacity), not by the reference mask / normal map (opaque over the whole box = the dark rectangle). NO keyword or _Affect* change (v1 dropped _MATERIAL_AFFECTS_MASKMAP: that shader variant is not in the player build, so the whole decal vanished)
         return m;
     }
 
@@ -63,7 +64,7 @@ public static class GroundRing
         RaycastHit hit; if (Physics.Raycast(pos + Vector3.up * s.probeUpM, Vector3.down, out hit, s.probeM, ~0, QueryTriggerInteraction.Ignore)) pos.y = hit.point.y;
         if (whiteRing == null) whiteRing = BuildRingTexture("GroundRing", s.texSize, s.ringRadiusFrac, s.ringWidthFrac, s.innerFill, Color.white);
         tint.a = 1f;
-        var mat = BuildMaterial(s.refMaterial, whiteRing, tint, "ground_ring"); if (mat == null) return false;
+        var mat = BuildMaterial(s.refMaterial, whiteRing, tint, "ground_ring", s.albedoOnly); if (mat == null) return false;
         GameObject go; var proj = CreateProjector(mat, pos, 0f, radiusM, s.depthM, s.drawDistanceM, "GroundRing", out go, s.dropM);
         var fx = go.AddComponent<GroundRingFx>(); fx.proj = proj; fx.mat = mat; fx.t0 = Time.unscaledTime; fx.seconds = seconds; fx.opacity = s.maxOpacity; fx.fadeIn = Mathf.Clamp01(s.fadeInFrac); fx.fadeOut = Mathf.Clamp01(s.fadeOutFrac);
         Shown++; LastLog = "ring r=" + radiusM.ToString("F1") + " s=" + seconds.ToString("F2") + " at " + pos.ToString("F1");

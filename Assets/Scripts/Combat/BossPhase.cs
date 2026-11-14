@@ -12,7 +12,7 @@ using UnityEngine;
 [Serializable] public class BpStagger { public int ticks = 0; public string clip = "hit_heavy"; public bool bossTakesDamage = true; }   // BOSSPHASES C1: ticks 0 = no roar recoil
 [Serializable] public class BpFlash { public float[] color = null; public float seconds = 0f, strength = 0f, emissiveNits = 0f, riseSeconds = 0.05f; }   // BOSSPHASES C1: strength or seconds 0 = no flash
 [Serializable] public class BpTelegraph { public float radiusM = 0f, seconds = 0f; }
-[Serializable] public class BpRing { public bool enabled = false; public float dropM = 0f, depthM = 6f, maxOpacity = 0.9f, ringWidthFrac = 0.1f, innerFill = 0.35f; }   // RINGDROP v1: optional GroundRing look; enabled false = the built-in Style (today)   // BOSSPHASES C2: radiusM or seconds 0 = no ground ring
+[Serializable] public class BpRing { public bool enabled = false, albedoOnly = false; public float dropM = 0f, depthM = 6f, maxOpacity = 0.9f, ringWidthFrac = 0.1f, innerFill = 0.35f; }   // RINGDROP v1: optional GroundRing look; enabled false = the built-in Style (today)   // BOSSPHASES C2: radiusM or seconds 0 = no ground ring
 [Serializable]
 public class BpRow
 {
@@ -143,7 +143,7 @@ public class BossPhase : MonoBehaviour
     {
         if (ringStyle != null) return ringStyle; var c = Cfg(); var r = c != null ? c.ring : null;
         if (r == null || !r.enabled) return ringStyle = GroundRing.Default;
-        var s = new GroundRing.Style { dropM = r.dropM, depthM = Mathf.Max(0.5f, r.depthM), maxOpacity = Mathf.Clamp01(r.maxOpacity), ringWidthFrac = Mathf.Max(0.01f, r.ringWidthFrac), innerFill = Mathf.Clamp01(r.innerFill) };
+        var s = new GroundRing.Style { albedoOnly = r.albedoOnly, dropM = r.dropM, depthM = Mathf.Max(0.5f, r.depthM), maxOpacity = Mathf.Clamp01(r.maxOpacity), ringWidthFrac = Mathf.Max(0.01f, r.ringWidthFrac), innerFill = Mathf.Clamp01(r.innerFill) };
         return ringStyle = s;
     }
 
