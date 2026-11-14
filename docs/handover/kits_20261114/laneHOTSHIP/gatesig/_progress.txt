@@ -1,0 +1,5 @@
+13:42:19 prepared
+13:50:11 prepared
+13:50:12 start sig pid 59576
+13:51:05 end sig; pid read back: gone
+13:51:05 done

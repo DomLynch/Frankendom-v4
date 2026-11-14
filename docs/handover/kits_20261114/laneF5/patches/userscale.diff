@@ -1,0 +1,15 @@
+--- a/Assets/Scripts/QualityTiers.cs
++++ b/Assets/Scripts/QualityTiers.cs
+@@ -108,8 +108,10 @@
+     // ---- FPSX_C v1: render scale + upscaler as a player option (HDRP dynamic resolution; the HDRP assets already have DRS on, hardware, STP) ----
+     public static bool UserScaleOn { get { return head.userScale != null && head.userScale.enabled && !RuntimeQuality.IsHarness(); } }
+     public static UserScaleRow UserScaleCfg { get { return head.userScale ?? new UserScaleRow(); } }
+-    public static int UserScale { get { return PlayerPrefs.GetInt(head.userScale.scaleKey, 100); } }
+-    public static string UserUpscaler { get { return PlayerPrefs.GetString(head.userScale.upscalerKey, head.userScale.defaultUpscaler); } }
++    [System.Serializable] class TierScaleFlags { public int renderScale = 0; public string upscaler = ""; }   // F5 USERSCALE
++    static TierScaleFlags TierScale() { try { var t = string.IsNullOrEmpty(FlagsJson) ? null : JsonUtility.FromJson<TierScaleFlags>(FlagsJson); if (t != null) return t; } catch (System.Exception) { } return new TierScaleFlags(); }   // the active tier's own renderScale / upscaler = the default the menu row shows until the player picks
++    public static int UserScale { get { int d = TierScale().renderScale; return PlayerPrefs.GetInt(head.userScale.scaleKey, d > 0 ? d : 100); } }
++    public static string UserUpscaler { get { string u = TierScale().upscaler; return PlayerPrefs.GetString(head.userScale.upscalerKey, !string.IsNullOrEmpty(u) ? u : head.userScale.defaultUpscaler); } }
+     public static void SetUser(int scale, string upscaler)
+     {
+         if (!UserScaleOn) return;

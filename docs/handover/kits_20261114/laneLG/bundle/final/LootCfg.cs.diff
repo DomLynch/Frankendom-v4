@@ -1,0 +1,7 @@
+--- LootCfg.cs (tree)
++++ LootCfg.cs.patched
+@@ -59,3 +59,3 @@
+         public float descGap = 14f, detailNameGap = 6f, openFadeS = 0.18f, hintY = 40f, closeBox = 34f;
+-        public bool openInFight = false, showEquipHint = true; public float equipHintBottom = 96f; public int equipHintSize = 15;
++        public bool openInFight = false, showEquipHint = true, blockWhileMenu = false; public float equipHintBottom = 96f; public int equipHintSize = 15;   // F5 LOOTPAD: blockWhileMenu true = the equip screen does not open on the press / frame the pause menu owns (loot_ui.json screen.blockWhileMenu)
+         public int triTex = 32; public float triPad = 4f;

@@ -1,0 +1,68 @@
+﻿[HudHp] Joan 145.5 -> 504.4 bar 0.97 tick 1
+[CamScene] step hub_restart (restart)
+[CamScene] restarted: player at (0.0, 0.0, 80.0)
+[CamScene] step hub_restart took 4.1 s
+[CamScene] step hub_arr (hold)
+[CamScene] step hub_arr took 6.2 s
+[CamScene] step hub_gate (walk)
+[BossHold] z4_grendel waits for wave z4_p
+[CamScene] step hub_gate took 4.1 s
+[CamScene] step z4_arr0 (walk)
+[Zones] engage bandit_z4_p_1 (NpcMereRaider, life 0)
+[BossHold] z4_grendel released (wave dead, held 2.1 s)
+[Zones] engage bandit_z4_p_1 (NpcMereRaider, life 0)
+[CamScene] step z4_arr0 took 3.7 s
+[CamScene] step z4_arr (hold)
+[HudHp] Joan 520.0 -> 518.9 bar 1.00 tick 1071
+[CamScene] step z4_arr took 6.0 s
+[CamScene] step z4_wavewalk (walk)
+[HudHp] Joan 518.9 -> 517.8 bar 1.00 tick 1136
+[CamScene] step z4_wavewalk took 2.4 s
+[CamScene] step z4_wave (fight)
+[CamScene] bandit_z4_p_1 engaged, killing in 2.0 s
+[CamScene-EVT] hpLeft bandit_z4_p_1 (hp 290 -> 5)
+[CombatSlowMo] dip kill scale 0.45 hold 0.08 ease 0.03/0.20 clk=38.15
+[CamScene] fight z4_wave: strikes thrown 6, hits landed (foe hp drops) 7 (light)
+[CamScene] step z4_wave took 14.0 s
+[CamScene] step z4_rel (hold)
+[CamScene] step z4_rel took 12.0 s
+[CamScene] step z4_meet (walk)
+[Zones] engage z4_grendel (Grendel, life 0)
+[CamScene] z4_meet: 1 engaged, stop
+[CamScene] step z4_meet took 3.6 s
+[CamScene] step z4_p1 (fight)
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=66.19
+[HudHp] Joan 517.8 -> 514.5 bar 0.99 tick 2945
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=68.61
+[HudHp] Joan 514.5 -> 511.6 bar 0.98 tick 3159
+[HudHp] Joan 511.6 -> 508.5 bar 0.98 tick 3186
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=71.88
+[HudHp] Joan 508.5 -> 504.4 bar 0.97 tick 3267
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=81.42
+[CamScene] fight z4_p1: strikes thrown 25, hits landed (foe hp drops) 8 (4-direction cycle)
+[CamScene] step z4_p1 took 20.0 s
+[CamScene] step z4_p2 (fight)
+[CamScene] z4_grendel engaged, killing in 1.0 s
+[CamScene-EVT] hpLeft z4_grendel (hp 451 -> 370)
+[CombatSlowMo] dip crit scale 1.00 hold 0.10 ease 0.03/0.20 clk=88.69
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=91.74
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=97.79
+[GroundRing] ring r=2.8 s=0.65 at (1.9, 0.0, 117.7)
+[CombatSlowMo] dip bossPhase scale 0.35 hold 0.16 ease 0.04/0.30 clk=100.92
+[BossPhase] Grendel enters its phase (health 311/520, damageScale 1.62)
+[CombatSlowMo] dip crit scale 1.00 hold 0.10 ease 0.03/0.20 clk=104.09
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=106.00
+[CamScene] fight z4_p2: strikes thrown 15, hits landed (foe hp drops) 10 (4-direction cycle)
+[CamScene] step z4_p2 took 22.0 s
+[CamScene] step z4_kill (fight)
+[CamScene] z4_grendel engaged, killing in 1.0 s
+[Bandits] gate bandit_z4_a_1 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z4_a_2 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z4_a_3 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z4_b_1 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z4_b_2 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z4_b_3 open (boss gone) aggro 14.0
+[CamScene] fight z4_kill: strikes thrown 1, hits landed (foe hp drops) 2 (4-direction cycle)
+[CamScene] step z4_kill took 7.1 s
+[CamScene] step z4_dead (hold)
+[CamScene] step z4_dead took 4.1 s

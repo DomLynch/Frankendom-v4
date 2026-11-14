@@ -1,0 +1,124 @@
+--- a/Assets/Scripts/Menu/MenuCfg.cs
++++ b/Assets/Scripts/Menu/MenuCfg.cs
+@@ -31,6 +31,14 @@
+         public string colAction = "Action", colKeys = "Keyboard / mouse", colPad = "Gamepad";
+         public KeyRowC[] rows = new KeyRowC[0];
+     }
++    [Serializable]
++    public class BootC
++    {
++        // F5 BOOTMENU: enabled false = nothing changes. title / resumeLabel / footer replace the PAUSED title, the "Resume" label and the footer line on that first open only.
++        // afterCardS = wait after the loading card and the StartupWarm cover are gone; maxWaitS = give up (never opens late). skipArgs = proof / capture flags that must never meet a title.
++        public bool enabled = false; public string title = "", resumeLabel = "", footer = ""; public float afterCardS = 0.3f, maxWaitS = 60f;
++        public string[] skipArgs = { "-camscene", "-camtrace", "-dirproof", "-zoneshot", "-routebot", "-lightdump", "-lightoff", "-resgate", "-record", "-flickrec" };
++    }
+     [Serializable] public class DefaultsC { public float camSens = 1f;   /* RCHYGIENE v100: audio defaults live in audio_mix.json */ public int vsync = 1, frameCap = 0; public bool hints = true; }
+     [Serializable] public class StringsC
+     {
+@@ -53,7 +61,7 @@
+     {
+         public bool enabled = true, allowOnEndScreen = true; public float maxFadeToOpen = 0.5f, unfreezeMaxS = 0.5f, saveDelayS = 0.6f, openWaitS = 0.8f;   // openWaitS: an Esc press that cannot open yet (slow-mo dip, fade) is remembered this long
+         public string[] harnessArgs = { "-balanceauto", "-autoplay", "-finisherauto", "-finisherrotonly", "-postureproof", "-camproof", "-flowproof", "-verifyGround", "-looptest", "-latencyprobe", "-perfbench", "-steerauto", "-steerpreview", "-gaps", "-props", "-record", "-sheet:", "-headsheet", "-cmp", "-stand", "-isolate", "-facecam" };
+-        public InputC input = new InputC(); public LayoutC layout = new LayoutC(); public StringsC strings = new StringsC(); public DefaultsC defaults = new DefaultsC(); public ControlsC controls = new ControlsC();
++        public BootC boot = new BootC(); public InputC input = new InputC(); public LayoutC layout = new LayoutC(); public StringsC strings = new StringsC(); public DefaultsC defaults = new DefaultsC(); public ControlsC controls = new ControlsC();
+         public ItemC[] items = Items(); public TabC[] tabs = new TabC[0];
+         public ChoiceC[] vsyncModes = { new ChoiceC { value = 0, label = "Off" }, new ChoiceC { value = 1, label = "On" } };
+         public ChoiceC[] fullscreenModes = { new ChoiceC { id = "FullScreenWindow", label = "Borderless window" }, new ChoiceC { id = "ExclusiveFullScreen", label = "Exclusive fullscreen" }, new ChoiceC { id = "Windowed", label = "Windowed" } };
+@@ -84,7 +92,7 @@
+ 
+     static void Fix(Data d)
+     {
+-        if (d.input == null) d.input = new InputC(); if (d.layout == null) d.layout = new LayoutC(); if (d.strings == null) d.strings = new StringsC(); if (d.defaults == null) d.defaults = new DefaultsC(); if (d.controls == null) d.controls = new ControlsC();
++        if (d.boot == null) d.boot = new BootC(); if (d.boot.skipArgs == null) d.boot.skipArgs = new string[0]; if (d.input == null) d.input = new InputC(); if (d.layout == null) d.layout = new LayoutC(); if (d.strings == null) d.strings = new StringsC(); if (d.defaults == null) d.defaults = new DefaultsC(); if (d.controls == null) d.controls = new ControlsC();
+         if (d.items == null || d.items.Length == 0) d.items = Items(); if (d.tabs == null) d.tabs = new TabC[0]; if (d.harnessArgs == null) d.harnessArgs = new string[0];
+         if (d.vsyncModes == null || d.vsyncModes.Length == 0) d.vsyncModes = new Data().vsyncModes; if (d.fullscreenModes == null || d.fullscreenModes.Length == 0) d.fullscreenModes = new Data().fullscreenModes; if (d.frameCaps == null || d.frameCaps.Length == 0) d.frameCaps = new Data().frameCaps;
+         if (d.controls.rows == null) d.controls.rows = new KeyRowC[0]; if (d.controls.padNames == null) d.controls.padNames = new ControlsC().padNames;
+--- a/Assets/Scripts/Menu/MenuUI.cs
++++ b/Assets/Scripts/Menu/MenuUI.cs
+@@ -47,7 +47,7 @@
+         try
+         {
+             if (inst != null || !Enabled) return;
+-            var go = new GameObject("MenuUI"); DontDestroyOnLoad(go); inst = go.AddComponent<MenuUI>();
++            var go = new GameObject("MenuUI"); DontDestroyOnLoad(go); inst = go.AddComponent<MenuUI>(); inst.ArmBoot();
+         }
+         catch (Exception e) { Debug.LogWarning("[MenuUI] boot failed: " + e.Message); }
+     }
+@@ -57,6 +57,25 @@
+     void OnApplicationQuit() { MenuSettings.Flush(); }
+     void OnApplicationFocus(bool f) { if (!f) MenuSettings.Flush(); }
+     void OnLoaded(Scene s, LoadSceneMode m) { if (Open) ForceClose(); pendingUnfreeze = false; ownFreeze = false; }
++
++    // ---------------- F5 BOOTMENU (menu.json boot{}, default off) ----------------
++    bool bootPending, bootMode; float bootT0 = -1f, bootClear = -1f;
++    void ArmBoot()
++    {
++        var B = MenuCfg.Get().boot; bootPending = false;
++        if (B == null || !B.enabled || !Enabled) return;
++        foreach (var a in Environment.GetCommandLineArgs()) foreach (var s in B.skipArgs) if (!string.IsNullOrEmpty(s) && a.StartsWith(s, StringComparison.OrdinalIgnoreCase)) { Debug.Log("[MenuUI] boot menu off: " + a); return; }
++        bootPending = true; Debug.Log("[MenuUI] boot menu armed");
++    }
++    void BootTick(MenuCfg.Data C)
++    {
++        var B = C.boot; float now = Time.unscaledTime; if (bootT0 < 0f) bootT0 = now;
++        if (now - bootT0 > B.maxWaitS) { bootPending = false; Debug.Log("[MenuUI] boot menu gave up after " + B.maxWaitS.ToString("F0") + " s"); return; }
++        if (!LoadingCard.Cleared || !StartupWarm.Done) { bootClear = -1f; return; }   // the card and the cover are gone: the world is really there
++        if (bootClear < 0f) bootClear = now;
++        if (now - bootClear < B.afterCardS || !Allowed() || !ClockReady()) return;
++        bootPending = false; bootMode = true; OpenMenu(); Debug.Log("[MenuUI] boot menu opened");
++    }
+ 
+     // ---------------- open / close ----------------
+     /// <summary>Nothing forbids the menu right now (finisher, steer mode, harness, another UI owning the fight).</summary>
+@@ -88,7 +107,7 @@
+     {
+         if (!Open) return;
+         Open = false; ClosedFrame = Time.frameCount;
+-        Time.timeScale = prevTs;   // CanOpen only lets the menu open at 1; fixedDeltaTime is never touched
++        Time.timeScale = prevTs; bootMode = false;   // CanOpen only lets the menu open at 1; fixedDeltaTime is never touched
+         AudioMix.SetPaused(false);   // RCHYGIENE v100: un-pauses at once, fades back in
+         CrashLog.AckNotice();   // RCHYGIENE v100: the 'last session crashed' line is shown for one pause only
+         if (cursorSaved) { Cursor.lockState = prevLock; Cursor.visible = prevVis; cursorSaved = false; }
+@@ -97,7 +116,7 @@
+     }
+     void ForceClose()
+     {
+-        Open = false; ClosedFrame = Time.frameCount; Time.timeScale = 1f; AudioMix.SetPaused(false); ownFreeze = false; pendingUnfreeze = false;
++        Open = false; ClosedFrame = Time.frameCount; Time.timeScale = 1f; AudioMix.SetPaused(false); ownFreeze = false; pendingUnfreeze = false; bootMode = false;
+         if (cursorSaved) { Cursor.lockState = prevLock; Cursor.visible = prevVis; cursorSaved = false; }
+     }
+ 
+@@ -127,6 +146,7 @@
+         }
+         if (!Open)
+         {
++            if (bootPending) BootTick(C);   // F5 BOOTMENU
+             if (HudCfg.AnyDown(kOpen) && Allowed()) { wantOpen = true; wantUntil = Time.unscaledTime + C.openWaitS; }   // not remembered when a finisher / another UI is up: Esc that closes the loot screen must not pop the menu
+             if (wantOpen)
+             {
+@@ -461,14 +481,14 @@
+     {
+         var C = MenuCfg.Get(); var L = C.layout; float cx = vw * 0.5f;
+         float ty = vh * L.titleY;
+-        HudDraw.Caps(cx, ty, 0.5f, C.strings.pausedTitle, "title", L.titleSize, L.titleSmall, L.titleTracking, Ink());
++        HudDraw.Caps(cx, ty, 0.5f, bootMode && !string.IsNullOrEmpty(C.boot.title) ? C.boot.title : C.strings.pausedTitle, "title", L.titleSize, L.titleSmall, L.titleTracking, Ink());
+         Rule(cx, ty + L.titleSize * ML.pause.capsLine + ML.pause.ruleGap, L.ruleW);
+         var hover = mouseActive && C.input.mouse ? Event.current.mousePosition : new Vector2(-1f, -1f);
+         for (int i = 0; i < C.items.Length; i++)
+         {
+             var r = PauseRect(i, vw, vh);
+             if (mouseActive && r.Contains(hover)) pauseSel = i;
+-            bool sel = i == pauseSel; string lab = C.items[i].label;
++            bool sel = i == pauseSel; string lab = bootMode && C.items[i].id == "resume" && !string.IsNullOrEmpty(C.boot.resumeLabel) ? C.boot.resumeLabel : C.items[i].label;
+             float w = HudDraw.CapsWidth(lab, "title", L.itemSize, L.itemSmall, L.itemTracking);
+             if (sel)
+             {
+@@ -478,7 +498,7 @@
+             }
+             HudDraw.Caps(cx, r.y + (r.height - L.itemSize * ML.pause.capsLine) * 0.5f, 0.5f, lab, "title", L.itemSize, L.itemSmall, L.itemTracking, sel ? Gold() : Ink(ML.pause.itemIdleAlpha));
+         }
+-        Footer(new Rect(0f, vh - ML.pause.footerBottom, vw, ML.pause.footerH), C.strings.footerPause);
++        Footer(new Rect(0f, vh - ML.pause.footerBottom, vw, ML.pause.footerH), bootMode && !string.IsNullOrEmpty(C.boot.footer) ? C.boot.footer : C.strings.footerPause);
+         if (CrashLog.ShowNotice) HudDraw.Text(new Rect(0f, vh - ML.pause.crashBottom, vw, ML.pause.crashH), C.strings.crashedNotice, "serif", L.footerSize + ML.pause.crashFontAdd, TextAnchor.MiddleCenter, false, Gold(ML.pause.crashAlpha));   // RCHYGIENE v100
+     }
+ 

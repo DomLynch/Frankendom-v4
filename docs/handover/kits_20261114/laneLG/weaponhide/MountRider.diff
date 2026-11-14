@@ -1,0 +1,39 @@
+--- MountRider.cs (tree)
++++ MountRider.cs.patched
+@@ -33,2 +33,3 @@
+     public MtVariant[] variants = new MtVariant[0];   // hades-env variants v1
++    public bool hideWeaponWhileMounted = false; public string[] hideSockets = { "WeaponSocket_R" };   // HIDEWEAPON v1: mounted = the carried weapon renderers (under these socket names) are switched off, back on at dismount; default off
+ }
+@@ -89,2 +90,3 @@
+     bool mounted, exhausted, modelSaved, loadStarted, loaded, haveLast; float stam, nextSummon, baseWalk, baseRun, horseYaw, phase, ampBlend, speedNow, breath, bob, pitch, roll; Vector3 baseModelPos, lastPos;
++    readonly List<Renderer> hiddenW = new List<Renderer>(); float nextHideScan;   // HIDEWEAPON v1
+ 
+@@ -141,2 +143,3 @@
+             df.guardHeld = false;   // v1: no fighting from the saddle
++            if (K.hideWeaponWhileMounted && Time.unscaledTime >= nextHideScan) { nextHideScan = Time.unscaledTime + 0.5f; HideWeapon(); }   // HIDEWEAPON v1: a weapon swap while riding is caught within 0.5 s
+             Gait(dt);
+@@ -184,2 +187,3 @@
+         horseYaw = df.transform.eulerAngles.y; horse.SetActive(true);
++        nextHideScan = 0f; HideWeapon();   // HIDEWEAPON v1
+         PlaceHorse(); if (K.debugLog) Debug.Log("[Mount] mounted " + H.id);
+@@ -190,2 +194,3 @@
+         mounted = false; /* FIX2 v1: nothing to restore, the fields were never written */
++        ShowWeapon();   // HIDEWEAPON v1
+         if (modelSaved && fi != null && fi.model != null) fi.model.localPosition = baseModelPos;
+@@ -194,2 +199,16 @@
+     }
++
++    /// <summary>HIDEWEAPON v1: switch off every enabled Renderer under the named weapon sockets of the player (data: mount.json hideWeaponWhileMounted, hideSockets). Only renderers this call switched off are switched back on.</summary>
++    void HideWeapon()
++    {
++        if (!K.hideWeaponWhileMounted || df == null || K.hideSockets == null) return;
++        foreach (var tr in df.GetComponentsInChildren<Transform>(true))
++        {
++            bool hit = false; for (int i = 0; i < K.hideSockets.Length; i++) if (tr.name == K.hideSockets[i]) { hit = true; break; }
++            if (!hit) continue;
++            foreach (var r in tr.GetComponentsInChildren<Renderer>(true)) if (r.enabled) { r.enabled = false; hiddenW.Add(r); }
++        }
++    }
++
++    void ShowWeapon() { for (int i = 0; i < hiddenW.Count; i++) if (hiddenW[i] != null) hiddenW[i].enabled = true; hiddenW.Clear(); }
+ 

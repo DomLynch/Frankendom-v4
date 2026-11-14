@@ -1,0 +1,71 @@
+{
+    "version": 3,
+    "owned": [
+        "cuirass_joan",
+        "arms_joan",
+        "legarmour_joan",
+        "joan_shield",
+        "joan_tabard",
+        "war_axe",
+        "pitborn_maul",
+        "sobek_trident",
+        "iron_maul",
+        "boar_spear",
+        "pitborn_chest",
+        "mount_horse"
+    ],
+    "equipped": [
+        {
+            "slot": "head",
+            "item": ""
+        },
+        {
+            "slot": "chest",
+            "item": "cuirass_joan"
+        },
+        {
+            "slot": "tabard",
+            "item": "joan_tabard"
+        },
+        {
+            "slot": "arms",
+            "item": "arms_joan"
+        },
+        {
+            "slot": "legs",
+            "item": "legarmour_joan"
+        },
+        {
+            "slot": "mainHand",
+            "item": "war_axe"
+        },
+        {
+            "slot": "offHand",
+            "item": "joan_shield"
+        },
+        {
+            "slot": "remnant1",
+            "item": ""
+        },
+        {
+            "slot": "remnant2",
+            "item": ""
+        }
+    ],
+    "coins": 248,
+    "seq": 2,
+    "sales": [
+        {
+            "id": "sell-1-pitborn_chest",
+            "item": "pitborn_chest",
+            "coins": -120
+        },
+        {
+            "id": "sell-2-mount_horse",
+            "item": "mount_horse",
+            "coins": -50
+        }
+    ],
+    "startPaid": true,
+    "stacks": []
+}

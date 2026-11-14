@@ -1,0 +1,6 @@
+--- GameLoop.cs (tree)
++++ GameLoop.cs.patched
+@@ -163,2 +163,3 @@
+     {
++        StartupWarm.ReArm();   // RELOADCOVER v1: black cover until the reloaded scene has its gear on (startup_warm.json cover.onReload, default on)
+         ResetGlobals();

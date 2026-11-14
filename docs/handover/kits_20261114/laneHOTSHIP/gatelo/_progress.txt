@@ -1,0 +1,9 @@
+12:30:08 prepared
+12:35:09 prepared
+12:35:09 start cam pid 54444
+12:36:29 end cam; pid read back: gone
+12:36:29 start plain pid 59116
+12:37:31 end plain; pid read back: gone
+12:37:31 start demon pid 10656
+12:38:32 end demon; pid read back: gone
+12:38:32 done

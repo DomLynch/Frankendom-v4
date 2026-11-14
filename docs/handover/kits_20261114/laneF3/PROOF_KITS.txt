@@ -1,0 +1,27 @@
+sigbash  round 1 applied        abilities.json c6ae52bfa2 OK
+sigbash  round 1 applied        parses as JSON OK
+sigbash  round 1 reverted       abilities.json 349b473f51 OK
+sigbash  round 1 reverted       byte-identical to tree file OK
+sigaxe   round 1 applied        gear.json 088f02c18d OK
+sigaxe   round 1 applied        parses as JSON OK
+sigaxe   round 1 reverted       gear.json d1fb8581f4 OK
+sigaxe   round 1 reverted       byte-identical to tree file OK
+tells    round 1 applied        boss_phase.json 6e9b16fdfc OK
+tells    round 1 applied        parses as JSON OK
+tells    round 1 reverted       boss_phase.json 793a9a7f29 OK
+tells    round 1 reverted       byte-identical to tree file OK
+sigbash  round 2 applied        abilities.json c6ae52bfa2 OK
+sigbash  round 2 applied        parses as JSON OK
+sigbash  round 2 reverted       abilities.json 349b473f51 OK
+sigbash  round 2 reverted       byte-identical to tree file OK
+sigaxe   round 2 applied        gear.json 088f02c18d OK
+sigaxe   round 2 applied        parses as JSON OK
+sigaxe   round 2 reverted       gear.json d1fb8581f4 OK
+sigaxe   round 2 reverted       byte-identical to tree file OK
+tells    round 2 applied        boss_phase.json 6e9b16fdfc OK
+tells    round 2 applied        parses as JSON OK
+tells    round 2 reverted       boss_phase.json 793a9a7f29 OK
+tells    round 2 reverted       byte-identical to tree file OK
+STACK    all three applied: abilities.json c6ae52bfa2, gear.json 088f02c18d, boss_phase.json 6e9b16fdfc
+STACK    reverted in reverse order: all three byte-identical to the tree OK
+CHECK    sigaxe: every item stats{} and weapon{} block equal to base (no armor/poise/damage number moved) OK

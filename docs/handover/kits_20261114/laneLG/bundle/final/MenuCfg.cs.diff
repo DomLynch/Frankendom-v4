@@ -1,0 +1,27 @@
+--- MenuCfg.cs (tree)
++++ MenuCfg.cs.patched
+@@ -14,2 +14,3 @@
+         public string axisX = "Horizontal", axisY = "Vertical";   // Input Manager axes (left stick); empty = no stick navigation
++        public string dpadAxisX = "", dpadAxisY = "";   // F5 DPADNAV: Input Manager axes of the D-pad (DPadX / DPadY in InputManager.asset); empty = the D-pad does not navigate
+         public float axisThreshold = 0.6f, repeatDelayS = 0.4f, repeatS = 0.11f, mouseMovePx = 3f; public bool mouse = true;
+@@ -32,2 +33,10 @@
+         public KeyRowC[] rows = new KeyRowC[0];
++    }
++    [Serializable]
++    public class BootC
++    {
++        // F5 BOOTMENU: enabled false = nothing changes. title / resumeLabel / footer replace the PAUSED title, the "Resume" label and the footer line on that first open only.
++        // afterCardS = wait after the loading card and the StartupWarm cover are gone; maxWaitS = give up (never opens late). skipArgs = proof / capture flags that must never meet a title.
++        public bool enabled = false; public string title = "", resumeLabel = "", footer = ""; public float afterCardS = 0.3f, maxWaitS = 60f;
++        public string[] skipArgs = { "-camscene", "-camtrace", "-dirproof", "-zoneshot", "-routebot", "-lightdump", "-lightoff", "-resgate", "-record", "-flickrec" };
+     }
+@@ -55,3 +64,3 @@
+         public string[] harnessArgs = { "-balanceauto", "-autoplay", "-finisherauto", "-finisherrotonly", "-postureproof", "-camproof", "-flowproof", "-verifyGround", "-looptest", "-latencyprobe", "-perfbench", "-steerauto", "-steerpreview", "-gaps", "-props", "-record", "-sheet:", "-headsheet", "-cmp", "-stand", "-isolate", "-facecam" };
+-        public InputC input = new InputC(); public LayoutC layout = new LayoutC(); public StringsC strings = new StringsC(); public DefaultsC defaults = new DefaultsC(); public ControlsC controls = new ControlsC();
++        public BootC boot = new BootC(); public InputC input = new InputC(); public LayoutC layout = new LayoutC(); public StringsC strings = new StringsC(); public DefaultsC defaults = new DefaultsC(); public ControlsC controls = new ControlsC();
+         public ItemC[] items = Items(); public TabC[] tabs = new TabC[0];
+@@ -86,3 +95,3 @@
+     {
+-        if (d.input == null) d.input = new InputC(); if (d.layout == null) d.layout = new LayoutC(); if (d.strings == null) d.strings = new StringsC(); if (d.defaults == null) d.defaults = new DefaultsC(); if (d.controls == null) d.controls = new ControlsC();
++        if (d.boot == null) d.boot = new BootC(); if (d.boot.skipArgs == null) d.boot.skipArgs = new string[0]; if (d.input == null) d.input = new InputC(); if (d.layout == null) d.layout = new LayoutC(); if (d.strings == null) d.strings = new StringsC(); if (d.defaults == null) d.defaults = new DefaultsC(); if (d.controls == null) d.controls = new ControlsC();
+         if (d.items == null || d.items.Length == 0) d.items = Items(); if (d.tabs == null) d.tabs = new TabC[0]; if (d.harnessArgs == null) d.harnessArgs = new string[0];

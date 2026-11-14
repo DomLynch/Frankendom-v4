@@ -1,0 +1,53 @@
+{
+    "version": 3,
+    "owned": [
+        "cuirass_joan",
+        "arms_joan",
+        "legarmour_joan",
+        "joan_shield",
+        "joan_tabard"
+    ],
+    "equipped": [
+        {
+            "slot": "head",
+            "item": ""
+        },
+        {
+            "slot": "chest",
+            "item": "cuirass_joan"
+        },
+        {
+            "slot": "tabard",
+            "item": "joan_tabard"
+        },
+        {
+            "slot": "arms",
+            "item": "arms_joan"
+        },
+        {
+            "slot": "legs",
+            "item": "legarmour_joan"
+        },
+        {
+            "slot": "mainHand",
+            "item": ""
+        },
+        {
+            "slot": "offHand",
+            "item": "joan_shield"
+        },
+        {
+            "slot": "remnant1",
+            "item": ""
+        },
+        {
+            "slot": "remnant2",
+            "item": ""
+        }
+    ],
+    "coins": 418,
+    "seq": 0,
+    "sales": [],
+    "startPaid": true,
+    "stacks": []
+}

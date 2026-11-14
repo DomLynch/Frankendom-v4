@@ -1,0 +1,87 @@
+﻿[HudHp] Joan 145.5 -> 504.4 bar 0.97 tick 1
+[Zones] engage bandit_z6_p_1 (NpcAntlerKnight, life 0)
+[Zones] engage bandit_z6_p_2 (NpcHoundMaster, life 0)
+[CamScene] step z6_restart (restart)
+[CamScene] restarted: player at (0.0, 0.0, 252.0)
+[CamScene] step z6_restart took 3.8 s
+[CamScene] step z6_arr (hold)
+[Zones] engage bandit_z6_p_1 (NpcAntlerKnight, life 0)
+[Zones] engage bandit_z6_p_2 (NpcHoundMaster, life 0)
+[HudHp] Joan 520.0 -> 518.6 bar 1.00 tick 628
+[HudHp] Joan 518.6 -> 517.1 bar 1.00 tick 636
+[CamScene] step z6_arr took 26.1 s
+[CamScene] step z6_wavewalk1 (walk)
+[HudHp] Joan 517.1 -> 516.3 bar 0.99 tick 1467
+[CamScene] step z6_wavewalk1 took 1.7 s
+[CamScene] step z6_wave1 (fight)
+[CamScene] bandit_z6_p_1 engaged, killing in 2.0 s
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=41.72
+[CamScene-EVT] hpLeft bandit_z6_p_1 (hp 431 -> 5)
+[HudHp] Joan 516.3 -> 514.7 bar 0.99 tick 1654
+[Zones] engage bandit_z6_p_3 (NpcHuntsman, life 0)
+[CombatSlowMo] dip kill scale 0.45 hold 0.08 ease 0.03/0.20 clk=43.12
+[HudHp] Joan 514.7 -> 513.5 bar 0.99 tick 1839
+[HudHp] Joan 513.5 -> 512.4 bar 0.99 tick 1945
+[HudHp] Joan 512.4 -> 511.2 bar 0.98 tick 1968
+[HudHp] Joan 511.2 -> 510.1 bar 0.98 tick 2012
+[CombatSlowMo] dip crit scale 1.00 hold 0.10 ease 0.03/0.20 clk=50.01
+[CamScene] fight z6_wave1: strikes thrown 13, hits landed (foe hp drops) 11 (light)
+[CamScene] step z6_wave1 took 12.0 s
+[CamScene] step z6_wavewalk2 (walk)
+[HudHp] Joan 510.1 -> 509.2 bar 0.98 tick 2214
+[HudHp] Joan 509.2 -> 508.2 bar 0.98 tick 2239
+[CamScene] step z6_wavewalk2 took 2.0 s
+[CamScene] step z6_wave2 (fight)
+[CamScene] bandit_z6_p_2 engaged, killing in 2.0 s
+[HudHp] Joan 508.2 -> 506.8 bar 0.98 tick 2335
+[HudHp] Joan 506.8 -> 505.9 bar 0.97 tick 2358
+[CamScene-EVT] hpLeft bandit_z6_p_2 (hp 250 -> 5)
+[HudHp] Joan 505.9 -> 504.4 bar 0.97 tick 2436
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=64.89
+[CamScene] fight z6_wave2: strikes thrown 10, hits landed (foe hp drops) 7 (light)
+[CamScene] step z6_wave2 took 12.0 s
+[CamScene] step z6_wavewalk3 (walk)
+[CombatSlowMo] dip deathblow scale 1.00 hold 0.22 ease 0.04/0.30 clk=67.35
+[CamScene] step z6_wavewalk3 took 5.2 s
+[CamScene] step z6_wave3 (fight)
+[CamScene] bandit_z6_p_3 engaged, killing in 2.0 s
+[CombatSlowMo] dip kill scale 0.45 hold 0.08 ease 0.03/0.20 clk=72.94
+[CamScene-EVT] hpLeft bandit_z6_p_3 (hp 202 -> 5)
+[CamScene] fight z6_wave3: strikes thrown 3, hits landed (foe hp drops) 4 (light)
+[CamScene] step z6_wave3 took 12.0 s
+[CamScene] step z6_meet (walk)
+[Zones] engage z6_erlking (Erlking, life 1)
+[CamScene] z6_meet: 1 engaged, stop
+[CamScene] step z6_meet took 6.5 s
+[CamScene] step z6_p1 (fight)
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=92.88
+[CombatSlowMo] dip crit scale 1.00 hold 0.10 ease 0.03/0.20 clk=94.09
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=102.93
+[CamScene] fight z6_p1: strikes thrown 15, hits landed (foe hp drops) 12 (4-direction cycle)
+[CamScene] step z6_p1 took 20.0 s
+[CamScene] step z6_p2 (fight)
+[CamScene] z6_erlking engaged, killing in 1.0 s
+[CamScene-EVT] hpLeft z6_erlking (hp 492 -> 430)
+[CombatSlowMo] dip crit scale 1.00 hold 0.10 ease 0.03/0.20 clk=118.62
+[CombatSlowMo] dip deathblow scale 1.00 hold 0.22 ease 0.04/0.30 clk=122.21
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=125.64
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=128.77
+[CamScene] fight z6_p2: strikes thrown 16, hits landed (foe hp drops) 10 (4-direction cycle)
+[CamScene] step z6_p2 took 22.0 s
+[CamScene] step z6_kill (fight)
+[CamScene] z6_erlking engaged, killing in 1.0 s
+[Bandits] gate bandit_z6_a_1 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z6_a_2 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z6_a_3 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z6_b_1 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z6_b_2 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z6_b_3 open (boss gone) aggro 14.0
+[Zones] engage bandit_z6_a_1 (NpcAntlerKnight, life 0)
+[Zones] engage bandit_z6_a_2 (NpcHuntsman, life 0)
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=138.35
+[CamScene] fight z6_kill: strikes thrown 4, hits landed (foe hp drops) 5 (4-direction cycle)
+[CamScene] step z6_kill took 7.0 s
+[CamScene] step z6_dead (hold)
+[CamScene] step z6_dead took 4.0 s
+[CamScene] step z6_gate (walk)
+[CamScene] step z6_gate took 5.1 s

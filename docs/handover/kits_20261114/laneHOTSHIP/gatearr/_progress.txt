@@ -1,0 +1,5 @@
+13:22:53 prepared
+13:35:04 prepared
+13:35:05 start arr pid 59940
+13:37:47 end arr; pid read back: gone
+13:37:47 done

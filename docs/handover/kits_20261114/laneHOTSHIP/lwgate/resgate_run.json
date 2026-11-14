@@ -1,0 +1,126 @@
+﻿{
+    "_about":  "RESGATE v1: resolution gate (Scripts/ResGate.cs, tools in _agents/laneRESGATE). DARK: needs the command-line flag -resgate AND enabled=true (run_resgate.py passes a copy with enabled=true via -resgatedata:). Sizes = the gate list (Steam share from Dom\u0027s mix). proxy = the window that gives the same virtual HUD layout when the real size does not fit the 2560x1600 laptop display (the HUD is a pure function of vw = W / s, vh = 1080, s = H / 1080, so an aspect-equivalent window proves layout; it does NOT prove real-size raster, scaling or performance). display = the largest window this laptop opens. Window-capture settings and offscreen (camera to RenderTexture, 3D only, no IMGUI) settings are read by ResGate.cs; checks{} is read by resgate_check.py only.",
+    "enabled":  true,
+    "requireWindowSize":  true,
+    "muteAudio":  true,
+    "hudOnly":  true,
+    "bootWaitSec":  60,
+    "timeoutSec":  900,
+    "exitGraceSec":  2,
+    "stateSeconds":  1.0,
+    "settleFrames":  90,
+    "stateFrames":  8,
+    "hudFrames":  4,
+    "display":  {
+                    "maxW":  2560,
+                    "maxH":  1600
+                },
+    "sizes":  [
+                  {
+                      "id":  "1080p",
+                      "w":  1920,
+                      "h":  1080,
+                      "steamPct":  51,
+                      "note":  "Steam majority"
+                  },
+                  {
+                      "id":  "1440p",
+                      "w":  2560,
+                      "h":  1440,
+                      "steamPct":  21,
+                      "note":  "fits the 2560x1600 display as a borderless -popupwindow"
+                  },
+                  {
+                      "id":  "1600p",
+                      "w":  2560,
+                      "h":  1600,
+                      "steamPct":  0,
+                      "note":  "Dom native (16:10)"
+                  },
+                  {
+                      "id":  "uw1440",
+                      "w":  3440,
+                      "h":  1440,
+                      "steamPct":  3,
+                      "note":  "21:9 ultrawide, wider than the display",
+                      "proxy":  {
+                                    "w":  2560,
+                                    "h":  1072
+                                }
+                  },
+                  {
+                      "id":  "4k",
+                      "w":  3840,
+                      "h":  2160,
+                      "steamPct":  5,
+                      "note":  "clamps to 2560x1600 on this laptop (COORDINATION 11:47)",
+                      "proxy":  {
+                                    "w":  1920,
+                                    "h":  1080
+                                }
+                  }
+              ],
+    "states":  [
+                   {
+                       "id":  "fight"
+                   },
+                   {
+                       "id":  "hints"
+                   },
+                   {
+                       "id":  "lock"
+                   },
+                   {
+                       "id":  "guard"
+                   },
+                   {
+                       "id":  "victory"
+                   },
+                   {
+                       "id":  "defeat"
+                   },
+                   {
+                       "id":  "menu_pause"
+                   },
+                   {
+                       "id":  "menu_settings"
+                   },
+                   {
+                       "id":  "loot_labels",
+                       "needsArg":  "-lootdemo"
+                   },
+                   {
+                       "id":  "loot_screen",
+                       "needsArg":  "-lootdemo"
+                   }
+               ],
+    "offscreen":  {
+                      "enabled":  true,
+                      "settleFrames":  90,
+                      "keepPng":  true,
+                      "sizeIds":  [
+                                      "1080p",
+                                      "1440p",
+                                      "1600p",
+                                      "uw1440",
+                                      "4k"
+                                  ]
+                  },
+    "checks":  {
+                   "inkThreshold":  40,
+                   "poolBlock":  4,
+                   "layerAreaFrac":  0.2,
+                   "edgeBandPx":  2,
+                   "marginMinFrac":  0.02,
+                   "offscreenTolPx":  1,
+                   "overflowTolPx":  2,
+                   "inkPresentMin":  0.01,
+                   "consistencyTolFrac":  0.006,
+                   "framing":  {
+                                   "visMin":  0.9,
+                                   "screenHPlayerMin":  0.15,
+                                   "hfovWarnDeg":  100
+                               },
+                   "note":  "inkThreshold = 0..255 max channel of a HUD-only pixel; layerAreaFrac = connected ink bigger than this share of the frame is a full-screen layer (vignette, dim) and ignored; marginMinFrac = WARN when HUD ink is closer to the border than this share of the frame height (TV overscan); consistencyTolFrac = max difference of ink bbox / frame height between same-aspect sizes; framing numbers = camera_framing.json proof (steadyMin 0.9, playerScreenHMin 0.22 -\u003e 0.15 far)."
+               }
+}

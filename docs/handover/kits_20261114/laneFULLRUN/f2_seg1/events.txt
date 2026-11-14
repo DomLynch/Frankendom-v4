@@ -1,0 +1,89 @@
+﻿[HudHp] Joan 150.0 -> 520.0 bar 1.00 tick 1
+[Zones] engage z1_pitborn (Pitborn, life 0)
+[CamScene] step ready (ready)
+[CamScene] ready: player at (0.0, 0.0, 12.6)
+[CamScene] step ready took 3.2 s
+[CamScene] step z1_restart (restart)
+[CamScene] restarted: player at (0.0, 0.0, 12.6)
+[CamScene] step z1_restart took 4.4 s
+[CamScene] step z1_arr (hold)
+[Zones] engage z1_pitborn (Pitborn, life 0)
+[CamScene] step z1_arr took 6.7 s
+[CamScene] step z1_meet (walk)
+[CamScene] step z1_meet took 0.0 s
+[CamScene] step z1_p1 (fight)
+[HudHp] Joan 520.0 -> 517.1 bar 0.99 tick 339
+[HudHp] Joan 517.1 -> 513.4 bar 0.99 tick 410
+[HudHp] Joan 513.4 -> 511.5 bar 0.99 tick 466
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=29.67
+[HudHp] Joan 511.5 -> 511.0 bar 0.98 tick 640
+[CombatSlowMo] dip deathblow scale 1.00 hold 0.22 ease 0.04/0.30 clk=34.35
+[HudHp] Joan 511.0 -> 510.7 bar 0.98 tick 1039
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=39.01
+[HudHp] Joan 510.7 -> 508.8 bar 0.98 tick 1154
+[HudHp] Joan 508.8 -> 507.3 bar 0.98 tick 1206
+[CamScene] fight z1_p1: strikes thrown 18, hits landed (foe hp drops) 10 (4-direction cycle)
+[CamScene] step z1_p1 took 20.0 s
+[CamScene] step z1_p2 (fight)
+[CamScene] z1_pitborn engaged, killing in 1.0 s
+[HudHp] Joan 507.3 -> 506.8 bar 0.98 tick 1396
+[CamScene-EVT] hpLeft z1_pitborn (hp 298 -> 240)
+[BossPhase] Pitborn enters its phase (health 240/520, damageScale 0.83)
+[CombatSlowMo] dip deathblow scale 1.00 hold 0.22 ease 0.04/0.30 clk=52.14
+[Bandits] gate bandit_z1_a_1 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z1_a_2 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z1_a_3 open (boss gone) aggro 14.0
+[Zones] engage bandit_z1_a_1 (NpcChainWarden, life 0)
+[Zones] engage bandit_z1_a_2 (NpcSlagCrossbowman, life 0)
+[HudHp] Joan 506.8 -> 506.6 bar 0.97 tick 1918
+[HudHp] Joan 506.6 -> 506.2 bar 0.97 tick 1942
+[CombatSlowMo] dip crit scale 1.00 hold 0.10 ease 0.03/0.20 clk=57.39
+[HudHp] Joan 506.2 -> 505.9 bar 0.97 tick 2142
+[HudHp] Joan 505.9 -> 505.6 bar 0.97 tick 2170
+[CamScene] fight z1_p2: strikes thrown 12, hits landed (foe hp drops) 11 (4-direction cycle)
+[CamScene] step z1_p2 took 22.0 s
+[CamScene] step z1_kill (fight)
+[HudHp] Joan 505.6 -> 505.3 bar 0.97 tick 2517
+[HudHp] Joan 505.3 -> 505.1 bar 0.97 tick 2536
+[CombatSlowMo] dip crit scale 1.00 hold 0.10 ease 0.03/0.20 clk=68.56
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=70.00
+[HudHp] Joan 505.1 -> 504.4 bar 0.97 tick 2681
+[CamScene] fight z1_kill: strikes thrown 5, hits landed (foe hp drops) 3 (4-direction cycle)
+[CamScene] step z1_kill took 7.1 s
+[CamScene] step z1_dead (hold)
+[CamScene] step z1_dead took 4.1 s
+[CamScene] step z1_gate (walk)
+[CamScene] step z1_gate took 1.7 s
+[CamScene] step z2_arr0 (walk)
+[Zones] engage bandit_z1_a_3 (NpcPitGladiator, life 0)
+[CamScene] step z2_arr0 took 4.0 s
+[CamScene] step z2_arr (hold)
+[CamScene] step z2_arr took 5.0 s
+[CamScene] step z2_meet (walk)
+[Zones] engage z2_sobek (Sobek, life 0)
+[CamScene] z2_meet: 1 engaged, stop
+[CamScene] step z2_meet took 2.7 s
+[CamScene] step z2_p1 (fight)
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=95.62
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=101.81
+[CombatSlowMo] dip deathblow scale 1.00 hold 0.22 ease 0.04/0.30 clk=105.42
+[CamScene] fight z2_p1: strikes thrown 21, hits landed (foe hp drops) 10 (4-direction cycle)
+[CamScene] step z2_p1 took 20.0 s
+[CamScene] step z2_p2 (fight)
+[CamScene] z2_sobek engaged, killing in 1.0 s
+[CamScene-EVT] hpLeft z2_sobek (hp 384 -> 310)
+[GroundRing] ring r=2.4 s=0.60 at (0.0, 0.0, 49.6)
+[CombatSlowMo] dip bossPhase scale 0.35 hold 0.16 ease 0.04/0.30 clk=117.28
+[BossPhase] Sobek enters its phase (health 283/480, damageScale 1.49)
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=119.08
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=125.46
+[CamScene] fight z2_p2: strikes thrown 15, hits landed (foe hp drops) 8 (4-direction cycle)
+[CamScene] step z2_p2 took 22.1 s
+[CamScene] step z2_kill (fight)
+[CamScene] z2_sobek engaged, killing in 1.0 s
+[Bandits] gate bandit_z2_a_1 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z2_a_2 open (boss gone) aggro 14.0
+[CamScene] fight z2_kill: strikes thrown 0, hits landed (foe hp drops) 1 (4-direction cycle)
+[CamScene] step z2_kill took 7.0 s
+[CamScene] step z2_dead (hold)
+[CamScene] step z2_dead took 4.0 s

@@ -1,0 +1,7 @@
+10:26:50 prepared
+10:35:08 prepared
+10:35:08 start cam pid 48396
+10:36:31 end cam; pid read back: gone
+10:36:31 start mount pid 45920
+10:37:33 end mount; pid read back: gone
+10:37:33 done

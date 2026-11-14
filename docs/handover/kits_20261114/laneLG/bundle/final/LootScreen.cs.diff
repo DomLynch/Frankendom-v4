@@ -1,0 +1,6 @@
+--- LootScreen.cs (tree)
++++ LootScreen.cs.patched
+@@ -39,2 +39,3 @@
+         if (LootCfg.Get().slots.Length == 0) return false;
++        if (S.blockWhileMenu && MenuUI.Blocking) return false;   // F5 LOOTPAD
+         if (RTFinisher.Busy || GameLoopDriver.Transitioning || MarketUI.Open) return false;   // STALL v1: not on top of the stall panel

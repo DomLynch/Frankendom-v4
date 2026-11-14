@@ -1,0 +1,8 @@
+11:26:06 prepared
+11:26:18 prepared
+11:35:04 prepared
+11:35:04 start new pid 54812
+11:36:11 end new; pid read back: gone
+11:36:11 start base pid 29856
+11:37:16 end base; pid read back: gone
+11:37:16 done

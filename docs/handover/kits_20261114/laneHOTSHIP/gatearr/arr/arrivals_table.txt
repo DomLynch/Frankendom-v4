@@ -1,0 +1,7 @@
+hub_camp     restart start t=50.1 s | darkest +2.2 s | first lit +8.0 s | dark run 5.7 s
+pit_yard     restart start t=59.9 s | darkest +2.4 s | first lit +4.6 s | dark run 2.2 s
+sobek_reach  restart start t=67.9 s | darkest +2.3 s | first lit +5.3 s | dark run 3.0 s
+grendel      restart start t=76.8 s | darkest +2.7 s | first lit +4.5 s | dark run 1.8 s
+z5_humbaba   restart start t=85.6 s | darkest +2.6 s | first lit +4.3 s | dark run 1.7 s
+z6_erlking   restart start t=94.5 s | darkest +2.5 s | first lit +4.9 s | dark run 2.4 s
+z7_market2   restart start t=102.2 s | darkest +2.4 s | first lit +4.2 s | dark run 1.7 s

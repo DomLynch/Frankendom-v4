@@ -1,0 +1,14 @@
+--- ZoneRuntime.cs (tree)
++++ ZoneRuntime.cs.patched
+@@ -87,3 +87,10 @@
+         var z = ZoneData.Zone(zoneId); if (!on || z == null || z == zone) return false;
+-        zone = z; if (spot.Length > 0) lastSpot = spot; ArenaLimits.ZoneZMax = z.limits != null ? z.limits.zMax : float.NaN; arriveGraceUntil = 0f; UpdateRift(true); LookSpawns(false); return true;
++        zone = z; if (spot.Length > 0) lastSpot = spot; ArenaLimits.ZoneZMax = z.limits != null ? z.limits.zMax : float.NaN; arriveGraceUntil = SpanGrace(z); UpdateRift(true); LookSpawns(false); return true;   // ARRIVALGRACE v1 (was 0f)
++    }
++    /// <summary>ARRIVALGRACE v1: the engage grace after a walked (span) zone entry, from zones.json engage.spanGraceSeconds / spanGraceZones. 0 seconds = the old value 0 (Poll engages at once).</summary>
++    float SpanGrace(ZZone z)
++    {
++        var e = T.engage; if (e == null || e.spanGraceSeconds <= 0f || z == null) return 0f;
++        if (e.spanGraceZones != null && e.spanGraceZones.Length > 0 && System.Array.IndexOf(e.spanGraceZones, z.id) < 0) return 0f;
++        return Time.unscaledTime + e.spanGraceSeconds;
+     }

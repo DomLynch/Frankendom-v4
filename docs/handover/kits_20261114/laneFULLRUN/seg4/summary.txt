@@ -1,0 +1,7 @@
+﻿BossHold                     0
+BossPhase                    0
+Zones] engage                8
+revive                       0
+end screen                   4
+fell out of the world        0
+Exception                    0

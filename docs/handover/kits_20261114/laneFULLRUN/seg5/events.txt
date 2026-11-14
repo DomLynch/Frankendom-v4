@@ -1,0 +1,21 @@
+﻿[Bandits] gate bandit_z6_a_1 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z6_a_2 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z6_a_3 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z6_b_1 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z6_b_2 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z6_b_3 open (boss gone) aggro 14.0
+[HudHp] Joan 145.5 -> 504.4 bar 0.97 tick 1
+[CamScene] step z7_restart (restart)
+[CamScene] restarted: player at (0.0, 0.0, 323.0)
+[CamScene] step z7_restart took 3.4 s
+[CamScene] step z7_arr (hold)
+[CamScene] step z7_arr took 26.1 s
+[CamScene] step z7_hearth (walk)
+[CamScene] step z7_hearth took 1.1 s
+[CamScene] step z7_look (hold)
+[CamScene] step z7_look took 4.0 s
+[CamScene] step z7_end (walk)
+[Zones] end screen alpha_end
+[CamScene] step z7_end took 6.8 s
+[CamScene] step z7_endscreen (hold)
+[CamScene] step z7_endscreen took 8.3 s

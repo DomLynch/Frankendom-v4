@@ -1,0 +1,56 @@
+15:23:05 prepared
+15:35:09 prepared
+15:35:09 start run1 pid 25440
+15:35:52 end run1; pid read back: gone
+15:35:52 start run2 pid 41832
+15:36:27 end run2; pid read back: gone
+15:36:27 start run3 pid 60468
+15:36:48 key {TAB} at 21.3 s
+15:36:51 key {DOWN} at 24.1 s
+15:36:52 key {DOWN} at 25.2 s
+15:36:53 key {DOWN} at 26.2 s
+15:36:54 key {DOWN} at 27.5 s
+15:36:55 key {DOWN} at 28.2 s
+15:36:57 key {RIGHT} at 29.8 s
+15:37:00 key {DOWN} at 32.6 s
+15:37:02 key {TAB} at 35.3 s
+15:37:04 key {ESC} at 37.4 s
+15:37:07 key {DOWN} at 40.3 s
+15:37:08 key {DOWN} at 41.0 s
+15:37:10 key {ENTER} at 42.8 s
+15:37:21 end run3; pid read back: gone
+15:37:21 done
+15:52:05 prepared
+15:52:06 start run3 pid 50748
+15:52:27 key {TAB} at 21.2 s
+15:52:30 key {DOWN} at 24.2 s
+15:52:31 key {DOWN} at 25.4 s
+15:52:32 key {DOWN} at 26.3 s
+15:52:33 key {DOWN} at 27.1 s
+15:52:34 key {DOWN} at 28.3 s
+15:52:36 key {RIGHT} at 29.7 s
+15:52:38 key {DOWN} at 32.2 s
+15:52:41 key {TAB} at 35.3 s
+15:52:43 key {ESC} at 37.4 s
+15:52:47 key {DOWN} at 40.3 s
+15:52:48 key {DOWN} at 41.2 s
+15:52:49 key {ENTER} at 42.9 s
+15:53:01 end run3; pid read back: gone
+15:53:01 done
+16:05:11 prepared
+16:05:11 start run3 pid 57640
+16:05:36 key {TAB} at 24.2 s
+16:05:40 key {DOWN} at 28.1 s
+16:05:41 key {DOWN} at 29.3 s
+16:05:42 key {DOWN} at 30.2 s
+16:05:43 key {DOWN} at 31.1 s
+16:05:44 key {DOWN} at 32.3 s
+16:05:45 key {RIGHT} at 33.7 s
+16:05:47 key {DOWN} at 35.5 s
+16:05:51 key {TAB} at 39.5 s
+16:05:53 key {ESC} at 41.3 s
+16:05:55 key {DOWN} at 43.1 s
+16:05:55 key {DOWN} at 44.0 s
+16:05:57 key {ENTER} at 45.6 s
+16:06:10 end run3; pid read back: gone
+16:06:10 done

@@ -1,0 +1,497 @@
+{
+    "build": "1.0",
+    "note": "gap = hoofMarkerY - groundY (+ floats, - sinks). meshGap = lowest baked mesh vertex Y - min groundY under the 4 hooves.",
+    "sinkM_ambient": 0.07999999821186066,
+    "mountSinkM": 0.04500000178813934,
+    "groundRayUpM": 3.0,
+    "subjects": [
+        {
+            "name": "MOUNT MountHorse",
+            "kind": "mount",
+            "rig": "Scene",
+            "scaleY": 1.0,
+            "rows": [
+                {
+                    "t": 29,
+                    "speed": 3.4142274856567383,
+                    "rootY": 0.03240329027175903,
+                    "bodyLocalY": 0.00550089031457901,
+                    "gapMin": 0.0773688331246376,
+                    "gapMean": 0.11917057633399963,
+                    "gapMax": 0.1953059732913971,
+                    "meshMinY": 0.04247182235121727,
+                    "meshGap": 0.04247182235121727,
+                    "gait": "",
+                    "ikActive": true,
+                    "ikDriven": true,
+                    "hooves": [
+                        {
+                            "leg": "FL",
+                            "hoofY": 0.11268128454685211,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.11268128454685211,
+                            "hit": true
+                        },
+                        {
+                            "leg": "FR",
+                            "hoofY": 0.09132620692253113,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.09132620692253113,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HL",
+                            "hoofY": 0.0773688331246376,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.0773688331246376,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HR",
+                            "hoofY": 0.1953059732913971,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.1953059732913971,
+                            "hit": true
+                        }
+                    ]
+                },
+                {
+                    "t": 30,
+                    "speed": 3.891132116317749,
+                    "rootY": 0.03240329027175903,
+                    "bodyLocalY": 0.011355583555996418,
+                    "gapMin": 0.07739053666591644,
+                    "gapMean": 0.15487489104270935,
+                    "gapMax": 0.23288525640964508,
+                    "meshMinY": 0.042863912880420685,
+                    "meshGap": 0.042863912880420685,
+                    "gait": "",
+                    "ikActive": true,
+                    "ikDriven": true,
+                    "hooves": [
+                        {
+                            "leg": "FL",
+                            "hoofY": 0.0773978903889656,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.0773978903889656,
+                            "hit": true
+                        },
+                        {
+                            "leg": "FR",
+                            "hoofY": 0.23182585835456848,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.23182585835456848,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HL",
+                            "hoofY": 0.23288525640964508,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.23288525640964508,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HR",
+                            "hoofY": 0.07739053666591644,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07739053666591644,
+                            "hit": true
+                        }
+                    ]
+                },
+                {
+                    "t": 31,
+                    "speed": 4.240334510803223,
+                    "rootY": 0.03240329027175903,
+                    "bodyLocalY": 0.010698390193283558,
+                    "gapMin": 0.07739344239234924,
+                    "gapMean": 0.15709201991558075,
+                    "gapMax": 0.23680004477500916,
+                    "meshMinY": -0.020786374807357788,
+                    "meshGap": -0.020786374807357788,
+                    "gait": "",
+                    "ikActive": true,
+                    "ikDriven": true,
+                    "hooves": [
+                        {
+                            "leg": "FL",
+                            "hoofY": 0.23680004477500916,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.23680004477500916,
+                            "hit": true
+                        },
+                        {
+                            "leg": "FR",
+                            "hoofY": 0.07739344239234924,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07739344239234924,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HL",
+                            "hoofY": 0.0774015486240387,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.0774015486240387,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HR",
+                            "hoofY": 0.2367730587720871,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.2367730587720871,
+                            "hit": true
+                        }
+                    ]
+                },
+                {
+                    "t": 32,
+                    "speed": 3.7026963233947754,
+                    "rootY": 0.03240329027175903,
+                    "bodyLocalY": 0.018720882013440132,
+                    "gapMin": 0.07738295942544937,
+                    "gapMean": 0.15713970363140106,
+                    "gapMax": 0.23690028488636017,
+                    "meshMinY": 0.03855527937412262,
+                    "meshGap": 0.03855527937412262,
+                    "gait": "",
+                    "ikActive": true,
+                    "ikDriven": true,
+                    "hooves": [
+                        {
+                            "leg": "FL",
+                            "hoofY": 0.07738295942544937,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07738295942544937,
+                            "hit": true
+                        },
+                        {
+                            "leg": "FR",
+                            "hoofY": 0.23687955737113953,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.23687955737113953,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HL",
+                            "hoofY": 0.23690028488636017,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.23690028488636017,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HR",
+                            "hoofY": 0.07739605009555817,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07739605009555817,
+                            "hit": true
+                        }
+                    ]
+                },
+                {
+                    "t": 33,
+                    "speed": 3.8904943466186523,
+                    "rootY": 0.03240329027175903,
+                    "bodyLocalY": 0.016448067501187325,
+                    "gapMin": 0.07737970352172852,
+                    "gapMean": 0.15728095173835754,
+                    "gapMax": 0.23718293011188507,
+                    "meshMinY": 0.03948288783431053,
+                    "meshGap": 0.03948288783431053,
+                    "gait": "",
+                    "ikActive": true,
+                    "ikDriven": true,
+                    "hooves": [
+                        {
+                            "leg": "FL",
+                            "hoofY": 0.23718293011188507,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.23718293011188507,
+                            "hit": true
+                        },
+                        {
+                            "leg": "FR",
+                            "hoofY": 0.07739534229040146,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07739534229040146,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HL",
+                            "hoofY": 0.07737970352172852,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07737970352172852,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HR",
+                            "hoofY": 0.23716585338115692,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.23716585338115692,
+                            "hit": true
+                        }
+                    ]
+                },
+                {
+                    "t": 34,
+                    "speed": 3.869961738586426,
+                    "rootY": 0.03240329027175903,
+                    "bodyLocalY": 0.0033151202369481325,
+                    "gapMin": 0.07740126550197601,
+                    "gapMean": 0.15714815258979797,
+                    "gapMax": 0.2368950992822647,
+                    "meshMinY": 0.021164875477552414,
+                    "meshGap": 0.021164875477552414,
+                    "gait": "",
+                    "ikActive": true,
+                    "ikDriven": true,
+                    "hooves": [
+                        {
+                            "leg": "FL",
+                            "hoofY": 0.07740126550197601,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07740126550197601,
+                            "hit": true
+                        },
+                        {
+                            "leg": "FR",
+                            "hoofY": 0.23689378798007965,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.23689378798007965,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HL",
+                            "hoofY": 0.2368950992822647,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.2368950992822647,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HR",
+                            "hoofY": 0.07740247249603271,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07740247249603271,
+                            "hit": true
+                        }
+                    ]
+                },
+                {
+                    "t": 35,
+                    "speed": 3.749587059020996,
+                    "rootY": 0.03240329027175903,
+                    "bodyLocalY": 0.019051218405365944,
+                    "gapMin": 0.077383853495121,
+                    "gapMean": 0.15604811906814575,
+                    "gapMax": 0.2347153127193451,
+                    "meshMinY": -0.008251802995800972,
+                    "meshGap": -0.008251802995800972,
+                    "gait": "",
+                    "ikActive": true,
+                    "ikDriven": true,
+                    "hooves": [
+                        {
+                            "leg": "FL",
+                            "hoofY": 0.23469722270965576,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.23469722270965576,
+                            "hit": true
+                        },
+                        {
+                            "leg": "FR",
+                            "hoofY": 0.077383853495121,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.077383853495121,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HL",
+                            "hoofY": 0.07739607244729996,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07739607244729996,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HR",
+                            "hoofY": 0.2347153127193451,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.2347153127193451,
+                            "hit": true
+                        }
+                    ]
+                },
+                {
+                    "t": 36,
+                    "speed": 4.11998176574707,
+                    "rootY": 0.03240329027175903,
+                    "bodyLocalY": 0.012651910074055195,
+                    "gapMin": 0.07738617062568665,
+                    "gapMean": 0.15292009711265564,
+                    "gapMax": 0.22845500707626343,
+                    "meshMinY": 0.03251521661877632,
+                    "meshGap": 0.03251521661877632,
+                    "gait": "",
+                    "ikActive": true,
+                    "ikDriven": true,
+                    "hooves": [
+                        {
+                            "leg": "FL",
+                            "hoofY": 0.07739497721195221,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07739497721195221,
+                            "hit": true
+                        },
+                        {
+                            "leg": "FR",
+                            "hoofY": 0.22845500707626343,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.22845500707626343,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HL",
+                            "hoofY": 0.22844427824020386,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.22844427824020386,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HR",
+                            "hoofY": 0.07738617062568665,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07738617062568665,
+                            "hit": true
+                        }
+                    ]
+                },
+                {
+                    "t": 37,
+                    "speed": 4.156844615936279,
+                    "rootY": 0.03240329027175903,
+                    "bodyLocalY": 0.007817097008228302,
+                    "gapMin": 0.07739830017089844,
+                    "gapMean": 0.1500759720802307,
+                    "gapMax": 0.22275397181510925,
+                    "meshMinY": -0.0384591706097126,
+                    "meshGap": -0.0384591706097126,
+                    "gait": "",
+                    "ikActive": true,
+                    "ikDriven": true,
+                    "hooves": [
+                        {
+                            "leg": "FL",
+                            "hoofY": 0.2227502167224884,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.2227502167224884,
+                            "hit": true
+                        },
+                        {
+                            "leg": "FR",
+                            "hoofY": 0.07739830017089844,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07739830017089844,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HL",
+                            "hoofY": 0.07740139961242676,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07740139961242676,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HR",
+                            "hoofY": 0.22275397181510925,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.22275397181510925,
+                            "hit": true
+                        }
+                    ]
+                },
+                {
+                    "t": 38,
+                    "speed": 4.246930122375488,
+                    "rootY": 0.03240329027175903,
+                    "bodyLocalY": 0.011995760723948479,
+                    "gapMin": 0.07738330215215683,
+                    "gapMean": 0.14808161556720734,
+                    "gapMax": 0.2162422239780426,
+                    "meshMinY": 0.04071204364299774,
+                    "meshGap": 0.04071204364299774,
+                    "gait": "",
+                    "ikActive": true,
+                    "ikDriven": true,
+                    "hooves": [
+                        {
+                            "leg": "FL",
+                            "hoofY": 0.08246840536594391,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.08246840536594391,
+                            "hit": true
+                        },
+                        {
+                            "leg": "FR",
+                            "hoofY": 0.2162325531244278,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.2162325531244278,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HL",
+                            "hoofY": 0.2162422239780426,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.2162422239780426,
+                            "hit": true
+                        },
+                        {
+                            "leg": "HR",
+                            "hoofY": 0.07738330215215683,
+                            "groundY": 0.0,
+                            "terrainY": NaN,
+                            "gap": 0.07738330215215683,
+                            "hit": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

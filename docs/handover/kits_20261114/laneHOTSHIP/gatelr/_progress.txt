@@ -1,0 +1,8 @@
+12:44:14 prepared
+12:44:48 prepared
+12:50:04 prepared
+12:50:05 start kit pid 54544
+12:50:59 end kit; pid read back: gone
+12:50:59 start nokit pid 18236
+12:51:51 end nokit; pid read back: gone
+12:51:51 done

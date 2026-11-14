@@ -1,0 +1,13 @@
+15:14:51 prepared
+15:14:55 prepared
+15:14:56 start run1 pid 47264
+15:15:28 end run1; pid read back: gone
+15:15:28 start run2 pid 2788
+15:15:51 Tab pressed at 22.1 s
+15:16:15 end run2; pid read back: gone
+15:16:15 done
+15:19:52 prepared
+15:19:53 start run2 pid 40216
+15:20:16 Tab pressed at 22.3 s
+15:20:40 end run2; pid read back: gone
+15:20:40 done

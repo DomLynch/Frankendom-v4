@@ -1,0 +1,7 @@
+--- ZoneData.cs (tree)
++++ ZoneData.cs.patched
+@@ -52,3 +52,3 @@
+ }
+-[Serializable] public class ZEngage { public int maxEngaged = 1; public float retargetMarginM = 1.5f; public bool finisherWithOthers = false;   /* MULTI v1 */ public float graceAfterArriveSeconds = 3f, corpseSeconds = 25f, spawnMinDistance = 30f; }
++[Serializable] public class ZEngage { public int maxEngaged = 1; public float retargetMarginM = 1.5f; public bool finisherWithOthers = false;   /* MULTI v1 */ public float graceAfterArriveSeconds = 3f, corpseSeconds = 25f, spawnMinDistance = 30f; public float spanGraceSeconds = 0f; public string[] spanGraceZones = new string[0]; /* ARRIVALGRACE v1: a seamless-span zone entry (SpanEnter) gets this many seconds of no-engage; 0 = old behaviour (no grace); spanGraceZones = zone ids it applies to, empty = all */ }
+ [Serializable] public class ZCover { public float[] color = new float[] { 1f, 0.84f, 0.58f }; public float inSeconds = 0.3f, holdMinSeconds = 0.1f, outSeconds = 0.55f, holdMaxSeconds = 8f; }

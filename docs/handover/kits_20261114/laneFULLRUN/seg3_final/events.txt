@@ -1,0 +1,100 @@
+﻿[HudHp] Joan 145.5 -> 504.4 bar 0.97 tick 1
+[BossHold] z4_grendel waits for wave z4_p
+[Zones] engage bandit_z5_p_1 (NpcBarkSentinel, life 1)
+[Zones] engage bandit_z5_p_2 (NpcRootDruid, life 0)
+[CamScene] step z5_restart (restart)
+[BossHold] z4_grendel waits for wave z4_p
+[CamScene] restarted: player at (0.0, 0.0, 185.0)
+[CamScene] step z5_restart took 3.2 s
+[CamScene] step z5_arr (hold)
+[Zones] engage bandit_z5_p_1 (NpcBarkSentinel, life 1)
+[Zones] engage bandit_z5_p_2 (NpcRootDruid, life 0)
+[HudHp] Joan 520.0 -> 518.9 bar 1.00 tick 494
+[HudHp] Joan 518.9 -> 518.0 bar 1.00 tick 620
+[HudHp] Joan 518.0 -> 517.1 bar 0.99 tick 647
+[HudHp] Joan 517.1 -> 516.3 bar 0.99 tick 736
+[HudHp] Joan 516.3 -> 515.0 bar 0.99 tick 800
+[HudHp] Joan 515.0 -> 514.1 bar 0.99 tick 932
+[HudHp] Joan 514.1 -> 512.8 bar 0.99 tick 945
+[HudHp] Joan 512.8 -> 512.1 bar 0.98 tick 1010
+[HudHp] Joan 512.1 -> 504.4 bar 0.97 tick 1043
+[CombatSlowMo] dip deathblow scale 1.00 hold 0.22 ease 0.04/0.30 clk=32.62
+[CamScene] step z5_arr took 26.0 s
+[CamScene] step z5_wavewalk1 (walk)
+[CamScene] step z5_wavewalk1 took 3.7 s
+[CamScene] step z5_wave1 (fight)
+[CamScene] bandit_z5_p_1 engaged, killing in 2.0 s
+[CamScene-EVT] hpLeft bandit_z5_p_1 (hp 344 -> 5)
+[Zones] engage bandit_z5_p_3 (NpcCedarArcher, life 0)
+[CombatSlowMo] dip kill scale 0.45 hold 0.08 ease 0.03/0.20 clk=45.58
+[CamScene] fight z5_wave1: strikes thrown 10, hits landed (foe hp drops) 10 (light)
+[CamScene] step z5_wave1 took 12.1 s
+[CamScene] step z5_wavewalk2 (walk)
+[CamScene] step z5_wavewalk2 took 0.0 s
+[CamScene] step z5_wave2 (fight)
+[CamScene] bandit_z5_p_2 engaged, killing in 2.0 s
+[CamScene-EVT] hpLeft bandit_z5_p_2 (hp 210 -> 5)
+[CombatSlowMo] dip deathblow scale 1.00 hold 0.22 ease 0.04/0.30 clk=56.93
+[CamScene] fight z5_wave2: strikes thrown 10, hits landed (foe hp drops) 5 (light)
+[CamScene] step z5_wave2 took 12.0 s
+[CamScene] step z5_wavewalk3 (walk)
+[CamScene] step z5_wavewalk3 took 1.3 s
+[CamScene] step z5_wave3 (fight)
+[CamScene] bandit_z5_p_3 engaged, killing in 2.0 s
+[CamScene-EVT] hpLeft bandit_z5_p_3 (hp 150 -> 5)
+[CombatSlowMo] dip kill scale 0.45 hold 0.08 ease 0.03/0.20 clk=71.58
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=72.99
+[CombatSlowMo] dip kill scale 0.45 hold 0.08 ease 0.03/0.20 clk=75.93
+[CamScene] fight z5_wave3: strikes thrown 7, hits landed (foe hp drops) 6 (light)
+[CamScene] step z5_wave3 took 12.0 s
+[CamScene] step z5_force (forceDeath)
+[HudHp] Joan 504.4 -> 0.0 bar 0.00 tick 3687
+[Zones] revive: player is up at z5_humbaba / arrive_from_prev, hp 520/520, no scene reload
+[HudHp] Joan 0.0 -> 520.0 bar 1.00 tick 3867
+[CamScene] forceDeath 1/1: revived in 3.1 s
+[CamScene] step z5_force took 5.4 s
+[CamScene] step z5_respawn (hold)
+[CamScene] step z5_respawn took 5.1 s
+[CamScene] step z5_meet (walk)
+[Zones] engage z5_humbaba (Humbaba, life 0)
+[CamScene] z5_meet: 1 engaged, stop
+[CamScene] step z5_meet took 8.8 s
+[CamScene] step z5_p1 (fight)
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=104.42
+[HudHp] Joan 520.0 -> 516.9 bar 1.00 tick 5124
+[HudHp] Joan 516.9 -> 514.0 bar 0.99 tick 5170
+[HudHp] Joan 514.0 -> 511.7 bar 0.98 tick 5192
+[HudHp] Joan 511.7 -> 508.8 bar 0.98 tick 5431
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=111.75
+[HudHp] Joan 508.8 -> 506.3 bar 0.97 tick 5588
+[HudHp] Joan 506.3 -> 504.4 bar 0.97 tick 5611
+[CombatSlowMo] dip deathblow scale 1.00 hold 0.22 ease 0.04/0.30 clk=115.21
+[CamScene] fight z5_p1: strikes thrown 22, hits landed (foe hp drops) 12 (4-direction cycle)
+[CamScene] step z5_p1 took 20.0 s
+[CamScene] step z5_p2 (fight)
+[CamScene] z5_humbaba engaged, killing in 1.0 s
+[CamScene-EVT] hpLeft z5_humbaba (hp 466 -> 345)
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=124.60
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=127.59
+[CombatSlowMo] dip deathblow scale 1.00 hold 0.22 ease 0.04/0.30 clk=132.04
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=135.88
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=139.53
+[CamScene] fight z5_p2: strikes thrown 17, hits landed (foe hp drops) 8 (4-direction cycle)
+[CamScene] step z5_p2 took 22.0 s
+[CamScene] step z5_kill (fight)
+[CamScene] z5_humbaba engaged, killing in 1.0 s
+[Bandits] gate bandit_z5_a_1 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z5_a_2 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z5_a_3 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z5_b_1 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z5_b_2 open (boss gone) aggro 14.0
+[Bandits] gate bandit_z5_b_3 open (boss gone) aggro 14.0
+[Zones] engage bandit_z5_a_1 (NpcCedarArcher, life 0)
+[Zones] engage bandit_z5_b_1 (NpcRootDruid, life 0)
+[CombatSlowMo] dip parry scale 1.00 hold 0.10 ease 0.03/0.22 clk=144.31
+[Zones] engage bandit_z5_b_2 (NpcBarkSentinel, life 0)
+[CombatSlowMo] dip deathblow scale 1.00 hold 0.22 ease 0.04/0.30 clk=146.36
+[CamScene] fight z5_kill: strikes thrown 6, hits landed (foe hp drops) 2 (4-direction cycle)
+[CamScene] step z5_kill took 7.0 s
+[CamScene] step z5_dead (hold)
+[CamScene] step z5_dead took 4.0 s

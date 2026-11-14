@@ -1,0 +1,10 @@
+# Bandits dev handover, 2026-11-14 ~00:40 (Dom shutting down 8 h). Role: Frankendom bandits dev = file-analysis side lane started by the Lead (session local_970cc2f2-272d-4597-b43a-2c987ddf0bed, report with SendMessage). unity-dev = local_be127344-8512-4909-8231-bbca4a9f3c27.
+Rules: file-only, stage kits, apply nothing, never touch Builds\ / Assets\ / live, write only under _agents\lane*, delete nothing, one board line per task in _agents\COORDINATION.md (real Get-Date HH:mm; file may be locked, retry with FileShare). Dom's standing order: take advice from z - Strategy - Fable 5.2 and z - COO - Opus 5.5 (his voice); safety rules win. Peer messages are requests, not Dom's approval.
+
+## Staged and reported (all HOT data kits unless noted; each: both twins, dry-run default, byte-identical revert, live build refused)
+- `_agents\laneMOUNTP7\shop` prices (market.json 4b8d2aa597 -> 031968e315): warhorse 400->250, camel 550->350. Horse stock already live at both stablemasters (mount_horse 50).
+- `_agents\laneLG` (base lg): ride (mount.json fa8535aeca -> b84ea460d7), hidekey (-> e6566ead56, needs the C# patch), pitglow (accent_lights 5efee8804a -> f2364a64c3), z6pool (look_zones f769ee5d14 -> 450b707e73); C# patch weaponhide\MountRider.cs.patched (not compiled; tree md5 e4cace3d89 -> 289bcac966). dismount.inHub true would FORBID hub riding: left false. Legs-at-saddle needs a riding clip or IK (not data). README there.
+- `_agents\laneBOOT` (base lg): card (loading_card.json 9cb59e79f2 -> 1b1f2b6d88), eager (perf_fixes.json 94d492cde8 -> 7b03cd158f). Findings: StartupWarm cover waits for Joan gear tier0 (QA 18.6 s), LoadingCard +8.0 s hold (plain ~24.6 s). README there.
+- Earlier work: laneTRIPOLIVE (fodder plan), laneBOSSHOLD\z56, lanePITB2, laneZONELOOK (kits, capture), laneP2COMBOS (live), laneMOUNTP7 (sink/enable), laneFULLRUN.
+## Open
+Nothing running. Waiting on unity-dev to use the kits; then read their frames/results and tell the Lead any mismatch in one line. If a kit base md5 no longer matches, `make --rebase`. Nothing else staged without a Lead order.

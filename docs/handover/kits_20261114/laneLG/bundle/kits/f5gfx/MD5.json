@@ -1,0 +1,10 @@
+{
+ "quality_tiers.json": {
+  "base": "15ea65a016",
+  "after": "31eb54ad88"
+ },
+ "game_settings.json": {
+  "base": "56d314772c",
+  "after": "d5758efc6e"
+ }
+}

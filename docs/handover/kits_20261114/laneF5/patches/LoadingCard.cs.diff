@@ -1,0 +1,20 @@
+--- a/Assets/Scripts/HUD/LoadingCard.cs
++++ b/Assets/Scripts/HUD/LoadingCard.cs
+@@ -6,7 +6,7 @@
+ // Data: loading_card.json (StreamingAssets first, then Assets/Data via DataPath). Missing file or "enabled": false = nothing. Never in harness runs (RunMode.IsHarness / MenuCfg.Harness / skipArgs).
+ public class LoadingCard : MonoBehaviour
+ {
+-    [Serializable] class Cfg { public bool enabled = true; public string title = "FRANKENDOM", sub = "loading"; public float extraAfterPrewarmS = 0.3f, fadeS = 0.6f, maxSeconds = 40f, minSeconds = 3.0f, calmFrameS = 0.06f, calmForS = 1.5f; public int titleSize = 54, subSize = 20; public string[] skipArgs = new[] { "-camscene", "-dirproof", "-camtrace", "-zoneshot", "-routebot", "-balanceauto", "-perfbench", "-autoplay" }; public bool forceInHarness = false; }
++    [Serializable] class Cfg { public bool enabled = true; public string title = "FRANKENDOM", sub = "loading"; public float extraAfterPrewarmS = 0.3f, fadeS = 0.6f, maxSeconds = 40f, minSeconds = 3.0f, calmFrameS = 0.06f, calmForS = 1.5f; public int titleSize = 54, subSize = 20; public string[] skipArgs = new[] { "-camscene", "-dirproof", "-camtrace", "-zoneshot", "-routebot", "-balanceauto", "-perfbench", "-autoplay" }; public bool forceInHarness = false, waitForStartupWarm = false; }
+     static Cfg cfg; float t0, doneAt = -1f, calmSince = -1f;
+     static bool cleared = true;   // true when no card exists (harness runs, file missing or off); false while a card is up
+     public static bool Cleared { get { return cleared; } }
+@@ -38,7 +38,7 @@
+     {
+         float now = Time.realtimeSinceStartup;
+         if (Time.unscaledDeltaTime < cfg.calmFrameS) { if (calmSince < 0f) calmSince = now; } else calmSince = -1f;   // the world only draws once the texture / zone streaming hitches (100+ ms frames) have stopped
+-        if (doneAt < 0f && now - t0 >= cfg.minSeconds && Prewarm92.TotalSeconds >= 0f && calmSince >= 0f && now - calmSince >= cfg.calmForS) { doneAt = now; Debug.Log("[LoadingCard] prewarm done and frames calm (" + cfg.calmForS.ToString("F1") + " s under " + (cfg.calmFrameS * 1000f).ToString("F0") + " ms) after " + (now - t0).ToString("F1") + " s: fading out"); }
++        if (doneAt < 0f && now - t0 >= cfg.minSeconds && Prewarm92.TotalSeconds >= 0f && calmSince >= 0f && now - calmSince >= cfg.calmForS && (!cfg.waitForStartupWarm || StartupWarm.Done)) { doneAt = now; Debug.Log("[LoadingCard] prewarm done and frames calm (" + cfg.calmForS.ToString("F1") + " s under " + (cfg.calmFrameS * 1000f).ToString("F0") + " ms) after " + (now - t0).ToString("F1") + " s: fading out"); }
+         if (doneAt < 0f && now - t0 >= cfg.maxSeconds) { doneAt = now - cfg.extraAfterPrewarmS; Debug.Log("[LoadingCard] gave up waiting for the prewarm after " + cfg.maxSeconds.ToString("F0") + " s: fading out"); }
+         if (doneAt >= 0f && now - doneAt >= cfg.extraAfterPrewarmS + cfg.fadeS) { Debug.Log("[LoadingCard] gone"); Destroy(gameObject); }
+     }

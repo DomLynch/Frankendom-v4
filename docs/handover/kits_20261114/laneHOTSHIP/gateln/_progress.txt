@@ -1,0 +1,6 @@
+12:09:21 prepared
+12:10:09 prepared
+12:20:09 prepared
+12:20:09 start fodder pid 53228
+12:21:52 end fodder; pid read back: gone
+12:22:02 done

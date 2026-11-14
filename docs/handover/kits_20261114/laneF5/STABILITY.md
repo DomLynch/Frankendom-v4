@@ -1,0 +1,64 @@
+# F5 STABILITY: every exception, error, warning class, stall and crash in the run logs (file-only, 2026-11-14 ~15:30)
+Sources (all read-only): F2 segments `_agents\laneFULLRUN\f2_seg1`, `f2_seg2`, `f2_seg3` (14 Nov 14:05-14:52, QA copy `HDRP_v109lcrun`, `-camscene` bot, 2 Hz native 2560x1600 frame capture), `seg4` (z6) and `seg5` (z7) (14 Nov 11:09-11:23), `_agents\laneHOTSHIP\gatearr\arr\game.log` (13:35-13:37, build luq, arrivals z1 to z7), the one plain launch `AppData\LocalLow\Dom Games\Frankendom\Player.log` (li, 09:36), and the nine CrashLog session logs `...\Frankendom\logs\session_20261114_*.log`. Counting scripts: `logscan.py`, `stab.py` (output `stab_counts.json`, `stab_out.txt`, `scan_out.txt`).
+Not the same thing as the live build: F2 ran a QA copy `lc` of the live data; the tree and live are now `lv`. The segment logs are the best "full run" evidence there is, but each segment is a fresh process of 1 to 2.5 minutes: no single process has run z1 to z7, so long-run memory and leaks are untested (laneFULLRUN\README).
+
+## 1. Verdict
+* **Exceptions, errors, asserts: 0** in all 7 game logs and 0 `ERROR / EXCEPTION / ASSERT` lines in the 9 CrashLog session logs (7321 `LOG`, 3858 `WARNING` lines in total). (The strings `hpAssert` in `[Bandits] hpAssert ... maxHealth` are info lines, not asserts: first-pass counts of 3-54 per log were those.) `fell out of the world`: 0. `events.txt` of F2 seg1 to 3 confirm `Exception 0`.
+* **Crashes: none in a run.** Four CrashLog sessions today are flagged `previous session: DID NOT END CLEANLY` (130640, 132014, 133514, 151532): every one is a QA gate run that the harness hard-stops at its time limit (`laneHOTSHIP\gatearr` run 13:35-13:37; the gate runs of build lbc / luq / lsg / lwg). The three F2 sessions (140507, 143508, 145006) ended cleanly. The only Unity crash dump on the machine is `AppData\Local\Temp\Dom Games\Frankendom\Crashes\Crash_2026-11-08_084226141` (8 Nov, `kill_Humbaba.log`): old and not repeated since.
+* **Stalls: yes, at start.** First frame 6.1 s, second 2.6 s, third 0.75 s on a plain launch; 2.4-2.9 s then 0.6-1.0 s in every QA run; a COLD start (gatearr, first launch after the build was copied) hit 15.8 s then 8.1 s. After the world is up the plain launch kept 44 hitches of 100 ms or more in its first 40 s (7 of 250 ms or more, worst 360 ms at t=37 s).
+* **fps: no valid fps in any of these logs.** See section 5.
+
+## 2. Warning classes (counts per log; zone = the segment, `z` = logged world z)
+| class | f2_seg1 (z1 Pitborn, z2 Sobek) | f2_seg2 (hub, z4 Grendel) | f2_seg3 (z5 Humbaba) | seg4 (z6 Erlking) | seg5 (z7 end) | gatearr (z1-z7 arrivals) | plain launch (li, Sobek save) |
+|---|---|---|---|---|---|---|---|
+| Exception / Error / Assert | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| `[Gear] glb load failed ... Object reference not set` | 6 | 4 | 9 | 10 | 8 | 4 | **0** |
+| `ZONEGROUNDMAT WARN row ...: 0 material slots matched` | 11 | 9 | 5 | 5 | 5 | 16 | 5 |
+| `<name> has a null UnityEngine.Material on the material property` | 584 | 348 | 406 | 380 | 311 | 2941 | 304 |
+| `STATICDECALS ... N dropped` (N>0) | 14 | 8 | 6 | 5 | 0 | 6 | 9 |
+| `[Hub] npc ...: no preloaded import, parsing now (a hitch)` | 3 | 11 | 5 | 3 | 8 | 29 | 3 |
+| `[HorseBehav] ... a leg bone is missing, left static` | 0 | 0 | 0 | 0 | 0 | 4 | 0 |
+| `RagdollRig: Pitborn was NOT in its rest pose` | 4 | 2 | 2 | 2 | 2 | 11 | 1 |
+| `[ZoneSpan] ring ZnRingN has # rows, zone_span.json says #` | 32 | 32 | 32 | 32 | 32 | 144 | 16 |
+| `[CrashLog] the last session did not end cleanly` | 0 | 0 | 0 | 0 | 0 | 1 | 0 |
+Notes per class:
+* **glb load failed** (arms_joan_R/L, shield_joan_LOD0, cuirass_joan, legs_joan_R/L, bandit_sword_LOD2; `GearAssetLoader.cs:63`, a NullReference after the `await` in `LoadGlb`). It appears only in harness runs, at t=17-20 s right after the `z1_restart` / zone restart steps (F2 seg1 game.log:973-1022), and **never in the plain launches (0 in Player.log and Player-prev.log)**: the restart destroys the parent while the glb is still loading. The loader swallows it (`LoadGlb` catches everything, returns an empty result), so the gear piece is simply not attached in that harness frame range. It does not show in the player path but a player who dies and retries is a restart: check once on a real retry (F3 owns retry).
+* **null Material / ZONEGROUNDMAT** (`pit__patch_earth_000`, `gid_gren_peat_n`, `sobe_moss_n`, `sobe_blood_n`, `l#_z#_h_needle_#`, ... about 30 names of 30-160 each, plus the `w21seam_*` meshes): ground-patch / decal style meshes with a null material slot, and `ZoneGroundMat` finds the zone roots but matches 0 material slots for 5 to 8 of the zone ground rows (`t_z2_sobek_wet_mud`, `t_z3_camp_trodden_earth`, `t_z4_grendel_bone_silt`, `t_z5_humbaba_duff_roots`, `t_z6_erlking_ash`, `t_z7_market_worn_earth`). Not a crash; may be a LOOK issue (patches that draw nothing, ground rows that do not apply). Not my lane and the look is about to freeze: hand to the environment dev with these names before the freeze.
+* **Hub npc no preloaded import**: `npc_trader`, `npc_vendor_1`, `npc_keeper`, `npc_traveller`, `npc_stablemaster`, `npc_bricabrac`, `npc_horse`, `npc_keeper_z7`: the glb is parsed on demand = a hitch. Plain launch Player.log:194-195, 644; `[Hub] npc npc_trader loaded hidden (10559 ms wall)`, `npc_vendor_1 (7538 ms wall)` (Player.log:587, 641): about 10 s of background parse that overlaps the first seconds of play. Kit candidate for the boot dev: C3.eagerFiles / hub NPCs (`laneBOOT\README.md`).
+* **ZoneSpan ring row count**: `ring Z2Ring0 has # rows, zone_span.json says #`: 16 distinct rings logged twice per boot (32 per run, 144 in gatearr which loaded more rings). Rebuild/regenerate warning, constant, harmless at runtime so far.
+* **STATICDECALS dropped**: `... w21_merchant_stall: 0 placed, 2 dropped (no ground / not at yExpect ...)` (seg4 and seg5 differ: 0 placed in seg4, 2 placed in seg5, so placement depends on streaming order), hub_camp 5-6 dropped. Cosmetic.
+* **RagdollRig / HorseBehav**: build-time rest-pose warning for Pitborn (hinge 32 deg at forearmR > 25: joint limits offset) every launch; two ambient horses (`AmbientHorse_mt2_z4_1_0`, `AmbientHorse_gh_z6_se_0`) stay static.
+* **Startup noise present in every log (not ours)**: `d3d12: failed to query info queue interface (0x80004002)`, the D3D12 device filter line, `ScriptableRuntimeReflectionSystemSettings.system is assigned more than once`.
+
+## 3. Stalls and hitches (with zone and time)
+| where | when | what | evidence |
+|---|---|---|---|
+| Start, plain launch | t 6.4 s | frame 1 = 6074 ms, frame 2 2567 ms, frame 3 753 ms | Player.log:79,153,196 |
+| Start, QA runs | t 6-10 s | `ZoneHitch FRAME 1` 2373-2845 ms (zone code 225-1191 ms, the rest outside our code: scene/GPU), `FRAME 2` 603-978 ms (`template.load` of 15 creature templates, Sobek 85-160 ms, Humbaba 53-91 ms, Erlking 68-97 ms each) | f2 game.log:168 (seg1), 155 (seg2), 184 (seg3); seg4 game.log:212; seg5 game.log:178 |
+| Start, cold | t 33 s | gatearr: frame 1 **15803 ms**, frame 2 **8065 ms** (`template.load` Sobek 316 ms, Grendel 321, Humbaba 331, Erlking 334; warm done 3094 ms with prefabs 2992 ms) | gatearr game.log:165,207,~529. A cold disk plus a busy GPU; not repeatable in the later F2 runs (2.4-2.9 s). |
+| After reveal, plain launch | t 11-14 s | 4 boot hitches 135-753 ms then 5-8 per second of 112-272 ms | Player.log:196-500 |
+| Hub / world streaming, plain launch (z 44, Sobek) | t 34-37 s | 209-360 ms frames, in 3 groups of 3, 6 frames apart (FRAME 851-891) | Player.log:677-700, frames 851-853, 871-874, 891-894 (groups of 3 about 20 frames apart); right after `[Hub] npc npc_keeper: no preloaded import` (:644) and `[MatAdjust]`, so most likely the hub NPC / material work |
+| z1 yard, F2 seg1 after restart | t 17-20 s | 8 frames of 117-587 ms around the `glb load failed` lines | f2_seg1 game.log:973-1022 |
+| z1 / z2, F2 seg1 | t 62.6 s, z 11.9 | 679 ms | f2_seg1 game.log:1475 |
+| z6 Erlking, seg4 | t 102.5 s, z 278 | 761 ms (worst later hitch of all runs) | seg4 game.log:2167 |
+| Zone crossings (span.warm) | frames 69-71 (z 80), 122 (z 94), 576 (z 185), 704 (z 252), 835 (z 323) | one 200-460 ms frame at each crossing, `spanWarm.lookSpawns` 12-264 ms | gatearr game.log:645-691,2670-2682,3477-3487,4288-4298; f2 seg1 game.log:1618 |
+Counts of later hitches (>= 100 / 250 / 500 ms): f2_seg1 304 / 35 / 4, f2_seg2 243 / 12 / 0, f2_seg3 305 / 12 / 0, seg4 290 / 17 / 1, seg5 127 / 15 / 0, gatearr 330 / 38 / 0, plain launch 44 / 7 / 0. **Read the QA numbers with care**: in the F2 runs a steady 121-128 ms frame repeats every 15 frames (f2_seg1 game.log:2126-2168, frames 2662, 2677, 2692 ...; every 15th frame) = the 2 Hz native 2560x1600 capture, so roughly 200 to 250 of each log's 300 hitches are capture artefacts, not the game. The plain launch has no capture; its 44 are real.
+
+## 4. Crash and exit hygiene
+* `CrashLog` is on in player runs (`crash_log.json`: writes Error/Exception/Assert with stack, ring buffer of 200 lines, heartbeat 5 s, folder `...\Frankendom\logs`, 8 files / 4 MB max). It wrote 9 sessions today, none with an error. `running.flag` is left behind by a hard kill and the next start prints `DID NOT END CLEANLY`; the pause menu shows "The last session ended unexpectedly" once (`menu.json strings.crashedNotice`). So a QA kill makes the next real launch show a crash notice on first pause: **after any harness run, delete `logs\running.flag` before Dom plays** (or run `CrashLog.AckNotice` path) or Dom's first pause reads "ended unexpectedly" (running.flag now: stamp 152000, pid 40216, a gate run).
+* Quit: `Pause > Quit to desktop` has a confirm box and `Application.Quit` with a settings flush (`MenuUI.cs:212-218`). Not exercised in any log.
+* Unity splash screen on (`ProjectSettings`): not in any log.
+* `-logFile` runs: `ReleaseCfg.backgroundArgs` keeps them running in the background; a plain launch pauses on focus loss (`runInBackground` false at runtime). Alt-tab in a hand launch pauses the sim, including audio; fine for a release, surprising during a capture.
+
+## 5. fps evidence (what exists, what does not)
+* F2 logs: **none usable**: frames/seconds over the whole log is 14.0-27.3 fps (f2_seg1 2843 frames in 144 s = 19.7, f2_seg2 25.2, f2_seg3 27.3, seg4 25.6, seg5 16.5, gatearr 14.0) but that includes the boot stall, the 2 Hz native capture and step transitions; it is a lower bound, not a measurement. `fps_next.json` is all-off, `fps_overlay.json` enabled false (F2 toggles the overlay, F3 the HUD counter).
+* Valid measurements on file (COORDINATION.md, capture off, 2560x1600, quiet machine): start fps at the Pitborn gate, live dcf: steady p50 35.2 ms / p95 36.7 ms (28 fps), **first 5 s 8.4 fps with a 1.5 s frame, 5-35 s 22-29 fps** (10 Nov 09:47, line 1789). Native 100% Humbaba fight 190 s: **p50 66.7 ms = 15 fps**, p95 100 ms (12 Nov 14:46, "ITEM 7 FAIL"). Upscale A/B same fight: 80% + STP 33.9 ms = 30 fps (p95 48.7), 67% + STP 26.0 = 38 fps, **67% + FSR 2 25.3 ms = 40 fps, p95 26.5** (16:06). As shipped (row A as tier ultra2k, plain launch, no flags): Humbaba 25.4 ms = 39 fps p95 32.6, **z7 market 30.7 ms = 33 fps p95 35.9** (16:35). 1080p native: 39 fps.
+* So the F5 goal "30 fps native at 2560x1600" reads: **true native (render scale 100) FAILS (15 fps); the shipped default (ultra2k = 67% + FSR 2 upscaled to 2560x1600) PASSES (33-40 fps)**; the label "Ultra Native" and the hint text still say native (kit `f5gfx`). No fps number exists for the hub, z3-z6 arenas or a bandit pack at the shipped default after the look changes of lc to lv (the 16:35 numbers are on hg), and none for the first minute on a plain launch with the card: needs one quiet-slot measurement before the look freeze (`startfps.py`).
+* vsync On at the 180 Hz panel (registry) gives 36 / 45 / 60 fps steps for a 33-40 fps game; with vsync Off and a 30 fps cap the frame time is steadier. Not measured.
+* `[MemLog] t=20s texNow=9.42 GB ... reserved=3.06 GB` (Player.log): texture memory 9.4 GB resident at 20 s on a 49 GB budget; no growth data over a long run exists.
+
+## 6. What to do about it (ranked; DATA = hot, CODE = next build)
+1. Start black and stall (DATA `f5card` now, CODE `cardwait`, DATA hub NPCs into C3.eager by the boot dev): the card must live until the cover goes, or the player sees 7 s of title-less black.
+2. One quiet-slot measurement of the shipped default on a plain launch at the Hades gate, 90 s, native frames: the only number the F5 goal is missing.
+3. Delete `logs\running.flag` after harness runs; hand the null-material / ZONEGROUNDMAT list to the environment dev before the freeze.
+4. Check the `[Gear] glb load failed` on one real death-and-retry (F3), because the harness restart is the only place it occurs.
