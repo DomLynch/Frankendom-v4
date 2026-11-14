@@ -2,6 +2,7 @@
   "_about": "laneHORSE v2 (staged, DARK, UNPROVEN in Unity). Read by Assets/Scripts/Mount/MountRider.cs (summon, speed, dismount, gait) and, for the size, by the static camp horse (hub.json npc_horse runtime.horseScale). enabled=false ships dark. Units metres, seconds, degrees. Copy to Assets/Data AND StreamingAssets.",
   "enabled": true,
   "debugLog": false,
+  "hideWeaponWhileMounted": true,
   "summonAction": "mount",
   "summonKey": "M",
   "requireOwned": "mount_horse",
