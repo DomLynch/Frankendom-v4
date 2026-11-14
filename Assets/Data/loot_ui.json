@@ -212,6 +212,7 @@
   "slots": [
     { "id": "head", "label": "Head", "group": "" },
     { "id": "chest", "label": "Chest", "group": "" },
+    { "id": "tabard", "label": "Tabard", "group": "" },
     { "id": "arms", "label": "Arms", "group": "" },
     { "id": "legs", "label": "Legs", "group": "" },
     { "id": "mainHand", "label": "Main hand", "group": "hand" },

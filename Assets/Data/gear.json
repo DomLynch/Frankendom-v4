@@ -17,6 +17,11 @@
       "visual": true
     },
     {
+      "id": "tabard",
+      "group": "",
+      "visual": true
+    },
+    {
       "id": "arms",
       "group": "",
       "visual": true
@@ -331,7 +336,7 @@
       },
       {
         "victim": "Erlking",
-        "max": 1
+        "max": 2
       }
     ],
     "_maxPerKillBy": "WEAPONSWAP v88: per-victim cap; a victim without a row uses maxPerKill. Pitborn drops 3: maul + pauldron pair + chest (Dom's loot design)."
@@ -404,6 +409,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "common",
       "notes": "Joan base layer (ch13 chef_base glb node Layer_Tunic, material Heraldry). Already on the wearer: equipping shows it. Zones are a first guess, tune after one render.",
       "weapon": {
         "damageMul": 1,
@@ -441,6 +447,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "fine",
       "notes": "Joan base layer (Layer_Helmet, material Steel). Not in the default loadout (bare headed); a closed helm hides the whole head zone.",
       "weapon": {
         "damageMul": 1,
@@ -479,6 +486,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "common",
       "notes": "Joan base layer (Layer_Bracers, material Leather).",
       "weapon": {
         "damageMul": 1,
@@ -519,6 +527,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "common",
       "notes": "Joan base layer (Layer_Greaves, material Steel).",
       "weapon": {
         "damageMul": 1,
@@ -543,7 +552,7 @@
         "cueEvent": ""
       },
       "name": "Heraldic tabard",
-      "slot": "chest",
+      "slot": "tabard",
       "glb": "Gear/joan_tabard.glb",
       "resource": "",
       "part": "",
@@ -560,6 +569,7 @@
         "Grendel"
       ],
       "dropChance": 1.0,
+      "rarity": "fine",
       "materials": {
         "Tabard": {
           "smoothness": 0.2,
@@ -612,6 +622,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "common",
       "materials": {
         "*": {
           "smoothness": 0.25,
@@ -660,6 +671,7 @@
         "Humbaba"
       ],
       "dropChance": 1.0,
+      "rarity": "rare",
       "materials": {
         "*": {
           "smoothness": 0.5,
@@ -933,6 +945,7 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "rare",
       "notes": "v87 PLACEHOLDER (Dom): Pitborn's chest piece drop. The glb does not exist yet, the art comes later: a missing glb = stats only, no visual, no exception. Drops with the pauldrons and the maul on the first win.",
       "weapon": {
         "damageMul": 1,
@@ -972,6 +985,13 @@
         "Pitborn"
       ],
       "dropChance": 1.0,
+      "rarity": "rare",
+      "statList": [
+        { "stat": "damage", "value": 1.5 },
+        { "stat": "speed", "value": 0.75 },
+        { "stat": "reach", "value": 0.9 },
+        { "stat": "posture", "value": 1.8 }
+      ],
       "notes": "WEAPONSWAP v88 (Dom's loot design: Joan starts with her sword, Pitborn's maul drops and REPLACES it in the mainHand slot). glb = laneDROPPIT pitborn_maul_joan_LOD0.glb (0.88 m, grip node = origin, +Y shaft, nodes tip / head / grip_off / grip_off_low). weapon{} = multipliers on the default sword: damage x1.5, speed x0.75 (every move phase 1.33x the ticks: about +10 percent damage per second but bigger single hits and a longer commit), reach x0.9 (maul head 0.55-0.70 m from the grip vs the sword tip at 1.0 m; two hands claw some back), posture x1.8 (it breaks guards). stats = armor 0 / poise 3 / weight 7 (weight 7 > weightFree 6: slightly slower stamina regen). twoHanded true = TwoHandIK holds the shaft with the left hand. Tune all of it here, no code.",
       "weapon": {
         "id": "pitborn_maul",
@@ -1019,8 +1039,9 @@
         "poise": 2,
         "weight": 2.8
       },
-      "dropFrom": [],
-      "dropChance": 0.0,
+      "dropFrom": ["Erlking"],
+      "dropChance": 1.0,
+      "rarity": "fine",
       "tier": "drop",
       "source": "modelled v2 (laneHELMET2): smooth analytic shell, fitted to the Joan_v6b scalp",
       "doubleSided": false,
@@ -1071,6 +1092,7 @@
         "Erlking"
       ],
       "dropChance": 1.0,
+      "rarity": "fine",
       "tier": "drop",
       "source": "modelled v2 (laneHELMET2): smooth analytic shell, fitted to the Joan_v6b scalp",
       "doubleSided": false,
@@ -1224,6 +1246,13 @@
         "Sobek"
       ],
       "dropChance": 1.0,
+      "rarity": "rare",
+      "statList": [
+        { "stat": "damage", "value": 1.0 },
+        { "stat": "speed", "value": 1.08 },
+        { "stat": "reach", "value": 1.768 },
+        { "stat": "posture", "value": 1.0 }
+      ],
       "notes": "SOBEKTUNE v1 (replaces the SOBEKWEAPON ornate stand-in): Strategy picked C14 = frankendom src/assets/source/weapons/trident.glb (dark bronze, 99,646 tris source, never edited, copy in laneSOBEKTUNE\\trident). LOD0 = 18000 tris with a 2K normal and 2K AO (R channel, occlusionTexture) baked from the 99.6k source (Cycles CPU), all textures PNG; LOD1 = 5400 tris (distance LOD: swap by distance is a Unity step, no loader exists yet). Length 2.55 m = 0.85 x Sobek 3.0 m, grip node = origin, butt 0.51 m behind it, tip 2.04 m ahead, nodes grip / tip / head / grip_off / grip_off_low. Extra cost vs the 3,120-tri stand-in: +14880 tris (LOD0), 2 x 2K maps + 2 x 1K maps in memory. | SOBEKMOVES: speedMul 1.08 (a bit quicker than the sword), reachMul 1.7 = median ReachScale for a 2.2 m tip (tools\\reach_table.py; fighter.scale assumed 1), damage/posture 1.0.",
       "weapon": {
         "id": "sobek_trident",
@@ -1256,6 +1285,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "common",
       "notes": "SHIELD v1 (laneSHIELD): the owner's round shield (Downloads medieval shield 3d model.glb, Tripo, 1.93M tris 3x4096 maps) decimated to LOD0 30000 tris / 4096 maps (ASSETAUDIT: Dom's original base + normal bytes and a mask map from his metal-rough texture) (LOD1 8000 / 1024 ships as shield_joan_LOD1.glb, no loader swaps it yet; a LOD2 of 2000 tris was made and NOT shipped: its normal map breaks up). 0.60 m round, origin = the grip bar, +Z = the face, +Y up. Left hand: shield_mount.json rows (socket, per-state tuck / hide), grip pose = row curl. shield{} = the cover rule: guard side 'left' (the shield arm) ALSO covers overhead and thrust swings as a block (never a parry); blocks with that guard put 10 percent less posture on her; a block only the shield covered costs 25 percent more stamina. Nothing else changes: parry window, other guard sides, damage, reach. weight 2.5 only matters when her whole kit passes weightFree 6 (stamina regen). Remove the item from roster.json loadout = exactly today's fight.",
       "materials": {
         "*": {
@@ -1317,6 +1347,7 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "common",
       "materials": {
         "*": {
           "smoothness": 0.31,
@@ -1385,6 +1416,7 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "common",
       "materials": {
         "*": {
           "smoothness": 0.34,
@@ -1454,6 +1486,7 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "common",
       "materials": {
         "*": {
           "smoothness": 0.435,
@@ -1674,6 +1707,13 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "relic",
+      "statList": [
+        { "stat": "damage", "value": 1.0 },
+        { "stat": "speed", "value": 0.9 },
+        { "stat": "reach", "value": 0.78 },
+        { "stat": "posture", "value": 1.4 }
+      ],
       "notes": "laneMONSTER6 (Erlking): Dom's designed antler great-axe (primitive axe 3d model.glb), 5000 tris, FULL 4K base / roughness / normal (his source albedo untouched, metallic 0), 1.80 m, grip node = origin (right hand, middle wrap), grip_off = the left hand (butt wrap, 0.74 m behind), tip = crescent edge, +Y = haft toward the big crescent. twoHanded true = TwoHandIK holds grip_off with the left hand. Swap by replacing the glb + data\\erlking_weapon.json.",
       "weapon": {
         "id": "erlking_axe",
@@ -1889,6 +1929,13 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "common",
+      "statList": [
+        { "stat": "damage", "value": 1.15 },
+        { "stat": "speed", "value": 1.0 },
+        { "stat": "reach", "value": 1.0 },
+        { "stat": "posture", "value": 1.0 }
+      ],
       "notes": "laneMARKET v1 vendor weapon. glb empty = WeaponSwap keeps Joan's own sword model, only the multipliers change (a warning is logged). A real model is an optional art task.",
       "weapon": {
         "id": "knight_sword",
@@ -1929,6 +1976,13 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "fine",
+      "statList": [
+        { "stat": "damage", "value": 1.0 },
+        { "stat": "speed", "value": 1.0 },
+        { "stat": "reach", "value": 1.0 },
+        { "stat": "posture", "value": 1.0 }
+      ],
       "notes": "laneMARKET v1 vendor weapon. STAND-IN art: Erlking's axe glb. Own model optional.",
       "weapon": {
         "id": "war_axe",
@@ -2031,6 +2085,13 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "fine",
+      "statList": [
+        { "stat": "damage", "value": 1.0 },
+        { "stat": "speed", "value": 1.0 },
+        { "stat": "reach", "value": 1.0 },
+        { "stat": "posture", "value": 1.0 }
+      ],
       "notes": "laneMARKET v1 vendor weapon. STAND-IN art: the Pitborn maul glb (a plain iron retexture would be a look item for Dom).",
       "weapon": {
         "id": "iron_maul",
@@ -2129,6 +2190,13 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "fine",
+      "statList": [
+        { "stat": "damage", "value": 1.0 },
+        { "stat": "speed", "value": 1.0 },
+        { "stat": "reach", "value": 1.0 },
+        { "stat": "posture", "value": 1.0 }
+      ],
       "notes": "laneMARKET v1 vendor weapon. STAND-IN art: Sobek's trident glb (its reach 1.768 is measured; 1.5 here is a guess, retune after one fight).",
       "weapon": {
         "id": "boar_spear",
