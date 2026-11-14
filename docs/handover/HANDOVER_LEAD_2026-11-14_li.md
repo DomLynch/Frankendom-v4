@@ -29,3 +29,10 @@ Read first: this file, then `_agents\HANDOVER_LEAD_2026-11-13_kzzz.md` (older), 
 
 ## 4. Open for Dom
 Play li (boot time, riding); 67% FSR2 keep/revert; Sobek/Humbaba difficulty; settings menu + controller; z7 shop vs fight; pit orange vs grey was decided by Strategy for Dom = grey.
+
+## UPDATE 14 Nov 2026 19:00 (Lead): F1-F5 ALL POSTED DONE, ALPHA LOOK FROZEN
+- LIVE = HDRP_v109md (PREV ma). md = ma + boss ground rings OFF (Dom: looks cheap; boss_phase telegraph.radiusM 0, code kept, revert file _agents\laneLG\ringsoff\boss_phase.ma.json) + Controls rows (controls.json fixedRows). Earlier today: lj..lz releases (eager boot, camback, tabard slot + rarity/stat UI, z7 Armourer Pitborn chest 120, tells, sigbash, 8-patch CODE bundle lz = reload cover + menu/pad/graphics rows + plain-exe launch).
+- Deliverables: F1 arrival lit 4.2-5.3 s (hub 8.0, cold first-lit ~12-14 s on plain launch), F2 five segments assisted harness (flow proven, NOT a real fight), F3 rewards/tells/phase/2.1 s retry/save compat on a copy of Dom's v2 save, F4 drop+buy+sell+gear on Joan, F5 menu/settings/Controls rows/reload cover/plain launch.
+- Open for Dom: play it (real fights, Sobek/Humbaba difficulty), 67% FSR2 vs native (native = 15 fps), controller test with a pad, Grendel +3 armor / Erlking axe tuning (sigaxe/sigfull/t_curve HELD), fodderoff (pre-boss raiders) HELD, mkt_z7 shipped as a stock choice (one-row revert), disk (ax_lev + bi are launcher targets, 20 GB).
+- Look freeze: _agents\laneF5\freeze (check_freeze.py exit 0 at 18:58). Changes need Dom's yes. Docs: _agents\laneF5\proof\F5_PROOF_TABLE.md, laneFULLRUN\F2_RUN_LOG.md, docs\handover\kits_20261114.
+- Lessons: read PLAY.bat before every release.ps1; release.ps1 refuses while a game runs; CODE builds via Tools\build_v109<tag>.ps1 (copy previous, replace tag), 2-3 min; peer messages capped (20 per Dom message) so the board is the channel; ring decal fix needs shader-variant care (keyword changes do not survive into the player).
