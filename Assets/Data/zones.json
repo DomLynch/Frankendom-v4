@@ -462,7 +462,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 0.8,
-          "damageMul": 0.36,
+          "damageMul": 0.252,
           "difficulty": 6,
           "needs": "NPC15PLACE: Resources/Creatures/NpcChainWarden.prefab; wakes only after the z1_pitborn boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -482,7 +482,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 0.8,
-          "damageMul": 0.27,
+          "damageMul": 0.189,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcSlagCrossbowman.prefab; wakes only after the z1_pitborn boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -502,7 +502,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 0.8,
-          "damageMul": 0.315,
+          "damageMul": 0.2205,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcPitGladiator.prefab; wakes only after the z1_pitborn boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         }
@@ -750,7 +750,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 0.8492,
-          "damageMul": 0.648,
+          "damageMul": 0.4536,
           "difficulty": 6,
           "needs": "NPC15PLACE: Resources/Creatures/NpcReedSkirmisher.prefab; wakes only after the z2_sobek boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -769,8 +769,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 0.8492,
-          "damageMul": 0.567,
+          "hpMul": 0.7385,
+          "damageMul": 0.3969,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcCrocWarrior.prefab; wakes only after the z2_sobek boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -789,8 +789,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 0.8492,
-          "damageMul": 0.567,
+          "hpMul": 0.7385,
+          "damageMul": 0.3969,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcEmbalmerCultist.prefab; wakes only after the z2_sobek boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         }
@@ -1184,8 +1184,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 1.0,
-          "damageMul": 0.6142,
+          "hpMul": 0.8,
+          "damageMul": 0.4299,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcMereRaider.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1204,8 +1204,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 1.0,
-          "damageMul": 0.6142,
+          "hpMul": 0.8,
+          "damageMul": 0.4299,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcDrownedThane.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1225,7 +1225,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 1.0,
-          "damageMul": 0.7021,
+          "damageMul": 0.4915,
           "difficulty": 6,
           "needs": "NPC15PLACE: Resources/Creatures/NpcBogHag.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1244,8 +1244,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 1.0,
-          "damageMul": 0.6142,
+          "hpMul": 0.8,
+          "damageMul": 0.4299,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcDrownedThane.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1265,7 +1265,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 1.0,
-          "damageMul": 0.7021,
+          "damageMul": 0.4915,
           "difficulty": 6,
           "needs": "NPC15PLACE: Resources/Creatures/NpcBogHag.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1284,8 +1284,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 1.0,
-          "damageMul": 0.6142,
+          "hpMul": 0.8,
+          "damageMul": 0.4299,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcMereRaider.prefab; wakes only after the z4_grendel boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1304,8 +1304,8 @@
           "respawnMaxS": 420,
           "aggro": 9.0,
           "leash": 12.5,
-          "hpMul": 1.0,
-          "damageMul": 0.6142,
+          "hpMul": 0.8,
+          "damageMul": 0.4299,
           "difficulty": 4,
           "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 9.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
         },
@@ -1324,8 +1324,8 @@
           "respawnMaxS": 420,
           "aggro": 9.0,
           "leash": 12.5,
-          "hpMul": 1.0,
-          "damageMul": 0.6142,
+          "hpMul": 0.8,
+          "damageMul": 0.4299,
           "difficulty": 4,
           "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 9.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
         }
@@ -1570,7 +1570,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 1.12,
-          "damageMul": 0.5669,
+          "damageMul": 0.3968,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcCedarArcher.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1590,7 +1590,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 1.12,
-          "damageMul": 0.7561,
+          "damageMul": 0.5293,
           "difficulty": 6,
           "needs": "NPC15PLACE: Resources/Creatures/NpcRootDruid.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1609,8 +1609,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 1.12,
-          "damageMul": 0.6615,
+          "hpMul": 0.8615,
+          "damageMul": 0.463,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcBarkSentinel.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1630,7 +1630,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 1.12,
-          "damageMul": 0.7561,
+          "damageMul": 0.5293,
           "difficulty": 6,
           "needs": "NPC15PLACE: Resources/Creatures/NpcRootDruid.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1649,8 +1649,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 1.12,
-          "damageMul": 0.6615,
+          "hpMul": 0.8615,
+          "damageMul": 0.463,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcBarkSentinel.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1670,7 +1670,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 1.12,
-          "damageMul": 0.5669,
+          "damageMul": 0.3968,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcCedarArcher.prefab; wakes only after the z5_humbaba boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1689,8 +1689,8 @@
           "respawnMaxS": 420,
           "aggro": 12.0,
           "leash": 14.0,
-          "hpMul": 1.12,
-          "damageMul": 0.6615,
+          "hpMul": 0.8615,
+          "damageMul": 0.463,
           "difficulty": 4,
           "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 12.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
         },
@@ -1710,7 +1710,7 @@
           "aggro": 12.0,
           "leash": 14.0,
           "hpMul": 1.12,
-          "damageMul": 0.7561,
+          "damageMul": 0.5293,
           "difficulty": 6,
           "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 12.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
         },
@@ -1730,7 +1730,7 @@
           "aggro": 12.0,
           "leash": 14.0,
           "hpMul": 1.12,
-          "damageMul": 0.5669,
+          "damageMul": 0.3968,
           "difficulty": 4,
           "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 12.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
         }
@@ -1961,8 +1961,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 1.3846,
-          "damageMul": 0.819,
+          "hpMul": 0.9231,
+          "damageMul": 0.5733,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcAntlerKnight.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -1982,7 +1982,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 1.3846,
-          "damageMul": 0.7019,
+          "damageMul": 0.4913,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcHuntsman.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -2001,8 +2001,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 1.3846,
-          "damageMul": 0.9361,
+          "hpMul": 1.3187,
+          "damageMul": 0.6553,
           "difficulty": 6,
           "needs": "NPC15PLACE: Resources/Creatures/NpcHoundMaster.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -2021,8 +2021,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 1.3846,
-          "damageMul": 0.9361,
+          "hpMul": 1.3187,
+          "damageMul": 0.6553,
           "difficulty": 6,
           "needs": "NPC15PLACE: Resources/Creatures/NpcHoundMaster.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -2041,8 +2041,8 @@
           "respawnMaxS": 420,
           "aggro": 0.5,
           "leash": 12.5,
-          "hpMul": 1.3846,
-          "damageMul": 0.819,
+          "hpMul": 0.9231,
+          "damageMul": 0.5733,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcAntlerKnight.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -2062,7 +2062,7 @@
           "aggro": 0.5,
           "leash": 12.5,
           "hpMul": 1.3846,
-          "damageMul": 0.7019,
+          "damageMul": 0.4913,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcHuntsman.prefab; wakes only after the z6_erlking boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
         },
@@ -2081,8 +2081,8 @@
           "respawnMaxS": 420,
           "aggro": 13.0,
           "leash": 15.5,
-          "hpMul": 1.3846,
-          "damageMul": 0.819,
+          "hpMul": 0.9231,
+          "damageMul": 0.5733,
           "difficulty": 4,
           "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 13.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
         },
@@ -2101,8 +2101,8 @@
           "respawnMaxS": 420,
           "aggro": 13.0,
           "leash": 15.5,
-          "hpMul": 1.3846,
-          "damageMul": 0.9361,
+          "hpMul": 1.3187,
+          "damageMul": 0.6553,
           "difficulty": 6,
           "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 13.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
         },
@@ -2122,7 +2122,7 @@
           "aggro": 13.0,
           "leash": 15.5,
           "hpMul": 1.3846,
-          "damageMul": 0.7019,
+          "damageMul": 0.4913,
           "difficulty": 4,
           "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 13.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
         }
