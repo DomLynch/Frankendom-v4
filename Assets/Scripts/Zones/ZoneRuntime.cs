@@ -85,7 +85,14 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     public bool SpanEnter(string zoneId, string spot)
     {
         var z = ZoneData.Zone(zoneId); if (!on || z == null || z == zone) return false;
-        zone = z; if (spot.Length > 0) lastSpot = spot; ArenaLimits.ZoneZMax = z.limits != null ? z.limits.zMax : float.NaN; arriveGraceUntil = 0f; UpdateRift(true); LookSpawns(false); return true;
+        zone = z; if (spot.Length > 0) lastSpot = spot; ArenaLimits.ZoneZMax = z.limits != null ? z.limits.zMax : float.NaN; arriveGraceUntil = SpanGrace(z); UpdateRift(true); LookSpawns(false); return true;   // ARRIVALGRACE v1 (was 0f)
+    }
+    /// <summary>ARRIVALGRACE v1: the engage grace after a walked (span) zone entry, from zones.json engage.spanGraceSeconds / spanGraceZones. 0 seconds = the old value 0 (Poll engages at once).</summary>
+    float SpanGrace(ZZone z)
+    {
+        var e = T.engage; if (e == null || e.spanGraceSeconds <= 0f || z == null) return 0f;
+        if (e.spanGraceZones != null && e.spanGraceZones.Length > 0 && System.Array.IndexOf(e.spanGraceZones, z.id) < 0) return 0f;
+        return Time.unscaledTime + e.spanGraceSeconds;
     }
     public void SpanRestoreLimits() { if (zone != null) ArenaLimits.ZoneZMax = zone.limits != null ? zone.limits.zMax : float.NaN; }
     public void SpanWarm(string zoneId) { var z = ZoneData.Zone(zoneId); if (!on || z == null || z == zone || phase != Phase.Play) return; var keep = zone; zone = z; long zs = ZoneHitch.Mark(); try { LookSpawns(true); ZoneHitch.Lap("spanWarm.lookSpawns " + zoneId, ref zs); } finally { if (ZoneData.Get().persistence.spanWarmFinally) zone = keep; } zone = keep; }   /* SAVEFIX v2: key on = an exception in LookSpawns no longer leaves `zone` on the NEXT zone; key off = it propagates exactly as before */

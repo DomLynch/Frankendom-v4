@@ -81,6 +81,8 @@
     "retargetMarginM": 1.5,
     "finisherWithOthers": false,
     "graceAfterArriveSeconds": 8.0,
+    "spanGraceSeconds": 10.0,
+    "spanGraceZones": ["z5_humbaba", "z6_erlking"],
     "corpseSeconds": 25,
     "spawnMinDistance": 30,
     "_about": "INT107 (Dom): maxEngaged 2 = Pitborn and Sobek can be on you together (both brains attack the player; target = nearest engaged, switches when another is nearer by retargetMarginM; finisherWithOthers false = plain death while another enemy is engaged). 1 = the duel stays 1 v 1 (the sim and the camera are tuned for it); a camp of 2 is a later Dom decision. spawnMinDistance: a creature whose timer ran out while you stand in its zone appears only when you are at least this far from its spot, or when you arrive through a gate (hidden by the flash); in a small arena that means it appears when you arrive, never in front of you."

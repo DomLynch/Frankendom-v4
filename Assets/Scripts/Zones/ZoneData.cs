@@ -50,7 +50,7 @@ using UnityEngine;
     public float crossFloorFrac = 0.35f, regenDelaySeconds = 6f, regenPerSecondFrac = 0.01f, regenCeilDangerFrac = 0.6f, regenCeilSafeFrac = 1f, hearthRadius = 2.5f, hearthRegenPerSecondFrac = 0.08f, deathHoldSeconds = 3f;
     public ZRespawn respawn = new ZRespawn();   // REVIVE v1
 }
-[Serializable] public class ZEngage { public int maxEngaged = 1; public float retargetMarginM = 1.5f; public bool finisherWithOthers = false;   /* MULTI v1 */ public float graceAfterArriveSeconds = 3f, corpseSeconds = 25f, spawnMinDistance = 30f; }
+[Serializable] public class ZEngage { public int maxEngaged = 1; public float retargetMarginM = 1.5f; public bool finisherWithOthers = false;   /* MULTI v1 */ public float graceAfterArriveSeconds = 3f, corpseSeconds = 25f, spawnMinDistance = 30f; public float spanGraceSeconds = 0f; public string[] spanGraceZones = new string[0]; /* ARRIVALGRACE v1: a seamless-span zone entry (SpanEnter) gets this many seconds of no-engage; 0 = old behaviour (no grace); spanGraceZones = zone ids it applies to, empty = all */ }
 [Serializable] public class ZCover { public float[] color = new float[] { 1f, 0.84f, 0.58f }; public float inSeconds = 0.3f, holdMinSeconds = 0.1f, outSeconds = 0.55f, holdMaxSeconds = 8f; }
 [Serializable] public class ZCrossing { public ZCover cover = new ZCover(); public bool allowWhileEngaged = false; public float preloadDistance = 14f; public bool freePassage = false; /* ALPHAFLOW v1 */ public bool endRequiresBossKill = false; /* ENDKILL v1: an end-screen gate opens only after its unlockKilledSpawn (z6_erlking) was killed; false = old behaviour (always open) */ }
 
