@@ -1,0 +1,10 @@
+﻿{
+  "_about": "K1 escort attacker cap (staged by the bandits dev, NOT applied). Needs BossEscort.cs + the one-line AIBrain hook (_agents\\laneLG\\k1). Copy to Assets\\Data and Assets\\StreamingAssets (twins). enabled false or file missing = old behaviour. maxAttackers: escorts mid-swing at once (3 = no cap in effect). graceAfterHitS: after Joan loses health no escort may start a swing for that long (0 = off). proofLog true: one [EscortProof] line per second of Joan's health lost, proofSeconds long, from the first escort decision (works with enabled false = the BEFORE number).",
+  "enabled": true,
+  "maxAttackers": 2,
+  "graceAfterHitS": 0.6,
+  "idPrefix": "#bandit_z",
+  "rescanS": 0.25,
+  "proofLog": true,
+  "proofSeconds": 20
+}

@@ -164,7 +164,7 @@
     },
     {
       "item": "hunting_bow",
-      "buyValue": 17,
+      "buyValue": 40,
       "sellable": true,
       "sellOverride": 0
     },
@@ -510,7 +510,8 @@
         "bascinet_joan",
         "joan_helmet",
         "joan_bracers",
-        "joan_greaves"
+        "joan_greaves",
+        "hunting_bow"
       ]
     },
     {
@@ -523,7 +524,7 @@
         "x": -4.7,
         "z": 85.4
       },
-      "radius": 2.2,
+      "radius": 4.0,
       "promptRadius": 8.0,
       "promptHeight": 2.1,
       "area": {

@@ -695,6 +695,11 @@
         "pad": ""
       },
       {
+        "label": "Bow mode on/off",
+        "keys": "5",
+        "pad": "L3"
+      },
+      {
         "label": "Frame rate counter",
         "keys": "F3",
         "pad": ""

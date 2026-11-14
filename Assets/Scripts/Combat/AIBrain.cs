@@ -464,6 +464,7 @@ public class AIBrain : MonoBehaviour
                 else s.hold = best == "light" && reads.parryHappy && s.Roll() < R.baitShare;
                 float feintChance = Mathf.Max(p.feint, reads.parryHappy ? R.feint : 0f);
                 s.feint = feintChance > 0f && best != "deathblow" && (action == "heavy" || action == "light") && !s.hold && s.Roll() < feintChance;
+                if (BossEscort.Blocked(df)) return Done();   // K1: escort attacker cap (boss_escort.json; off = no change)
                 intent.action = action; intent.held = s.hold;
                 return intent;
             }

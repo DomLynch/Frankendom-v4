@@ -183,6 +183,14 @@ public static class BowHooks
         return l.ToArray();
     }
 
+    /// <summary>K3b (BowEquip.cs): equip / unequip of the bow item sets the mode directly. Default path: bow.json equipItemId "" = never called.</summary>
+    public static void SetFor(DuelFighter f, bool on, string why)
+    {
+        if (f == null || !BowCfg.Master) return; State st; if (!states.TryGetValue(f, out st)) { st = new State(); states[f] = st; }
+        if (!st.init) { st.init = true; st.charId = Roster.IdOf(f.transform); st.none = !BowCfg.IsBowCharacter(st.charId); st.ammo = BowCfg.Get().ammo; }
+        if (st.none) return; SetMode(f, st, on, why);
+    }
+
     static void SetMode(DuelFighter f, State st, bool on, string why)
     {
         if (st.bow == on) return;
