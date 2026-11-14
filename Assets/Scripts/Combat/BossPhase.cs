@@ -11,7 +11,8 @@ using UnityEngine;
 [Serializable] public class BpCue { public string cue = ""; public float gain = 0f, rate = 1f, delay = 0f; }
 [Serializable] public class BpStagger { public int ticks = 0; public string clip = "hit_heavy"; public bool bossTakesDamage = true; }   // BOSSPHASES C1: ticks 0 = no roar recoil
 [Serializable] public class BpFlash { public float[] color = null; public float seconds = 0f, strength = 0f, emissiveNits = 0f, riseSeconds = 0.05f; }   // BOSSPHASES C1: strength or seconds 0 = no flash
-[Serializable] public class BpTelegraph { public float radiusM = 0f, seconds = 0f; }   // BOSSPHASES C2: radiusM or seconds 0 = no ground ring
+[Serializable] public class BpTelegraph { public float radiusM = 0f, seconds = 0f; }
+[Serializable] public class BpRing { public bool enabled = false; public float dropM = 0f, depthM = 6f, maxOpacity = 0.9f, ringWidthFrac = 0.1f, innerFill = 0.35f; }   // RINGDROP v1: optional GroundRing look; enabled false = the built-in Style (today)   // BOSSPHASES C2: radiusM or seconds 0 = no ground ring
 [Serializable]
 public class BpRow
 {
@@ -25,7 +26,7 @@ public class BpRow
     public BpFlash flash = new BpFlash();           // BOSSPHASES C1: a HitFlash on the boss
     public BpTelegraph telegraph = new BpTelegraph();   // BOSSPHASES C2: a GroundRing at the boss feet
 }
-[Serializable] public class BpFile { public bool enabled = false; public float pollSeconds = 0.25f, refreshSeconds = 2f; public bool log = true; public BpRow[] rows = new BpRow[0]; }
+[Serializable] public class BpFile { public bool enabled = false; public float pollSeconds = 0.25f, refreshSeconds = 2f; public bool log = true; public BpRing ring = new BpRing(); public BpRow[] rows = new BpRow[0]; }
 
 public class BossPhase : MonoBehaviour
 {
@@ -132,8 +133,18 @@ public class BossPhase : MonoBehaviour
             HitFlash.Flash(df, new HitFlashTable.Row { color = fl.color, seconds = fl.seconds, riseSeconds = fl.riseSeconds, strength = fl.strength, emissiveNits = fl.emissiveNits, onlyDeathblow = false, skipOnKill = false });
         var tg = row.telegraph;
         if (tg != null && tg.radiusM > 0f && tg.seconds > 0f)
-            GroundRing.Show(df.transform.position, tg.radiusM, tg.seconds, hasCol ? new Color(fl.color[0], fl.color[1], fl.color[2], 1f) : new Color(1f, 0.55f, 0.25f, 1f));
+            GroundRing.Show(df.transform.position, tg.radiusM, tg.seconds, hasCol ? new Color(fl.color[0], fl.color[1], fl.color[2], 1f) : new Color(1f, 0.55f, 0.25f, 1f), RingStyle());
         if (!string.IsNullOrEmpty(row.slowMo) && !busy) CombatSlowMo.Request(row.slowMo);
+    }
+
+    // RINGDROP v1: the GroundRing Style from boss_phase.json ring{} (enabled false / absent = GroundRing.Default, today). Built once.
+    static GroundRing.Style ringStyle;
+    static GroundRing.Style RingStyle()
+    {
+        if (ringStyle != null) return ringStyle; var c = Cfg(); var r = c != null ? c.ring : null;
+        if (r == null || !r.enabled) return ringStyle = GroundRing.Default;
+        var s = new GroundRing.Style { dropM = r.dropM, depthM = Mathf.Max(0.5f, r.depthM), maxOpacity = Mathf.Clamp01(r.maxOpacity), ringWidthFrac = Mathf.Max(0.01f, r.ringWidthFrac), innerFill = Mathf.Clamp01(r.innerFill) };
+        return ringStyle = s;
     }
 
     static void Leave(DuelFighter df, St s)

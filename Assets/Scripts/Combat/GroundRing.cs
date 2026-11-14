@@ -12,7 +12,7 @@ public static class GroundRing
     {
         public string refMaterial = "WoundDecalRef"; public int texSize = 128;
         public float ringRadiusFrac = 0.85f, ringWidthFrac = 0.1f, innerFill = 0.35f, drawDistanceM = 120f, depthM = 6f, maxOpacity = 0.9f;
-        public float probeUpM = 0.3f, probeM = 4f, fadeInFrac = 0.2f, fadeOutFrac = 0.35f;   // ground snap: ray from probeUpM above pos, probeM long (starts inside the boss capsule so it only sees the ground)
+        public float probeUpM = 0.3f, probeM = 4f, fadeInFrac = 0.2f, fadeOutFrac = 0.35f; public float dropM = 0f;   /* RINGDROP v1: the projector box is lowered by dropM (0 = old box, bottom at pos.y; a floor below pos.y, e.g. flat terrain -0.05, was outside it) */   // ground snap: ray from probeUpM above pos, probeM long (starts inside the boss capsule so it only sees the ground)
     }
     public static readonly Style Default = new Style();
     public static int Shown; public static string LastLog = "";   // proof counters (harness / log)
@@ -48,9 +48,9 @@ public static class GroundRing
     }
 
     // One downward DecalProjector, centred on pos, sized radiusM*2 square and depthM deep, fully transparent (fadeFactor 0). Same set-up as the old HumbabaWatch.MakeDecal.
-    public static DecalProjector CreateProjector(Material mat, Vector3 pos, float yawDeg, float radiusM, float depthM, float drawDistanceM, string name, out GameObject go)
+    public static DecalProjector CreateProjector(Material mat, Vector3 pos, float yawDeg, float radiusM, float depthM, float drawDistanceM, string name, out GameObject go, float dropM = 0f)
     {
-        go = new GameObject(name); go.transform.position = pos + Vector3.up * (depthM * 0.5f); go.transform.rotation = Quaternion.Euler(90f, yawDeg, 0f);
+        go = new GameObject(name); go.transform.position = pos + Vector3.up * (depthM * 0.5f - dropM); go.transform.rotation = Quaternion.Euler(90f, yawDeg, 0f);
         var p = go.AddComponent<DecalProjector>(); p.material = mat; p.pivot = Vector3.zero; p.size = new Vector3(radiusM * 2f, radiusM * 2f, depthM); p.drawDistance = drawDistanceM; p.fadeFactor = 0f;
         return p;
     }
@@ -64,7 +64,7 @@ public static class GroundRing
         if (whiteRing == null) whiteRing = BuildRingTexture("GroundRing", s.texSize, s.ringRadiusFrac, s.ringWidthFrac, s.innerFill, Color.white);
         tint.a = 1f;
         var mat = BuildMaterial(s.refMaterial, whiteRing, tint, "ground_ring"); if (mat == null) return false;
-        GameObject go; var proj = CreateProjector(mat, pos, 0f, radiusM, s.depthM, s.drawDistanceM, "GroundRing", out go);
+        GameObject go; var proj = CreateProjector(mat, pos, 0f, radiusM, s.depthM, s.drawDistanceM, "GroundRing", out go, s.dropM);
         var fx = go.AddComponent<GroundRingFx>(); fx.proj = proj; fx.mat = mat; fx.t0 = Time.unscaledTime; fx.seconds = seconds; fx.opacity = s.maxOpacity; fx.fadeIn = Mathf.Clamp01(s.fadeInFrac); fx.fadeOut = Mathf.Clamp01(s.fadeOutFrac);
         Shown++; LastLog = "ring r=" + radiusM.ToString("F1") + " s=" + seconds.ToString("F2") + " at " + pos.ToString("F1");
         Debug.Log("[GroundRing] " + LastLog);
