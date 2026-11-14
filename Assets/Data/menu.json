@@ -74,6 +74,8 @@
   ],
   "axisX": "Horizontal",
   "axisY": "Vertical",
+  "dpadAxisX": "DPadX",
+  "dpadAxisY": "DPadY",
   "axisThreshold": 0.6,
   "repeatDelayS": 0.4,
   "repeatS": 0.11,
@@ -118,6 +120,22 @@
     {
      "type": "gs",
      "id": "graphics.tier",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    },
+    {
+     "type": "gs",
+     "id": "graphics.renderScale",
+     "fmt": "0",
+     "max": 1,
+     "step": 0.05,
+     "scale": 1
+    },
+    {
+     "type": "gs",
+     "id": "graphics.upscaler",
      "fmt": "0",
      "max": 1,
      "step": 0.05,

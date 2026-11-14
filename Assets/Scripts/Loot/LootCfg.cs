@@ -57,7 +57,7 @@ public static class LootCfg
         public int titleSize = 38, subtitleSize = 14, headerSize = 14, labelSize = 12, nameSize = 22, rowNameSize = 20, bodySize = 15, statSize = 17, hintSize = 14, badgeSize = 11, closeSize = 20;
         public float titleY = 18f, headerY = 92f, bodyTop = 124f, bodyBottom = 70f, slotRowH = 62f, candRowH = 52f, rowGap = 5f, statRowH = 30f, statValueW = 70f, arrowSize = 16f, deltaW = 64f;
         public float descGap = 14f, detailNameGap = 6f, openFadeS = 0.18f, hintY = 40f, closeBox = 34f;
-        public bool openInFight = false, showEquipHint = true; public float equipHintBottom = 96f; public int equipHintSize = 15;
+        public bool openInFight = false, showEquipHint = true, blockWhileMenu = false; public float equipHintBottom = 96f; public int equipHintSize = 15;   // F5 LOOTPAD: blockWhileMenu true = the equip screen does not open on the press / frame the pause menu owns (loot_ui.json screen.blockWhileMenu)
         public int triTex = 32; public float triPad = 4f;
         // HCKIT6 v100 (HC3 K13): LootScreen paddings / line factors that were literals (loot_ui.json screen{}); defaults = the old literals
         public float insetPx = 6f, insetFrameW = 1f, titleLine = 1.4f, subtitleDx = 2f, subtitleDy = 1.28f, boxLine = 1.6f, ruleH = 2f, ruleAlpha = 0.85f, idleFrameAlpha = 0.35f, rowPadX = 14f, rowPadY = 7f, rowTrim = 20f, labelLine = 1.5f, nameTrim = 24f, nameGap = 2f, nameLine = 1.4f, zebraAlpha = 0.025f, arrowGap = 10f, deltaGap = 6f, messageS = 2.5f;

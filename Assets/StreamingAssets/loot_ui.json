@@ -156,6 +156,7 @@
     "hintY": 40.0,
     "closeBox": 34.0,
     "openInFight": false,
+    "blockWhileMenu": true,
     "showEquipHint": true,
     "equipHintBottom": 96.0,
     "equipHintSize": 15,

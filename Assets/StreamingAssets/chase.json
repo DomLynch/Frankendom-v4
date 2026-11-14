@@ -1,6 +1,6 @@
 {
   "_about": "laneCHASE v1: a monster that is engaged follows the player (also through a gate) and gives up when the player gets far enough away. Dark: enabled=false = zones behave as laneZONES shipped (leash teleport, no follow). Needs zones.json enabled too. Every number here is read by ChaseAgent / ChaseCore, none is in code. Rows by roster id; '*' is the row for any creature without its own. RECOMMENDATION to Dom, not his decision yet: chase speed 5 to 10 percent under the player's run speed (0.92 = 8 percent under), so a sprint escapes slowly and a walk does not.",
-  "enabled": false,
+  "enabled": true,
   "rows": [
     {
       "id": "*",

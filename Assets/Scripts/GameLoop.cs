@@ -161,6 +161,7 @@ public static class GameLoop
     }
     static void Reload()
     {
+        StartupWarm.ReArm();   // RELOADCOVER v1: black cover until the reloaded scene has its gear on (startup_warm.json cover.onReload, default on)
         ResetGlobals();
         // LADDER v92: which enemy / scene does the current ladder row want? No character / scene columns = roster default enemy + reload of the active scene = exactly the old behaviour (LadderResolve, tested outside Unity)
         var row = CurrentRow(); string chr, scn; if (PickOn) PickColumns(out chr, out scn); else ColumnsAt(OpponentIndex, out chr, out scn);   // HARNESSPICK v1

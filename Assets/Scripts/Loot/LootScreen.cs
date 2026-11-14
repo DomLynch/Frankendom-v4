@@ -37,6 +37,7 @@ public static class LootScreen
     {
         var S = LootCfg.Get().screen;
         if (LootCfg.Get().slots.Length == 0) return false;
+        if (S.blockWhileMenu && MenuUI.Blocking) return false;   // F5 LOOTPAD
         if (RTFinisher.Busy || GameLoopDriver.Transitioning || MarketUI.Open) return false;   // STALL v1: not on top of the stall panel
         if (demo || S.openInFight) return true;
         bool live = GameLoop.Player != null && GameLoop.Enemy != null && GameLoop.Outcome == GameLoop.Result.None && !(ZoneRuntime.Owns && (GameLoop.Enemy.Dead || GameLoop.Enemy.opponent == null));   // TRADEFIN v1: a zone corpse / an unengaged creature is not a live fight

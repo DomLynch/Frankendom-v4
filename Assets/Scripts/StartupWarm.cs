@@ -13,7 +13,8 @@ using Debug = UnityEngine.Debug;
 public class StartupWarm : MonoBehaviour
 {
     [Serializable] public class CoverC { public bool enabled = true; public float r = 0f, g = 0f, b = 0f; public int holdFramesAfter = 2;
-        public bool waitForGear = false; public float gearCapSeconds = 12f; public int gearAttachFrames = 20; }   // v3: hold the cover until Joan's gear tier of GlbPreload is parsed (+ gearAttachFrames for the attach), hard cap gearCapSeconds
+        public bool waitForGear = false; public float gearCapSeconds = 12f; public int gearAttachFrames = 20;
+        public bool onReload = true, reloadHoldSim = false; public int reloadHoldFrames = 100; public float reloadCapSeconds = 4f; }   // RELOADCOVER v1: re-arm after an in-process scene reload (Retry / Backspace / next fight)   // v3: hold the cover until Joan's gear tier of GlbPreload is parsed (+ gearAttachFrames for the attach), hard cap gearCapSeconds
     [Serializable] public class HoldC { public bool enabled = false; }
     [Serializable] public class HarnessC { public bool warmRenders = true; }
     [Serializable]
@@ -85,6 +86,29 @@ public class StartupWarm : MonoBehaviour
         if (froze) { Duel.Frozen = false; froze = false; }
         cover = false; Done = true;
         if (tex != null) { Destroy(tex); tex = null; }
+    }
+    // RELOADCOVER v1 (staged): GameLoop.Reload calls this before SceneManager.LoadScene. The persistent StartupWarm object (DontDestroyOnLoad) raises the black cover again, waits for the new scene
+    // and then reloadHoldFrames frames (the saved loadout applies ~20 frames after a load and every armour piece attaches over more frames), then releases. No-op before the first cover is over, in harness runs, or with cover.onReload false.
+    public static void ReArm()
+    {
+        var s = FindFirstObjectByType<StartupWarm>(); if (s == null || !Done || s.harness || s.reloading) return;
+        var c = Load(); if (c == null || !c.enabled || !c.cover.enabled || !c.cover.onReload) return;
+        s.StartCoroutine(s.ReloadCover(c));
+    }
+    bool reloading;
+    IEnumerator ReloadCover(Cfg c)
+    {
+        reloading = true; cover = true; Done = false;
+        if (tex == null) { tex = new Texture2D(1, 1); tex.SetPixel(0, 0, new Color(c.cover.r, c.cover.g, c.cover.b, 1f)); tex.Apply(); }
+        bool loaded = false; UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene, UnityEngine.SceneManagement.LoadSceneMode> h = (sc, md) => { if (md == UnityEngine.SceneManagement.LoadSceneMode.Single) loaded = true; };
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += h;
+        float t0 = Time.realtimeSinceStartup; while (!loaded && Time.realtimeSinceStartup - t0 < 20f) yield return null;   // hc:ok hard cap on the scene load wait
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= h;
+        if (c.cover.reloadHoldSim && !Duel.Frozen) { Duel.Frozen = true; froze = true; }
+        float t1 = Time.realtimeSinceStartup, cap = Mathf.Max(0.2f, c.cover.reloadCapSeconds); int n = 0;
+        for (; n < c.cover.reloadHoldFrames && Time.realtimeSinceStartup - t1 < cap; n++) yield return null;
+        Debug.Log("[Cover] reload cover held " + (Time.realtimeSinceStartup - t0).ToString("0.0") + " s (load " + (t1 - t0).ToString("0.0") + " s + " + n + " frames)");
+        reloading = false; Release();
     }
     void OnDestroy() { if (froze) Duel.Frozen = false; }
 

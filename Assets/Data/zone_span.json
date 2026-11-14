@@ -1,6 +1,6 @@
 {
   "_about": "ZONESPAN v1 (zone_span.json v2), read by Assets/Scripts/Zones/ZoneSpan.cs and Assets/Editor/Zone2Build.cs. SHIPS DARK: enabled=false. ONE ROW PER ZONE in \"zones\" (any number): each has its offsetZ, ring groups and gate row. A zone is a physical copy of the Pit Yard (or a safe zone) at z + offsetZ in the SAME scene (one sky, one sun, one fog stack). Zone roots are switched by distance, ring by ring. Units metres, seconds. Needs zones.json enabled too (laneZONES). Generated from zone_plan.json by gen_zone2.py: edit the plan, not this file.",
-  "enabled": false,
+  "enabled": true,
   "version": 2,
   "arrive": {
     "enabled": true,

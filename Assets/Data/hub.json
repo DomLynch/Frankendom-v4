@@ -1,6 +1,6 @@
 {
   "_about": "HUB v1 + CAMPSET v1 (laneHUB rules file, edited copy by laneCAMPSET). SHIPS OFF. Placement B (after Sobek), zone offset 72; rows in props_layout_hub.json are the zone-local camp rows + 72. NPC bodies are the camp characters Dom chose on 2026-11-06 (Arissa, Akai, Erika: 106-joint rig, embedded Idle, 512 px textures), loaded from StreamingAssets/Npc. Original text: HUB v1 (lane laneHUB), STAGED, SHIPS OFF. Designs from Armagedom's Central Hub reused as DATA ONLY (no code, no art copied): a safe camp zone with a few idle NPCs, a hearth, one sell-only stall. zones.json carries the zone ROW (hub_camp, safe:true, spawns [], hearth + market services, gates); this file carries everything else about the camp: the safe-zone rule, the NPC rows, the layout reference, the stall row, what is saved. Units: metres, degrees, seconds; x,z are in the zone lane (x -3.8..3.8, z 8..26 with the zMax override). enabled=false means nothing here is read. NEW READERS NEEDED (none exist yet): HubCfg.cs (loads this file), a safe-rule hook in ZoneRuntime, an NPC spawner. check_hub.py lists the keys a reader must claim.",
-  "enabled": false,
+  "enabled": true,
   "version": 1,
   "zone": "hub_camp",
   "layout": "props_layout_hub.json",

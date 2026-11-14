@@ -11,10 +11,14 @@
   "r": 0.0,
   "g": 0.0,
   "b": 0.0,
-  "holdFramesAfter": 24,
+  "holdFramesAfter": 12,
   "waitForGear": true,
-  "gearCapSeconds": 25.0,
-  "gearAttachFrames": 20
+  "gearCapSeconds": 8.0,
+  "onReload": true,
+  "reloadHoldFrames": 100,
+  "reloadCapSeconds": 4.0,
+  "reloadHoldSim": false,
+  "gearAttachFrames": 100
  },
  "holdSim": {
   "_about": "true = Duel.Frozen while the warm renders run, so the fight does not start behind the cover. OFF by default: the harness frame counts and simhash must not move. Turn on only after the A/B of warmRenders alone.",

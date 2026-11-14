@@ -12,6 +12,7 @@ public static class MenuCfg
         public string[] openKeys = { "Escape", "JoystickButton7" }, closeKeys = { "JoystickButton7" }, backKeys = { "Escape", "JoystickButton1" }, confirmKeys = { "Return", "KeypadEnter", "JoystickButton0" };
         public string[] upKeys = { "UpArrow", "W" }, downKeys = { "DownArrow", "S" }, leftKeys = { "LeftArrow", "A" }, rightKeys = { "RightArrow", "D" }, tabPrevKeys = { "Q", "JoystickButton4" }, tabNextKeys = { "E", "JoystickButton5" };
         public string axisX = "Horizontal", axisY = "Vertical";   // Input Manager axes (left stick); empty = no stick navigation
+        public string dpadAxisX = "", dpadAxisY = "";   // F5 DPADNAV: Input Manager axes of the D-pad (DPadX / DPadY in InputManager.asset); empty = the D-pad does not navigate
         public float axisThreshold = 0.6f, repeatDelayS = 0.4f, repeatS = 0.11f, mouseMovePx = 3f; public bool mouse = true;
     }
     [Serializable] public class RowC
@@ -30,6 +31,14 @@ public static class MenuCfg
         public string slideAction = "Slide {0} + attack", slideKeys = "Light: {0}   Heavy: {1}", slidePad = "Right stick + RB", schemeAction = "Control scheme", deadZoneAction = "Swipe dead zone", padDeadZoneFmt = "stick {0}%";
         public string colAction = "Action", colKeys = "Keyboard / mouse", colPad = "Gamepad";
         public KeyRowC[] rows = new KeyRowC[0];
+    }
+    [Serializable]
+    public class BootC
+    {
+        // F5 BOOTMENU: enabled false = nothing changes. title / resumeLabel / footer replace the PAUSED title, the "Resume" label and the footer line on that first open only.
+        // afterCardS = wait after the loading card and the StartupWarm cover are gone; maxWaitS = give up (never opens late). skipArgs = proof / capture flags that must never meet a title.
+        public bool enabled = false; public string title = "", resumeLabel = "", footer = ""; public float afterCardS = 0.3f, maxWaitS = 60f;
+        public string[] skipArgs = { "-camscene", "-camtrace", "-dirproof", "-zoneshot", "-routebot", "-lightdump", "-lightoff", "-resgate", "-record", "-flickrec" };
     }
     [Serializable] public class DefaultsC { public float camSens = 1f;   /* RCHYGIENE v100: audio defaults live in audio_mix.json */ public int vsync = 1, frameCap = 0; public bool hints = true; }
     [Serializable] public class StringsC
@@ -53,7 +62,7 @@ public static class MenuCfg
     {
         public bool enabled = true, allowOnEndScreen = true; public float maxFadeToOpen = 0.5f, unfreezeMaxS = 0.5f, saveDelayS = 0.6f, openWaitS = 0.8f;   // openWaitS: an Esc press that cannot open yet (slow-mo dip, fade) is remembered this long
         public string[] harnessArgs = { "-balanceauto", "-autoplay", "-finisherauto", "-finisherrotonly", "-postureproof", "-camproof", "-flowproof", "-verifyGround", "-looptest", "-latencyprobe", "-perfbench", "-steerauto", "-steerpreview", "-gaps", "-props", "-record", "-sheet:", "-headsheet", "-cmp", "-stand", "-isolate", "-facecam" };
-        public InputC input = new InputC(); public LayoutC layout = new LayoutC(); public StringsC strings = new StringsC(); public DefaultsC defaults = new DefaultsC(); public ControlsC controls = new ControlsC();
+        public BootC boot = new BootC(); public InputC input = new InputC(); public LayoutC layout = new LayoutC(); public StringsC strings = new StringsC(); public DefaultsC defaults = new DefaultsC(); public ControlsC controls = new ControlsC();
         public ItemC[] items = Items(); public TabC[] tabs = new TabC[0];
         public ChoiceC[] vsyncModes = { new ChoiceC { value = 0, label = "Off" }, new ChoiceC { value = 1, label = "On" } };
         public ChoiceC[] fullscreenModes = { new ChoiceC { id = "FullScreenWindow", label = "Borderless window" }, new ChoiceC { id = "ExclusiveFullScreen", label = "Exclusive fullscreen" }, new ChoiceC { id = "Windowed", label = "Windowed" } };
@@ -84,7 +93,7 @@ public static class MenuCfg
 
     static void Fix(Data d)
     {
-        if (d.input == null) d.input = new InputC(); if (d.layout == null) d.layout = new LayoutC(); if (d.strings == null) d.strings = new StringsC(); if (d.defaults == null) d.defaults = new DefaultsC(); if (d.controls == null) d.controls = new ControlsC();
+        if (d.boot == null) d.boot = new BootC(); if (d.boot.skipArgs == null) d.boot.skipArgs = new string[0]; if (d.input == null) d.input = new InputC(); if (d.layout == null) d.layout = new LayoutC(); if (d.strings == null) d.strings = new StringsC(); if (d.defaults == null) d.defaults = new DefaultsC(); if (d.controls == null) d.controls = new ControlsC();
         if (d.items == null || d.items.Length == 0) d.items = Items(); if (d.tabs == null) d.tabs = new TabC[0]; if (d.harnessArgs == null) d.harnessArgs = new string[0];
         if (d.vsyncModes == null || d.vsyncModes.Length == 0) d.vsyncModes = new Data().vsyncModes; if (d.fullscreenModes == null || d.fullscreenModes.Length == 0) d.fullscreenModes = new Data().fullscreenModes; if (d.frameCaps == null || d.frameCaps.Length == 0) d.frameCaps = new Data().frameCaps;
         if (d.controls.rows == null) d.controls.rows = new KeyRowC[0]; if (d.controls.padNames == null) d.controls.padNames = new ControlsC().padNames;
