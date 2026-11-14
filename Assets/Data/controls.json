@@ -680,6 +680,21 @@
         "pad": "D-pad"
       },
       {
+        "label": "Pick up / equip loot (after the fight)",
+        "keys": "E",
+        "pad": "X / A"
+      },
+      {
+        "label": "Equipment screen (after the fight)",
+        "keys": "Tab",
+        "pad": "Start"
+      },
+      {
+        "label": "Call / dismount horse (once bought)",
+        "keys": "M",
+        "pad": ""
+      },
+      {
         "label": "Frame rate counter",
         "keys": "F3",
         "pad": ""

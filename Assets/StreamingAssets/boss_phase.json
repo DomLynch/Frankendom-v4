@@ -4,7 +4,7 @@
  "pollSeconds": 0.25,
  "refreshSeconds": 2.0,
  "log": true,
- "ring": { "enabled": true, "albedoOnly": true, "dropM": 0.3, "depthM": 6.0, "maxOpacity": 1.0, "ringWidthFrac": 0.14, "innerFill": 0.5 },
+ "ring": { "enabled": true, "dropM": 0.3, "depthM": 6.0, "maxOpacity": 1.0, "ringWidthFrac": 0.14, "innerFill": 0.5 },
  "rows": [
   {
    "id": "Pitborn",
@@ -36,7 +36,7 @@
     "strength": 0.0,
     "emissiveNits": 0.0
    },
-   "telegraph": { "radiusM": 2.4, "seconds": 0.6 },
+   "telegraph": { "radiusM": 0.0, "seconds": 0.6 },
    "summon": []
   },
   {
@@ -70,7 +70,7 @@
     "emissiveNits": 0.0
    },
    "telegraph": {
-    "radiusM": 2.4,
+    "radiusM": 0.0,
     "seconds": 0.6
    },
    "summon": [
@@ -108,7 +108,7 @@
     "emissiveNits": 0.0
    },
    "telegraph": {
-    "radiusM": 2.8,
+    "radiusM": 0.0,
     "seconds": 0.65
    },
    "summon": [
@@ -145,7 +145,7 @@
     "strength": 0.0,
     "emissiveNits": 0.0
    },
-   "telegraph": { "radiusM": 3.0, "seconds": 0.7 },
+   "telegraph": { "radiusM": 0.0, "seconds": 0.7 },
    "summon": []
   },
   {
@@ -179,7 +179,7 @@
     "emissiveNits": 0.0
    },
    "telegraph": {
-    "radiusM": 3.2,
+    "radiusM": 0.0,
     "seconds": 0.75
    },
    "summon": [
