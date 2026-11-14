@@ -223,7 +223,11 @@
   "stats": [
     { "stat": "armor", "label": "Armour", "decimals": 0, "higherIsBetter": true },
     { "stat": "poise", "label": "Poise", "decimals": 0, "higherIsBetter": true },
-    { "stat": "weight", "label": "Weight", "decimals": 1, "higherIsBetter": false }
+    { "stat": "weight", "label": "Weight", "decimals": 1, "higherIsBetter": false },
+    { "stat": "damage", "label": "Damage", "decimals": 2, "higherIsBetter": true },
+    { "stat": "speed", "label": "Speed", "decimals": 2, "higherIsBetter": true },
+    { "stat": "reach", "label": "Reach", "decimals": 2, "higherIsBetter": true },
+    { "stat": "posture", "label": "Posture", "decimals": 2, "higherIsBetter": true }
   ],
   "rarities": [
     { "id": "common", "label": "Common", "color": [0.86, 0.83, 0.77, 1.0] },

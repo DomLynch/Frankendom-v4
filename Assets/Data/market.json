@@ -222,6 +222,12 @@
       "buyValue": 60,
       "sellable": true,
       "sellOverride": 0
+    },
+    {
+      "item": "erlking_axe",
+      "buyValue": 45,
+      "sellable": true,
+      "sellOverride": 0
     }
   ],
   "rowsNote": "One row per sellable item id. buyValue = what the item would cost to buy (round(5 * (6 armor + 5 poise + 1 weight)) to 5, from gear.json; PLACEHOLDER balance). sellOverride > 0 pins the sell price. sellable false = the trader refuses it. An id with no row is not bought. Re-generate with gen_market.py.",
@@ -616,7 +622,8 @@
         "bascinet_joan",
         "joan_helmet",
         "joan_bracers",
-        "joan_greaves"
+        "joan_greaves",
+        "pitborn_chest"
       ]
     },
     {

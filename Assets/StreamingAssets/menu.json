@@ -423,6 +423,20 @@
     "action": "Pause menu",
     "keys": "Esc",
     "pad": "Start"
+   },
+   {
+    "action": "Pick up / equip loot (after the fight)",
+    "keys": "E",
+    "pad": "X / A"
+   },
+   {
+    "action": "Equipment screen (after the fight)",
+    "keys": "Tab",
+    "pad": "Start"
+   },
+   {
+    "action": "Call / dismount horse (once bought)",
+    "keys": "M"
    }
   ]
  },
