@@ -36,7 +36,7 @@
     "respawn": {
       "_about": "REVIVE v1 (laneSEAMLESS): Joan's in-world respawn, no scene reload. enabled false = old death (3 s black + GameLoop.Retry). delayS = lying time before she stands up; rule arrive = the zone's arrive spot (rows below), hearth = the zone's hearth service spot; hpFrac = share of max hp; coverS / coverMax = the dark dip before she stands up (alpha max); foeReset spawn = the creatures that were fighting her go back to their spawn at full hp after foeResetDelayS (keep = they stay); fallbackAfterS = if the revive cannot happen (finisher still running, ragdoll cannot be put back) the old reload runs after this.",
       "enabled": true,
-      "delayS": 3.0,
+      "delayS": 2.0,
       "rule": "arrive",
       "arrive": [
         {
@@ -69,10 +69,10 @@
         }
       ],
       "hpFrac": 1.0,
-      "coverS": 0.5,
+      "coverS": 0.4,
       "coverMax": 1.0,
       "foeReset": "spawn",
-      "foeResetDelayS": 2.5,
+      "foeResetDelayS": 2.0,
       "fallbackAfterS": 12.0
     }
   },
