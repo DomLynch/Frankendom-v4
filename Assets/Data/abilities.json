@@ -73,7 +73,8 @@
       "name": "Lunge",
       "slot": 0,
       "weapons": [
-        "boar_spear"
+        "boar_spear",
+        "sobek_trident"
       ],
       "characters": [
         "Joan"
@@ -130,7 +131,8 @@
       "name": "Sweep",
       "slot": 1,
       "weapons": [
-        "boar_spear"
+        "boar_spear",
+        "sobek_trident"
       ],
       "characters": [
         "Joan"
@@ -190,7 +192,8 @@
       "name": "Cleave",
       "slot": 0,
       "weapons": [
-        "war_axe"
+        "war_axe",
+        "erlking_axe"
       ],
       "characters": [
         "Joan"
@@ -249,7 +252,8 @@
       "name": "Chop",
       "slot": 1,
       "weapons": [
-        "war_axe"
+        "war_axe",
+        "erlking_axe"
       ],
       "characters": [
         "Joan"
@@ -306,7 +310,8 @@
       "name": "Ground Slam",
       "slot": 0,
       "weapons": [
-        "iron_maul"
+        "iron_maul",
+        "pitborn_maul"
       ],
       "characters": [
         "Joan"
@@ -365,7 +370,8 @@
       "name": "Smash",
       "slot": 1,
       "weapons": [
-        "iron_maul"
+        "iron_maul",
+        "pitborn_maul"
       ],
       "characters": [
         "Joan"
