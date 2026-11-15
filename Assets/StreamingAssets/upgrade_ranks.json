@@ -43,6 +43,36 @@
       "field": "blockCost",
       "mul": 0.97,
       "label": "Guard I: block stamina cost x0.97"
+    },
+    {
+      "item": "rank_vigour_3",
+      "field": "hp",
+      "mul": 1.03,
+      "label": "Vigour III: max health x1.03"
+    },
+    {
+      "item": "rank_wind_3",
+      "field": "stamina",
+      "mul": 1.03,
+      "label": "Wind III: max stamina x1.03"
+    },
+    {
+      "item": "rank_edge_3",
+      "field": "damage",
+      "mul": 1.03,
+      "label": "Edge III: damage x1.03"
+    },
+    {
+      "item": "rank_guard_2",
+      "field": "blockCost",
+      "mul": 0.97,
+      "label": "Guard II: block stamina cost x0.97"
+    },
+    {
+      "item": "rank_guard_3",
+      "field": "blockCost",
+      "mul": 0.97,
+      "label": "Guard III: block stamina cost x0.97"
     }
   ]
 }

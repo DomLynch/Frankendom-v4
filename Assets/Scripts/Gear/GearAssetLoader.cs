@@ -42,28 +42,57 @@ public static class GearAssetLoader
         done(r.root, r.res, "gltf:" + file);
     }
 
-    struct Loaded { public GameObject root; public IDisposable res; }
+    struct Loaded { public GameObject root; public IDisposable res; public bool threw, dead; }   // K30: threw = an exception (retry), dead = the parent was destroyed while loading (no retry)
 
+    // K30: gear.json loadRetries: a load that THREW is retried with a fresh GltfImport (the preloaded one, if any, was already consumed by attempt 0)
     static async Task<Loaded> LoadGlb(string file, Transform parent)
     {
-        var holder = new GameObject("GearGlb");
+        int retries = 1; try { retries = Mathf.Max(0, GearTable.Get().loadRetries); } catch (Exception) { }
+        Loaded r = new Loaded();
+        for (int attempt = 0; attempt <= retries; attempt++)
+        {
+            r = await LoadGlbOnce(file, parent, attempt == 0, attempt);
+            if (!r.threw) return r;
+            if (attempt < retries) { Debug.Log("[Gear] glb load retry " + (attempt + 1) + "/" + retries + " (" + file + ")"); await Task.Yield(); }
+        }
+        return new Loaded();
+    }
+
+    static async Task<Loaded> LoadGlbOnce(string file, Transform parent, bool usePreload, int attempt)
+    {
+        bool hadParent = parent != null;
+        GameObject holder = null; GLTFast.GltfImport gltf = null;
         try
         {
+            holder = new GameObject("GearGlb");
             holder.transform.SetParent(parent, false);
-            GLTFast.GltfImport gltf = null; bool ok = false;
-            var pre = GlbPreload.Take(file);   // PERF3 v100 C3: parsed during the intro (perf_fixes.json C3); a miss or a failed preload = the old path below
-            if (pre != null) { gltf = await pre; ok = gltf != null; }
-            if (!ok) { gltf = new GLTFast.GltfImport(); ok = await gltf.LoadFile(file); }
+            bool ok = false;
+            if (usePreload)
+            {
+                var pre = GlbPreload.Take(file);   // PERF3 v100 C3: parsed during the intro (perf_fixes.json C3); a miss or a failed preload = the old path below
+                if (pre != null) { gltf = await pre; ok = gltf != null; }
+            }
+            if (!ok) { gltf = new GLTFast.GltfImport(deferAgent: GlbPreload.DeferAgent); ok = await gltf.LoadFile(file); }   // K30: shared DontDestroyOnLoad defer agent
+            if (hadParent && (parent == null || holder == null)) return Dead(gltf, holder);
             if (ok) ok = await gltf.InstantiateMainSceneAsync(holder.transform);
+            if (hadParent && (parent == null || holder == null)) return Dead(gltf, holder);   // K30: the wearer / piece was destroyed while glTFast ran
             if (!ok) { gltf.Dispose(); UnityEngine.Object.Destroy(holder); return new Loaded(); }
             return new Loaded { root = holder, res = gltf };
         }
         catch (Exception e)
         {
-            Debug.LogWarning("[Gear] glb load failed (" + file + "): " + e.Message);
+            Debug.LogWarning("[Gear] glb load failed (" + file + ", attempt " + (attempt + 1) + "): " + e.ToString());   // K30: full stack
+            try { if (gltf != null) gltf.Dispose(); } catch (Exception) { }
             if (holder != null) UnityEngine.Object.Destroy(holder);
-            return new Loaded();
+            return new Loaded { threw = !(hadParent && parent == null) };   // a dead parent is not worth a retry
         }
+    }
+
+    static Loaded Dead(GLTFast.GltfImport gltf, GameObject holder)
+    {
+        try { if (gltf != null) gltf.Dispose(); } catch (Exception) { }
+        try { if (holder != null) UnityEngine.Object.Destroy(holder); } catch (Exception) { }
+        return new Loaded { dead = true };
     }
 
     static string FindFile(string glb)

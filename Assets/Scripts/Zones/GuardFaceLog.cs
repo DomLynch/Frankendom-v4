@@ -7,8 +7,8 @@ using UnityEngine;
 // Purpose: find why the z2 pickets show their backs to Joan whatever the spot yaw (DuelFighter faceOpp toward df.opponent, brain disabled, etc.).
 public static class GuardFaceLog
 {
-    static bool on, started; static readonly HashSet<DuelFighter> seen = new HashSet<DuelFighter>();
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void Reset() { started = false; on = false; seen.Clear(); }
+    static bool on, started; static readonly HashSet<DuelFighter> seen = new HashSet<DuelFighter>(), seen12 = new HashSet<DuelFighter>();
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void Reset() { started = false; on = false; seen.Clear(); seen12.Clear(); }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
@@ -27,14 +27,14 @@ public static class GuardFaceLog
             foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsSortMode.None))
             {
                 if (f == null || f.IsPlayer || f.name.IndexOf("#bandit_", System.StringComparison.Ordinal) < 0) continue;
-                if (seen.Contains(f)) continue;
                 float t0; if (!first.TryGetValue(f, out t0)) { first[f] = Time.unscaledTime; continue; }
-                if (Time.unscaledTime - t0 < 3f) continue;
-                seen.Add(f);
+                bool at12 = seen.Contains(f);   // FK15: second line at +12 s (the guards after the restart settled)
+                if (at12 ? (seen12.Contains(f) || Time.unscaledTime - t0 < 12f) : Time.unscaledTime - t0 < 3f) continue;
+                if (at12) seen12.Add(f); else seen.Add(f);
                 var sb = new System.Text.StringBuilder();
                 foreach (var m in f.GetComponents<MonoBehaviour>()) { if (m == null) continue; sb.Append(m.GetType().Name).Append(m.enabled ? ":on " : ":off "); }
                 object fo = faceF != null ? faceF.GetValue(f) : null;
-                Debug.Log("[GuardFace] " + f.name + " opp=" + (f.opponent != null ? f.opponent.name : "none") + " faceOpp=" + (fo != null ? fo.ToString() : "?") + " state=" + f.state + " y=" + f.transform.eulerAngles.y.ToString("F1") + " pos=(" + f.transform.position.x.ToString("F2") + "," + f.transform.position.z.ToString("F2") + ") comps=[" + sb.ToString().Trim() + "]");
+                Debug.Log("[GuardFace" + (at12 ? "+12" : "") + "] " + f.name + " opp=" + (f.opponent != null ? f.opponent.name : "none") + " faceOpp=" + (fo != null ? fo.ToString() : "?") + " state=" + f.state + " y=" + f.transform.eulerAngles.y.ToString("F1") + " pos=(" + f.transform.position.x.ToString("F2") + "," + f.transform.position.z.ToString("F2") + ") comps=[" + sb.ToString().Trim() + "]");
             }
         }
     }

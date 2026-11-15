@@ -215,7 +215,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         bool hasPos = sp != null && sp.pos.Length >= 2;
         if (!hasPos && (tpl.scene.IsValid() == false)) { Warn(row.id, "[Zones] spawn " + row.id + ": spot has no pos and the creature is not a scene object, skipped"); return; }
         Vector3 home = hasPos ? SpotPos(sp, tpl.transform.position) : tpl.transform.position; float yaw = sp != null ? sp.yaw : 0f;
-        var go = Instantiate(tpl, home, Quaternion.Euler(0f, yaw, 0f)); go.name = Roster.Get(cid).objectName + "#" + row.id; ZoneHitch.Lap("spawn.instantiate " + cid, ref zh);  /* ZONEHITCH v1 */
+        var go = Instantiate(tpl, home, Quaternion.Euler(0f, yaw, 0f)); go.name = Roster.Get(cid).objectName + "#" + row.id; ZoneHitch.Lap("spawn.instantiate " + cid, ref zh); CreatureFacing.Apply(go, cid);  /* ZONEHITCH v1 */
         var df = go.GetComponent<DuelFighter>(); var br = go.GetComponent<AIBrain>();
         if (df == null) { Destroy(go); Warn(row.id, "[Zones] spawn " + row.id + ": clone has no DuelFighter"); return; }
         if (br != null) br.enabled = false;   // dormant until the player walks into its aggro radius
@@ -248,7 +248,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         var z = Inst; if (z == null || !z.on || z.zone == null || z.player == null || z.live.ContainsKey(id)) return null;
         var tpl = z.Template(creature); if (tpl == null) return null;
         var row = new ZSpawn { id = id, enabled = false, ladderRow = ladderRow, hpMul = hpMul, damageMul = damageMul, difficulty = difficulty, aggro = aggro, leash = leash };
-        var go = Instantiate(tpl, at, Quaternion.Euler(0f, yaw, 0f)); go.name = Roster.Get(creature).objectName + "#" + id;
+        var go = Instantiate(tpl, at, Quaternion.Euler(0f, yaw, 0f)); go.name = Roster.Get(creature).objectName + "#" + id; CreatureFacing.Apply(go, creature);
         var df = go.GetComponent<DuelFighter>(); var br = go.GetComponent<AIBrain>(); if (df == null) { Destroy(go); return null; }
         if (br != null) br.enabled = false;
         { var zc = ZoneData.Creature(creature); if (zc != null && zc.source == "resources") AttachRuntime(go); }

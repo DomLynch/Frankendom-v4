@@ -31,7 +31,7 @@ public sealed partial class ZoneRuntime
         var z = Inst; if (z == null || !z.on || z.zone == null || row == null) return null;
         if (z.live.ContainsKey(row.id)) return null;
         var tpl = z.Template(creature); if (tpl == null) { z.Warn("s2." + creature, "[S2] no template for " + creature); return null; }
-        var go = Instantiate(tpl, pos, Quaternion.Euler(0f, yaw, 0f)); go.name = Roster.Get(creature).objectName + "#" + row.id;
+        var go = Instantiate(tpl, pos, Quaternion.Euler(0f, yaw, 0f)); go.name = Roster.Get(creature).objectName + "#" + row.id; CreatureFacing.Apply(go, creature);
         var df = go.GetComponent<DuelFighter>(); var br = go.GetComponent<AIBrain>();
         if (df == null) { Destroy(go); return null; }
         if (br != null) br.enabled = false;

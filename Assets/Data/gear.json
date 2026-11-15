@@ -1,5 +1,9 @@
 {
   "enabled": true,
+  "loadRetries": 1,
+  "gearReadyCapS": 3.0,
+  "gearPreload": true,
+  "deferFrameBudget": 0.5,
   "debugLog": false,
   "statsWithoutAsset": true,
   "hideUnequippedLayers": true,
@@ -332,11 +336,11 @@
       },
       {
         "victim": "Humbaba",
-        "max": 2
+        "max": 3
       },
       {
         "victim": "Erlking",
-        "max": 3
+        "max": 4
       }
     ],
     "_maxPerKillBy": "WEAPONSWAP v88: per-victim cap; a victim without a row uses maxPerKill. Pitborn drops 3: maul + pauldron pair + chest (Dom's loot design)."
@@ -1122,6 +1126,7 @@
     },
     {
       "id": "sobek_claws",
+      "rarity": "relic",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -1180,6 +1185,7 @@
     },
     {
       "id": "pitborn_claws",
+      "rarity": "relic",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -1525,6 +1531,7 @@
     },
     {
       "id": "grendel_blade_R",
+      "rarity": "relic",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -1578,6 +1585,7 @@
     },
     {
       "id": "grendel_blade_L",
+      "rarity": "relic",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -1631,6 +1639,7 @@
     },
     {
       "id": "humbaba_claws",
+      "rarity": "relic",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -1750,6 +1759,7 @@
     },
     {
       "id": "grendel_claws",
+      "rarity": "relic",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -1809,6 +1819,7 @@
     },
     {
       "id": "erlking_claws",
+      "rarity": "relic",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -1868,6 +1879,7 @@
     },
     {
       "id": "npc_bow",
+      "rarity": "common",
       "shield": { "id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": "" },
       "name": "Archer's bow",
       "slot": "mainHand",
@@ -1881,6 +1893,7 @@
     },
     {
       "id": "joan_bow",
+      "rarity": "fine",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -2456,6 +2469,7 @@
     },
     {
       "id": "bandit_sword",
+      "rarity": "common",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -2496,6 +2510,7 @@
     },
     {
       "id": "bandit_dagger",
+      "rarity": "common",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -2536,6 +2551,7 @@
     },
     {
       "id": "bandit_axe",
+      "rarity": "common",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -2908,6 +2924,196 @@
       "dropChance": 0,
       "rarity": "fine",
       "notes": "k11 upgrade rank: owning this item gives Joan -3% block stamina cost (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "rank_vigour_3",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Vigour III",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "rarity": "relic",
+      "notes": "k31 upgrade rank (FK9): owning this item gives Joan +3% max health (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver 300).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "rank_wind_3",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Wind III",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "rarity": "relic",
+      "notes": "k31 upgrade rank (FK9): owning this item gives Joan +3% max stamina (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver 300).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "rank_edge_3",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Edge III",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "rarity": "relic",
+      "notes": "k31 upgrade rank (FK9): owning this item gives Joan +3% damage (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver 300).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "rank_guard_2",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Guard II",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "rarity": "rare",
+      "notes": "k31 upgrade rank (FK9): owning this item gives Joan -3% block stamina cost (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver 150).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "rank_guard_3",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Guard III",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "rarity": "relic",
+      "notes": "k31 upgrade rank (FK9): owning this item gives Joan -3% block stamina cost (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver 300).",
       "weapon": {
         "damageMul": 1,
         "speedMul": 1,

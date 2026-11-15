@@ -32,13 +32,13 @@ public class LoadingCard : MonoBehaviour
         catch (Exception e) { Debug.LogWarning("[LoadingCard] off: " + e.Message); }
     }
 
-    void Awake() { t0 = Time.realtimeSinceStartup; black = new Texture2D(1, 1); black.SetPixel(0, 0, Color.black); black.Apply(); }
+    void Awake() { t0 = Time.realtimeSinceStartup; GearReady.Begin(t0);black = new Texture2D(1, 1); black.SetPixel(0, 0, Color.black); black.Apply(); }
 
     void Update()
     {
         float now = Time.realtimeSinceStartup;
         if (Time.unscaledDeltaTime < cfg.calmFrameS) { if (calmSince < 0f) calmSince = now; } else calmSince = -1f;   // the world only draws once the texture / zone streaming hitches (100+ ms frames) have stopped
-        if (doneAt < 0f && now - t0 >= cfg.minSeconds && Prewarm92.TotalSeconds >= 0f && calmSince >= 0f && now - calmSince >= cfg.calmForS && (!cfg.waitForStartupWarm || StartupWarm.Done)) { doneAt = now; Debug.Log("[LoadingCard] prewarm done and frames calm (" + cfg.calmForS.ToString("F1") + " s under " + (cfg.calmFrameS * 1000f).ToString("F0") + " ms) after " + (now - t0).ToString("F1") + " s: fading out"); }
+        if (doneAt < 0f && now - t0 >= cfg.minSeconds && Prewarm92.TotalSeconds >= 0f && calmSince >= 0f && now - calmSince >= cfg.calmForS && (!cfg.waitForStartupWarm || StartupWarm.Done) && GearReady.Poll(now)) { doneAt = now; Debug.Log("[LoadingCard] prewarm done and frames calm (" + cfg.calmForS.ToString("F1") + " s under " + (cfg.calmFrameS * 1000f).ToString("F0") + " ms) after " + (now - t0).ToString("F1") + " s: fading out"); }
         if (doneAt < 0f && now - t0 >= cfg.maxSeconds) { doneAt = now - cfg.extraAfterPrewarmS; Debug.Log("[LoadingCard] gave up waiting for the prewarm after " + cfg.maxSeconds.ToString("F0") + " s: fading out"); }
         if (doneAt >= 0f && now - doneAt >= cfg.extraAfterPrewarmS + cfg.fadeS) { Debug.Log("[LoadingCard] gone"); Destroy(gameObject); }
     }

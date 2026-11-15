@@ -18,7 +18,7 @@ public class GearSlots : MonoBehaviour, IGearStatSource
     public bool applyLoadout = true;         // equip the roster.json loadout in Start
     public Transform skeletonRoot;           // "" = Fighter.anim.transform, else this transform
 
-    class SlotState { public string slotId; public GearTable.Item item; public int serial; public bool loading, visualOk, maskOk, wasTried; public List<GameObject> pieces = new List<GameObject>(); public List<Renderer> renderers = new List<Renderer>(); public List<GameObject> owned = new List<GameObject>(); public bool layerMode; public Renderer layerRenderer; }
+    class SlotState { public string slotId; public GearTable.Item item; public int serial; public bool loading, visualOk, maskOk, wasTried, resolved; public List<GameObject> pieces = new List<GameObject>(); public List<Renderer> renderers = new List<Renderer>(); public List<GameObject> owned = new List<GameObject>(); public bool layerMode; public Renderer layerRenderer; }
     // one glb of an item (the primary, or the mirror of a pair) while it loads
     class PieceResult { public bool ok, abort; public string info = ""; public GameObject root; public List<Renderer> renderers = new List<Renderer>(); public List<GameObject> owned = new List<GameObject>(); }
 
@@ -123,7 +123,16 @@ public class GearSlots : MonoBehaviour, IGearStatSource
     }
 
     // ---------------- visual ----------------
-    void Start()
+    bool loadoutApplied;   // K30: Start has run (the loadout, if any, is equipped): until then "no slots" does not mean "all resolved"
+    /// <summary>K30 GearReady gate: the loadout is equipped and every slot has Resolved (visual ok or a resolved failure). n = slot count.</summary>
+    public bool AllResolved(out int n)
+    {
+        n = slots.Count; if (!loadoutApplied) return false;
+        foreach (var kv in slots) if (!kv.Value.resolved) return false;
+        return true;
+    }
+    void Start() { ApplyLoadout(); loadoutApplied = true; }
+    void ApplyLoadout()
     {
         if (!GearTable.Get().enabled || !applyLoadout) return;
         var lo = GearTable.Loadout(CharacterId); if (lo == null) return;
@@ -219,7 +228,7 @@ public class GearSlots : MonoBehaviour, IGearStatSource
 
     void Resolved(SlotState s, bool ok, string why, bool warn = true)
     {
-        s.visualOk = ok; if (!ok) s.maskOk = false;
+        s.resolved = true; s.visualOk = ok; if (!ok) s.maskOk = false;
         if (!ok && warn) GearTable.Warn("'" + s.item.id + "' has no visual (" + why + "): equipped for stats only, no body masking");
         else if (ok) GearTable.Log(s.item.id + " visual ok: " + why);
         if (OnVisual != null) OnVisual(this, s.item, s.slotId, ok);

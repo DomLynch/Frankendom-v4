@@ -20,7 +20,32 @@ public static class GlbPreload
     public static int Started, Done, Failed, Taken; public static float Seconds;   // for the log line / perfbench
     public static bool Expected, Tier0Done;   // v3: StartupWarm holds its cover until Joan's gear tier is parsed (Expected = a preload runner was started)
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cache.Clear(); Started = Done = Failed = Taken = 0; Seconds = 0f; Expected = Tier0Done = false; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cache.Clear(); Started = Done = Failed = Taken = 0; Seconds = 0f; Expected = Tier0Done = false; if (deferGo != null) UnityEngine.Object.Destroy(deferGo); deferGo = null; deferAgent = null; }
+
+    // K30: ONE DontDestroyOnLoad defer agent for every glTFast import of the gear path (GearAssetLoader, this class), so no import depends on glTFast's global default agent. Recreated if its object was destroyed.
+    static GameObject deferGo; static GLTFast.TimeBudgetPerFrameDeferAgent deferAgent;
+    public static GLTFast.IDeferAgent DeferAgent
+    {
+        get
+        {
+            if (deferAgent == null)   // Unity null check: also true when the object was destroyed
+            {
+                deferGo = new GameObject("GlbDeferAgent"); UnityEngine.Object.DontDestroyOnLoad(deferGo);
+                deferAgent = deferGo.AddComponent<GLTFast.TimeBudgetPerFrameDeferAgent>();
+                float b = 0.5f; try { b = GearTable.Get().deferFrameBudget; } catch (Exception) { }
+                deferAgent.SetFrameBudget(Mathf.Clamp(b, 0.01f, 5f));
+            }
+            return deferAgent;
+        }
+    }
+
+    /// <summary>K30: parse this file now if nothing is cached for it yet (the loading card preloads the player's loadout with it). Returns true when a parse was started.</summary>
+    public static bool Ensure(string file)
+    {
+        if (string.IsNullOrEmpty(file)) return false;
+        string key = Key(file); if (cache.ContainsKey(key)) return false;
+        Add(file, LoadAsync(file)); return true;
+    }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
@@ -84,12 +109,12 @@ public static class GlbPreload
         GLTFast.GltfImport g = null;
         try
         {
-            g = new GLTFast.GltfImport();
+            g = new GLTFast.GltfImport(deferAgent: DeferAgent);   // K30
             bool ok = await g.LoadFile(file);
             if (!ok) { g.Dispose(); Failed++; return null; }
             Done++; return g;
         }
-        catch (Exception e) { Debug.LogWarning("[GlbPreload] " + file + ": " + e.Message); try { if (g != null) g.Dispose(); } catch (Exception) { } Failed++; return null; }
+        catch (Exception e) { Debug.LogWarning("[GlbPreload] " + file + ": " + e.ToString() /* K30: full stack */); try { if (g != null) g.Dispose(); } catch (Exception) { } Failed++; return null; }
     }
 
     internal static void Add(string file, Task<GLTFast.GltfImport> t) { cache[Key(file)] = t; Started++; }
