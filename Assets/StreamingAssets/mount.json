@@ -2,7 +2,7 @@
   "_about": "laneHORSE v2 (staged, DARK, UNPROVEN in Unity). Read by Assets/Scripts/Mount/MountRider.cs (summon, speed, dismount, gait) and, for the size, by the static camp horse (hub.json npc_horse runtime.horseScale). enabled=false ships dark. Units metres, seconds, degrees. Copy to Assets/Data AND StreamingAssets.",
   "enabled": true,
   "debugLog": false,
-  "rider": { "enabled": true, "log": true, "shield": { "enabled": false, "socket": "ShieldSocket_L", "bone": "mixamorig:Spine2", "rx": 0, "ry": 0, "rz": 0, "px": 0, "py": 0.05, "pz": -0.22, "scale": 1 }, "clips": [ { "from": "idle", "state": "rider_idle" }, { "from": "walk", "state": "rider_gallop" }, { "from": "loco_run", "state": "rider_gallop" } ] },
+  "rider": { "enabled": false, "log": true, "shield": { "enabled": false, "socket": "ShieldSocket_L", "bone": "mixamorig:Spine2", "rx": 0, "ry": 0, "rz": 0, "px": 0, "py": 0.05, "pz": -0.22, "scale": 1 }, "clips": [ { "from": "idle", "state": "rider_idle" }, { "from": "walk", "state": "rider_gallop" }, { "from": "loco_run", "state": "rider_gallop" } ] },
   "hideWeaponWhileMounted": true,
   "summonAction": "mount",
   "summonKey": "M",

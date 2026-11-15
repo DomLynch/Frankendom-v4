@@ -50,6 +50,7 @@ public sealed class ZoneCamScene : MonoBehaviour
                 case "fight": it = Fight(S, st); break;
                 case "hold": it = Hold(S, st); break;
                 case "forceDeath": it = ForceDeath(S, st); break;   // CODE5 v1
+                case "sidecam": it = SideCam(S, st); break;   // FK17: free camera beside / behind Joan (data pos = [right m, up m, forward m, look height m]) for st.seconds, her sim keeps running
                 case "hitPose": it = HitPose(S, st); break;   // dev2: play one Animator state on Joan, freeze at the peak, front camera (step.item = state name, step.seconds = hold)
                 case "trade": it = Trade(S, st); break; case "equip": it = EquipStep(S, st); break; case "lootscreen": it = LootShot(S, st); break; case "mounttoggle": it = MountToggle(S, st); break; case "pickup": it = Pickup(S, st); break; case "inv": Inv(st.id); break;   // CLOSE5B v1
                 default: Note("unknown kind " + st.kind); ok = false; break;
@@ -151,6 +152,22 @@ public sealed class ZoneCamScene : MonoBehaviour
         Debug.Log("[CamScene-POSE] " + st.item + " hasState " + has + " clipLen " + len.ToString("F2") + " freeze at t " + t1.ToString("F2") + " hold " + st.seconds.ToString("F1"));
         while (Time.realtimeSinceStartup < t1 + Mathf.Max(0.5f, st.seconds)) { PoseCam(cam, m); yield return null; }
         an.speed = 1f; m.enabled = simWas; cam.fieldOfView = fov0; if (rig != null) rig.enabled = rigWas;
+    }
+    // FK17 SIDECAM (harness): the camera stands at pos[0] m to Joan's RIGHT (negative = left), pos[1] m above her root, pos[2] m ahead of her, looking at her root + pos[3] m (default 1.3), fov 40, for st.seconds. The camera rig is switched off and
+    // switched back on afterwards; Joan's simulation is NOT touched (she can ride, gallop, fight while it films). Frames come from the camtrace recorder.
+    IEnumerator SideCam(CtScene S, CtStep st)
+    {
+        var m = Me(); var cam = Camera.main; if (m == null || cam == null) { Note("sidecam: no Joan or camera"); yield break; }
+        var rig = cam.GetComponent<CameraRig>(); bool rigWas = rig != null && rig.enabled; if (rig != null) rig.enabled = false; float fov0 = cam.fieldOfView;
+        float sx = st.pos != null && st.pos.Length > 0 ? st.pos[0] : 4f, sy = st.pos != null && st.pos.Length > 1 ? st.pos[1] : 1.6f, sz = st.pos != null && st.pos.Length > 2 ? st.pos[2] : 0f, ly = st.pos != null && st.pos.Length > 3 ? st.pos[3] : 1.3f;
+        float t1 = Time.realtimeSinceStartup + Mathf.Max(0.5f, st.seconds);
+        while (Time.realtimeSinceStartup < t1)
+        {
+            Vector3 f = m.transform.forward; f.y = 0f; f.Normalize(); Vector3 r = m.transform.right; r.y = 0f; r.Normalize(); Vector3 p = m.transform.position;
+            cam.transform.position = p + r * sx + f * sz + Vector3.up * sy; cam.transform.rotation = Quaternion.LookRotation((p + Vector3.up * ly) - cam.transform.position, Vector3.up); cam.fieldOfView = 40f;
+            yield return null;
+        }
+        cam.fieldOfView = fov0; if (rig != null) rig.enabled = rigWas;
     }
     static int poseSide;
     void PoseCam(Camera cam, DuelFighter m)
