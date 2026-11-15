@@ -94,7 +94,7 @@
     "heavyAction": "heavy",
     "strikeKeys": ["Mouse0", "F"],
     "heavyKeys": ["G"],
-    "onOpponent": true,
+    "onOpponent": false,
     "inHub": false,
     "onMenu": false,
     "onFinisher": true,

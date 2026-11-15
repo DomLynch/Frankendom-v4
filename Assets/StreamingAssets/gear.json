@@ -399,7 +399,7 @@
       },
       "name": "Heraldic tunic",
       "slot": "chest",
-      "glb": "",
+      "glb": "Gear/joan_tunic.glb",
       "rig": "psyche-106",
       "materials": {
         "*": {
@@ -447,12 +447,10 @@
       "name": "Steel helm",
       "slot": "head",
       "layer": "",
-      "glb": "",
+      "glb": "Gear/bascinet_joan.glb",
       "rig": "psyche-106",
       "tris": 5292,
-      "coversZones": [
-        "head"
-      ],
+      "coversZones": [],
       "hidesLayers": [
         "Joan_Hair"
       ],
@@ -496,7 +494,7 @@
       },
       "name": "Leather bracers",
       "slot": "arms",
-      "glb": "",
+      "glb": "Gear/joan_bracers.glb",
       "rig": "psyche-106",
       "coversZones": [
         "forearmL",
@@ -536,7 +534,7 @@
       },
       "name": "Steel greaves",
       "slot": "legs",
-      "glb": "",
+      "glb": "Gear/joan_greaves.glb",
       "rig": "psyche-106",
       "coversZones": [
         "shinL",
