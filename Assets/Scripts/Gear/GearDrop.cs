@@ -54,6 +54,7 @@ public static class GearDrop
             Rolls++;
             if (r.NextDouble() < it.dropChance) win.Add(it);
         }
+        MobDrops.Append(victimId, r, win);   /* MOBDROPS v1: per-victim tier table (mob_drops.json), no-op without the file */
         return win;
     }
 

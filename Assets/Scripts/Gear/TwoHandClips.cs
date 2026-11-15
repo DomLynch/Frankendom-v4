@@ -9,7 +9,8 @@ public static class TwoHandClips
 {
     [Serializable] public class Pair { public string from = "", to = ""; public bool loop; }
     [Serializable] public class Set { public string id = "", glb = ""; public Pair[] map = new Pair[0]; }
-    [Serializable] public class Row { public string weapon = "", set = ""; }
+    [Serializable] public class Pick { public string state = "", set = ""; }
+    [Serializable] public class Row { public string weapon = "", set = ""; public Pick[] pick = new Pick[0]; }   // pick = per controller state (from) a different set id than row.set
     [Serializable] public class Data { public bool enabled = true; public Set[] sets = new Set[0]; public Row[] rows = new Row[0]; }
 
     static Data data; static bool on;
@@ -37,10 +38,10 @@ public static class TwoHandClips
     {
         if (slot != "mainHand") return;
         var f = Fighter(w); if (f == null || !f.IsPlayer || AnimOf(f) == null) return;
-        var d = Get(); Set s = null;
-        if (d.enabled && it != null) { foreach (var r in d.rows) if (r != null && r.weapon == it.id) foreach (var c in d.sets) if (c != null && c.id == r.set) s = c; }
+        var d = Get(); Set s = null; Row row = null;
+        if (d.enabled && it != null) { foreach (var r in d.rows) if (r != null && r.weapon == it.id) foreach (var c in d.sets) if (c != null && c.id == r.set) { s = c; row = r; } }
         if (s == null) { Restore(f, it != null ? it.id : ""); return; }
-        Apply(f, s, it.id);
+        Apply(f, s, row, it.id);
     }
     static void OnUneq(GearSlots w, GearTable.Item it, string slot)
     {
@@ -49,24 +50,30 @@ public static class TwoHandClips
         Restore(f, "unequip");
     }
 
-    static void Apply(DuelFighter f, Set s, string weapon)
+    static Pair PickPair(Data d, Row row, Set s, Pair p0)
+    {
+        if (row == null || row.pick == null) return p0;
+        foreach (var k in row.pick) if (k != null && k.state == p0.from) foreach (var c in d.sets) if (c != null && c.id == k.set) foreach (var q in c.map) if (q != null && q.from == p0.from) return q;
+        return p0;
+    }
+    static void Apply(DuelFighter f, Set s, Row row, string weapon)
     {
         var anim = AnimOf(f); var h = anim.GetComponent<Holder>();
         RuntimeAnimatorController baseCtrl = h != null && h.orig != null ? h.orig : anim.runtimeAnimatorController; if (baseCtrl == null) return;
         var byName = new Dictionary<string, AnimationClip>(); foreach (var c in baseCtrl.animationClips) if (c != null && !byName.ContainsKey(c.name)) byName[c.name] = c;
         var oc = new AnimatorOverrideController(baseCtrl); oc.name = baseCtrl.name;
-        var list = new List<KeyValuePair<AnimationClip, AnimationClip>>(); oc.GetOverrides(list);
+        var list = new List<KeyValuePair<AnimationClip, AnimationClip>>(); oc.GetOverrides(list); var all = Get();
         int n = 0, miss = 0;
-        foreach (var p in s.map)
+        foreach (var p0 in s.map)
         {
-            AnimationClip to; if (!byName.TryGetValue(p.to, out to)) { miss++; continue; }
+            var p = PickPair(all, row, s, p0); AnimationClip to; if (!byName.TryGetValue(p.to, out to)) { miss++; continue; }
             for (int i = 0; i < list.Count; i++) if (list[i].Key != null && list[i].Key.name == p.from) { list[i] = new KeyValuePair<AnimationClip, AnimationClip>(list[i].Key, to); n++; }
         }
         if (n == 0) { Debug.LogWarning("[TwoHandClips] " + weapon + " set " + s.id + ": no clip replaced (missing " + miss + "), old controller stays"); return; }
         oc.ApplyOverrides(list);
         if (h == null) h = anim.gameObject.AddComponent<Holder>();
         h.orig = baseCtrl; h.oc = oc; h.set = s.id; anim.runtimeAnimatorController = oc;
-        Debug.Log("[TwoHandClips] Joan " + weapon + " -> set " + s.id + ": " + n + " clip(s) replaced" + (miss > 0 ? ", " + miss + " missing" : ""));
+        Debug.Log("[TwoHandClips] Joan " + weapon + " -> set " + s.id + (row != null && row.pick != null && row.pick.Length > 0 ? " (+" + row.pick.Length + " per-state picks)" : "") + ": " + n + " clip(s) replaced" + (miss > 0 ? ", " + miss + " missing" : ""));
     }
     static void Restore(DuelFighter f, string why)
     {

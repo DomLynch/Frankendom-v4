@@ -1,0 +1,48 @@
+{
+  "_about": "k11 permanent silver upgrades (UpgradeRanks.cs). One row per rank: owning the item (bought once at a Bric-a-brac stall, market.json buyValue = the silver price) multiplies Joan's Progression field by mul. field: hp | stamina | damage (Progression.Total kinds) or a Progression perk field: blockCost blockChip attackCost postureTaken parryWindow moveSpeed. Ranks of one field multiply. enabled false or no file = old behaviour (every Mul is 1). All values PLACEHOLDERS (Dom economy call).",
+  "enabled": true,
+  "ranks": [
+    {
+      "item": "rank_vigour_1",
+      "field": "hp",
+      "mul": 1.03,
+      "label": "Vigour I: max health x1.03"
+    },
+    {
+      "item": "rank_vigour_2",
+      "field": "hp",
+      "mul": 1.03,
+      "label": "Vigour II: max health x1.03"
+    },
+    {
+      "item": "rank_wind_1",
+      "field": "stamina",
+      "mul": 1.03,
+      "label": "Wind I: max stamina x1.03"
+    },
+    {
+      "item": "rank_wind_2",
+      "field": "stamina",
+      "mul": 1.03,
+      "label": "Wind II: max stamina x1.03"
+    },
+    {
+      "item": "rank_edge_1",
+      "field": "damage",
+      "mul": 1.02,
+      "label": "Edge I: damage x1.02"
+    },
+    {
+      "item": "rank_edge_2",
+      "field": "damage",
+      "mul": 1.02,
+      "label": "Edge II: damage x1.02"
+    },
+    {
+      "item": "rank_guard_1",
+      "field": "blockCost",
+      "mul": 0.97,
+      "label": "Guard I: block stamina cost x0.97"
+    }
+  ]
+}

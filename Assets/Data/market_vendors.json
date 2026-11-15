@@ -82,6 +82,12 @@
           "item": "hunting_bow",
           "ready": true,
           "price": 40
+        },
+        {
+          "item": "arrow_bundle",
+          "ready": true,
+          "price": 6,
+          "needs": "AmmoRefill kind ammo (k10 code edits)"
         }
       ]
     },

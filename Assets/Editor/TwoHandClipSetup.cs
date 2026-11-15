@@ -21,6 +21,8 @@ public static class TwoHandClipSetup
         var map = new Dictionary<string, string>();
         foreach (var b in AnimationUtility.GetCurveBindings(refClip)) { string p = b.path; while (!string.IsNullOrEmpty(p)) { string lf = Leaf(p); if (!map.ContainsKey(lf)) map[lf] = p; int k = p.LastIndexOf('/'); p = k > 0 ? p.Substring(0, k) : ""; } }
         if (!AssetDatabase.IsValidFolder(Dir)) AssetDatabase.CreateFolder("Assets/Characters/Joan", "TwoHandClips");
+        var keep = new HashSet<string>(); foreach (var s0 in d.sets) foreach (var p0 in s0.map) keep.Add(p0.to);
+        foreach (var x in new List<ChildAnimatorState>(sm.states)) if (x.state.name.StartsWith("th_") && !keep.Contains(x.state.name)) { string nm = x.state.name; sm.RemoveState(x.state); Debug.Log("TwoHandClipSetup: removed stale state " + nm); }
         int added = 0;
         foreach (var s in d.sets)
         {

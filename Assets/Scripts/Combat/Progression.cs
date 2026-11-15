@@ -11,7 +11,7 @@ public static class Progression
 {
     [Serializable] public class Perk { public string label = ""; public float blockCostMul = 1f, blockChipMul = 1f, attackCostMul = 1f, postureTakenMul = 1f, parryWindowMul = 1f, moveSpeedMul = 1f; }
     [Serializable] public class Step { public string boss = "", zone = "", spawn = "", title = ""; public float hpMul = 1f, staminaMul = 1f, damageMul = 1f; public Perk perk = new Perk(); }
-    [Serializable] public class Toast { public float seconds = 4f, fadeInS = 0.25f, fadeOutS = 0.5f, lineH = 1.6f, bottom = 240f; public int size = 22; public float[] color = new float[0]; public string text = "{0}  -  {1}"; }
+    [Serializable] public class Toast { public int depth = -1000; public float seconds = 4f, fadeInS = 0.25f, fadeOutS = 0.5f, lineH = 1.6f, bottom = 240f; public int size = 22; public float[] color = new float[0]; public string text = "{0}  -  {1}"; }
     [Serializable] public class Cfg { public bool enabled = false, log = true; public string gatePrefix = "prog_step_"; public float pollS = 1f; public Toast toast = new Toast(); public Step[] steps = new Step[0]; }
 
     static Cfg c; static string lastToast = ""; static float toastT0 = -99f;   // hc:ok unset-time sentinel
@@ -44,6 +44,7 @@ public static class Progression
     static bool Unlock(int i, bool toast)
     {
         if (Unlocked(i)) return false;
+        if (Get().log) Debug.Log("[Progression] unlock path " + (toast ? "KILL HOOK (toast)" : "RETRO from the save (no toast)") + " step " + (i + 1));
         ZoneSave.UnlockGate(Gate(i)); ZoneSave.Flush(true);
         var s = Get().steps[i];
         if (Get().log) Debug.Log("[Progression] step " + (i + 1) + " unlocked (" + s.boss + "): hp x" + s.hpMul + " stamina x" + s.staminaMul + " damage x" + s.damageMul + " perk '" + s.perk.label + "' | totals hp x" + Total(0).ToString("F3") + " stamina x" + Total(1).ToString("F3") + " damage x" + Total(2).ToString("F3"));
@@ -61,7 +62,7 @@ public static class Progression
     {
         var k = Get(); if (!k.enabled) return 1f; float m = 1f;
         for (int i = 0; i < k.steps.Length; i++) { var s = k.steps[i]; if (s == null || !Unlocked(i)) continue; m *= kind == 0 ? s.hpMul : kind == 1 ? s.staminaMul : s.damageMul; }
-        return m;
+        return m * UpgradeRanks.Mul(kind == 0 ? "hp" : kind == 1 ? "stamina" : "damage");   // k11: owned silver ranks
     }
     public static float DamageMul(DuelFighter a) { if (a == null || a != GameLoop.Player) return 1f; return Total(2); }
     // perk field by name: product over unlocked steps (Joan only)
@@ -73,7 +74,7 @@ public static class Progression
             var s = k.steps[i]; if (s == null || s.perk == null || !Unlocked(i)) continue;
             m *= field == "blockCost" ? s.perk.blockCostMul : field == "blockChip" ? s.perk.blockChipMul : field == "attackCost" ? s.perk.attackCostMul : field == "postureTaken" ? s.perk.postureTakenMul : field == "parryWindow" ? s.perk.parryWindowMul : field == "moveSpeed" ? s.perk.moveSpeedMul : 1f;
         }
-        return m;
+        return m * UpgradeRanks.Mul(field);   // k11: owned silver ranks
     }
 
     internal static bool ToastActive(out string text, out float alpha)
@@ -86,7 +87,7 @@ public static class Progression
     // Joan's base health / stamina scaled by the unlocked steps; polled, so a new step applies at once and a scene reload re-applies after FightBalance set the base.
     public class ProgressionDriver : MonoBehaviour
     {
-        DuelFighter cur; float appliedHp = 1f, appliedSt = 1f, next, born;
+        bool toastLogged; DuelFighter cur; float appliedHp = 1f, appliedSt = 1f, next, born;
         void OnEnable() { born = Time.unscaledTime; }
         void Update()
         {
@@ -122,7 +123,8 @@ public static class Progression
         {
             if (Event.current.type != EventType.Repaint) return;
             string text; float a; if (!ToastActive(out text, out a)) return;
-            var k = Get().toast; GUI.depth = -1000;   // hc:ok IMGUI draw order, above the HUD like the silver toast
+            if (!toastLogged) { toastLogged = true; if (Get().log) Debug.Log("[Progression] toast drawn: " + text); }
+            var k = Get().toast; GUI.depth = k.depth;   // hc:ok IMGUI draw order, above the HUD like the silver toast
             HudDraw.Text(new Rect(0f, Screen.height - k.bottom, Screen.width, k.size * k.lineH), text, "serif", k.size, TextAnchor.UpperCenter, false, HudCfg.Col(k.color, a));
         }
     }

@@ -93,6 +93,16 @@
       "cooldownS": 30.0,
       "buyValue": 5,
       "maxCarry": 3
+    },
+    {
+      "id": "arrow_bundle",
+      "name": "Arrow bundle",
+      "kind": "ammo",
+      "arrows": 20,
+      "description": "20 arrows for the bow quiver",
+      "cooldownS": 2.0,
+      "buyValue": 6,
+      "maxCarry": 5
     }
   ]
 }

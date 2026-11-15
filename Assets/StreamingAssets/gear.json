@@ -2552,6 +2552,347 @@
         "ikWeight": 1.0,
         "ikBlendSeconds": 0.15
       }
+    },
+    {
+      "id": "pitborn_gorget",
+      "name": "Pitborn gorget",
+      "slot": "chest",
+      "glb": "Gear/pitborn_gorget_joan.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 9,
+        "poise": 6,
+        "weight": 4.5
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "rarity": "relic",
+      "materials": {
+        "*": {
+          "smoothness": 0.5,
+          "metallic": 0.85,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "FK1 mob_drops k9: relic drop of Humbaba (mob_drops.json). Existing GLB pitborn_gorget_joan.glb (symmetric, rig psyche-106 like pitborn_chest_joan). Material row copied from pitborn_pauldron_joan. Stats placeholder."
+    },
+    {
+      "id": "pitborn_vambrace",
+      "name": "Pitborn vambrace",
+      "slot": "arms",
+      "glb": "Gear/pitborn_vambrace_joan.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [
+        "Layer_Bracers"
+      ],
+      "stats": {
+        "armor": 8,
+        "poise": 6,
+        "weight": 3.5
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "rarity": "relic",
+      "materials": {
+        "*": {
+          "smoothness": 0.5,
+          "metallic": 0.85,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "FK1 mob_drops k9: relic drop of Humbaba. Existing GLB is ONE side only (right arm, x -0.62..-0.51): no L file exists, so one vambrace shows (glbMirror empty). Stats placeholder."
+    },
+    {
+      "id": "pitborn_greave",
+      "name": "Pitborn greave",
+      "slot": "legs",
+      "glb": "Gear/pitborn_greave_joan.glb",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [
+        "Layer_Greaves"
+      ],
+      "stats": {
+        "armor": 8,
+        "poise": 5,
+        "weight": 4.5
+      },
+      "dropFrom": [],
+      "dropChance": 0.0,
+      "rarity": "relic",
+      "materials": {
+        "*": {
+          "smoothness": 0.5,
+          "metallic": 0.85,
+          "normalScale": 1.0
+        }
+      },
+      "notes": "FK1 mob_drops k9: relic drop of Erlking. Existing GLB is ONE side only (x -0.21..-0.04). Stats placeholder."
+    },
+    {
+      "id": "rank_vigour_1",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Vigour I",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "k11 upgrade rank: owning this item gives Joan +3% max health (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "rank_vigour_2",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Vigour II",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "k11 upgrade rank: owning this item gives Joan +3% max health (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "rank_wind_1",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Wind I",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "k11 upgrade rank: owning this item gives Joan +3% max stamina (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "rank_wind_2",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Wind II",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "k11 upgrade rank: owning this item gives Joan +3% max stamina (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "rank_edge_1",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Edge I",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "k11 upgrade rank: owning this item gives Joan +2% damage (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "rank_edge_2",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Edge II",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "k11 upgrade rank: owning this item gives Joan +2% damage (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
+    },
+    {
+      "id": "rank_guard_1",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Guard I",
+      "slot": "",
+      "layer": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 0,
+        "weight": 0
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "notes": "k11 upgrade rank: owning this item gives Joan -3% block stamina cost (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      },
+      "glb": "",
+      "resource": ""
     }
   ]
 }

@@ -1,0 +1,589 @@
+{
+  "_about": "MOBDROPS v1 (FK1 loot, STAGED, placeholders for Dom's balance call). Read by MobDrops.cs, called from GearDrop.Roll. enabled false or a missing file = old behaviour (mobs drop silver only, bosses drop by gear.json dropFrom). A row = one victim (creature = roster id, the same id gear.json dropFrom and boss_silver.json use): roll chance; if it wins, count times pick a tier by tiers[].w (only tiers that have items in items[]), then one item of that tier by items[].w; an item the victim already dropped this kill is skipped. Independent of drop.maxPerKillBy. item ids must exist in gear.json items[] (an unknown id is skipped with a log line). tier names are free text (gear.json rarity: common / fine / rare / relic). zone is a note only.",
+  "enabled": true,
+  "rows": [
+    {
+      "creature": "NpcPitGladiator",
+      "zone": "z1",
+      "chance": 0.15,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 80
+        },
+        {
+          "tier": "fine",
+          "w": 20
+        },
+        {
+          "tier": "rare",
+          "w": 0
+        }
+      ],
+      "items": [
+        {
+          "id": "cuirass_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "joan_boots",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "iron_maul",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcChainWarden",
+      "zone": "z1",
+      "chance": 0.15,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 80
+        },
+        {
+          "tier": "fine",
+          "w": 20
+        },
+        {
+          "tier": "rare",
+          "w": 0
+        }
+      ],
+      "items": [
+        {
+          "id": "arms_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "joan_shield",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "gorget_joan",
+          "tier": "fine",
+          "w": 1
+        },
+        {
+          "id": "iron_maul",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcSlagCrossbowman",
+      "zone": "z1",
+      "chance": 0.15,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 80
+        },
+        {
+          "tier": "fine",
+          "w": 20
+        },
+        {
+          "tier": "rare",
+          "w": 0
+        }
+      ],
+      "items": [
+        {
+          "id": "joan_boots",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "legarmour_joan",
+          "tier": "common",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcCrocWarrior",
+      "zone": "z2",
+      "chance": 0.18,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 75
+        },
+        {
+          "tier": "fine",
+          "w": 22
+        },
+        {
+          "tier": "rare",
+          "w": 3
+        }
+      ],
+      "items": [
+        {
+          "id": "legarmour_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "boar_spear",
+          "tier": "fine",
+          "w": 1
+        },
+        {
+          "id": "greave_joan",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcReedSkirmisher",
+      "zone": "z2",
+      "chance": 0.18,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 75
+        },
+        {
+          "tier": "fine",
+          "w": 22
+        },
+        {
+          "tier": "rare",
+          "w": 3
+        }
+      ],
+      "items": [
+        {
+          "id": "joan_boots",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "arms_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "boar_spear",
+          "tier": "fine",
+          "w": 1
+        },
+        {
+          "id": "vambrace_joan",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcEmbalmerCultist",
+      "zone": "z2",
+      "chance": 0.18,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 75
+        },
+        {
+          "tier": "fine",
+          "w": 22
+        },
+        {
+          "tier": "rare",
+          "w": 3
+        }
+      ],
+      "items": [
+        {
+          "id": "joan_boots",
+          "tier": "common",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcMereRaider",
+      "zone": "z4",
+      "chance": 0.2,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 65
+        },
+        {
+          "tier": "fine",
+          "w": 30
+        },
+        {
+          "tier": "rare",
+          "w": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "arms_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "cuirass_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "war_axe",
+          "tier": "fine",
+          "w": 1
+        },
+        {
+          "id": "pauldron_joan",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcBogHag",
+      "zone": "z4",
+      "chance": 0.2,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 65
+        },
+        {
+          "tier": "fine",
+          "w": 30
+        },
+        {
+          "tier": "rare",
+          "w": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "joan_boots",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "vambrace_joan",
+          "tier": "fine",
+          "w": 1
+        },
+        {
+          "id": "gorget_joan",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcDrownedThane",
+      "zone": "z4",
+      "chance": 0.2,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 65
+        },
+        {
+          "tier": "fine",
+          "w": 30
+        },
+        {
+          "tier": "rare",
+          "w": 5
+        }
+      ],
+      "items": [
+        {
+          "id": "joan_shield",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "cuirass_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "war_axe",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcBarkSentinel",
+      "zone": "z5",
+      "chance": 0.22,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 55
+        },
+        {
+          "tier": "fine",
+          "w": 38
+        },
+        {
+          "tier": "rare",
+          "w": 7
+        }
+      ],
+      "items": [
+        {
+          "id": "legarmour_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "iron_maul",
+          "tier": "fine",
+          "w": 1
+        },
+        {
+          "id": "greave_joan",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcCedarArcher",
+      "zone": "z5",
+      "chance": 0.22,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 55
+        },
+        {
+          "tier": "fine",
+          "w": 38
+        },
+        {
+          "tier": "rare",
+          "w": 7
+        }
+      ],
+      "items": [
+        {
+          "id": "arms_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "boar_spear",
+          "tier": "fine",
+          "w": 1
+        },
+        {
+          "id": "vambrace_joan",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcRootDruid",
+      "zone": "z5",
+      "chance": 0.22,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 55
+        },
+        {
+          "tier": "fine",
+          "w": 38
+        },
+        {
+          "tier": "rare",
+          "w": 7
+        }
+      ],
+      "items": [
+        {
+          "id": "joan_boots",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "gorget_joan",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcHuntsman",
+      "zone": "z6",
+      "chance": 0.25,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 45
+        },
+        {
+          "tier": "fine",
+          "w": 45
+        },
+        {
+          "tier": "rare",
+          "w": 10
+        }
+      ],
+      "items": [
+        {
+          "id": "arms_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "boar_spear",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcHoundMaster",
+      "zone": "z6",
+      "chance": 0.25,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 45
+        },
+        {
+          "tier": "fine",
+          "w": 45
+        },
+        {
+          "tier": "rare",
+          "w": 10
+        }
+      ],
+      "items": [
+        {
+          "id": "legarmour_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "greave_joan",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "NpcAntlerKnight",
+      "zone": "z6",
+      "chance": 0.25,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "common",
+          "w": 45
+        },
+        {
+          "tier": "fine",
+          "w": 45
+        },
+        {
+          "tier": "rare",
+          "w": 10
+        }
+      ],
+      "items": [
+        {
+          "id": "cuirass_joan",
+          "tier": "common",
+          "w": 1
+        },
+        {
+          "id": "war_axe",
+          "tier": "fine",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "Humbaba",
+      "zone": "z5",
+      "chance": 0.3,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "relic",
+          "w": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "pitborn_gorget",
+          "tier": "relic",
+          "w": 1
+        },
+        {
+          "id": "pitborn_vambrace",
+          "tier": "relic",
+          "w": 1
+        }
+      ]
+    },
+    {
+      "creature": "Erlking",
+      "zone": "z6",
+      "chance": 0.3,
+      "count": 1,
+      "tiers": [
+        {
+          "tier": "relic",
+          "w": 1
+        }
+      ],
+      "items": [
+        {
+          "id": "erlking_axe",
+          "tier": "relic",
+          "w": 1
+        },
+        {
+          "id": "pitborn_greave",
+          "tier": "relic",
+          "w": 1
+        }
+      ]
+    }
+  ]
+}

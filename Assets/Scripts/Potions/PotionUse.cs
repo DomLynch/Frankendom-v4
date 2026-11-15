@@ -102,6 +102,7 @@ public sealed class PotionUse : MonoBehaviour
         string id = EnsureSelected(); var p = PotionCfg.Find(id);
         if (p == null || PotionStore.Qty(id) < 1) return Refuse(C, T.refuseNone);
         int t; if (readyAt.TryGetValue(id, out t) && now < t) return Refuse(C, T.refuseCooldown);
+        if (AmmoRefill.IsAmmo(p)) { int add; if (!AmmoRefill.Add(f, p, out add)) return Refuse(C, T.refuseFull); PotionStore.Take(id); LootSave.Save(); readyAt[id] = now + Ticks(p.cooldownS); ToastText = AmmoRefill.Toast(add); ToastAt = Time.unscaledTime; if (C.debugLog) Debug.Log("[Potions] refilled " + add + " arrows via " + id); if (OnUsed != null) OnUsed(id); EnsureSelected(); return true; }
         bool hp = p.kind == "heal";
         if (R.refuseWhenFull && (hp ? f.health >= f.maxHealth - 0.01f : f.stamina >= f.maxStamina - 0.01f)) return Refuse(C, T.refuseFull);   // hc:ok 0.01 = float-equality guard on full health / stamina
 

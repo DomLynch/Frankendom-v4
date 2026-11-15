@@ -191,6 +191,16 @@ public static class BowHooks
         if (st.none) return; SetMode(f, st, on, why);
     }
 
+    /// <summary>K10 (AmmoRefill): add arrows to the fighter's quiver, capped at bow.json ammo. False when no bow state / quiver off / already full.</summary>
+    public static bool AddAmmo(DuelFighter f, int n, out int added)
+    {
+        added = 0; var C = BowCfg.Get(); State st; if (f == null || !BowCfg.Master || !C.quiverOn || n < 1) return false;
+        if (!states.TryGetValue(f, out st)) { st = new State(); states[f] = st; }
+        if (!st.init) { st.init = true; st.charId = Roster.IdOf(f.transform); st.none = !BowCfg.IsBowCharacter(st.charId); st.ammo = C.ammo; }
+        if (st.none || st.ammo >= C.ammo) return false;
+        added = Mathf.Min(n, C.ammo - st.ammo); st.ammo += added; return true;
+    }
+
     static void SetMode(DuelFighter f, State st, bool on, string why)
     {
         if (st.bow == on) return;

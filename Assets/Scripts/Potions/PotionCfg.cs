@@ -11,7 +11,7 @@ public static class PotionCfg
     public class PotionC
     {
         public string id = "", name = "", kind = "", description = "", stat = "";
-        public int healFlat = 0, buyValue = 0, maxCarry = 9;
+        public int healFlat = 0, buyValue = 0, maxCarry = 9, arrows = 0;   // K10: kind "ammo" = arrows per bundle
         public float healFracOfMax = 0f, restoreFracOfMax = 0f, overSeconds = 0f, cooldownS = 8f, add = 0f, forSeconds = 0f;
     }
     [Serializable]
@@ -25,7 +25,7 @@ public static class PotionCfg
     public class TextC
     {
         public string chip = "{0}   {1}   x{2}", chipNone = "{0}   No potions", cycleHint = "{0} swap", tagQty = "x{0}", tagFull = "Full", healed = "+{0} health", stamina = "Stamina restored",
-            bought = "Bought {0} for {1} silver.", sold = "Sold {0} for {1} silver.", refuseNone = "No potions left.", refuseCooldown = "Not ready yet.", refuseFull = "Already full.", refuseBusy = "Not now.",
+            bought = "Bought {0} for {1} silver.", sold = "Sold {0} for {1} silver.", refuseNone = "No potions left.", refuseCooldown = "Not ready yet.", refuseFull = "Already full.", refuseBusy = "Not now.", ammo = "+{0} arrows",
             descHealFlat = "Restores {0} health", descHealFrac = "Restores {0}% of your health", descOver = " over {0} s", descStamina = "Restores {0}% of your stamina", descCooldown = "    Ready again after {0} s";
     }
     [Serializable] public class StartStackC { public string id = ""; public int qty; }   // STARTSTACKS v1: potions a NEW save starts with (consumables.json startStacks); empty = none (old behaviour)
@@ -66,7 +66,7 @@ public static class PotionCfg
         return null;
     }
     /// <summary>Only the effects this code implements are stackable: heal and stamina.</summary>
-    public static bool Implemented(PotionC p) { return p != null && p.id.Length > 0 && (p.kind == "heal" || p.kind == "stamina"); }
+    public static bool Implemented(PotionC p) { return p != null && p.id.Length > 0 && (p.kind == "heal" || p.kind == "stamina" || p.kind == AmmoRefill.Kind); }
 
     public static KeyCode[] UseKeys() { if (useK == null) useK = MarketCfg.Keys(Get().useKeys); return useK; }
     public static KeyCode[] CycleKeys() { if (cycleK == null) cycleK = MarketCfg.Keys(Get().cycleKeys); return cycleK; }
