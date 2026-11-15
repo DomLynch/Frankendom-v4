@@ -399,7 +399,7 @@
       },
       "name": "Heraldic tunic",
       "slot": "chest",
-      "glb": "Gear/joan_tunic.glb",
+      "glb": "",
       "rig": "psyche-106",
       "materials": {
         "*": {
