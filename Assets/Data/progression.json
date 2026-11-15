@@ -1,0 +1,15 @@
+{
+  "_about": "FK2 progression (Progression.cs). Killing a zone boss unlocks its step for good (saved as gate id prog_step_<n> in the zones save). Joan's max health / max stamina / damage are multiplied by every unlocked step, and each step gives one perk: a multiplier on a stance-layer seam (blockCostMul: block stamina cost, blockChipMul: chip damage through a block, attackCostMul: swing stamina cost, postureTakenMul: posture taken, parryWindowMul: parry window, moveSpeedMul: move speed). All values are PLACEHOLDERS for Dom's balance call; 1.0 = no effect. enabled false or no file = off. Zone, spawn = the boss's spawn row, only used to credit a boss already killed in an older save (no toast).",
+  "enabled": true,
+  "log": true,
+  "gatePrefix": "prog_step_",
+  "pollS": 1.0,
+  "toast": { "seconds": 4.0, "fadeInS": 0.25, "fadeOutS": 0.5, "lineH": 1.6, "bottom": 240, "size": 22, "color": [0.93, 0.88, 0.78], "text": "{0}  -  {1}" },
+  "steps": [
+    { "boss": "Pitborn", "zone": "pit_yard", "spawn": "z1_pitborn", "title": "THE GATE WARDEN FALLS", "hpMul": 1.07, "staminaMul": 1.06, "damageMul": 1.05, "perk": { "label": "Steady Guard: blocking costs less", "blockCostMul": 0.85 } },
+    { "boss": "Sobek", "zone": "sobek_reach", "spawn": "z2_sobek", "title": "SOBEK FALLS", "hpMul": 1.07, "staminaMul": 1.06, "damageMul": 1.05, "perk": { "label": "Tireless Arm: swings cost less", "attackCostMul": 0.92 } },
+    { "boss": "Grendel", "zone": "grendel", "spawn": "z4_grendel", "title": "GRENDEL FALLS", "hpMul": 1.07, "staminaMul": 1.06, "damageMul": 1.05, "perk": { "label": "Iron Stance: harder to stagger", "postureTakenMul": 0.85 } },
+    { "boss": "Humbaba", "zone": "z5_humbaba", "spawn": "z5_humbaba", "title": "HUMBABA FALLS", "hpMul": 1.07, "staminaMul": 1.06, "damageMul": 1.05, "perk": { "label": "Keen Eye: wider parry window", "parryWindowMul": 1.15 } },
+    { "boss": "Erlking", "zone": "z6_erlking", "spawn": "z6_erlking", "title": "THE ERLKING FALLS", "hpMul": 1.07, "staminaMul": 1.06, "damageMul": 1.05, "perk": { "label": "Wind Foot: faster on foot, less chip through a block", "moveSpeedMul": 1.04, "blockChipMul": 0.85 } }
+  ]
+}

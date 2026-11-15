@@ -43,6 +43,7 @@ public static class FightBalance
         float k = 1f; var ra = For(a); var rd = For(d);
         if (ra != null) { k *= ra.damageMul; if (m != null && m.id != null && m.id.StartsWith("skill_")) k *= ra.specialDamageMul; }
         if (rd != null) k *= rd.takenMul;
+        k *= Progression.DamageMul(a);   // FK2: Joan's unlocked progression steps (1 when none / off)
         k *= StanceLayer.DamageMul(a, d);   // lanePARRY: live stance layer (stances.json), off in steer mode (STStanceMods owns stances there)
         return k;
     }

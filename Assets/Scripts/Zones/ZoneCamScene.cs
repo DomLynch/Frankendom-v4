@@ -152,10 +152,13 @@ public sealed class ZoneCamScene : MonoBehaviour
         while (Time.realtimeSinceStartup < t1 + Mathf.Max(0.5f, st.seconds)) { PoseCam(cam, m); yield return null; }
         an.speed = 1f; m.enabled = simWas; cam.fieldOfView = fov0; if (rig != null) rig.enabled = rigWas;
     }
+    static int poseSide;
     void PoseCam(Camera cam, DuelFighter m)
     {
         Vector3 head = m.transform.position + Vector3.up * 1.55f; Vector3 f = m.transform.forward; f.y = 0f; f.Normalize();
-        cam.transform.position = head + f * 2.4f + Vector3.up * 0.05f; cam.transform.rotation = Quaternion.LookRotation((head - Vector3.up * 0.25f) - cam.transform.position, Vector3.up); cam.fieldOfView = 38f;
+        if (poseSide == 0) { poseSide = 1; foreach (var a in System.Environment.GetCommandLineArgs()) { if (a == "-posecam:left") poseSide = 2; else if (a == "-posecam:right") poseSide = 3; } }   // FK3: -posecam:left|right = camera beside Joan (hands in profile); default = front, as before
+        Vector3 off = poseSide == 2 ? -m.transform.right : poseSide == 3 ? m.transform.right : f; off.y = 0f; off.Normalize();
+        cam.transform.position = head + off * 2.4f + Vector3.up * 0.05f; cam.transform.rotation = Quaternion.LookRotation((head - Vector3.up * 0.25f) - cam.transform.position, Vector3.up); cam.fieldOfView = 38f;
     }
 
     // dev2 BANDIT-Y LOG (harness): -banditylog:<seconds> logs once per interval, for every fighter whose name has '#bandit_' or '#z2_' etc.: y, ground y under it (ray down), engaged state. Used to find floaters.

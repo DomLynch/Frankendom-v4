@@ -149,7 +149,7 @@ public static class StanceLayer
         procA = a; procD = d; procTick = Duel.TickCount; procMul = roll;
         m *= roll; LastMul = m; return m;
     }
-    public static float BlockCostMul(DuelFighter d) { var r = For(d); return r != null ? r.blockCostMul : 1f; }
+    public static float BlockCostMul(DuelFighter d) { var r = For(d); return (r != null ? r.blockCostMul : 1f) * Progression.PerkMul(d, "blockCost"); }
     public static float PostureTakenMul(DuelFighter d) { var r = For(d); return r != null ? r.postureTakenMul : 1f; }   // kept for older callers; Duel now calls PostureMul
     // STANCE2: posture one blow puts on the defender = attacker postureDealtMul x defender postureTakenMul (x the Trickster proc of this very hit when it was a clean hit and rollsScalePosture)
     public static float PostureMul(DuelFighter a, DuelFighter d, bool cleanHit)
@@ -158,6 +158,7 @@ public static class StanceLayer
         float m = 1f; var ra = For(a); var rd = For(d);
         if (ra != null) m *= ra.postureDealtMul;
         if (rd != null) m *= rd.postureTakenMul;
+        m *= Progression.PerkMul(d, "postureTaken");
         if (cleanHit && Get().rollsScalePosture && procTick == Duel.TickCount && procA == a && procD == d) m *= procMul;
         return m;
     }
@@ -170,11 +171,11 @@ public static class StanceLayer
         if (cleanHit && Get().rollsScalePosture && procTick == Duel.TickCount && procA == a && procD == d) m *= procMul;
         return m;
     }
-    public static float BlockChipMul(DuelFighter d) { var r = For(d); return r != null ? r.blockChipMul : 1f; }
+    public static float BlockChipMul(DuelFighter d) { var r = For(d); return (r != null ? r.blockChipMul : 1f) * Progression.PerkMul(d, "blockChip"); }
     public static float GuardArcMul(DuelFighter d) { var r = For(d); return r != null ? r.guardArcMul : 1f; }
-    public static float ParryWindowMul(DuelFighter f) { var r = For(f); return r != null ? r.parryWindowMul : 1f; }
-    public static float AttackCostMul(DuelFighter f) { var r = For(f); return r != null ? r.attackCostMul : 1f; }
-    public static float MoveSpeedMul(DuelFighter f) { var r = For(f); return r != null ? r.moveSpeedMul : 1f; }
+    public static float ParryWindowMul(DuelFighter f) { var r = For(f); return (r != null ? r.parryWindowMul : 1f) * Progression.PerkMul(f, "parryWindow"); }
+    public static float AttackCostMul(DuelFighter f) { var r = For(f); return (r != null ? r.attackCostMul : 1f) * Progression.PerkMul(f, "attackCost"); }
+    public static float MoveSpeedMul(DuelFighter f) { var r = For(f); return (r != null ? r.moveSpeedMul : 1f) * Progression.PerkMul(f, "moveSpeed"); }
     public static float FeintCostMul(DuelFighter f) { var r = For(f); return r != null ? r.feintCostMul : 1f; }
 
     // ---- cycling ----
