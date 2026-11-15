@@ -174,7 +174,10 @@
     {
       "character": "Erlking",
       "materials": []
-    }
+    },
+    { "character": "NpcPitGladiator",
+      "_why": "Dom via Strategy 15 Nov: bright red / gold centurion out of palette. Cloth oxblood, gold aged bronze, skin slightly calmer (k19 recolour.py). Revert: delete this row.",
+      "materials": [ { "match": "npcpitgladiator_body", "baseColor": [1,1,1], "smoothness": -1, "metallic": -1, "albedoBlob": "", "albedoTexture": "CharTex/npcpitgladiator_body_base_graded.jpg" } ] }
   ],
   "lookGlobal": {
     "enabled": true,

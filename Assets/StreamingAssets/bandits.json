@@ -787,7 +787,7 @@
       "twoHanded": false,
       "cueWeapon": "sword",
       "notes": "BANDITS v1: glb empty = the base sword model stays (like knight_sword); multipliers 1.0 so the type's damage comes only from bandits.json.",
-      "glb": "Gear/bandit_sword_LOD2.glb"
+      "glb": "Gear/gladius_LOD2.glb"
     },
     {
       "id": "bandit_dagger",
@@ -799,7 +799,7 @@
       "twoHanded": false,
       "cueWeapon": "sword",
       "notes": "BANDITS v1: NO dagger model exists (SPAWN_AUDIT section 4): glb empty = sword model with a short reach and a fast swing until art exists. cues.json has only claws/sword, so the hit audio is the sword's.",
-      "glb": "Gear/bandit_sword_LOD2.glb"
+      "glb": "Gear/short_dagger_LOD2.glb"
     },
     {
       "id": "bandit_axe",
@@ -810,7 +810,8 @@
       "postureMul": 1.1,
       "twoHanded": false,
       "cueWeapon": "sword",
-      "notes": "BANDITS v1: NO small axe model exists. Only used by the BanditAxe type, which is OFF."
+      "notes": "BANDITS v1: NO small axe model exists. Only used by the BanditAxe type, which is OFF.",
+      "glb": "Gear/short_hatchet_LOD2.glb"
     }
   ],
   "refBoss": [

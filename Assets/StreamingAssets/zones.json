@@ -336,12 +336,12 @@
       "spots": [
         {
           "id": "arrive_start",
-          "pos": [0, 8.5],
+          "pos": [0, 8.2],
           "yaw": 0
         },
         {
           "id": "pitborn_stand",
-          "pos": [0, 15],
+          "pos": [0, 19.2],
           "yaw": 180,
           "note": "empty pos = Pitborn stays where the scene built him"
         },
@@ -382,19 +382,19 @@
         },
         {
           "id": "bandit_z1_a_1",
-          "pos": [-1.8, 23.2],
+          "pos": [-1.2, 23.4],
           "yaw": 180,
           "note": "NPC15PLACE z1_a member 1 (NpcChainWarden): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\")"
         },
         {
           "id": "bandit_z1_a_2",
-          "pos": [0, 23.6],
+          "pos": [0, 23.7],
           "yaw": 180,
           "note": "NPC15PLACE z1_a member 2 (NpcSlagCrossbowman): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\")"
         },
         {
           "id": "bandit_z1_a_3",
-          "pos": [1.8, 23.2],
+          "pos": [1.2, 23.4],
           "yaw": 180,
           "note": "NPC15PLACE z1_a member 3 (NpcPitGladiator): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\") | NPC6ROWS fixup: moved from [9.17, 20.67] (clutter cluster added to props_layout after the Z12 solve)"
         }
