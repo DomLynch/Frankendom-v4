@@ -60,7 +60,7 @@ public static class BowShot
             live.RemoveAt(i); bool hit = Land(s);
             var A = BowCfg.Get().arrow;
             if (s.view == null) continue;
-            if (hit && A.stuckSeconds > 0f) { PlayCue(A.thudCue, A.thudGain, A.thudRate); s.view.Embed(s.d); }   // K24: the arrow stays in the body
+            if (hit && A.stuckSeconds > 0f && !s.d.IsPlayer) { PlayCue(A.thudCue, A.thudGain, A.thudRate); s.view.Embed(s.d); }   // K24: the arrow stays in the body
             else if (!hit && A.stuckSeconds > 0f) s.view.Overfly();                                          // K24: a dodged arrow flies on and sticks in the ground
             else End(s);
         }
