@@ -44,7 +44,7 @@ public static class ChaseTable
 public sealed class ChaseAgent : MonoBehaviour
 {
     public ChaseRow row; public DuelFighter df, player; public Vector3 home; public float leash; public bool foreign;   // foreign = followed through a gate: no home leash here, it walks to the arrival spot and vanishes when it gives up
-    ChaseState st; int lastTick; bool runClip; Animator anim;
+    ChaseState st; int lastTick; bool runClip; Animator anim; public float homeYaw; public bool hasHomeYaw;   // HOMEFACE: the spot yaw the post was placed with
     public bool Owning { get { return enabled && (st.mode == ChaseMode.Chase || st.mode == ChaseMode.Pause || st.mode == ChaseMode.Home); } }
     public bool Done { get { return st.mode == ChaseMode.Done; } }
     public bool GivingUpNow { get { return st.mode == ChaseMode.Pause || st.mode == ChaseMode.Home; } }
@@ -89,6 +89,9 @@ public sealed class ChaseAgent : MonoBehaviour
             }
             else { df.moveDir = Vector3.zero; df.run = false; }
         }
+        // HOMEFACE: Home mode walked it back to its post along the walk heading (z2 guards ended facing away from Joan); at the post, idle, no foe: turn to the spot yaw
+        if (hasHomeYaw && row.homeFaceDegPerS > 0f && !Owning && df.opponent == null && df.state == FState.Loco && df.moveDir.sqrMagnitude < 1e-4f && Flat(df.transform.position, home) < Mathf.Max(0.6f, row.homeArriveDist + 0.3f))
+            df.transform.rotation = Quaternion.RotateTowards(df.transform.rotation, Quaternion.Euler(0f, homeYaw, 0f), row.homeFaceDegPerS * Time.deltaTime);
         if (Owning && anim != null && df.moveDir.sqrMagnitude > 0.0001f && !(LocoDir.Enabled && df.locoDir.Applied) /* LOCODIR v1: LocoDir owns the leg speed of a row character */)   // presentation only: after DuelFighter.Update wrote anim.speed this frame
         {
             float nominal = df.run ? df.runSpeed : df.walkSpeed, v = df.moveDir.magnitude * nominal;

@@ -226,7 +226,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         RagdollDeath.PrebuildOne(go);   // KILLBUG v1: a Resources clone has no rig yet: build it now (rest pose) instead of at death
         ZoneHitch.Lap("spawn.apply+activate", ref zh); var lv = new Live { row = row,  /* ZONEHITCH v1 */
          creature = cid, gen = gen, go = go, df = df, brain = br, home = home, homeYaw = yaw, zoneId = zone.id };
-        { var cr = ChaseTable.Enabled ? ChaseTable.Row(cid) : null; if (cr != null) { lv.chase = go.AddComponent<ChaseAgent>(); lv.chase.Init(df, player, home, row.leash, cr, false); } }   // CHASE v1
+        { var cr = ChaseTable.Enabled ? ChaseTable.Row(cid) : null; if (cr != null) { lv.chase = go.AddComponent<ChaseAgent>(); lv.chase.Init(df, player, home, row.leash, cr, false); lv.chase.homeYaw = yaw; lv.chase.hasHomeYaw = sp != null; } }   // CHASE v1
         ZoneHitch.Lap("spawn.chase", ref zh); live[row.id] = lv;  /* ZONEHITCH v1 */
         if (GameLoop.Enemy == null) GameLoop.Enemy = df;
     }
@@ -256,7 +256,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         if (go.GetComponent<ArenaLimits>() == null && go.GetComponent<CharacterController>() != null) go.AddComponent<ArenaLimits>();
         go.SetActive(true); RagdollDeath.PrebuildOne(go);
         var lv = new Live { row = row, creature = creature, gen = 0, go = go, df = df, brain = br, home = at, homeYaw = yaw, zoneId = z.zone.id };
-        { var cr = ChaseTable.Enabled ? ChaseTable.Row(creature) : null; if (cr != null) { lv.chase = go.AddComponent<ChaseAgent>(); lv.chase.Init(df, z.player, at, row.leash, cr, false); } }
+        { var cr = ChaseTable.Enabled ? ChaseTable.Row(creature) : null; if (cr != null) { lv.chase = go.AddComponent<ChaseAgent>(); lv.chase.Init(df, z.player, at, row.leash, cr, false); lv.chase.homeYaw = yaw; lv.chase.hasHomeYaw = true; } }
         z.live[id] = lv; z.Engage(lv); return df;
     }
     // ------------------------------------------------------------------ fights begin when you approach
