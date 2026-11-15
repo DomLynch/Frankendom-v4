@@ -17,7 +17,7 @@ using UnityEngine;
 [Serializable] public class MtSpeed { public float walkMul = 1.6f, runMul = 2.2f; }
 [Serializable] public class MtStamina { public float max = 100f, gallopDrainPerS = 14f, regenPerS = 22f, minToGallop = 15f; }
 [Serializable] public class MtSummon { public float cooldownS = 3f; public float uiRequestS = 5f; /* K26: how long a summon asked for from the equipment screen waits (the horse may still be loading after a mount choice) */ }
-[Serializable] public class MtDismount { public string strikeAction = "strike", heavyAction = "heavy"; public string[] strikeKeys = { "Mouse0", "F" }, heavyKeys = { "G" }; /* FIX2 v1: were literals in Update */ public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true, onEquipScreen = true; /* K26: false = the equipment screen's freeze is not a finisher: the ride survives opening it (mount.json dismount.onEquipScreen) */ public bool horseStays = true; public float horseKeepM = 40f; /* HORSESTAYS: on dismount the horse stays standing where she got off (false = it vanishes, the old behaviour); it is put away when she is farther than horseKeepM (a zone change) */ public float foeRadiusM = 0f; /* MOUNTRULE v1: 0 = any live opponent engages (old); > 0 = only an opponent closer than this many metres */ }
+[Serializable] public class MtDismount { public string strikeAction = "strike", heavyAction = "heavy"; public string[] strikeKeys = { "Mouse0", "F" }, heavyKeys = { "G" }; /* FIX2 v1: were literals in Update */ public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true, onEquipScreen = true; /* K26: false = the equipment screen's freeze is not a finisher: the ride survives opening it (mount.json dismount.onEquipScreen) */ public bool onHit = true; /* DATA: being hit (health drops) while mounted dismounts her (mount.json dismount.onHit was a dead key) */ public bool horseStays = true; public float horseKeepM = 40f; /* HORSESTAYS: on dismount the horse stays standing where she got off (false = it vanishes, the old behaviour); it is put away when she is farther than horseKeepM (a zone change) */ public float foeRadiusM = 0f; /* MOUNTRULE v1: 0 = any live opponent engages (old); > 0 = only an opponent closer than this many metres */ }
 [Serializable] public class MtZ { public string id = ""; public float zFrom, zTo; }
 [Serializable] public class MtCam { public float backMul = 1f, heightMul = 1f; }
 [Serializable] public class MtGait
@@ -135,6 +135,7 @@ public sealed class MountRider : MonoBehaviour
 
     bool Owned() { return ProofOwn || string.IsNullOrEmpty(K.requireOwned) || LootSave.Owns(K.requireOwned) || MountData.Variant() != null; }   // hades-env variants v1: owning only the war horse is enough
 
+    float lastHp;   // dismount.onHit: health when last seen mounted
     string Refuse()
     {
         if (!Owned()) return "no horse owned";
@@ -157,6 +158,8 @@ public sealed class MountRider : MonoBehaviour
         bool key = InputMap.Down(K.summonAction, KeyCodeOf(K.summonKey)) | ProofTake() | ui;
         if (mounted)
         {
+            if (why == null && K.dismount.onHit && df.health < lastHp - 0.01f) why = "hit";   // dismount.onHit
+            lastHp = df.health;
             if (why != null || key || (K.dismount.onStrike && StrikeDown())) { uiReq = false; Dismount(why ?? "key"); return; }
             // horse stamina: the run key is a gallop. Empty = no gallop until minToGallop is back.
             if (df.run) { if (exhausted || stam <= 0f) df.run = false; else { stam -= St.gallopDrainPerS * dt; if (stam <= 0f) { stam = 0f; exhausted = true; df.run = false; } } }
@@ -208,7 +211,7 @@ public sealed class MountRider : MonoBehaviour
         if (fi != null && fi.model != null) { baseModelPos = fi.model.localPosition; modelSaved = true; }
         horseYaw = df.transform.eulerAngles.y; horse.SetActive(true);
         nextHideScan = 0f; HideWeapon();   // HIDEWEAPON v1
-        PlaceHorse(); RiderPose.Apply(df); RiderPose.ShieldOn(df);   // FK16: rider clips + shield on the back
+        PlaceHorse(); lastHp = df.health; RiderPose.Apply(df); RiderPose.ShieldOn(df);   // FK16: rider clips + shield on the back
         if (K.debugLog) Debug.Log("[Mount] mounted " + H.id);
     }
 

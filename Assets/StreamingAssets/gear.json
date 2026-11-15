@@ -399,7 +399,7 @@
       },
       "name": "Heraldic tunic",
       "slot": "chest",
-      "glb": "Gear/joan_tunic.glb",
+      "glb": "",
       "rig": "psyche-106",
       "materials": {
         "*": {
@@ -496,7 +496,7 @@
       },
       "name": "Leather bracers",
       "slot": "arms",
-      "glb": "Gear/joan_bracers.glb",
+      "glb": "",
       "rig": "psyche-106",
       "coversZones": [
         "forearmL",
@@ -536,7 +536,7 @@
       },
       "name": "Steel greaves",
       "slot": "legs",
-      "glb": "Gear/joan_greaves.glb",
+      "glb": "",
       "rig": "psyche-106",
       "coversZones": [
         "shinL",
