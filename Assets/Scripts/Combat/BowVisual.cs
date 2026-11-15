@@ -67,6 +67,34 @@ public class BowVisual : MonoBehaviour
         }
     }
 
+    // K24 carry: the bow is rigid on the hand bone, and every idle / walk pose of the rig has the hand at the hip, so the bow hung from it there. Outside the draw / loose states (FState Windup / Active / Recovery, plus
+    // visual.carry.releaseDelayTicks after) it rests on visual.carry.parentRole (a back / shoulder bone) with the carry row; on the draw it goes back to the hand with the hold row. carry.enabled false = old behaviour (always the hand).
+    DuelFighter fighter; Transform carryBone; bool onHand = true, carryWarned; float lastAim = -99f;
+    void LateUpdate()
+    {
+        if (inst == null || !want || hand == null) return;
+        var K = BowCfg.Get().visual.carry; if (K == null || !K.enabled) { if (!onHand) Seat(true, K); return; }
+        if (fighter == null) fighter = GetComponent<DuelFighter>(); if (fighter == null) return;
+        if (fighter.state == FState.Windup || fighter.state == FState.Active || fighter.state == FState.Recovery) lastAim = Time.time;
+        bool toHand = Time.time - lastAim < K.releaseDelayTicks / 60f;
+        if (toHand != onHand) Seat(toHand, K);
+    }
+
+    void Seat(bool toHand, BowCfg.Carry K)
+    {
+        var V = BowCfg.Get().visual; Transform parent = hand;
+        if (!toHand)
+        {
+            if (carryBone == null) carryBone = FindNamed(Skel(), Roster.BoneName(this, K.parentRole));
+            if (carryBone == null) { if (!carryWarned) { carryWarned = true; GearTable.Warn("[bow] no carry bone '" + Roster.BoneName(this, K.parentRole) + "' on " + name + ": the bow stays on the hand"); } return; }
+            parent = carryBone;
+        }
+        var t = inst.transform; t.SetParent(parent, false);
+        if (toHand) { t.localRotation = Quaternion.Euler(V.holdRxDeg, V.holdRyDeg, V.holdRzDeg); t.localPosition = new Vector3(V.holdPx, V.holdPy, V.holdPz); }
+        else { t.localRotation = Quaternion.Euler(K.rxDeg, K.ryDeg, K.rzDeg); t.localPosition = new Vector3(K.px, K.py, K.pz); }
+        t.localScale = Vector3.one; onHand = toHand;
+    }
+
     void RestoreSword() { for (int i = 0; i < hidden.Count; i++) if (hidden[i] != null) hidden[i].SetActive(true); hidden.Clear(); }
 }
 

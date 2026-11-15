@@ -25,8 +25,11 @@ public static class BowCfg
     [Serializable] public class Foe { public string id = ""; public bool allow = true; public float enterOffsetM, exitOffsetM, pinMul = 1f; }
     [Serializable] public class Keys { public string[] toggleKeys = new string[0], padToggleKeys = new string[0]; }
     [Serializable] public class GearWeapon { public float damageMul = 1f, speedMul = 1f, reachMul = 1f, postureMul = 1f; public bool twoHanded; }
-    [Serializable] public class Visual { public string handRole = "LeftHand"; public float holdRxDeg, holdRyDeg, holdRzDeg, holdPx, holdPy, holdPz; }
-    [Serializable] public class Arrow { public float tintMix = 0.35f /* FIX2 v1: was a literal in BowShot */, lengthM = 0.95f, radiusM = 0.014f, releaseHeightM = 1.35f, aimHeightM = 1.2f, releaseForwardM = 0.4f, volleySpreadM = 0.12f; public string shaft = "#8a6a43", head = "#8d9399", fin = "#7a6a4c"; public string[] shaders = new string[0]; }
+    [Serializable] public class Carry { public bool enabled; public string parentRole = "Spine2"; public float rxDeg, ryDeg, rzDeg, px, py, pz; public int releaseDelayTicks = 45; }   // K24: where the bow rests when it is not being drawn (null/disabled = it stays on the hand, as before)
+    [Serializable] public class Visual { public string handRole = "LeftHand"; public float holdRxDeg, holdRyDeg, holdRzDeg, holdPx, holdPy, holdPz; public Carry carry = new Carry(); }
+    // K24: aim assist. Joan turns to the foe (or, with retarget, the best foe inside the cone) while she draws and looses; the cone is measured from the camera heading (the way the player is looking), the foe the duel already has is accepted outside the cone when lockedAlwaysFaces.
+    [Serializable] public class Aim { public bool enabled, playerOnly = true, lockedAlwaysFaces = true, retarget, snapOnRelease = true, faceInLoco; public float coneDeg = 70f, rangeM = 24f, turnSpeedDegS = 720f, snapAboveDeg = 3f; }
+    [Serializable] public class Arrow { public float gravityMS2, arcMaxM = 99f, dragPerS, embedM = 0.12f, stuckSeconds, stuckFadeS = 1f, stuckScatterM = 0.05f, headLenM = 0.07f, headRadiusM = 0.016f, finLenM = 0.12f, finHeightM = 0.028f, finInsetM = 0.02f, shaftSmoothness = 0.35f, headSmoothness = 0.6f, headMetallic = 0.8f, thudGain, thudRate = 1f, looseGain, looseRate = 1f; public int maxStuck = 24, finCount = 3, radialSegments = 8; public bool castShadow = true; public string thudCue = "", looseCue = ""; public float tintMix = 0.35f /* FIX2 v1: was a literal in BowShot */, lengthM = 0.95f, radiusM = 0.014f, releaseHeightM = 1.35f, aimHeightM = 1.2f, releaseForwardM = 0.4f, volleySpreadM = 0.12f; public string shaft = "#8a6a43", head = "#8d9399", fin = "#7a6a4c"; public string[] shaders = new string[0]; }
     [Serializable] public class Hud { public bool enabled; public int bracketPx, thickPx, gapPx, chipRightPx, chipBottomPx, chipFontPx, chipWidthPx = 140; public float chipLineH = 1.6f; public string colour = "#e8d9a8", chipBow = "BOW", chipSword = "SWORD", chipAmmoSep = "  "; }
     [Serializable]
     public class Data
@@ -45,6 +48,7 @@ public static class BowCfg
         public Keys input = new Keys();
         public GearWeapon gearWeapon = new GearWeapon();
         public Visual visual = new Visual();
+        public Aim aim = new Aim();
         public Arrow arrow = new Arrow();
         public Hud hud = new Hud();
     }
@@ -73,7 +77,7 @@ public static class BowCfg
             if (d.lanes == null) d.lanes = new Lane[0]; if (d.laneDirection == null) d.laneDirection = new LaneDir[0]; if (d.specials == null) d.specials = new Special[0];
             if (d.foes == null) d.foes = new Foe[0]; if (d.characters == null) d.characters = new string[0];
             if (d.slots == null) d.slots = new Slots(); if (d.auto == null) d.auto = new Auto(); if (d.input == null) d.input = new Keys(); if (d.gearWeapon == null) d.gearWeapon = new GearWeapon();
-            if (d.visual == null) d.visual = new Visual(); if (d.arrow == null) d.arrow = new Arrow(); if (d.hud == null) d.hud = new Hud();
+            if (d.visual == null) d.visual = new Visual(); if (d.visual.carry == null) d.visual.carry = new Carry(); if (d.aim == null) d.aim = new Aim(); if (d.arrow == null) d.arrow = new Arrow(); if (d.hud == null) d.hud = new Hud();
             data = d;
         }
         catch (Exception ex) { Debug.LogWarning("[bow] bow.json parse failed, the bow stays off: " + ex.Message); data = new Data(); }

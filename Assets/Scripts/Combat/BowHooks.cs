@@ -24,9 +24,10 @@ public static class BowHooks
     static int bowUp;                 // number of fighters in bow mode: 0 = every seam returns neutral without a dictionary lookup
     static WeaponStats stats;
     static KeyCode[] kToggle, kPad; static CameraRig rig;
+    static List<DuelFighter> allFighters;   // K24: the list SimTick last saw (BowAim retarget)
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { states.Clear(); bowByChar.Clear(); bowUp = 0; stats = null; kToggle = kPad = null; rig = null; SceneManager.sceneLoaded -= OnScene; }
+    static void ResetStatics() { states.Clear(); bowByChar.Clear(); bowUp = 0; stats = null; kToggle = kPad = null; rig = null; allFighters = null; SceneManager.sceneLoaded -= OnScene; }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Boot() { SceneManager.sceneLoaded -= OnScene; SceneManager.sceneLoaded += OnScene; }
     static void OnScene(Scene s, LoadSceneMode m) { states.Clear(); bowByChar.Clear(); bowUp = 0; rig = null; }
@@ -46,7 +47,9 @@ public static class BowHooks
     {
         var C = BowCfg.Get(); State st; if (!states.TryGetValue(a, out st) || !st.bow) return false;
         var sp = BowCfg.SpecialByMove(m.id); var lane = sp == null ? BowCfg.LaneOf(m.id) : null; if (sp == null && lane == null) return false;
+        var pick = BowAim.Pick(a, d, allFighters); if (pick != null) d = pick;   // K24: aim assist (identical to d unless aim.retarget finds a better foe in the cone; null = assist off)
         float gap = Gap(a, d); if (gap < C.minGapM) return false;
+        BowAim.Snap(a, d);   // K24: the arrow leaves from the front
         int cost = sp != null ? Mathf.Max(1, sp.arrows) : 1;
         if (C.quiverOn) { if (st.ammo < cost) return false; st.ammo -= cost; }
         int[] lanes = sp != null && sp.lanes != null && sp.lanes.Length > 0 ? sp.lanes : new[] { lane != null ? lane.lane : 0 };
@@ -108,6 +111,7 @@ public static class BowHooks
     public static void SimTick(List<DuelFighter> fighters)
     {
         if (!BowCfg.Master) return;
+        allFighters = fighters;
         for (int i = 0; i < fighters.Count; i++)
         {
             var f = fighters[i]; if (f == null) continue;
@@ -115,6 +119,7 @@ public static class BowHooks
             if (!st.init) { st.init = true; st.charId = Roster.IdOf(f.transform); st.none = !BowCfg.IsBowCharacter(st.charId); st.ammo = BowCfg.Get().ammo; }
             if (st.none) continue;
             Evaluate(f, st);
+            if (st.bow) BowAim.Tick(f, st.foe, fighters);   // K24: turn to the foe while drawing / loosing (aim.enabled false = returns at once)
         }
         BowShot.Step(Duel.TickCount);
     }

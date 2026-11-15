@@ -51,7 +51,7 @@ public sealed class ZoneCamScene : MonoBehaviour
                 case "hold": it = Hold(S, st); break;
                 case "forceDeath": it = ForceDeath(S, st); break;   // CODE5 v1
                 case "hitPose": it = HitPose(S, st); break;   // dev2: play one Animator state on Joan, freeze at the peak, front camera (step.item = state name, step.seconds = hold)
-                case "trade": it = Trade(S, st); break; case "equip": it = EquipStep(S, st); break; case "pickup": it = Pickup(S, st); break; case "inv": Inv(st.id); break;   // CLOSE5B v1
+                case "trade": it = Trade(S, st); break; case "equip": it = EquipStep(S, st); break; case "lootscreen": it = LootShot(S, st); break; case "mounttoggle": it = MountToggle(S, st); break; case "pickup": it = Pickup(S, st); break; case "inv": Inv(st.id); break;   // CLOSE5B v1
                 default: Note("unknown kind " + st.kind); ok = false; break;
             }
             if (it != null)
@@ -325,6 +325,19 @@ public sealed class ZoneCamScene : MonoBehaviour
         Note("trade " + act + " " + (item.Length > 0 ? item : "-") + " at " + (st.stall.Length > 0 ? st.stall : "main") + ": " + res + ", coins " + c0 + " -> " + LootSave.Coins);
     }
 
+    // FK11 proof tools (harness only): open the equipment screen on tab st.item (0 gear / 1 mounts / 2 remnants & moves), hold st.seconds (frames come from the recorder), close it.
+    IEnumerator LootShot(CtScene S, CtStep st)
+    {
+        int tab = 0; int.TryParse(st.item, out tab);
+        LootScreen.ShotTab(tab); Note("lootscreen: tab " + tab + " open " + LootScreen.Open);
+        yield return new WaitForSecondsRealtime(Mathf.Max(0.5f, st.seconds));
+        LootScreen.CloseScreen(); yield return new WaitForSecondsRealtime(0.5f);
+    }
+    // FK11 proof tool: the summon / dismiss toggle as the Mounts tab or the M key calls it.
+    IEnumerator MountToggle(CtScene S, CtStep st)
+    {
+        MountRider.RequestToggle(); Note("mounttoggle: requested"); yield return new WaitForSecondsRealtime(Mathf.Max(0.5f, st.seconds));
+    }
     IEnumerator EquipStep(CtScene S, CtStep st)
     {
         string id = st.item.Length > 0 ? st.item : lastItem, res = "?", slot = "-", vis = "unknown"; GearItem it = null; bool un = st.action == "unequip";

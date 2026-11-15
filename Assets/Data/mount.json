@@ -84,7 +84,8 @@
     "minToGallop": 20.0
   },
   "summon": {
-    "cooldownS": 4.0
+    "cooldownS": 4.0,
+    "uiRequestS": 5.0
   },
   "dismount": {
     "onStrike": true,
@@ -96,6 +97,7 @@
     "inHub": false,
     "onMenu": false,
     "onFinisher": true,
+    "onEquipScreen": false,
     "onHit": true,
     "foeRadiusM": 14.0,
     "actions": [

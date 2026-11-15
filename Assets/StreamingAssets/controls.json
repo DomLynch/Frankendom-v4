@@ -646,8 +646,51 @@
         "hint": ""
       },
       {
-        "id": "hints",
-        "label": "Controls panel",
+        "id": "mount",
+        "label": "Call / dismount horse (once bought)",
+        "keys": [
+          "M"
+        ],
+        "pad": [],
+        "padFrom": "",
+        "padText": "",
+        "overlap": [],
+        "hint": "Outside fights and arenas. Also on the equipment screen's Mounts tab."
+      },
+      {
+        "id": "equipTabPrev",
+        "label": "Equipment screen: previous tab",
+        "keys": [
+          "Q"
+        ],
+        "pad": [
+          "JoystickButton4"
+        ],
+        "padFrom": "",
+        "padText": "",
+        "overlap": [
+          "guard"
+        ],
+        "hint": "Gear, Mounts, Remnants and Moves. LB on the pad."
+      },
+      {
+        "id": "equipTabNext",
+        "label": "Equipment screen: next tab",
+        "keys": [
+          "R"
+        ],
+        "pad": [
+          "JoystickButton5"
+        ],
+        "padFrom": "",
+        "padText": "",
+        "overlap": [
+          "recenter"
+        ],
+        "hint": "RB on the pad."
+      },
+      {
+        "id": "hints",        "label": "Controls panel",
         "keys": [
           "F1"
         ],
@@ -688,11 +731,6 @@
         "label": "Equipment screen (after the fight)",
         "keys": "Tab",
         "pad": "Start"
-      },
-      {
-        "label": "Call / dismount horse (once bought)",
-        "keys": "M",
-        "pad": ""
       },
       {
         "label": "Bow mode on/off",

@@ -7,7 +7,14 @@ using UnityEngine;
 // Sizes are px at referenceHeight (1080) and scale with Screen.height like the HUD (hud.json). Colours are [r,g,b(,a)] 0..1.
 public static class LootCfg
 {
-    [Serializable] public class SlotC { public string id = "", label = "", group = "", sub = ""; }
+    [Serializable] public class SlotC { public string id = "", label = "", group = "", sub = "", tab = ""; /* K26: the equipment tab this slot is listed on (a tabs[] id); "" = the first tab */ }
+    // K26: the equipment screen tabs (loot_ui.json tabs[]). kind: "slots" = worn slots + carried list, "mounts" = owned mounts + summon / dismiss, "slotsMoves" = slots + the move list (abilities.json) of the wearer. No row = one tab holding every slot (the old screen).
+    [Serializable] public class TabC { public string id = "", label = "", kind = "slots"; }
+    [Serializable] public class StatKeyC { public string key = "", label = ""; public int decimals = 0; }
+    [Serializable] public class RefuseC { public string code = "", text = ""; }
+    [Serializable] public class SlotNameC { public int slot = 0; public string trigger = "", label = "", action = ""; /* trigger "" = any ability trigger on that slot; first matching row wins; action = controls.json bindings id whose key is shown */ }
+    [Serializable] public class MountsC { public string itemSlot = "mount"; public bool closeOnSummon = true; public StatKeyC[] stats = new StatKeyC[0]; public RefuseC[] refuse = new RefuseC[0]; }
+    [Serializable] public class MovesC { public string character = ""; public StatKeyC[] stats = new StatKeyC[0]; public SlotNameC[] slots = new SlotNameC[0]; }
     [Serializable] public class StatC { public string stat = "", label = ""; public int decimals = 0; public bool higherIsBetter = true; }
     [Serializable] public class RarityC { public string id = "", label = ""; public float[] color = { 0.93f, 0.90f, 0.84f, 1f }; }
     [Serializable]
@@ -24,6 +31,7 @@ public static class LootCfg
     {
         public string[] pickup = { "E", "JoystickButton2" }, toggle = { "Tab", "JoystickButton7" }, close = { "Escape", "JoystickButton1" }, confirm = { "E", "JoystickButton0" }, unequip = { "U", "Delete", "JoystickButton2" };
         public string[] up = { "UpArrow", "W" }, down = { "DownArrow", "S" }, left = { "LeftArrow", "A" }, right = { "RightArrow", "D" };
+        public string[] tabPrev = { "Q", "JoystickButton4" }, tabNext = { "R", "JoystickButton5" };   // K26: only used while controls.json bindings (equipTabPrev / equipTabNext) are off
         public string axisX = "Horizontal", axisY = "Vertical"; public float stickThreshold = 0.6f, repeatDelayS = 0.35f, repeatS = 0.11f;
     }
     [Serializable]
@@ -59,6 +67,7 @@ public static class LootCfg
         public float descGap = 14f, detailNameGap = 6f, openFadeS = 0.18f, hintY = 40f, closeBox = 34f;
         public bool openInFight = false, showEquipHint = true, blockWhileMenu = false; public float equipHintBottom = 96f; public int equipHintSize = 15;   // F5 LOOTPAD: blockWhileMenu true = the equip screen does not open on the press / frame the pause menu owns (loot_ui.json screen.blockWhileMenu)
         public int triTex = 32; public float triPad = 4f;
+        public float tabW = 190f, tabH = 34f, tabGap = 8f, tabY = 18f, tabUnderH = 2f, moveRowH = 40f, sectionGap = 10f, actionRowH = 52f; public int tabSize = 15, sectionSize = 13; public bool rememberTab = false;   // K26: tab strip, move rows, mount action row
         // HCKIT6 v100 (HC3 K13): LootScreen paddings / line factors that were literals (loot_ui.json screen{}); defaults = the old literals
         public float insetPx = 6f, insetFrameW = 1f, titleLine = 1.4f, subtitleDx = 2f, subtitleDy = 1.28f, boxLine = 1.6f, ruleH = 2f, ruleAlpha = 0.85f, idleFrameAlpha = 0.35f, rowPadX = 14f, rowPadY = 7f, rowTrim = 20f, labelLine = 1.5f, nameTrim = 24f, nameGap = 2f, nameLine = 1.4f, zebraAlpha = 0.025f, arrowGap = 10f, deltaGap = 6f, messageS = 2.5f;
     }
@@ -69,6 +78,11 @@ public static class LootCfg
             equipped = "Worn", elsewhere = "In {0}", comparedWith = "Compared with {0}", comparedEmpty = "Compared with an empty slot", removing = "Taking off", noStats = "No stats", selectItem = "Select an item",
             pickup = "Take", pickupKeys = "E / X", equipHint = "Tab / Start  Equipment", acquired = "Acquired", acquiredSub = "Tab / Start to equip", equipKeys = "E / A  Equip", unequipKeys = "U / X  Unequip", moveKeys = "Arrows / Stick  Move", closeKeys = "Tab / Start / Esc  Close",
             slotLine = "{0}  -  {1}", close = "X", cannotEquip = "That does not fit there";
+        // K26: tab texts (loot_ui.json text{}). {0} / {1} = the tab keys (controls.json bindings equipTabPrev / equipTabNext), {0} of mountKeyLine = the summon key (controls.json "mount", else mount.json summonKey)
+        public string tabKeys = "{0} / {1} or LB / RB  Tab", summonKeys = "E / A  Summon or dismiss", mountsHeader = "Mounts", mountActionHeader = "Ride", movesHeader = "Moves", remnantsHeader = "Remnants",
+            summon = "Summon", dismiss = "Dismiss", mountKeyLine = "Key {0} calls or dismisses it outside fights and arenas", mountChosen = "Chosen", mountRidden = "Ridden", mountsNone = "You own no mount", mountsNoneSub = "Buy one from a stablemaster",
+            mountRefuseOther = "You cannot ride here now", movesNone = "No moves for this wearer", movesNote = "Moves come with the weapon in your hand", moveReady = "Ready", moveOther = "Other weapon", moveKeyLine = "{0}  -  Key {1}", moveWeapons = "Weapons: {0}",
+            weaponAny = "Any weapon", weaponStart = "Starting sword";
     }
     [Serializable] public class SaveC { public string file = "loot_save.json"; public bool enabled = true; public int applyAfterFrames = 20; }
     [Serializable] public class CatalogC { public string gearFile = "gear.json"; public string[] gearStatKeys = { "armor", "poise", "weight" }; }
@@ -80,6 +94,7 @@ public static class LootCfg
         public ColorsC colors = new ColorsC(); public FontsC fonts = new FontsC(); public KeysC keys = new KeysC(); public PillarC pillar = new PillarC(); public LabelC label = new LabelC();
         public PickupC pickup = new PickupC(); public ScreenC screen = new ScreenC(); public TextC text = new TextC(); public SaveC save = new SaveC(); public CatalogC catalog = new CatalogC(); public DemoC demo = new DemoC();
         public SlotC[] slots = new SlotC[0]; public StatC[] stats = new StatC[0]; public RarityC[] rarities = new RarityC[0]; public GearItem[] fallbackItems = new GearItem[0];
+        public TabC[] tabs = new TabC[0]; public MountsC mounts = new MountsC(); public MovesC moves = new MovesC();   // K26
     }
 
     static Data data; static bool loaded;
@@ -109,6 +124,14 @@ public static class LootCfg
         if (d.slots == null) d.slots = new SlotC[0]; if (d.stats == null) d.stats = new StatC[0]; if (d.rarities == null) d.rarities = new RarityC[0]; if (d.fallbackItems == null) d.fallbackItems = new GearItem[0];
         if (d.catalog.gearStatKeys == null) d.catalog.gearStatKeys = new string[0]; if (d.pickup.fallbackItems == null) d.pickup.fallbackItems = new string[0]; if (d.demo.items == null) d.demo.items = new string[0];
         for (int i = 0; i < d.slots.Length; i++) { var s = d.slots[i]; if (s == null) { d.slots[i] = s = new SlotC(); } if (s.id == null) s.id = ""; if (s.label == null) s.label = ""; if (s.group == null) s.group = ""; if (s.sub == null) s.sub = ""; }
+        // K26: tabs / mounts / moves; no tabs row = one tab with every slot (the old screen); a slot with no tab belongs to the first tab
+        if (d.mounts == null) d.mounts = new MountsC(); if (d.moves == null) d.moves = new MovesC(); if (d.tabs == null) d.tabs = new TabC[0];
+        if (d.mounts.stats == null) d.mounts.stats = new StatKeyC[0]; if (d.mounts.refuse == null) d.mounts.refuse = new RefuseC[0]; if (d.moves.stats == null) d.moves.stats = new StatKeyC[0]; if (d.moves.slots == null) d.moves.slots = new SlotNameC[0];
+        if (d.mounts.itemSlot == null) d.mounts.itemSlot = ""; if (d.moves.character == null) d.moves.character = "";
+        if (d.keys.tabPrev == null) d.keys.tabPrev = new string[0]; if (d.keys.tabNext == null) d.keys.tabNext = new string[0];
+        if (d.tabs.Length == 0) d.tabs = new[] { new TabC { id = "", label = "", kind = "slots" } };
+        for (int i = 0; i < d.tabs.Length; i++) { var t = d.tabs[i]; if (t == null) { d.tabs[i] = t = new TabC(); } if (t.id == null) t.id = ""; if (t.label == null) t.label = ""; if (string.IsNullOrEmpty(t.kind)) t.kind = "slots"; }
+        for (int i = 0; i < d.slots.Length; i++) { var s = d.slots[i]; if (s.tab == null) s.tab = ""; if (s.tab.Length == 0) s.tab = d.tabs[0].id; }
         d.referenceHeight = Mathf.Max(240f, d.referenceHeight); d.minScale = Mathf.Max(0.2f, d.minScale); d.maxScale = Mathf.Max(d.minScale, d.maxScale);
         d.pillar.planes = Mathf.Clamp(d.pillar.planes, 1, 4); d.pillar.texW = Mathf.Clamp(d.pillar.texW, 8, 512); d.pillar.texH = Mathf.Clamp(d.pillar.texH, 8, 1024); d.pillar.groundTex = Mathf.Clamp(d.pillar.groundTex, 8, 512);
         d.screen.triTex = Mathf.Clamp(d.screen.triTex, 8, 128);

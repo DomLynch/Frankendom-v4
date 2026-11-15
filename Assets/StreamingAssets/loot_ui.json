@@ -41,6 +41,8 @@
     "down": ["DownArrow", "S"],
     "left": ["LeftArrow", "A"],
     "right": ["RightArrow", "D"],
+    "tabPrev": ["Q", "JoystickButton4"],
+    "tabNext": ["R", "JoystickButton5"],
     "axisX": "Horizontal",
     "axisY": "Vertical",
     "stickThreshold": 0.6,
@@ -161,7 +163,10 @@
     "equipHintBottom": 96.0,
     "equipHintSize": 15,
     "triTex": 32,
-    "triPad": 4.0
+    "triPad": 4.0,
+    "_tabsNote": "K26: tab strip right of the title (tabW / tabH / tabGap / tabY px), moveRowH = a move row in the Remnants and Moves list, sectionGap / sectionSize = its Moves heading, actionRowH = the Summon row on the Mounts tab. rememberTab false = the screen always opens on the first tab.",
+    "tabW": 190.0, "tabH": 34.0, "tabGap": 8.0, "tabY": 18.0, "tabUnderH": 2.0, "tabSize": 15,
+    "moveRowH": 46.0, "sectionGap": 10.0, "sectionSize": 13, "actionRowH": 52.0, "rememberTab": false
   },
   "text": {
     "title": "Equipment",
@@ -190,7 +195,29 @@
     "closeKeys": "Tab / Start / Esc  Close",
     "slotLine": "{0}  -  {1}",
     "close": "X",
-    "cannotEquip": "That does not fit there"
+    "cannotEquip": "That does not fit there",
+    "tabKeys": "{0} / {1} or LB / RB  Tab",
+    "summonKeys": "E / A  Summon or dismiss",
+    "mountsHeader": "Mounts",
+    "mountActionHeader": "Ride",
+    "movesHeader": "Moves",
+    "remnantsHeader": "Remnants",
+    "summon": "Summon",
+    "dismiss": "Dismiss",
+    "mountKeyLine": "Key {0} calls or dismisses it outside fights and arenas",
+    "mountChosen": "Chosen",
+    "mountRidden": "Ridden",
+    "mountsNone": "You own no mount",
+    "mountsNoneSub": "Buy one from a stablemaster",
+    "mountRefuseOther": "You cannot ride here now",
+    "movesNone": "No moves for this wearer",
+    "movesNote": "Moves come with the weapon in your hand",
+    "moveReady": "Ready",
+    "moveOther": "Other weapon",
+    "moveKeyLine": "{0}  -  Key {1}",
+    "moveWeapons": "Weapons: {0}",
+    "weaponAny": "Any weapon",
+    "weaponStart": "Starting sword"
   },
   "save": {
     "_about": "Written to Application.persistentDataPath/<file> after every pickup / equip / take off.",
@@ -210,16 +237,62 @@
     "distance": 3.0,
     "items": ["pitborn_pauldron", "pit_vambrace", "ember_remnant"]
   },
+  "tabs": [
+    { "id": "gear", "label": "Gear", "kind": "slots" },
+    { "id": "mounts", "label": "Mounts", "kind": "mounts" },
+    { "id": "remnants", "label": "Remnants & Moves", "kind": "slotsMoves" }
+  ],
+  "mounts": {
+    "_about": "K26 Mounts tab. itemSlot = the gear.json slot id of the mount items (owned ones are listed, from loot_save.json owned[]). closeOnSummon = the screen closes after Summon so the ride starts. stats: key walk / run = the speed multipliers, stamina = the horse stamina, height = withers m (mount.json variant row of the item, else the plain horse). refuse: MountRider.UiRefuse codes -> text shown under the Summon row.",
+    "itemSlot": "mount",
+    "closeOnSummon": true,
+    "stats": [
+      { "key": "walk", "label": "Walk speed x", "decimals": 1 },
+      { "key": "run", "label": "Gallop speed x", "decimals": 1 },
+      { "key": "stamina", "label": "Stamina", "decimals": 0 },
+      { "key": "height", "label": "Height (m)", "decimals": 2 }
+    ],
+    "refuse": [
+      { "code": "no rider", "text": "Mounts are not available in this scene" },
+      { "code": "no horse owned", "text": "You own no mount" },
+      { "code": "horse not loaded yet", "text": "Your mount is still arriving" },
+      { "code": "dead", "text": "You cannot ride now" },
+      { "code": "boss arena", "text": "No riding in a boss arena" },
+      { "code": "fight engaged", "text": "No riding while a foe is near" },
+      { "code": "safe zone", "text": "No riding in the camp" },
+      { "code": "menu", "text": "Close the menu first" },
+      { "code": "finisher", "text": "Wait for the scene to end" }
+    ]
+  },
+  "moves": {
+    "_about": "K26 Remnants and Moves tab: the move list = abilities.json rows whose characters[] holds the wearer (character '' = the player fighter's roster id). slots[]: first row matching the ability's slot (and trigger when set) gives its label and the controls.json bindings id whose key is shown (else the row's own key text). stats: key damage / posture / stagger / reach / knockback / stamina = the move-defs.json row of moveId, cooldown = the ability cooldownS (seconds), windup / active / recovery = ticks.",
+    "character": "",
+    "stats": [
+      { "key": "damage", "label": "Damage", "decimals": 0 },
+      { "key": "posture", "label": "Posture", "decimals": 0 },
+      { "key": "stagger", "label": "Stagger", "decimals": 0 },
+      { "key": "reach", "label": "Reach", "decimals": 1 },
+      { "key": "stamina", "label": "Stamina", "decimals": 0 },
+      { "key": "cooldown", "label": "Cooldown (s)", "decimals": 1 }
+    ],
+    "slots": [
+      { "slot": 0, "trigger": "", "label": "Special 1", "action": "special1" },
+      { "slot": 1, "trigger": "", "label": "Special 2", "action": "special2" },
+      { "slot": 2, "trigger": "", "label": "Shield bash", "action": "kick" },
+      { "slot": 3, "trigger": "evade", "label": "Dodge strike", "action": "dodge" },
+      { "slot": 3, "trigger": "", "label": "Riposte", "action": "riposte" }
+    ]
+  },
   "slots": [
-    { "id": "head", "label": "Head", "group": "" },
-    { "id": "chest", "label": "Chest", "group": "" },
-    { "id": "tabard", "label": "Tabard", "group": "" },
-    { "id": "arms", "label": "Arms", "group": "" },
-    { "id": "legs", "label": "Legs", "group": "" },
-    { "id": "mainHand", "label": "Main hand", "group": "hand" },
-    { "id": "offHand", "label": "Off hand", "group": "hand" },
-    { "id": "remnant1", "label": "Remnant I", "group": "remnant" },
-    { "id": "remnant2", "label": "Remnant II", "group": "remnant" }
+    { "id": "head", "label": "Head", "group": "", "tab": "gear" },
+    { "id": "chest", "label": "Chest", "group": "", "tab": "gear" },
+    { "id": "tabard", "label": "Tabard", "group": "", "tab": "gear" },
+    { "id": "arms", "label": "Arms", "group": "", "tab": "gear" },
+    { "id": "legs", "label": "Legs", "group": "", "tab": "gear" },
+    { "id": "mainHand", "label": "Main hand", "group": "hand", "tab": "gear" },
+    { "id": "offHand", "label": "Off hand", "group": "hand", "tab": "gear" },
+    { "id": "remnant1", "label": "Remnant I", "group": "remnant", "tab": "remnants" },
+    { "id": "remnant2", "label": "Remnant II", "group": "remnant", "tab": "remnants" }
   ],
   "stats": [
     { "stat": "armor", "label": "Armour", "decimals": 0, "higherIsBetter": true },

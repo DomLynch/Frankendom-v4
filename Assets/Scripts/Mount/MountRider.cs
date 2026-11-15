@@ -16,8 +16,8 @@ using UnityEngine;
 }
 [Serializable] public class MtSpeed { public float walkMul = 1.6f, runMul = 2.2f; }
 [Serializable] public class MtStamina { public float max = 100f, gallopDrainPerS = 14f, regenPerS = 22f, minToGallop = 15f; }
-[Serializable] public class MtSummon { public float cooldownS = 3f; }
-[Serializable] public class MtDismount { public string strikeAction = "strike", heavyAction = "heavy"; public string[] strikeKeys = { "Mouse0", "F" }, heavyKeys = { "G" }; /* FIX2 v1: were literals in Update */ public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true; public float foeRadiusM = 0f; /* MOUNTRULE v1: 0 = any live opponent engages (old); > 0 = only an opponent closer than this many metres */ }
+[Serializable] public class MtSummon { public float cooldownS = 3f; public float uiRequestS = 5f; /* K26: how long a summon asked for from the equipment screen waits (the horse may still be loading after a mount choice) */ }
+[Serializable] public class MtDismount { public string strikeAction = "strike", heavyAction = "heavy"; public string[] strikeKeys = { "Mouse0", "F" }, heavyKeys = { "G" }; /* FIX2 v1: were literals in Update */ public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true, onEquipScreen = true; /* K26: false = the equipment screen's freeze is not a finisher: the ride survives opening it (mount.json dismount.onEquipScreen) */ public float foeRadiusM = 0f; /* MOUNTRULE v1: 0 = any live opponent engages (old); > 0 = only an opponent closer than this many metres */ }
 [Serializable] public class MtZ { public string id = ""; public float zFrom, zTo; }
 [Serializable] public class MtCam { public float backMul = 1f, heightMul = 1f; }
 [Serializable] public class MtGait
@@ -58,7 +58,21 @@ public static class MountData
     public static float HorseScale() { return HorseScale(Get().horse); }
     public static float HorseScale(MtHorse h) { return h != null && h.heightM > 0f && h.glbHeightM > 0f ? h.heightM / h.glbHeightM : 1f; }   // hades-env variants v1
     /// <summary>hades-env variants v1: the LAST variants[] row whose item the player owns (later rows are the better horse), or null = the plain horse.</summary>
-    public static MtVariant Variant() { var k = Get(); MtVariant v = null; foreach (var r in k.variants) if (r != null && !string.IsNullOrEmpty(r.item) && LootSave.Owns(r.item)) v = r; return v; }
+    /// <summary>K26: the owned mount item the player picked on the equipment screen's Mounts tab ("" = none picked: the last owned variant in mount.json order, as before). Session only, not saved.</summary>
+    public static string Pick = "";
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetPick() { Pick = ""; }
+    public static MtVariant Variant()
+    {
+        var k = Get();
+        if (!string.IsNullOrEmpty(Pick) && LootSave.Owns(Pick))   // K26: a picked variant wins; the plain horse (requireOwned) = no variant
+        {
+            foreach (var r in k.variants) if (r != null && r.item == Pick) return r;
+            if (Pick == k.requireOwned) return null;
+        }
+        MtVariant v = null; foreach (var r in k.variants) if (r != null && !string.IsNullOrEmpty(r.item) && LootSave.Owns(r.item)) v = r; return v;
+    }
+    /// <summary>K26: the item id of the mount a summon would call now (the picked one, else the last owned variant, else the plain horse's item).</summary>
+    public static string ActiveItem() { var v = Variant(); return v != null ? v.item : Get().requireOwned; }
     /// <summary>StreamingAssets/horse.glb path, or null when the file is missing.</summary>
     public static string GlbFile() { return GlbFile(Get().horse); }
     public static string GlbFile(MtHorse h)   // hades-env variants v1
@@ -79,6 +93,12 @@ public sealed class MountRider : MonoBehaviour
     public static string ProofInfo() { var i = Inst; if (i == null) return "no rider"; return "mounted=" + i.mounted + " loaded=" + i.loaded + " speedNow=" + i.speedNow.ToString("F2") + " stam=" + i.stam.ToString("F0") + " horse=" + (i.horse != null && i.horse.activeSelf ? i.horse.transform.position.ToString("F2") : "off") + " player=" + (i.df != null ? i.df.transform.position.ToString("F2") : "none") + " scale=" + (i.loaded ? MountData.HorseScale(i.H).ToString("F3") : "-"); }
     public static string ProofRefuse() { var i = Inst; return i == null || i.df == null ? "no rider" : i.Refuse(); }
     bool ProofTake() { bool k = ProofKey; ProofKey = false; return k; }
+    // K26: the equipment screen's Mounts tab asks for the same toggle as the summon key. Handled in Update; a request that is refused only because the horse is still loading waits uiRequestS seconds.
+    static bool uiReq; static float uiUntil;
+    public static void RequestToggle() { var i = Inst; if (i == null) return; uiReq = true; uiUntil = Time.unscaledTime + Mathf.Max(0.1f, i.K.summon.uiRequestS); }
+    /// <summary>K26: why a summon would be refused right now ("" = it would work, "no rider" = the rider is not running). Codes are the Refuse() strings; the equipment screen maps them to text (loot_ui.json mounts.refuse).</summary>
+    public static string UiRefuse() { var i = Inst; if (i == null || i.df == null) return "no rider"; if (i.mounted) return ""; return i.Refuse() ?? ""; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetUi() { uiReq = false; }
     /// <summary>FIX2 v1: the ride's speed multiplier, read by DuelFighter.MoveTick (and ChaseAgent for the player) ON THE SIM TICK. walkSpeed / runSpeed fields are no longer written from Update, so the speed a tick sees never depends on frame timing. 1 when not mounted or for any other fighter.</summary>
     public static float SpeedMul(DuelFighter f, bool run) { var i = Inst; if (i == null || !i.mounted || i.K == null || f != i.df) return 1f; var S = i.cur != null ? i.cur.speed : i.K.speed; return run ? S.runMul : S.walkMul; }   // hades-env variants v1
     /// <summary>For a CameraRig hook: 1 on foot, mount.json camera.* while mounted.</summary>
@@ -124,7 +144,7 @@ public sealed class MountRider : MonoBehaviour
         if (K.dismount.onOpponent && df.opponent != null && !df.opponent.Dead) { float fr = K.dismount.foeRadiusM; if (fr <= 0f || (df.opponent.transform.position - df.transform.position).sqrMagnitude <= fr * fr) return "fight engaged"; }   // MOUNTRULE v1: foeRadiusM (mount.json dismount) limits "engaged" to a boss that is actually close
         if (K.dismount.inHub && (HubSafe.PlayerInside() || MarketSafe.NoCombat)) return "safe zone";
         if (K.dismount.onMenu && MenuUI.Open) return "menu";
-        if (K.dismount.onFinisher && Duel.Frozen) return "finisher";
+        if (K.dismount.onFinisher && Duel.Frozen && (K.dismount.onEquipScreen || !(LootScreen.Open || LootScreen.ClosedFrame == Time.frameCount))) return "finisher";   // K26: the equipment screen's own freeze (and the frame it closes) is not a finisher when dismount.onEquipScreen is false
         return null;
     }
 
@@ -133,10 +153,11 @@ public sealed class MountRider : MonoBehaviour
         if (!Bind()) return; float dt = Time.deltaTime;
         if (loaded && !mounted && MountData.Variant() != cur) { if (horse != null) Destroy(horse); if (imp != null) { try { imp.Dispose(); } catch (Exception) { } imp = null; } horse = null; hBody = null; loaded = false; loadStarted = false; }   // hades-env variants v1: a new horse was bought: reload
         if (!loadStarted && Owned()) { loadStarted = true; var t = LoadHorse(); }   // paid for only once the horse is owned
-        string why = Refuse(); bool key = InputMap.Down(K.summonAction, KeyCodeOf(K.summonKey)) | ProofTake();
+        string why = Refuse(); bool ui = uiReq && Time.unscaledTime <= uiUntil; if (!ui) uiReq = false;   // K26
+        bool key = InputMap.Down(K.summonAction, KeyCodeOf(K.summonKey)) | ProofTake() | ui;
         if (mounted)
         {
-            if (why != null || key || (K.dismount.onStrike && StrikeDown())) { Dismount(why ?? "key"); return; }
+            if (why != null || key || (K.dismount.onStrike && StrikeDown())) { uiReq = false; Dismount(why ?? "key"); return; }
             // horse stamina: the run key is a gallop. Empty = no gallop until minToGallop is back.
             if (df.run) { if (exhausted || stam <= 0f) df.run = false; else { stam -= St.gallopDrainPerS * dt; if (stam <= 0f) { stam = 0f; exhausted = true; df.run = false; } } }
             else { stam = Mathf.Min(St.max, stam + St.regenPerS * dt); if (exhausted && stam >= St.minToGallop) exhausted = false; }
@@ -146,8 +167,8 @@ public sealed class MountRider : MonoBehaviour
         }
         else if (key && Time.time >= nextSummon)
         {
-            if (why != null) { if (K.debugLog) Debug.Log("[Mount] refused: " + why); return; }
-            nextSummon = Time.time + K.summon.cooldownS; Mount();
+            if (why != null) { if (why != "horse not loaded yet") uiReq = false; /* K26 */ if (K.debugLog) Debug.Log("[Mount] refused: " + why); return; }
+            uiReq = false; nextSummon = Time.time + K.summon.cooldownS; Mount();
         }
     }
 

@@ -1,17 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// BOW v2 (laneBOW, STAGED DARK, UNPROVEN). The arrows. Sim: a shot is launched by BowHooks.Release on the swing's first Active tick, flies speedCmS for ceil(range*100*60/speed) ticks (V3 missileTicks) and is judged on ARRIVAL by the
+// BOW v2 (laneBOW, STAGED DARK, UNPROVEN) + K24 (laneLG, file-only, NOT applied: ballistic look, solid arrow, stuck arrows, sound cues). The arrows. Sim: a shot is launched by BowHooks.Release on the swing's first Active tick, flies speedCmS for ceil(range*100*60/speed) ticks (V3 missileTicks) and is judged on ARRIVAL by the
 // ordinary Duel.Resolve (so a roll i-frame dodges it, a guard that covers the lane's direction blocks it, a clean hit staggers / adds posture / starts HitPhysics exactly like a melee hit) with Duel.RangedNow set: reach and arc
 // are skipped (the arrow homes, V3 missileHoming 1), the finisher is skipped (RTFinisher.TryBegin), and events carry the shooter's swing (Duel.RangedMove). The arrow cannot be parried (parryable false).
-// Presentation: BowArrowView interpolates the shot between ticks with Duel.Alpha. Everything numeric is bow.json; the view is the only thing that touches Unity objects.
+// Presentation: BowArrowView interpolates the shot between ticks with Duel.Alpha. K24: the path is a gravity arc with drag (bow.json arrow.gravityMS2 / arcMaxM / dragPerS; the sim time and the hit are unchanged, the arc starts and ends on the same two
+// points the straight line did), the arrow is a solid shaft + head + fletching built from the arrow row, a landed arrow stays in the body (parented to the nearest bone) for arrow.stuckSeconds, a dodged one flies on into the ground.
+// Everything numeric is bow.json; the view is the only thing that touches Unity objects.
 public static class BowShot
 {
     public class Shot { public DuelFighter a, d; public MoveDef mv; public int launched, arrive, pinTicks; public Vector3 from; public BowArrowView view; }
     static readonly List<Shot> live = new List<Shot>(8);
+    static CueBus bus;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { live.Clear(); }
+    static void ResetStatics() { live.Clear(); bus = null; BowArrowView.ResetStatics(); }
 
     static MoveDef Clone(MoveDef m)
     {
@@ -20,12 +23,21 @@ public static class BowShot
             breaksGuard = false, parryable = false, charges = false, hasVsGuard = false, vsGuardStagger = 0f, vsGuardStaminaDamage = 0f };
     }
 
+    /// <summary>K24: play an existing cue id from the CueBus (arrow.thudCue / looseCue). Empty id or gain 0 = silent.</summary>
+    public static void PlayCue(string cue, float gain, float rate)
+    {
+        if (string.IsNullOrEmpty(cue) || gain <= 0f) return;
+        if (bus == null) bus = Object.FindFirstObjectByType<CueBus>();
+        if (bus != null) bus.Play(cue, gain, 0f, rate <= 0f ? 1f : rate);
+    }
+
     /// <summary>Throw one arrow per lane at the foe. special = the move row's damage is already per arrow and its direction comes from the lane; an ordinary shot keeps the swing's own direction. mul scales the row's damage.</summary>
     public static void Launch(DuelFighter a, DuelFighter d, MoveDef m, int[] lanes, bool special, float mul, int speedCmS, int pinTicks, string tint)
     {
         var C = BowCfg.Get(); float gap = Mathf.Max(0.01f, (d.transform.position - a.transform.position).magnitude);
         int ticks = Mathf.Max(1, Mathf.CeilToInt(gap * 100f * 60f / Mathf.Max(1, speedCmS)));   // V3 missileTicks
         Vector3 from = a.transform.position + Vector3.up * (C.arrow.releaseHeightM * a.scale) + a.transform.forward * C.arrow.releaseForwardM;
+        PlayCue(C.arrow.looseCue, C.arrow.looseGain, C.arrow.looseRate);
         for (int i = 0; i < lanes.Length; i++)
         {
             var mv = Clone(m); mv.damage = m.damage * mul;
@@ -45,13 +57,18 @@ public static class BowShot
             if (s.a == null || s.d == null || s.d.Dead) { End(s); live.RemoveAt(i); continue; }
             if (tick < s.arrive) continue;
             if (Duel.FrozenFor(s.d) || Duel.FrozenFor(s.a)) { s.arrive++; continue; }   // a finisher / menu holds the sim: the arrow hangs until it ends
-            live.RemoveAt(i); Land(s); End(s);
+            live.RemoveAt(i); bool hit = Land(s);
+            var A = BowCfg.Get().arrow;
+            if (s.view == null) continue;
+            if (hit && A.stuckSeconds > 0f) { PlayCue(A.thudCue, A.thudGain, A.thudRate); s.view.Embed(s.d); }   // K24: the arrow stays in the body
+            else if (!hit && A.stuckSeconds > 0f) s.view.Overfly();                                          // K24: a dodged arrow flies on and sticks in the ground
+            else End(s);
         }
     }
 
     static void End(Shot s) { if (s.view != null) Object.Destroy(s.view.gameObject); }
 
-    static void Land(Shot s)
+    static bool Land(Shot s)
     {
         bool hit = false;
         Duel.RangedNow = true; Duel.RangedMove = s.mv;
@@ -61,35 +78,157 @@ public static class BowShot
         // a clean hit (HitReactionTable.Last is set by Resolve only for one) of a pinning arrow holds the foe: V3 pinShot crowd control; pinTicks is 0 for foes that take the posture break only (bow.json foes[].pinMul)
         if (hit && s.pinTicks > 0 && HitReactionTable.Last != null && !s.d.Dead) s.d.Stagger(s.pinTicks, "stagger_loop");
         if (BowCfg.Log) Debug.Log("[bow] arrow " + s.mv.id + " landed tick " + Duel.TickCount + (hit ? " contact" : " MISS (i-frames)") + (hit && HitReactionTable.Last != null ? " clean hit" : ""));
+        return hit;
     }
 }
 
-// One arrow in the air: a thin shaft, a head and fins (V1 arrow model), moved between sim ticks by Duel.Alpha. Pure presentation.
+// One arrow: solid shaft, head and fletching built from bow.json arrow (sizes, colours, finCount), flown between sim ticks by Duel.Alpha along a gravity arc with drag, then (K24) stuck in the target for arrow.stuckSeconds
+// or flown on into the ground. Pure presentation: the sim neither reads nor waits for it. Local +Z = flight direction, origin = shaft centre.
 public class BowArrowView : MonoBehaviour
 {
-    BowShot.Shot s; int lane, count; Transform shaft; Vector3 laneOff;
+    BowShot.Shot s; int lane, count; Vector3 laneOff; float halfTotal;
+    bool stuck, flying; float until, fadeFrom; Vector3 vel, stuckScale; float flyEnd;
+
+    // ---- shared meshes / materials (built once, cleared on domain reset) ----
+    static Mesh shaftM, headM, finM; static string finKey = "";
+    static readonly Dictionary<string, Material> mats = new Dictionary<string, Material>();
+    static readonly Queue<BowArrowView> stuckQ = new Queue<BowArrowView>();
+    public static void ResetStatics() { shaftM = headM = finM = null; finKey = ""; mats.Clear(); stuckQ.Clear(); }
+
+    static Mesh Cylinder(int seg, bool cone)   // unit radius, z 0..1 for the cone (tip at z 1), z -0.5..0.5 for the cylinder
+    {
+        var m = new Mesh(); var v = new List<Vector3>(); var t = new List<int>();
+        float z0 = cone ? 0f : -0.5f, z1 = cone ? 1f : 0.5f;
+        for (int i = 0; i < seg; i++) { float a = i * Mathf.PI * 2f / seg; v.Add(new Vector3(Mathf.Cos(a), Mathf.Sin(a), z0)); v.Add(new Vector3(cone ? 0f : Mathf.Cos(a), cone ? 0f : Mathf.Sin(a), z1)); }
+        for (int i = 0; i < seg; i++) { int a = i * 2, b = a + 1, c = ((i + 1) % seg) * 2, d = c + 1; t.Add(a); t.Add(c); t.Add(b); t.Add(c); t.Add(d); t.Add(b); }
+        int cb = v.Count; v.Add(new Vector3(0f, 0f, z0)); for (int i = 0; i < seg; i++) { t.Add(cb); t.Add(((i + 1) % seg) * 2); t.Add(i * 2); }   // tail / base cap
+        if (!cone) { int ct = v.Count; v.Add(new Vector3(0f, 0f, z1)); for (int i = 0; i < seg; i++) { t.Add(ct); t.Add(i * 2 + 1); t.Add(((i + 1) % seg) * 2 + 1); } }
+        m.SetVertices(v); m.SetTriangles(t, 0); m.RecalculateNormals(); m.RecalculateBounds(); return m;
+    }
+
+    static Mesh Fins(BowCfg.Arrow C)   // finCount double-sided trapezoids around the tail, taller at the nock end
+    {
+        var m = new Mesh(); var v = new List<Vector3>(); var t = new List<int>();
+        float zBack = -C.lengthM * 0.5f + C.finInsetM, zFront = zBack + C.finLenM, r = C.radiusM, h = C.finHeightM;
+        for (int i = 0; i < Mathf.Max(1, C.finCount); i++)
+        {
+            float a = i * Mathf.PI * 2f / Mathf.Max(1, C.finCount); Vector3 u = new Vector3(Mathf.Cos(a), Mathf.Sin(a), 0f); int b = v.Count;
+            v.Add(u * r + new Vector3(0f, 0f, zBack)); v.Add(u * r + new Vector3(0f, 0f, zFront)); v.Add(u * (r + h * 0.35f) + new Vector3(0f, 0f, zFront)); v.Add(u * (r + h) + new Vector3(0f, 0f, zBack));
+            t.Add(b); t.Add(b + 1); t.Add(b + 2); t.Add(b); t.Add(b + 2); t.Add(b + 3); t.Add(b); t.Add(b + 2); t.Add(b + 1); t.Add(b); t.Add(b + 3); t.Add(b + 2);
+        }
+        m.SetVertices(v); m.SetTriangles(t, 0); m.RecalculateNormals(); m.RecalculateBounds(); return m;
+    }
+
+    static Material Mat(BowCfg.Arrow C, Color c, float smooth, float metal)
+    {
+        string key = ColorUtility.ToHtmlStringRGBA(c) + "|" + smooth + "|" + metal;
+        Material m; if (mats.TryGetValue(key, out m) && m != null) return m;
+        Shader sh = null; for (int i = 0; i < C.shaders.Length && sh == null; i++) sh = Shader.Find(C.shaders[i]);
+        if (sh == null) return null;
+        m = new Material(sh) { name = "BowArrow_" + key };
+        if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", c); if (m.HasProperty("_Color")) m.SetColor("_Color", c); if (m.HasProperty("_UnlitColor")) m.SetColor("_UnlitColor", c);
+        if (m.HasProperty("_Smoothness")) m.SetFloat("_Smoothness", smooth); if (m.HasProperty("_Metallic")) m.SetFloat("_Metallic", metal);
+        mats[key] = m; return m;
+    }
+
+    GameObject Part(string n, Mesh mesh, Material mat, Vector3 pos, Vector3 scale, bool shadow)
+    {
+        var g = new GameObject(n); g.transform.SetParent(transform, false); g.transform.localPosition = pos; g.transform.localScale = scale;
+        g.AddComponent<MeshFilter>().sharedMesh = mesh; var r = g.AddComponent<MeshRenderer>(); if (mat != null) r.sharedMaterial = mat;
+        r.shadowCastingMode = shadow ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off; return g;
+    }
 
     public void Init(BowShot.Shot shot, Color tint, int laneIndex, int laneCount)
     {
         s = shot; lane = laneIndex; count = laneCount; var C = BowCfg.Get().arrow;
-        Shader sh = null; for (int i = 0; i < C.shaders.Length && sh == null; i++) sh = Shader.Find(C.shaders[i]);
-        Material mat = sh != null ? new Material(sh) : null; if (mat != null) { mat.color = Color.Lerp(BowCfg.Col(C.shaft, Color.gray), tint, C.tintMix /* FIX2 v1: bow.json arrow.tintMix */); }
-        var g = GameObject.CreatePrimitive(PrimitiveType.Cylinder); Destroy(g.GetComponent<Collider>()); g.name = "Shaft"; shaft = g.transform; shaft.SetParent(transform, false);
-        shaft.localRotation = Quaternion.Euler(90f, 0f, 0f); shaft.localScale = new Vector3(C.radiusM * 2f, C.lengthM * 0.5f, C.radiusM * 2f);   // cylinder is 2 m tall on Y, turned onto Z
-        var r = g.GetComponent<Renderer>(); if (mat != null) r.sharedMaterial = mat; r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        if (shaftM == null) shaftM = Cylinder(Mathf.Max(3, C.radialSegments), false); if (headM == null) headM = Cylinder(Mathf.Max(3, C.radialSegments), true);
+        string fk = C.finCount + "|" + C.lengthM + "|" + C.radiusM + "|" + C.finLenM + "|" + C.finHeightM + "|" + C.finInsetM; if (finM == null || finKey != fk) { finM = Fins(C); finKey = fk; }
+        Color shaftC = Color.Lerp(BowCfg.Col(C.shaft, Color.gray), tint, C.tintMix);
+        halfTotal = C.lengthM * 0.5f + C.headLenM;
+        Part("Shaft", shaftM, Mat(C, shaftC, C.shaftSmoothness, 0f), Vector3.zero, new Vector3(C.radiusM, C.radiusM, C.lengthM), C.castShadow);
+        Part("Head", headM, Mat(C, BowCfg.Col(C.head, Color.gray), C.headSmoothness, C.headMetallic), new Vector3(0f, 0f, C.lengthM * 0.5f), new Vector3(C.headRadiusM, C.headRadiusM, C.headLenM), C.castShadow);
+        Part("Fins", finM, Mat(C, BowCfg.Col(C.fin, Color.gray), C.shaftSmoothness, 0f), Vector3.zero, Vector3.one, C.castShadow);
         laneOff = count > 1 ? new Vector3(lane * C.volleySpreadM, 0f, 0f) : Vector3.zero;   // a volley fans a little so three shafts read as three
         Place();
     }
 
-    void LateUpdate() { if (s == null || s.a == null || s.d == null) return; Place(); }
+    void LateUpdate() { if (stuck || flying || s == null || s.a == null || s.d == null) return; Place(); }
+
+    // ---- flight: tip position at progress p (0..1 of the sim time) ----
+    float Span { get { return Mathf.Max(1f, s.arrive - s.launched); } }
+    Vector3 Aim() { return s.d.transform.position + Vector3.up * (BowCfg.Get().arrow.aimHeightM * s.d.scale); }   // homing: where the foe stands NOW, as the sim judges it
+    Vector3 TipAt(float p)
+    {
+        var C = BowCfg.Get().arrow; float T = Span / 60f; Vector3 to = Aim();
+        float k = C.dragPerS * T, w = k > 1e-4f ? (1f - Mathf.Exp(-k * p)) / (1f - Mathf.Exp(-k)) : p;   // drag: fast off the string, slower late; w(0)=0, w(1)=1
+        Vector3 pos = Vector3.Lerp(s.from, to, w);
+        float peak = Mathf.Min(C.gravityMS2 * T * T / 8f, C.arcMaxM); pos.y += 4f * peak * p * (1f - p);   // 0.5 g T^2 p (1-p), capped: same two end points as the straight line
+        Vector3 dir = to - s.from; dir.y = 0f; if (dir.sqrMagnitude > 1e-6f) { Vector3 right = Vector3.Cross(Vector3.up, dir.normalized); pos += right * laneOff.x * Mathf.Sin(p * Mathf.PI); }
+        return pos;
+    }
+    float P() { return Mathf.Clamp01((Duel.TickCount - s.launched + Duel.Alpha) / Span); }
+
+    void Pose(Vector3 tip, Vector3 dir)
+    {
+        if (dir.sqrMagnitude < 1e-8f) dir = transform.forward; dir.Normalize();
+        transform.rotation = Quaternion.LookRotation(dir, Vector3.up); transform.position = tip - dir * halfTotal;
+    }
 
     void Place()
     {
-        var C = BowCfg.Get().arrow; float span = Mathf.Max(1f, s.arrive - s.launched);
-        float p = Mathf.Clamp01((Duel.TickCount - s.launched + Duel.Alpha) / span);
-        Vector3 to = s.d.transform.position + Vector3.up * (C.aimHeightM * s.d.scale);   // homing: the arrow aims at where the foe stands NOW, as the sim judges it
-        Vector3 pos = Vector3.Lerp(s.from, to, p), dir = (to - s.from); if (dir.sqrMagnitude < 1e-6f) dir = transform.forward;
-        transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
-        transform.position = pos + transform.TransformVector(laneOff) * Mathf.Sin(p * Mathf.PI);
+        float p = P(), e = 0.02f; Vector3 tip = TipAt(p); Vector3 dir = TipAt(Mathf.Min(1f, p + e)) - TipAt(Mathf.Max(0f, p - e));
+        Pose(tip, dir);
+    }
+
+    // ---- landed: stays in the body ----
+    public void Embed(DuelFighter d)
+    {
+        var C = BowCfg.Get().arrow; Vector3 tip = TipAt(1f), dir = (TipAt(1f) - TipAt(0.96f)); if (dir.sqrMagnitude < 1e-8f) dir = transform.forward; dir.Normalize();
+        var rnd = new System.Random(lane * 7919 + Duel.TickCount); Vector3 side = Vector3.Cross(dir, Vector3.up); if (side.sqrMagnitude < 1e-6f) side = Vector3.right; side.Normalize();
+        tip += side * ((float)rnd.NextDouble() * 2f - 1f) * C.stuckScatterM + Vector3.up * ((float)rnd.NextDouble() * 2f - 1f) * C.stuckScatterM + dir * C.embedM;
+        Pose(tip, dir); stuck = true;
+        Transform bone = NearestBone(d, transform.position + dir * halfTotal * 0.5f); transform.SetParent(bone != null ? bone : d.transform, true);
+        stuckScale = transform.localScale; until = Time.time + C.stuckSeconds; fadeFrom = Mathf.Max(0f, C.stuckSeconds - C.stuckFadeS);
+        while (stuckQ.Count >= Mathf.Max(1, C.maxStuck)) { var o = stuckQ.Dequeue(); if (o != null) Destroy(o.gameObject); }
+        stuckQ.Enqueue(this); s = null;
+    }
+
+    static Transform NearestBone(DuelFighter d, Vector3 at)
+    {
+        Transform best = null; float bd = float.MaxValue;
+        foreach (var smr in d.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+            foreach (var b in smr.bones) { if (b == null) continue; float q = (b.position - at).sqrMagnitude; if (q < bd) { bd = q; best = b; } }
+        return best;
+    }
+
+    // ---- dodged: flies on under gravity until the ground (or aim.stuckSeconds-bounded time) ----
+    public void Overfly()
+    {
+        var C = BowCfg.Get().arrow; float T = Span / 60f; Vector3 a = TipAt(0.96f), b = TipAt(1f); vel = (b - a) / (0.04f * T);
+        Vector3 dir = vel.sqrMagnitude > 1e-6f ? vel.normalized : transform.forward; flying = true; flyEnd = Time.time + Mathf.Max(1f, C.stuckSeconds * 0.1f + 1.5f); s = null;
+        Pose(b, dir);
+    }
+
+    void Update()
+    {
+        var C = BowCfg.Get().arrow;
+        if (stuck)
+        {
+            if (Time.time >= until) { Destroy(gameObject); return; }
+            if (Time.time > fadeFrom && C.stuckFadeS > 0.01f) transform.localScale = stuckScale * Mathf.Clamp01((until - Time.time) / C.stuckFadeS);   // shrinks away, no transparent pass
+            return;
+        }
+        if (!flying) return;
+        float dt = Time.deltaTime; vel.y -= C.gravityMS2 * dt; Vector3 step = vel * dt, tip = transform.position + transform.forward * halfTotal; float len = step.magnitude;
+        RaycastHit h;
+        if (len > 1e-5f && Physics.Raycast(tip, step / len, out h, len + C.embedM, ~0, QueryTriggerInteraction.Ignore) && h.collider.GetComponentInParent<DuelFighter>() == null)
+        {
+            Vector3 dir = step / len; Pose(h.point + dir * C.embedM, dir); flying = false; stuck = true; transform.SetParent(h.collider.transform, true);
+            stuckScale = transform.localScale; until = Time.time + C.stuckSeconds; fadeFrom = Mathf.Max(0f, C.stuckSeconds - C.stuckFadeS);
+            while (stuckQ.Count >= Mathf.Max(1, C.maxStuck)) { var o = stuckQ.Dequeue(); if (o != null) Destroy(o.gameObject); }
+            stuckQ.Enqueue(this); return;
+        }
+        if (len > 1e-5f) Pose(tip + step, step);
+        if (Time.time >= flyEnd) Destroy(gameObject);
     }
 }
