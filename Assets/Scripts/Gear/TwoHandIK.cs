@@ -39,6 +39,7 @@ public static class TwoBoneIK
 [DefaultExecutionOrder(60)]
 public class TwoHandIK : MonoBehaviour
 {
+    int relN;
     public WeaponSwap owner;
     public float Weight { get { return wEff; } }                          // 0..1 actually applied last frame (GripPose closes the left fingers with it)
     public bool Driving { get { return owner != null && owner.TwoHanded; } }
@@ -94,6 +95,8 @@ public class TwoHandIK : MonoBehaviour
         float dt = Time.deltaTime, blend = owner != null ? owner.IkBlendSeconds : 0.15f;
         w = Mathf.MoveTowards(w, tgt, dt / blend);
         wEff = 0f;
+        if (C.debugLog && grip != null && w <= 0.001f && InStates(C.releaseStates) && ++relN % Mathf.Max(1, C.debugEvery) == 0)   // COO: clip-only measure while the IK is released (debug only)
+        { Vector3 pn = hand.position + hand.rotation * palmLocal; Vector3 dd = grip.position - pn; Vector3 ss = grip.up.normalized; float rr = (dd - ss * Vector3.Dot(dd, ss)).magnitude; Debug.Log("[TwoHandIK] RELEASED clip-only palm-to-shaft=" + (rr * 100f).ToString("F1") + "cm"); }
         if (w <= 0.001f || grip == null) return;
 
         // ---- target: wrist position and hand rotation that put the left palm on the shaft ----
