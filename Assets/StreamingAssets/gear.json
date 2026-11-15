@@ -494,7 +494,7 @@
       },
       "name": "Leather bracers",
       "slot": "arms",
-      "glb": "Gear/joan_bracers.glb",
+      "glb": "",
       "rig": "psyche-106",
       "coversZones": [
         "forearmL",
@@ -536,6 +536,11 @@
       "slot": "legs",
       "glb": "Gear/joan_greaves.glb",
       "rig": "psyche-106",
+      "materials": {
+        "*": {
+          "smoothness": 0.35
+        }
+      },
       "coversZones": [
         "shinL",
         "shinR",
