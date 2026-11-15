@@ -667,19 +667,19 @@
         {
           "id": "bandit_z2_a_1",
           "pos": [-1.2, 59.4],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z2_a member 1 (NpcReedSkirmisher): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
         },
         {
           "id": "bandit_z2_a_2",
           "pos": [0, 59.7],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z2_a member 2 (NpcCrocWarrior): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
         },
         {
           "id": "bandit_z2_a_3",
           "pos": [1.2, 59.4],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z2_a member 3 (NpcEmbalmerCultist): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
         }
       ],
@@ -1061,19 +1061,19 @@
         {
           "id": "bandit_z4_a_1",
           "pos": [-1.2, 164.4],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z4_a member 1 (NpcMereRaider): patrol group z4_a, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
         },
         {
           "id": "bandit_z4_a_2",
           "pos": [0, 164.7],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z4_a member 2 (NpcDrownedThane): patrol group z4_a, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
         },
         {
           "id": "bandit_z4_a_3",
           "pos": [1.2, 164.4],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z4_a member 3 (NpcBogHag): patrol group z4_a, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
         },
         {
@@ -1408,19 +1408,19 @@
         {
           "id": "bandit_z5_a_1",
           "pos": [-1.2, 231.4],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z5_a member 1 (NpcCedarArcher): patrol group z5_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
         },
         {
           "id": "bandit_z5_a_2",
           "pos": [0, 231.7],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z5_a member 2 (NpcRootDruid): patrol group z5_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
         },
         {
           "id": "bandit_z5_a_3",
           "pos": [1.2, 231.4],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z5_a member 3 (NpcBarkSentinel): patrol group z5_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
         },
         {
@@ -1777,19 +1777,19 @@
         {
           "id": "bandit_z6_a_1",
           "pos": [-1.2, 302.8],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z6_a member 1 (BanditMelee): patrol group z6_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
         },
         {
           "id": "bandit_z6_a_2",
           "pos": [0, 303.1],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z6_a member 2 (NpcHuntsman): patrol group z6_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
         },
         {
           "id": "bandit_z6_a_3",
           "pos": [1.2, 302.8],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z6_a member 3 (NpcHoundMaster): patrol group z6_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
         },
         {
