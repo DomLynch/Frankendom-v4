@@ -383,19 +383,19 @@
         {
           "id": "bandit_z1_a_1",
           "pos": [-1.2, 23.4],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z1_a member 1 (NpcChainWarden): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\")"
         },
         {
           "id": "bandit_z1_a_2",
           "pos": [0, 23.7],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z1_a member 2 (NpcSlagCrossbowman): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\")"
         },
         {
           "id": "bandit_z1_a_3",
           "pos": [1.2, 23.4],
-          "yaw": 0,
+          "yaw": 180,
           "note": "NPC15PLACE z1_a member 3 (NpcPitGladiator): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\") | NPC6ROWS fixup: moved from [9.17, 20.67] (clutter cluster added to props_layout after the Z12 solve)"
         }
       ],
@@ -1624,8 +1624,8 @@
           "ladderRow": "npcbarksentinel_z5",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 12.0,
-          "leash": 14.0,
+          "aggro": 6.0,
+          "leash": 10.0,
           "hpMul": 0.8615,
           "damageMul": 0.463,
           "difficulty": 4,
@@ -1644,8 +1644,8 @@
           "ladderRow": "npcrootdruid_z5",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 12.0,
-          "leash": 14.0,
+          "aggro": 6.0,
+          "leash": 10.0,
           "hpMul": 1.12,
           "damageMul": 0.5293,
           "difficulty": 6,
@@ -1653,7 +1653,7 @@
         },
         {
           "id": "bandit_z5_p_3",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_z5_p_3",
           "picks": [
             {
@@ -1664,8 +1664,8 @@
           "ladderRow": "npccedararcher_z5",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 12.0,
-          "leash": 14.0,
+          "aggro": 6.0,
+          "leash": 10.0,
           "hpMul": 1.12,
           "damageMul": 0.3968,
           "difficulty": 4,
@@ -1992,8 +1992,8 @@
           "ladderRow": "npcantlerknight_z6",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 13.0,
-          "leash": 15.5,
+          "aggro": 6.0,
+          "leash": 10.0,
           "hpMul": 0.9231,
           "damageMul": 0.5733,
           "difficulty": 4,
@@ -2012,8 +2012,8 @@
           "ladderRow": "npchoundmaster_z6",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 13.0,
-          "leash": 15.5,
+          "aggro": 6.0,
+          "leash": 10.0,
           "hpMul": 1.3187,
           "damageMul": 0.6553,
           "difficulty": 6,
@@ -2021,7 +2021,7 @@
         },
         {
           "id": "bandit_z6_p_3",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_z6_p_3",
           "picks": [
             {
@@ -2032,8 +2032,8 @@
           "ladderRow": "npchuntsman_z6",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 13.0,
-          "leash": 15.5,
+          "aggro": 6.0,
+          "leash": 10.0,
           "hpMul": 1.3846,
           "damageMul": 0.4913,
           "difficulty": 4,
