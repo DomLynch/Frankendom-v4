@@ -258,6 +258,7 @@
       "px": 0.0,
       "py": 0.04,
       "pz": -0.2,
+      "scale": 1.0,
       "releaseDelayTicks": 45
     }
   },
@@ -280,7 +281,7 @@
     "arcMaxM": 1.1,
     "dragPerS": 0.35,
     "embedM": 0.22,
-    "stuckSeconds": 2.0,
+    "stuckSeconds": 6.0,
     "stuckFadeS": 1.0,
     "stuckScatterM": 0.05,
     "maxStuck": 24,

@@ -92,7 +92,7 @@ public class BowVisual : MonoBehaviour
         var t = inst.transform; t.SetParent(parent, false);
         if (toHand) { t.localRotation = Quaternion.Euler(V.holdRxDeg, V.holdRyDeg, V.holdRzDeg); t.localPosition = new Vector3(V.holdPx, V.holdPy, V.holdPz); }
         else { t.localRotation = Quaternion.Euler(K.rxDeg, K.ryDeg, K.rzDeg); t.localPosition = new Vector3(K.px, K.py, K.pz); }
-        t.localScale = Vector3.one; onHand = toHand;
+        t.localScale = (toHand || K.scale <= 0.01f) ? Vector3.one : Vector3.one * K.scale; onHand = toHand;   // carry.scale: K.scale 1 = as before
     }
 
     void RestoreSword() { for (int i = 0; i < hidden.Count; i++) if (hidden[i] != null) hidden[i].SetActive(true); hidden.Clear(); }

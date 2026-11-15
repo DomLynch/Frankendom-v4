@@ -25,7 +25,7 @@ public static class BowCfg
     [Serializable] public class Foe { public string id = ""; public bool allow = true; public float enterOffsetM, exitOffsetM, pinMul = 1f; }
     [Serializable] public class Keys { public string[] toggleKeys = new string[0], padToggleKeys = new string[0]; }
     [Serializable] public class GearWeapon { public float damageMul = 1f, speedMul = 1f, reachMul = 1f, postureMul = 1f; public bool twoHanded; }
-    [Serializable] public class Carry { public bool enabled; public string parentRole = "Spine2"; public float rxDeg, ryDeg, rzDeg, px, py, pz; public int releaseDelayTicks = 45; }   // K24: where the bow rests when it is not being drawn (null/disabled = it stays on the hand, as before)
+    [Serializable] public class Carry { public bool enabled; public string parentRole = "Spine2"; public float rxDeg, ryDeg, rzDeg, px, py, pz; public float scale = 1f; public int releaseDelayTicks = 45; }   // K24: where the bow rests when it is not being drawn (null/disabled = it stays on the hand, as before)
     [Serializable] public class Visual { public string handRole = "LeftHand"; public float holdRxDeg, holdRyDeg, holdRzDeg, holdPx, holdPy, holdPz; public Carry carry = new Carry(); }
     // K24: aim assist. Joan turns to the foe (or, with retarget, the best foe inside the cone) while she draws and looses; the cone is measured from the camera heading (the way the player is looking), the foe the duel already has is accepted outside the cone when lockedAlwaysFaces.
     [Serializable] public class Aim { public bool enabled, playerOnly = true, lockedAlwaysFaces = true, retarget, snapOnRelease = true, faceInLoco; public float coneDeg = 70f, rangeM = 24f, turnSpeedDegS = 720f, snapAboveDeg = 3f; }
