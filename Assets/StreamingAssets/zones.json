@@ -383,19 +383,19 @@
         {
           "id": "bandit_z1_a_1",
           "pos": [-1.2, 23.4],
-          "yaw": 180,
+          "yaw": 0,
           "note": "NPC15PLACE z1_a member 1 (NpcChainWarden): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\")"
         },
         {
           "id": "bandit_z1_a_2",
           "pos": [0, 23.7],
-          "yaw": 180,
+          "yaw": 0,
           "note": "NPC15PLACE z1_a member 2 (NpcSlagCrossbowman): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\")"
         },
         {
           "id": "bandit_z1_a_3",
           "pos": [1.2, 23.4],
-          "yaw": 180,
+          "yaw": 0,
           "note": "NPC15PLACE z1_a member 3 (NpcPitGladiator): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\") | NPC6ROWS fixup: moved from [9.17, 20.67] (clutter cluster added to props_layout after the Z12 solve)"
         }
       ],

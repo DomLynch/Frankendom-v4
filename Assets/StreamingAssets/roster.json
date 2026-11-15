@@ -290,7 +290,7 @@
       "scaleFloor": 1.0,
       "armoured": false,
       "notes": "NPC15 (archer, pit_yard): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditArcher.",
-      "loadout": []
+      "loadout": ["npc_bow"]
     },
     {
       "id": "NpcCrocWarrior",
@@ -472,7 +472,7 @@
       "scaleFloor": 1.0,
       "armoured": false,
       "notes": "NPC15 (archer, z5_humbaba): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditArcher.",
-      "loadout": []
+      "loadout": ["npc_bow"]
     },
     {
       "id": "NpcRootDruid",
@@ -516,7 +516,7 @@
       "scaleFloor": 1.0,
       "armoured": false,
       "notes": "NPC15 (archer, z6_erlking): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditArcher.",
-      "loadout": []
+      "loadout": ["npc_bow"]
     },
     {
       "id": "NpcHoundMaster",

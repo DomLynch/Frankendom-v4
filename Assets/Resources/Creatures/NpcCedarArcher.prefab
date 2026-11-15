@@ -165,6 +165,8 @@ MonoBehaviour:
     breaksGuard: 0
     parryable: 0
     charges: 0
+    weaponStaminaMul: 0
+    arcDeg: 0
     hasVsGuard: 0
     vsGuardStagger: 0
     vsGuardStaminaDamage: 0
@@ -178,6 +180,9 @@ MonoBehaviour:
   guardSide: 0
   special1Cd: 120
   special2Cd: 120
+  special3Cd: 0
+  special4Cd: 0
+  evadeLeft: 0
   scale: 1
   damageScale: 0.83
   statSpent: 0
@@ -302,6 +307,37 @@ Transform:
   m_Children:
   - {fileID: 4835689773611785975}
   m_Father: {fileID: 7518813884103557904}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6222188688463877238
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5436427646368346649}
+  m_Layer: 0
+  m_Name: WeaponSocket_R
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5436427646368346649
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6222188688463877238}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.012068173, y: 0, z: 0.050109502, w: 0.9986708}
+  m_LocalPosition: {x: -0.005531353, y: 0.054972474, z: -0.001332149}
+  m_LocalScale: {x: 1.1411114, y: 1.1411114, z: 1.1411114}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3195026592394802955}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &766329486541625011
 PrefabInstance:
@@ -817,12 +853,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -6416064475704139336, guid: 361c57723fb79844bace481e4c33ac74, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5436427646368346649}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 8771091787928289351, guid: 361c57723fb79844bace481e4c33ac74, type: 3}
       insertIndex: -1
       addedObject: {fileID: 207787453748058750}
   m_SourcePrefab: {fileID: -4161369568681901532, guid: 361c57723fb79844bace481e4c33ac74, type: 3}
+--- !u!4 &3195026592394802955 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -6416064475704139336, guid: 361c57723fb79844bace481e4c33ac74, type: 3}
+  m_PrefabInstance: {fileID: 766329486541625011}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &3799034186298956558 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: -4748361991329772099, guid: 361c57723fb79844bace481e4c33ac74, type: 3}

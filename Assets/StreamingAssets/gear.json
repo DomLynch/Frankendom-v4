@@ -1862,6 +1862,19 @@
       }
     },
     {
+      "id": "npc_bow",
+      "shield": { "id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": "" },
+      "name": "Archer's bow",
+      "slot": "mainHand",
+      "glb": "Gear/joan_bow_LOD0.glb",
+      "resource": "", "part": "", "coversZones": [], "hidesLayers": [],
+      "stats": { "armor": 0, "poise": 0, "weight": 2.0 },
+      "dropFrom": [], "dropChance": 0.0,
+      "materials": { "*": { "smoothness": 0.2, "metallic": 0.08, "normalScale": 1.0 } },
+      "notes": "COO archers armed: NPC-only copy of the joan_bow visual (same glb) so the three archer NPCs (Slag Crossbowman, Cedar Archer, Huntsman) show a bow in the right-hand socket. Not a player item (never in a vendor list or drop table). Damage comes from the type rows, multipliers 1.",
+      "weapon": { "id": "npc_bow", "twoHanded": false, "damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15 }
+    },
+    {
       "id": "joan_bow",
       "shield": {
         "id": "",
