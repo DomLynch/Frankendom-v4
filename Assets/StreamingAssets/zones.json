@@ -667,19 +667,19 @@
         {
           "id": "bandit_z2_a_1",
           "pos": [-1.2, 59.4],
-          "yaw": 180,
+          "yaw": 0,
           "note": "NPC15PLACE z2_a member 1 (NpcReedSkirmisher): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
         },
         {
           "id": "bandit_z2_a_2",
           "pos": [0, 59.7],
-          "yaw": 180,
+          "yaw": 0,
           "note": "NPC15PLACE z2_a member 2 (NpcCrocWarrior): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
         },
         {
           "id": "bandit_z2_a_3",
           "pos": [1.2, 59.4],
-          "yaw": 180,
+          "yaw": 0,
           "note": "NPC15PLACE z2_a member 3 (NpcEmbalmerCultist): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
         }
       ],
