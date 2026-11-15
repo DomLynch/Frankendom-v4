@@ -336,12 +336,12 @@
       "spots": [
         {
           "id": "arrive_start",
-          "pos": [0, -4],
+          "pos": [0, 8.5],
           "yaw": 0
         },
         {
           "id": "pitborn_stand",
-          "pos": [0, 7],
+          "pos": [0, 15],
           "yaw": 180,
           "note": "empty pos = Pitborn stays where the scene built him"
         },
