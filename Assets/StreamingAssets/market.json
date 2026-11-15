@@ -507,7 +507,6 @@
         "arms_joan",
         "legarmour_joan",
         "joan_shield",
-        "bascinet_joan",
         "joan_helmet",
         "joan_bracers",
         "joan_greaves",
@@ -590,9 +589,7 @@
         "_about": "The camp rectangle in world x / z (zone_plan hub_camp: offset 72, boundaryLocal -4 -> z 68; limits.zMax 94). The stall and the no-fight rule work only inside it. Monsters are held outside by laneZONESPAN destSafe (followers stop 1.5 m before the door face z 63), not by this rectangle."
       },
       "items": [
-        "joan_tabard",
-        "joan_boots",
-        "cap_joan"
+        "joan_boots"
       ]
     },
     {
@@ -620,7 +617,6 @@
         "arms_joan",
         "legarmour_joan",
         "joan_shield",
-        "bascinet_joan",
         "joan_helmet",
         "joan_bracers",
         "joan_greaves",
@@ -728,9 +724,7 @@
         "leavePad": 0.5
       },
       "items": [
-        "joan_tabard",
-        "joan_boots",
-        "cap_joan"
+        "joan_boots"
       ]
     }
   ]
