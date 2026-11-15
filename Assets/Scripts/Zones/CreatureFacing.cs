@@ -21,7 +21,8 @@ public static class CreatureFacing
     {
         var c = Get(); if (c == null || !c.enabled || c.rows == null || go == null) return;
         float deg = 0f; bool hit = false;
-        string on = go.name; int hx = on.IndexOf('#'); if (hx > 0) on = on.Substring(0, hx);   // rows match the roster id or the object name\n        foreach (var r in c.rows) if (r != null && (r.creature == creature || r.creature == on)) { deg = r.yawDeg; hit = true; break; }
+        string on = go.name; int hx = on.IndexOf('#'); if (hx > 0) on = on.Substring(0, hx);   // rows match the roster id or the object name
+        foreach (var r in c.rows) if (r != null && (r.creature == creature || r.creature == on)) { deg = r.yawDeg; hit = true; break; }
         if (!hit || Mathf.Abs(deg) < 0.001f) return;
         var anim = go.GetComponentInChildren<Animator>(true); string how;
         if (anim != null && anim.transform != go.transform) { anim.transform.Rotate(0f, deg, 0f, Space.World); how = "animator child " + anim.name; }

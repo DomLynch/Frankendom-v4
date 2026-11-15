@@ -81,10 +81,12 @@ public static class GearAssetLoader
         }
         catch (Exception e)
         {
-            Debug.LogWarning("[Gear] glb load failed (" + file + ", attempt " + (attempt + 1) + "): " + e.ToString());   // K30: full stack
+            bool wearerGone = hadParent && parent == null;   // FK15: the wearer / piece was destroyed (zone restart rebuilds Joan) while glTFast ran: not a failure
+            if (wearerGone) Debug.Log("[Gear] load cancelled (wearer rebuilt): " + file);
+            else Debug.LogWarning("[Gear] glb load failed (" + file + ", attempt " + (attempt + 1) + "): " + e.ToString());   // K30: full stack
             try { if (gltf != null) gltf.Dispose(); } catch (Exception) { }
-            if (holder != null) UnityEngine.Object.Destroy(holder);
-            return new Loaded { threw = !(hadParent && parent == null) };   // a dead parent is not worth a retry
+            try { if (holder != null) UnityEngine.Object.Destroy(holder); } catch (Exception) { }
+            return wearerGone ? new Loaded { dead = true } : new Loaded { threw = true };   // a dead parent is not worth a retry
         }
     }
 
