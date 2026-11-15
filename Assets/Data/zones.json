@@ -336,12 +336,12 @@
       "spots": [
         {
           "id": "arrive_start",
-          "pos": [],
+          "pos": [0, -4],
           "yaw": 0
         },
         {
           "id": "pitborn_stand",
-          "pos": [],
+          "pos": [0, 7],
           "yaw": 180,
           "note": "empty pos = Pitborn stays where the scene built him"
         },
@@ -382,29 +382,20 @@
         },
         {
           "id": "bandit_z1_a_1",
-          "pos": [
-            7.1,
-            19.9
-          ],
-          "yaw": 224.8,
+          "pos": [-1.8, 23.2],
+          "yaw": 180,
           "note": "NPC15PLACE z1_a member 1 (NpcChainWarden): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\")"
         },
         {
           "id": "bandit_z1_a_2",
-          "pos": [
-            7.9,
-            18.4
-          ],
-          "yaw": 227.5,
+          "pos": [0, 23.6],
+          "yaw": 180,
           "note": "NPC15PLACE z1_a member 2 (NpcSlagCrossbowman): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\")"
         },
         {
           "id": "bandit_z1_a_3",
-          "pos": [
-            9.4,
-            19.2
-          ],
-          "yaw": 212.0,
+          "pos": [1.8, 23.2],
+          "yaw": 180,
           "note": "NPC15PLACE z1_a member 3 (NpcPitGladiator): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\") | NPC6ROWS fixup: moved from [9.17, 20.67] (clutter cluster added to props_layout after the Z12 solve)"
         }
       ],
@@ -459,8 +450,8 @@
           "ladderRow": "npcchainwarden_z1",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 0.8,
           "damageMul": 0.252,
           "difficulty": 6,
@@ -479,8 +470,8 @@
           "ladderRow": "npcslagcrossbowman_z1",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 0.8,
           "damageMul": 0.189,
           "difficulty": 4,
@@ -499,8 +490,8 @@
           "ladderRow": "npcpitgladiator_z1",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 0.8,
           "damageMul": 0.2205,
           "difficulty": 4,
