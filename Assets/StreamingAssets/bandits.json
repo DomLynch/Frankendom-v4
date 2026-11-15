@@ -934,7 +934,7 @@
   ],
   "afterGate": {
     "_about": "BanditArcher.cs (optional): a group with needsGate true wakes only after its zone boss is dead (its spawn row aggro is held at the capped value while the boss lives, then raised to the type aggro). Without the C# the capped aggro in zones.json stays: those members are then nearly inert, never a danger during the boss fight.",
-    "enabled": true,
+    "enabled": false,
     "pollS": 0.5
   },
   "runtime": {
