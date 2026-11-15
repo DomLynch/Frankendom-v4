@@ -447,7 +447,7 @@
       "name": "Steel helm",
       "slot": "head",
       "layer": "",
-      "glb": "Gear/bascinet_joan.glb",
+      "glb": "",
       "rig": "psyche-106",
       "tris": 5292,
       "coversZones": [
