@@ -440,10 +440,22 @@
       "name": "Steel helm",
       "slot": "head",
       "layer": "Layer_Helmet",
+      "glb": "Gear/bascinet_joan.glb",
+      "rig": "psyche-106",
+      "tris": 5292,
       "coversZones": [
         "head"
       ],
-      "hidesLayers": [],
+      "hidesLayers": [
+        "Joan_Hair"
+      ],
+      "doubleSided": false,
+      "materials": {
+        "*": {
+          "metallic": 0.85,
+          "smoothness": 0.62
+        }
+      },
       "stats": {
         "armor": 5,
         "poise": 3,

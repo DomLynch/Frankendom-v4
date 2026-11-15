@@ -17,7 +17,7 @@ using UnityEngine;
 [Serializable] public class MtSpeed { public float walkMul = 1.6f, runMul = 2.2f; }
 [Serializable] public class MtStamina { public float max = 100f, gallopDrainPerS = 14f, regenPerS = 22f, minToGallop = 15f; }
 [Serializable] public class MtSummon { public float cooldownS = 3f; public float uiRequestS = 5f; /* K26: how long a summon asked for from the equipment screen waits (the horse may still be loading after a mount choice) */ }
-[Serializable] public class MtDismount { public string strikeAction = "strike", heavyAction = "heavy"; public string[] strikeKeys = { "Mouse0", "F" }, heavyKeys = { "G" }; /* FIX2 v1: were literals in Update */ public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true, onEquipScreen = true; /* K26: false = the equipment screen's freeze is not a finisher: the ride survives opening it (mount.json dismount.onEquipScreen) */ public float foeRadiusM = 0f; /* MOUNTRULE v1: 0 = any live opponent engages (old); > 0 = only an opponent closer than this many metres */ }
+[Serializable] public class MtDismount { public string strikeAction = "strike", heavyAction = "heavy"; public string[] strikeKeys = { "Mouse0", "F" }, heavyKeys = { "G" }; /* FIX2 v1: were literals in Update */ public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true, onEquipScreen = true; /* K26: false = the equipment screen's freeze is not a finisher: the ride survives opening it (mount.json dismount.onEquipScreen) */ public bool horseStays = true; public float horseKeepM = 40f; /* HORSESTAYS: on dismount the horse stays standing where she got off (false = it vanishes, the old behaviour); it is put away when she is farther than horseKeepM (a zone change) */ public float foeRadiusM = 0f; /* MOUNTRULE v1: 0 = any live opponent engages (old); > 0 = only an opponent closer than this many metres */ }
 [Serializable] public class MtZ { public string id = ""; public float zFrom, zTo; }
 [Serializable] public class MtCam { public float backMul = 1f, heightMul = 1f; }
 [Serializable] public class MtGait
@@ -165,6 +165,7 @@ public sealed class MountRider : MonoBehaviour
             if (K.hideWeaponWhileMounted && Time.unscaledTime >= nextHideScan) { nextHideScan = Time.unscaledTime + 0.5f; HideWeapon(); }   // HIDEWEAPON v1: a weapon swap while riding is caught within 0.5 s
             Gait(dt);
         }
+        else if (horse != null && horse.activeSelf && (!K.dismount.horseStays || (horse.transform.position - df.transform.position).sqrMagnitude > K.dismount.horseKeepM * K.dismount.horseKeepM)) horse.SetActive(false);   // HORSESTAYS: put away a stood horse that is far behind (zone change)
         else if (key && Time.time >= nextSummon)
         {
             if (why != null) { if (why != "horse not loaded yet") uiReq = false; /* K26 */ if (K.debugLog) Debug.Log("[Mount] refused: " + why); return; }
@@ -215,7 +216,7 @@ public sealed class MountRider : MonoBehaviour
         mounted = false; /* FIX2 v1: nothing to restore, the fields were never written */
         ShowWeapon();   // HIDEWEAPON v1
         if (modelSaved && fi != null && fi.model != null) fi.model.localPosition = baseModelPos;
-        if (horse != null) horse.SetActive(false);
+        if (horse != null && !K.dismount.horseStays) horse.SetActive(false);   // HORSESTAYS: otherwise it stands where she got off (PlaceHorse only runs while mounted)
         if (K.debugLog) Debug.Log("[Mount] dismounted: " + why);
     }
 

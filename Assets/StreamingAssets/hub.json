@@ -404,7 +404,16 @@
         "knight_sword",
         "war_axe",
         "iron_maul",
-        "boar_spear"
+        "boar_spear",
+        "hunting_bow",
+        "joan_bow",
+        "arrow_bundle",
+        "bandit_sword",
+        "bandit_dagger",
+        "bandit_axe",
+        "pitborn_maul",
+        "sobek_trident",
+        "erlking_axe"
       ],
       "tabKeys": [
         "Q",
