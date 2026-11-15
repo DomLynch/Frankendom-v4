@@ -151,6 +151,7 @@ public static class GearTable
     public class Data
     {
         public bool enabled = true, debugLog = false, statsWithoutAsset = true, hideUnequippedLayers = true;
+        public bool layerFirst = true;               // DATA: an item with a layer row takes the layer route first and never falls back to its glb (today); false = items that also have a glb / resource load that instead
         public int loadRetries = 1;                  // K30: a glb load that THREW is retried this many times with a fresh GltfImport
         public float gearReadyCapS = 3.0f;           // K30: the loading card waits at most this long for the player's gear slots to resolve (<= 0 = no gate)
         public bool gearPreload = true;              // K30: while the loading card is up, parse the player's loadout glbs through GlbPreload

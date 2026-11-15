@@ -282,6 +282,7 @@
     "dragPerS": 0.35,
     "embedM": 0.22,
     "stuckSeconds": 6.0,
+    "stickToPlayer": false,
     "stuckFadeS": 1.0,
     "stuckScatterM": 0.05,
     "maxStuck": 24,

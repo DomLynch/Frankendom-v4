@@ -208,7 +208,7 @@ public sealed class MountRider : MonoBehaviour
         if (fi != null && fi.model != null) { baseModelPos = fi.model.localPosition; modelSaved = true; }
         horseYaw = df.transform.eulerAngles.y; horse.SetActive(true);
         nextHideScan = 0f; HideWeapon();   // HIDEWEAPON v1
-        PlaceHorse(); RiderPose.Apply(df);   // FK16: rider clips
+        PlaceHorse(); RiderPose.Apply(df); RiderPose.ShieldOn(df);   // FK16: rider clips + shield on the back
         if (K.debugLog) Debug.Log("[Mount] mounted " + H.id);
     }
 

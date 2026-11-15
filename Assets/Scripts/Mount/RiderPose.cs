@@ -8,14 +8,15 @@ using UnityEngine;
 public static class RiderPose
 {
     [Serializable] public class Pair { public string from = "", state = ""; }
-    [Serializable] public class Cfg { public bool enabled = false, log = true; public Pair[] clips = new Pair[0]; }
+    [Serializable] public class Shield { public bool enabled = false; public string socket = "ShieldSocket_L", bone = "mixamorig:Spine2"; public float rx = 0f, ry = 0f, rz = 0f, px = 0f, py = 0.05f, pz = -0.22f, scale = 1f; }   // DATA: the shield rides on her back while mounted
+    [Serializable] public class Cfg { public bool enabled = false, log = true; public Pair[] clips = new Pair[0]; public Shield shield = new Shield(); }
     [Serializable] class Doc { public Cfg rider = new Cfg(); }
     static Cfg cfg; static RuntimeAnimatorController before; static AnimatorOverrideController mine;
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void Reset() { cfg = null; before = null; mine = null; }
     static Cfg Get()
     {
         if (cfg != null) return cfg; cfg = new Cfg();
-        try { string t = DataPath.ReadText("mount.json"); if (!string.IsNullOrEmpty(t)) { var d = JsonUtility.FromJson<Doc>(t.TrimStart('﻿')); if (d != null && d.rider != null) { cfg = d.rider; if (cfg.clips == null) cfg.clips = new Pair[0]; } } }
+        try { string t = DataPath.ReadText("mount.json"); if (!string.IsNullOrEmpty(t)) { var d = JsonUtility.FromJson<Doc>(t.TrimStart('﻿')); if (d != null && d.rider != null) { cfg = d.rider; if (cfg.clips == null) cfg.clips = new Pair[0]; if (cfg.shield == null) cfg.shield = new Shield(); } } }
         catch (Exception e) { Debug.LogWarning("[Rider] mount.json rider block read failed: " + e.Message); }
         return cfg;
     }
@@ -38,8 +39,26 @@ public static class RiderPose
         oc.ApplyOverrides(list); before = cur; mine = oc; anim.runtimeAnimatorController = oc;
         if (c.log) Debug.Log("[Rider] Joan mounted: " + n + " clip(s) replaced" + (miss > 0 ? ", " + miss + " missing" : ""));
     }
+    // SHIELD: while mounted the shield socket (ShieldSocket_L) is re-parented to a back bone with the mount.json rider.shield row; dismounting puts it back exactly where it was
+    static Transform shieldT, shieldParent; static Vector3 shieldPos, shieldScale; static Quaternion shieldRot;
+    static Transform Find(DuelFighter f, string name) { foreach (var t in f.GetComponentsInChildren<Transform>(true)) if (t.name == name) return t; return null; }
+    public static void ShieldOn(DuelFighter f)
+    {
+        var S = Get().shield; if (!Get().enabled || S == null || !S.enabled || f == null || shieldT != null) return;
+        var sock = Find(f, S.socket); var bone = Find(f, S.bone); if (sock == null || bone == null) { Debug.LogWarning("[Rider] shield carry: " + (sock == null ? "socket '" + S.socket + "'" : "bone '" + S.bone + "'") + " not found, the shield stays on the arm"); return; }
+        shieldT = sock; shieldParent = sock.parent; shieldPos = sock.localPosition; shieldRot = sock.localRotation; shieldScale = sock.localScale;
+        sock.SetParent(bone, false); sock.localRotation = Quaternion.Euler(S.rx, S.ry, S.rz); sock.localPosition = new Vector3(S.px, S.py, S.pz); sock.localScale = shieldScale * (S.scale > 0.01f ? S.scale : 1f);
+        if (Get().log) Debug.Log("[Rider] shield carried on " + S.bone);
+    }
+    public static void ShieldOff()
+    {
+        if (shieldT == null) return;
+        if (shieldParent != null) { shieldT.SetParent(shieldParent, false); shieldT.localPosition = shieldPos; shieldT.localRotation = shieldRot; shieldT.localScale = shieldScale; }
+        shieldT = null; shieldParent = null;
+    }
     public static void Restore(DuelFighter f)
     {
+        ShieldOff();
         var anim = AnimOf(f); if (anim == null || mine == null) return;
         if (anim.runtimeAnimatorController == mine && before != null) anim.runtimeAnimatorController = before;
         if (Get().log) Debug.Log("[Rider] Joan dismounted: original controller back");

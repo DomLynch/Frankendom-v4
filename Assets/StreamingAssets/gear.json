@@ -1,6 +1,7 @@
 {
   "enabled": true,
   "loadRetries": 1,
+  "layerFirst": true,
   "gearReadyCapS": 3.0,
   "gearPreload": true,
   "deferFrameBudget": 0.5,
@@ -398,7 +399,13 @@
       },
       "name": "Heraldic tunic",
       "slot": "chest",
-      "layer": "Layer_Tunic",
+      "glb": "Gear/joan_tunic.glb",
+      "rig": "psyche-106",
+      "materials": {
+        "*": {
+          "smoothness": 0.25
+        }
+      },
       "coversZones": [
         "torso",
         "pelvis",
@@ -489,7 +496,8 @@
       },
       "name": "Leather bracers",
       "slot": "arms",
-      "layer": "Layer_Bracers",
+      "glb": "Gear/joan_bracers.glb",
+      "rig": "psyche-106",
       "coversZones": [
         "forearmL",
         "forearmR"
@@ -528,7 +536,8 @@
       },
       "name": "Steel greaves",
       "slot": "legs",
-      "layer": "Layer_Greaves",
+      "glb": "Gear/joan_greaves.glb",
+      "rig": "psyche-106",
       "coversZones": [
         "shinL",
         "shinR",

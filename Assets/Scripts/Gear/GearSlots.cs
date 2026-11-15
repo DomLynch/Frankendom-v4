@@ -154,7 +154,7 @@ public class GearSlots : MonoBehaviour, IGearStatSource
     IEnumerator LoadVisual(SlotState s)
     {
         var it = s.item;
-        if (it.layer.Length > 0)
+        if (it.layer.Length > 0 && (GearTable.Get().layerFirst || (it.glb.Length == 0 && it.resource.Length == 0)))   // DATA: gear.json layerFirst (default true = today)
         {
             // a layer mesh that already sits on the wearer (Layer_Helmet ...): equipping = showing it
             Renderer lr = FindLayer(it.layer);

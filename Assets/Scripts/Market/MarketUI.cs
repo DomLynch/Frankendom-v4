@@ -89,7 +89,7 @@ public sealed class MarketUI : MonoBehaviour
         for (int i = 1; i <= nx; i++) { var q = C.stalls[i - 1]; var a2 = areas[i]; a2.zMin = q.area.zMin; a2.zMax = q.area.zMax; a2.xHalf = q.area.xHalf; a2.enterPad = q.area.enterPad; a2.leavePad = q.area.leavePad; MarketWorld.StallXZ(q, out ax[i], out az[i]); }
         int pk = MarketStallPick.Update(areas, ax, az, playerPos.x, playerPos.z);
         stl = pk > 0 ? C.stalls[pk - 1] : C.stall;
-        if (pk != lastPk) { lastPk = pk; if (pk >= 0) HubTrade.UseStock(pk > 0 ? stl.items : null); }
+        if (pk != lastPk) { lastPk = pk; if (pk >= 0) HubTrade.UseStock(pk > 0 ? stl.items : (C.stall.items != null && C.stall.items.Length > 0 ? C.stall.items : null)); }
         return pk;
     }
     void ResetExtra() { if (areas != null) for (int i = 1; i < areas.Length; i++) areas[i].Inside = false; lastPk = -1; }   // MARKET2 v1

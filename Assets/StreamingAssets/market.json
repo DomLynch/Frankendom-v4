@@ -399,6 +399,7 @@
     }
   ],
   "stall": {
+    "items": ["knight_sword", "war_axe", "iron_maul", "boar_spear", "hunting_bow", "joan_bow", "arrow_bundle", "bandit_sword", "bandit_dagger", "bandit_axe", "pitborn_maul", "sobek_trident", "erlking_axe"],  "_itemsNote": "DATA: the main WEAPONSMITH stock; hub.json stall.buy.items is the fallback when this is empty",
     "id": "hub_trade",
     "title": "Weaponsmith",
     "anchor": {
@@ -649,7 +650,7 @@
         "leavePad": 0.5,
         "_about": "The camp rectangle in world x / z (zone_plan hub_camp: offset 72, boundaryLocal -4 -> z 68; limits.zMax 94). The stall and the no-fight rule work only inside it. Monsters are held outside by laneZONESPAN destSafe (followers stop 1.5 m before the door face z 63), not by this rectangle."
       },
-      "items": ["cuirass_joan", "arms_joan", "legarmour_joan", "joan_shield", "joan_helmet"]
+      "items": ["cuirass_joan", "arms_joan", "legarmour_joan", "joan_shield", "joan_helmet", "joan_bracers", "joan_greaves"]
     },
     {
       "_about": "laneSTALLS vend v2: Stablemaster. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
@@ -762,7 +763,7 @@
         "enterPad": 0.5,
         "leavePad": 0.5
       },
-      "items": ["cuirass_joan", "arms_joan", "legarmour_joan", "joan_shield", "joan_helmet", "pitborn_chest"]
+      "items": ["cuirass_joan", "arms_joan", "legarmour_joan", "joan_shield", "joan_helmet", "pitborn_chest", "joan_bracers", "joan_greaves"]
     },
     {
       "_about": "laneSTALLS vend v2: Weaponsmith. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
