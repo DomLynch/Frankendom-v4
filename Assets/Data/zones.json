@@ -1452,28 +1452,19 @@
         },
         {
           "id": "bandit_z5_p_1",
-          "pos": [
-            -3.0,
-            191.5
-          ],
+          "pos": [-3, 183],
           "yaw": 155.2,
           "note": "ENCOUNTERS v1 pre-boss fodder z5_p member 1 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
         },
         {
           "id": "bandit_z5_p_2",
-          "pos": [
-            1.5,
-            189.5
-          ],
+          "pos": [1.5, 181],
           "yaw": 198.4,
           "note": "ENCOUNTERS v1 pre-boss fodder z5_p member 2 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
         },
         {
           "id": "bandit_z5_p_3",
-          "pos": [
-            -0.5,
-            195.5
-          ],
+          "pos": [-0.5, 187],
           "yaw": 177.3,
           "note": "ENCOUNTERS v1 pre-boss fodder z5_p member 3 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
         }
@@ -1830,29 +1821,20 @@
         },
         {
           "id": "bandit_z6_p_1",
-          "pos": [
-            -3.0,
-            259.0
-          ],
+          "pos": [-3, 255.5],
           "yaw": 156.8,
           "note": "ENCOUNTERS v1 pre-boss fodder z6_p member 1 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
         },
         {
           "id": "bandit_z6_p_2",
-          "pos": [
-            3.0,
-            261.0
-          ],
+          "pos": [3, 257.5],
           "yaw": 198.4,
           "note": "ENCOUNTERS v1 pre-boss fodder z6_p member 2 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
         },
         {
           "id": "bandit_z6_p_3",
-          "pos": [
-            0.0,
-            264.5
-          ],
-          "yaw": 180.0,
+          "pos": [0, 261],
+          "yaw": 180,
           "note": "ENCOUNTERS v1 pre-boss fodder z6_p member 3 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
         }
       ],
