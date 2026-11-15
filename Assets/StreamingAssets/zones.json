@@ -666,23 +666,20 @@
         },
         {
           "id": "bandit_z2_a_1",
-          "pos": [
-            -5.74,
-            42.11
-          ],
-          "yaw": 146.5,
+          "pos": [-1.2, 59.4],
+          "yaw": 0,
           "note": "NPC15PLACE z2_a member 1 (NpcReedSkirmisher): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
         },
         {
           "id": "bandit_z2_a_2",
-          "pos": [-8.24, 42.15],
-          "yaw": 99.9,
+          "pos": [0, 59.7],
+          "yaw": 0,
           "note": "NPC15PLACE z2_a member 2 (NpcCrocWarrior): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
         },
         {
           "id": "bandit_z2_a_3",
-          "pos": [-7.91, 39.95],
-          "yaw": 111.0,
+          "pos": [1.2, 59.4],
+          "yaw": 0,
           "note": "NPC15PLACE z2_a member 3 (NpcEmbalmerCultist): patrol group z2_a, home placed by laneNPC15PLACE/place.py (ladder step \"z2 ring 11.5 (arrive 8 from gate_pit, core 2)\")"
         }
       ],
@@ -727,7 +724,7 @@
         },
         {
           "id": "bandit_z2_a_1",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_z2_a_1",
           "picks": [
             {
@@ -738,8 +735,8 @@
           "ladderRow": "npcreedskirmisher_z2",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 0.5,
-          "leash": 12.5,
+          "aggro": 4.5,
+          "leash": 6.5,
           "hpMul": 0.8492,
           "damageMul": 0.4536,
           "difficulty": 6,
@@ -747,7 +744,7 @@
         },
         {
           "id": "bandit_z2_a_2",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_z2_a_2",
           "picks": [
             {
@@ -758,8 +755,8 @@
           "ladderRow": "npccrocwarrior_z2",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 0.5,
-          "leash": 12.5,
+          "aggro": 4.5,
+          "leash": 6.5,
           "hpMul": 0.7385,
           "damageMul": 0.3969,
           "difficulty": 4,
@@ -767,7 +764,7 @@
         },
         {
           "id": "bandit_z2_a_3",
-          "enabled": false,
+          "enabled": true,
           "spot": "bandit_z2_a_3",
           "picks": [
             {
@@ -778,8 +775,8 @@
           "ladderRow": "npcembalmercultist_z2",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 0.5,
-          "leash": 12.5,
+          "aggro": 4.5,
+          "leash": 6.5,
           "hpMul": 0.7385,
           "damageMul": 0.3969,
           "difficulty": 4,
@@ -988,19 +985,13 @@
       "spots": [
         {
           "id": "arrive_from_prev",
-          "pos": [
-            0.0,
-            116.0
-          ],
+          "pos": [0, 123],
           "yaw": 0,
           "note": "laneMONSTER3 (Grendel): resume spot (a saved game that quit in this zone) and PLAY_GRENDEL.bat; crossing is by walking through the camp door."
         },
         {
           "id": "grendel_stand",
-          "pos": [
-            0.0,
-            125.0
-          ],
+          "pos": [0, 134],
           "yaw": 0,
           "note": "laneMONSTER3 (Grendel): his stand, local z 17 like the zone 2 stand; PLACEHOLDER until measured in the built zone."
         },
@@ -1069,64 +1060,43 @@
         },
         {
           "id": "bandit_z4_a_1",
-          "pos": [
-            -8.12,
-            144.41
-          ],
-          "yaw": 165.2,
+          "pos": [-1.2, 164.4],
+          "yaw": 0,
           "note": "NPC15PLACE z4_a member 1 (NpcMereRaider): patrol group z4_a, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
         },
         {
           "id": "bandit_z4_a_2",
-          "pos": [
-            -7.16,
-            141.61
-          ],
-          "yaw": 159.8,
+          "pos": [0, 164.7],
+          "yaw": 0,
           "note": "NPC15PLACE z4_a member 2 (NpcDrownedThane): patrol group z4_a, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
         },
         {
           "id": "bandit_z4_a_3",
-          "pos": [
-            -4.8,
-            142.94
-          ],
-          "yaw": 150.5,
+          "pos": [1.2, 164.4],
+          "yaw": 0,
           "note": "NPC15PLACE z4_a member 3 (NpcBogHag): patrol group z4_a, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
         },
         {
           "id": "bandit_z4_b_1",
-          "pos": [
-            2.12,
-            149.24
-          ],
-          "yaw": 204.6,
+          "pos": [-1.2, 155.5],
+          "yaw": 0,
           "note": "NPC15PLACE z4_b member 1 (NpcDrownedThane): patrol group z4_b, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
         },
         {
           "id": "bandit_z4_b_2",
-          "pos": [
-            4.19,
-            147.84
-          ],
-          "yaw": 204.0,
+          "pos": [0, 155.8],
+          "yaw": 0,
           "note": "NPC15PLACE z4_b member 2 (NpcBogHag): patrol group z4_b, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
         },
         {
           "id": "bandit_z4_b_3",
-          "pos": [
-            4.53,
-            150.44
-          ],
-          "yaw": 168.9,
+          "pos": [1.2, 155.5],
+          "yaw": 0,
           "note": "NPC15PLACE z4_b member 3 (NpcMereRaider): patrol group z4_b, home placed by laneNPC15PLACE/place.py (ladder step \"strict\")"
         },
         {
           "id": "bandit_z4_p_1",
-          "pos": [
-            5.5,
-            112.0
-          ],
+          "pos": [-8.5, 108.5],
           "yaw": 306.0,
           "note": "ENCOUNTERS v1 pre-boss fodder z4_p member 1 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
         },
@@ -1173,8 +1143,8 @@
           "ladderRow": "npcmereraider_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 0.8,
           "damageMul": 0.4299,
           "difficulty": 4,
@@ -1193,8 +1163,8 @@
           "ladderRow": "npcdrownedthane_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 0.8,
           "damageMul": 0.4299,
           "difficulty": 4,
@@ -1213,8 +1183,8 @@
           "ladderRow": "npcboghag_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 1.0,
           "damageMul": 0.4915,
           "difficulty": 6,
@@ -1233,8 +1203,8 @@
           "ladderRow": "npcdrownedthane_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 0.8,
           "damageMul": 0.4299,
           "difficulty": 4,
@@ -1253,8 +1223,8 @@
           "ladderRow": "npcboghag_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 1.0,
           "damageMul": 0.4915,
           "difficulty": 6,
@@ -1273,8 +1243,8 @@
           "ladderRow": "npcmereraider_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 0.8,
           "damageMul": 0.4299,
           "difficulty": 4,
@@ -1293,8 +1263,8 @@
           "ladderRow": "npcmereraider_z4",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 9.0,
-          "leash": 12.5,
+          "aggro": 6.0,
+          "leash": 10.0,
           "hpMul": 0.8,
           "damageMul": 0.4299,
           "difficulty": 4,
@@ -1359,10 +1329,7 @@
       "spots": [
         {
           "id": "arrive_from_prev",
-          "pos": [
-            0.0,
-            185.0
-          ],
+          "pos": [0, 200],
           "yaw": 0,
           "note": "ZONE5 v1: resume spot, 8 m inside the entry gate. Crossing is by walking (ZoneSpan), no teleport."
         },
@@ -1377,10 +1344,7 @@
         },
         {
           "id": "boss_stand",
-          "pos": [
-            0.0,
-            211.0
-          ],
+          "pos": [0, 211],
           "yaw": 180,
           "note": "ZONE5 v1: the boss stands 2 m north of the clearing centre facing the path; PLACEHOLDER until measured in the built zone"
         },
@@ -1443,29 +1407,20 @@
         },
         {
           "id": "bandit_z5_a_1",
-          "pos": [
-            -11.61,
-            209.32
-          ],
-          "yaw": 122.6,
+          "pos": [-1.2, 231.4],
+          "yaw": 0,
           "note": "NPC15PLACE z5_a member 1 (NpcCedarArcher): patrol group z5_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
         },
         {
           "id": "bandit_z5_a_2",
-          "pos": [
-            -13.42,
-            211.25
-          ],
-          "yaw": 148.6,
+          "pos": [0, 231.7],
+          "yaw": 0,
           "note": "NPC15PLACE z5_a member 2 (NpcRootDruid): patrol group z5_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
         },
         {
           "id": "bandit_z5_a_3",
-          "pos": [
-            -13.46,
-            208.18
-          ],
-          "yaw": 147.9,
+          "pos": [1.2, 231.4],
+          "yaw": 0,
           "note": "NPC15PLACE z5_a member 3 (NpcBarkSentinel): patrol group z5_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 14, next 8\")"
         },
         {
@@ -1558,8 +1513,8 @@
           "ladderRow": "npccedararcher_z5",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 1.12,
           "damageMul": 0.3968,
           "difficulty": 4,
@@ -1578,8 +1533,8 @@
           "ladderRow": "npcrootdruid_z5",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 1.12,
           "damageMul": 0.5293,
           "difficulty": 6,
@@ -1598,8 +1553,8 @@
           "ladderRow": "npcbarksentinel_z5",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 0.8615,
           "damageMul": 0.463,
           "difficulty": 4,
@@ -1607,7 +1562,7 @@
         },
         {
           "id": "bandit_z5_b_1",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_z5_b_1",
           "picks": [
             {
@@ -1627,7 +1582,7 @@
         },
         {
           "id": "bandit_z5_b_2",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_z5_b_2",
           "picks": [
             {
@@ -1647,7 +1602,7 @@
         },
         {
           "id": "bandit_z5_b_3",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_z5_b_3",
           "picks": [
             {
@@ -1764,10 +1719,7 @@
       "spots": [
         {
           "id": "arrive_from_prev",
-          "pos": [
-            0.0,
-            252.0
-          ],
+          "pos": [0, 275],
           "yaw": 0,
           "note": "ZONE6: just past the zone 5 door, facing the ring"
         },
@@ -1782,10 +1734,7 @@
         },
         {
           "id": "boss_stand",
-          "pos": [
-            0.0,
-            286.0
-          ],
+          "pos": [0, 286],
           "yaw": 180,
           "note": "ZONE6: Erlking stands 4 m north of the ring centre, facing the entry (21.5 m from the south mouth)"
         },
@@ -1836,29 +1785,20 @@
         },
         {
           "id": "bandit_z6_a_1",
-          "pos": [
-            5.7,
-            273.61
-          ],
-          "yaw": 184.7,
+          "pos": [-1.2, 302.8],
+          "yaw": 0,
           "note": "NPC15PLACE z6_a member 1 (BanditMelee): patrol group z6_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
         },
         {
           "id": "bandit_z6_a_2",
-          "pos": [
-            8.0,
-            272.19
-          ],
-          "yaw": 235.2,
+          "pos": [0, 303.1],
+          "yaw": 0,
           "note": "NPC15PLACE z6_a member 2 (NpcHuntsman): patrol group z6_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
         },
         {
           "id": "bandit_z6_a_3",
-          "pos": [
-            9.1,
-            275.01
-          ],
-          "yaw": 224.8,
+          "pos": [1.2, 302.8],
+          "yaw": 0,
           "note": "NPC15PLACE z6_a member 3 (NpcHoundMaster): patrol group z6_a, home placed by laneNPC15PLACE/place.py (ladder step \"arrive 18.5 (= aggro + walk + 1)\")"
         },
         {
@@ -1930,7 +1870,7 @@
           "ladderRow": "erlking",
           "respawnMinS": 180,
           "respawnMaxS": 180,
-          "aggro": 13.0,
+          "aggro": 9,
           "leash": 30.0,
           "hpMul": 1.0,
           "damageMul": 1.0,
@@ -1950,8 +1890,8 @@
           "ladderRow": "npcantlerknight_z6",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 0.9231,
           "damageMul": 0.5733,
           "difficulty": 4,
@@ -1970,8 +1910,8 @@
           "ladderRow": "npchuntsman_z6",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 1.3846,
           "damageMul": 0.4913,
           "difficulty": 4,
@@ -1990,8 +1930,8 @@
           "ladderRow": "npchoundmaster_z6",
           "respawnMinS": 240,
           "respawnMaxS": 420,
-          "aggro": 14,
-          "leash": 26,
+          "aggro": 5,
+          "leash": 7,
           "hpMul": 1.3187,
           "damageMul": 0.6553,
           "difficulty": 6,
@@ -1999,7 +1939,7 @@
         },
         {
           "id": "bandit_z6_b_1",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_z6_b_1",
           "picks": [
             {
@@ -2019,7 +1959,7 @@
         },
         {
           "id": "bandit_z6_b_2",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_z6_b_2",
           "picks": [
             {
@@ -2039,7 +1979,7 @@
         },
         {
           "id": "bandit_z6_b_3",
-          "enabled": true,
+          "enabled": false,
           "spot": "bandit_z6_b_3",
           "picks": [
             {
