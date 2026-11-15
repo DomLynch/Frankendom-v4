@@ -1,0 +1,8 @@
+{
+  "_about": "FK3b (TwoHandRule.cs): a weapon whose gear.json weapon block has twoHanded true (maul, great axe) needs both hands: equipping it takes the item in offSlot (the shield) off. A one-handed weapon leaves the off-hand alone. Equipping a shield while a two-hander is wielded puts the two-hander away (the shield takes the off-hand). restoreOffHand: going back to a one-hander or the default sword puts the shield that was taken off back on. enabled false or no file = old behaviour.",
+  "enabled": true,
+  "log": true,
+  "restoreOffHand": true,
+  "mainSlot": "mainHand",
+  "offSlot": "offHand"
+}

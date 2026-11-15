@@ -5262,7 +5262,7 @@
           "r": 2.0
         }
       ],
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "m_hub_2",
@@ -6165,7 +6165,7 @@
           "r": 2.0
         }
       ],
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "m_hub_3",
@@ -44403,7 +44403,7 @@
           "r": 2.0
         }
       ],
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "mt_z6_2",
@@ -44666,7 +44666,7 @@
           "r": 6.0
         }
       ],
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "mt_z6_3",
@@ -45584,7 +45584,7 @@
           "r": 2.0
         }
       ],
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "mt_z4_1",
@@ -46267,7 +46267,7 @@
           "r": 2.0
         }
       ],
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "mt_z4_2",
@@ -48447,7 +48447,7 @@
           "r": 2.0
         }
       ],
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "mt_z1_1",
@@ -53519,7 +53519,7 @@
           "r": 2.0
         }
       ],
-      "enabled": true
+      "enabled": false
     },
     {
       "id": "mt2_z2_1",
@@ -54185,7 +54185,7 @@
           "r": 3.5
         }
       ],
-      "enabled": true
+      "enabled": false
     }
   ],
   "seedStride": 7919,

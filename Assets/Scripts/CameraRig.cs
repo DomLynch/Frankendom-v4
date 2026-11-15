@@ -92,7 +92,7 @@ public class CameraRig : MonoBehaviour
         if (!colLoaded) LoadCol();
         float dt = Time.deltaTime; if (!poseLoaded) LoadPose();
         if (CamZone.Active(pose.zone)) CamZone.Pick(pose.zone, this, target);   // CAMZONE v1: zones only: the lock target must be fighting Joan and near, else the nearest fighting one, else the free camera
-        bool lockOn = lockEnabled && enemy && enemyHp && !enemyHp.Dead && Vector3.Distance(target.position, enemy.position) < lockRange; dbgLockOn = lockOn;  /* CAMZONE v1 */
+        bool lockOn = lockEnabled && enemy && enemyHp && !enemyHp.Dead && Vector3.Distance(target.position, enemy.position) < lockRange; if (lockOn && SoftLock.Broken(target, enemy, dt)) lockOn = false; dbgLockOn = lockOn;  /* CAMZONE v1; SOFTLOCK: half lock, breaks on moving away / mouse (soft_lock.json) */
         lockW = Mathf.MoveTowards(lockW, lockOn ? 1f : 0f, dt * DirectionalInput.LockEase(lockOn));   // CTRL v68: controls.json camera.easeIn / easeOut (3 / 3 without the file)
 
         // free camera (lock-on off): mouse yaw/pitch over the right shoulder

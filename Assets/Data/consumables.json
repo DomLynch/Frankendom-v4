@@ -55,7 +55,7 @@
       "id": "potion_health_minor",
       "name": "Minor healing draught",
       "kind": "heal",
-      "healFlat": 40,
+      "healFlat": 20,
       "healFracOfMax": 0.0,
       "overSeconds": 0.0,
       "cooldownS": 8.0,

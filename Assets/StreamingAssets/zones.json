@@ -77,7 +77,7 @@
     }
   },
   "engage": {
-    "maxEngaged": 2,
+    "maxEngaged": 3,
     "retargetMarginM": 1.5,
     "finisherWithOthers": false,
     "graceAfterArriveSeconds": 8.0,
