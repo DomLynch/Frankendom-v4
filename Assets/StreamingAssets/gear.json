@@ -3193,6 +3193,53 @@
       "dropChance": 1.0,
       "rarity": "relic",
       "notes": "FK8: relic remnant from the Erlking (placeholder stats): a charm of antler, +3 armor +3 poise."
+    },
+    {
+      "id": "joan_helm_dom",
+      "shield": {
+        "id": "",
+        "sideGuard": "",
+        "cover": [],
+        "blockStaminaMul": 1,
+        "blockPostureMul": 1,
+        "cueEvent": ""
+      },
+      "name": "Dom's helm",
+      "slot": "head",
+      "glb": "Gear/joan_helm_dom.glb",
+      "rig": "psyche-106",
+      "coversZones": [],
+      "hidesLayers": [
+        "Joan_Hair"
+      ],
+      "stats": {
+        "armor": 5,
+        "poise": 2,
+        "weight": 2.8
+      },
+      "dropFrom": [],
+      "dropChance": 0,
+      "rarity": "fine",
+      "tier": "shop",
+      "doubleSided": false,
+      "materials": {
+        "*": {
+          "metallic": 0.85,
+          "smoothness": 0.62
+        }
+      },
+      "notes": "Dom's own helmet model (medieval_helmet_dom.glb), fitted/decimated by OpenTrident; stats like the Steel bascinet; sold in the Armourers.",
+      "weapon": {
+        "damageMul": 1,
+        "speedMul": 1,
+        "reachMul": 1,
+        "postureMul": 1,
+        "gripNode": "grip",
+        "tipNode": "tip",
+        "offHandNode": "grip_off",
+        "ikWeight": 1,
+        "ikBlendSeconds": 0.15
+      }
     }
   ]
 }
