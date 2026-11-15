@@ -11,6 +11,11 @@ public static class BowEquip
     static bool on;
     static string Id() { var d = BowCfg.Get(); return d != null && d.equipItemId != null ? d.equipItemId : ""; }
     static bool Armed() { return BowCfg.Master && Id().Length > 0; }
+    /// <summary>equipRearm: the player has the bow item in the main hand right now.</summary>
+    public static bool HoldsBowItem(DuelFighter f) { if (f == null || !Armed()) return false; var w = f.GetComponent<GearSlots>(); return w != null && w.ItemIn("mainHand") == Id(); }
+    /// <summary>equipKeepNoFoe: the bow item is in the main hand, so the bow mode is not dropped when there is no foe.</summary>
+    public static bool KeepNoFoe(DuelFighter f) { return BowCfg.Get().equipKeepNoFoe && HoldsBowItem(f); }
+    public static bool WantsBow(DuelFighter f) { if (f == null || !Armed() || !BowCfg.Get().equipRearm) return false; var w = f.GetComponent<GearSlots>(); return w != null && w.ItemIn("mainHand") == Id(); }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()

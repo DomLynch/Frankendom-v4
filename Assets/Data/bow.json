@@ -8,6 +8,8 @@
   "weaponId": "bow",
   "gearItemId": "joan_bow",
   "equipItemId": "hunting_bow",
+  "equipRearm": true,
+  "equipKeepNoFoe": true,
   "ammo": 40,
   "quiverOn": true,
   "minGapM": 3.0,

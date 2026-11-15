@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 public static class BowHooks
 {
     public class State
-    {
+    { public bool manualOff;
         public bool none, bow; public string charId = "";
         public int sinceSwitch = 9999, farTicks, lockout, manualHold, ammo, lastToggleFrame = -1;
         public DuelFighter foe; public BowCfg.Foe foeRow; public bool foeResolved; public WeaponSwap ws; public BowVisual vis; public bool init;
@@ -140,14 +140,15 @@ public static class BowHooks
         if (f.IsPlayer && st.lastToggleFrame != Time.frameCount && ToggleDown())
         {
             st.lastToggleFrame = Time.frameCount;
-            if (st.bow) { SetMode(f, st, false, "manual"); st.manualHold = A.manualHoldTicks; }
+            if (st.bow) { SetMode(f, st, false, "manual"); st.manualHold = A.manualHoldTicks; st.manualOff = true; }
             else if (!dead && free && GearWeaponBlocks(f, st, A)) { }
-            else if (!dead && free) { SetMode(f, st, true, "manual"); st.manualHold = A.manualHoldTicks; }
+            else if (!dead && free) { SetMode(f, st, true, "manual"); st.manualHold = A.manualHoldTicks; st.manualOff = false; }
             return;
         }
 
         if (st.bow)
         {
+            if (dead && f.IsPlayer && !f.Dead && BowEquip.KeepNoFoe(f)) { if (f.guardHeld && C.guardExitsBow) { SetMode(f, st, false, "guard"); st.lockout = A.lockoutAfterGuardTicks; } return; }   // equipKeepNoFoe: no foe = no target, the bow stays in her hand
             if (dead) { SetMode(f, st, false, "no foe"); return; }
             if (f.guardHeld && C.guardExitsBow) { SetMode(f, st, false, "guard"); st.lockout = A.lockoutAfterGuardTicks; return; }   // the guard is a sword guard: instant, even mid-recovery of nothing (guardHeld only)
             if (BowCfg.AutoOn && st.manualHold <= 0 && free && (st.foeRow == null || st.foeRow.allow))
@@ -158,6 +159,9 @@ public static class BowHooks
             return;
         }
 
+        // equipRearm (bow.json): the bow item is in the main hand and a foe is engaged: the bow mode comes (back) up; the manual toggle / guard lockout still win
+        bool locoNow = f.state == FState.Loco && !f.guardHeld && !Duel.FrozenFor(f);
+        if (f.IsPlayer && !f.Dead && !st.manualOff && (dead ? (locoNow && BowEquip.KeepNoFoe(f)) : free) && st.lockout <= 0 && st.manualHold <= 0 && BowEquip.WantsBow(f) && !(C.quiverOn && st.ammo <= 0)) { SetMode(f, st, true, "equip rearm"); return; }
         // melee -> bow, auto only
         if (!BowCfg.AutoOn || dead || !free || st.lockout > 0 || st.manualHold > 0 || st.sinceSwitch < A.minDwellTicks || (st.foeRow != null && !st.foeRow.allow) || GearWeaponBlocks(f, st, A) || (C.quiverOn && st.ammo <= 0) || (A.requireLockOn && !LockedOn(f))) { st.farTicks = 0; return; }
         float enterM = A.rangeEnterM + (st.foeRow != null ? st.foeRow.enterOffsetM : 0f);
@@ -193,7 +197,7 @@ public static class BowHooks
     {
         if (f == null || !BowCfg.Master) return; State st; if (!states.TryGetValue(f, out st)) { st = new State(); states[f] = st; }
         if (!st.init) { st.init = true; st.charId = Roster.IdOf(f.transform); st.none = !BowCfg.IsBowCharacter(st.charId); st.ammo = BowCfg.Get().ammo; }
-        if (st.none) return; SetMode(f, st, on, why);
+        if (st.none) return; if (on) st.manualOff = false; SetMode(f, st, on, why);
     }
 
     /// <summary>K10 (AmmoRefill): add arrows to the fighter's quiver, capped at bow.json ammo. False when no bow state / quiver off / already full.</summary>

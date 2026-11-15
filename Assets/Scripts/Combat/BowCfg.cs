@@ -36,7 +36,7 @@ public static class BowCfg
     {
         public bool enabled, debugLog, quiverOn, guardExitsBow;
         public string[] characters = new string[0];
-        public string weaponId = "bow", gearItemId = "", equipItemId = "";   /* K3b: gear item id whose main-hand equip turns the bow mode on ("" = off, today) */
+        public bool equipKeepNoFoe = true; /* DATA: with the bow item in the main hand the bow mode stays up (bow in hand, sword hidden) with or without a live foe; false = the no-foe drop of today */ public bool equipRearm = true; /* DATA: while the bow item sits in the main hand the bow mode comes back up whenever the player has a live foe (the no-foe drop only lasts until the next engage); false = old: equip sets the mode once, the first no-foe tick drops it */ public string weaponId = "bow", gearItemId = "", equipItemId = "";   /* K3b: gear item id whose main-hand equip turns the bow mode on ("" = off, today) */
         public int ammo, speedCmS = 900, sharePerMille = 1000, specialRecoveryTicks = 31;
         public float minGapM = 3f, specialBaseDamage = 22f;
         public Lane[] lanes = new Lane[0];
