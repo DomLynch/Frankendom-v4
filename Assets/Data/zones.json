@@ -389,7 +389,7 @@
         {
           "id": "bandit_z1_a_2",
           "pos": [0, 23.7],
-          "yaw": 180,
+          "yaw": 0,
           "note": "NPC15PLACE z1_a member 2 (NpcSlagCrossbowman): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\")"
         },
         {
