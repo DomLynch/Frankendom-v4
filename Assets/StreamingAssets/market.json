@@ -34,6 +34,27 @@
       "_silver": true
     },
     {
+      "item": "pitborn_gorget",
+      "buyValue": 150,
+      "sellable": true,
+      "sellOverride": 0,
+      "_silver": true
+    },
+    {
+      "item": "pitborn_vambrace",
+      "buyValue": 150,
+      "sellable": true,
+      "sellOverride": 0,
+      "_silver": true
+    },
+    {
+      "item": "pitborn_greave",
+      "buyValue": 150,
+      "sellable": true,
+      "sellOverride": 0,
+      "_silver": true
+    },
+    {
       "item": "joan_helmet",
       "buyValue": 54,
       "sellable": true,
@@ -231,49 +252,49 @@
     },
     {
       "item": "rank_vigour_1",
-      "buyValue": 25,
+      "buyValue": 60,
       "sellable": false,
       "sellOverride": 0,
       "_silver": true
     },
     {
       "item": "rank_vigour_2",
-      "buyValue": 40,
+      "buyValue": 150,
       "sellable": false,
       "sellOverride": 0,
       "_silver": true
     },
     {
       "item": "rank_wind_1",
-      "buyValue": 25,
+      "buyValue": 60,
       "sellable": false,
       "sellOverride": 0,
       "_silver": true
     },
     {
       "item": "rank_wind_2",
-      "buyValue": 40,
+      "buyValue": 150,
       "sellable": false,
       "sellOverride": 0,
       "_silver": true
     },
     {
       "item": "rank_edge_1",
-      "buyValue": 30,
+      "buyValue": 60,
       "sellable": false,
       "sellOverride": 0,
       "_silver": true
     },
     {
       "item": "rank_edge_2",
-      "buyValue": 45,
+      "buyValue": 150,
       "sellable": false,
       "sellOverride": 0,
       "_silver": true
     },
     {
       "item": "rank_guard_1",
-      "buyValue": 30,
+      "buyValue": 60,
       "sellable": false,
       "sellOverride": 0,
       "_silver": true

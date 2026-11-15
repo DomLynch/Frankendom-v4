@@ -10,7 +10,9 @@ public static class BossSilver
 {
     [Serializable] public class Row { public string id = ""; public int silver = 0; }
     [Serializable] public class TextC { public string toast = "+{0} silver"; }
-    [Serializable] public class Cfg { public bool enabled = false; public Row[] rows = new Row[0]; public TextC text = new TextC(); public float toastSeconds = 3f, toastFadeInS = 0.25f, toastFadeOutS = 0.5f, toastLineH = 1.6f; public int toastSize = 24; public float toastBottom = 190f; public float[] color = new float[0]; }
+    [Serializable] public class Cfg { public bool enabled = false; public Row[] rows = new Row[0]; public TextC text = new TextC(); public float toastSeconds = 3f, toastFadeInS = 0.25f, toastFadeOutS = 0.5f, toastLineH = 1.6f; public int toastSize = 24; public float toastBottom = 190f; public float[] color = new float[0];
+        // ECON (Lead, Strategy 11:17): once per run. oncePerRun true = the first kill of a spawn (spawn id from the victim name 'Creature#spawnId@gen') pays the row in full and is remembered as the gate id paidPrefix+spawnId in the zones save (New game erases it); later kills of that spawn (a respawn) pay row * repeatMulBoss (bosses, ids in bossIds) or row * repeatMulMob (everyone else). false / absent = every kill pays in full (old behaviour).
+        public bool oncePerRun = false; public float repeatMulBoss = 0f, repeatMulMob = 0.25f; public string paidPrefix = "paid_"; public string[] bossIds = new string[0]; }
 
     static Cfg c; static readonly System.Collections.Generic.HashSet<DuelFighter> paid = new System.Collections.Generic.HashSet<DuelFighter>();
     public static string LastToast = ""; static float toastT0 = -99f;
@@ -46,6 +48,7 @@ public static class BossSilver
         if (victim == GameLoop.Player) return;
         if (!paid.Add(victim)) return;   // one kill, one payment (the finisher path and Die() can both fire)
         string id = victim.CharacterId; int amount = SilverFor(id); if (amount <= 0) return;
+        { var K = Get(); if (K.oncePerRun) { int h = victim.name.IndexOf('#'); if (h >= 0) { string sid = victim.name.Substring(h + 1); int at = sid.IndexOf('@'); if (at >= 0) sid = sid.Substring(0, at); string gate = K.paidPrefix + sid; if (ZoneSave.GateUnlocked(gate)) { bool boss = K.bossIds != null && Array.IndexOf(K.bossIds, id) >= 0; amount = Mathf.RoundToInt(amount * (boss ? K.repeatMulBoss : K.repeatMulMob)); } else { ZoneSave.UnlockGate(gate); ZoneSave.Flush(true); } if (amount <= 0) return; } } }   // ECON: pay once per run, respawns pay a fraction
         string req = "boss-" + id + "-" + Duel.TickCount + "-" + System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(victim);
         int cap = MarketCfg.Get().currency.cap;
         if (LootSave.CommitGrant(req, amount, MarketCfg.Get().rules.keepRequests, cap)) { LastToast = string.Format(Get().text.toast, amount); toastT0 = Time.unscaledTime; Debug.Log("[BossSilver] " + id + " paid " + amount + " silver (wallet " + LootSave.Coins + ")"); }

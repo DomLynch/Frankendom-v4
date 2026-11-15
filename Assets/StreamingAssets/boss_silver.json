@@ -1,26 +1,31 @@
 {
-  "_about": "BOSSSILVER v1: silver the player earns for killing a boss (BossSilver.cs, LootSave.CommitGrant). enabled false = nobody pays. Needs market.json enabled (coins exist). id = the victim's roster character id.",
+  "_about": "BOSSSILVER v1: silver the player earns for killing a boss (BossSilver.cs, LootSave.CommitGrant). enabled false = nobody pays. Needs market.json enabled (coins exist). ECON: oncePerRun true = the first kill of a spawn pays the row in full, a respawn pays row * repeatMulMob (bossIds: repeatMulBoss, 0 = bosses pay once per run); remembered as gate id paidPrefix+spawnId in the zones save. id = the victim's roster character id.",
   "enabled": true,
+  "oncePerRun": true,
+  "repeatMulBoss": 0.0,
+  "repeatMulMob": 0.25,
+  "paidPrefix": "paid_",
+  "bossIds": ["Pitborn", "Sobek", "Grendel", "Humbaba", "Erlking"],
   "rows": [
     {
       "id": "Pitborn",
-      "silver": 16
+      "silver": 40
     },
     {
       "id": "Sobek",
-      "silver": 22
+      "silver": 55
     },
     {
       "id": "Grendel",
-      "silver": 30
+      "silver": 75
     },
     {
       "id": "Humbaba",
-      "silver": 38
+      "silver": 95
     },
     {
       "id": "Erlking",
-      "silver": 48
+      "silver": 120
     },
     {
       "id": "BanditArcher",
@@ -36,63 +41,63 @@
     },
     {
       "id": "NpcPitGladiator",
-      "silver": 2
+      "silver": 10
     },
     {
       "id": "NpcChainWarden",
-      "silver": 2
+      "silver": 10
     },
     {
       "id": "NpcSlagCrossbowman",
-      "silver": 1
+      "silver": 5
     },
     {
       "id": "NpcCrocWarrior",
-      "silver": 2
+      "silver": 10
     },
     {
       "id": "NpcReedSkirmisher",
-      "silver": 2
+      "silver": 10
     },
     {
       "id": "NpcEmbalmerCultist",
-      "silver": 2
+      "silver": 10
     },
     {
       "id": "NpcMereRaider",
-      "silver": 2
+      "silver": 10
     },
     {
       "id": "NpcBogHag",
-      "silver": 2
+      "silver": 10
     },
     {
       "id": "NpcDrownedThane",
-      "silver": 2
+      "silver": 10
     },
     {
       "id": "NpcBarkSentinel",
-      "silver": 2
+      "silver": 10
     },
     {
       "id": "NpcCedarArcher",
-      "silver": 1
+      "silver": 5
     },
     {
       "id": "NpcRootDruid",
-      "silver": 2
+      "silver": 10
     },
     {
       "id": "NpcHuntsman",
-      "silver": 1
+      "silver": 5
     },
     {
       "id": "NpcHoundMaster",
-      "silver": 2
+      "silver": 10
     },
     {
       "id": "NpcAntlerKnight",
-      "silver": 2
+      "silver": 10
     }
   ],
   "text": {

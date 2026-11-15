@@ -8,7 +8,7 @@ using UnityEngine;
 // Re-engage when the gap falls under relockGapM, or the player moves toward the foe (within relockAngleDeg, speed >= minSpeed) for relockAfterS, or the foe is within nearGapM. soft_lock.json (StreamingAssets first, then Assets/Data): enabled false / no file = the old hard lock, byte for byte.
 public static class SoftLock
 {
-    [Serializable] public class Cfg { public bool enabled = false, log = true; public float nearGapM = 3.5f, relockGapM = 4.5f, minSpeed = 1.2f, breakAngleDeg = 70f, breakAfterS = 0.35f, relockAngleDeg = 40f, relockAfterS = 0.4f, mouseBreak = 2.5f, mouseWindowS = 0.4f; }
+    [Serializable] public class Cfg { public bool enabled = false, log = true; public float nearGapM = 3.5f, relockGapM = 4.5f, minSpeed = 1.2f, breakAngleDeg = 70f, breakAfterS = 0.35f, relockAngleDeg = 40f, relockAfterS = 0.4f, mouseBreak = 2.5f, mouseWindowS = 0.4f; public string[] breakActions = new string[0]; }
     static Cfg c; static Transform lastEnemy; static bool broken, init; static Vector3 lastPos; static float awayT, towardT, mouseAcc, mouseT;
     public static Cfg Get()
     {
@@ -38,13 +38,14 @@ public static class SoftLock
         {
             if (gap <= k.nearGapM) { awayT = 0f; return false; }
             awayT = ang > k.breakAngleDeg ? awayT + dt : 0f;
-            bool byMouse = mouseAcc >= k.mouseBreak;
-            if (awayT >= k.breakAfterS || byMouse) { broken = true; towardT = 0f; awayT = 0f; mouseAcc = 0f; if (k.log) Debug.Log("[SoftLock] lock broken (gap " + gap.ToString("F1") + " m, " + (byMouse ? "mouse" : "moving away") + ")"); }
+            bool byMouse = mouseAcc >= k.mouseBreak, byKey = false;
+            if (k.breakActions != null) for (int i = 0; i < k.breakActions.Length && !byKey; i++) if (!string.IsNullOrEmpty(k.breakActions[i]) && InputMap.Down(k.breakActions[i], KeyCode.None)) byKey = true;   // a deliberate key (dodge, the lock key ...) from controls.json action ids
+            if (awayT >= k.breakAfterS || byMouse || byKey) { broken = true; towardT = 0f; awayT = 0f; mouseAcc = 0f; if (k.log) Debug.Log("[SoftLock] break reason=" + (byKey ? "key" : byMouse ? "mouse" : "moving away") + " (gap " + gap.ToString("F1") + " m)"); }
         }
         else
         {
             towardT = ang >= 0f && ang < k.relockAngleDeg ? towardT + dt : 0f;
-            if (gap < k.relockGapM || towardT >= k.relockAfterS) { broken = false; towardT = 0f; if (k.log) Debug.Log("[SoftLock] lock back (gap " + gap.ToString("F1") + " m)"); }
+            if (gap < k.relockGapM || towardT >= k.relockAfterS) { broken = false; towardT = 0f; if (k.log) Debug.Log("[SoftLock] re-lock (gap " + gap.ToString("F1") + " m)"); }
         }
         return broken;
     }

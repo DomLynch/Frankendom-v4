@@ -1,5 +1,5 @@
 {
-  "_about": "Soft (half) lock-on camera (SoftLock.cs, called from CameraRig). Dom 15 Nov: the hard lock keeps turning the camera when he runs past an enemy; it should help but break when he moves too much or moves the mouse. While the foe is farther than nearGapM: moving away from the foe (speed >= minSpeed, angle to the foe > breakAngleDeg for breakAfterS) or a mouse movement sum >= mouseBreak within mouseWindowS frees the camera. It locks again when the gap < relockGapM, or he moves toward the foe (angle < relockAngleDeg for relockAfterS). Up close (<= nearGapM) it never breaks. The fight's targeting is not changed, only the camera. enabled false or no file = the old hard lock.",
+  "_about": "Soft (half) lock-on camera (SoftLock.cs, called from CameraRig). Dom 15 Nov: the hard lock keeps turning the camera when he runs past an enemy; it should help but break when he moves too much or moves the mouse. While the foe is farther than nearGapM: moving away from the foe (speed >= minSpeed, angle to the foe > breakAngleDeg for breakAfterS) or a mouse movement sum >= mouseBreak within mouseWindowS frees the camera. It locks again when the gap < relockGapM, or he moves toward the foe (angle < relockAngleDeg for relockAfterS). breakActions = controls.json action ids that also free the camera when pressed while farther than nearGapM (dodge, the lock key). Up close (<= nearGapM) it never breaks. The fight's targeting is not changed, only the camera. enabled false or no file = the old hard lock.",
   "enabled": true,
   "log": true,
   "nearGapM": 3.5,
@@ -10,5 +10,6 @@
   "relockAngleDeg": 40.0,
   "relockAfterS": 0.4,
   "mouseBreak": 2.5,
-  "mouseWindowS": 0.4
+  "mouseWindowS": 0.4,
+  "breakActions": ["dodge", "lock"]
 }
