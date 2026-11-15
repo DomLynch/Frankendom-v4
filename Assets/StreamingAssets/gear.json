@@ -1034,7 +1034,7 @@
         "blockPostureMul": 1,
         "cueEvent": ""
       },
-      "name": "Steel bascinet (open face, aventail edge)",
+      "name": "Steel bascinet",
       "slot": "head",
       "glb": "Gear/bascinet_joan.glb",
       "rig": "psyche-106",

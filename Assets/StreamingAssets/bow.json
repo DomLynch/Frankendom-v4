@@ -254,7 +254,7 @@
       "parentRole": "Spine2",
       "rxDeg": 0.0,
       "ryDeg": 90.0,
-      "rzDeg": 0.0,
+      "rzDeg": 90.0,
       "px": 0.0,
       "py": 0.04,
       "pz": -0.2,
@@ -279,15 +279,15 @@
     "gravityMS2": 5.5,
     "arcMaxM": 1.1,
     "dragPerS": 0.35,
-    "embedM": 0.12,
-    "stuckSeconds": 14.0,
-    "stuckFadeS": 1.5,
+    "embedM": 0.22,
+    "stuckSeconds": 6.0,
+    "stuckFadeS": 1.0,
     "stuckScatterM": 0.05,
     "maxStuck": 24,
-    "headLenM": 0.07,
+    "headLenM": 0.05,
     "headRadiusM": 0.016,
     "finCount": 3,
-    "finLenM": 0.12,
+    "finLenM": 0.09,
     "finHeightM": 0.028,
     "finInsetM": 0.02,
     "radialSegments": 8,
@@ -301,7 +301,7 @@
     "looseCue": "whoosh_light",
     "looseGain": 0.35,
     "looseRate": 0.85,
-    "lengthM": 0.95,
+    "lengthM": 0.5,
     "tintMix": 0.35,
     "radiusM": 0.014,
     "shaft": "#8a6a43",
@@ -354,3 +354,4 @@
     "quick": "bow_quick"
   }
 }
+
