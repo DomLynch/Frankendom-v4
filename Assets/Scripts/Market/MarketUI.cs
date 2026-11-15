@@ -11,6 +11,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-410)]   // before PlayerBrain (-200) and LootUI (-400): InReach and Blocking are set before the keys are read
 public sealed class MarketUI : MonoBehaviour
 {
+    public static int LastVisibleRows;
     public static MarketUI Instance;
     static MenuLayoutCfg.MarketC ML { get { return MenuLayoutCfg.MK; } }   // UIDATAB v1: layout numbers of the stall UI: menu_layout.json (defaults = the old literals)
     readonly UiStr.Cat4 promptCat = new UiStr.Cat4(); readonly UiStr.IntFmt coinFmt = new UiStr.IntFmt(), priceFmt = new UiStr.IntFmt(); string statFor = null, statText = "";   // UIDATAB v1: cached strings (no per-frame concat / format / upper)
@@ -215,7 +216,7 @@ public sealed class MarketUI : MonoBehaviour
         // rows
         var lines = shop.Stock.lines; Rect list = R(lay.list);
         if (lines.Count == 0) HudDraw.Text(new Rect(list.x, list.y + ML.panel.nothingDy, list.width, L.rowNameSize * ML.panel.nothingK), T.nothing, "serif", L.rowNameSize, TextAnchor.UpperCenter, false, dim, true);
-        int vis = lay.visibleRows;
+        int vis = lay.visibleRows; LastVisibleRows = vis;   // harness: ZoneCamScene trade step moves the selection with the rows the panel really shows (it used 8, the panel shows 6)
         for (int v = 0; v < vis; v++)
         {
             int i = shop.Scroll + v; if (i >= lines.Count) break; var ln = lines[i]; Rect r = R(lay.Row(v)); bool sel = i == shop.Index, armed = sel && shop.Armed == ln.id;

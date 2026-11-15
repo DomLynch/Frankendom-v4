@@ -310,7 +310,7 @@ public sealed class ZoneCamScene : MonoBehaviour
                         if (at < 0) res = item.Length == 0 ? (buy ? "nothing-buyable" : "nothing-sellable") : "not-listed" + (buy ? "" : !LootSave.Owns(item) ? " (not-owned)" : MarketPrice.Sell(MarketPrice.Find(MarketCfg.Rows(), item), MarketCfg.Rules()) <= 0 ? " (not-sellable: no market.json row)" : "");
                         else
                         {
-                            item = L[at].id; if (at != shop.Index) shop.Move(at - shop.Index, 8);
+                            item = L[at].id; if (at != shop.Index) shop.Move(at - shop.Index, MarketUI.LastVisibleRows > 0 ? MarketUI.LastVisibleRows : 6);
                             var r = shop.Confirm(); if (r == null && shop.Armed == item) { yield return new WaitForSecondsRealtime(0.3f); r = shop.Confirm(); }   // first confirm arms (rules.confirmSell), the second sends the order
                             if (r == null) res = shop.NoteKey.Length > 0 ? shop.NoteKey : "refused";
                             else { res = r.code; if (r.ok && !r.replayed) { MarketHooks.RaiseSold(r.item, r.coinsDelta); if (buy) lastItem = r.item; } }   // same line as MarketUI.TickOpen

@@ -208,13 +208,15 @@ public sealed class MountRider : MonoBehaviour
         if (fi != null && fi.model != null) { baseModelPos = fi.model.localPosition; modelSaved = true; }
         horseYaw = df.transform.eulerAngles.y; horse.SetActive(true);
         nextHideScan = 0f; HideWeapon();   // HIDEWEAPON v1
-        PlaceHorse(); if (K.debugLog) Debug.Log("[Mount] mounted " + H.id);
+        PlaceHorse(); RiderPose.Apply(df);   // FK16: rider clips
+        if (K.debugLog) Debug.Log("[Mount] mounted " + H.id);
     }
 
     void Dismount(string why)
     {
         mounted = false; /* FIX2 v1: nothing to restore, the fields were never written */
         ShowWeapon();   // HIDEWEAPON v1
+        RiderPose.Restore(df);   // FK16
         if (modelSaved && fi != null && fi.model != null) fi.model.localPosition = baseModelPos;
         if (horse != null && !K.dismount.horseStays) horse.SetActive(false);   // HORSESTAYS: otherwise it stands where she got off (PlaceHorse only runs while mounted)
         if (K.debugLog) Debug.Log("[Mount] dismounted: " + why);
