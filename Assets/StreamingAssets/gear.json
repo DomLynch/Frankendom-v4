@@ -332,11 +332,11 @@
       },
       {
         "victim": "Humbaba",
-        "max": 1
+        "max": 2
       },
       {
         "victim": "Erlking",
-        "max": 2
+        "max": 3
       }
     ],
     "_maxPerKillBy": "WEAPONSWAP v88: per-victim cap; a victim without a row uses maxPerKill. Pitborn drops 3: maul + pauldron pair + chest (Dom's loot design)."
@@ -718,6 +718,7 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "rare",
       "materials": {
         "*": {
           "smoothness": 0.5,
@@ -763,6 +764,7 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "fine",
       "materials": {
         "pauldron_mat": {
           "smoothness": 0.5,
@@ -810,6 +812,7 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "fine",
       "materials": {
         "vambrace_mat": {
           "smoothness": 0.5,
@@ -854,6 +857,7 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "fine",
       "materials": {
         "gorget_mat": {
           "smoothness": 0.5,
@@ -901,6 +905,7 @@
       },
       "dropFrom": [],
       "dropChance": 0.0,
+      "rarity": "fine",
       "materials": {
         "greave_mat": {
           "smoothness": 0.5,
@@ -2357,6 +2362,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "common",
       "notes": "laneHORSE: owning this item unlocks the mount (MountRider reads loot_save owned[] for mount.json requireOwned). Not wearable: slot 'mount' has no wearer. Sold by the stable vendor (market.json z7_trade_c). The glb is loaded by MountRider from StreamingAssets, not by the gear loader.",
       "weapon": {
         "damageMul": 1,
@@ -2394,6 +2400,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "rare",
       "notes": "hades-env: Dom's Tripo fantasy war horse (80k-tri LOD, 4K textures as made). Owning this item unlocks the stronger mount (mount.json variants[], needs the MountRider variants hunk). Not wearable (slot mount, no wearer). Sold by the Stablemaster in both camps (market.json stalls hub_trade_c and z7_trade_c).",
       "weapon": {
         "damageMul": 1,
@@ -2431,6 +2438,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "relic",
       "notes": "hades-env: Dom's Tripo skeletal camel (80k-tri LOD, 4K textures as made; the file renders as a saddled skeletal CAMEL with a hump and long neck, as Dom said). Owning this item unlocks the third mount (mount.json variants[]). Not wearable. Sold by the Stablemaster in both camps.",
       "weapon": {
         "damageMul": 1,
@@ -2670,6 +2678,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "fine",
       "notes": "k11 upgrade rank: owning this item gives Joan +3% max health (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
       "weapon": {
         "damageMul": 1,
@@ -2707,6 +2716,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "rare",
       "notes": "k11 upgrade rank: owning this item gives Joan +3% max health (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
       "weapon": {
         "damageMul": 1,
@@ -2744,6 +2754,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "fine",
       "notes": "k11 upgrade rank: owning this item gives Joan +3% max stamina (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
       "weapon": {
         "damageMul": 1,
@@ -2781,6 +2792,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "rare",
       "notes": "k11 upgrade rank: owning this item gives Joan +3% max stamina (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
       "weapon": {
         "damageMul": 1,
@@ -2818,6 +2830,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "fine",
       "notes": "k11 upgrade rank: owning this item gives Joan +2% damage (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
       "weapon": {
         "damageMul": 1,
@@ -2855,6 +2868,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "rare",
       "notes": "k11 upgrade rank: owning this item gives Joan +2% damage (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
       "weapon": {
         "damageMul": 1,
@@ -2892,6 +2906,7 @@
       },
       "dropFrom": [],
       "dropChance": 0,
+      "rarity": "fine",
       "notes": "k11 upgrade rank: owning this item gives Joan -3% block stamina cost (upgrade_ranks.json, read by UpgradeRanks.cs). Not wearable (slot empty). Bought once at the Bric-a-brac stall (market.json row, silver).",
       "weapon": {
         "damageMul": 1,
@@ -2906,6 +2921,48 @@
       },
       "glb": "",
       "resource": ""
+    },
+    {
+      "id": "humbaba_heartwood_idol",
+      "name": "Heartwood idol",
+      "slot": "remnant",
+      "glb": "",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 0,
+        "poise": 4,
+        "weight": 0.5
+      },
+      "dropFrom": [
+        "Humbaba"
+      ],
+      "dropChance": 1.0,
+      "rarity": "relic",
+      "notes": "FK8: relic remnant from Humbaba (placeholder stats, Dom's balance call): a carved heart-wood idol, +4 poise."
+    },
+    {
+      "id": "erlking_antler_charm",
+      "name": "Antler charm",
+      "slot": "remnant",
+      "glb": "",
+      "resource": "",
+      "part": "",
+      "coversZones": [],
+      "hidesLayers": [],
+      "stats": {
+        "armor": 3,
+        "poise": 3,
+        "weight": 0.5
+      },
+      "dropFrom": [
+        "Erlking"
+      ],
+      "dropChance": 1.0,
+      "rarity": "relic",
+      "notes": "FK8: relic remnant from the Erlking (placeholder stats): a charm of antler, +3 armor +3 poise."
     }
   ]
 }
