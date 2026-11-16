@@ -24,7 +24,7 @@ public class CameraRig : MonoBehaviour
     [System.Serializable] class FreeRow { public float yawLimitDeg = 55f, pitchMinDeg = -5f, pitchMaxDeg = 45f; }
     FreeRow free = new FreeRow(); bool freeLoaded;
     void LoadFree() { freeLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_free.json", Application.dataPath + "/Data/camera_free.json" }) { if (!System.IO.File.Exists(p)) continue; try { free = JsonUtility.FromJson<FreeRow>(DataPath.ReadFile(p)); } catch { } break; } }
-    [System.Serializable] class ColRow { public bool enabled = false; public float radius = 0.35f, minDistFromTarget = 1.2f, minGroundY = 0f, minHeightAboveGround = 0.6f; public int[] ignoreLayers = { 8, 9 }; }
+    [System.Serializable] class ColRow { public bool enabled = false; public float radius = 0.35f, minDistFromTarget = 1.2f, thinOccluderM = 0f /* DATA: a collider whose horizontal width is below this (a column, a post) never pulls the camera in; 0 = off */, minGroundY = 0f, minHeightAboveGround = 0.6f; public int[] ignoreLayers = { 8, 9 }; }
     // V68: lock-on pose multipliers as data (camera_pose.json, StreamingAssets first). 1/1/0 = the V3 pose as before.
     [System.Serializable] class CamPoseRow { public float backMul = 1f, heightMul = 1f, lookYAdd = 0f, shoulder = 1f; public LockCamRow lockCam = new LockCamRow(); public CamZone.Row zone = new CamZone.Row(); /* CAMZONE v1 */ public FreeCamRow freeCam = new FreeCamRow(); /* FREECAM v1 */ } /*HCKIT1 v93*/
     /* FREECAM v1: the free (lock-off) camera as data, camera_pose.json "freeCam". enabled=false = the public fields above (distance 3.3 / height 1.6 / shoulder 0.5) and the old instant collision, exactly as before. */
@@ -159,8 +159,17 @@ public class CameraRig : MonoBehaviour
                 int mask = PhysMasks.NotPhys; foreach (var l in col.ignoreLayers) mask &= ~(1 << l);
                 if (!fcOn) colLenInit = false;   // FREECAM v1: the smoothed length restarts from the live cast when the free camera begins
                 if (fcOn) drawPos = FreeCol(from, dirv, len, mask, drawPos);   // FREECAM v1
-                else if (Physics.SphereCast(from, col.radius, dirv / len, out var ch, len, mask, QueryTriggerInteraction.Ignore))
-                    { drawPos = from + dirv / len * Mathf.Max(col.minDistFromTarget, ch.distance); dbgColHit = true; dbgColCollider = ch.collider; /* CAMZONE v1 */ }
+                else
+                {
+                    int nh = Physics.SphereCastNonAlloc(from, col.radius, dirv / len, fcHits, len, mask, QueryTriggerInteraction.Ignore); float bestD = float.MaxValue; Collider bestC = null;
+                    for (int hi = 0; hi < nh; hi++)
+                    {
+                        var hc = fcHits[hi].collider; if (hc == null) continue;
+                        if (col.thinOccluderM > 0f && Mathf.Max(hc.bounds.size.x, hc.bounds.size.z) < col.thinOccluderM) continue;   // a thin column / post: the camera looks past it
+                        if (fcHits[hi].distance < bestD) { bestD = fcHits[hi].distance; bestC = hc; }
+                    }
+                    if (bestC != null) { drawPos = from + dirv / len * Mathf.Max(col.minDistFromTarget, bestD); dbgColHit = true; dbgColCollider = bestC; /* CAMZONE v1 */ }
+                }
             }
         }
         if (dbgColHit && dbgColCollider != null) { if (dbgColCollider != lastColLogged) { lastColLogged = dbgColCollider; Debug.Log("[CamCol] camera pulled in by '" + dbgColCollider.name + "' (layer " + LayerMask.LayerToName(dbgColCollider.gameObject.layer) + ", root '" + dbgColCollider.transform.root.name + "', size " + dbgColCollider.bounds.size.ToString("F1") + ") wanted " + dbgColWanted.ToString("F1") + " m, minDistFromTarget " + col.minDistFromTarget.ToString("F1")); } } else lastColLogged = null;   // names the cause of a camera collapse

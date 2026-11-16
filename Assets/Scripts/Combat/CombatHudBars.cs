@@ -79,6 +79,7 @@ public static class CombatHudBars
             Color c = frac < B.lowFraction ? HudCfg.Col(C.staminaLow) : HudCfg.Col(C.stamina);
             if (f.Exhausted) { float p = HudLayout.Get().barFx.exhaustMin + HudLayout.Get().barFx.exhaustAmp * Mathf.Abs(Mathf.Sin(Time.unscaledTime * Mathf.PI * B.exhaustedPulseHz)); c = HudCfg.Col(C.staminaExhausted) * p; c.a = 1f; }
             Bar(stamRect, stam.taper, frac, -1f, c, false, false);
+            { float ceil = WoundSystem.StaminaCeil(f); if (ceil < 0.995f) HudDraw.Fill(new Rect(stamRect.x + stamRect.width * ceil, stamRect.y, stamRect.width * (1f - ceil), stamRect.height), new Color(0f, 0f, 0f, 0.8f)); }   // wounded: the end of the bar she cannot refill is darkened, so it never shows stamina she cannot use
             yy = stamRect.yMax + stam.gap;
         }
         if (showPost && post != null && PD.enabled && PH.enabled)

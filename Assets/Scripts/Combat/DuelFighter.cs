@@ -10,7 +10,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public MoveTable moves; public RuleTable rules; public DuelFighter opponent;
     public float walkSpeed = 2.2f, runSpeed = 5.5f, maxHealth = 150f, maxStamina = 100f, radius = 0.4f;
 
-    public FState state; public int t; public MoveDef move; bool chained; bool hitDone; bool noFoeTried; int charge; int staggerTicks;
+    public string lastSpend = "?"; public FState state; public int t; public MoveDef move; bool chained; bool hitDone; bool noFoeTried; int charge; int staggerTicks;
     public float health, stamina, posture;
     int regenWait, postureHold, guardAge, parryCd, riposteTicks, blockFlash; bool parryWindow;
     public Vector3 moveDir; public bool run, guardHeld, heavyHeld; public int guardSide;   // 0 centre, 1 left, 2 right, 3 up
@@ -327,7 +327,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         var d = DodgeTable.Get(); var r = d.roll;
         int ticks = (int)R("roll", 36), isf = (int)R("safeStart", 4), ief = (int)R("safeEnd", 20); float dist = 3.2f, cost = R("rollCost", 30f), pow = 1f, turn = 12f; int cd = 0;
         if (d.enabled) { ticks = r.ticks; isf = r.iframeStart; ief = r.iframeEnd; dist = r.distance; cost = RollCost(); pow = r.easePower; turn = r.turnRate; cd = r.cooldownTicks; }
-        stamina = Mathf.Max(0f, stamina - cost); regenWait = RegenDelay();
+        lastSpend = "roll"; stamina = Mathf.Max(0f, stamina - cost); regenWait = RegenDelay();
         if (moveDir.sqrMagnitude > 0.01f) rollDir = moveDir.normalized;
         else
         {
@@ -350,7 +350,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         var d = DodgeTable.Get(); var r = d.backstep;
         int ticks = (int)R("backstep.ticks", 12), isf = (int)R("safeStart", 4), ief = (int)R("safeEnd", 20); float dist = 1.4f, cost = R("backstep.cost", 10f), pow = 1f; int cd = 0;
         if (d.enabled) { ticks = r.ticks; isf = r.iframeStart; ief = r.iframeEnd; dist = r.distance; cost = BackstepCost(); pow = r.easePower; cd = r.cooldownTicks; }
-        stamina = Mathf.Max(0f, stamina - cost); regenWait = RegenDelay();
+        lastSpend = "backstep"; stamina = Mathf.Max(0f, stamina - cost); regenWait = RegenDelay();
         rollDir = -OppFlat();   // straight away from the opponent (the old -transform.forward is the same while he is faced); the body keeps facing him
         BeginDodge(1, ticks, dist, isf, ief, pow, cd, R("dodge.turnRate", 12f)); /* DATALAYER b10 */
         string clip = (d.enabled && !string.IsNullOrEmpty(r.clip)) ? r.clip : "backstep";
@@ -370,7 +370,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         else if (sideDir > 0) { rollDir = right; clip = r.clipRight; }
         else { rollDir = -toO; clip = r.clipBack; }
         if (string.IsNullOrEmpty(clip)) clip = r.clip;
-        stamina = Mathf.Max(0f, stamina - SidestepCost()); regenWait = RegenDelay();
+        lastSpend = "sidestep"; stamina = Mathf.Max(0f, stamina - SidestepCost()); regenWait = RegenDelay();
         BeginDodge(2, r.ticks, r.distance, r.iframeStart, r.iframeEnd, r.easePower, r.cooldownTicks, R("dodge.turnRate", 12f)); /* DATALAYER b10 */
         PlayDodgeClip(clip, r);
         if (d.debugLog) Debug.Log("[Dodge] " + name + " SIDESTEP dir=" + sideDir + " clip=" + clip + " stamina=" + stamina);
@@ -384,7 +384,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         move = m; chained = isChained; state = FState.Windup; t = 0; hitDone = false; noFoeTried = false; charge = 0;
         pLight = pHeavy = pThrust = pKick = 0;
         if (id == "light_right") lastLightRight = true; else if (id == "light_left") lastLightRight = false;
-        stamina = Mathf.Max(0f, stamina - MoveCost(m)); regenWait = RegenDelay();
+        lastSpend = "attack " + m.id; stamina = Mathf.Max(0f, stamina - MoveCost(m)); regenWait = RegenDelay();
         int total = Tk(m.Windup(isChained)) + Tk(m.Active(isChained)) + Tk(m.Recovery(isChained));
         var arow = AttackClipTable.Get().enabled ? AttackClipTable.Find(CharKey(), id) : null;
         fadeOutLen = 0f;
@@ -556,6 +556,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         if (!exhausted && stamina <= 0f)
         {
             exhausted = true; statExhaustEntries++; regenWait = Mathf.Max(regenWait, S.regen.exhaustedDelayTicks);
+            if (IsPlayer) Debug.Log("[Exhausted] enter stamina=" + stamina.ToString("F1") + " max=" + maxStamina.ToString("F0") + " ceil=" + (maxStamina * WoundSystem.StaminaCeil(this)).ToString("F0") + " cause=" + lastSpend + " tick=" + Duel.TickCount);
             if (S.debugLog) Debug.Log("[Stamina] " + name + " EXHAUSTED tick=" + Duel.TickCount);
         }
         else if (exhausted && stamina >= S.exhausted.recoverAt) exhausted = false;
@@ -624,7 +625,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public float HitArcDeg { get { return Rf(ref cHitArc, "hit.arcDeg", 70f); } } /* DATALAYER b11 */
     public float HeavyDamage { get { return Rf(ref cHeavyDmg, "hit.heavyDamage", 18f); } } /* DATALAYER b11 */
     float LocoBlendS { get { return Rf(ref cLocoBlend, "blend.locoS", 0.15f); } } /* DATALAYER b10 */
-    public void SpendStamina(float s) { stamina -= s; regenWait = RegenDelay(); }
+    public void SpendStamina(float s) { lastSpend = "block/chip"; stamina -= s; regenWait = RegenDelay(); }
 
     // ---------------- presentation (per frame) ----------------
     // PHYSAUDIT: body motion is SIM state. It ran in Update with Time.deltaTime (one cc.Move per rendered frame), so frame rate and hit-stop/physics frame-time wobble changed positions.
