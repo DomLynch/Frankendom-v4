@@ -45,7 +45,7 @@ public class CameraRig : MonoBehaviour
     ColRow col = new ColRow(); bool colLoaded, goodSet; Vector3 lastGoodPos = new Vector3(0f, 3f, 5f), lastGoodLook = new Vector3(0f, 1f, 15f), lastGoodFwd = Vector3.forward;
     static bool IsFinite(Vector3 v) { return !(float.IsNaN(v.x) || float.IsNaN(v.y) || float.IsNaN(v.z) || float.IsInfinity(v.x) || float.IsInfinity(v.y) || float.IsInfinity(v.z)); }
     void LoadCol() { colLoaded = true; foreach (var p in new[] { Application.streamingAssetsPath + "/camera_collision.json", Application.dataPath + "/Data/camera_collision.json" }) { if (!System.IO.File.Exists(p)) continue; try { col = JsonUtility.FromJson<ColRow>(DataPath.ReadFile(p)); } catch { } break; } if (col == null) col = new ColRow(); }
-    Camera cam; CameraImpact impact;
+    Camera cam; CameraImpact impact; Collider lastColLogged;
     public void Recenter() { if (target) yaw = target.eulerAngles.y; }
     // FREECAM v1: the free camera collision. Same cast as before (sphere from the look-at to the camera, same mask, same minDistFromTarget) except: the player's own colliders are skipped (ignoreSelf),
     // a hit pulls the camera in AT ONCE (never through a wall), and it is released slowly (colReleaseMPerS) and only after colHoldS without a hit, so a post or a prop edge cannot make it pop in and out.
@@ -163,6 +163,7 @@ public class CameraRig : MonoBehaviour
                     { drawPos = from + dirv / len * Mathf.Max(col.minDistFromTarget, ch.distance); dbgColHit = true; dbgColCollider = ch.collider; /* CAMZONE v1 */ }
             }
         }
+        if (dbgColHit && dbgColCollider != null) { if (dbgColCollider != lastColLogged) { lastColLogged = dbgColCollider; Debug.Log("[CamCol] camera pulled in by '" + dbgColCollider.name + "' (layer " + LayerMask.LayerToName(dbgColCollider.gameObject.layer) + ", root '" + dbgColCollider.transform.root.name + "', size " + dbgColCollider.bounds.size.ToString("F1") + ") wanted " + dbgColWanted.ToString("F1") + " m, minDistFromTarget " + col.minDistFromTarget.ToString("F1")); } } else lastColLogged = null;   // names the cause of a camera collapse
         if (!IsFinite(drawPos) || !IsFinite(lookAt)) { drawPos = lastGoodPos; lookAt = lastGoodLook; camPos = lastGoodPos; }
         transform.position = drawPos;
         var lookDir = lookAt - transform.position; if (lookDir.sqrMagnitude < 1e-6f) lookDir = lastGoodFwd;

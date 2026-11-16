@@ -1,4 +1,4 @@
-{
+﻿{
   "enabled": true,
   "debugLog": false,
   "defaultMax": 100,
@@ -155,8 +155,8 @@
     }
   ],
   "regen": {
-    "delayTicks": 50,
-    "perSecond": 22,
+    "delayTicks": 36,
+    "perSecond": 30,
     "guardMul": 0.0,
     "exhaustedDelayTicks": 100,
     "exhaustedMul": 0.8
@@ -180,19 +180,19 @@
     },
     {
       "id": "heavy_overhead",
-      "cost": 30
+      "cost": 22
     },
     {
       "id": "heavy_left",
-      "cost": 30
+      "cost": 22
     },
     {
       "id": "heavy_right",
-      "cost": 30
+      "cost": 22
     },
     {
       "id": "heavy_thrust",
-      "cost": 30
+      "cost": 22
     },
     {
       "id": "light_overhead",
