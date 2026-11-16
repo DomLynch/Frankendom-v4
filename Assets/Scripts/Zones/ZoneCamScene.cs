@@ -161,12 +161,17 @@ public sealed class ZoneCamScene : MonoBehaviour
         var rig = cam.GetComponent<CameraRig>(); bool rigWas = rig != null && rig.enabled; if (rig != null) rig.enabled = false; float fov0 = cam.fieldOfView;
         float sx = st.pos != null && st.pos.Length > 0 ? st.pos[0] : 4f, sy = st.pos != null && st.pos.Length > 1 ? st.pos[1] : 1.6f, sz = st.pos != null && st.pos.Length > 2 ? st.pos[2] : 0f, ly = st.pos != null && st.pos.Length > 3 ? st.pos[3] : 1.3f;
         float t1 = Time.realtimeSinceStartup + Mathf.Max(0.5f, st.seconds);
+        // SIDECAM v2 (harness): st.run = true makes her move straight ahead (the heading she has at the start, running) for the whole step, so a mounted gallop can be filmed; st.item = "static" parks the camera in the world at the start offset (she rides past it) instead of following her.
+        Vector3 f0 = m.transform.forward; f0.y = 0f; f0.Normalize(); Vector3 r0 = m.transform.right; r0.y = 0f; r0.Normalize(); Vector3 p00 = m.transform.position; bool parked = st.item == "static"; Vector3 parkPos = p00 + r0 * sx + f0 * sz + Vector3.up * sy;
+        if (st.run) { drive = true; wantDir = f0; wantRun = true; }
         while (Time.realtimeSinceStartup < t1)
         {
             Vector3 f = m.transform.forward; f.y = 0f; f.Normalize(); Vector3 r = m.transform.right; r.y = 0f; r.Normalize(); Vector3 p = m.transform.position;
-            cam.transform.position = p + r * sx + f * sz + Vector3.up * sy; cam.transform.rotation = Quaternion.LookRotation((p + Vector3.up * ly) - cam.transform.position, Vector3.up); cam.fieldOfView = 40f;
+            if (st.run) { wantDir = f0; wantRun = true; }
+            cam.transform.position = parked ? parkPos : p + r * sx + f * sz + Vector3.up * sy; cam.transform.rotation = Quaternion.LookRotation((p + Vector3.up * ly) - cam.transform.position, Vector3.up); cam.fieldOfView = 40f;
             yield return null;
         }
+        if (st.run) { wantDir = Vector3.zero; wantRun = false; }
         cam.fieldOfView = fov0; if (rig != null) rig.enabled = rigWas;
     }
     static int poseSide;

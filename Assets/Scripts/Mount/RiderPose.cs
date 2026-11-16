@@ -21,6 +21,15 @@ public static class RiderPose
         return cfg;
     }
     static Animator AnimOf(DuelFighter f) { var fx = f != null ? f.GetComponent<Fighter>() : null; return fx != null ? fx.anim : null; }
+    /// <summary>ARMDIAG (QA, mount.json debugLog true): what the Animator is playing while mounted: per-layer weight and the clip names with their weights on layer 0, so a raised arm can be traced to a layer / state (Unity-side override) or to the rider clip itself.</summary>
+    public static void LogAnim(DuelFighter f)
+    {
+        var anim = AnimOf(f); if (anim == null) return; var sb = new System.Text.StringBuilder("[RiderDiag] t=" + Time.time.ToString("0.0") + " layers:");
+        for (int i = 0; i < anim.layerCount; i++) sb.Append(" " + anim.GetLayerName(i) + "=" + anim.GetLayerWeight(i).ToString("0.00"));
+        sb.Append(" | L0 clips:"); foreach (var ci in anim.GetCurrentAnimatorClipInfo(0)) sb.Append(" " + (ci.clip != null ? ci.clip.name : "?") + "=" + ci.weight.ToString("0.00"));
+        var nx = anim.GetNextAnimatorClipInfo(0); if (nx.Length > 0) { sb.Append(" next:"); foreach (var ci in nx) sb.Append(" " + (ci.clip != null ? ci.clip.name : "?") + "=" + ci.weight.ToString("0.00")); }
+        sb.Append(" speed=" + anim.speed.ToString("0.00")); Debug.Log(sb.ToString());
+    }
     public static void Apply(DuelFighter f)
     {
         var c = Get(); var anim = AnimOf(f); if (!c.enabled || anim == null || anim.runtimeAnimatorController == null) return;
@@ -32,7 +41,7 @@ public static class RiderPose
         int n = 0, miss = 0;
         foreach (var p in c.clips)
         {
-            if (p == null) continue; AnimationClip to; if (!byName.TryGetValue(p.state, out to)) { miss++; continue; }
+            if (p == null) continue; AnimationClip to = Resources.Load<AnimationClip>("RiderClips/" + p.state); if (to == null && !byName.TryGetValue(p.state, out to)) { miss++; continue; }   // RESOURCESBAKE: Resources first (v3c), the controller state is only the fallback
             for (int i = 0; i < list.Count; i++) if (list[i].Key != null && list[i].Key.name == p.from) { list[i] = new KeyValuePair<AnimationClip, AnimationClip>(list[i].Key, to); n++; }
         }
         if (n == 0) { if (c.log) Debug.LogWarning("[Rider] no clip replaced (missing " + miss + "): the rider clips are not in the controller (Editor RiderClipSetup not run?), old pose stays"); return; }

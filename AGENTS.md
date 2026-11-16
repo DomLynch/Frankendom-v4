@@ -27,6 +27,7 @@ Updated by Strategy 2026-11-06: a 9/10 AAA duel, Joan vs the Pitborn at the Hade
 6. **Big direction changes** (a new look for trails, blood, lighting, camera, or adding or removing props) go to `COORDINATION.md` as a PROPOSE line with a screenshot first. Strategy answers within one sweep (~5 min). Small tuning needs no approval; just log it.
 7. Back up before rewriting someone else's work (`Tools\_backup_<agent>_<HHMM>\`).
 8. No deploys, pushes or uploads. Only Dom says deploy.
+9. **Board lines say what is running (COO 2026-11-16 11:38):** every QA / gate script that posts a FOCUS TAKEN or RELEASED line takes a required `-Purpose` (one line: what the run proves) and prints its output folder; no hard-coded text, an empty purpose is refused (exit 8). `_agents\laneHOTSHIP\gateproof.ps1` and `gatepick.ps1` do this.
 
 ## Fast releases (Dom's standing rule, restated 2026-11-10 23:30: "fast release builds no need to rebuild all game each time")
 A release takes 10-15 minutes. Never rebuild the whole game for a change that a smaller path can ship.

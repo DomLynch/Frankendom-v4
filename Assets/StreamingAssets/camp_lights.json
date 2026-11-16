@@ -334,9 +334,9 @@
         1.7,
         87.5
       ],
-      "kelvin": 1700,
-      "candela": 22000,
-      "range": 13.0,
+      "kelvin": 2000,
+      "candela": 4500,
+      "range": 9.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 22.0,
       "layerMask": 65535,

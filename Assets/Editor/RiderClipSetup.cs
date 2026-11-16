@@ -9,7 +9,7 @@ using UnityEngine;
 // Batch: -executeMethod RiderClipSetup.BakeAndBuild (bakes, then the normal HdrpBatch player build in the same Editor session).
 public static class RiderClipSetup
 {
-    const string Ctl = "Assets/Characters/Joan.controller", Glb = "Assets/Characters/Joan_rider_clips.glb", Dir = "Assets/Characters/Joan/RiderClips";
+    const string Ctl = "Assets/Characters/Joan.controller", Glb = "Assets/Characters/Joan_rider_clips.glb", Dir = "Assets/Resources/RiderClips";   // RESOURCESBAKE: the baked clips are stand-alone assets under Resources (NOT states of Joan.controller): changing them does not touch the controller, so Unity does not reprocess the 23 scenes (the 36 GB RAM peak)
     static readonly string[] Names = { "rider_idle", "rider_gallop" };
     static string Leaf(string p) { int k = p.LastIndexOf('/'); return k >= 0 ? p.Substring(k + 1) : p; }
     [MenuItem("Tools/Combat/Bake Rider Clips")]
@@ -21,7 +21,8 @@ public static class RiderClipSetup
         if (refClip == null) { Debug.LogError("RiderClipSetup: guard_idle has no clip"); return; }
         var map = new Dictionary<string, string>();
         foreach (var b in AnimationUtility.GetCurveBindings(refClip)) { string p = b.path; while (!string.IsNullOrEmpty(p)) { string lf = Leaf(p); if (!map.ContainsKey(lf)) map[lf] = p; int k = p.LastIndexOf('/'); p = k > 0 ? p.Substring(0, k) : ""; } }
-        if (!AssetDatabase.IsValidFolder(Dir)) AssetDatabase.CreateFolder("Assets/Characters/Joan", "RiderClips");
+        if (!AssetDatabase.IsValidFolder("Assets/Resources")) AssetDatabase.CreateFolder("Assets", "Resources");
+        if (!AssetDatabase.IsValidFolder(Dir)) AssetDatabase.CreateFolder("Assets/Resources", "RiderClips");
         AssetDatabase.ImportAsset(Glb, ImportAssetOptions.ForceSynchronousImport);
         var src = new Dictionary<string, AnimationClip>(); foreach (var o in AssetDatabase.LoadAllAssetsAtPath(Glb)) { var c = o as AnimationClip; if (c != null && !c.name.StartsWith("__preview__")) src[c.name] = c; }
         int added = 0;
@@ -34,12 +35,10 @@ public static class RiderClipSetup
             foreach (var b in AnimationUtility.GetCurveBindings(sc)) { var cv = AnimationUtility.GetEditorCurve(sc, b); var nb = b; string np; if (map.TryGetValue(Leaf(b.path), out np)) { nb.path = np; hit++; } else miss++; AnimationUtility.SetEditorCurve(dst, nb, cv); }
             var st = AnimationUtility.GetAnimationClipSettings(sc); st.loopTime = true; st.loopBlend = true; AnimationUtility.SetAnimationClipSettings(dst, st);
             if (isNew) AssetDatabase.CreateAsset(dst, apath); else EditorUtility.SetDirty(dst);
-            AnimatorState state = null; foreach (var x in sm.states) if (x.state.name == nm) state = x.state;
-            if (state == null) state = sm.AddState(nm);
-            state.motion = dst; state.writeDefaultValues = true; state.speed = 1f; added++;
+            added++;   // RESOURCESBAKE: no controller state is added any more (the controller stays untouched); RiderPose loads Resources/RiderClips/<state>
             Debug.Log("RiderClipSetup: " + nm + " len " + dst.length.ToString("0.000") + " s paths " + hit + " unmatched " + miss);
         }
-        EditorUtility.SetDirty(ctrl); AssetDatabase.SaveAssets(); AssetDatabase.Refresh(); Debug.Log("RiderClipSetup: +" + added + " states in " + Ctl);
+        AssetDatabase.SaveAssets(); AssetDatabase.Refresh(); Debug.Log("RiderClipSetup: " + added + " clip(s) written to " + Dir + " (controller not modified)");
     }
     public static void BakeAndBuild() { Run(); BuildPlayerCmd.Run(); }
 }

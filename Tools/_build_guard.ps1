@@ -15,6 +15,8 @@ function Get-BuildBlockers {
     # COO 10:46 rule C amended: a CODE-ONLY build (HdrpBatch.Build, no scene bake) may run BESIDE another game's Editor (free RAM floor still applies); a scene-bake build runs alone.
     # Our OWN project's Unity.exe always blocks (one Editor per project). Mode: $script:BuildMode = 'CodeOnly' | 'Bake' (default Bake = alone).
     $mode = if ($script:BuildMode) { $script:BuildMode } else { 'Bake' }
+    # COO 12:06: NO Frankendom scene-bake builds while Tools\_bake_frozen.txt exists (the rider bake took free RAM to 0.7-2 GB twice today). Delete the file when RiderClipSetup is fixed and its per-scene peak memory is logged under 20 GB.
+    if ($mode -eq 'Bake' -and (Test-Path (Join-Path $p 'Tools\_bake_frozen.txt'))) { $why += "scene-bake builds are FROZEN (Tools\_bake_frozen.txt): " + ((Get-Content (Join-Path $p 'Tools\_bake_frozen.txt') -TotalCount 1)) }
     $ps = @(Get-CimInstance Win32_Process -Filter "Name='Unity.exe'" -ErrorAction SilentlyContinue)
     $own = @($ps | Where-Object { $_.CommandLine -match 'unity_test_hdrp' })
     $other = @($ps | Where-Object { $_.CommandLine -notmatch 'unity_test_hdrp' })
