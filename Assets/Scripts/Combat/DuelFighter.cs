@@ -418,10 +418,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             if (!noFoeTried)   // once per swing: the pick, the release and the log happen on the first Active tick only
             {
                 noFoeTried = true;
-                var nf = BowHooks.NoFoeTarget(this, move);
-                bool shot = nf != null && Duel.Resolve(this, nf, move, 1f);
-                if (shot) hitDone = true;
-                BowHooks.NoFoeLog(this, nf, shot);
+                if (BowHooks.NoFoeShot(this, move)) hitDone = true;
             }
         }
         if (t >= Tk(move.Active(chained))) { if (!hitDone) ContactRelay.AttackMissed(this, move); state = FState.Recovery; t = 0; }

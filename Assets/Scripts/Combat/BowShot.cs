@@ -126,6 +126,8 @@ public class BowArrowView : MonoBehaviour
         Shader sh = null; for (int i = 0; i < C.shaders.Length && sh == null; i++) sh = Shader.Find(C.shaders[i]);
         if (sh == null) return null;
         m = new Material(sh) { name = "BowArrow_" + key };
+        if (sh.name.IndexOf("Unlit", System.StringComparison.OrdinalIgnoreCase) >= 0 && C.unlitMul > 0f) { c = new Color(c.r * C.unlitMul, c.g * C.unlitMul, c.b * C.unlitMul, c.a); }   // a lit shader was not found: an unlit one ignores the dark scene and reads as a glowing tracer, so scale the colour down (arrow.unlitMul)
+        if (m.HasProperty("_EmissiveColor")) m.SetColor("_EmissiveColor", Color.black); if (m.HasProperty("_EmissionColor")) m.SetColor("_EmissionColor", Color.black);
         if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", c); if (m.HasProperty("_Color")) m.SetColor("_Color", c); if (m.HasProperty("_UnlitColor")) m.SetColor("_UnlitColor", c);
         if (m.HasProperty("_Smoothness")) m.SetFloat("_Smoothness", smooth); if (m.HasProperty("_Metallic")) m.SetFloat("_Metallic", metal);
         mats[key] = m; return m;
@@ -141,6 +143,15 @@ public class BowArrowView : MonoBehaviour
     public void Init(BowShot.Shot shot, Color tint, int laneIndex, int laneCount)
     {
         s = shot; lane = laneIndex; count = laneCount; var C = BowCfg.Get().arrow;
+        Build(tint);
+        laneOff = count > 1 ? new Vector3(lane * C.volleySpreadM, 0f, 0f) : Vector3.zero;   // a volley fans a little so three shafts read as three
+        Place();
+    }
+
+    /// <summary>Builds the shaft, head and fins (shared by the flying arrow and the arrow nocked on the string).</summary>
+    public void Build(Color tint)
+    {
+        var C = BowCfg.Get().arrow;
         if (shaftM == null) shaftM = Cylinder(Mathf.Max(3, C.radialSegments), false); if (headM == null) headM = Cylinder(Mathf.Max(3, C.radialSegments), true);
         string fk = C.finCount + "|" + C.lengthM + "|" + C.radiusM + "|" + C.finLenM + "|" + C.finHeightM + "|" + C.finInsetM; if (finM == null || finKey != fk) { finM = Fins(C); finKey = fk; }
         Color shaftC = Color.Lerp(BowCfg.Col(C.shaft, Color.gray), tint, C.tintMix);
@@ -148,8 +159,13 @@ public class BowArrowView : MonoBehaviour
         Part("Shaft", shaftM, Mat(C, shaftC, C.shaftSmoothness, 0f), Vector3.zero, new Vector3(C.radiusM, C.radiusM, C.lengthM), C.castShadow);
         Part("Head", headM, Mat(C, BowCfg.Col(C.head, Color.gray), C.headSmoothness, C.headMetallic), new Vector3(0f, 0f, C.lengthM * 0.5f), new Vector3(C.headRadiusM, C.headRadiusM, C.headLenM), C.castShadow);
         Part("Fins", finM, Mat(C, BowCfg.Col(C.fin, Color.gray), C.shaftSmoothness, 0f), Vector3.zero, Vector3.one, C.castShadow);
-        laneOff = count > 1 ? new Vector3(lane * C.volleySpreadM, 0f, 0f) : Vector3.zero;   // a volley fans a little so three shafts read as three
-        Place();
+    }
+
+    /// <summary>The arrow on the string during a draw: a static view (no Shot) parented to the bow, local +Z = the way it will fly.</summary>
+    public static GameObject MakeNocked(Transform parent)
+    {
+        var g = new GameObject("BowArrow_nocked"); g.transform.SetParent(parent, false);
+        var v = g.AddComponent<BowArrowView>(); v.stuck = true; v.until = float.MaxValue; v.fadeFrom = float.MaxValue; v.Build(BowCfg.Col(BowCfg.Get().arrow.shaft, Color.gray)); return g;
     }
 
     void LateUpdate() { if (stuck || flying || s == null || s.a == null || s.d == null) return; Place(); }

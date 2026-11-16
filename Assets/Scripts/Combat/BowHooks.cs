@@ -63,19 +63,14 @@ public static class BowHooks
         return true;
     }
 
-    /// <summary>DuelFighter.TickActive with no duel foe: the un-engaged fighter this bow swing is thrown at (aim.retarget cone pick), or null (the swing whiffs as before).</summary>
-    public static DuelFighter NoFoeTarget(DuelFighter a, MoveDef m)
+    /// <summary>DuelFighter.TickActive with no duel foe, once per swing: launch the arrow straight at the best un-engaged fighter in the aim cone. An arrow ignores melee reach, so this calls Release directly (the arrival is judged by Duel.Resolve as for any arrow). Logs why when nothing flew.</summary>
+    public static bool NoFoeShot(DuelFighter a, MoveDef m)
     {
-        if (!Handles(a, m)) return null;
-        var t = BowAim.Pick(a, null, allFighters);
-        return t;
-    }
-
-    /// <summary>Once per swing: what the no-foe shot did (target, gap, whether an arrow was launched).</summary>
-    public static void NoFoeLog(DuelFighter a, DuelFighter t, bool shot)
-    {
-        if (!BowCfg.Log) return;
-        Debug.Log("[bow] no-foe swing: target " + (t != null ? t.name + " gap " + Gap(a, t).ToString("F1") + " m" : "none in the aim cone") + ", arrow launched " + shot);
+        if (!Handles(a, m)) return false;
+        var t = BowAim.Pick(a, null, allFighters); State st; states.TryGetValue(a, out st);
+        bool shot = t != null && !t.Dead && Release(a, t, m, 1f);
+        if (BowCfg.Log) Debug.Log("[bow] no-foe swing: target " + (t != null ? t.name + " gap " + Gap(a, t).ToString("F1") + " m" : "none in the aim cone") + ", ammo " + (st != null ? st.ammo.ToString() : "?") + ", arrow launched " + shot);
+        return shot;
     }
 
     /// <summary>DuelFighter.SpecialId: the bow's move id for this slot while the bow is up, else null (the caller keeps the roster special).</summary>

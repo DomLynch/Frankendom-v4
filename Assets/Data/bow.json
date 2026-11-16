@@ -243,6 +243,7 @@
   },
   "visual": {
     "_about": "BowVisual.cs: glb from gear.json items[].joan_bow (StreamingAssets/Gear/joan_bow_LOD0.glb = V1 bow-v1.glb, textures re-encoded PNG by BOWART v2). Parented to handRole of the fighter skeleton (Roster.BoneName). hold = Euler degrees + metres in the LeftHand bone frame of the 106-joint Mixamo rig, fitted by Tools/bow_clips_build.py on the bow_hold pose (BOWART v2: grip centre in the palm, long axis = the fist axis, string side to the archer; one static hold for every state: in non-bow poses the bow tilts with the hand).",
+    "nock": { "enabled": true, "px": 0.0, "py": 0.0, "pz": 0.0, "rxDeg": 0.0, "ryDeg": 0.0, "rzDeg": 0.0 },
     "handRole": "LeftHand",
     "holdRxDeg": 84.29,
     "holdRyDeg": 105.11,
@@ -307,6 +308,7 @@
     "looseRate": 0.85,
     "lengthM": 0.95,
     "tintMix": 0.0,
+    "unlitMul": 0.3,
     "radiusM": 0.02,
     "shaft": "#8a6a43",
     "head": "#8d9399",

@@ -78,6 +78,15 @@ public class BowVisual : MonoBehaviour
         if (fighter.state == FState.Windup || fighter.state == FState.Active || fighter.state == FState.Recovery) lastAim = Time.time;
         bool toHand = Time.time - lastAim < K.releaseDelayTicks / 60f;
         if (toHand != onHand) Seat(toHand, K);
+        Nock();
+    }
+
+    GameObject nocked;
+    void Nock()   // the arrow on the string while the fighter draws (Windup); gone on the loose
+    {
+        var N = BowCfg.Get().visual.nock; bool show = N != null && N.enabled && fighter != null && fighter.state == FState.Windup && BowHooks.Handles(fighter, fighter.move);
+        if (show && nocked == null && inst != null) { nocked = BowArrowView.MakeNocked(inst.transform); nocked.transform.localPosition = new Vector3(N.px, N.py, N.pz); nocked.transform.localRotation = Quaternion.Euler(N.rxDeg, N.ryDeg, N.rzDeg); }
+        if (nocked != null) nocked.SetActive(show);
     }
 
     void Seat(bool toHand, BowCfg.Carry K)
