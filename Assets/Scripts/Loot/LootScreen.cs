@@ -386,7 +386,7 @@ public static class LootScreen
             LootDraw.Text(new Rect(r.x + S.rowPadX, r.y + S.rowPadY, r.width - S.rowTrim, S.labelSize * S.labelLine), UiStr.Up(s.label.Length > 0 ? s.label : LootCfg.Pretty(s.id)), "serif", S.labelSize, TextAnchor.UpperLeft, true, sel ? gold : dim);
             var nr = new Rect(r.x + S.rowPadX, r.y + S.rowPadY + S.labelSize * S.labelLine + S.nameGap, r.width - S.nameTrim, S.rowNameSize * S.nameLine);
             if (w != null) LootDraw.Text(nr, w.name, "serif", S.rowNameSize, TextAnchor.UpperLeft, false, LootCfg.RarityColor(w));
-            else LootDraw.Text(nr, T.emptySlot, "serif", S.rowNameSize, TextAnchor.UpperLeft, false, dim, true);
+            else { string eName = T.emptySlot; GearItem fw; if (s.id == "mainHand" && T.emptyMainHandShowsStarting && LootBridge.Catalog.TryGet(AbilityTable.Get().fallbackWeapon, out fw) && fw != null) eName = fw.name; LootDraw.Text(nr, eName, "serif", S.rowNameSize, TextAnchor.UpperLeft, false, dim, true); }   // the starting sword is in her hand even when no gear weapon is equipped
             if (GUI.Button(r, GUIContent.none, GUIStyle.none)) { SelectSlot(i); focus = 0; if (ev0.clickCount >= 2) focus = 1; }
         }
         if (!hasMoves) return;

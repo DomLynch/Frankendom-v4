@@ -82,7 +82,7 @@ public static class LootCfg
         public string tabKeys = "{0} / {1} or LB / RB  Tab", summonKeys = "E / A  Summon or dismiss", mountsHeader = "Mounts", mountActionHeader = "Ride", movesHeader = "Moves", remnantsHeader = "Remnants",
             summon = "Summon", dismiss = "Dismiss", mountKeyLine = "Key {0} calls or dismisses it outside fights and arenas", mountChosen = "Chosen", mountRidden = "Ridden", mountsNone = "You own no mount", mountsNoneSub = "Buy one from a stablemaster",
             mountRefuseOther = "You cannot ride here now", movesNone = "No moves for this wearer", movesNote = "Moves come with the weapon in your hand", moveReady = "Ready", moveOther = "Other weapon", moveKeyLine = "{0}  -  Key {1}", moveWeapons = "Weapons: {0}",
-            weaponAny = "Any weapon", weaponStart = "Starting sword";
+            weaponAny = "Any weapon", weaponStart = "Starting sword"; public bool emptyMainHandShowsStarting = true; /* DATA (loot_ui.json): an empty MAIN HAND slot shows the weapon she actually holds (abilities.json fallbackWeapon, the starting sword) instead of "Empty", like the shield shows on the off hand */
     }
     [Serializable] public class SaveC { public string file = "loot_save.json"; public bool enabled = true; public int applyAfterFrames = 20; }
     [Serializable] public class CatalogC { public string gearFile = "gear.json"; public string[] gearStatKeys = { "armor", "poise", "weight" }; }

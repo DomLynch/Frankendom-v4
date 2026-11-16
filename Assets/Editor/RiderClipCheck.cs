@@ -34,6 +34,14 @@ public static class RiderClipCheck
             }
             sb.Append("  LEFT hand height range " + minL.ToString("0.00") + " .. " + maxL.ToString("0.00") + " m, RIGHT " + minR.ToString("0.00") + " .. " + maxR.ToString("0.00") + " m"); Debug.Log(sb.ToString());
         }
+        // RUNTIMECLIPS: the same numbers for the clips built at RUNTIME from StreamingAssets\Rider\Joan_rider_clips.glb (RiderClipRuntime, own glTF reader): must match the baked ones
+        string rep; var rtc = RiderClipRuntime.Load(System.IO.Path.GetFullPath("Assets/StreamingAssets/Rider/Joan_rider_clips.glb"), go.transform, out rep); Debug.Log("[RiderClipCheck] RUNTIME load: " + (rtc == null ? "FAILED " + rep : rep));
+        if (rtc != null) foreach (var kv in rtc)
+        {
+            var clip = kv.Value; var sb = new StringBuilder("[RiderClipCheck] RUNTIME " + kv.Key + " len " + clip.length.ToString("0.00") + " s\n"); float minL = 9f, maxL = -9f;
+            for (int i = 0; i < 12; i++) { float t = clip.length * i / 12f; clip.SampleAnimation(go, t); Vector3 L = go.transform.InverseTransformPoint(lh.position), R = go.transform.InverseTransformPoint(rh.position); minL = Mathf.Min(minL, L.y); maxL = Mathf.Max(maxL, L.y); sb.Append("  t=" + t.ToString("0.00") + " LeftHand " + V(L) + " RightHand " + V(R) + (hips != null ? " Hips " + V(go.transform.InverseTransformPoint(hips.position)) : "") + (head != null ? " Head " + V(go.transform.InverseTransformPoint(head.position)) : "") + "\n"); }
+            sb.Append("  LEFT hand height range " + minL.ToString("0.00") + " .. " + maxL.ToString("0.00") + " m"); Debug.Log(sb.ToString());
+        }
         Object.DestroyImmediate(go);
     }
 }

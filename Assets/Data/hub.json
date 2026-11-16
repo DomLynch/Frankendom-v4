@@ -248,7 +248,7 @@
       "spot": "npc_stable",
       "yaw": 90,
       "clip": "Idle",
-      "enabled": true,
+      "enabled": false,
       "phaseSeconds": 7.85,
       "interact": {
         "kind": "shop",
@@ -281,8 +281,8 @@
     },
     {
       "id": "npc_bricabrac",
-      "role": "bricabrac",
-      "title": "Bric-a-brac",
+      "role": "stablemaster",
+      "title": "Stable",
       "spot": "npc_misc",
       "yaw": 270,
       "clip": "Idle",
@@ -406,7 +406,6 @@
         "iron_maul",
         "boar_spear",
         "hunting_bow",
-        "joan_bow",
         "arrow_bundle",
         "bandit_sword",
         "bandit_dagger",
@@ -652,7 +651,7 @@
           "spot": "vendor_3",
           "yaw": 90,
           "clip": "Idle",
-          "enabled": true,
+          "enabled": false,
           "phaseSeconds": 15.7,
           "interact": {
             "kind": "shop",
@@ -685,8 +684,8 @@
         },
         {
           "id": "npc_vendor_5",
-          "role": "bricabrac",
-          "title": "Bric-a-brac",
+          "role": "stablemaster",
+          "title": "Stable",
           "spot": "vendor_5",
           "yaw": 270,
           "clip": "Idle",

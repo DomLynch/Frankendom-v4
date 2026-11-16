@@ -80,7 +80,7 @@
     "maxEngaged": 3,
     "retargetMarginM": 1.5,
     "finisherWithOthers": false,
-    "graceAfterArriveSeconds": 8.0,
+    "graceAfterArriveSeconds": 25.0,
     "spanGraceSeconds": 10.0,
     "spanGraceZones": ["z5_humbaba", "z6_erlking"],
     "corpseSeconds": 25,
@@ -336,7 +336,7 @@
       "spots": [
         {
           "id": "arrive_start",
-          "pos": [0, 8.2],
+          "pos": [0, 1.0],
           "yaw": 0
         },
         {

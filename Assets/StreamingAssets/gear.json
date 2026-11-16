@@ -1014,10 +1014,22 @@
       "dropChance": 1.0,
       "rarity": "rare",
       "statList": [
-        { "stat": "damage", "value": 1.5 },
-        { "stat": "speed", "value": 0.75 },
-        { "stat": "reach", "value": 0.9 },
-        { "stat": "posture", "value": 1.8 }
+        {
+          "stat": "damage",
+          "value": 1.5
+        },
+        {
+          "stat": "speed",
+          "value": 0.75
+        },
+        {
+          "stat": "reach",
+          "value": 0.9
+        },
+        {
+          "stat": "posture",
+          "value": 1.8
+        }
       ],
       "notes": "WEAPONSWAP v88 (Dom's loot design: Joan starts with her sword, Pitborn's maul drops and REPLACES it in the mainHand slot). glb = laneDROPPIT pitborn_maul_joan_LOD0.glb (0.88 m, grip node = origin, +Y shaft, nodes tip / head / grip_off / grip_off_low). weapon{} = multipliers on the default sword: damage x1.5, speed x0.75 (every move phase 1.33x the ticks: about +10 percent damage per second but bigger single hits and a longer commit), reach x0.9 (maul head 0.55-0.70 m from the grip vs the sword tip at 1.0 m; two hands claw some back), posture x1.8 (it breaks guards). stats = armor 0 / poise 3 / weight 7 (weight 7 > weightFree 6: slightly slower stamina regen). twoHanded true = TwoHandIK holds the shaft with the left hand. Tune all of it here, no code.",
       "weapon": {
@@ -1066,7 +1078,9 @@
         "poise": 2,
         "weight": 2.8
       },
-      "dropFrom": ["Erlking"],
+      "dropFrom": [
+        "Erlking"
+      ],
       "dropChance": 1.0,
       "rarity": "fine",
       "tier": "drop",
@@ -1265,10 +1279,22 @@
       "dropChance": 1.0,
       "rarity": "rare",
       "statList": [
-        { "stat": "damage", "value": 1.0 },
-        { "stat": "speed", "value": 1.08 },
-        { "stat": "reach", "value": 1.768 },
-        { "stat": "posture", "value": 1.0 }
+        {
+          "stat": "damage",
+          "value": 1.0
+        },
+        {
+          "stat": "speed",
+          "value": 1.08
+        },
+        {
+          "stat": "reach",
+          "value": 1.768
+        },
+        {
+          "stat": "posture",
+          "value": 1.0
+        }
       ],
       "notes": "SOBEKTUNE v1 (replaces the SOBEKWEAPON ornate stand-in): Strategy picked C14 = frankendom src/assets/source/weapons/trident.glb (dark bronze, 99,646 tris source, never edited, copy in laneSOBEKTUNE\\trident). LOD0 = 18000 tris with a 2K normal and 2K AO (R channel, occlusionTexture) baked from the 99.6k source (Cycles CPU), all textures PNG; LOD1 = 5400 tris (distance LOD: swap by distance is a Unity step, no loader exists yet). Length 2.55 m = 0.85 x Sobek 3.0 m, grip node = origin, butt 0.51 m behind it, tip 2.04 m ahead, nodes grip / tip / head / grip_off / grip_off_low. Extra cost vs the 3,120-tri stand-in: +14880 tris (LOD0), 2 x 2K maps + 2 x 1K maps in memory. | SOBEKMOVES: speedMul 1.08 (a bit quicker than the sword), reachMul 1.7 = median ReachScale for a 2.2 m tip (tools\\reach_table.py; fighter.scale assumed 1), damage/posture 1.0.",
       "weapon": {
@@ -1729,10 +1755,22 @@
       "dropChance": 0.0,
       "rarity": "relic",
       "statList": [
-        { "stat": "damage", "value": 1.0 },
-        { "stat": "speed", "value": 0.9 },
-        { "stat": "reach", "value": 0.78 },
-        { "stat": "posture", "value": 1.4 }
+        {
+          "stat": "damage",
+          "value": 1.0
+        },
+        {
+          "stat": "speed",
+          "value": 0.9
+        },
+        {
+          "stat": "reach",
+          "value": 0.78
+        },
+        {
+          "stat": "posture",
+          "value": 1.4
+        }
       ],
       "notes": "laneMONSTER6 (Erlking): Dom's designed antler great-axe (primitive axe 3d model.glb), 5000 tris, FULL 4K base / roughness / normal (his source albedo untouched, metallic 0), 1.80 m, grip node = origin (right hand, middle wrap), grip_off = the left hand (butt wrap, 0.74 m behind), tip = crescent edge, +Y = haft toward the big crescent. twoHanded true = TwoHandIK holds grip_off with the left hand. Swap by replacing the glb + data\\erlking_weapon.json.",
       "weapon": {
@@ -1886,20 +1924,6 @@
     {
       "id": "npc_bow",
       "rarity": "common",
-      "shield": { "id": "", "sideGuard": "", "cover": [], "blockStaminaMul": 1, "blockPostureMul": 1, "cueEvent": "" },
-      "name": "Archer's bow",
-      "slot": "mainHand",
-      "glb": "Gear/joan_bow_LOD0.glb",
-      "resource": "", "part": "", "coversZones": [], "hidesLayers": [],
-      "stats": { "armor": 0, "poise": 0, "weight": 2.0 },
-      "dropFrom": [], "dropChance": 0.0,
-      "materials": { "*": { "smoothness": 0.2, "metallic": 0.08, "normalScale": 1.0 } },
-      "notes": "COO archers armed: NPC-only copy of the joan_bow visual (same glb) so the three archer NPCs (Slag Crossbowman, Cedar Archer, Huntsman) show a bow in the right-hand socket. Not a player item (never in a vendor list or drop table). Damage comes from the type rows, multipliers 1.",
-      "weapon": { "id": "npc_bow", "twoHanded": false, "damageMul": 1, "speedMul": 1, "reachMul": 1, "postureMul": 1, "gripNode": "grip", "tipNode": "tip", "offHandNode": "grip_off", "ikWeight": 1, "ikBlendSeconds": 0.15 }
-    },
-    {
-      "id": "joan_bow",
-      "rarity": "fine",
       "shield": {
         "id": "",
         "sideGuard": "",
@@ -1908,7 +1932,7 @@
         "blockPostureMul": 1,
         "cueEvent": ""
       },
-      "name": "Hunter's bow",
+      "name": "Archer's bow",
       "slot": "mainHand",
       "glb": "Gear/joan_bow_LOD0.glb",
       "resource": "",
@@ -1918,7 +1942,7 @@
       "stats": {
         "armor": 0,
         "poise": 0,
-        "weight": 0
+        "weight": 2.0
       },
       "dropFrom": [],
       "dropChance": 0.0,
@@ -1929,8 +1953,10 @@
           "normalScale": 1.0
         }
       },
-      "notes": "BOW v2 (laneBOW): visual home of the bow mode only (BowVisual.cs parents this glb to the left hand while the bow is up). No weapon block on purpose: equipping it through the loot UI is not a feature. glb = V1 bow-v1.glb (240 KB, EXT_texture_webp), source kit/source/v1_bow_clips/bow-v1.PROVENANCE.txt.",
+      "notes": "COO archers armed: NPC-only copy of the joan_bow visual (same glb) so the three archer NPCs (Slag Crossbowman, Cedar Archer, Huntsman) show a bow in the right-hand socket. Not a player item (never in a vendor list or drop table). Damage comes from the type rows, multipliers 1.",
       "weapon": {
+        "id": "npc_bow",
+        "twoHanded": false,
         "damageMul": 1,
         "speedMul": 1,
         "reachMul": 1,
@@ -1968,10 +1994,22 @@
       "dropChance": 0.0,
       "rarity": "common",
       "statList": [
-        { "stat": "damage", "value": 1.15 },
-        { "stat": "speed", "value": 1.0 },
-        { "stat": "reach", "value": 1.0 },
-        { "stat": "posture", "value": 1.0 }
+        {
+          "stat": "damage",
+          "value": 1.15
+        },
+        {
+          "stat": "speed",
+          "value": 1.0
+        },
+        {
+          "stat": "reach",
+          "value": 1.0
+        },
+        {
+          "stat": "posture",
+          "value": 1.0
+        }
       ],
       "notes": "laneMARKET v1 vendor weapon. glb empty = WeaponSwap keeps Joan's own sword model, only the multipliers change (a warning is logged). A real model is an optional art task.",
       "weapon": {
@@ -2015,10 +2053,22 @@
       "dropChance": 0.0,
       "rarity": "fine",
       "statList": [
-        { "stat": "damage", "value": 1.0 },
-        { "stat": "speed", "value": 1.0 },
-        { "stat": "reach", "value": 1.0 },
-        { "stat": "posture", "value": 1.0 }
+        {
+          "stat": "damage",
+          "value": 1.0
+        },
+        {
+          "stat": "speed",
+          "value": 1.0
+        },
+        {
+          "stat": "reach",
+          "value": 1.0
+        },
+        {
+          "stat": "posture",
+          "value": 1.0
+        }
       ],
       "notes": "laneMARKET v1 vendor weapon. STAND-IN art: Erlking's axe glb. Own model optional.",
       "weapon": {
@@ -2124,10 +2174,22 @@
       "dropChance": 0.0,
       "rarity": "fine",
       "statList": [
-        { "stat": "damage", "value": 1.0 },
-        { "stat": "speed", "value": 1.0 },
-        { "stat": "reach", "value": 1.0 },
-        { "stat": "posture", "value": 1.0 }
+        {
+          "stat": "damage",
+          "value": 1.0
+        },
+        {
+          "stat": "speed",
+          "value": 1.0
+        },
+        {
+          "stat": "reach",
+          "value": 1.0
+        },
+        {
+          "stat": "posture",
+          "value": 1.0
+        }
       ],
       "notes": "laneMARKET v1 vendor weapon. STAND-IN art: the Pitborn maul glb (a plain iron retexture would be a look item for Dom).",
       "weapon": {
@@ -2229,10 +2291,22 @@
       "dropChance": 0.0,
       "rarity": "fine",
       "statList": [
-        { "stat": "damage", "value": 1.0 },
-        { "stat": "speed", "value": 1.0 },
-        { "stat": "reach", "value": 1.0 },
-        { "stat": "posture", "value": 1.0 }
+        {
+          "stat": "damage",
+          "value": 1.0
+        },
+        {
+          "stat": "speed",
+          "value": 1.0
+        },
+        {
+          "stat": "reach",
+          "value": 1.0
+        },
+        {
+          "stat": "posture",
+          "value": 1.0
+        }
       ],
       "notes": "laneMARKET v1 vendor weapon. STAND-IN art: Sobek's trident glb (its reach 1.768 is measured; 1.5 here is a guess, retune after one fight).",
       "weapon": {
@@ -2337,9 +2411,18 @@
       "dropChance": 0.0,
       "rarity": "fine",
       "statList": [
-        { "stat": "damage", "value": 1.0 },
-        { "stat": "speed", "value": 0.85 },
-        { "stat": "posture", "value": 1.0 }
+        {
+          "stat": "damage",
+          "value": 1.0
+        },
+        {
+          "stat": "speed",
+          "value": 0.85
+        },
+        {
+          "stat": "posture",
+          "value": 1.0
+        }
       ],
       "notes": "laneMARKET v1 vendor weapon, made real by K3c. Equipped in the main hand it puts Joan in BOW mode (BowEquip.cs, bow.json equipItemId): strikes become auto-aimed arrows, specials are the bow's, stats come from bow.json gearWeapon while the bow is up (the statList below mirrors them). The weapon block is only the sword fallback (guard up, dry quiver, bow off with key 5): reachMul 1.0 on purpose. glb empty is fine: BowVisual draws Gear/joan_bow_LOD0.glb on the left hand. No icon table exists (rows are text only).",
       "weapon": {

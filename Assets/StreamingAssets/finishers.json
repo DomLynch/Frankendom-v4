@@ -1,7 +1,7 @@
 {
   "version": 1,
   "note": "ROSTER: no character names here except per-character rows keyed by roster id (clipImport.characters, rt.ground.soles); attackerSide and clip targets are roles \"player\" / \"enemy\" (a character id still works); the killer weapon, controller and finisher clip folder come from roster.json. STANDALONE finisher data (no duel_rules.json). Read by Finishers loader (FN1), the mesh cut and Assets/Editor/FinisherClipSetup.cs (clipImport). StreamingAssets copy must be identical. Offsets are stand-in metres; TUNE from renders. V61B: finishers ON, rotation.enabledIds = decapitation / split_crown / split_crown_pit, shots frame the victim body (frameBody), *_settle shot at the end. V62: rotation.perWeapon + enabledIds += river_light, hengdao_heavy; per-finisher slow-mo curves, *_settle rest shots, per-entry sheetFrames, pair probe fields. V61C: finisher length 4-6 s (clip start / speed / dieAt / slow-mo / hold), split_crown pairOffset forward 1.4, rt.look (camera keeps the gameplay look), auto.maxFinisherSeconds / lumaTolerance / clearance. V63G: rotation.enabledIds = decapitation + split_crown; head_split gets gore.cleaves/bursts \"crown\" (wound line, side patches, drips, bigger burst); rt.look.vignette (slow-mo-only override, fades out and is removed); rt.auto.vignette* checks. V64F: river_light pair placement re-derived; rt.pair (interpenetration probe), rt.victimLook (victim luma probe / stuck-flash guard), rt.ground body clamp for the victim, cuts.capMaterial (dark wet red cap). rotation.enabledIds unchanged (river_light / hengdao_heavy stay OFF: enable = add the ids to the list). V64F2: rt.pair radiusK 0.6 + failPairs (torso/leg only fail, arm / hand overlaps warn); gore.piece settleLift (resting head lifted to the floor); the victim foot-float is a WARN when the lowest body point is judged.",
-  "enableFinishers": true,
+  "enableFinishers": false,
   "enableGore": true,
   "rotation": {
     "mode": "sequence",
@@ -4694,7 +4694,7 @@
     },
     "v1": {
       "enabled": true,
-      "camera": true,
+      "camera": false,
       "timing": true,
       "headArc": true,
       "crown": true,

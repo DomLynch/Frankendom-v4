@@ -9,10 +9,10 @@ public static class RiderPose
 {
     [Serializable] public class Pair { public string from = "", state = ""; }
     [Serializable] public class Shield { public bool enabled = false; public string socket = "ShieldSocket_L", bone = "mixamorig:Spine2"; public float rx = 0f, ry = 0f, rz = 0f, px = 0f, py = 0.05f, pz = -0.22f, scale = 1f; }   // DATA: the shield rides on her back while mounted
-    [Serializable] public class Cfg { public bool enabled = false, log = true; public Pair[] clips = new Pair[0]; public Shield shield = new Shield(); }
+    [Serializable] public class Cfg { public bool enabled = false, log = true; public bool riderClipsRuntime = false; /* DATA: true = the rider clips are built at runtime from StreamingAssets\Rider\Joan_rider_clips.glb (RiderClipRuntime); false = the baked controller clips */ public Pair[] clips = new Pair[0]; public Shield shield = new Shield(); }
     [Serializable] class Doc { public Cfg rider = new Cfg(); }
     static Cfg cfg; static RuntimeAnimatorController before; static AnimatorOverrideController mine;
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void Reset() { cfg = null; before = null; mine = null; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void Reset() { cfg = null; before = null; mine = null; rt = null; rtTried = false; }
     static Cfg Get()
     {
         if (cfg != null) return cfg; cfg = new Cfg();
@@ -30,6 +30,19 @@ public static class RiderPose
         var nx = anim.GetNextAnimatorClipInfo(0); if (nx.Length > 0) { sb.Append(" next:"); foreach (var ci in nx) sb.Append(" " + (ci.clip != null ? ci.clip.name : "?") + "=" + ci.weight.ToString("0.00")); }
         sb.Append(" speed=" + anim.speed.ToString("0.00")); Debug.Log(sb.ToString());
     }
+    static Dictionary<string, AnimationClip> rt; static Animator rtAnim; static bool rtTried;
+    /// <summary>RUNTIMECLIPS: the rider clips built from StreamingAssets\Rider\Joan_rider_clips.glb (own glTF reader, no Unity asset); null when the file is absent.</summary>
+    static AnimationClip RuntimeClip(Animator anim, string name)
+    {
+        if (anim == null) return null;
+        if (!rtTried || rtAnim != anim)
+        {
+            rtTried = true; rtAnim = anim; rt = null; string rep = "no file";
+            foreach (var pth in DataPath.Candidates("Rider/Joan_rider_clips.glb")) if (System.IO.File.Exists(pth)) { rt = RiderClipRuntime.Load(pth, anim.transform, out rep); break; }
+            if (Get().log) Debug.Log("[Rider] runtime clips: " + (rt != null ? rep : "none (" + rep + "), the controller / Resources clips are used"));
+        }
+        AnimationClip c; return rt != null && rt.TryGetValue(name, out c) ? c : null;
+    }
     public static void Apply(DuelFighter f)
     {
         var c = Get(); var anim = AnimOf(f); if (!c.enabled || anim == null || anim.runtimeAnimatorController == null) return;
@@ -41,7 +54,7 @@ public static class RiderPose
         int n = 0, miss = 0;
         foreach (var p in c.clips)
         {
-            if (p == null) continue; AnimationClip to = Resources.Load<AnimationClip>("RiderClips/" + p.state); if (to == null && !byName.TryGetValue(p.state, out to)) { miss++; continue; }   // RESOURCESBAKE: Resources first (v3c), the controller state is only the fallback
+            if (p == null) continue; AnimationClip to = c.riderClipsRuntime ? RuntimeClip(anim, p.state) : null; if (to == null && !byName.TryGetValue(p.state, out to)) { miss++; continue; }   // RUNTIMECLIPS: with the data switch riderClipsRuntime (default OFF) the clip comes from StreamingAssets\Rider\Joan_rider_clips.glb (own glTF reader, plays through the same Animator override); OFF or no file = the baked controller clip as before   // RUNTIMECLIPS: StreamingAssets\Rider\Joan_rider_clips.glb read at runtime first (a pose change = a file copy), then Resources, then the controller state   // RESOURCESBAKE: Resources first (v3c), the controller state is only the fallback
             for (int i = 0; i < list.Count; i++) if (list[i].Key != null && list[i].Key.name == p.from) { list[i] = new KeyValuePair<AnimationClip, AnimationClip>(list[i].Key, to); n++; }
         }
         if (n == 0) { if (c.log) Debug.LogWarning("[Rider] no clip replaced (missing " + miss + "): the rider clips are not in the controller (Editor RiderClipSetup not run?), old pose stays"); return; }

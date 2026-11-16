@@ -307,13 +307,6 @@
       "_silver": true
     },
     {
-      "item": "joan_bow",
-      "buyValue": 35,
-      "sellable": true,
-      "sellOverride": 0,
-      "_silver": true
-    },
-    {
       "item": "bandit_sword",
       "buyValue": 20,
       "sellable": true,
@@ -406,7 +399,21 @@
     }
   ],
   "stall": {
-    "items": ["knight_sword", "war_axe", "iron_maul", "boar_spear", "hunting_bow", "joan_bow", "arrow_bundle", "bandit_sword", "bandit_dagger", "bandit_axe", "pitborn_maul", "sobek_trident", "erlking_axe"],  "_itemsNote": "DATA: the main WEAPONSMITH stock; hub.json stall.buy.items is the fallback when this is empty",
+    "items": [
+      "knight_sword",
+      "war_axe",
+      "iron_maul",
+      "boar_spear",
+      "hunting_bow",
+      "arrow_bundle",
+      "bandit_sword",
+      "bandit_dagger",
+      "bandit_axe",
+      "pitborn_maul",
+      "sobek_trident",
+      "erlking_axe"
+    ],
+    "_itemsNote": "DATA: the main WEAPONSMITH stock; hub.json stall.buy.items is the fallback when this is empty",
     "id": "hub_trade",
     "title": "Weaponsmith",
     "anchor": {
@@ -657,33 +664,14 @@
         "leavePad": 0.5,
         "_about": "The camp rectangle in world x / z (zone_plan hub_camp: offset 72, boundaryLocal -4 -> z 68; limits.zMax 94). The stall and the no-fight rule work only inside it. Monsters are held outside by laneZONESPAN destSafe (followers stop 1.5 m before the door face z 63), not by this rectangle."
       },
-      "items": ["cuirass_joan", "arms_joan", "legarmour_joan", "joan_shield", "joan_helm_dom", "joan_greaves"]
-    },
-    {
-      "_about": "laneSTALLS vend v2: Stablemaster. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
-      "id": "hub_trade_c",
-      "title": "Stablemaster",
-      "anchor": {
-        "zone": "",
-        "spot": "",
-        "x": -4.7,
-        "z": 85.4
-      },
-      "radius": 4.0,
-      "promptRadius": 8.0,
-      "promptHeight": 2.1,
-      "area": {
-        "zMin": 63.0,
-        "zMax": 98.0,
-        "xHalf": 8.0,
-        "enterPad": 0.5,
-        "leavePad": 0.5,
-        "_about": "The camp rectangle in world x / z (zone_plan hub_camp: offset 72, boundaryLocal -4 -> z 68; limits.zMax 94). The stall and the no-fight rule work only inside it. Monsters are held outside by laneZONESPAN destSafe (followers stop 1.5 m before the door face z 63), not by this rectangle."
-      },
       "items": [
-        "mount_horse",
-        "mount_warhorse",
-        "mount_skeletal_camel"
+        "cuirass_joan",
+        "arms_joan",
+        "legarmour_joan",
+        "joan_shield",
+        "joan_helm_dom",
+        "joan_greaves",
+        "joan_boots"
       ]
     },
     {
@@ -716,7 +704,7 @@
     {
       "_about": "laneSTALLS vend v2: Bric-a-brac. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
       "id": "hub_trade_e",
-      "title": "Bric-a-brac",
+      "title": "Stable",
       "anchor": {
         "zone": "",
         "spot": "",
@@ -735,19 +723,9 @@
         "_about": "The camp rectangle in world x / z (zone_plan hub_camp: offset 72, boundaryLocal -4 -> z 68; limits.zMax 94). The stall and the no-fight rule work only inside it. Monsters are held outside by laneZONESPAN destSafe (followers stop 1.5 m before the door face z 63), not by this rectangle."
       },
       "items": [
-        "joan_boots",
-        "rank_vigour_1",
-        "rank_vigour_2",
-        "rank_wind_1",
-        "rank_wind_2",
-        "rank_edge_1",
-        "rank_edge_2",
-        "rank_guard_1",
-        "rank_vigour_3",
-        "rank_wind_3",
-        "rank_edge_3",
-        "rank_guard_2",
-        "rank_guard_3"
+        "mount_horse",
+        "mount_warhorse",
+        "mount_skeletal_camel"
       ]
     },
     {
@@ -770,7 +748,16 @@
         "enterPad": 0.5,
         "leavePad": 0.5
       },
-      "items": ["cuirass_joan", "arms_joan", "legarmour_joan", "joan_shield", "joan_helm_dom", "joan_greaves", "pitborn_chest"]
+      "items": [
+        "cuirass_joan",
+        "arms_joan",
+        "legarmour_joan",
+        "joan_shield",
+        "joan_helm_dom",
+        "joan_greaves",
+        "pitborn_chest",
+        "joan_boots"
+      ]
     },
     {
       "_about": "laneSTALLS vend v2: Weaponsmith. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
@@ -792,32 +779,19 @@
         "enterPad": 0.5,
         "leavePad": 0.5
       },
-      "items": ["knight_sword", "war_axe", "iron_maul", "boar_spear", "hunting_bow", "joan_bow", "arrow_bundle", "bandit_sword", "bandit_dagger", "bandit_axe", "pitborn_maul", "sobek_trident", "erlking_axe"]
-    },
-    {
-      "_about": "laneSTALLS vend v2: Stablemaster. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
-      "id": "z7_trade_c",
-      "title": "Stablemaster",
-      "anchor": {
-        "zone": "z7_market2",
-        "spot": "vendor_3",
-        "x": -3.0,
-        "z": 352.1
-      },
-      "radius": 3.0,
-      "promptRadius": 8.0,
-      "promptHeight": 2.1,
-      "area": {
-        "zMin": 315.0,
-        "zMax": 362.0,
-        "xHalf": 10.0,
-        "enterPad": 0.5,
-        "leavePad": 0.5
-      },
       "items": [
-        "mount_horse",
-        "mount_warhorse",
-        "mount_skeletal_camel"
+        "knight_sword",
+        "war_axe",
+        "iron_maul",
+        "boar_spear",
+        "hunting_bow",
+        "arrow_bundle",
+        "bandit_sword",
+        "bandit_dagger",
+        "bandit_axe",
+        "pitborn_maul",
+        "sobek_trident",
+        "erlking_axe"
       ]
     },
     {
@@ -849,7 +823,7 @@
     {
       "_about": "laneSTALLS vend v2: Bric-a-brac. Stock = items (market.json rows buyValue; potions: consumables.json buyValue).",
       "id": "z7_trade_e",
-      "title": "Bric-a-brac",
+      "title": "Stable",
       "anchor": {
         "zone": "",
         "spot": "",
@@ -867,19 +841,9 @@
         "leavePad": 0.5
       },
       "items": [
-        "joan_boots",
-        "rank_vigour_1",
-        "rank_vigour_2",
-        "rank_wind_1",
-        "rank_wind_2",
-        "rank_edge_1",
-        "rank_edge_2",
-        "rank_guard_1",
-        "rank_vigour_3",
-        "rank_wind_3",
-        "rank_edge_3",
-        "rank_guard_2",
-        "rank_guard_3"
+        "mount_horse",
+        "mount_warhorse",
+        "mount_skeletal_camel"
       ]
     }
   ]

@@ -112,10 +112,6 @@
       "name": "the hunting bow"
     },
     {
-      "id": "joan_bow",
-      "name": "the bow"
-    },
-    {
       "id": "bandit_dagger",
       "name": "a bandit's dagger"
     },
@@ -278,48 +274,6 @@
       ]
     },
     {
-      "stallId": "hub_trade_c",
-      "npcId": "npc_stablemaster",
-      "role": "stablemaster",
-      "impostorWeight": 1.0,
-      "lines": [
-        {
-          "killer": "",
-          "zone": "",
-          "weapon": "",
-          "minCount": 1,
-          "weight": 1.0,
-          "text": "Even the horses heard about {zone}. They will not go near it."
-        },
-        {
-          "killer": "",
-          "zone": "",
-          "weapon": "",
-          "minCount": 2,
-          "weight": 1.0,
-          "text": "{killer} again? The warhorse would have carried you out of it."
-        },
-        {
-          "killer": "",
-          "zone": "",
-          "weapon": "",
-          "minCount": 0,
-          "weight": 0.5,
-          "text": "You died in {zone}. My animals know the smell on you."
-        }
-      ],
-      "fallback": [
-        {
-          "killer": "",
-          "zone": "",
-          "weapon": "",
-          "minCount": 0,
-          "weight": 1.0,
-          "text": "You look like you died recently. Sit. Spend."
-        }
-      ]
-    },
-    {
       "stallId": "hub_trade_d",
       "npcId": "npc_keeper",
       "role": "apothecary",
@@ -372,7 +326,7 @@
     {
       "stallId": "hub_trade_e",
       "npcId": "npc_bricabrac",
-      "role": "bricabrac",
+      "role": "stablemaster",
       "impostorWeight": 1.0,
       "lines": [
         {
@@ -381,15 +335,7 @@
           "weapon": "",
           "minCount": 1,
           "weight": 1.0,
-          "text": "Heard about {zone}. I have just the thing for you. Do not ask what it is."
-        },
-        {
-          "killer": "",
-          "zone": "",
-          "weapon": "",
-          "minCount": 0,
-          "weight": 0.6,
-          "text": "Dying in {zone}, was it? Everything in here has died at least once."
+          "text": "Even the horses heard about {zone}. They will not go near it."
         },
         {
           "killer": "",
@@ -397,7 +343,15 @@
           "weapon": "",
           "minCount": 2,
           "weight": 1.0,
-          "text": "{killer} took you. Pity, you were my best customer."
+          "text": "{killer} again? The warhorse would have carried you out of it."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 0.5,
+          "text": "You died in {zone}. My animals know the smell on you."
         }
       ],
       "fallback": [
@@ -560,48 +514,6 @@
       ]
     },
     {
-      "stallId": "z7_trade_c",
-      "npcId": "npc_vendor_3",
-      "role": "stablemaster",
-      "impostorWeight": 1.0,
-      "lines": [
-        {
-          "killer": "",
-          "zone": "",
-          "weapon": "",
-          "minCount": 1,
-          "weight": 1.0,
-          "text": "Even the horses heard about {zone}. They will not go near it."
-        },
-        {
-          "killer": "",
-          "zone": "",
-          "weapon": "",
-          "minCount": 2,
-          "weight": 1.0,
-          "text": "{killer} again? The warhorse would have carried you out of it."
-        },
-        {
-          "killer": "",
-          "zone": "",
-          "weapon": "",
-          "minCount": 0,
-          "weight": 0.5,
-          "text": "You died in {zone}. My animals know the smell on you."
-        }
-      ],
-      "fallback": [
-        {
-          "killer": "",
-          "zone": "",
-          "weapon": "",
-          "minCount": 0,
-          "weight": 1.0,
-          "text": "You look like you died recently. Sit. Spend."
-        }
-      ]
-    },
-    {
       "stallId": "z7_trade_d",
       "npcId": "npc_keeper_z7",
       "role": "apothecary",
@@ -654,7 +566,7 @@
     {
       "stallId": "z7_trade_e",
       "npcId": "npc_vendor_5",
-      "role": "bricabrac",
+      "role": "stablemaster",
       "impostorWeight": 1.0,
       "lines": [
         {
@@ -663,15 +575,7 @@
           "weapon": "",
           "minCount": 1,
           "weight": 1.0,
-          "text": "Heard about {zone}. I have just the thing for you. Do not ask what it is."
-        },
-        {
-          "killer": "",
-          "zone": "",
-          "weapon": "",
-          "minCount": 0,
-          "weight": 0.6,
-          "text": "Dying in {zone}, was it? Everything in here has died at least once."
+          "text": "Even the horses heard about {zone}. They will not go near it."
         },
         {
           "killer": "",
@@ -679,7 +583,15 @@
           "weapon": "",
           "minCount": 2,
           "weight": 1.0,
-          "text": "{killer} took you. Pity, you were my best customer."
+          "text": "{killer} again? The warhorse would have carried you out of it."
+        },
+        {
+          "killer": "",
+          "zone": "",
+          "weapon": "",
+          "minCount": 0,
+          "weight": 0.5,
+          "text": "You died in {zone}. My animals know the smell on you."
         }
       ],
       "fallback": [

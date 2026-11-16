@@ -78,8 +78,8 @@
     "lockAtDuelStart": true,
     "enterRange": 4.0,
     "stickyRange": 6.0,
-    "exitRange": 12.0,
-    "exitSeconds": 3.0,
+    "exitRange":8.0,
+    "exitSeconds":1.0,
     "easeIn": 3.0,
     "easeOut": 1.8
   },
