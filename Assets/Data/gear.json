@@ -455,12 +455,6 @@
         "Joan_Hair"
       ],
       "doubleSided": false,
-      "materials": {
-        "*": {
-          "metallic": 0.85,
-          "smoothness": 0.62
-        }
-      },
       "stats": {
         "armor": 5,
         "poise": 3,
@@ -1060,7 +1054,7 @@
       },
       "name": "Steel bascinet",
       "slot": "head",
-      "glb": "Gear/bascinet_joan.glb",
+      "glb": "Gear/joan_helm_dom.glb",
       "rig": "psyche-106",
       "tris": 5292,
       "coversZones": [],
@@ -1078,12 +1072,6 @@
       "tier": "drop",
       "source": "modelled v2 (laneHELMET2): smooth analytic shell, fitted to the Joan_v6b scalp",
       "doubleSided": false,
-      "materials": {
-        "*": {
-          "metallic": 0.85,
-          "smoothness": 0.62
-        }
-      },
       "notes": "v2: smooth pointed bascinet (analytic ogive skull over a low-order scalp fit, straight brow edge, flared raised neck guard), 4.2 mm plate, 9 mm brass rolled edge, steel #4a4a4e metallic 0.85 roughness 0.34-0.46 brushed, subtle hammering (max tilt ~4 deg). 0 intersecting tris vs head in rest/turn/tilt/neck poses; 0 overlaps with body/tunic in all 11 gameplay actions (min 7.9 mm to tunic in Death); only Stress_OverheadRoll clips. Old files in _work/v1.",
       "weapon": {
         "damageMul": 1,
@@ -1109,7 +1097,7 @@
       },
       "name": "Steel kettle cap",
       "slot": "head",
-      "glb": "Gear/cap_joan.glb",
+      "glb": "Gear/joan_helm_dom.glb",
       "rig": "psyche-106",
       "tris": 5292,
       "coversZones": [],
@@ -1129,12 +1117,6 @@
       "tier": "drop",
       "source": "modelled v2 (laneHELMET2): smooth analytic shell, fitted to the Joan_v6b scalp",
       "doubleSided": false,
-      "materials": {
-        "*": {
-          "metallic": 0.85,
-          "smoothness": 0.62
-        }
-      },
       "notes": "v2: kettle hat, round elliptical dome + flat even 3.8 cm brim (9 deg droop), 9 mm brass rolled edge, same steel material. 0 overlaps in all actions (min 0.6 mm brim-to-body in Roll, no overlap).",
       "weapon": {
         "damageMul": 1,
@@ -3222,12 +3204,6 @@
       "rarity": "fine",
       "tier": "shop",
       "doubleSided": false,
-      "materials": {
-        "*": {
-          "metallic": 0.85,
-          "smoothness": 0.62
-        }
-      },
       "notes": "Dom's own helmet model (medieval_helmet_dom.glb), fitted/decimated by OpenTrident; stats like the Steel bascinet; sold in the Armourers.",
       "weapon": {
         "damageMul": 1,

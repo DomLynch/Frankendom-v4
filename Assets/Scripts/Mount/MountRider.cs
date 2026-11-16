@@ -25,13 +25,14 @@ using UnityEngine;
     public float walkCyclesPerM = 0.55f, gallopCyclesPerM = 0.28f, bobWalkM = 0.02f, bobGallopM = 0.06f, pitchWalkDeg = 1.5f, pitchGallopDeg = 5f, rollWalkDeg = 1.5f, rollGallopDeg = 1f, breathM = 0.004f, breathCyclesPerS = 0.3f, blendS = 0.12f, stillMps = 0.15f;
 }
 [Serializable] public class MtVariant { public string item = ""; public MtHorse horse = new MtHorse(); public MtSpeed speed = new MtSpeed(); public MtStamina stamina = new MtStamina(); }   // hades-env variants v1: a second horse = one row (owning item unlocks it)
+[Serializable] public class MountGearMask { public string item = ""; public float fromFrac = 0.3f, toFrac = 0.9f; /* DATA: triangles of the item's skinned mesh whose centre sits between fromFrac and toFrac of the mesh height (0 = bottom, 1 = top) are removed while mounted */ }
 [Serializable] public class MountCfg
 {
     public bool enabled = false, debugLog = false, playAreaIsBoss = true; public string summonAction = "mount", summonKey = "H", requireOwned = ""; public float turnDegPerS = 200f;
     public MtHorse horse = new MtHorse(); public MtSpeed speed = new MtSpeed(); public MtStamina stamina = new MtStamina(); public MtSummon summon = new MtSummon(); public MtDismount dismount = new MtDismount();
     public MtZ[] noMountZ = new MtZ[0]; public MtCam camera = new MtCam(); public MtGait gait = new MtGait();
     public MtVariant[] variants = new MtVariant[0];   // hades-env variants v1
-    public string[] hideGearWhileMounted = new string[0]; /* DATA: gear item ids whose renderers are switched off while mounted and back on at dismount (e.g. joan_tabard: no red through the chest plate while riding); empty = nothing */ public bool hideWeaponWhileMounted = false; public string[] hideSockets = { "WeaponSocket_R" };   // HIDEWEAPON v1: mounted = the carried weapon renderers (under these socket names) are switched off, back on at dismount; default off
+    public MountGearMask[] maskGearWhileMounted = new MountGearMask[0]; /* DATA: chest-only mask, e.g. [{"item":"joan_tabard","fromFrac":0.3,"toFrac":0.92}] keeps the skirt and the neck trim, hides the part under the cuirass while riding; an unreadable mesh falls back to hiding the whole piece */ public string[] hideGearWhileMounted = new string[0]; /* DATA: gear item ids whose renderers are switched off while mounted and back on at dismount (e.g. joan_tabard: no red through the chest plate while riding); empty = nothing */ public bool hideWeaponWhileMounted = false; public string[] hideSockets = { "WeaponSocket_R" };   // HIDEWEAPON v1: mounted = the carried weapon renderers (under these socket names) are switched off, back on at dismount; default off
 }
 
 public static class MountData
@@ -108,7 +109,7 @@ public sealed class MountRider : MonoBehaviour
     MtVariant cur; MtHorse H { get { return cur != null ? cur.horse : K.horse; } } MtStamina St { get { return cur != null ? cur.stamina : K.stamina; } }   // hades-env variants v1: cur = the owned variant (null = plain)
     MountCfg K; DuelFighter df; Fighter fi; GameObject horse; Transform hBody; GLTFast.GltfImport imp; List<Material> mats;
     bool mounted, exhausted, modelSaved, loadStarted, loaded, haveLast; float stam, nextSummon, baseWalk, baseRun, horseYaw, phase, ampBlend, speedNow, breath, bob, pitch, roll; Vector3 baseModelPos, lastPos;
-    readonly List<Renderer> hiddenW = new List<Renderer>(); float nextHideScan;   // HIDEWEAPON v1
+    readonly List<Renderer> hiddenW = new List<Renderer>(); float nextHideScan; readonly Dictionary<SkinnedMeshRenderer, Mesh> maskedOrig = new Dictionary<SkinnedMeshRenderer, Mesh>(); readonly List<Mesh> maskCopies = new List<Mesh>();   // HIDEWEAPON v1
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Inst = null; }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -230,7 +231,10 @@ public sealed class MountRider : MonoBehaviour
     {
         if (df != null && K.hideGearWhileMounted != null && K.hideGearWhileMounted.Length > 0)   // hideGearWhileMounted: worn gear (GearPiece itemId) hidden while riding
             foreach (var gp in df.GetComponentsInChildren<GearPiece>(true)) { bool gh = false; for (int i = 0; i < K.hideGearWhileMounted.Length; i++) if (gp.itemId == K.hideGearWhileMounted[i]) { gh = true; break; } if (!gh) continue; foreach (var r in gp.GetComponentsInChildren<Renderer>(true)) if (r.enabled) { r.enabled = false; hiddenW.Add(r); } }
+        if (df != null && K.maskGearWhileMounted != null && K.maskGearWhileMounted.Length > 0) MaskGear();
         if (!K.hideWeaponWhileMounted || df == null || K.hideSockets == null) return;
+        { var gs0 = df.GetComponent<GearSlots>(); string mh0 = gs0 != null ? gs0.ItemIn("mainHand") : "";   // WEAPONHIDE: the main-hand weapon is hidden wherever its glb hangs (socket or not), not only under WeaponSocket_R
+          if (!string.IsNullOrEmpty(mh0)) foreach (var gp in df.GetComponentsInChildren<GearPiece>(true)) if (gp.itemId == mh0) foreach (var r in gp.GetComponentsInChildren<Renderer>(true)) if (r.enabled) { r.enabled = false; hiddenW.Add(r); } }
         foreach (var tr in df.GetComponentsInChildren<Transform>(true))
         {
             bool hit = false; for (int i = 0; i < K.hideSockets.Length; i++) if (tr.name == K.hideSockets[i]) { hit = true; break; }
@@ -239,7 +243,37 @@ public sealed class MountRider : MonoBehaviour
         }
     }
 
-    void ShowWeapon() { for (int i = 0; i < hiddenW.Count; i++) if (hiddenW[i] != null) hiddenW[i].enabled = true; hiddenW.Clear(); }
+    void ShowWeapon()
+    {
+        for (int i = 0; i < hiddenW.Count; i++) if (hiddenW[i] != null) hiddenW[i].enabled = true; hiddenW.Clear();
+        foreach (var kv in maskedOrig) if (kv.Key != null) kv.Key.sharedMesh = kv.Value;   // chest mask off: the original mesh is back on foot
+        maskedOrig.Clear(); for (int i = 0; i < maskCopies.Count; i++) if (maskCopies[i] != null) Destroy(maskCopies[i]); maskCopies.Clear();
+    }
+
+    /// <summary>maskGearWhileMounted: a copy of the worn piece's skinned mesh without the triangles in the masked height band (chest under the plate); the original goes back at dismount.</summary>
+    void MaskGear()
+    {
+        foreach (var gp in df.GetComponentsInChildren<GearPiece>(true))
+        {
+            MountGearMask m = null; for (int i = 0; i < K.maskGearWhileMounted.Length; i++) if (K.maskGearWhileMounted[i] != null && gp.itemId == K.maskGearWhileMounted[i].item) { m = K.maskGearWhileMounted[i]; break; }
+            if (m == null) continue;
+            foreach (var smr in gp.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+            {
+                if (maskedOrig.ContainsKey(smr)) continue; var src = smr.sharedMesh; if (src == null) continue;
+                if (!src.isReadable) { if (smr.enabled) { smr.enabled = false; hiddenW.Add(smr); } continue; }   // unreadable mesh: the whole piece goes off (stop-gap)
+                var vs = src.vertices; var b = src.bounds; float y0 = b.min.y + b.size.y * Mathf.Clamp01(m.fromFrac), y1 = b.min.y + b.size.y * Mathf.Clamp01(m.toFrac);
+                var cp = Instantiate(src); cp.name = src.name + "_mounted";
+                for (int sm = 0; sm < src.subMeshCount; sm++)
+                {
+                    var tr = src.GetTriangles(sm); var keep = new List<int>(tr.Length);
+                    for (int t = 0; t + 2 < tr.Length; t += 3) { float cy = (vs[tr[t]].y + vs[tr[t + 1]].y + vs[tr[t + 2]].y) / 3f; if (cy >= y0 && cy <= y1) continue; keep.Add(tr[t]); keep.Add(tr[t + 1]); keep.Add(tr[t + 2]); }
+                    cp.SetTriangles(keep, sm);
+                }
+                maskedOrig[smr] = src; smr.sharedMesh = cp; maskCopies.Add(cp);
+                if (K.debugLog) Debug.Log("[Rider] mounted mask on " + gp.itemId + ": " + src.name + " band " + m.fromFrac + "-" + m.toFrac);
+            }
+        }
+    }
 
     /// <summary>Procedural gait (the glb has no rig): phase advances with the ground speed, bob / pitch / roll blend with how fast the horse moves.</summary>
     void Gait(float dt)

@@ -3,7 +3,7 @@
   "enabled": true,
   "debugLog": false,
   "rider": { "enabled": true, "log": true, "shield": { "enabled": true, "socket": "ShieldSocket_L", "bone": "mixamorig:Hips", "rx": 0, "ry": 0, "rz": 70, "px": 0.3, "py": -0.05, "pz": -0.10, "scale": 0.8 }, "clips": [ { "from": "idle", "state": "rider_idle" }, { "from": "walk", "state": "rider_gallop" }, { "from": "loco_run", "state": "rider_gallop" } ] },
-  "hideWeaponWhileMounted": true, "hideGearWhileMounted": ["joan_tabard"],
+  "hideWeaponWhileMounted": true, "maskGearWhileMounted": [ { "item": "joan_tabard", "fromFrac": 0.3, "toFrac": 0.92 } ],
   "summonAction": "mount",
   "summonKey": "M",
   "requireOwned": "mount_horse",
