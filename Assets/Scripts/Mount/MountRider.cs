@@ -31,7 +31,7 @@ using UnityEngine;
     public MtHorse horse = new MtHorse(); public MtSpeed speed = new MtSpeed(); public MtStamina stamina = new MtStamina(); public MtSummon summon = new MtSummon(); public MtDismount dismount = new MtDismount();
     public MtZ[] noMountZ = new MtZ[0]; public MtCam camera = new MtCam(); public MtGait gait = new MtGait();
     public MtVariant[] variants = new MtVariant[0];   // hades-env variants v1
-    public bool hideWeaponWhileMounted = false; public string[] hideSockets = { "WeaponSocket_R" };   // HIDEWEAPON v1: mounted = the carried weapon renderers (under these socket names) are switched off, back on at dismount; default off
+    public string[] hideGearWhileMounted = new string[0]; /* DATA: gear item ids whose renderers are switched off while mounted and back on at dismount (e.g. joan_tabard: no red through the chest plate while riding); empty = nothing */ public bool hideWeaponWhileMounted = false; public string[] hideSockets = { "WeaponSocket_R" };   // HIDEWEAPON v1: mounted = the carried weapon renderers (under these socket names) are switched off, back on at dismount; default off
 }
 
 public static class MountData
@@ -228,6 +228,8 @@ public sealed class MountRider : MonoBehaviour
     /// <summary>HIDEWEAPON v1: switch off every enabled Renderer under the named weapon sockets of the player (data: mount.json hideWeaponWhileMounted, hideSockets). Only renderers this call switched off are switched back on.</summary>
     void HideWeapon()
     {
+        if (df != null && K.hideGearWhileMounted != null && K.hideGearWhileMounted.Length > 0)   // hideGearWhileMounted: worn gear (GearPiece itemId) hidden while riding
+            foreach (var gp in df.GetComponentsInChildren<GearPiece>(true)) { bool gh = false; for (int i = 0; i < K.hideGearWhileMounted.Length; i++) if (gp.itemId == K.hideGearWhileMounted[i]) { gh = true; break; } if (!gh) continue; foreach (var r in gp.GetComponentsInChildren<Renderer>(true)) if (r.enabled) { r.enabled = false; hiddenW.Add(r); } }
         if (!K.hideWeaponWhileMounted || df == null || K.hideSockets == null) return;
         foreach (var tr in df.GetComponentsInChildren<Transform>(true))
         {
