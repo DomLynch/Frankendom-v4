@@ -223,8 +223,9 @@ public class ShieldMount : MonoBehaviour, IGearShieldSource
         curOff = Vector3.Lerp(curOff, tOff, k); curRot = Quaternion.Slerp(curRot, tRot, k); curVis = Mathf.Lerp(curVis, tVis, k); curScale = Mathf.Lerp(curScale, tr.scale, k);
         ArmIK(tr, tVis);   // SHIELDGUARD v1: the shield arm (before the socket reads the hand)
         float hs = Mathf.Max(0.0001f, hand.lossyScale.x);
-        socket.localPosition = curOff / hs; socket.localRotation = curRot;
-        float s = Mathf.Max(0.0001f, curScale * Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(curVis)) / hs);   // hide / show = the shield shrinks into the fist over blendSeconds (no pop)
+        bool carried = RiderPose.Carrying(socket);   // SHIELDPOSE: mounted shield carry keeps its mount.json rider.shield pose
+        if (carried) { socket.localPosition = RiderPose.CarryPos; socket.localRotation = RiderPose.CarryRot; } else { socket.localPosition = curOff / hs; socket.localRotation = curRot; }
+        float s = Mathf.Max(0.0001f, curScale * (carried ? RiderPose.CarryScale : 1f) * Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(curVis)) / hs);   // hide / show = the shield shrinks into the fist over blendSeconds (no pop)
         socket.localScale = new Vector3(s, s, s);   // world scale = row.scale: the glb is authored in metres
         if (diagN < 40 && diagT < Time.unscaledTime && (Flag("-shield:log") || Load().debugLog))
         {

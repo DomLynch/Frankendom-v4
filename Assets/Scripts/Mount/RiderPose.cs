@@ -40,14 +40,17 @@ public static class RiderPose
         if (c.log) Debug.Log("[Rider] Joan mounted: " + n + " clip(s) replaced" + (miss > 0 ? ", " + miss + " missing" : ""));
     }
     // SHIELD: while mounted the shield socket (ShieldSocket_L) is re-parented to a back bone with the mount.json rider.shield row; dismounting puts it back exactly where it was
-    static bool shieldWarned; static Transform shieldT, shieldParent; static Vector3 shieldPos, shieldScale; static Quaternion shieldRot;
+    static bool shieldWarned; static Transform shieldT, shieldParent; static Vector3 carryPos; static Quaternion carryRot = Quaternion.identity; static float carryScale = 1f;
+    /// <summary>SHIELDPOSE: while the shield socket is carried on a rider bone, ShieldMount keeps this pose (mount.json rider.shield px/py/pz, rx/ry/rz, scale) instead of overwriting it with the hand pose every frame.</summary>
+    public static bool Carrying(Transform t) { return shieldT != null && shieldT == t; }
+    public static Vector3 CarryPos { get { return carryPos; } } public static Quaternion CarryRot { get { return carryRot; } } public static float CarryScale { get { return carryScale; } } static Vector3 shieldPos, shieldScale; static Quaternion shieldRot;
     static Transform Find(DuelFighter f, string name) { foreach (var t in f.GetComponentsInChildren<Transform>(true)) if (t.name == name) return t; return null; }
     public static void ShieldOn(DuelFighter f)
     {
         var S = Get().shield; if (!Get().enabled || S == null || !S.enabled || f == null || shieldT != null) return;   // SHIELDRETRY: called again from MountRider every 0.5 s while mounted (the shield glb can finish loading after the summon), the not-found warning prints once per mount
         var sock = Find(f, S.socket); var bone = Find(f, S.bone); if (sock == null || bone == null) { if (!shieldWarned) { shieldWarned = true; Debug.LogWarning("[Rider] shield carry: " + (sock == null ? "socket '" + S.socket + "'" : "bone '" + S.bone + "'") + " not found (yet), retrying every 0.5 s while mounted"); } return; }
         shieldT = sock; shieldParent = sock.parent; shieldPos = sock.localPosition; shieldRot = sock.localRotation; shieldScale = sock.localScale;
-        sock.SetParent(bone, false); sock.localRotation = Quaternion.Euler(S.rx, S.ry, S.rz); sock.localPosition = new Vector3(S.px, S.py, S.pz); sock.localScale = shieldScale * (S.scale > 0.01f ? S.scale : 1f);
+        carryPos = new Vector3(S.px, S.py, S.pz); carryRot = Quaternion.Euler(S.rx, S.ry, S.rz); carryScale = S.scale > 0.01f ? S.scale : 1f; sock.SetParent(bone, false); sock.localRotation = Quaternion.Euler(S.rx, S.ry, S.rz); sock.localPosition = new Vector3(S.px, S.py, S.pz); sock.localScale = shieldScale * (S.scale > 0.01f ? S.scale : 1f);
         if (Get().log) Debug.Log("[Rider] shield carried on " + S.bone);
     }
     public static void ShieldOff()
