@@ -413,6 +413,11 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             float mul = (move.charges && charge >= (int)R("charge.min", 30)) ? R("charge.damage", 1.5f) : 1f;
             if (Duel.Resolve(this, opponent, move, mul)) hitDone = true;
         }
+        else if (!hitDone && opponent == null && IsPlayer)   // bow no-foe v1: an arrow loosed with no duel foe flies at the best un-engaged fighter in the aim cone (BowAim.Pick), with normal hit physics on arrival
+        {
+            var nf = BowHooks.NoFoeTarget(this, move);
+            if (nf != null && Duel.Resolve(this, nf, move, 1f)) hitDone = true;
+        }
         if (t >= Tk(move.Active(chained))) { if (!hitDone) ContactRelay.AttackMissed(this, move); state = FState.Recovery; t = 0; }
     }
 

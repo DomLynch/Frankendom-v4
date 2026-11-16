@@ -63,6 +63,15 @@ public static class BowHooks
         return true;
     }
 
+    /// <summary>DuelFighter.TickActive with no duel foe: the un-engaged fighter this bow swing is thrown at (aim.retarget cone pick), or null (the swing whiffs as before).</summary>
+    public static DuelFighter NoFoeTarget(DuelFighter a, MoveDef m)
+    {
+        if (!Handles(a, m)) return null;
+        var t = BowAim.Pick(a, null, allFighters);
+        if (t != null && BowCfg.Log) Debug.Log("[bow] no-foe shot at " + t.name);
+        return t;
+    }
+
     /// <summary>DuelFighter.SpecialId: the bow's move id for this slot while the bow is up, else null (the caller keeps the roster special).</summary>
     public static string SpecialIdFor(DuelFighter f, int slot)
     {
