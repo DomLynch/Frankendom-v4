@@ -40,19 +40,19 @@ public static class RiderPose
         if (c.log) Debug.Log("[Rider] Joan mounted: " + n + " clip(s) replaced" + (miss > 0 ? ", " + miss + " missing" : ""));
     }
     // SHIELD: while mounted the shield socket (ShieldSocket_L) is re-parented to a back bone with the mount.json rider.shield row; dismounting puts it back exactly where it was
-    static Transform shieldT, shieldParent; static Vector3 shieldPos, shieldScale; static Quaternion shieldRot;
+    static bool shieldWarned; static Transform shieldT, shieldParent; static Vector3 shieldPos, shieldScale; static Quaternion shieldRot;
     static Transform Find(DuelFighter f, string name) { foreach (var t in f.GetComponentsInChildren<Transform>(true)) if (t.name == name) return t; return null; }
     public static void ShieldOn(DuelFighter f)
     {
-        var S = Get().shield; if (!Get().enabled || S == null || !S.enabled || f == null || shieldT != null) return;
-        var sock = Find(f, S.socket); var bone = Find(f, S.bone); if (sock == null || bone == null) { Debug.LogWarning("[Rider] shield carry: " + (sock == null ? "socket '" + S.socket + "'" : "bone '" + S.bone + "'") + " not found, the shield stays on the arm"); return; }
+        var S = Get().shield; if (!Get().enabled || S == null || !S.enabled || f == null || shieldT != null) return;   // SHIELDRETRY: called again from MountRider every 0.5 s while mounted (the shield glb can finish loading after the summon), the not-found warning prints once per mount
+        var sock = Find(f, S.socket); var bone = Find(f, S.bone); if (sock == null || bone == null) { if (!shieldWarned) { shieldWarned = true; Debug.LogWarning("[Rider] shield carry: " + (sock == null ? "socket '" + S.socket + "'" : "bone '" + S.bone + "'") + " not found (yet), retrying every 0.5 s while mounted"); } return; }
         shieldT = sock; shieldParent = sock.parent; shieldPos = sock.localPosition; shieldRot = sock.localRotation; shieldScale = sock.localScale;
         sock.SetParent(bone, false); sock.localRotation = Quaternion.Euler(S.rx, S.ry, S.rz); sock.localPosition = new Vector3(S.px, S.py, S.pz); sock.localScale = shieldScale * (S.scale > 0.01f ? S.scale : 1f);
         if (Get().log) Debug.Log("[Rider] shield carried on " + S.bone);
     }
     public static void ShieldOff()
     {
-        if (shieldT == null) return;
+        shieldWarned = false; if (shieldT == null) return;
         if (shieldParent != null) { shieldT.SetParent(shieldParent, false); shieldT.localPosition = shieldPos; shieldT.localRotation = shieldRot; shieldT.localScale = shieldScale; }
         shieldT = null; shieldParent = null;
     }

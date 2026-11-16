@@ -165,7 +165,7 @@ public sealed class MountRider : MonoBehaviour
             if (df.run) { if (exhausted || stam <= 0f) df.run = false; else { stam -= St.gallopDrainPerS * dt; if (stam <= 0f) { stam = 0f; exhausted = true; df.run = false; } } }
             else { stam = Mathf.Min(St.max, stam + St.regenPerS * dt); if (exhausted && stam >= St.minToGallop) exhausted = false; }
             df.guardHeld = false;   // v1: no fighting from the saddle
-            if (K.hideWeaponWhileMounted && Time.unscaledTime >= nextHideScan) { nextHideScan = Time.unscaledTime + 0.5f; HideWeapon(); }   // HIDEWEAPON v1: a weapon swap while riding is caught within 0.5 s
+            if (Time.unscaledTime >= nextHideScan) { nextHideScan = Time.unscaledTime + 0.5f; if (K.hideWeaponWhileMounted) HideWeapon(); RiderPose.ShieldOn(df); }   // HIDEWEAPON v1: a weapon swap while riding is caught within 0.5 s
             Gait(dt);
         }
         else if (horse != null && horse.activeSelf && (!K.dismount.horseStays || (horse.transform.position - df.transform.position).sqrMagnitude > K.dismount.horseKeepM * K.dismount.horseKeepM)) horse.SetActive(false);   // HORSESTAYS: put away a stood horse that is far behind (zone change)
