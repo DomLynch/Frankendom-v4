@@ -19,6 +19,42 @@ function Get-BuildBlockers {
     # COO/Strategy 12:57 (third time: 12:37 free RAM 0.1 GB as Dom launched): EVERY Frankendom Editor start needs 45 GB+ free, NO game running (Dom or QA, any project) and NO other Editor. mem_watch.ps1 stops MY Editor the moment any game process starts.
     # COO 14:10 ruling: a WARM CodeOnly build (no FK_BAKE_TEST, no _codeonly_unproven.txt; last code-only peak 4.3 GB) needs 24 GB+ free; other Editors and QA players are allowed. It still refuses for a Dom game (checked below), our own project's Editor, or a backup lock. COLD / FK_BAKE_TEST builds keep the 45 GB, ALONE, no-game rule.
     $warm = ($mode -eq 'CodeOnly' -and $env:FK_BAKE_TEST -ne '1' -and -not (Test-Path (Join-Path $p 'Tools\_codeonly_unproven.txt')))
+if ($warm) { $MinFreeGB = 14 }   # COO ruling 23:03: warm code-only peak ~4.5 GB, floor 24 -> 14 (14 - 4.5 = 9.5 GB, above the 8 GB own-pid stop); cold/FK_BAKE_TEST keep 45 GB ALONE
+
+# COO 23:09 (qe peaked 33.5 / 29.1 GB under a "warm" flag): a take is COLD (45 GB, ALONE) when (a) the LAST measured Editor peak (newest TestOut\v109*_mem.csv, column peakMyUnityGB) was over 12 GB, or (b) any non-code Assets file (not .cs/.cs.meta/.json, not Data/StreamingAssets) changed since the newest real build's Assembly-CSharp.dll.
+if ($warm) {
+    $coldWhy = $null
+    try {
+        $mc = Get-ChildItem (Join-Path $p 'TestOut') -Filter 'v109*_mem.csv' -ErrorAction Stop | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+        if ($mc) { $pk = (Import-Csv $mc.FullName | ForEach-Object { [double]$_.peakMyUnityGB } | Measure-Object -Maximum).Maximum; if ($pk -gt 12) { $coldWhy = "last measured Editor peak $pk GB ($($mc.Name)) is over 12 GB" } }
+        $dll = Get-ChildItem (Join-Path $p 'Builds') -Directory -Filter 'HDRP_v109*' -ErrorAction Stop | ForEach-Object { Get-Item (Join-Path $_.FullName 'HadesSlice_Data\Managed\Assembly-CSharp.dll') -ErrorAction SilentlyContinue } | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+        if ($dll -and -not $coldWhy) {
+            $ch = @(Get-ChildItem (Join-Path $p 'Assets') -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -gt $dll.LastWriteTime -and $_.Extension -notin '.cs', '.json' -and $_.FullName -notmatch '\\(Data|StreamingAssets)\\' -and $_.Name -notmatch '\.cs\.meta$' })
+            if ($ch.Count -gt 0) { $coldWhy = "$($ch.Count) non-code Assets file(s) changed since the last real build (e.g. $($ch[0].Name))" }
+        }
+    } catch { }
+    # COO 23:11: a NEW public / [SerializeField] field without [NonSerialized] in a .cs changed since the last real build re-serializes scenes (qe lastSpend): treat as COLD and name it.
+    if (-not $coldWhy -and $dll) {
+        try {
+            Push-Location $p
+            $cs = @(Get-ChildItem (Join-Path $p 'Assets\Scripts') -Recurse -Filter *.cs -File -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -gt $dll.LastWriteTime })
+            $hits = @()
+            foreach ($c in ($cs | Select-Object -First 60)) {
+                $rel = $c.FullName.Substring($p.Length + 1).Replace('\', '/')
+                $base = (& git log --before=($dll.LastWriteTime.ToString('s')) -1 --format=%H -- $rel 2>$null)
+                $d = if ($base) { & git diff $base -- $rel 2>$null } else { & git diff HEAD -- $rel 2>$null }
+                foreach ($l in @($d)) {
+                    if ($l -notmatch '^\+(?!\+)') { continue }
+                    if ($l -match 'NonSerialized|\bstatic\b|\bconst\b|\bclass\b|\bstruct\b|\benum\b|\binterface\b|\bdelegate\b|\bevent\b|\boverride\b|\babstract\b|\bvirtual\b|\bpartial\b') { continue }
+                    if ($l -match '^\+\s*(//|/\*|\*)') { continue }
+                    if ($l -match '^\+\s*(\[SerializeField\]|public\s+[\w<>\[\],\.\?]+(\s*,\s*[\w<>\[\],\.\?]+)*\s+\w+\s*(=[^;(){}]*)?\s*(,\s*\w+\s*(=[^;(){}]*)?\s*)*;)') { $hits += "$($c.Name): $($l.Substring(1).Trim())" }
+                }
+            }
+            Pop-Location
+            if ($hits.Count -gt 0) { $coldWhy = "new serialized field(s) since the last real build (re-serialize scenes): " + (($hits | Select-Object -First 3) -join ' | ') }
+        } catch { try { Pop-Location } catch { } }
+    }    if ($coldWhy) { $warm = $false; $script:ColdWhy = "treated as COLD (45 GB, ALONE): $coldWhy" }
+}
     if (-not $warm) { $MinFreeGB = [Math]::Max($MinFreeGB, 45); $anyGame = @(Get-Process HadesSlice, FronteirDom, FrontierDom, ARMAGEDOM_Slice0 -EA SilentlyContinue); if ($anyGame.Count -gt 0) { $why += 'a game is running (' + (($anyGame | ForEach-Object { $_.Name + ' ' + $_.Id }) -join ', ') + '): no Editor start while ANY game runs (Dom, QA, any project)' }; $anyEd = @(Get-Process Unity -EA SilentlyContinue); if ($anyEd.Count -gt 0) { $why += 'another Unity.exe is open (pids ' + (($anyEd | ForEach-Object { $_.Id }) -join ',') + '): no second Editor' } }
     $codeOnlyUnproven = $false; if ($mode -eq 'CodeOnly' -and (Test-Path (Join-Path $p 'Tools\_codeonly_unproven.txt'))) { $mode = 'Bake'; $MinFreeGB = [Math]::Max($MinFreeGB, 30); $codeOnlyUnproven = $true }
     # COO 12:06: NO Frankendom scene-bake builds while Tools\_bake_frozen.txt exists (the rider bake took free RAM to 0.7-2 GB twice today). Delete the file when RiderClipSetup is fixed and its per-scene peak memory is logged under 20 GB.
@@ -40,6 +76,7 @@ if ($mode -eq 'Bake' -and $env:FK_BAKE_TEST -ne '1' -and (Test-Path (Join-Path $
     if (Test-Path $lock) { if (((Get-Date) - (Get-Item $lock).LastWriteTime).TotalMinutes -lt 30) { $why += "backup lock exists ($lock)" } }
     $free = [math]::Round((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1MB, 1)
     if ($free -lt $MinFreeGB) { $why += "free RAM $free GB is under $MinFreeGB GB" }
+if ($script:ColdWhy) { $why += $script:ColdWhy }
     $hs = @(Get-CimInstance Win32_Process -Filter "Name='HadesSlice.exe'" -ErrorAction SilentlyContinue)
     # COO 10:53: Dom = a fresh dom-runs log, or a launcher/explorer parent; 'no QA flags' alone is NOT proof (boot-check players have none)
     $plain = @($hs | Where-Object {
@@ -91,4 +128,8 @@ if ($DryRun) {
     $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
     if ($w.Count -gt 0) { "DRY RUN: build would be REFUSED at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ') } else { "DRY RUN: build would run (all clear) at $(Get-Date -Format 'HH:mm')" }
 }
+
+
+
+
 

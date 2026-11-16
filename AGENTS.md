@@ -75,3 +75,15 @@ Every build script ENDS with `Add-BuiltLine '<tag>'` (from _build_guard.ps1), wh
 
 ## Build tags are reserved by script (Lead + Strategy, 16 Nov 22:06)
 Nobody types a tag by hand. Get one with `powershell -File Tools\next_tag.ps1 -Owner <you>` (prints and atomically reserves the next free HDRP_v109 tag as Builds\HDRP_v109<tag>.reserved; refuses if another owner holds it). `deploy_data.ps1 -Apply` and `Assert-BuildSafe '<tag>'` (every build_v109*.ps1) reserve the tag themselves and refuse a tag reserved by another owner (set $env:FK_OWNER to your name so your own tag is reusable). Cause: tag collisions pn (14:08), pv (22:00) and a hot deploy landing during another build's write. Mechanism: Tools\_tag_reserve.ps1.
+
+## Rule 13 amendment: warm code-only floor 14 GB (COO ruling 23:03, 16 Nov)
+A WARM code-only Frankendom build (CodeOnly, no FK_BAKE_TEST, no Tools\_codeonly_unproven.txt; measured peak ~4.5 GB) needs 14 GB+ free RAM (was 24; 14 - 4.5 = 9.5 GB stays above the 8 GB own-pid stop). Other lanes' Editors and QA players may keep running. COLD / FK_BAKE_TEST / bake builds keep 45 GB+, ALONE, nothing else running. Implemented in Tools\_build_guard.ps1 (Get-BuildBlockers, $warm); launchers must not carry their own higher RAM wait (use the guard).
+
+**Serialized fields are bake-class (Unity dev, Lead 2026-11-16 23:10):** a NEW public field or [SerializeField] on a scene-baked component (DuelFighter, CameraRig, CombatHudBars hosts, any MonoBehaviour in a scene or prefab) re-serializes every scene that holds it, so a 'code-only' build opens HadesSlice and peaks near 30 GB (qe 23:05: 33.5 GB, own-pid stop at 3.5 GB free). New serialized fields = bake-class. In a code-only take use private, [System.NonSerialized] or static members, and JSON-loaded config classes only; check the diff for new public fields before starting the Editor. If a code-only Editor passes ~8 GB, stop it, post the cause, and ship the data-only parts hot.
+
+
+## Cold detection in the guard (COO 23:09, 16 Nov)
+A 'warm' take is treated as COLD (45 GB free, ALONE) when the last measured Editor peak (newest TestOut\v109*_mem.csv, peakMyUnityGB) is over 12 GB, or any non-code Assets file (not .cs/.cs.meta/.json, not Data/StreamingAssets) changed since the newest real build's Assembly-CSharp.dll. Implemented in Tools\_build_guard.ps1. Also bake-class: a NEW serialized field on a scene-baked class (qe lastSpend) re-serializes every scene; the guard cannot see it, so mem_watch (own-pid stop at 8 GB) stays mandatory.
+
+## Serialized-field detection in the guard (COO 23:11, 16 Nov)
+Tools\_build_guard.ps1 diffs every Assets\Scripts .cs changed since the newest real build's dll against its last commit before that dll (git) and treats the take as COLD (45 GB, ALONE) when an added line declares a public field or [SerializeField] without [NonSerialized] (static/const/types/methods are skipped; a false positive only costs an ALONE slot). It prints the field. Together with the peak rule and the non-code Assets rule this is the three-part cold detector.
