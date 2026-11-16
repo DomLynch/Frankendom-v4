@@ -52,7 +52,7 @@ public sealed class ZoneCamScene : MonoBehaviour
                 case "forceDeath": it = ForceDeath(S, st); break;   // CODE5 v1
                 case "sidecam": it = SideCam(S, st); break;   // FK17: free camera beside / behind Joan (data pos = [right m, up m, forward m, look height m]) for st.seconds, her sim keeps running
                 case "hitPose": it = HitPose(S, st); break;   // dev2: play one Animator state on Joan, freeze at the peak, front camera (step.item = state name, step.seconds = hold)
-                case "trade": it = Trade(S, st); break; case "equip": it = EquipStep(S, st); break; case "lootscreen": it = LootShot(S, st); break; case "mounttoggle": it = MountToggle(S, st); break; case "pickup": it = Pickup(S, st); break; case "inv": Inv(st.id); break;   // CLOSE5B v1
+                case "trade": it = Trade(S, st); break; case "equip": it = EquipStep(S, st); break; case "lootscreen": it = LootShot(S, st); break; case "mounttoggle": it = MountToggle(S, st); break; case "remount": MountRider.ProofKey = true; Note("remount: virtual E press"); it = Wait(st.seconds); break; case "lonebow": it = LoneBow(S, st); break; case "pickup": it = Pickup(S, st); break; case "inv": Inv(st.id); break;   // CLOSE5B v1
                 default: Note("unknown kind " + st.kind); ok = false; break;
             }
             if (it != null)
@@ -359,6 +359,24 @@ public sealed class ZoneCamScene : MonoBehaviour
     IEnumerator MountToggle(CtScene S, CtStep st)
     {
         MountRider.RequestToggle(); Note("mounttoggle: requested"); yield return new WaitForSecondsRealtime(Mathf.Max(0.5f, st.seconds));
+    }
+    IEnumerator Wait(float sec) { yield return new WaitForSecondsRealtime(Mathf.Max(0.3f, sec)); }
+    // FK proof tool (pk): a bow swing with NO duel foe. Walks toward the nearest other fighter and swings when in range, never fighting back; logs how often the swing found no opponent.
+    IEnumerator LoneBow(CtScene S, CtStep st)
+    {
+        float t0 = Time.realtimeSinceStartup, nextHit = 0f; int swings = 0, noOpp = 0;
+        while (Time.realtimeSinceStartup - t0 < st.seconds)
+        {
+            var m = Me(); DuelFighter best = null; float bd = 1e9f;
+            if (m != null) foreach (var f in UnityEngine.Object.FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) { if (f == m || f.Dead) continue; float dd = Flat(f.transform.position, m.transform.position); if (dd < bd) { bd = dd; best = f; } }
+            if (m == null || best == null) { wantDir = Vector3.zero; yield return null; continue; }
+            Vector3 to = best.transform.position - m.transform.position; to.y = 0f;
+            wantRun = false; wantDir = bd > S.approachGapM ? to / Mathf.Max(0.01f, bd) : Vector3.zero;
+            if (bd <= S.attackGapM && Time.realtimeSinceStartup >= nextHit) { if (m.opponent == null) noOpp++; m.PressDirected("thrust"); swings++; nextHit = Time.realtimeSinceStartup + 1.4f; }
+            yield return null;
+        }
+        Debug.Log("[CamScene] lonebow " + st.id + ": swings " + swings + ", swings with no duel foe " + noOpp);
+        wantDir = Vector3.zero;
     }
     IEnumerator EquipStep(CtScene S, CtStep st)
     {
