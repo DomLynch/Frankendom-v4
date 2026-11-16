@@ -13,10 +13,10 @@
   "b": 0.0,
   "holdFramesAfter": 12,
   "waitForGear": true,
-  "gearCapSeconds": 45.0,
+  "gearCapSeconds": 30.0,
   "onReload": true,
   "reloadHoldFrames": 100,
-  "reloadCapSeconds": 45.0,
+  "reloadCapSeconds": 30.0,
   "reloadHoldSim": false,
   "gearAttachFrames": 100
  },
