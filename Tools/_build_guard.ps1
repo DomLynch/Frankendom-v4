@@ -1,4 +1,4 @@
-# Frankendom build preflight (COO standing rule 09:13, Dom: recurring faults get a guard IN THE SCRIPT).
+﻿# Frankendom build preflight (COO standing rule 09:13, Dom: recurring faults get a guard IN THE SCRIPT).
 # Dot-source from any Tools\build_v109*.ps1:   . "$PSScriptRoot\_build_guard.ps1"; Assert-BuildSafe 'oq'
 # Dry run (prints every check, never starts anything):   powershell -File Tools\_build_guard.ps1 -DryRun
 # Refuses (exit 3, prints WHY) when ANY of these holds:
@@ -65,6 +65,7 @@ if ($mode -eq 'Bake' -and $env:FK_BAKE_TEST -ne '1' -and (Test-Path (Join-Path $
 function Assert-BuildSafe {
     param([string]$Tag = '?', [int]$MinFreeGB = 24, [ValidateSet('Bake', 'CodeOnly')][string]$Mode = 'Bake')
     $script:BuildMode = $Mode
+    . (Join-Path $PSScriptRoot '_tag_reserve.ps1'); try { $null = Reserve-Tag -Tag $Tag -Owner ("build:$Tag") } catch { "BUILD REFUSED ($Tag): $($_.Exception.Message)"; exit 3 }
     $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
     if ($w.Count -gt 0) {
         "BUILD REFUSED ($Tag) at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ')
@@ -87,6 +88,8 @@ function Add-BuiltLine {
 }
 if ($DryRun) {
     $script:BuildMode = $Mode
+    . (Join-Path $PSScriptRoot '_tag_reserve.ps1'); try { $null = Reserve-Tag -Tag $Tag -Owner ("build:$Tag") } catch { "BUILD REFUSED ($Tag): $($_.Exception.Message)"; exit 3 }
     $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
     if ($w.Count -gt 0) { "DRY RUN: build would be REFUSED at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ') } else { "DRY RUN: build would run (all clear) at $(Get-Date -Format 'HH:mm')" }
 }
+

@@ -63,8 +63,9 @@
       "Gear/gorget_joan_R.glb",
       "Gear/greave_joan_R.glb"
     ],
-    "eagerStartFrames": 20,
-    "eagerFramesBetween": 2,
+    "tier0BudgetMs": 8.0,
+    "eagerStartFrames": 2,
+    "eagerFramesBetween": 1,
     "lateDelayFrames": 600,
     "lateFramesBetween": 20,
     "files": [

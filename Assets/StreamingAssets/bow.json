@@ -255,7 +255,7 @@
       "_about": "K24: where the bow rests when it is not being drawn (BowVisual.LateUpdate). The bow is rigid on the hand bone and the rig's idle / walk poses hang the hand at the hip, so it hung there. Outside FState Windup / Active / Recovery (plus releaseDelayTicks after the last shot) the bow sits on parentRole with this row; on the draw it returns to the hand with the hold row above. enabled false = always the hand (old). UNPROVEN GUESS: rx/ry/rz (deg) and px/py/pz (metres, parentRole bone frame) put it across the back; fit by one frame with -bow:on and edit the six numbers.",
       "enabled": true,
       "parentRole": "Spine2",
-      "rxDeg": 0.0,
+      "rxDeg": 35.0,
       "ryDeg": 90.0,
       "rzDeg": 25.0,
       "px": 0.0,

@@ -51,6 +51,7 @@ public static class PerfFixes
         public string[] files = new string[0];                 // extra glb files: StreamingAssets-relative, project-relative or absolute
         public int startDelayFrames = 30;                      // after the scene load
         public int framesBetweenFiles = 20;                    // one file at a time, spread over the intro
+        public float tier0BudgetMs = 0f;                        // DATA: per-frame parse budget (ms) for Joan's gear tier while the start cover is up (gear.json deferFrameBudget applies after); 0 = off
         public float maxTotalMb = 128f;                        // parsed imports stay in RAM until the loader takes them: files past this total are not preloaded
         public bool inHarness = false;
         // v2 (2026-11-11, startup stall fix): TIER 0 = eagerFiles (Joan's worn gear) parsed first, eagerStartFrames after the scene load, eagerFramesBetween frames apart;

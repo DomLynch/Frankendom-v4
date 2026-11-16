@@ -24,6 +24,9 @@ public static class GlbPreload
 
     // K30: ONE DontDestroyOnLoad defer agent for every glTFast import of the gear path (GearAssetLoader, this class), so no import depends on glTFast's global default agent. Recreated if its object was destroyed.
     static GameObject deferGo; static GLTFast.TimeBudgetPerFrameDeferAgent deferAgent;
+    /// <summary>Behind the start cover nothing is playing, so tier 0 parses with a big per-frame budget (perf_fixes C3.tier0BudgetMs); RestoreBudget puts the gentle in-play budget (gear.json deferFrameBudget) back.</summary>
+    public static void BoostBudget(float ms) { var _ = DeferAgent; if (deferAgent != null) deferAgent.SetFrameBudget(Mathf.Clamp(ms, 0.01f, 50f)); }
+    public static void RestoreBudget() { float b = 0.5f; try { b = GearTable.Get().deferFrameBudget; } catch (Exception) { } if (deferAgent != null) deferAgent.SetFrameBudget(Mathf.Clamp(b, 0.01f, 5f)); }
     public static GLTFast.IDeferAgent DeferAgent
     {
         get
@@ -129,6 +132,7 @@ public class GlbPreloadRunner : MonoBehaviour
         var eager = GlbPreload.WantedEager();
         if (eager.Count > 0)
         {   // TIER 0: Joan's worn gear first, a couple of frames apart, so the armour is on within seconds of the first frame
+            if (c.tier0BudgetMs > 0f) GlbPreload.BoostBudget(c.tier0BudgetMs);
             for (int i = 0; i < Mathf.Max(0, c.eagerStartFrames); i++) yield return null;
             float te = Time.realtimeSinceStartup;
             foreach (var f in eager)
@@ -140,7 +144,7 @@ public class GlbPreloadRunner : MonoBehaviour
                 for (int i = 0; i < Mathf.Max(1, c.eagerFramesBetween); i++) yield return null;
             }
             foreach (var t in pending) while (!t.IsCompleted) yield return null;
-            GlbPreload.Tier0Done = true;
+            GlbPreload.Tier0Done = true; if (c.tier0BudgetMs > 0f) GlbPreload.RestoreBudget();
             Debug.Log("[GlbPreload] tier0 (Joan gear) " + eager.Count + " files, " + (used / 1048576f).ToString("0.0") + " MB, " + (Time.realtimeSinceStartup - te).ToString("0.0") + " s");
             for (int i = 0; i < Mathf.Max(0, c.lateDelayFrames); i++) yield return null;
         }

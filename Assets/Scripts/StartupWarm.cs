@@ -75,7 +75,7 @@ public class StartupWarm : MonoBehaviour
             float tg = Time.realtimeSinceStartup; bool capped = false;
             while (!GlbPreload.Tier0Done) { if (Time.realtimeSinceStartup - tg > Mathf.Max(1f, c.cover.gearCapSeconds)) { capped = true; break; } yield return null; }
             if (!capped) for (int i = 0; i < c.cover.gearAttachFrames; i++) yield return null;
-            Debug.Log(capped ? "[Cover] reveal without gear (cap " + c.cover.gearCapSeconds.ToString("0") + " s)" : "[Cover] reveal after gear tier parsed (" + (Time.realtimeSinceStartup - tg).ToString("0.0") + " s wait)");
+            if (capped) Debug.LogError("[Cover] ERROR reveal WITHOUT gear: the gear tier was not loaded after the " + c.cover.gearCapSeconds.ToString("0") + " s last-resort cap"); else Debug.Log("[Cover] reveal after gear loaded (" + (Time.realtimeSinceStartup - tg).ToString("0.0") + " s wait)");
         }
         Debug.Log("[StartupWarm] done renders " + done + " (first " + first.ToString("0") + " ms, last " + last.ToString("0") + " ms, total " + total.ToString("0") + " ms), " + (Time.realtimeSinceStartup - t0).ToString("0.00") + " s wall, cover " + cover + ", sim hold " + froze + ", harness " + harness);
         Release();

@@ -178,7 +178,7 @@ public class WeaponSwap : MonoBehaviour, IGearWeaponSource
         GameObject inst = null; IDisposable res = null; string info = "";
         yield return GearAssetLoader.Load(it, it.glb, true, sock, (g, r, i) => { inst = g; res = r; info = i; });
         if (this == null || my != serial) { if (res != null) res.Dispose(); if (inst != null) Destroy(inst); yield break; }   // unequipped / replaced while loading
-        if (inst == null) { GearTable.Warn("weapon '" + wd.id + "' has no visual (" + info + "): stats apply, the sword stays"); yield break; }
+        if (inst == null) { if (wd.id.IndexOf("bow", StringComparison.OrdinalIgnoreCase) >= 0) Debug.Log("[Gear] bow item '" + wd.id + "': no weapon-slot model by design, BowVisual draws the bow and hides the sword"); else GearTable.Warn("weapon '" + wd.id + "' has no visual (" + info + "): stats apply, the sword stays"); yield break; }
 
         // reference renderer = the sword that is on the socket now (rendering layer / shadows must match the fighter's other renderers)
         Renderer refR = null;
