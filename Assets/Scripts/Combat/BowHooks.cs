@@ -68,8 +68,14 @@ public static class BowHooks
     {
         if (!Handles(a, m)) return null;
         var t = BowAim.Pick(a, null, allFighters);
-        if (t != null && BowCfg.Log) Debug.Log("[bow] no-foe shot at " + t.name);
         return t;
+    }
+
+    /// <summary>Once per swing: what the no-foe shot did (target, gap, whether an arrow was launched).</summary>
+    public static void NoFoeLog(DuelFighter a, DuelFighter t, bool shot)
+    {
+        if (!BowCfg.Log) return;
+        Debug.Log("[bow] no-foe swing: target " + (t != null ? t.name + " gap " + Gap(a, t).ToString("F1") + " m" : "none in the aim cone") + ", arrow launched " + shot);
     }
 
     /// <summary>DuelFighter.SpecialId: the bow's move id for this slot while the bow is up, else null (the caller keeps the roster special).</summary>

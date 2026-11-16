@@ -10,7 +10,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public MoveTable moves; public RuleTable rules; public DuelFighter opponent;
     public float walkSpeed = 2.2f, runSpeed = 5.5f, maxHealth = 150f, maxStamina = 100f, radius = 0.4f;
 
-    public FState state; public int t; public MoveDef move; bool chained; bool hitDone; int charge; int staggerTicks;
+    public FState state; public int t; public MoveDef move; bool chained; bool hitDone; bool noFoeTried; int charge; int staggerTicks;
     public float health, stamina, posture;
     int regenWait, postureHold, guardAge, parryCd, riposteTicks, blockFlash; bool parryWindow;
     public Vector3 moveDir; public bool run, guardHeld, heavyHeld; public int guardSide;   // 0 centre, 1 left, 2 right, 3 up
@@ -381,7 +381,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     void StartMove(string id, bool isChained)
     {
         var m = WeaponMove(id); if (m == null) return;   // WEAPONMOVES v1
-        move = m; chained = isChained; state = FState.Windup; t = 0; hitDone = false; charge = 0;
+        move = m; chained = isChained; state = FState.Windup; t = 0; hitDone = false; noFoeTried = false; charge = 0;
         pLight = pHeavy = pThrust = pKick = 0;
         if (id == "light_right") lastLightRight = true; else if (id == "light_left") lastLightRight = false;
         stamina = Mathf.Max(0f, stamina - MoveCost(m)); regenWait = RegenDelay();
@@ -415,8 +415,14 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         }
         else if (!hitDone && opponent == null && IsPlayer)   // bow no-foe v1: an arrow loosed with no duel foe flies at the best un-engaged fighter in the aim cone (BowAim.Pick), with normal hit physics on arrival
         {
-            var nf = BowHooks.NoFoeTarget(this, move);
-            if (nf != null && Duel.Resolve(this, nf, move, 1f)) hitDone = true;
+            if (!noFoeTried)   // once per swing: the pick, the release and the log happen on the first Active tick only
+            {
+                noFoeTried = true;
+                var nf = BowHooks.NoFoeTarget(this, move);
+                bool shot = nf != null && Duel.Resolve(this, nf, move, 1f);
+                if (shot) hitDone = true;
+                BowHooks.NoFoeLog(this, nf, shot);
+            }
         }
         if (t >= Tk(move.Active(chained))) { if (!hitDone) ContactRelay.AttackMissed(this, move); state = FState.Recovery; t = 0; }
     }

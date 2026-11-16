@@ -306,7 +306,7 @@
     "looseGain": 0.35,
     "looseRate": 0.85,
     "lengthM": 0.95,
-    "tintMix": 0.35,
+    "tintMix": 0.0,
     "radiusM": 0.02,
     "shaft": "#8a6a43",
     "head": "#8d9399",
