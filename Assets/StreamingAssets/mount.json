@@ -7,6 +7,7 @@
   "summonAction": "mount",
   "summonKey": "M",
   "requireOwned": "mount_horse",
+  "remount": { "enabled": true, "radiusM": 2.5, "standOffsetM": 1.8, "key": "E", "prompt": "Ride" },
   "variants": [
     {
       "horse": {

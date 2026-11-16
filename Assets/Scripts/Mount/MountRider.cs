@@ -18,7 +18,8 @@ using UnityEngine;
 [Serializable] public class MtStamina { public float max = 100f, gallopDrainPerS = 14f, regenPerS = 22f, minToGallop = 15f; }
 [Serializable] public class MtSummon { public float cooldownS = 3f; public float uiRequestS = 5f; /* K26: how long a summon asked for from the equipment screen waits (the horse may still be loading after a mount choice) */ }
 [Serializable] public class MtDismount { public string strikeAction = "strike", heavyAction = "heavy"; public string[] strikeKeys = { "Mouse0", "F" }, heavyKeys = { "G" }; /* FIX2 v1: were literals in Update */ public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true, onEquipScreen = true; /* K26: false = the equipment screen's freeze is not a finisher: the ride survives opening it (mount.json dismount.onEquipScreen) */ public bool onHit = true; /* DATA: being hit (health drops) while mounted dismounts her (mount.json dismount.onHit was a dead key) */ public bool horseStays = true; public float horseKeepM = 40f; /* HORSESTAYS: on dismount the horse stays standing where she got off (false = it vanishes, the old behaviour); it is put away when she is farther than horseKeepM (a zone change) */ public float foeRadiusM = 0f; /* MOUNTRULE v1: 0 = any live opponent engages (old); > 0 = only an opponent closer than this many metres */ }
-[Serializable] public class MtZ { public string id = ""; public float zFrom, zTo; }
+[Serializable] public class MtRemount { public bool enabled = false; public float radiusM = 2.5f, standOffsetM = 1.8f; public string key = "E", prompt = "Ride"; /* DATA: enabled = a dismounted horse stands beside her; within radiusM the key (default E) mounts it again without the menu, a small prompt shows; standOffsetM = how far to her right the horse is left standing */ }
+[Serializable] public class MtZ{ public string id = ""; public float zFrom, zTo; }
 [Serializable] public class MtCam { public float backMul = 1f, heightMul = 1f; }
 [Serializable] public class MtGait
 {
@@ -31,6 +32,7 @@ using UnityEngine;
     public bool enabled = false, debugLog = false, playAreaIsBoss = true; public string summonAction = "mount", summonKey = "H", requireOwned = ""; public float turnDegPerS = 200f;
     public MtHorse horse = new MtHorse(); public MtSpeed speed = new MtSpeed(); public MtStamina stamina = new MtStamina(); public MtSummon summon = new MtSummon(); public MtDismount dismount = new MtDismount();
     public MtZ[] noMountZ = new MtZ[0]; public MtCam camera = new MtCam(); public MtGait gait = new MtGait();
+    public MtRemount remount = new MtRemount();   // FK remount v1: walk up to the standing horse and press the key
     public MtVariant[] variants = new MtVariant[0];   // hades-env variants v1
     public MountGearMask[] maskGearWhileMounted = new MountGearMask[0]; /* DATA: chest-only mask, e.g. [{"item":"joan_tabard","fromFrac":0.3,"toFrac":0.92}] keeps the skirt and the neck trim, hides the part under the cuirass while riding; an unreadable mesh falls back to hiding the whole piece */ public string[] hideGearWhileMounted = new string[0]; /* DATA: gear item ids whose renderers are switched off while mounted and back on at dismount (e.g. joan_tabard: no red through the chest plate while riding); empty = nothing */ public bool hideWeaponWhileMounted = false; public string[] hideSockets = { "WeaponSocket_R" };   // HIDEWEAPON v1: mounted = the carried weapon renderers (under these socket names) are switched off, back on at dismount; default off
 }
@@ -170,6 +172,10 @@ public sealed class MountRider : MonoBehaviour
             Gait(dt);
         }
         else if (horse != null && horse.activeSelf && (!K.dismount.horseStays || (horse.transform.position - df.transform.position).sqrMagnitude > K.dismount.horseKeepM * K.dismount.horseKeepM)) horse.SetActive(false);   // HORSESTAYS: put away a stood horse that is far behind (zone change)
+        else if (K.remount.enabled && horse != null && horse.activeSelf && why == null && NearHorse() && (Input.GetKeyDown(KeyCodeOf(K.remount.key)) || ProofTake()) && Time.time >= nextSummon)
+        {
+            uiReq = false; nextSummon = Time.time + K.summon.cooldownS; Mount();   // remount v1: walk-up, no menu
+        }
         else if (key && Time.time >= nextSummon)
         {
             if (why != null) { if (why != "horse not loaded yet") uiReq = false; /* K26 */ if (K.debugLog) Debug.Log("[Mount] refused: " + why); return; }
@@ -216,12 +222,22 @@ public sealed class MountRider : MonoBehaviour
         if (K.debugLog) Debug.Log("[Mount] mounted " + H.id);
     }
 
+    bool NearHorse() { if (horse == null || df == null) return false; var d = horse.transform.position - df.transform.position; d.y = 0f; return d.sqrMagnitude <= K.remount.radiusM * K.remount.radiusM; }
+
+    void OnGUI()
+    {
+        if (mounted || !K.remount.enabled || horse == null || !horse.activeSelf || df == null || LootScreen.Open || MenuUI.Open || !NearHorse()) return;
+        var st = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = Mathf.RoundToInt(Screen.height * 0.024f) }; st.normal.textColor = new Color(0.95f, 0.86f, 0.6f);
+        GUI.Label(new Rect(0, Screen.height * 0.78f, Screen.width, Screen.height * 0.05f), K.remount.key + "  " + K.remount.prompt, st);
+    }
+
     void Dismount(string why)
     {
         mounted = false; /* FIX2 v1: nothing to restore, the fields were never written */
         ShowWeapon();   // HIDEWEAPON v1
         RiderPose.Restore(df);   // FK16
         if (modelSaved && fi != null && fi.model != null) fi.model.localPosition = baseModelPos;
+        if (horse != null && K.remount.enabled && K.dismount.horseStays && df != null) horse.transform.position += df.transform.right * K.remount.standOffsetM;   // remount v1: the horse is left standing beside her, not under her
         if (horse != null && !K.dismount.horseStays) horse.SetActive(false);   // HORSESTAYS: otherwise it stands where she got off (PlaceHorse only runs while mounted)
         if (K.debugLog) Debug.Log("[Mount] dismounted: " + why);
     }
