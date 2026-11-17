@@ -66,6 +66,8 @@ public sealed class BanditArcher : MonoBehaviour
 
     // ------------------------------------------------------------------ the archer
     DuelFighter df; AIBrain brain; TypeRow type; int lastTick = -1, windupEnd = -1, cooldownUntil, shots; bool kiting;
+    /// <summary>NPCARCHER v1: true during the 0.7 s aim phase (BowVisual draws the string and nocks an arrow while it holds).</summary>
+    public bool Aiming { get { return windupEnd >= 0; } }
 
     void Awake() { df = GetComponent<DuelFighter>(); brain = GetComponent<AIBrain>(); type = df != null ? TypeOf(df.CharacterId) : null; }
 
@@ -132,6 +134,7 @@ public sealed class BanditArcher : MonoBehaviour
             {
                 if (f == null) continue; var t = TypeOf(f.CharacterId); if (t == null) continue;
                 if (t.role == "archer" && f.GetComponent<BanditArcher>() == null) f.gameObject.AddComponent<BanditArcher>();
+                if (t.role == "archer" && BowCfg.Get().visual.npc.enabled && System.Array.IndexOf(BowCfg.Get().visual.npc.ids, f.CharacterId) >= 0 && f.GetComponent<BowVisual>() == null) f.gameObject.AddComponent<BowVisual>().Show(true);   // NPCARCHER v1: the same bending bow, string and nocked arrow as Joan
                 if (k.runtime.hpAssert) HpAssert(f);
             }
             if (k.afterGate.enabled) Gate(k, all);

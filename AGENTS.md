@@ -103,3 +103,30 @@ Tools\build_suspend_watch.ps1, started detached by Assert-BuildSafe after the al
 
 ## Dom-game rule REMOVED (Dom 17 Nov 09:57, relayed by Strategy + COO: 'thats dumb, i rarely play so remove that rule now... you are limiting my speed of releases')
 The rules 'a Dom game running = everyone yields', the Dom-game refusals in _build_guard / flip / release / QA launchers, mem_watch's stop on a game start, the 24 / 35 / 45 GB start waits and the build-suspend watcher (Tools\build_suspend_watch.ps1, no longer started by Assert-BuildSafe) are WITHDRAWN. Kept: (1) mem_watch own-pid stop only at free RAM < 4 GB; (2) NEVER overwrite or delete the build folder a running game was started from (release.ps1 refuses only when a running HadesSlice runs from the folder being made live; prune_builds.ps1 skips folders with a running HadesSlice and build folders referenced by launchers); (3) bake/cold take floor 16 GB, warm code-only 14 GB; QA players start when free RAM is about 16 GB or more and stop at 4 GB; (4) serialized-field refusal in the guard. A squeeze on Dom's machine is accepted.
+
+## QA player start rule while another lane's Editor is open (COO 17 Nov 11:59)
+A Frankendom QA player (12.7-15.2 GB working set) starts only at 24 GB+ free while ANY other lane's EDITOR TAKEN is open on the board (no later EDITOR RELEASED for that lane, last 90 min); 16 GB+ free otherwise. Implemented in _agents\laneHOTSHIP\gateproof.ps1 (Open-OtherEditors reads COORDINATION.md; waits up to 25 min, then ABORT ram). Cause: a 15.2 GB QA player beside the Armagedom and FrontierDom Editors dropped free RAM to 2.6 GB and Armagedom's ramwatch killed Ascent65.
+
+
+## QA start floor 25 GB always + BUILD PHASE lines (Strategy 17 Nov 12:24)
+gateproof.ps1: a QA player starts only at 25 GB+ free (always, not only while an Editor is open) and never while a board line 'BUILD PHASE player <lane> until HH:MM' is open (max 8 min from its stamp). Build scripts post that line in their player-build phase (Tools\build_compileonly.ps1 does at the Editor start). gateproof.ps1 -DryRun prints the decision ('QA DRYRUN: free .. floor 25 .. => START|WAIT') and exits. Why ptb178 started beside FD's Editor: one check at the start (30.8 GB passed), then FD's bake ramped up; the BUILD PHASE line closes that gap.
+
+
+## Compile-only trap: new RuntimeInitializeOnLoadMethod (COO 14:09, 17 Nov; found by unity-dev with QaLean.cs)
+A compile-only take (CompilePlayerScripts, only Assembly-CSharp.dll replaced) keeps the OLD RuntimeInitializeOnLoadMethod table of the player build: a NEW [RuntimeInitializeOnLoadMethod] in new or changed code NEVER runs (no log line, no error). Hook new startup code through an EXISTING boot path (e.g. ZoneGroundMat.Boot or another already-registered hook) or do a full player build. Tools\_build_guard.ps1 prints a WARNING when the git diff since the last real build adds that attribute.
+
+## COO operating standard (Dom 17 Nov 2026, set by z-Strategy; applies to whoever holds the COO seat)
+1. Outcome owner, not reporter: every COO sweep line names what the COO changed, found or unblocked.
+2. A stall is the COO's until he names its cause: a lane past 22 min or a promised time = within 5 min he reads that lane's logs himself and posts CAUSE + the one action, or does the allowed action (flip-first, slot release).
+3. Causes, not symptoms: for anything failed twice or reported by Dom, the COO opens the log, data file and code path before writing to a Lead. Floor: one cause found by the COO per hour.
+4. Evidence before PASS: full-size frames, weak points named; "better than before" is not a pass; no frame/log = CLAIM; never "done" to Dom on a Lead's word.
+5. The COO's own guards/windows/slots are suspects: each has a measured cost in lane-minutes and an expiry; a lane waiting with RAM free means the rule is wrong; quiet windows max 8 min, interleaved.
+6. Recurring faults go into the mechanism (script guard + this file + handover); rules that stopped earning their cost are removed.
+Every COO sweep line ends: `COO SCORE: stalls caught N (longest M min) | causes found by me N | frames opened N, rejected N | lane-minutes my rules blocked N | Dom asks open N (oldest age)`. Strategy audits it.
+
+## Refusal reasons on the board (unitydev, COO order 15:44, 17 Nov)
+Assert-BuildSafe now appends 'BUILD REFUSED frankendom <tag>: <reasons>' to COORDINATION.md before it exits 3, so a refused build is never invisible. A script that dot-sources Tools\_build_guard.ps1 must keep its own -Tag: the guard has a script-level param($Tag) that resets the caller's $Tag (save it before and restore it after the dot-source, as Tools\build_texstream.ps1 does). A detached launch carries its env only if the launcher sets it (FK_BAKE_LIFT for a per-slot lift).
+
+**Guard script-level param renamed (unitydev, COO order 15:46, 17 Nov):** Tools\_build_guard.ps1's script-level -Tag is now -DryRunTag, so dot-sourcing the guard can never overwrite a caller's $Tag (it had blanked it: 'BUILD REFUSED ()' on the texture bake). The per-script save/restore workaround in build_texstream.ps1 is removed; build_compileonly.ps1 and every build_v109*.ps1 are covered by the one change. Checked: a function that dot-sources the guard keeps its $Tag, and -DryRun still works.
+
+**Disk floor in the guard (unitydev, COO 16:15, 17 Nov):** the texture bake died at the StreamingAssets copy because C: was at 0 GB. Assert-BuildSafe now refuses in second 1 when C: free is under 25 GB for a bake / full build (12 GB code-only; FK_MINDISK_GB overrides) and posts 'BUILD REFUSED frankendom <tag>: C: free disk X GB is under Y GB'. Free space comes first: keep-last-3 builds (Tools\prune_builds.ps1), delete old QA run folders (laneHOTSHIP ptb*/batch*) after reading their frames.

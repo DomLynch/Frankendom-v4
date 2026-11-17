@@ -15,6 +15,7 @@ $live = ([regex]::Match((Get-Content "$p\Builds\PLAY.bat" -Raw), 'HDRP_\w+')).Va
 $dst = "$p\Builds\HDRP_v109$Tag"; $man = "$dst\HadesSlice_Data\Managed"
 if (-not (Test-Path "$man\Assembly-CSharp.dll")) { Write-Host "no tag folder from deploy_data ($dst)"; exit 5 }
 $out = "$p\TestOut\FkCompileOut"
+$bpU=(Get-Date).AddMinutes(4).ToString('HH:mm'); try { $fs=[IO.File]::Open("$p\_agents\COORDINATION.md",'Append','Write','ReadWrite'); $bb=[Text.Encoding]::UTF8.GetBytes("`r`n"+(Get-Date -Format 'yyyy-MM-dd HH:mm')+" BUILD PHASE player frankendom until $bpU (compile-only Editor $Tag, peak 3 GB)"); $fs.Write($bb,0,$bb.Length); $fs.Close() } catch { }
 $b = Start-Process $u -ArgumentList "-batchmode -quit -accept-apiupdate -silent-crashes -projectPath $p -executeMethod HdrpCompileOnly.Run -compileOut TestOut/FkCompileOut -logFile $p\TestOut\v109${Tag}_Build.log" -PassThru
 if (-not $b.WaitForExit(900000)) { try { $b.Kill() } catch {} }
 $code = $b.ExitCode

@@ -189,6 +189,7 @@ public sealed class HubNpcs : MonoBehaviour
         if (got != null) n.body = new GltfHold { imp = got };
         else { n.body = new GltfHold { imp = new GLTFast.GltfImport() }; if (!await n.body.imp.LoadFile(bodyFile)) return false; }
         if (!await n.body.imp.InstantiateMainSceneAsync(body.transform)) return false;
+        TexShare.Apply(body, bodyFile);   // TEXSHARE v1
         if (row.runtime.clipGlb.Length > 0 || row.runtime.clipSources.Length > 0)
         {
             string clipFile = Find(row.runtime.clipGlb, row.runtime.clipSources);

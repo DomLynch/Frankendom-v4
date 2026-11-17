@@ -7,7 +7,19 @@
 #   3. free RAM is under MinFreeGB (default 24; these builds peak about 36 GB)
 #   4. a Dom game is running: a HadesSlice without -camscene/-camtrace, or a frankendom dom-runs log written in the last 3 minutes with a live HadesSlice
 #   5. the Unity licence probe fails (licence file missing/expired, or the newest Editor log shows a licence error)
-param([switch]$DryRun, [int]$MinFreeGB = 24, [string]$Mode = 'Bake')
+param([switch]$DryRun, [int]$MinFreeGB = 24, [string]$Mode = 'Bake', [string]$DryRunTag = '')   # DryRunTag (was Tag): a script-level $Tag param blanked the caller's own $Tag whenever a build script dot-sourced this file (BUILD REFUSED () 15:36, unitydev/COO 15:46)
+# COO 15:55 17 Nov: an ALONE bake of ANOTHER lane that is still open (EDITOR TAKEN <lane> ALONE without a later EDITOR RELEASED <lane> in the last 3 h) refuses this build.
+function Get-OtherLaneAlone {
+    $out = @(); try {
+        $own = 'frankendom'; $lines = Get-Content 'C:\Users\dom12\Documents\unity_test_hdrp\_agents\COORDINATION.md' -Tail 400 -ErrorAction Stop; $open = @{}
+        foreach ($l in $lines) {
+            if ($l -match '^(\d{4}-\d\d-\d\d \d\d:\d\d)\s+.*?EDITOR TAKEN\s+(\w+)\s+ALONE') { $open[$Matches[2].ToLower()] = $Matches[1] }
+            elseif ($l -match '^(\d{4}-\d\d-\d\d \d\d:\d\d)\s+.*EDITOR RELEASED\s+(\w+)') { $open.Remove($Matches[2].ToLower()) }
+        }
+        foreach ($k in $open.Keys) { if ($k -ne $own) { $t = [datetime]::ParseExact($open[$k], 'yyyy-MM-dd HH:mm', $null); if (((Get-Date) - $t).TotalHours -lt 3) { $out += "another lane's ALONE bake is open: $k (TAKEN $($open[$k]), no later RELEASED)" } } }
+    } catch {}
+    return $out
+}
 function Get-BuildBlockers {
     param([int]$MinFreeGB = 24)
     $why = @()
@@ -52,7 +64,8 @@ if ($warm) {
                     if ($l -match '^\+\s*(\[SerializeField\]|public\s+[\w<>\[\],\.\?]+(\s*,\s*[\w<>\[\],\.\?]+)*\s+\w+\s*(=[^;(){}]*)?\s*(,\s*\w+\s*(=[^;(){}]*)?\s*)*;)') { $hits += "$($c.Name): $($l.Substring(1).Trim())" }
                 }
             }
-            Pop-Location
+            # COO 14:09: a NEW [RuntimeInitializeOnLoadMethod] never runs in a compile-only take (stale method table): warn loudly.
+            try { $rt = @(); foreach ($c in ($cs | Select-Object -First 60)) { $rel2 = $c.FullName.Substring($p.Length + 1).Replace('\', '/'); $base2 = (& git log --before=($dll.LastWriteTime.ToString('s')) -1 --format=%H -- $rel2 2>$null); $d2 = if ($base2) { & git diff $base2 -- $rel2 2>$null } else { & git diff HEAD -- $rel2 2>$null }; if (@($d2) -match '^\+.*RuntimeInitializeOnLoadMethod') { $rt += $c.Name } }; if ($rt.Count -gt 0) { Write-Output ("WARNING compile-only trap: a NEW [RuntimeInitializeOnLoadMethod] in " + ($rt -join ', ') + " will NOT run in a compile-only take (stale method table). Hook it from an existing boot path (e.g. ZoneGroundMat.Boot) or do a full build.") } } catch { }            Pop-Location
             if ($hits.Count -gt 0) { $script:SerWhy = "REFUSED, new serialized field(s) in a code take (re-serializes scenes; make them private/[NonSerialized] and load from json, Strategy 08:45): " + (($hits | Select-Object -First 3) -join ' | ') }
         } catch { try { Pop-Location } catch { } }
     }    # Strategy/COO 08:20 17 Nov: the scripts-only PROOF take (HdrpScriptsOnly, env FK_SCRIPTSONLY_PROOF=1) is exempt from cold detection for this one proof: floor 24 GB, no other Unity.exe, no game; mem_watch stops it at own > 12 GB or free < 8 GB.
@@ -64,8 +77,15 @@ if ($warm) {
     $codeOnlyUnproven = $false; if ($mode -eq 'CodeOnly' -and (Test-Path (Join-Path $p 'Tools\_codeonly_unproven.txt'))) { $mode = 'Bake'; $MinFreeGB = [Math]::Max($MinFreeGB, 30); $codeOnlyUnproven = $true }
     # COO 12:06: NO Frankendom scene-bake builds while Tools\_bake_frozen.txt exists (the rider bake took free RAM to 0.7-2 GB twice today). Delete the file when RiderClipSetup is fixed and its per-scene peak memory is logged under 20 GB.
     # COO 12:30: -Mode CodeOnly means NOTHING under Assets\ changes except code: refuse when git sees a changed/new file under Assets\ that is not .cs/.asmdef/.asmref/.meta and not data (Assets\Data, Assets\StreamingAssets), or when the setup step declares outputs in $env:BUILD_SETUP_OUTPUTS (semicolon list). An asset import re-processes whatever references it (the 30 GB main-scene load).
-if ($mode -eq 'CodeOnly') { $chg = @(& git -C $p status --porcelain --untracked-files=all -- Assets 2>$null | ForEach-Object { ($_.Substring(3)).Trim('"') -replace '\\','/' } | Where-Object { $_ -notmatch '\.(cs|asmdef|asmref|meta)$' -and $_ -notmatch '^Assets/Data/' -and $_ -notmatch '^Assets/StreamingAssets/.*\.(json|txt|csv|md)$' }); if ($env:BUILD_SETUP_OUTPUTS) { $chg += @($env:BUILD_SETUP_OUTPUTS -split ';' | Where-Object { $_ }) }; if ($chg.Count -gt 0) { $why += 'not code-only: ' + (($chg | Select-Object -First 8) -join ', ') + $(if ($chg.Count -gt 8) { ' (+' + ($chg.Count - 8) + ' more)' } else { '' }) } }
-if ($mode -eq 'Bake' -and $env:FK_BAKE_TEST -ne '1' -and (Test-Path (Join-Path $p 'Tools\_bake_frozen.txt'))) { $why += "scene-bake builds are FROZEN (Tools\_bake_frozen.txt): " + ((Get-Content (Join-Path $p 'Tools\_bake_frozen.txt') -TotalCount 1)) }
+if ($mode -eq 'CodeOnly') { $chg = @(& git -C $p status --porcelain --untracked-files=all -- Assets 2>$null | ForEach-Object { ($_.Substring(3)).Trim('"') -replace '\\','/' } | Where-Object { $_ -notmatch '\.(cs|asmdef|asmref|meta)$' -and $_ -notmatch '^Assets/Data/' -and $_ -notmatch '^Assets/StreamingAssets/.*\.(json|txt|csv|md|glb|png|jpg)$' }); if ($env:BUILD_SETUP_OUTPUTS) { $chg += @($env:BUILD_SETUP_OUTPUTS -split ';' | Where-Object { $_ }) }; if ($chg.Count -gt 0) { $why += 'not code-only: ' + (($chg | Select-Object -First 8) -join ', ') + $(if ($chg.Count -gt 8) { ' (+' + ($chg.Count - 8) + ' more)' } else { '' }) } }
+    # COO 15:35 17 Nov: per-slot lift of the bake freeze: FK_BAKE_LIFT must equal the build tag; refused if the chain (build script of that tag or build_texstream.ps1) contains RiderClipSetup (the 23-scene bake the freeze is for).
+    $lifted = $false
+    if ($env:FK_BAKE_LIFT -and $script:GuardTag -and $env:FK_BAKE_LIFT -eq $script:GuardTag) {
+        $chain = @((Join-Path $p "Tools\build_v109$($script:GuardTag).ps1"), (Join-Path $p 'Tools\build_texstream.ps1')) | Where-Object { Test-Path $_ }
+        $rc = @($chain | Where-Object { Select-String -Path $_ -Pattern 'RiderClipSetup' -Quiet })
+        if ($rc.Count -gt 0) { $why += "FK_BAKE_LIFT refused: the chain contains RiderClipSetup ($($rc -join ', '))" } else { $lifted = $true; Write-Host "BAKE FREEZE LIFTED for $($script:GuardTag) (COO 15:35, texture-streaming bake, not RiderClipSetup)" }
+    }
+if (-not $lifted -and $mode -eq 'Bake' -and $env:FK_BAKE_TEST -ne '1' -and (Test-Path (Join-Path $p 'Tools\_bake_frozen.txt'))) { $why += "scene-bake builds are FROZEN (Tools\_bake_frozen.txt): " + ((Get-Content (Join-Path $p 'Tools\_bake_frozen.txt') -TotalCount 1)) }
     $ps = @(Get-CimInstance Win32_Process -Filter "Name='Unity.exe'" -ErrorAction SilentlyContinue)
     $own = @($ps | Where-Object { $_.CommandLine -match 'unity_test_hdrp' })
     $other = @($ps | Where-Object { $_.CommandLine -notmatch 'unity_test_hdrp' })
@@ -83,6 +103,8 @@ if ($mode -eq 'Bake' -and $env:FK_BAKE_TEST -ne '1' -and (Test-Path (Join-Path $
     if ($free -lt $MinFreeGB) { $why += "free RAM $free GB is under $MinFreeGB GB" }
 # (cold detection is informational now: it raises the RAM floor to 16 GB, it no longer refuses; serialized-field refusal below stays)
 if ($script:SerWhy) { $why += $script:SerWhy }
+# COO 16:15 17 Nov: a full C: failed the texture bake at the file copy after 9 minutes. Refuse in second 1 when C: free is under the expected build size + 10 GB (bake / full build 25 GB, code-only 12 GB; FK_MINDISK_GB overrides).
+try { $dfree = [math]::Round((Get-PSDrive C).Free / 1GB, 1); $dneed = $(if ($env:FK_MINDISK_GB) { [double]$env:FK_MINDISK_GB } elseif ($mode -eq 'CodeOnly') { 12 } else { 25 }); if ($dfree -lt $dneed) { $why += "C: free disk $dfree GB is under $dneed GB (expected build size + 10 GB; free space first)" } } catch { }
     # (Dom-game refusal and fresh-dom-runs-log refusal REMOVED 17 Nov 09:57 on Dom's order; the build folder his running game uses is never overwritten: see release.ps1 / prune_builds.ps1.)
     # Unity 6 keeps no .ulf: probe = the Licensing Client log (newest 400 lines) must not end in a sign-in / entitlement failure
     $lc = Join-Path $env:LOCALAPPDATA 'Unity\Unity.Licensing.Client.log'
@@ -101,9 +123,11 @@ function Assert-BuildSafe {
     param([string]$Tag = '?', [int]$MinFreeGB = 16, [ValidateSet('Bake', 'CodeOnly')][string]$Mode = 'Bake')
     $script:BuildMode = $Mode
     . (Join-Path $PSScriptRoot '_tag_reserve.ps1'); try { $null = Reserve-Tag -Tag $Tag -Owner $(if ($env:FK_OWNER) { $env:FK_OWNER } else { "build:$Tag" }) } catch { "BUILD REFUSED ($Tag): $($_.Exception.Message)"; exit 3 }
-    $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
+    $script:GuardTag = $Tag
+    $w = @(Get-BuildBlockers -MinFreeGB $MinFreeGB) + @(Get-OtherLaneAlone)
     if ($w.Count -gt 0) {
         "BUILD REFUSED ($Tag) at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ')
+        try { $fsb = [IO.File]::Open((Join-Path $p '_agents\COORDINATION.md'), 'Append', 'Write', 'ReadWrite'); $bbb = [Text.Encoding]::UTF8.GetBytes("`r`n" + (Get-Date -Format 'yyyy-MM-dd HH:mm') + " BUILD REFUSED frankendom ${Tag}: " + ($w -join ' | ')); $fsb.Write($bbb, 0, $bbb.Length); $fsb.Close() } catch {}   # refusal reasons on the board (COO 15:44): a refused build was invisible
         exit 3
     }
     "build guard ($Tag): all clear at $(Get-Date -Format 'HH:mm')"
@@ -123,9 +147,16 @@ function Add-BuiltLine {
 }
 if ($DryRun) {
     $script:BuildMode = $Mode
+    $script:GuardTag = $DryRunTag
     $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
     if ($w.Count -gt 0) { "DRY RUN: build would be REFUSED at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ') } else { "DRY RUN: build would run (all clear) at $(Get-Date -Format 'HH:mm')" }
 }
+
+
+
+
+
+
 
 
 

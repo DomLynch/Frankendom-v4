@@ -20,7 +20,7 @@ using UnityEngine;
 [Serializable] public class MtDismount { public string strikeAction = "strike", heavyAction = "heavy"; public string[] strikeKeys = { "Mouse0", "F" }, heavyKeys = { "G" }; /* FIX2 v1: were literals in Update */ public bool onStrike = true, onOpponent = true, inHub = true, onMenu = true, onFinisher = true, onEquipScreen = true; /* K26: false = the equipment screen's freeze is not a finisher: the ride survives opening it (mount.json dismount.onEquipScreen) */ public bool onHit = true; /* DATA: being hit (health drops) while mounted dismounts her (mount.json dismount.onHit was a dead key) */ public bool horseStays = true; public float horseKeepM = 40f; /* HORSESTAYS: on dismount the horse stays standing where she got off (false = it vanishes, the old behaviour); it is put away when she is farther than horseKeepM (a zone change) */ public float foeRadiusM = 0f; /* MOUNTRULE v1: 0 = any live opponent engages (old); > 0 = only an opponent closer than this many metres */ }
 [Serializable] public class MtRemount { public bool enabled = false; public float radiusM = 2.5f, standOffsetM = 1.8f; public string key = "E", prompt = "Ride"; /* DATA: enabled = a dismounted horse stands beside her; within radiusM the key (default E) mounts it again without the menu, a small prompt shows; standOffsetM = how far to her right the horse is left standing */ }
 [Serializable] public class MtZ{ public string id = ""; public float zFrom, zTo; }
-[Serializable] public class MtCam { public float backMul = 1f, heightMul = 1f; }
+[Serializable] public class MtCam { public float backMul = 1f, heightMul = 1f, refHeightM = 0f; }   // refHeightM (CAMEL v1): 0 = off; > 0 = the mount height the two multipliers are tuned for (the horse, 1.75): both are scaled by (current mount heightM / refHeightM) so a taller mount keeps its rider in frame
 [Serializable] public class MtGait
 {
     public float walkCyclesPerM = 0.55f, gallopCyclesPerM = 0.28f, bobWalkM = 0.02f, bobGallopM = 0.06f, pitchWalkDeg = 1.5f, pitchGallopDeg = 5f, rollWalkDeg = 1.5f, rollGallopDeg = 1f, breathM = 0.004f, breathCyclesPerS = 0.3f, blendS = 0.12f, stillMps = 0.15f;
@@ -106,8 +106,11 @@ public sealed class MountRider : MonoBehaviour
     /// <summary>FIX2 v1: the ride's speed multiplier, read by DuelFighter.MoveTick (and ChaseAgent for the player) ON THE SIM TICK. walkSpeed / runSpeed fields are no longer written from Update, so the speed a tick sees never depends on frame timing. 1 when not mounted or for any other fighter.</summary>
     public static float SpeedMul(DuelFighter f, bool run) { var i = Inst; if (i == null || !i.mounted || i.K == null || f != i.df) return 1f; var S = i.cur != null ? i.cur.speed : i.K.speed; return run ? S.runMul : S.walkMul; }   // hades-env variants v1
     /// <summary>For a CameraRig hook: 1 on foot, mount.json camera.* while mounted.</summary>
-    public static float CamBackMul { get { return Mounted ? MountData.Get().camera.backMul : 1f; } }
-    public static float CamHeightMul { get { return Mounted ? MountData.Get().camera.heightMul : 1f; } }
+    public static float CamBackMul { get { return Mounted ? MountData.Get().camera.backMul * CamRefScale() : 1f; } }
+    public static float CamHeightMul { get { return Mounted ? MountData.Get().camera.heightMul * CamRefScale() : 1f; } }
+    public static float CamFreeScale { get { return Mounted ? CamRefScale() : 1f; } }   // CAMEL v1: the free camera's mount scale (mount.json camera.refHeightM; 1 = off)
+    public static string CamInfo() { var i = Inst; var k = MountData.Get(); return "mount=" + MountData.ActiveItem() + " heightM=" + (i != null && i.H != null ? i.H.heightM.ToString("F3") : "?") + " refHeightM=" + k.camera.refHeightM.ToString("F3") + " scale=" + CamRefScale().ToString("F3") + " backMul=" + k.camera.backMul.ToString("F2") + " heightMul=" + k.camera.heightMul.ToString("F2") + " seatRaiseM=" + (i != null && i.H != null ? i.H.seatRaiseM.ToString("F3") : "?"); }
+    static float CamRefScale() { var r = MountData.Get().camera.refHeightM; var i = Inst; if (r <= 0f || i == null || i.H == null || i.H.heightM <= 0f) return 1f; return i.H.heightM / r; }   // CAMEL v1
 
     MtVariant cur; MtHorse H { get { return cur != null ? cur.horse : K.horse; } } MtStamina St { get { return cur != null ? cur.stamina : K.stamina; } }   // hades-env variants v1: cur = the owned variant (null = plain)
     MountCfg K; DuelFighter df; Fighter fi; GameObject horse; Transform hBody; GLTFast.GltfImport imp; List<Material> mats;
@@ -201,6 +204,7 @@ public sealed class MountRider : MonoBehaviour
             var body = new GameObject("Body"); body.transform.SetParent(root.transform, false);
             imp = new GLTFast.GltfImport();
             if (!await imp.LoadFile(file) || !await imp.InstantiateMainSceneAsync(body.transform)) { Debug.LogWarning("[Mount] horse glb failed to load: " + file); Destroy(root); return; }
+            TexShare.Apply(root, file);   // TEXSHARE v1
             foreach (var c in root.GetComponentsInChildren<Collider>(true)) Destroy(c);
             var rl = new List<Renderer>(root.GetComponentsInChildren<Renderer>(true));
             foreach (var r in rl) r.shadowCastingMode = H.shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;

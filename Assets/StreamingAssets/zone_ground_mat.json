@@ -517,6 +517,32 @@
       "baseColorMap": "apothecary_tent_albedo_green.png",
       "smoothMin": -1.0,
       "smoothMax": -1.0
+    },
+    {
+      "id": "z1_hide_hero_sword",
+      "zoneRoot": "Arena",
+      "matchMaterial": [],
+      "onlyUnderName": [
+        "hero_weapon_sword"
+      ],
+      "hide": true,
+      "enabled": true,
+      "mix": 1.0,
+      "smoothMin": -1.0,
+      "smoothMax": -1.0
+    },
+    {
+      "id": "z1_hide_propsroot_sword",
+      "zoneRoot": "PropsRoot",
+      "matchMaterial": [],
+      "onlyUnderName": [
+        "hero_weapon_sword"
+      ],
+      "hide": true,
+      "enabled": true,
+      "mix": 1.0,
+      "smoothMin": -1.0,
+      "smoothMax": -1.0
     }
   ]
 }

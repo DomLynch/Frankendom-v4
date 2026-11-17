@@ -1,0 +1,1 @@
+{"enabled": false, "minSize": 2048, "maxPerTick": 2, "tickS": 1.0, "highQuality": true, "normalsToo": false, "excludeContains": ["cookie","atlas","iris","eye"]}

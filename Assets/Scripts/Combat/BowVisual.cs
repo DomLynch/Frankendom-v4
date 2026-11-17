@@ -46,7 +46,7 @@ public class BowVisual : MonoBehaviour
         int layer = refR != null ? refR.gameObject.layer : hand.gameObject.layer;
         foreach (var x in g.GetComponentsInChildren<Transform>(true)) x.gameObject.layer = layer;
         foreach (var r in rends) { r.shadowCastingMode = refR != null ? refR.shadowCastingMode : UnityEngine.Rendering.ShadowCastingMode.On; r.receiveShadows = refR != null ? refR.receiveShadows : true; if (refR != null) r.renderingLayerMask = refR.renderingLayerMask; }
-        inst = g; Apply();
+        inst = g; PrepRig(); if (!rigOn) PrepString(); Apply();
         if (BowCfg.Log) Debug.Log("[bow] bow visual on " + name + " (" + info + ")");
     }
 
@@ -75,16 +75,176 @@ public class BowVisual : MonoBehaviour
         if (inst == null || !want || hand == null) return;
         var K = BowCfg.Get().visual.carry; if (K == null || !K.enabled) { if (!onHand) Seat(true, K); return; }
         if (fighter == null) fighter = GetComponent<DuelFighter>(); if (fighter == null) return;
-        if (fighter.state == FState.Windup || fighter.state == FState.Active || fighter.state == FState.Recovery) lastAim = Time.time;
+        if (archer == null) archer = GetComponent<BanditArcher>();
+        if (fighter.state == FState.Windup || fighter.state == FState.Active || fighter.state == FState.Recovery) lastAim = Time.time; else if (archer != null && archer.Aiming) lastAim = Time.time;
         bool toHand = Time.time - lastAim < K.releaseDelayTicks / 60f;
         if (toHand != onHand) Seat(toHand, K);
-        Nock();
+        Nock(); if (rigOn) DrawRig(); else DrawString();
+    }
+
+    // DRAW v1: the bow glb is ONE static mesh with the string baked in. At load the thin triangles along the chord between the two limb tips are removed (bow.json visual.draw.stringRadiusM)
+    // and the string is redrawn as a LineRenderer: tip -> nock point -> tip. The nock point rests at the chord middle and follows the right hand bone while the fighter draws (FState Windup),
+    // and snaps back on the loose. No limb bend: the mesh is not skinned. The nocked arrow rides the nock point. Nothing here is read by the sim.
+    // AIM v1: the nocked arrow points at the target (flattened: foe position, else the fighter's forward) with its tail at the nock point, whatever the bow hand does (the grip hand sits low: the shaft used to follow the bow and point at the floor).
+    void PlaceNocked(Vector3 nockW)
+    {
+        if (nocked == null || fighter == null) return; var A = BowCfg.Get().arrow; var D = BowCfg.Get().visual.draw;
+        Vector3 dir = fighter.transform.forward; dir.y = 0f;
+        if (fighter.opponent != null)
+        {   // toward the foe's chest, flattened but with the pitch clamped to +-maxPitchDeg (a close or high foe must not send the shaft into the floor or the sky)
+            Vector3 to = fighter.opponent.transform.position + Vector3.up * (A.aimHeightM * fighter.opponent.scale) - nockW; Vector3 flat = to; flat.y = 0f;
+            if (flat.sqrMagnitude > 1e-4f) { float pitch = Mathf.Clamp(Mathf.Atan2(to.y, flat.magnitude) * Mathf.Rad2Deg, -D.maxPitchDeg, D.maxPitchDeg); dir = Quaternion.AngleAxis(-pitch, Vector3.Cross(Vector3.up, flat.normalized)) * flat.normalized; }
+        }
+        if (dir.sqrMagnitude < 1e-4f) { dir = fighter.transform.forward; dir.y = 0f; } dir.Normalize();
+        nocked.transform.rotation = Quaternion.LookRotation(dir, Vector3.up); nocked.transform.position = nockW + dir * (A.lengthM * 0.5f - D.arrowBackM);
+        if (BowCfg.Log && Time.time >= nextAimLog && fighter.opponent != null)
+        {   // AIMLOG v1: the body-yaw test (Strategy): dot of the fighter's forward and the flat direction to its foe (1 = facing it)
+            nextAimLog = Time.time + 0.5f; Vector3 tf = fighter.opponent.transform.position - fighter.transform.position; tf.y = 0f; Vector3 ff = fighter.transform.forward; ff.y = 0f;
+            Debug.Log("[bow] aim dot=" + (tf.sqrMagnitude > 1e-4f && ff.sqrMagnitude > 1e-4f ? Vector3.Dot(ff.normalized, tf.normalized).ToString("F2") : "n/a") + " arrowDot=" + Vector3.Dot(dir, tf.sqrMagnitude > 1e-4f ? tf.normalized : dir).ToString("F2") + " foe=" + fighter.opponent.name + " gap=" + tf.magnitude.ToString("F1"));
+        }
+    }
+
+    // RIG v1 (OpenTrident kits_out\3d\bow_rigged\joan_bow_rigged.glb): when the bow glb is skinned (bones bow_grip, bow_up_1-3, bow_low_1-3, bow_nock; the string is its own mesh skinned to the tip bones and bow_nock)
+    // the string is not touched: bow_nock goes to the right hand while the fighter draws, and the six limb bones bend about the bow's X axis by draw.bendDeg / 3 each x the draw fraction (upper +, lower -), cumulative along the limb.
+    LineRenderer rigStr; bool rigStrHidden; Vector3 rigLowOff, rigUpOff;
+    bool rigOn; Transform nockB; Vector3 nockRestLocal; Transform[] upB = new Transform[3], lowB = new Transform[3]; Quaternion[] upRest = new Quaternion[3], lowRest = new Quaternion[3];
+    void PrepRig()
+    {
+        if (inst == null) return; var D = BowCfg.Get().visual.draw; if (D == null || !D.enabled) return;
+        var sk = inst.GetComponentInChildren<SkinnedMeshRenderer>(true); if (sk == null) return;
+        nockB = FindNamed(inst.transform, "bow_nock"); if (nockB == null) { GearTable.Warn("[bow] rig: skinned bow without a bow_nock bone: no draw"); return; }
+        for (int i = 0; i < 3; i++)
+        {
+            upB[i] = FindNamed(inst.transform, "bow_up_" + (i + 1)); lowB[i] = FindNamed(inst.transform, "bow_low_" + (i + 1));
+            if (upB[i] == null || lowB[i] == null) GearTable.Warn("[bow] rig: limb bone " + (i + 1) + " missing: no limb bend for it");
+            else { upRest[i] = Quaternion.Inverse(inst.transform.rotation) * upB[i].rotation; lowRest[i] = Quaternion.Inverse(inst.transform.rotation) * lowB[i].rotation; }
+        }
+        nockRestLocal = nockB.localPosition; foreach (var r in inst.GetComponentsInChildren<SkinnedMeshRenderer>(true)) r.updateWhenOffscreen = true;
+        // taut string: the rig's own string mesh (skinned to the tips and bow_nock) shows a slack curve and a ribbon at the top tip when the limbs bend; hide it and draw a V line from the two string attach points (rest points of the glb string, carried by the tip bones) to the nock
+        if (D.stringA != null && D.stringA.Length >= 3 && D.stringB != null && D.stringB.Length >= 3 && upB[2] != null && lowB[2] != null)
+        {
+            SkinnedMeshRenderer rigBiggest = null; int rigBigT = -1; var rigAll = inst.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+            foreach (var r in rigAll) { int tc = r.sharedMesh != null ? (int)(r.sharedMesh.GetIndexCount(0) / 3) : 0; if (tc > rigBigT) { rigBigT = tc; rigBiggest = r; } }
+            foreach (var r in rigAll)
+            {   // keep only the biggest skinned mesh (the limbs); every other skinned mesh of the rigged bow (the string, its strands, knots) is replaced by the drawn line
+                bool hide = r != rigBiggest || r.gameObject.name.IndexOf("string", StringComparison.OrdinalIgnoreCase) >= 0;
+                if (BowCfg.Log) Debug.Log("[bow] rig: renderer '" + r.gameObject.name + "' " + (r.sharedMesh != null ? (r.sharedMesh.GetIndexCount(0) / 3) : 0) + " tris -> " + (hide ? "hidden" : "kept"));
+                if (hide) { r.enabled = false; rigStrHidden = true; }
+            }
+            // ghost strands: thin leftover string triangles in the LIMB mesh (rest pose along the string line) follow the nock to the hand and show as faint dotted lines: remove them from a copy of the limb mesh
+            foreach (var r in inst.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+            {
+                if (r.gameObject.name.IndexOf("string", StringComparison.OrdinalIgnoreCase) >= 0 || r.sharedMesh == null) continue;
+                var gm = r.sharedMesh; if (!gm.isReadable) { if (BowCfg.Log) Debug.Log("[bow] rig: limb mesh not readable, ghost strands not removed"); continue; }
+                var ga = new Vector3(D.stringA[0], D.stringA[1], D.stringA[2]); var gb = new Vector3(D.stringB[0], D.stringB[1], D.stringB[2]); var gv = gm.vertices; var gt = gm.triangles; var gk = new List<int>(gt.Length); int gr = 0;
+                Vector3 gd = gb - ga; float gl = gd.magnitude; if (gl < 0.05f) continue; gd /= gl;
+                for (int i = 0; i + 2 < gt.Length; i += 3)
+                {
+                    bool thin = true; for (int k = 0; k < 3 && thin; k++) { Vector3 w = gv[gt[i + k]] - ga; float t = Vector3.Dot(w, gd) / gl; float d = (w - gd * Vector3.Dot(w, gd)).magnitude; if (d > D.stringRadiusM || t < D.tipClampT || t > 1f - D.tipClampT) thin = false; }
+                    if (thin) gr++; else { gk.Add(gt[i]); gk.Add(gt[i + 1]); gk.Add(gt[i + 2]); }
+                }
+                if (BowCfg.Log) Debug.Log("[bow] rig: ghost string triangles removed from " + r.gameObject.name + ": " + gr + " of " + (gt.Length / 3));
+                if (gr > 0) { var g2 = Instantiate(gm); g2.SetTriangles(gk, 0); r.sharedMesh = g2; }
+            }
+            if (rigStrHidden)
+            {
+                var T0 = inst.transform; var pa = new Vector3(D.stringA[0], D.stringA[1], D.stringA[2]); var pb = new Vector3(D.stringB[0], D.stringB[1], D.stringB[2]);
+                if (pa.y > pb.y) { var tmp = pa; pa = pb; pb = tmp; }   // pa = the lower attach point, pb = the upper
+                rigLowOff = lowB[2].InverseTransformPoint(T0.TransformPoint(pa)); rigUpOff = upB[2].InverseTransformPoint(T0.TransformPoint(pb));
+                rigStr = new GameObject("BowStringRig").AddComponent<LineRenderer>(); rigStr.transform.SetParent(inst.transform, false);
+                rigStr.positionCount = 3; rigStr.useWorldSpace = true; rigStr.startWidth = rigStr.endWidth = D.widthM; rigStr.numCapVertices = 2; rigStr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; rigStr.alignment = LineAlignment.View;
+                Shader sh = null; var shs = BowCfg.Get().arrow.shaders; for (int i = 0; shs != null && i < shs.Length && sh == null; i++) sh = Shader.Find(shs[i]);
+                if (sh != null) { var mat = new Material(sh) { name = "BowStringRig" }; Color col = BowCfg.Col(D.color, Color.white); if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", col); if (mat.HasProperty("_Color")) mat.SetColor("_Color", col); if (mat.HasProperty("_UnlitColor")) mat.SetColor("_UnlitColor", col); if (mat.HasProperty("_Smoothness")) mat.SetFloat("_Smoothness", 0.2f); rigStr.sharedMaterial = mat; }
+            }
+        }
+        rigOn = true; if (BowCfg.Log) Debug.Log("[bow] rig: skinned bow, nock + limb bones found");
+    }
+    void DrawRig()
+    {
+        var D = BowCfg.Get().visual.draw;
+        bool draw = Drawing();
+        if (!draw) drawK = 0f; else drawK = Mathf.MoveTowards(drawK, 1f, Time.deltaTime / Mathf.Max(0.02f, D.drawSeconds));
+        if (rHand == null) rHand = FindNamed(Skel(), Roster.BoneName(this, D.handRole));
+        var T = inst.transform; float k = Mathf.SmoothStep(0f, 1f, drawK);
+        Vector3 restW = nockB.parent.TransformPoint(nockRestLocal), tgtW = restW;
+        if (drawK > 0f && rHand != null) tgtW = Vector3.Lerp(restW, rHand.TransformPoint(new Vector3(D.handPx, D.handPy, D.handPz)) + Vector3.down * D.dropM, k);
+        nockB.position = tgtW;
+        float per = D.bendDeg / 3f * k;
+        for (int i = 0; i < 3; i++)
+        {
+            if (upB[i] != null) upB[i].rotation = T.rotation * Quaternion.AngleAxis(per * (i + 1), Vector3.right) * upRest[i];
+            if (lowB[i] != null) lowB[i].rotation = T.rotation * Quaternion.AngleAxis(-per * (i + 1), Vector3.right) * lowRest[i];
+        }
+        if (rigStr != null) { rigStr.SetPosition(0, lowB[2].TransformPoint(rigLowOff)); rigStr.SetPosition(1, tgtW); rigStr.SetPosition(2, upB[2].TransformPoint(rigUpOff)); }
+        if (nocked != null && nocked.activeSelf) PlaceNocked(tgtW);
+    }
+
+    float nextAimLog;
+    BanditArcher archer;
+    bool Drawing() { return fighter != null && ((fighter.state == FState.Windup && BowHooks.Handles(fighter, fighter.move)) || (archer != null && archer.Aiming)); }
+    LineRenderer strLr; Vector3 tipA, tipB; bool strOk; float drawK; Transform rHand;
+    void PrepString()
+    {
+        var D = BowCfg.Get().visual.draw; if (D == null || !D.enabled || inst == null || strOk) return;
+        try
+        {
+            foreach (var mf in inst.GetComponentsInChildren<MeshFilter>(true))
+            {
+                var mesh = mf.sharedMesh; if (mesh == null) continue;
+                if (!mesh.isReadable) { GearTable.Warn("[bow] draw: the bow mesh is not readable: the baked string stays, no draw"); return; }
+                var M = inst.transform.worldToLocalMatrix * mf.transform.localToWorldMatrix; var vs = mesh.vertices; var lv = new Vector3[vs.Length];
+                Vector3 mn = new Vector3(1e9f, 1e9f, 1e9f), mx = -mn; for (int i = 0; i < vs.Length; i++) { lv[i] = M.MultiplyPoint3x4(vs[i]); mn = Vector3.Min(mn, lv[i]); mx = Vector3.Max(mx, lv[i]); }
+                Vector3 ext = mx - mn; int ax = ext.x >= ext.y && ext.x >= ext.z ? 0 : (ext.y >= ext.z ? 1 : 2); float lo = mn[ax], len = Mathf.Max(1e-4f, ext[ax]);
+                // the string's two nock points are bow.json data in the glb's own frame; glTFast flips an axis on import, so try the 8 sign combinations in MESH space and keep the one that sits on the most thin triangles
+                if (D.stringA == null || D.stringA.Length < 3 || D.stringB == null || D.stringB.Length < 3) return;
+                var tris = mesh.triangles; Vector3 pa0 = new Vector3(D.stringA[0], D.stringA[1], D.stringA[2]), pb0 = new Vector3(D.stringB[0], D.stringB[1], D.stringB[2]);
+                int bestN = -1; Vector3 bestA = pa0, bestB = pb0;
+                for (int sgn = 0; sgn < 8; sgn++)
+                {
+                    var sg = new Vector3((sgn & 1) != 0 ? -1f : 1f, (sgn & 2) != 0 ? -1f : 1f, (sgn & 4) != 0 ? -1f : 1f); Vector3 a = Vector3.Scale(pa0, sg), b = Vector3.Scale(pb0, sg), ab = b - a; float abl = ab.magnitude; if (abl < 0.05f) continue; Vector3 ad = ab / abl; int n = 0;
+                    for (int i = 0; i + 2 < tris.Length; i += 3) { bool ok = true; for (int k = 0; k < 3 && ok; k++) { Vector3 w = vs[tris[i + k]] - a; float t = Vector3.Dot(w, ad) / abl; float d = (w - ad * Vector3.Dot(w, ad)).magnitude; if (d > D.stringRadiusM || t < -0.02f || t > 1.02f) ok = false; } if (ok) n++; }
+                    if (n > bestN) { bestN = n; bestA = a; bestB = b; }
+                }
+                if (bestN < 10) { if (BowCfg.Log) Debug.Log("[bow] draw: no string found at the data points (best " + bestN + " triangles): the baked string stays"); return; }
+                tipA = M.MultiplyPoint3x4(bestA); tipB = M.MultiplyPoint3x4(bestB);
+                var keep = new List<int>(tris.Length); int removed = 0; { Vector3 ab = bestB - bestA; float abl = ab.magnitude; Vector3 ad = ab / abl;
+                for (int i = 0; i + 2 < tris.Length; i += 3)
+                {
+                    bool thin = true;
+                    for (int k = 0; k < 3 && thin; k++) { Vector3 w = vs[tris[i + k]] - bestA; float t = Vector3.Dot(w, ad) / abl; float d = (w - ad * Vector3.Dot(w, ad)).magnitude; if (d > D.stringRadiusM || t < -0.02f || t > 1.02f) thin = false; }
+                    if (thin) removed++; else { keep.Add(tris[i]); keep.Add(tris[i + 1]); keep.Add(tris[i + 2]); }
+                } }
+                float cl = (tipB - tipA).magnitude;
+                if (BowCfg.Log) Debug.Log("[bow] draw: string triangles removed " + removed + " of " + (tris.Length / 3) + ", tips " + tipA.ToString("F3") + " / " + tipB.ToString("F3") + " chord " + cl.ToString("F3") + " m");
+                if (removed == 0) return;
+                var m2 = Instantiate(mesh); m2.SetTriangles(keep, 0); m2.RecalculateBounds(); mf.sharedMesh = m2;
+                var go = new GameObject("BowString"); go.transform.SetParent(inst.transform, false); strLr = go.AddComponent<LineRenderer>();
+                strLr.positionCount = 3; strLr.useWorldSpace = true; strLr.startWidth = strLr.endWidth = D.widthM; strLr.numCapVertices = 2; strLr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; strLr.alignment = LineAlignment.View;
+                Shader sh = null; var shs = BowCfg.Get().arrow.shaders; for (int i = 0; shs != null && i < shs.Length && sh == null; i++) sh = Shader.Find(shs[i]);
+                if (sh != null) { var mat = new Material(sh) { name = "BowString" }; Color col = BowCfg.Col(D.color, Color.white); if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", col); if (mat.HasProperty("_Color")) mat.SetColor("_Color", col); if (mat.HasProperty("_UnlitColor")) mat.SetColor("_UnlitColor", col); if (mat.HasProperty("_Smoothness")) mat.SetFloat("_Smoothness", 0.2f); strLr.sharedMaterial = mat; }
+                strOk = true; return;
+            }
+        }
+        catch (Exception e) { GearTable.Warn("[bow] draw setup failed: " + e.Message); }
+    }
+
+    void DrawString()
+    {
+        if (!strOk || strLr == null || inst == null) return;
+        var D = BowCfg.Get().visual.draw; var N = BowCfg.Get().visual.nock;
+        bool draw = Drawing();
+        if (!draw) drawK = 0f; else drawK = Mathf.MoveTowards(drawK, 1f, Time.deltaTime / Mathf.Max(0.02f, D.drawSeconds));
+        if (rHand == null) rHand = FindNamed(Skel(), Roster.BoneName(this, D.handRole));
+        var T = inst.transform; Vector3 rest = (tipA + tipB) * 0.5f, np = rest;
+        if (drawK > 0f && rHand != null) { Vector3 hp = T.InverseTransformPoint(rHand.TransformPoint(new Vector3(D.handPx, D.handPy, D.handPz)) + Vector3.down * D.dropM); np = Vector3.Lerp(rest, hp, Mathf.SmoothStep(0f, 1f, drawK)); }
+        strLr.SetPosition(0, T.TransformPoint(tipA)); strLr.SetPosition(1, T.TransformPoint(np)); strLr.SetPosition(2, T.TransformPoint(tipB));
+        if (nocked != null && nocked.activeSelf) PlaceNocked(T.TransformPoint(np)); else if (nocked != null && N != null) nocked.transform.localPosition = new Vector3(N.px, N.py, N.pz) + (np - rest);
     }
 
     GameObject nocked;
     void Nock()   // the arrow on the string while the fighter draws (Windup); gone on the loose
     {
-        var N = BowCfg.Get().visual.nock; bool show = N != null && N.enabled && fighter != null && fighter.state == FState.Windup && BowHooks.Handles(fighter, fighter.move);
+        var N = BowCfg.Get().visual.nock; bool show = N != null && N.enabled && Drawing();
         if (show && nocked == null && inst != null) { nocked = BowArrowView.MakeNocked(inst.transform); nocked.transform.localPosition = new Vector3(N.px, N.py, N.pz); nocked.transform.localRotation = Quaternion.Euler(N.rxDeg, N.ryDeg, N.rzDeg); }
         if (nocked != null) nocked.SetActive(show);
     }

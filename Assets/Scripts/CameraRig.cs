@@ -9,6 +9,10 @@
 [DefaultExecutionOrder(1000)]
 public class CameraRig : MonoBehaviour
 {
+    static float nextMountCamLog;
+    static bool proofYawRead; static float proofYawVal;
+    static bool ProofYawOn { get { if (!proofYawRead) { proofYawRead = true; proofYawVal = float.NaN; foreach (var a in System.Environment.GetCommandLineArgs()) if (a.StartsWith("-camyaw:")) { float v; if (float.TryParse(a.Substring(8), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out v)) proofYawVal = v; } } return !float.IsNaN(proofYawVal); } }
+    static float ProofYawVal { get { return proofYawVal; } }
     public Transform target, enemy;
     public Health enemyHp;
     public float distance = 3.3f, height = 1.6f, shoulder = 0.5f, yaw = 0f, pitch = 2f, sensitivity = 2.2f;   // free-camera values (lock-on off)
@@ -106,8 +110,11 @@ public class CameraRig : MonoBehaviour
         var fcr = pose.freeCam; bool fcOn = fcr.enabled && lockW <= 0.001f;   // FREECAM v1: the free camera only; while any lock weight is left, the collision path below is the old one
         if (fcr.enabled && !freePitchInit) { freePitchInit = true; pitch = Mathf.Clamp(fcr.startPitchDeg, free.pitchMinDeg, CamZone.PitchMax(pose.zone, free.pitchMaxDeg)); }   // FREECAM v1: the scene starts at 2 deg, the zone free pitch after a lock is 8: one value
         var rot = Quaternion.Euler(pitch, yaw, 0f);
-        Vector3 focus = target.position + Vector3.up * (fcr.enabled ? fcr.height : height) + rot * Vector3.right * (fcr.enabled ? fcr.shoulder : shoulder);   // FREECAM v1
-        Vector3 freePos = focus - rot * Vector3.forward * (fcr.enabled ? fcr.distance : distance), freeLook = focus;
+        if (ProofYawOn) { yaw = ProofYawVal; rot = Quaternion.Euler(pitch, yaw, 0f); }   // CAMEL v1: -camyaw:<deg> QA flag orbits the PLAY camera (proof frame from the side)
+        float mcs = MountRider.CamFreeScale;   // CAMEL v1: a mount taller than the reference (mount.json camera.refHeightM) lifts and backs the FREE camera by the same ratio (1 on foot / on the horse); the lock-on branch already used CamBackMul / CamHeightMul
+        Vector3 focus = target.position + Vector3.up * (fcr.enabled ? fcr.height : height) * mcs + rot * Vector3.right * (fcr.enabled ? fcr.shoulder : shoulder);   // FREECAM v1
+        Vector3 freePos = focus - rot * Vector3.forward * (fcr.enabled ? fcr.distance : distance) * mcs, freeLook = focus;
+        if (MountRider.Mounted && BowCfg.Log && Time.time >= nextMountCamLog) { nextMountCamLog = Time.time + 2f; Debug.Log("[MountCam] " + MountRider.CamInfo() + " freeScale=" + mcs.ToString("F3") + " height=" + ((fcr.enabled ? fcr.height : height) * mcs).ToString("F2") + " dist=" + ((fcr.enabled ? fcr.distance : distance) * mcs).ToString("F2") + " pivotY=" + focus.y.ToString("F2") + " saddleY=" + target.position.y.ToString("F2") + " lockBranch=" + (enemy != null)); }
 
         if (enemy)
         {

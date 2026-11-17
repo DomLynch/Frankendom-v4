@@ -1,0 +1,11 @@
+﻿{
+  "enabled": false,
+  "budgetMB": 6144,
+  "maxLevelReduction": 1,
+  "forceLoadAllS": 8,
+  "forceLoadAfterZoneS": 8,
+  "hitchForceMs": 150,
+  "logEveryS": 20,
+  "addAllCameras": true
+}
+

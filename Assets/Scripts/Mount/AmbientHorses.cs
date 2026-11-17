@@ -118,6 +118,7 @@ public sealed partial class AmbientHorses : MonoBehaviour
                 var hold = new GltfHold { imp = new GLTFast.GltfImport() }; s.holds.Add(hold);
                 bool okLoad = await hold.imp.LoadFile(file); if (K.debugLog) Debug.Log("[AmbientHorses] " + h.id + "[" + i + "] LoadFile ok=" + okLoad); if (!okLoad || !await hold.imp.InstantiateMainSceneAsync(body.transform)) { Debug.LogWarning("[AmbientHorses] glb failed: " + file); Destroy(go); continue; }
                 if (gen != s.gen) { Destroy(go); Free(s); return; }
+                TexShare.Apply(body, file);   // TEXSHARE v1
                 foreach (var c in go.GetComponentsInChildren<Collider>(true)) Destroy(c);
                 var rl = new List<Renderer>(go.GetComponentsInChildren<Renderer>(true));
                 foreach (var r in rl) r.shadowCastingMode = K.shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;

@@ -93,7 +93,7 @@ public class BowArrowView : MonoBehaviour
     static Mesh shaftM, headM, finM; static string finKey = "";
     static readonly Dictionary<string, Material> mats = new Dictionary<string, Material>();
     static readonly Queue<BowArrowView> stuckQ = new Queue<BowArrowView>();
-    public static void ResetStatics() { shaftM = headM = finM = null; finKey = ""; mats.Clear(); stuckQ.Clear(); perBody.Clear(); }
+    public static void ResetStatics() { shaftM = headM = finM = null; finKey = ""; finNockedM = null; finNockedKey = ""; mats.Clear(); stuckQ.Clear(); perBody.Clear(); }
 
     static Mesh Cylinder(int seg, bool cone)   // unit radius, z 0..1 for the cone (tip at z 1), z -0.5..0.5 for the cylinder
     {
@@ -149,16 +149,25 @@ public class BowArrowView : MonoBehaviour
     }
 
     /// <summary>Builds the shaft, head and fins (shared by the flying arrow and the arrow nocked on the string).</summary>
-    public void Build(Color tint, bool flyingArrow = true)
+    static Mesh finNockedM; static string finNockedKey = "";
+    public void Build(Color tint, bool flyingArrow = true, bool nockedView = false)
     {
         var C = BowCfg.Get().arrow;
+        float sr = nockedView && C.nockedRadiusM > 0f ? C.nockedRadiusM : C.radiusM, hs = sr / Mathf.Max(1e-4f, C.radiusM);   // a nocked arrow is a slim shaft; its head and fins keep their proportions
         if (shaftM == null) shaftM = Cylinder(Mathf.Max(3, C.radialSegments), false); if (headM == null) headM = Cylinder(Mathf.Max(3, C.radialSegments), true);
         string fk = C.finCount + "|" + C.lengthM + "|" + C.radiusM + "|" + C.finLenM + "|" + C.finHeightM + "|" + C.finInsetM; if (finM == null || finKey != fk) { finM = Fins(C); finKey = fk; }
         Color shaftC = Color.Lerp(BowCfg.Col(C.shaft, Color.gray), tint, C.tintMix);
         halfTotal = C.lengthM * 0.5f + C.headLenM;
-        Part("Shaft", shaftM, Mat(C, shaftC, C.shaftSmoothness, 0f), Vector3.zero, new Vector3(C.radiusM, C.radiusM, C.lengthM), C.castShadow);
-        Part("Head", headM, Mat(C, BowCfg.Col(C.head, Color.gray), C.headSmoothness, C.headMetallic), new Vector3(0f, 0f, C.lengthM * 0.5f), new Vector3(C.headRadiusM, C.headRadiusM, C.headLenM), C.castShadow);
-        Part("Fins", finM, Mat(C, BowCfg.Col(!string.IsNullOrEmpty(C.fletchColor) ? C.fletchColor : C.fin, Color.gray), C.shaftSmoothness, 0f), Vector3.zero, Vector3.one, C.castShadow);
+        Part("Shaft", shaftM, Mat(C, shaftC, C.shaftSmoothness, 0f), Vector3.zero, new Vector3(sr, sr, C.lengthM), C.castShadow);
+        Part("Head", headM, Mat(C, BowCfg.Col(C.head, Color.gray), C.headSmoothness, C.headMetallic), new Vector3(0f, 0f, C.lengthM * 0.5f), new Vector3(C.headRadiusM * hs, C.headRadiusM * hs, C.headLenM), C.castShadow);
+        Mesh finUse = finM;
+        if (nockedView && C.nockedRadiusM > 0f)
+        {   // real fletching on the nocked arrow: three vanes at the slim shaft's tail, height / length from nockedFinHeightM / nockedFinLenM (0 = the flight values)
+            string nk = fk + "|n" + sr + "|" + C.nockedFinHeightM + "|" + C.nockedFinLenM;
+            if (finNockedM == null || finNockedKey != nk) { var C2 = JsonUtility.FromJson<BowCfg.Arrow>(JsonUtility.ToJson(C)); C2.radiusM = sr; if (C.nockedFinHeightM > 0f) C2.finHeightM = C.nockedFinHeightM; if (C.nockedFinLenM > 0f) C2.finLenM = C.nockedFinLenM; finNockedM = Fins(C2); finNockedKey = nk; }
+            finUse = finNockedM;
+        }
+        Part("Fins", finUse, Mat(C, BowCfg.Col(!string.IsNullOrEmpty(C.fletchColor) ? C.fletchColor : C.fin, Color.gray), C.shaftSmoothness, 0f), Vector3.zero, Vector3.one, C.castShadow);
         if (flyingArrow && C.streakLenM > 0f) streakGo = Part("Streak", shaftM, Mat(C, BowCfg.Col(C.streakColor, Color.white), 0.1f, 0f), new Vector3(0f, 0f, -(C.lengthM * 0.5f + C.streakLenM * 0.5f)), new Vector3(C.radiusM * 0.7f, C.radiusM * 0.7f, C.streakLenM), false);
     }
 
@@ -166,7 +175,7 @@ public class BowArrowView : MonoBehaviour
     public static GameObject MakeNocked(Transform parent)
     {
         var g = new GameObject("BowArrow_nocked"); g.transform.SetParent(parent, false);
-        var v = g.AddComponent<BowArrowView>(); v.stuck = true; v.until = float.MaxValue; v.fadeFrom = float.MaxValue; v.Build(BowCfg.Col(BowCfg.Get().arrow.shaft, Color.gray), false); return g;
+        var v = g.AddComponent<BowArrowView>(); v.stuck = true; v.until = float.MaxValue; v.fadeFrom = float.MaxValue; v.Build(BowCfg.Col(BowCfg.Get().arrow.shaft, Color.gray), false, true); return g;
     }
 
     void LateUpdate() { if (stuck || flying || s == null || s.a == null || s.d == null) return; Place(); }

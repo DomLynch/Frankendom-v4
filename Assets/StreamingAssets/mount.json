@@ -1,4 +1,4 @@
-﻿{
+{
   "_about": "laneHORSE v2 (staged, DARK, UNPROVEN in Unity). Read by Assets/Scripts/Mount/MountRider.cs (summon, speed, dismount, gait) and, for the size, by the static camp horse (hub.json npc_horse runtime.horseScale). enabled=false ships dark. Units metres, seconds, degrees. Copy to Assets/Data AND StreamingAssets.",
   "enabled": true,
   "debugLog": false,
@@ -40,7 +40,7 @@
         "glb": "Mount/skeletal_camel_lod.glb",
         "heightM": 2.106,
         "glbHeightM": 2.106,
-        "seatRaiseM": 0.92,
+        "seatRaiseM": 1.32,
         "seatBackM": 0.70,
         "radiusM": 0.662,
         "yawOffsetDeg": 0.0,
@@ -142,7 +142,8 @@
   ],
   "camera": {
     "backMul": 1.6,
-    "heightMul": 1.25
+    "heightMul": 1.25,
+    "refHeightM": 1.75
   },
   "gait": {
     "walkCyclesPerM": 0.55,

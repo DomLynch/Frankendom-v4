@@ -20,6 +20,8 @@ public sealed class ZoneGroundMat : MonoBehaviour
         public string id, zoneRoot, targetRoot = ""; public string[] unlessActive; public float zMin = -1e9f, zMax = 1e9f; public string[] matchMaterial, excludeMaterial, excludeRenderer;   /* unity-dev2: excludeRenderer = renderer GameObject name substrings left untouched (a strip mesh with bad UVs for the world projection) */ public bool enabled = true; public float mix = 1f;
         public float[] tint; public float smoothMin = -1f, smoothMax = -1f, normalScale = -1f, detailAlbedo = -1f, detailNormal = -1f, detailSmooth = -1f, detailTilingMul = 1f, tilingMul = 1f;
         public string baseColorMap = "", normalMap = "", maskMap = "";
+        public string dumpName = "";   // DIAG: once per row, log every Renderer in the whole scene (any root) whose GameObject or material name contains this: path, active/enabled, world position
+        public bool hide;   // PROPTINT v1: hide the matched renderers (enabled = false) instead of changing their materials (a floating prop, by data)
         public string[] onlyUnderName;   // PROPTINT v1: only renderers that sit under (or on) a GameObject whose name contains one of these (a prop inside a zone root, e.g. "camps_c1_apothecary"); empty = every renderer under the root
     }
     [Serializable] public class Cfg { public bool enabled = false, log = true; public float rescanSeconds = 3f, settledRescanSeconds = 20f; public int maxPerPoll = 60; public string texDir = "groundmat", cloneSuffix = " (zgm)"; public Row[] rows; }
@@ -35,11 +37,12 @@ public sealed class ZoneGroundMat : MonoBehaviour
     readonly HashSet<string> scanLogged = new HashSet<string>();
     readonly Dictionary<Renderer, Material[]> orig = new Dictionary<Renderer, Material[]>();
     readonly HashSet<(Renderer, Row)> changed = new HashSet<(Renderer, Row)>();
-    int touched; bool logged;
+    int touched, hiddenCount; bool logged;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
+        QaLean.Apply();
         try
         {
             string a1 = null; foreach (var a in Environment.GetCommandLineArgs()) if (a.StartsWith(ArgPrefix)) a1 = a.Substring(ArgPrefix.Length);
@@ -121,6 +124,18 @@ public sealed class ZoneGroundMat : MonoBehaviour
 
     void Scan()
     {
+        foreach (var dr in c.rows) if (dr != null && dr.enabled && !string.IsNullOrEmpty(dr.dumpName) && scanLogged.Add(dr.id + "#dump"))
+        {
+            int n = 0; foreach (var r in FindObjectsByType<Renderer>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (r == null || n >= 60) break; bool hit = r.gameObject.name.IndexOf(dr.dumpName, StringComparison.OrdinalIgnoreCase) >= 0;
+                if (!hit) foreach (var sm in r.sharedMaterials) if (sm != null && sm.name.IndexOf(dr.dumpName, StringComparison.OrdinalIgnoreCase) >= 0) { hit = true; break; }
+                if (!hit) { var mf = r.GetComponent<MeshFilter>(); if (mf != null && mf.sharedMesh != null && mf.sharedMesh.name.IndexOf(dr.dumpName, StringComparison.OrdinalIgnoreCase) >= 0) hit = true; }
+                if (!hit) continue; n++; string path = r.gameObject.name; for (var pp = r.transform.parent; pp != null; pp = pp.parent) path = pp.name + "/" + path;
+                Debug.Log("ZONEGROUNDMAT dump " + dr.id + ": " + path + " active " + r.gameObject.activeInHierarchy + " enabled " + r.enabled + " at " + r.bounds.center.ToString("F2") + " size " + r.bounds.size.ToString("F2") + " scene " + r.gameObject.scene.name);
+            }
+            Debug.Log("ZONEGROUNDMAT dump " + dr.id + ": " + n + " renderer(s) containing '" + dr.dumpName + "'");
+        }
         int budget = Mathf.Max(1, c.maxPerPoll);
         foreach (var row in c.rows) if (row != null && row.enabled && !string.IsNullOrEmpty(row.targetRoot) && !Gate(row)) Revert(row);   // reverts first, so a new zone row never gets overwritten
         foreach (var row in c.rows)
@@ -132,7 +147,7 @@ public sealed class ZoneGroundMat : MonoBehaviour
             var seen = new HashSet<string>(); var rnames = new List<string>();
             foreach (var r in rs)
             {
-                if (r == null) continue; if (row.onlyUnderName != null && row.onlyUnderName.Length > 0 && !UnderName(row, r, g.transform)) continue; if (row.excludeRenderer != null && row.excludeRenderer.Length > 0 && ExcludedRenderer(row, r)) continue; var key = (r, row);
+                if (r == null) continue; if (row.onlyUnderName != null && row.onlyUnderName.Length > 0 && !UnderName(row, r, g.transform)) continue; if (row.hide) { Transform best = null; for (var tt = r.transform; tt != null && tt != g.transform; tt = tt.parent) { foreach (var hn in row.onlyUnderName) if (!string.IsNullOrEmpty(hn) && tt.name.IndexOf(hn, StringComparison.OrdinalIgnoreCase) >= 0) best = tt; } if (best != null && best.gameObject.activeSelf) { best.gameObject.SetActive(false); touched++; hiddenCount++; string path = best.name; for (var pp = best.parent; pp != null; pp = pp.parent) path = pp.name + "/" + path; Debug.Log("ZONEGROUNDMAT hidden " + path + " (" + row.id + ")"); } continue; } if (row.excludeRenderer != null && row.excludeRenderer.Length > 0 && ExcludedRenderer(row, r)) continue; var key = (r, row);
                 var arr = r.sharedMaterials; bool ch = false;
                 for (int i = 0; i < arr.Length; i++)
                 {

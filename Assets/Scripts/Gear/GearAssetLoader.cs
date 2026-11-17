@@ -77,6 +77,7 @@ public static class GearAssetLoader
             if (ok) ok = await gltf.InstantiateMainSceneAsync(holder.transform);
             if (hadParent && (parent == null || holder == null)) return Dead(gltf, holder);   // K30: the wearer / piece was destroyed while glTFast ran
             if (!ok) { gltf.Dispose(); UnityEngine.Object.Destroy(holder); return new Loaded(); }
+            TexShare.Apply(holder, file);   // TEXSHARE v1: one shared GPU copy per (file, image)
             Debug.Log("[GearLoad] instantiated " + Path.GetFileName(file) + " frame " + Time.frameCount + " t " + Time.realtimeSinceStartup.ToString("F1"));   // HELMDIAG v1
             return new Loaded { root = holder, res = gltf };
         }
