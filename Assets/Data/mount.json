@@ -41,7 +41,7 @@
         "heightM": 2.106,
         "glbHeightM": 2.106,
         "seatRaiseM": 0.92,
-        "seatBackM": 0.07,
+        "seatBackM": 0.70,
         "radiusM": 0.662,
         "yawOffsetDeg": 0.0,
         "convertMaterials": true,
