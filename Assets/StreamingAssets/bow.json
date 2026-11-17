@@ -284,7 +284,7 @@
     "arcMaxM": 1.1,
     "dragPerS": 0.35,
     "embedM": 0.35,
-    "stuckSeconds": 0.0,
+    "stuckSeconds": 6.0,
     "stickToPlayer": false,
     "stuckFadeS": 1.0,
     "stuckScatterM": 0.05,
