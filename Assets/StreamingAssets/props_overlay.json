@@ -1,4 +1,4 @@
-{
+﻿{
   "_about": "PROPSOVERLAY v1 (laneDATA3), read by Assets/Scripts/Zones/PropsOverlay.cs. Runtime overlay on top of the BAKED props_layout_*.json scene objects: added, moved and disabled rows apply on zone load AFTER the baked objects exist, so ordinary prop edits are HOT (copy this file into the build's StreamingAssets, no scene chain). Ships enabled=false with no rows = the code does nothing. A missing file does nothing. Edit the Assets/Data and StreamingAssets twins together.",
   "enabled": true,
   "version": 1,
@@ -34,6 +34,15 @@
   },
   "_rowShape": "id (unique new id for op add; the baked wrapper name for move and disable), op (add | move | disable), src (add only: the name of a baked prop wrapper to clone, e.g. a worldmid_..., z4_..., z2back_... id: ONLY ids that exist in the build), zone (zone_span.json zone id: sobek_reach, hub_camp, grendel, z5_humbaba, z6_erlking, z7_market2; or main for the Arena), ring (0..2, the ring group the clone joins, default 1; main uses group), group (main only: Arena child group name, e.g. WorldNear), pos [x,y,z] (same meaning as props_layout: y = bottom of the prop; move with pos [] keeps the baked position), rotEuler [x,y,z] ([] keeps), scale (props_layout scale when scaleMode=absolute, or a multiplier on the source scale when relative; 0 keeps), scaleYMul (0 keeps), lod (-1 = the baked LODGroup, 0..2 = force that LOD), ground (bottom | pivot | snap: snap = bottom on the ray hit + pos[1]), enabled (false = the row does nothing).",
   "rows": [
+    {
+      "id": "camps_c1_market_tent",
+      "op": "move",
+      "zone": "hub_camp",
+      "enabled": true,
+      "pos": [8.99, -60, 82.53],
+      "scale": 0.01,
+      "note": "Dom 17 Nov: the canvas tent is not the Stable; the Stable stall now stands at the wooden shed (market.json hub_trade_e). Moved away like g4v_sil_wreck_d; the baked row stays (bake follow-up)."
+    },
     {
       "id": "gcomp_near_L1",
       "op": "add",

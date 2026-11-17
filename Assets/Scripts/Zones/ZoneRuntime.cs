@@ -492,7 +492,8 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     void RespawnDone(ZRespawn R)
     {
         reviveAsked = false; phase = Phase.CoverOut; phaseT = 0f; coverColor = Color.black; downHandled = false;
-        arriveGraceUntil = Time.unscaledTime + T.engage.graceAfterArriveSeconds; player.opponent = null; combatTicks = 0; lastTick = Duel.TickCount; crossGate = null;
+        arriveGraceUntil = Time.unscaledTime + T.engage.graceAfterRespawnSeconds; player.opponent = null; combatTicks = 0; lastTick = Duel.TickCount; crossGate = null;
+        LookSpawns(true);   // frozen-enemies fix: the creatures that were reset at her death come back now, under the dark dip (the poll refused them: their spot is closer than spawnMinDistance to her arrival spot)
         Debug.Log("[Zones] revive: player is up at " + reviveWhere + ", hp " + player.health.ToString("F0") + "/" + player.maxHealth.ToString("F0") + ", no scene reload");
         SaveNow();
     }
@@ -506,7 +507,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
             ids += (ids.Length > 0 ? ", " : "") + key; Vanish(l); live.Remove(key); n++;   // gone; its record is untouched = alive at home, LookSpawns brings it back at its spawn spot with full hp as soon as nobody sees the spot
         }
         foeKeys.Clear();
-        if (n > 0) { Debug.Log("[Zones] reset: " + n + " creature(s) back to their spawn at full hp (" + ids + ")"); if (phase == Phase.Play) LookSpawns(false); }
+        if (n > 0) { Debug.Log("[Zones] reset: " + n + " creature(s) back to their spawn at full hp (" + ids + ")"); LookSpawns(phase != Phase.Play); }
     }
 
     // ------------------------------------------------------------------ gates

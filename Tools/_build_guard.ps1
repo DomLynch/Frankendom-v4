@@ -58,7 +58,8 @@ if ($warm) {
     if ($env:FK_SCRIPTSONLY_PROOF -eq '1') { $coldWhy = $null; $script:ColdWhy = $null; $MinFreeGB = 24 }
     if ($coldWhy) { $warm = $false; $script:ColdWhy = "treated as COLD (45 GB, ALONE): $coldWhy" }
 }
-    if (-not $warm) { $MinFreeGB = [Math]::Max($MinFreeGB, $(if ($env:FK_COLD_MINFREE) { [int]$env:FK_COLD_MINFREE } else { 45 })); $anyGame = @(Get-Process HadesSlice, FronteirDom, FrontierDom, ARMAGEDOM_Slice0 -EA SilentlyContinue); if ($anyGame.Count -gt 0) { $why += 'a game is running (' + (($anyGame | ForEach-Object { $_.Name + ' ' + $_.Id }) -join ', ') + '): no Editor start while ANY game runs (Dom, QA, any project)' }; $anyEd = @(Get-Process Unity -EA SilentlyContinue); if ($anyEd.Count -gt 0) { $why += 'another Unity.exe is open (pids ' + (($anyEd | ForEach-Object { $_.Id }) -join ',') + '): no second Editor' } }
+    # Dom 17 Nov 09:57 (via Strategy+COO): no Dom-game refusal and no 24/35/45 GB waits any more. Cold/bake floor 16 GB; own-pid stop (mem_watch) at free < 4 GB is the only RAM guard once running.
+    if (-not $warm) { $MinFreeGB = [Math]::Max($MinFreeGB, 16) }
     $codeOnlyUnproven = $false; if ($mode -eq 'CodeOnly' -and (Test-Path (Join-Path $p 'Tools\_codeonly_unproven.txt'))) { $mode = 'Bake'; $MinFreeGB = [Math]::Max($MinFreeGB, 30); $codeOnlyUnproven = $true }
     # COO 12:06: NO Frankendom scene-bake builds while Tools\_bake_frozen.txt exists (the rider bake took free RAM to 0.7-2 GB twice today). Delete the file when RiderClipSetup is fixed and its per-scene peak memory is logged under 20 GB.
     # COO 12:30: -Mode CodeOnly means NOTHING under Assets\ changes except code: refuse when git sees a changed/new file under Assets\ that is not .cs/.asmdef/.asmref/.meta and not data (Assets\Data, Assets\StreamingAssets), or when the setup step declares outputs in $env:BUILD_SETUP_OUTPUTS (semicolon list). An asset import re-processes whatever references it (the 30 GB main-scene load).
@@ -79,17 +80,9 @@ if ($mode -eq 'Bake' -and $env:FK_BAKE_TEST -ne '1' -and (Test-Path (Join-Path $
     if (Test-Path $lock) { if (((Get-Date) - (Get-Item $lock).LastWriteTime).TotalMinutes -lt 30) { $why += "backup lock exists ($lock)" } }
     $free = [math]::Round((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1MB, 1)
     if ($free -lt $MinFreeGB) { $why += "free RAM $free GB is under $MinFreeGB GB" }
-if ($script:ColdWhy) { $why += $script:ColdWhy }
+# (cold detection is informational now: it raises the RAM floor to 16 GB, it no longer refuses; serialized-field refusal below stays)
 if ($script:SerWhy) { $why += $script:SerWhy }
-    $hs = @(Get-CimInstance Win32_Process -Filter "Name='HadesSlice.exe'" -ErrorAction SilentlyContinue)
-    # COO 10:53: Dom = a fresh dom-runs log, or a launcher/explorer parent; 'no QA flags' alone is NOT proof (boot-check players have none)
-    $plain = @($hs | Where-Object {
-        $_.CommandLine -notmatch '-camscene|-camtrace|-fpshots|-benchOut' -and (
-            ((Get-ChildItem (Join-Path $p 'dom-runs') -Filter 'frankendom_*.log' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime | Select-Object -Last 1 | Where-Object { ((Get-Date) - $_.LastWriteTime).TotalMinutes -lt 3 }) -ne $null) -or
-            ((Get-CimInstance Win32_Process -Filter "ProcessId=$($_.ParentProcessId)" -ErrorAction SilentlyContinue).Name -match '^(explorer|cmd|powershell|pwsh|conhost)\.exe$')) })
-    if ($plain.Count -gt 0) { $why += "a Dom game is running (HadesSlice pid " + (($plain | ForEach-Object { $_.ProcessId }) -join ',') + ", fresh dom-runs log or launcher parent)" }
-    $dl = Get-ChildItem (Join-Path $p 'dom-runs') -Filter 'frankendom_*.log' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime | Select-Object -Last 1
-    if ($dl -and $hs.Count -gt 0 -and ((Get-Date) - $dl.LastWriteTime).TotalMinutes -lt 3) { $why += "fresh Dom run log $($dl.Name) with a live HadesSlice" }
+    # (Dom-game refusal and fresh-dom-runs-log refusal REMOVED 17 Nov 09:57 on Dom's order; the build folder his running game uses is never overwritten: see release.ps1 / prune_builds.ps1.)
     # Unity 6 keeps no .ulf: probe = the Licensing Client log (newest 400 lines) must not end in a sign-in / entitlement failure
     $lc = Join-Path $env:LOCALAPPDATA 'Unity\Unity.Licensing.Client.log'
     if (-not (Test-Path $lc)) { $why += "licence probe: no Unity.Licensing.Client.log (Hub never signed in?)" }
@@ -104,7 +97,7 @@ if ($script:SerWhy) { $why += $script:SerWhy }
     return $why
 }
 function Assert-BuildSafe {
-    param([string]$Tag = '?', [int]$MinFreeGB = 24, [ValidateSet('Bake', 'CodeOnly')][string]$Mode = 'Bake')
+    param([string]$Tag = '?', [int]$MinFreeGB = 16, [ValidateSet('Bake', 'CodeOnly')][string]$Mode = 'Bake')
     $script:BuildMode = $Mode
     . (Join-Path $PSScriptRoot '_tag_reserve.ps1'); try { $null = Reserve-Tag -Tag $Tag -Owner $(if ($env:FK_OWNER) { $env:FK_OWNER } else { "build:$Tag" }) } catch { "BUILD REFUSED ($Tag): $($_.Exception.Message)"; exit 3 }
     $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
@@ -113,8 +106,6 @@ function Assert-BuildSafe {
         exit 3
     }
     "build guard ($Tag): all clear at $(Get-Date -Format 'HH:mm')"
-    # COO 09:24 17 Nov: pause the build within ~1 s of a Dom launch of any game (Tools\build_suspend_watch.ps1, NtSuspendProcess), resume when it ends.
-    try { if (-not (Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'build_suspend_watch' })) { Start-Process powershell -WindowStyle Hidden -ArgumentList '-NoProfile','-File',(Join-Path $PSScriptRoot 'build_suspend_watch.ps1') | Out-Null; "suspend watcher started" } } catch { }
 }
 # Last step of every build script (COO 10:48): post 'BUILT <tag> ready to flip' on the board automatically, so a finished build is never invisible.
 #   . "$p\Tools\_build_guard.ps1"; Add-BuiltLine 'ov'   (reads TestOut\v109<tag>_done.txt and Builds\HDRP_v109<tag>\build_info.json)
@@ -134,6 +125,7 @@ if ($DryRun) {
     $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
     if ($w.Count -gt 0) { "DRY RUN: build would be REFUSED at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ') } else { "DRY RUN: build would run (all clear) at $(Get-Date -Format 'HH:mm')" }
 }
+
 
 
 

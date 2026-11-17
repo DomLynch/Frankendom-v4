@@ -1,4 +1,4 @@
-{
+﻿{
   "_about": "STALL v1 (lane laneSTALL), STAGED, SHIPS OFF. The camp trader stall: a sell-only stall in the safe camp. Read by Scripts/Market/MarketCfg.cs (StreamingAssets first, then Assets/Data). Everything the player sees or can change is here: coins, prices, keys, layout, text, the camp rectangle, the combat rule. Sizes are px at hud.json referenceHeight (1080) and scale with HudCfg.Scale() (Screen.height / referenceHeight, clamped), the same UI scale as the HUD. Colours: the HUD palette (hud.json colors) is used for ink / dim / gold / frame / crimson / charcoal / shadow; only the panel rows are here. enabled=false = no stall, no prompt, no combat rule: the game is exactly as before.",
   "_domNote": "laneMARKET v1: currency is SILVER (whole numbers, prices max 1000). Start silver 100 (currency.startCoins, read by LootSave.StartCoins). Boss silver: boss_silver.json.",
   "enabled": true,
@@ -650,8 +650,8 @@
       "anchor": {
         "zone": "",
         "spot": "",
-        "x": -1.9,
-        "z": 82.5
+        "x": -3.4,
+        "z": 85.6
       },
       "radius": 2.2,
       "promptRadius": 8.0,
@@ -708,8 +708,8 @@
       "anchor": {
         "zone": "",
         "spot": "",
-        "x": 4.2,
-        "z": 83.3
+        "x": -4.2,
+        "z": 80.6
       },
       "radius": 2.2,
       "promptRadius": 8.0,
