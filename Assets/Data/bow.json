@@ -283,7 +283,7 @@
     "gravityMS2": 5.5,
     "arcMaxM": 1.1,
     "dragPerS": 0.35,
-    "embedM": 0.22,
+    "embedM": 0.35,
     "stuckSeconds": 0.0,
     "stickToPlayer": false,
     "stuckFadeS": 1.0,
@@ -321,7 +321,7 @@
       "Sprites/Default"
     ],
     "releaseHeightM": 1.35,
-    "aimHeightM": 1.2,
+    "aimHeightM": 0.9,
     "releaseForwardM": 0.4,
     "volleySpreadM": 0.12
   },

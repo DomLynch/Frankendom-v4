@@ -53,9 +53,11 @@ if ($warm) {
             Pop-Location
             if ($hits.Count -gt 0) { $coldWhy = "new serialized field(s) since the last real build (re-serialize scenes): " + (($hits | Select-Object -First 3) -join ' | ') }
         } catch { try { Pop-Location } catch { } }
-    }    if ($coldWhy) { $warm = $false; $script:ColdWhy = "treated as COLD (45 GB, ALONE): $coldWhy" }
+    }    # Strategy/COO 08:20 17 Nov: the scripts-only PROOF take (HdrpScriptsOnly, env FK_SCRIPTSONLY_PROOF=1) is exempt from cold detection for this one proof: floor 24 GB, no other Unity.exe, no game; mem_watch stops it at own > 12 GB or free < 8 GB.
+    if ($env:FK_SCRIPTSONLY_PROOF -eq '1') { $coldWhy = $null; $script:ColdWhy = $null; $MinFreeGB = 24 }
+    if ($coldWhy) { $warm = $false; $script:ColdWhy = "treated as COLD (45 GB, ALONE): $coldWhy" }
 }
-    if (-not $warm) { $MinFreeGB = [Math]::Max($MinFreeGB, 45); $anyGame = @(Get-Process HadesSlice, FronteirDom, FrontierDom, ARMAGEDOM_Slice0 -EA SilentlyContinue); if ($anyGame.Count -gt 0) { $why += 'a game is running (' + (($anyGame | ForEach-Object { $_.Name + ' ' + $_.Id }) -join ', ') + '): no Editor start while ANY game runs (Dom, QA, any project)' }; $anyEd = @(Get-Process Unity -EA SilentlyContinue); if ($anyEd.Count -gt 0) { $why += 'another Unity.exe is open (pids ' + (($anyEd | ForEach-Object { $_.Id }) -join ',') + '): no second Editor' } }
+    if (-not $warm) { $MinFreeGB = [Math]::Max($MinFreeGB, $(if ($env:FK_COLD_MINFREE) { [int]$env:FK_COLD_MINFREE } else { 45 })); $anyGame = @(Get-Process HadesSlice, FronteirDom, FrontierDom, ARMAGEDOM_Slice0 -EA SilentlyContinue); if ($anyGame.Count -gt 0) { $why += 'a game is running (' + (($anyGame | ForEach-Object { $_.Name + ' ' + $_.Id }) -join ', ') + '): no Editor start while ANY game runs (Dom, QA, any project)' }; $anyEd = @(Get-Process Unity -EA SilentlyContinue); if ($anyEd.Count -gt 0) { $why += 'another Unity.exe is open (pids ' + (($anyEd | ForEach-Object { $_.Id }) -join ',') + '): no second Editor' } }
     $codeOnlyUnproven = $false; if ($mode -eq 'CodeOnly' -and (Test-Path (Join-Path $p 'Tools\_codeonly_unproven.txt'))) { $mode = 'Bake'; $MinFreeGB = [Math]::Max($MinFreeGB, 30); $codeOnlyUnproven = $true }
     # COO 12:06: NO Frankendom scene-bake builds while Tools\_bake_frozen.txt exists (the rider bake took free RAM to 0.7-2 GB twice today). Delete the file when RiderClipSetup is fixed and its per-scene peak memory is logged under 20 GB.
     # COO 12:30: -Mode CodeOnly means NOTHING under Assets\ changes except code: refuse when git sees a changed/new file under Assets\ that is not .cs/.asmdef/.asmref/.meta and not data (Assets\Data, Assets\StreamingAssets), or when the setup step declares outputs in $env:BUILD_SETUP_OUTPUTS (semicolon list). An asset import re-processes whatever references it (the 30 GB main-scene load).
@@ -128,6 +130,7 @@ if ($DryRun) {
     $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
     if ($w.Count -gt 0) { "DRY RUN: build would be REFUSED at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ') } else { "DRY RUN: build would run (all clear) at $(Get-Date -Format 'HH:mm')" }
 }
+
 
 
 
