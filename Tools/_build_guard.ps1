@@ -113,6 +113,8 @@ function Assert-BuildSafe {
         exit 3
     }
     "build guard ($Tag): all clear at $(Get-Date -Format 'HH:mm')"
+    # COO 09:24 17 Nov: pause the build within ~1 s of a Dom launch of any game (Tools\build_suspend_watch.ps1, NtSuspendProcess), resume when it ends.
+    try { if (-not (Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'build_suspend_watch' })) { Start-Process powershell -WindowStyle Hidden -ArgumentList '-NoProfile','-File',(Join-Path $PSScriptRoot 'build_suspend_watch.ps1') | Out-Null; "suspend watcher started" } } catch { }
 }
 # Last step of every build script (COO 10:48): post 'BUILT <tag> ready to flip' on the board automatically, so a finished build is never invisible.
 #   . "$p\Tools\_build_guard.ps1"; Add-BuiltLine 'ov'   (reads TestOut\v109<tag>_done.txt and Builds\HDRP_v109<tag>\build_info.json)
@@ -132,6 +134,7 @@ if ($DryRun) {
     $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
     if ($w.Count -gt 0) { "DRY RUN: build would be REFUSED at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ') } else { "DRY RUN: build would run (all clear) at $(Get-Date -Format 'HH:mm')" }
 }
+
 
 
 

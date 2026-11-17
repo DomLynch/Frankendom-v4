@@ -97,3 +97,6 @@ Code takes use compile-only (PlayerBuildInterface.CompilePlayerScripts via Asset
 
 **QA player footprint (Unity dev, 17 Nov 09:00):** a scripted QA player takes 12.7-14.7 GB working set at start and no flag changes it (quality low / 720p: 12.7 GB; -permem:E1,E3,E4: 13.9 GB; ultra2k: 14.7 GB); Unity-managed memory is only ~2 GB, the rest is native/GPU memory that this iGPU (unified memory) counts as system RAM, so a dGPU player would see most of it as VRAM. QA therefore starts at >= 27 GB free with at most one Editor up and my own 14 GB stop; the product-memory question needs a measurement on a dGPU or via GPU counters, not on this laptop's working set.
 
+
+## Build-suspend watcher (COO 09:24, 17 Nov)
+Tools\build_suspend_watch.ps1, started detached by Assert-BuildSafe after the all-clear, polls every 1 s: when ANY game has a live process AND a fresh dom-runs log exists (Frankendom, Armagedom or FrontierDom dom-runs), it NtSuspendProcess-es this project's Unity.exe and its children (nothing killed) and posts BUILD SUSPENDED; when the game ends it resumes and posts BUILD RESUMED. Exits 90 s after the Editor is gone or after 60 min. Dry run: powershell -File Tools\build_suspend_watch.ps1 -DryRun.
