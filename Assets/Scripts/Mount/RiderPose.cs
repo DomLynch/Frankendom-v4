@@ -9,10 +9,11 @@ public static class RiderPose
 {
     [Serializable] public class Pair { public string from = "", state = ""; }
     [Serializable] public class Shield { public bool enabled = false; public string socket = "ShieldSocket_L", bone = "mixamorig:Spine2"; public float rx = 0f, ry = 0f, rz = 0f, px = 0f, py = 0.05f, pz = -0.22f, scale = 1f; }   // DATA: the shield rides on her back while mounted
-    [Serializable] public class Cfg { public bool enabled = false, log = true; public bool riderClipsRuntime = false; /* DATA: true = the rider clips are built at runtime from StreamingAssets\Rider\Joan_rider_clips.glb (RiderClipRuntime); false = the baked controller clips */ public Pair[] clips = new Pair[0]; public Shield shield = new Shield(); }
+    [Serializable] public class Cfg { public bool enabled = false, log = true; public bool riderClipsRuntime = false; /* DATA: true = the rider clips are built at runtime from StreamingAssets\Rider\Joan_rider_clips.glb (RiderClipRuntime); false = the baked controller clips */ public Pair[] clips = new Pair[0]; public Shield shield = new Shield(); public Leg[] legs = new Leg[0]; }
+    [Serializable] public class Leg { public string mount = "", bone = ""; public float rxDeg = 0f, ryDeg = 0f, rzDeg = 0f; }   // DATA: rider.legs rows: while mounted on this mount id (mount.json variants[].item), this bone is rotated by (rx, ry, rz) degrees on top of the rider clip, e.g. a thigh abduction so the legs sit outside the ribs
     [Serializable] class Doc { public Cfg rider = new Cfg(); }
     static Cfg cfg; static RuntimeAnimatorController before; static AnimatorOverrideController mine;
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void Reset() { cfg = null; before = null; mine = null; rt = null; rtTried = false; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void Reset() { cfg = null; before = null; mine = null; rt = null; rtTried = false; legState.Clear(); legBone.Clear(); }
     static Cfg Get()
     {
         if (cfg != null) return cfg; cfg = new Cfg();
@@ -20,6 +21,24 @@ public static class RiderPose
         catch (Exception e) { Debug.LogWarning("[Rider] mount.json rider block read failed: " + e.Message); }
         return cfg;
     }
+    // rider.legs: runs in LateUpdate (after the Animator). The Animator rewrites the bone each frame; when it did not (the clip has no curve for it) the stored base is reused so the offset never accumulates.
+    struct LegState { public Quaternion baseRot, applied; }
+    static readonly Dictionary<Transform, LegState> legState = new Dictionary<Transform, LegState>();
+    static readonly Dictionary<string, Transform> legBone = new Dictionary<string, Transform>();
+    public static void ApplyLegs(DuelFighter f, string mountId)
+    {
+        if (f == null || string.IsNullOrEmpty(mountId)) return; var cf = Get(); if (cf == null || !cf.enabled || cf.legs == null || cf.legs.Length == 0) return;
+        foreach (var r in cf.legs)
+        {
+            if (r == null || r.mount != mountId || string.IsNullOrEmpty(r.bone)) continue;
+            string key = f.GetHashCode() + "|" + r.bone; Transform t; if (!legBone.TryGetValue(key, out t) || t == null) { t = null; foreach (var x in f.GetComponentsInChildren<Transform>(true)) if (x.name == r.bone) { t = x; break; } legBone[key] = t; }
+            if (t == null) continue;
+            Quaternion cur = t.localRotation, b = cur; LegState e; if (legState.TryGetValue(t, out e) && Quaternion.Angle(cur, e.applied) < 0.01f) b = e.baseRot;
+            Quaternion app = b * Quaternion.Euler(r.rxDeg, r.ryDeg, r.rzDeg); t.localRotation = app; legState[t] = new LegState { baseRot = b, applied = app };
+        }
+    }
+    public static void ResetLegs() { legState.Clear(); legBone.Clear(); }
+
     static Animator AnimOf(DuelFighter f) { var fx = f != null ? f.GetComponent<Fighter>() : null; return fx != null ? fx.anim : null; }
     /// <summary>ARMDIAG (QA, mount.json debugLog true): what the Animator is playing while mounted: per-layer weight and the clip names with their weights on layer 0, so a raised arm can be traced to a layer / state (Unity-side override) or to the rider clip itself.</summary>
     public static void LogAnim(DuelFighter f)

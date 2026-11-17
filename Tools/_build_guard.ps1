@@ -23,6 +23,7 @@ if ($warm) { $MinFreeGB = 14 }   # COO ruling 23:03: warm code-only peak ~4.5 GB
 
 # COO 23:09 (qe peaked 33.5 / 29.1 GB under a "warm" flag): a take is COLD (45 GB, ALONE) when (a) the LAST measured Editor peak (newest TestOut\v109*_mem.csv, column peakMyUnityGB) was over 12 GB, or (b) any non-code Assets file (not .cs/.cs.meta/.json, not Data/StreamingAssets) changed since the newest real build's Assembly-CSharp.dll.
 if ($warm) {
+    $script:SerWhy = $null
     $coldWhy = $null
     try {
         $mc = Get-ChildItem (Join-Path $p 'TestOut') -Filter 'v109*_mem.csv' -ErrorAction Stop | Sort-Object LastWriteTime -Descending | Select-Object -First 1
@@ -51,7 +52,7 @@ if ($warm) {
                 }
             }
             Pop-Location
-            if ($hits.Count -gt 0) { $coldWhy = "new serialized field(s) since the last real build (re-serialize scenes): " + (($hits | Select-Object -First 3) -join ' | ') }
+            if ($hits.Count -gt 0) { $script:SerWhy = "REFUSED, new serialized field(s) in a code take (re-serializes scenes; make them private/[NonSerialized] and load from json, Strategy 08:45): " + (($hits | Select-Object -First 3) -join ' | ') }
         } catch { try { Pop-Location } catch { } }
     }    # Strategy/COO 08:20 17 Nov: the scripts-only PROOF take (HdrpScriptsOnly, env FK_SCRIPTSONLY_PROOF=1) is exempt from cold detection for this one proof: floor 24 GB, no other Unity.exe, no game; mem_watch stops it at own > 12 GB or free < 8 GB.
     if ($env:FK_SCRIPTSONLY_PROOF -eq '1') { $coldWhy = $null; $script:ColdWhy = $null; $MinFreeGB = 24 }
@@ -79,6 +80,7 @@ if ($mode -eq 'Bake' -and $env:FK_BAKE_TEST -ne '1' -and (Test-Path (Join-Path $
     $free = [math]::Round((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1MB, 1)
     if ($free -lt $MinFreeGB) { $why += "free RAM $free GB is under $MinFreeGB GB" }
 if ($script:ColdWhy) { $why += $script:ColdWhy }
+if ($script:SerWhy) { $why += $script:SerWhy }
     $hs = @(Get-CimInstance Win32_Process -Filter "Name='HadesSlice.exe'" -ErrorAction SilentlyContinue)
     # COO 10:53: Dom = a fresh dom-runs log, or a launcher/explorer parent; 'no QA flags' alone is NOT proof (boot-check players have none)
     $plain = @($hs | Where-Object {
@@ -130,6 +132,7 @@ if ($DryRun) {
     $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
     if ($w.Count -gt 0) { "DRY RUN: build would be REFUSED at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ') } else { "DRY RUN: build would run (all clear) at $(Get-Date -Format 'HH:mm')" }
 }
+
 
 
 

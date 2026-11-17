@@ -10,7 +10,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public MoveTable moves; public RuleTable rules; public DuelFighter opponent;
     public float walkSpeed = 2.2f, runSpeed = 5.5f, maxHealth = 150f, maxStamina = 100f, radius = 0.4f;
 
-    [System.NonSerialized] public string lastSpend = "?"; public FState state; public int t; public MoveDef move; bool chained; bool hitDone; bool noFoeTried; int charge; int staggerTicks;
+    [System.NonSerialized] internal string lastSpend = "?"; public FState state; public int t; public MoveDef move; bool chained; bool hitDone; bool noFoeTried; int charge; int staggerTicks;
     public float health, stamina, posture;
     int regenWait, postureHold, guardAge, parryCd, riposteTicks, blockFlash; bool parryWindow;
     public Vector3 moveDir; public bool run, guardHeld, heavyHeld; public int guardSide;   // 0 centre, 1 left, 2 right, 3 up

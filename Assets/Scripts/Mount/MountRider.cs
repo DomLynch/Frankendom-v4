@@ -98,6 +98,7 @@ public sealed class MountRider : MonoBehaviour
     bool ProofTake() { bool k = ProofKey; ProofKey = false; return k; }
     // K26: the equipment screen's Mounts tab asks for the same toggle as the summon key. Handled in Update; a request that is refused only because the horse is still loading waits uiRequestS seconds.
     static bool uiReq; static float uiUntil;
+    public void ApplyRiderLegs() { var v = MountData.Variant(); RiderPose.ApplyLegs(df, v != null ? v.item : ""); }   // rider.legs rows (mount.json)
     public static void RequestToggle() { var i = Inst; if (i == null) return; uiReq = true; uiUntil = Time.unscaledTime + Mathf.Max(0.1f, i.K.summon.uiRequestS); }
     /// <summary>K26: why a summon would be refused right now ("" = it would work, "no rider" = the rider is not running). Codes are the Refuse() strings; the equipment screen maps them to text (loot_ui.json mounts.refuse).</summary>
     public static string UiRefuse() { var i = Inst; if (i == null || i.df == null) return "no rider"; if (i.mounted) return ""; return i.Refuse() ?? ""; }
@@ -320,5 +321,5 @@ public sealed class MountRider : MonoBehaviour
 [DefaultExecutionOrder(700)]   // after ArenaLimits (600): the horse follows the clamped position
 public sealed class MountFollow : MonoBehaviour
 {
-    void LateUpdate() { if (MountRider.Inst != null && MountRider.Mounted) MountRider.Inst.PlaceHorse(); }
+    void LateUpdate() { if (MountRider.Inst != null && MountRider.Mounted) { MountRider.Inst.PlaceHorse(); MountRider.Inst.ApplyRiderLegs(); } }
 }
