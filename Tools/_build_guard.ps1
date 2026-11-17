@@ -144,6 +144,15 @@ function Add-BuiltLine {
     $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm') BUILT frankendom HDRP_v109$Tag " + $(if ($ok) { 'ready to flip' } else { 'FAILED / incomplete (do not flip)' }) + " ($res; build_info.json " + $(if (Test-Path $info) { 'present' } else { 'MISSING' }) + ")"
     Add-Content -Path (Join-Path $p '_agents\COORDINATION.md') -Value ("`n" + $line)
     $line
+    # PATH line (COO/Dom 17 Nov 23:1x): every build says HOT | CODE | FULL and the asset that forced a FULL. A FULL with no forcing asset refuses (exit 5): set $env:FK_FORCING_ASSET to the asset or scene that cannot go any lighter path.
+    $pth = if ($res -match 'compileonly') { 'CODE' } else { 'FULL' }
+    $fa = $env:FK_FORCING_ASSET
+    if ($pth -eq 'FULL' -and [string]::IsNullOrWhiteSpace($fa)) {
+        $m = "$(Get-Date -Format 'yyyy-MM-dd HH:mm') PATH FULL REFUSED frankendom HDRP_v109$Tag : a full build needs a forcing asset (set FK_FORCING_ASSET=<asset or scene>); data = HOT (deploy_data), code = CODE (build_compileonly)"
+        Add-Content -Path (Join-Path $p '_agents\COORDINATION.md') -Value ("`n" + $m); $m; exit 5
+    }
+    $pl = "$(Get-Date -Format 'yyyy-MM-dd HH:mm') PATH $pth frankendom HDRP_v109$Tag" + $(if ($pth -eq 'FULL') { " (forcing asset: $fa)" } else { '' })
+    Add-Content -Path (Join-Path $p '_agents\COORDINATION.md') -Value ("`n" + $pl); $pl
 }
 if ($DryRun) {
     $script:BuildMode = $Mode

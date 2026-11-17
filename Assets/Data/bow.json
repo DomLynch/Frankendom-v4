@@ -1,4 +1,4 @@
-﻿{
+{
   "_about": "BOW v2 STAGED DARK, UNPROVEN IN UNITY. Read by BowCfg.cs. Master 'enabled' false or a missing file = no bow anywhere, every fight is bit for bit today's (BowHooks returns neutral on its first line). Ported from Frankendom V3 / V1 sandbox rows (sandbox-rules-defs.json: missile, missileLanes, bowSpecial, specialPick; kit/source/v3_sandbox-rules-defs.json). V3 units kept where it can: speeds in cm/s, shares per-mille, ticks at 60 Hz. The bow is a MODE of the fighter, not a gear swap: mode ON = strikes become auto-aimed arrows (the shot always flies at the foe, only a roll i-frame, a guard that covers the lane, or a parry-less block answers it; V3 missileHoming 1), the two specials change to the bow's, WeaponHooks reports the bow weapon stats. Command line: -bow:on / -bow:off (force master), -bow:auto (force auto.enabled), -bow:log (one line per switch and shot).",
   "enabled": true,
   "debugLog": true,
@@ -244,7 +244,7 @@
   "visual": {
     "_about": "BowVisual.cs: glb from gear.json items[].joan_bow (StreamingAssets/Gear/joan_bow_LOD0.glb = V1 bow-v1.glb, textures re-encoded PNG by BOWART v2). Parented to handRole of the fighter skeleton (Roster.BoneName). hold = Euler degrees + metres in the LeftHand bone frame of the 106-joint Mixamo rig, fitted by Tools/bow_clips_build.py on the bow_hold pose (BOWART v2: grip centre in the palm, long axis = the fist axis, string side to the archer; one static hold for every state: in non-bow poses the bow tilts with the hand).",
     "nock": { "enabled": true, "px": 0.0, "py": 0.0, "pz": -0.30, "rxDeg": 0.0, "ryDeg": 0.0, "rzDeg": 0.0 },
-    "draw": { "enabled": true, "dropM": -0.10, "_about": "DRAW v1: string follows the right hand during the draw; OFF until the QA frame is proven (stringA/B in the bow glb frame, 8 sign combos tried at load)" },
+    "npc": { "enabled": true, "ids": ["NpcSlagCrossbowman","NpcCedarArcher","NpcHuntsman"] }, "draw": { "enabled": true, "dropM": -0.10, "_about": "DRAW v1: string follows the right hand during the draw; OFF until the QA frame is proven (stringA/B in the bow glb frame, 8 sign combos tried at load)" },
     "handRole": "LeftHand",
     "holdRxDeg": 84.29,
     "holdRyDeg": 105.11,

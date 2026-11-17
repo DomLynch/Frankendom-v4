@@ -2557,7 +2557,7 @@
       "resource": ""
     },
     {
-      "id": "bandit_sword",
+      "id": "bandit_sword", "materials": { "*": { "metallic": 0.9, "smoothness": 0.6 } },
       "rarity": "common",
       "shield": {
         "id": "",
@@ -2583,7 +2583,7 @@
       "dropChance": 0.0,
       "notes": "BANDITS v1: glb empty = the base sword model stays (like knight_sword); multipliers 1.0 so the type's damage comes only from bandits.json.",
       "weapon": {
-        "id": "bandit_sword",
+        "id": "bandit_sword", "materials": { "*": { "metallic": 0.9, "smoothness": 0.6 } },
         "twoHanded": false,
         "damageMul": 1.0,
         "speedMul": 1.0,

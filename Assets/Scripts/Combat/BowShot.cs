@@ -37,6 +37,7 @@ public static class BowShot
         var C = BowCfg.Get(); float gap = Mathf.Max(0.01f, (d.transform.position - a.transform.position).magnitude);
         int ticks = Mathf.Max(1, Mathf.CeilToInt(gap * 100f * 60f / Mathf.Max(1, speedCmS)));   // V3 missileTicks
         Vector3 from = a.transform.position + Vector3.up * (C.arrow.releaseHeightM * a.scale) + a.transform.forward * C.arrow.releaseForwardM;
+        if (!a.IsPlayer) { var bv = a.GetComponent<BowVisual>(); Vector3 np; if (bv != null && bv.NockWorld(out np)) from = np; }   // NPCARCHER v2: the arrow leaves from the nock / right hand, not from a height over the body
         PlayCue(C.arrow.looseCue, C.arrow.looseGain, C.arrow.looseRate);
         for (int i = 0; i < lanes.Length; i++)
         {

@@ -1,4 +1,4 @@
-﻿{
+{
  "_about": "FootGround.cs: per-foot ground raycast + two-bone leg IK + pelvis offset (lowest foot defines the hips) + foot levelling + toe flattening, in LateUpdate after the Animator. ankleHeight = Foot bone height above the sole when flat (m); plantSnap/maxLift = ankle height above its ground within which the foot is fully planted / released (m); pelvisDownMax/UpMax = hips travel limits (m); pelvisSmooth = seconds; ignoreLayers = physics layers the rays skip (8 characters, 9 other fighters); states[] = per Animator state weight 0..1 (roll tucks, so weighted down); unlisted states use the global weight. enabled=false switches it off.",
  "characters": [
   {
@@ -449,7 +449,7 @@
    "debug": false,
    "debugEvery": 60,
    "weight": 1.0,
-   "ankleHeight": 0.155,
+   "ankleHeight": 0.111,
    "rayUp": 0.6,
    "rayDown": 0.9,
    "ignoreLayers": [
@@ -585,7 +585,7 @@
    "debug": false,
    "debugEvery": 60,
    "weight": 1.0,
-   "ankleHeight": 0.159,
+   "ankleHeight": 0.06,
    "rayUp": 0.6,
    "rayDown": 0.9,
    "ignoreLayers": [
@@ -811,7 +811,7 @@
    "debug": false,
    "debugEvery": 60,
    "weight": 1.0,
-   "ankleHeight": 0.355,
+   "ankleHeight": 0.298,
    "rayUp": 0.674,
    "rayDown": 1.01,
    "ignoreLayers": [

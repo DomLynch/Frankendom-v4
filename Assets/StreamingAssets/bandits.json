@@ -661,18 +661,16 @@
     },
     {
       "id": "NpcCedarArcher",
-      "role": "melee",
+      "role": "archer",
       "displayName": "Cedar Archer",
       "hudName": "CEDAR ARCHER",
       "hudTitle": "Bow of the Grove",
       "body": "t15_cedararcher",
       "heightM": 2.2,
       "weapon": "sword",
-      "weaponItem": "bandit_sword",
-      "loadout": [
-        "bandit_sword"
-      ],
-      "keepWeapon": true,
+      "weaponItem": "",
+      "loadout": [],
+      "keepWeapon": false,
       "hpTypeMul": 0.6,
       "dmgTypeMul": 0.857,
       "difficulty": 4,
@@ -680,7 +678,23 @@
       "leashExtra": 10.0,
       "respawnMinS": 240,
       "respawnMaxS": 420,
-      "silver": 1
+      "silver": 1,
+      "ranged": {
+        "minM": 5.0,
+        "maxM": 15.0,
+        "cooldownS": 3.4,
+        "windupS": 0.9,
+        "speedCmS": 700,
+        "missChance": 0.25,
+        "needLos": true,
+        "kiteBelowM": 4.0,
+        "moveId": "thrust",
+        "arrowDamageMul": 0.7,
+        "tint": "#e8d9a8",
+        "losHeightM": 1.5,
+        "windupMaxS": 1.8,
+        "turnDegPerS": 360
+      }
     },
     {
       "id": "NpcRootDruid",
@@ -707,18 +721,16 @@
     },
     {
       "id": "NpcHuntsman",
-      "role": "melee",
+      "role": "archer",
       "displayName": "Huntsman",
       "hudName": "HUNTSMAN",
       "hudTitle": "Horn and Arrow",
       "body": "t15_huntsman",
       "heightM": 1.8,
       "weapon": "sword",
-      "weaponItem": "bandit_sword",
-      "loadout": [
-        "bandit_sword"
-      ],
-      "keepWeapon": true,
+      "weaponItem": "",
+      "loadout": [],
+      "keepWeapon": false,
       "hpTypeMul": 0.6,
       "dmgTypeMul": 0.857,
       "difficulty": 4,
@@ -726,7 +738,23 @@
       "leashExtra": 10.0,
       "respawnMinS": 240,
       "respawnMaxS": 420,
-      "silver": 1
+      "silver": 1,
+      "ranged": {
+        "minM": 5.0,
+        "maxM": 15.0,
+        "cooldownS": 3.4,
+        "windupS": 0.9,
+        "speedCmS": 700,
+        "missChance": 0.25,
+        "needLos": true,
+        "kiteBelowM": 4.0,
+        "moveId": "thrust",
+        "arrowDamageMul": 0.7,
+        "tint": "#e8d9a8",
+        "losHeightM": 1.35,
+        "windupMaxS": 1.8,
+        "turnDegPerS": 360
+      }
     },
     {
       "id": "NpcHoundMaster",
@@ -863,7 +891,27 @@
     "propNearM": 8.0,
     "acceptMarginM": 0.3
   },
-  "zones": [ {"id": "sobek_reach", "short": "z2", "boss": {"spawn": "z2_sobek", "creature": "Sobek", "ladderRow": "sobek"}, "_note": "dev2: runtime Gate() reads id + boss; with the hk gate rule (boss killed record) the z2_a group stays asleep until Sobek has actually died"},  {"id": "pit_yard", "short": "z1", "boss": {"spawn": "z1_pitborn", "creature": "Pitborn", "ladderRow": "pitborn"}, "_note": "dev2 12 Nov: runtime Gate() only reads id + boss; without this row the z1_a group never woke after Pitborn died (aggro stayed 0.5)"}, 
+  "zones": [
+    {
+      "id": "sobek_reach",
+      "short": "z2",
+      "boss": {
+        "spawn": "z2_sobek",
+        "creature": "Sobek",
+        "ladderRow": "sobek"
+      },
+      "_note": "dev2: runtime Gate() reads id + boss; with the hk gate rule (boss killed record) the z2_a group stays asleep until Sobek has actually died"
+    },
+    {
+      "id": "pit_yard",
+      "short": "z1",
+      "boss": {
+        "spawn": "z1_pitborn",
+        "creature": "Pitborn",
+        "ladderRow": "pitborn"
+      },
+      "_note": "dev2 12 Nov: runtime Gate() only reads id + boss; without this row the z1_a group never woke after Pitborn died (aggro stayed 0.5)"
+    },
     {
       "id": "grendel",
       "short": "z4",

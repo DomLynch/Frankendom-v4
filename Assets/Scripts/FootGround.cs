@@ -83,6 +83,25 @@ public class FootGround : MonoBehaviour
         Debug.Log("[FootGround] attached to " + rn + " (bones ok, toeEnd " + (lToeEnd != null) + "/" + (rToeEnd != null) + ")");
     }
 
+    bool ankleMeasured; int ankleFrames;
+    void AnkleMeasure()
+    {
+        try { if (anim != null) anim.Rebind(); } catch { }   // REST POSE: Rebind restores the default (bind) pose before sampling; the animator re-evaluates next frame
+        float minY = float.MaxValue; var tmp = new Mesh();
+        foreach (var smr in GetComponentsInChildren<SkinnedMeshRenderer>(false))
+        {
+            if (smr == null || smr.sharedMesh == null || !smr.enabled) continue;
+            smr.BakeMesh(tmp); var vs = tmp.vertices; var m = smr.transform.localToWorldMatrix;
+            // BakeMesh output is in the renderer's local space without scale; apply position/rotation and lossyScale
+            Vector3 sc = smr.transform.lossyScale; var tr = Matrix4x4.TRS(smr.transform.position, smr.transform.rotation, sc);
+            for (int i = 0; i < vs.Length; i++) { float y = tr.MultiplyPoint3x4(vs[i]).y; if (y < minY) minY = y; }
+        }
+        Object.Destroy(tmp);
+        if (minY == float.MaxValue) return;
+        float l = lFoot.position.y - minY, r = rFoot.position.y - minY;
+        Debug.Log("[AnkleMeasure] REST " + transform.root.name + " rowName=" + row.name + " ankleRow=" + row.ankleHeight.ToString("F3") + " leftFootAboveSole=" + l.ToString("F3") + " rightFootAboveSole=" + r.ToString("F3") + " lowestFoot=" + Mathf.Min(l, r).ToString("F3"));
+    }
+
     float StateWeight(int hash)
     {
         for (int i = 0; i < stHash.Length; i++) for (int j = 0; j < stHash[i].Length; j++) if (stHash[i][j] == hash) return row.states[i].weight;
@@ -123,6 +142,7 @@ public class FootGround : MonoBehaviour
     {
         if (!init) Init();
         if (row == null) return;
+        if (!ankleMeasured && ++ankleFrames == 40) { ankleMeasured = true; try { AnkleMeasure(); } catch { } }   // ANKLEAUDIT: one-time log, foot bone height above the lowest skinned vertex
         float target = 1f;
         if (anim != null && anim.isActiveAndEnabled && anim.runtimeAnimatorController != null)
         {

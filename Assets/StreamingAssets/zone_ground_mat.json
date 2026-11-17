@@ -493,7 +493,7 @@
         1.0,
         1.0
       ],
-      "baseColorMap": "apothecary_stall_albedo_green.png",
+      "baseColorMap": "apothecary_stall_albedo_tan.png",
       "smoothMin": -1.0,
       "smoothMax": -1.0
     },
@@ -514,7 +514,7 @@
         1.0,
         1.0
       ],
-      "baseColorMap": "apothecary_tent_albedo_green.png",
+      "baseColorMap": "apothecary_tent_albedo_tan.png",
       "smoothMin": -1.0,
       "smoothMax": -1.0
     },

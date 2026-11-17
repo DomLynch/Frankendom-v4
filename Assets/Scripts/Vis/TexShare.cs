@@ -38,7 +38,7 @@ public static class TexShare
     {
         if (!On || root == null || string.IsNullOrEmpty(file)) return;
         try { var orig = Pass(root, file); jobs.Add(new Job { root = root, file = file, at = Time.realtimeSinceStartup + Mathf.Max(0.5f, cfg.settleS), originals = orig }); }
-        catch (Exception e) { Debug.LogWarning("[TexShare] apply " + file + ": " + e.Message); }
+        catch (Exception e) { Debug.LogWarning("[TexShare] apply " + file + ": " + e.ToString()); }
     }
 
     static List<Texture2D> Pass(GameObject root, string file)
@@ -77,7 +77,10 @@ public static class TexShare
         Entry e;
         if (entries.TryGetValue(key, out e) && e.shared != null) { e.users.Add(root); if (e.shared != t) reused++; return e.shared; }
         if (SystemInfo.copyTextureSupport == UnityEngine.Rendering.CopyTextureSupport.None) return t;
-        var c = new Texture2D(t.width, t.height, t.graphicsFormat, t.mipmapCount, UnityEngine.Experimental.Rendering.TextureCreationFlags.None) { name = t.name, wrapMode = t.wrapMode, filterMode = t.filterMode, anisoLevel = t.anisoLevel, mipMapBias = t.mipMapBias };
+        var gf = UnityEngine.Experimental.Rendering.GraphicsFormatUtility.IsSRGBFormat(t.graphicsFormat) ? UnityEngine.Experimental.Rendering.GraphicsFormat.R8G8B8A8_SRGB : UnityEngine.Experimental.Rendering.GraphicsFormat.R8G8B8A8_UNorm;
+        if (t.format != TextureFormat.ARGB32 && t.format != TextureFormat.RGBA32 && t.format != TextureFormat.RGB24 && t.format != TextureFormat.BGRA32) gf = SystemInfo.GetCompatibleFormat(t.graphicsFormat, UnityEngine.Experimental.Rendering.FormatUsage.Sample);   // compressed (BC7/DXT/BC5): same block format
+        if (gf == UnityEngine.Experimental.Rendering.GraphicsFormat.None) return t;
+        var c = new Texture2D(t.width, t.height, gf, t.mipmapCount, UnityEngine.Experimental.Rendering.TextureCreationFlags.None) { name = t.name, wrapMode = t.wrapMode, filterMode = t.filterMode, anisoLevel = t.anisoLevel, mipMapBias = t.mipMapBias };
         Graphics.CopyTexture(t, c);
         e = new Entry { shared = c }; e.users.Add(root); entries[key] = e; created++;
         return c;

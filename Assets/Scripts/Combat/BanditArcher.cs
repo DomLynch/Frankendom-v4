@@ -65,7 +65,7 @@ public sealed class BanditArcher : MonoBehaviour
     }
 
     // ------------------------------------------------------------------ the archer
-    DuelFighter df; AIBrain brain; TypeRow type; int lastTick = -1, windupEnd = -1, cooldownUntil, shots; bool kiting;
+    DuelFighter df; AIBrain brain; TypeRow type; int lastTick = -1, windupEnd = -1, cooldownUntil, shots; bool kiting, pressed, loosedFlag; readonly NpcBowAnim.Player bowAnim = new NpcBowAnim.Player(); Animator bodyAnim;
     /// <summary>NPCARCHER v1: true during the 0.7 s aim phase (BowVisual draws the string and nocks an arrow while it holds).</summary>
     public bool Aiming { get { return windupEnd >= 0; } }
 
@@ -74,23 +74,31 @@ public sealed class BanditArcher : MonoBehaviour
     void Update()
     {
         if (!Get().enabled || df == null || type == null || type.role != "archer") return;
+        if (bowAnim.Alive) { bowAnim.Tick(NpcBowAnim.Ready(NpcBowAnim.KindOf(df.CharacterId)), windupEnd >= 0, loosedFlag); loosedFlag = false; }   // NPCARCHER v3: draw -> hold -> loose clips (OpenTrident) while the AI aims
         if (brain == null) brain = GetComponent<AIBrain>();
         if (df.Dead || brain == null || !brain.enabled) { windupEnd = -1; return; }   // dormant (not engaged yet) or dead
         var foe = df.opponent; if (foe == null || foe.Dead || Duel.FrozenFor(df)) { windupEnd = -1; return; }
         int tick = Duel.TickCount; if (tick == lastTick) return; lastTick = tick;   // one decision per sim tick
         var R = type.ranged; var d = foe.transform.position - transform.position; d.y = 0f; float gap = d.magnitude; var dir = gap > Eps ? d / gap : transform.forward;
-        if (df.state != FState.Loco) { windupEnd = -1; return; }   // mid swing / stagger / roll: the normal machine owns it
+        if (df.state != FState.Loco && !(windupEnd >= 0 && pressed && (df.state == FState.Windup || df.state == FState.Active))) { windupEnd = -1; pressed = false; return; }   // mid swing / stagger / roll: the normal machine owns it (NPCARCHER v2: except the draw pose this archer started itself)
 
         if (windupEnd >= 0)   // aiming: stand still, turn to the target, loose on time
         {
             df.moveDir = Vector3.zero; Face(dir, R);
-            if (gap < R.kiteBelowM) { windupEnd = -1; return; }   // he got in my face: abort, kite
+            if (gap < R.kiteBelowM) { windupEnd = -1; pressed = false; return; }   // he got in my face: abort, kite
             if (tick >= windupEnd) Loose(foe, R);
             return;
         }
         if (gap < R.kiteBelowM) kiting = true; else if (gap >= R.minM) kiting = false;
         if (kiting) { df.moveDir = -dir; df.run = true; return; }   // back away until there is room to shoot again (AIBrain's own move is overridden for this tick)
-        if (gap >= R.minM && gap <= R.maxM && tick >= cooldownUntil && (!R.needLos || LineOfSight(foe, R))) windupEnd = tick + Mathf.Max(1, Mathf.RoundToInt(R.windupS * Get().runtime.tickHz));
+        if (gap >= R.minM && gap <= R.maxM && tick >= cooldownUntil && (!R.needLos || LineOfSight(foe, R))) { windupEnd = tick + Mathf.Max(1, Mathf.RoundToInt(R.windupS * Get().runtime.tickHz)); StartBowAnim(); }
+    }
+
+    void StartBowAnim()
+    {
+        string kd = NpcBowAnim.KindOf(df.CharacterId); NpcBowAnim.Preload(kd); var cs = NpcBowAnim.Ready(kd); if (cs == null) return;
+        if (bodyAnim == null) bodyAnim = GetComponentInChildren<Animator>(); if (bodyAnim == null) return;
+        loosedFlag = false; if (bowAnim.Start(bodyAnim, cs, kd == "52") && BowCfg.Log) Debug.Log("[NpcBow] " + name + " draw clip started");
     }
 
     void Face(Vector3 dir, Ranged R)
@@ -108,10 +116,11 @@ public sealed class BanditArcher : MonoBehaviour
 
     void Loose(DuelFighter foe, Ranged R)
     {
+        bool wasPressed = pressed; pressed = false; loosedFlag = true;
         windupEnd = -1; cooldownUntil = Duel.TickCount + Mathf.Max(1, Mathf.RoundToInt(R.cooldownS * Get().runtime.tickHz)); shots++;
         var mv = df.moves != null ? df.moves.Get(R.moveId) : null; if (mv == null) { Debug.LogWarning("[Bandits] " + name + ": move '" + R.moveId + "' missing, no shot"); return; }
         uint hsh = ZoneCore.Hash(name, "bandit_shot", shots, "miss"); bool miss = (hsh % MissGrain) < (uint)Mathf.RoundToInt(R.missChance * MissGrain);   // seeded: same run = same misses
-        df.Press(R.moveId);   // plays the thrust state as the shooting pose; the foe is out of its reach, so it cannot melee-hit
+        if (!wasPressed) df.Press(R.moveId);   // plays the thrust state as the shooting pose; the foe is out of its reach, so it cannot melee-hit
         if (!miss) BowShot.Launch(df, foe, mv, new[] { 0 }, false, R.arrowDamageMul, R.speedCmS, 0, R.tint);
         Debug.Log("[Bandits] " + name + (miss ? " shot MISSED (missChance)" : " loosed") + " tick " + Duel.TickCount);
     }

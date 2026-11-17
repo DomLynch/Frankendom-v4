@@ -79,7 +79,7 @@ public class BowVisual : MonoBehaviour
         if (fighter.state == FState.Windup || fighter.state == FState.Active || fighter.state == FState.Recovery) lastAim = Time.time; else if (archer != null && archer.Aiming) lastAim = Time.time;
         bool toHand = Time.time - lastAim < K.releaseDelayTicks / 60f;
         if (toHand != onHand) Seat(toHand, K);
-        Nock(); if (rigOn) DrawRig(); else DrawString();
+        NpcDrawHandIk(); Nock(); if (rigOn) DrawRig(); else DrawString();
     }
 
     // DRAW v1: the bow glb is ONE static mesh with the string baked in. At load the thin triangles along the chord between the two limb tips are removed (bow.json visual.draw.stringRadiusM)
@@ -179,6 +179,74 @@ public class BowVisual : MonoBehaviour
         if (nocked != null && nocked.activeSelf) PlaceNocked(tgtW);
     }
 
+    /// <summary>NPCARCHER v2: world position of the string's nock point (follows the right hand while drawing); false when the skinned rig is not up.</summary>
+    public bool NockWorld(out Vector3 p) { p = Vector3.zero; if (!rigOn || nockB == null) return false; p = nockB.position; return true; }
+
+    // NPCARCHER v4 (COO 21:10): the drawing hand of an NPC archer ended above his head (the clip was authored on Joan's arm length). Two-bone IK on the right arm: while drawing, the hand goes to a cheek anchor in front of the right side of the face
+    // (bow.json visual.draw.npcIk / cheekRightM / cheekDownM / cheekFwdM); the string and the nocked arrow follow that hand. Weighted in and out with the draw. Never runs for the player.
+    Transform ikUp, ikFore, ikHand, ikHead, lUp, lFore, lHand; float ikK; bool ikTried;
+    void NpcDrawHandIk()
+    {
+        if (fighter == null || fighter.IsPlayer) return; var D = BowCfg.Get().visual.draw; if (D == null || !D.npcIk) return;
+        if (!ikTried) { ikTried = true; var sk = Skel(); string pre = Roster.BoneName(this, ""); ikUp = FindNamed(sk, pre + "RightArm"); ikFore = FindNamed(sk, pre + "RightForeArm"); ikHand = FindNamed(sk, pre + "RightHand"); ikHead = FindNamed(sk, pre + "Head"); if (BowCfg.Log) Debug.Log("[bow] npc ik bones " + (ikUp != null) + "/" + (ikFore != null) + "/" + (ikHand != null) + "/" + (ikHead != null) + " on " + name); }
+        if (ikUp == null || ikFore == null || ikHand == null || ikHead == null) return;
+        ikK = Mathf.MoveTowards(ikK, Drawing() ? 1f : 0f, Time.deltaTime / 0.2f); if (ikK <= 0.001f) { if (D.groundHips) GroundHips(); return; }
+        Vector3 fw = fighter.transform.forward; fw.y = 0f; fw.Normalize(); Vector3 rt = fighter.transform.right; rt.y = 0f; rt.Normalize();
+        if (D.groundHips) GroundHips();
+        if (D.spineLevel) LevelTorso(rt, D);
+        Vector3 T = ikHead.position + rt * D.cheekRightM + Vector3.down * D.cheekDownM + fw * D.cheekFwdM;
+        Vector3 S = ikUp.position, E = ikFore.position, W = ikHand.position; float l1 = (E - S).magnitude, l2 = (W - E).magnitude; if (l1 < 1e-3f || l2 < 1e-3f) return;
+        Vector3 toT = T - S; float d = Mathf.Clamp(toT.magnitude, 0.05f, (l1 + l2) * 0.999f); Vector3 dir = toT.normalized;
+        Vector3 pole = -fw + rt * 0.6f + Vector3.up * 0.2f; Vector3 perp = pole - dir * Vector3.Dot(pole, dir); if (perp.sqrMagnitude < 1e-6f) perp = rt; perp.Normalize();
+        float a = (l1 * l1 - l2 * l2 + d * d) / (2f * d); float h = Mathf.Sqrt(Mathf.Max(0f, l1 * l1 - a * a)); Vector3 E2 = S + dir * a + perp * h;
+        Quaternion q1 = Quaternion.FromToRotation(E - S, E2 - S); ikUp.rotation = Quaternion.Slerp(Quaternion.identity, q1, ikK) * ikUp.rotation;
+        E = ikFore.position; W = ikHand.position; Quaternion q2 = Quaternion.FromToRotation(W - E, (S + dir * d) - E); ikFore.rotation = Quaternion.Slerp(Quaternion.identity, q2, ikK) * ikFore.rotation;
+        if (D.bowArmIk)   // NPCARCHER v5: the bow arm hung at the hip (bow low, arrow at head height): the left hand goes straight out along the line of fire at shoulder height
+        {
+            if (lUp == null) { var sk2 = Skel(); string pre2 = Roster.BoneName(this, ""); lUp = FindNamed(sk2, pre2 + "LeftArm"); lFore = FindNamed(sk2, pre2 + "LeftForeArm"); lHand = FindNamed(sk2, pre2 + "LeftHand"); }
+            if (lUp != null && lFore != null && lHand != null)
+            {
+                Vector3 S2 = lUp.position, E3 = lFore.position, W3 = lHand.position; float m1 = (E3 - S2).magnitude, m2 = (W3 - E3).magnitude;
+                if (m1 > 1e-3f && m2 > 1e-3f)
+                {
+                    Vector3 aim = fw; if (fighter.opponent != null) { aim = fighter.opponent.transform.position - fighter.transform.position; aim.y = 0f; if (aim.sqrMagnitude < 1e-4f) aim = fw; aim.Normalize(); }
+                    Vector3 T2 = S2 + aim * (m1 + m2) * 0.97f + Vector3.up * D.bowArmRaiseM; Vector3 dir2 = (T2 - S2).normalized; float d2 = Mathf.Min((T2 - S2).magnitude, (m1 + m2) * 0.999f);
+                    Vector3 pole2 = -rt * 0.4f + Vector3.down * 0.6f; Vector3 perp2 = pole2 - dir2 * Vector3.Dot(pole2, dir2); if (perp2.sqrMagnitude < 1e-6f) perp2 = Vector3.down; perp2.Normalize();
+                    float a2 = (m1 * m1 - m2 * m2 + d2 * d2) / (2f * d2); float h2 = Mathf.Sqrt(Mathf.Max(0f, m1 * m1 - a2 * a2)); Vector3 E4 = S2 + dir2 * a2 + perp2 * h2;
+                    lUp.rotation = Quaternion.Slerp(Quaternion.identity, Quaternion.FromToRotation(E3 - S2, E4 - S2), ikK) * lUp.rotation;
+                    E3 = lFore.position; W3 = lHand.position; lFore.rotation = Quaternion.Slerp(Quaternion.identity, Quaternion.FromToRotation(W3 - E3, (S2 + dir2 * d2) - E3), ikK) * lFore.rotation;
+                }
+            }
+        }
+    }
+    // NPCARCHER v6 (COO 21:25): while drawing, the NPC leaned back with the head tilted to the sky. Level the spine (lean about the character's right axis to bow.json visual.draw.leanTargetDeg, forward positive) and the head (pitch to 0), weighted by the draw, before the arm IK reads the bones.
+    Transform lvHips, lvSp1, lvSp2, lvNeck; bool lvTried;
+    void LevelTorso(Vector3 rt, BowCfg.Draw D)
+    {
+        if (!lvTried) { lvTried = true; var sk = Skel(); string pre = Roster.BoneName(this, ""); lvHips = FindNamed(sk, pre + "Hips"); lvSp1 = FindNamed(sk, pre + "Spine1"); lvSp2 = FindNamed(sk, pre + "Spine2"); lvNeck = FindNamed(sk, pre + "Neck"); }
+        float w = ikK * D.spineLevelW;
+        if (lvHips != null && lvSp1 != null && lvSp2 != null)
+        {
+            float lean = Vector3.SignedAngle(Vector3.up, lvSp2.position - lvHips.position, rt); float corr = (D.leanTargetDeg - lean) * w;
+            lvSp1.rotation = Quaternion.AngleAxis(corr * 0.5f, rt) * lvSp1.rotation; lvSp2.rotation = Quaternion.AngleAxis(corr * 0.5f, rt) * lvSp2.rotation;
+        }
+        if (lvNeck != null && ikHead != null)
+        {
+            float hp = Vector3.SignedAngle(Vector3.up, ikHead.position - lvNeck.position, rt); ikHead.rotation = Quaternion.AngleAxis((D.headPitchDeg - hp) * w, rt) * ikHead.rotation;
+        }
+    }
+    // NPCARCHER v7 (COO 21:35): the Cedar floated ~0.5 m in the hold (the clip's hips height does not match the body). While no draw runs the lowest foot height above the fighter's root is remembered; while drawing, the hips are lowered by whatever the feet are
+    // higher than that (bow.json visual.draw.groundHips), so the feet stay on the ground (the shadow). Upper-body IK only, no change to the root transform.
+    Transform gfL, gfR; float footRest = float.NaN, nextGhLog; bool gfTried;
+    void GroundHips()
+    {
+        if (!gfTried) { gfTried = true; var sk = Skel(); string pre = Roster.BoneName(this, ""); gfL = FindNamed(sk, pre + "LeftFoot"); gfR = FindNamed(sk, pre + "RightFoot"); if (lvHips == null) lvHips = FindNamed(sk, pre + "Hips"); }
+        if (gfL == null || gfR == null || lvHips == null) return;
+        float rootY = fighter.transform.position.y; float foot = Mathf.Min(gfL.position.y, gfR.position.y) - rootY;
+        if (ikK <= 0.001f) { footRest = float.IsNaN(footRest) ? foot : Mathf.Lerp(footRest, foot, 0.2f); return; }
+        if (float.IsNaN(footRest)) return;
+        float up = foot - footRest; if (BowCfg.Log && Time.time >= nextGhLog) { nextGhLog = Time.time + 0.5f; Debug.Log("[bow] ground hips " + name + " rootY " + rootY.ToString("F2") + " foot " + foot.ToString("F2") + " rest " + footRest.ToString("F2") + " up " + up.ToString("F2") + " hipsY " + lvHips.position.y.ToString("F2")); } if (up > 0.02f) lvHips.position -= Vector3.up * up * ikK;
+    }
     float nextAimLog;
     BanditArcher archer;
     bool Drawing() { return fighter != null && ((fighter.state == FState.Windup && BowHooks.Handles(fighter, fighter.move)) || (archer != null && archer.Aiming)); }

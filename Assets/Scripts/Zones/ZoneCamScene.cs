@@ -168,6 +168,12 @@ public sealed class ZoneCamScene : MonoBehaviour
         {
             Vector3 f = m.transform.forward; f.y = 0f; f.Normalize(); Vector3 r = m.transform.right; r.y = 0f; r.Normalize(); Vector3 p = m.transform.position;
             if (st.run) { wantDir = f0; wantRun = true; }
+            DuelFighter archerSubj = null; if (st.item == "archer") { float bd = 1e9f; foreach (var ba in FindObjectsByType<BanditArcher>(FindObjectsSortMode.None)) { var bf = ba.GetComponent<DuelFighter>(); if (bf == null || bf.Dead) continue; float dd = (bf.transform.position - p).sqrMagnitude; if (dd < bd) { bd = dd; archerSubj = bf; } } if (archerSubj == null) archerSubj = m.opponent; }
+            if (st.item == "archer" && archerSubj != null && !archerSubj.Dead)   // NPCARCHER proof: subject = the foe (the archer), camera at 90 degrees to the line of fire at sx metres, sy up, sz along the line (data pos = [side m, up m, along m, look height m])
+            {
+                Vector3 ap = archerSubj.transform.position; Vector3 ax = ap - p; ax.y = 0f; if (ax.sqrMagnitude < 1e-4f) ax = f; ax.Normalize(); Vector3 sr = Vector3.Cross(Vector3.up, ax).normalized;
+                cam.transform.position = ap + sr * sx + ax * sz + Vector3.up * sy; cam.transform.rotation = Quaternion.LookRotation((ap + Vector3.up * ly) - cam.transform.position, Vector3.up); cam.fieldOfView = 40f; yield return null; continue;
+            }
             cam.transform.position = parked ? parkPos : p + r * sx + f * sz + Vector3.up * sy; cam.transform.rotation = Quaternion.LookRotation((p + Vector3.up * ly) - cam.transform.position, Vector3.up); cam.fieldOfView = 40f;
             yield return null;
         }
