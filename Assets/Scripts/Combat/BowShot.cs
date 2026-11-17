@@ -86,14 +86,14 @@ public static class BowShot
 // or flown on into the ground. Pure presentation: the sim neither reads nor waits for it. Local +Z = flight direction, origin = shaft centre.
 public class BowArrowView : MonoBehaviour
 {
-    BowShot.Shot s; int lane, count; Vector3 laneOff; float halfTotal;
+    BowShot.Shot s; int lane, count; Vector3 laneOff; float halfTotal; GameObject streakGo; static readonly Dictionary<DuelFighter, List<BowArrowView>> perBody = new Dictionary<DuelFighter, List<BowArrowView>>();
     bool stuck, flying; float until, fadeFrom; Vector3 vel, stuckScale; float flyEnd;
 
     // ---- shared meshes / materials (built once, cleared on domain reset) ----
     static Mesh shaftM, headM, finM; static string finKey = "";
     static readonly Dictionary<string, Material> mats = new Dictionary<string, Material>();
     static readonly Queue<BowArrowView> stuckQ = new Queue<BowArrowView>();
-    public static void ResetStatics() { shaftM = headM = finM = null; finKey = ""; mats.Clear(); stuckQ.Clear(); }
+    public static void ResetStatics() { shaftM = headM = finM = null; finKey = ""; mats.Clear(); stuckQ.Clear(); perBody.Clear(); }
 
     static Mesh Cylinder(int seg, bool cone)   // unit radius, z 0..1 for the cone (tip at z 1), z -0.5..0.5 for the cylinder
     {
@@ -149,7 +149,7 @@ public class BowArrowView : MonoBehaviour
     }
 
     /// <summary>Builds the shaft, head and fins (shared by the flying arrow and the arrow nocked on the string).</summary>
-    public void Build(Color tint)
+    public void Build(Color tint, bool flyingArrow = true)
     {
         var C = BowCfg.Get().arrow;
         if (shaftM == null) shaftM = Cylinder(Mathf.Max(3, C.radialSegments), false); if (headM == null) headM = Cylinder(Mathf.Max(3, C.radialSegments), true);
@@ -158,14 +158,15 @@ public class BowArrowView : MonoBehaviour
         halfTotal = C.lengthM * 0.5f + C.headLenM;
         Part("Shaft", shaftM, Mat(C, shaftC, C.shaftSmoothness, 0f), Vector3.zero, new Vector3(C.radiusM, C.radiusM, C.lengthM), C.castShadow);
         Part("Head", headM, Mat(C, BowCfg.Col(C.head, Color.gray), C.headSmoothness, C.headMetallic), new Vector3(0f, 0f, C.lengthM * 0.5f), new Vector3(C.headRadiusM, C.headRadiusM, C.headLenM), C.castShadow);
-        Part("Fins", finM, Mat(C, BowCfg.Col(C.fin, Color.gray), C.shaftSmoothness, 0f), Vector3.zero, Vector3.one, C.castShadow);
+        Part("Fins", finM, Mat(C, BowCfg.Col(!string.IsNullOrEmpty(C.fletchColor) ? C.fletchColor : C.fin, Color.gray), C.shaftSmoothness, 0f), Vector3.zero, Vector3.one, C.castShadow);
+        if (flyingArrow && C.streakLenM > 0f) streakGo = Part("Streak", shaftM, Mat(C, BowCfg.Col(C.streakColor, Color.white), 0.1f, 0f), new Vector3(0f, 0f, -(C.lengthM * 0.5f + C.streakLenM * 0.5f)), new Vector3(C.radiusM * 0.7f, C.radiusM * 0.7f, C.streakLenM), false);
     }
 
     /// <summary>The arrow on the string during a draw: a static view (no Shot) parented to the bow, local +Z = the way it will fly.</summary>
     public static GameObject MakeNocked(Transform parent)
     {
         var g = new GameObject("BowArrow_nocked"); g.transform.SetParent(parent, false);
-        var v = g.AddComponent<BowArrowView>(); v.stuck = true; v.until = float.MaxValue; v.fadeFrom = float.MaxValue; v.Build(BowCfg.Col(BowCfg.Get().arrow.shaft, Color.gray)); return g;
+        var v = g.AddComponent<BowArrowView>(); v.stuck = true; v.until = float.MaxValue; v.fadeFrom = float.MaxValue; v.Build(BowCfg.Col(BowCfg.Get().arrow.shaft, Color.gray), false); return g;
     }
 
     void LateUpdate() { if (stuck || flying || s == null || s.a == null || s.d == null) return; Place(); }
@@ -199,7 +200,7 @@ public class BowArrowView : MonoBehaviour
     // ---- landed: stays in the body ----
     public void Embed(DuelFighter d)
     {
-        var C = BowCfg.Get().arrow; Vector3 tip = TipAt(1f), dir = (TipAt(1f) - TipAt(0.96f)); if (dir.sqrMagnitude < 1e-8f) dir = transform.forward; dir.Normalize();
+        var C = BowCfg.Get().arrow; Vector3 tip = TipAt(1f), dir = (TipAt(1f) - TipAt(0.96f)); if (dir.sqrMagnitude < 1e-8f) dir = transform.forward; dir.Normalize(); if (C.stuckLevel > 0f) { dir.y *= Mathf.Clamp01(1f - C.stuckLevel); if (dir.sqrMagnitude < 1e-8f) dir = transform.forward; dir.Normalize(); }   // stuckLevel: the arrow points back along the shot
         var rnd = new System.Random(lane * 7919 + Duel.TickCount); Vector3 side = Vector3.Cross(dir, Vector3.up); if (side.sqrMagnitude < 1e-6f) side = Vector3.right; side.Normalize();
         tip += side * ((float)rnd.NextDouble() * 2f - 1f) * C.stuckScatterM + Vector3.up * ((float)rnd.NextDouble() * 2f - 1f) * C.stuckScatterM + dir * C.embedM;
         Pose(tip, dir); stuck = true;
@@ -207,6 +208,12 @@ public class BowArrowView : MonoBehaviour
         stuckScale = transform.localScale; until = Time.time + C.stuckSeconds; fadeFrom = Mathf.Max(0f, C.stuckSeconds - C.stuckFadeS);
         while (stuckQ.Count >= Mathf.Max(1, C.maxStuck)) { var o = stuckQ.Dequeue(); if (o != null) Destroy(o.gameObject); }
         stuckQ.Enqueue(this); s = null;
+        if (streakGo != null) { Destroy(streakGo); streakGo = null; }
+        if (C.maxStuckPerBody > 0 && d != null)
+        {
+            List<BowArrowView> L; if (!perBody.TryGetValue(d, out L)) { L = new List<BowArrowView>(); perBody[d] = L; }
+            L.RemoveAll(x => x == null); L.Add(this); while (L.Count > C.maxStuckPerBody) { var o = L[0]; L.RemoveAt(0); if (o != null) Destroy(o.gameObject); }
+        }
     }
 
     static Transform NearestBone(DuelFighter d, Vector3 at)

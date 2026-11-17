@@ -90,3 +90,10 @@ Tools\_build_guard.ps1 diffs every Assets\Scripts .cs changed since the newest r
 
 ## QA player footprint (Lead, measured 17 Nov 08:4x; Strategy agreed 09:00)
 A Frankendom HadesSlice player is NOT ~3 GB: working set climbs 2.8 -> 12.7 GB in 30 s at quality low 1280x720 (ws_low.csv, qc) and reaches 14.7 GB at full quality (ptb111). It is asset loading, not resolution. So the Frankendom QA player STARTS only at 27 GB+ free and its own guard ends it at free < 14 GB (Dom's machine is in trouble under ~12 GB). The generic 16 GB QA floor above assumes a small player and does not apply to Frankendom. Open: a QA-only lean flag (zone under test only, target < 6 GB) and the product problem (a 13-15 GB game cannot run on a 16 GB Steam machine): load per zone, report the working set after 60 s in the first zone in every release line (roadmap Step 5, before the alpha run).
+
+## Compile-only is the DEFAULT code path (Unity dev, Lead/Strategy 17 Nov 08:50)
+Code takes use compile-only (PlayerBuildInterface.CompilePlayerScripts via Assets\Editor\HdrpCompileOnly.cs + Tools\build_compileonly.ps1: only Assembly-CSharp.dll is replaced in a copy of the live build, no scene opened). Proven by qk: Editor peak 2.9 GB, 85 s, boot check 0 exceptions, live 08:5x. Rule: no new serialized fields (public or [SerializeField]) in a code take (the guard refuses them); a full HdrpBatch.Build is for baked changes only. The BuildOptions.BuildScriptsOnly path (Tools\build_scriptsonly.ps1) is NOT used: it needs a previous full build recorded in this Library ('Can't verify script data layout').
+
+
+**QA player footprint (Unity dev, 17 Nov 09:00):** a scripted QA player takes 12.7-14.7 GB working set at start and no flag changes it (quality low / 720p: 12.7 GB; -permem:E1,E3,E4: 13.9 GB; ultra2k: 14.7 GB); Unity-managed memory is only ~2 GB, the rest is native/GPU memory that this iGPU (unified memory) counts as system RAM, so a dGPU player would see most of it as VRAM. QA therefore starts at >= 27 GB free with at most one Editor up and my own 14 GB stop; the product-memory question needs a measurement on a dGPU or via GPU counters, not on this laptop's working set.
+

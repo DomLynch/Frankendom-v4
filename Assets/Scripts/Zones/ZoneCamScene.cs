@@ -365,6 +365,8 @@ public sealed class ZoneCamScene : MonoBehaviour
     IEnumerator LoneBow(CtScene S, CtStep st)
     {
         float t0 = Time.realtimeSinceStartup, nextHit = 0f; int swings = 0, noOpp = 0;
+        var cam = Camera.main; CameraRig rig = cam != null ? cam.GetComponent<CameraRig>() : null; bool rigWas = rig != null && rig.enabled; bool side = st.pos != null && st.pos.Length >= 3 && cam != null; float fov0 = cam != null ? cam.fieldOfView : 40f;
+        if (side && rig != null) rig.enabled = false;   // step.pos = [right m, up m, forward m, look height m]: a close side camera on Joan while she shoots, looking at the point between her and the foe
         while (Time.realtimeSinceStartup - t0 < st.seconds)
         {
             var m = Me(); DuelFighter best = null; float bd = 1e9f;
@@ -373,10 +375,12 @@ public sealed class ZoneCamScene : MonoBehaviour
             Vector3 to = best.transform.position - m.transform.position; to.y = 0f;
             wantRun = false; wantDir = bd > S.approachGapM ? to / Mathf.Max(0.01f, bd) : Vector3.zero;
             if (bd <= S.attackGapM && Time.realtimeSinceStartup >= nextHit) { if (m.opponent == null) noOpp++; m.PressDirected("thrust"); swings++; nextHit = Time.realtimeSinceStartup + 1.4f; }
+            if (side) { Vector3 f = m.transform.forward; f.y = 0f; f.Normalize(); Vector3 r = m.transform.right; r.y = 0f; r.Normalize(); Vector3 p = m.transform.position; float ly = st.pos.Length > 3 ? st.pos[3] : 1.3f; Vector3 look = Vector3.Lerp(p, best.transform.position, 0.5f) + Vector3.up * ly; cam.transform.position = p + r * st.pos[0] + f * st.pos[2] + Vector3.up * st.pos[1]; cam.transform.rotation = Quaternion.LookRotation(look - cam.transform.position, Vector3.up); cam.fieldOfView = 40f; }
             yield return null;
         }
         Debug.Log("[CamScene] lonebow " + st.id + ": swings " + swings + ", swings with no duel foe " + noOpp);
         wantDir = Vector3.zero;
+        if (side) { cam.fieldOfView = fov0; if (rig != null) rig.enabled = rigWas; }
     }
     IEnumerator EquipStep(CtScene S, CtStep st)
     {

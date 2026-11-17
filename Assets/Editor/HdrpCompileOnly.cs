@@ -12,7 +12,7 @@ public static class HdrpCompileOnly
 {
     public static void Run()
     {
-        string outDir = "Temp/FkCompileOut"; var a = System.Environment.GetCommandLineArgs();
+        string outDir = "TestOut/FkCompileOut"; var a = System.Environment.GetCommandLineArgs();
         for (int i = 0; i < a.Length - 1; i++) if (a[i] == "-compileOut") outDir = a[i + 1];
         int code = 1;
         try
