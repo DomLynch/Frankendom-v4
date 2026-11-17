@@ -1,0 +1,7 @@
+{
+  "_about": "PROPSRUNTIME v1: props placed at runtime from a GLB, no scene bake. enabled=false (shipped) = nothing runs. Row: id, zone (zones.json zone id), glb (file under StreamingAssets/<folder>/), pos [x,z] (ground found by raycast) or [x,y,z], yaw (deg), scale, castShadows, collider none|box|mesh, enabled. A zone change removes the zone's props; the file is hot-reloaded while the zone is up. Log: [PropsRuntime] zone X: applied N rows, failed M, skipped K.",
+  "enabled": false,
+  "folder": "PropsRuntime",
+  "reloadCheckSeconds": 3.0,
+  "rows": []
+}

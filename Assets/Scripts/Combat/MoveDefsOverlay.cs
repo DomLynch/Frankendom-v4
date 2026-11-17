@@ -19,6 +19,7 @@ public static class MoveDefsOverlay
         public Chained chained; public Chain chain; public VsGuard vsGuard;
         public float damage, stamina, staminaDamage, stagger, poise, poiseFrom, chip, knockback, stepIn, reach, posture, chamber, arcDeg;   // ABILITIES v1: arcDeg
         public bool breaksGuard, parryable, charges;
+        public bool overrides;   // WEIGHT v1: true = this row's timing/damage fields replace the baked Moves.asset row of the same id (a copy; everything else of the asset row stays)
     }
     [Serializable] class MovesJ { public MoveJ[] moves; }
 
@@ -31,9 +32,15 @@ public static class MoveDefsOverlay
                 if (!File.Exists(p)) continue;
                 var mj = JsonUtility.FromJson<MovesJ>(DataPath.ReadFile(p));
                 if (mj == null || mj.moves == null) return;
-                string added = "";
+                string added = "", overrode = "";
                 foreach (var m in mj.moves)
                 {
+                    if (m != null && m.overrides && !string.IsNullOrEmpty(m.id) && map.ContainsKey(m.id) && m.windup > 0)   // WEIGHT v1: data override of a baked row (timings + damage + chained timings only)
+                    {
+                        var o = map[m.id].Copy(); o.windup = m.windup; o.active = m.active > 0 ? m.active : o.active; o.recovery = m.recovery; if (m.damage > 0f) o.damage = m.damage;
+                        if (m.chained != null && m.chained.windup > 0) { o.hasChained = true; o.chainedWindup = m.chained.windup; o.chainedActive = m.chained.active; o.chainedRecovery = m.chained.recovery; }
+                        map[o.id] = o; overrode += (overrode.Length > 0 ? ", " : "") + o.id + " " + o.windup + "/" + o.active + "/" + o.recovery; continue;
+                    }
                     if (m == null || string.IsNullOrEmpty(m.id) || map.ContainsKey(m.id)) continue;
                     if (m.windup <= 0 && m.active <= 0) continue;   // not a full row (no timings): never add a half-filled move
                     var d = new MoveDef
@@ -48,6 +55,7 @@ public static class MoveDefsOverlay
                     if (m.vsGuard != null && m.vsGuard.stagger > 0) { d.hasVsGuard = true; d.vsGuardStagger = m.vsGuard.stagger; d.vsGuardStaminaDamage = m.vsGuard.staminaDamage; }
                     map[d.id] = d; added += (added.Length > 0 ? ", " : "") + d.id;
                 }
+                if (overrode.Length > 0) Debug.Log("[MoveDefsOverlay] weight overrides applied (windup/active/recovery): " + overrode);
                 if (added.Length > 0) Debug.Log("[MoveDefsOverlay] rows added from " + Path.GetFileName(p) + " (not in Moves.asset): " + added);
                 return;
             }

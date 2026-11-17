@@ -292,6 +292,7 @@ def gate_D(R, data, sa, args, ros):
         for mid, m in am.items():
             j = jm.get(mid)
             if j is None: R.add('D', 'WARN', 'Moves.asset/' + mid, 'in the asset but not in move-defs.json'); continue
+            if j.get('overrides'): R.add('D', 'INFO', 'Moves.asset/' + mid, 'json row carries overrides:true (WEIGHT v1, MoveDefsOverlay replaces the asset timings at runtime): drift is intended'); continue
             exp = {}
             for k, v in j.items():
                 if k in ('chainPath', 'feintUntil', 'path', 'direction', 'id', 'chained', 'chain', 'vsGuard'): continue

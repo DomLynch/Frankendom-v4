@@ -161,6 +161,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     {
         if (phase == Phase.Play) LookSpawns(false);
         UpdateRift(false); Preload(); Corpses();
+        PropsRuntime.Tick(zone != null ? zone.id : "");   // PROPSRUNTIME v1: runtime-loaded prop rows for the active zone (props_runtime.json, off by default)
     }
 
     // ------------------------------------------------------------------ spawns: computed when someone looks
