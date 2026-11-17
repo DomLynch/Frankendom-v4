@@ -41,6 +41,7 @@ if ($warm) {
             $cs = @(Get-ChildItem (Join-Path $p 'Assets\Scripts') -Recurse -Filter *.cs -File -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -gt $dll.LastWriteTime })
             $hits = @()
             foreach ($c in ($cs | Select-Object -First 60)) {
+                $ex = @(Get-Content (Join-Path $p 'Tools\_serfield_exempt.txt') -ErrorAction SilentlyContinue | Where-Object { $_ -and $_ -notmatch '^\s*#' } | ForEach-Object { $_.Trim() }); if ($ex -contains $c.Name) { continue }
                 $rel = $c.FullName.Substring($p.Length + 1).Replace('\', '/')
                 $base = (& git log --before=($dll.LastWriteTime.ToString('s')) -1 --format=%H -- $rel 2>$null)
                 $d = if ($base) { & git diff $base -- $rel 2>$null } else { & git diff HEAD -- $rel 2>$null }
@@ -125,6 +126,7 @@ if ($DryRun) {
     $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
     if ($w.Count -gt 0) { "DRY RUN: build would be REFUSED at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ') } else { "DRY RUN: build would run (all clear) at $(Get-Date -Format 'HH:mm')" }
 }
+
 
 
 

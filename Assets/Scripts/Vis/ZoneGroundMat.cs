@@ -20,6 +20,7 @@ public sealed class ZoneGroundMat : MonoBehaviour
         public string id, zoneRoot, targetRoot = ""; public string[] unlessActive; public float zMin = -1e9f, zMax = 1e9f; public string[] matchMaterial, excludeMaterial, excludeRenderer;   /* unity-dev2: excludeRenderer = renderer GameObject name substrings left untouched (a strip mesh with bad UVs for the world projection) */ public bool enabled = true; public float mix = 1f;
         public float[] tint; public float smoothMin = -1f, smoothMax = -1f, normalScale = -1f, detailAlbedo = -1f, detailNormal = -1f, detailSmooth = -1f, detailTilingMul = 1f, tilingMul = 1f;
         public string baseColorMap = "", normalMap = "", maskMap = "";
+        public string[] onlyUnderName;   // PROPTINT v1: only renderers that sit under (or on) a GameObject whose name contains one of these (a prop inside a zone root, e.g. "camps_c1_apothecary"); empty = every renderer under the root
     }
     [Serializable] public class Cfg { public bool enabled = false, log = true; public float rescanSeconds = 3f, settledRescanSeconds = 20f; public int maxPerPoll = 60; public string texDir = "groundmat", cloneSuffix = " (zgm)"; public Row[] rows; }
 
@@ -97,6 +98,16 @@ public sealed class ZoneGroundMat : MonoBehaviour
 
     static bool ExcludedRenderer(Row row, Renderer r) { string n = r.gameObject.name; foreach (var x in row.excludeRenderer) if (!string.IsNullOrEmpty(x) && n.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0) return true; return false; }
 
+    static bool UnderName(Row row, Renderer r, Transform stop)
+    {
+        for (var t = r.transform; t != null; t = t.parent)
+        {
+            string n = t.name; foreach (var x in row.onlyUnderName) if (!string.IsNullOrEmpty(x) && n.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            if (t == stop) break;
+        }
+        return false;
+    }
+
     static string Base(string n) { bool ch = true; while (ch) { ch = false; foreach (var s in Suffixes) if (n.EndsWith(s)) { n = n.Substring(0, n.Length - s.Length); ch = true; } } return n; }
 
     static bool Match(Row r, string name)
@@ -121,13 +132,13 @@ public sealed class ZoneGroundMat : MonoBehaviour
             var seen = new HashSet<string>(); var rnames = new List<string>();
             foreach (var r in rs)
             {
-                if (r == null) continue; if (row.excludeRenderer != null && row.excludeRenderer.Length > 0 && ExcludedRenderer(row, r)) continue; var key = (r, row);
+                if (r == null) continue; if (row.onlyUnderName != null && row.onlyUnderName.Length > 0 && !UnderName(row, r, g.transform)) continue; if (row.excludeRenderer != null && row.excludeRenderer.Length > 0 && ExcludedRenderer(row, r)) continue; var key = (r, row);
                 var arr = r.sharedMaterials; bool ch = false;
                 for (int i = 0; i < arr.Length; i++)
                 {
                     var m = arr[i]; if (m == null) continue; string bn = Base(m.name);
                     if (c.log && (r.gameObject.name.IndexOf("ground", StringComparison.OrdinalIgnoreCase) >= 0 || bn.IndexOf("terrain", StringComparison.OrdinalIgnoreCase) >= 0 || bn.IndexOf("paving", StringComparison.OrdinalIgnoreCase) >= 0)) seen.Add(bn + "[" + (m.shader != null ? m.shader.name : "?") + "]");
-                    if (c.log && !string.IsNullOrEmpty(row.targetRoot) && Match(row, m.name)) rnames.Add(r.gameObject.name + "@" + r.bounds.center.ToString("F0") + "/" + r.bounds.size.ToString("F0"));
+                    if (c.log && !string.IsNullOrEmpty(row.targetRoot) && Match(row, m.name)) rnames.Add(r.gameObject.name + "<" + (r.transform.parent != null ? r.transform.parent.name : "") + ">[" + bn + "]@" + r.bounds.center.ToString("F0") + "/" + r.bounds.size.ToString("F0"));
                     if (done.Contains(key) || budget <= 0 || !Match(row, m.name)) continue;
                     if (!m.HasProperty("_BaseColor")) continue;   // not an HDRP/Lit-style material: left alone
                     Material cl; var ck = (row, bn);

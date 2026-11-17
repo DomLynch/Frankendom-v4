@@ -44,7 +44,7 @@ public static class ChaseTable
 public sealed class ChaseAgent : MonoBehaviour
 {
     public ChaseRow row; public DuelFighter df, player; public Vector3 home; public float leash; public bool foreign;   // foreign = followed through a gate: no home leash here, it walks to the arrival spot and vanishes when it gives up
-    ChaseState st; int lastTick; bool runClip; Animator anim; public float homeYaw; public bool hasHomeYaw;   // HOMEFACE: the spot yaw the post was placed with
+    float fightStall; ChaseState st; int lastTick; bool runClip; Animator anim; public float homeYaw; public bool hasHomeYaw;   // HOMEFACE: the spot yaw the post was placed with
     public bool Owning { get { return enabled && (st.mode == ChaseMode.Chase || st.mode == ChaseMode.Pause || st.mode == ChaseMode.Home); } }
     public bool Done { get { return st.mode == ChaseMode.Done; } }
     public bool GivingUpNow { get { return st.mode == ChaseMode.Pause || st.mode == ChaseMode.Home; } }
@@ -87,8 +87,19 @@ public sealed class ChaseAgent : MonoBehaviour
                 float nominal = runClip ? df.runSpeed : df.walkSpeed;
                 df.run = runClip; df.moveDir = dir * Mathf.Min(1f, nominal > 0f ? v / nominal : 0f);   // |moveDir| x run/walkSpeed = v in MoveTick; wound / exhaust multipliers can only slow it further
             }
-            else { df.moveDir = Vector3.zero; df.run = false; }
+            else
+            {
+                df.moveDir = Vector3.zero; df.run = false;
+                // FIGHTCLOSE v1: dead band between startGap and the AI swing line: close in after fightStallS, until within fightCloseGapM
+                if (st.mode == ChaseMode.Fight && row.fightStallS > 0f && !player.Dead && df.opponent != null)
+                {
+                    if (gap > row.fightCloseGapM) { fightStall += Time.deltaTime; if (fightStall >= row.fightStallS) { Vector3 tp = player.transform.position - df.transform.position; tp.y = 0f; if (tp.sqrMagnitude > 1e-6f) { df.moveDir = tp.normalized; df.run = false; } } }
+                    else fightStall = 0f;
+                }
+                else fightStall = 0f;
+            }
         }
+        else if (!free) fightStall = 0f;
         // HOMEFACE: Home mode walked it back to its post along the walk heading (z2 guards ended facing away from Joan); at the post, idle, no foe: turn to the spot yaw
         if (hasHomeYaw && row.homeFaceDegPerS > 0f && !Owning && df.opponent == null && df.state == FState.Loco && df.moveDir.sqrMagnitude < 1e-4f && Flat(df.transform.position, home) < Mathf.Max(0.6f, row.homeArriveDist + 0.3f))
             df.transform.rotation = Quaternion.RotateTowards(df.transform.rotation, Quaternion.Euler(0f, homeYaw, 0f), row.homeFaceDegPerS * Time.deltaTime);

@@ -475,6 +475,48 @@
       "zMax": 380,
       "unlessActive": [],
       "surface": "dust"
+    },
+    {
+      "id": "z3_apothecary_canopy_green",
+      "zoneRoot": "HubZone",
+      "matchMaterial": [
+        "tripo_material_3f60fa24"
+      ],
+      "onlyUnderName": [
+        "camps_c1_apothecary",
+        "apothecary_stall"
+      ],
+      "enabled": true,
+      "mix": 1.0,
+      "tint": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "baseColorMap": "apothecary_stall_albedo_green.png",
+      "smoothMin": -1.0,
+      "smoothMax": -1.0
+    },
+    {
+      "id": "z7_apothecary_tent_green",
+      "zoneRoot": "Zone7",
+      "matchMaterial": [
+        "tripo_mat_36cd47c8"
+      ],
+      "onlyUnderName": [
+        "camps_c2_apothecary",
+        "apothecary_tent"
+      ],
+      "enabled": true,
+      "mix": 1.0,
+      "tint": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "baseColorMap": "apothecary_tent_albedo_green.png",
+      "smoothMin": -1.0,
+      "smoothMax": -1.0
     }
   ]
 }

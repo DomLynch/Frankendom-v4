@@ -62,6 +62,16 @@ public static class RiderPose
         }
         AnimationClip c; return rt != null && rt.TryGetValue(name, out c) ? c : null;
     }
+    static System.Collections.IEnumerator HelmDiag(DuelFighter f)
+    {
+        for (int k = 0; k < 40 && f != null; k++)
+        {
+            var sb = new System.Text.StringBuilder("[HelmDiag] frame " + Time.frameCount + " t " + Time.realtimeSinceStartup.ToString("F1") + ":");
+            foreach (var gp in f.GetComponentsInChildren<GearPiece>(true)) { int on = 0, all = 0; foreach (var r in gp.GetComponentsInChildren<Renderer>(true)) { all++; if (r.enabled && r.gameObject.activeInHierarchy) on++; } sb.Append(" " + gp.itemId + "=" + on + "/" + all + (gp.gameObject.activeInHierarchy ? "" : "(inactive)")); }
+            Debug.Log(sb.ToString());
+            for (int i = 0; i < 6; i++) yield return null;
+        }
+    }
     public static void Apply(DuelFighter f)
     {
         var c = Get(); var anim = AnimOf(f); if (!c.enabled || anim == null || anim.runtimeAnimatorController == null) return;
@@ -79,6 +89,7 @@ public static class RiderPose
         if (n == 0) { if (c.log) Debug.LogWarning("[Rider] no clip replaced (missing " + miss + "): the rider clips are not in the controller (Editor RiderClipSetup not run?), old pose stays"); return; }
         oc.ApplyOverrides(list); before = cur; mine = oc; anim.runtimeAnimatorController = oc;
         if (c.log) Debug.Log("[Rider] Joan mounted: " + n + " clip(s) replaced" + (miss > 0 ? ", " + miss + " missing" : ""));
+        if (c.log) f.StartCoroutine(HelmDiag(f));   // HELMDIAG v1: which worn pieces / renderers exist after the mount, every 6 frames for 3 s
     }
     // SHIELD: while mounted the shield socket (ShieldSocket_L) is re-parented to a back bone with the mount.json rider.shield row; dismounting puts it back exactly where it was
     static bool shieldWarned; static Transform shieldT, shieldParent; static Vector3 carryPos; static Quaternion carryRot = Quaternion.identity; static float carryScale = 1f;

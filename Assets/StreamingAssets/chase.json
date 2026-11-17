@@ -1,4 +1,4 @@
-{
+﻿{
   "_about": "laneCHASE v1: a monster that is engaged follows the player (also through a gate) and gives up when the player gets far enough away. Dark: enabled=false = zones behave as laneZONES shipped (leash teleport, no follow). Needs zones.json enabled too. Every number here is read by ChaseAgent / ChaseCore, none is in code. Rows by roster id; '*' is the row for any creature without its own. RECOMMENDATION to Dom, not his decision yet: chase speed 5 to 10 percent under the player's run speed (0.92 = 8 percent under), so a sprint escapes slowly and a walk does not.",
   "enabled": true,
   "rows": [
@@ -11,6 +11,8 @@
       "_gap_about": "metres between bodies. Beyond startGap the chase agent drives the body (AI paused: no swing, no decision). Back inside stopGap the AI takes over again (hysteresis, no flicker).",
       "slowZoneM": 1.5,
       "_slow_about": "the last metres before stopGap the speed ramps down to 0 so control hands back without a pop",
+      "fightCloseGapM": 2.6,
+      "fightStallS": 1.5,
       "handoverSlackM": 0.08,
       "_slack_about": "FOESEP v1: the chase hands back to the AI at gap <= stopGap + this. The ramp reaches stopGap only asymptotically, so v108c stalled in Chase at 2.62 (stop 2.6) and 3.91 (stop 3.87) while Joan stood still (laneCHASEGAP creep finding). Rows inherit it from this row. 0 = v108c.",
       "accelMps2": 10.0,
@@ -61,6 +63,7 @@
       "speedMulOfPlayerRun": 0.92,
       "startGap": 4.0,
       "stopGap": 2.7,
+      "fightCloseGapM": 1.9,
       "slowZoneM": 1.3,
       "accelMps2": 10.0,
       "giveUpGap": 16.0,
@@ -84,6 +87,7 @@
       "speedMulOfPlayerRun": 0.95,
       "startGap": 3.37,
       "stopGap": 1.87,
+      "fightCloseGapM": 2.0,
       "slowZoneM": 1.3,
       "accelMps2": 10.0,
       "giveUpGap": 16.0,
@@ -105,12 +109,12 @@
     {
       "id": "Humbaba",
       "speedMulOfPlayerRun": 0.9,
-      "startGap": 3.76,
+      "startGap": 2.6,
       "stopGap": 2.26,
       "slowZoneM": 1.3,
       "accelMps2": 10.0,
       "giveUpGap": 16.0,
-      "outOfReachGap": 5.16,
+      "outOfReachGap": 4.0,
       "giveUpOutOfReachS": 9.0,
       "giveUpPauseS": 0.8,
       "homeSpeedMulOfWalk": 1.0,

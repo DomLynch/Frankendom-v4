@@ -61,7 +61,9 @@
       "Gear/pauldron_joan_R.glb",
       "Gear/vambrace_joan_R.glb",
       "Gear/gorget_joan_R.glb",
-      "Gear/greave_joan_R.glb"
+      "Gear/greave_joan_R.glb",
+      "Gear/joan_helm_dom.glb",
+      "Gear/arms_joan_L.glb"
     ],
     "tier0BudgetMs": 8.0,
     "eagerStartFrames": 2,
@@ -80,6 +82,8 @@
       "Gear/vambrace_joan_R.glb",
       "Gear/gorget_joan_R.glb",
       "Gear/greave_joan_R.glb",
+      "Gear/joan_helm_dom.glb",
+      "Gear/arms_joan_L.glb",
       "Gear/pitborn_chest_joan.glb",
       "Gear/bascinet_joan.glb",
       "Gear/cap_joan.glb",
