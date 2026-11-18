@@ -19,7 +19,7 @@ public sealed class BanditArcher : MonoBehaviour
     [Serializable] public class Ranged
     {
         public float minM = 5f, maxM = 15f, cooldownS = 2.6f, windupS = 0.7f, missChance = 0.15f, kiteBelowM = 4f, arrowDamageMul = 1f, losHeightM = 1.3f, turnDegPerS = 360f;
-        public int speedCmS = 700; public bool needLos = true; public string moveId = "thrust", tint = "#e8d9a8";
+        public int speedCmS = 700; public bool needLos = true; public string moveId = "thrust", tint = "#e8d9a8", bowRig = "";   // RIGDATA v1: which NPC bow clip set the body uses: "" / "106" = Mixamo-106 (Slag), "52" = the 52-bone bandit bodies (npc52_bow_*.glb)
     }
     [Serializable] public class TypeRow { public string id = "", role = ""; public bool off = false; public float aggro = 7f, leashExtra = 12f; public Ranged ranged = new Ranged(); }
     [Serializable] public class MemberRow { public string type = ""; }

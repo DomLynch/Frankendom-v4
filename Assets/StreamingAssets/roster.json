@@ -339,6 +339,29 @@
       ]
     },
     {
+      "id": "NpcMarshWarden",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Marsh Warden",
+      "objectName": "NpcMarshWarden",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcReedSkirmisher.controller",
+      "modelGlb": "Assets/Characters/NpcReedSkirmisher/NpcReedSkirmisher_combat.glb",
+      "animGlb": "Assets/Characters/NpcReedSkirmisher/NpcReedSkirmisher_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcReedSkirmisher.mask",
+      "finisherClipFolder": "Assets/Characters/NpcReedSkirmisher/FinisherClips",
+      "heightM": 1.75,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (assassin, sobek_reach): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditAssassin.",
+      "loadout": [
+        "boar_spear"
+      ]
+    },
+    {
       "id": "NpcEmbalmerCultist",
       "specials": [
         "skill_cleave",

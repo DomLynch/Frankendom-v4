@@ -310,6 +310,26 @@
     "_note": "laneNPC15INT: one Tripo material per body, renamed npcreedskirmisher_body by stage_npc15.py"
   },
   {
+    "id": "NpcMarshWarden",
+    "glb": "Assets/Characters/NpcReedSkirmisher/NpcReedSkirmisher_combat.glb",
+    "texDir": "Assets/Characters/NpcReedSkirmisher/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcreedskirmisher_body",
+        "maskOut": "npcreedskirmisher_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcreedskirmisher_body_base.jpg",
+            "normal": "npcreedskirmisher_body_normal.jpg",
+            "mr": "npcreedskirmisher_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcreedskirmisher_body by stage_npc15.py"
+  },
+  {
     "id": "NpcEmbalmerCultist",
     "glb": "Assets/Characters/NpcEmbalmerCultist/NpcEmbalmerCultist_combat.glb",
     "texDir": "Assets/Characters/NpcEmbalmerCultist/Tex",

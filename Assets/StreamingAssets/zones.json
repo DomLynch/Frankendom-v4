@@ -252,6 +252,13 @@
       "_about": "NPC15: Resources/Creatures/NpcReedSkirmisher.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
     },
     {
+      "id": "NpcMarshWarden",
+      "source": "resources",
+      "scene": "HadesSlice_NpcReedSkirmisher",
+      "path": "Creatures/NpcReedSkirmisher",
+      "_about": "NPC15: Resources/Creatures/NpcReedSkirmisher.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
       "id": "NpcEmbalmerCultist",
       "source": "resources",
       "scene": "HadesSlice_NpcEmbalmerCultist",

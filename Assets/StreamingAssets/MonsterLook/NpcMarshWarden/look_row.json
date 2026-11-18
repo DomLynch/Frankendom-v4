@@ -1,0 +1,22 @@
+{
+  "character": "NpcMarshWarden",
+  "look": {
+    "enabled": false,
+    "model": "MonsterLook/NpcMarshWarden/NpcMarshWarden_look.glb",
+    "parts": [
+      {
+        "renderer": "Body",
+        "mesh": "Body",
+        "slots": [
+          {
+            "slot": 0,
+            "glbMaterial": "tripo_material",
+            "baseMap": "MonsterLook/NpcMarshWarden/ember_basecolor.bc7",
+            "normalMap": "MonsterLook/NpcMarshWarden/ember_normal.bc7",
+            "maskMap": "MonsterLook/NpcMarshWarden/ember_rm.bc7"
+          }
+        ]
+      }
+    ]
+  }
+}

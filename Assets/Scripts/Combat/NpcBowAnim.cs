@@ -15,7 +15,7 @@ public static class NpcBowAnim
     static readonly System.Collections.Generic.HashSet<string> busy = new System.Collections.Generic.HashSet<string>();
     /// <summary>Clip set per body kind: "" = Mixamo-106 bodies (Slag), "52" = the 52-bone bandit bodies (Cedar Archer, Huntsman: npc52_bow_*.glb, OpenTrident 17 Nov).</summary>
     public static Set Ready(string kind) { Set s; sets.TryGetValue(kind ?? "", out s); return s; }
-    public static string KindOf(string characterId) { return characterId == "NpcCedarArcher" || characterId == "NpcHuntsman" ? "52" : ""; }
+    public static string KindOf(string characterId) { var t = BanditArcher.TypeOf(characterId); string r = t != null && t.ranged != null ? t.ranged.bowRig : ""; return r == "52" ? "52" : ""; }   // RIGDATA v1: bandits.json types[].ranged.bowRig, no hard-coded ids
 
     public static void Preload(string kind)
     {

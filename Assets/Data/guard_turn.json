@@ -27,6 +27,7 @@
     {"id": "BanditAssassin", "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0},
     {"id": "NpcChainWarden", "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0},
     {"id": "NpcReedSkirmisher", "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0},
+    {"id": "NpcMarshWarden", "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0},
     {"id": "NpcHoundMaster", "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0},
     { "id": "Pitborn", "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0 },
     { "id": "Joan",    "enabled": true, "turnDeg": -1.0, "bakedDeg": -1.0 },

@@ -52,6 +52,10 @@
       "weapon": "sword"
     },
     {
+      "character": "NpcMarshWarden",
+      "weapon": "sword"
+    },
+    {
       "character": "NpcBogHag",
       "weapon": "claws"
     },
@@ -158,6 +162,10 @@
       "surface": "flesh"
     },
     {
+      "character": "NpcMarshWarden",
+      "surface": "flesh"
+    },
+    {
       "character": "NpcBogHag",
       "surface": "flesh"
     },
@@ -261,6 +269,10 @@
     },
     {
       "character": "NpcReedSkirmisher",
+      "rate": 1.0
+    },
+    {
+      "character": "NpcMarshWarden",
       "rate": 1.0
     },
     {

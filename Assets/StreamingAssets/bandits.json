@@ -545,6 +545,29 @@
       "silver": 2
     },
     {
+      "id": "NpcMarshWarden",
+      "role": "assassin",
+      "displayName": "Marsh Warden",
+      "hudName": "MARSH WARDEN",
+      "hudTitle": "Spear of the Reeds",
+      "body": "t15_reedskirmisher",
+      "heightM": 1.75,
+      "weapon": "sword",
+      "weaponItem": "boar_spear",
+      "loadout": [
+        "boar_spear"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 0.7,
+      "dmgTypeMul": 1.143,
+      "difficulty": 6,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
       "id": "NpcEmbalmerCultist",
       "role": "melee",
       "displayName": "Embalmer Cultist",
@@ -680,6 +703,7 @@
       "respawnMaxS": 420,
       "silver": 1,
       "ranged": {
+        "bowRig": "52",
         "minM": 5.0,
         "maxM": 15.0,
         "cooldownS": 3.4,
@@ -740,6 +764,7 @@
       "respawnMaxS": 420,
       "silver": 1,
       "ranged": {
+        "bowRig": "52",
         "minM": 5.0,
         "maxM": 15.0,
         "cooldownS": 3.4,

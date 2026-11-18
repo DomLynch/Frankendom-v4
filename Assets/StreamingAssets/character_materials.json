@@ -38,6 +38,28 @@
   },
   "rows": [
     {
+      "character": "NpcMarshWarden",
+      "_why": "ALIAS + MONSTERLOOK PILOT (17 Nov night, proven in log ptb335-337): NpcReedSkirmisher prefab wearing the vendor_c2 body. look.enabled false = dark: no spawn row uses this id yet and the model is not preloaded. Switch on with enabled true and point a spawn pick at NpcMarshWarden.",
+      "look": {
+        "enabled": false,
+        "model": "MonsterLook/NpcMarshWarden/NpcMarshWarden_look.glb",
+        "parts": [
+          {
+            "renderer": "Body",
+            "mesh": "Body",
+            "slots": [
+              {
+                "slot": 0,
+                "glbMaterial": "tripo_material",
+                "baseMap": "MonsterLook/NpcMarshWarden/ember_basecolor.bc7",
+                "normalMap": "MonsterLook/NpcMarshWarden/ember_normal.bc7",
+                "maskMap": "MonsterLook/NpcMarshWarden/ember_rm.bc7"
+              }
+            ]
+          }
+        ]
+      }
+    },    {
       "character": "Joan",
       "_why": "13 Nov, Dom via Lead: Joan's hair read as a flat glowing orange blob. The hair albedo averages RGB 153/64/32 (saturated orange). baseColor multiplies it to about 84/40/22 (deep auburn) so it shades like hair and stops glowing. Revert = delete this row or set baseColor to 1,1,1. 13 Nov 11:20: a further step to 0.42/0.50/0.60 changed nothing measurable in the pit (red-light dominated), reverted to 0.55/0.62/0.70.",
       "materials": [

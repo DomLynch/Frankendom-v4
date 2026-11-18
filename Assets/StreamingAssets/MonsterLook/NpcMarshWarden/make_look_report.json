@@ -1,0 +1,59 @@
+{
+  "id": "NpcMarshWarden",
+  "files": {
+    "ember_basecolor.bc7": {
+      "src": "C:\\Users\\dom12\\Documents\\unity_test_hdrp\\_agents\\laneLG\\alias_kit\\src_tex\\ember_basecolor.jpg",
+      "src_sha256": "2bbccdf21bc893252c834c11cadae4ee5f70053406a477b28b2c2a799f26f23c",
+      "kind": "srgb",
+      "bytes": 5592464,
+      "md5": "d35f95f69cba5ed621069bd1a2a44f4c",
+      "psnr_rgba_db": [
+        45.49,
+        46.78,
+        45.65,
+        55.45
+      ],
+      "w": 2048,
+      "h": 2048,
+      "mips": 12
+    },
+    "ember_normal.bc7": {
+      "src": "C:\\Users\\dom12\\Documents\\unity_test_hdrp\\_agents\\laneLG\\alias_kit\\src_tex\\ember_normal.png",
+      "src_sha256": "b914dd9c1f30dec69d5958eaf39fee104ef3551f4f8b3676d6af903b43b88e48",
+      "kind": "normal",
+      "bytes": 5592464,
+      "md5": "a746c3be82edb23e7647a7668e9f6113",
+      "psnr_rgba_db": [
+        49.62,
+        49.49,
+        52.7,
+        55.11
+      ],
+      "w": 2048,
+      "h": 2048,
+      "mips": 12
+    },
+    "ember_rm.bc7": {
+      "src": "C:\\Users\\dom12\\Documents\\unity_test_hdrp\\_agents\\laneLG\\alias_kit\\src_tex\\ember_rm.jpg",
+      "src_sha256": "11ff3c67703eacbfa5de61f47cacf9a47f3a24ae076a84ded2fe13e66fb086f2",
+      "kind": "linear",
+      "bytes": 1398160,
+      "md5": "37197deeed2fdadadc31bafa9d476b1e",
+      "psnr_rgba_db": [
+        45.87,
+        47.62,
+        54.29,
+        45.14
+      ],
+      "w": 1024,
+      "h": 1024,
+      "mips": 11
+    }
+  },
+  "glb": {
+    "src_bytes": 5663116,
+    "bytes": 2348732,
+    "accessors_equal": 5,
+    "md5": "dedef1fb7f2191740a8e73e998834d56"
+  }
+}
