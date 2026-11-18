@@ -201,9 +201,9 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     // ZONES-ATTACH v1 (INT107): the per-object form of every AfterSceneLoad attacher a fighter needs (same data want-checks, GetComponent guards, so a component already there is never doubled).
     static void AttachRuntime(GameObject go)
     {
-        MonsterLook.AttachTo(go);   /* MONSTERLOOK v1: swap mesh + textures to the data look (same frame) when the character row says so; the prefab look otherwise */
-        ArmHold.AttachTo(go); WeaponGrip.AttachTo(go); TailSpring.AttachTo(go); FootGround.AttachTo(go); FootYaw.AttachTo(go); HeadClamp.AttachTo(go);
-        GuardTorsoTurn.AttachTo(go); GearSlots.AttachTo(go); HitReact.AttachTo(go);
+        if (!QaSwitches.Skip("monsterlook")) MonsterLook.AttachTo(go);   /* MONSTERLOOK v1: swap mesh + textures to the data look (same frame) when the character row says so; the prefab look otherwise */   // QASWITCH v1: each attacher can be skipped by -qa_no:<name> for CPU hunts (QA only)
+        if (!QaSwitches.Skip("armhold")) ArmHold.AttachTo(go); if (!QaSwitches.Skip("weapongrip")) WeaponGrip.AttachTo(go); if (!QaSwitches.Skip("tailspring")) TailSpring.AttachTo(go); if (!QaSwitches.Skip("footground")) FootGround.AttachTo(go); if (!QaSwitches.Skip("footyaw")) FootYaw.AttachTo(go); if (!QaSwitches.Skip("headclamp")) HeadClamp.AttachTo(go);
+        if (!QaSwitches.Skip("guardtorso")) GuardTorsoTurn.AttachTo(go); if (!QaSwitches.Skip("gearslots")) GearSlots.AttachTo(go); if (!QaSwitches.Skip("hitreact")) HitReact.AttachTo(go);
     }
     void SpawnOne(ZSpawn row, int gen)
     {
@@ -224,10 +224,11 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         ApplyRow(df, br, row);
         if (go.GetComponent<ArenaLimits>() == null && go.GetComponent<CharacterController>() != null) go.AddComponent<ArenaLimits>();
         go.SetActive(true);
-        RagdollDeath.PrebuildOne(go);   // KILLBUG v1: a Resources clone has no rig yet: build it now (rest pose) instead of at death
+        if (!QaSwitches.Skip("prebuild")) RagdollDeath.PrebuildOne(go);   // KILLBUG v1: a Resources clone has no rig yet: build it now (rest pose) instead of at death   // QASWITCH v1
+        QaSwitches.ApplyHide(go);   // QASWITCH v1: -qa_hide_r hides the renderers, the logic keeps running (QA only)
         ZoneHitch.Lap("spawn.apply+activate", ref zh); var lv = new Live { row = row,  /* ZONEHITCH v1 */
          creature = cid, gen = gen, go = go, df = df, brain = br, home = home, homeYaw = yaw, zoneId = zone.id };
-        { var cr = ChaseTable.Enabled ? ChaseTable.Row(cid) : null; if (cr != null) { lv.chase = go.AddComponent<ChaseAgent>(); lv.chase.Init(df, player, home, row.leash, cr, false); lv.chase.homeYaw = yaw; lv.chase.hasHomeYaw = sp != null; } }   // CHASE v1
+        { var cr = ChaseTable.Enabled && !QaSwitches.Skip("chase") ? ChaseTable.Row(cid) : null; if (cr != null) { lv.chase = go.AddComponent<ChaseAgent>(); lv.chase.Init(df, player, home, row.leash, cr, false); lv.chase.homeYaw = yaw; lv.chase.hasHomeYaw = sp != null; } }   // CHASE v1
         ZoneHitch.Lap("spawn.chase", ref zh); live[row.id] = lv;  /* ZONEHITCH v1 */
         if (GameLoop.Enemy == null) GameLoop.Enemy = df;
     }
