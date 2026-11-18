@@ -46,29 +46,18 @@ if ($warm) {
             if ($ch.Count -gt 0) { $coldWhy = "$($ch.Count) non-code Assets file(s) changed since the last real build (e.g. $($ch[0].Name))" }
         }
     } catch { }
-    # COO 23:11: a NEW public / [SerializeField] field without [NonSerialized] in a .cs changed since the last real build re-serializes scenes (qe lastSpend): treat as COLD and name it.
-    if (-not $coldWhy -and $dll) {
+    # Audit 18 Nov (Pin compile-only to the build it extends): the 60-file added-line heuristic is replaced by signature compare against the BASE build (live build named in PLAY.bat): serialized field set, boot-hook set, script file list, all files, no cap (Tools\_build_sig.ps1).
+    # Refuses (names the items) when the serialized layout changed, a script file was removed/renamed, or the [RuntimeInitializeOnLoadMethod] set grew. Fails closed when the compare cannot run.
+    if (-not $coldWhy) {
         try {
-            Push-Location $p
-            $cs = @(Get-ChildItem (Join-Path $p 'Assets\Scripts') -Recurse -Filter *.cs -File -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -gt $dll.LastWriteTime })
-            $hits = @()
-            foreach ($c in ($cs | Select-Object -First 60)) {
-                $ex = @(Get-Content (Join-Path $p 'Tools\_serfield_exempt.txt') -ErrorAction SilentlyContinue | Where-Object { $_ -and $_ -notmatch '^\s*#' } | ForEach-Object { $_.Trim() }); if ($ex -contains $c.Name) { continue }
-                $rel = $c.FullName.Substring($p.Length + 1).Replace('\', '/')
-                $base = (& git log --before=($dll.LastWriteTime.ToString('s')) -1 --format=%H -- $rel 2>$null)
-                $d = if ($base) { & git diff $base -- $rel 2>$null } else { & git diff HEAD -- $rel 2>$null }
-                foreach ($l in @($d)) {
-                    if ($l -notmatch '^\+(?!\+)') { continue }
-                    if ($l -match 'NonSerialized|\bstatic\b|\bconst\b|\bclass\b|\bstruct\b|\benum\b|\binterface\b|\bdelegate\b|\bevent\b|\boverride\b|\babstract\b|\bvirtual\b|\bpartial\b') { continue }
-                    if ($l -match '^\+\s*(//|/\*|\*)') { continue }
-                    if ($l -match '^\+\s*(\[SerializeField\]|public\s+[\w<>\[\],\.\?]+(\s*,\s*[\w<>\[\],\.\?]+)*\s+\w+\s*(=[^;(){}]*)?\s*(,\s*\w+\s*(=[^;(){}]*)?\s*)*;)') { $hits += "$($c.Name): $($l.Substring(1).Trim())" }
-                }
-            }
-            # COO 14:09: a NEW [RuntimeInitializeOnLoadMethod] never runs in a compile-only take (stale method table): warn loudly.
-            try { $rt = @(); foreach ($c in ($cs | Select-Object -First 60)) { $rel2 = $c.FullName.Substring($p.Length + 1).Replace('\', '/'); $base2 = (& git log --before=($dll.LastWriteTime.ToString('s')) -1 --format=%H -- $rel2 2>$null); $d2 = if ($base2) { & git diff $base2 -- $rel2 2>$null } else { & git diff HEAD -- $rel2 2>$null }; if (@($d2) -match '^\+.*RuntimeInitializeOnLoadMethod') { $rt += $c.Name } }; if ($rt.Count -gt 0) { Write-Output ("WARNING compile-only trap: a NEW [RuntimeInitializeOnLoadMethod] in " + ($rt -join ', ') + " will NOT run in a compile-only take (stale method table). Hook it from an existing boot path (e.g. ZoneGroundMat.Boot) or do a full build.") } } catch { }            Pop-Location
-            if ($hits.Count -gt 0) { $script:SerWhy = "REFUSED, new serialized field(s) in a code take (re-serializes scenes; make them private/[NonSerialized] and load from json, Strategy 08:45): " + (($hits | Select-Object -First 3) -join ' | ') }
-        } catch { try { Pop-Location } catch { } }
-    }    # Strategy/COO 08:20 17 Nov: the scripts-only PROOF take (HdrpScriptsOnly, env FK_SCRIPTSONLY_PROOF=1) is exempt from cold detection for this one proof: floor 24 GB, no other Unity.exe, no game; mem_watch stops it at own > 12 GB or free < 8 GB.
+            . (Join-Path $PSScriptRoot '_build_sig.ps1')
+            $sc = Test-CodeOnlySig -Repo $p
+            foreach ($n in $sc.notes) { Write-Output ("signature note: " + $n) }
+            if ($sc.legacy) { Write-Output ("signature note: base " + $sc.baseName + " has no signature fields (" + $sc.baseHow + "); a full build stamps them") }
+            if ($sc.refuse) { $script:SerWhy = "REFUSED, needs a full build (signature guard vs base $($sc.baseName), $($sc.baseHow)): " + ($sc.reasons -join ' | ') }
+        } catch { $script:SerWhy = "REFUSED, signature guard could not run (fails closed): " + $_.Exception.Message }
+    }
+    # Strategy/COO 08:20 17 Nov: the scripts-only PROOF take (HdrpScriptsOnly, env FK_SCRIPTSONLY_PROOF=1) is exempt from cold detection for this one proof: floor 24 GB, no other Unity.exe, no game; mem_watch stops it at own > 12 GB or free < 8 GB.
     if ($env:FK_SCRIPTSONLY_PROOF -eq '1') { $coldWhy = $null; $script:ColdWhy = $null; $MinFreeGB = 24 }
     if ($coldWhy) { $warm = $false; $script:ColdWhy = "treated as COLD (45 GB, ALONE): $coldWhy" }
 }
@@ -124,6 +113,8 @@ function Assert-BuildSafe {
     $script:BuildMode = $Mode
     . (Join-Path $PSScriptRoot '_tag_reserve.ps1'); try { $null = Reserve-Tag -Tag $Tag -Owner $(if ($env:FK_OWNER) { $env:FK_OWNER } else { "build:$Tag" }) } catch { "BUILD REFUSED ($Tag): $($_.Exception.Message)"; exit 3 }
     $script:GuardTag = $Tag
+    # Audit 18 Nov: remember the commit + signatures this build starts from; Add-BuiltLine writes them into build_info.json (baseCommit, fullBakeId, serializedSig, bootSig, scriptFilesSig)
+    try { . (Join-Path $PSScriptRoot '_build_sig.ps1'); $script:BuildSigAtStart = Get-BuildSig $p; $script:BuildHeadAtStart = Get-GitHeadState $p } catch { $script:BuildSigAtStart = $null }
     $w = @(Get-BuildBlockers -MinFreeGB $MinFreeGB) + @(Get-OtherLaneAlone)
     if ($w.Count -gt 0) {
         "BUILD REFUSED ($Tag) at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ')
@@ -141,7 +132,16 @@ function Add-BuiltLine {
     $info = Join-Path $p "Builds\HDRP_v109${Tag}\build_info.json"
     $res = if (Test-Path $done) { (Get-Content $done -Raw).Trim() } else { 'no done file' }
     $ok = (Test-Path $info) -and ($res -match 'build=0')
-    $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm') BUILT frankendom HDRP_v109$Tag " + $(if ($ok) { 'ready to flip' } else { 'FAILED / incomplete (do not flip)' }) + " ($res; build_info.json " + $(if (Test-Path $info) { 'present' } else { 'MISSING' }) + ")"
+    # Audit 18 Nov: a successful FULL/bake build records the commit and signatures it was compiled from (compile-only takes compare against these). Compile-only/hot takes inherit them.
+    if ($ok -and $res -notmatch 'compileonly|scriptsonly') {
+        try {
+            . (Join-Path $PSScriptRoot '_build_sig.ps1'); $bd = Split-Path $info -Parent; $cur = Get-Content $info -Raw | ConvertFrom-Json
+            if (-not $cur.fullBakeId -or $cur.fullBakeId -eq "HDRP_v109$Tag" -or $cur.source -ne 'deploy_data') {
+                if ($script:BuildSigAtStart) { $sg = $script:BuildSigAtStart; $hs = $script:BuildHeadAtStart; $at = 'buildStart' } else { $sg = Get-BuildSig $p; $hs = Get-GitHeadState $p; $at = 'buildEnd' }
+                Set-BuildInfoSig $bd "HDRP_v109$Tag" $sg $hs.commit ([bool]$hs.dirty) $at
+            }
+        } catch { Write-Output ("build_info signature stamp FAILED: " + $_.Exception.Message) }
+    }    $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm') BUILT frankendom HDRP_v109$Tag " + $(if ($ok) { 'ready to flip' } else { 'FAILED / incomplete (do not flip)' }) + " ($res; build_info.json " + $(if (Test-Path $info) { 'present' } else { 'MISSING' }) + ")"
     Add-Content -Path (Join-Path $p '_agents\COORDINATION.md') -Value ("`n" + $line)
     $line
     # PATH line (COO/Dom 17 Nov 23:1x): every build says HOT | CODE | FULL and the asset that forced a FULL. A FULL with no forcing asset refuses (exit 5): set $env:FK_FORCING_ASSET to the asset or scene that cannot go any lighter path.

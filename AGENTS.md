@@ -148,3 +148,11 @@ Armagedom left the laptop, so the three-game guards are cut to what the machine 
 
 ## QA copy guard (COO 18 Nov 10:0x)
 gateproof.ps1 keeps deploy_data.ps1's output and REFUSES (exit 10, board line with deploy_data's last lines) when the QA copy has no HadesSlice.exe. Cause: a 4-letter QA tag (109kfjn) was refused by deploy_data ('tag must look like v109xx') with the output hidden by Out-Null, so ptb392 looped about 10 times in 12 min. QA copies use a 2-3 letter tag from Tools\next_tag.ps1.
+
+## Dom's game blocks NEW QA players (COO 2026-11-18 11:17)
+qa_slot.ps1 refuses to START a QA player (WAIT, logged in qa_slots\wait_log.csv) while Dom's own game runs: ARMAGEDOM_Slice0 without -bench, or any HadesSlice/FronteirDom/ARMAGEDOM process whose command line logs to a dom-runs folder. Running players and Editors are NOT paused. Why: Dom's 10:55 Frankendom session (zone 5) died with a D3D12 device-lost on the shared iGPU while FK QA ptb413 started beside it (10:54:36-10:55:27), and the laptop restarted at 10:57. gateproof.ps1 and fd_qa_run.ps1 both go through qa_slot.
+
+## While Dom plays: QA players stop, nothing else does (Strategy ruling 2026-11-18 11:20; replaces the QA part of Dom's 17 Nov no-pause rule)
+1. When Dom's own game starts, every QA player on the laptop ends ITSELF within ~5 s (its own launcher polls qa_slot.ps1 -DomPlaying every 2 s and stops its own pid), marks the run VOID-DOM, and queues a rerun (qa_slots\requeue.txt; cost in qa_slots\void_log.csv).
+2. No new QA player starts while he plays (qa_slot.ps1 WAIT).
+3. Editors, compiles, code-only builds, data copies, agents and the desktop are untouched. Reason: Dom's 10:55 Frankendom session died with a D3D12 device-lost on the shared iGPU while QA player ptb413 ran beside it, and the laptop restarted at 10:57. gateproof.ps1 implements both; FrontierDom's fd_qa_run.ps1 must too.

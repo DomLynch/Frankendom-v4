@@ -73,8 +73,8 @@ public class PlayerBrain : MonoBehaviour
         if (InputMap.Down("heavy", KeyCode.G)) df.Press("heavy");
         if (InputMap.Down("thrust", KeyCode.T)) df.Press("thrust");
         if (InputMap.Down("kick", KeyCode.C)) df.Press(df.SlotReady(2) ? "special3" : "kick");   // ABILITIES v1: C = shield bash while it is ready (abilities on), else the plain kick as today
-        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Z)) df.Press("special1");
-        if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.X)) df.Press("special2");
+        if (InputMap.KeyDown("special1", KeyCode.Alpha1, KeyCode.Z)) df.Press("special1");   // SPECIALREBIND v1: the resolved binding (defaults Alpha1 / Z when nothing is rebound); the pad press stays in DirectionalInput
+        if (InputMap.KeyDown("special2", KeyCode.Alpha2, KeyCode.X)) df.Press("special2");
         // dodge keys (dodge.json input): "immediate" = the key decides on key-down (roll / sidestep by the held direction, see DodgeFromKey);
         // "tapHold" (or dodge.json "enabled": false) = V3 legacy: tap = backstep, hold > holdSeconds = roll
         var dd = DodgeTable.Get();

@@ -279,6 +279,29 @@ def feq(a, b, tol=1e-4):
     try: return abs(float(a) - float(b)) <= tol * max(1.0, abs(float(a)), abs(float(b)))
     except Exception: return a == b
 
+# FIELD CONTRACT for overrides:true rows (MoveDefsOverlay v2): default set + the names listed in the row's "set" array
+MOVE_OVERRIDABLE = {'windup', 'active', 'recovery', 'damage', 'chained', 'stamina', 'staminaDamage', 'stagger', 'poise', 'poiseFrom', 'chip', 'knockback',
+                    'stepIn', 'reach', 'posture', 'chamber', 'arcDeg', 'breaksGuard', 'parryable', 'charges', 'chain', 'vsGuard'}
+MOVE_GROUP = {'hasChained': 'chained', 'chainedWindup': 'chained', 'chainedActive': 'chained', 'chainedRecovery': 'chained',
+              'chainWindow': 'chain', 'chainFollow': 'chain', 'hasVsGuard': 'vsGuard', 'vsGuardStagger': 'vsGuard', 'vsGuardStaminaDamage': 'vsGuard'}
+
+def override_contract(j, mid):
+    """-> (set of covered field groups, [(level, msg)] problems). Mirrors MoveDefsOverlay.ApplyOverride exactly."""
+    probs = []; named = set()
+    for n in (j.get('set') or []):
+        if n in MOVE_OVERRIDABLE: named.add(n)
+        else: probs.append(('WARN', "'set' names unsupported field '%s' (runtime logs a warning and ignores it)" % n))
+    cov = set(named)
+    if (j.get('windup') or 0) > 0:   # the runtime applies the default set only when windup > 0
+        cov.update(['windup', 'recovery'])
+        if (j.get('active') or 0) > 0: cov.add('active')
+        if (j.get('damage') or 0) > 0: cov.add('damage')
+        if (j.get('chained') or {}).get('windup', 0) > 0: cov.add('chained')
+    for n in sorted(named):   # a named field the row does not carry would silently apply 0 / false
+        if n not in ('chained', 'chain', 'vsGuard') and j.get(n) is None:
+            probs.append(('FAIL', "'set' names '%s' but the row has no value for it (the runtime would apply 0/false)" % n))
+    return cov, probs
+
 def gate_D(R, data, sa, args, ros):
     try: import yaml  # noqa
     except Exception: R.add('D', 'WARN', 'pyyaml', 'PyYAML missing: gate D skipped (pip install pyyaml)'); return
@@ -292,10 +315,9 @@ def gate_D(R, data, sa, args, ros):
         for mid, m in am.items():
             j = jm.get(mid)
             if j is None: R.add('D', 'WARN', 'Moves.asset/' + mid, 'in the asset but not in move-defs.json'); continue
-            if j.get('overrides'): R.add('D', 'INFO', 'Moves.asset/' + mid, 'json row carries overrides:true (WEIGHT v1, MoveDefsOverlay replaces the asset timings at runtime): drift is intended'); continue
             exp = {}
             for k, v in j.items():
-                if k in ('chainPath', 'feintUntil', 'path', 'direction', 'id', 'chained', 'chain', 'vsGuard'): continue
+                if k in ('chainPath', 'feintUntil', 'path', 'direction', 'id', 'chained', 'chain', 'vsGuard', 'overrides', 'set'): continue
                 exp[k] = v
             ch = j.get('chained'); cn = j.get('chain'); vs = j.get('vsGuard')
             exp['hasChained'] = 1 if ch else 0
@@ -303,12 +325,25 @@ def gate_D(R, data, sa, args, ros):
             if cn: exp['chainWindow'] = cn['window']
             exp['hasVsGuard'] = 1 if vs else 0
             if vs: exp.update({'vsGuardStagger': vs.get('stagger', 0), 'vsGuardStaminaDamage': vs.get('staminaDamage', 0)})
-            bad = []
+            bad = []; badk = []
             for k, v in exp.items():
                 if k not in m: continue
                 vv = 0 if v is None else int(v) if isinstance(v, bool) else v
-                if not feq(m[k], vv): bad.append('%s asset=%s json=%s' % (k, m[k], vv))
-            if cn and sorted(cn.get('follow', [])) != sorted(m.get('chainFollow') or []): bad.append('chainFollow differs')
+                if not feq(m[k], vv): bad.append('%s asset=%s json=%s' % (k, m[k], vv)); badk.append(k)
+            if cn and sorted(cn.get('follow', [])) != sorted(m.get('chainFollow') or []): bad.append('chainFollow differs'); badk.append('chainFollow')
+            if j.get('overrides'):
+                cov, probs = override_contract(j, mid)
+                unc = [b for b, k in zip(bad, badk) if MOVE_GROUP.get(k, k) not in cov]
+                cvd = [b for b, k in zip(bad, badk) if MOVE_GROUP.get(k, k) in cov]
+                for pr in probs: R.add('D', pr[0], 'Moves.asset/' + mid, pr[1])
+                if unc:
+                    diffs += 1
+                    R.add('D', 'FAIL', 'Moves.asset/' + mid, 'overrides:true but the runtime contract does not cover: ' + '; '.join(
+                        '%s (effective source: asset wins)' % b for b in unc[:6]) + ' -> name the field in "set" (overridable: ' + ', '.join(sorted(MOVE_OVERRIDABLE)) + ') or revert the json value')
+                else:
+                    R.add('D', 'INFO', 'Moves.asset/' + mid, 'json row carries overrides:true; every differing field is covered by the contract (%s): drift is intended%s' % (
+                        ', '.join(sorted(cov)), ('; applied: ' + '; '.join(cvd[:6])) if cvd else ''))
+                continue
             if bad: diffs += 1; R.add('D', 'FAIL', 'Moves.asset/' + mid, 'value drift: ' + '; '.join(bad[:6]))
         only_json = sorted(set(jm) - set(am))
         if only_json: R.add('D', 'WARN', 'move-defs.json', '%d move row(s) exist only in json and reach the game through MoveDefsOverlay (editing them is fine; the asset is authoritative for the %d shared rows): %s' % (len(only_json), len(am), ', '.join(only_json)))

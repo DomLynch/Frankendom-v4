@@ -13,13 +13,14 @@ public static class NpcBowAnim
     public sealed class Set { public AnimationClip draw, hold, loose; public bool legsCut; }
     static readonly System.Collections.Generic.Dictionary<string, Set> sets = new System.Collections.Generic.Dictionary<string, Set>();
     static readonly System.Collections.Generic.HashSet<string> busy = new System.Collections.Generic.HashSet<string>();
+    static readonly System.Collections.Generic.Dictionary<string, float> retryAt = new System.Collections.Generic.Dictionary<string, float>();
     /// <summary>Clip set per body kind: "" = Mixamo-106 bodies (Slag), "52" = the 52-bone bandit bodies (Cedar Archer, Huntsman: npc52_bow_*.glb, OpenTrident 17 Nov).</summary>
     public static Set Ready(string kind) { Set s; sets.TryGetValue(kind ?? "", out s); return s; }
     public static string KindOf(string characterId) { var t = BanditArcher.TypeOf(characterId); string r = t != null && t.ranged != null ? t.ranged.bowRig : ""; return r == "52" ? "52" : ""; }   // RIGDATA v1: bandits.json types[].ranged.bowRig, no hard-coded ids
 
     public static void Preload(string kind)
     {
-        kind = kind ?? ""; if (sets.ContainsKey(kind) || busy.Contains(kind)) return;
+        kind = kind ?? ""; float ra; if (sets.ContainsKey(kind) || busy.Contains(kind) || (retryAt.TryGetValue(kind, out ra) && Time.unscaledTime < ra)) return;   // LOADFIX v1: a failed load is retried after a backoff instead of blocking the rig for the whole process
         busy.Add(kind); Load(kind);
     }
 
@@ -30,10 +31,11 @@ public static class NpcBowAnim
         {
             var s = new Set();
             s.draw = await LoadClip(pre + "draw.glb"); s.hold = await LoadClip(pre + "hold.glb"); s.loose = await LoadClip(pre + "loose.glb");
-            if (s.draw == null || s.hold == null || s.loose == null) Debug.LogWarning("[NpcBow] clip load incomplete (" + pre + "): those archers keep the old pose");
+            if (s.draw == null || s.hold == null || s.loose == null) { Debug.LogWarning("[NpcBow] clip load incomplete (" + pre + "): those archers keep the old pose, retry in 10 s"); retryAt[kind] = Time.unscaledTime + 10f; }
             else { sets[kind] = s; Debug.Log("[NpcBow] clips loaded (" + pre + "): draw " + s.draw.length.ToString("F2") + " s, hold " + s.hold.length.ToString("F2") + " s, loose " + s.loose.length.ToString("F2") + " s"); }
         }
-        catch (Exception e) { Debug.LogWarning("[NpcBow] load failed (" + pre + "): " + e.Message); }
+        catch (Exception e) { Debug.LogWarning("[NpcBow] load failed (" + pre + "): " + e.Message + ", retry in 10 s"); retryAt[kind] = Time.unscaledTime + 10f; }
+        finally { busy.Remove(kind); }   // LOADFIX v1
     }
 
     static async Task<AnimationClip> LoadClip(string file)

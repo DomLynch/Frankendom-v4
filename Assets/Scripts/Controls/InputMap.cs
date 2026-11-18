@@ -126,6 +126,18 @@ public static class InputMap
     public static KeyCode[] Keys(string id, KeyCode[] legacy) { var x = Find(id); return x != null ? x.all : legacy; }
     /// <summary>Only the first mapped keyboard / mouse key (the double-tap side-step follows the first move key, not the arrows).</summary>
     public static KeyCode[] Primary(string id, KeyCode[] legacy) { var x = Find(id); return x != null ? x.primary : legacy; }
+    /// <summary>SPECIALREBIND v1: keyboard / mouse press only (the mapped slots, never the pad list of the row): a gamepad press is read once, by DirectionalInput, so one pad press can not fire twice. Map off: exactly the old keys a / b. An action with every slot cleared never fires.</summary>
+    public static bool KeyDown(string id, KeyCode a, KeyCode b) { var x = Find(id); if (x == null) return Input.GetKeyDown(a) || Input.GetKeyDown(b); for (int i = 0; i < x.cur.Length; i++) if (x.cur[i] != KeyCode.None && Input.GetKeyDown(x.cur[i])) return true; return false; }
+    static readonly Dictionary<Act, string> labels = new Dictionary<Act, string>(); static int labelsVer = -1;
+    /// <summary>SPECIALREBIND v1: the HUD text of an action's key. The data text (fallback) while the action is not rebound; else the first mapped key name, or the unbound mark. Cached per change of the map (no per-frame allocation).</summary>
+    public static string KeyLabel(string id, string fallback)
+    {
+        var x = Find(id); if (x == null || !x.Changed) return fallback;
+        if (labelsVer != Version) { labels.Clear(); labelsVer = Version; }
+        string s; if (labels.TryGetValue(x, out s)) return s;
+        s = Name(KeyCode.None); for (int i = 0; i < x.cur.Length; i++) if (x.cur[i] != KeyCode.None) { s = Name(x.cur[i]); break; }
+        labels[x] = s; return s;
+    }
     public static bool AnyDown(string id, KeyCode[] legacy) { return Any(Keys(id, legacy), true); }
     public static bool AnyHeld(string id, KeyCode[] legacy) { return Any(Keys(id, legacy), false); }
 
