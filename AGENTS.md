@@ -156,3 +156,8 @@ qa_slot.ps1 refuses to START a QA player (WAIT, logged in qa_slots\wait_log.csv)
 1. When Dom's own game starts, every QA player on the laptop ends ITSELF within ~5 s (its own launcher polls qa_slot.ps1 -DomPlaying every 2 s and stops its own pid), marks the run VOID-DOM, and queues a rerun (qa_slots\requeue.txt; cost in qa_slots\void_log.csv).
 2. No new QA player starts while he plays (qa_slot.ps1 WAIT).
 3. Editors, compiles, code-only builds, data copies, agents and the desktop are untouched. Reason: Dom's 10:55 Frankendom session died with a D3D12 device-lost on the shared iGPU while QA player ptb413 ran beside it, and the laptop restarted at 10:57. gateproof.ps1 implements both; FrontierDom's fd_qa_run.ps1 must too.
+
+## While Dom plays: releases still flow (Strategy ruling 2026-11-18 11:43, amends the section above)
+1. HOT-data releases flip while he plays on the twin check + data check only (no player), always.
+2. A CODE release gets ONE short boot check beside him: qa_slot.ps1 -Acquire -BootCheck (one machine-wide, never beside a -bench/outside audit run), 30 s max, 1280x720, fps capped at 30, self-stop at free RAM < 8 GB, never from the folder he is running; log seconds, peak RAM and his frame time before/during. If his game hitches or dies during one, -BootCheck is withdrawn the same minute.
+3. Every other QA player (proof runs, strips, benches, balance sims with a renderer, fps pairs) still waits, and running ones still yield at his launch.

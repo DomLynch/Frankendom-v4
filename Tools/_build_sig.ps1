@@ -7,6 +7,8 @@
 #   scriptFilesSig = hash of the sorted list of .cs file paths (catches removed / renamed / added files)
 # build_info.json fields: baseCommit, fullBakeId, serializedSig, bootSig, scriptFilesSig, sigDirty, sigAt, sigVersion (item lists live in TestOut\buildsig\<fullBakeId>.json).
 $script:SigProject = 'C:\Users\dom12\Documents\unity_test_hdrp'
+# Algorithm version: bump when the item extraction changes. A stored sidecar / build_info made by another version is NOT trusted for item lists: the base is rebuilt from baseCommit with the current algorithm (Lead 18 Nov: v1 sidecar vs v2 parser = every field "added").
+$script:SigAlgo = 2
 function Get-SigHash([string[]]$items) { $s = (@($items | Sort-Object -Unique -CaseSensitive) -join "`n"); $b = [Text.Encoding]::UTF8.GetBytes($s); ([BitConverter]::ToString([Security.Cryptography.SHA256]::Create().ComputeHash($b)) -replace '-', '').Substring(0, 16).ToLower() }
 function Remove-CsComments([string]$t) { $t = [regex]::Replace($t, '/\*[\s\S]*?\*/', ''); [regex]::Replace($t, '(?m)//.*$', '') }
 function Get-SerItems([string]$text, [string]$rel) {
@@ -70,12 +72,12 @@ function Get-BuildSigFromCommit([string]$Repo, [string]$Commit, [string]$ExemptF
 }
 function Write-SigSidecar([string]$FullBakeId, $Sig) {
     $d = Join-Path $script:SigProject 'TestOut\buildsig'; New-Item -ItemType Directory $d -Force | Out-Null
-    [IO.File]::WriteAllText((Join-Path $d "$FullBakeId.json"), ([pscustomobject]@{ files = $Sig.files; ser = $Sig.ser; boot = $Sig.boot } | ConvertTo-Json -Depth 4), (New-Object Text.UTF8Encoding($false)))
+    [IO.File]::WriteAllText((Join-Path $d "$FullBakeId.json"), ([pscustomobject]@{ algo = $script:SigAlgo; files = $Sig.files; ser = $Sig.ser; boot = $Sig.boot } | ConvertTo-Json -Depth 4), (New-Object Text.UTF8Encoding($false)))
 }
 # Adds/overwrites the signature fields in <BuildDir>\build_info.json (read-modify-write, other fields kept)
 function Set-BuildInfoSig([string]$BuildDir, [string]$FullBakeId, $Sig, [string]$Commit, [bool]$Dirty, [string]$SigAt) {
     $f = Join-Path $BuildDir 'build_info.json'; $o = Get-Content $f -Raw | ConvertFrom-Json
-    foreach ($kv in @(@('baseCommit', $Commit), @('fullBakeId', $FullBakeId), @('serializedSig', $Sig.serializedSig), @('bootSig', $Sig.bootSig), @('scriptFilesSig', $Sig.scriptFilesSig), @('sigDirty', $Dirty), @('sigAt', $SigAt), @('sigVersion', 1))) {
+    foreach ($kv in @(@('baseCommit', $Commit), @('fullBakeId', $FullBakeId), @('serializedSig', $Sig.serializedSig), @('bootSig', $Sig.bootSig), @('scriptFilesSig', $Sig.scriptFilesSig), @('sigDirty', $Dirty), @('sigAt', $SigAt), @('sigVersion', $script:SigAlgo))) {
         if ($o.PSObject.Properties[$kv[0]]) { $o.($kv[0]) = $kv[1] } else { $o | Add-Member -NotePropertyName $kv[0] -NotePropertyValue $kv[1] }
     }
     [IO.File]::WriteAllText($f, ($o | ConvertTo-Json -Depth 6), (New-Object Text.UTF8Encoding($false)))
@@ -84,10 +86,10 @@ function Set-BuildInfoSig([string]$BuildDir, [string]$FullBakeId, $Sig, [string]
 function Get-GitHeadState([string]$Repo) { $h = (& git -C $Repo rev-parse HEAD 2>$null); $d = @(& git -C $Repo status --porcelain --untracked-files=all -- Assets/Scripts 2>$null).Count -gt 0; @{ commit = "$h".Trim(); dirty = $d } }
 # Base signature of a build: sidecar lists if present and hashes agree, else rebuilt from baseCommit (git archive), else (legacy build, no fields) from the newest commit before the build time (marked legacy)
 function Get-BaseSig([string]$Repo, $Info, [string]$BuildName) {
-    $legacy = $false; $commit = [string]$Info.baseCommit; $fid = [string]$Info.fullBakeId
+    $legacy = ([string]$Info.sigAt -eq 'legacyEstimate'); $commit = [string]$Info.baseCommit; $fid = [string]$Info.fullBakeId
     if ($fid) { $sc = Join-Path $script:SigProject "TestOut\buildsig\$fid.json"
-        if (Test-Path $sc) { $j = Get-Content $sc -Raw | ConvertFrom-Json; $sg = [pscustomobject]@{ files = @($j.files); ser = @($j.ser); boot = @($j.boot) }; $sg | Add-Member serializedSig (Get-SigHash $sg.ser); $sg | Add-Member bootSig (Get-SigHash $sg.boot); $sg | Add-Member scriptFilesSig (Get-SigHash $sg.files)
-            if ($sg.serializedSig -eq $Info.serializedSig -and $sg.bootSig -eq $Info.bootSig) { return [pscustomobject]@{ sig = $sg; how = "sidecar $fid"; legacy = $false; commit = $commit } } } }
+        if ((Test-Path $sc) -and [int]$Info.sigVersion -eq $script:SigAlgo) { $j = Get-Content $sc -Raw | ConvertFrom-Json; $sg = [pscustomobject]@{ files = @($j.files); ser = @($j.ser); boot = @($j.boot) }; $sg | Add-Member serializedSig (Get-SigHash $sg.ser); $sg | Add-Member bootSig (Get-SigHash $sg.boot); $sg | Add-Member scriptFilesSig (Get-SigHash $sg.files)
+            if ([int]$j.algo -eq $script:SigAlgo -and $sg.serializedSig -eq $Info.serializedSig -and $sg.bootSig -eq $Info.bootSig) { return [pscustomobject]@{ sig = $sg; how = "sidecar $fid"; legacy = $false; commit = $commit } } } }
     if (-not $commit) { $t = if ($Info.realBuildTime) { $Info.realBuildTime } else { $Info.time }; if (-not $t) { throw "base build $BuildName has no baseCommit and no time" }; $commit = (& git -C $Repo rev-list -1 --before="$t" HEAD 2>$null); $legacy = $true }
     if (-not $commit) { throw "no commit found for base build $BuildName" }
     $sg = Get-BuildSigFromCommit $Repo $commit

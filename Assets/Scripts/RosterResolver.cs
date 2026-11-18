@@ -35,6 +35,7 @@ public static class RosterResolver
     public static string IdOfName(string name)
     {
         if (string.IsNullOrEmpty(name)) return "";
+        string reg = Roster.RegisteredIdOfName(name); if (reg.Length > 0) return reg;   // ROSTERID v1: a spawned clone's exact name carries its explicit id
         string n = Strip(name);
         var all = Roster.All;
         if (all != null)
@@ -45,7 +46,7 @@ public static class RosterResolver
             }
         return Roster.IdOfName(name);   // COMPAT: the old "name contains objectName / id" rule
     }
-    public static string IdOf(Transform t) { return t == null ? "" : IdOfName(t.root.name); }
+    public static string IdOf(Transform t) { if (t == null) return ""; string rid = Roster.RegisteredId(t); if (rid.Length > 0) return rid; return IdOfName(t.root.name); }   // ROSTERID v1: explicit id of the transform / root first
 
     static string Strip(string n)
     {

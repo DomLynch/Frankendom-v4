@@ -85,6 +85,44 @@ public static class SafeFile
         return false;
     }
 
+    /// <summary>ZONESAVE v2: Recover(), then read the primary; when it is missing or fails `isValid`, fall back to the .bak (the previous good copy AtomicWrite keeps).
+    /// A corrupt primary is quarantined (moved away, timestamped) and the good .bak is copied back as the primary, so the next AtomicWrite keeps a sane pair. `allowWrite` false (RunMode.RealSaveBlocked) = read only, nothing on disk is touched.
+    /// Returns the valid text and sets `source` to "primary", "backup" or "" (neither: the caller starts fresh). A file that cannot be READ (locked, IOException) is not treated as corrupt: it is left alone and the .bak is only read.</summary>
+    public static string ReadValid(string path, Func<string, bool> isValid, bool allowWrite, out string source)
+    {
+        source = "";
+        if (allowWrite) Recover(path);
+        bool primaryUnreadable = false;
+        if (File.Exists(path))
+        {
+            try
+            {
+                string t = File.ReadAllText(path).TrimStart((char)0xFEFF);
+                if (isValid(t)) { source = "primary"; return t; }
+            }
+            catch (IOException) { primaryUnreadable = true; }
+            catch (UnauthorizedAccessException) { primaryUnreadable = true; }
+            catch (Exception) { }
+            if (!primaryUnreadable && allowWrite) Quarantine(path, "bad", "is corrupt or unreadable", true);
+        }
+        string bak = Bak(path);
+        if (File.Exists(bak))
+        {
+            try
+            {
+                string t = File.ReadAllText(bak).TrimStart((char)0xFEFF);
+                if (isValid(t))
+                {
+                    if (allowWrite && !primaryUnreadable) { try { File.Copy(bak, path, true); } catch (Exception e) { WarnOnce("restorefail:" + path, "[Save] could not copy " + Path.GetFileName(bak) + " back over " + Path.GetFileName(path) + ": " + e.Message); } }
+                    WarnOnce("fallback:" + path, "[Save] " + Path.GetFileName(path) + " was missing or corrupt: using " + Path.GetFileName(bak) + (allowWrite ? " (restored as the primary)" : " (read only)"));
+                    source = "backup"; return t;
+                }
+            }
+            catch (Exception) { }
+        }
+        return null;
+    }
+
     /// <summary>Keep a timestamped copy (or move, when `move`) of `path` as path.&lt;tag&gt;.&lt;stamp&gt; and prune to the newest `keep`. An identical newest copy is not duplicated. Returns the copy, or null (no file / failure).</summary>
     public static string Quarantine(string path, string tag, string reason, bool move = false, int keep = KeepDefault)
     {
