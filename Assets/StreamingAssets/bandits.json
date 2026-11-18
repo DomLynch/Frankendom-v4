@@ -462,6 +462,29 @@
       "silver": 2
     },
     {
+      "id": "NpcAshReaver",
+      "role": "assassin",
+      "displayName": "Ash Reaver",
+      "hudName": "ASH REAVER",
+      "hudTitle": "Keeper of the Yard",
+      "body": "t15_chainwarden",
+      "heightM": 1.85,
+      "weapon": "sword",
+      "weaponItem": "bandit_axe",
+      "loadout": [
+        "bandit_axe"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 0.7,
+      "dmgTypeMul": 1.143,
+      "difficulty": 6,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
       "id": "NpcSlagCrossbowman",
       "role": "archer",
       "displayName": "Slag Crossbowman",
@@ -572,6 +595,29 @@
       "role": "melee",
       "displayName": "Embalmer Cultist",
       "hudName": "EMBALMER CULTIST",
+      "hudTitle": "Knife of the Dead",
+      "body": "t15_embalmercultist",
+      "heightM": 1.75,
+      "weapon": "sword",
+      "weaponItem": "bandit_dagger",
+      "loadout": [
+        "bandit_dagger"
+      ],
+      "keepWeapon": true,
+      "hpTypeMul": 1.0,
+      "dmgTypeMul": 1.0,
+      "difficulty": 4,
+      "aggro": 14.0,
+      "leashExtra": 12.0,
+      "respawnMinS": 240,
+      "respawnMaxS": 420,
+      "silver": 2
+    },
+    {
+      "id": "NpcFenWitch",
+      "role": "melee",
+      "displayName": "Fen Witch",
+      "hudName": "FEN WITCH",
       "hudTitle": "Knife of the Dead",
       "body": "t15_embalmercultist",
       "heightM": 1.75,

@@ -37,6 +37,9 @@
     {"id": "npcpitgladiator_z1", "character": "NpcPitGladiator", "name": "PIT GLADIATOR", "title": "Sand-Sworn Brawler", "hpMul": 0.8, "damageMul": 0.2205, "difficulty": 4, "inLadder": false},
     {"id": "npcreedskirmisher_z2", "character": "NpcReedSkirmisher", "name": "REED SKIRMISHER", "title": "Spear of the Reeds", "hpMul": 0.8492, "damageMul": 0.4536, "difficulty": 6, "inLadder": false},
     {"id": "npccrocwarrior_z2", "character": "NpcCrocWarrior", "name": "CROC WARRIOR", "title": "Sobek's Spawn", "hpMul": 0.7385, "damageMul": 0.3969, "difficulty": 4, "inLadder": false},
-    {"id": "npcembalmercultist_z2", "character": "NpcEmbalmerCultist", "name": "EMBALMER CULTIST", "title": "Knife of the Dead", "hpMul": 0.7385, "damageMul": 0.3969, "difficulty": 4, "inLadder": false}
+    {"id": "npcembalmercultist_z2", "character": "NpcEmbalmerCultist", "name": "EMBALMER CULTIST", "title": "Knife of the Dead", "hpMul": 0.7385, "damageMul": 0.3969, "difficulty": 4, "inLadder": false},
+    {"id": "npcmarshwarden_z4", "character": "NpcMarshWarden", "name": "MARSH WARDEN", "title": "Spear of the Reeds", "hpMul": 0.8492, "damageMul": 0.4536, "difficulty": 6, "inLadder": false},
+    {"id": "npcfenwitch_z4", "character": "NpcFenWitch", "name": "FEN WITCH", "title": "Knife of the Dead", "hpMul": 0.7385, "damageMul": 0.3969, "difficulty": 4, "inLadder": false},
+    {"id": "npcashreaver_z1", "character": "NpcAshReaver", "name": "ASH REAVER", "title": "Keeper of the Yard", "hpMul": 0.8, "damageMul": 0.252, "difficulty": 6, "inLadder": false}
   ]
 }

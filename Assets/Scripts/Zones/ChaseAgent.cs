@@ -24,6 +24,17 @@ public static class ChaseTable
             }
         }
     }
+    /// <summary>CHASETRACE v1: chase_trace.json {"traceS":0.5,"ids":["Humbaba"]} (StreamingAssets, optional): one log line per traceS seconds per listed creature with mode / gap / state. No file or traceS 0 = off (today). Plain JSON class, never a scene field.</summary>
+    [System.Serializable] class Trace { public float traceS; public string[] ids; }
+    static Trace tr; static bool trLoaded;
+    public static bool TraceOn(string id)
+    {
+        if (!trLoaded) { trLoaded = true; var t = HudCfg.ReadData("chase_trace.json"); if (t != null) { try { tr = JsonUtility.FromJson<Trace>(t); } catch (System.Exception) { } } }
+        if (tr == null || tr.traceS <= 0f || tr.ids == null) return false;
+        for (int i = 0; i < tr.ids.Length; i++) if (tr.ids[i] == id || tr.ids[i] == "*") return true;
+        return false;
+    }
+    public static float TraceEvery { get { return tr != null ? Mathf.Max(0.05f, tr.traceS) : 1f; } }
     static string RowText(string t, string id)   // the json object of the row with this id (string-aware brace match)
     {
         int k = t.IndexOf("\"id\": \"" + id + "\""); if (k < 0) k = t.IndexOf("\"id\":\"" + id + "\""); if (k < 0) return null; int s = t.LastIndexOf('{', k); if (s < 0) return null;
@@ -44,7 +55,7 @@ public static class ChaseTable
 public sealed class ChaseAgent : MonoBehaviour
 {
     public ChaseRow row; public DuelFighter df, player; public Vector3 home; public float leash; public bool foreign;   // foreign = followed through a gate: no home leash here, it walks to the arrival spot and vanishes when it gives up
-    float fightStall; ChaseState st; int lastTick; bool runClip; Animator anim; public float homeYaw; public bool hasHomeYaw;   // HOMEFACE: the spot yaw the post was placed with
+    float fightStall, nextTrace; ChaseState st; int lastTick; bool runClip; Animator anim; public float homeYaw; public bool hasHomeYaw;   // HOMEFACE: the spot yaw the post was placed with
     public bool Owning { get { return enabled && (st.mode == ChaseMode.Chase || st.mode == ChaseMode.Pause || st.mode == ChaseMode.Home); } }
     public bool Done { get { return st.mode == ChaseMode.Done; } }
     public bool GivingUpNow { get { return st.mode == ChaseMode.Pause || st.mode == ChaseMode.Home; } }
@@ -107,6 +118,11 @@ public sealed class ChaseAgent : MonoBehaviour
         {
             float nominal = df.run ? df.runSpeed : df.walkSpeed, v = df.moveDir.magnitude * nominal;
             anim.speed *= ChaseCore.AnimSpeed(v, nominal, row.animMin, row.animMax);
+        }
+        if (ChaseTable.TraceOn(row.id) && Time.unscaledTime >= nextTrace && player != null)   // CHASETRACE v1
+        {
+            nextTrace = Time.unscaledTime + ChaseTable.TraceEvery;
+            Debug.Log("[ChaseTrace] " + row.id + " t " + Time.unscaledTime.ToString("F2") + " mode " + st.mode + " gap " + Flat(df.transform.position, player.transform.position).ToString("F2") + " state " + df.state + " moveDir " + df.moveDir.magnitude.ToString("F2") + " opp " + (df.opponent != null) + " stall " + fightStall.ToString("F2") + " start " + row.startGap.ToString("F2") + " stop " + row.stopGap.ToString("F2") + " close " + row.fightCloseGapM.ToString("F2") + " joan " + player.state + " hp " + df.health.ToString("F0"));
         }
     }
 }

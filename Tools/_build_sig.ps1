@@ -8,27 +8,55 @@
 # build_info.json fields: baseCommit, fullBakeId, serializedSig, bootSig, scriptFilesSig, sigDirty, sigAt, sigVersion (item lists live in TestOut\buildsig\<fullBakeId>.json).
 $script:SigProject = 'C:\Users\dom12\Documents\unity_test_hdrp'
 # Algorithm version: bump when the item extraction changes. A stored sidecar / build_info made by another version is NOT trusted for item lists: the base is rebuilt from baseCommit with the current algorithm (Lead 18 Nov: v1 sidecar vs v2 parser = every field "added").
-$script:SigAlgo = 2
+$script:SigAlgo = 4
 function Get-SigHash([string[]]$items) { $s = (@($items | Sort-Object -Unique -CaseSensitive) -join "`n"); $b = [Text.Encoding]::UTF8.GetBytes($s); ([BitConverter]::ToString([Security.Cryptography.SHA256]::Create().ComputeHash($b)) -replace '-', '').Substring(0, 16).ToLower() }
 function Remove-CsComments([string]$t) { $t = [regex]::Replace($t, '/\*[\s\S]*?\*/', ''); [regex]::Replace($t, '(?m)//.*$', '') }
-function Get-SerItems([string]$text, [string]$rel) {
-    $t = Remove-CsComments $text
-    if ($t -notmatch '\b(MonoBehaviour|ScriptableObject|StateMachineBehaviour|NetworkBehaviour)\b|\[\s*(System\.)?Serializable\s*\]') { return @() }
-    $items = New-Object System.Collections.Generic.List[string]; $pending = ''
-    $t = [regex]::Replace($t, '([;{}])', "`$1`n")   # one statement per line, so one-line classes (public class X : MonoBehaviour { public int hp; }) are seen
-    foreach ($raw in ($t -split "`n")) {
-        $ln = $raw.Trim(); if ($ln -eq '') { continue }
-        if ($ln -match '^(\[[^\]]*\]\s*)+$') { $pending += ' ' + $ln; continue }
-        $attrs = $pending; $pending = ''
-        $m = [regex]::Match($ln, '^((?:\[[^\]]*\]\s*)*)(.*)$'); $attrs += ' ' + $m.Groups[1].Value; $r = $m.Groups[2].Value.Trim()
-        if ($attrs -match 'NonSerialized') { continue }
-        if ($attrs -match 'field\s*:\s*SerializeField') {
-            $pm = [regex]::Match($r, '^(?:(?:public|private|protected|internal)\s+)?([\w<>\[\],\.\?]+)\s+(\w+)\s*\{'); if ($pm.Success) { $items.Add("$rel::$($pm.Groups[1].Value) $($pm.Groups[2].Value) (autoprop)") }; continue
+# Class-precise (Lead/COO 18 Nov, K15): a field counts only when its INNERMOST enclosing type is serialized: [Serializable], or derives (directly or through user base classes, resolved across all files) from
+# MonoBehaviour / ScriptableObject / StateMachineBehaviour / NetworkBehaviour. Static classes and plain nested classes (BowShot.Shot) are skipped; a nested [Serializable] type counts. Braces are parsed after comments and strings are stripped.
+$script:SerBases = @('MonoBehaviour', 'ScriptableObject', 'StateMachineBehaviour', 'NetworkBehaviour')
+function Get-CleanCs([string]$t) {
+    $ev = [System.Text.RegularExpressions.MatchEvaluator]{ param($m) $c = $m.Value[0]; if ($c -eq '/') { ' ' } elseif ($c -eq "'") { "''" } else { '""' } }
+    $t = [regex]::Replace($t, '//[^\n]*|/\*[\s\S]*?\*/|@"(?:[^"]|"")*"|"(?:[^"\\\n]|\\.)*"|''(?:[^''\\\n]|\\.)+''', $ev)
+    [regex]::Replace($t, '(?m)^\s*#.*$', '')
+}
+function Get-BaseNames([string]$rest) {
+    for ($i = 0; $i -lt 4; $i++) { $rest = [regex]::Replace($rest, '<[^<>]*>', '') }
+    $m = [regex]::Match($rest, '^\s*:\s*([^{]*?)\s*(?:\bwhere\b.*)?$'); if (-not $m.Success) { return @() }
+    @($m.Groups[1].Value -split ',' | ForEach-Object { ($_.Trim() -split '\.')[-1] } | Where-Object { $_ })
+}
+function Get-SerTypeSet([string[]]$cleanTexts) {
+    $recs = @(); foreach ($c in $cleanTexts) { foreach ($m in [regex]::Matches($c, '(?<pre>(?:\[[^\]]*\]\s*)*)(?:\w+\s+)*?(?:class|struct)\s+(?<name>\w+)(?<rest>[^{;]*)\{')) { $recs += [pscustomobject]@{ name = $m.Groups['name'].Value; ser = ($m.Groups['pre'].Value -match 'Serializable'); bases = @(Get-BaseNames $m.Groups['rest'].Value) } } }
+    $set = New-Object 'System.Collections.Generic.HashSet[string]'; $root = New-Object 'System.Collections.Generic.HashSet[string]'; $attr = New-Object 'System.Collections.Generic.HashSet[string]'
+    foreach ($b in $script:SerBases) { [void]$set.Add($b); [void]$root.Add($b) }
+    foreach ($x in $recs) { if ($x.ser) { [void]$set.Add($x.name); [void]$attr.Add($x.name) } }
+    do { $ch = $false; foreach ($x in $recs) { if (-not $set.Contains($x.name)) { foreach ($b in $x.bases) { if ($set.Contains($b)) { [void]$set.Add($x.name); $ch = $true; break } } } } } while ($ch)
+    do { $ch = $false; foreach ($x in $recs) { if (-not $root.Contains($x.name)) { foreach ($b in $x.bases) { if ($root.Contains($b)) { [void]$root.Add($x.name); $ch = $true; break } } } } } while ($ch)
+    return [pscustomobject]@{ all = $set; root = $root; attr = $attr }
+}
+function Get-SerItems([string]$clean, [string]$rel, $serSet) {
+    $items = New-Object System.Collections.Generic.List[object]; $stack = New-Object System.Collections.Generic.List[object]; $pos = 0; $carry = ''
+    foreach ($m in [regex]::Matches($clean, '[;{}]')) {
+        $hdr = $clean.Substring($pos, $m.Index - $pos).Trim(); $pos = $m.Index + 1; $c = $m.Value
+        if ($carry) { $hdr = ($carry + ' ' + $hdr).Trim(); $carry = '' }
+        $top = if ($stack.Count) { $stack[$stack.Count - 1] } else { $null }
+        $inSer = ($top -and $top.kind -eq 'type' -and $top.ser)
+        if ($c -eq '}') { if ($stack.Count) { $p = $stack[$stack.Count - 1]; $stack.RemoveAt($stack.Count - 1); if ($p.kind -eq 'init') { $carry = $p.hdr + ' ' + $hdr } }; continue }
+        if ($c -eq '{') {
+            $tm = [regex]::Match($hdr, '\b(?:class|struct)\s+(\w+)(.*)$')
+            if ($tm.Success -and $hdr -notmatch '=') {
+                $ser = ($hdr -match '\[\s*(System\.)?Serializable\s*\]'); if (-not $ser) { foreach ($bn in (Get-BaseNames $tm.Groups[2].Value)) { if ($serSet.all.Contains($bn)) { $ser = $true; break } } }
+                $stack.Add(@{ kind = 'type'; ser = $ser; hdr = ''; name = $tm.Groups[1].Value })
+            } elseif ($inSer -and $hdr -match 'field\s*:\s*SerializeField') {
+                $pm = [regex]::Match($hdr, '^(?:\[[^\]]*\]\s*)*(?:(?:public|private|protected|internal)\s+)?([\w<>\[\],\.\?]+)\s+(\w+)\s*$'); if ($pm.Success) { $items.Add([pscustomobject]@{ item = "$rel::$($pm.Groups[1].Value) $($pm.Groups[2].Value) (autoprop)"; type = $top.name; fty = $pm.Groups[1].Value }) }
+                $stack.Add(@{ kind = 'other'; ser = $false; hdr = '' })
+            } elseif ($top -and $top.kind -eq 'type' -and $hdr -match '=' -and $hdr -notmatch '=>') { $stack.Add(@{ kind = 'init'; ser = $false; hdr = $hdr }) }
+            else { $stack.Add(@{ kind = 'other'; ser = $false; hdr = '' }) }
+            continue
         }
-        $ini = ($r -match '=\s*new\b[^;]*\{\s*$')   # field with an object initializer: 'public Foo f = new Foo {' (the rest of the initializer is split over later lines)
-        if (($r -notmatch ';\s*$' -and -not $ini) -or ($r -match '[}]|=>' -and -not $ini)) { continue }
-        if ($r -match '\{' -and -not $ini) { continue }
-        $d = ($r -replace '[;{]\s*$', ''); $eq = $d.IndexOf('='); if ($eq -ge 0) { $d = $d.Substring(0, $eq) }; $d = $d.Trim()
+        if (-not $inSer -or $hdr -eq '' -or $hdr -match '=>') { continue }
+        $mm = [regex]::Match($hdr, '^((?:\[[^\]]*\]\s*)*)(.*)$'); $attrs = $mm.Groups[1].Value; $r = $mm.Groups[2].Value.Trim()
+        if ($attrs -match 'NonSerialized') { continue }
+        $d = $r; $eq = $d.IndexOf('='); if ($eq -ge 0) { $d = $d.Substring(0, $eq) }; $d = $d.Trim()
         if ($d -match '[()]') { continue }
         $fm = [regex]::Match($d, '^(?<mods>(?:(?:public|private|protected|internal|static|readonly|const|volatile|new)\s+)*)(?<type>[\w<>\[\],\.\?\s]+?)\s+(?<names>\w+(?:\s*,\s*\w+)*)$')
         if (-not $fm.Success) { continue }
@@ -37,11 +65,10 @@ function Get-SerItems([string]$text, [string]$rel) {
         if ($mods -notmatch '\bpublic\b' -and $attrs -notmatch 'SerializeField') { continue }
         if ($fm.Groups['type'].Value -match '^(return|using|namespace|class|struct|enum|interface|delegate|event|else|goto|throw)\b') { continue }
         $ty = ($fm.Groups['type'].Value -replace '\s+', ' ') -replace '\s*([<>,\[\]])\s*', '$1'
-        foreach ($n in ($fm.Groups['names'].Value -split '\s*,\s*')) { $items.Add("$rel::$ty $n") }
+        foreach ($n in ($fm.Groups['names'].Value -split '\s*,\s*')) { $items.Add([pscustomobject]@{ item = "$rel::$ty $n"; type = $top.name; fty = $ty }) }
     }
     return $items.ToArray()
-}
-function Get-BootItems([string]$text, [string]$rel) {
+}function Get-BootItems([string]$text, [string]$rel) {
     $t = Remove-CsComments $text; $o = @()
     foreach ($m in [regex]::Matches($t, '\[\s*(?:UnityEngine\.)?RuntimeInitializeOnLoadMethod[^\]]*\]\s*(?:\[[^\]]*\]\s*)*(?:(?:public|private|internal|protected|static|unsafe)\s+)*[\w<>\.]+\s+(\w+)\s*\(')) { $o += "$rel::$($m.Groups[1].Value)" }
     return $o
@@ -53,12 +80,18 @@ function Get-BuildSig([string]$Root, [string]$ExemptFile = '') {
     $ex = @(Get-Content $ExemptFile -ErrorAction SilentlyContinue | Where-Object { $_ -and $_ -notmatch '^\s*#' } | ForEach-Object { $_.Trim() })
     $files = New-Object System.Collections.Generic.List[string]; $ser = New-Object System.Collections.Generic.List[string]; $boot = New-Object System.Collections.Generic.List[string]
     $rootLen = (Resolve-Path $Root).Path.TrimEnd('\').Length + 1
+    $recs = New-Object System.Collections.Generic.List[object]; $cl = @{}; foreach ($f in [IO.Directory]::EnumerateFiles($sd, '*.cs', [IO.SearchOption]::AllDirectories)) { $cl[$f] = Get-CleanCs ([IO.File]::ReadAllText($f)) }
+    $serSet = Get-SerTypeSet @($cl.Values)
     foreach ($f in [IO.Directory]::EnumerateFiles($sd, '*.cs', [IO.SearchOption]::AllDirectories)) {
         $rel = $f.Substring($rootLen).Replace('\', '/'); $files.Add($rel)
         $txt = [IO.File]::ReadAllText($f)
-        if ($ex -notcontains [IO.Path]::GetFileName($f)) { foreach ($i in (Get-SerItems $txt $rel)) { $ser.Add($i) } }
+        if ($ex -notcontains [IO.Path]::GetFileName($f)) { foreach ($i in (Get-SerItems $cl[$f] $rel $serSet)) { $recs.Add($i) } }
         foreach ($i in (Get-BootItems $txt $rel)) { $boot.Add($i) }
     }
+    # reachability: a [Serializable]-only type counts only when a MonoBehaviour-family type (transitively) holds it as a field type; JSON-only config classes do not touch scene layout
+    $reach = New-Object 'System.Collections.Generic.HashSet[string]'; foreach ($x in $serSet.root) { [void]$reach.Add($x) }
+    do { $ch = $false; foreach ($x in $recs) { if ($reach.Contains($x.type)) { foreach ($tk in [regex]::Matches($x.fty, '[A-Za-z_]\w*')) { if ($serSet.attr.Contains($tk.Value) -and -not $reach.Contains($tk.Value)) { [void]$reach.Add($tk.Value); $ch = $true } } } } } while ($ch)
+    foreach ($x in $recs) { if ($reach.Contains($x.type)) { $ser.Add($x.item) } }
     [pscustomobject]@{ files = @($files | Sort-Object -Unique -CaseSensitive); ser = @($ser | Sort-Object -Unique -CaseSensitive); boot = @($boot | Sort-Object -Unique -CaseSensitive)
         scriptFilesSig = (Get-SigHash $files); serializedSig = (Get-SigHash $ser); bootSig = (Get-SigHash $boot) }
 }

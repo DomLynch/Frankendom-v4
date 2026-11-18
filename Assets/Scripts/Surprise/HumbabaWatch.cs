@@ -24,7 +24,7 @@ public class HwFace
 [Serializable] public class HwEyes { public bool enabled = true; public float followSpeed = 6f, rangeM = 60f, hideBeyondM = 140f, playerHeadM = 1.6f, idleIntensity = 0.6f, activeIntensity = 1.6f; public float[] tint = new float[] { 1f, 0.6f, 0.2f }; public int texSize = 64; public float lobePower = 3f, lobeRadiusFrac = 0.9f; public string shader = "Furnace/Particle", fallbackShader = "HDRP/Unlit"; public HwFace[] faces = new HwFace[0]; }
 [Serializable] public class HwHeavy { public bool needHeavyFlag = true; public float minDamage = 0f, chance = 1f; }
 [Serializable] public class HwGroan { public string cue = "effort_voice"; public float gain = 0.9f, rate = 0.4f, delayS = 0f; public string shake = "hitHeavy"; public float shakeMul = 1f; }
-[Serializable] public class HwDecal { public string refMaterial = "WoundDecalRef"; public int texSize = 128; public float ringRadiusFrac = 0.85f, ringWidthFrac = 0.1f, innerFill = 0.35f, drawDistanceM = 120f, depthM = 6f, maxOpacity = 0.9f; public float[] tint = new float[] { 0.03f, 0.02f, 0.02f }; }
+[Serializable] public class HwDecal { public string refMaterial = "WoundDecalRef"; public int texSize = 128; public float ringRadiusFrac = 0.85f, ringWidthFrac = 0.1f, innerFill = 0.35f, drawDistanceM = 120f, depthM = 6f, maxOpacity = 0.9f; public float[] tint = new float[] { 0.03f, 0.02f, 0.02f }; public float dropM = 0.3f; public bool albedoOnly = true; }   // HUMBARING v1: the projector box is lowered by dropM (the old box had its bottom exactly at the ground = no ring) and the decal changes only the floor colour (like boss_phase ring{})
 [Serializable]
 public class HwBranch
 {
@@ -212,11 +212,12 @@ public class HumbabaWatch : MonoBehaviour
     {
         var K = c.branch.decal;
         if (decalMat == null)
-        {
-            var refMat = Resources.Load<Material>(K.refMaterial); if (refMat == null) { Debug.LogWarning("[HumbabaWatch] no decal material '" + K.refMaterial + "': no ground telegraph"); return; }   // hc:ok algorithm constant / guard / log (reviewed)
-            decalMat = new Material(refMat); decalMat.name = "humbaba_mark"; decalMat.hideFlags = HideFlags.DontUnloadUnusedAsset; decalMat.EnableKeyword("_COLORMAP"); decalMat.SetTexture(BaseColorMap, MakeRing(K)); decalMat.SetColor("_BaseColor", Color.white);   // hc:ok algorithm constant / guard / log (reviewed)
+        {   // HUMBARING v1: GroundRing.BuildMaterial (clone of Resources/WoundDecalRef, ring texture, optional albedo-only) instead of a local copy of it
+            decalMat = GroundRing.BuildMaterial(K.refMaterial, MakeRing(K), Color.white, "humbaba_mark", K.albedoOnly);
+            if (decalMat == null) { Debug.LogWarning("[HumbabaWatch] no decal material '" + K.refMaterial + "': no ground telegraph"); return; }   // hc:ok algorithm constant / guard / log (reviewed)
         }
-        D.proj = GroundRing.CreateProjector(decalMat, D.p, D.yaw, c.branch.radiusM, K.depthM, K.drawDistanceM, "HumbabaMark", out D.decal);   // BOSSPHASES C2: the projector set-up now lives in GroundRing (same position, rotation, size, fade 0)
+        D.proj = GroundRing.CreateProjector(decalMat, D.p, D.yaw, c.branch.radiusM, K.depthM, K.drawDistanceM, "HumbabaMark", out D.decal, K.dropM);   // BOSSPHASES C2 + HUMBARING v1 (dropM)
+        if (c.log) Debug.Log("[HumbabaWatch] ring projector at " + D.p.ToString("F1") + " dropM " + K.dropM.ToString("F2") + " albedoOnly " + K.albedoOnly + " mat " + (D.proj != null && D.proj.material != null ? D.proj.material.name + " shader " + D.proj.material.shader.name : "NULL"));   // hc:ok algorithm constant / guard / log (reviewed)
     }
 
     static Texture2D MakeRing(HwDecal K)   // hc:ok algorithm constant / guard / log (reviewed)

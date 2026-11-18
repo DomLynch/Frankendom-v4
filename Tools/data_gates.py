@@ -474,7 +474,7 @@ def gate_F(R, data, sa, args, ros):
 
 
 # laneBELLYBITE v1: rows that are NEW ON PURPOSE (file, roster id, row 'move'): gate G reports them as INFO instead of 'GAINS n row(s)'. Add a line here with a comment, do not weaken the gate.
-INTENDED_NEW_ROWS = {('attack_clips.json', 'Pitborn', 'belly_grab')}   # Pitborn belly-mouth grab (laneBELLYBITE): a move only Pitborn has
+INTENDED_NEW_ROWS = {('attack_clips.json', 'Pitborn', 'belly_grab')} | {('attack_clips.json', c, m) for c in ['BanditArcher', 'BanditAssassin', 'BanditMelee', 'NpcPitGladiator', 'NpcChainWarden', 'NpcSlagCrossbowman', 'NpcReedSkirmisher', 'NpcMarshWarden', 'NpcEmbalmerCultist', 'NpcMereRaider', 'NpcDrownedThane', 'NpcCedarArcher', 'NpcHuntsman', 'NpcHoundMaster', 'NpcAntlerKnight'] for m in ('heavy_left','heavy_right','heavy_thrust','light_overhead')}   # T1 NPC heavy/overhead rows (kit fix_npcclips)
 
 # -------------------------------------------------------------------------------- gate G (only with --overlay): no character gains or loses a row
 def gate_G(R, data, sa, args, ros):

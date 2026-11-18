@@ -272,6 +272,29 @@
       ]
     },
     {
+      "id": "NpcAshReaver",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Ash Reaver",
+      "objectName": "NpcAshReaver",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcChainWarden.controller",
+      "modelGlb": "Assets/Characters/NpcChainWarden/NpcChainWarden_combat.glb",
+      "animGlb": "Assets/Characters/NpcChainWarden/NpcChainWarden_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcChainWarden.mask",
+      "finisherClipFolder": "Assets/Characters/NpcChainWarden/FinisherClips",
+      "heightM": 1.85,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (assassin, pit_yard): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditAssassin.",
+      "loadout": [
+        "bandit_axe"
+      ]
+    },
+    {
       "id": "NpcSlagCrossbowman",
       "specials": [
         "skill_cleave",
@@ -370,6 +393,29 @@
       "bonePrefix": "mixamorig:",
       "displayName": "Embalmer Cultist",
       "objectName": "NpcEmbalmerCultist",
+      "weapon": "sword",
+      "controller": "Assets/Characters/NpcEmbalmerCultist.controller",
+      "modelGlb": "Assets/Characters/NpcEmbalmerCultist/NpcEmbalmerCultist_combat.glb",
+      "animGlb": "Assets/Characters/NpcEmbalmerCultist/NpcEmbalmerCultist_anim.glb",
+      "guardMask": "Assets/Characters/GuardUpper_NpcEmbalmerCultist.mask",
+      "finisherClipFolder": "Assets/Characters/NpcEmbalmerCultist/FinisherClips",
+      "heightM": 1.75,
+      "scaleFloor": 1.0,
+      "armoured": false,
+      "notes": "NPC15 (melee, sobek_reach): Tripo body bound to the 106-joint rig (laneNPC15), combat glb = clip_build base set. heightM is the DESIGN height incl. crown / antlers; EnemySwap scales the model to it. Clips: base 28 states. UNMEASURED: grip, foot, head clamp rows are clones of BanditMelee.",
+      "loadout": [
+        "bandit_dagger"
+      ]
+    },
+    {
+      "id": "NpcFenWitch",
+      "specials": [
+        "skill_cleave",
+        "skill_reaping"
+      ],
+      "bonePrefix": "mixamorig:",
+      "displayName": "Fen Witch",
+      "objectName": "NpcFenWitch",
       "weapon": "sword",
       "controller": "Assets/Characters/NpcEmbalmerCultist.controller",
       "modelGlb": "Assets/Characters/NpcEmbalmerCultist/NpcEmbalmerCultist_combat.glb",

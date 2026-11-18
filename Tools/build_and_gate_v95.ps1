@@ -1,3 +1,4 @@
+Write-Host 'RETIRED: use gateproof.ps1 / qa_slot.ps1'; exit 1
 $u='C:\Program Files\Unity\Hub\Editor\6000.6.7f1\Editor\Unity.exe'; $p='C:\Users\dom12\Documents\unity_test_hdrp'
 Set-Location $p
 Remove-Item TestOut\v95_fin_done.txt -ErrorAction SilentlyContinue

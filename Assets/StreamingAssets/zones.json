@@ -1,4 +1,4 @@
-﻿{
+﻿﻿{
   "_about": "ZONES v1 (lane laneZONES), read by Assets/Scripts/Zones/ZoneData.cs. SHIPS DARK: enabled=false means the game is exactly the old duel (scene reload per fight, opponents.json ladder). enabled=true turns the game into walking zones: monsters stand at spawn spots, a fight starts when you walk into a creature's aggro radius, a kill is stored as a real-world respawn time (UTC ms) in the save, and a dead creature simply reads as alive again once that time has passed (computed when someone looks, no server loop, V1/V3 lazy-respawn pattern). Gates carry you to another zone behind a flash, no camera cut. Units: metres, degrees, seconds. A spot pos is [x, z] (ground height is found by a raycast), [] = where the scene already put the object.",
   "enabled": true,
   "version": 1,
@@ -231,6 +231,13 @@
       "_about": "NPC15: Resources/Creatures/NpcChainWarden.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
     },
     {
+      "id": "NpcAshReaver",
+      "source": "resources",
+      "scene": "HadesSlice_NpcChainWarden",
+      "path": "Creatures/NpcChainWarden",
+      "_about": "NPC15: Resources/Creatures/NpcChainWarden.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
       "id": "NpcSlagCrossbowman",
       "source": "resources",
       "scene": "HadesSlice_NpcSlagCrossbowman",
@@ -260,6 +267,13 @@
     },
     {
       "id": "NpcEmbalmerCultist",
+      "source": "resources",
+      "scene": "HadesSlice_NpcEmbalmerCultist",
+      "path": "Creatures/NpcEmbalmerCultist",
+      "_about": "NPC15: Resources/Creatures/NpcEmbalmerCultist.prefab, made by BanditsBatch step 4 / Hades > Zones > Save creature prefabs."
+    },
+    {
+      "id": "NpcFenWitch",
       "source": "resources",
       "scene": "HadesSlice_NpcEmbalmerCultist",
       "path": "Creatures/NpcEmbalmerCultist",
@@ -405,6 +419,12 @@
           "pos": [1.2, 23.4],
           "yaw": 180,
           "note": "NPC15PLACE z1_a member 3 (NpcPitGladiator): patrol group z1_a, home placed by laneNPC15PLACE/place.py (ladder step \"z1 ring 6 (arrive 8, core 2)\") | NPC6ROWS fixup: moved from [9.17, 20.67] (clutter cluster added to props_layout after the Z12 solve)"
+        },
+        {
+          "id": "ash_reaver_1",
+          "pos": [-6.5, 4.5],
+          "yaw": 70,
+          "note": "ENEMIES_SPAWN 18 Nov (HOT data): Ash Reaver in the yard west of the start-to-Pitborn path, clear of hearth and stall"
         }
       ],
       "spawns": [
@@ -504,6 +524,26 @@
           "damageMul": 0.2205,
           "difficulty": 4,
           "needs": "NPC15PLACE: Resources/Creatures/NpcPitGladiator.prefab; wakes only after the z1_pitborn boss is dead (BanditArcher after-gate, needsGate true): aggro 0.5 held while it lives, type aggro 14 after"
+        },
+        {
+          "id": "enemy_z1_ashreaver",
+          "enabled": true,
+          "spot": "ash_reaver_1",
+          "picks": [
+            {
+              "creature": "NpcAshReaver",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcashreaver_z1",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 4.0,
+          "leash": 14.0,
+          "hpMul": 0.8,
+          "damageMul": 0.252,
+          "difficulty": 6,
+          "note": "ENEMIES_SPAWN 18 Nov (HOT data): numbers copied from donor NpcChainWarden z1 row"
         }
       ],
       "services": [
@@ -1116,6 +1156,18 @@
           ],
           "yaw": 21.8,
           "note": "ENCOUNTERS v1 pre-boss fodder z4_p member 2 (staged, needsGate false): between the arrival and the boss arena, >= 3 m from every baked prop and every props_overlay row"
+        },
+        {
+          "id": "mere_warden_1",
+          "pos": [-4.5, 114.0],
+          "yaw": 200,
+          "note": "ENEMIES_SPAWN 18 Nov (HOT data): Marsh Warden stands on the path just inside the Mere door, before the boss arena (boss_stand z 134); clear of bandit_z4_p_* wave ids so the bossHold wave is untouched"
+        },
+        {
+          "id": "mere_witch_1",
+          "pos": [5.0, 116.0],
+          "yaw": 170,
+          "note": "ENEMIES_SPAWN 18 Nov (HOT data): Fen Witch beside the path, 18 m before the boss, 8.5 m from the revive spot arrive_from_prev so a respawn does not wake it"
         }
       ],
       "spawns": [
@@ -1297,6 +1349,46 @@
           "damageMul": 0.4299,
           "difficulty": 4,
           "note": "ENCOUNTERS v1: PRE-boss fodder, needsGate false (awake from arrival, aggro 9.0 so it does not reach the boss ring); numbers copied from the zone's own post-boss row of the same type"
+        },
+        {
+          "id": "enemy_z4_marshwarden",
+          "enabled": true,
+          "spot": "mere_warden_1",
+          "picks": [
+            {
+              "creature": "NpcMarshWarden",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcmarshwarden_z4",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 9.0,
+          "leash": 12.5,
+          "hpMul": 0.8492,
+          "damageMul": 0.4536,
+          "difficulty": 6,
+          "note": "ENEMIES_SPAWN 18 Nov (HOT data): numbers copied from donor NpcReedSkirmisher z2 row"
+        },
+        {
+          "id": "enemy_z4_fenwitch",
+          "enabled": true,
+          "spot": "mere_witch_1",
+          "picks": [
+            {
+              "creature": "NpcFenWitch",
+              "weight": 1
+            }
+          ],
+          "ladderRow": "npcfenwitch_z4",
+          "respawnMinS": 240,
+          "respawnMaxS": 420,
+          "aggro": 8.0,
+          "leash": 11.0,
+          "hpMul": 0.7385,
+          "damageMul": 0.3969,
+          "difficulty": 4,
+          "note": "ENEMIES_SPAWN 18 Nov (HOT data): numbers copied from donor NpcEmbalmerCultist z2 row"
         }
       ],
       "services": [],

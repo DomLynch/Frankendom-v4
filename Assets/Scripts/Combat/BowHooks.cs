@@ -25,12 +25,13 @@ public static class BowHooks
     static WeaponStats stats;
     static KeyCode[] kToggle, kPad; static CameraRig rig;
     static List<DuelFighter> allFighters;   // K24: the list SimTick last saw (BowAim retarget)
+    public static List<DuelFighter> Fighters { get { return allFighters; } }   // FREEAIM v1
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { states.Clear(); bowByChar.Clear(); bowUp = 0; stats = null; kToggle = kPad = null; rig = null; allFighters = null; SceneManager.sceneLoaded -= OnScene; }
+    static void ResetStatics() { states.Clear(); bowByChar.Clear(); bowUp = 0; stats = null; kToggle = kPad = null; rig = null; allFighters = null; BowWalk.Reset(); SceneManager.sceneLoaded -= OnScene; }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Boot() { SceneManager.sceneLoaded -= OnScene; SceneManager.sceneLoaded += OnScene; }
-    static void OnScene(Scene s, LoadSceneMode m) { states.Clear(); bowByChar.Clear(); bowUp = 0; rig = null; }
+    static void OnScene(Scene s, LoadSceneMode m) { states.Clear(); bowByChar.Clear(); bowUp = 0; rig = null; BowWalk.Reset(); }
 
     // ---------------- seams ----------------
     public static bool Active(DuelFighter f) { if (bowUp == 0 || f == null) return false; State st; return states.TryGetValue(f, out st) && st.bow; }
@@ -47,9 +48,12 @@ public static class BowHooks
     {
         var C = BowCfg.Get(); State st; if (!states.TryGetValue(a, out st) || !st.bow) return false;
         var sp = BowCfg.SpecialByMove(m.id); var lane = sp == null ? BowCfg.LaneOf(m.id) : null; if (sp == null && lane == null) return false;
-        var pick = BowAim.Pick(a, d, allFighters); if (pick != null) d = pick;   // K24: aim assist (identical to d unless aim.retarget finds a better foe in the cone; null = assist off)
-        float gap = Gap(a, d); if (gap < C.minGapM) return false;
-        BowAim.Snap(a, d);   // K24: the arrow leaves from the front
+        bool pointShot = false; Vector3 fp = Vector3.zero;
+        if (BowFree.Wants(a)) { DuelFighter ft; if (BowFree.Resolve(a, out ft, out fp)) { if (ft != null) d = ft; else pointShot = true; } else if (d == a) return false; }   // FREEAIM v1: the camera ray picks the fighter it passes through (soft snap) or the point it hits; d == a = the no-foe caller's placeholder
+        else { var pick = BowAim.Pick(a, d, allFighters); if (pick != null) d = pick; }   // K24: aim assist (identical to d unless aim.retarget finds a better foe in the cone; null = assist off)
+        float gap; if (pointShot) { Vector3 gv = fp - a.transform.position; gv.y = 0f; gap = gv.magnitude; } else gap = Gap(a, d);
+        if (gap < C.minGapM) return false;
+        if (pointShot) BowAim.SnapPoint(a, fp); else BowAim.Snap(a, d);   // K24: the arrow leaves from the front
         int cost = sp != null ? Mathf.Max(1, sp.arrows) : 1;
         if (C.quiverOn) { if (st.ammo < cost) return false; st.ammo -= cost; }
         int[] lanes = sp != null && sp.lanes != null && sp.lanes.Length > 0 ? sp.lanes : new[] { lane != null ? lane.lane : 0 };
@@ -58,8 +62,9 @@ public static class BowHooks
         float pinMul = st.foeRow != null ? st.foeRow.pinMul : 1f;
         int pin = sp != null ? Mathf.RoundToInt(sp.pinTicks * pinMul) : 0;
         string tint = sp != null && !string.IsNullOrEmpty(sp.tint) ? sp.tint : "#e8d9a8";
-        BowShot.Launch(a, d, m, lanes, sp != null, mul * chargeMul, speed, pin, tint);
-        if (BowCfg.Log) Debug.Log("[bow] " + a.name + " " + m.id + " -> " + d.name + " gap " + gap.ToString("0.0") + " m, " + lanes.Length + " arrow(s), " + (C.quiverOn ? st.ammo + " left" : "quiver off"));
+        if (BowFree.Wants(a)) { var FF = C.aim.free; if (FF.speedCmS > 0f) speed = Mathf.Max(speed, Mathf.RoundToInt(FF.speedCmS)); }   // FREEAIM v1: a long shot flies fast (data); the 7.8 m/s of V3 would take 6 s over 45 m
+        BowShot.Launch(a, pointShot ? null : d, m, lanes, sp != null, mul * chargeMul, speed, pin, tint, pointShot, fp);
+        if (BowCfg.Log) Debug.Log("[bow] " + a.name + " " + m.id + " -> " + (pointShot ? "point " + fp.ToString("F1") : d.name) + " gap " + gap.ToString("0.0") + " m, " + lanes.Length + " arrow(s), " + (C.quiverOn ? st.ammo + " left" : "quiver off"));
         return true;
     }
 
@@ -67,9 +72,9 @@ public static class BowHooks
     public static bool NoFoeShot(DuelFighter a, MoveDef m)
     {
         if (!Handles(a, m)) return false;
-        var t = BowAim.Pick(a, null, allFighters); State st; states.TryGetValue(a, out st);
-        bool shot = t != null && !t.Dead && Release(a, t, m, 1f);
-        if (BowCfg.Log) Debug.Log("[bow] no-foe swing: target " + (t != null ? t.name + " gap " + Gap(a, t).ToString("F1") + " m" : "none in the aim cone") + ", ammo " + (st != null ? st.ammo.ToString() : "?") + ", arrow launched " + shot);
+        State st; states.TryGetValue(a, out st); bool free = BowFree.Wants(a); DuelFighter t = null; bool shot;   // FREEAIM v1: free aim fires along the camera ray (Release resolves it; a = placeholder foe)
+        if (free) shot = Release(a, a, m, 1f); else { t = BowAim.Pick(a, null, allFighters); shot = t != null && !t.Dead && Release(a, t, m, 1f); }
+        if (BowCfg.Log) Debug.Log("[bow] no-foe swing: target " + (free ? "free aim (camera ray)" : t != null ? t.name + " gap " + Gap(a, t).ToString("F1") + " m" : "none in the aim cone") + ", ammo " + (st != null ? st.ammo.ToString() : "?") + ", arrow launched " + shot);
         return shot;
     }
 

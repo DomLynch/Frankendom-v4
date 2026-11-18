@@ -28,6 +28,10 @@
       "weapon": "sword"
     },
     {
+      "character": "NpcFenWitch",
+      "weapon": "sword"
+    },
+    {
       "character": "NpcMereRaider",
       "weapon": "sword"
     },
@@ -45,6 +49,10 @@
     },
     {
       "character": "NpcChainWarden",
+      "weapon": "sword"
+    },
+    {
+      "character": "NpcAshReaver",
       "weapon": "sword"
     },
     {
@@ -138,6 +146,10 @@
       "surface": "flesh"
     },
     {
+      "character": "NpcFenWitch",
+      "surface": "flesh"
+    },
+    {
       "character": "NpcMereRaider",
       "surface": "flesh"
     },
@@ -155,6 +167,10 @@
     },
     {
       "character": "NpcChainWarden",
+      "surface": "flesh"
+    },
+    {
+      "character": "NpcAshReaver",
       "surface": "flesh"
     },
     {
@@ -248,6 +264,10 @@
       "rate": 1.0
     },
     {
+      "character": "NpcFenWitch",
+      "rate": 1.0
+    },
+    {
       "character": "NpcMereRaider",
       "rate": 1.0
     },
@@ -265,6 +285,10 @@
     },
     {
       "character": "NpcChainWarden",
+      "rate": 1.0
+    },
+    {
+      "character": "NpcAshReaver",
       "rate": 1.0
     },
     {
@@ -1020,6 +1044,14 @@
       "note": "Pitborn battle growl on heavy windup (V3 charge_foe) | laneDRILL: charge_foe (5 x 80 ms tonal 176 Hz bursts = drill/buzz) swapped for the effort_voice grunt; voicePitch .78 makes it deep",
       "play": [
         {
+          "cue": "boss_chain_drag",
+          "gain": 0.22,
+          "delay": 0.0,
+          "rate": 0.8,
+          "who": "",
+          "chance": 1.0
+        },
+        {
           "cue": "charge_foe",
           "gain": 0.22,
           "delay": 0.0,
@@ -1239,6 +1271,14 @@
       "disabled": false,
       "note": "SOBEKDATA: roar on the heavy windup: the EXISTING cue effort_voice, voicePitch 0.55 (guess) turns it into a growl, so no new audio file is required to ship. Real Sobek audio = sobek_roar / sobek_step / sobek_tail_whoosh / hurt / death, not in audio_manifest yet.",
       "play": [
+        {
+          "cue": "boss_reed_inhale",
+          "gain": 0.25,
+          "delay": 0.0,
+          "rate": 0.8,
+          "who": "",
+          "chance": 1.0
+        },
         {
           "cue": "charge_foe",
           "gain": 0.3,
@@ -1573,6 +1613,14 @@
       "note": "laneMONSTER3 (Grendel): cloned from the Sobek voice row",
       "play": [
         {
+          "cue": "boss_grendel_howl",
+          "gain": 0.2,
+          "delay": 0.0,
+          "rate": 0.75,
+          "who": "",
+          "chance": 1.0
+        },
+        {
           "cue": "charge_foe",
           "gain": 0.3,
           "delay": 0.0,
@@ -1774,6 +1822,14 @@
       "note": "laneMONSTER5 (Humbaba): cloned from the Sobek voice row",
       "play": [
         {
+          "cue": "boss_timber_creak",
+          "gain": 0.28,
+          "delay": 0.0,
+          "rate": 0.6,
+          "who": "",
+          "chance": 1.0
+        },
+        {
           "cue": "charge_foe",
           "gain": 0.3,
           "delay": 0.0,
@@ -1795,6 +1851,14 @@
       "disabled": false,
       "note": "laneMONSTER6 (Erlking): cloned from the Sobek voice row",
       "play": [
+        {
+          "cue": "boss_erl_toll",
+          "gain": 0.25,
+          "delay": 0.0,
+          "rate": 0.6,
+          "who": "",
+          "chance": 1.0
+        },
         {
           "cue": "charge_foe",
           "gain": 0.3,
@@ -2146,6 +2210,14 @@
       "note": "BOSSPHASES tell: the unblockable belly grab (windup 36 ticks, mouth opens at 35 percent) gets its own low growl so it is not heard as a heavy.",
       "play": [
         {
+          "cue": "boss_chain_drag",
+          "gain": 0.3,
+          "delay": 0.0,
+          "rate": 0.7,
+          "who": "",
+          "chance": 1.0
+        },
+        {
           "cue": "charge_foe",
           "gain": 0.4,
           "delay": 0.0,
@@ -2177,6 +2249,14 @@
       "disabled": false,
       "note": "BOSSPHASES tell: reed lunge = higher hiss + rising charge. Replaces the generic Sobek heavy voice row for this move only (most specific row wins per layer).",
       "play": [
+        {
+          "cue": "boss_reed_inhale",
+          "gain": 0.3,
+          "delay": 0.0,
+          "rate": 0.9,
+          "who": "",
+          "chance": 1.0
+        },
         {
           "cue": "charge_foe",
           "gain": 0.34,
@@ -2210,6 +2290,14 @@
       "note": "BOSSPHASES tell: charge = deep growl + charge swell. Replaces the generic Grendel heavy voice row for this move only.",
       "play": [
         {
+          "cue": "boss_grendel_howl",
+          "gain": 0.2,
+          "delay": 0.0,
+          "rate": 0.8,
+          "who": "",
+          "chance": 1.0
+        },
+        {
           "cue": "charge_foe",
           "gain": 0.4,
           "delay": 0.0,
@@ -2241,6 +2329,14 @@
       "disabled": false,
       "note": "BOSSPHASES tell: maw lunge = slow groan, a faint crack at the end of the windup. Replaces the generic Humbaba heavy voice row for this move only.",
       "play": [
+        {
+          "cue": "boss_timber_creak",
+          "gain": 0.3,
+          "delay": 0.0,
+          "rate": 0.55,
+          "who": "",
+          "chance": 1.0
+        },
         {
           "cue": "charge_foe",
           "gain": 0.4,

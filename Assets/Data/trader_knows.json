@@ -310,6 +310,14 @@
           "minCount": 4,
           "weight": 1.0,
           "text": "{count} times. I should charge you a standing fee."
+        },
+        {
+          "killer": "Pitborn",
+          "zone": "",
+          "weapon": "pitborn_maul",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "Ah, {mine} against {weapon}. Sit, I will see to the ribs."
         }
       ],
       "fallback": [
@@ -550,6 +558,14 @@
           "minCount": 4,
           "weight": 1.0,
           "text": "{count} times. I should charge you a standing fee."
+        },
+        {
+          "killer": "Pitborn",
+          "zone": "",
+          "weapon": "pitborn_maul",
+          "minCount": 0,
+          "weight": 1.0,
+          "text": "Ah, {mine} against {weapon}. Sit, I will see to the ribs."
         }
       ],
       "fallback": [

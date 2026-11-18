@@ -1,4 +1,4 @@
-﻿{
+{
   "_about": "HUB v1 + CAMPSET v1 (laneHUB rules file, edited copy by laneCAMPSET). SHIPS OFF. Placement B (after Sobek), zone offset 72; rows in props_layout_hub.json are the zone-local camp rows + 72. NPC bodies are the camp characters Dom chose on 2026-11-06 (Arissa, Akai, Erika: 106-joint rig, embedded Idle, 512 px textures), loaded from StreamingAssets/Npc. Original text: HUB v1 (lane laneHUB), STAGED, SHIPS OFF. Designs from Armagedom's Central Hub reused as DATA ONLY (no code, no art copied): a safe camp zone with a few idle NPCs, a hearth, one sell-only stall. zones.json carries the zone ROW (hub_camp, safe:true, spawns [], hearth + market services, gates); this file carries everything else about the camp: the safe-zone rule, the NPC rows, the layout reference, the stall row, what is saved. Units: metres, degrees, seconds; x,z are in the zone lane (x -3.8..3.8, z 8..26 with the zMax override). enabled=false means nothing here is read. NEW READERS NEEDED (none exist yet): HubCfg.cs (loads this file), a safe-rule hook in ZoneRuntime, an NPC spawner. check_hub.py lists the keys a reader must claim.",
   "enabled": true,
   "version": 1,
@@ -170,7 +170,7 @@
       "role": "apothecary",
       "title": "Apothecary",
       "spot": "npc_keeper",
-      "yaw": 270,
+      "yaw": 215,
       "clip": "Idle",
       "phaseSeconds": 3.93,
       "interact": {
@@ -181,7 +181,7 @@
       "body": {
         "status": "dom_asset",
         "bodyId": "c1_apothecary",
-        "character": "Old Marl (regenerated v2)",
+        "character": "Herbalist (npc_trader body, woman in maroon dress and embroidered apron)",
         "source": "Dom Tripo session 2026-11-10: _agents\\incoming_tripo_20261110\\vendors_scaled\\vendor_c1_apothecary.glb -> laneVENDORS4 decimate (50k LOD0) -> bind to psyche-106 (laneNPC15 bindrun)",
         "rig": "psyche-106 (106 joints, 1 skin, mixamorig names, Rig root, same hierarchy as the old npc_trader.glb)",
         "idle": "none embedded: runtime.clipGlb Npc/npc_idle_rig.glb (Mixamo idle rebased onto the Rig hierarchy by laneTRADEFIN, same as the old trader/traveller)",
@@ -189,13 +189,13 @@
         "heightM": 1.58,
         "nativeHeightM": 1.773,
         "scaleNote": "scale = design height / bound native height (1.580 / 1.773)",
-        "replaces": "Goblin D Shareyko (camp_goblin.glb, scale 0.74)"
+        "replaces": "Old Marl (vendor_c1_apothecary_reveal.glb, teal hooded elder) and before him Goblin D Shareyko (camp_goblin.glb)"
       },
       "runtime": {
-        "glb": "Npc/vendor_c1_apothecary_reveal.glb",
+        "glb": "Npc/npc_trader.glb",
         "sources": [],
         "hideNodes": [],
-        "scale": 0.891,
+        "scale": 0.914,
         "clipGlb": "Npc/npc_idle_rig.glb",
         "clipSources": [],
         "clipName": ""

@@ -54,13 +54,29 @@ public static class BowAim
     {
         if (!On) return null;
         var A = BowCfg.Get().aim;
-        bool aiming = Aiming(f); if (!aiming && !A.faceInLoco) return null;
+        bool aiming = Aiming(f); if (!aiming && !A.faceInLoco && !BowFree.FaceHeld(f)) return null;   // FREEAIM v1
         if (f.state == FState.Dead || f.state == FState.Stagger || f.state == FState.Down || f.state == FState.Roll) return null;
+        if (BowFree.Wants(f) && (aiming || BowFree.FaceHeld(f)))   // FREEAIM v1: the body follows the camera heading (the crosshair), not a foe
+        {
+            Vector3 h = BowFree.Heading(f); if (h.sqrMagnitude > 1e-4f) f.transform.rotation = Quaternion.RotateTowards(f.transform.rotation, Quaternion.LookRotation(h, Vector3.up), A.turnSpeedDegS / 60f);
+            return null;
+        }
+        if (!aiming && !A.faceInLoco) return null;
         var t = Pick(f, foe, all); if (t == null) return null;
         Vector3 d = Flat(t.transform.position - f.transform.position); if (d.sqrMagnitude < 1e-4f) return t;
         Quaternion want = Quaternion.LookRotation(d.normalized, Vector3.up);
         f.transform.rotation = Quaternion.RotateTowards(f.transform.rotation, want, A.turnSpeedDegS / 60f);
         return t;
+    }
+
+    /// <summary>FREEAIM v1: a point shot leaves from the front too.</summary>
+    public static void SnapPoint(DuelFighter a, Vector3 p)
+    {
+        if (!On || a == null) return;
+        var A = BowCfg.Get().aim; if (!A.snapOnRelease || (A.playerOnly && !a.IsPlayer)) return;
+        Vector3 d = Flat(p - a.transform.position); if (d.sqrMagnitude < 1e-4f) return;
+        Quaternion want = Quaternion.LookRotation(d.normalized, Vector3.up);
+        if (Quaternion.Angle(a.transform.rotation, want) > A.snapAboveDeg) a.transform.rotation = want;
     }
 
     /// <summary>BowHooks.Release: the arrow leaves from the front. Closes the remaining angle when it is above aim.snapAboveDeg.</summary>

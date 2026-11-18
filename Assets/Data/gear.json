@@ -372,7 +372,7 @@
       "rollDeg": 0,
       "flipPalm": false,
       "keepAnimatedRotation": false,
-      "reachFadeM": 0.15,
+      "reachFadeM": 0.5,
       "poleHintLocal": [
         -0.5,
         -1,
@@ -997,6 +997,7 @@
         "cueEvent": ""
       },
       "name": "Pitborn's maul",
+      "desc": "Two hands. While you hold it, keys 1 and 2 (pad Y and X) become Ground Slam, a wide low sweep that hits everyone in front, and Smash, a slow overhead that breaks a guard. Your shield is set aside while it is worn. Press E on it again to put your sword back.",
       "slot": "mainHand",
       "glb": "Gear/pitborn_maul_joan_LOD0.glb",
       "resource": "",
@@ -2159,6 +2160,7 @@
         "cueEvent": ""
       },
       "name": "Iron maul",
+      "desc": "Two hands. While you hold it, keys 1 and 2 (pad Y and X) become Ground Slam, a wide low sweep that hits everyone in front, and Smash, a slow overhead that breaks a guard. Your shield is set aside while it is worn. Press E on it again to put your sword back.",
       "slot": "mainHand",
       "glb": "Gear/pitborn_maul_joan_LOD0.glb",
       "resource": "",

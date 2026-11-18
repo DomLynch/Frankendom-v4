@@ -1,6 +1,6 @@
 {
   "_about": "HUMBABA'S FACE IS WATCHING v1 (pool lane S4, HumbabaWatch.cs, UNPROVEN IN UNITY). enabled false = nothing runs. eyes.faces[].eyes[] = iris socket positions as FRACTIONS of the prop's own renderer bounds (u across, v up, w depth of the eye surface, all measured on the glTF mesh in headless Blender: eyes centred at x -0.017 / +0.050, y 0.379 / 0.380 up of 0.737, surface depth 0.131 / 0.140 of a 0.964 deep box; the face is not centred on the trunk, its centre line is x +0.017). flipX true because glTFast mirrors X on import (if the proof shot shows the irises on the wrong sockets, flip this one value). irisWidthFrac = iris width as a fraction of the box width; maxOffsetFrac = largest offset inside the socket as a fraction of the iris width; maxYawDeg / maxPitchDeg = gaze angle that gives the full offset; standoffFrac = how far in front of the eye surface the quad sits (fraction of box depth). eyes.followSpeed 1/s exponential. heavy: a Hit event by the player on bossId with the heavy flag and at least minDamage health lost. groan: an EXISTING cue (effort_voice) pitched down = placeholder (missing: a real wood groan, see READY.md). branch: sourceProp = an EXISTING scene prop that is cloned (z5_root_log_NW, fallen_pillar_3), scaled to targetLengthM, colliders stripped; telegraphS = ground mark time before the landing; radiusM = mark size, damageRadiusM = hurt radius (Joan only unless hurtBoss); dodge i-frames avoid it; nonLethal keeps Joan at 1 HP minimum; maxPerFight and cooldownS cap it (and the shared SurpriseGate allows one surprise per zone visit when useGate is true). proof.forceAtS = harness only (-s4:1): seconds after boss and Joan exist until a scripted heavy hit.",
-  "enabled": false,
+  "enabled": true,
   "log": true,
   "useGate": true,
   "refreshS": 0.5,
@@ -46,9 +46,9 @@
     "chance": 1.0
   },
   "groan": {
-    "cue": "effort_voice",
+    "cue": "boss_timber_creak",
     "gain": 0.9,
-    "rate": 0.4,
+    "rate": 0.45,
     "delayS": 0,
     "shake": "hitHeavy",
     "shakeMul": 1.0
@@ -86,9 +86,9 @@
       "ringWidthFrac": 0.1,
       "innerFill": 0.35,
       "drawDistanceM": 120,
-      "depthM": 6,
-      "maxOpacity": 0.9,
-      "tint": [0.03, 0.02, 0.02]
+      "depthM": 3,
+      "maxOpacity": 0.75,
+      "tint": [0.5, 0.09, 0.04]
     }
   },
   "proof": {

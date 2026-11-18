@@ -1,3 +1,4 @@
+Write-Host 'RETIRED: use gateproof.ps1 / qa_slot.ps1'; exit 1
 $p='C:\Users\dom12\Documents\unity_test_hdrp'; Set-Location $p
 foreach($v in 'HDRP_v99','HDRP_v98'){
   $d="$p\Builds\$v"; Set-Location $d; Remove-Item "$d\verify_out_recheck2" -Recurse -ErrorAction SilentlyContinue

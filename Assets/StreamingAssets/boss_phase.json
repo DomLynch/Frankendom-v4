@@ -12,9 +12,9 @@
    "hpFrac": 0.5,
    "damageMul": 1.0,
    "cue": {
-    "cue": "charge_foe",
-    "gain": 0.4,
-    "rate": 0.85,
+    "cue": "boss_chain_drag",
+    "gain": 0.5,
+    "rate": 0.6,
     "delay": 0.0
    },
    "shake": "hitHeavy",
@@ -45,9 +45,9 @@
    "hpFrac": 0.6,
    "damageMul": 1.0,
    "cue": {
-    "cue": "charge_foe",
-    "gain": 0.5,
-    "rate": 0.7,
+    "cue": "boss_reed_inhale",
+    "gain": 0.6,
+    "rate": 0.65,
     "delay": 0.0
    },
    "shake": "hitHeavy",
@@ -83,9 +83,9 @@
    "hpFrac": 0.6,
    "damageMul": 1.0,
    "cue": {
-    "cue": "charge_foe",
-    "gain": 0.55,
-    "rate": 0.65,
+    "cue": "boss_grendel_howl",
+    "gain": 0.6,
+    "rate": 0.55,
     "delay": 0.0
    },
    "shake": "hitHeavy",
@@ -121,9 +121,9 @@
    "hpFrac": 0.5,
    "damageMul": 1.0,
    "cue": {
-    "cue": "charge_foe",
-    "gain": 0.6,
-    "rate": 0.55,
+    "cue": "boss_timber_creak",
+    "gain": 0.7,
+    "rate": 0.45,
     "delay": 0.0
    },
    "shake": "deathblow",
@@ -154,7 +154,7 @@
    "hpFrac": 0.5,
    "damageMul": 1.0,
    "cue": {
-    "cue": "charge_foe",
+    "cue": "boss_erl_toll",
     "gain": 0.7,
     "rate": 0.5,
     "delay": 0.0

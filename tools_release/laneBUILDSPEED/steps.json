@@ -1,0 +1,100 @@
+{
+  "_about": "laneBUILDSPEED fingerprint config. A step is SKIPPED only when (a) the hash of its inputs equals the hash recorded after its last successful run AND (b) the hash of its outputs still equals the one recorded then (nobody touched the output). Inputs = declared globs + every Assets/ path and *.json name found as a string literal in the step's code files (fp.py scan) + the code files themselves. Indirect reads (through a helper class) are NOT seen by the scan: add them to extraInputs, or list the helper in code. Globs are relative to the project root. Nothing is hard-coded in fp.py.",
+  "stateFile": "_agents/laneBUILDSPEED/_state/fingerprints.json",
+  "dataDir": "Assets/Data",
+  "steps": {
+    "monster": {
+      "about": "MonsterBatch.Run (Unity launch 1): Pitborn capsule + head slot, AttackClipSetup, DodgeClipSetup, FinisherClipSetup, V1FinisherClipSetup, EnemySwap scenes, creature prefabs.",
+      "unity": "MonsterBatch.Run",
+      "code": [
+        "Assets/Editor/MonsterBatch.cs",
+        "Assets/Editor/AttackClipSetup.cs",
+        "Assets/Editor/DodgeClipSetup.cs",
+        "Assets/Editor/FinisherClipSetup.cs",
+        "Assets/Editor/V1FinisherClipSetup.cs",
+        "Assets/Editor/EnemySwap.cs",
+        "Assets/Editor/ZoneCreaturePrefab.cs",
+        "Assets/Editor/SafeIO.cs"
+      ],
+      "extraInputs": [
+        "Assets/Data/attack_clips.json",
+        "Assets/Data/dodge_clips.json",
+        "Assets/Data/clip_sets*.json",
+        "Assets/Data/finishers.json",
+        "Assets/Data/v1_finisher_clips.json",
+        "Assets/Data/enemy_swap.json",
+        "Assets/Data/roster.json",
+        "Assets/Characters/**/*.glb",
+        "Assets/Characters/**/*.fbx",
+        "Assets/Characters/**/Mats/*.mat"
+      ],
+      "outputs": [
+        "Assets/Scenes/HadesSlice_Sobek.unity",
+        "Assets/Characters/**/*.controller",
+        "Assets/Characters/**/*.prefab",
+        "Assets/Prefabs/**/*.prefab"
+      ],
+      "excludeInputs": [
+        "Assets/Scenes/HadesSlice.unity"
+      ]
+    },
+    "zones": {
+      "about": "Zone2BuildBatch.Run (Unity launch 2): one idempotent block per zone_span.json row. Fingerprint is PER ZONE (see zoneRules); the launch is skipped when every zone is clean.",
+      "unity": "Zone2BuildBatch.Run",
+      "perZone": true,
+      "code": [
+        "Assets/Editor/Zone2BuildBatch.cs",
+        "Assets/Editor/Zone2Build.cs",
+        "Assets/Editor/Zone2TerrainStamp.cs",
+        "Assets/Editor/PropsLayout.cs",
+        "Assets/Editor/HdrpGltfMats.cs",
+        "Assets/Scripts/Zones/ZoneSpan.cs"
+      ],
+      "zoneSpanFile": "Assets/Data/zone_span.json",
+      "zoneRules": {
+        "rowKey": "zones",
+        "idKey": "id",
+        "rootKey": "root",
+        "layoutKey": "layout",
+        "layoutDir": "Assets/Data",
+        "globalInputs": [
+          "Assets/Data/zone_span.json#build",
+          "Assets/Data/props_layout.json",
+          "Assets/Env/World/Terrain/**/*.asset",
+          "Assets/Env/World/Terrain/**/*.glb",
+          "Assets/Env/World/**/*.mat"
+        ]
+      },
+      "outputs": [
+        "Assets/Scenes/HadesSlice.unity"
+      ],
+      "outputsAreShared": true,
+      "excludeInputs": [
+        "Assets/Scenes/HadesSlice.unity",
+        "Assets/Data/zone_span.json"
+      ],
+      "_excludeNote": "zone_span.json is hashed per row (zoneRules) plus its 'build' block (globalInputs #build), not as a whole file, or one zone edit would dirty every zone."
+    },
+    "player": {
+      "about": "Player build (Unity launch 3: HdrpBatch.Production chain + BuildPipeline). Not skippable by fingerprint here; if the ONLY change since the last good build is StreamingAssets / Assets/Data json, use deploy_data.ps1 instead.",
+      "unity": "HdrpBatch.Production",
+      "code": [
+        "Assets/Editor/HdrpBatch.cs",
+        "Assets/Editor/BuildPlayer.cs",
+        "Assets/Editor/BuildCfg.cs"
+      ],
+      "extraInputs": [
+        "Assets/Scripts/**/*.cs",
+        "Assets/Scenes/*.unity",
+        "Assets/Resources/**/*",
+        "Assets/Shaders/**/*",
+        "Assets/VFX/**/*.shader",
+        "ProjectSettings/*.asset",
+        "Packages/manifest.json",
+        "Tools/build_config.json"
+      ],
+      "outputs": []
+    }
+  },
+  "_excludeInputsNote": "excludeInputs: scanned/declared inputs that the step (or an earlier chain step) also WRITES. Counting them would make the step dirty after its own run. Risk: a scene reverted by hand is not noticed; use --force monster|zones then."
+}

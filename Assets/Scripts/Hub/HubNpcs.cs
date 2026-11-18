@@ -183,11 +183,12 @@ public sealed class HubNpcs : MonoBehaviour
         if (bodyFile == null) { Debug.LogWarning("[Hub] npc " + row.id + ": body GLB not found (runtime.glb / sources in hub.json)"); return false; }
         n.go = new GameObject("npc_" + row.id); n.go.transform.SetParent(parent, false); n.go.SetActive(false);   // off until placed: no frame shows it at the origin
         var body = new GameObject(S.bodyName); body.transform.SetParent(n.go.transform, false);
-        var pre = GlbPreload.Take(bodyFile); GLTFast.GltfImport got = null;   // CAMPNPC v1: parsed during the intro (perf_fixes.json C3.files); only the instantiate is left
+        var pre = GlbPreload.Take(bodyFile, !hiddenLoad); GLTFast.GltfImport got = null;   // CAMPNPC v1: parsed during the intro (perf_fixes.json C3.files); only the instantiate is left
+        if (pre == null && GlbPreload.Claim(bodyFile)) pre = GlbPreload.Take(bodyFile, !hiddenLoad);   // PRELOADHITCH v1 (C3.lateSmooth): the late tier has not reached this file yet: start the ONE parse now (smooth agent), the late tier skips it
         if (pre != null) { try { got = await pre; } catch (Exception) { got = null; } }
         if (S.logLoads) Debug.Log("[Hub] npc " + row.id + (got != null ? ": parsed import taken from GlbPreload" : ": no preloaded import, parsing now (a hitch)"));
         if (got != null) n.body = new GltfHold { imp = got };
-        else { n.body = new GltfHold { imp = new GLTFast.GltfImport() }; if (!await n.body.imp.LoadFile(bodyFile)) return false; }
+        else { n.body = new GltfHold { imp = new GLTFast.GltfImport(deferAgent: GlbPreload.ConsumerAgent()) }; if (!await n.body.imp.LoadFile(bodyFile)) return false; }
         if (!await n.body.imp.InstantiateMainSceneAsync(body.transform)) return false;
         TexShare.Apply(body, bodyFile);   // TEXSHARE v1
         if (row.runtime.clipGlb.Length > 0 || row.runtime.clipSources.Length > 0)
@@ -196,7 +197,7 @@ public sealed class HubNpcs : MonoBehaviour
             if (clipFile == null) Debug.LogWarning("[Hub] npc " + row.id + ": clip GLB not found, the body stays in its pose");
             else
             {
-                n.clip = new GltfHold { imp = new GLTFast.GltfImport() };
+                n.clip = new GltfHold { imp = new GLTFast.GltfImport(deferAgent: GlbPreload.ConsumerAgent()) };
                 if (await n.clip.imp.LoadFile(clipFile))
                 {
                     var clips = n.clip.imp.GetAnimationClips(); AnimationClip pick = null;

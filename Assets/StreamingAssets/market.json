@@ -681,8 +681,8 @@
       "anchor": {
         "zone": "",
         "spot": "",
-        "x": 2.3,
-        "z": 90.0
+        "x": 4.68,
+        "z": 91.81
       },
       "radius": 2.2,
       "promptRadius": 8.0,
@@ -801,8 +801,8 @@
       "anchor": {
         "zone": "",
         "spot": "",
-        "x": 2.3,
-        "z": 333.0
+        "x": 3.45,
+        "z": 334.24
       },
       "radius": 3.0,
       "promptRadius": 8.0,

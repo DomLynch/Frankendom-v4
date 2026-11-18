@@ -1,0 +1,8 @@
+﻿{
+  "_about": "Machine paths (HCKIT5 v95, HC4 K9). Read by Assets/Editor/ProjectPaths.cs and Tools/paths.py; json / tools write ${kitsOut}/... instead of an absolute path. Values below = the literals the project used before. NOT in Assets/ (does not ship).",
+  "projectRoot": "",
+  "kitsOut": "C:/Users/<USERNAME>/Documents/kits_out",
+  "unityExe": "C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Unity.exe",
+  "blenderExe": "C:/Program Files/Blender Foundation/Blender 5.2/blender.exe",
+  "handoverDir": "C:/HANDOVER-Macbook"
+}

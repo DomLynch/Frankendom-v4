@@ -1,3 +1,4 @@
+Write-Host 'RETIRED: use gateproof.ps1 / qa_slot.ps1'; exit 1
 $p='C:\Users\dom12\Documents\unity_test_hdrp'; $d="$p\Builds\HDRP_v100"; $sa="$d\HadesSlice_Data\StreamingAssets"
 $t=0; while(-not (Test-Path "$d\chain_done.txt") -and $t -lt 3600){ Start-Sleep 15; $t+=15 }
 Get-Process HadesSlice -ErrorAction SilentlyContinue | % { $_.WaitForExit(600000) | Out-Null }

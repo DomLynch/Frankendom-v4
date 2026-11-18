@@ -20,7 +20,7 @@
    "damageMul": 1.0,
    "takenMul": 1.0,
    "specialDamageMul": 0.65,
-   "specialCooldownTicks": 1500,
+   "specialCooldownTicks": 0,
    "specialInitialCooldownTicks": 900,
    "specialMaxUses": 0
   },

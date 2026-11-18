@@ -41,7 +41,7 @@
       "character": "NpcMarshWarden",
       "_why": "ALIAS + MONSTERLOOK PILOT (17 Nov night, proven in log ptb335-337): NpcReedSkirmisher prefab wearing the vendor_c2 body. look.enabled false = dark: no spawn row uses this id yet and the model is not preloaded. Switch on with enabled true and point a spawn pick at NpcMarshWarden.",
       "look": {
-        "enabled": false,
+        "enabled": true,
         "model": "MonsterLook/NpcMarshWarden/NpcMarshWarden_look.glb",
         "parts": [
           {
@@ -199,7 +199,53 @@
     },
     { "character": "NpcPitGladiator",
       "_why": "Dom via Strategy 15 Nov: bright red / gold centurion out of palette. Cloth oxblood, gold aged bronze, skin slightly calmer (k19 recolour.py). Revert: delete this row.",
-      "materials": [ { "match": "npcpitgladiator_body", "baseColor": [1,1,1], "smoothness": -1, "metallic": -1, "albedoBlob": "", "albedoTexture": "CharTex/npcpitgladiator_body_base_graded.jpg" } ] }
+      "materials": [ { "match": "npcpitgladiator_body", "baseColor": [1,1,1], "smoothness": -1, "metallic": -1, "albedoBlob": "", "albedoTexture": "CharTex/npcpitgladiator_body_base_graded.jpg" } ] },
+    {
+      "character": "NpcFenWitch",
+      "_why": "ALIAS + MONSTERLOOK (newenemies_kit, 18 Nov): alias of a donor prefab wearing a delivered body. look.enabled false = dark; switch on with enabled true and a spawn pick at NpcFenWitch.",
+      "look": {
+        "enabled": true,
+        "model": "MonsterLook/NpcFenWitch/NpcFenWitch_look.glb",
+        "parts": [
+          {
+            "renderer": "Body",
+            "mesh": "Body",
+            "slots": [
+              {
+                "slot": 0,
+                "glbMaterial": "tripo_material",
+                "baseMap": "MonsterLook/NpcFenWitch/witch_basecolor.bc7",
+                "normalMap": "MonsterLook/NpcFenWitch/witch_normal.bc7",
+                "maskMap": "MonsterLook/NpcFenWitch/witch_rm.bc7"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "character": "NpcAshReaver",
+      "_why": "ALIAS + MONSTERLOOK (newenemies_kit, 18 Nov): alias of a donor prefab wearing a delivered body. look.enabled false = dark; switch on with enabled true and a spawn pick at NpcAshReaver.",
+      "look": {
+        "enabled": true,
+        "model": "MonsterLook/NpcAshReaver/NpcAshReaver_look.glb",
+        "parts": [
+          {
+            "renderer": "Body",
+            "mesh": "Body",
+            "slots": [
+              {
+                "slot": 0,
+                "glbMaterial": "tripo_material",
+                "baseMap": "MonsterLook/NpcAshReaver/reaver_basecolor.bc7",
+                "normalMap": "MonsterLook/NpcAshReaver/reaver_normal.bc7",
+                "maskMap": "MonsterLook/NpcAshReaver/reaver_rm.bc7"
+              }
+            ]
+          }
+        ]
+      }
+    }
   ],
   "lookGlobal": {
     "enabled": true,

@@ -13,7 +13,7 @@
   },
   "colors": {
     "ink": [0.93, 0.90, 0.84, 1.0],
-    "dim": [0.62, 0.60, 0.56, 0.9],
+    "dim": [0.84, 0.81, 0.74, 1.0],
     "charcoal": [0.035, 0.035, 0.04, 0.78],
     "crimson": [0.62, 0.07, 0.09, 1.0],
     "gold": [0.86, 0.69, 0.30, 1.0],
@@ -65,13 +65,13 @@
   },
   "stance": {
     "_about": "Bottom-left stance indicator: caption, a diamond + the stance name in its stances.json colour (small caps), a dim key hint. The switch toast (stance name, lower centre) is drawn here too. enabled = false gives the old StanceLayer label back.",
-    "enabled": true, "x": 48, "bottom": 58, "caption": "STANCE", "captionSize": 16, "nameSize": 24, "nameSmall": 18, "tracking": 2.4, "diamond": 10, "hint": "3 / 4", "hintSize": 16,
+    "enabled": true, "x": 48, "bottom": 58, "caption": "STANCE", "captionSize": 19, "nameSize": 27, "nameSmall": 20, "tracking": 2.4, "diamond": 12, "hint": "3 / 4", "hintSize": 20,
     "toastSize": 24, "toastSmall": 18, "toastY": 0.70
   },
   "specials": {
     "_about": "Bottom-right: the two special-move icons (special 1, special 2 of the player's DuelFighter). Round dark icon, thin ring (gold when ready), glyph (slash, crescent, cross, anything else = diamond), a clockwise pie + seconds while cooling down, a flash ring when ready again. cooldownTicks = the full cooldown the pie is measured against (the larger of this and the biggest value seen is used); ticksPerSecond = sim rate (60 Hz).",
     "enabled": true,
-    "right": 52,
+    "right": 100,
     "bottom": 72,
     "size": 56,
     "gap": 92,
@@ -80,9 +80,9 @@
     "ticksPerSecond": 60,
     "cooldownTicks": 540,
     "readyFlashS": 0.55,
-    "keySize": 13,
-    "cdSize": 19,
-    "keyDy": 6,
+    "keySize": 18,
+    "cdSize": 23,
+    "keyDy": 8,
     "pieSteps": 48,
     "items": [
       {
@@ -120,8 +120,8 @@
   "hint": {
     "_about": "Controls panel: hidden until F1 (toggleKey) is pressed; F1 again hides it. showSeconds > 0 would also show it that long after the fight starts (delayS after the start); 0 = F1 only. cornerText = a small dim 'F1  Controls' under the stance line for the first cornerSeconds of a fight. Rows are the real keys (PlayerBrain.cs, dodge.json, flow.json, controls.json).",
     "enabled": true, "toggleKey": "F1", "delayS": 0.9, "showSeconds": 0.0, "fadeSeconds": 0.25,
-    "columns": 2, "colWidth": 330, "rowHeight": 22, "fontSize": 14, "keyWidth": 130, "margin": 48, "bottom": 96, "pad": 14, "panelAlpha": 0.72,
-    "title": "CONTROLS", "titleSize": 17, "footer": "F1 hide", "footerSize": 12, "cornerText": "F1  Controls", "cornerSize": 11, "cornerSeconds": 12.0, "cornerAlpha": 0.5,
+    "columns": 2, "colWidth": 380, "rowHeight": 27, "fontSize": 18, "keyWidth": 160, "margin": 48, "bottom": 96, "pad": 16, "panelAlpha": 0.86,
+    "title": "CONTROLS", "titleSize": 17, "footer": "F1 hide", "footerSize": 12, "cornerText": "F1  Controls", "cornerSize": 15, "cornerSeconds": 12.0, "cornerAlpha": 0.9,
     "rows": [
       { "k": "WASD", "a": "Move" },
       { "k": "Shift", "a": "Run" },
@@ -136,7 +136,7 @@
       { "k": "RMB / Q / pad LB", "a": "Guard (tap early: parry)" },
       { "k": "Slide / arrows", "a": "Guard side: left, right, top" },
       { "k": "B", "a": "Riposte after a parry" },
-      { "k": "1 / 2 (Z / X)", "a": "Specials (pad Y / X)" },
+      { "k": "1 / 2 (Z / X)", "a": "Weapon moves (pad Y / X), they change with the weapon" },
       { "k": "3 / 4, wheel", "a": "Stance" },
       { "k": "Backspace", "a": "Restart fight" },
       { "k": "F3", "a": "FPS" }
@@ -182,10 +182,10 @@
   "layout": {
     "_about": "HCKIT6 v100 (HC3 K13): layout factors GameHUD.cs / HudDraw.cs held as literals (line heights = x font size, px gaps, alphas); every value equals the old literal. nameLine = name row height x nameSize (player + boss); title* = boss ladder title; cue* = cue text under the boss bar; caption* / diamond* / hint* / toast* = stance block; corner* = key hint corner text; keys* = the controls panel; iconBack / pieShade / icon* / cd* / flash* / keyLabel* = special icons; guard* = guard-direction centre dot and ring; spaceW (width of a space = x width of 'a'), lineH, shadowDiv, runPad, capsCache = HudDraw small caps.",
     "nameLine": 1.35, "bossMinW": 300, "titleBox": 1.5, "titleAdvance": 1.4, "cueLift": 2, "cueSmallDelta": 3, "cueTracking": 3,
-    "captionLift": 1.5, "captionW": 200, "captionH": 1.6, "diamondLine": 1.1, "diamondDx": 1, "diamondGap": 8, "hintGap": 16, "hintW": 160, "hintH": 1.6, "hintAlpha": 0.8, "hintDy": 0.2, "toastTracking": 1.5,
+    "captionLift": 1.5, "captionW": 200, "captionH": 1.6, "diamondLine": 1.1, "diamondDx": 1, "diamondGap": 8, "hintGap": 16, "hintW": 160, "hintH": 1.6, "hintAlpha": 1.0, "hintDy": 0.2, "toastTracking": 1.5,
     "cornerFadeS": 1.5, "cornerDy": 1.5, "cornerW": 260, "cornerH": 1.6,
-    "keysPanel": [0.02, 0.02, 0.025], "keysLinePx": 1, "keysTitleTracking": 3, "keysTitleDy": 0.6, "keysTitleLine": 1.7, "keysTitleSmall": 3, "keysRowInk": 0.9, "keysFooterLine": 1.8, "keysFooterBox": 1.6, "keysFooterLift": 2, "keysFooterAdvance": 1.7,
-    "iconBack": [0.025, 0.025, 0.03, 0.86], "pieShade": [0.0, 0.0, 0.0, 0.62], "iconInk": 0.95, "iconCoolAlpha": 0.75, "cdInk": 0.95, "flashBase": 1.1, "flashGrow": 0.35, "keyLabelPad": 20, "keyLabelBox": 1.6, "keyLabelInk": 0.85,
+    "keysPanel": [0.02, 0.02, 0.025], "keysLinePx": 1, "keysTitleTracking": 3, "keysTitleDy": 0.6, "keysTitleLine": 1.7, "keysTitleSmall": 3, "keysRowInk": 1.0, "keysFooterLine": 1.8, "keysFooterBox": 1.6, "keysFooterLift": 2, "keysFooterAdvance": 1.7,
+    "iconBack": [0.025, 0.025, 0.03, 0.86], "pieShade": [0.0, 0.0, 0.0, 0.62], "iconInk": 0.95, "iconCoolAlpha": 0.75, "cdInk": 0.95, "flashBase": 1.1, "flashGrow": 0.35, "keyLabelPad": 46, "keyLabelBox": 1.6, "keyLabelInk": 1.0,
     "guardDotCentre": 1.25, "guardRingPx": 0.5,
     "spaceW": 0.55, "lineH": 1.45, "shadowDiv": 14, "runPad": 6, "capsCache": 400
   }

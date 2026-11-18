@@ -1,3 +1,4 @@
+Write-Host 'RETIRED: use gateproof.ps1 / qa_slot.ps1'; exit 1
 $p='C:\Users\dom12\Documents\unity_test_hdrp'
 & powershell -ExecutionPolicy Bypass -File $p\Tools\run_v88.ps1
 if((Test-Path "$p\Builds\HDRP_v88\HadesSlice.exe") -and (Test-Path "$p\Builds\HDRP_v88\HadesSlice_Data\StreamingAssets") -and -not (Select-String -Path "$p\TestOut\v88_Build.log" -Pattern "Build Finished, Result: Failure" -Quiet)){

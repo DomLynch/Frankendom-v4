@@ -1,0 +1,96 @@
+{
+  "_about": "HCKIT3 v93: THE one build-identity / build-chain config. Read by Assets/Editor/BuildCfg.cs + BuildPlayer.cs + HdrpBatch.cs + JoanSwap.cs (path Tools/build_config.json, relative to the project root = Unity batch cwd) and by every Tools/*.ps1 through Tools/lib/hckit3_common.ps1. Dev/release options and the scene list stay in Assets/Data/build.json (that file ships in the player, this one does not). Dom 2026-11-05: exe name stays HadesSlice for now (no exe/icon/splash change yet): to rename the exe change build.exeName HERE ONLY. productName/companyName also move Application.persistentDataPath (saves, rebinds, finisher_rotation.json, Player.log) from LocalLow/DefaultCompany/HadesSlice to LocalLow/<companyName>/<productName>.",
+  "identity": {
+    "companyName": "Dom Games",
+    "productName": "Frankendom",
+    "bundleVersion": "",
+    "iconPath": "",
+    "showUnitySplash": -1
+  },
+  "build": {
+    "exeName": "HadesSlice.exe",
+    "buildRoot": "Builds",
+    "buildDirPrefix": "HDRP_",
+    "defaultDir": "Builds/HDRP_ultra",
+    "writeBuildInfo": true,
+    "editorOnlyData": [ "joan_swap.json", "mhhead_attach.json", "character_setup.json", "v1_finisher_clips.json", "occlusion.json", "perf_mem_build.json" ],
+    "reportStaleStreaming": true,
+    "pruneStaleStreaming": false
+  },
+  "player": {
+    "fullScreenMode": "FullScreenWindow",
+    "resizableWindow": true,
+    "runInBackground": true,
+    "defaultWidth": 1920,
+    "defaultHeight": 1080,
+    "graphicsApi": "Direct3D12"
+  },
+  "paths": {
+    "unityExe": "C:/Program Files/Unity/Hub/Editor/6000.6.7f1/Editor/Unity.exe",
+    "projectRoot": "",
+    "testOutDir": "TestOut"
+  },
+  "io": {
+    "_about": "LOCKFIX v103: Assets/Editor/SafeIO.cs settings (retry of Win32 1224 'user-mapped section open' and other lock errors on Editor build-time writes). Missing = these defaults.",
+    "attempts": 8,
+    "initialDelayMs": 50,
+    "backoffFactor": 2.0,
+    "maxDelayMs": 2000,
+    "maxTotalMs": 20000,
+    "jitterPct": 0.25,
+    "retryWin32": [ 1224, 32, 33, 5 ],
+    "skipIfIdentical": true,
+    "viaTemp": true,
+    "renameAside": true,
+    "inPlaceFallback": false,
+    "tempSuffix": "~",
+    "asideSuffix": ".stale~",
+    "copyMtimeFromSource": 1,
+    "logRetries": true,
+    "onExhausted": "throw"
+  },
+  "chain": {
+    "name": "Production",
+    "legacyAlias": "V51",
+    "_flags": "HdrpBatch.Production steps. Defaults = what HdrpBatch.V51 does today (true) plus the steps V51 skips (false). Turn a step on/off here, not in code.",
+    "controlsInputAxes": true,
+    "alwaysIncludeShaders": true,
+    "attackClipSetup": true,
+    "dodgeClipSetup": true,
+    "guardLayerSetup": true,
+    "woundDecalRef": true,
+    "v1FinisherClipSetup": true,
+    "finisherClipSetup": false,
+    "finisherReadable": false,
+    "joanSwap": false,
+    "gltfMats": true,
+    "worldMats": true,
+    "bridgeMats": true,
+    "look": true,
+    "hdrpShot": true,
+    "ground": true,
+    "propsLayout": true,
+    "doorway": true,
+    "charLayer": true,
+    "occlusion": true,
+    "perfMem": true,
+    "deckDiag": true,
+    "deckDiagArea": { "center": [0, 0, 15], "size": [18, 100, 38] }
+  },
+  "swap": {
+    "templateId": "Dracula",
+    "_about": "JoanSwap clone template (roster id). Today 'Dracula' (the scene object whose component set is cloned). Dom: no Dracula ENEMY, but the template object stays in the scene until a neutral template exists. Precedence: -swapTemplate:<id> on the Unity command line, then this value, then joan_swap.json templateId (legacy)."
+  },
+  "batch": {
+    "unityArgs": [ "-batchmode", "-quit", "-accept-apiupdate", "-silent-crashes" ],
+    "buildTimeoutSec": 1500,
+    "buildFailedMarker": "Build Finished, Result: Failure"
+  },
+  "preSteps": {
+    "finisher": { "method": "FinisherClipSetup.RunBatch", "tag": "fin",  "logSuffix": "FinClips", "timeoutSec": 1500 },
+    "joan":     { "method": "JoanSwap.RunAllBatch",        "tag": "joan", "logSuffix": "Joan",     "timeoutSec": 1200 },
+    "attack":   { "method": "AttackClipSetup.Run",         "tag": "atk",  "logSuffix": "AttackClips", "timeoutSec": 1200 },
+    "dodge":    { "method": "DodgeClipSetup.Run",          "tag": "dodge","logSuffix": "DodgeClips",  "timeoutSec": 1200 },
+    "noop":     { "method": "HdrpBatch.Noop",              "tag": "noop", "logSuffix": "Noop",     "timeoutSec": 900 }
+  }
+}

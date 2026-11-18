@@ -1,0 +1,1537 @@
+{
+ "accepted": {
+  "Combat\\CombatCues.cs": {
+   "code": {
+    "date": "2026-11-09",
+    "n": 15,
+    "reason": "TOP20A: field defaults mirror combat_cues.json (seconds, sizeFrac, yFrac, edge*) plus structural constants (scan intervals, pulse maths); all tunables are in data"
+   },
+   "code_color": {
+    "date": "2026-11-09",
+    "n": 3,
+    "reason": "TOP20A: colour defaults of the combat_cues.json fields (wrongColor/exhaustedColor); the shipped values live in combat_cues.json, the field defaults only apply with no file"
+   }
+  },
+  "DataWatcher.cs": {
+   "code": {
+    "date": "2026-11-11",
+    "n": 1,
+    "reason": "laneDATA1 reviewed: reflection-based reload calls, no gameplay hardcode"
+   }
+  },
+  "Diag\\GroundScan.cs": {
+   "code": {
+    "date": "2026-11-11",
+    "n": 4,
+    "reason": "diagnostic arg-only renderer scan"
+   },
+   "code_path": {
+    "date": "2026-11-11",
+    "n": 0,
+    "reason": "diag"
+   }
+  },
+  "Diag\\LightDump.cs": {
+   "code": {
+    "date": "2026-11-11",
+    "n": 3,
+    "reason": "diagnostic arg-only light off switch"
+   }
+  },
+  "Diag\\TerrainHeight.cs": {
+   "code": {
+    "date": "2026-11-11",
+    "n": 8,
+    "reason": "diagnostic arg-only height log"
+   }
+  },
+  "FootGround.cs": {
+   "code": {
+    "date": "2026-11-10",
+    "n": 2,
+    "reason": "laneFEETFIX levelMaxDeg gate: +2 literals (LevelGate thresholds 0.6 / 1.0 in the 5-line method), data key levelMaxDeg 20 in foot_ground.json"
+   }
+  },
+  "FpsNext.cs": {
+   "code": {
+    "date": "2026-11-07",
+    "n": 3,
+    "reason": "fallback defaults of applyAfterFrames/recheckEveryFrames mirrored in fps_next.json; 16/24/32 are the legal depth-bit values being validated, not tunables"
+   }
+  },
+  "Hub\\NpcLife.cs": {
+   "code": {
+    "date": "2026-11-11",
+    "n": 10,
+    "reason": "laneNPCLIFE reader: timings/weights come from npc_life.json, remaining literals are defaults"
+   },
+   "code_clipname": {
+    "date": "2026-11-11",
+    "n": 1,
+    "reason": "idle state name is the HubNpcs base clip"
+   }
+  },
+  "Loot\\BossSilver.cs": {
+   "code_path": {
+    "date": "2026-11-08",
+    "n": 1,
+    "reason": "config file name literal, same streamingAssetsPath + Data fallback pattern every Cfg loader uses"
+   }
+  },
+  "MatAdjustRuntime.cs": {
+   "code": {
+    "date": "2026-11-11",
+    "n": 4,
+    "reason": "laneDATA4 reviewed: material property names"
+   }
+  },
+  "Menu\\MenuLayoutCfg.cs": {
+   "code": {
+    "date": "2026-11-08",
+    "n": 2,
+    "reason": "UIDATA B config defaults equal the old literals by design (menu_layout.json carries them)"
+   }
+  },
+  "Mount\\AmbientHorses.cs": {
+   "code": {
+    "date": "2026-11-08",
+    "n": 2,
+    "reason": "7919 = hash prime and 360 = degrees in a random-yaw/seed expression (maths constants, not tuning)"
+   }
+  },
+  "PavingLower.cs": {
+   "code": {
+    "date": "2026-11-07",
+    "n": 2,
+    "reason": "fallback defaults dropM/retryFrames mirrored in paving_lower.json; 13/12 are the lengths of the -pavinglower:/-pavingdrop: arg prefixes"
+   }
+  },
+  "Physics\\HitReactKnock.cs": {
+   "code_path": {
+    "date": "2026-11-07",
+    "n": 1,
+    "reason": "config loader reads physics.json like HitReact.cs"
+   }
+  },
+  "Physics\\PhysWeapon.cs": {
+   "code_clipname": {
+    "date": "2026-11-07",
+    "n": 2,
+    "reason": "HDRP shader property names"
+   },
+   "code_path": {
+    "date": "2026-11-07",
+    "n": 1,
+    "reason": "config loader reads physweapon.json"
+   }
+  },
+  "Vis\\ZoneGroundMat.cs": {
+   "code": {
+    "date": "2026-11-11",
+    "n": 4,
+    "reason": "reviewed unity-dev2 2026-11-11: shader property ids and safe defaults for a data-driven override (values live in zone_ground_mat.json)"
+   },
+   "code_clipname": {
+    "date": "2026-11-11",
+    "n": 6,
+    "reason": "reviewed unity-dev2 2026-11-11: shader property names (_BaseColor etc.) and texture slot names in a data-driven material override, no animation clips"
+   }
+  },
+  "Zones/ZoneCharSep.cs": {
+   "code": {
+    "date": "2026-11-10",
+    "n": 0,
+    "reason": "V14 kit: tuning literals (smoothing guards) in a dark-by-default character separation rig; values are data-driven where it matters"
+   }
+  },
+  "Zones\\AccentLights.cs": {
+   "code": {
+    "date": "2026-11-10",
+    "n": 2,
+    "reason": "laneV11 data-class defaults mirror accent_lights.json (data-driven AccentLights, unity-build accepted 2026-11-10)"
+   }
+  },
+  "Zones\\LockSwitch.cs": {
+   "code": {
+    "date": "2026-11-11",
+    "n": 5,
+    "reason": "reviewed unity-dev2 2026-11-11: serializable config class defaults (values live in lock_switch.json) and -lockswitchproof harness offsets"
+   }
+  },
+  "Zones\\PropsOverlay.cs": {
+   "code": {
+    "date": "2026-11-11",
+    "n": 3,
+    "reason": "laneDATA3 reviewed"
+   },
+   "code_path": {
+    "date": "2026-11-11",
+    "n": 1,
+    "reason": "laneDATA3 reviewed: json path"
+   }
+  },
+  "Zones\\ZoneCharSep.cs": {
+   "code": {
+    "date": "2026-11-10",
+    "n": 7,
+    "reason": "laneV14 rig tuning literals mirror character_sep.json defaults; dark by default (unity-build accepted 2026-11-10)"
+   }
+  },
+  "Zones\\ZoneLook.cs": {
+   "code": {
+    "date": "2026-11-09",
+    "n": 31,
+    "reason": "VIS1: field defaults mirror look_zones.json plus structural constants; all tunables are in look_zones.json; master enabled=false"
+   },
+   "code_color": {
+    "date": "2026-11-09",
+    "n": 2,
+    "reason": "VIS1: field defaults mirror look_zones.json (the shipped values live in data; defaults only apply with no file); master enabled=false"
+   }
+  },
+  "Zones\\ZoneUiCfg.cs": {
+   "code_path": {
+    "date": "2026-11-08",
+    "n": 1,
+    "reason": "UIDATA C config default path literal equals the old literal by design (zone_ui.json)"
+   }
+  }
+ },
+ "files": {
+  "ArcFx.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 2
+  },
+  "ArenaBounceFill.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "ArenaLimits.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "ArmHold.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "AtmosFlicker.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Audio\\AudioMix.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "CamFraming.cs": {
+   "code": 5,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "CamOcclusion.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "CamReframe.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "CamShake.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "CameraDeath.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "CameraImpact.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "CameraRig.cs": {
+   "code": 10,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 3
+  },
+  "CombatSlowMo.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\AIBrain.cs": {
+   "code": 13,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\AiAdapt.cs": {
+   "code": 11,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\AiDial.cs": {
+   "code": 11,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\AiRead.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\AiStance.cs": {
+   "code": 6,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\AiTactic.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\AnimBlend.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\AttackClipTable.cs": {
+   "code": 6,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 2
+  },
+  "Combat\\AudioManifest.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\BellyBite.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\BloodBurst.cs": {
+   "code": 6,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 1
+  },
+  "Combat\\BloodEdge.cs": {
+   "code": 6,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 1,
+   "code_path": 1
+  },
+  "Combat\\BloodGround.cs": {
+   "code": 12,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\BloodShapes.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\BloodTable.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\ClashFx.cs": {
+   "code": 19,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 6,
+   "code_color": 2,
+   "code_path": 1
+  },
+  "Combat\\ClashFxSheetRefs.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\CombatClass.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\CombatData.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\CombatFeel.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 2
+  },
+  "Combat\\CombatHudBars.cs": {
+   "code": 12,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 4
+  },
+  "Combat\\CombatVFX.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\ControlsTable.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\CueBus.cs": {
+   "code": 5,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\CueTable.cs": {
+   "code": 7,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\DeathTable.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 2
+  },
+  "Combat\\DifficultyTable.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\DirectionalGuard.cs": {
+   "code": 6,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\DirectionalInput.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\DodgeTable.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\Duel.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\DuelFighter.cs": {
+   "code": 33,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 4
+  },
+  "Combat\\DuelFighterBot65.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\DuelFighterDir.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\DuelFighterFlow.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\DuelFighterParry.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\DuelFighterPoise.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\DuelFighterWeapon.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\FightBalance.cs": {
+   "code": 7,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\Flinch.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\FlowBot.cs": {
+   "code": 8,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\FlowHud.cs": {
+   "code": 23,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 3
+  },
+  "Combat\\FlowTable.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 2
+  },
+  "Combat\\FxMaterials.cs": {
+   "code": 5,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 10,
+   "code_color": 2,
+   "code_path": 1
+  },
+  "Combat\\GameConfig.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\GuardTorsoTurn.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\HitAnchor.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\HitFeel.cs": {
+   "code": 24,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 5,
+   "code_color": 1,
+   "code_path": 1
+  },
+  "Combat\\HitFlash.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 1
+  },
+  "Combat\\HitReactionTable.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\HitVfxCfg.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\ImpactTable.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\MoveDefsOverlay.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\MoveTable.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\MoveVariants.cs": {
+   "code": 8,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\PlayerBrain.cs": {
+   "code": 7,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\PoiseTable.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 2
+  },
+  "Combat\\PostureTable.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 1,
+   "code_path": 1
+  },
+  "Combat\\PresentationClock.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\RagdollDeath.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Combat\\RuleTable.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\ShoveTable.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\TouchControls.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\TouchRelease.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\ViewInterp.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Combat\\WoundDecals.cs": {
+   "code": 21,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 13,
+   "code_color": 1
+  },
+  "Combat\\WoundSystem.cs": {
+   "code": 10,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 1
+  },
+  "Combat\\WoundTable.cs": {
+   "code": 10,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Controls\\InputMap.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "CrackFlicker.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "DataPath.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "DoorGlowCard.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 9,
+   "code_color": 1,
+   "code_path": 1
+  },
+  "DoorwayFlicker.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "FeetBurst.cs": {
+   "code": 8,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "FeetClip.cs": {
+   "code": 6,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Fighter.cs": {
+   "code": 6,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "FighterLod.cs": {
+   "code": 5,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "FighterScale.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Finishers\\CutLod.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Finishers\\FinVis.cs": {
+   "code": 27,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 17
+  },
+  "Finishers\\FinisherBody.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Finishers\\FinisherBodyCfg.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Finishers\\FinisherCamera.cs": {
+   "code": 33,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Finishers\\FinisherCleave.cs": {
+   "code": 39,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 5
+  },
+  "Finishers\\FinisherGround.cs": {
+   "code": 13,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Finishers\\FinisherLook.cs": {
+   "code": 11,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Finishers\\FinisherPiece.cs": {
+   "code": 9,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Finishers\\FinisherPlayer.cs": {
+   "code": 20,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 1
+  },
+  "Finishers\\FinisherRotationStore.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Finishers\\FinisherTime.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Finishers\\FinisherTypes.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Finishers\\FinisherVictimLook.cs": {
+   "code": 6,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Finishers\\FinisherVignette.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Finishers\\GoreFx.cs": {
+   "code": 28,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 13,
+   "code_color": 1
+  },
+  "Finishers\\MeshCut.cs": {
+   "code": 14,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 5
+  },
+  "Finishers\\MeshCutCrown.cs": {
+   "code": 12,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 1
+  },
+  "Finishers\\RTFinisher.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 1
+  },
+  "Finishers\\SeveredHeadArc.cs": {
+   "code": 8,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Finishers\\V1Extras.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Flicker.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "FogSsgiTuning.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "FollowBehind.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "FootGround.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "FootYaw.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "FrameRateCap.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "FurnaceFlicker.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "FxPrewarm.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "GameHUD.cs": {
+   "code": 23,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "GameLoop.cs": {
+   "code": 50,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 4
+  },
+  "GameSettings.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "GatewayCameraShake.cs": {
+   "code": 9,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "GatewayRift.cs": {
+   "code": 44,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 1
+  },
+  "GatewayTable.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 2
+  },
+  "Gear\\GearAssetLoader.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Gear\\GearAttach.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Gear\\GearDrop.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Gear\\GearHooks.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Gear\\GearJson.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Gear\\GearMask.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Gear\\GearMaterials.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 6
+  },
+  "Gear\\GearSlots.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Gear\\GearTable.cs": {
+   "code": 9,
+   "code_bone": 1,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 2
+  },
+  "Gear\\ShieldMount.cs": {
+   "code": 6,
+   "code_bone": 2,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Gear\\TwoHandIK.cs": {
+   "code": 5,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Gear\\WeaponDrop.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Gear\\WeaponSwap.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "GeoLod.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "GlbPreload.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "GripPose.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "HeadClamp.cs": {
+   "code": 6,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Health.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Hub\\HubCfg.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Hub\\HubCore.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Hub\\HubNpcs.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Hub\\HubSafe.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Hub\\HubTrade.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Hub\\MarketBuy.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "HudCfg.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "HudDraw.cs": {
+   "code": 117,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 2
+  },
+  "LadderResolve.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "LookData.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "LookOptions.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 4,
+   "code_path": 1
+  },
+  "Loot\\LootCfg.cs": {
+   "code": 10,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Loot\\LootContracts.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Loot\\LootDraw.cs": {
+   "code": 5,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 2
+  },
+  "Loot\\LootGearAdapter.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Loot\\LootPickup.cs": {
+   "code": 6,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 7,
+   "code_color": 7
+  },
+  "Loot\\LootSave.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Loot\\LootScreen.cs": {
+   "code": 27,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 1
+  },
+  "Loot\\LootUI.cs": {
+   "code": 35,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Market\\MarketAdapters.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Market\\MarketCfg.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Market\\MarketCore.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Market\\MarketUI.cs": {
+   "code": 42,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Market\\MarketZoneBridge.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Menu\\MenuCfg.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Menu\\MenuControls.cs": {
+   "code": 24,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 2
+  },
+  "Menu\\MenuSettings.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Menu\\MenuUI.cs": {
+   "code": 65,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "PaletteGuard.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Physics\\FighterLayers.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Physics\\FinPhys.cs": {
+   "code": 14,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Physics\\HitReact.cs": {
+   "code": 20,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Physics\\PhysMasks.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Physics\\PhysicsCfg.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Physics\\PhysicsClock.cs": {
+   "code": 6,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Physics\\RagdollRig.cs": {
+   "code": 36,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Prewarm92.cs": {
+   "code": 5,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "PropVis.cs": {
+   "code": 39,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 2,
+   "code_color": 1,
+   "code_path": 1
+  },
+  "QualityTiers.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "Release\\ReleaseCfg.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "RimFollow.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "RimRig.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Roster.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_path": 1
+  },
+  "RosterResolver.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "RuntimeQuality.cs": {
+   "code": 9,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 2,
+   "code_path": 1
+  },
+  "Save\\SavePaths.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Save\\SaveSlot.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "ScrollUV.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "ShadowCache.cs": {
+   "code": 10,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "ShadowFixes.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "ShadowProxy.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 1
+  },
+  "ShadowSaver.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "ShardOrbit.cs": {
+   "code": 33,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "SwingFix.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "TailSpring.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "WeaponGrip.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "WeaponTrail.cs": {
+   "code": 10,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0,
+   "code_color": 2
+  },
+  "WoundGate.cs": {
+   "code": 8,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\CamZone.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\CampBackdrop.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 1
+  },
+  "Zones\\CampLights.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ChaseAgent.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ChaseCore.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\FoeSep.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneCamScene.cs": {
+   "code": 3,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneCamTrace.cs": {
+   "code": 18,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneCore.cs": {
+   "code": 5,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneData.cs": {
+   "code": 1,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneFlag.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneGround.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneHitch.cs": {
+   "code": 15,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneRouteBot.cs": {
+   "code": 28,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 1
+  },
+  "Zones\\ZoneRuntime.cs": {
+   "code": 16,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneSave.cs": {
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneSpan.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneSpanCore.cs": {
+   "code": 4,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  },
+  "Zones\\ZoneXing.cs": {
+   "code": 2,
+   "code_bone": 0,
+   "code_charname": 0,
+   "code_clipname": 0
+  }
+ },
+ "note": "hard-coded literal counts per runtime file and hot category; gate fails only when a count goes UP or a new file appears",
+ "version": 1
+}

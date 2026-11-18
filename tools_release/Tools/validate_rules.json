@@ -1,0 +1,16 @@
+{
+  "_about": "HCKIT1 v93 (HC4 K1): the vocabularies and limits Tools/validate_hit_reactions.py checks. Characters, controllers, weapons and armour come from Assets/Data/roster.json (never from this file). Values = what the script had inline. Lives in Tools/, not Assets/Data, so it does not ship in StreamingAssets.",
+  "locations": ["head", "torso", "arm", "legs"],
+  "directions": ["front", "left", "right", "back"],
+  "weights": ["light", "heavy", "kick"],
+  "events": ["hit", "block", "block_perfect", "parry", "guard_break", "attack_start", "attack_miss", "roll", "backstep", "sidestep", "kill"],
+  "cueLayers": ["impact", "voice", "base"],
+  "surfaces": ["flesh", "armour"],
+  "cueGainMax": 1.5,
+  "blood": {
+    "groundColorMax": 0.30,
+    "groundAlphaMax": 0.95,
+    "groundCountMax": 64,
+    "_about": "groundColorMax = Dom's rule 'no glowing blood' (max of r,g,b of blood.json ground.color). blood.json ships 0.30 today, so the script FAILS on that real data mismatch: either lower blood.json or raise this number, a decision for Dom."
+  }
+}

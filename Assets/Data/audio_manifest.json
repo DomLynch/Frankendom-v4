@@ -27,7 +27,12 @@
     { "id": "crowd_gasp", "slices": [36.161, 0.42, 36.641, 0.42] },
     { "id": "crowd_cheer", "slices": [37.121, 2.5, 39.681, 2.5, 42.241, 2.5] },
     { "id": "charge_foe", "slices": [44.801, 0.397, 45.257, 0.391] },
-    { "id": "effort_voice", "slices": [45.708, 0.15, 45.918, 0.15] }
+    { "id": "effort_voice", "slices": [45.708, 0.15, 45.918, 0.15] },
+    { "id": "boss_chain_drag", "slices": [2.351, 0.6] },
+    { "id": "boss_reed_inhale", "slices": [28.241, 0.64, 29.001, 0.7] },
+    { "id": "boss_grendel_howl", "slices": [30.601, 1.06, 31.781, 1.12] },
+    { "id": "boss_timber_creak", "slices": [34.361, 0.74] },
+    { "id": "boss_erl_toll", "slices": [18.961, 1.98] }
   ],
   "fallback": [
     {"evt": "hit", "cond": "kick", "cue": "hit_kick", "gain": 0.3, "delay": 0, "rate": 1},

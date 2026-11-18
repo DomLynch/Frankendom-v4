@@ -1,3 +1,4 @@
+Write-Host 'RETIRED: use gateproof.ps1 / qa_slot.ps1'; exit 1
 $p='C:\Users\dom12\Documents\unity_test_hdrp'; $d="$p\Builds\HDRP_v98"; Set-Location $d
 $fl="$d\HadesSlice_Data\StreamingAssets\runtime_flags_balance.json"
 Remove-Item "$d\extras.txt" -ErrorAction SilentlyContinue

@@ -1,0 +1,8 @@
+{
+  "_about": "deploy_data.ps1 config. ignoreRealBuildCheck = relative-path wildcards (PowerShell -like, backslashes) of files that the build chain REGENERATES on every run, so their mtime changes without a content change: they do not force a real build, but their count is printed (ignored N). Remove an entry to be strict.",
+  "ignoreRealBuildCheck": [
+    "Assets\\HDRP\\Mats\\*",
+    "Assets\\HDRP\\Masks\\*",
+    "Assets\\HDRP\\Global.asset"
+  ]
+}

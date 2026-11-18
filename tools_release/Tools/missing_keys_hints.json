@@ -1,0 +1,25 @@
+{
+  "_about": "missing_keys.py hints (data, not code). loaders: a FromJson call the text scan cannot pair with a json file by itself (file = .cs file name, type = row class, json = file name, dir = \"Tools\" when the file lives in Tools\\ instead of Data\\, block = optional top-level block of that json). ignore: a loader the check does not walk, with the reason (printed in the report, never silent). blockLoaders: owner.Load<T>(\"block\") calls that read one top-level block of a json. allow: keys that may stay code-only, with the reason. HCKIT8 v103b: Editor loaders + the 7 loaders HCKIT7 left unpaired.",
+  "blockLoaders": { "STSteer": "steer.json" },
+  "loaders": [
+    { "file": "GearTable.cs", "type": "Data", "json": "gear.json" },
+    { "file": "GearTable.cs", "type": "RosterFile", "json": "roster.json" },
+    { "file": "LootContracts.cs", "type": "GFile", "json": "gear.json" },
+    { "file": "STAuto.cs", "type": "Root", "json": "steer.json", "_why": "-steerdata:<path> reads a whole steer.json copy; the default path reads the same file through STSteer.Load<AutoCfg>(\"auto\")" },
+    { "file": "SaveSlot.cs", "type": "LootUiPeek", "json": "loot_ui.json", "_why": "SaveSlot.LootFileName reads loot_ui.json save.file through cfg.lootDataFile (default loot_ui.json)" },
+    { "file": "BuildCfg.cs", "type": "Conf", "json": "build_config.json", "dir": "Tools", "_why": "Tools\\build_config.json (HCKIT3), not Data\\build.json" },
+    { "file": "ProjectPaths.cs", "type": "Cfg", "json": "paths.json", "dir": "Tools", "_why": "Tools\\paths.json (HCKIT5)" },
+    { "file": "HdrpScene.cs", "type": "Preset", "json": "hdrp_lighting_ultra.json", "_why": "Preset.Load(tier) builds hdrp_lighting_<tier>.json; ultra is the only tier file in Data" }
+  ],
+  "ignore": [
+    { "file": "QualityTiers.cs", "type": "Mul", "why": "parsed from one tier's flags{} block (FlagsJson), not from the file root; every tier lists lodBiasMul" },
+    { "file": "QualityTiers.cs", "type": "object", "why": "Overlay(object flags) = FromJsonOverwrite of a tier's flags{} block onto the live RuntimeFlags; by design a key a tier does not list keeps the authored runtime_flags.json value (a code default would be wrong here), so there is nothing to fill" },
+    { "file": "LootSave.cs", "type": "FileData", "why": "runtime save file in persistentDataPath, not a Data file" },
+    { "file": "SaveSlot.cs", "type": "FileData", "why": "runtime save file in persistentDataPath (save_slot1.json), not a Data file; its config is save.json (CfgC, checked)" },
+    { "file": "SaveSlot.cs", "type": "LootPeek", "why": "reads the runtime loot save in persistentDataPath (count peek: version / owned / equipped), not a Data file" },
+    { "file": "FinisherRotationStore.cs", "type": "FileRows", "why": "runtime rotation save in persistentDataPath (finisher_rotation.json), not a Data file" },
+    { "file": "MenuSettings.cs", "type": "Saved", "why": "player's settings.json in persistentDataPath, overlaid on defaults taken from menu.json defaults{} + audio_mix.json (both checked); deadZonePx -1 = the controls.json value" },
+    { "file": "GearGlbHidden.cs", "type": "Doc", "why": "reads the JSON chunk of a .glb (glTF nodes/extras), not a project data file" }
+  ],
+  "allow": []
+}

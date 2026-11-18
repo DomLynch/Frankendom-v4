@@ -1,3 +1,4 @@
+Write-Host 'RETIRED: use gateproof.ps1 / qa_slot.ps1'; exit 1
 $b='C:\Users\dom12\Documents\unity_test_hdrp\Builds\HDRP_v94'; Set-Location $b; $sa="$b\HadesSlice_Data\StreamingAssets"; $bk="$b\sa_backup_bisect"; New-Item -ItemType Directory -Force $bk | Out-Null
 foreach($f in 'death.json','head_clamp.json','weapon_grip.json','hud.json'){ if(-not (Test-Path "$bk\$f")){ Copy-Item "$sa\$f" "$bk\$f" -Force } }
 $enc=New-Object Text.UTF8Encoding($false)

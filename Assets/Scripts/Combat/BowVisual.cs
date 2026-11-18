@@ -185,9 +185,10 @@ public class BowVisual : MonoBehaviour
     // NPCARCHER v4 (COO 21:10): the drawing hand of an NPC archer ended above his head (the clip was authored on Joan's arm length). Two-bone IK on the right arm: while drawing, the hand goes to a cheek anchor in front of the right side of the face
     // (bow.json visual.draw.npcIk / cheekRightM / cheekDownM / cheekFwdM); the string and the nocked arrow follow that hand. Weighted in and out with the draw. Never runs for the player.
     Transform ikUp, ikFore, ikHand, ikHead, lUp, lFore, lHand; float ikK; bool ikTried;
+    string bodyId; string BodyId() { if (bodyId == null) { string n = fighter != null ? fighter.name : ""; int h = n.IndexOf('#'); bodyId = h > 0 ? n.Substring(0, h) : n; } return bodyId; }   // K18: NPC id for the per-body draw row
     void NpcDrawHandIk()
     {
-        if (fighter == null || fighter.IsPlayer) return; var D = BowCfg.Get().visual.draw; if (D == null || !D.npcIk) return;
+        if (fighter == null || fighter.IsPlayer) return; var D = BowCfg.DrawFor(BodyId()); if (D == null || !D.npcIk) return;
         if (!ikTried) { ikTried = true; var sk = Skel(); string pre = Roster.BoneName(this, ""); ikUp = FindNamed(sk, pre + "RightArm"); ikFore = FindNamed(sk, pre + "RightForeArm"); ikHand = FindNamed(sk, pre + "RightHand"); ikHead = FindNamed(sk, pre + "Head"); if (BowCfg.Log) Debug.Log("[bow] npc ik bones " + (ikUp != null) + "/" + (ikFore != null) + "/" + (ikHand != null) + "/" + (ikHead != null) + " on " + name); }
         if (ikUp == null || ikFore == null || ikHand == null || ikHead == null) return;
         ikK = Mathf.MoveTowards(ikK, Drawing() ? 1f : 0f, Time.deltaTime / 0.2f); if (ikK <= 0.001f) { if (D.groundHips) GroundHips(); return; }
@@ -339,7 +340,7 @@ public class BowVisual : MonoBehaviour
 public class BowHud : MonoBehaviour
 {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    static void Boot() { if (!BowCfg.Master || !BowCfg.Get().hud.enabled || FindFirstObjectByType<BowHud>() != null) return; new GameObject("BowHud").AddComponent<BowHud>(); }
+    static void Boot() { if (!BowCfg.Master || !BowCfg.Get().hud.enabled || FindFirstObjectByType<BowHud>() != null) return; var go = new GameObject("BowHud"); DontDestroyOnLoad(go); go.AddComponent<BowHud>(); }   // HUDKEEP: Boot runs once at first load; without DontDestroyOnLoad a zone restart / Retry (scene reload) destroyed the host for good: no chip, no reticle
 
     void OnGUI()
     {
@@ -359,6 +360,7 @@ public class BowHud : MonoBehaviour
                 HudDraw.Fill(new Rect(x + g, y + g + b - t, b, t), c); HudDraw.Fill(new Rect(x + g + b - t, y + g, t, b), c);
             }
         }
+        BowFree.DrawReticle(f, bow);   // FREEAIM v1
         string chip = bow ? (BowCfg.Get().quiverOn ? H.chipBow + H.chipAmmoSep + ammo : H.chipBow) : WeaponChip(f, H.chipSword);   // WEAPONTAG v1
         HudDraw.Text(new Rect(Screen.width - H.chipRightPx - H.chipWidthPx, Screen.height - H.chipBottomPx, H.chipWidthPx, H.chipFontPx * H.chipLineH), chip, "serif", H.chipFontPx, TextAnchor.MiddleRight, false, c);
     }

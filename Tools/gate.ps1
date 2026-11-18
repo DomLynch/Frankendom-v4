@@ -1,4 +1,6 @@
 param([string]$v,[string]$mode="full")
+Write-Host 'RETIRED: use gateproof.ps1 / qa_slot.ps1'; exit 1
+
 $d="C:\Users\dom12\Documents\unity_test_hdrp\Builds\HDRP_$v"; Set-Location $d
 function Run($name,$flags,$sec,$w=1920,$h=1080){
     $common=@('-silent-crashes',"-screen-width $w","-screen-height $h",'-screen-fullscreen 0',"-logFile $name.log")

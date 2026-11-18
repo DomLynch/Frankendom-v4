@@ -250,6 +250,26 @@
     "_note": "laneNPC15INT: one Tripo material per body, renamed npcchainwarden_body by stage_npc15.py"
   },
   {
+    "id": "NpcAshReaver",
+    "glb": "Assets/Characters/NpcChainWarden/NpcChainWarden_combat.glb",
+    "texDir": "Assets/Characters/NpcChainWarden/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcchainwarden_body",
+        "maskOut": "npcchainwarden_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcchainwarden_body_base.jpg",
+            "normal": "npcchainwarden_body_normal.jpg",
+            "mr": "npcchainwarden_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcchainwarden_body by stage_npc15.py"
+  },
+  {
     "id": "NpcSlagCrossbowman",
     "glb": "Assets/Characters/NpcSlagCrossbowman/NpcSlagCrossbowman_combat.glb",
     "texDir": "Assets/Characters/NpcSlagCrossbowman/Tex",
@@ -331,6 +351,26 @@
   },
   {
     "id": "NpcEmbalmerCultist",
+    "glb": "Assets/Characters/NpcEmbalmerCultist/NpcEmbalmerCultist_combat.glb",
+    "texDir": "Assets/Characters/NpcEmbalmerCultist/Tex",
+    "groups": [
+      {
+        "glbMaterial": "npcembalmercultist_body",
+        "maskOut": "npcembalmercultist_body_mask.png",
+        "maskSize": 1024,
+        "parts": [
+          {
+            "base": "npcembalmercultist_body_base.jpg",
+            "normal": "npcembalmercultist_body_normal.jpg",
+            "mr": "npcembalmercultist_body_mr.jpg"
+          }
+        ]
+      }
+    ],
+    "_note": "laneNPC15INT: one Tripo material per body, renamed npcembalmercultist_body by stage_npc15.py"
+  },
+  {
+    "id": "NpcFenWitch",
     "glb": "Assets/Characters/NpcEmbalmerCultist/NpcEmbalmerCultist_combat.glb",
     "texDir": "Assets/Characters/NpcEmbalmerCultist/Tex",
     "groups": [

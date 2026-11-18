@@ -1,3 +1,4 @@
+Write-Host 'RETIRED: use gateproof.ps1 / qa_slot.ps1'; exit 1
 $b='C:\Users\dom12\Documents\unity_test_hdrp\Builds\HDRP_v93'; Set-Location $b
 $t=0; while(-not (Test-Path "$b\gate_done.txt") -and $t -lt 3000){ Start-Sleep 10; $t+=10 }
 if(Test-Path "$b\gate_done.txt"){

@@ -1,0 +1,53 @@
+{
+ "_about": "json_keys_gate allow list (laneFIXGATES). file.json -> list of keys, or \"*\" for a whole file. Only keys read by Python / Editor / lane tools (no C# reader) or documentation keys belong here; a key the GAME should read must get a C# field instead.",
+ "character_setup.json": [
+  "missingAttackRowsNote",
+  "missingStatesNote",
+  "finisherStatesNote"
+ ],
+ "hub.json": [
+  "layoutNote",
+  "lookNote"
+ ],
+ "clip_sets.json": [
+  "legFixNote"
+ ],
+ "decals.json": [
+  "layerMaskNote"
+ ],
+ "finishers.json": [
+  "pairOffsetNote"
+ ],
+ "market.json": [
+  "rowsNote"
+ ],
+ "move-defs.json": [
+  "directionalAbout"
+ ],
+ "physics.json": [
+  "minPeakZones_note"
+ ],
+ "tail_spring.json": [
+  "noTailNote"
+ ],
+ "pitborn_skin_tint.json": "*",
+ "world_fog.json": "*",
+ "opt1_levers.json": "*",
+ "gltf_texture_compress.json": "*",
+ "props_layout_zone7.json": "*",
+ "pitborn_clip_rows.json": "*",
+ "joan_rows_owned.json": "*",
+ "clip_sets_sobek.json": "*",
+ "clip_sets_erlking.json": "*",
+ "clip_sets_grendel.json": "*",
+ "clip_sets_humbaba.json": "*",
+ "clip_sets_pit.json": "*",
+ "market_vendors.json": "*",
+ "props_layout_zone5.json": "*",
+ "clip_build.json": "*",
+ "trench_setup.json": "*",
+ "mhhead_attach.json": "*",
+ "perf_mem_build.json": "*",
+ "texture_plan.json": "*",
+ "ground_fog_wisps.json": "*"
+}

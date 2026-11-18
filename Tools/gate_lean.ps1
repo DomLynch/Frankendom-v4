@@ -1,4 +1,6 @@
 param([string]$v,[string[]]$proofs=@())
+Write-Host 'RETIRED: use gateproof.ps1 / qa_slot.ps1'; exit 1
+
 if(-not $v.StartsWith('v')) { $v = "v$v" }
 $d="C:\Users\dom12\Documents\unity_test_hdrp\Builds\HDRP_$v"; Set-Location $d
 $common=@('-silent-crashes','-screen-width 1920','-screen-height 1080','-screen-fullscreen 0')

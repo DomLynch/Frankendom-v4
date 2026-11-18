@@ -658,6 +658,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             case FState.Stagger: case FState.Down: if (!PresentationClock.Frozen) { v = knock; knock *= HitKnockback.Decay;   /* KNOCKBACK v1: was the literal 0.88f, same default */ } faceOpp = false; break;   // P1: no knock slide while the animation is frozen (hit-stop)
             case FState.Dead: faceOpp = false; break;
         }
+        if (BowWalk.Wants(this)) v = BowWalk.Vel(this, v);   // WALKFIRE v1: bow.json move.whileShooting: legs keep walking at move.speedMul x walk speed through Windup / Active / Recovery of a bow shot (off = unchanged)
         if (PresentationClock.Frozen) { v.x = 0f; v.z = 0f; }   // P1: hit-stop freezes the body with the animation (the legs are frozen too: no ice-skating)
         vy = (cc.isGrounded || ZoneGroundHold.Active) ? -1f : vy - ArenaLimits.FallGravity * dt;   // CAMPGROUND v1: no free fall while a zone arrival waits for its ground ring
         v.y = vy; if (cc.enabled) cc.Move(v * dt);
@@ -732,6 +733,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
             if (LocoDir.Enabled) f.anim.speed = locoDir.Speed(f.anim.speed, dt, f.anim.transform, scale);   // LOCODIR v1: Animator speed = body speed / (stride x model scale), rate limited; no row / guard-walk / no stride = speed unchanged
         }
         UpdateGuardLayer(upperPose, dt);
+        BowWalk.Present(this, f, dt);   // WALKFIRE v1: upper-body bow clip over the walk legs (runtime PlayableGraph), off = returns at once
     }
 
     // ---------------- moving guard: masked upper-body Animator layer (Assets/Editor/GuardLayerSetup.cs builds it) ----------------

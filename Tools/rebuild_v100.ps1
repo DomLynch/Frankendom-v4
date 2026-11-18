@@ -1,3 +1,4 @@
+Write-Host 'RETIRED: use gateproof.ps1 / qa_slot.ps1'; exit 1
 $p='C:\Users\dom12\Documents\unity_test_hdrp'; Set-Location $p
 # wait for the first v100 chain to finish (one GPU job at a time)
 $t=0; while(-not (Test-Path "$p\Builds\HDRP_v100\chain_done.txt") -and -not (Test-Path "$p\Builds\v100_BUILD_FAILED.txt") -and $t -lt 6000){ Start-Sleep 15; $t+=15 }

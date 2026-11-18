@@ -96,7 +96,7 @@ public class CameraRig : MonoBehaviour
         if (!colLoaded) LoadCol();
         float dt = Time.deltaTime; if (!poseLoaded) LoadPose();
         if (CamZone.Active(pose.zone)) CamZone.Pick(pose.zone, this, target);   // CAMZONE v1: zones only: the lock target must be fighting Joan and near, else the nearest fighting one, else the free camera
-        bool lockOn = lockEnabled && enemy && enemyHp && !enemyHp.Dead && Vector3.Distance(target.position, enemy.position) < lockRange; if (lockOn && SoftLock.Broken(target, enemy, dt)) lockOn = false; dbgLockOn = lockOn;  /* CAMZONE v1; SOFTLOCK: half lock, breaks on moving away / mouse (soft_lock.json) */
+        bool lockOn = lockEnabled && enemy && enemyHp && !enemyHp.Dead && Vector3.Distance(target.position, enemy.position) < lockRange; if (lockOn && SoftLock.Broken(target, enemy, dt)) lockOn = false; if (lockOn && BowFree.HoldsCamera) lockOn = false; /* FREEAIM v1: the aim key frees the camera from the lock */ dbgLockOn = lockOn;  /* CAMZONE v1; SOFTLOCK: half lock, breaks on moving away / mouse (soft_lock.json) */
         lockW = Mathf.MoveTowards(lockW, lockOn ? 1f : 0f, dt * DirectionalInput.LockEase(lockOn));   // CTRL v68: controls.json camera.easeIn / easeOut (3 / 3 without the file)
 
         // free camera (lock-on off): mouse yaw/pitch over the right shoulder
@@ -187,6 +187,7 @@ public class CameraRig : MonoBehaviour
         float dw = CameraDeath.Weight;   // FREECAM v1: CameraDeath.Shape only runs while rig.enemy is set, so once CamZone released the corpse its weight (FOV 38) stayed 1 in the free camera for good: it now eases out over fovEaseS
         if (fcr.enabled) { if (!enemy) { fovDeathW = Mathf.MoveTowards(fovDeathW, 0f, dt / Mathf.Max(fcr.fovEaseMinS, fcr.fovEaseS) /* DATALAYER b8 */); dw = fovDeathW; } else fovDeathW = dw; }
         cam.fieldOfView = CamFraming.WidenFov(transform, Mathf.Lerp(Mathf.Lerp(pose.lockCam.fovFree, pose.lockCam.fovLock, lockW), CameraDeath.Fov, dw), lockW, cam.aspect);   // V65CAM: opens up only if collision still crops a fighter
+        BowFree.CamApply(transform, cam, dt);   // FREEAIM v1: over-the-shoulder offset + aim lens while the aim key is held (bow.json aim.free); weight 0 = nothing
         if (impact) impact.Apply(transform); CamShake.Apply(transform);   // V65CAM: weight-scaled shake (camera_impact.json shake) on top;   // contact kick + roll tumble on top of the pose, on unscaled time (CameraImpact.cs)
         // hard floor for EVERY camera mode (impact shake / roll dip / crit / low-HP cuts included): never below ground + minHeight, never NaN
         {

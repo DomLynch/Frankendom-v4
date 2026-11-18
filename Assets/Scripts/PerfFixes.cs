@@ -61,6 +61,15 @@ public static class PerfFixes
         public int eagerFramesBetween = 2;
         public int lateDelayFrames = 600;
         public int lateFramesBetween = 20;
+        // PRELOADHITCH v1 (JSON only, no serialized MonoBehaviour field): lateSmooth false = the old behaviour, byte for byte. true = the late tier (and the hub NPC load) parses through a
+        // calm-gated defer agent: real-ms budget per frame, at most one heavy step per lateSpacingFrames, nothing while the player is in a fight (capped by lateMaxWaitS), and a file the
+        // hub NPCs need before the late tier reaches it is parsed ONCE (claimed in flight, skipped by the late tier) instead of twice.
+        public bool lateSmooth = false;
+        public float lateBudgetMs = 4f;          // real ms of glTFast work per frame for the smooth agent (glTFast's own budget is a fraction of a 30 fps frame, so gear.json deferFrameBudget 0.5 = 16.7 ms)
+        public float lateHeavyMs = 50f;          // a frame this long (unscaled dt) counts as heavy: the agent then defers for lateSpacingFrames frames
+        public int lateSpacingFrames = 24;       // min frames between two heavy steps (a 3-texture GLB no longer lands as 3 consecutive 200 ms frames)
+        public bool lateHoldWhileEngaged = true; // no step while the player has a live opponent ...
+        public float lateMaxWaitS = 20f;         // ... or is inside the spacing, but never longer than this per step (a consumer that needs the file is not starved)
     }
     [Serializable] public class D1Cfg { public bool enabled = true; public float epsilonRel = 0.002f; public float epsilonEmissiveRel = 0.002f; public string note; }   // write only when the value moved by more than epsilon x the base (0 = any change)
     [Serializable] public class D1bCfg { public bool enabled = true; public string note; }

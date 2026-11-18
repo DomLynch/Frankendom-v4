@@ -9,7 +9,7 @@ using UnityEngine;
 // Everything numeric is bow.json; the view is the only thing that touches Unity objects.
 public static class BowShot
 {
-    public class Shot { public DuelFighter a, d; public MoveDef mv; public int launched, arrive, pinTicks; public Vector3 from; public BowArrowView view; }
+    public class Shot { public DuelFighter a, d; public MoveDef mv; public int launched, arrive, pinTicks; public Vector3 from; public BowArrowView view; public bool free; public Vector3 point; }   // FREEAIM v1: free = flies to point (d null), no hit judged; Overfly sticks it in what it meets
     static readonly List<Shot> live = new List<Shot>(8);
     static CueBus bus;
 
@@ -32,9 +32,9 @@ public static class BowShot
     }
 
     /// <summary>Throw one arrow per lane at the foe. special = the move row's damage is already per arrow and its direction comes from the lane; an ordinary shot keeps the swing's own direction. mul scales the row's damage.</summary>
-    public static void Launch(DuelFighter a, DuelFighter d, MoveDef m, int[] lanes, bool special, float mul, int speedCmS, int pinTicks, string tint)
+    public static void Launch(DuelFighter a, DuelFighter d, MoveDef m, int[] lanes, bool special, float mul, int speedCmS, int pinTicks, string tint, bool pointShot = false, Vector3 pt = default(Vector3))
     {
-        var C = BowCfg.Get(); float gap = Mathf.Max(0.01f, (d.transform.position - a.transform.position).magnitude);
+        var C = BowCfg.Get(); float gap = Mathf.Max(0.01f, ((pointShot ? pt : d.transform.position) - a.transform.position).magnitude);
         int ticks = Mathf.Max(1, Mathf.CeilToInt(gap * 100f * 60f / Mathf.Max(1, speedCmS)));   // V3 missileTicks
         Vector3 from = a.transform.position + Vector3.up * (C.arrow.releaseHeightM * a.scale) + a.transform.forward * C.arrow.releaseForwardM;
         if (!a.IsPlayer) { var bv = a.GetComponent<BowVisual>(); Vector3 np; if (bv != null && bv.NockWorld(out np)) from = np; }   // NPCARCHER v2: the arrow leaves from the nock / right hand, not from a height over the body
@@ -43,7 +43,7 @@ public static class BowShot
         {
             var mv = Clone(m); mv.damage = m.damage * mul;
             if (special || lanes.Length > 1) mv.direction = BowCfg.DirectionOf(lanes[i]);
-            var s = new Shot { a = a, d = d, mv = mv, launched = Duel.TickCount, arrive = Duel.TickCount + ticks, pinTicks = i == 0 ? pinTicks : 0, from = from };
+            var s = new Shot { a = a, d = d, mv = mv, launched = Duel.TickCount, arrive = Duel.TickCount + ticks, pinTicks = i == 0 ? pinTicks : 0, from = from, free = pointShot, point = pt };
             var go = new GameObject("BowArrow"); s.view = go.AddComponent<BowArrowView>(); s.view.Init(s, BowCfg.Col(tint, Color.white), lanes[i], lanes.Length);
             live.Add(s);
         }
@@ -55,9 +55,10 @@ public static class BowShot
         for (int i = live.Count - 1; i >= 0; i--)
         {
             var s = live[i];
-            if (s.a == null || s.d == null || s.d.Dead) { End(s); live.RemoveAt(i); continue; }
+            if (s.a == null || (s.d == null && !s.free) || (s.d != null && s.d.Dead)) { End(s); live.RemoveAt(i); continue; }
             if (tick < s.arrive) continue;
-            if (Duel.FrozenFor(s.d) || Duel.FrozenFor(s.a)) { s.arrive++; continue; }   // a finisher / menu holds the sim: the arrow hangs until it ends
+            if ((s.d != null && Duel.FrozenFor(s.d)) || Duel.FrozenFor(s.a)) { s.arrive++; continue; }
+            if (s.d == null) { live.RemoveAt(i); if (s.view != null) s.view.Overfly(); continue; }   // FREEAIM v1: a point shot has arrived: no hit to judge, the arrow flies on and sticks in the world   // a finisher / menu holds the sim: the arrow hangs until it ends
             live.RemoveAt(i); bool hit = Land(s);
             var A = BowCfg.Get().arrow;
             if (s.view == null) continue;
@@ -179,11 +180,11 @@ public class BowArrowView : MonoBehaviour
         var v = g.AddComponent<BowArrowView>(); v.stuck = true; v.until = float.MaxValue; v.fadeFrom = float.MaxValue; v.Build(BowCfg.Col(BowCfg.Get().arrow.shaft, Color.gray), false, true); return g;
     }
 
-    void LateUpdate() { if (stuck || flying || s == null || s.a == null || s.d == null) return; Place(); }
+    void LateUpdate() { if (stuck || flying || s == null || s.a == null || (s.d == null && !s.free)) return; Place(); }
 
     // ---- flight: tip position at progress p (0..1 of the sim time) ----
     float Span { get { return Mathf.Max(1f, s.arrive - s.launched); } }
-    Vector3 Aim() { return s.d.transform.position + Vector3.up * (BowCfg.Get().arrow.aimHeightM * s.d.scale); }   // homing: where the foe stands NOW, as the sim judges it
+    Vector3 Aim() { if (s.d == null) return s.point; return s.d.transform.position + Vector3.up * (BowCfg.Get().arrow.aimHeightM * s.d.scale); }   // homing: where the foe stands NOW, as the sim judges it
     Vector3 TipAt(float p)
     {
         var C = BowCfg.Get().arrow; float T = Span / 60f; Vector3 to = Aim();
