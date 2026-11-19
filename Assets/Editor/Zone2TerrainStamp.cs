@@ -116,7 +116,7 @@ public static class Zone2TerrainStamp
                 }
                 mesh.vertices = v; if (hasN) mesh.normals = nr; mesh.RecalculateBounds(); it.stamped = mesh;
                 { var uv = it.pristine.uv; bool uvCh = false;   // UVSCALE v1: ground texture cells match the paving plate (zone_span terrain.uvScale, 1 or absent = off)
-                  if (uv != null && uv.Length == v.Length) for (int wi = 0; wi < rows.Count; wi++) { float k = rows[wi].terrain.uvScale; if (k <= 1.0001f) continue; for (int i = 0; i < uv.Length; i++) { float wgt = TerrainStampCore.Weight(ws[wi], chunks[ci].x[i], chunks[ci].z[i] - ws[wi].offsetZ); if (wgt <= 0f) continue; uv[i] = uvPiv[wi] + (uv[i] - uvPiv[wi]) * (1f + (k - 1f) * wgt); uvCh = true; }  }
+                  if (uv != null && uv.Length == v.Length) for (int i = 0; i < uv.Length; i++) { int bw = -1; float bg = 0f; for (int wi = 0; wi < rows.Count; wi++) { if (rows[wi].terrain.uvScale <= 1.0001f) continue; float wgt = TerrainStampCore.Weight(ws[wi], chunks[ci].x[i], chunks[ci].z[i] - ws[wi].offsetZ); if (wgt > bg) { bg = wgt; bw = wi; } } if (bw < 0) continue; var u0 = uv[i]; uv[i] = uvPiv[bw] + (u0 - uvPiv[bw]) * (1f + (rows[bw].terrain.uvScale - 1f) * bg); uvCh = true; }   /* UVSCALE v2 (Lead 19 Nov): ONE scale per vertex from the max-weight window; v1 compounded where stamp windows overlap (hub z66-116 vs grendel z102-174 = about 30x tiling, the z4 smooth band edge at z116) */
                   if (uvCh) mesh.uv = uv; }
             }
             foreach (var kv in R.movedPerWin) Debug.Log("[TerrainStamp] prepared zone '" + kv.Key + "': " + kv.Value + " original terrain vertices moved (source coverage " + (R.coverage[kv.Key] * 100f).ToString("0.0") + "%)");
