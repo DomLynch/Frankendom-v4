@@ -43,6 +43,7 @@ public sealed class ZoneGroundMat : MonoBehaviour
     static void Boot()
     {
         QaLean.Apply();
+        LodRepair.Boot();   // LODREPAIR v1: rebuilds empty LODGroups (v10sky_*); -nolodrepair = off
         try
         {
             string a1 = null; foreach (var a in Environment.GetCommandLineArgs()) if (a.StartsWith(ArgPrefix)) a1 = a.Substring(ArgPrefix.Length);

@@ -457,9 +457,10 @@ public class ClashFx : MonoBehaviour
     }
 
     // ---- emitters ----
+    public static float LastSparkAt = -1f; public static Vector3 LastSparkPos;   // SPARKCAP v1 (QA capture burst trigger: the burst fires where sparks really spawn)
     void SpawnSparks(Vector3 anchor, Vector3 along, Vector3 side, float strength, int n)
     {
-        var sp = cfg.sparks;
+        var sp = cfg.sparks; if (n > 0) { LastSparkAt = Time.unscaledTime; LastSparkPos = anchor; }
         for (int j = 0; j < n; j++)
         {
             Vector3 at = anchor + side * ((Rand() - 0.5f) * 2f * sp.anchorJitter);

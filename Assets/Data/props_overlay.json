@@ -2803,6 +2803,6 @@
       "enabled": true,
       "note": "PITDRESS rubble at the S_E parapet end (clutter_rubble abs scale 1.90, 1.9 m); clone of clutter_z1_3"
     },
-    {"id": "fk_armlantern_ring", "op": "add", "src": "z6h_erlking_hanging_lamps_0", "zone": "hub_camp", "ring": 1, "pos": [-3.3, 1.45, 86.6], "rotEuler": [0, 0, 0], "scale": 0.18, "scaleYMul": 0, "lod": 0, "ground": "bottom", "enabled": true, "note": "FK armlantern 19 Nov: ring of 8 hanging lanterns (baked z6 erlking_hanging_lamps, 4.59 x 0.18 = 0.83 m ring) hung under the Armourer canopy toward the camera, lanterns 1.45-1.75 m: the visible source of the CampLantern_Armourer light. Revert = delete this row."}
+    {"id": "fk_armlantern_ring", "op": "add", "src": "z6h_erlking_hanging_lamps_0", "zone": "hub_camp", "ring": 1, "pos": [-3.3, 1.8, 86.6], "rotEuler": [0, 0, 0], "scale": 0.09, "scaleYMul": 0, "lod": 0, "ground": "bottom", "enabled": true, "note": "FK armlantern 19 Nov: ring of 8 hanging lanterns (baked z6 erlking_hanging_lamps, 4.59 x 0.18 = 0.83 m ring) hung under the Armourer canopy toward the camera, lanterns 1.45-1.75 m: the visible source of the CampLantern_Armourer light. Revert = delete this row."}
   ]
 }

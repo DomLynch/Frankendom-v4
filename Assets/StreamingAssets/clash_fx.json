@@ -111,8 +111,8 @@
     "textureEdgePower": 1.2,
     "glintPool": 8,
     "glintLife": 0.085,
-    "glintSize": 0.07,
-    "glintSizePerStrength": 0.03,
+    "glintSize": 0.0,
+    "glintSizePerStrength": 0.0,
     "colorAlphaMid": 0.9, "colorAlphaMidAt": 0.5,
     "glintColor": {
       "r": 1.0,

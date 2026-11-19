@@ -143,6 +143,7 @@ public sealed class ZoneCamTrace : MonoBehaviour
     }
 
     static float lodAuditNext = 30f;
+    float sparkSeen = -1f;
     static void LodAudit()
     {
         var gs = UnityEngine.Object.FindObjectsByType<LODGroup>(FindObjectsInactive.Exclude); int total = 0, unwired = 0, multi = 0, bad = 0; var sb = new System.Text.StringBuilder();
@@ -283,6 +284,8 @@ public sealed class ZoneCamTrace : MonoBehaviour
             if (ts != pTgt && ts >= 0 && pTgt >= 0) { FState f = (FState)ts; if (f == FState.Stagger && near <= 3.2f) ev = "hit"; else if (f == FState.Guard && near <= 3.2f) ev = "block"; else if (f == FState.ParryRecover) ev = "parry"; else if (f == FState.Active && near <= 2.5f) ev = "clash"; else if (f == FState.Dead) ev = "finisher"; }
             if (ev == null && ps != pPl && ps >= 0 && pPl >= 0) { FState f = (FState)ps; if (f == FState.Stagger) ev = "phit"; else if (f == FState.Guard && near <= 3.2f) ev = "pblock"; else if (f == FState.ParryRecover) ev = "pparry"; }
         }
+        if (ev == null && evLeft <= 0 && Time.realtimeSinceStartup >= evCoolUntil && evN < evMaxN && ClashFx.LastSparkAt > sparkSeen) { ev = "spark"; }   // SPARKCAP v1: contact-gated burst, fires on the frame after ClashFx really spawned sparks
+        if (ClashFx.LastSparkAt > sparkSeen) sparkSeen = ClashFx.LastSparkAt;
         pTgt = ts; pPl = ps;
         if (ev != null)
         {

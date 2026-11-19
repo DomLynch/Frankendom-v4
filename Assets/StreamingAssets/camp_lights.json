@@ -35,7 +35,7 @@
         2.0,
         340.4
       ],
-      "kelvin": 3300.0,
+      "kelvin": 3800.0,
       "candela": 11000.0,
       "range": 5.0,
       "volumetricDimmer": 0.0,
@@ -1219,7 +1219,7 @@
       "name": "CampLantern_Armourer",
       "pos": [
         -3.3,
-        1.6,
+        1.85,
         86.6
       ],
       "kelvin": 3200.0,

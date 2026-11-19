@@ -314,6 +314,7 @@ public class HitFeel : MonoBehaviour
 
         bool metal = false;
         try { metal = BloodTable.For(e.target, e.heavy, e.target.Dead).sparks; } catch (Exception) { }   // victims[].sparks (blood.json) = armour: a landed blow on metal also sparks
+        if (e.type == "Blocked" || e.type == "Parried" || e.type == "GuardBroken") { try { var wid = WeaponHooks.Of(e.target).id; metal = !string.IsNullOrEmpty(wid) && wid != "claws"; } catch (Exception) { } }   // GUARDMETAL v1 (19 Nov): a guard contact is steel on steel only when the DEFENDER holds a weapon (not claws/body): rows with "metal": 1 then fire sparks/flash only there, so a guard against a flesh monster spawns no star
         var row = FindRow(e, metal);
         if (row == null) return;
         if (row.spark <= 0f && row.flash <= 0f) return;
