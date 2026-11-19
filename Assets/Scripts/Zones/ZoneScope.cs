@@ -77,7 +77,7 @@ public static class ZoneScope
                 if (cfg.hitch == null) cfg.hitch = new ZscHitch(); if (cfg.neighbours == null) cfg.neighbours = new ZscNeigh[0]; if (cfg.groups == null) cfg.groups = new ZscGroup[0]; if (cfg.decode == null) cfg.decode = new ZscDecode(); if (cfg.camps == null) cfg.camps = new ZscCamp[0];
                 foreach (var a in Environment.GetCommandLineArgs()) { if (a == "-zonescope:on") cfg.enabled = true; else if (a == "-zonescope:off") cfg.enabled = false; }
                 foreach (var a in Environment.GetCommandLineArgs()) { if (a == "-zonedecode:on") cfg.decode.mode = "uri"; else if (a == "-zonedecode:off") cfg.decode.mode = "off"; }
-                active = (cfg.enabled || (cfg.onWhenGlbMipDrop > 0 && PerfMem.GlbMipDrop >= cfg.onWhenGlbMipDrop)) && !PerfFlags.HarnessRun();   // LOWSCOPE: on a preset whose glbMipDrop >= onWhenGlbMipDrop (Low = 2) only; 0 = off
+                bool qaLean = Environment.GetEnvironmentVariable("FK_QA_SCOPE") == "1";   /* LEANQA v1: QA copies only (env set by run_oneroute -Lean), zone scope ON at HIGH textures in a harness run so a single-zone proof player holds one zone */ active = (cfg.enabled || qaLean || (cfg.onWhenGlbMipDrop > 0 && PerfMem.GlbMipDrop >= cfg.onWhenGlbMipDrop)) && (!PerfFlags.HarnessRun() || qaLean);   // LOWSCOPE: on a preset whose glbMipDrop >= onWhenGlbMipDrop (Low = 2) only; 0 = off
                 decodeActive = cfg.decode.mode == "uri" && (active || cfg.decode.standalone) && !PerfFlags.HarnessRun();
             }
         }
