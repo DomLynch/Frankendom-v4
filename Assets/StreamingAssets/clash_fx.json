@@ -66,9 +66,9 @@
   "sparks": {
     "poolSize": 192,
     "cooldown": 0.04,
-    "countBase": 4,
-    "countRandomPerStrength": 2,
-    "countRandomBase": 2,
+    "countBase": 2,
+    "countRandomPerStrength": 1,
+    "countRandomBase": 0,
     "firstWaveMin": 0.4,
     "firstWaveRange": 0.4,
     "lateDelay": 0.033,
@@ -77,9 +77,9 @@
     "anchorJitter": 0.12,
     "alongBias": 0.35,
     "alongScale": 1.2,
-    "sideSpread": 3.0,
+    "sideSpread": 1.2,
     "upMin": 0.1,
-    "upRange": 1.8,
+    "upRange": 0.8,
     "speedMin": 1.4,
     "speedRange": 4.5,
     "speedBase": 0.8,
@@ -93,7 +93,7 @@
     "velocityScale": 0.02,
     "maxParticleSize": 0.5,
     "gravity": 1.0,
-    "opacity": 0.7,
+    "opacity": 0.5,
     "colorHot": {
       "r": 1.0,
       "g": 1.0,
@@ -142,8 +142,8 @@
     "textureSize": 32,
     "textureEdgePower": 1.5,
     "block": {
-      "countBase": 5,
-      "countPerStrength": 4,
+      "countBase": 3,
+      "countPerStrength": 2,
       "radius": 0.1,
       "speedBase": 0.42,
       "speedPerStrength": 0.3,
@@ -155,7 +155,7 @@
       "footSide": 0.22
     },
     "plant": {
-      "count": 5,
+      "count": 2,
       "radius": 0.075,
       "speed": 0.32,
       "lift": 0.14,
@@ -187,7 +187,7 @@
       "perfect": -1,
       "targetContains": "",
       "attackerWeapon": "claws",
-      "spark": 0.5,
+      "spark": 0.0,
       "dust": 0.0,
       "feet": "rear"
     },
@@ -197,7 +197,7 @@
       "perfect": -1,
       "targetContains": "",
       "attackerWeapon": "claws",
-      "spark": 0.45,
+      "spark": 0.0,
       "dust": 1.0,
       "feet": "both"
     },
@@ -207,7 +207,7 @@
       "perfect": -1,
       "targetContains": "",
       "attackerWeapon": "claws",
-      "spark": 0.4,
+      "spark": 0.0,
       "dust": 0.6,
       "feet": "rear"
     },
@@ -217,7 +217,7 @@
       "perfect": 1,
       "targetContains": "",
       "attackerWeapon": "claws",
-      "spark": 0.35,
+      "spark": 0.0,
       "dust": 0.25,
       "feet": "rear"
     },
@@ -227,7 +227,7 @@
       "perfect": -1,
       "targetContains": "",
       "attackerWeapon": "claws",
-      "spark": 0.2,
+      "spark": 0.0,
       "dust": 0.4,
       "feet": "rear"
     },

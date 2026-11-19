@@ -196,8 +196,9 @@ public sealed class ZoneCamScene : MonoBehaviour
     void PoseCam(Camera cam, DuelFighter m)
     {
         Vector3 head = m.transform.position + Vector3.up * 1.55f; Vector3 f = m.transform.forward; f.y = 0f; f.Normalize();
-        if (poseSide == 0) { poseSide = 1; foreach (var a in System.Environment.GetCommandLineArgs()) { if (a == "-posecam:left") poseSide = 2; else if (a == "-posecam:right") poseSide = 3; } }   // FK3: -posecam:left|right = camera beside Joan (hands in profile); default = front, as before
+        if (poseSide == 0) { poseSide = 1; foreach (var a in System.Environment.GetCommandLineArgs()) { if (a == "-posecam:left") poseSide = 2; else if (a == "-posecam:right") poseSide = 3; else if (a == "-posecam:low") poseSide = 4; } }   // FK3: -posecam:left|right = camera beside Joan (hands in profile); default = front, as before
         Vector3 off = poseSide == 2 ? -m.transform.right : poseSide == 3 ? m.transform.right : f; off.y = 0f; off.Normalize();
+        if (poseSide == 4) { Vector3 rt = m.transform.right; rt.y = 0f; rt.Normalize(); Vector3 gp = m.transform.position; cam.transform.position = gp + rt * 3.4f + Vector3.up * 0.30f; cam.transform.rotation = Quaternion.LookRotation((gp + Vector3.up * 0.55f) - cam.transform.position, Vector3.up); cam.fieldOfView = 60f; return; }   // AXEGRIP low: QA-only floor-level wide camera beside Joan (same relative pose every run)
         cam.transform.position = head + off * 2.4f + Vector3.up * 0.05f; cam.transform.rotation = Quaternion.LookRotation((head - Vector3.up * 0.25f) - cam.transform.position, Vector3.up); cam.fieldOfView = 38f;
     }
 

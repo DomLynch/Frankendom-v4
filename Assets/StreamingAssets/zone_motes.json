@@ -24,7 +24,7 @@
       ],
       "sizeMin": 0.015,
       "sizeMax": 0.04,
-      "count": 150,
+      "count": 60,
       "lifeMin": 16,
       "lifeMax": 24,
       "box": [
@@ -57,7 +57,7 @@
       ],
       "sizeMin": 0.015,
       "sizeMax": 0.04,
-      "count": 150,
+      "count": 60,
       "lifeMin": 18,
       "lifeMax": 26,
       "box": [
@@ -90,7 +90,7 @@
       ],
       "sizeMin": 0.015,
       "sizeMax": 0.04,
-      "count": 90,
+      "count": 36,
       "lifeMin": 16,
       "lifeMax": 24,
       "box": [
@@ -123,7 +123,7 @@
       ],
       "sizeMin": 0.015,
       "sizeMax": 0.04,
-      "count": 190,
+      "count": 76,
       "lifeMin": 14,
       "lifeMax": 22,
       "box": [
@@ -156,7 +156,7 @@
       ],
       "sizeMin": 0.015,
       "sizeMax": 0.04,
-      "count": 170,
+      "count": 68,
       "lifeMin": 18,
       "lifeMax": 28,
       "box": [
@@ -189,7 +189,7 @@
       ],
       "sizeMin": 0.015,
       "sizeMax": 0.04,
-      "count": 180,
+      "count": 72,
       "lifeMin": 16,
       "lifeMax": 24,
       "box": [
@@ -222,7 +222,7 @@
       ],
       "sizeMin": 0.015,
       "sizeMax": 0.04,
-      "count": 90,
+      "count": 36,
       "lifeMin": 16,
       "lifeMax": 24,
       "box": [

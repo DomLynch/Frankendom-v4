@@ -45,7 +45,7 @@
     "vignette":  {
                      "enabled":  true,
                      "startFrac":  0.35,
-                     "maxAlpha":  0.38,
+                     "maxAlpha":  0.22,
                      "inner":  0.45,
                      "pulseHz":  0.0,
                      "pulseDepth":  0.0,
