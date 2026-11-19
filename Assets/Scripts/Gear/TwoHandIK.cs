@@ -83,6 +83,7 @@ public class TwoHandIK : MonoBehaviour
     void LateUpdate()
     {
         if (!init) Init();
+        WeaponGroundClamp.Apply(owner, fighter);   // AXEGRIP v1: held weapon never below the ground (data: weapon_ground_clamp.json)
         if (!ok) return;
         var C = GearTable.Get().weaponSwap.ik;
         Transform grip = owner != null ? owner.OffHandNode : null;

@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "epsilonM": 0.02,
+  "probeUpM": 1.6,
+  "probeLenM": 4.0,
+  "maxTiltDeg": 55.0,
+  "maxLiftM": 0.2,
+  "attackS": 0.03,
+  "releaseS": 0.12,
+  "quickRejectM": 1.3,
+  "maxSamples": 2500,
+  "logCorrection": true,
+  "logClearance": false,
+  "weapons": []
+}
