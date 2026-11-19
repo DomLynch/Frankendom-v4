@@ -21,7 +21,7 @@ public static class LookOptions
     [Serializable] public class Vig { public bool on; public float intensity = 0.34f; }
     [Serializable] public class Root { public Door doorwayDepth = new Door(); public Plate endPlate = new Plate(); public WoundD woundMarks = new WoundD(); public Vig sceneVignette = new Vig(); public Wash deathWash = new Wash(); public Spike doorwaySpikeStrip = new Spike(); public Floor floorNormal = new Floor(); public Blood finisherBlood = new Blood(); public Cap combatCamCap = new Cap(); public ReframeRow camReframe = new ReframeRow(); /* // GOOSEBACKLOG2 v102 */ public PlugFix terrainPlug = new PlugFix(); /* // laneWHIRLFIX */ public DitherKit.Cfg dither = new DitherKit.Cfg(); /* DITHERKIT v1: enabled false = today; see DitherKit.cs */ }
 
-    [Serializable] public class PlugFix { public bool on; public string[] names = { "TerrainCentrePlug" }; public float dropM = 0.05f; }   // laneWHIRLFIX
+    [Serializable] public class PlugFix { public bool on; public string[] names = { "TerrainCentrePlug" }; public float dropM = 0.05f; public string[] raiseNames = new string[0]; public float raiseM = 0f; public bool dumpFlat = false; public float[] dumpBox = { -5f, 0f, 10f, 20f }; public float dumpMaxY = 0.1f; }   // laneWHIRLFIX
     static Root cfg;
     public static Root Cfg()
     {
@@ -123,11 +123,24 @@ public static class LookOptions
             var all = Resources.FindObjectsOfTypeAll<Transform>();
             for (int i = 0; i < all.Length; i++)
             {
-                var t = all[i]; if (t == null || !t.gameObject.scene.IsValid() || Array.IndexOf(c.terrainPlug.names, t.name) < 0) continue;
+                var t = all[i]; if (t == null || !t.gameObject.scene.IsValid() || (Array.IndexOf(c.terrainPlug.names, t.name) < 0 && (c.terrainPlug.raiseNames == null || Array.IndexOf(c.terrainPlug.raiseNames, t.name) < 0))) continue;
                 float y0; if (!plugY0.TryGetValue(t, out y0)) { y0 = t.position.y; plugY0[t] = y0; }
-                float want = y0 - Mathf.Max(0f, c.terrainPlug.dropM); var p = t.position;
+                bool upN = c.terrainPlug.raiseNames != null && Array.IndexOf(c.terrainPlug.raiseNames, t.name) >= 0; float want = upN ? y0 + c.terrainPlug.raiseM : y0 - Mathf.Max(0f, c.terrainPlug.dropM); var p = t.position;   // FLOORFIX: raiseNames/raiseM lift a named block so it wins the depth test
                 if (Mathf.Abs(p.y - want) > 1e-4f) { t.position = new Vector3(p.x, want, p.z); Debug.Log("[LookOptions] terrain plug sunk to y " + want.ToString("F3") + ": " + t.name); }
             }
+        }
+        if (c.terrainPlug.on && c.terrainPlug.dumpFlat && c.terrainPlug.dumpBox != null && c.terrainPlug.dumpBox.Length >= 4)   // FLOORFIX: name every flat renderer in the box (x0,z0,x1,z1) so a coplanar plane can be found; logged each pass, max 60 lines
+        {
+            var bx = c.terrainPlug.dumpBox; var rs = UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsInactive.Include, FindObjectsSortMode.None); int n = 0;
+            for (int i = 0; i < rs.Length && n < 60; i++)
+            {
+                var r = rs[i]; if (r == null) continue; var bb = r.bounds;
+                if (bb.max.x < bx[0] || bb.min.x > bx[2] || bb.max.z < bx[1] || bb.min.z > bx[3] || bb.size.y > c.terrainPlug.dumpMaxY || Mathf.Abs(bb.center.y) > 1.5f) continue;
+                string path = r.name; var tr = r.transform.parent; int d = 0; while (tr != null && d++ < 8) { path = tr.name + "/" + path; tr = tr.parent; }
+                string mn = ""; var ms = r.sharedMaterials; for (int m = 0; m < ms.Length; m++) mn += (ms[m] != null ? ms[m].name : "null") + ";";
+                Debug.Log("[FlatDump] " + path + " en=" + r.enabled + " mat=" + mn + " c=(" + bb.center.x.ToString("F2") + "," + bb.center.y.ToString("F3") + "," + bb.center.z.ToString("F2") + ") s=(" + bb.size.x.ToString("F2") + "," + bb.size.y.ToString("F3") + "," + bb.size.z.ToString("F2") + ")"); n++;
+            }
+            Debug.Log("[FlatDump] " + n + " flat renderers in box");
         }
         if (c.doorwayDepth.on)   // GOOSEBACKLOG v100: faint red haze behind the threshold = depth cue; only the light's volumetric dimmer and the inside fog density change
         {

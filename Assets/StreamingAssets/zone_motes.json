@@ -255,7 +255,7 @@
       ],
       "sizeMin": 0.03,
       "sizeMax": 0.06,
-      "count": 30,
+      "count": 0,
       "lifeMin": 7,
       "lifeMax": 11,
       "box": [

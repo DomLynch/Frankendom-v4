@@ -162,6 +162,15 @@ public sealed class ZoneCamScene : MonoBehaviour
     {
         var m = Me(); var cam = Camera.main; if (m == null || cam == null) { Note("sidecam: no Joan or camera"); yield break; }
         var rig = cam.GetComponent<CameraRig>(); bool rigWas = rig != null && rig.enabled; if (rig != null) rig.enabled = false; float fov0 = cam.fieldOfView;
+        // WORLD CAMERA (19 Nov, QA proofs): st.item = "world" parks the camera at an ABSOLUTE world pose, independent of Joan and her lock-on: pos = [x, y, z, yawDeg, pitchDeg (default 12), fov (default 40)]; yaw 0 = world +z (toward the pit gate), 90 = +x (right of the gate axis), 180 = away, 270 = left. Same pose for every arm = a same-camera pair.
+        if (st.item == "world" && st.pos != null && st.pos.Length >= 4)
+        {
+            Vector3 wp = new Vector3(st.pos[0], st.pos[1], st.pos[2]); float wyaw = st.pos[3], wpitch = st.pos.Length > 4 ? st.pos[4] : 12f, wfov = st.pos.Length > 5 ? st.pos[5] : 40f; Quaternion wq = Quaternion.Euler(wpitch, wyaw, 0f);
+            Note("worldcam " + st.id + ": pos " + wp.ToString("F1") + " yaw " + wyaw.ToString("F1") + " pitch " + wpitch.ToString("F1"));
+            float tw = Time.realtimeSinceStartup + Mathf.Max(0.5f, st.seconds);
+            while (Time.realtimeSinceStartup < tw) { cam.transform.position = wp; cam.transform.rotation = wq; cam.fieldOfView = wfov; yield return null; }
+            cam.fieldOfView = fov0; if (rig != null) rig.enabled = rigWas; yield break;
+        }
         float sx = st.pos != null && st.pos.Length > 0 ? st.pos[0] : 4f, sy = st.pos != null && st.pos.Length > 1 ? st.pos[1] : 1.6f, sz = st.pos != null && st.pos.Length > 2 ? st.pos[2] : 0f, ly = st.pos != null && st.pos.Length > 3 ? st.pos[3] : 1.3f;
         float t1 = Time.realtimeSinceStartup + Mathf.Max(0.5f, st.seconds);
         // SIDECAM v2 (harness): st.run = true makes her move straight ahead (the heading she has at the start, running) for the whole step, so a mounted gallop can be filmed; st.item = "static" parks the camera in the world at the start offset (she rides past it) instead of following her.

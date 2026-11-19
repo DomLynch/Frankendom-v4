@@ -255,3 +255,10 @@ Any NEW visual effect, tell, marker or character light needs, in its board/LIVE 
 
 
 - **Banned assets (19 Nov, goblin purge, Dom order):** Tools\banned_assets.txt lists names + SHA256 that must never ship (old goblin / Old Marl / NpcFenWitch look body). Tools\banned_assets_check.ps1 is called by deploy_data.ps1 (exit 8), flip.ps1 (exit 5), build_compileonly.ps1 (exit 5) and _build_guard.ps1 (exit 3); a match refuses with the file path + a board line. Never restore a quarantined file (D:\_quarantine_goblin_20261119, manifest.csv); Lead-only rollback override: $env:FK_BANNED_ALLOW='<reason>'. Add a new banned asset by appending a name/sha256 line.
+- **Banned values (19 Nov, COO ruling):** Tools\banned_values.json lists data values that caused a regression (first: look_zones.json pit_yard fogMaxHeight 26, sepia haze wall; original 16). Tools\banned_values_check.ps1 is called by deploy_data.ps1 -Apply (exit 5) and flip.ps1 (exit 5); a match refuses with 'BANNED VALUE REFUSED: <file> <selector>.<key> = <value> (<reason>)' on the board. Add an entry whenever a value is found to cause a regression; Lead-only override $env:FK_BANNED_ALLOW='<reason>'.
+
+a VOID run keeps its evidence: the bus renames run -> run_void_HHmm before the retry
+
+- (COO 19 Nov 10:54) A flip that replaces a lane's live build rewrites or removes qa_slots\p0_<lane>.txt in the same minute; a p0 naming a build that is no longer live is void and the COO renames it .void.
+
+- 2026-11-19 Lead/COO: a look PAIR must share ONE camera: use a camscene step {kind:'sidecam', item:'world', pos:[x,y,z,yawDeg,pitchDeg,fov]} (absolute pose, yaw 0 = +z toward the pit gate, 90 right, 180 away, 270 left; independent of Joan's lock-on). SideCam offsets without 'world' are relative to Joan's heading and are NOT a valid pair; the four-yaw hooks log [FourYaw] and the run is VOID when the yaws span < 270 degrees or differ from 'before' by > 2 degrees.

@@ -1,6 +1,7 @@
 {
  "_about": "ZONESCOPE v1 (kit fk_loadscope_kit). enabled false = today, bit for bit (every hook returns at once). enabled true: runtime-loaded GLBs (GlbPreload late tier, hub camp NPCs, ZoneHitch.Warm creature prefabs) are kept only for the CURRENT zone and neighbours[].keep; others are not parsed at start, staged ahead in calm frames, and dropped (GltfImport.Dispose) dropAfterS after the zone leaves scope. Files in no group stay always loaded. mbEst/mpx are decoded-size ESTIMATES from the GLB headers. v2: camps[] = the hub NPC sets are wanted only while the player is within aheadM before / behindM after the camp area (z1 never loads the hub), minAgeS after the scene load; hysteresisM before a camp is dropped; Defer skips any file already started (W7 double parse).",
  "enabled": false,
+ "onWhenGlbMipDrop": 2,
  "log": true,
  "startZone": "pit_yard",
  "keepLoadedMB": 1700.0,

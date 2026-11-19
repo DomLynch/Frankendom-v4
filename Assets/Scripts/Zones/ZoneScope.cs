@@ -28,7 +28,7 @@ public class ZscDecode
 [Serializable]
 public class ZscCfg
 {
-    public bool enabled, log = true, scopeTemplates = true, scopeCamps = true, dropCamps = true; public string startZone = "pit_yard", lootAlts = "preload";
+    public bool enabled; public int onWhenGlbMipDrop = 0; public bool log = true, scopeTemplates = true, scopeCamps = true, dropCamps = true; public string startZone = "pit_yard", lootAlts = "preload";
     public float keepLoadedMB = 1700f, dropAfterS = 20f, templateMsEst = 60f;
     public ZscHitch hitch = new ZscHitch(); public ZscDecode decode = new ZscDecode(); public ZscNeigh[] neighbours = new ZscNeigh[0]; public ZscCamp[] camps = new ZscCamp[0]; public ZscGroup[] groups = new ZscGroup[0];
 }
@@ -77,7 +77,7 @@ public static class ZoneScope
                 if (cfg.hitch == null) cfg.hitch = new ZscHitch(); if (cfg.neighbours == null) cfg.neighbours = new ZscNeigh[0]; if (cfg.groups == null) cfg.groups = new ZscGroup[0]; if (cfg.decode == null) cfg.decode = new ZscDecode(); if (cfg.camps == null) cfg.camps = new ZscCamp[0];
                 foreach (var a in Environment.GetCommandLineArgs()) { if (a == "-zonescope:on") cfg.enabled = true; else if (a == "-zonescope:off") cfg.enabled = false; }
                 foreach (var a in Environment.GetCommandLineArgs()) { if (a == "-zonedecode:on") cfg.decode.mode = "uri"; else if (a == "-zonedecode:off") cfg.decode.mode = "off"; }
-                active = cfg.enabled && !PerfFlags.HarnessRun();
+                active = (cfg.enabled || (cfg.onWhenGlbMipDrop > 0 && PerfMem.GlbMipDrop >= cfg.onWhenGlbMipDrop)) && !PerfFlags.HarnessRun();   // LOWSCOPE: on a preset whose glbMipDrop >= onWhenGlbMipDrop (Low = 2) only; 0 = off
                 decodeActive = cfg.decode.mode == "uri" && (active || cfg.decode.standalone) && !PerfFlags.HarnessRun();
             }
         }

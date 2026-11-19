@@ -29,6 +29,20 @@
       }
     },
     {
+      "name": "Z7Lantern_V5",
+      "pos": [
+        5.83,
+        2.0,
+        340.4
+      ],
+      "kelvin": 2200.0,
+      "candela": 9000.0,
+      "range": 6.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 16,
+      "layerMask": 65535
+    },
+    {
       "name": "Z7Lantern_A",
       "pos": [
         -2.4,

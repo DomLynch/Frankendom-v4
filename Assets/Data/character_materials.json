@@ -118,7 +118,7 @@
             1,
             1
           ],
-          "smoothness": 0.8,
+          "smoothness": 0.7,
           "metallic": -1,
           "albedoBlob": "",
           "albedoTexture": "",
@@ -191,11 +191,11 @@
     },
     {
       "character": "Humbaba",
-      "materials": []
+      "materials": [{ "match": "creature5_body", "smoothness": 0.72, "metallic": -1, "baseColor": [1,1,1], "albedoBlob": "", "albedoTexture": "", "_why": "fk_bossmat: twin RemapMax 0.9 -> 0.72, mask keeps skin/fur/bone separation" }]
     },
     {
       "character": "Erlking",
-      "materials": []
+      "materials": [{ "match": "erlking_body", "smoothness": 0.68, "metallic": -1, "baseColor": [1,1,1], "albedoBlob": "", "albedoTexture": "", "_why": "fk_bossmat: twin RemapMax 0.85 -> 0.68, mask keeps hide/bark/bone separation" }]
     },
     { "character": "NpcPitGladiator",
       "_why": "Dom via Strategy 15 Nov: bright red / gold centurion out of palette. Cloth oxblood, gold aged bronze, skin slightly calmer (k19 recolour.py). Revert: delete this row.",
