@@ -11,11 +11,12 @@ public class LoadingCard : MonoBehaviour
     static bool cleared = true;   // true when no card exists (harness runs, file missing or off); false while a card is up
     public static bool Cleared { get { return cleared; } }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cleared = true; cfg = null; }
-    void OnDestroy() { cleared = true; } GUIStyle sTitle, sSub; Texture2D black;
+    void OnDestroy() { cleared = true; LoadCardHold.OnGone(); } GUIStyle sTitle, sSub; Texture2D black;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
+        MusicPlayer.Boot();   // MUSIC v1: one call into the music start-up from this existing boot hook (Scripts/Audio/MusicPlayer.cs)
         try
         {
             string t = DataPath.ReadText("loading_card.json"); if (string.IsNullOrEmpty(t)) return;
@@ -32,14 +33,14 @@ public class LoadingCard : MonoBehaviour
         catch (Exception e) { Debug.LogWarning("[LoadingCard] off: " + e.Message); }
     }
 
-    void Awake() { t0 = Time.realtimeSinceStartup; GearReady.Begin(t0);black = new Texture2D(1, 1); black.SetPixel(0, 0, Color.black); black.Apply(); }
+    void Awake() { t0 = Time.realtimeSinceStartup; GearReady.Begin(t0); LoadCardHold.OnArm(t0); black = new Texture2D(1, 1); black.SetPixel(0, 0, Color.black); black.Apply(); }
 
     void Update()
     {
         float now = Time.realtimeSinceStartup;
         if (Time.unscaledDeltaTime < cfg.calmFrameS) { if (calmSince < 0f) calmSince = now; } else calmSince = -1f;   // the world only draws once the texture / zone streaming hitches (100+ ms frames) have stopped
-        if (doneAt < 0f && now - t0 >= cfg.minSeconds && Prewarm92.TotalSeconds >= 0f && calmSince >= 0f && now - calmSince >= cfg.calmForS && (!cfg.waitForStartupWarm || StartupWarm.Done) && GearReady.Poll(now)) { doneAt = now; Debug.Log("[LoadingCard] prewarm done and frames calm (" + cfg.calmForS.ToString("F1") + " s under " + (cfg.calmFrameS * 1000f).ToString("F0") + " ms) after " + (now - t0).ToString("F1") + " s: fading out"); }
-        if (doneAt < 0f && now - t0 >= cfg.maxSeconds) { doneAt = now - cfg.extraAfterPrewarmS; Debug.Log("[LoadingCard] gave up waiting for the prewarm after " + cfg.maxSeconds.ToString("F0") + " s: fading out"); }
+        if (doneAt < 0f && now - t0 >= cfg.minSeconds && Prewarm92.TotalSeconds >= 0f && LoadCardHold.CalmOk(now, calmSince >= 0f && now - calmSince >= cfg.calmForS, !cfg.waitForStartupWarm || StartupWarm.Done) && GearReady.Poll(now) && LoadCardHold.InputOk()) { doneAt = now; Debug.Log("[LoadingCard] prewarm done and frames calm (" + cfg.calmForS.ToString("F1") + " s under " + (cfg.calmFrameS * 1000f).ToString("F0") + " ms) after " + (now - t0).ToString("F1") + " s: fading out"); }
+        float capS = LoadCardHold.Cap(cfg.maxSeconds); if (doneAt < 0f && now - t0 >= capS) { doneAt = now - cfg.extraAfterPrewarmS; Debug.Log("[LoadingCard] gave up waiting for the prewarm after " + capS.ToString("F0") + " s: fading out (prewarmDone " + (Prewarm92.TotalSeconds >= 0f) + ")"); }
         if (doneAt >= 0f && now - doneAt >= cfg.extraAfterPrewarmS + cfg.fadeS) { Debug.Log("[LoadingCard] gone"); Destroy(gameObject); }
     }
 
@@ -56,8 +57,8 @@ public class LoadingCard : MonoBehaviour
             sTitle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = Mathf.Max(12, Mathf.RoundToInt(cfg.titleSize * Screen.height / 1080f)), fontStyle = FontStyle.Bold }; sTitle.normal.textColor = new Color(0.85f, 0.78f, 0.62f, 1f);
             sSub = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontSize = Mathf.Max(10, Mathf.RoundToInt(cfg.subSize * Screen.height / 1080f)) }; sSub.normal.textColor = new Color(0.6f, 0.58f, 0.52f, 1f);
         }
-        GUI.Label(new Rect(0, Screen.height * 0.42f, Screen.width, Screen.height * 0.1f), cfg.title, sTitle);
-        GUI.Label(new Rect(0, Screen.height * 0.52f, Screen.width, Screen.height * 0.05f), cfg.sub, sSub);
+        if (!LoadCardHold.Title(cfg.title, cfg.titleSize)) GUI.Label(new Rect(0, Screen.height * 0.42f, Screen.width, Screen.height * 0.1f), cfg.title, sTitle);
+        if (!LoadCardHold.SubDraw(LoadCardHold.Sub(cfg.sub, now - t0), cfg.subSize)) GUI.Label(new Rect(0, Screen.height * 0.52f, Screen.width, Screen.height * 0.05f), LoadCardHold.Sub(cfg.sub, now - t0), sSub); LoadCardHold.Draw(now - t0, doneAt >= 0f);
         GUI.color = c;
     }
 }

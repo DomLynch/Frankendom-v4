@@ -170,7 +170,7 @@ public sealed class ZoneHitchRunner : MonoBehaviour
         var prefabs = new List<GameObject>(); Camera wc = null; RenderTexture rt = null; GameObject wg = null;
         try
         {
-            if (W.prefabs) { sw.Restart(); var zr = ZoneRuntime.Inst; if (zr != null) prefabs = zr.SpanPreload(); Step(sb, "prefabs " + prefabs.Count, sw, ref total); }
+            if (W.prefabs) { sw.Restart(); var zr = ZoneRuntime.Inst; int ppf = LoadCardHold.PrefabsPerFrame(); if (zr != null && ppf > 0) { var nm = zr.SpanPreloadNames(); for (int ni = 0; ni < nm.Count; ni++) { var pg = zr.SpanTemplate(nm[ni]); if (pg != null && !prefabs.Contains(pg)) prefabs.Add(pg); if ((ni + 1) % ppf == 0) yield return null; } } else if (zr != null) prefabs = zr.SpanPreload(); Step(sb, "prefabs " + prefabs.Count, sw, ref total); }   /* LOADCARD v2: spread */
             yield return null;
             if (main != null && (W.materials || W.rings))
             {

@@ -19,7 +19,7 @@ public sealed class LootUI : MonoBehaviour
     /// <summary>True while the equip screen is open (and on the frame it closed): GameLoopDriver must not read Enter / A / B then.</summary>
     public static bool Blocking { get { return LootScreen.Open || LootScreen.ClosedFrame == Time.frameCount || MarketUI.Blocking; } }   // STALL v1
     /// <summary>True when a pickup is within reach this frame (PlayerBrain may ignore the E roll then; optional hunk).</summary>
-    public static bool PickupInReach { get; private set; }
+    public static bool PickupInReach { get; private set; } bool nearHeard; static bool nearLogged;   // TAKE C1: one quiet cue when an item comes within reach (loot_ui.json glint.sound)
     public static int PickupCount { get { return Instance != null ? Instance.live.Count : 0; } }
 
     struct Drop { public string id; public Vector3 pos; }
@@ -175,8 +175,9 @@ public sealed class LootUI : MonoBehaviour
             var a = live[i].Anchor; float d = Mathf.Sqrt((a.x - wp.x) * (a.x - wp.x) + (a.z - wp.z) * (a.z - wp.z));
             if (d < nearDist) { nearDist = d; near = live[i]; }
         }
-        if (near == null || nearDist > C.pickup.radius) return;
+        if (near == null || nearDist > C.pickup.radius) { nearHeard = false; return; }
         PickupInReach = true;
+        if (!nearHeard) { nearHeard = true; var G = C.glint; if (G != null && G.sound && !string.IsNullOrEmpty(G.nearCue)) { BowShot.PlayCue(G.nearCue, G.nearGain, G.nearRate); if (!nearLogged) { nearLogged = true; Debug.Log("[Take] C1 loot near cue: " + G.nearCue + " gain " + G.nearGain.ToString("F2") + " rate " + G.nearRate.ToString("F2")); } } }
         if (!ReferenceEquals(keyOwner, C.keys)) { keyOwner = C.keys; kPickup = LootCfg.Keys(C.keys.pickup); }
         if (C.pickup.autoPickup || LootCfg.AnyDown(kPickup)) Collect(near);
     }

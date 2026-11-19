@@ -34,6 +34,7 @@ public static class LootCfg
         public string[] tabPrev = { "Q", "JoystickButton4" }, tabNext = { "R", "JoystickButton5" };   // K26: only used while controls.json bindings (equipTabPrev / equipTabNext) are off
         public string axisX = "Horizontal", axisY = "Vertical"; public float stickThreshold = 0.6f, repeatDelayS = 0.35f, repeatS = 0.11f;
     }
+    [Serializable] public class GlintC { public bool on = false, sound = false; public float sizeM = 0.06f, smoothness = 0.92f, metallic = 1f, liftM = 0.004f, tilt = 12f, tintMix = 0.35f, nearGain = 0.15f, nearRate = 1.7f; public string nearCue = "block"; }   // TAKE C1: on = a small physical metal glint on the item instead of the pillar; sound = one quiet cue when an item comes within reach (default OFF = today)
     [Serializable]
     public class PillarC
     {
@@ -91,7 +92,7 @@ public static class LootCfg
     public class Data
     {
         public int version = 1; public bool enabled = true, debugLog = false; public float referenceHeight = 1080f, minScale = 0.6f, maxScale = 3f; public int guiDepth = -1100;
-        public ColorsC colors = new ColorsC(); public FontsC fonts = new FontsC(); public KeysC keys = new KeysC(); public PillarC pillar = new PillarC(); public LabelC label = new LabelC();
+        public ColorsC colors = new ColorsC(); public FontsC fonts = new FontsC(); public KeysC keys = new KeysC(); public PillarC pillar = new PillarC(); public GlintC glint = new GlintC(); public LabelC label = new LabelC();
         public PickupC pickup = new PickupC(); public ScreenC screen = new ScreenC(); public TextC text = new TextC(); public SaveC save = new SaveC(); public CatalogC catalog = new CatalogC(); public DemoC demo = new DemoC();
         public SlotC[] slots = new SlotC[0]; public StatC[] stats = new StatC[0]; public RarityC[] rarities = new RarityC[0]; public GearItem[] fallbackItems = new GearItem[0];
         public TabC[] tabs = new TabC[0]; public MountsC mounts = new MountsC(); public MovesC moves = new MovesC();   // K26
@@ -118,7 +119,7 @@ public static class LootCfg
     static Data Fixed(Data d) { Fix(d); return d; }
     static void Fix(Data d)
     {
-        if (d.colors == null) d.colors = new ColorsC(); if (d.fonts == null) d.fonts = new FontsC(); if (d.keys == null) d.keys = new KeysC(); if (d.pillar == null) d.pillar = new PillarC();
+        if (d.colors == null) d.colors = new ColorsC(); if (d.fonts == null) d.fonts = new FontsC(); if (d.keys == null) d.keys = new KeysC(); if (d.pillar == null) d.pillar = new PillarC(); if (d.glint == null) d.glint = new GlintC();
         if (d.label == null) d.label = new LabelC(); if (d.pickup == null) d.pickup = new PickupC(); if (d.screen == null) d.screen = new ScreenC(); if (d.text == null) d.text = new TextC();
         if (d.save == null) d.save = new SaveC(); if (d.catalog == null) d.catalog = new CatalogC(); if (d.demo == null) d.demo = new DemoC();
         if (d.slots == null) d.slots = new SlotC[0]; if (d.stats == null) d.stats = new StatC[0]; if (d.rarities == null) d.rarities = new RarityC[0]; if (d.fallbackItems == null) d.fallbackItems = new GearItem[0];

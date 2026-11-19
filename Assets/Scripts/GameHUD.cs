@@ -22,7 +22,7 @@ public class GameHUD : MonoBehaviour
     bool camArg; string fpsTxt; float fpsTxtFor = -1f; string[] lblK = new string[4], lblS = new string[4], lblT = new string[4]; static readonly string[] nums = new string[128];   // UIDATA_A v1: caches, OnGUI allocates nothing per frame
     static string Num(int n) { if (n < 0 || n >= nums.Length) return n.ToString(); return nums[n] ?? (nums[n] = n.ToString()); }
     // HUDBUG v1 (zones): with zones on the scene enemy is an inactive template and every enemy is a clone, so enemy/ef (set by BuildSlice) never moved. Zones off: untouched.
-    Health zEnemyHp; DuelFighter zEnemyDf; float zPlayerLast = -1f, zEnemyLast = -1f, zBarLastEngaged = -1f; DuelFighter zEnemyLogged;
+    Health zEnemyHp; DuelFighter zEnemyDf; float zPlayerLast = -1f, zEnemyLast = -1f, zBarLastEngaged = -1f; DuelFighter zBarFoe; DuelFighter zEnemyLogged;
     void ZonesBind()
     {
         if (!ZoneRuntime.Owns || pf == null && player == null) return;   // steer mode detaches the HUD (pf and player null): leave it
@@ -32,8 +32,11 @@ public class GameHUD : MonoBehaviour
         // dev2 BOSSBAR v1 (code2.json bossBar): the enemy bar is drawn only while that fighter is engaged with Joan, plus lingerS after the last engaged moment (death card, hand-over); never for a fighter that stands idle / in the safe camp.
         var bb = Code2Cfg.Get(); if (bb != null && bb.bossBar.enabled && ef != null)
         {
-            if (!ef.Dead && ef.opponent != null && ef.opponent == GameLoop.Player) zBarLastEngaged = Time.unscaledTime;
-            if (zBarLastEngaged < 0f || Time.unscaledTime - zBarLastEngaged > bb.bossBar.lingerS) { ef = null; enemy = null; }
+            if (!ef.Dead && ef.opponent != null && ef.opponent == GameLoop.Player) { zBarLastEngaged = Time.unscaledTime; zBarFoe = ef; }
+            // BOSSBAR v2: the linger belongs to the fighter that was engaged (a new target that never fought Joan, e.g. the camp arrival foe after the last kill, gets no bar), and an optional far cut (code2.json bossBar.farHideM)
+            bool showBar = zBarFoe == ef && zBarLastEngaged >= 0f && Time.unscaledTime - zBarLastEngaged <= bb.bossBar.lingerS;
+            if (showBar && bb.bossBar.farHideM > 0f && !ef.Dead && GameLoop.Player != null) { Vector3 dv = ef.transform.position - GameLoop.Player.transform.position; dv.y = 0f; if (dv.magnitude > bb.bossBar.farHideM) showBar = false; }
+            if (!showBar || LoadCardHold.HoldEngage()) { ef = null; enemy = null; }   /* LOADCARD v3: no boss bar before the first engage */
         }
         ZonesHpLog();
     }
@@ -74,6 +77,7 @@ public class GameHUD : MonoBehaviour
         var H = HudCfg.Get();
         if (showFps) DebugLines(H);
         if (STSteer.Active) return;   // steer mode: STUI draws the bar, hints and banners
+        if (ZoneEndScreen.Active) return;   // ENDALPHA v2: the end screen owns the picture, no combat HUD under it
         float s = HudCfg.Scale(), vw = Screen.width / s, vh = Screen.height / s, now = Time.unscaledTime, dt = Mathf.Clamp(now - lastNow, 0f, HudLayout.Get().game.dtMax); lastNow = now;
         var m = GUI.matrix; GUI.matrix = Matrix4x4.Scale(new Vector3(s, s, 1f));
         HudDraw.Alpha = 1f - Mathf.Clamp01(GameLoop.ScreenAlpha) * Mathf.Clamp01(H.screens.hudFade);   // the end screen fades the HUD out

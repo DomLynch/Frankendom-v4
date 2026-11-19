@@ -7,5 +7,6 @@
   "radiusOfHeight": 0.2,
   "problemHidden": 0.25,
   "proof": { "seps": [2.0, 4.0, 6.0, 7.0, 10.0], "settleFrames": 60, "sampleFrames": 6, "enforce": false, "hiddenMax": 0.5, "csvName": "camproof_occlusion.csv" },
-  "fix": { "enabled": false, "nearSepM": 4.0, "blendSpanM": 2.0, "shoulderAddM": 1.0, "heightAddM": 0.0 }
+  "fix": { "enabled": false, "nearSepM": 4.0, "blendSpanM": 2.0, "shoulderAddM": 1.0, "heightAddM": 0.0 },
+  "side": { "enabled": false, "log": true, "hiddenOn": 0.4, "hiddenFull": 0.8, "shiftM": 1.2, "riseMPerS": 2.5, "fallMPerS": 1.5 }
 }

@@ -84,7 +84,7 @@ public static class CamZone
     /// <summary>CameraRig.LateUpdate, before the lock test. Never touches the player's own target (hits, HUD): only which enemy the CAMERA frames.</summary>
     public static void Pick(Row z, CameraRig rig, Transform player)
     {
-        if (RTFinisher.Busy || rig.Yield || player == null) return;
+        if (RTFinisher.Busy || rig.Yield || player == null || LoadCardHold.HoldEngage() /* LOADCARD v4: no auto camera target before the first engage */) return;
         float now = Time.unscaledTime;
         if (pdfFor != player) { pdfFor = player; pdf = player.GetComponent<DuelFighter>(); accTr = heldTr = deadTr = null; nextScan = 0f; }
         if (pdf == null) return;

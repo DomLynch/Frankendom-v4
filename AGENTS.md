@@ -152,6 +152,8 @@ Armagedom left the laptop, so the three-game guards are cut to what the machine 
 ## QA copy guard (COO 18 Nov 10:0x)
 gateproof.ps1 keeps deploy_data.ps1's output and REFUSES (exit 10, board line with deploy_data's last lines) when the QA copy has no HadesSlice.exe. Cause: a 4-letter QA tag (109kfjn) was refused by deploy_data ('tag must look like v109xx') with the output hidden by Out-Null, so ptb392 looped about 10 times in 12 min. QA copies use a 2-3 letter tag from Tools\next_tag.ps1.
 
+**QA tags are reserved, never computed (tooling 18 Nov 17:4x):** 17:32 gateproof was REFUSED ('TAG kr RESERVED by gfxfix_props') because callers passed hand-picked k-tags that collided. gateproof.ps1 now takes its QA copy tag only from `Tools\next_tag.ps1 -Owner gateproof:<pid> -Kind qa` (atomic, k + 2 letters, random among free slots, never a tag anyone holds, stale k* reservations with a dead owner pid over 6 h cleared first) and IGNORES the caller's -V: read the `QA TAG: 109kxx reserved` line it prints, do not guess the folder. -DryRun only previews a free tag. Backups *.bak_qatag. Any new script that makes a QA copy must call next_tag -Kind qa itself.
+
 ## Dom's game blocks NEW QA players (COO 2026-11-18 11:17)
 qa_slot.ps1 refuses to START a QA player (WAIT, logged in qa_slots\wait_log.csv) while Dom's own game runs: ARMAGEDOM_Slice0 without -bench, or any HadesSlice/FronteirDom/ARMAGEDOM process whose command line logs to a dom-runs folder. Running players and Editors are NOT paused. Why: Dom's 10:55 Frankendom session (zone 5) died with a D3D12 device-lost on the shared iGPU while FK QA ptb413 started beside it (10:54:36-10:55:27), and the laptop restarted at 10:57. gateproof.ps1 and fd_qa_run.ps1 both go through qa_slot.
 
@@ -173,3 +175,83 @@ gateproof.ps1: a -Build base with no HadesSlice.exe (pruned by keep-last-3) fall
 
 ## Exclusive drain reservation (COO 2026-11-18 13:1x)
 qa_slot.ps1: a waiting -Exclusive acquire writes qa_slots\excl_wait_<lane>.txt; while it is fresh (< 60 s) and under 20 min old, NEW normal players from other lanes WAIT ('draining for <lane>'s exclusive bench'), so the iGPU can empty. Running players are untouched. Cause: FD's B A B A bench timed out at 13:02 after 10 min because FK kept starting players beside its 50-min balance sim.
+
+## Release leak guard (Strategy item C, tooling agent 18 Nov: a half-finished 'Jeannette' story edit went live inside an unrelated HOT release)
+deploy_data.ps1 ships the WHOLE Assets\Data + Assets\StreamingAssets tree, so anyone's unfinished edit rides in with your release. The guard is in the scripts (shared helpers: _agents\laneHOTSHIP\leakguard.ps1; backups .bak_leakguard). (1) flip.ps1 diffs the new build's StreamingAssets (every file, content hash, both directions) against the PREVIOUS live build (the PLAY.bat target) and prints every changed/added/removed file with its last-written time and the last CLAIM/DONE board line naming it; the LIVE board line carries the list (`changed vs prev live: N [c:file, a:file, r:file]`). (2) A release names its files: `flip.ps1 -Build HDRP_v109xx -Files zones.json,loading_card.json -Note "..."` (wildcards and rel paths ok), or `deploy_data.ps1 -v <tag> -Files ... -Apply` stores them in build_info.json purposeFiles and flip.ps1 reads them. Any changed file NOT named blocks the flip (exit 7, prints the unnamed files + who last wrote them; deploy_data -Apply blocks the same way before writing). Fix: name it if it is yours, or revert/park the file in the tree and redeploy. (3) `-AllowUnlisted "<reason>"` is for the Lead only and posts a LEAK-GUARD OVERRIDE board line. (4) deploy_data.ps1 in dry run shows the same unnamed-file report against its base, so leaks are visible before the build exists. (5) The tree-vs-build check and the json guard are unchanged. (6) With no -Files the old usage still works: the changed-file list goes in the LIVE line and a WARNING says there is no purpose list; `FK_STRICT_FLIP=1` makes that case block too (default OFF; the Lead turns it on after the alpha gate). Test without flipping: `flip.ps1 -Build X -PrevLive Y -DryRun`.
+
+- No forked gateproof; agents pass parameters. Use _agents\laneHOTSHIP\gateproof.ps1 with -Script <hook file> (examples in _agents\laneHOTSHIP\gateproof_hooks\), -DeadlineMin, -WaitMin, -SaveName, -Width/-Height. QA tags come only from next_tag.ps1 -Kind qa; deploy_data.ps1 -Apply refuses a 109k+2-letter tag not reserved by gateproof (exit 14).
+
+## qa_slot ramp headroom (COO 2026-11-18 18:0x)
+qa_slot.ps1 adds to a new player's need the GB each HELD slot has not loaded yet (expectGB minus its current working set; an unbound slot counts in full; a dead bound pid counts 0). Cause: three players granted within 20 s at 17:57 on free RAM measured before the held FK players ramped (4 -> 15 GB in ~35 s); free fell to 2.7 GB and the vk proof player died at t=45 s. Cost to watch: more WAITs when two players start together; the COO counts them in wait_log.csv.
+- qa_slot exclusive drain holds the waiting lane's OWN normal players too (COO 18 Nov 18:1x): FK2's drain blocked FD while FK kept starting players.
+- qa_slot: a lane in its exclusive cooldown no longer drains other lanes; the cooldown is their turn (COO 18 Nov 18:2x, FK2 chain held FD 20+ min).
+- Dom-playing detection (COO 18 Nov 19:2x): an ARMAGEDOM_Slice0 started from C:\Users\dom12\coo_qa\ is the COO's laptop QA copy, not Dom (qa_slot Test-DomPlaying + dom_playing_watch). Any new laptop QA copy of Armagedom must live under that folder.
+
+## Memory numbers are sampled at 180 s or later (Lead 18 Nov, COO order)
+The GlbPreload late tier lands after 60 s: texNow goes 8.82 -> 10.69 GB between the 60 s and 180 s MemLog lines in the same run, so a 60 s figure under-reads the working set by ~1.9 GB. Every FK memory number (working set, texNow, peak) is quoted at 180 s or later and says so; a 60 s number is labelled 'early' and never compared with a 10.5 GB target. D's 60 s baseline (14.12 GB ws, 8.65 GB texNow) is restated as 'early'.
+
+## Compile-only Editor runs headless and low priority (COO/Strategy 18 Nov, after two 5-10 s freezes of Dom's Armagedom at 19:31 and 19:38)
+Tools\build_compileonly.ps1 starts Unity with -batchmode -nographics (GfxDevice Null: no D3D12 device on the iGPU Dom plays on) and sets the Editor process to BelowNormal priority; CompilePlayerScripts needs no GPU (proof: v109vx log 'Forcing GfxDevice: Null', 0 errors, 65 s; v109vw without it opened Direct3D). -nographics stays OFF for anything that bakes or compiles shaders/lighting (FULL builds): those run when Dom is not playing, and a FULL that starts while his game is up must post 'FULL STARTED BESIDE DOM <game> <tag>'.
+- qa_slot (COO 18 Nov 20:2x): another lane's FULL/bake 'BUILD PHASE player <lane> until HH:MM' line BLOCKS new QA players again (<= 10 min); compile-only phases stay log-only. Cause: 20:17 FK proof player 16.4 GB beside FD FULL Editor 15.7 GB, free RAM 2.7 GB.
+- qa_slot -Bind (COO 18 Nov 20:3x, built by FK tooling): refuses a non-game pid (exit 5) and starts one hidden _agents\qa_slot_watch.ps1 per bound pid that stops ONLY that pid when free RAM < 4 GB (FK_OWN_STOP_GB), writes VOID-RAM + requeue and a board line. Every QA launcher, inline agent harnesses included, must call -Acquire then -Bind; an unbound player has no protection.
+- qa_slot priority (COO 18 Nov 20:5x): write _agents\qa_slots\p0_<lane>.txt at every code flip and delete it when the live proof lands; while it is fresh (< 30 min) other lanes' new QA players wait. Round-robin: the lane that got the last slot waits while another lane asked in the last 60 s.
+
+## Every FK code flip: full route on the player's own launcher args (Strategy 18 Nov, FK contract row)
+_agents\laneLG\fk_fullroute\fullroute.ps1 [-Build HDRP_v109xx] runs the live build with EXACTLY PLAY.bat's args (read at run time) plus -logFile/-savePath/-camscene -camtrace, drives z1 -> z2 -> hub -> z4 -> z5 -> z6 -> z7 + the alpha_end card, proves each arrival from the log (camtrace zone column + '[CamScene] step zN_arr'; end card = 'gate opened gate_z7_alpha_end' + '[Zones] end screen alpha_end') and writes RESULT.md (zone | arrival | t | stuck | boss kill). FK contract row: every FK code flip: fullroute.ps1 on the live build, PASS before the next flip is called done; HOT-only flips run it nightly. Remaining assists (listed in its README): in-game ZoneCamScene driver, Joan hp floor 0.9, boss kill by data after 20+20 s, raider waves pinned to 5 hp, one forced death in z5, menu.json off on the copy.
+- GPU hang guard (COO 18 Nov 21:1x, after K7: the 10:55 device-hung = 3 D3D12 players on the iGPU incl. an outside bench uncapped at ~621 fps): qa_slot makes every new QA player wait while an unbound bench process (-bench/-benchOut/-perfbench) runs; every bench and QA launcher we own caps fps at 60. System changes (TdrDelay, driver rollback, LiveKernelReports dumps) are Dom's own call.
+- QA FPS cap (COO guard (a), 18 Nov): every FK QA player we launch gets -qa_fps:60 (vsync off) through ONE helper, _agents\laneHOTSHIP\qa_common.ps1 (Get-QaFpsArg; env FK_QA_FPS=N overrides; nothing added if the command line already has -qa_fps). Only exception: perf-measurement runs (fk2_run, g3_run, ab_run via fk16 -Perf, fk2 native/3060 runs) cap at 144. Uncapped = explicit -Uncapped or FK_QA_FPS=0 plus an auto board line; a new launcher dot-sources the helper, never hard-codes the flag.
+
+## QA never leaves Dom's PlayerPrefs changed, and nobody deletes player.lock raw (tooling 18 Nov 2026, incident 21:2x)
+1. QA players write Dom's REAL registry key HKCU\Software\Dom Games\Frankendom (-savePath does not move it; Unity's Screenmanager / UnityGraphicsQuality keys cannot be redirected). Every FK QA / proof launcher that starts a player wraps the run: `. _agents\laneHOTSHIP\qa_common.ps1; $qp = Backup-DomPrefs -Owner x; try { ...player... } finally { Restore-DomPrefs $qp }` (exact restore: deletes what the run added, re-sets what it changed, verifies the sorted value list by SHA256, prints 'prefs restored, N values, hash ok' or 'prefs RESTORE MISMATCH' + a board line; a hidden watcher and a stale PENDING_<pid>.json marker restore after a kill). Backups: _agents\qa_prefs_backup\ (last 20). Tests on the throwaway key HKCU\Software\FKQA_TEST: laneHOTSHIP\qa_prefs_selftest.ps1. A new launcher without it is a rule break; FK_QA_PREFS_OFF=1 is explicit and logged. Code side (pending apply): _agents\laneLG\fk_qaprefs_kit (FkPrefs wrapper: QA runs keep game prefs in memory).
+2. player.lock is a JSON {pid, startTime, owner, deadline}. Take it with `New-PlayerLock -Owner <script> -DeadlineMin N` and release it with `Remove-PlayerLock` (qa_common.ps1): it deletes only your own lock, or one whose owner pid is dead / start time differs / deadline passed (logged: board line + output). A raw `Remove-Item ...player.lock` or `[IO.File]::Open(...player.lock...)` is a rule break; lint: `powershell -File _agents\laneHOTSHIP\lockfix_bulk.ps1 -Lint` (must print nothing).
+
+## Kit apply scripts write backups OUTSIDE Assets (Strategy 18 Nov 22:00; second time tonight a .bak inside Assets blocked a compile-only build: 19:36 .bak_texdedupe, 21:53 DuelFighter.cs.bak_w8)
+Every kit apply.ps1 backs up into its own kit folder (backup_<stamp>\), never beside the target under Assets. _build_guard.ps1 now prints 'stray backup in Assets: <file> - move it OUT of Assets' as its own line before 'not code-only'.
+
+- 2026-11-18 22:13 COO: stall = 15 min without a LIVE/HOT per lane (Dom: 10-15 min data releases). Every HOT gets a new tag; a tag is never reused (proof and rollback name it). Data releases never wait for a code build, a QA run or the capture bus.
+
+- 2026-11-18 22:22 COO: a proof kit or BUS_REQUEST with no running driver is a stall. Each game's proof bus has one named driver agent that runs the queue back to back (waits only on DOM PLAYING or a FULL build phase) and posts a result line per arm; 'I start no player' kits are not done until the driver has run them.
+
+A kit without a running driver = a stall: every kit ships with its proof job in _agents\laneLG\fk_proofbus\queue.json; the bus driver runs the queue back to back; no kit is called done without its proof or an explicit BLOCKED line.
+
+- 2026-11-18 22:43 COO: gateproof's quarter-hour start window (:05-:07) is RETIRED; qa_slot is the one gate for QA players. Never add a clock window back without its lane-minute cost on the board.
+- 2026-11-18 22:50 COO: qa_slot lane 'armagedom-coo' (the COO's laptop Armagedom copy) is the LOWEST class: it waits whenever another lane asked in the last 120 s.
+- 2026-11-18 22:52 COO: qa_slot_watch.ps1 (started by every qa_slot -Bind) stops its bound QA player within ~2 s when Dom's own game starts (VOID-DOM). Cause: AMD driver reset 22:46 with my AR QA copy beside Dom's game on the iGPU.
+
+- 2026-11-18 23:0x Strategy/Lead: every ARENA LOOK proof is shot from FOUR yaws at the fight spot (toward the gate, away, left, right), same pose, and passes only if all four read as one place. One hero frame hid a cold-grey world with warm pasted-on characters in f_000100 (open0 on wu).
+
+## Token cost rules (Strategy 19 Nov 08:50; the desktop burned ~20% of Dom's allowance overnight)
+- A waiting agent ENDS its turn and is woken by the bus/notification; no polling loops, no status-only board lines.
+- At most 4 agents per game overnight; every agent brief ends with its STOP condition.
+- Find why a number is strange before tuning it; never retune from a single run.
+- The COO's 11-minute sweep posts a board line only when something changed. (2026-11-19 08:47 COO)
+
+
+## NO ARCADE, realistic only (Dom PERMANENT, 2026-11-19 09:01)
+No flat-colour body flashes, silhouette tints, glow outlines, floor rings or cartoon overlays in any game. Tells and hit feedback = animation pose and timing, sound, camera, a real light on the body, real VFX (dust, blood, sparks). Any tint/flash/outline data row defaults OFF; a visible feedback effect ships only after a full-size frame that reads as realistic. Gore must read real (dark wet red, no glow).
+
+
+## Alpha gate tracker is LIVE (Dom 19 Nov 09:15, 2026-11-19 09:03)
+_agents\ALPHA_GATES_2026-11-18.md is owned by the COO and updated in the same turn as each event. A Lead that closes or reopens a gate row (a flip, a proof, Dom's run) tells the COO in ONE line with the evidence path (report file, frame, or run log); the COO writes the file. Rows carry state, evidence path, the one thing that closes it, owner, last-updated time.
+
+
+- 2026-11-19 COO/Lead: Unity licence after a restart: Tools\_build_guard.ps1 starts the Unity Hub minimised (path in Tools\hub_path.txt, recorded from the running 'Unity Hub' process once Dom has signed in) when the licence probe fails and the Hub is not running, then re-probes for 60 s before refusing. No credentials are ever typed by an agent. Until that file exists CODE takes refuse with 'licence probe'.
+
+- NO ARCADE dividing line (Strategy 19 Nov 09:25): WORLD = film test (nothing drawn on bodies or the ground that a film of the fight would not contain); HUD = restraint (thin, desaturated, no bloom, no pulsing; a bar flash is one beat). Every row an audit turns OFF is listed in the alpha tracker's FK6/AR8/FD6 evidence; never turn one back on without Strategy.
+
+
+## Outside graphics reviews (Strategy 19 Nov 09:40, 2026-11-19 09:26)
+- A review item is a HYPOTHESIS: verify it against the reader + log + a frame from the CURRENT live build before work starts (reviewers score older builds).
+- Every item passes the FILM TEST before it is built (the orange Pitborn flash came from a review's 'readability' advice).
+- One item = one tagged HOT = one same-camera pair vs the previous LIVE; no bundles.
+- Code/FULL items are not 'today' while the Unity licence is down.
+
+
+## Re-adding guard (Dom 19 Nov 09:55, permanent; COO enforces)
+Any NEW visual effect, tell, marker or character light needs, in its board/LIVE line, either 'Dom asked: <his words>' or 'replaces <banned item>, film-test frame <path>'. Without it the COO orders it OFF. Outside reviews are not permission. Tint/flash/outline/marker rows default OFF.
+
+
+- HUD text rule (Strategy 19 Nov 10:45, all three games): text appears only when it tells the player something NEW (a new area, a boss, an objective change), stays under ~4 s, sits at the screen edge, never centre-screen during combat, never pulses. Boss intro cards: once per run at arena entry, small, under the boss bar, fade ~3 s; OFF for normal enemies and elites. Area label: small, top-left, on entry only, fades ~4 s, no banner or flash. (2026-11-19 10:09)
+
+
+- **Banned assets (19 Nov, goblin purge, Dom order):** Tools\banned_assets.txt lists names + SHA256 that must never ship (old goblin / Old Marl / NpcFenWitch look body). Tools\banned_assets_check.ps1 is called by deploy_data.ps1 (exit 8), flip.ps1 (exit 5), build_compileonly.ps1 (exit 5) and _build_guard.ps1 (exit 3); a match refuses with the file path + a board line. Never restore a quarantined file (D:\_quarantine_goblin_20261119, manifest.csv); Lead-only rollback override: $env:FK_BANNED_ALLOW='<reason>'. Add a new banned asset by appending a name/sha256 line.

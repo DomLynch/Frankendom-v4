@@ -167,6 +167,70 @@
       "normalScale": -1,
       "emissiveScale": -1,
       "tiling": 0
+    },
+    {
+      "match": "dead_tree_1",
+      "color": [
+        1.4,
+        1.28,
+        1.15
+      ],
+      "smoothnessMax": 0.3,
+      "smoothnessMin": -1,
+      "metallicMax": -1,
+      "aoStrength": -1,
+      "normalScale": 1.5,
+      "emissiveScale": -1,
+      "tiling": 0,
+      "_fklook": true
+    },
+    {
+      "match": "rock_boulder_",
+      "color": [
+        1.22,
+        1.19,
+        1.15
+      ],
+      "smoothnessMax": 0.4,
+      "smoothnessMin": -1,
+      "metallicMax": -1,
+      "aoStrength": -1,
+      "normalScale": 1.5,
+      "emissiveScale": -1,
+      "tiling": 0,
+      "_fklook": true
+    },
+    {
+      "match": "hero_boulder_",
+      "color": [
+        1.22,
+        1.19,
+        1.15
+      ],
+      "smoothnessMax": 0.4,
+      "smoothnessMin": -1,
+      "metallicMax": -1,
+      "aoStrength": -1,
+      "normalScale": 1.4,
+      "emissiveScale": -1,
+      "tiling": 0,
+      "_fklook": true
+    },
+    {
+      "match": "hero_debris_rubble",
+      "color": [
+        1.22,
+        1.19,
+        1.15
+      ],
+      "smoothnessMax": 0.4,
+      "smoothnessMin": -1,
+      "metallicMax": -1,
+      "aoStrength": -1,
+      "normalScale": 1.4,
+      "emissiveScale": -1,
+      "tiling": 0,
+      "_fklook": true
     }
   ],
   "_rowsNote": "optional extra rows with the same fields as hdrp_fixes.json matAdjust (match, color, normalScale, tiling, metallicMax, smoothnessMax, smoothnessMin, aoStrength, emissiveScale); applied AFTER the source rows, so they win.",

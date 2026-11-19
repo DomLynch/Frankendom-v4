@@ -6,7 +6,7 @@
 // With a TwoHandIK on the Animator (two-handed weapon) the left hand closes with the IK weight, so the fist opens when the arm lets go.
 public class GripPose : MonoBehaviour
 {
-    [System.Serializable] public class Row { public string name; public float fingerDeg = 62f, thumbDeg = 35f, thumbWeight = 0.7f, falloff = 1f; public float[] fingerAxis = { 0, 0, 1 }, thumbAxis = { 0, 1, 0 }; public string weapon = ""; public bool leftHand; public float leftWeight = 1f; public bool absolute; public string[] leftStates; }   // leftStates: Animator states in which the LEFT hand also grips (two-handed phases; empty = always when leftHand)   // absolute: the curl REPLACES the clip's finger rotation (rest * curl) so the fist holds in every clip/phase; false = old additive curl on top of the clip
+    [System.Serializable] public class Row { public string name; public float fingerDeg = 62f, thumbDeg = 35f, thumbWeight = 0.7f, falloff = 1f; public float[] fingerAxis = { 0, 0, 1 }, thumbAxis = { 0, 1, 0 }; public string weapon = ""; public bool leftHand; public float leftWeight = 1f; public bool absolute; public string[] leftStates; public float leftRampS = 0.1f; public int ikRetryFrames = 30; /* DATALAYER 18 Nov (datamove_03): frames between retries of the TwoHandIK lookup (was Time.frameCount % 30) */ /* DATALAYER 18 Nov: seconds for the left-hand grip weight to ramp 0 -> 1 (was Time.deltaTime / 0.1f) */ }   // leftStates: Animator states in which the LEFT hand also grips (two-handed phases; empty = always when leftHand)   // absolute: the curl REPLACES the clip's finger rotation (rest * curl) so the fist holds in every clip/phase; false = old additive curl on top of the clip
     [System.Serializable] public class Root { public Row defaults; public Row[] characters; }
     public float fingerDeg = 62f, thumbDeg = 35f;
     Row row; Transform[][] chains, lchains; Quaternion[][] rest, lrest; bool init; static Root data; string curWeapon = "", rootName = ""; TwoHandIK ik; bool ikLooked;
@@ -65,10 +65,10 @@ public class GripPose : MonoBehaviour
         Curl(chains, 1f, rest);
         if (lchains != null)
         {
-            if (!ikLooked) { ikLooked = true; ik = GetComponent<TwoHandIK>(); } else if (ik == null && Time.frameCount % 30 == 0) ik = GetComponent<TwoHandIK>();   // WeaponSwap adds it later, on the first two-handed weapon
+            if (!ikLooked) { ikLooked = true; ik = GetComponent<TwoHandIK>(); DM03.Log("grip.ikRetryFrames", 1, row.ikRetryFrames); } else if (ik == null && Time.frameCount % Mathf.Max(1, row.ikRetryFrames) == 0) ik = GetComponent<TwoHandIK>();   // WeaponSwap adds it later, on the first two-handed weapon
             float want = row.leftHand && LeftOn() ? 1f : 0f;
             if (want > 0f && ik != null && ik.Driving) want = Mathf.Min(want, ik.Weight);   // the fist follows the arm: opens when the IK lets go
-            lw = Mathf.MoveTowards(lw, want, Time.deltaTime / 0.1f); if (lw > 0f) Curl(lchains, row.leftWeight * lw, lrest);
+            lw = Mathf.MoveTowards(lw, want, Time.deltaTime / Mathf.Max(Mathf.Epsilon, row.leftRampS)); if (lw > 0f) Curl(lchains, row.leftWeight * lw, lrest);
         }
     }
 }

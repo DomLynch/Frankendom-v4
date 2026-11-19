@@ -19,6 +19,7 @@ public class DirectionPrompt : MonoBehaviour
         public string[] skipArgs = { "-camscene", "-dirproof", "-camtrace" };
         public float showDelayS = 4f, secondsPerLine = 6f, fadeS = 0.35f;
         public bool pauseWhileMenuOpen = true, showCounter = true;
+        public bool holdInCombat = false;   // TAKE C8c: true = the prompt neither shows nor counts down while a foe is engaged (HUD text rule: nothing centre-screen during combat); default OFF = as today
         public string[] dismissKeys = { "Return", "KeypadEnter", "JoystickButton6" };
         public string title = "HOW TO FIGHT", dismissKbm = "Enter  Skip", dismissPad = "Back  Skip", keyJoin = " / ";
         public string[] kbm = new string[0], pad = new string[0];
@@ -28,7 +29,15 @@ public class DirectionPrompt : MonoBehaviour
         public float[] textColor = { 0.96f, 0.93f, 0.85f, 1f }, titleColor = { 0.96f, 0.78f, 0.30f, 1f }, backColor = { 0f, 0f, 0f, 0.55f };
     }
 
-    static Cfg cfg; static DirectionPrompt inst;
+    static Cfg cfg; static DirectionPrompt inst; bool heldNow, heldLogged;
+    // TAKE C8c: true while the prompt is held back because a foe is engaged (ZoneScope.Engaged = the player has a live opponent)
+    bool CombatHeld()
+    {
+        if (cfg == null || !cfg.holdInCombat) return false;
+        bool e = ZoneScope.Engaged();
+        if (e != heldNow) { heldNow = e; if (!heldLogged || cfg.debugLog) { heldLogged = true; Debug.Log("[Take] C8c onboarding prompt " + (e ? "held: a foe is engaged" : "resumed: no foe engaged") + " (direction_prompt.json holdInCombat)"); } }
+        return e;
+    }
     string[] lines; bool padMode; int idx = -1; float wait, lineT; KeyCode[] dismiss; GUIStyle sBody, sTitle, sFoot; int builtFor = -1;
 
     static Cfg Load()
@@ -118,7 +127,7 @@ public class DirectionPrompt : MonoBehaviour
         lines = new string[src.Length]; for (int i = 0; i < src.Length; i++) lines[i] = Fill(src[i]);
         dismiss = ControlsTable.Keys(cfg.dismissKeys);
         if (lines.Length == 0) { Debug.LogWarning("[DirectionPrompt] no lines in direction_prompt.json (" + (padMode ? "pad" : "kbm") + "): nothing shown, not marked"); inst = null; Destroy(gameObject); return; }
-        idx = 0; lineT = 0f;
+        idx = 0; lineT = 0f; Debug.Log("[Take] C8c onboarding gate read: holdInCombat=" + cfg.holdInCombat);
         Debug.Log("[DirectionPrompt] shown: device=" + (padMode ? "pad" : "kbm") + " lines=" + lines.Length + " first=\"" + lines[0] + "\"");
     }
 
@@ -133,6 +142,7 @@ public class DirectionPrompt : MonoBehaviour
     {
         if (cfg == null) return;
         if (cfg.pauseWhileMenuOpen && MenuUI.Open) return;
+        if (CombatHeld()) return;
         float dt = Time.unscaledDeltaTime; if (dt > 0.25f) dt = 0.25f;   // a load hitch does not eat the prompt
         if (idx < 0) { if (!LoadingCard.Cleared) return; wait += dt; if (wait >= cfg.showDelayS) Begin(); return; }   // dev2: the delay counts from the moment the loading card is gone (Cleared is true without a card)
         if (dismiss != null) for (int i = 0; i < dismiss.Length; i++) if (dismiss[i] != KeyCode.None && Input.GetKeyDown(dismiss[i])) { Finish("dismissed at line " + (idx + 1)); return; }
@@ -152,8 +162,9 @@ public class DirectionPrompt : MonoBehaviour
 
     void OnGUI()
     {
-        if (cfg == null || idx < 0 || lines == null || idx >= lines.Length || Event.current.type != EventType.Repaint) return;
+        if (cfg == null || idx < 0 || lines == null || idx >= lines.Length || Event.current.type != EventType.Repaint || ZoneEndScreen.Active) return; /* ENDHUD v1 */
         if (cfg.pauseWhileMenuOpen && MenuUI.Open) return;
+        if (heldNow && cfg.holdInCombat) return;
         Styles();
         float per = Mathf.Max(0.5f, cfg.secondsPerLine), fade = Mathf.Clamp(cfg.fadeS, 0.01f, per * 0.5f);
         float alpha = Mathf.Clamp01(Mathf.Min(lineT / fade, (per - lineT) / fade));

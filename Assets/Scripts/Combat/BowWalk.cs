@@ -131,7 +131,7 @@ public static class BowWalk
                     want = strafe ? (lm.x < 0f ? "strafe_L" : "strafe_R") : "walk";
                     if (!legs.HasState(0, Animator.StringToHash(want))) want = "walk";
                 }
-                if (want != legState) { legState = want; legs.CrossFadeInFixedTime(Animator.StringToHash(want), 0.12f, 0, 0f); }
+                if (want != legState) { float fade = Mathf.Max(0f, M.legFadeS); if (M.log) Debug.Log("[bow] walk-fire legs " + legState + " -> " + want + " fade " + fade.ToString("0.00") + "s (move.legFadeS)"); legState = want; legs.CrossFadeInFixedTime(Animator.StringToHash(want), fade, 0, 0f); }
                 legs.SetSpeed(frozen ? 0f : (moving ? Mathf.Max(0.05f, M.legAnimSpeed) * fi.animWeight : 1f));
             }
             catch (System.Exception e) { Debug.LogWarning("[bow] walk-fire tick failed: " + e.Message); Stop(df, true); }

@@ -8,8 +8,8 @@ using UnityEngine;
 // Re-engage when the gap falls under relockGapM, or the player moves toward the foe (within relockAngleDeg, speed >= minSpeed) for relockAfterS, or the foe is within nearGapM. soft_lock.json (StreamingAssets first, then Assets/Data): enabled false / no file = the old hard lock, byte for byte.
 public static class SoftLock
 {
-    [Serializable] public class Cfg { public bool enabled = false, log = true; public float nearGapM = 3.5f, relockGapM = 4.5f, minSpeed = 1.2f, breakAngleDeg = 70f, breakAfterS = 0.35f, relockAngleDeg = 40f, relockAfterS = 0.4f, mouseBreak = 2.5f, mouseWindowS = 0.4f; public string[] breakActions = new string[0]; }
-    static Cfg c; static Transform lastEnemy; static bool broken, init; static Vector3 lastPos; static float awayT, towardT, mouseAcc, mouseT;
+    [Serializable] public class Cfg { public bool enabled = false, log = true; public float nearGapM = 3.5f, relockGapM = 4.5f, minSpeed = 1.2f, breakAngleDeg = 70f, breakAfterS = 0.35f, relockAngleDeg = 40f, relockAfterS = 0.4f, mouseBreak = 2.5f, mouseWindowS = 0.4f, mouseGraceS = 0f, mouseSpikeMax = 0f, maxSpeedMps = 0f; public bool mouseNeedFocus = false, diagMouse = false; public string[] breakActions = new string[0]; }
+    static Cfg c; static Transform lastEnemy; static bool broken, init; static Vector3 lastPos; static float awayT, towardT, mouseAcc, mouseT, graceUntil; static bool seenFocus, lastFocus; static CursorLockMode lastLock; static int diagN;
     public static Cfg Get()
     {
         if (c != null) return c;
@@ -22,17 +22,24 @@ public static class SoftLock
         catch (Exception e) { Debug.LogWarning("[SoftLock] read failed, off: " + e.Message); c = new Cfg(); }
         return c;
     }
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void Reset() { c = null; broken = false; init = false; awayT = towardT = mouseAcc = mouseT = 0f; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void Reset() { c = null; broken = false; init = false; awayT = towardT = mouseAcc = mouseT = 0f; seenFocus = false; diagN = 0; graceUntil = 0f; }
 
     public static bool Broken(Transform player, Transform enemy, float dt)
     {
         var k = Get(); if (!k.enabled || player == null || enemy == null || dt <= 0f) return false;
+        if (LoadCardHold.SoftLockHeld()) { broken = false; awayT = towardT = mouseAcc = mouseT = 0f; lastPos = player.position; return false; }   // OPENPIN v1 (data firstLook.softLockHold, default false = no change): card up and first-fight beat = the locked opening camera
         Vector3 pp = player.position, to = enemy.position - pp; to.y = 0f; float gap = to.magnitude;
         if (!init) { init = true; lastPos = pp; }
+        // SOFTLOCK GRACE v1 (data mouseGraceS / mouseNeedFocus / mouseSpikeMax / maxSpeedMps; all 0 / false = today's behaviour byte for byte): a focus or cursor-lock change (window gains focus, Cursor.lockState flips, the harness Alt-tap) can deliver one huge Mouse X/Y delta; it must not count as the player moving the mouse
+        float tNow = Time.unscaledTime; bool foc = Application.isFocused; var ls = Cursor.lockState;
+        if (!seenFocus || foc != lastFocus || ls != lastLock) { seenFocus = true; lastFocus = foc; lastLock = ls; graceUntil = tNow + k.mouseGraceS; }
         if (enemy != lastEnemy) { lastEnemy = enemy; broken = false; awayT = towardT = 0f; }   // a new foe starts locked
-        Vector3 v = (pp - lastPos) / dt; v.y = 0f; lastPos = pp; float spd = v.magnitude;
+        Vector3 v = (pp - lastPos) / dt; v.y = 0f; lastPos = pp; float spd = v.magnitude; if (k.maxSpeedMps > 0f && spd > k.maxSpeedMps) { v = Vector3.zero; spd = 0f; }   // a teleport / spawn clamp / respawn is not Joan running away (lastPos was stale while the lock cam was off)
         float ang = gap > 0.01f && spd >= k.minSpeed ? Vector3.Angle(v, to) : -1f;   // -1 = not moving enough to say
-        float mx = Mathf.Abs(Input.GetAxisRaw("Mouse X")) + Mathf.Abs(Input.GetAxisRaw("Mouse Y"));
+        float mx = Mathf.Abs(Input.GetAxisRaw("Mouse X")) + Mathf.Abs(Input.GetAxisRaw("Mouse Y")), mxRaw = mx;
+        if (k.mouseGraceS > 0f && (tNow < graceUntil || !LoadingCard.Cleared || (k.mouseNeedFocus && (!foc || ls != CursorLockMode.Locked)))) mx = 0f;   // card up, just after a focus / lock change, or no focus / no lock: not the player's hand
+        if (k.mouseSpikeMax > 0f && mx > k.mouseSpikeMax) mx = 0f;   // one-frame jump bigger than any hand movement (units = GetAxisRaw, read the diag lines first)
+        if (k.diagMouse && mxRaw >= 0.5f && diagN < 40) { diagN++; Debug.Log("[SoftLock] mouse sample mxRaw=" + mxRaw.ToString("F2") + " counted=" + mx.ToString("F2") + " acc=" + mouseAcc.ToString("F2") + " focus=" + foc + " lock=" + ls + " cardCleared=" + LoadingCard.Cleared + " graceLeft=" + Mathf.Max(0f, graceUntil - tNow).ToString("F2") + " gap=" + gap.ToString("F1") + " t=" + tNow.ToString("F2")); }
         mouseT += dt; mouseAcc += mx; if (mouseT > k.mouseWindowS) { mouseT = 0f; mouseAcc = 0f; }
         if (!broken)
         {

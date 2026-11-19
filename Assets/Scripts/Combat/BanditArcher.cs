@@ -77,7 +77,7 @@ public sealed class BanditArcher : MonoBehaviour
         if (bowAnim.Alive) { bowAnim.Tick(NpcBowAnim.Ready(NpcBowAnim.KindOf(df.CharacterId)), windupEnd >= 0, loosedFlag); loosedFlag = false; }   // NPCARCHER v3: draw -> hold -> loose clips (OpenTrident) while the AI aims
         if (brain == null) brain = GetComponent<AIBrain>();
         if (df.Dead || brain == null || !brain.enabled) { windupEnd = -1; return; }   // dormant (not engaged yet) or dead
-        var foe = df.opponent; if (foe == null || foe.Dead || Duel.FrozenFor(df)) { windupEnd = -1; return; }
+        var foe = df.opponent; if (foe == null || foe.Dead || Duel.FrozenFor(df) || LoadCardHold.Passive(df) /* LOADCARD v5 */) { windupEnd = -1; return; }
         int tick = Duel.TickCount; if (tick == lastTick) return; lastTick = tick;   // one decision per sim tick
         var R = type.ranged; var d = foe.transform.position - transform.position; d.y = 0f; float gap = d.magnitude; var dir = gap > Eps ? d / gap : transform.forward;
         if (df.state != FState.Loco && !(windupEnd >= 0 && pressed && (df.state == FState.Windup || df.state == FState.Active))) { windupEnd = -1; pressed = false; return; }   // mid swing / stagger / roll: the normal machine owns it (NPCARCHER v2: except the draw pose this archer started itself)

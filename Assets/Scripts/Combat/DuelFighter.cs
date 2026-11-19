@@ -141,12 +141,18 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         if (row == null || f == null || f.anim == null || f.anim.runtimeAnimatorController == null) return false;
         var df = AttackClipTable.Get().defaults;
         string clip = row.clip; float st = row.startTime, ct = row.contactTime, en = row.endTime, hold = row.holdClipTime;
+        bool viaClaw = false;   // W8: claw body whose controller lacks the gcl_* state: play the donor state carrying the claw clip, with the row's own claw timings
         if (!HasState(clip))
+        {
+            string cdn = ClawClips.Donor(f.anim, CharKey(), clip);
+            if (cdn != null && HasState(cdn)) { clip = cdn; viaClaw = true; }
+        }
+        if (!viaClaw && !HasState(clip))
         {
             clip = row.fallbackClip; st = row.fbStartTime; ct = row.fbContactTime; en = row.fbEndTime; hold = row.fbHoldClipTime;
             if (!HasState(clip)) return false;
         }
-        float len = ClipLen(clip);
+        float len = viaClaw ? ClawClips.Length(row.clip) : ClipLen(clip);   // W8: ClipLen caches the pre-override controller
         if (len <= 0.05f || ct <= 0.05f) return false;
         ct = Mathf.Min(ct, len); if (en <= ct + 0.05f || en > len) en = len;
         st = Mathf.Clamp(st, 0f, ct - 0.05f);

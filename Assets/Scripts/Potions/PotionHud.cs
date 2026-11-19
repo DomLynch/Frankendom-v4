@@ -27,20 +27,34 @@ public sealed class PotionHud : MonoBehaviour
     string ChipNoneText(string fmt) { string kl = UseLabel(); if (nnText == null || fmt != nnFmt || kl != nnKey) { nnText = string.Format(fmt, kl); nnFmt = fmt; nnKey = kl; } return nnText; }
     string CycleHintText(string fmt) { string kl = CycleLabel(); if (hnText == null || fmt != hnFmt || kl != hnKey) { hnText = string.Format(fmt, kl); hnFmt = fmt; hnKey = kl; } return hnText; }
 
+    // TAKE C8a (HUD text rule): chipShowS > 0 = the chip (and its bar) is drawn only for that many seconds after something NEW (another potion selected, the count changed, a cooldown started), fading over chipFadeS; 0 = always, as today
+    string chipSigId = ""; int chipSigQty = -2; bool chipSigCd; float chipAt = -999f; bool chipLogRead, chipLogHide;
+
     void OnGUI()
     {
         if (Event.current.type != EventType.Repaint) return;
         var C = PotionCfg.Get(); if (!C.enabled || !C.hud.enabled) return;
         var pl = GameLoop.Player; if (pl == null || pl.Dead || !pl.gameObject.activeInHierarchy) return;
-        if (RTFinisher.Busy || LootScreen.Open || MarketUI.Open) return;
+        if (RTFinisher.Busy || LootScreen.Open || MarketUI.Open || ZoneEndScreen.Active) return; /* ENDHUD v1 */
         var H = C.hud; var T = C.text; var K = HudCfg.Get().colors;
         float s = HudCfg.Scale(); var m = GUI.matrix; GUI.matrix = Matrix4x4.Scale(new Vector3(s, s, 1f)); float vh = Screen.height / s;
         Color ink = HudCfg.Col(K.ink), dim = HudCfg.Col(K.dim), gold = HudCfg.Col(K.gold);
         HudDraw.Alpha = 1f;
         string id = PotionUse.EnsureSelected(); float y = vh - H.bottomPx;
         string line; Color col;
+        bool chipCd = id.Length > 0 && PotionUse.CooldownLeft01(id) > 0f; int chipQty = id.Length > 0 ? PotionStore.Qty(id) : -1;
+        if (id != chipSigId || chipQty != chipSigQty || (chipCd && !chipSigCd)) { chipSigId = id; chipSigQty = chipQty; chipAt = Time.unscaledTime; chipLogHide = false; } chipSigCd = chipCd;
+        float chipA = 1f;
+        if (H.chipShowS > 0f)
+        {
+            if (!chipLogRead) { chipLogRead = true; Debug.Log("[Take] C8a potion chip: shows only on change, " + H.chipShowS.ToString("F1") + " s (consumables.json hud.chipShowS)"); }
+            float ca = Time.unscaledTime - chipAt; chipA = Mathf.Clamp01((H.chipShowS - ca) / Mathf.Max(0.01f, H.chipFadeS));
+            if (chipA <= 0f && !chipLogHide) { chipLogHide = true; Debug.Log("[Take] C8a potion chip hidden " + ca.ToString("F1") + " s after the last change"); }
+        }
+        if (chipA > 0f) {
         if (id.Length > 0) { var p = PotionCfg.Find(id); line = ChipText(T.chip, id, p.name.Length > 0 ? p.name : id, PotionStore.Qty(id)); col = ink; }   // FIX2 v1: cached
         else { line = ChipNoneText(T.chipNone); col = dim; }
+        HudDraw.Alpha = chipA;
         HudDraw.Text(new Rect(H.leftPx, y, H.widthPx, H.nameSize * H.lineH), line, "serif", H.nameSize, TextAnchor.UpperLeft, true, col);
         if (id.Length > 0)
         {
@@ -50,6 +64,7 @@ public sealed class PotionHud : MonoBehaviour
             if (PotionUse.KindsCarried() > 1 && PotionCfg.CycleKeys().Length > 0)
                 HudDraw.Text(new Rect(H.leftPx, by + H.barH + H.barGapPx, H.widthPx, H.hintSize * H.lineH), CycleHintText(T.cycleHint), "serif", H.hintSize, TextAnchor.UpperLeft, false, dim);
         }
+        } /* chipA */ HudDraw.Alpha = 1f;
         float age = Time.unscaledTime - PotionUse.ToastAt;
         if (PotionUse.ToastText.Length > 0 && age >= 0f && age <= H.toastSeconds)
         {

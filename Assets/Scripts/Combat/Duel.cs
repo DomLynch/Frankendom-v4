@@ -7,7 +7,7 @@ public class Duel : MonoBehaviour
     static readonly List<DuelFighter> fighters = new List<DuelFighter>();
     public static int TickCount;
     public static bool Frozen;   // FN1: true while a finisher scene runs: no brain decides, no new hit resolves (reset on scene load)
-    public static bool FrozenFor(DuelFighter f) { if (!Frozen) return false; if (!RTFinisher.Busy) return true; var r = FinisherConfig.Get().rt.realtime; if (r == null || !r.enabled || !r.pairOnlyFreeze) return true; return f == null || f == RTFinisher.Killer || f == RTFinisher.Victim; }   // FINREALTIME v1 H2: Frozen for THIS fighter. A finisher scene with rt.realtime.pairOnlyFreeze freezes only the killer and the victim; menus / loot / market (no finisher) freeze everyone as before
+    public static bool FrozenFor(DuelFighter f) { if (LoadCardHold.EnemyFreeze(f)) return true; /* LOADCARD v4: whole world still in the first-fight beat */ if (!Frozen) return false; if (!RTFinisher.Busy) return true; var r = FinisherConfig.Get().rt.realtime; if (r == null || !r.enabled || !r.pairOnlyFreeze) return true; return f == null || f == RTFinisher.Killer || f == RTFinisher.Victim; }   // FINREALTIME v1 H2: Frozen for THIS fighter. A finisher scene with rt.realtime.pairOnlyFreeze freezes only the killer and the victim; menus / loot / market (no finisher) freeze everyone as before
     float acc;
     static Duel inst;
     public static float Alpha { get { return inst == null || PresentationClock.Frozen ? 1f : Mathf.Clamp01(inst.acc * 60f); } }   // PHYSAUDIT: 0..1 inside the current tick, ViewInterp only (never read by the sim)
@@ -50,7 +50,7 @@ public class Duel : MonoBehaviour
     // returns true when the strike made contact (hit, block, parry): the move then stops checking
     public static bool Resolve(DuelFighter a, DuelFighter d, MoveDef m, float chargeMul)
     {
-        if (d.Dead || FrozenFor(d) || FrozenFor(a) /* FINREALTIME v1 H2b */ || HubSafe.NoHit(d) || d.FakeImmune /* FAKEDEATH v1 */) return false;   // laneNPCSPAWN: the player in a safe camp takes no strike (health, posture, stamina stay)
+        if (d.Dead || FrozenFor(d) || FrozenFor(a) /* FINREALTIME v1 H2b */ || LoadCardHold.Passive(a) /* FIRSTLOOK v6 G1: a passive first-look enemy can never land a strike (Passive is false for Joan, false outside the beat, false in mode v4) */ || HubSafe.NoHit(d) || d.FakeImmune /* FAKEDEATH v1 */) return false;   // laneNPCSPAWN: the player in a safe camp takes no strike (health, posture, stamina stay)
         if (!RangedNow && BowHooks.Handles(a, m)) return BowHooks.Release(a, d, m, chargeMul);   // BOW v2: a bow-mode swing throws the arrow (BowShot judges it on arrival through this same method)
         Vector3 ad = d.transform.position - a.transform.position; ad.y = 0f;
         float dist = ad.magnitude;

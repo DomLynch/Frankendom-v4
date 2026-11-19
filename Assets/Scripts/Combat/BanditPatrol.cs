@@ -101,7 +101,7 @@ public sealed class BanditPatrol : MonoBehaviour
         var K = Get(); if (!K.enabled || df == null || g == null || m == null || !BanditArcher.Get().enabled) return;
         if (brain == null) brain = GetComponent<AIBrain>();
         bool engaged = brain != null && brain.enabled;
-        if (df.Dead || engaged || Duel.FrozenFor(df)) { Release(); return; }
+        if (df.Dead || engaged || Duel.FrozenFor(df) || LoadCardHold.Passive(df) /* LOADCARD v5 */) { Release(); return; }
         if (df.state != FState.Loco && df.state != FState.Guard) { Release(); return; }   // hit, stagger, roll, an attack: the machine owns it
         int tick = Duel.TickCount; int hz = Mathf.Max(1, BanditArcher.Get().runtime.tickHz); float dt = Time.deltaTime;   // hc:ok algorithm constant / index / unit guard (reviewed)
         var player = GameLoop.Player; Vector3 pos = transform.position;

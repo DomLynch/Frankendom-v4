@@ -23,6 +23,8 @@
       "giveUpPauseS": 0.8,
       "homeSpeedMulOfWalk": 1.0,
       "homeArriveDist": 0.4,
+      "homeFaceMinM": 0.6,
+      "homeFaceSlackM": 0.3,
       "resetOnHome": true,
       "_reset_about": "true = full hp when it arrives home (the old leash rule). It does not re-aggro while walking home.",
       "followThroughGate": false,

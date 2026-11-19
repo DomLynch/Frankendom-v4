@@ -3688,7 +3688,7 @@
     ],
     "finisherVfx": {
       "_about": "FINVIS v1: finisher blood v2. v2 = false is today's look (every hook is off). v2 = true: (pools) V1 growing floor stains as lit HDRP decals with a normal map and wet smoothness; (droplets) lit HDRP/Lit droplet particles that land into the pools; (body) the splat quads become lit wound decals; (reveal) the old red X (cleave line/patches/drips quads) is replaced by a wet blood line that draws itself along the cut edge, thickens, then drips. Textures: StreamingAssets/<dir>/*.png (V1 blood art, make_textures.py). All numbers below; V1 values noted.",
-      "v2": false,
+      "v2": true,
       "dir": "finvis",
       "pools": {
         "enabled": true,
@@ -3714,6 +3714,7 @@
         "liftM": 0.02,
         "drawDistanceM": 40.0,
         "smoothness": 0.85,
+        "glossAge": false, "glossFreshS": 6.0, "glossSoakS": 60.0, "glossEnd": 0.35, "glossSteps": 4,
         "minNormalY": 0.6,
         "rayUpM": 0.3,
         "rayDownM": 0.3,

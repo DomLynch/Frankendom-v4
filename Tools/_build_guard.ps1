@@ -7,7 +7,7 @@
 #   3. free RAM is under MinFreeGB (default 24; these builds peak about 36 GB)
 #   4. a Dom game is running: a HadesSlice without -camscene/-camtrace, or a frankendom dom-runs log written in the last 3 minutes with a live HadesSlice
 #   5. the Unity licence probe fails (licence file missing/expired, or the newest Editor log shows a licence error)
-param([switch]$DryRun, [int]$MinFreeGB = 24, [string]$Mode = 'Bake', [string]$DryRunTag = '')   # DryRunTag (was Tag): a script-level $Tag param blanked the caller's own $Tag whenever a build script dot-sourced this file (BUILD REFUSED () 15:36, unitydev/COO 15:46)
+param([switch]$DryRun, [int]$MinFreeGB = 24, [string]$Mode = 'Bake', [string]$DryRunTag = '', [string]$FixtureDomGame = '', [string]$FixtureBoard = '')   # DryRunTag (was Tag): a script-level $Tag param blanked the caller's own $Tag whenever a build script dot-sourced this file (BUILD REFUSED () 15:36, unitydev/COO 15:46)
 # COO 15:55 17 Nov: an ALONE bake of ANOTHER lane that is still open (EDITOR TAKEN <lane> ALONE without a later EDITOR RELEASED <lane> in the last 3 h) refuses this build.
 function Get-OtherLaneAlone {
     $out = @(); try {
@@ -66,7 +66,7 @@ if ($warm) {
     $codeOnlyUnproven = $false; if ($mode -eq 'CodeOnly' -and (Test-Path (Join-Path $p 'Tools\_codeonly_unproven.txt'))) { $mode = 'Bake'; $MinFreeGB = [Math]::Max($MinFreeGB, 30); $codeOnlyUnproven = $true }
     # COO 12:06: NO Frankendom scene-bake builds while Tools\_bake_frozen.txt exists (the rider bake took free RAM to 0.7-2 GB twice today). Delete the file when RiderClipSetup is fixed and its per-scene peak memory is logged under 20 GB.
     # COO 12:30: -Mode CodeOnly means NOTHING under Assets\ changes except code: refuse when git sees a changed/new file under Assets\ that is not .cs/.asmdef/.asmref/.meta and not data (Assets\Data, Assets\StreamingAssets), or when the setup step declares outputs in $env:BUILD_SETUP_OUTPUTS (semicolon list). An asset import re-processes whatever references it (the 30 GB main-scene load).
-if ($mode -eq 'CodeOnly') { $chg = @(& git -C $p status --porcelain --untracked-files=all -- Assets 2>$null | ForEach-Object { ($_.Substring(3)).Trim('"') -replace '\\','/' } | Where-Object { $_ -notmatch '\.(cs|asmdef|asmref|meta)$' -and $_ -notmatch '^Assets/Data/' -and $_ -notmatch '^Assets/StreamingAssets/.*\.(json|txt|csv|md|glb|png|jpg|bc7|ogg|wav)$' }); if ($env:BUILD_SETUP_OUTPUTS) { $chg += @($env:BUILD_SETUP_OUTPUTS -split ';' | Where-Object { $_ }) }; if ($chg.Count -gt 0) { $why += 'not code-only: ' + (($chg | Select-Object -First 8) -join ', ') + $(if ($chg.Count -gt 8) { ' (+' + ($chg.Count - 8) + ' more)' } else { '' }) } }
+if ($mode -eq 'CodeOnly') { $chg = @(& git -C $p status --porcelain --untracked-files=all -- Assets 2>$null | ForEach-Object { ($_.Substring(3)).Trim('"') -replace '\\','/' } | Where-Object { $_ -notmatch '\.(cs|asmdef|asmref|meta)$' -and $_ -notmatch '^Assets/Data/' -and $_ -notmatch '^Assets/StreamingAssets/.*\.(json|txt|csv|md|glb|png|jpg|bc7|ogg|wav)$' }); if ($env:BUILD_SETUP_OUTPUTS) { $chg += @($env:BUILD_SETUP_OUTPUTS -split ';' | Where-Object { $_ }) }; $stray = @($chg | Where-Object { $_ -match '\.(bak|orig|rej|tmp)(_[A-Za-z0-9]+)?$|\.(bak|orig)[._]' }); if ($stray.Count -gt 0) { $why += 'stray backup in Assets: ' + (($stray | Select-Object -First 8) -join ', ') + ' - move it OUT of Assets (kit folder); apply scripts must write backups outside Assets' }; if ($chg.Count -gt 0) { $why += 'not code-only: ' + (($chg | Select-Object -First 8) -join ', ') + $(if ($chg.Count -gt 8) { ' (+' + ($chg.Count - 8) + ' more)' } else { '' }) } }
     # COO 15:35 17 Nov: per-slot lift of the bake freeze: FK_BAKE_LIFT must equal the build tag; refused if the chain (build script of that tag or build_texstream.ps1) contains RiderClipSetup (the 23-scene bake the freeze is for).
     $lifted = $false
     if ($env:FK_BAKE_LIFT -and $script:GuardTag -and $env:FK_BAKE_LIFT -eq $script:GuardTag) {
@@ -95,6 +95,8 @@ if ($script:SerWhy) { $why += $script:SerWhy }
 # COO 16:15 17 Nov: a full C: failed the texture bake at the file copy after 9 minutes. Refuse in second 1 when C: free is under the expected build size + 10 GB (bake / full build 25 GB, code-only 12 GB; FK_MINDISK_GB overrides).
 try { $dfree = [math]::Round((Get-PSDrive C).Free / 1GB, 1); $dneed = $(if ($env:FK_MINDISK_GB) { [double]$env:FK_MINDISK_GB } elseif ($mode -eq 'CodeOnly') { 12 } else { 25 }); if ($dfree -lt $dneed) { $why += "C: free disk $dfree GB is under $dneed GB (expected build size + 10 GB; free space first)" } } catch { }
     # (Dom-game refusal and fresh-dom-runs-log refusal REMOVED 17 Nov 09:57 on Dom's order; the build folder his running game uses is never overwritten: see release.ps1 / prune_builds.ps1.)
+    # COO 19 Nov: after a restart the Unity Hub is not running and the licensing client has no access token. If Tools\hub_path.txt names the Hub exe (recorded from the running process once Dom has signed in), start it minimised and re-probe up to 60 s before refusing. No-op while the file is absent. Credentials are never typed here.
+    try { $hp = Join-Path $p 'Tools\hub_path.txt'; $lc0 = Join-Path $env:LOCALAPPDATA 'Unity\Unity.Licensing.Client.log'; if ((Test-Path $hp) -and -not (Get-Process -Name 'Unity Hub' -ErrorAction SilentlyContinue)) { $hx = (Get-Content $hp -Raw).Trim(); if ($hx -and ($hx -like 'shell:*' -or (Test-Path $hx))) { $t0h = Get-Date; if ($hx -like 'shell:*') { Start-Process explorer.exe -ArgumentList $hx | Out-Null } else { Start-Process $hx -WindowStyle Minimized | Out-Null }; for ($hi = 0; $hi -lt 12; $hi++) { Start-Sleep 5; if ((Test-Path $lc0) -and (Get-Item $lc0).LastWriteTime -gt $t0h) { $tl = Get-Content $lc0 -Tail 200 -ErrorAction SilentlyContinue; if ($tl | Select-String -Pattern 'Entitlements? (were )?(updated|granted)|licen[cs]e (is )?(valid|updated)|Successfully (acquired|updated)' -Quiet) { break } } } } } } catch { }
     # Unity 6 keeps no .ulf: probe = the Licensing Client log (newest 400 lines) must not end in a sign-in / entitlement failure
     $lc = Join-Path $env:LOCALAPPDATA 'Unity\Unity.Licensing.Client.log'
     if (-not (Test-Path $lc)) { $why += "licence probe: no Unity.Licensing.Client.log (Hub never signed in?)" }
@@ -105,12 +107,47 @@ try { $dfree = [math]::Round((Get-PSDrive C).Free / 1GB, 1); $dneed = $(if ($env
         if ($bad -and (-not $good -or $bad.LineNumber -gt $good.LineNumber)) { $why += "licence probe: Licensing Client log shows: " + $bad.Line.Substring(0, [Math]::Min(120, $bad.Line.Length)) }
     }
     $log = Get-ChildItem (Join-Path $p 'TestOut') -Filter '*_Build.log' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime | Select-Object -Last 1
-    if ($log -and ((Get-Date) - $log.LastWriteTime).TotalHours -lt 2 -and (Select-String -Path $log.FullName -Pattern 'No valid Unity Editor license|license (is )?(invalid|expired)|Licensing: .*(fail|denied)' -Quiet)) { $why += "licence probe: newest build log $($log.Name) shows a licence error" }
+    $lcFresh = $false; try { if ($log -and (Test-Path $lc) -and (Get-Item $lc).LastWriteTime -gt $log.LastWriteTime -and -not (Get-Content $lc -Tail 80 -ErrorAction SilentlyContinue | Select-String -Pattern 'Access token is unavailable|Code 404|0 entitlement|No valid' -Quiet)) { $lcFresh = $true } } catch { }   # a licence success newer than the failed build log clears the stale refusal (19 Nov: v109ww_Build.log would have blocked 2 h after sign-in)
+    if ($log -and -not $lcFresh -and ((Get-Date) - $log.LastWriteTime).TotalHours -lt 2 -and (Select-String -Path $log.FullName -Pattern 'No valid Unity Editor license|license (is )?(invalid|expired)|Licensing: .*(fail|denied)' -Quiet)) { $why += "licence probe: newest build log $($log.Name) shows a licence error" }
     return $why
+}
+# Strategy 18 Nov: a FULL (Bake-mode) build starts WITH graphics (no -nographics: it bakes / compiles shaders and lighting) and may start while Dom's game is up. It must say so on the board.
+# Detection REUSES the existing mechanisms: _agents\qa_slot.ps1 -DomPlaying (Dom's game = ARMAGEDOM_Slice0 without -bench outside coo_qa, or any player logging to dom-runs) for the yes/no,
+# and the board's open 'DOM PLAYING <game>' line (posted by _agents\dom_playing_watch.ps1, no later DOM STOPPED) for the game name; process name is the fallback.
+# Test without an Editor: -DryRun -FixtureDomGame <game|none> [-FixtureBoard <temp copy>]  (the fixture replaces the process probe; with no -FixtureBoard nothing is written, the line is only printed).
+function Get-DomGameNow {
+    param([string]$Board = 'C:\Users\dom12\Documents\unity_test_hdrp\_agents\COORDINATION.md')
+    if ($FixtureDomGame) { return $(if ($FixtureDomGame -eq 'none') { '' } else { $FixtureDomGame }) }
+    $q = 'C:\Users\dom12\Documents\unity_test_hdrp\_agents\qa_slot.ps1'
+    $yes = $false; try { $yes = [bool](& $q -DomPlaying) } catch { }
+    if (-not $yes) { return '' }
+    $name = ''
+    try { $open = $null; foreach ($l in (Get-Content $Board -Tail 600 -ErrorAction Stop)) { if ($l -match 'DOM PLAYING\s+(\w+)') { $open = $Matches[1] } elseif ($l -match 'DOM STOPPED\s+(\w+)') { if ($open -eq $Matches[1]) { $open = $null } } }; if ($open) { $name = $open } } catch { }
+    if (-not $name) { $pr = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue | Where-Object { $_.Name -match '^(ARMAGEDOM_Slice0|HadesSlice|FronteirDom)\.exe$' -and ("$($_.CommandLine)" -match 'dom-runs' -or $_.Name -like 'ARMAGEDOM*') } | Select-Object -First 1; if ($pr) { $name = @{ 'ARMAGEDOM_Slice0.exe' = 'Armagedom'; 'HadesSlice.exe' = 'Frankendom'; 'FronteirDom.exe' = 'FrontierDom' }[$pr.Name] } }
+    if (-not $name) { $name = 'unknown' }
+    return $name
+}
+function Add-GuardBoard {
+    param([string]$Text, [string]$Board = 'C:\Users\dom12\Documents\unity_test_hdrp\_agents\COORDINATION.md')
+    try { $fs = [IO.File]::Open($Board, 'Append', 'Write', 'ReadWrite'); $bb = [Text.Encoding]::UTF8.GetBytes("`r`n" + (Get-Date -Format 'yyyy-MM-dd HH:mm') + " " + $Text); $fs.Write($bb, 0, $bb.Length); $fs.Close() } catch { }
+}
+# Exact board text: 'FULL STARTED BESIDE DOM <game> <tag>'. Once per tag per process. Returns the line (or '' when Dom is not playing).
+function Add-FullBesideDomLine {
+    param([string]$Tag, [string]$Board = '')
+    if ($script:FullBesideDone -eq $Tag) { return '' }
+    $g = Get-DomGameNow
+    if (-not $g) { return '' }
+    $script:FullBesideDone = $Tag
+    $line = "FULL STARTED BESIDE DOM $g $Tag"
+    if ($Board) { Add-GuardBoard -Text $line -Board $Board }
+    elseif (-not $script:GuardDryRun) { Add-GuardBoard -Text $line }
+    return $line
 }
 function Assert-BuildSafe {
     param([string]$Tag = '?', [int]$MinFreeGB = 16, [ValidateSet('Bake', 'CodeOnly')][string]$Mode = 'Bake')
     $script:BuildMode = $Mode
+    # BANNED ASSET GUARD (19 Nov, goblin purge): any Tools\banned_assets.txt match under Assets refuses the build before a tag is reserved.
+    $bannedHits = @(& (Join-Path $PSScriptRoot 'banned_assets_check.ps1') -Root (Join-Path $PSScriptRoot '..\Assets') -Caller 'build_guard'); if ($bannedHits.Count) { $bannedHits | ForEach-Object { Write-Host $_ }; "BUILD REFUSED ($Tag): banned asset in Assets"; exit 3 }
     . (Join-Path $PSScriptRoot '_tag_reserve.ps1'); try { $null = Reserve-Tag -Tag $Tag -Owner $(if ($env:FK_OWNER) { $env:FK_OWNER } else { "build:$Tag" }) } catch { "BUILD REFUSED ($Tag): $($_.Exception.Message)"; exit 3 }
     $script:GuardTag = $Tag
     # Audit 18 Nov: remember the commit + signatures this build starts from; Add-BuiltLine writes them into build_info.json (baseCommit, fullBakeId, serializedSig, bootSig, scriptFilesSig)
@@ -122,6 +159,9 @@ function Assert-BuildSafe {
         exit 3
     }
     "build guard ($Tag): all clear at $(Get-Date -Format 'HH:mm')"
+    # Strategy 18 Nov: say which mode runs. FULL = graphics ON (never -nographics: shaders / lighting bake); CODE-ONLY = -nographics + BelowNormal (build_compileonly.ps1).
+    if ($Mode -eq 'CodeOnly') { "build mode ($Tag): CODE-ONLY (headless -nographics + BelowNormal where build_compileonly.ps1 starts the Editor)" }
+    else { "build mode ($Tag): FULL / Bake (graphics ON, NO -nographics: this build bakes / compiles shaders and lighting)"; $fb = Add-FullBesideDomLine -Tag $Tag; if ($fb) { $fb } }
 }
 # Last step of every build script (COO 10:48): post 'BUILT <tag> ready to flip' on the board automatically, so a finished build is never invisible.
 #   . "$p\Tools\_build_guard.ps1"; Add-BuiltLine 'ov'   (reads TestOut\v109<tag>_done.txt and Builds\HDRP_v109<tag>\build_info.json)
@@ -157,8 +197,14 @@ function Add-BuiltLine {
 if ($DryRun) {
     $script:BuildMode = $Mode
     $script:GuardTag = $DryRunTag
+    $script:GuardDryRun = $true
     $w = Get-BuildBlockers -MinFreeGB $MinFreeGB
     if ($w.Count -gt 0) { "DRY RUN: build would be REFUSED at $(Get-Date -Format 'HH:mm'): " + ($w -join ' | ') } else { "DRY RUN: build would run (all clear) at $(Get-Date -Format 'HH:mm')" }
+    if ($Mode -ne 'CodeOnly') {
+        "DRY RUN build mode: FULL / Bake (graphics ON, NO -nographics)"
+        $fb = Add-FullBesideDomLine -Tag $(if ($DryRunTag) { $DryRunTag } else { 'xx' }) -Board $FixtureBoard
+        if ($fb) { "DRY RUN board line: $fb" + $(if ($FixtureBoard) { "  (appended to fixture board $FixtureBoard)" } else { "  (printed only, real board untouched)" }) } else { "DRY RUN: Dom's game is not up, no FULL STARTED BESIDE DOM line" }
+    } else { "DRY RUN build mode: CODE-ONLY (no FULL STARTED BESIDE DOM line in this mode)" }
 }
 
 

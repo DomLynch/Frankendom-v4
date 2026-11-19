@@ -87,7 +87,7 @@ public sealed class ZoneSpan : MonoBehaviour
     readonly List<GameObject> tunnelObjs = new List<GameObject>(); readonly List<DuelFighter> chasers = new List<DuelFighter>();
     int lastZone;
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Inst = null; OnEvent = null; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { Inst = null; OnEvent = null; ZoneScope.ResetStatics(); }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
@@ -135,7 +135,7 @@ public sealed class ZoneSpan : MonoBehaviour
         tunnelZone = 1; for (int i = 1; i < n; i++) if (r[i].row.id == K.tunnel.zone) tunnelZone = i;
         core = new SpanChain(n) { ahead = K.wake.ahead, behind = K.wake.behind, hyst = K.wake.hysteresis };
         for (int i = 0; i < n; i++) { core.min[i] = r[i].lo; core.max[i] = r[i].hi; core.boundary[i] = r[i].boundary; r[i].wasWant = i == 0; }
-        rz = r; open = new bool[n]; openEff = new bool[n]; keep = new bool[n]; lastZone = 0; live = true; needBind = false; nextPoll = 0f;
+        rz = r; open = new bool[n]; openEff = new bool[n]; keep = new bool[n]; lastZone = 0; live = true; needBind = false; nextPoll = 0f; ZoneScope.OnBind();   /* ZONESCOPE v1 */
         Debug.Log("[ZoneSpan] bound: " + n + " zones (" + (n - 1) + " built), " + hid + " zone 1 rows hidden, " + tunnelObjs.Count + " tunnel pieces"); ZoneHitch.Bound(this, skyline, WarmUnits());  /* ZONEHITCH v1 */
     }
 
@@ -170,6 +170,7 @@ public sealed class ZoneSpan : MonoBehaviour
         if (!live || player == null) { if (live && player == null) { live = false; needBind = true; bindTries = 0; } return; }
         float now = Time.unscaledTime;
         long zh = ZoneHitch.Mark(); if (now >= nextPoll) { nextPoll = now + K.pollSeconds; Poll(); ZoneHitch.Lap("span.poll", ref zh); }  /* ZONEHITCH v1 */
+        ZoneScope.Frame();   // ZONESCOPE v1
         Pace(); ZoneHitch.Lap("span.pace", ref zh); Skyline(); ZoneHitch.Lap("span.skyline", ref zh);  /* ZONEHITCH v1 */
     }
 
@@ -201,6 +202,7 @@ public sealed class ZoneSpan : MonoBehaviour
             int prev = lastZone; lastZone = core.Zone; string id = rz[lastZone].zoneId; string sp = lastZone > prev ? rz[lastZone].spot : rz[prev].backSpot;
             if (zr != null) zr.SpanEnter(id, sp); Fire("enter:" + id);
         }
+        ZoneScope.Poll(rz[core.Zone].zoneId);   // ZONESCOPE v1 (off = returns at once)
         bool tOpen = n > tunnelZone && openEff[tunnelZone];
         if (tOpen != tunnelHidden) { tunnelHidden = tOpen; foreach (var o in tunnelObjs) if (o != null) o.SetActive(!tOpen); Fire(tOpen ? "tunnel:open" : "tunnel:closed"); }
         float top = float.NaN; reach = true; for (int i = 1; i < n; i++) { reach = reach && openEff[i]; if (!reach) break; top = rz[i].hi; }

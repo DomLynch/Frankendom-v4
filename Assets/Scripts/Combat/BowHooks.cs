@@ -61,7 +61,7 @@ public static class BowHooks
         int speed = sp != null && sp.speedCmS > 0 ? sp.speedCmS : C.speedCmS;
         float pinMul = st.foeRow != null ? st.foeRow.pinMul : 1f;
         int pin = sp != null ? Mathf.RoundToInt(sp.pinTicks * pinMul) : 0;
-        string tint = sp != null && !string.IsNullOrEmpty(sp.tint) ? sp.tint : "#e8d9a8";
+        string tint = sp != null && !string.IsNullOrEmpty(sp.tint) ? sp.tint : C.arrow.defaultTint; DM03.LogS("arrow.defaultTint", 1, C.arrow.defaultTint);   // DATALAYER 18 Nov: bow.json arrow.defaultTint (default #e8d9a8)
         if (BowFree.Wants(a)) { var FF = C.aim.free; if (FF.speedCmS > 0f) speed = Mathf.Max(speed, Mathf.RoundToInt(FF.speedCmS)); }   // FREEAIM v1: a long shot flies fast (data); the 7.8 m/s of V3 would take 6 s over 45 m
         BowShot.Launch(a, pointShot ? null : d, m, lanes, sp != null, mul * chargeMul, speed, pin, tint, pointShot, fp);
         if (BowCfg.Log) Debug.Log("[bow] " + a.name + " " + m.id + " -> " + (pointShot ? "point " + fp.ToString("F1") : d.name) + " gap " + gap.ToString("0.0") + " m, " + lanes.Length + " arrow(s), " + (C.quiverOn ? st.ammo + " left" : "quiver off"));

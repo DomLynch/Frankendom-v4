@@ -10,11 +10,11 @@ public sealed class LootPickup : MonoBehaviour
     public bool Collected { get; private set; }
     public Vector3 Anchor { get { return transform.position; } }   // ground point of the pillar
 
-    Material pillarMat, groundMat; Transform pillarT, groundT; float born, collectedAt, baseIntensity, baseGround;
+    Material pillarMat, groundMat, glintMat; Transform pillarT, groundT, glintT; static bool glintLogged; float born, collectedAt, baseIntensity, baseGround;
     static Texture2D pillarTex, groundTex; static readonly Dictionary<int, Mesh> pillarMeshes = new Dictionary<int, Mesh>(); static Mesh groundMesh; static bool shaderWarned;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { pillarTex = null; groundTex = null; pillarMeshes.Clear(); groundMesh = null; shaderWarned = false; }
+    static void ResetStatics() { glintLogged = false; pillarTex = null; groundTex = null; pillarMeshes.Clear(); groundMesh = null; shaderWarned = false; }
 
     public static LootPickup Spawn(string id, GearItem it, Vector3 pos)
     {
@@ -26,6 +26,7 @@ public sealed class LootPickup : MonoBehaviour
     void Build()
     {
         var P = LootCfg.Get().pillar; born = Time.time;
+        if (LootCfg.Get().glint.on && BuildGlint(P)) return;   // TAKE C1: glint.on = a small physical glint on the item instead of the pillar; no HDRP/Lit or no cube = the pillar is built as before
         Shader sh = Shader.Find(P.shader);
         if (sh == null) { if (!shaderWarned) { shaderWarned = true; Debug.LogWarning("[LootUI] pillar shader '" + P.shader + "' not found (add it to Always Included Shaders): the marker has a label only."); } return; }
         if (pillarTex == null) pillarTex = MakePillarTex(P);
@@ -38,10 +39,27 @@ public sealed class LootPickup : MonoBehaviour
         Apply(0f, 1f);
     }
 
+    // TAKE C1: the item as a small metal shard lying on the floor. A real HDRP/Lit surface (metallic, glossy, NO emission, additive or alpha): the specular catch comes from the scene lights and reflection probes, so it changes as the camera moves.
+    // No decal, beam, bob or spin. Size = glint.sizeM, tilt and yaw from the item id (stable, no state). False when HDRP/Lit or the built-in cube is missing (the caller then builds the pillar).
+    bool BuildGlint(LootCfg.PillarC P)
+    {
+        var G = LootCfg.Get().glint; Shader sh = Shader.Find("HDRP/Lit"); if (sh == null) return false;
+        Mesh cube = Resources.GetBuiltinResource<Mesh>("Cube.fbx"); if (cube == null) return false;
+        glintMat = new Material(sh); glintMat.name = "LootGlint";
+        Color tint = Color.Lerp(Color.white, color, Mathf.Clamp01(G.tintMix));
+        glintMat.SetColor("_BaseColor", tint); glintMat.SetFloat("_Metallic", Mathf.Clamp01(G.metallic)); glintMat.SetFloat("_Smoothness", Mathf.Clamp01(G.smoothness));
+        glintT = MakeChild("Glint", cube, glintMat);
+        int h = (itemId ?? "").GetHashCode(); float w = Mathf.Max(0.01f, G.sizeM), tl = G.tilt;
+        glintT.localScale = new Vector3(w, w * 0.12f, w * 0.6f);
+        glintT.localPosition = new Vector3(0f, G.liftM + w * 0.06f, 0f);
+        glintT.localRotation = Quaternion.Euler(((h & 15) - 8) / 8f * tl, ((h >> 4) & 255) * 1.41f, (((h >> 12) & 15) - 8) / 8f * tl);
+        if (!glintLogged) { glintLogged = true; Debug.Log("[Take] C1 loot glint on: HDRP/Lit shard " + w.ToString("F3") + " m, smoothness " + G.smoothness.ToString("F2") + ", pillar not built (loot_ui.json glint.on)"); }
+        return true;
+    }
     // PREWARM v92: the loot marker's shared textures, meshes and the two materials (neutral colour) exist before the first drop; Prewarm92 draws them sub-pixel and destroys the materials. The textures / meshes are the real static caches.
     internal static void CollectPrewarm(List<Material> mats, List<Mesh> meshes)
     {
-        var P = LootCfg.Get().pillar; Shader sh = Shader.Find(P.shader); if (sh == null) return;
+        var P = LootCfg.Get().pillar; if (LootCfg.Get().glint.on) return; Shader sh = Shader.Find(P.shader); if (sh == null) return;   // TAKE C1: the glint has no shared textures / meshes to warm
         if (pillarTex == null) pillarTex = MakePillarTex(P);
         if (groundTex == null) groundTex = MakeGroundTex(P);
         var tmp = new GameObject("LootPrewarm") { hideFlags = HideFlags.HideAndDontSave }; tmp.SetActive(false); var lp = tmp.AddComponent<LootPickup>(); lp.color = Color.white;
@@ -99,7 +117,7 @@ public sealed class LootPickup : MonoBehaviour
         groundT.localScale = new Vector3(P.groundRadius * 2f * widthK, 1f, P.groundRadius * 2f * widthK);
     }
 
-    void OnDestroy() { if (pillarMat != null) Destroy(pillarMat); if (groundMat != null) Destroy(groundMat); }
+    void OnDestroy() { if (pillarMat != null) Destroy(pillarMat); if (groundMat != null) Destroy(groundMat); if (glintMat != null) Destroy(glintMat); }
 
     // ---- procedural art (no assets) ----
     // pillar: u across (soft sine edge, widthEdgePower), v up (solid at the foot, long fade to nothing at the top)

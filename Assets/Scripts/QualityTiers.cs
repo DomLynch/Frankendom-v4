@@ -46,6 +46,7 @@ public static class QualityTiers
             string p = Application.streamingAssetsPath + "/quality_tiers.json";
             if (File.Exists(p)) { raw = DataPath.ReadFile(p); var h = JsonUtility.FromJson<Head>(raw); if (h != null) head = h; if (string.IsNullOrEmpty(head.prefsKey)) head.prefsKey = "gfx.tier"; }
             string t = Arg("-quality:");
+            if (t == null) { string mq = PerfMem.MemTierQuality(RuntimeQuality.IsHarness()); if (!string.IsNullOrEmpty(mq) && (RuntimeQuality.IsHarness() || string.IsNullOrEmpty(PlayerPrefs.GetString(head.prefsKey, "")))) t = mq; }   // FK16GB_A v1: the Low / Medium preset's effects row, unless the player saved an Effects choice (High returns "" = today's path)
             if (t == null) t = RuntimeQuality.IsHarness() ? HarnessTier : PlayerPrefs.GetString(head.prefsKey, "");   // gates / benches never depend on a saved player choice
             if (string.IsNullOrEmpty(t)) t = GameSettings.FirstRunTier(DefaultTier);
             Select(t);
@@ -67,7 +68,9 @@ public static class QualityTiers
         FlagsJson = raw != null ? ExtractFlags(raw, tier) : null;
         LodBiasMul = 1f;
         if (FlagsJson != null) { var m = JsonUtility.FromJson<Mul>(FlagsJson); if (m != null && m.lodBiasMul > 0f) LodBiasMul = m.lodBiasMul; }
+        { string pf = PerfMem.MemTierFlagsFor(tier); if (!string.IsNullOrEmpty(pf)) { var m2 = new Mul { lodBiasMul = LodBiasMul }; JsonUtility.FromJsonOverwrite(pf, m2); if (m2.lodBiasMul > 0f) LodBiasMul = m2.lodBiasMul; } }   // FK_PRESETS v1: the preset's lodBiasMul
         ApplyLod();
+        PerfMem.MemTierApply();   // FK16GB_A v1: SetQualityLevel resets globalTextureMipmapLimit to the level's own value; put the preset's limit back (High: no-op)
         Debug.Log("QUALITYTIER tier=" + tier + " level=" + QualitySettings.names[QualitySettings.GetQualityLevel()] + " asset=" + (GraphicsSettings.currentRenderPipeline != null ? GraphicsSettings.currentRenderPipeline.name : "none")
             + " gpu=" + SystemInfo.graphicsDeviceName + " api=" + SystemInfo.graphicsDeviceType + " vram=" + SystemInfo.graphicsMemorySize + "MB");
     }
@@ -75,6 +78,7 @@ public static class QualityTiers
     // 2KPROFILE v01: the QualitySettings level of a tier: its json "level", else the tier name capitalised (low -> Low)
     static string LevelOf(string tier)
     {
+        string pl = PerfMem.MemTierLevelFor(tier); if (!string.IsNullOrEmpty(pl)) return pl;   // FK_PRESETS v1: the preset's HDRP asset level (Low -> Medium, Medium -> High); "" on High / harness / another Effects row
         foreach (var ti in Tiers) if (ti != null && string.Equals(ti.name, tier, System.StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(ti.level)) return ti.level;
         return char.ToUpperInvariant(tier[0]) + tier.Substring(1);
     }
@@ -96,6 +100,7 @@ public static class QualityTiers
     public static void Overlay(object flags)
     {
         if (FlagsJson != null && !string.Equals(Current, head.baseTier, System.StringComparison.OrdinalIgnoreCase)) JsonUtility.FromJsonOverwrite(FlagsJson, flags);
+        { string pov = PerfMem.MemTierFlagsFor(Current); if (!string.IsNullOrEmpty(pov)) { JsonUtility.FromJsonOverwrite(pov, flags); Debug.Log("[MemTier] overlay " + PerfMem.MemTierLabel + " on tier " + Current + ": " + pov); } }   // FK_PRESETS v1: the preset's flags overlay (High / another Effects row / harness: "" = nothing)
         if (UserScaleOn && (PlayerPrefs.HasKey(head.userScale.scaleKey) || PlayerPrefs.HasKey(head.userScale.upscalerKey)))   // FPSX_C v1: the player's own choice beats the tier; -qset: / -renderscale: below beat the player
             JsonUtility.FromJsonOverwrite("{\"renderScale\":" + UserScale + ",\"upscaler\":\"" + UserUpscaler + "\"}", flags);
         string qs = Arg("-qset:"), rs = Arg("-renderscale:");
@@ -109,9 +114,11 @@ public static class QualityTiers
     public static bool UserScaleOn { get { return head.userScale != null && head.userScale.enabled && !RuntimeQuality.IsHarness(); } }
     public static UserScaleRow UserScaleCfg { get { return head.userScale ?? new UserScaleRow(); } }
     [System.Serializable] class TierScaleFlags { public int renderScale = 0; public string upscaler = ""; }   // F5 USERSCALE
-    static TierScaleFlags TierScale() { try { var t = string.IsNullOrEmpty(FlagsJson) ? null : JsonUtility.FromJson<TierScaleFlags>(FlagsJson); if (t != null) return t; } catch (System.Exception) { } return new TierScaleFlags(); }   // the active tier's own renderScale / upscaler = the default the menu row shows until the player picks
+    static TierScaleFlags TierScale() { try { var t = string.IsNullOrEmpty(FlagsJson) ? null : JsonUtility.FromJson<TierScaleFlags>(FlagsJson); if (t != null) { string pf = PerfMem.MemTierFlagsFor(Current); if (!string.IsNullOrEmpty(pf)) JsonUtility.FromJsonOverwrite(pf, t); return t; } } catch (System.Exception) { } return new TierScaleFlags(); }   // the active tier's own renderScale / upscaler = the default the menu row shows until the player picks
     public static int UserScale { get { int d = TierScale().renderScale; return PlayerPrefs.GetInt(head.userScale.scaleKey, d > 0 ? d : 100); } }
     public static string UserUpscaler { get { string u = TierScale().upscaler; return PlayerPrefs.GetString(head.userScale.upscalerKey, !string.IsNullOrEmpty(u) ? u : head.userScale.defaultUpscaler); } }
+    /// <summary>FK_PRESETS v1: a preset change forgets the player's own render scale / upscaler choice so the preset's scale shows (menu: Graphics row). No-op while userScale is off.</summary>
+    public static void ClearUser() { if (!UserScaleOn) return; PlayerPrefs.DeleteKey(head.userScale.scaleKey); PlayerPrefs.DeleteKey(head.userScale.upscalerKey); Debug.Log("[MemTier] preset change: saved render scale / upscaler choice cleared (the preset's own scale applies)"); }
     public static void SetUser(int scale, string upscaler)
     {
         if (!UserScaleOn) return;

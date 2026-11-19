@@ -6189,7 +6189,7 @@
         "kind": "box",
         "note": "documentation only: PropsLayout.PlaceOne adds no collider (see REPORT)"
       },
-      "note": "CAMPSPLACE apothecary | hub_camp | footprint 2.80x2.86 h 3.22 | replaces - | shelves z -1.0, counter z 0..0.75; scaled 1.15 (2.4x2.5 against brief 3x2.5); Old Marl is small",
+      "note": "CAMPSPLACE apothecary | hub_camp | footprint 2.80x2.86 h 3.22 | replaces - | shelves z -1.0, counter z 0..0.75; scaled 1.15 (2.4x2.5 against brief 3x2.5)",
       "disabled": false
     },
     {

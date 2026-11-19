@@ -1,0 +1,13 @@
+{
+  "_about": "MUSIC v1 (Dom, 18 Nov): read by Scripts/Audio/MusicPlayer.cs, started from LoadingCard.Boot once the loading card is gone. tracks[]: id, file (in StreamingAssets/music/), volume (base 0..1, then times the Music slider of audio_mix.json and master), fadeInS, loop. states: which track id plays in which game state; v1 plays states.any in EVERY state (menu/camp/explore/combat/boss/death/end are placeholders, empty = not used yet). startDelayS = wait after the card is gone. loopDeclickMs = fade at the file end and start so the loop join does not click. skipArgs = command-line flags that keep it off (QA, camera scenes, fps benches); forceArg turns it on in a harness run. enabled false = silent. The WAV is streamed from disk (about 64 KB of memory), never decoded whole.",
+  "enabled": true,
+  "category": "music",
+  "forceArg": "-music",
+  "startDelayS": 0.5,
+  "loopDeclickMs": 30,
+  "skipArgs": ["-nomusic", "-camscene", "-qa"],
+  "tracks": [
+    { "id": "the_solemn_hymn", "file": "the_solemn_hymn.wav", "label": "The Solemn Hymn", "volume": 0.4, "fadeInS": 4.0, "loop": true }
+  ],
+  "states": { "any": "the_solemn_hymn", "menu": "", "camp": "", "explore": "", "combat": "", "boss": "", "death": "", "end": "" }
+}

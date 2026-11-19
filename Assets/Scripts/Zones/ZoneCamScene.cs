@@ -31,6 +31,9 @@ public sealed class ZoneCamScene : MonoBehaviour
         if (!ZoneRuntime.Owns && !ZoneSave.Active) { Debug.LogWarning("[CamScene] zones are off (needs -zones, no harness flag): nothing to do"); Done("zones off", false); yield break; }
         if (!ZoneCamTrace.Running) { Debug.LogWarning("[CamScene] needs -camtrace:<dir> next to -camscene"); Done("no -camtrace", false); yield break; }
         C = ZoneCamTrace.Cfg; var S = C.scene; if (!S.enabled) { Done("scene.enabled=false", false); yield break; }
+        // 19 Nov: a QA player ended gracefully mid-step with no quit reason (fullroute 093842, exit 0). Name the next stop: who called Quit (managed stack; empty = external WM_CLOSE) and the CamScene step. Static lambdas, no serialized field, no new boot hook.
+        Application.wantsToQuit += () => { Debug.Log("[QuitReason] wantsToQuit step=" + ZoneCamTrace.Step + " t=" + Time.realtimeSinceStartup.ToString("F1") + " stack=" + (UnityEngine.StackTraceUtility.ExtractStackTrace() ?? "").Replace("\n", " | ")); return true; };
+        Application.quitting += () => Debug.Log("[QuitReason] quitting step=" + ZoneCamTrace.Step + " t=" + Time.realtimeSinceStartup.ToString("F1"));
         HookEvents(S);
         if (S.startZone.Length > 0) { yield return WaitReady(S); yield return StartCoroutine(Restart(S, new CtStep { id = "start", zone = S.startZone, spot = S.startSpot })); }   // CODE5 v1: begin at a zone spot
         float tAll = Time.realtimeSinceStartup; bool ok = true;

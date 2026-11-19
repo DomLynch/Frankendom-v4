@@ -1,0 +1,42 @@
+{
+ "_about": "W8 (ClawClips.cs): claw bodies play their attack_clips.json gcl_* rows. glb = clips-only extract in StreamingAssets (7 gcl clips). map: gcl state -> DONOR clip/state of the body's own controller (the gcl clip replaces the donor clip through an AnimatorOverrideController; the donor state is what plays). Donors are the controller slots the claw moves would otherwise play as sword clips (light_attack_R is shared by the atk_* / maul_* states; heavy_windup and heavy_windup_hold are not played while an attack_clips row is active). characters = roster ids. enabled false / no file = the old sword fallback.",
+ "enabled": false,
+ "debugLog": true,
+ "glb": "Npc/claw_clips.glb",
+ "characters": [
+  "NpcCrocWarrior",
+  "NpcBogHag",
+  "NpcBarkSentinel",
+  "NpcRootDruid"
+ ],
+ "map": [
+  {
+   "state": "gcl_swipe_R",
+   "donor": "light_attack_R"
+  },
+  {
+   "state": "gcl_swipe_L",
+   "donor": "light_attack_L"
+  },
+  {
+   "state": "gcl_stab",
+   "donor": "thrust"
+  },
+  {
+   "state": "gcl_counter",
+   "donor": "riposte"
+  },
+  {
+   "state": "gcl_hook_R",
+   "donor": "heavy_release"
+  },
+  {
+   "state": "gcl_hook_L",
+   "donor": "heavy_windup"
+  },
+  {
+   "state": "gcl_slam",
+   "donor": "heavy_windup_hold"
+  }
+ ]
+}

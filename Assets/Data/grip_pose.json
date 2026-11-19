@@ -1,6 +1,8 @@
 {
  "defaults": {
   "name": "",
+  "leftRampS": 0.1,
+  "ikRetryFrames": 30,
   "fingerDeg": 62,
   "thumbDeg": 35,
   "thumbWeight": 0.7,

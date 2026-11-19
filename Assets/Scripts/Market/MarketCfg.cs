@@ -14,7 +14,7 @@ public static class MarketCfg
     [Serializable] public class AnchorC { public string zone = "", spot = ""; public float x = 0f, z = 0f; }
     [Serializable] public class AreaC { public float zMin = 0f, zMax = 0f, xHalf = 8f, enterPad = 0.5f, leavePad = 0.5f; }
     [Serializable] public class StallC { public string id = "", title = "Trader"; public AnchorC anchor = new AnchorC(); public float radius = 2.4f, promptRadius = 5f, promptHeight = 2.1f; public AreaC area = new AreaC(); public string[] items = new string[0]; }   // MARKET2 v1: items = the stock of an EXTRA stall (stalls[]); the main stall's stock stays hub.json stall.buy.items
-    [Serializable] public class SafeC { public bool noCombat = true; public string[] allowPress = { "roll", "backstep", "sidestep" }; public float refuseSeconds = 1.4f, tagTop = 26f, coinDy = 8f, tagTracking = 3.2f; public int tagBig = 20, tagSmall = 15, subSize = 13, coinSize = 17; }
+    [Serializable] public class SafeC { public bool noCombat = true; public string[] allowPress = { "roll", "backstep", "sidestep" }; public float refuseSeconds = 1.4f, tagTop = 26f, coinDy = 8f, tagTracking = 3.2f, tagShowS = 0f, tagFadeS = 0.6f; public int tagBig = 20, tagSmall = 15, subSize = 13, coinSize = 17; }
     [Serializable]
     public class KeysC
     {

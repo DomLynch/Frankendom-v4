@@ -27,6 +27,15 @@ public static class CamOcclusion
         public float heightAddM = 0f;      // extra camera height (m)
     }
     [Serializable]
+    public class SideRow   // TAKE CAM trial: a small sideways camera shift while the foe's body hides the player (camera_occlusion.json "side"); enabled=false = the pose is untouched
+    {
+        public bool enabled = false, log = true;
+        public float hiddenOn = 0.4f;      // fraction of the player hidden by the foe (Hidden(), same samples as the proof) at which the shift starts
+        public float hiddenFull = 0.8f;    // ... and at which it is full
+        public float shiftM = 1.2f;        // full shift, metres sideways, toward the side that moves the foe off the player (the camera-right side when level)
+        public float riseMPerS = 2.5f, fallMPerS = 1.5f;   // how fast the shift builds / lets go (slow = no swing)
+    }
+    [Serializable]
     public class Row
     {
         public bool enabled = true;
@@ -37,6 +46,7 @@ public static class CamOcclusion
         public float problemHidden = 0.25f;                              // tools verdict: a fighter hidden more than this at a separation is a real problem
         public ProofRow proof = new ProofRow();
         public FixRow fix = new FixRow();
+        public SideRow side = new SideRow();
     }
     static Row cfg;
     public static Row Cfg()
@@ -51,7 +61,7 @@ public static class CamOcclusion
                 var r = JsonUtility.FromJson<Row>(DataPath.ReadFile(p));
                 if (r != null)
                 {
-                    cfg = r; if (cfg.proof == null) cfg.proof = new ProofRow(); if (cfg.fix == null) cfg.fix = new FixRow();
+                    cfg = r; if (cfg.proof == null) cfg.proof = new ProofRow(); if (cfg.fix == null) cfg.fix = new FixRow(); if (cfg.side == null) cfg.side = new SideRow();
                     if (cfg.heights == null || cfg.heights.Length == 0) cfg.heights = new[] { 0.5f };
                     if (cfg.lateral == null || cfg.lateral.Length == 0) cfg.lateral = new[] { 0f };
                     if (cfg.proof.seps == null) cfg.proof.seps = new float[0];
@@ -62,7 +72,7 @@ public static class CamOcclusion
         }
         return cfg;
     }
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cfg = null; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cfg = null; sideOff = 0f; sideSign = 1f; sideRead = sideEngaged = false; }
 
     // ---- the fix (camera) -------------------------------------------------------------------------------------------------
     /// <summary>Lock-camera position with the near-range slide applied. right = the camera-right axis (yaw), sep = flat fighter gap (m).</summary>
@@ -72,6 +82,28 @@ public static class CamOcclusion
         var f = CamFraming.Cfg(); if (lockW < f.minLockW || CameraDeath.Weight > f.maxDeathWeight) return lockPos;
         float w = Mathf.Clamp01((r.fix.nearSepM - sep) / Mathf.Max(0.01f, r.fix.blendSpanM)); if (w <= 0f) return lockPos;
         return lockPos + right * (r.fix.shoulderAddM * w) + Vector3.up * (r.fix.heightAddM * w);
+    }
+
+    // ---- TAKE CAM trial: lateral offset while the foe covers the player --------------------------------------------------------
+    static float sideOff, sideSign = 1f; static bool sideRead, sideEngaged;
+    /// <summary>CameraRig, lock block, after Shift(): when side.enabled and the foe hides at least side.hiddenOn of the player seen from lockPos, the camera slides sideways (up to side.shiftM) away from the foe's side, eased slowly. Measured from the pose BEFORE this shift, so it cannot feed back. Off = lockPos unchanged.</summary>
+    public static Vector3 Side(Vector3 lockPos, Vector3 right, Transform player, Transform foe, float lockW, float dt)
+    {
+        var r = Cfg(); var S = r.side;
+        if (!sideRead) { sideRead = true; Debug.Log("[Take] CAM lateral trial read (camera_occlusion.json side): enabled=" + (r.enabled && S.enabled) + " shiftM=" + S.shiftM.ToString("F2") + " hiddenOn=" + S.hiddenOn.ToString("F2") + " hiddenFull=" + S.hiddenFull.ToString("F2")); }
+        if (!r.enabled || !S.enabled) return lockPos;
+        var f = CamFraming.Cfg(); float want = 0f;
+        if (player != null && foe != null && lockW >= f.minLockW && CameraDeath.Weight <= f.maxDeathWeight)
+        {
+            float rb; float hid = Hidden(lockPos, player, foe, out rb);
+            float k = Mathf.Clamp01((hid - S.hiddenOn) / Mathf.Max(0.01f, S.hiddenFull - S.hiddenOn));
+            if (sideOff <= 0.001f && k > 0f) { Vector3 o = foe.position - player.position; o.y = 0f; float lat = Vector3.Dot(o, right); sideSign = lat > 0.02f ? -1f : 1f; }   // foe right of the player: camera goes left (and the reverse); dead centre = right, the shoulder side
+            want = k * S.shiftM;
+        }
+        sideOff = Mathf.MoveTowards(sideOff, want, (want > sideOff ? S.riseMPerS : S.fallMPerS) * Mathf.Max(0f, dt));
+        if (sideOff <= 0.0005f) return lockPos;
+        if (S.log && !sideEngaged) { sideEngaged = true; Debug.Log("[Take] CAM lateral engaged: foe hides the player, camera shifts " + (sideSign * sideOff).ToString("F2") + " m sideways (target " + want.ToString("F2") + " m)"); }
+        return lockPos + right * (sideSign * sideOff);
     }
 
     // ---- the measurement (camproof) ----------------------------------------------------------------------------------------

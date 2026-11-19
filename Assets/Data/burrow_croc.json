@@ -95,7 +95,7 @@
 
   "flash": {
     "_about": "own short colour flash on every 'Hit' contact (the hit_flash.json Sobek row is enabled false, so the boss does not flash). MaterialPropertyBlock per material slot, always restored.",
-    "enabled": true,
+    "enabled": false,
     "seconds": 0.12,
     "riseS": 0.02,
     "strength": 0.5,
@@ -130,7 +130,7 @@
 
   "ripple": {
     "_about": "ripple rings on the ground: a pool of HDRP DecalProjectors (clone of Resources/WoundDecalRef like StaticDecals) with a ring texture made in code. One ring every intervalM metres crawled, a double ring (ringsPerEvent) scaled by surfaceSizeMul on surfacing / burrowing. Ring grows sizeStartM -> sizeEndM over life seconds and fades (opacity, fadePow). depthM / liftM = projector box depth and height over the ground.",
-    "enabled": true,
+    "enabled": false,
     "refMaterial": "WoundDecalRef",
     "pool": 10,
     "texSize": 128,

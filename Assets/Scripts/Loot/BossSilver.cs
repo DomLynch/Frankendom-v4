@@ -68,7 +68,7 @@ public sealed class BossSilverToast : MonoBehaviour
     static MenuLayoutCfg.SilverC ML { get { return MenuLayoutCfg.BS; } }   // UIDATAB v1: the IMGUI depth of the toast: menu_layout.json (the rest of the toast is already boss_silver.json)
     void OnGUI()
     {
-        if (Event.current.type != EventType.Repaint) return;   // UIDATA_C v1: draw only, no layout pass
+        if (Event.current.type != EventType.Repaint || ZoneEndScreen.Active) return; /* ENDHUD v1 */   // UIDATA_C v1: draw only, no layout pass
         string text; float a; if (!BossSilver.ToastActive(out text, out a)) return;
         var k = BossSilver.Get(); GUI.depth = ML.toast.depth;   // hc:ok IMGUI draw order
         var col = HudCfg.Col(k.color, a);

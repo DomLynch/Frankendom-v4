@@ -23,7 +23,7 @@ public sealed class MarketUI : MonoBehaviour
     public static bool InReach { get; private set; }
 
     ShopController shop; LocalMarket market; LootMarketStore store;
-    readonly MarketArea area = new MarketArea(); bool inArea, havePlayer; float stallX, stallZ, dist; Vector3 playerPos;
+    readonly MarketArea area = new MarketArea(); bool inArea, havePlayer; float tagSince; float stallX, stallZ, dist; Vector3 playerPos;
     MarketArea[] areas; float[] ax, az; MarketCfg.StallC stl; int lastPk = -1;   // MARKET2 v1: areas[0] = area (main stall); stl = the stall the player is in (the main one when in none)
     int openFrame, unfreezeFrame = -1; float openAt; bool ownFreeze;
     KeyCode[] kInteract, kConfirm, kClose, kUp, kDown; object keyOwner; int lastDy; float nextNav; bool axisBroken;
@@ -70,7 +70,9 @@ public sealed class MarketUI : MonoBehaviour
         if (!havePlayer) { InReach = false; MarketSafe.NoCombat = false; area.Inside = false; ResetExtra(); inArea = false; if (Open) CloseUi(); return; }
         playerPos = pl.transform.position;
         var A = C.stall.area; area.zMin = A.zMin; area.zMax = A.zMax; area.xHalf = A.xHalf; area.enterPad = A.enterPad; area.leavePad = A.leavePad;
+        bool wasIn = inArea;
         inArea = PickStall(C) >= 0;   // MARKET2 v1: with stalls[] empty this is exactly area.Update on the main rectangle
+        if (inArea && !wasIn) tagSince = Time.unscaledTime;   // HUD text rule (19 Nov): the camp tag shows on ENTRY only when safe.tagShowS > 0
         MarketSafe.NoCombat = C.safe.noCombat && inArea && !TraderKnows.AmbushLive;   // S9
         MarketWorld.StallXZ(stl, out stallX, out stallZ); dist = MarketArea.Dist(playerPos.x, playerPos.z, stallX, stallZ);
 
@@ -134,7 +136,7 @@ public sealed class MarketUI : MonoBehaviour
     void OnGUI()
     {
         var C = MarketCfg.Get(); if (!C.enabled || !havePlayer) return;
-        if (Event.current.type != EventType.Repaint) return;
+        if (Event.current.type != EventType.Repaint || ZoneEndScreen.Active) return; /* ENDHUD v1 */
         GUI.depth = C.guiDepth; float s = HudCfg.Scale(); var m = GUI.matrix; GUI.matrix = Matrix4x4.Scale(new Vector3(s, s, 1f)); float vw = Screen.width / s, vh = Screen.height / s;
         var H = HudCfg.Get();
         HudDraw.Alpha = 1f;
@@ -146,6 +148,11 @@ public sealed class MarketUI : MonoBehaviour
     void DrawCampTag(MarketCfg.Data C, HudCfg.Data H, float vw)
     {
         if (!inArea) return; var S = C.safe; var T = C.text; Color gold = HudCfg.Col(H.colors.gold), dim = HudCfg.Col(H.colors.dim);
+        if (S.tagShowS > 0f)   // HUD text rule: text only on entry, <= ~4 s, fades out; 0 (default) = the old always-on tag
+        {
+            float age = Time.unscaledTime - tagSince; if (age > S.tagShowS + S.tagFadeS) return;
+            HudDraw.Alpha = age <= S.tagShowS ? 1f : Mathf.Clamp01(1f - (age - S.tagShowS) / Mathf.Max(0.01f, S.tagFadeS));
+        }
         float y = S.tagTop; HudDraw.Caps(vw * 0.5f, y, 0.5f, T.safeTag, "title", S.tagBig, S.tagSmall, S.tagTracking, gold);
         y += S.tagBig * ML.tag.bigK; HudDraw.Text(new Rect(0f, y, vw, S.subSize * ML.tag.subK), T.safeSub, "serif", S.subSize, TextAnchor.UpperCenter, false, dim);
         y += S.subSize * ML.tag.subK + S.coinDy; HudDraw.Text(new Rect(0f, y, vw, S.coinSize * ML.tag.coinK), coinFmt.Get(T.coins, LootSave.Coins), "serif", S.coinSize, TextAnchor.UpperCenter, true, gold);

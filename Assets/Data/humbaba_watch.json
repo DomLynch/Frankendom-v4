@@ -8,14 +8,14 @@
   "gateKey": "humbaba_branch",
   "bossId": "Humbaba",
   "eyes": {
-    "enabled": true,
+    "enabled": false,
     "followSpeed": 6,
     "rangeM": 60,
     "hideBeyondM": 140,
     "playerHeadM": 1.6,
-    "idleIntensity": 0.6,
-    "activeIntensity": 1.6,
-    "tint": [1.0, 0.6, 0.2],
+    "idleIntensity": 0.12,
+    "activeIntensity": 0.30,
+    "tint": [0.82, 0.80, 0.74],
     "texSize": 64,
     "lobePower": 3,
     "lobeRadiusFrac": 0.9,
@@ -31,7 +31,7 @@
           { "u": 0.4826, "v": 0.515, "w": 0.636 },
           { "u": 0.5510, "v": 0.515, "w": 0.645 }
         ],
-        "irisWidthFrac": 0.018,
+        "irisWidthFrac": 0.009,
         "irisAspect": 1.0,
         "standoffFrac": 0.004,
         "maxOffsetFrac": 0.3,
@@ -87,7 +87,7 @@
       "innerFill": 0.35,
       "drawDistanceM": 120,
       "depthM": 3,
-      "maxOpacity": 0.75,
+      "maxOpacity": 0.0,
       "tint": [0.5, 0.09, 0.04]
     }
   },

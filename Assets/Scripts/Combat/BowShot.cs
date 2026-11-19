@@ -170,7 +170,7 @@ public class BowArrowView : MonoBehaviour
             finUse = finNockedM;
         }
         Part("Fins", finUse, Mat(C, BowCfg.Col(!string.IsNullOrEmpty(C.fletchColor) ? C.fletchColor : C.fin, Color.gray), C.shaftSmoothness, 0f), Vector3.zero, Vector3.one, C.castShadow);
-        if (flyingArrow && C.streakLenM > 0f) streakGo = Part("Streak", shaftM, Mat(C, BowCfg.Col(C.streakColor, Color.white), 0.1f, 0f), new Vector3(0f, 0f, -(C.lengthM * 0.5f + C.streakLenM * 0.5f)), new Vector3(C.radiusM * 0.7f, C.radiusM * 0.7f, C.streakLenM), false);
+        if (flyingArrow && C.streakLenM > 0f) { DM03.Log("arrow.streak", 2, C.streakSmoothness, C.streakWidthFrac); streakGo = Part("Streak", shaftM, Mat(C, BowCfg.Col(C.streakColor, Color.white), C.streakSmoothness, 0f), new Vector3(0f, 0f, -(C.lengthM * 0.5f + C.streakLenM * 0.5f)), new Vector3(C.radiusM * C.streakWidthFrac, C.radiusM * C.streakWidthFrac, C.streakLenM), false); }
     }
 
     /// <summary>The arrow on the string during a draw: a static view (no Shot) parented to the bow, local +Z = the way it will fly.</summary>
@@ -211,7 +211,7 @@ public class BowArrowView : MonoBehaviour
     // ---- landed: stays in the body ----
     public void Embed(DuelFighter d)
     {
-        var C = BowCfg.Get().arrow; Vector3 tip = TipAt(1f), dir = (TipAt(1f) - TipAt(0.96f)); if (dir.sqrMagnitude < 1e-8f) dir = transform.forward; dir.Normalize(); if (C.stuckLevel > 0f) { dir.y *= Mathf.Clamp01(1f - C.stuckLevel); if (dir.sqrMagnitude < 1e-8f) dir = transform.forward; dir.Normalize(); }   // stuckLevel: the arrow points back along the shot
+        var C = BowCfg.Get().arrow; Vector3 tip = TipAt(1f), dir = (TipAt(1f) - TipAt(C.flightSampleFrom)); if (dir.sqrMagnitude < 1e-8f) dir = transform.forward; dir.Normalize(); if (C.stuckLevel > 0f) { dir.y *= Mathf.Clamp01(1f - C.stuckLevel); if (dir.sqrMagnitude < 1e-8f) dir = transform.forward; dir.Normalize(); }   // stuckLevel: the arrow points back along the shot
         var rnd = new System.Random(lane * 7919 + Duel.TickCount); Vector3 side = Vector3.Cross(dir, Vector3.up); if (side.sqrMagnitude < 1e-6f) side = Vector3.right; side.Normalize();
         tip += side * ((float)rnd.NextDouble() * 2f - 1f) * C.stuckScatterM + Vector3.up * ((float)rnd.NextDouble() * 2f - 1f) * C.stuckScatterM + dir * C.embedM;
         Pose(tip, dir); stuck = true;
@@ -238,8 +238,8 @@ public class BowArrowView : MonoBehaviour
     // ---- dodged: flies on under gravity until the ground (or aim.stuckSeconds-bounded time) ----
     public void Overfly()
     {
-        var C = BowCfg.Get().arrow; float T = Span / 60f; Vector3 a = TipAt(0.96f), b = TipAt(1f); vel = (b - a) / (0.04f * T);
-        Vector3 dir = vel.sqrMagnitude > 1e-6f ? vel.normalized : transform.forward; flying = true; flyEnd = Time.time + Mathf.Max(1f, C.stuckSeconds * 0.1f + 1.5f); s = null;
+        var C = BowCfg.Get().arrow; float T = Span / 60f; Vector3 a = TipAt(C.flightSampleFrom), b = TipAt(1f); vel = (b - a) / (Mathf.Max(Mathf.Epsilon, C.flightSampleSpan) * T);   // the Max is a divide-by-zero guard
+        Vector3 dir = vel.sqrMagnitude > 1e-6f ? vel.normalized : transform.forward; flying = true; DM03.Log("arrow.overfly", 2, C.overflyMinS, C.overflyStuckFrac); flyEnd = Time.time + Mathf.Max(C.overflyMinS, C.stuckSeconds * C.overflyStuckFrac + C.overflyPadS); s = null;
         Pose(b, dir);
     }
 

@@ -1,0 +1,10 @@
+{
+  "_about": "TAKE C6 (RimRig.cs). keyFollow=false = the rim light keeps its old placement (far side of the character from the camera = a ring that turns with the camera). true = the rim sits on the key light side (keyLight, Key_ColdSun, driven by ZoneLook) at the same height, never within minAwayDeg of the camera side (a front light is not a rim), eased at followRate /s. runMul / aboveMul scale distance and height. Default OFF.",
+  "keyFollow": false,
+  "log": true,
+  "keyLight": "Key_ColdSun",
+  "minAwayDeg": 100.0,
+  "followRate": 6.0,
+  "runMul": 1.0,
+  "aboveMul": 1.0
+}

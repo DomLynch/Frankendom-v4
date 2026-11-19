@@ -166,7 +166,7 @@ public sealed class ZoneGroundMat : MonoBehaviour
             if (c.log && scanLogged.Add(row.id)) Debug.Log("ZONEGROUNDMAT scan " + row.id + " (" + (string.IsNullOrEmpty(row.targetRoot) ? row.zoneRoot : row.targetRoot) + "): " + rs.Length + " renderers; ground-like materials: " + string.Join(", ", new List<string>(seen).ToArray()));
         }
         if (c.log && !logged && touched > 0) { logged = true; Debug.Log("ZONEGROUNDMAT " + File_ + ": " + touched + " renderers, " + clones.Count + " material clones"); }
-        if (c.log) foreach (var row in c.rows) if (row != null && row.enabled && Root(row.zoneRoot) != null && !matches.ContainsKey(row) && settled == 2) Debug.LogWarning("ZONEGROUNDMAT WARN row " + row.id + ": root " + row.zoneRoot + " found but 0 material slots matched (see the scan line for the real names)");
+        if (c.log) foreach (var row in c.rows) if (row != null && row.enabled && !row.hide && Gate(row) && Root(row.zoneRoot) != null && !matches.ContainsKey(row) && settled == 2) Debug.LogWarning("ZONEGROUNDMAT WARN row " + row.id + ": root " + row.zoneRoot + " found but 0 material slots matched (see the scan line for the real names)");
     }
 
     Material Make(Row row, Material src)

@@ -1,0 +1,195 @@
+{
+ "_about": "ZONESCOPE v1 (kit fk_loadscope_kit). enabled false = today, bit for bit (every hook returns at once). enabled true: runtime-loaded GLBs (GlbPreload late tier, hub camp NPCs, ZoneHitch.Warm creature prefabs) are kept only for the CURRENT zone and neighbours[].keep; others are not parsed at start, staged ahead in calm frames, and dropped (GltfImport.Dispose) dropAfterS after the zone leaves scope. Files in no group stay always loaded. mbEst/mpx are decoded-size ESTIMATES from the GLB headers. v2: camps[] = the hub NPC sets are wanted only while the player is within aheadM before / behindM after the camp area (z1 never loads the hub), minAgeS after the scene load; hysteresisM before a camp is dropped; Defer skips any file already started (W7 double parse).",
+ "enabled": false,
+ "log": true,
+ "startZone": "pit_yard",
+ "keepLoadedMB": 1700.0,
+ "dropAfterS": 20.0,
+ "scopeTemplates": true,
+ "scopeCamps": true,
+ "dropCamps": true,
+ "templateMsEst": 60.0,
+ "lootAlts": "preload",
+ "hitch": {
+  "quietAfterArrivalS": 12.0,
+  "calmFrameMs": 40.0,
+  "perPollBudgetMs": 350.0,
+  "arrivalBudgetMs": 0.0,
+  "msPerMpx": 18.0,
+  "spacingFrames": 24,
+  "countOverMs": 100,
+  "holdWhileEngaged": true,
+  "maxWaitS": 30.0,
+  "_about": "quietAfterArrivalS: no staged load starts in the first N s after a zone change (the arrival window the COO measures). arrivalBudgetMs: est ms of loader work allowed inside that window (0 = none). perPollBudgetMs: est ms of loads started per 0.25 s poll. calmFrameMs: the last frame must be shorter. spacingFrames: min frames between two starts. est ms = group mpx share x msPerMpx (4096x4096 PNG ~300 ms measured as one frame, cannot be sliced: so the budget is a placement budget, see README 6)."
+ },
+ "decode": {
+  "mode": "off",
+  "scope": "groups",
+  "standalone": false,
+  "minPixels": 4000000,
+  "nonReadable": false,
+  "stripMips": true,
+  "logImages": true,
+  "maxParallel": 1,
+  "imageSpacingFrames": 6,
+  "cacheDir": "zonescope_img",
+  "_about": "ZoneDecode (README 9): mode uri = big GLB images (>= minPixels) get a uri and are decoded by Unity on a worker thread (UnityWebRequestTexture on a cache file) instead of LoadImage on the main thread. scope groups = only files of a zone_scope group, all = every GlbPreload parse. standalone = works with enabled false. Gate keys reused from hitch: calmFrameMs, holdWhileEngaged, maxWaitS; imageSpacingFrames = min frames between two image requests."
+ },
+ "neighbours": [
+  {
+   "zone": "pit_yard",
+   "keep": [
+    "pit_yard",
+    "sobek_reach"
+   ]
+  },
+  {
+   "zone": "sobek_reach",
+   "keep": [
+    "pit_yard",
+    "sobek_reach",
+    "hub_camp"
+   ]
+  },
+  {
+   "zone": "hub_camp",
+   "keep": [
+    "sobek_reach",
+    "hub_camp",
+    "grendel"
+   ]
+  },
+  {
+   "zone": "grendel",
+   "keep": [
+    "hub_camp",
+    "grendel",
+    "z5_humbaba"
+   ]
+  },
+  {
+   "zone": "z5_humbaba",
+   "keep": [
+    "grendel",
+    "z5_humbaba",
+    "z6_erlking"
+   ]
+  },
+  {
+   "zone": "z6_erlking",
+   "keep": [
+    "z5_humbaba",
+    "z6_erlking",
+    "z7_market2"
+   ]
+  },
+  {
+   "zone": "z7_market2",
+   "keep": [
+    "z6_erlking",
+    "z7_market2"
+   ]
+  }
+ ],
+ "groups": [
+  {
+   "id": "z2",
+   "zone": "sobek_reach",
+   "policy": "zone",
+   "files": [
+    "sobek_trident_LOD0.glb"
+   ],
+   "stageExtra": [],
+   "mbEst": 40.0,
+   "mpx": 10.5
+  },
+  {
+   "id": "hub",
+   "zone": "hub_camp",
+   "policy": "zone",
+   "files": [
+    "vendor_c1_armourer.glb",
+    "vendor_c1_weaponsmith.glb",
+    "npc_trader.glb",
+    "vendor_c1_stablemaster.glb"
+   ],
+   "stageExtra": [
+    "camp_erika_olive.glb",
+    "horse_lod.glb"
+   ],
+   "mbEst": 382.0,
+   "mpx": 117.5
+  },
+  {
+   "id": "z4",
+   "zone": "grendel",
+   "policy": "zone",
+   "files": [
+    "grendel_blade_R_LOD0.glb",
+    "grendel_blade_L_LOD0.glb"
+   ],
+   "stageExtra": [],
+   "mbEst": 384.0,
+   "mpx": 100.6
+  },
+  {
+   "id": "z6",
+   "zone": "z6_erlking",
+   "policy": "zone",
+   "files": [
+    "GreatAxe_v2.glb"
+   ],
+   "stageExtra": [],
+   "mbEst": 115.0,
+   "mpx": 34.6
+  },
+  {
+   "id": "z7",
+   "zone": "z7_market2",
+   "policy": "zone",
+   "files": [
+    "vendor_c2_armourer.glb",
+    "vendor_c2_weaponsmith.glb",
+    "vendor_c2_apothecary.glb",
+    "vendor_c2_stablemaster.glb",
+    "camp_arissa.glb"
+   ],
+   "stageExtra": [],
+   "mbEst": 127.0,
+   "mpx": 38.4
+  },
+  {
+   "id": "loot_alts",
+   "zone": "",
+   "policy": "loot",
+   "files": [
+    "pitborn_pauldron_joan_R.glb",
+    "pitborn_chest_joan.glb",
+    "bascinet_joan.glb",
+    "cap_joan.glb",
+    "pitborn_maul_joan_LOD0.glb",
+    "joan_greaves.glb",
+    "pitborn_pauldron.glb"
+   ],
+   "stageExtra": [],
+   "mbEst": 336.0,
+   "mpx": 88.2
+  }
+ ],
+ "camps": [
+  {
+   "zone": "hub_camp",
+   "aheadM": 30.0,
+   "behindM": 30.0,
+   "hysteresisM": 15.0,
+   "minAgeS": 0.0
+  },
+  {
+   "zone": "z7_market2",
+   "aheadM": 30.0,
+   "behindM": 30.0,
+   "hysteresisM": 15.0,
+   "minAgeS": 0.0
+  }
+ ]
+}

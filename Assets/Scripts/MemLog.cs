@@ -17,7 +17,7 @@ public class MemLog : MonoBehaviour
     static void Boot()
     {
         if (inst != null || Application.isBatchMode) return;
-        LoadCfg(); TexShare.LoadCfg();
+        LoadCfg(); TexShare.LoadCfg(); TexDedupe.Boot();   // TEXDEDUPE v1
         var go = new GameObject("MemLog"); DontDestroyOnLoad(go); inst = go.AddComponent<MemLog>();
     }
 
@@ -82,7 +82,7 @@ public class MemLog : MonoBehaviour
             foreach (var t in Resources.FindObjectsOfTypeAll<Texture2D>())
             {
                 if (t == null || done >= ccfg.maxPerTick) break;
-                if (skipped.Contains(t)) continue;
+                if (skipped.Contains(t) || TexDedupe.IsShared(t)) continue;   // TEXDEDUPE v1: a shared texture is never recompressed / swapped by TexCompress
                 var f = t.format;
                 if (f != TextureFormat.ARGB32 && f != TextureFormat.RGBA32 && f != TextureFormat.RGB24 && f != TextureFormat.BGRA32) continue;
                 if (t.width < ccfg.minSize || t.width % 4 != 0 || t.height % 4 != 0) continue;
@@ -103,8 +103,8 @@ public class MemLog : MonoBehaviour
     void Update()
     {
         TickCompress();
-        TexShare.Tick();
-        if (next >= marks.Length && (ccfg == null || !ccfg.enabled) && !TexShare.On) { enabled = false; return; }
+        TexShare.Tick(); TexDedupe.Tick();
+        if (next >= marks.Length && (ccfg == null || !ccfg.enabled) && !TexShare.On && !TexDedupe.Active) { enabled = false; return; }
         if (next >= marks.Length) return;
         if (Time.realtimeSinceStartup - t0 < marks[next]) return;
         float mark = marks[next++];
@@ -197,7 +197,7 @@ public class MemLog : MonoBehaviour
     }
 
     // size from format and mip chain for Texture2D (Profiler returned ~0 for most characters and glTF maps), Profiler value otherwise
-    static long Est(Texture t)
+    internal static long Est(Texture t)
     {
         long prof = Profiler.GetRuntimeMemorySizeLong(t);
         var t2 = t as Texture2D;

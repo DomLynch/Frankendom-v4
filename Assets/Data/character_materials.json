@@ -84,9 +84,9 @@
         {
           "match": "pitborn_Body",
           "baseColor": [
-            1.0,
-            1.0,
-            1.0
+            0.86,
+            0.79,
+            0.74
           ],
           "smoothness": -1,
           "metallic": -1,
@@ -96,9 +96,9 @@
         {
           "match": "pitborn_head",
           "baseColor": [
-            1.0,
-            1.0,
-            1.0
+            0.86,
+            0.79,
+            0.74
           ],
           "smoothness": -1,
           "metallic": -1,
@@ -200,29 +200,9 @@
     { "character": "NpcPitGladiator",
       "_why": "Dom via Strategy 15 Nov: bright red / gold centurion out of palette. Cloth oxblood, gold aged bronze, skin slightly calmer (k19 recolour.py). Revert: delete this row.",
       "materials": [ { "match": "npcpitgladiator_body", "baseColor": [1,1,1], "smoothness": -1, "metallic": -1, "albedoBlob": "", "albedoTexture": "CharTex/npcpitgladiator_body_base_graded.jpg" } ] },
-    {
-      "character": "NpcFenWitch",
-      "_why": "ALIAS + MONSTERLOOK (newenemies_kit, 18 Nov): alias of a donor prefab wearing a delivered body. look.enabled false = dark; switch on with enabled true and a spawn pick at NpcFenWitch.",
-      "look": {
-        "enabled": true,
-        "model": "MonsterLook/NpcFenWitch/NpcFenWitch_look.glb",
-        "parts": [
-          {
-            "renderer": "Body",
-            "mesh": "Body",
-            "slots": [
-              {
-                "slot": 0,
-                "glbMaterial": "tripo_material",
-                "baseMap": "MonsterLook/NpcFenWitch/witch_basecolor.bc7",
-                "normalMap": "MonsterLook/NpcFenWitch/witch_normal.bc7",
-                "maskMap": "MonsterLook/NpcFenWitch/witch_rm.bc7"
-              }
-            ]
-          }
-        ]
-      }
-    },
+    { "character": "NpcFenWitch",
+      "_why": "ALIAS of the donor prefab (NpcEmbalmerCultist). The old goblin look body was purged 19 Nov (Dom order); no look block. Revert: goblin_overlay.py revert.",
+      "materials": [] },
     {
       "character": "NpcAshReaver",
       "_why": "ALIAS + MONSTERLOOK (newenemies_kit, 18 Nov): alias of a donor prefab wearing a delivered body. look.enabled false = dark; switch on with enabled true and a spawn pick at NpcAshReaver.",

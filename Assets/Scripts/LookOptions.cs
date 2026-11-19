@@ -19,7 +19,7 @@ public static class LookOptions
     [Serializable] public class Plate { public bool on; public float plateAlpha = 0f; }
     [Serializable] public class WoundD { public bool on; public float colorMul = 0.5f, sizeMul = 0.7f; public int affectNormal = -1, affectAO = -1; public float endAngleFade = -1f; /* // GOOSEBACKLOG2 v102: -1 = keep wounds.json */ }
     [Serializable] public class Vig { public bool on; public float intensity = 0.34f; }
-    [Serializable] public class Root { public Door doorwayDepth = new Door(); public Plate endPlate = new Plate(); public WoundD woundMarks = new WoundD(); public Vig sceneVignette = new Vig(); public Wash deathWash = new Wash(); public Spike doorwaySpikeStrip = new Spike(); public Floor floorNormal = new Floor(); public Blood finisherBlood = new Blood(); public Cap combatCamCap = new Cap(); public ReframeRow camReframe = new ReframeRow(); /* // GOOSEBACKLOG2 v102 */ public PlugFix terrainPlug = new PlugFix(); /* // laneWHIRLFIX */ }
+    [Serializable] public class Root { public Door doorwayDepth = new Door(); public Plate endPlate = new Plate(); public WoundD woundMarks = new WoundD(); public Vig sceneVignette = new Vig(); public Wash deathWash = new Wash(); public Spike doorwaySpikeStrip = new Spike(); public Floor floorNormal = new Floor(); public Blood finisherBlood = new Blood(); public Cap combatCamCap = new Cap(); public ReframeRow camReframe = new ReframeRow(); /* // GOOSEBACKLOG2 v102 */ public PlugFix terrainPlug = new PlugFix(); /* // laneWHIRLFIX */ public DitherKit.Cfg dither = new DitherKit.Cfg(); /* DITHERKIT v1: enabled false = today; see DitherKit.cs */ }
 
     [Serializable] public class PlugFix { public bool on; public string[] names = { "TerrainCentrePlug" }; public float dropM = 0.05f; }   // laneWHIRLFIX
     static Root cfg;
@@ -44,6 +44,7 @@ public static class LookOptions
         if (cfg.woundMarks == null) cfg.woundMarks = new WoundD();
         if (cfg.sceneVignette == null) cfg.sceneVignette = new Vig();
         if (cfg.terrainPlug == null) cfg.terrainPlug = new PlugFix();   // laneWHIRLFIX
+        if (cfg.dither == null) cfg.dither = new DitherKit.Cfg(); if (cfg.dither.grain == null) cfg.dither.grain = new DitherKit.GrainCfg();   // DITHERKIT v1
         return cfg;
     }
 
@@ -78,7 +79,7 @@ public static class LookOptions
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
     {
-        var c = Cfg(); if (!c.doorwaySpikeStrip.on && !c.floorNormal.on && !c.doorwayDepth.on && !c.sceneVignette.on && !c.terrainPlug.on) return;   /* laneWHIRLFIX */   // GOOSEBACKLOG v100: + doorwayDepth, sceneVignette
+        var c = Cfg(); if (!c.doorwaySpikeStrip.on && !c.floorNormal.on && !c.doorwayDepth.on && !c.sceneVignette.on && !c.terrainPlug.on && !c.dither.diagLog && !DitherKit.Active(c.dither)) return;   /* laneWHIRLFIX */   // GOOSEBACKLOG v100: + doorwayDepth, sceneVignette
         var go = new GameObject("LookOptionsApply"); UnityEngine.Object.DontDestroyOnLoad(go); go.AddComponent<Applier>();
     }
 
@@ -91,7 +92,7 @@ public static class LookOptions
         void OnLoaded(UnityEngine.SceneManagement.Scene s, UnityEngine.SceneManagement.LoadSceneMode m) { frames = 0; t = 0f; second = false; }
         void Update()
         {
-            frames++; t += Time.unscaledDeltaTime;
+            frames++; t += Time.unscaledDeltaTime; DitherKit.Recheck(Cfg().dither);   // DITHERKIT v1
             if (frames == 5) ApplyAll();
             else if (!second && t > 2f) { second = true; ApplyAll(); }
         }
@@ -100,6 +101,7 @@ public static class LookOptions
     static void ApplyAll()
     {
         var c = Cfg();
+        DitherKit.Apply(c.dither, UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);   // DITHERKIT v1: read + log hd.dithering (and set it when look_options.json dither.enabled or -qa_dither)
         if (c.doorwaySpikeStrip.on && c.doorwaySpikeStrip.hideObjects != null)
         {
             var all = Resources.FindObjectsOfTypeAll<Transform>();

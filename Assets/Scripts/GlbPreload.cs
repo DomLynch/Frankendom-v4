@@ -23,7 +23,7 @@ public static class GlbPreload
     public static int Started, Done, Failed, Taken; public static float Seconds;   // for the log line / perfbench
     public static bool Expected, Tier0Done;   // v3: StartupWarm holds its cover until Joan's gear tier is parsed (Expected = a preload runner was started)
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { cache.Clear(); everStarted.Clear(); agents.Clear(); Claimed = SkippedDup = DeferFrames = 0; Started = Done = Failed = Taken = 0; Seconds = 0f; Expected = Tier0Done = false; if (deferGo != null) UnityEngine.Object.Destroy(deferGo); deferGo = null; deferAgent = null; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { TexDedupe.Boot(); cache.Clear(); everStarted.Clear(); agents.Clear(); Claimed = SkippedDup = DeferFrames = 0; Started = Done = Failed = Taken = 0; Seconds = 0f; Expected = Tier0Done = false; if (deferGo != null) UnityEngine.Object.Destroy(deferGo); deferGo = null; deferAgent = null; }
 
     // K30: ONE DontDestroyOnLoad defer agent for every glTFast import of the gear path (GearAssetLoader, this class), so no import depends on glTFast's global default agent. Recreated if its object was destroyed.
     static GameObject deferGo; static GLTFast.TimeBudgetPerFrameDeferAgent deferAgent;
@@ -168,6 +168,7 @@ public static class GlbPreload
         {
             GLTFast.IDeferAgent da = DeferAgent;
             if (smooth) { var sa = new SmoothAgent(); agents[Key(file)] = sa; da = sa; }   // PRELOADHITCH v1
+            if (ZoneDecode.Wants(file)) { g = await ZoneDecode.Load(file, da); if (g != null) { Done++; return g; } g = null; }   // ZONEDECODE v1 (off = false): big images decoded off the main thread; null = the old LoadFile path below
             g = new GLTFast.GltfImport(deferAgent: da);   // K30
             bool ok = await g.LoadFile(file);
             if (!ok) { g.Dispose(); Failed++; return null; }
@@ -177,6 +178,37 @@ public static class GlbPreload
     }
 
     internal static void Add(string file, Task<GLTFast.GltfImport> t) { cache[Key(file)] = t; everStarted.Add(Key(file)); Started++; }
+
+    // ---------------------------------------------------------------- ZONESCOPE v1 (zone_scope.json; nothing below runs while it is off)
+    public static bool IsCached(string file) { return !string.IsNullOrEmpty(file) && cache.ContainsKey(Key(file)); }
+    /// <summary>Parse this file now when nothing was started for it this session (through the smooth agent when C3.lateSmooth is on). Returns true when a parse was started.</summary>
+    public static bool Stage(string file)
+    {
+        if (string.IsNullOrEmpty(file)) return false; string key = Key(file);
+        if (cache.ContainsKey(key) || everStarted.Contains(key)) return false;
+        Add(file, LoadAsync(file, Smooth)); return true;
+    }
+    /// <summary>ZONESCOPE v2: like Stage, but also when this file was started (and taken / disposed) before: a hub camp re-entered or a scene reloaded must parse it again through the staged path instead of the old "parsing now" path. False when it is cached (a parse is running or waiting).</summary>
+    public static bool StageAgain(string file)
+    {
+        if (string.IsNullOrEmpty(file)) return false; string key = Key(file);
+        if (cache.ContainsKey(key)) return false;
+        Add(file, LoadAsync(file, Smooth)); return true;
+    }
+    /// <summary>Release a parsed import nobody has taken (its textures / meshes are destroyed when the task has finished). False when it was already taken by a consumer (that owner disposes it) or never parsed.</summary>
+    public static bool Drop(string file)
+    {
+        if (string.IsNullOrEmpty(file)) return false; string key = Key(file); Task<GLTFast.GltfImport> t;
+        if (!cache.TryGetValue(key, out t)) return false;
+        cache.Remove(key); everStarted.Remove(key); agents.Remove(key);
+        try
+        {
+            var ts = TaskScheduler.FromCurrentSynchronizationContext();
+            t.ContinueWith(x => { try { if (!x.IsFaulted && !x.IsCanceled && x.Result != null) x.Result.Dispose(); } catch (Exception) { } }, ts);
+        }
+        catch (Exception e) { Debug.LogWarning("[GlbPreload] drop " + file + ": " + e.Message); }
+        return true;
+    }
 }
 
 public class GlbPreloadRunner : MonoBehaviour
@@ -214,6 +246,7 @@ public class GlbPreloadRunner : MonoBehaviour
             long len = 0; try { len = new FileInfo(f).Length; } catch (Exception) { }
             if (used + len > budget) { Debug.Log("[GlbPreload] skipped (budget " + c.maxTotalMb + " MB): " + f); continue; }
             used += len;
+            if (ZoneScope.Defer(f)) continue;   // ZONESCOPE v1: zone-owned file out of scope / loot alternate on demand: counted in `used`, not parsed (off = false)
             var t = GlbPreload.LoadAsync(f, smooth); GlbPreload.Add(f, t); pending.Add(t);
             if (smooth) while (!t.IsCompleted) yield return null;   // one file at a time: its heavy steps never overlap another file's
             for (int i = 0; i < gap; i++) yield return null;

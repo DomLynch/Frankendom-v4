@@ -47,10 +47,11 @@ public static class BowFree
         Vector3 h = c.transform.forward; h.y = 0f; return h.sqrMagnitude > 1e-4f ? h.normalized : Vector3.zero;
     }
 
+    static float UpMax(BowCfg.Free f) { return Mathf.Max(0f, f.reticleUpMaxFrac); }   // DATALAYER 18 Nov: bow.json aim.free.reticleUpMaxFrac (default 0.4)
     /// <summary>RETICLEUP v1: the aim ray direction: through the screen point reticleUpFrac of the height above the centre (0 = the camera forward, exactly as before).</summary>
     public static Vector3 RayDir(Camera cam)
     {
-        var f = F; float up = f != null ? Mathf.Clamp(f.reticleUpFrac, -0.4f, 0.4f) : 0f;
+        var f = F; float up = f != null ? Mathf.Clamp(f.reticleUpFrac, -UpMax(f), UpMax(f)) : 0f;
         if (Mathf.Abs(up) < 1e-4f) return cam.transform.forward;
         return cam.ViewportPointToRay(new Vector3(0.5f, 0.5f + up, 0f)).direction;
     }
@@ -63,7 +64,7 @@ public static class BowFree
         Vector3 dir = RayDir(cam), o = cam.transform.position;   // RETICLEUP v1: the ray goes through the (raised) reticle, not the screen centre
         float along0 = Vector3.Dot(a.transform.position + Vector3.up * (A.releaseHeightM * a.scale) - o, dir);
         o += dir * Mathf.Max(0f, along0);                                  // the ray starts at the archer's plane: a wall behind her never blocks it
-        float max = Mathf.Max(5f, Fr.maxRangeM), wd = max; Vector3 wp = o + dir * max;
+        float max = Mathf.Max(Fr.minRangeM, Fr.maxRangeM), wd = max; DM03.Log("aim.free.minRangeM", 1, Fr.minRangeM); Vector3 wp = o + dir * max;
         var hits = Physics.RaycastAll(o, dir, max, ~0, QueryTriggerInteraction.Ignore);
         for (int i = 0; i < hits.Length; i++)
         {
@@ -105,7 +106,7 @@ public static class BowFree
         else if (f.state != FState.Loco) prog = 1f; else winMax = 0f;
         DuelFighter t; Vector3 p; bool on = Resolve(f, out t, out p) && t != null;
         Color c = BowCfg.Col(on ? Fr.colourOnTarget : Fr.colour, Color.white);
-        float cx = Screen.width * 0.5f, cy = Screen.height * (0.5f - Mathf.Clamp(Fr.reticleUpFrac, -0.4f, 0.4f)), g = Mathf.Lerp(Fr.gapPx, Fr.gapPx * Fr.tightenTo, prog), L = Fr.tickLenPx, th = Fr.tickThickPx, d = Fr.dotPx;
+        float cx = Screen.width * 0.5f, cy = Screen.height * (0.5f - Mathf.Clamp(Fr.reticleUpFrac, -UpMax(Fr), UpMax(Fr))), g = Mathf.Lerp(Fr.gapPx, Fr.gapPx * Fr.tightenTo, prog), L = Fr.tickLenPx, th = Fr.tickThickPx, d = Fr.dotPx;
         if (Fr.log && Time.unscaledTime >= nextRetLog) { nextRetLog = Time.unscaledTime + 1f; Debug.Log("[bow] free reticle: centre " + cx.ToString("F0") + "," + cy.ToString("F0") + " px (screen " + Screen.width + "x" + Screen.height + ") colour " + (on ? Fr.colourOnTarget : Fr.colour) + " on-target " + on + (on ? " target " + t.name : "") + " draw " + prog.ToString("F2") + " gap " + g.ToString("F1") + "px up " + Fr.reticleUpFrac.ToString("F2") + (on ? "" : " ray-end " + p.ToString("F1"))); }
         HudDraw.Fill(new Rect(cx - d * 0.5f, cy - d * 0.5f, d, d), c);
         HudDraw.Fill(new Rect(cx - g - L, cy - th * 0.5f, L, th), c); HudDraw.Fill(new Rect(cx + g, cy - th * 0.5f, L, th), c);

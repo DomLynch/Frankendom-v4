@@ -23,6 +23,8 @@ using UnityEngine.Rendering.HighDefinition;
     public float lateSeedS = 7f, lateSeedAmount = 0.3f, sessionGapS = 12f;
     public float lifeS = 90f, fadeS = 4f, depthM = 0.08f, liftM = 0.02f, drawDistanceM = 40f;
     public float smoothness = 0.85f, minNormalY = 0.6f, rayUpM = 0.3f, rayDownM = 0.3f;
+    public bool glossAge = false;                // TAKE C7: wet blood is glossy when fresh and soaks in: the stain's decal smoothness eases from `smoothness` to glossEnd between glossFreshS and glossFreshS + glossSoakS, in glossSteps shared materials (default OFF = one smoothness for the stain's whole life, as today)
+    public float glossFreshS = 6f, glossSoakS = 60f, glossEnd = 0.35f; public int glossSteps = 4;
     public int maxLandPerFrame = 12;
     public float[] tint = { 1f, 1f, 1f, 1f };
     public string[] poolFiles = { "floor-pool", "floor-pool-b" };
@@ -83,7 +85,7 @@ public static class FinVis
     static readonly List<Vector3> lateSources = new List<Vector3>();
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { tex.Clear(); mats.Clear(); decalShader = litShader = null; shaderLooked = warned = false; dropMat = null; dropMesh = null; stains.Clear(); seeps.Clear(); beats.Clear(); driver = null; stainCursor = serial = landThisFrame = sessionStains = 0; lastRegister = -999f; lateSeeded = false; lateSources.Clear(); }
+    static void ResetStatics() { glossLogged = glossRead = false; tex.Clear(); mats.Clear(); decalShader = litShader = null; shaderLooked = warned = false; dropMat = null; dropMesh = null; stains.Clear(); seeps.Clear(); beats.Clear(); driver = null; stainCursor = serial = landThisFrame = sessionStains = 0; lastRegister = -999f; lateSeeded = false; lateSources.Clear(); }
     // INT100b: the reload of the duel scene (rematch / balance fights) also drops the pools, seeps, beats and the driver (their scene objects are gone); shader / texture caches are kept (no regeneration hitch)
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     static void HookSceneReset() { UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneReset; UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneReset; }
@@ -94,7 +96,7 @@ public static class FinVis
         WoundDecals.SceneReset();
     }
 
-    class PoolStain { public GameObject go; public DecalProjector p; public Vector3 pos, normal; public float radius, target, angle, squash, born; public bool live; }
+    class PoolStain { public GameObject go; public DecalProjector p; public Vector3 pos, normal; public float radius, target, angle, squash, born; public bool live; public string file; public int step; }
     class Seep { public Transform tr; public float strength, until; public Vector3 lastFloor; public bool has; }
     class Beat { public DecalProjector p; public Transform t; public float t0, dur, w0, w1, len, h0, h1; public bool grow; public bool started; }
 
@@ -159,6 +161,7 @@ public static class FinVis
             if (c.body.enabled) foreach (var f in c.body.files) FileMat(f, c.body.smoothness, null, true);
             if (c.reveal.enabled) foreach (var f in c.reveal.dripFiles) FileMat(f, c.body.smoothness, null, true);
             if (c.droplets.enabled) { DropMat(); DropMesh(); }
+            if (c.pools.enabled && c.pools.glossAge) for (int g = 1; g <= Mathf.Max(1, c.pools.glossSteps); g++) { float sm = AgedSmooth(c.pools, g); foreach (var f in c.pools.poolFiles) FileMat(f, sm, c.pools.tint, true); foreach (var f in c.pools.splashFiles) FileMat(f, sm, c.pools.tint, true); }   // TAKE C7: the aged-gloss materials exist before the first stain soaks
         }
         catch (Exception e) { Debug.LogWarning("[FinVis] warm: " + e.Message); }
     }
@@ -176,6 +179,9 @@ public static class FinVis
         }
         catch (Exception e) { Debug.LogWarning("[FinVis] collect: " + e.Message); }
     }
+
+    static bool glossLogged, glossRead;
+    static float AgedSmooth(FinVisPoolCfg pc, int step) { int n = Mathf.Max(1, pc.glossSteps); return Mathf.Lerp(pc.smoothness, pc.glossEnd, Mathf.Clamp01(step / (float)n)); }   // TAKE C7
 
     static Mesh DropMesh()
     {
@@ -229,6 +235,7 @@ public static class FinVis
     static void Stain(Vector3 floorPoint, Vector3 normal, float amount, bool splash)
     {
         var pc = Cfg().pools; if (!pc.enabled) return;
+        if (!glossRead) { glossRead = true; Debug.Log("[Take] C7 finishers.json pools read: glossAge=" + pc.glossAge + " fresh " + pc.glossFreshS.ToString("F0") + " s, soak " + pc.glossSoakS.ToString("F0") + " s, end smoothness " + pc.glossEnd.ToString("F2") + ", steps " + pc.glossSteps); }
         float m2 = pc.mergeM * pc.mergeM;
         for (int i = 0; i < stains.Count; i++)
         {
@@ -249,7 +256,7 @@ public static class FinVis
             st.p = st.go.AddComponent<DecalProjector>(); st.p.scaleMode = DecalScaleMode.ScaleInvariant; st.p.pivot = Vector3.zero;
             st.p.drawDistance = pc.drawDistanceM; st.p.fadeScale = 0.8f; st.p.startAngleFade = 60f; st.p.endAngleFade = 90f;
         }
-        st.p.material = mat; st.p.fadeFactor = 1f;
+        st.p.material = mat; st.p.fadeFactor = 1f; st.file = file; st.step = 0;
         st.pos = floorPoint; st.normal = normal; st.radius = pc.startRadiusM; st.target = pc.startTargetM; st.angle = ++serial * 2.4f; st.born = Time.time; st.live = true;
         st.squash = pc.squashBase + pc.squashSin * Mathf.Pow(Mathf.Sin(st.angle), 2f);
         var yaw = new Vector3(Mathf.Sin(st.angle), 0f, Mathf.Cos(st.angle)); yaw = Vector3.ProjectOnPlane(yaw, normal); if (yaw.sqrMagnitude < 1e-6f) yaw = Vector3.forward;
@@ -452,6 +459,11 @@ public static class FinVis
                 float f = 1f - (age - pc.lifeS) / Mathf.Max(0.1f, pc.fadeS);
                 if (f <= 0f) { s.live = false; s.go.SetActive(false); continue; }
                 s.p.fadeFactor = f;
+            }
+            if (pc.glossAge && s.file != null)   // TAKE C7: fresh = glossy, then it soaks in (smoothness steps down with age)
+            {
+                int ns = Mathf.Clamp(Mathf.RoundToInt(Mathf.Clamp01((age - pc.glossFreshS) / Mathf.Max(0.1f, pc.glossSoakS)) * Mathf.Max(1, pc.glossSteps)), 0, Mathf.Max(1, pc.glossSteps));
+                if (ns != s.step) { var am = FileMat(s.file, ns == 0 ? pc.smoothness : AgedSmooth(pc, ns), pc.tint, true); if (am != null) { s.p.material = am; s.step = ns; if (!glossLogged) { glossLogged = true; Debug.Log("[Take] C7 blood gloss ages: a pool decal went smoothness " + pc.smoothness.ToString("F2") + " -> " + AgedSmooth(pc, ns).ToString("F2") + " at age " + age.ToString("F0") + " s (step " + ns + " of " + pc.glossSteps + ")"); } } }
             }
             float nr = s.radius + (s.target - s.radius) * (1f - Mathf.Exp(-dt * pc.growPerS));
             if (Mathf.Abs(nr - s.radius) > 1e-4f) { s.radius = nr; s.p.size = new Vector3(nr * 2f, nr * 2f * s.squash, pc.depthM); }

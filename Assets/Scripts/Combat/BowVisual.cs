@@ -184,14 +184,18 @@ public class BowVisual : MonoBehaviour
 
     // NPCARCHER v4 (COO 21:10): the drawing hand of an NPC archer ended above his head (the clip was authored on Joan's arm length). Two-bone IK on the right arm: while drawing, the hand goes to a cheek anchor in front of the right side of the face
     // (bow.json visual.draw.npcIk / cheekRightM / cheekDownM / cheekFwdM); the string and the nocked arrow follow that hand. Weighted in and out with the draw. Never runs for the player.
-    Transform ikUp, ikFore, ikHand, ikHead, lUp, lFore, lHand; float ikK; bool ikTried;
+    Transform ikUp, ikFore, ikHand, ikHead, lUp, lFore, lHand; float ikK, lastDrawT; bool ikTried, wasHold;
     string bodyId; string BodyId() { if (bodyId == null) { string n = fighter != null ? fighter.name : ""; int h = n.IndexOf('#'); bodyId = h > 0 ? n.Substring(0, h) : n; } return bodyId; }   // K18: NPC id for the per-body draw row
     void NpcDrawHandIk()
     {
         if (fighter == null || fighter.IsPlayer) return; var D = BowCfg.DrawFor(BodyId()); if (D == null || !D.npcIk) return;
         if (!ikTried) { ikTried = true; var sk = Skel(); string pre = Roster.BoneName(this, ""); ikUp = FindNamed(sk, pre + "RightArm"); ikFore = FindNamed(sk, pre + "RightForeArm"); ikHand = FindNamed(sk, pre + "RightHand"); ikHead = FindNamed(sk, pre + "Head"); if (BowCfg.Log) Debug.Log("[bow] npc ik bones " + (ikUp != null) + "/" + (ikFore != null) + "/" + (ikHand != null) + "/" + (ikHead != null) + " on " + name); }
         if (ikUp == null || ikFore == null || ikHand == null || ikHead == null) return;
-        ikK = Mathf.MoveTowards(ikK, Drawing() ? 1f : 0f, Time.deltaTime / 0.2f); if (ikK <= 0.001f) { if (D.groundHips) GroundHips(); return; }
+        bool drawNow = Drawing(); if (drawNow) lastDrawT = Time.time;   // RELEASEHOLD v1 (W5): keep the weight for D.holdAfterReleaseS after the loose, then ease out over D.easeOutS (defaults 0 / 0.2 = the old fixed 0.2 s ramp)
+        bool holdIk = drawNow || (D.holdAfterReleaseS > 0f && lastDrawT > 0f && Time.time - lastDrawT < D.holdAfterReleaseS);
+        ikK = Mathf.MoveTowards(ikK, holdIk ? 1f : 0f, Time.deltaTime / (holdIk ? 0.2f : Mathf.Max(0.02f, D.easeOutS)));
+        if (BowCfg.Log && D.holdAfterReleaseS > 0f && wasHold != holdIk && !drawNow) { Debug.Log("[bow] npc release hold " + name + " " + (holdIk ? "ON" : "OFF") + " t=" + Time.time.ToString("F3") + " ikK " + ikK.ToString("F2") + " hold " + D.holdAfterReleaseS.ToString("F2") + " ease " + D.easeOutS.ToString("F2")); }
+        wasHold = holdIk; if (ikK <= 0.001f) { if (D.groundHips) GroundHips(); return; }
         Vector3 fw = fighter.transform.forward; fw.y = 0f; fw.Normalize(); Vector3 rt = fighter.transform.right; rt.y = 0f; rt.Normalize();
         if (D.groundHips) GroundHips();
         if (D.spineLevel) LevelTorso(rt, D);
@@ -344,7 +348,7 @@ public class BowHud : MonoBehaviour
 
     void OnGUI()
     {
-        if (Event.current.type != EventType.Repaint || !BowCfg.Master) return;
+        if (Event.current.type != EventType.Repaint || !BowCfg.Master || ZoneEndScreen.Active) return; /* ENDHUD v1 */
         var H = BowCfg.Get().hud; var f = BowHooks.HudFighter(); bool bow; int ammo; DuelFighter foe;
         if (f == null || !BowHooks.TryHud(f, out bow, out ammo, out foe)) return;
         Color c = BowCfg.Col(H.colour, Color.white);
@@ -362,8 +366,19 @@ public class BowHud : MonoBehaviour
         }
         BowFree.DrawReticle(f, bow);   // FREEAIM v1
         string chip = bow ? (BowCfg.Get().quiverOn ? H.chipBow + H.chipAmmoSep + ammo : H.chipBow) : WeaponChip(f, H.chipSword);   // WEAPONTAG v1
+        float chipA = 1f;   // TAKE C8b (HUD text rule): chipShowS > 0 = the weapon chip shows only for that many seconds after it CHANGES (weapon swapped, mode, arrows left), fading over chipFadeS; 0 = always, as today
+        if (H.chipShowS > 0f)
+        {
+            if (!chipRead) { chipRead = true; Debug.Log("[Take] C8b weapon chip: shows only on change, " + H.chipShowS.ToString("F1") + " s (bow.json hud.chipShowS)"); }
+            if (chip != chipLast) { chipLast = chip; chipAt = Time.unscaledTime; chipHidLogged = false; }
+            float ca = Time.unscaledTime - chipAt; chipA = Mathf.Clamp01((H.chipShowS - ca) / Mathf.Max(0.01f, H.chipFadeS));
+            if (chipA <= 0f) { if (!chipHidLogged) { chipHidLogged = true; Debug.Log("[Take] C8b weapon chip hidden " + ca.ToString("F1") + " s after the last change (" + chipLast + ")"); } return; }
+        }
+        float oldA = HudDraw.Alpha; if (chipA < 1f) HudDraw.Alpha = oldA * chipA;
         HudDraw.Text(new Rect(Screen.width - H.chipRightPx - H.chipWidthPx, Screen.height - H.chipBottomPx, H.chipWidthPx, H.chipFontPx * H.chipLineH), chip, "serif", H.chipFontPx, TextAnchor.MiddleRight, false, c);
+        HudDraw.Alpha = oldA;
     }
+    string chipLast = ""; float chipAt = -999f; bool chipRead, chipHidLogged;
     static string wcId = null, wcName = "";
     static string WeaponChip(DuelFighter f, string dflt)   // WEAPONTAG v1: equipped weapon display name, cached per id
     {

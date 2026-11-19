@@ -1,6 +1,7 @@
-﻿# gatef4 (Frankendom unity-dev): K1 escort fight frames z4-z6 on a QA copy of the LIVE build (read from PLAY.bat), sandbox save only, own pid.
+# gatef4 (Frankendom unity-dev): K1 escort fight frames z4-z6 on a QA copy of the LIVE build (read from PLAY.bat), sandbox save only, own pid.
 # One boot: z1 Pitborn kill + pickup (rarity-coloured drop label), restart to hub_camp: wear pitborn_chest (frame of Joan), sell erlking_axe + boar_spear at hub_trade_a (Sell tab frames, silver before/after).
 param([string]$SpotYaw = '', [string]$Mode = 'tabs', [string]$ExtraCsv = '', [string]$NotBefore = '', [string]$Zone = 'z4', [string]$Run = 'A', [string]$Build = '', [string]$Tag = 'pick', [string]$V = '109kqp9', [switch]$Prep, [switch]$NoSlot, [string]$Purpose = '', [switch]$DryRun)
+. 'C:\Users\dom12\Documents\unity_test_hdrp\_agents\laneHOTSHIP\qa_common.ps1'   # player.lock helpers (New-PlayerLock / Remove-PlayerLock)
 # COO 11:38: every board FOCUS line names WHAT is being proved (no hard-coded text). -Purpose (or $env:FK_PURPOSE) is required; frames and logs go to the Tag folder.
 if (-not $Purpose -and $env:FK_PURPOSE) { $Purpose = $env:FK_PURPOSE }; if (-not "$Purpose".Trim()) { Write-Host 'REFUSED: -Purpose is required (one line: what this run proves, e.g. -Purpose "oz seat side standstill")'; exit 8 }
 # TARGET GUARD + PURE DRYRUN (Lead, outside audit P0, 18 Nov): runs BEFORE any filesystem write (no junction, no mkdir, no Remove-Item, no deploy, no board line under -DryRun).
@@ -189,7 +190,7 @@ $qaT0 = Get-Date; $ram = 0; $need = 19
 while ($true) { $ram = (Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1MB; $oe = @(Open-OtherEditors); $bp = @(Open-BuildPhase) + @(Other-BatchEditors); if ($ram -ge $need) { break }; if ($DryRun) { break }; if (((Get-Date) - $qaT0).TotalMinutes -gt 25) { Done "ABORT ram $ram (need $need GB, build phase: $($bp -join ','), open editors: $($oe -join ','))"; 'ABORT ram'; exit 9 }; Start-Sleep 15 }
 if ($DryRun) { & "$($env:FK_ROOT)\_agents\qa_slot.ps1" -DryRun -Lane frankendom -ExpectGB 15 | Out-Host; $go = ($ram -ge $need); $line = "QA DRYRUN: free $([math]::Round($ram,1)) GB, floor $need GB, other editors open: [$($oe -join ',')], build phase open: [$($bp -join ',')] => " + $(if ($go) { 'START' } else { 'WAIT' }); Write-Host $line; Done $line; exit 0 }
 if ($oe.Count -gt 0 -or $bp.Count -gt 0) { Done "QA start at $([math]::Round($ram,1)) GB free (floor $need) with other lane editor(s) open: $($oe -join ','); build phase: $($bp -join ',')" }
-try { $fs = [IO.File]::Open("$P\_agents\laneHOTSHIP\player.lock", 'CreateNew', 'Write', 'None'); $fs.Close() } catch { Done 'ABORT lock'; 'ABORT lock'; exit 9 }
+try { if (-not (New-PlayerLock -Owner 'gateproof' -DeadlineMin ([math]::Max(30, $DeadlineMin + 15)))) { throw 'player.lock busy' } } catch { Done 'ABORT lock'; 'ABORT lock'; exit 9 }
 $ExtraArgs = @(); if ($ExtraCsv -ne '' -and $ExtraCsv -ne 'none') { $ExtraArgs = @($ExtraCsv -split ',' | % { if ($_ -match '^-') { $_ } else { '-' + $_ } }) }; $deadline = (Get-Date).AddMinutes(5); $until = $deadline.ToString('HH:mm')
  # QAFPS v1 (K7 crash fix, COO/Strategy 18 Nov): every QA player is capped at 60 fps (vSync off) so it cannot hog the shared iGPU; FK_QA_FPS=0 turns the flag off, FK_QA_FPS=N sets another cap. The game reads -qa_fps:N in QaSwitches.Tick (compile-only, builds from tz on).
 if ($env:FK_QA_FPS -ne '0') { $ExtraArgs += '-qa_fps:' + $(if ($env:FK_QA_FPS) { $env:FK_QA_FPS } else { '60' }) };
@@ -211,8 +212,9 @@ if (-not $env:FK_FRESH) { [IO.File]::WriteAllText("$save\loot_save.json", $ls, $
 $out = "$o0\run"
 # COO 17 Nov 12:48: machine-wide QA slot (max 2 players across all lanes, free >= expected + 8 GB); per-lane checks cannot see each other
 $slot = & "$($env:FK_ROOT)\_agents\qa_slot.ps1" -Acquire -Lane frankendom -ExpectGB 15 -WaitMinutes 10; if (-not $slot) { Done 'ABORT no QA slot (qa_slot.ps1: 2 players or free < 23 GB for 10 min)'; 'ABORT slot'; exit 4 }
+$qp = Backup-DomPrefs -Owner 'gateproof_rel'; try {
 $pr = Start-Process "$dir\HadesSlice.exe" -ArgumentList (@('-zones', $(if ($env:FK_QA_LOW) { '-quality:low' } else { '-quality:ultra2k' }), '-screen-width', $(if ($env:FK_QA_LOW) { '1280' } else { '2560' }), '-screen-height', $(if ($env:FK_QA_LOW) { '720' } else { '1600' }), '-screen-fullscreen', '0', '-savePath', $save, '-camscene', "-camtrace:$out\trace", '-silent-crashes', '-logFile', "$out\game.log") + $ExtraArgs) -WorkingDirectory $dir -PassThru
-$mypid = $pr.Id; Done "start pid $mypid"; & "$($env:FK_ROOT)\_agents\qa_slot.ps1" -Bind -Slot $slot -PlayerPid $mypid
+$mypid = $pr.Id; Register-DomPrefsPlayer $qp $mypid; Done "start pid $mypid"; & "$($env:FK_ROOT)\_agents\qa_slot.ps1" -Bind -Slot $slot -PlayerPid $mypid
 # COO 18 Nov 11:4x (Strategy ruling after Dom's 10:55 crash): poll every 2 s; if Dom's own game starts, end OUR OWN player at once, mark VOID-DOM, queue a rerun.
 $waitEnd = (Get-Date).AddMilliseconds([math]::Min(285000, (($deadline - (Get-Date)).TotalSeconds - 8) * 1000)); $voidDom = $false
 while (-not $pr.HasExited -and (Get-Date) -lt $waitEnd) {
@@ -222,8 +224,9 @@ while (-not $pr.HasExited -and (Get-Date) -lt $waitEnd) {
 if (-not $pr.HasExited) { Stop-Process -Id $mypid -Force }; $pr.WaitForExit(15000) | Out-Null
 Done ("end; pid read back: " + $(if (Get-Process -Id $mypid -EA SilentlyContinue) { 'STILL RUNNING' } else { 'gone' }))
 & "$($env:FK_ROOT)\_agents\qa_slot.ps1" -Release -Slot $slot
+} finally { Restore-DomPrefs $qp }
 Copy-Item "$save\loot_save.json" "$o0\loot_save_after.json" -Force -EA SilentlyContinue
-Remove-Item "$P\_agents\laneHOTSHIP\player.lock" -Force -EA SilentlyContinue
+$null = Remove-PlayerLock
 Board "Frankendom unity-dev FOCUS RELEASED ($Purpose; own pid ended and read back; frames + logs in _agents\laneHOTSHIP\$Tag\run)"
 Done 'done'
 

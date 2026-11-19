@@ -64,6 +64,16 @@ public static class GameSettings
         Fire();
     }
 
+    // FK16GB_A v1: Graphics Low / Medium / High. Saves the preset, applies the mip limit now and the preset's effects row (or the data default for High) like the Effects row does.
+    static void SetMemPreset(string id)
+    {
+        if (string.IsNullOrEmpty(id) || !Get().enabled || RuntimeQuality.IsHarness()) return;
+        string q = PerfMem.SetMemTier(id); if (q == null) return;
+        QualityTiers.ClearUser();   // FK_PRESETS v1
+        if (Get().graphics.applyAtRuntime) QualityTiers.SetTier(string.IsNullOrEmpty(q) ? QualityTiers.DefaultTier : q, false);
+        Fire();
+    }
+
     // ---------------- camera ----------------
     // false (default) = today's behaviour (controls.json camera.combatCamera auto lock). true = no auto lock, the player steers; Tab still toggles the lock by hand.
     public static bool FreeCameraInCombat
@@ -98,6 +108,13 @@ public static class GameSettings
                 var t = GraphicsTiers(); var ids = new List<string>(); var labs = new List<string>();
                 foreach (var ti in t) if (ti != null && !string.IsNullOrEmpty(ti.name)) { ids.Add(ti.name.ToLowerInvariant()); labs.Add(string.IsNullOrEmpty(ti.label) ? ti.name : ti.label); }
                 r.Choices = ids.ToArray(); r.ChoiceLabels = labs.ToArray(); r.Get = () => GraphicsTier; r.Set = v => SetGraphicsTier(v);
+            }
+            else if (e.id == "graphics.preset")   // FK16GB_A v1: the one simple Graphics Low / Medium / High row (memory_tiers.json); hidden when that file is missing
+            {
+                var rows16 = PerfMem.MemTierRows(); if (rows16.Length == 0) continue;
+                var ids = new List<string>(); var labs = new List<string>();
+                foreach (var pr in rows16) if (pr != null && !string.IsNullOrEmpty(pr.name)) { ids.Add(pr.name.ToLowerInvariant()); labs.Add(string.IsNullOrEmpty(pr.label) ? pr.name : pr.label); }
+                r.Choices = ids.ToArray(); r.ChoiceLabels = labs.ToArray(); r.Get = () => PerfMem.MemTierName; r.Set = v => SetMemPreset(v);
             }
             else if (e.id == "graphics.renderScale" || e.id == "graphics.upscaler")   // FPSX_C v1: hidden while quality_tiers.json userScale.enabled=false
             {

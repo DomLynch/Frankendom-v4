@@ -91,10 +91,11 @@ public static class NpcBowAnim
             }
             catch (Exception e) { Debug.LogWarning("[NpcBow] start failed: " + e.Message); Stop(); return false; }
         }
-        void Swap(AnimationClip c, string ph, bool loop)
+        void Swap(AnimationClip c, string ph, bool loop, float startS = 0f)
         {
-            var next = AnimationClipPlayable.Create(graph, c); next.SetDuration(loop ? double.MaxValue : c.length);
-            outp.SetSourcePlayable(next); if (cur.IsValid()) cur.Destroy(); cur = next; phase = ph; untilT = Time.time + c.length;
+            startS = loop ? 0f : Mathf.Clamp(startS, 0f, Mathf.Max(0f, c.length - 0.05f));   // RELEASEHOLD v1 (W5): visual.npc.looseStartS, loose clip only
+            var next = AnimationClipPlayable.Create(graph, c); next.SetDuration(loop ? double.MaxValue : c.length); if (startS > 0f) next.SetTime(startS);
+            outp.SetSourcePlayable(next); if (cur.IsValid()) cur.Destroy(); cur = next; phase = ph; untilT = Time.time + c.length - startS;
         }
         /// <summary>Per frame: draw -> hold (loops) while aiming; loose = switch to the release clip; the graph ends when the loose clip is over.</summary>
         public void Tick(Set s, bool aiming, bool loosed)
@@ -102,7 +103,7 @@ public static class NpcBowAnim
             if (!alive) return;
             try
             {
-                if (loosed && phase != "loose") { Swap(s.loose, "loose", false); return; }
+                if (loosed && phase != "loose") { Swap(s.loose, "loose", false, BowCfg.Get().visual.npc != null ? BowCfg.Get().visual.npc.looseStartS : 0f); if (BowCfg.Log) Debug.Log("[bow] npc release t=" + Time.time.ToString("F3") + " loose clip from " + (BowCfg.Get().visual.npc != null ? BowCfg.Get().visual.npc.looseStartS : 0f).ToString("F2") + " s"); return; }
                 if (phase == "draw" && Time.time >= untilT && aiming) { Swap(s.hold, "hold", true); return; }
                 if (phase == "hold" && Time.time >= untilT && aiming) { Swap(s.hold, "hold", true); return; }
                 if (phase == "loose" && Time.time >= untilT) Stop();

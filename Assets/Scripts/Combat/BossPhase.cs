@@ -12,7 +12,7 @@ using UnityEngine;
 [Serializable] public class BpStagger { public int ticks = 0; public string clip = "hit_heavy"; public bool bossTakesDamage = true; }   // BOSSPHASES C1: ticks 0 = no roar recoil
 [Serializable] public class BpFlash { public float[] color = null; public float seconds = 0f, strength = 0f, emissiveNits = 0f, riseSeconds = 0.05f; }   // BOSSPHASES C1: strength or seconds 0 = no flash
 [Serializable] public class BpTelegraph { public float radiusM = 0f, seconds = 0f; }
-[Serializable] public class BpRing { public bool enabled = false, albedoOnly = false; public float dropM = 0f, depthM = 6f, maxOpacity = 0.9f, ringWidthFrac = 0.1f, innerFill = 0.35f; }   // RINGDROP v1: optional GroundRing look; enabled false = the built-in Style (today)   // BOSSPHASES C2: radiusM or seconds 0 = no ground ring
+[Serializable] public class BpRing { public bool enabled = false, albedoOnly = false; public float dropM = 0f, depthM = 6f, maxOpacity = 0.9f, ringWidthFrac = 0.1f, innerFill = 0.35f; public float[] fallbackColor = { 1f, 0.55f, 0.25f }; /* DATALAYER 18 Nov: telegraph ring colour when a row has no flash.color (was a literal in Roar) */ }   // RINGDROP v1: optional GroundRing look; enabled false = the built-in Style (today)   // BOSSPHASES C2: radiusM or seconds 0 = no ground ring
 [Serializable]
 public class BpRow
 {
@@ -133,12 +133,13 @@ public class BossPhase : MonoBehaviour
             HitFlash.Flash(df, new HitFlashTable.Row { color = fl.color, seconds = fl.seconds, riseSeconds = fl.riseSeconds, strength = fl.strength, emissiveNits = fl.emissiveNits, onlyDeathblow = false, skipOnKill = false });
         var tg = row.telegraph;
         if (tg != null && tg.radiusM > 0f && tg.seconds > 0f)
-            GroundRing.Show(df.transform.position, tg.radiusM, tg.seconds, hasCol ? new Color(fl.color[0], fl.color[1], fl.color[2], 1f) : new Color(1f, 0.55f, 0.25f, 1f), RingStyle());
+            GroundRing.Show(df.transform.position, tg.radiusM, tg.seconds, hasCol ? new Color(fl.color[0], fl.color[1], fl.color[2], 1f) : FallbackRing(), RingStyle());
         if (!string.IsNullOrEmpty(row.slowMo) && !busy) CombatSlowMo.Request(row.slowMo);
     }
 
     // RINGDROP v1: the GroundRing Style from boss_phase.json ring{} (enabled false / absent = GroundRing.Default, today). Built once.
     static GroundRing.Style ringStyle;
+    static Color FallbackRing() { var c = Cfg(); var a = c != null && c.ring != null ? c.ring.fallbackColor : null; return a != null && a.Length >= 3 ? new Color(a[0], a[1], a[2], 1f) : Color.white; }   // DATALAYER 18 Nov: bossphase ring.fallbackColor (default 1, 0.55, 0.25); a malformed row falls to white
     static GroundRing.Style RingStyle()
     {
         if (ringStyle != null) return ringStyle; var c = Cfg(); var r = c != null ? c.ring : null;

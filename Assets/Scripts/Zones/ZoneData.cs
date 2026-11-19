@@ -8,11 +8,11 @@ using UnityEngine;
 [Serializable] public class ZPick { public string creature = ""; public int weight = 1; }
 [Serializable] public class ZSpawn
 {
-    public string id = "", spot = "", ladderRow = "", needs = "";
+    public string id = "", spot = "", ladderRow = "", needs = "", spawnAfterDead = "", spawnAtSpot = "";   // GATEGROUP v1: spawnAfterDead = spawn id of a boss row in the same zone: this row is not spawned until that row is dead (empty = today); spawnAtSpot = optional spot id the body appears at (its home stays `spot`)
     public bool enabled = true;
     public ZPick[] picks = new ZPick[0];
     public int respawnMinS = 300, respawnMaxS = 600, difficulty = 0;
-    public float aggro = 7f, leash = 24f, hpMul = 1f, damageMul = 1f;
+    public float aggro = 7f, leash = 24f, hpMul = 1f, damageMul = 1f, spawnDelayS = 0f;   // GATEGROUP v1: seconds after the boss is seen dead (not on arrival)
 }
 [Serializable] public class ZGate
 {
@@ -36,7 +36,7 @@ using UnityEngine;
 [Serializable] public class ZCreature { public string id = "", source = "scene", path = "", scene = "";   /* ZONES-ATTACH v1: enemy scene the prefab is saved from (empty = the zone scene) */ }
 [Serializable] public class ZStart { public string zone = "", spot = ""; }
 [Serializable] public class ZClock { public int guardSeconds = 120; }
-[Serializable] public class ZPersist { public string file = "zones_save.json"; public int version = 1; public float saveEverySeconds = 30f; public bool resetOnNewGame = false, skipSaveWhileDown = false, spanWarmFinally = false; public float minLoadHpFrac = 0f;   /* HPLOAD v1 */ /* SAVEFIX v2: all three default to today's behaviour, zones.json persistence turns them on */ }
+[Serializable] public class ZPersist { public string file = "zones_save.json"; public int version = 1; public float saveEverySeconds = 30f, saveFloorS = 5f /* DATALAYER 18 Nov: the autosave interval never goes below this (was Mathf.Max(5f, saveEverySeconds) in ZoneRuntime.Update); row absent = 5 */; public bool resetOnNewGame = false, skipSaveWhileDown = false, spanWarmFinally = false; public float minLoadHpFrac = 0f;   /* HPLOAD v1 */ /* SAVEFIX v2: all three default to today's behaviour, zones.json persistence turns them on */ }
 // REVIVE v1 (laneSEAMLESS): zones.json hp.respawn = Joan's in-world respawn. enabled false = the old death (black, GameLoop.Retry reload). rule: arrive = the zone's arrive spot from `arrive` rows, hearth = the zone's hearth service spot (arrive if none).
 [Serializable] public class ZArrive { public string zone = "", spot = ""; }
 [Serializable] public class ZRespawn
@@ -47,20 +47,22 @@ using UnityEngine;
 [Serializable] public class ZHp
 {
     public string onCross = "carry", onDeath = "hearth_full";
-    public float crossFloorFrac = 0.35f, regenDelaySeconds = 6f, regenPerSecondFrac = 0.01f, regenCeilDangerFrac = 0.6f, regenCeilSafeFrac = 1f, hearthRadius = 2.5f, hearthRegenPerSecondFrac = 0.08f, deathHoldSeconds = 3f;
+    public float crossFloorFrac = 0.35f, regenDelaySeconds = 6f, regenPerSecondFrac = 0.01f, regenCeilDangerFrac = 0.6f, regenCeilSafeFrac = 1f, hearthRadius = 2.5f, hearthRegenPerSecondFrac = 0.08f, deathHoldSeconds = 3f, deathCoverStartFrac = 0.4f, deathCoverSpanFrac = 0.6f, downMinHpFrac = 0.1f; /* DATALAYER 18 Nov (datamove_03): the legacy (non-hearth_full) respawn never restores below this share of max hp (was Mathf.Max(0.1f, hp share) in ZoneRuntime.DownStep); row absent = 0.1 */ /* DATALAYER 18 Nov: the death fade-to-black starts at this share of deathHoldSeconds and takes this share to cover (were 0.4 / 0.6 literals in ZoneRuntime.DownStep) */
     public ZRespawn respawn = new ZRespawn();   // REVIVE v1
 }
-[Serializable] public class ZEngage { public int maxEngaged = 1; public float retargetMarginM = 1.5f; public bool finisherWithOthers = false;   /* MULTI v1 */ public float graceAfterArriveSeconds = 3f, graceAfterRespawnSeconds = 3f, corpseSeconds = 25f, spawnMinDistance = 30f; public float spanGraceSeconds = 0f; public string[] spanGraceZones = new string[0]; /* ARRIVALGRACE v1: a seamless-span zone entry (SpanEnter) gets this many seconds of no-engage; 0 = old behaviour (no grace); spanGraceZones = zone ids it applies to, empty = all */ }
+[Serializable] public class ZEngage { public int maxEngaged = 1; public float retargetMarginM = 1.5f, leashFloorM = 45f; /* DATALAYER 18 Nov: was Mathf.Max(row.leash, 45f) in ZoneRuntime.Poll; row absent = 45 */ public bool finisherWithOthers = false;   /* MULTI v1 */ public float graceAfterArriveSeconds = 3f, graceAfterRespawnSeconds = 3f, corpseSeconds = 25f, spawnMinDistance = 30f; public float spanGraceSeconds = 0f; public string[] spanGraceZones = new string[0]; /* ARRIVALGRACE v1: a seamless-span zone entry (SpanEnter) gets this many seconds of no-engage; 0 = old behaviour (no grace); spanGraceZones = zone ids it applies to, empty = all */ }
 [Serializable] public class ZCover { public float[] color = new float[] { 1f, 0.84f, 0.58f }; public float inSeconds = 0.3f, holdMinSeconds = 0.1f, outSeconds = 0.55f, holdMaxSeconds = 8f; }
 [Serializable] public class ZCrossing { public ZCover cover = new ZCover(); public bool allowWhileEngaged = false; public float preloadDistance = 14f; public bool freePassage = false; /* ALPHAFLOW v1 */ public bool endRequiresBossKill = false; /* ENDKILL v1: an end-screen gate opens only after its unlockKilledSpawn (z6_erlking) was killed; false = old behaviour (always open) */ }
 
 // TWOFIGHT v1 (laneTWOFIGHT): zones.json "twoFight" = the switches of the two-enemy rules (all rows in data; defaults here = the shipped rows)
 [Serializable] public class ZTwoFight { public bool skipGivingUp = true, healTarget = true, noEngageInFinisher = true, killerExempt = true, safeZoneGiveUp = true, resetBarOnSwitch = true, clearStaleOpponent = false, givenUpNoSlot = false, vanishGaveUpOffZone = false; public float staleMaxM = 0f; }   /* CODE4 v1 */   /* OPPSTALE v1 */
+// DATALAYER 18 Nov (datamove_03): zones.json "spotProbe" = the ground raycasts that put a spawn / arrive spot on the floor (were 3 / 12 / 1.5 / 8 literals in ZoneRuntime.SpotPosGround / SpotPos). defaults = today.
+[Serializable] public class ZProbe { public float groundUpM = 3f, groundDownM = 12f, spotUpM = 1.5f, spotDownM = 8f; }
 [Serializable] public class ZoneTable
 {
     public bool enabled = false; public int version = 1; public float pollSeconds = 0.5f;
     public ZStart start = new ZStart(); public ZClock clock = new ZClock(); public ZPersist persistence = new ZPersist(); public ZHp hp = new ZHp();
-    public ZEngage engage = new ZEngage(); public ZCrossing crossing = new ZCrossing(); public ZTwoFight twoFight = new ZTwoFight();   /* TWOFIGHT v1 */
+    public ZEngage engage = new ZEngage(); public ZCrossing crossing = new ZCrossing(); public ZTwoFight twoFight = new ZTwoFight(); public ZProbe spotProbe = new ZProbe();   /* TWOFIGHT v1 */
     public ZCreature[] creatures = new ZCreature[0]; public ZZone[] zones = new ZZone[0];
     public EndScreenRow[] endScreens = new EndScreenRow[0];   // ENDALPHA v1
 }
@@ -146,4 +148,17 @@ public static class ZoneData
         }
         return e;
     }
+}
+
+// DATALAYER 18 Nov (datamove_03): one log line per tag the first time a moved literal is read, so a run proves the row reached the code ("applied N").
+public static class DM03
+{
+    static readonly System.Collections.Generic.HashSet<string> seen = new System.Collections.Generic.HashSet<string>();
+    public static bool Seen(string tag) { return !seen.Add(tag); }
+    public static void Log(string tag, int n, float a, float b = 0f, float c = 0f, float d = 0f)
+    {
+        if (Seen(tag)) return;
+        UnityEngine.Debug.Log("[DataMove03] " + tag + " applied " + n + ": " + a.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture) + (n > 1 ? " " + b.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture) : "") + (n > 2 ? " " + c.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture) : "") + (n > 3 ? " " + d.ToString("0.####", System.Globalization.CultureInfo.InvariantCulture) : ""));
+    }
+    public static void LogS(string tag, int n, string s) { if (Seen(tag)) return; UnityEngine.Debug.Log("[DataMove03] " + tag + " applied " + n + ": " + s); }
 }

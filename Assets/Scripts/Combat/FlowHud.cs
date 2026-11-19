@@ -31,14 +31,14 @@ public class FlowHud : MonoBehaviour
     void OnGUI()
     {
         if (Event.current.type != EventType.Repaint) return;
-        var d = FlowTable.Get(); if (!d.enabled) return;
+        var d = FlowTable.Get(); if (!d.enabled || ZoneEndScreen.Active) return; /* ENDHUD v1 */
         if (Time.unscaledTime >= nextFind || pb == null) Find();
         if (pb == null || df == null || df.Dead || (!pb.enabled && !FlowTable.ForceHud)) return;
         var h = d.lockOn.hud; Color col = C(h.color);
         if (small == null) { small = Style(h.fontSize, TextAnchor.UpperCenter, true); toast = Style(h.toastFontSize, TextAnchor.MiddleCenter, true); hint = Style(d.riposte.fontSize, TextAnchor.MiddleCenter, true); }
 
         // lock marker: a small dot on the target's chest while the lock is on and the target is in range
-        if (d.lockOn.enabled && h.enabled && rig != null && rig.lockEnabled && df.opponent != null && !df.opponent.Dead && cam != null)
+        if (d.lockOn.enabled && h.enabled && rig != null && rig.lockEnabled && df.opponent != null && !df.opponent.Dead && cam != null && !LoadCardHold.HoldEngage() /* LOADCARD v3: no LOCK marker before the first engage */)
         {
             Vector3 dv = df.opponent.transform.position - df.transform.position; dv.y = 0f;
             if (dv.magnitude <= d.lockOn.range)

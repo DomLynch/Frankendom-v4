@@ -43,7 +43,7 @@
     "fogDepthRatio":  -1,
     "fogUniformity":  -1,
     "fogCutoff":  -1,
-    "fogAniso":  -2,
+    "fogAniso":  0.3,
     "ssgiRadius":  -1,
     "ssgiThickness":  -1
 }

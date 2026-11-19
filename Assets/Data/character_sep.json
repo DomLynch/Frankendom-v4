@@ -14,29 +14,29 @@
   {
    "id": "pit_yard",
    "rimColor": [
-    0.38,
-    0.742,
-    1.0
+    0.8,
+    0.86,
+    0.94
    ],
-   "playerRimMul": 1.5,
+   "playerRimMul": 0.85,
    "enemyRimColor": [
-    0.38,
-    0.742,
-    1.0
+    0.85,
+    0.828,
+    0.807
    ],
-   "enemyRimMul": 2.2,
+   "enemyRimMul": 0.85,
    "fillColor": [
-    1.0,
-    0.7,
-    0.55
+    1,
+    0.95,
+    0.9
    ],
    "fillMul": 1.0,
    "heroRimColor": [
-    0.38,
-    0.742,
-    1.0
+    0.8,
+    0.86,
+    0.94
    ],
-   "heroRimMul": 1.4,
+   "heroRimMul": 0.85,
    "shadow": {
     "colorFromRim": true,
     "lux": 900.0,
@@ -51,29 +51,29 @@
   {
    "id": "sobek_reach",
    "rimColor": [
-    1.0,
-    0.566,
-    0.38
+    0.8,
+    0.86,
+    0.94
    ],
-   "playerRimMul": 1.5,
+   "playerRimMul": 0.85,
    "enemyRimColor": [
-    1.0,
-    0.5,
-    0.36
+    0.85,
+    0.846,
+    0.832
    ],
-   "enemyRimMul": 3.46,
+   "enemyRimMul": 0.85,
    "fillColor": [
-    0.675,
-    0.81,
-    0.76
+    1,
+    0.99,
+    0.959
    ],
-   "fillMul": 1.0,
+   "fillMul": 0.5,
    "heroRimColor": [
-    1.0,
-    0.566,
-    0.38
+    0.8,
+    0.86,
+    0.94
    ],
-   "heroRimMul": 1.5,
+   "heroRimMul": 0.85,
    "shadow": {
     "colorFromRim": true,
     "lux": 900.0,
@@ -88,29 +88,29 @@
   {
    "id": "hub_camp",
    "rimColor": [
-    0.38,
-    0.674,
-    1.0
+    0.8,
+    0.86,
+    0.94
    ],
-   "playerRimMul": 1.3,
+   "playerRimMul": 0.85,
    "enemyRimColor": [
-    0.38,
-    0.674,
-    1.0
+    0.85,
+    0.833,
+    0.807
    ],
-   "enemyRimMul": 1.8,
+   "enemyRimMul": 0.85,
    "fillColor": [
-    1.0,
-    0.82,
-    0.65
+    1,
+    0.96,
+    0.9
    ],
-   "fillMul": 1.0,
+   "fillMul": 0.5,
    "heroRimColor": [
-    0.38,
-    0.674,
-    1.0
+    0.8,
+    0.86,
+    0.94
    ],
-   "heroRimMul": 1.2,
+   "heroRimMul": 0.85,
    "shadow": {
     "colorFromRim": true,
     "lux": 900.0,
@@ -125,29 +125,29 @@
   {
    "id": "grendel",
    "rimColor": [
-    0.38,
-    0.693,
-    1.0
+    0.8,
+    0.86,
+    0.94
    ],
-   "playerRimMul": 1.5,
+   "playerRimMul": 0.85,
    "enemyRimColor": [
-    0.4,
-    0.62,
-    1.0
+    0.85,
+    0.841,
+    0.828
    ],
-   "enemyRimMul": 2.83,
+   "enemyRimMul": 0.85,
    "fillColor": [
-    0.95,
-    0.61,
-    0.58
+    1,
+    0.979,
+    0.948
    ],
-   "fillMul": 1.0,
+   "fillMul": 0.5,
    "heroRimColor": [
-    0.38,
-    0.693,
-    1.0
+    0.8,
+    0.86,
+    0.94
    ],
-   "heroRimMul": 1.5,
+   "heroRimMul": 0.85,
    "shadow": {
     "colorFromRim": true,
     "lux": 900.0,
@@ -162,29 +162,29 @@
   {
    "id": "z5_humbaba",
    "rimColor": [
-    1.0,
-    0.566,
-    0.38
-   ],
-   "playerRimMul": 1.5,
-   "enemyRimColor": [
-    1.0,
-    0.66,
-    0.3
-   ],
-   "enemyRimMul": 3.14,
-   "fillColor": [
-    0.7,
     0.8,
-    0.675
+    0.86,
+    0.94
    ],
-   "fillMul": 1.0,
+   "playerRimMul": 0.85,
+   "enemyRimColor": [
+    0.85,
+    0.845,
+    0.815
+   ],
+   "enemyRimMul": 0.85,
+   "fillColor": [
+    1,
+    0.988,
+    0.918
+   ],
+   "fillMul": 0.5,
    "heroRimColor": [
-    1.0,
-    0.566,
-    0.38
+    0.8,
+    0.86,
+    0.94
    ],
-   "heroRimMul": 1.5,
+   "heroRimMul": 0.85,
    "shadow": {
     "colorFromRim": true,
     "lux": 900.0,
@@ -199,29 +199,29 @@
   {
    "id": "z6_erlking",
    "rimColor": [
-    0.42,
-    0.78,
-    1.0
-   ],
-   "playerRimMul": 1.6,
-   "enemyRimColor": [
-    0.36,
     0.8,
-    1.0
+    0.86,
+    0.94
    ],
-   "enemyRimMul": 4.09,
+   "playerRimMul": 0.85,
+   "enemyRimColor": [
+    0.85,
+    0.832,
+    0.819
+   ],
+   "enemyRimMul": 0.85,
    "fillColor": [
-    0.95,
-    0.61,
-    0.58
+    1,
+    0.959,
+    0.929
    ],
-   "fillMul": 1.0,
+   "fillMul": 0.5,
    "heroRimColor": [
-    0.42,
-    0.78,
-    1.0
+    0.8,
+    0.86,
+    0.94
    ],
-   "heroRimMul": 1.7,
+   "heroRimMul": 0.85,
    "shadow": {
     "colorFromRim": true,
     "lux": 900.0,
@@ -236,29 +236,29 @@
   {
    "id": "z7_market2",
    "rimColor": [
-    0.38,
-    0.674,
-    1.0
+    0.8,
+    0.86,
+    0.94
    ],
-   "playerRimMul": 1.3,
+   "playerRimMul": 0.85,
    "enemyRimColor": [
-    0.38,
-    0.674,
-    1.0
+    0.85,
+    0.833,
+    0.807
    ],
-   "enemyRimMul": 1.8,
+   "enemyRimMul": 0.85,
    "fillColor": [
-    1.0,
-    0.82,
-    0.65
+    1,
+    0.96,
+    0.9
    ],
-   "fillMul": 1.0,
+   "fillMul": 0.5,
    "heroRimColor": [
-    0.38,
-    0.674,
-    1.0
+    0.8,
+    0.86,
+    0.94
    ],
-   "heroRimMul": 1.3,
+   "heroRimMul": 0.85,
    "shadow": {
     "colorFromRim": true,
     "lux": 900.0,

@@ -1,0 +1,91 @@
+{
+  "_about": "FK_PRESETS v1 (stacked on FK16GB_A v3). ONE presets file for the player-facing Graphics setting: Low / Medium / High. Read by Scripts/PerfMem.cs from StreamingAssets (player) or Assets/Data (editor); twin copy in the other folder, byte identical. Per preset: mipLimit / glbMipDrop / maskMipDrop (textures), quality = the quality_tiers.json row the preset starts from (ultra2k = today's shipped High row, so the flags overlay below is the only difference), level = the QualitySettings level whose HDRP asset is used (Ultra = HDRP_Max today; High = HDRP_High: sun/punctual atlas 2048, decal draw distance 300; Medium = HDRP_Medium: atlas 2048, 1024 sun map, 16 bit depth, SSS off, contact shadows off, decal atlas 2048, DRS floor 50), qs = QualitySettings overrides applied after the level switch, flags = an overlay of RuntimeQuality.Flags keys (same schema as quality_tiers.json flags, keys not listed keep the ultra2k value). High lists nothing: quality empty, level empty, qs -1, no flags = today's behaviour bit for bit. The overlay and the level apply only while the active effects row equals the preset's quality row (a player who picks another Effects row gets that row as it is). Missing file or enabled=false = nothing happens (High behaviour). Do not put curly braces inside any string of this file: PerfMem cuts the flags object out by brace matching.",
+  "enabled": true,
+  "defaultPreset": "high",
+  "prefsKey": "gfx.preset",
+  "autoPick": {
+    "enabled": false,
+    "_about": "Used when no -qa_tier flag and no saved player choice. SystemInfo.systemMemorySize (MB) and graphicsMemorySize (MB, the dedicated card; a unified-memory machine reports its shared pool, the 64 GB laptop reports 49144) each give a preset, the lower one wins. -qa_ram:N (GB) replaces the real RAM for the pick (QA on a big machine). A 16 GB machine reports about 15.5-16.3 GB, so ramMbLow 18000 catches it; 32 GB reports about 31-32 GB and stays High.",
+    "ramMbLow": 18000,
+    "ramMbMedium": 26000,
+    "vramMbLow": 4500,
+    "vramMbMedium": 7000
+  },
+  "glb": {
+    "minSize": 2048,
+    "maxPerTick": 2,
+    "tickS": 1.0,
+    "settleS": 8.0,
+    "retireS": 8.0,
+    "normalsToo": true,
+    "log": true,
+    "diag": false,
+    "maskSuffix": "_mask",
+    "maskMinSize": 1024,
+    "_about": "glTFast runtime textures (gear, NPC, mounts, boss weapons) are created with ONE mip, so globalTextureMipmapLimit cannot reduce them (TexTop: 4096x4096 ARGB32 64.0 MB mips=1, RGB24 48.0 MB mips=1). A preset glbMipDrop N blits every uncompressed 1-mip texture >= minSize to (w>>N, h>>N) on the GPU, swaps it on every material and frees the original retireS seconds later (a preload may still hold it)."
+  },
+  "presets": [
+    {
+      "name": "low",
+      "label": "Low",
+      "mipLimit": 2,
+      "glbMipDrop": 2,
+      "maskMipDrop": 0,
+      "quality": "ultra2k",
+      "level": "Medium",
+      "qs": {
+        "skinWeights": 255,
+        "aniso": -1
+      },
+      "flags": {
+        "renderScale": 59,
+        "shadowDistance": 26,
+        "cascades": 2,
+        "contactShadows": false,
+        "ssrQuality": 0,
+        "ssaoQuality": 0,
+        "fogQuality": 0,
+        "bloomQuality": 0,
+        "particleScale": 0.7,
+        "motionBlur": 0
+      },
+      "note": "For 16 GB machines and weak GPUs. Textures: limit 2, glb and mask downsize. Starts from the ultra2k row (no SSGI, same as High) and draws with the HDRP_Medium asset (atlas 2048, 1024 sun map, 16 bit shadow depth, no SSS, no contact shadows, decal atlas 2048), STP at 59 percent per axis, sun shadows to 26 m (2 cascades kept so fighters stay crisp), fog quality 0, SSAO and SSR and bloom at the lowest level, particles 70 percent. LOD: the HDRP_Medium asset's own LOD bias 0.8 is what cameras cull with (QualitySettings.lodBias is overwritten per camera by HDRP, so a lodBiasMul flag is inert and is not used). maskMipDrop is 0 because the mip limit already reaches the generated masks (a mask copy under a limit wrote garbage). skinWeights is forced back to 255 because the Medium level would drop it to 4 (hair weights unverified)."
+    },
+    {
+      "name": "medium",
+      "label": "Medium",
+      "mipLimit": 1,
+      "glbMipDrop": 1,
+      "maskMipDrop": 0,
+      "quality": "ultra2k",
+      "level": "High",
+      "qs": {
+        "skinWeights": -1,
+        "aniso": -1
+      },
+      "flags": {
+        "renderScale": 67,
+        "shadowDistance": 34,
+        "cascades": 2,
+        "ssrQuality": 0,
+        "particleScale": 0.85,
+        "motionBlur": 0
+      },
+      "note": "For 24 GB class machines or 6 GB cards. Textures: limit 1, glb and mask downsize 1. ultra2k row with the HDRP_High asset (punctual atlas 2048, decal draw distance 300, everything else as High), STP at 67 percent per axis (the 1286 px wide internal frame of the approved v69 look at 1080p), sun shadows to 34 m, SSR quality 0, particles 85 percent, motion blur off. maskMipDrop 0: the mip limit already reaches the masks."
+    },
+    {
+      "name": "high",
+      "label": "High",
+      "mipLimit": 0,
+      "glbMipDrop": 0,
+      "maskMipDrop": 0,
+      "quality": "",
+      "level": "",
+      "qs": {
+        "skinWeights": -1,
+        "aniso": -1
+      },
+      "note": "Best of best: today's behaviour bit for bit. No mip limit change, no effects row change, no asset level change, no QualitySettings override, no flags overlay. Whatever quality_tiers.json defaultTier (ultra2k) and the player's own Effects choice say. Default on capable machines."
+    }
+  ]
+}

@@ -36,7 +36,7 @@
     "toastHalfW": 160.0,
     "toastW": 320.0,
     "toastH": 30.0,
-    "toastYFrac": 0.7,
+    "toastYFrac": 0.9,
     "toastShadowAlpha": 0.7,
     "toastFadeMinS": 0.05,
     "toastFadeFrac": 0.5,

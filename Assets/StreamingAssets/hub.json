@@ -154,10 +154,10 @@
         "replaces": "Arissa (camp_arissa.glb)"
       },
       "runtime": {
-        "glb": "Npc/vendor_c1_weaponsmith.glb",
+        "glb": "Npc/vendor_c2_weaponsmith.glb",
         "sources": [],
         "hideNodes": [],
-        "scale": 1.015,
+        "scale": 1.027,
         "clipGlb": "Npc/npc_idle_rig.glb",
         "clipSources": [],
         "clipName": ""
@@ -189,7 +189,7 @@
         "heightM": 1.58,
         "nativeHeightM": 1.773,
         "scaleNote": "scale = design height / bound native height (1.580 / 1.773)",
-        "replaces": "Old Marl (vendor_c1_apothecary_reveal.glb, teal hooded elder) and before him Goblin D Shareyko (camp_goblin.glb)"
+        "replaces": "removed 19 Nov (vendor body purged)"
       },
       "runtime": {
         "glb": "Npc/npc_trader.glb",
@@ -294,20 +294,13 @@
         "radius": 2.2
       },
       "runtime": {
-        "glb": "Npc/camp_erika_olive.glb",
+        "glb": "Npc/vendor_c1_stablemaster.glb",
         "sources": [],
-        "hideNodes": [
-          "Layer_Tunic",
-          "Layer_Helmet",
-          "Layer_Bracers",
-          "Layer_Greaves",
-          "Layer_Sword",
-          "Layer_Scabbard"
-        ],
-        "scale": 1.0,
-        "clipGlb": "",
+        "hideNodes": [],
+        "scale": 1.038,
+        "clipGlb": "Npc/npc_idle_rig.glb",
         "clipSources": [],
-        "clipName": "Idle"
+        "clipName": ""
       },
       "_phase_pre_vischar": 2.1
     },
@@ -696,20 +689,13 @@
             "radius": 3.0
           },
           "runtime": {
-            "glb": "Npc/camp_arissa.glb",
+            "glb": "Npc/vendor_c2_stablemaster.glb",
             "sources": [],
-            "hideNodes": [
-              "Layer_Tunic",
-              "Layer_Helmet",
-              "Layer_Bracers",
-              "Layer_Greaves",
-              "Layer_Sword",
-              "Layer_Scabbard"
-            ],
-            "scale": 1.0,
-            "clipGlb": "",
+            "hideNodes": [],
+            "scale": 1.083,
+            "clipGlb": "Npc/npc_idle_rig.glb",
             "clipSources": [],
-            "clipName": "Idle"
+            "clipName": ""
           },
           "enabled": true,
           "_phase_pre_vischar": 1.9
@@ -748,7 +734,7 @@
             "heightM": 1.68,
             "nativeHeightM": 1.773,
             "scaleNote": "scale = design height / bound native height (1.680 / 1.773)",
-            "replaces": "Goblin (camp_goblin.glb, scale 0.74)"
+            "replaces": "removed 19 Nov (camp body purged)"
           },
           "_phase_pre_vischar": 0.7
         }

@@ -67,6 +67,7 @@ public sealed class HubNpcs : MonoBehaviour
         float now = Time.unscaledTime; if (now < nextPoll) return; nextPoll = now + K.spawner.pollSeconds;
         var p = GameLoop.Player; bool zones = ZoneRuntime.Owns && ZoneSpan.Live && p != null;
         PreloadStep(zones, now, p); ProbeTick(now);   // CAMPNPC v1
+        if (standing.Count > 0 && asleep && !loading && ZoneScope.CampDrop(K.zone, K.area.zMin, K.area.zMax, p != null ? p.transform.position.z : float.NaN)) { Clear(); preloaded = false; liveSince = -1f; ZoneScope.NoteCampDropped(K.zone); }   // ZONESCOPE v1: a sleeping camp out of scope for dropAfterS frees its bodies and imports
         bool want = res.Step(zones ? p.transform.position.z : 0f, K.area.zMin, K.area.zMax, zones && !ZoneGroundHold.Active);   // CAMPGROUND v1: no NPC while the player's own ground is still being found
         if (want) { if (asleep) Wake(); else if (!loading && !tried && standing.Count == 0 && !(K.spawner.holdWhileEngaged && p != null && p.opponent != null && !p.opponent.Dead)) { tried = true;  /* TRADEFIN v1: no 3 x 25 MB glb import in a fight */ StartCoroutine(SpawnAll(++gen)); } }
         else if ((standing.Count > 0 && !asleep) || (loading && !hiddenLoad)) Leave();   // CAMPNPC v1: a sleeping camp / a hidden load is the normal state while the player is away
@@ -92,6 +93,7 @@ public sealed class HubNpcs : MonoBehaviour
     void PreloadStep(bool zones, float now, DuelFighter p)
     {
         var Pl = K.spawner.preload; if (!zones) { liveSince = -1f; return; }
+        if (!ZoneScope.CampWanted(K.zone, K.area.zMin, K.area.zMax, p != null ? p.transform.position.z : float.NaN, Time.timeSinceLevelLoad)) return;   // ZONESCOPE v1: the hidden camp load only runs while the camp zone is in scope
         if (!Pl.enabled || preloaded || loading || tried || standing.Count > 0) return;
         if (liveSince < 0f) liveSince = now;
         if (now - liveSince < Pl.startDelaySeconds) return;
@@ -184,7 +186,8 @@ public sealed class HubNpcs : MonoBehaviour
         n.go = new GameObject("npc_" + row.id); n.go.transform.SetParent(parent, false); n.go.SetActive(false);   // off until placed: no frame shows it at the origin
         var body = new GameObject(S.bodyName); body.transform.SetParent(n.go.transform, false);
         var pre = GlbPreload.Take(bodyFile, !hiddenLoad); GLTFast.GltfImport got = null;   // CAMPNPC v1: parsed during the intro (perf_fixes.json C3.files); only the instantiate is left
-        if (pre == null && GlbPreload.Claim(bodyFile)) pre = GlbPreload.Take(bodyFile, !hiddenLoad);   // PRELOADHITCH v1 (C3.lateSmooth): the late tier has not reached this file yet: start the ONE parse now (smooth agent), the late tier skips it
+        if (pre == null && GlbPreload.Claim(bodyFile)) pre = GlbPreload.Take(bodyFile, !hiddenLoad);
+        if (pre == null && ZoneScope.StageForConsumer(bodyFile)) pre = GlbPreload.Take(bodyFile, !hiddenLoad);   // ZONESCOPE v1: one staged parse instead of "parsing now" (off = false)   // PRELOADHITCH v1 (C3.lateSmooth): the late tier has not reached this file yet: start the ONE parse now (smooth agent), the late tier skips it
         if (pre != null) { try { got = await pre; } catch (Exception) { got = null; } }
         if (S.logLoads) Debug.Log("[Hub] npc " + row.id + (got != null ? ": parsed import taken from GlbPreload" : ": no preloaded import, parsing now (a hitch)"));
         if (got != null) n.body = new GltfHold { imp = got };

@@ -251,11 +251,11 @@
         1.0,
         0.4,
         0.12,
-        0.8
+        0.55
       ],
-      "sizeMin": 0.05,
-      "sizeMax": 0.11,
-      "count": 40,
+      "sizeMin": 0.03,
+      "sizeMax": 0.06,
+      "count": 30,
       "lifeMin": 7,
       "lifeMax": 11,
       "box": [
@@ -268,7 +268,7 @@
         0.12,
         0.03
       ],
-      "forwardM": 14.0,
+      "forwardM": 17.0,
       "bottomM": -0.2,
       "noiseStrength": 0.25,
       "noiseFrequency": 0.2,

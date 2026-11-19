@@ -60,10 +60,10 @@
     "exhaustMin": 0.55,
     "exhaustAmp": 0.45,
     "postureShowMin": 0.01,
-    "flashPad": 2.0,
-    "flashGrow": 4.0,
-    "deathFlashAlpha": 0.9,
-    "parryFlashAlpha": 0.7
+    "flashPad": 1.0,
+    "flashGrow": 2.0,
+    "deathFlashAlpha": 0.40,
+    "parryFlashAlpha": 0.35
   },
   "flow": {
     "findEvery": 0.5,

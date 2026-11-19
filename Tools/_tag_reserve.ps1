@@ -29,3 +29,30 @@ function Reserve-Tag {
     return $mine
 }
 
+# QA tags (tooling 18 Nov): QA copies are 109k + 2 letters (676 slots), reserved ONLY via next_tag.ps1 -Kind qa. The owner must be unique per run (gateproof:<pid>) because Reserve-Tag lets the same owner reuse a tag.
+function Clear-StaleQaReservations {
+    param([string]$Root = 'C:\Users\dom12\Documents\unity_test_hdrp', [int]$MaxAgeHours = 6, [switch]$ListOnly)
+    $out = @()
+    foreach ($f in @(Get-ChildItem "$Root\Builds" -Filter 'HDRP_v109k*.reserved' -File -ErrorAction SilentlyContinue)) {
+        if ($f.Name -notmatch '^HDRP_v109k[a-z]{0,2}\.reserved$') { continue }
+        if (((Get-Date) - $f.LastWriteTime).TotalHours -le $MaxAgeHours) { continue }
+        $c = Get-Content $f.FullName -Raw -ErrorAction SilentlyContinue
+        $op = if ($c -match 'pid=(\d+)') { [int]$Matches[1] } else { 0 }
+        $pr = if ($op -gt 0) { Get-Process -Id $op -ErrorAction SilentlyContinue } else { $null }
+        if ($pr -and $pr.StartTime -le $f.LastWriteTime.AddMinutes(1)) { continue }   # owner pid alive AND started before the file (a pid reused later by another process does not count)
+        $out += $f.Name
+        if (-not $ListOnly) { Remove-Item $f.FullName -Force -ErrorAction SilentlyContinue }
+    }
+    return $out
+}
+function Get-FreeQaTag {
+    param([string]$Root = 'C:\Users\dom12\Documents\unity_test_hdrp')
+    $used = @{}
+    foreach ($f in @(Get-ChildItem "$Root\Builds" -Filter 'HDRP_v109k*' -ErrorAction SilentlyContinue)) { if ($f.Name -match '^HDRP_v109(k[a-z]{1,2})(\.reserved)?$') { $used[$Matches[1]] = $true } }
+    $b = "$Root\_agents\COORDINATION.md"
+    if (Test-Path $b) { foreach ($m in [regex]::Matches(((Get-Content $b -Tail 400) -join "`n"), 'HDRP_v109(k[a-z]{1,2})\b')) { $used[$m.Groups[1].Value] = $true } }
+    $cands = @(); foreach ($x in 97..122) { foreach ($y in 97..122) { $t = 'k' + [char]$x + [char]$y; if (-not $used[$t]) { $cands += $t } } }
+    if (-not $cands) { throw 'QA tag space k?? exhausted' }
+    $cands | Get-Random -Count ([math]::Min(8, $cands.Count))
+}
+

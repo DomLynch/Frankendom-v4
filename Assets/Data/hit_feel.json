@@ -25,16 +25,16 @@
     "_about": "HDR emissive streaks on Furnace/Particle (additive, display-referred): intensity 8 at 2200 K cooling to 1700 K at coolAt. Size x clamp(cameraDistance / refDistance, 1, maxGrow) so it reads at gameplay distance. countBase + countPerStrength * rows[].spark, x countScaleHeavy on a heavy blow, +-countRandom.",
     "enabled": 1,
     "suppressInFinisher": 1, "poolSize": 320, "glintPool": 24, "cooldown": 0.03,
-    "intensity": 4.0, "glintIntensity": 2.0, "kelvin": 1800, "coolKelvin": 1300, "coolAt": 0.35, "glintWhiteMix": 0.1, "opacity": 1.0,
-    "countBase": 10, "countPerStrength": 6, "countRandom": 0.25, "countScaleHeavy": 1.5,
+    "intensity": 2.5, "glintIntensity": 2.0, "kelvin": 1800, "coolKelvin": 1000, "coolAt": 0.2, "glintWhiteMix": 0.1, "opacity": 1.0,
+    "countBase": 4, "countPerStrength": 2, "countRandom": 0.25, "countScaleHeavy": 1.5,
     "anchorHeight": 1.1, "anchorBack": 0.4, "anchorJitter": 0.1,
-    "alongBias": 0.3, "alongScale": 1.1, "sideSpread": 0.9, "upMin": 0.1, "upRange": 0.8, "towardCamera": 0.7,
-    "speedMin": 2.5, "speedRange": 5.0, "speedPerStrength": 0.35,
+    "alongBias": 0.3, "alongScale": 1.1, "sideSpread": 0.6, "upMin": 0.1, "upRange": 0.4, "towardCamera": 0.7,
+    "speedMin": 1.5, "speedRange": 2.5, "speedPerStrength": 0.35,
     "lifeMin": 0.09, "lifeRange": 0.11, "gravity": 1.2,
-    "sizeMin": 0.012, "sizeRange": 0.010, "lengthScale": 1.0, "velocityScale": 0.035, "maxParticleSize": 0.5,
+    "sizeMin": 0.012, "sizeRange": 0.010, "lengthScale": 1.0, "velocityScale": 0.012, "maxParticleSize": 0.5,
     "glintLife": 0.04, "glintSize": 0.10, "glintSizePerStrength": 0.08,
     "glintTowardCamM": 0.1, "colorAlphaMid": 0.85, "colorAlphaMidAt": 0.5,
-    "refDistance": 4.0, "maxGrow": 2.2
+    "refDistance": 4.0, "maxGrow": 1.0
   },
   "flash": {
     "_about": "Warm point light (HDRP lumens, no shadows) for `seconds` of unscaled time, intensity falls as (1 - age/seconds)^falloffPower, peak = lumen * rows[].flash, placed towardCamera metres in front of the contact. Same lumen order as MoveSheet's lights (12000 lm / 4 m) under the fixed EV 9.4.",
@@ -63,7 +63,7 @@
     "dropColor":  { "r": 0.22, "g": 0.012, "b": 0.012, "a": 1.0 },
     "mistColor":  { "r": 0.30, "g": 0.02, "b": 0.02, "a": 0.9 },
     "_aboutSpray": "HCAUDIT1 v104: the FINISHER blood spray (GoreFx.Spray) - separate from startColor/endColor above (those feed the hit burst). Values = the v69 literals GoreFx.cs had.",
-    "sprayStartColor": { "r": 0.412, "g": 0.059, "b": 0.051, "a": 1.0 },
+    "sprayStartColor": { "r": 0.300, "g": 0.020, "b": 0.020, "a": 1.0 },
     "sprayEndColor":   { "r": 0.125, "g": 0.02, "b": 0.016, "a": 1.0 },
     "sprayAlphaMid": 0.9, "sprayAlphaMidAt": 0.7, "sprayTaper": 0.05, "sprayLengthScale": 3.2, "sprayMaxParticleSize": 0.5,
     "sprayConeRadius": 0.01, "sprayCleanupPadS": 2.0, "sprayMaxParticles": 600

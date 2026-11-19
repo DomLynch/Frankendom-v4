@@ -228,8 +228,8 @@ public class DirectionalInput : MonoBehaviour
         if (d <= K.stickyRange) farT = 0f;
         else if (d > K.exitRange) { farT += Time.unscaledDeltaTime; if (farT >= K.exitSeconds) ExitCombat(); }
     }
-    void EnterCombat() { inCombat = true; farT = 0f; if (!rig.lockEnabled) FlowTable.ToggleLock(rig, df); if (ControlsTable.Get().debugLog) Debug.Log("[DirInput] combat ON (auto lock)"); }
-    void ExitCombat() { inCombat = false; farT = 0f; if (rig.lockEnabled) FlowTable.ToggleLock(rig, df); if (ControlsTable.Get().debugLog) Debug.Log("[DirInput] combat OFF (free camera)"); }
+    void EnterCombat() { inCombat = true; farT = 0f; if (!rig.lockEnabled) { FlowTable.ToggleLock(rig, df); FlowTable.lastToggleTime = float.NegativeInfinity; /* LOCKTOAST v1: automatic toggle, no LOCK ON toast */ } if (ControlsTable.Get().debugLog) Debug.Log("[DirInput] combat ON (auto lock)"); }
+    void ExitCombat() { inCombat = false; farT = 0f; if (rig.lockEnabled) { FlowTable.ToggleLock(rig, df); FlowTable.lastToggleTime = float.NegativeInfinity; /* LOCKTOAST v1: automatic toggle, no LOCK OFF toast outside combat */ } if (ControlsTable.Get().debugLog) Debug.Log("[DirInput] combat OFF (free camera)"); }
 
     // ---------------- marker ----------------
     void OnGUI()

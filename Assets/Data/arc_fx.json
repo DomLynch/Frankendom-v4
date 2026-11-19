@@ -2,9 +2,9 @@
   "_about": "ARCS v105 (laneARCS), read by Scripts/ArcFx.cs (StreamingAssets first, then Assets/Data). Three look changes Goose scored 6/10 on v103 (fight_15, fight_19; v102 fight_9), each ONE switch (false = today's look). HCFIX 2026-11-06: guard.on is TRUE (Dom wants the soft guard arc on; colour and alpha stay here, he may darken them); weapon and sparks stay false until Dom's LOOK OK. ArcFx.cs class defaults equal this file. guard = the pale blue-white crescent arcs round Joan are the GUARD-DIRECTION HUD (hud.json guardDir), not a weapon trail: on = soft-edged tapered arc texture (edgeSoft 0 hard .. 1 all gradient, endFade = fraction of the arc length that fades to the tips), tint / parryTint = [r,g,b,a], alphas replace hud.json guardDir.idleAlpha and the lit alpha 1. weapon = the soft curved weapon arc (AGENTS.md direction): WeaponTrail renders without -trails; timeS = trail lifetime, widthM = ribbon width at its widest, widthCurve = shoulderWidth at the head rising to 1 at shoulderAt then 0 at the tail, colours blend head -> tail with alpha headAlpha -> midAlpha (at midAt) -> 0, role = fx_materials.json role (dust = alpha blend, never additive). sparks = the cartoon fan is the baked UE flipbook (clash_fx.json sheets.sparks) centred on the defender's body: on = flipbook skipped (flipbook false), procedural count x proceduralCountScale x countScale, side / up spread x sideSpreadMul / upRangeMul, origin = the real contact point (contactBlend 0 = attacker's TrailTip, 1 = defender's TrailTip, kept within maxFromBodyM x fighter scale of the old body anchor and inside minHeightM..maxHeightM x scale above the floor; tipNode = fallback node name; clashOnly = flesh hits keep the body anchor; hotColor / coolColor = the procedural streak colour over life instead of clash_fx.json colorHot white / colorCool grey-blue, warm steel-spark orange; [] keeps clash_fx.json).",
   "guard": {
     "on": true,
-    "tint": [0.58, 0.56, 0.52, 1.0], "parryTint": [0.78, 0.60, 0.24, 1.0],
-    "arcDeg": 56.0, "thickness": 0.10, "edgeSoft": 0.55, "endFade": 0.5,
-    "idleAlpha": 0.10, "activeAlpha": 0.62, "parryAlpha": 0.70,
+    "tint": [0.56, 0.55, 0.53, 1.0], "parryTint": [0.64, 0.59, 0.48, 1.0],
+    "arcDeg": 56.0, "thickness": 0.06, "edgeSoft": 0.55, "endFade": 0.5,
+    "idleAlpha": 0.07, "activeAlpha": 0.36, "parryAlpha": 0.42,
     "textureSize": 256
   },
   "weapon": {

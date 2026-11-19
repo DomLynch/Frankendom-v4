@@ -100,9 +100,11 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     public List<GameObject> SpanPreload()
     {
         var r = new List<GameObject>(); if (T == null || T.zones == null) return r;
-        foreach (var q in T.zones) { if (q == null || q.spawns == null) continue; foreach (var s in q.spawns) { if (s == null || !s.enabled || s.picks == null) continue; foreach (var p in s.picks) { if (p == null) continue; var c = ZoneData.Creature(p.creature); if (c == null || c.source != "resources") continue; var g = Template(p.creature); if (g != null && !r.Contains(g)) r.Add(g); } } }
+        foreach (var q in T.zones) { if (q == null || q.spawns == null || ZoneScope.SkipZone(q.id)) continue; foreach (var s in q.spawns) { if (s == null || !s.enabled || s.picks == null) continue; foreach (var p in s.picks) { if (p == null) continue; var c = ZoneData.Creature(p.creature); if (c == null || c.source != "resources") continue; var g = Template(p.creature); if (g != null && !r.Contains(g)) r.Add(g); } } }
         return r;
     }
+    public List<string> SpanPreloadNames() { var r = new List<string>(); if (T == null || T.zones == null) return r; foreach (var q in T.zones) { if (q == null || q.spawns == null || ZoneScope.SkipZone(q.id)) continue; foreach (var s in q.spawns) { if (s == null || !s.enabled || s.picks == null) continue; foreach (var p in s.picks) { if (p == null) continue; var c = ZoneData.Creature(p.creature); if (c == null || c.source != "resources") continue; if (!r.Contains(p.creature)) r.Add(p.creature); } } } return r; }   // LOADCARD v2: same walk as SpanPreload, names only
+    public GameObject SpanTemplate(string creature) { return Template(creature); }   // LOADCARD v2: one prefab load per call (spread)
     public int SpanDespawn(string zoneId)   // idle creatures of that zone only: never an engaged one, never a corpse
     {
         List<string> rm = null;
@@ -138,7 +140,7 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         }
         if (ZoneEndScreen.Active) EndScreenStep();   // ENDALPHA v1
         if (Time.unscaledTime >= nextPoll) { nextPoll = Time.unscaledTime + T.pollSeconds; Poll(); }
-        if (Time.unscaledTime >= nextSave) { SaveNow(); nextSave = Time.unscaledTime + (ZoneSave.WriteFailing ? ZoneSave.RetryDelay : Mathf.Max(5f, T.persistence.saveEverySeconds)); /* ZONESAVE v2: after a failed write retry on the backoff (2..30 s), not after a full interval */ }
+        if (Time.unscaledTime >= nextSave) { SaveNow(); DM03.Log("persistence.saveFloorS", 1, T.persistence.saveFloorS); nextSave = Time.unscaledTime + (ZoneSave.WriteFailing ? ZoneSave.RetryDelay : Mathf.Max(T.persistence.saveFloorS, T.persistence.saveEverySeconds)); /* ZONESAVE v2: after a failed write retry on the backoff (2..30 s), not after a full interval */ }
     }
 
     /// <summary>GameLoop.Player / Enemy / Ready are what the HUD, camera framing and loot read; GameLoopDriver (which normally fills them) stands down while zones own the fight.</summary>
@@ -171,12 +173,28 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         foreach (var row in zone.spawns)
         {
             if (row == null || !row.enabled || live.ContainsKey(row.id)) continue;
+            if (row.spawnAfterDead.Length > 0 && !AfterBossDead(row, arriving)) continue;   // GATEGROUP v1
             var rec = ZoneSave.Rec(zone.id, row.id);
             if (ZoneCore.ClockGuard(rec, now, row.respawnMaxS, T.clock.guardSeconds)) ZoneSave.Put(rec);
             var look = ZoneCore.Look(rec, now); if (!look.alive) continue;
-            if (!arriving && !CanAppear(row)) continue;   // never pop in front of the player: on arrival (under the flash), or off screen, or spawnMinDistance away
+            if (!arriving && row.spawnAfterDead.Length == 0 && !CanAppear(row)) continue;   // GATEGROUP v1: a deferred row appears at its gate spot by design (walks in), the off-screen rule is skipped for it   // never pop in front of the player: on arrival (under the flash), or off screen, or spawnMinDistance away
             SpawnOne(row, look.generation);
         }
+    }
+    // GATEGROUP v1: private, not serialized. A row with spawnAfterDead waits until the named boss row is dead (live boss dead, or its kill record pending = same rule as BanditArcher.Gate), then spawns once per boss death.
+    readonly Dictionary<string, float> gateSeen = new Dictionary<string, float>(); readonly HashSet<string> gateDeferred = new HashSet<string>(), gateDone = new HashSet<string>();
+    bool AfterBossDead(ZSpawn row, bool arriving)
+    {
+        string bid = row.spawnAfterDead;
+        if (ZoneData.Spawn(zone, bid) == null) { Warn(row.id, "[Zones] spawn " + row.id + ": spawnAfterDead '" + bid + "' is not a spawn row of zone " + zone.id + ", spawning normally"); return true; }
+        bool dead; Live bl;
+        if (live.TryGetValue(bid, out bl) && bl.df != null) dead = bl.killed || bl.df.Dead;
+        else { var br = ZoneSave.Rec(zone.id, bid); dead = br != null && br.respawnAtMs > ZoneCore.NowMs(); }
+        if (!dead) { gateSeen.Remove(row.id); gateDone.Remove(row.id); if (gateDeferred.Add(row.id)) Debug.Log("[Zones] deferred spawn " + row.id + " until " + bid + " dead"); return false; }
+        float t0; if (!gateSeen.TryGetValue(row.id, out t0)) { t0 = Time.unscaledTime; gateSeen[row.id] = t0; }
+        if (!arriving && row.spawnDelayS > 0f && Time.unscaledTime - t0 < row.spawnDelayS) return false;
+        gateDeferred.Remove(row.id); if (gateDone.Add(row.id)) Debug.Log("[Zones] spawn " + row.id + " (boss dead)");
+        return true;
     }
     /// <summary>A creature whose time is up appears when the player cannot see its spot (off screen) or is spawnMinDistance away, never in front of them.</summary>
     bool CanAppear(ZSpawn row)
@@ -216,7 +234,8 @@ public sealed partial class ZoneRuntime : MonoBehaviour
         bool hasPos = sp != null && sp.pos.Length >= 2;
         if (!hasPos && (tpl.scene.IsValid() == false)) { Warn(row.id, "[Zones] spawn " + row.id + ": spot has no pos and the creature is not a scene object, skipped"); return; }
         Vector3 home = hasPos ? SpotPos(sp, tpl.transform.position) : tpl.transform.position; float yaw = sp != null ? sp.yaw : 0f;
-        var go = Instantiate(tpl, home, Quaternion.Euler(0f, yaw, 0f)); go.name = Roster.Get(cid).objectName + "#" + row.id; Roster.Register(go, cid); ZoneHitch.Lap("spawn.instantiate " + cid, ref zh); CreatureFacing.Apply(go, cid);  /* ZONEHITCH v1 */
+        Vector3 atPos = home; float atYaw = yaw; if (row.spawnAtSpot.Length > 0) { var sp2 = ZoneData.Spot(zone, row.spawnAtSpot); if (sp2 != null && sp2.pos.Length >= 2) { atPos = SpotPos(sp2, home); atYaw = sp2.yaw; } }   // GATEGROUP v1
+        var go = Instantiate(tpl, atPos, Quaternion.Euler(0f, atYaw, 0f)); go.name = Roster.Get(cid).objectName + "#" + row.id; Roster.Register(go, cid); ZoneHitch.Lap("spawn.instantiate " + cid, ref zh); CreatureFacing.Apply(go, cid);  /* ZONEHITCH v1 */
         var df = go.GetComponent<DuelFighter>(); var br = go.GetComponent<AIBrain>();
         if (df == null) { Destroy(go); Warn(row.id, "[Zones] spawn " + row.id + ": clone has no DuelFighter"); return; }
         if (br != null) br.enabled = false;   // dormant until the player walks into its aggro radius
@@ -329,20 +348,20 @@ public sealed partial class ZoneRuntime : MonoBehaviour
             if (l.engaged)
             {
                 // dev2 (item 1, Humbaba never engaged): a creature still "engaged" more than max(leash, 45 m) from Joan (left behind in an earlier zone, its chase never ended) kept counting against engage.maxEngaged, so the next boss could not engage. Drop it.
-                if (Flat(pp, l.df.transform.position) > Mathf.Max(l.row.leash, 45f)) { if (l.chase != null && l.chase.foreign) Vanish(l); else Disengage(l); continue; }
+                if (Flat(pp, l.df.transform.position) > Mathf.Max(l.row.leash, T.engage.leashFloorM)) { if (l.chase != null && l.chase.foreign) Vanish(l); else Disengage(l); continue; }
                 if (l.chase != null) { if (l.chase.Done) { if (l.chase.foreign) Vanish(l); else Disengage(l); } else if (T.twoFight.vanishGaveUpOffZone && l.chase.GivingUpNow && zone != null && l.zoneId != zone.id) Vanish(l); /* CODE4 v1 */ continue; }   // CHASE v1: gives up by gap / time, walks home, then resets
                 if (Flat(pp, l.home) > l.row.leash) Disengage(l);   // leash: it forgets you, resets to full and walks home (teleport)
                 continue;
             }
             if (IsHeld(l)) continue;   // BOSSHOLD v1: the zone boss stays dormant (no engage, no brain) while its pre-boss wave lives
-            if (Time.unscaledTime < arriveGraceUntil || CapCount() >= T.engage.maxEngaged) continue;
-            if (Flat(pp, l.df.transform.position) <= l.row.aggro) Engage(l);
+            if (Time.unscaledTime < arriveGraceUntil || LoadCardHold.HoldEngage() || CapCount() >= T.engage.maxEngaged) continue;   /* LOADCARD v2: no engage under the card */
+            if (Flat(pp, l.df.transform.position) <= l.row.aggro || LoadCardHold.ForceEngage(l.df) /* LOADCARD v5 */) Engage(l);
         }
         if (T.engage.maxEngaged > 1 && EngagedCount() > 1) Retarget(false);   // MULTI v1 (Poll)
     }
     void Engage(Live l)
     {
-        l.engaged = true; l.df.opponent = player; if (!TargetOk(player.opponent)) player.opponent = l.df;   // MULTI v1 (Engage): both brains attack the player; a later engage does not steal the target
+        LoadCardHold.OnEngage(); /* LOADCARD v5: a forced engage ends the beat */ l.engaged = true; l.df.opponent = player; if (!TargetOk(player.opponent)) player.opponent = l.df;   // MULTI v1 (Engage): both brains attack the player; a later engage does not steal the target
         if (l.chase != null) l.chase.Restart();   // CHASE v1
         var rig = FindFirstObjectByType<CameraRig>(); if (rig != null) { rig.enemy = l.df.transform; rig.enemyHp = l.df.GetComponent<Health>(); }   // CHASE v1 (ZONES gap): the lock camera followed the inactive scene template
         if (l.brain != null) l.brain.enabled = true;
@@ -436,10 +455,10 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     void DownStep(float dt)
     {
         if (RespawnStep(dt)) return;   // REVIVE v1: in-world respawn (no reload); false = off or gave up, the old path below runs
-        phaseT += dt; float hold = Mathf.Max(0.5f, T.hp.deathHoldSeconds); cover = Mathf.Clamp01((phaseT - hold * 0.4f) / (hold * 0.6f));
+        phaseT += dt; float hold = Mathf.Max(0.5f, T.hp.deathHoldSeconds); cover = Mathf.Clamp01((phaseT - hold * T.hp.deathCoverStartFrac) / Mathf.Max(Mathf.Epsilon, hold * T.hp.deathCoverSpanFrac));   /* DATALAYER 18 Nov: 0.4 / 0.6 were literals; hp.deathCoverStartFrac / deathCoverSpanFrac, defaults 0.4 / 0.6; the Max is a divide-by-zero guard */
         if (phaseT < hold || downHandled) return; downHandled = true;
         var hz = ZoneData.HearthZone(); var hs = hz != null ? ZoneData.Service(hz, "hearth") : null;
-        if (hz != null) ZoneSave.SetPlayer(hz.id, hs != null ? hs.spot : T.start.spot, T.hp.onDeath == "hearth_full" ? 1f : Mathf.Max(0.1f, player.health / Mathf.Max(1f, player.maxHealth)));
+        DM03.Log("hp.downMinHpFrac", 1, T.hp.downMinHpFrac); if (hz != null) ZoneSave.SetPlayer(hz.id, hs != null ? hs.spot : T.start.spot, T.hp.onDeath == "hearth_full" ? 1f : Mathf.Max(T.hp.downMinHpFrac, player.health / Mathf.Max(1f, player.maxHealth)));
         ZoneSave.Flush(true); GameLoop.Retry();   // loot is already saved by LootSave; every monster timer stays in the zone file
     }
 
@@ -629,8 +648,8 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     static Vector3 SpotPosGround(ZSpot s, Vector3 refPos)
     {
         if (s == null || s.pos == null || s.pos.Length < 2) return refPos;
-        Vector3 o = new Vector3(s.pos[0], refPos.y + 3f, s.pos[1]); float low = float.NaN;
-        foreach (var h in Physics.RaycastAll(o, Vector3.down, 12f, ~0, QueryTriggerInteraction.Ignore))
+        var Pr = ZoneData.Get().spotProbe; DM03.Log("spotProbe", 4, Pr.groundUpM, Pr.groundDownM, Pr.spotUpM, Pr.spotDownM); Vector3 o = new Vector3(s.pos[0], refPos.y + Pr.groundUpM, s.pos[1]); float low = float.NaN;
+        foreach (var h in Physics.RaycastAll(o, Vector3.down, Pr.groundDownM, ~0, QueryTriggerInteraction.Ignore))
         {
             if (h.collider == null || h.collider.GetComponentInParent<DuelFighter>() != null) continue;
             if (float.IsNaN(low) || h.point.y < low) low = h.point.y;
@@ -640,8 +659,8 @@ public sealed partial class ZoneRuntime : MonoBehaviour
     static Vector3 SpotPos(ZSpot s, Vector3 refPos)
     {
         if (s == null || s.pos == null || s.pos.Length < 2) return refPos;
-        Vector3 o = new Vector3(s.pos[0], refPos.y + 1.5f, s.pos[1]); RaycastHit hit;
-        if (Physics.Raycast(o, Vector3.down, out hit, 8f, ~0, QueryTriggerInteraction.Ignore)) return new Vector3(s.pos[0], hit.point.y, s.pos[1]);
+        var Pr = ZoneData.Get().spotProbe; DM03.Log("spotProbe", 4, Pr.groundUpM, Pr.groundDownM, Pr.spotUpM, Pr.spotDownM); Vector3 o = new Vector3(s.pos[0], refPos.y + Pr.spotUpM, s.pos[1]); RaycastHit hit;
+        if (Physics.Raycast(o, Vector3.down, out hit, Pr.spotDownM, ~0, QueryTriggerInteraction.Ignore)) return new Vector3(s.pos[0], hit.point.y, s.pos[1]);
         return new Vector3(s.pos[0], refPos.y, s.pos[1]);
     }
     /// <summary>ROBUST v1: a fighter that keeps falling at the same spot is put on the zone's last arrive spot (data: zones.json spots). False = zones off / not the player / no spot.</summary>

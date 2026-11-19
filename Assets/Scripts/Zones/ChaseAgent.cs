@@ -78,7 +78,7 @@ public sealed class ChaseAgent : MonoBehaviour
         if (row == null || df == null || player == null || df.Dead) return;
         if (ZoneRuntime.HoldsBoss(df)) { if (Owning) { df.moveDir = Vector3.zero; df.run = false; } st = new ChaseState(); lastTick = Duel.TickCount; return; }   // BOSSHOLD v1: a held boss stands idle (no auto-walk to Joan)
         int now = Duel.TickCount, n = now - lastTick; if (n < 0) n = 0; lastTick = now;
-        if (Duel.FrozenFor(df) /* FINREALTIME v1 H5 */) { if (Owning) { df.moveDir = Vector3.zero; df.run = false; } return; }
+        if (Duel.FrozenFor(df) /* FINREALTIME v1 H5 */ || LoadCardHold.Passive(df) /* LOADCARD v5 */) { if (Owning) { df.moveDir = Vector3.zero; df.run = false; } return; }
         bool free = df.state == FState.Loco || df.state == FState.Guard;
         if (n > 0 && free)
         {
@@ -112,7 +112,7 @@ public sealed class ChaseAgent : MonoBehaviour
         }
         else if (!free) fightStall = 0f;
         // HOMEFACE: Home mode walked it back to its post along the walk heading (z2 guards ended facing away from Joan); at the post, idle, no foe: turn to the spot yaw
-        if (hasHomeYaw && row.homeFaceDegPerS > 0f && !Owning && df.opponent == null && df.state == FState.Loco && df.moveDir.sqrMagnitude < 1e-4f && Flat(df.transform.position, home) < Mathf.Max(0.6f, row.homeArriveDist + 0.3f))
+        if (hasHomeYaw && row.homeFaceDegPerS > 0f && !Owning && df.opponent == null && df.state == FState.Loco && df.moveDir.sqrMagnitude < 1e-4f && Flat(df.transform.position, home) < Mathf.Max(row.homeFaceMinM, row.homeArriveDist + row.homeFaceSlackM))
             df.transform.rotation = Quaternion.RotateTowards(df.transform.rotation, Quaternion.Euler(0f, homeYaw, 0f), row.homeFaceDegPerS * Time.deltaTime);
         if (Owning && anim != null && df.moveDir.sqrMagnitude > 0.0001f && !(LocoDir.Enabled && df.locoDir.Applied) /* LOCODIR v1: LocoDir owns the leg speed of a row character */)   // presentation only: after DuelFighter.Update wrote anim.speed this frame
         {

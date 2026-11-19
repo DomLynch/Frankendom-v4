@@ -143,7 +143,7 @@ public sealed class BurrowCroc : MonoBehaviour
         if (dead) { Release(); return; }
         if (engaged) { if (forceUp) { Stand(); return; } Lunge(K, player); return; }   // S1 GROUNDBITE: no lunge during the clamp
         if (df.state != FState.Loco && df.state != FState.Guard) { Release(); return; }   // hit / stagger / an attack: the machine owns it
-        if (Duel.FrozenFor(df)) { Release(); return; }
+        if (Duel.FrozenFor(df) || LoadCardHold.Passive(df) /* LOADCARD v5 */) { Release(); return; }
         Roam(K, player, pos, dt);
     }
 

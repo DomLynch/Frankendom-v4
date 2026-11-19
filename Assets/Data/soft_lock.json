@@ -11,5 +11,10 @@
   "relockAfterS": 0.8,
   "mouseBreak": 1.5,
   "mouseWindowS": 0.4,
-  "breakActions": ["dodge", "lock"]
+  "breakActions": ["dodge", "lock"],
+  "mouseGraceS": 1.0,
+  "mouseNeedFocus": true,
+  "mouseSpikeMax": 0,
+  "maxSpeedMps": 12.0,
+  "diagMouse": true
 }

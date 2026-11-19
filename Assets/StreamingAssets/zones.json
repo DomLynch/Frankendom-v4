@@ -15,6 +15,7 @@
     "file": "zones_save.json",
     "version": 1,
     "saveEverySeconds": 30,
+    "saveFloorS": 5.0,
     "resetOnNewGame": true,
     "skipSaveWhileDown": true,
     "spanWarmFinally": true,
@@ -33,6 +34,9 @@
     "hearthRegenPerSecondFrac": 0.08,
     "onDeath": "hearth_full",
     "deathHoldSeconds": 3.0,
+    "deathCoverStartFrac": 0.4,
+    "deathCoverSpanFrac": 0.6,
+    "downMinHpFrac": 0.1,
     "respawn": {
       "_about": "REVIVE v1 (laneSEAMLESS): Joan's in-world respawn, no scene reload. enabled false = old death (3 s black + GameLoop.Retry). delayS = lying time before she stands up; rule arrive = the zone's arrive spot (rows below), hearth = the zone's hearth service spot; hpFrac = share of max hp; coverS / coverMax = the dark dip before she stands up (alpha max); foeReset spawn = the creatures that were fighting her go back to their spawn at full hp after foeResetDelayS (keep = they stay); fallbackAfterS = if the revive cannot happen (finisher still running, ragdoll cannot be put back) the old reload runs after this.",
       "enabled": true,
@@ -79,6 +83,7 @@
   "engage": {
     "maxEngaged": 3,
     "retargetMarginM": 1.5,
+    "leashFloorM": 45.0,
     "finisherWithOthers": false,
     "graceAfterArriveSeconds": 20.0,
       "graceAfterRespawnSeconds": 3.0,
@@ -88,6 +93,7 @@
     "spawnMinDistance": 30,
     "_about": "INT107 (Dom): maxEngaged 2 = Pitborn and Sobek can be on you together (both brains attack the player; target = nearest engaged, switches when another is nearer by retargetMarginM; finisherWithOthers false = plain death while another enemy is engaged). 1 = the duel stays 1 v 1 (the sim and the camera are tuned for it); a camp of 2 is a later Dom decision. spawnMinDistance: a creature whose timer ran out while you stand in its zone appears only when you are at least this far from its spot, or when you arrive through a gate (hidden by the flash); in a small arena that means it appears when you arrive, never in front of you."
   },
+  "spotProbe": { "groundUpM": 3.0, "groundDownM": 12.0, "spotUpM": 1.5, "spotDownM": 8.0 },
   "twoFight": {
       "clearStaleOpponent": true,
       "staleMaxM": 60.0,
@@ -127,13 +133,13 @@
         "Turn back and explore: the zones are yours to revisit.",
         "More is coming. Tell us what you thought."
       ],
-      "hint": "Enter: go back and explore      Esc: back to camp",
+      "hint": "Enter: go back and explore      Esc: close",
       "fadeInS": 1.6,
       "minShowS": 1.0,
-      "backdropAlpha": 0.82,
+      "backdropAlpha": 0.92,
       "titleSize": 46,
       "lineSize": 22,
-      "hintSize": 18,
+      "hintSize": 24,
       "titleY": 0.3,
       "lineGap": 1.5,
       "titleGapMul": 1.6,
@@ -143,18 +149,17 @@
         0.78
       ],
       "dimColor": [
-        0.62,
-        0.58,
-        0.5
+        0.88,
+        0.83,
+        0.72
       ],
       "continueKeys": [
         "Return",
         "KeypadEnter",
-        "Space"
-      ],
-      "campKeys": [
+        "Space",
         "Escape"
       ],
+      "campKeys": [],
       "nudgeBackM": 8.0,
       "campZone": "hub_camp",
       "campSpot": "hearth",
@@ -422,8 +427,8 @@
         },
         {
           "id": "ash_reaver_1",
-          "pos": [-6.5, 4.5],
-          "yaw": 70,
+          "pos": [9.0, 20.5],
+          "yaw": 270,
           "note": "ENEMIES_SPAWN 18 Nov (HOT data): Ash Reaver in the yard west of the start-to-Pitborn path, clear of hearth and stall"
         }
       ],
@@ -469,6 +474,9 @@
           "id": "bandit_z1_a_1",
           "enabled": true,
           "spot": "bandit_z1_a_1",
+          "spawnAfterDead": "z1_pitborn",
+          "spawnAtSpot": "gate_sobek",
+          "spawnDelayS": 4.0,
           "picks": [
             {
               "creature": "NpcChainWarden",
@@ -489,6 +497,9 @@
           "id": "bandit_z1_a_2",
           "enabled": true,
           "spot": "bandit_z1_a_2",
+          "spawnAfterDead": "z1_pitborn",
+          "spawnAtSpot": "gate_sobek",
+          "spawnDelayS": 4.0,
           "picks": [
             {
               "creature": "NpcSlagCrossbowman",
@@ -509,6 +520,9 @@
           "id": "bandit_z1_a_3",
           "enabled": true,
           "spot": "bandit_z1_a_3",
+          "spawnAfterDead": "z1_pitborn",
+          "spawnAtSpot": "gate_sobek",
+          "spawnDelayS": 4.0,
           "picks": [
             {
               "creature": "NpcPitGladiator",

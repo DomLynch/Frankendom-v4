@@ -33,7 +33,7 @@
                      "tint":  0.0,
                      "saturation":  -10.0,
                      "contrast":  33.0,
-                     "vignette":  0.48,
+                     "vignette":  0.31,
                      "bloomIntensity":  0.22,
                      "bloomThreshold":  0.92,
                      "fogAlbedo":  [
@@ -75,47 +75,47 @@
                      "zFrom":  -100000.0,
                      "zTo":  26.0,
                      "colorFilter":  [
-                                         1,
-                                         1,
-                                         1
+                                         1.0,
+                                         0.99,
+                                         0.97
                                      ],
                      "postExposure":  -0.25,
                      "temperature":  0.0,
                      "tint":  0.0,
-                     "saturation":  -24.0,
-                     "contrast":  36.0,
-                     "vignette":  0.48,
+                     "saturation":  -16.0,
+                     "contrast":  24.0,
+                     "vignette":  0.31,
                      "fogAlbedo":  [
-                                       0.42,
-                                       0.43,
-                                       0.45
+                                       0.36,
+                                       0.31,
+                                       0.27
                                    ],
                      "fogTint":  [
+                                     0.95,
                                      0.86,
-                                     0.88,
-                                     0.92
+                                     0.76
                                  ],
                      "fogMeanFreePath":  52.0,
-                     "fogMaxHeight":  16.0,
+                     "fogMaxHeight":  26.0,
                      "keyElevationDeg":  26.0,
                      "keyYawOffsetDeg":  0.0,
                      "keyColor":  [
-                                      0.93,
+                                      1.0,
                                       0.95,
-                                      1
+                                      0.9
                                   ],
                      "bounceColor":  [
-                                         0.7,
-                                         0.7,
-                                         0.72
+                                         0.76,
+                                         0.66,
+                                         0.58
                                      ],
                      "bounceLux":  380.0,
                      "bouncePitchDeg":  20.0,
                      "bounceYawDeg":  195.0,
                      "moonRimColor":  [
-                                          0.74,
-                                          0.77,
-                                          0.84
+                                          0.86,
+                                          0.89,
+                                          0.95
                                       ],
                      "bloomIntensity":  0.22,
                      "bloomThreshold":  0.92,
@@ -126,16 +126,16 @@
                      "zFrom":  26.0,
                      "zTo":  62.0,
                      "colorFilter":  [
-                                         0.9,
                                          1.0,
-                                         0.95
+                                         1.0,
+                                         1.0
                                      ],
                      "postExposure":  0.3,
-                     "temperature":  -6.0,
-                     "tint":  -8.0,
+                     "temperature":  0.0,
+                     "tint":  0.0,
                      "saturation":  -12.0,
                      "contrast":  34.0,
-                     "vignette":  0.48,
+                     "vignette":  0.31,
                      "fogAlbedo":  [
                                        0.399,
                                        0.598,
@@ -149,27 +149,27 @@
                      "fogMeanFreePath":  102.0,
                      "fogMaxHeight":  80.0,
                      "keyElevationDeg":  24.0,
-                     "keyYawOffsetDeg":  0.0,
+                     "keyYawOffsetDeg":  35.0,
                      "keyColor":  [
-                                      0.88,
                                       0.97,
-                                      0.98
+                                      0.96,
+                                      0.93
                                   ],
                      "bounceColor":  [
                                          0.35,
                                          0.62,
                                          0.52
                                      ],
-                     "bounceLux":  800.0,
+                     "bounceLux":  400.0,
                      "bouncePitchDeg":  35.0,
                      "bounceYawDeg":  195.0,
                      "moonRimColor":  [
-                                          0.62,
-                                          0.72,
-                                          0.7
+                                          0.34,
+                                          0.39,
+                                          0.4
                                       ],
-                     "bloomIntensity":  0.6,
-                     "bloomThreshold":  0.4,
+                     "bloomIntensity":  0.24,
+                     "bloomThreshold":  1.2,
                      "bloomScatter":  0.6
                  },
                  {
@@ -178,15 +178,15 @@
                      "zTo":  98.0,
                      "colorFilter":  [
                                          1.0,
-                                         0.965,
-                                         0.925
+                                         1.0,
+                                         1.0
                                      ],
                      "postExposure":  0.05,
-                     "temperature":  7.0,
+                     "temperature":  0.0,
                      "tint":  0.0,
                      "saturation":  -6.0,
                      "contrast":  36.0,
-                     "vignette":  0.48,
+                     "vignette":  0.31,
                      "fogAlbedo":  [
                                        0.61,
                                        0.545,
@@ -211,16 +211,16 @@
                                          0.64,
                                          0.3
                                      ],
-                     "bounceLux":  520.0,
+                     "bounceLux":  290.0,
                      "bouncePitchDeg":  -999.0,
                      "bounceYawDeg":  -999.0,
                      "moonRimColor":  [
-                                          0.6,
-                                          0.7,
-                                          0.85
+                                          0.36,
+                                          0.42,
+                                          0.5
                                       ],
-                     "bloomIntensity":  0.65,
-                     "bloomThreshold":  0.35,
+                     "bloomIntensity":  0.24,
+                     "bloomThreshold":  1.2,
                      "bloomScatter":  0.75
                  },
                  {
@@ -228,16 +228,16 @@
                      "zFrom":  98.0,
                      "zTo":  167.0,
                      "colorFilter":  [
-                                         0.97,
-                                         0.98,
+                                         1.0,
+                                         1.0,
                                          1.0
                                      ],
                      "postExposure":  0.027,
-                     "temperature":  -2.0,
+                     "temperature":  0.0,
                      "tint":  0.0,
                      "saturation":  -14.0,
                      "contrast":  38.0,
-                     "vignette":  0.48,
+                     "vignette":  0.31,
                      "fogAlbedo":  [
                                        0.5,
                                        0.54,
@@ -251,24 +251,24 @@
                      "fogMeanFreePath":  113.5,
                      "fogMaxHeight":  100.0,
                      "keyElevationDeg":  22.0,
-                     "keyYawOffsetDeg":  0.0,
+                     "keyYawOffsetDeg":  35.0,
                      "keyColor":  [
-                                      0.85,
-                                      0.9,
-                                      0.95
+                                      0.96,
+                                      0.94,
+                                      0.91
                                   ],
                      "bounceColor":  [
                                          0.35,
                                          0.55,
                                          0.62
                                      ],
-                     "bounceLux":  700.0,
+                     "bounceLux":  350.0,
                      "bouncePitchDeg":  30.0,
                      "bounceYawDeg":  190.0,
                      "moonRimColor":  [
-                                          0.95,
-                                          0.72,
-                                          0.55
+                                          0.42,
+                                          0.44,
+                                          0.48
                                       ],
                      "bloomIntensity":  0.22,
                      "bloomThreshold":  0.92,
@@ -279,16 +279,16 @@
                      "zFrom":  167.0,
                      "zTo":  234.0,
                      "colorFilter":  [
-                                         0.98,
-                                         0.99,
-                                         0.96
+                                         1.0,
+                                         1.0,
+                                         1.0
                                      ],
                      "postExposure":  0.22,
-                     "temperature":  2.0,
-                     "tint":  -3.0,
+                     "temperature":  0.0,
+                     "tint":  0.0,
                      "saturation":  -6.0,
                      "contrast":  33.0,
-                     "vignette":  0.48,
+                     "vignette":  0.31,
                      "fogAlbedo":  [
                                        0.5,
                                        0.57,
@@ -313,13 +313,13 @@
                                          0.55,
                                          0.55
                                      ],
-                     "bounceLux":  1000.0,
+                     "bounceLux":  500.0,
                      "bouncePitchDeg":  55.0,
                      "bounceYawDeg":  185.0,
                      "moonRimColor":  [
-                                          0.62,
-                                          0.72,
-                                          0.8
+                                          0.36,
+                                          0.42,
+                                          0.47
                                       ],
                      "bloomIntensity":  0.22,
                      "bloomThreshold":  0.92,
@@ -331,15 +331,15 @@
                      "zTo":  305.0,
                      "colorFilter":  [
                                          1.0,
-                                         0.96,
-                                         0.96
+                                         1.0,
+                                         1.0
                                      ],
                      "postExposure":  0.04,
-                     "temperature":  2.0,
-                     "tint":  2.0,
+                     "temperature":  0.0,
+                     "tint":  0.0,
                      "saturation":  -14.0,
                      "contrast":  38.0,
-                     "vignette":  0.48,
+                     "vignette":  0.31,
                      "fogAlbedo":  [
                                        0.6,
                                        0.52,
@@ -353,24 +353,24 @@
                      "fogMeanFreePath":  115.0,
                      "fogMaxHeight":  110.0,
                      "keyElevationDeg":  30.0,
-                     "keyYawOffsetDeg":  0.0,
+                     "keyYawOffsetDeg":  35.0,
                      "keyColor":  [
-                                      0.92,
-                                      0.92,
-                                      0.98
+                                      0.98,
+                                      0.94,
+                                      0.91
                                   ],
                      "bounceColor":  [
                                          0.7,
                                          0.3,
                                          0.26
                                      ],
-                     "bounceLux":  250.0,
+                     "bounceLux":  150.0,
                      "bouncePitchDeg":  50.0,
                      "bounceYawDeg":  180.0,
                      "moonRimColor":  [
-                                          0.86,
-                                          0.66,
-                                          0.66
+                                          0.42,
+                                          0.42,
+                                          0.46
                                       ],
                      "bloomIntensity":  0.3,
                      "bloomThreshold":  0.65,
@@ -381,16 +381,16 @@
                      "zFrom":  305.0,
                      "zTo":  100000.0,
                      "colorFilter":  [
-                                         0.95,
-                                         0.95,
-                                         0.94
+                                         1.0,
+                                         1.0,
+                                         1.0
                                      ],
                      "postExposure":  0.064,
-                     "temperature":  4.0,
+                     "temperature":  0.0,
                      "tint":  0.0,
                      "saturation":  -16.0,
                      "contrast":  36.0,
-                     "vignette":  0.48,
+                     "vignette":  0.31,
                      "fogAlbedo":  [
                                        0.637,
                                        0.538,
@@ -415,13 +415,13 @@
                                          0.64,
                                          0.3
                                      ],
-                     "bounceLux":  440.0,
+                     "bounceLux":  250.0,
                      "bouncePitchDeg":  -999.0,
                      "bounceYawDeg":  -999.0,
                      "moonRimColor":  [
-                                          0.8,
-                                          0.7,
-                                          0.62
+                                          0.46,
+                                          0.45,
+                                          0.44
                                       ],
                      "bloomIntensity":  0.22,
                      "bloomThreshold":  0.92,
@@ -445,11 +445,11 @@
                                   20
                               ],
                      "albedo":  [
-                                    0.45,
-                                    0.46,
-                                    0.5
+                                    0.34,
+                                    0.31,
+                                    0.29
                                 ],
-                     "meanFreePath":  5,
+                     "meanFreePath":  22,
                      "positiveFade":  [
                                           0.35,
                                           1.0,
@@ -482,7 +482,7 @@
                                     0.6,
                                     0.54
                                 ],
-                     "meanFreePath":  6.0,
+                     "meanFreePath":  20.0,
                      "positiveFade":  [
                                           0.35,
                                           1.0,
@@ -515,7 +515,7 @@
                                     0.58,
                                     0.6
                                 ],
-                     "meanFreePath":  6.0,
+                     "meanFreePath":  20.0,
                      "positiveFade":  [
                                           0.35,
                                           1.0,
@@ -548,7 +548,7 @@
                                     0.596,
                                     0.417
                                 ],
-                     "meanFreePath":  6.0,
+                     "meanFreePath":  20.0,
                      "positiveFade":  [
                                           0.35,
                                           1.0,
@@ -581,7 +581,7 @@
                                     0.504,
                                     0.504
                                 ],
-                     "meanFreePath":  6.0,
+                     "meanFreePath":  20.0,
                      "positiveFade":  [
                                           0.35,
                                           1.0,

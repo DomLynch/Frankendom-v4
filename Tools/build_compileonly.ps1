@@ -29,6 +29,8 @@ if ($refuse) {
 Write-Host 'signature compare: PASS (serialized layout, script files and boot hooks match the base build)'
 if ($DryRun) { Write-Host 'DRYRUN: would continue to guard, compile check, staging deploy, Editor compile (nothing started)'; exit 0 }
 
+# BANNED ASSET GUARD (19 Nov, goblin purge): refuse before any tag or Editor slot is spent.
+$bannedHits = @(& "$p\Tools\banned_assets_check.ps1" -Root "$p\Assets" -Caller 'build_compileonly'); if ($bannedHits.Count) { $bannedHits | ForEach-Object { Write-Host $_ }; Write-Host "BUILD REFUSED $Tag (banned asset), exit 5"; exit 5 }
 . "$p\Tools\_build_guard.ps1"; Assert-BuildSafe $Tag -Mode CodeOnly
 & powershell -NoProfile -File 'Tools\compile_check.ps1' | Out-Host; if ($LASTEXITCODE -ne 0) { Write-Host 'COMPILE CHECK FAILED: build refused (no Editor slot spent)'; exit 4 }
 Remove-Item "TestOut\v109${Tag}_done.txt" -ErrorAction SilentlyContinue
@@ -48,7 +50,8 @@ if ($drc -ne 0 -or $dout -notmatch 'RESULT READY' -or -not (Test-Path "$man\Asse
 if ($code -eq 0) {
   if (Test-Path $out) { Remove-Item $out -Recurse -Force -ErrorAction SilentlyContinue }   # stale dlls from an earlier run must never pass the DLL-exists test
   $bpU=(Get-Date).AddMinutes(4).ToString('HH:mm'); Add-Board "BUILD PHASE player frankendom until $bpU (compile-only Editor $Tag, peak 3 GB)"
-  $b = Start-Process $u -ArgumentList "-batchmode -quit -accept-apiupdate -silent-crashes -projectPath $p -executeMethod HdrpCompileOnly.Run -compileOut TestOut/FkCompileOut -logFile $p\TestOut\v109${Tag}_Build.log" -PassThru
+  $b = Start-Process $u -ArgumentList "-batchmode -nographics -quit -accept-apiupdate -silent-crashes -projectPath $p -executeMethod HdrpCompileOnly.Run -compileOut TestOut/FkCompileOut -logFile $p\TestOut\v109${Tag}_Build.log" -PassThru
+  try { $b.PriorityClass = 'BelowNormal' } catch {}   # Dom plays on the same iGPU: low priority and no D3D device (-nographics)
   if (-not $b.WaitForExit(900000)) { try { $b.Kill() } catch {}; Fail 6 'Editor compile timed out (killed)' }
   elseif ($b.ExitCode -ne 0) { Fail $b.ExitCode "Editor exit code $($b.ExitCode)" }
 }

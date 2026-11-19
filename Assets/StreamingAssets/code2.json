@@ -29,6 +29,6 @@
   },
   "bossBar": {
     "_about": "BOSSBAR v1 (GameHUD.ZonesBind): the enemy health bar and name are drawn only while that fighter is engaged with Joan, plus lingerS seconds after the last engaged moment (kill card, hand-over). enabled false = the old behaviour (bar follows GameLoop.Enemy always).",
-    "enabled": true, "lingerS": 4.0
+    "enabled": true, "lingerS": 2.0, "farHideM": 18.0
   }
 }

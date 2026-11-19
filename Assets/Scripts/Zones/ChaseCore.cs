@@ -8,7 +8,7 @@ using System;
     public float speedMulOfPlayerRun, startGap, stopGap, slowZoneM, accelMps2, giveUpGap, outOfReachGap, giveUpOutOfReachS, giveUpPauseS;
     public float homeSpeedMulOfWalk, homeArriveDist, followGateMaxGap, followArriveBehindM, runClipFromMps, walkClipBelowMps, animMin, animMax;
     public bool resetOnHome, followThroughGate;
-    public float homeFaceDegPerS = 240f;   // HOMEFACE: an idle guard back at its post turns to the spot yaw at this rate (deg/s); 0 = off (it keeps the heading of its walk home)
+    public float homeFaceDegPerS = 240f, homeFaceMinM = 0.6f, homeFaceSlackM = 0.3f /* DATALAYER 18 Nov: the idle-at-post turn runs inside max(homeFaceMinM, homeArriveDist + homeFaceSlackM) of the post (were 0.6 / 0.3 literals in ChaseAgent) */;   // HOMEFACE: an idle guard back at its post turns to the spot yaw at this rate (deg/s); 0 = off (it keeps the heading of its walk home)
     public float fightCloseGapM = 2.6f, fightStallS = 1.5f;   // FIGHTCLOSE v1: in Fight a free creature that stays beyond fightCloseGapM (m) for fightStallS (s) walks in until within it (fightStallS <= 0 = off); rows inherit from "*"
     public float handoverSlackM;   // FOESEP v1: hand back to the AI at gap <= stopGap + this (the speed ramp reaches stopGap only asymptotically: v108c stalled at 2.62 / 3.91 m)
 }

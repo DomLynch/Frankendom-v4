@@ -450,7 +450,9 @@
     "tagTop": 26.0,
     "subSize": 13,
     "coinSize": 17,
-    "coinDy": 8.0
+    "coinDy": 8.0,
+    "tagShowS": 4.0,
+    "tagFadeS": 0.6
   },
   "keys": {
     "_about": "KeyCode names (old Input Manager, like loot_ui.json). interact: E / pad X (same as the loot pickup). confirm: E / pad A. close: Esc / pad B / Tab / pad Start. up / down + the left stick move. The panel ignores the confirm press on the frame it opened.",

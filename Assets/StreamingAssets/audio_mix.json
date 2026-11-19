@@ -8,7 +8,7 @@
     { "id": "sfx",      "label": "Effects",       "hint": "Blades, blocks, hits and voices.",              "defaultLevel": 1.0, "min": 0.0, "max": 1.0, "menu": true },
     { "id": "ambience", "label": "Ambience",      "hint": "The gate, the crowd and the world around the duel.", "defaultLevel": 1.0, "min": 0.0, "max": 1.0, "menu": true },
     { "id": "ui",       "label": "Interface",     "hint": "Menu and loot screen sounds.",                  "defaultLevel": 1.0, "min": 0.0, "max": 1.0, "menu": false },
-    { "id": "music",    "label": "Music",         "hint": "Score and stingers.",                           "defaultLevel": 1.0, "min": 0.0, "max": 1.0, "menu": false }
+    { "id": "music",    "label": "Music",         "hint": "Background music.",                           "defaultLevel": 1.0, "min": 0.0, "max": 1.0, "menu": true }
   ],
   "cues": [
     { "cue": "crowd_*",      "category": "ambience" },
