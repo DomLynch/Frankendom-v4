@@ -70,7 +70,7 @@ public sealed class HubNpcs : MonoBehaviour
         if (standing.Count > 0 && asleep && !loading && ZoneScope.CampDrop(K.zone, K.area.zMin, K.area.zMax, p != null ? p.transform.position.z : float.NaN)) { Clear(); preloaded = false; liveSince = -1f; ZoneScope.NoteCampDropped(K.zone); }   // ZONESCOPE v1: a sleeping camp out of scope for dropAfterS frees its bodies and imports
         bool want = res.Step(zones ? p.transform.position.z : 0f, K.area.zMin, K.area.zMax, zones && !ZoneGroundHold.Active);   // CAMPGROUND v1: no NPC while the player's own ground is still being found
         if (want) { if (asleep) Wake(); else if (!loading && !tried && standing.Count == 0 && !(K.spawner.holdWhileEngaged && p != null && p.opponent != null && !p.opponent.Dead)) { tried = true;  /* TRADEFIN v1: no 3 x 25 MB glb import in a fight */ StartCoroutine(SpawnAll(++gen)); } }
-        else if ((standing.Count > 0 && !asleep) || (loading && !hiddenLoad)) Leave();   // CAMPNPC v1: a sleeping camp / a hidden load is the normal state while the player is away
+        else if ((standing.Count > 0 && !asleep && !(loading && hiddenLoad)) || (loading && !hiddenLoad)) Leave();   // HUBHITCH: a hidden load that already has bodies standing is NOT a visit that ended (Clear() cancelled the preload on approach and the camp loaded inside the arrival window)   // CAMPNPC v1: a sleeping camp / a hidden load is the normal state while the player is away
     }
 
     // ------------------------------------------------------------------ leave / wake

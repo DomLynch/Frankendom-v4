@@ -188,9 +188,9 @@
                      "contrast":  36.0,
                      "vignette":  0.31,
                      "fogAlbedo":  [
-                                       0.61,
-                                       0.545,
-                                       0.465
+                                       0.42,
+                                       0.38,
+                                       0.34
                                    ],
                      "fogTint":  [
                                      0.98,
@@ -334,7 +334,7 @@
                                          1.0,
                                          1.0
                                      ],
-                     "postExposure":  0.04,
+                     "postExposure":  0.55,
                      "temperature":  0.0,
                      "tint":  0.0,
                      "saturation":  -14.0,
@@ -360,9 +360,9 @@
                                       0.91
                                   ],
                      "bounceColor":  [
-                                         0.7,
-                                         0.3,
-                                         0.26
+                                         0.5,
+                                         0.44,
+                                         0.42
                                      ],
                      "bounceLux":  150.0,
                      "bouncePitchDeg":  50.0,

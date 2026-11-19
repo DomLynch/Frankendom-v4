@@ -187,6 +187,7 @@ public static class AudioMix
     internal static void DriverGone() { driver = null; Paused = false; ReleaseListener(); }
 
     /// <summary>Called by the driver every frame (unscaled time, so it runs while the menu holds timeScale 0).</summary>
+    static bool masterLogged;
     internal static void Tick(float dt)
     {
         var P = Cfg().pause; float target = Paused ? 0f : 1f;
@@ -199,7 +200,7 @@ public static class AudioMix
         if (Managed)
         {
             float v = Master * fade;
-            if (!Mathf.Approximately(v, lastWritten)) { AudioListener.volume = v; lastWritten = v; }
+            if (!Mathf.Approximately(v, lastWritten)) { AudioListener.volume = v; lastWritten = v; if (!masterLogged) { masterLogged = true; Debug.Log("[AudioMix] master applied " + v.ToString("F2") + " (Master level " + Master.ToString("F2") + ", pause fade " + fade.ToString("F2") + ") on the first driver tick"); } }   // FK5: the [MenuSettings] applied line prints before this first tick, so its master 1.00 is the pre-driver value
         }
         if (dirty || bound.Count > 0)
         {

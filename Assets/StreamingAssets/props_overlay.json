@@ -1,4 +1,4 @@
-﻿{
+{
   "_about": "PROPSOVERLAY v1 (laneDATA3), read by Assets/Scripts/Zones/PropsOverlay.cs. Runtime overlay on top of the BAKED props_layout_*.json scene objects: added, moved and disabled rows apply on zone load AFTER the baked objects exist, so ordinary prop edits are HOT (copy this file into the build's StreamingAssets, no scene chain). Ships enabled=false with no rows = the code does nothing. A missing file does nothing. Edit the Assets/Data and StreamingAssets twins together.",
   "enabled": true,
   "version": 1,
@@ -34,6 +34,10 @@
   },
   "_rowShape": "id (unique new id for op add; the baked wrapper name for move and disable), op (add | move | disable), src (add only: the name of a baked prop wrapper to clone, e.g. a worldmid_..., z4_..., z2back_... id: ONLY ids that exist in the build), zone (zone_span.json zone id: sobek_reach, hub_camp, grendel, z5_humbaba, z6_erlking, z7_market2; or main for the Arena), ring (0..2, the ring group the clone joins, default 1; main uses group), group (main only: Arena child group name, e.g. WorldNear), pos [x,y,z] (same meaning as props_layout: y = bottom of the prop; move with pos [] keeps the baked position), rotEuler [x,y,z] ([] keeps), scale (props_layout scale when scaleMode=absolute, or a multiplier on the source scale when relative; 0 keeps), scaleYMul (0 keeps), lod (-1 = the baked LODGroup, 0..2 = force that LOD), ground (bottom | pivot | snap: snap = bottom on the ray hit + pos[1]), enabled (false = the row does nothing).",
   "rows": [
+    {"id": "hero_boulder_A", "op": "move", "zone": "main", "group": "Props", "pos": [-6.4, -0.42, 9.8], "rotEuler": [], "scale": 0, "scaleYMul": 0, "ground": "bottom", "enabled": true, "note": "FK seams 19 Nov: boulder foot sunk 0.12 m (y -0.30 -> -0.42) so the hard base line against the paving/bank disappears (fk_seams_kit FULL_LIST item 3, data-first). Revert = delete these 4 rows."},
+    {"id": "hero_boulder_B", "op": "move", "zone": "main", "group": "Props", "pos": [-8.4, -0.42, 15.8], "rotEuler": [], "scale": 0, "scaleYMul": 0, "ground": "bottom", "enabled": true, "note": "FK seams 19 Nov: boulder foot sunk 0.12 m (y -0.30 -> -0.42) so the hard base line against the paving/bank disappears (fk_seams_kit FULL_LIST item 3, data-first). Revert = delete these 4 rows."},
+    {"id": "hero_boulder_C", "op": "move", "zone": "main", "group": "Props", "pos": [6.6, -0.42, 8.8], "rotEuler": [], "scale": 0, "scaleYMul": 0, "ground": "bottom", "enabled": true, "note": "FK seams 19 Nov: boulder foot sunk 0.12 m (y -0.30 -> -0.42) so the hard base line against the paving/bank disappears (fk_seams_kit FULL_LIST item 3, data-first). Revert = delete these 4 rows."},
+    {"id": "hero_boulder_D", "op": "move", "zone": "main", "group": "Props", "pos": [7.6, -0.42, 14.2], "rotEuler": [], "scale": 0, "scaleYMul": 0, "ground": "bottom", "enabled": true, "note": "FK seams 19 Nov: boulder foot sunk 0.12 m (y -0.30 -> -0.42) so the hard base line against the paving/bank disappears (fk_seams_kit FULL_LIST item 3, data-first). Revert = delete these 4 rows."},
     {
       "id": "camps_c1_market_tent",
       "op": "move",
@@ -2798,6 +2802,7 @@
       "ground": "bottom",
       "enabled": true,
       "note": "PITDRESS rubble at the S_E parapet end (clutter_rubble abs scale 1.90, 1.9 m); clone of clutter_z1_3"
-    }
+    },
+    {"id": "fk_armlantern_ring", "op": "add", "src": "z6h_erlking_hanging_lamps_0", "zone": "hub_camp", "ring": 1, "pos": [-3.3, 1.45, 86.6], "rotEuler": [0, 0, 0], "scale": 0.18, "scaleYMul": 0, "lod": 0, "ground": "bottom", "enabled": true, "note": "FK armlantern 19 Nov: ring of 8 hanging lanterns (baked z6 erlking_hanging_lamps, 4.59 x 0.18 = 0.83 m ring) hung under the Armourer canopy toward the camera, lanterns 1.45-1.75 m: the visible source of the CampLantern_Armourer light. Revert = delete this row."}
   ]
 }

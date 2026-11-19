@@ -35,9 +35,9 @@
         2.0,
         340.4
       ],
-      "kelvin": 2200.0,
-      "candela": 9000.0,
-      "range": 6.0,
+      "kelvin": 3300.0,
+      "candela": 11000.0,
+      "range": 5.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 16,
       "layerMask": 65535
@@ -141,8 +141,8 @@
         4.5,
         256.0
       ],
-      "kelvin": 1900.0,
-      "candela": 44000.0,
+      "kelvin": 2200.0,
+      "candela": 17600.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -164,8 +164,8 @@
         4.5,
         256.0
       ],
-      "kelvin": 1900.0,
-      "candela": 44000.0,
+      "kelvin": 2200.0,
+      "candela": 17600.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -187,8 +187,8 @@
         4.5,
         264.5
       ],
-      "kelvin": 1900.0,
-      "candela": 44000.0,
+      "kelvin": 2200.0,
+      "candela": 17600.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -210,8 +210,8 @@
         4.5,
         264.5
       ],
-      "kelvin": 1900.0,
-      "candela": 44000.0,
+      "kelvin": 2200.0,
+      "candela": 17600.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -233,8 +233,8 @@
         4.5,
         247.5
       ],
-      "kelvin": 1900.0,
-      "candela": 44000.0,
+      "kelvin": 2200.0,
+      "candela": 17600.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -256,8 +256,8 @@
         4.5,
         247.5
       ],
-      "kelvin": 1900.0,
-      "candela": 44000.0,
+      "kelvin": 2200.0,
+      "candela": 17600.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -279,8 +279,8 @@
         4.5,
         250.0
       ],
-      "kelvin": 1900.0,
-      "candela": 44000.0,
+      "kelvin": 2200.0,
+      "candela": 17600.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -302,8 +302,8 @@
         4.5,
         250.0
       ],
-      "kelvin": 1900.0,
-      "candela": 44000.0,
+      "kelvin": 2200.0,
+      "candela": 17600.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -417,8 +417,8 @@
         2.2,
         86.0
       ],
-      "kelvin": 3400.0,
-      "candela": 900.0,
+      "kelvin": 3300.0,
+      "candela": 4000.0,
       "range": 4.5,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 7.0,
@@ -572,8 +572,8 @@
       }
     },
     {
-      "kelvin": 2300.0,
-      "candela": 40000.0,
+      "kelvin": 2600.0,
+      "candela": 16000.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -595,8 +595,8 @@
       ]
     },
     {
-      "kelvin": 2300.0,
-      "candela": 40000.0,
+      "kelvin": 2600.0,
+      "candela": 16000.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -618,8 +618,8 @@
       ]
     },
     {
-      "kelvin": 2300.0,
-      "candela": 40000.0,
+      "kelvin": 2600.0,
+      "candela": 16000.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -641,8 +641,8 @@
       ]
     },
     {
-      "kelvin": 2300.0,
-      "candela": 40000.0,
+      "kelvin": 2600.0,
+      "candela": 16000.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -664,8 +664,8 @@
       ]
     },
     {
-      "kelvin": 2300.0,
-      "candela": 40000.0,
+      "kelvin": 2600.0,
+      "candela": 16000.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -687,8 +687,8 @@
       ]
     },
     {
-      "kelvin": 2300.0,
-      "candela": 40000.0,
+      "kelvin": 2600.0,
+      "candela": 16000.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -710,8 +710,8 @@
       ]
     },
     {
-      "kelvin": 2300.0,
-      "candela": 40000.0,
+      "kelvin": 2600.0,
+      "candela": 16000.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -733,8 +733,8 @@
       ]
     },
     {
-      "kelvin": 2300.0,
-      "candela": 40000.0,
+      "kelvin": 2600.0,
+      "candela": 16000.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -762,8 +762,8 @@
         4.4,
         280.84
       ],
-      "kelvin": 2200.0,
-      "candela": 22000.0,
+      "kelvin": 2500.0,
+      "candela": 8800.0,
       "range": 10.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -969,8 +969,8 @@
         3.2,
         301.78
       ],
-      "kelvin": 2400.0,
-      "candela": 60000.0,
+      "kelvin": 2700.0,
+      "candela": 24000.0,
       "range": 14.0,
       "volumetricDimmer": 0.5,
       "activeRadiusM": 70.0,
@@ -992,8 +992,8 @@
         3.2,
         293.61
       ],
-      "kelvin": 2400.0,
-      "candela": 60000.0,
+      "kelvin": 2700.0,
+      "candela": 24000.0,
       "range": 14.0,
       "volumetricDimmer": 0.5,
       "activeRadiusM": 70.0,
@@ -1015,8 +1015,8 @@
         2.6,
         270.12
       ],
-      "kelvin": 2400.0,
-      "candela": 45000.0,
+      "kelvin": 2700.0,
+      "candela": 18000.0,
       "range": 11.0,
       "volumetricDimmer": 0.5,
       "activeRadiusM": 45.0,
@@ -1038,8 +1038,8 @@
         2.6,
         280.35
       ],
-      "kelvin": 2400.0,
-      "candela": 45000.0,
+      "kelvin": 2700.0,
+      "candela": 18000.0,
       "range": 11.0,
       "volumetricDimmer": 0.5,
       "activeRadiusM": 50.0,
@@ -1211,6 +1211,29 @@
         "frequency": 1.6,
         "octaves": 2,
         "seed": 3.7,
+        "lacunarity": 2.0,
+        "gain": 0.5
+      }
+    },
+    {
+      "name": "CampLantern_Armourer",
+      "pos": [
+        -3.3,
+        1.6,
+        86.6
+      ],
+      "kelvin": 3200.0,
+      "candela": 7000,
+      "range": 4.0,
+      "volumetricDimmer": 0.0,
+      "activeRadiusM": 7.0,
+      "layerMask": 65535,
+      "flicker": {
+        "baseValue": 1.0,
+        "amplitude": 0.05,
+        "frequency": 1.4,
+        "octaves": 2,
+        "seed": 41.0,
         "lacunarity": 2.0,
         "gain": 0.5
       }

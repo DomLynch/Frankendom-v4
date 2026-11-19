@@ -4,6 +4,17 @@
   "source": "hdrp_fixes.json",
   "rows": [
     {
+      "match": "tripo_material_7597ba0f",
+      "color": [1.0, 1.0, 1.0],
+      "smoothnessMax": -1,
+      "smoothnessMin": -1,
+      "metallicMax": -1,
+      "aoStrength": -1,
+      "normalScale": -1,
+      "emissiveScale": 0.0,
+      "tiling": 0
+    },
+    {
       "match": "M_Camp_canvas",
       "color": [
         0.78,
@@ -170,11 +181,7 @@
     },
     {
       "match": "dead_tree_1",
-      "color": [
-        1.4,
-        1.28,
-        1.15
-      ],
+      "color": [1.0, 1.0, 1.0],
       "smoothnessMax": 0.3,
       "smoothnessMin": -1,
       "metallicMax": -1,

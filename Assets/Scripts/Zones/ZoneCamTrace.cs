@@ -24,6 +24,7 @@ using UnityEngine;
 {
     public bool enabled = true, flipY = false, autoOrient = true, whileEngagedOnly = false;
     public float hz = 6f, startAfterS = 0f; public string format = "jpg", mode = "texture", folder = "frames";
+    public bool evBurst = false; public int evFps = 60, evMax = 60; public float evWindowS = 0.4f, evCooldownS = 1.2f;   /* FK_CAPBURST_V1 */
     public int jpgQuality = 88, width = 1600, maxFrames = 6000, calibFrames = 4, markerPx = 48, maxPending = 24; public float[] markerRgb = new float[] { 1f, 0f, 1f };
 }
 [Serializable] public class CtPass
@@ -62,6 +63,8 @@ public sealed class ZoneCamTrace : MonoBehaviour
     static readonly string[] stNames = Enum.GetNames(typeof(FState)), chNames = Enum.GetNames(typeof(ChaseMode)); static FieldInfo zoneField; static bool zoneFieldTried;
     static readonly WaitForEndOfFrame eof = new WaitForEndOfFrame();
     Texture2D outTex; CtMeta meta = new CtMeta();
+    // FK_CAPBURST_V1 event burst + dump-rate state (private, not serialized)
+    bool evOn, evSetCfr; int evLeft, evN, evK, evMaxN, evFps, evPrevCfr, pTgt = -1, pPl = -1, rDropped, rWinN, rLastDropped; float evWin, evCoolS, evCoolUntil, rDue, rWinT; string evNm = "";
 
     static string Arg(string prefix) { foreach (var a in Environment.GetCommandLineArgs()) if (a.StartsWith(prefix, StringComparison.Ordinal)) return a.Substring(prefix.Length); return null; }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { inst = null; Step = ""; EngagedNow = 0; NearestGap = 99f; }
@@ -85,6 +88,7 @@ public sealed class ZoneCamTrace : MonoBehaviour
             if (t != null) File.WriteAllText(Path.Combine(dir, "camtrace_data.json"), t);
         }
         catch (Exception e) { Debug.LogWarning("[CamTrace] cannot write to " + dir + ": " + e.Message); Destroy(gameObject); return; }
+        EvInit();
         t0 = Time.unscaledTime; calibLeft = C.frames.enabled && C.frames.autoOrient ? Mathf.Max(1, C.frames.calibFrames) : 0; flip = C.frames.flipY; orientKnown = calibLeft == 0;
         meta.unity = Application.unityVersion; meta.build = Application.version + " " + Application.platform; meta.commandLine = string.Join(" ", Environment.GetCommandLineArgs()); meta.startedUtc = DateTime.UtcNow.ToString("o"); meta.screenW = Screen.width; meta.screenH = Screen.height;
         Header(); Debug.Log("[CamTrace] on: " + dir + " (csv every frame, frames " + (C.frames.enabled ? C.frames.hz.ToString("F1") + " Hz " + C.frames.format + " width " + C.frames.width : "off") + ", screen " + Screen.width + "x" + Screen.height + ")");
@@ -138,9 +142,24 @@ public sealed class ZoneCamTrace : MonoBehaviour
         }
     }
 
+    static float lodAuditNext = 30f;
+    static void LodAudit()
+    {
+        var gs = UnityEngine.Object.FindObjectsByType<LODGroup>(FindObjectsInactive.Exclude); int total = 0, unwired = 0, multi = 0, bad = 0; var sb = new System.Text.StringBuilder();
+        foreach (var g in gs)
+        {
+            if (g == null) continue; total++; var lods = g.GetLODs(); int withR = 0, empty = 0; for (int i = 0; i < lods.Length; i++) { int n = 0; if (lods[i].renderers != null) foreach (var r in lods[i].renderers) if (r != null) n++; if (n > 0) withR++; else empty++; }
+            bool allEmpty = withR == 0; if (allEmpty) unwired++;
+            int on = 0; foreach (var r in g.GetComponentsInChildren<Renderer>(false)) { if (r == null || !r.enabled) continue; string nm = r.name; if (nm.IndexOf("LOD", StringComparison.OrdinalIgnoreCase) >= 0) on++; }
+            if (on >= 2) { multi++; if (allEmpty || empty > 0) { bad++; if (sb.Length < 600) sb.Append(g.name).Append(" (").Append(on).Append(" LOD meshes on, ").Append(empty).Append("/").Append(lods.Length).Append(" levels empty); "); } }
+        }
+        Debug.Log("[LodAudit] t=" + Time.unscaledTime.ToString("F0") + " groups " + total + ", all-levels-empty " + unwired + ", >=2 LOD-named renderers enabled " + multi + ", BAD (multi + empty levels) " + bad + (sb.Length > 0 ? " e.g. " + sb : ""));
+    }
+
     void LateUpdate()
     {
         if (csv == null || closed) return;
+        if (Time.unscaledTime >= lodAuditNext) { lodAuditNext = Time.unscaledTime + 60f; try { LodAudit(); } catch (Exception e) { Debug.LogWarning("[LodAudit] failed: " + e.Message); } }   // LODAUDIT v1 (QA only, camtrace): universal count of LODGroups that draw several LOD meshes at once
         try { Record(); } catch (Exception e) { errors++; if (errors <= 3) Debug.LogWarning("[CamTrace] row failed: " + e.Message); if (errors > 20) { Debug.LogWarning("[CamTrace] too many errors, recorder stopped"); Close(); } }
     }
 
@@ -174,7 +193,8 @@ public sealed class ZoneCamTrace : MonoBehaviour
         }
         sb.Append(',').Append(capMsPrev > 0f ? '1' : '0').Append(','); F(sb, capMsPrev, 1); capMsPrev = 0f; FoeCols(pp); sb.Append('\n'); rows++;   /* FOESEP v1 */ lastMs = ms;
         if (now >= nextFlush) { nextFlush = now + Mathf.Max(0.5f, C.csv.flushEveryS); Flush(); }
-        if (C.frames.enabled && !capBusy && now - t0 >= C.frames.startAfterS && (calibLeft > 0 || now >= nextCap) && capCount < C.frames.maxFrames && (calibLeft > 0 || !C.frames.whileEngagedOnly || nEng > 0))
+        EvStep(now, tdf, near);
+        if (C.frames.enabled && evLeft <= 0 && !capBusy && now - t0 >= C.frames.startAfterS && (calibLeft > 0 || now >= nextCap) && capCount < C.frames.maxFrames && (calibLeft > 0 || !C.frames.whileEngagedOnly || nEng > 0))
         {
             if (calibLeft == 0 && capPending >= C.frames.maxPending) { capSkipped++; nextCap = now + 1f / Mathf.Max(0.1f, C.frames.hz); }
             else { capBusy = true; calibrating = calibLeft > 0; StartCoroutine(Capture(now - t0)); }
@@ -196,15 +216,15 @@ public sealed class ZoneCamTrace : MonoBehaviour
     bool IsMarker(Color p) { var c = C.frames.markerRgb; var ZK = ZoneUiCfg.Get().camTrace; var fb = ZK.fallbackRgb; float r = c.Length > 0 ? c[0] : fb[0], g = c.Length > 1 ? c[1] : fb[1], b = c.Length > 2 ? c[2] : fb[2]; return Mathf.Abs(p.r - r) < ZK.markerTol && Mathf.Abs(p.g - g) < ZK.markerTol && Mathf.Abs(p.b - b) < ZK.markerTol; }   // UIDATA_C v1
     static float Luma(Texture2D t) { float s = 0f; int n = 0; for (int y = 4; y < t.height; y += Mathf.Max(1, t.height / 8)) for (int x = 4; x < t.width; x += Mathf.Max(1, t.width / 8)) { var c = t.GetPixel(x, y); s += 0.2126f * c.r + 0.7152f * c.g + 0.0722f * c.b; n++; } return n > 0 ? s / n : 0f; }
 
-    IEnumerator Capture(float tGame)
+    IEnumerator Capture(float tGame, string evName = null)
     {
         yield return eof;
-        try { CaptureNow(tGame); }
+        try { CaptureNow(tGame, evName); }
         catch (Exception e) { errors++; if (errors <= 3) Debug.LogWarning("[CamTrace] frame failed: " + e.Message); nextCap = Time.unscaledTime + 1f; }
         finally { capBusy = false; calibrating = calibLeft > 0 && calibrating; }
     }
 
-    void CaptureNow(float tGame)
+    void CaptureNow(float tGame, string evName = null)
     {
         var sw = System.Diagnostics.Stopwatch.StartNew(); Texture2D src = null;
         try { src = ScreenCapture.CaptureScreenshotAsTexture(); } catch (Exception e) { Debug.LogWarning("[CamTrace] capture failed: " + e.Message); }
@@ -236,11 +256,64 @@ public sealed class ZoneCamTrace : MonoBehaviour
         byte[] bytes = png ? tex.EncodeToPNG() : tex.EncodeToJPG(Mathf.Clamp(C.frames.jpgQuality, 1, 100));
         if (meta.lumaOut == 0f) { meta.lumaOut = Luma(tex); Debug.Log("[CamTrace] picture mean luma source " + meta.lumaSrc.ToString("F3") + " -> written " + meta.lumaOut.ToString("F3") + " (a large difference = a colour change in the scaled path)"); try { File.WriteAllText(Path.Combine(dir, "camtrace_meta.json"), JsonUtility.ToJson(meta, true)); } catch (Exception) { } }
         Destroy(src);
-        string name = "f_" + capCount.ToString("D6") + (png ? ".png" : ".jpg"), path = Path.Combine(Path.Combine(dir, C.frames.folder), name);
+        string name = (evName != null ? evName : "f_" + capCount.ToString("D6")) + (png ? ".png" : ".jpg"), path = Path.Combine(Path.Combine(dir, C.frames.folder), name);
         sbIdx.Append(capCount).Append(',').Append(tGame.ToString("F3", System.Globalization.CultureInfo.InvariantCulture)).Append(',').Append(C.frames.folder).Append('/').Append(name).Append("\n");
         Interlocked.Increment(ref capPending); ThreadPool.QueueUserWorkItem(_ => { try { File.WriteAllBytes(path, bytes); } catch (Exception) { } finally { Interlocked.Decrement(ref capPending); } });
         capCount++; float cms = (float)sw.Elapsed.TotalMilliseconds; capMsPrev = Mathf.Max(cms, 0.1f); capMsSum += cms; if (cms > capMsMax) capMsMax = cms;
-        nextCap = Time.unscaledTime + 1f / Mathf.Max(0.1f, C.frames.hz);
+        if (evName == null) RateStep();
+    }
+
+    // ---- FK_CAPBURST_V1: event burst (QA only; off unless FK_EVTBURST=1 or camtrace.json frames.evBurst=true) ----------------
+    void EvInit()
+    {
+        string e = Environment.GetEnvironmentVariable("FK_EVTBURST"); evOn = C.frames.evBurst || e == "1" || string.Equals(e, "true", StringComparison.OrdinalIgnoreCase);
+        int fps = C.frames.evFps; float win = C.frames.evWindowS; string v;
+        if (!string.IsNullOrEmpty(v = Environment.GetEnvironmentVariable("FK_EVTFPS"))) int.TryParse(v, out fps);
+        if (!string.IsNullOrEmpty(v = Environment.GetEnvironmentVariable("FK_EVTWIN"))) float.TryParse(v, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out win);
+        evFps = Mathf.Clamp(fps, 15, 120); evWin = Mathf.Clamp(win, 0.1f, 2f); evMaxN = Mathf.Max(1, C.frames.evMax); evCoolS = Mathf.Max(0.2f, C.frames.evCooldownS);
+        if (evOn) Debug.Log("[CamTrace] event burst ON: " + evFps + " fps deterministic for " + evWin.ToString("F2") + " s per event, max " + evMaxN + ", cooldown " + evCoolS.ToString("F1") + " s");
+    }
+    // Event = the foe (rig target) or Joan ENTERS Stagger / Guard / ParryRecover / Active (clash, foe within 2.5 m) / Dead. Rule names match fk_oneroute make_manifest: hit, block, parry, clash, finisher (+ p-prefixed for Joan).
+    void EvStep(float now, DuelFighter tdf, float near)
+    {
+        if (!evOn || closed || !C.frames.enabled || calibLeft > 0 || !orientKnown) return;
+        int ts = tdf != null ? (int)tdf.state : -1, ps = player != null ? (int)player.state : -1; string ev = null;
+        if (evLeft <= 0 && Time.realtimeSinceStartup >= evCoolUntil && evN < evMaxN)
+        {
+            if (ts != pTgt && ts >= 0 && pTgt >= 0) { FState f = (FState)ts; if (f == FState.Stagger && near <= 3.2f) ev = "hit"; else if (f == FState.Guard && near <= 3.2f) ev = "block"; else if (f == FState.ParryRecover) ev = "parry"; else if (f == FState.Active && near <= 2.5f) ev = "clash"; else if (f == FState.Dead) ev = "finisher"; }
+            if (ev == null && ps != pPl && ps >= 0 && pPl >= 0) { FState f = (FState)ps; if (f == FState.Stagger) ev = "phit"; else if (f == FState.Guard && near <= 3.2f) ev = "pblock"; else if (f == FState.ParryRecover) ev = "pparry"; }
+        }
+        pTgt = ts; pPl = ps;
+        if (ev != null)
+        {
+            evNm = ev; evN++; evK = 0; evLeft = Mathf.Max(2, Mathf.RoundToInt(evWin * evFps)); evCoolUntil = Time.realtimeSinceStartup + evCoolS;
+            if (Time.captureFramerate == 0) { evPrevCfr = 0; evSetCfr = true; Time.captureFramerate = evFps; }   // another owner (FeetBurst/CamProof) already fixed the step: leave it, never restore it
+            Debug.Log("[CamTrace] event " + ev + " #" + evN + " at frame " + Time.frameCount + " t " + (now - t0).ToString("F3") + ": burst " + evLeft + " frames at " + (Time.captureFramerate > 0 ? Time.captureFramerate : evFps) + " fps");
+        }
+        if (evLeft > 0 && !capBusy)
+        {
+            capBusy = true; calibrating = false; StartCoroutine(Capture(now - t0, "ev_" + evNm + "_" + evN.ToString("D2") + "_f" + evK.ToString("D2"))); evK++; evLeft--;
+            if (evLeft == 0 && evSetCfr) { Time.captureFramerate = evPrevCfr; evSetCfr = false; }
+        }
+    }
+    // Honest cadence: the next frame is due one interval after the PREVIOUS DUE time (not after the end of the slow capture). If a capture overruns by more than one interval the missed slots are counted and logged.
+    void RateStep()
+    {
+        float iv = 1f / Mathf.Max(0.1f, C.frames.hz), n = Time.unscaledTime; if (rDue <= 0f) rDue = n;
+        if (n - rDue > iv) { rDropped += (int)((n - rDue) / iv); rDue = n + iv; } else rDue += iv;
+        nextCap = rDue; rWinN++;
+        if (rWinT <= 0f) { rWinT = n; rLastDropped = rDropped; }
+        if (n - rWinT >= 5f)
+        {
+            int dd = rDropped - rLastDropped + 0;
+            if (dd > 0) Debug.LogWarning("[CamTrace] dump rate " + (rWinN / (n - rWinT)).ToString("F1") + " Hz requested " + C.frames.hz.ToString("F1") + ", dropped " + dd + " frames in " + (n - rWinT).ToString("F1") + " s (capture+encode mean " + (capCount > 0 ? (capMsSum / capCount).ToString("F0") : "0") + " ms, interval " + (iv * 1000f).ToString("F0") + " ms" + (capCount > 0 && capMsSum / capCount > iv * 1000f ? ": capture-bound, lower frames.width or use FK_EVTBURST" : "") + ", write-queue skips " + capSkipped + ")");
+            rWinT = n; rWinN = 0; rLastDropped = rDropped;
+        }
+    }
+    void EvEnd()
+    {
+        if (evSetCfr) { Time.captureFramerate = evPrevCfr; evSetCfr = false; }
+        float el = Time.unscaledTime - t0; Debug.Log("[CamTrace] dump rate " + (el > 0f ? (capCount / el) : 0f).ToString("F1") + " Hz requested " + C.frames.hz.ToString("F1") + ", dropped " + (rDropped + capSkipped) + " frames (slots missed " + rDropped + ", write-queue skips " + capSkipped + "), event bursts " + evN);
     }
 
     // ---- end ---------------------------------------------------------------------------------------------------------
@@ -250,6 +323,7 @@ public sealed class ZoneCamTrace : MonoBehaviour
     {
         if (closed) return; closed = true; Flush();
         try { csv.Close(); idx.Close(); } catch (Exception) { }
+        EvEnd();
         Debug.Log("[CamTrace] done: " + rows + " rows, " + capCount + " frames (" + capSkipped + " skipped for a full write queue), capture+encode mean " + (capCount > 0 ? (capMsSum / capCount).ToString("F1") : "0") + " ms max " + capMsMax.ToString("F1") + " ms -> " + dir);
     }
 }

@@ -25,11 +25,11 @@
   {
    "id": "blood_a",
    "name": "vis_blood_a",
-   "smoothness": 0.6,
+   "smoothness": 0.35,
    "tint": [
-    0.8,
-    0.8,
-    0.8
+    0.75,
+    0.55,
+    0.55
    ],
    "affectNormal": false,
    "affectSmoothness": true,
@@ -38,11 +38,11 @@
   {
    "id": "blood_b",
    "name": "vis_blood_b",
-   "smoothness": 0.6,
+   "smoothness": 0.35,
    "tint": [
-    0.8,
-    0.8,
-    0.8
+    0.75,
+    0.55,
+    0.55
    ],
    "affectNormal": false,
    "affectSmoothness": true,
@@ -51,11 +51,11 @@
   {
    "id": "blood_c",
    "name": "vis_blood_c",
-   "smoothness": 0.6,
+   "smoothness": 0.35,
    "tint": [
-    0.8,
-    0.8,
-    0.8
+    0.75,
+    0.55,
+    0.55
    ],
    "affectNormal": false,
    "affectSmoothness": true,
@@ -64,11 +64,11 @@
   {
    "id": "blood_drag",
    "name": "vis_blood_drag",
-   "smoothness": 0.55,
+   "smoothness": 0.35,
    "tint": [
-    0.8,
-    0.8,
-    0.8
+    0.75,
+    0.55,
+    0.55
    ],
    "affectNormal": false,
    "affectSmoothness": true,

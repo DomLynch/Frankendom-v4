@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 
 public sealed partial class CampLights : MonoBehaviour
 {
-    static CampLights inst; CampLightData D; readonly List<GameObject> made = new List<GameObject>(); readonly List<CampLightRow> rowOf = new List<CampLightRow>(); float next;
+    static CampLights inst; readonly HashSet<int> hdLogged = new HashSet<int>(); CampLightData D; readonly List<GameObject> made = new List<GameObject>(); readonly List<CampLightRow> rowOf = new List<CampLightRow>(); float next;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { inst = null; }
 
@@ -59,6 +59,7 @@ public sealed partial class CampLights : MonoBehaviour
             var g = made[i]; if (g == null) continue;
             bool want = live && (p.transform.position - g.transform.position).sqrMagnitude <= rowOf[i].activeRadiusM * rowOf[i].activeRadiusM;
             if (g.activeSelf != want) g.SetActive(want);
+            if (want && D.log && hdLogged.Add(i)) { var ll = g.GetComponent<Light>(); var hh = g.GetComponent<HDAdditionalLightData>(); if (ll != null && hh != null) Debug.Log("[CampLights] HELD " + g.name + " written " + rowOf[i].candela.ToString("F0") + " cd; Light.intensity " + ll.intensity.ToString("F1") + " " + ll.lightUnit + "; HD.intensity " + hh.intensity.ToString("F1") + " " + hh.lightUnit); }   // HELD: what HDRP actually holds per row once the light is on (the stored default when the written candela never arrived)
         }
     }
 }
