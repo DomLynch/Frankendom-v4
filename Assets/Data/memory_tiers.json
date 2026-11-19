@@ -4,7 +4,7 @@
   "defaultPreset": "high",
   "prefsKey": "gfx.preset",
   "autoPick": {
-    "enabled": false,
+    "enabled": true,
     "_about": "Used when no -qa_tier flag and no saved player choice. SystemInfo.systemMemorySize (MB) and graphicsMemorySize (MB, the dedicated card; a unified-memory machine reports its shared pool, the 64 GB laptop reports 49144) each give a preset, the lower one wins. -qa_ram:N (GB) replaces the real RAM for the pick (QA on a big machine). A 16 GB machine reports about 15.5-16.3 GB, so ramMbLow 18000 catches it; 32 GB reports about 31-32 GB and stays High.",
     "ramMbLow": 18000,
     "ramMbMedium": 26000,

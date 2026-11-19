@@ -57,7 +57,7 @@
   ],
   "blood": {
     "_about": "B1 fixes. lengthScale 1.6 (droplets, not needles; was 3.2 before v69), wet dark colour (0.35,0.02,0.02) fading to endColor, softDistance 0.15 on the bloodStrands material (-1 = leave the fx_materials.json value), velocityScale = small flight stretch, sizeScale / countScale x the BloodBurst V3 numbers. dropColor / mistColor = CombatVFX BloodDrops / BloodMist start colours (were 0.145,0.008,0.008 and 0.22,0.015,0.015).",
-    "lengthScale": 1.6, "velocityScale": 0.02, "softDistance": 0.15, "sizeScale": 2.20, "countScale": 3.00,
+    "lengthScale": 1.6, "velocityScale": 0.02, "softDistance": 0.15, "sizeScale": 2.20, "countScale": 1.00,
     "startColor": { "r": 0.35, "g": 0.02, "b": 0.02, "a": 1.0 },
     "endColor":   { "r": 0.14, "g": 0.01, "b": 0.01, "a": 1.0 },
     "dropColor":  { "r": 0.22, "g": 0.012, "b": 0.012, "a": 1.0 },
