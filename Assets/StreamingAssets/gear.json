@@ -2040,7 +2040,7 @@
       },
       "name": "War axe",
       "slot": "mainHand",
-      "glb": "Gear/GreatAxe_v2.glb",
+      "glb": "Gear/GreatAxe_war.glb",
       "resource": "",
       "part": "",
       "coversZones": [],

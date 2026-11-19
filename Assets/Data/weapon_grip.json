@@ -485,12 +485,12 @@
         119.22,
         257.65
       ],
-      "slide": -0.4,
+      "slide": 0.0,
       "blendSeconds": 0.1,
       "debugLog": false,
       "weapon": "war_axe",
       "_gen": "laneALPHAPACK weapons v1",
-      "_fit": "UNPROVEN GUESS: the pitborn_maul row cloned. Erlking_axe.glb also has grip = origin and +Y along the haft, but the haft thickness is unmeasured on Joan's hand. Fit by one frame (equip -weapon war_axe) then edit the 3 numbers."
+      "_fit": "AXEGRIP v1: grip node of GreatAxe_war.glb is the right palm, slide 0.0. Erlking_axe.glb also has grip = origin and +Y along the haft, but the haft thickness is unmeasured on Joan's hand. Fit by one frame (equip -weapon war_axe) then edit the 3 numbers."
     },
     {
       "name": "Joan",
@@ -507,12 +507,12 @@
         119.22,
         257.65
       ],
-      "slide": -0.85,
+      "slide": 0.0,
       "blendSeconds": 0.1,
       "debugLog": false,
       "weapon": "war_axe",
       "_gen": "laneALPHAPACK weapons v1",
-      "_fit": "UNPROVEN GUESS: the pitborn_maul row cloned. Erlking_axe.glb also has grip = origin and +Y along the haft, but the haft thickness is unmeasured on Joan's hand. Fit by one frame (equip -weapon war_axe) then edit the 3 numbers.",
+      "_fit": "AXEGRIP v1: grip node of GreatAxe_war.glb is the right palm, slide 0.0. Erlking_axe.glb also has grip = origin and +Y along the haft, but the haft thickness is unmeasured on Joan's hand. Fit by one frame (equip -weapon war_axe) then edit the 3 numbers.",
       "states": [
         "walk",
         "strafe_L",
@@ -538,12 +538,12 @@
         119.22,
         317.65
       ],
-      "slide": -0.6,
+      "slide": 0.0,
       "blendSeconds": 0.1,
       "debugLog": false,
       "weapon": "war_axe",
       "_gen": "laneALPHAPACK weapons v1",
-      "_fit": "UNPROVEN GUESS: the pitborn_maul row cloned. Erlking_axe.glb also has grip = origin and +Y along the haft, but the haft thickness is unmeasured on Joan's hand. Fit by one frame (equip -weapon war_axe) then edit the 3 numbers.",
+      "_fit": "AXEGRIP v1: grip node of GreatAxe_war.glb is the right palm, slide 0.0. Erlking_axe.glb also has grip = origin and +Y along the haft, but the haft thickness is unmeasured on Joan's hand. Fit by one frame (equip -weapon war_axe) then edit the 3 numbers.",
       "states": [
         "run"
       ]
