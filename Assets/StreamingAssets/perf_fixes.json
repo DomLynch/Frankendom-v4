@@ -63,7 +63,14 @@
       "Gear/gorget_joan_R.glb",
       "Gear/greave_joan_R.glb",
       "Gear/joan_helm_dom.glb",
-      "Gear/arms_joan_L.glb"
+      "Gear/arms_joan_L.glb",
+      "Npc/vendor_c2_weaponsmith.glb",
+      "Npc/npc_trader.glb",
+      "Npc/vendor_c1_armourer.glb",
+      "Npc/vendor_c1_stablemaster.glb",
+      "Npc/vendor_c2_armourer.glb",
+      "Npc/vendor_c2_apothecary.glb",
+      "Npc/vendor_c2_stablemaster.glb"
     ],
     "tier0BudgetMs": 8.0,
     "eagerStartFrames": 2,

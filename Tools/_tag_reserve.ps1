@@ -56,3 +56,19 @@ function Get-FreeQaTag {
     $cands | Get-Random -Count ([math]::Min(8, $cands.Count))
 }
 
+
+# TAGUNIQ v1 (Lead 19 Nov, COO ruling: a tag is never reused): a RELEASE tag is TAKEN if ANY trace exists: a Builds folder, a .reserved file, a TestOut\v109<tag>* file, or a board line naming v109<tag>. 2-letter tags first (a-z except k, which QA owns), then 3-letter.
+function Test-TagTaken([string]$Tag, [string]$Root = 'C:\Users\dom12\Documents\unity_test_hdrp') {
+    if (Test-Path "$Root\Builds\HDRP_v109$Tag") { return $true }
+    if (Test-Path "$Root\Builds\HDRP_v109$Tag.reserved") { return $true }
+    if (@(Get-ChildItem "$Root\TestOut" -Filter "v109$Tag*" -ErrorAction SilentlyContinue | Where-Object { $_.Name -match "^v109$Tag(_|\.|$)" }).Count -gt 0) { return $true }
+    $b = "$Root\_agents\COORDINATION.md"; if (-not $script:boardTxt) { $script:boardTxt = if (Test-Path $b) { Get-Content $b -Raw } else { '' } }
+    if ($script:boardTxt -match "v109$Tag\b") { return $true }
+    return $false
+}
+function Get-NextFreeTag([string]$Root = 'C:\Users\dom12\Documents\unity_test_hdrp') {
+    $script:boardTxt = $null; $A = @(97..122 | ForEach-Object { [string][char]$_ }); $L = @($A | Where-Object { $_ -ne 'k' })
+    foreach ($x in $L) { foreach ($y in $A) { $tag = "$x$y"; if (-not (Test-TagTaken $tag $Root)) { return $tag } } }
+    foreach ($x in $L) { foreach ($y in $A) { foreach ($z in $A) { $tag = "$x$y$z"; if (-not (Test-TagTaken $tag $Root)) { return $tag } } } }
+    throw 'tag space exhausted (3 letters)'
+}
