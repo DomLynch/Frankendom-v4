@@ -197,4 +197,7 @@ public class RagdollDeath : MonoBehaviour
     {
         if (done) return;
         done = true;
-        RagdollRig.LinkAll();   // a rig that was not pre-built (late spawn) still ignores both CharacterControlle
+        RagdollRig.LinkAll();   // a rig that was not pre-built (late spawn) still ignores both CharacterControllers
+        if (!rig.Convert(df != null ? df.opponent : null, killMove)) Debug.LogWarning("RagdollDeath: " + name + " kept its death clip (rig not built / too few parts / live cap).");
+    }
+}

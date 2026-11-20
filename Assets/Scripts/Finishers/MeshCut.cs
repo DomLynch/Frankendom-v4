@@ -721,4 +721,7 @@ public static partial class MeshCut   // V1FIN v94: partial (MeshCutCrown.cs)
         var sc = go.GetComponent<Collider>(); if (sc != null) { var cols = victim.GetComponentsInChildren<Collider>(true); for (int i = 0; i < cols.Length; i++) SafeIgnore(cols[i], sc); }
         go.AddComponent<Rigidbody>().mass = unit.massKg;
         root.localScale = Vector3.zero;
-        res.pieces.Add(go); res.o
+        res.pieces.Add(go); res.ok = true; res.note = "FALLBACK: meshes not readable, bone scaled to 0 + placeholder sphere (enable Read/Write on the model import)";
+    }
+}
+

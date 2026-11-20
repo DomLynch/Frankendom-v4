@@ -1567,12 +1567,12 @@
                      "shadow":  false,
                      "flicker":  {
                                      "baseValue":  1.0,
-                                     "amplitude":  0.0,
-                                     "frequency":  1.0,
-                                     "octaves":  1,
-                                     "seed":  7.7,
-                                     "lacunarity":  2.0,
-                                     "gain":  0.5
+                                     "amplitude":  0.1,
+                                     "frequency":  1.2,
+                                     "octaves":  2,
+                                     "seed":  5.9,
+                                     "lacunarity":  1.9,
+                                     "gain":  0.45
                                  },
                      "anchor":  "L10 spot: furnace-orange pool on the yard shoulder at the arena entrance (palette: slag furnace 1800 K, same as AccW21S furnace)",
                      "aimPitchDeg":  90.0,
@@ -1599,12 +1599,12 @@
                      "shadow":  false,
                      "flicker":  {
                                      "baseValue":  1.0,
-                                     "amplitude":  0.0,
-                                     "frequency":  1.0,
-                                     "octaves":  1,
-                                     "seed":  7.7,
-                                     "lacunarity":  2.0,
-                                     "gain":  0.5
+                                     "amplitude":  0.08,
+                                     "frequency":  0.9,
+                                     "octaves":  2,
+                                     "seed":  6.7,
+                                     "lacunarity":  1.9,
+                                     "gain":  0.45
                                  },
                      "anchor":  "L10 rim: ember back-light behind Pitborn (boss stand z 16)"
                  },
@@ -1626,12 +1626,12 @@
                      "shadow":  false,
                      "flicker":  {
                                      "baseValue":  1.0,
-                                     "amplitude":  0.0,
-                                     "frequency":  1.0,
-                                     "octaves":  1,
-                                     "seed":  7.7,
-                                     "lacunarity":  2.0,
-                                     "gain":  0.5
+                                     "amplitude":  0.08,
+                                     "frequency":  0.8,
+                                     "octaves":  2,
+                                     "seed":  8.3,
+                                     "lacunarity":  1.9,
+                                     "gain":  0.45
                                  },
                      "anchor":  "L10 spot: warm lantern pool on the moat edge at the entrance: amber against the teal grade",
                      "aimPitchDeg":  90.0,
@@ -1685,12 +1685,12 @@
                      "shadow":  false,
                      "flicker":  {
                                      "baseValue":  1.0,
-                                     "amplitude":  0.0,
-                                     "frequency":  1.0,
-                                     "octaves":  1,
-                                     "seed":  7.7,
-                                     "lacunarity":  2.0,
-                                     "gain":  0.5
+                                     "amplitude":  0.08,
+                                     "frequency":  0.8,
+                                     "octaves":  2,
+                                     "seed":  9.1,
+                                     "lacunarity":  1.9,
+                                     "gain":  0.45
                                  },
                      "anchor":  "L10 spot: camp approach lantern (no boss in z3, one row only)",
                      "aimPitchDeg":  90.0,
@@ -1808,12 +1808,12 @@
                      "shadow":  false,
                      "flicker":  {
                                      "baseValue":  1.0,
-                                     "amplitude":  0.0,
-                                     "frequency":  1.0,
-                                     "octaves":  1,
-                                     "seed":  7.7,
-                                     "lacunarity":  2.0,
-                                     "gain":  0.5
+                                     "amplitude":  0.1,
+                                     "frequency":  1.1,
+                                     "octaves":  2,
+                                     "seed":  4.3,
+                                     "lacunarity":  1.9,
+                                     "gain":  0.45
                                  },
                      "anchor":  "L10 rim: amber back-light behind Humbaba (boss stand z 211)"
                  },
@@ -1867,12 +1867,12 @@
                      "shadow":  false,
                      "flicker":  {
                                      "baseValue":  1.0,
-                                     "amplitude":  0.0,
+                                     "amplitude":  0.12,
                                      "frequency":  1.0,
-                                     "octaves":  1,
-                                     "seed":  7.7,
-                                     "lacunarity":  2.0,
-                                     "gain":  0.5
+                                     "octaves":  2,
+                                     "seed":  3.1,
+                                     "lacunarity":  1.9,
+                                     "gain":  0.45
                                  },
                      "anchor":  "L10 rim: ember back-light behind the Erlking (boss stand z 286)"
                  },

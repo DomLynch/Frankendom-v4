@@ -889,7 +889,7 @@
                                           0.0,
                                           0.5
                                       ],
-                     "activeRadiusM":  60.0,
+                     "activeRadiusM":  24.0,
                      "raycastGround":  true
                  },
                  {
@@ -1087,7 +1087,7 @@
                                           0.0,
                                           0.5
                                       ],
-                     "activeRadiusM":  60.0,
+                     "activeRadiusM":  30.0,
                      "raycastGround":  true
                  },
                  {

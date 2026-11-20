@@ -59,6 +59,17 @@ public class RagdollRig : MonoBehaviour
         Vector3 vr; return SampledVelocity(i, RagdollDeath.Cfg.inherit.windowFrames, out v, out w, out vr);
     }
     int slowTicks;
+    // DEATHFLING v1: one proof line per death ([DeathFling]); private, never serialized
+    [NonSerialized] Vector3 flingStart; [NonSerialized] float flingRawMax, flingMps, flingKg; [NonSerialized] string flingMove = ""; [NonSerialized] bool flingLogged, flingCapped;
+    void LogFling()
+    {
+        if (flingLogged || !Converted || parts.Count == 0 || parts[0].bone == null) return;
+        flingLogged = true;
+        Vector3 d = parts[0].bone.position - flingStart; d.y = 0f;
+        var ci = System.Globalization.CultureInfo.InvariantCulture;
+        Debug.Log("[DeathFling] " + name + " travelM=" + d.magnitude.ToString("F2", ci) + " settleS=" + SimTime.ToString("F1", ci) + " impulse=" + flingMps.ToString("F2", ci) + " mass=" + flingKg.ToString("F0", ci) + " killMove=" + flingMove
+            + (flingCapped ? " speedCap=" + RagdollDeath.Cfg.inherit.maxSpeed.ToString("F1", ci) + " rawMax=" + flingRawMax.ToString("F1", ci) : ""));
+    }
     // sampler ring
     Vector3[][] ringP; Quaternion[][] ringQ; Vector3[] ringRoot; float[] ringDt; int ringHead = -1, ringCount;
 
@@ -351,6 +362,7 @@ public class RagdollRig : MonoBehaviour
         Snap();   // REVIVE v1
         // 1) velocities BEFORE the Animator stops: bone velocity relative to the root (the clip) + the root's own motion, the sim knock replaces the root's horizontal part
         var inh = d.inherit;
+        flingLogged = false; flingCapped = false; flingRawMax = 0f; flingMps = 0f; flingKg = 0f; flingMove = "none";   // DEATHFLING v1
         Vector3 knock = df != null ? df.KnockVelocity : Vector3.zero;
         Vector3 rootVel = Vector3.zero; bool haveRoot = false;
         for (int i = 0; i < parts.Count; i++)
@@ -363,7 +375,7 @@ public class RagdollRig : MonoBehaviour
             if (inh.knockReplacesRoot && knock.sqrMagnitude > 1e-6f) { rv.x = knock.x * inh.knockScale; rv.z = knock.z * inh.knockScale; }   // SetKnock (this blow) replaced the slide the sim moves him with
             else add = knock * inh.knockScale;
             Vector3 total = rel + rv * inh.rootScale + add;
-            float sp = total.magnitude; if (sp > inh.maxSpeed && sp > 1e-5f) total *= inh.maxSpeed / sp;
+            float sp = total.magnitude; if (sp > inh.maxSpeed && sp > 1e-5f) { flingCapped = true; flingRawMax = Mathf.Max(flingRawMax, sp); total *= inh.maxSpeed / sp; }
             Vector3 aw = w * inh.angularScale; float asp = aw.magnitude; if (asp > inh.maxAngularSpeed && asp > 1e-5f) aw *= inh.maxAngularSpeed / asp;
             if (float.IsNaN(total.x) || float.IsNaN(total.y) || float.IsNaN(total.z)) total = Vector3.zero;
             if (float.IsNaN(aw.x) || float.IsNaN(aw.y) || float.IsNaN(aw.z)) aw = Vector3.zero;
@@ -387,7 +399,8 @@ public class RagdollRig : MonoBehaviour
             for (int i = 0; i < sk.Length; i++) sk[i].updateWhenOffscreen = true;
         }
         for (int i = 0; i < parts.Count; i++) parts[i].convertPos = parts[i].bone.position;
-        Physics.SyncTransforms();                       // kinematic bodies moved with the animation: bring PhysX to the current pose before they turn dynamic
+        flingStart = parts[0].convertPos;   // DEATHFLING v1: hips at the moment the ragdoll starts
+        Physics.SyncTransforms();                      // kinematic bodies moved with the animation: bring PhysX to the current pose before they turn dynamic
 
         // 3) solid, dynamic, moving
         CollisionDetectionMode cdm = CollisionDetectionMode.Discrete;
@@ -448,7 +461,7 @@ public class RagdollRig : MonoBehaviour
             Vector3 vc = par.inheritV + Vector3.Cross(par.inheritW, p.bone.position - par.bone.position);
             if (float.IsNaN(vc.x) || float.IsNaN(vc.y) || float.IsNaN(vc.z)) continue;
             Vector3 v = Vector3.Lerp(p.inheritV, vc, k);
-            float sp = v.magnitude; if (sp > inh.maxSpeed && sp > 1e-5f) v *= inh.maxSpeed / sp;
+            float sp = v.magnitude; if (sp > inh.maxSpeed && sp > 1e-5f) { flingCapped = true; flingRawMax = Mathf.Max(flingRawMax, sp); v *= inh.maxSpeed / sp; }
             p.inheritV = v;
         }
     }
@@ -554,6 +567,7 @@ public class RagdollRig : MonoBehaviour
         if (parts.Count == 0) return;   // KILLBUG v1
         var k = RagdollDeath.Cfg.kill;
         MoveDef m = (killer != null && killer.CurrentMove != null) ? killer.CurrentMove : victimMove;   // Killed() hands over the VICTIM's own move; the blow is the attacker's
+        flingMove = m != null && m.id != null ? m.id : "none"; flingKg = 0f; for (int i = 0; i < parts.Count; i++) flingKg += parts[i].mass;   // DEATHFLING v1
         Vector3 dir = Vector3.zero;
         if (k.attackerFacing && killer != null) dir = killer.transform.forward;
         dir.y = 0f;
@@ -569,6 +583,7 @@ public class RagdollRig : MonoBehaviour
             if (M > 1e-4f)
             {
                 Vector3 I = (dir * k.speedMps + Vector3.up * k.liftMps) * M * k.impulseScale * FinPushMul;
+                flingMps = I.magnitude / M;   // DEATHFLING v1: blow speed (m/s, whole body) incl. lift
                 float zs = Mathf.Clamp01(k.zoneShare);
                 for (int i = 0; i < parts.Count; i++) Push(parts[i], I * ((1f - zs) * parts[i].mass / M));   // every body gets the same velocity change: no whip
                 Push(zp, I * zs);                                                                                 // the struck zone gets its extra share (head / thigh)
@@ -576,6 +591,7 @@ public class RagdollRig : MonoBehaviour
             }
         }
         Vector3 imp = (dir * k.impulse + Vector3.up * k.lift) * k.impulseScale * FinPushMul;   /* FINPHYS v97 */
+        flingMps = imp.magnitude / Mathf.Max(1e-4f, flingKg);   // DEATHFLING v1: N s legacy blow expressed as whole-body m/s
         if (k.split == null || k.split.Length == 0) { Push(zp, imp); return; }
         float sum = 0f; for (int i = 0; i < k.split.Length; i++) if (k.split[i] != null) sum += Mathf.Max(0f, k.split[i].share);
         if (sum <= 1e-6f) { Push(zp, imp); return; }
@@ -605,6 +621,7 @@ public class RagdollRig : MonoBehaviour
         var dc = RagdollDeath.Cfg.death;
         ApplyDrives(SimTime);
         if (SimTime < RagdollDeath.Cfg.limits.tightenSeconds + dt) TightenLimits(SimTime);
+        if (SimTime >= 4f) LogFling();   // DEATHFLING v1: 4 s cap, once
         if (SimTime >= dc.maxSeconds) { Freeze(); return; }
         if (SimTime < Mathf.Max(dc.rampSeconds, dc.minSimSeconds)) { slowTicks = 0; return; }   // RAGDOLL v1: a propped / pinned body is not frozen standing
         float maxSq = 0f;
@@ -616,6 +633,7 @@ public class RagdollRig : MonoBehaviour
     public void Freeze()
     {
         if (Frozen) return;
+        LogFling();   // DEATHFLING v1: at rest (or maxSeconds)
         Frozen = true; live = Mathf.Max(0, live - 1);
         for (int i = 0; i < parts.Count; i++) if (parts[i].rb != null) parts[i].rb.isKinematic = true;
     }

@@ -599,19 +599,6 @@
    "dd": 0.0
   },
   {
-   "id": "gidI_sobe_pool_001",
-   "zone": "sobek_reach",
-   "tex": "gid_pool",
-   "x": -3.455,
-   "z": 55.066,
-   "yaw": 201.5,
-   "w": 2.1,
-   "h": 1.64,
-   "depth": 0.0,
-   "opacity": 0.97,
-   "dd": 40.0
-  },
-  {
    "id": "gidI_sobe_pool_002",
    "zone": "sobek_reach",
    "tex": "gid_pool",
@@ -872,19 +859,6 @@
    "dd": 45.0
   },
   {
-   "id": "l10_sobe_pool_018",
-   "zone": "sobek_reach",
-   "tex": "gid_pool",
-   "x": 3.168,
-   "z": 44.621,
-   "yaw": 193.0,
-   "w": 1.41,
-   "h": 1.19,
-   "depth": 0.0,
-   "opacity": 0.96,
-   "dd": 45.0
-  },
-  {
    "id": "l10_sobe_pool_019",
    "zone": "sobek_reach",
    "tex": "gid_pool",
@@ -911,19 +885,6 @@
    "dd": 45.0
   },
   {
-   "id": "l10_sobe_pool_021",
-   "zone": "sobek_reach",
-   "tex": "gid_pool",
-   "x": -4.052,
-   "z": 58.143,
-   "yaw": 231.5,
-   "w": 1.95,
-   "h": 1.78,
-   "depth": 0.0,
-   "opacity": 0.91,
-   "dd": 45.0
-  },
-  {
    "id": "l10_sobe_sheen_022",
    "zone": "sobek_reach",
    "tex": "wet_sheen@sobek_reach",
@@ -947,32 +908,6 @@
    "h": 1.1,
    "depth": 0.0,
    "opacity": 0.9,
-   "dd": 45.0
-  },
-  {
-   "id": "l10_sobe_puddle_024",
-   "zone": "sobek_reach",
-   "tex": "puddle_b",
-   "x": 2.784,
-   "z": 54.421,
-   "yaw": 252.6,
-   "w": 1.21,
-   "h": 1.07,
-   "depth": 0.0,
-   "opacity": 0.96,
-   "dd": 45.0
-  },
-  {
-   "id": "l10_sobe_puddle_025",
-   "zone": "sobek_reach",
-   "tex": "puddle_b",
-   "x": -3.223,
-   "z": 45.763,
-   "yaw": 224.2,
-   "w": 1.06,
-   "h": 0.85,
-   "depth": 0.0,
-   "opacity": 0.97,
    "dd": 45.0
   },
   {
