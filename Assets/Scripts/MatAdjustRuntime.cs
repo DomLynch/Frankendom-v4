@@ -143,6 +143,7 @@ public static class MatAdjustRuntime
     internal static void Scan(bool force)
     {
         DetailPackRuntime.Tick(force);   // fk_windcode: own json (detail_pack.json), own off switch (mode off = nothing), no-op in the Editor
+        PropSway.Tick(force);   // fk_propsway: own json (propsway.json), own off switch (mode off = nothing), finds the swaying props and puts them back on off, no-op in the Editor
         if (cfg == null || !cfg.enabled || all.Length == 0) return;
         var sw = Stopwatch.StartNew(); int matched = 0, baked = 0, changed = 0, props = 0;
         if (force || done.Count > 20000) done.Clear();
@@ -203,6 +204,7 @@ public class MatAdjustDriver : MonoBehaviour
             if (changed) { pending = true; nextScan = 0f; }
         }
         var c = MatAdjustRuntime.Current; if (c == null || !c.enabled) return;
+        PropSway.Frame();   // fk_propsway: the one per-frame driver of the prop sway (returns at once unless propsway.json mode is on)
         if (now < nextScan) return;
         bool fast = now < fastUntil;
         if (!fast && !pending && c.rescanSeconds <= 0f) { nextScan = now + 1f; return; }

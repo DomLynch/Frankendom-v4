@@ -35,8 +35,8 @@
         2.0,
         340.4
       ],
-      "kelvin": 3800.0,
-      "candela": 11000.0,
+      "kelvin": 4600.0,
+      "candela": 9000.0,
       "range": 5.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 16,
@@ -72,7 +72,7 @@
         1.9,
         346.4
       ],
-      "kelvin": 2200.0,
+      "kelvin": 3200.0,
       "candela": 14000.0,
       "range": 9.0,
       "volumetricDimmer": 0.0,
