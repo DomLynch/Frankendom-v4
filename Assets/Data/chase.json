@@ -16,7 +16,7 @@
       "handoverSlackM": 0.08,
       "_slack_about": "FOESEP v1: the chase hands back to the AI at gap <= stopGap + this. The ramp reaches stopGap only asymptotically, so v108c stalled in Chase at 2.62 (stop 2.6) and 3.91 (stop 3.87) while Joan stood still (laneCHASEGAP creep finding). Rows inherit it from this row. 0 = v108c.",
       "accelMps2": 10.0,
-      "giveUpGap": 16.0,
+      "giveUpGap": 50.0,
       "outOfReachGap": 5.0,
       "giveUpOutOfReachS": 9.0,
       "_giveUp_about": "gives up when the gap passes giveUpGap, OR the gap stayed above outOfReachGap for giveUpOutOfReachS seconds in a row, OR the creature is further than its spawn row's leash from home",

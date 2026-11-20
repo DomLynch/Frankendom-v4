@@ -22,7 +22,9 @@ try {
   $ptree = (git rev-parse "$parent^{tree}" 2>$null)
   if ($ptree -eq $tree) { L "no change since last backup ($($tree.Substring(0,8)))"; exit 0 }
   $c = (git commit-tree $tree -p $parent -m ("hourly backup {0} (working tree snapshot; branch main at {1})" -f (Get-Date -Format 'yyyy-MM-dd HH:mm'), (git rev-parse --short HEAD))).Trim()
-  git push -q origin "${c}:refs/heads/backup-hourly" 2>&1 | ForEach-Object { L "push: $_" }
-  if ($LASTEXITCODE -ne 0) { L "PUSH FAILED (exit $LASTEXITCODE), snapshot $($c.Substring(0,8)) is local only"; exit 1 }
+  # COO 20 Nov 14:1x: two pushes failed on 'Could not resolve host: github.com' (13:47, 14:06) while the name resolved fine a minute later. Retry up to 4 times, 20 s apart.
+  $pushExit = 1; for ($try = 1; $try -le 4 -and $pushExit -ne 0; $try++) { if ($try -gt 1) { Start-Sleep -Seconds 20 }; git push -q origin "${c}:refs/heads/backup-hourly" 2>&1 | ForEach-Object { L "push (try $try): $_" }; $pushExit = $LASTEXITCODE }
+  $global:LASTEXITCODE = $pushExit
+  if ($pushExit -ne 0) { L "PUSH FAILED (exit $LASTEXITCODE), snapshot $($c.Substring(0,8)) is local only"; exit 1 }
   L ("backup {0} pushed (tree {1}, {2} files left out)" -f $c.Substring(0,8), $tree.Substring(0,8), $big.Count)
 } finally { Remove-Item Env:\GIT_INDEX_FILE -ErrorAction SilentlyContinue; Remove-Item $tmp -ErrorAction SilentlyContinue }

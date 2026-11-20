@@ -49,6 +49,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
     public void Press(string what)
     {
         if (IsPlayer && MarketSafe.Refuses(what)) return;   // STALL v1: no attack presses in the camp (dodges stay)
+        if (BowCarry.Redirect(this, what)) return;   // BOWCARRY v1: bow up + foe inside bow_carry_clips.json club.rangeM: the melee press becomes the club move (data off / not the bow = returns false at once)
         int ttl = CombatFeel.QueueTtl(this, (int)R("bufferTtl", 11));   // P1: while a move / dodge / stagger runs, the press lives until the move can take it (cancel.json queue)
         if (ShoveTable.IsMove(what)) { pMove = what; pMoveTtl = ttl; return; }   // SHOVE v1: a shove.json move id is queued like a special; TickFree starts it (no special cooldown, no stamina refund)
         if (what == "special1" || what == "special2" || what == "special3" /* ABILITIES v1 */ || BellyBite.IsPress(what) /* BELLYBITE v1 */ || what == "light_left" || what == "light_right" || what == "heavy_overhead") { pMove = what == "special1" ? SpecialId(0) : what == "special2" ? SpecialId(1) : what == "special3" ? SpecialId(2) : what; /* DATALAYER b6 */ pMoveTtl = ttl; return; }
@@ -740,6 +741,7 @@ public partial class DuelFighter : MonoBehaviour   // V64FLOW: partial, moveset 
         }
         UpdateGuardLayer(upperPose, dt);
         BowWalk.Present(this, f, dt);   // WALKFIRE v1: upper-body bow clip over the walk legs (runtime PlayableGraph), off = returns at once
+        BowCarry.Present(this, f, dt);   // BOWCARRY v1: carry / nock / ready / club clips over the locomotion legs (runtime PlayableGraph), off = returns at once
     }
 
     // ---------------- moving guard: masked upper-body Animator layer (Assets/Editor/GuardLayerSetup.cs builds it) ----------------

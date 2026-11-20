@@ -68,6 +68,10 @@ public sealed class BanditArcher : MonoBehaviour
     DuelFighter df; AIBrain brain; TypeRow type; int lastTick = -1, windupEnd = -1, cooldownUntil, shots; bool kiting, pressed, loosedFlag; readonly NpcBowAnim.Player bowAnim = new NpcBowAnim.Player(); Animator bodyAnim;
     /// <summary>NPCARCHER v1: true during the 0.7 s aim phase (BowVisual draws the string and nocks an arrow while it holds).</summary>
     public bool Aiming { get { return windupEnd >= 0; } }
+    /// <summary>BOWCARRY v1: the draw / hold / loose clip graph is running (the carry pose stays off while it does).</summary>
+    public bool BowClipAlive { get { return bowAnim.Alive; } }
+    /// <summary>BOWCARRY v1: the arrow is on the string (the nock clip's event; true when no nock clip runs = today).</summary>
+    public bool ArrowOnString { get { return !bowAnim.Alive || bowAnim.ArrowOn; } }
 
     void Awake() { df = GetComponent<DuelFighter>(); brain = GetComponent<AIBrain>(); type = df != null ? TypeOf(df.CharacterId) : null; }
 

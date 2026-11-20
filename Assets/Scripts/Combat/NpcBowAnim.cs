@@ -10,7 +10,7 @@ using UnityEngine.Playables;
 // No serialized fields, no scene change: compile-only. Data: bandits.json ranged.useBowClips (default true), clip names fixed by file.
 public static class NpcBowAnim
 {
-    public sealed class Set { public AnimationClip draw, hold, loose; public bool legsCut; }
+    public sealed class Set { public AnimationClip draw, hold, loose, nock; public bool legsCut; }   // BOWCARRY v1: nock is optional (npc52_bow_nock.glb; absent or bow_carry_clips.json off = the draw starts at once, as before)
     static readonly System.Collections.Generic.Dictionary<string, Set> sets = new System.Collections.Generic.Dictionary<string, Set>();
     static readonly System.Collections.Generic.HashSet<string> busy = new System.Collections.Generic.HashSet<string>();
     static readonly System.Collections.Generic.Dictionary<string, float> retryAt = new System.Collections.Generic.Dictionary<string, float>();
@@ -31,6 +31,7 @@ public static class NpcBowAnim
         {
             var s = new Set();
             s.draw = await LoadClip(pre + "draw.glb"); s.hold = await LoadClip(pre + "hold.glb"); s.loose = await LoadClip(pre + "loose.glb");
+            if (BowCarry.On) s.nock = await LoadClip(pre + "nock.glb", true);   // BOWCARRY v1: optional, no warning when the file is not there
             if (s.draw == null || s.hold == null || s.loose == null) { Debug.LogWarning("[NpcBow] clip load incomplete (" + pre + "): those archers keep the old pose, retry in 10 s"); retryAt[kind] = Time.unscaledTime + 10f; }
             else { sets[kind] = s; Debug.Log("[NpcBow] clips loaded (" + pre + "): draw " + s.draw.length.ToString("F2") + " s, hold " + s.hold.length.ToString("F2") + " s, loose " + s.loose.length.ToString("F2") + " s"); }
         }
@@ -38,10 +39,10 @@ public static class NpcBowAnim
         finally { busy.Remove(kind); }   // LOADFIX v1
     }
 
-    static async Task<AnimationClip> LoadClip(string file)
+    static async Task<AnimationClip> LoadClip(string file, bool optional = false)
     {
         string p = Path.Combine(Path.Combine(Application.streamingAssetsPath, "Npc"), file);
-        if (!File.Exists(p)) { Debug.LogWarning("[NpcBow] missing " + p); return null; }
+        if (!File.Exists(p)) { if (!optional) Debug.LogWarning("[NpcBow] missing " + p); return null; }
         var g = new GLTFast.GltfImport();
         if (!await g.LoadFile(p)) return null;
         var cl = g.GetAnimationClips(); if (cl == null || cl.Length == 0 || cl[0] == null) return null;
@@ -51,7 +52,9 @@ public static class NpcBowAnim
     /// <summary>One playing sequence on one archer's Animator.</summary>
     public sealed class Player
     {
-        PlayableGraph graph; AnimationClipPlayable cur; AnimationPlayableOutput outp; bool alive; float untilT; string phase = "";
+        PlayableGraph graph; AnimationClipPlayable cur; AnimationPlayableOutput outp; bool alive; float untilT, nockT0; string phase = "";
+        /// <summary>BOWCARRY v1: the arrow is on the string (the nock clip is past bow_carry_clips.json npc52_nock eventS, or no nock phase runs).</summary>
+        public bool ArrowOn { get { return phase != "nock" || Time.time - nockT0 >= BowCarry.EventS("npc52_nock", 0.35f); } }
         public bool Alive { get { return alive; } }
         public string Phase { get { return phase; } }
         // 52-bone bodies: the clip's leg / foot / toe curves and the hips translation were authored for another rest pose and left the Cedar hanging ~0.5 m above the ground on pointed feet. They are cut from the clips once (the legs then stay in the body's own bind stance, feet flat); the arms, spine and head keep the clip.
@@ -63,8 +66,9 @@ public static class NpcBowAnim
                 string n = t.name; bool leg = n.IndexOf("Leg", StringComparison.OrdinalIgnoreCase) >= 0 || n.IndexOf("Foot", StringComparison.OrdinalIgnoreCase) >= 0 || n.IndexOf("Toe", StringComparison.OrdinalIgnoreCase) >= 0; bool hips = n.EndsWith("Hips");
                 if (!leg && !hips) continue;
                 string path = PathOf(an.transform, t); if (path == null) continue;
-                foreach (var c in new[] { s.draw, s.hold, s.loose })
+                foreach (var c in new[] { s.draw, s.hold, s.loose, s.nock })
                 {
+                    if (c == null) continue;
                     if (hips) { c.SetCurve(path, typeof(Transform), "localPosition.x", null); c.SetCurve(path, typeof(Transform), "localPosition.y", null); c.SetCurve(path, typeof(Transform), "localPosition.z", null); }
                     else foreach (var p in new[] { "localRotation.x", "localRotation.y", "localRotation.z", "localRotation.w", "localPosition.x", "localPosition.y", "localPosition.z" }) c.SetCurve(path, typeof(Transform), p, null);
                 }
@@ -86,7 +90,8 @@ public static class NpcBowAnim
                 Stop();
                 graph = PlayableGraph.Create("NpcBow"); graph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
                 outp = AnimationPlayableOutput.Create(graph, "NpcBowOut", an);
-                cur = AnimationClipPlayable.Create(graph, s.draw); outp.SetSourcePlayable(cur); graph.Play(); alive = true; phase = "draw"; untilT = Time.time + s.draw.length;
+                bool nocking = BowCarry.On && s.nock != null; var first = nocking ? s.nock : s.draw;   // BOWCARRY v1: nock (0.53 s, bow up + string hand to the string), then the draw continues from its own nocked pose
+                cur = AnimationClipPlayable.Create(graph, first); outp.SetSourcePlayable(cur); graph.Play(); alive = true; phase = nocking ? "nock" : "draw"; nockT0 = Time.time; untilT = Time.time + first.length;
                 return true;
             }
             catch (Exception e) { Debug.LogWarning("[NpcBow] start failed: " + e.Message); Stop(); return false; }
@@ -104,6 +109,7 @@ public static class NpcBowAnim
             try
             {
                 if (loosed && phase != "loose") { Swap(s.loose, "loose", false, BowCfg.Get().visual.npc != null ? BowCfg.Get().visual.npc.looseStartS : 0f); if (BowCfg.Log) Debug.Log("[bow] npc release t=" + Time.time.ToString("F3") + " loose clip from " + (BowCfg.Get().visual.npc != null ? BowCfg.Get().visual.npc.looseStartS : 0f).ToString("F2") + " s"); return; }
+                if (phase == "nock" && Time.time >= untilT && aiming) { Swap(s.draw, "draw", false, BowCarry.ResumeS("npc52_nock")); return; }   // BOWCARRY v1: the draw clip starts at its own nocked pose (npc52_nock resumeS, 0.30 s)
                 if (phase == "draw" && Time.time >= untilT && aiming) { Swap(s.hold, "hold", true); return; }
                 if (phase == "hold" && Time.time >= untilT && aiming) { Swap(s.hold, "hold", true); return; }
                 if (phase == "loose" && Time.time >= untilT) Stop();

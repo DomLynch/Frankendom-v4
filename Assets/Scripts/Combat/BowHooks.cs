@@ -28,10 +28,10 @@ public static class BowHooks
     public static List<DuelFighter> Fighters { get { return allFighters; } }   // FREEAIM v1
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    static void ResetStatics() { states.Clear(); bowByChar.Clear(); bowUp = 0; stats = null; kToggle = kPad = null; rig = null; allFighters = null; BowWalk.Reset(); SceneManager.sceneLoaded -= OnScene; }
+    static void ResetStatics() { states.Clear(); bowByChar.Clear(); bowUp = 0; stats = null; kToggle = kPad = null; rig = null; allFighters = null; BowWalk.Reset(); BowCarry.Reset(); SceneManager.sceneLoaded -= OnScene; }
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Boot() { SceneManager.sceneLoaded -= OnScene; SceneManager.sceneLoaded += OnScene; }
-    static void OnScene(Scene s, LoadSceneMode m) { states.Clear(); bowByChar.Clear(); bowUp = 0; rig = null; BowWalk.Reset(); }
+    static void OnScene(Scene s, LoadSceneMode m) { states.Clear(); bowByChar.Clear(); bowUp = 0; rig = null; BowWalk.Reset(); BowCarry.Reset(); }
 
     // ---------------- seams ----------------
     public static bool Active(DuelFighter f) { if (bowUp == 0 || f == null) return false; State st; return states.TryGetValue(f, out st) && st.bow; }

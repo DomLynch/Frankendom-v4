@@ -17,8 +17,8 @@
   "rayUpM": 3.0,
   "rayDownM": 6.0,
   "anisoLevel": 4.0,
-  "spawnPerFrame": 6,
-  "retryPolls": 600,
+  "spawnPerFrame": 16,
+  "retryPolls": 30,
   "maxTotal": 706,
   "decalLayer": -1,
   "textures": [

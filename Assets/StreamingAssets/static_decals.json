@@ -17,8 +17,8 @@
   "rayUpM": 3.0,
   "rayDownM": 6.0,
   "anisoLevel": 4.0,
-  "spawnPerFrame": 6,
-  "retryPolls": 600,
+  "spawnPerFrame": 16,
+  "retryPolls": 30,
   "maxTotal": 700,
   "decalLayer": -1,
   "textures": [
@@ -6182,7 +6182,8 @@
       "yaw": 282.2,
       "w": 11.64,
       "h": 9.48,
-      "depth": 0.0,
+      "depth": 0.2,
+      "yOffset": -0.2,
       "opacity": 0.76,
       "dd": 90.0
     },
@@ -6234,7 +6235,8 @@
       "yaw": 112.5,
       "w": 13.44,
       "h": 12.52,
-      "depth": 0.0,
+      "depth": 0.2,
+      "yOffset": -0.2,
       "opacity": 0.73,
       "dd": 90.0
     },
@@ -6247,7 +6249,8 @@
       "yaw": 89.8,
       "w": 13.78,
       "h": 10.85,
-      "depth": 0.0,
+      "depth": 0.2,
+      "yOffset": -0.2,
       "opacity": 0.75,
       "dd": 90.0
     },
@@ -6650,7 +6653,8 @@
       "yaw": 226.3,
       "w": 7.37,
       "h": 7.0,
-      "depth": 0.0,
+      "depth": 0.2,
+      "yOffset": -0.2,
       "opacity": 0.71,
       "dd": 90.0
     },
@@ -6754,7 +6758,8 @@
       "yaw": 138.3,
       "w": 9.12,
       "h": 9.09,
-      "depth": 0.0,
+      "depth": 0.2,
+      "yOffset": -0.2,
       "opacity": 0.68,
       "dd": 90.0
     },
@@ -6819,7 +6824,8 @@
       "yaw": 291.4,
       "w": 8.74,
       "h": 6.37,
-      "depth": 0.0,
+      "depth": 0.2,
+      "yOffset": -0.2,
       "opacity": 0.7,
       "dd": 90.0
     },
