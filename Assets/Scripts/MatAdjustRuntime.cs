@@ -246,4 +246,9 @@ public class MatAdjustProof : MonoBehaviour
             sb.AppendLine("rows with materials: " + rowsHit + " of " + MatAdjustRuntime.Rows.Length);
             sb.AppendLine("RESULT " + (fails == 0 ? "PASS" : "FAIL") + " fails=" + fails);
         }
-        string o =
+        string o = Arg("-mapout:"); if (!string.IsNullOrEmpty(o)) { try { File.WriteAllText(o, sb.ToString()); } catch (Exception e) { UnityEngine.Debug.LogWarning("[MatAdjust] proof out: " + e.Message); } }
+        UnityEngine.Debug.Log("[MatAdjust] proof\n" + sb);
+        if (!Flag("-makeep")) Application.Quit();
+    }
+}
+#endif
