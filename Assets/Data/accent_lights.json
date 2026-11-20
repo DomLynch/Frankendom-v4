@@ -2184,7 +2184,7 @@
                                  58.0
                              ],
                      "kelvin":  2000,
-                     "candela":  4500,
+                     "candela":  0.0,
                      "range":  8,
                      "volumetricDimmer":  0.0,
                      "activeRadiusM":  34.0,

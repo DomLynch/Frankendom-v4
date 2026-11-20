@@ -1,7 +1,19 @@
 {
-  "_about": "PROPSRUNTIME v1: props placed at runtime from a GLB, no scene bake. enabled=false (shipped) = nothing runs. Row: id, zone (zones.json zone id), glb (file under StreamingAssets/<folder>/), pos [x,z] (ground found by raycast) or [x,y,z], yaw (deg), scale, castShadows, collider none|box|mesh, enabled. A zone change removes the zone's props; the file is hot-reloaded while the zone is up. Log: [PropsRuntime] zone X: applied N rows, failed M, skipped K.",
-  "enabled": false,
+  "_about": "PROPSRUNTIME rows. hubrim_* = Tripo ground pieces on the hub ground edge (FK Lead 20 Nov, Strategy row-10 guide). Revert: enabled false or delete the hubrim_ rows.",
+  "enabled": true,
   "folder": "PropsRuntime",
   "reloadCheckSeconds": 3.0,
-  "rows": []
-}
+  "rows": [
+    {
+      "id": "hubrim_wall_w",
+      "zone": "hub_camp",
+      "glb": "fk_g2_fallen_wall_LOD1_2k.glb",
+      "pos": [
+        -16.0,
+        146.0
+      ],
+      "yaw": 80.0,
+      "scale": 1.2,
+      "castShadows": false,
+      "collider": "none",
+      "enabled": tru
