@@ -270,6 +270,22 @@
         "emissiveScale":  0,
         "tiling":  0,
         "_fkz6tree":  "z6 hanging lanterns: baked orange glass albedo dimmed to about 0.35x, sooty metal"
+    },
+    {
+      "match": "tripo_material_92bfa443",
+      "color": [
+        0.9,
+        0.9,
+        0.9
+      ],
+      "smoothnessMax": -1,
+      "smoothnessMin": -1,
+      "metallicMax": -1,
+      "aoStrength": -1,
+      "normalScale": -1,
+      "emissiveScale": -1,
+      "tiling": 0,
+      "_fkhubslab": "HUB lion statue + plinth share this one material (hub_lion_statue, LOD0 to LOD2, row z3h_hub_lion_statue). Sunlit plinth stone measured p99 display luma 234 (91.9 percent), max 247 (96.7 percent) in hub_back_yaw0 hh4o. k 0.90 gamma colour = linear albedo x0.79; the bronze lion darkens by the same factor. Revert = delete this row."
     }
   ],
   "_rowsNote": "optional extra rows with the same fields as hdrp_fixes.json matAdjust (match, color, normalScale, tiling, metallicMax, smoothnessMax, smoothnessMin, aoStrength, emissiveScale); applied AFTER the source rows, so they win.",

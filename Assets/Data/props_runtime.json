@@ -9,27 +9,12 @@
       "zone": "hub_camp",
       "glb": "fk_g2_fallen_wall_LOD1_2k.glb",
       "pos": [
-        -21.0,
-        -0.5,
-        156.0
+        -11.0,
+        -0.3,
+        128.0
       ],
       "yaw": 40.0,
-      "scale": 1.25,
-      "castShadows": false,
-      "collider": "none",
-      "enabled": true
-    },
-    {
-      "id": "hubrim_col_a",
-      "zone": "hub_camp",
-      "glb": "fk_g3_toppled_column_scorched_LOD1_2k.glb",
-      "pos": [
-        -15.0,
-        -0.3,
-        148.0
-      ],
-      "yaw": 310.0,
-      "scale": 1.9,
+      "scale": 1.6,
       "castShadows": false,
       "collider": "none",
       "enabled": true
@@ -39,12 +24,27 @@
       "zone": "hub_camp",
       "glb": "fk_g1_boulder_cluster_LOD1_2k.glb",
       "pos": [
-        -11.0,
-        -0.25,
-        142.0
+        -13.0,
+        -0.3,
+        145.0
       ],
       "yaw": 200.0,
-      "scale": 1.1,
+      "scale": 2.1,
+      "castShadows": false,
+      "collider": "none",
+      "enabled": true
+    },
+    {
+      "id": "hubrim_col_a",
+      "zone": "hub_camp",
+      "glb": "fk_g3_toppled_column_scorched_LOD1_2k.glb",
+      "pos": [
+        -3.0,
+        -0.3,
+        122.0
+      ],
+      "yaw": 310.0,
+      "scale": 3.2,
       "castShadows": false,
       "collider": "none",
       "enabled": true
@@ -54,12 +54,12 @@
       "zone": "hub_camp",
       "glb": "fk_g1_boulder_cluster_LOD1_2k.glb",
       "pos": [
-        -3.0,
-        -0.2,
-        136.0
+        5.0,
+        -0.3,
+        134.0
       ],
       "yaw": 95.0,
-      "scale": 0.8,
+      "scale": 1.5,
       "castShadows": false,
       "collider": "none",
       "enabled": true
@@ -69,12 +69,12 @@
       "zone": "hub_camp",
       "glb": "fk_g1_boulder_cluster_LOD1_2k.glb",
       "pos": [
-        6.0,
-        -0.4,
+        14.0,
+        -0.6,
         152.0
       ],
       "yaw": 75.0,
-      "scale": 1.4,
+      "scale": 2.3,
       "castShadows": false,
       "collider": "none",
       "enabled": true
@@ -84,27 +84,12 @@
       "zone": "hub_camp",
       "glb": "fk_g2_fallen_wall_LOD1_2k.glb",
       "pos": [
-        11.0,
+        9.0,
         -0.5,
-        163.0
+        166.0
       ],
       "yaw": 150.0,
-      "scale": 0.9,
-      "castShadows": false,
-      "collider": "none",
-      "enabled": true
-    },
-    {
-      "id": "hubrim_rock_d",
-      "zone": "hub_camp",
-      "glb": "fk_g1_boulder_cluster_LOD1_2k.glb",
-      "pos": [
-        15.0,
-        -0.3,
-        140.0
-      ],
-      "yaw": 290.0,
-      "scale": 0.95,
+      "scale": 1.4,
       "castShadows": false,
       "collider": "none",
       "enabled": true
@@ -114,12 +99,27 @@
       "zone": "hub_camp",
       "glb": "fk_g3_toppled_column_scorched_LOD1_2k.glb",
       "pos": [
-        24.0,
+        15.0,
         -0.35,
-        160.0
+        143.0
       ],
       "yaw": 20.0,
-      "scale": 2.4,
+      "scale": 3.0,
+      "castShadows": false,
+      "collider": "none",
+      "enabled": true
+    },
+    {
+      "id": "hubrim_rock_d",
+      "zone": "hub_camp",
+      "glb": "fk_g1_boulder_cluster_LOD1_2k.glb",
+      "pos": [
+        -7.0,
+        -0.4,
+        160.0
+      ],
+      "yaw": 290.0,
+      "scale": 1.7,
       "castShadows": false,
       "collider": "none",
       "enabled": true

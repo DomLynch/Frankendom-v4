@@ -7309,6 +7309,32 @@
       "ground": "bottom",
       "enabled": true,
       "note": "fk_z7stage horizon: clone of baked z7_rock_8 (rock_boulder_D), x5.2 = 17.2 m wide, 5.1 m tall above the ground (feet sunk 1.8 m); broken ring of big dark ridges at 40-70 m. Revert = delete rows z7h_ridge_*."
+    },
+    {
+      "id": "worldfar_far_ruin_tower_b_2",
+      "op": "move",
+      "zone": "main",
+      "enabled": true,
+      "pos": [
+        -65.61,
+        -60.0,
+        366.72
+      ],
+      "scale": 0.01,
+      "ground": "bottom",
+      "note": "HUBSLAB 20 Nov: the grey slab floating over the hub at x575-752 y268-322 in hub_back_yaw0 is the lit base of worldfar_far_ruin_tower_b_2 (WorldFar skyline ring, rides with the player, base floats at y 11); the dark tower body above it is black against the sky. Moved 60 m under the ground at 1 percent scale (proven op, as g4v_sil_wreck_d) and then disabled. Revert = delete the two rows with id worldfar_far_ruin_tower_b_2 (ops move and disable).",
+      "lod": -1,
+      "ring": 1
+    },
+    {
+      "id": "worldfar_far_ruin_tower_b_2",
+      "op": "disable",
+      "zone": "main",
+      "enabled": true,
+      "note": "HUBSLAB: same wrapper, SetActive(false) after the move row (log line PROPSOVERLAY applied: ... N disabled counts it).",
+      "ground": "bottom",
+      "lod": -1,
+      "ring": 1
     }
   ]
 }

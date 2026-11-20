@@ -118,6 +118,15 @@ public static class RuntimeQuality
     {
         float fogInternalW = 0f;   // FOGMERGE v1: only read when the grid lock is on
         if (F.fogGridWidth > 0) { var LR0 = LookData.Get().runtime; float sc0 = Mathf.Clamp(F.renderScale, LR0.renderScaleMin, LR0.renderScaleMax); fogInternalW = Screen.width * (sc0 < 99.5f ? sc0 : 100f) * 0.01f; }   // same clamp as the render scale below
+        if (F.indirectDiffuse >= 0f || F.indirectSpecular >= 0f)   // 20 Nov: name the volumes and the HDRP default profile once (amb1/amb2 null result)
+        {
+            try
+            {
+                var vols0 = Object.FindObjectsByType<Volume>(FindObjectsSortMode.None); var dp0 = VolumeManager.instance.globalDefaultProfile; IndirectLightingController dilc0 = null; bool has0 = dp0 != null && dp0.TryGet(out dilc0);
+                Debug.Log("[RuntimeQuality] ILC apply: volumes found " + vols0.Length + ", flag indirectDiffuse=" + F.indirectDiffuse + ", default profile=" + (dp0 != null ? dp0.name : "none") + " ILC " + (has0 ? ("diffuse=" + dilc0.indirectDiffuseLightingMultiplier.value + " override=" + dilc0.indirectDiffuseLightingMultiplier.overrideState) : "absent"));
+            }
+            catch (System.Exception e0) { Debug.LogWarning("[RuntimeQuality] ILC probe failed: " + e0.Message); }
+        }
         foreach (var v in Object.FindObjectsByType<Volume>(FindObjectsSortMode.None))
         {
             var p = QualityTiers.Fresh(v, first); if (p == null) continue;   // TIERS v96: was v.sharedProfile (edits went into the shared asset)
@@ -140,6 +149,7 @@ public static class RuntimeQuality
                 if (!p.TryGet(out IndirectLightingController ilc)) ilc = p.Add<IndirectLightingController>(true);
                 if (F.indirectDiffuse >= 0f) ilc.indirectDiffuseLightingMultiplier.Override(F.indirectDiffuse);
                 if (F.indirectSpecular >= 0f) ilc.reflectionLightingMultiplier.Override(F.indirectSpecular);
+                Debug.Log("[RuntimeQuality] ILC written vol=" + v.name + " global=" + v.isGlobal + " prio=" + v.priority + " weight=" + v.weight + " profile=" + (v.sharedProfile != null ? v.sharedProfile.name : "-") + " diffuse=" + ilc.indirectDiffuseLightingMultiplier.value + " override=" + ilc.indirectDiffuseLightingMultiplier.overrideState);   // 20 Nov: amb1/amb2 moved no frame; which volumes got it?
             }
             if (p.TryGet(out HDShadowSettings hs)) { if (F.cascades > 0) hs.cascadeShadowSplitCount.Override(F.cascades); if (F.shadowDistance > 0f) hs.maxShadowDistance.Override(F.shadowDistance); }
             // TIERS v96: tier-only keys (-1 = as authored)
