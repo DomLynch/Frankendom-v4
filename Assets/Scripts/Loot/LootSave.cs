@@ -25,10 +25,10 @@ public static class LootSave
     static bool Blocked() { if (!RunMode.RealSaveBlocked) return false; SafeFile.WarnOnce("lootblock", "[LootUI] harness run without -savePath: the real loot_save.json is NOT written (state stays in memory). Pass -savePath <dir> to keep a save."); return true; }
     /// <summary>Keep a timestamped copy (loot_save.json.bad.&lt;stamp&gt;, last 3) before a reset can overwrite a file this build cannot use as it is.</summary>
     static void Keep(string p, string why) { if (Blocked()) return; if (File.Exists(p) && SafeFile.Quarantine(p, "bad", why) == null) { overwriteUnsafe = true; SafeFile.WarnOnce("lootunsafe", "[LootUI] " + why + " and no copy could be made: loot_save.json will not be overwritten this session"); } }
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)] static void HookErase() { SaveSlot.OnErase += Erase; }   // REBIND v100: New game forgets the carried items
-    static void Erase() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = true; Applied = false; overwriteUnsafe = false; startPaid = MarketCfg.Get().enabled; ledger.Coins = StartCoins(); PotionStore.GrantStart(); /* STARTSTACKS v1 */ try { if (File.Exists(Path_)) { if (Blocked()) return; SafeFile.Quarantine(Path_, "erased", "was erased by New game"); File.Delete(Path_); } SafeFile.Discard(Path_); /* ERASEFIX v1 */ } catch (Exception e) { LastError = e.Message; } }   // FIXSAVE v1: harness guard + the last 3 erased saves stay as .erased.<stamp>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)] static void HookErase() { SaveSlot.OnErase += Erase; EquipKeep.Hook(); /* EQUIPKEEP v1 */ }   // REBIND v100: New game forgets the carried items
+    static void Erase() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = true; Applied = false; overwriteUnsafe = false; startPaid = MarketCfg.Get().enabled; ledger.Coins = StartCoins(); PotionStore.GrantStart(); /* STARTSTACKS v1 */ EquipKeep.Seed(); /* EQUIPKEEP v1 */ try { if (File.Exists(Path_)) { if (Blocked()) return; SafeFile.Quarantine(Path_, "erased", "was erased by New game"); File.Delete(Path_); } SafeFile.Discard(Path_); /* ERASEFIX v1 */ } catch (Exception e) { LastError = e.Message; } }   // FIXSAVE v1: harness guard + the last 3 erased saves stay as .erased.<stamp>
 
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = false; Applied = false; LastError = ""; startPaid = false; overwriteUnsafe = false; }
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)] static void ResetStatics() { EquipKeep.Reset(); /* EQUIPKEEP v1 */ PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); ledger.Clear(); wanted.Clear(); loaded = false; Applied = false; LastError = ""; startPaid = false; overwriteUnsafe = false; }
 
     public static string Path_ { get { return Path.Combine(SavePaths.Dir, LootCfg.Get().save.file); } }
     public static IList<string> Owned { get { EnsureLoaded(); return owned; } }
@@ -105,7 +105,8 @@ public static class LootSave
         return true;
     }
 
-    public static void EnsureLoaded()
+    public static void EnsureLoaded() { if (loaded) return; LoadFile(); EquipKeep.Seed(); }   // EQUIPKEEP v1: items the player always has (the starting sword) are carried on every load, new save included
+    static void LoadFile()
     {
         if (loaded) return;
         loaded = true; PotionStore.Clear(); /* POTIONS v1 */ owned.Clear(); wanted.Clear(); ledger.Clear(); ledger.Coins = StartCoins(); PotionStore.GrantStart(); /* STARTSTACKS v1 */ startPaid = MarketCfg.Get().enabled;   // INT108 v1: new save

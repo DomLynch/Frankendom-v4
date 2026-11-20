@@ -9,7 +9,7 @@ using UnityEngine;
 // Spawn: a herd loads (one body at a time) when the player is within spawnMarginM of its rectangle and the zones are live; sleeps (SetActive false) past despawnMarginM, or while the player is in a fight.
 // Walk: pick a random point in the rectangle (not within avoidPlayerM of the player, not inside an avoid circle, not closer than minSpacingM to a herdmate), turn, walk at walkMps with a procedural gait
 // (bob / pitch / roll locked to the ground speed, the same recipe as MountRider.Gait), stand pauseSMin..pauseSMax s. Ground = a down ray (first non-player collider); no ground = stand still.
-[Serializable] public class AhBreed { public string id = ""; public string glb = ""; public float heightM = 1.75f, glbHeightM = 1.75f; public string midGlb = ""; }   // FPSX_D2: midGlb = mesh-only twin (~10k tris), "" = none
+[Serializable] public class AhBreed { public string id = ""; public string glb = ""; public float heightM = 1.75f, glbHeightM = 1.75f; public string midGlb = ""; public float[] tint = null; public float smoothness = -1f; public bool castShadow = false; }   // FPSX_D2: midGlb = mesh-only twin (~10k tris), "" = none
 [Serializable] public class AhRect { public float xMin, xMax, zMin, zMax; }
 [Serializable] public class AhCircle { public float x, z, r; }
 [Serializable] public class AhHerd
@@ -121,8 +121,8 @@ public sealed partial class AmbientHorses : MonoBehaviour
                 TexShare.Apply(body, file);   // TEXSHARE v1
                 foreach (var c in go.GetComponentsInChildren<Collider>(true)) Destroy(c);
                 var rl = new List<Renderer>(go.GetComponentsInChildren<Renderer>(true));
-                foreach (var r in rl) r.shadowCastingMode = K.shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
-                if (K.convertMaterials) s.mats.AddRange(GearMaterials.Convert(rl));
+                foreach (var r in rl) r.shadowCastingMode = K.shadows || b.castShadow ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+                if (K.convertMaterials) { var madeFull = GearMaterials.Convert(rl); s.mats.AddRange(madeFull); BreedLook(b, madeFull); }
                 body.transform.localScale = Vector3.one * (b.heightM > 0f && b.glbHeightM > 0f ? b.heightM / b.glbHeightM : 1f);
                 var hr = new Horse { go = go, body = body.transform, herd = h, rnd = new System.Random(h.seed * K.seedStride + i), wait = 0f };
                 hr.pos = RandomPoint(h, hr, s, null); hr.yaw = (float)(hr.rnd.NextDouble() * 360.0); hr.target = hr.pos; hr.wait = Pause(hr);   // hc:ok 360 = a full turn (random start heading)
@@ -154,11 +154,11 @@ public sealed partial class AmbientHorses : MonoBehaviour
         if (gen != s.gen) { Destroy(go); return; }
         foreach (var c in go.GetComponentsInChildren<Collider>(true)) Destroy(c);
         var rl = new List<Renderer>(go.GetComponentsInChildren<Renderer>(true));
-        foreach (var r in rl) r.shadowCastingMode = K.shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+        foreach (var r in rl) r.shadowCastingMode = K.shadows || b.castShadow ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
         if (rl.Count == 1 && bc.midMats != null) rl[0].sharedMaterials = bc.midMats;
         else
         {
-            if (K.convertMaterials) { var made = GearMaterials.Convert(rl); bc.made.AddRange(made); if (K.midFirstTint != null && K.midFirstTint.Length >= 3) { var tc = new Color(K.midFirstTint[0], K.midFirstTint[1], K.midFirstTint[2], 1f); foreach (var m in made) { if (m == null) continue; if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", tc); if (m.HasProperty("_Color")) m.SetColor("_Color", tc); } } }
+            if (K.convertMaterials) { var made = GearMaterials.Convert(rl); bc.made.AddRange(made); if (K.midFirstTint != null && K.midFirstTint.Length >= 3) { var tc = new Color(K.midFirstTint[0], K.midFirstTint[1], K.midFirstTint[2], 1f); foreach (var m in made) { if (m == null) continue; if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", tc); if (m.HasProperty("_Color")) m.SetColor("_Color", tc); } } BreedLook(b, made); }
             if (rl.Count == 1) bc.midMats = rl[0].sharedMaterials;
         }
         body.transform.localScale = Vector3.one * (b.heightM > 0f && b.glbHeightM > 0f ? b.heightM / b.glbHeightM : 1f);
@@ -188,9 +188,9 @@ public sealed partial class AmbientHorses : MonoBehaviour
                 if (hr.go == null) return;
                 foreach (var c in node.GetComponentsInChildren<Collider>(true)) Destroy(c);
                 var rl = new List<Renderer>(node.GetComponentsInChildren<Renderer>(true));
-                foreach (var r in rl) r.shadowCastingMode = K.shadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
+                foreach (var r in rl) r.shadowCastingMode = K.shadows || b.castShadow ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
                 if (rl.Count == 1 && bc.fullMats != null) rl[0].sharedMaterials = bc.fullMats;
-                else { if (K.convertMaterials) bc.made.AddRange(GearMaterials.Convert(rl)); if (rl.Count == 1) bc.fullMats = rl[0].sharedMaterials; }
+                else { if (K.convertMaterials) { var madeUp = GearMaterials.Convert(rl); bc.made.AddRange(madeUp); BreedLook(b, madeUp); } if (rl.Count == 1) bc.fullMats = rl[0].sharedMaterials; }
                 bool lod = K.lodMidEnterM > 0f && hr.midMain != null && rl.Count == 1; Bounds bf, bm;
                 if (lod && (!LocalBounds(hr.body, rl[0], out bf) || !LocalBounds(hr.body, hr.midMain, out bm) || (bf.center - bm.center).magnitude > K.lodMidBoundsTolM || (bf.size - bm.size).magnitude > K.lodMidBoundsTolM * 2f)) lod = false;   // hc:ok size tolerance = 2 x the centre tolerance
                 if (lod) { hr.midMain.sharedMaterials = rl[0].sharedMaterials; hr.fullR = new[] { rl[0] }; hr.midR = new[] { hr.midMain }; hr.midOn = true; rl[0].enabled = false; }
@@ -250,6 +250,20 @@ public sealed partial class AmbientHorses : MonoBehaviour
             best = new Vector3(x, 0f, z); if (ok) return best;
         }
         return best;
+    }
+
+    // FKHOUND v1: per-breed look on the materials GearMaterials just made (all new HDRP/Lit clones, never shared assets). tint multiplies the base map (null = untouched), smoothness >= 0 sets it, emission is forced off
+    // for a breed that carries a tint (a ghost / pale Tripo skin must not glow). A breed with no tint / smoothness is not touched at all.
+    static void BreedLook(AhBreed b, List<Material> made)
+    {
+        if (b == null || made == null) return; bool tinted = b.tint != null && b.tint.Length >= 3; if (!tinted && b.smoothness < 0f) return;
+        foreach (var m in made)
+        {
+            if (m == null) continue;
+            if (tinted) { var tc = new Color(b.tint[0], b.tint[1], b.tint[2], 1f); if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", tc); if (m.HasProperty("_Color")) m.SetColor("_Color", tc); if (m.HasProperty("_EmissiveColor")) m.SetColor("_EmissiveColor", Color.black); m.DisableKeyword("_EMISSIVE_COLOR_MAP"); }
+            if (b.smoothness >= 0f) { if (m.HasProperty("_Smoothness")) m.SetFloat("_Smoothness", Mathf.Clamp01(b.smoothness)); if (m.HasProperty("_SmoothnessRemapMax")) m.SetFloat("_SmoothnessRemapMax", Mathf.Clamp01(b.smoothness)); }
+        }
+        if (K != null && K.debugLog) Debug.Log("[AmbientHorses] breed look " + b.id + " tint=" + (tinted ? b.tint[0].ToString("F2") + "," + b.tint[1].ToString("F2") + "," + b.tint[2].ToString("F2") : "-") + " smooth=" + b.smoothness.ToString("F2") + " mats=" + made.Count);
     }
 
     bool Ground(float x, float z, float refY, out float y)

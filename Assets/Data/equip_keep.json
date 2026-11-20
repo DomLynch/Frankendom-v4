@@ -1,0 +1,9 @@
+{
+  "_about": "EQUIPKEEP v1 (EquipKeep.cs): nothing is ever deleted by equipping. enabled false or no file = old behaviour. keepDisplaced: any item that leaves a slot of the player (replaced by a new weapon, the off-hand shield taken off by a two-hander, take off) is put in the carried list (loot_save owned) if it was not there, one [Equip] log line each. alwaysOwned: gear.json item ids that are always carried (joan_sword = the starting sword).",
+  "enabled": true,
+  "log": true,
+  "keepDisplaced": true,
+  "mainSlot": "mainHand",
+  "offSlot": "offHand",
+  "alwaysOwned": ["joan_sword"]
+}

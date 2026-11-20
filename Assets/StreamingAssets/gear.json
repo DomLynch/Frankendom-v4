@@ -388,6 +388,18 @@
   },
   "items": [
     {
+      "id": "joan_sword",
+      "name": "Joan's sword",
+      "slot": "mainHand",
+      "glb": "", "resource": "", "part": "",
+      "coversZones": [], "hidesLayers": [],
+      "stats": {"armor": 0, "poise": 0, "weight": 0},
+      "dropFrom": [], "dropChance": 0.0,
+      "rarity": "common",
+      "statList": [{"stat": "damage", "value": 1.0}, {"stat": "speed", "value": 1.0}, {"stat": "reach", "value": 1.0}, {"stat": "posture", "value": 1.0}],
+      "notes": "EQUIPKEEP v1: the sword Joan starts with was never an item (the default sword model on the socket, WeaponSwap id ''), so it could not appear in the carried list and a new main-hand weapon looked like it deleted it. This row makes it a real carried item (equip_keep.json alwaysOwned). No weapon block and no glb: WeaponSwap keeps her own sword model and neutral stats (equipping it = taking the weapon off). Not in any market row: not sellable."
+    },
+    {
       "id": "joan_tunic",
       "shield": {
         "id": "",

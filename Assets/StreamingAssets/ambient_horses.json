@@ -62,7 +62,10 @@
       "glb": "Mount/ghost_hound_rig_lod.glb",
       "heightM": 1.32,
       "glbHeightM": 1.32,
-      "midGlb": "Mount/ghost_hound_rig_mid.glb"
+      "midGlb": "Mount/ghost_hound_rig_mid.glb",
+      "tint": [0.34, 0.25, 0.18],
+      "smoothness": 0.12,
+      "castShadow": true
     },
     {
       "id": "erlking_hunt-courser",

@@ -355,14 +355,41 @@ public sealed partial class ZoneRuntime : MonoBehaviour
             }
             if (IsHeld(l)) continue;   // BOSSHOLD v1: the zone boss stays dormant (no engage, no brain) while its pre-boss wave lives
             if (Time.unscaledTime < arriveGraceUntil || LoadCardHold.HoldEngage() || CapCount() >= T.engage.maxEngaged) continue;   /* LOADCARD v2: no engage under the card */
-            if (Flat(pp, l.df.transform.position) <= l.row.aggro || LoadCardHold.ForceEngage(l.df) /* LOADCARD v5 */) Engage(l);
+            bool byHit = HitAggroOk(l, pp);   // RANGEDAGGRO v1: hurt while asleep (arrow from outside the aggro radius) = engaged
+            if (byHit || Flat(pp, l.df.transform.position) <= l.row.aggro || LoadCardHold.ForceEngage(l.df) /* LOADCARD v5 */) { Engage(l); if (byHit) HitAggroEngaged(l, pp); }
         }
         if (T.engage.maxEngaged > 1 && EngagedCount() > 1) Retarget(false);   // MULTI v1 (Poll)
     }
+    // ---- RANGEDAGGRO v1: a creature shot from outside its aggro radius stayed dormant (engage was distance only); if it did engage, the row leash (bandits 7 m) and chase.json giveUpGap (16 m) sent it home at once ----
+    bool HitAggroOk(Live l, Vector3 pp)
+    {
+        var e = T.engage; if (!e.hitAggro || l.df == null || l.df.Dead || l.df.health >= l.df.maxHealth - 0.01f) return false;
+        if (zone != null && (zone.safe || HubSafe.PlayerInside())) return false;   // camp / markets: no fighting
+        return HitAggroId(l, e) && Flat(pp, l.df.transform.position) <= e.hitAggroMaxM;
+    }
+    static bool HitAggroId(Live l, ZEngage e)
+    {
+        if (e.hitAggroIdPrefixes == null) return false;
+        for (int i = 0; i < e.hitAggroIdPrefixes.Length; i++) if (!string.IsNullOrEmpty(e.hitAggroIdPrefixes[i]) && l.row.id.StartsWith(e.hitAggroIdPrefixes[i], System.StringComparison.Ordinal)) return true;
+        return false;
+    }
+    void HitAggroEngaged(Live l, Vector3 pp)
+    {
+        var e = T.engage; int allies = 0; Vector3 at = l.df.transform.position;
+        LiftLeash(l, pp, e);
+        foreach (var o in live.Values)
+        {
+            if (o == l || o.df == null || o.killed || o.engaged || o.df.Dead || IsHeld(o) || CapCount() >= e.maxEngaged || !HitAggroId(o, e)) continue;
+            if (Flat(at, o.df.transform.position) > e.hitAggroAllyRadiusM) continue;
+            Engage(o); LiftLeash(o, pp, e); allies++;
+        }
+        Debug.Log("[Zones] hit-aggro " + l.row.id + " (" + l.creature + ") hp " + l.df.health.ToString("F0") + "/" + l.df.maxHealth.ToString("F0") + " at " + Flat(pp, at).ToString("F1") + " m: engaged, chase leash " + (l.chase != null ? l.chase.leash.ToString("F1") : "-") + ", allies called " + allies);
+    }
+    static void LiftLeash(Live l, Vector3 pp, ZEngage e) { if (l.chase != null) l.chase.leash = Mathf.Max(l.row.leash, Flat(l.home, pp) + e.hitAggroLeashExtraM); }
     void Engage(Live l)
     {
         LoadCardHold.OnEngage(); /* LOADCARD v5: a forced engage ends the beat */ l.engaged = true; l.df.opponent = player; if (!TargetOk(player.opponent)) player.opponent = l.df;   // MULTI v1 (Engage): both brains attack the player; a later engage does not steal the target
-        if (l.chase != null) l.chase.Restart();   // CHASE v1
+        if (l.chase != null) { l.chase.Restart(); l.chase.leash = l.row.leash; }   // CHASE v1 (RANGEDAGGRO v1: a normal engage starts from the row leash; a hit engage lifts it after this call)
         var rig = FindFirstObjectByType<CameraRig>(); if (rig != null) { rig.enemy = l.df.transform; rig.enemyHp = l.df.GetComponent<Health>(); }   // CHASE v1 (ZONES gap): the lock camera followed the inactive scene template
         if (l.brain != null) l.brain.enabled = true;
         GameLoop.Enemy = l.df; GameLoop.Player = player; combatTicks = 0;
