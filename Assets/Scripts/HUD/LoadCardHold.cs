@@ -58,6 +58,8 @@ public static class LoadCardHold
     }
 
     [Serializable] class Info { public string version = ""; }
+    /// <summary>VERSION STAMP v1: build version for the title and pause screens (same source as the load card).</summary>
+    public static string VersionLabel() { return C().showVersion ? Version() : ""; }
     static string Version()
     {
         if (version.Length > 0 || !C().showVersion) return version;

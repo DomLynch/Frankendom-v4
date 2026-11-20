@@ -43,6 +43,7 @@ public sealed class ZoneCamScene : MonoBehaviour
             ZoneCamTrace.Step = st.id; Note("step " + st.id + " (" + st.kind + ")"); float t0 = Time.realtimeSinceStartup;
             if (st.startZone.Length > 0) yield return StartCoroutine(Restart(S, new CtStep { id = st.id, zone = st.startZone, spot = st.startSpot }));   // CODE5 v1
             if (st.killAfter > 0f && st.boss.Length > 0) StartCoroutine(KillBoss(st));   // CODE5 v1
+            if (st.kind == "fight" && st.item == "deathcam") StartCoroutine(DeathCamWatch(st));   // DEATHCAM (harness)
             IEnumerator it = null;
             switch (st.kind)
             {
@@ -196,8 +197,9 @@ public sealed class ZoneCamScene : MonoBehaviour
     void PoseCam(Camera cam, DuelFighter m)
     {
         Vector3 head = m.transform.position + Vector3.up * 1.55f; Vector3 f = m.transform.forward; f.y = 0f; f.Normalize();
-        if (poseSide == 0) { poseSide = 1; foreach (var a in System.Environment.GetCommandLineArgs()) { if (a == "-posecam:left") poseSide = 2; else if (a == "-posecam:right") poseSide = 3; } }   // FK3: -posecam:left|right = camera beside Joan (hands in profile); default = front, as before
+        if (poseSide == 0) { poseSide = 1; foreach (var a in System.Environment.GetCommandLineArgs()) { if (a == "-posecam:left") poseSide = 2; else if (a == "-posecam:right") poseSide = 3; else if (a == "-posecam:low") poseSide = 4; } }   // FK3: -posecam:left|right = camera beside Joan (hands in profile); default = front, as before
         Vector3 off = poseSide == 2 ? -m.transform.right : poseSide == 3 ? m.transform.right : f; off.y = 0f; off.Normalize();
+        if (poseSide == 4) { Vector3 rt = m.transform.right; rt.y = 0f; rt.Normalize(); Vector3 gp = m.transform.position; cam.transform.position = gp + rt * 3.4f + Vector3.up * 0.30f; cam.transform.rotation = Quaternion.LookRotation((gp + Vector3.up * 0.55f) - cam.transform.position, Vector3.up); cam.fieldOfView = 60f; return; }   // AXEGRIP low: QA-only floor-level wide camera beside Joan (same relative pose every run)
         cam.transform.position = head + off * 2.4f + Vector3.up * 0.05f; cam.transform.rotation = Quaternion.LookRotation((head - Vector3.up * 0.25f) - cam.transform.position, Vector3.up); cam.fieldOfView = 38f;
     }
 
@@ -271,6 +273,33 @@ public sealed class ZoneCamScene : MonoBehaviour
     }
 
     static DuelFighter FindSpawn(string spawn, DuelFighter notMe) { string key = "#" + spawn; foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) if (f != null && f != notMe && f.name.Contains(key)) return f; return null; }
+    // DEATHCAM (harness): while a fight step with item "deathcam" runs, each foe that dies gets a close camera on its neck bone (pos = [side, up, back toward Joan] m, fov 28) for st.gapS s.
+    IEnumerator DeathCamWatch(CtStep st)
+    {
+        var cam = Camera.main; if (cam == null) yield break;
+        float side = st.pos != null && st.pos.Length > 0 ? st.pos[0] : 0.9f, up = st.pos != null && st.pos.Length > 1 ? st.pos[1] : 0.1f, back = st.pos != null && st.pos.Length > 2 ? st.pos[2] : 0.8f, dur = Mathf.Max(1f, st.gapS);
+        var seen = new HashSet<DuelFighter>(); foreach (var f0 in FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) if (f0 != null && f0.Dead) seen.Add(f0);
+        float end = Time.realtimeSinceStartup + Mathf.Max(1f, st.seconds);
+        while (Time.realtimeSinceStartup < end)
+        {
+            DuelFighter v = null; var m = Me();
+            foreach (var f in FindObjectsByType<DuelFighter>(FindObjectsSortMode.None)) if (f != null && f != m && !f.IsPlayer && f.Dead && seen.Add(f)) { v = f; break; }
+            if (v == null) { yield return new WaitForSeconds(0.1f); continue; }
+            var rig = cam.GetComponent<CameraRig>(); bool rigWas = rig != null && rig.enabled; if (rig != null) rig.enabled = false; float fov0 = cam.fieldOfView;
+            var an = v.GetComponentInChildren<Animator>(); Transform neck = an != null && an.isHuman ? an.GetBoneTransform(HumanBodyBones.Neck) : null;
+            Note("deathcam " + st.id + ": " + v.name + " neck bone " + (neck != null ? "found" : "missing (using root + 1.5 m)"));
+            float t1 = Time.realtimeSinceStartup + dur;
+            while (Time.realtimeSinceStartup < t1 && v != null)
+            {
+                Vector3 np = neck != null ? neck.position : v.transform.position + Vector3.up * 1.5f;
+                Vector3 axis = m != null ? v.transform.position - m.transform.position : v.transform.forward; axis.y = 0f; if (axis.sqrMagnitude < 1e-4f) axis = Vector3.forward; axis.Normalize();
+                Vector3 right = Vector3.Cross(Vector3.up, axis).normalized;
+                cam.transform.position = np + right * side + Vector3.up * up - axis * back; cam.transform.rotation = Quaternion.LookRotation(np - cam.transform.position, Vector3.up); cam.fieldOfView = 28f; yield return null;
+            }
+            cam.fieldOfView = fov0; if (rig != null) rig.enabled = rigWas;
+        }
+    }
+
     // killAfter: wait until the boss fights Joan (opponent == Joan, brain on), then N s later set its hp to 0: the sim's own Duel tick calls Die() at hp <= 0, so ZoneRuntime.KillWatch (kill record, gate unlock), the gear drop and the loot run unchanged.
     IEnumerator KillBoss(CtStep st)
     {

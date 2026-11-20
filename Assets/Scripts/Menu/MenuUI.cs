@@ -511,6 +511,7 @@ public sealed partial class MenuUI : MonoBehaviour
             HudDraw.Caps(cx, r.y + (r.height - L.itemSize * ML.pause.capsLine) * 0.5f, 0.5f, lab, "title", L.itemSize, L.itemSmall, L.itemTracking, sel ? Gold() : Ink(ML.pause.itemIdleAlpha));
         }
         Footer(new Rect(0f, vh - ML.pause.footerBottom, vw, ML.pause.footerH), bootMode && !string.IsNullOrEmpty(C.boot.footer) ? C.boot.footer : C.strings.footerPause);
+        { string ver = LoadCardHold.VersionLabel(); if (ver.Length > 0) { float vs = Mathf.Max(12f, L.footerSize * 0.9f); HudDraw.Text(new Rect(0f, vh - vs * 2.6f, vw * 0.988f, vs * 1.6f), "Frankendom " + ver, "serif", Mathf.RoundToInt(vs), TextAnchor.LowerRight, false, Dim()); } }   // VERSION STAMP v1: title + pause, bottom-right, dim
         if (CrashLog.ShowNotice) HudDraw.Text(new Rect(0f, vh - ML.pause.crashBottom, vw, ML.pause.crashH), C.strings.crashedNotice, "serif", L.footerSize + ML.pause.crashFontAdd, TextAnchor.MiddleCenter, false, Gold(ML.pause.crashAlpha));   // RCHYGIENE v100
     }
 

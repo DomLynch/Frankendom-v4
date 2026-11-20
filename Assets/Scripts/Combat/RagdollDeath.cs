@@ -154,7 +154,9 @@ public class RagdollDeath : MonoBehaviour
 
     static void OnKilledGlobal(DuelFighter f, MoveDef m)
     {
-        if (f == null || !PhysicsClock.PhysicsOn) return;
+        if (f == null) return;
+        FkDecap.OnKilled(f);   // DECAP v1: real-time head cut on a killing slash (decap.json enabled=false); runs before the ragdoll so RagdollRig sees the ~0-scale head bone
+        if (!PhysicsClock.PhysicsOn) return;
         if (f.GetComponent<RagdollDeath>() != null) return;   // a manually added component handles its own fighter
         if (!Matches(f)) return;
         f.gameObject.AddComponent<RagdollDeath>().Begin(m);
