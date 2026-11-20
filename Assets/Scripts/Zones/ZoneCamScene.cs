@@ -54,6 +54,7 @@ public sealed class ZoneCamScene : MonoBehaviour
                 case "flee": it = Walk(S, st, true); break;
                 case "fight": it = Fight(S, st); break;
                 case "hold": it = Hold(S, st); break;
+                case "choreo": it = Choreo(S, st); break;   // row 30 (COO 22:3x): one scripted exchange from st.item, no assists written (hp floor and kills are separate)
                 case "forceDeath": it = ForceDeath(S, st); break;   // CODE5 v1
                 case "followanimal": it = FollowAnimal(S, st); break;   // HOUNDCAM (QA harness): camera parked beside a roaming animal found by name (st.item), pos = [side, up, back] m
                 case "sidecam": it = SideCam(S, st); break;   // FK17: free camera beside / behind Joan (data pos = [right m, up m, forward m, look height m]) for st.seconds, her sim keeps running
@@ -252,6 +253,29 @@ public sealed class ZoneCamScene : MonoBehaviour
     }
 
     IEnumerator Hold(CtScene S, CtStep st) { drive = true; wantDir = Vector3.zero; wantRun = false; yield return new WaitForSeconds(st.seconds); }
+
+    // row 30 choreographed exchange. st.item = "approach;guard:2.5;strike:thrust;wait:1.0;guard:1.5;strike:heavy_overhead;wait:1.5;strike:light;wait:1.2". approach = walk to approachGapM of the opponent (max 20 s); guard:S = hold the guard input S s; strike:<move> = PressDirected(move) ("light" = Press light) then 0.9 s; wait:S = stand. Logs each action with Joan's state and the foe hp; writes no health.
+    IEnumerator Choreo(CtScene S, CtStep st)
+    {
+        drive = true; var acts = (st.item ?? "").Split(';');
+        foreach (var raw in acts)
+        {
+            var a = raw.Trim(); if (a.Length == 0) continue; var m = Me(); if (m == null) { yield return null; continue; }
+            string cmd = a, arg = ""; int ci = a.IndexOf(':'); if (ci > 0) { cmd = a.Substring(0, ci); arg = a.Substring(ci + 1); }
+            var t = m.opponent; float num; float.TryParse(arg, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out num);
+            Note("choreo " + a + " t=" + Time.realtimeSinceStartup.ToString("F1") + " state=" + m.state + " myhp=" + m.health.ToString("F0") + " foehp=" + (t != null ? t.health.ToString("F0") : "-") + " foestate=" + (t != null ? t.state.ToString() : "-"));
+            if (cmd == "approach")
+            {
+                float t0 = Time.realtimeSinceStartup;
+                while (Time.realtimeSinceStartup - t0 < 20f) { m = Me(); t = m != null ? m.opponent : null; if (m == null || t == null) { yield return null; continue; } Vector3 to = t.transform.position - m.transform.position; to.y = 0f; if (to.magnitude <= S.approachGapM) break; wantRun = false; wantDir = to.normalized; yield return null; }
+                wantDir = Vector3.zero;
+            }
+            else if (cmd == "guard") { wantDir = Vector3.zero; wantRun = false; float t0 = Time.realtimeSinceStartup; while (Time.realtimeSinceStartup - t0 < num) { m = Me(); if (m != null) m.guardHeld = true; yield return null; } m = Me(); if (m != null) m.guardHeld = false; }
+            else if (cmd == "strike") { wantDir = Vector3.zero; if (arg == "light") m.Press("light"); else m.PressDirected(arg); yield return new WaitForSeconds(0.9f); }
+            else if (cmd == "wait") { wantDir = Vector3.zero; wantRun = false; yield return new WaitForSeconds(num); }
+        }
+        wantDir = Vector3.zero;
+    }
 
     IEnumerator Fight(CtScene S, CtStep st)
     {
@@ -598,6 +622,22 @@ static class AmbDump
                 + " ssao.active=" + (ao0 != null ? ao0.active.ToString() : "?") + " ssao.quality=" + (ao0 != null ? ao0.quality.value.ToString() : "?"));
             var ap = RenderSettings.ambientProbe;
             sb.Append(" | RenderSettings ambientMode=" + RenderSettings.ambientMode + " intensity=" + RenderSettings.ambientIntensity.ToString("F2") + " probe L0 rgb=(" + ap[0, 0].ToString("F3") + "," + ap[1, 0].ToString("F3") + "," + ap[2, 0].ToString("F3") + ") sky=" + (RenderSettings.ambientSkyColor.grayscale).ToString("F3"));
+            try   // Strategy 22:25: what feeds indirect light. probe straight up/down, APV state, fog colour mode (log-only)
+            {
+                var dirs = new Vector3[] { Vector3.up, Vector3.down }; var cols = new Color[2]; ap.Evaluate(dirs, cols);
+                sb.Append(" | PROBE up=(" + cols[0].r.ToString("F3") + "," + cols[0].g.ToString("F3") + "," + cols[0].b.ToString("F3") + ") down=(" + cols[1].r.ToString("F3") + "," + cols[1].g.ToString("F3") + "," + cols[1].b.ToString("F3") + ")");
+                var pvs = UnityEngine.Object.FindObjectsByType<UnityEngine.Rendering.ProbeVolume>(FindObjectsSortMode.None);
+                var hdAsset = UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UnityEngine.Rendering.HighDefinition.HDRenderPipelineAsset;
+                var pru = UnityEngine.Rendering.ProbeReferenceVolume.instance;
+                sb.Append(" | APV supported=" + (hdAsset != null ? hdAsset.currentPlatformRenderPipelineSettings.lightProbeSystem.ToString() : "?") + " refVolInit=" + pru.isInitialized + " probeVolumeComponents=" + pvs.Length + " bakingSet=" + (pru.currentBakingSet != null ? pru.currentBakingSet.name : "none"));
+                UnityEngine.Rendering.HighDefinition.Fog fgx; var stk = UnityEngine.Rendering.HighDefinition.HDCamera.GetOrCreate(Camera.main).volumeStack;
+                fgx = stk != null ? stk.GetComponent<UnityEngine.Rendering.HighDefinition.Fog>() : null;
+                if (fgx != null) sb.Append(" | FOG colorMode=" + fgx.colorMode.value + " color=(" + fgx.color.value.r.ToString("F2") + "," + fgx.color.value.g.ToString("F2") + "," + fgx.color.value.b.ToString("F2") + ") tint=(" + fgx.tint.value.r.ToString("F2") + "," + fgx.tint.value.g.ToString("F2") + "," + fgx.tint.value.b.ToString("F2") + ") enabled=" + fgx.enabled.value);
+                var po = stk != null ? stk.GetComponent<UnityEngine.Rendering.ProbeVolumesOptions>() : null;
+                if (po != null) sb.Append(" | APVopt intensity=" + po.intensityMultiplier.value.ToString("F2"));
+                if (RuntimeQuality.AmbProbeInfo != null) sb.Append(" | AMBSW " + RuntimeQuality.AmbProbeInfo);
+            }
+            catch (System.Exception eP) { sb.Append(" | probeinfo failed: " + eP.Message); }
             var vols = UnityEngine.Object.FindObjectsByType<UnityEngine.Rendering.Volume>(FindObjectsSortMode.None);
             sb.Append(" | volumes " + vols.Length + ":");
             foreach (var v in vols)

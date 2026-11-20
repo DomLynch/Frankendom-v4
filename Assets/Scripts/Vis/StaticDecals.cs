@@ -132,11 +132,12 @@ public sealed class StaticDecals : MonoBehaviour
             if (!ok) return false;
             var go = new GameObject(string.IsNullOrEmpty(r.id) ? "sd" : r.id); go.transform.SetParent(z.root.transform, false);
             go.transform.position = new Vector3(r.x, gy + c.liftM + r.yOffset, r.z); go.transform.rotation = Quaternion.Euler(90f, r.yaw, 0f);
+            go.SetActive(false);   // 20 Nov: AddComponent on an active object runs DecalProjector.OnEnable with a null material (321-1787 'has a null UnityEngine.Material' lines per run, since at least 19 Nov); configure first, activate below
             var p = go.AddComponent<DecalProjector>(); p.material = m;
             p.size = new Vector3(r.w, r.h, r.depth > 0f ? r.depth : c.depthM); p.pivot = Vector3.zero; p.fadeFactor = Mathf.Clamp01(r.opacity);
             p.drawDistance = r.dd > 0f ? r.dd : c.drawDistance; p.fadeScale = c.fadeScale; p.startAngleFade = c.startAngleFade; p.endAngleFade = c.endAngleFade;
             if (c.decalLayer >= 0) p.decalLayerMask = (UnityEngine.Rendering.HighDefinition.RenderingLayerMask)(1u << c.decalLayer);
-            z.spawned++; return true;
+            go.SetActive(true); z.spawned++; return true;
         }
         catch (Exception e) { z.dropped++; if (c.log) Debug.LogWarning("STATICDECALS place failed " + r.id + ": " + e.Message); return true; }
     }

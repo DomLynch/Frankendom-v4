@@ -20,7 +20,7 @@ public static class RuntimeQuality
         // fogGridWidth > 0: fog froxel grid held at that many internal px at every output size (FPSA; 268 = the approved 1080p look). Skipped when fogManual / fogBudget / fogDepthRatio is set (those win). fogSlices: 170 when only the grid lock is on; in fogManual 1 the slice count.
         // fogManual 1 = Manual fog control; fogDenoise 0 none 1 reprojection 2 gaussian 3 both; ssgiRayMiss 0 none 1 sky 2 probes 3 both; fogBudget (existing key) is real again when set (FOGSSGI finding F0).
         public int fogGridWidth = 0, fogManual = -1, fogSlices = -1, fogDenoise = -1, fogDirOnly = -1, ssgiSteps = -1, ssgiDenoise = -1, ssgiHalfDenoise = -1, ssgiSecondDenoise = -1, ssgiRayMiss = -1;
-        public float fogScreenPct = -1f, fogDepthExtent = -1f, fogDepthRatio = -1f, fogUniformity = -1f, fogCutoff = -1f, fogAniso = -2f, ssgiRadius = -1f, ssgiThickness = -1f, ssgiAmbient = -1f; public int volAll = -1; }   // volAll 1 (20 Nov, COO 21:5x): every volume key below also goes on the priority-1000 runtime volume (per-profile writes are lost on the camera stack)   // ssgiAmbient (20 Nov): GlobalIllumination.ambientProbeDimmer on ray misses (Global.asset value 0, override off); -1 = as authored
+        public float fogScreenPct = -1f, fogDepthExtent = -1f, fogDepthRatio = -1f, fogUniformity = -1f, fogCutoff = -1f, fogAniso = -2f, ssgiRadius = -1f, ssgiThickness = -1f, ssgiAmbient = -1f; public int volAll = -1; public int apvOff = -1, ambStatic = -1; public float[] ambUp, ambDown; }   // apvOff 1: ProbeVolumesOptions.intensityMultiplier 0 on the runtime volume; ambStatic 1: VisualEnvironment skyAmbientMode Static there; ambUp/ambDown (rgb): RenderSettings.ambientProbe rebuilt from two colours every LateUpdate (Strategy 22:25, all off by default)   // volAll 1 (20 Nov, COO 21:5x): every volume key below also goes on the priority-1000 runtime volume (per-profile writes are lost on the camera stack)   // ssgiAmbient (20 Nov): GlobalIllumination.ambientProbeDimmer on ray misses (Global.asset value 0, override off); -1 = as authored
     [System.Serializable] public class MatOv { public string match; public float[] color; public float smoothness = -1f, metallic = -1f; }
     [System.Serializable] public class LightMul { public string name; public float mul = 1f; }
     static Flags F; static float scale = 100f;
@@ -115,7 +115,12 @@ public static class RuntimeQuality
 
     // the part of Boot that depends on the flags (TIERS v96: split out of Boot so a tier switch can run it again; the body is unchanged except where marked)
     // 20 Nov (COO 21:50, measured: r11b_ilcbind wrote indirectDiffuse 1.0 on HDRP_Global's profile and the CAMERA stack still read ILC 0.30, so edits to the existing volume's profile are lost). ONE runtime global Volume, priority 1000, weight 1, its own new VolumeProfile, holding the IndirectLightingController and the GlobalIllumination ambientProbeDimmer from the flags. Created only when a flag asks for it (indirectDiffuse / indirectSpecular / ssgiAmbient >= 0), so live does not change until a flag is set.
-    static Volume fkLightVol;
+    static Volume fkLightVol; public static string AmbProbeInfo;
+    public class FKAmbientProbe : MonoBehaviour   // runtime-added only (never in a scene): rewrites the ambient probe each frame after HDRP's own update
+    {
+        [System.NonSerialized] public Color up, down;
+        void LateUpdate() { var sh = new UnityEngine.Rendering.SphericalHarmonicsL2(); sh.Clear(); sh.AddDirectionalLight(Vector3.up, up, 1f); sh.AddDirectionalLight(Vector3.down, down, 1f); RenderSettings.ambientProbe = sh; }
+    }
     static void EnsureLightingVolume()
     {
         if (fkLightVol == null)
@@ -136,6 +141,15 @@ public static class RuntimeQuality
             if (F.hdriExposure > -900f) hsv.exposure.Override(F.hdriExposure);
             Debug.Log("[RuntimeQuality] HDRI volume prio=1000 rotation=" + (F.hdriRotation > -900f ? F.hdriRotation.ToString("F0") : "-") + " exposure=" + (F.hdriExposure > -900f ? F.hdriExposure.ToString("F1") : "-"));
         }
+        if (F.apvOff > 0) { UnityEngine.Rendering.ProbeVolumesOptions pvo; if (!prof.TryGet(out pvo)) pvo = prof.Add<UnityEngine.Rendering.ProbeVolumesOptions>(false); pvo.intensityMultiplier.Override(0f); }
+        if (F.ambStatic > 0) { VisualEnvironment ve; if (!prof.TryGet(out ve)) ve = prof.Add<VisualEnvironment>(false); ve.skyAmbientMode.Override(SkyAmbientMode.Static); }
+        if (F.ambUp != null && F.ambUp.Length >= 3 && F.ambDown != null && F.ambDown.Length >= 3)
+        {
+            var amb = fkLightVol.gameObject.GetComponent<FKAmbientProbe>(); if (amb == null) amb = fkLightVol.gameObject.AddComponent<FKAmbientProbe>();
+            amb.up = new Color(F.ambUp[0], F.ambUp[1], F.ambUp[2]); amb.down = new Color(F.ambDown[0], F.ambDown[1], F.ambDown[2]);
+            AmbProbeInfo = "probe written up=" + amb.up + " down=" + amb.down;
+        }
+        AmbProbeInfo = (AmbProbeInfo == null ? "" : AmbProbeInfo + " ") + "apvOff=" + F.apvOff + " ambStatic=" + F.ambStatic;
         if (F.volAll > 0)   // all the other volume keys, same intended values as the per-profile loop in Apply, on the one volume the camera stack honours
         {
             gil.active = F.ssgi; gil.enable.Override(F.ssgi); gil.fullResolutionSS.Override(F.ssgiFullRes); if (F.ssgiQuality >= 0) gil.quality.Override(F.ssgiQuality);
@@ -156,7 +170,7 @@ public static class RuntimeQuality
 
     static void Apply(string path, bool first)
     {
-        if (F.indirectDiffuse >= 0f || F.indirectSpecular >= 0f || F.ssgiAmbient >= 0f || F.hdriRotation > -900f || F.hdriExposure > -900f || F.volAll > 0) { try { EnsureLightingVolume(); } catch (System.Exception eV) { Debug.LogWarning("[RuntimeQuality] lighting volume failed: " + eV.Message); } }
+        if (F.indirectDiffuse >= 0f || F.indirectSpecular >= 0f || F.ssgiAmbient >= 0f || F.hdriRotation > -900f || F.hdriExposure > -900f || F.volAll > 0 || F.apvOff > 0 || F.ambStatic > 0 || F.ambUp != null) { try { EnsureLightingVolume(); } catch (System.Exception eV) { Debug.LogWarning("[RuntimeQuality] lighting volume failed: " + eV.Message); } }
         float fogInternalW = 0f;   // FOGMERGE v1: only read when the grid lock is on
         if (F.fogGridWidth > 0) { var LR0 = LookData.Get().runtime; float sc0 = Mathf.Clamp(F.renderScale, LR0.renderScaleMin, LR0.renderScaleMax); fogInternalW = Screen.width * (sc0 < 99.5f ? sc0 : 100f) * 0.01f; }   // same clamp as the render scale below
         if (F.indirectDiffuse >= 0f || F.indirectSpecular >= 0f)   // 20 Nov: name the volumes and the HDRP default profile once (amb1/amb2 null result)
