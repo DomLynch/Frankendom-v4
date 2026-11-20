@@ -54,6 +54,7 @@ public sealed class ZoneCamScene : MonoBehaviour
                 case "fight": it = Fight(S, st); break;
                 case "hold": it = Hold(S, st); break;
                 case "forceDeath": it = ForceDeath(S, st); break;   // CODE5 v1
+                case "followanimal": it = FollowAnimal(S, st); break;   // HOUNDCAM (QA harness): camera parked beside a roaming animal found by name (st.item), pos = [side, up, back] m
                 case "sidecam": it = SideCam(S, st); break;   // FK17: free camera beside / behind Joan (data pos = [right m, up m, forward m, look height m]) for st.seconds, her sim keeps running
                 case "hitPose": it = HitPose(S, st); break;   // dev2: play one Animator state on Joan, freeze at the peak, front camera (step.item = state name, step.seconds = hold)
                 case "trade": it = Trade(S, st); break; case "equip": it = EquipStep(S, st); break; case "lootscreen": it = LootShot(S, st); break; case "mounttoggle": it = MountToggle(S, st); break; case "remount": MountRider.ProofKey = true; Note("remount: virtual E press"); it = Wait(st.seconds); break; case "lonebow": it = LoneBow(S, st); break; case "pickup": it = Pickup(S, st); break; case "inv": Inv(st.id); break;   // CLOSE5B v1
@@ -156,6 +157,36 @@ public sealed class ZoneCamScene : MonoBehaviour
         Debug.Log("[CamScene-POSE] " + st.item + " hasState " + has + " clipLen " + len.ToString("F2") + " freeze at t " + t1.ToString("F2") + " hold " + st.seconds.ToString("F1"));
         while (Time.realtimeSinceStartup < t1 + Mathf.Max(0.5f, st.seconds)) { PoseCam(cam, m); yield return null; }
         an.speed = 1f; m.enabled = simWas; cam.fieldOfView = fov0; if (rig != null) rig.enabled = rigWas;
+    }
+    // HOUNDCAM (QA harness, only with -camscene): kind "followanimal". Finds the nearest ACTIVE GameObject whose name contains st.item (e.g. "AmbientHorse_gh_z6_sw_0"; waits up to min(timeoutS, 20) s for it to spawn),
+    // parks the world camera at pos = [side m, up m, back m] (default 2.0, 1.0, 2.0) relative to the animal's own right / up / behind, looks at its body centre (renderer bounds centre, else root + 0.9 m) for st.seconds (default 8),
+    // then gives the camera back (fov + CameraRig). Joan's sim is not touched. Pair it with a walk step toward the herd box first. Logs: "[CamScene] followanimal <id>: ..." lines.
+    IEnumerator FollowAnimal(CtScene S, CtStep st)
+    {
+        var cam = Camera.main; if (cam == null || st.item.Length == 0) { Note("followanimal " + st.id + ": no camera or empty item"); yield break; }
+        float side = st.pos != null && st.pos.Length > 0 ? st.pos[0] : 2.0f, up = st.pos != null && st.pos.Length > 1 ? st.pos[1] : 1.0f, back = st.pos != null && st.pos.Length > 2 ? st.pos[2] : 2.0f;
+        float dur = st.seconds > 0f ? st.seconds : 8f, tFind = Time.realtimeSinceStartup + Mathf.Min(st.timeoutS > 0f ? st.timeoutS : 20f, 20f);
+        Transform animal = null;
+        while (animal == null && Time.realtimeSinceStartup < tFind)
+        {
+            var m0 = Me(); Vector3 from = m0 != null ? m0.transform.position : Vector3.zero; float best = 1e12f;
+            foreach (var tr in FindObjectsByType<Transform>(FindObjectsSortMode.None)) { if (tr == null || !tr.gameObject.activeInHierarchy || !tr.name.Contains(st.item)) continue; float dd = (tr.position - from).sqrMagnitude; if (dd < best) { best = dd; animal = tr; } }
+            if (animal == null) yield return new WaitForSeconds(0.25f);
+        }
+        if (animal == null) { Note("followanimal " + st.id + ": no active object named *" + st.item + "* within the wait, nothing filmed"); yield return Wait(dur); yield break; }
+        var rig = cam.GetComponent<CameraRig>(); bool rigWas = rig != null && rig.enabled; if (rig != null) rig.enabled = false; float fov0 = cam.fieldOfView;
+        Note("followanimal " + st.id + ": " + animal.name + " at " + animal.position.ToString("F1") + ", offset [" + side.ToString("F1") + ", " + up.ToString("F1") + ", " + back.ToString("F1") + "] for " + dur.ToString("F1") + " s");
+        float t1 = Time.realtimeSinceStartup + dur; Vector3 look = animal.position + Vector3.up * 0.9f; bool first = true;
+        while (Time.realtimeSinceStartup < t1 && animal != null)
+        {
+            bool haveBounds = false; Bounds box = new Bounds(animal.position + Vector3.up * 0.9f, Vector3.zero);
+            foreach (var rend in animal.GetComponentsInChildren<Renderer>()) { if (rend == null || !rend.enabled) continue; if (!haveBounds) { box = rend.bounds; haveBounds = true; } else box.Encapsulate(rend.bounds); }
+            Vector3 centre = haveBounds ? box.center : animal.position + Vector3.up * 0.9f; look = first ? centre : Vector3.Lerp(look, centre, 0.25f); first = false;
+            Vector3 ahead = animal.forward; ahead.y = 0f; if (ahead.sqrMagnitude < 1e-4f) ahead = Vector3.forward; ahead.Normalize(); Vector3 right = Vector3.Cross(Vector3.up, ahead).normalized;
+            cam.transform.position = look + right * side + Vector3.up * up - ahead * back; cam.transform.rotation = Quaternion.LookRotation(look - cam.transform.position, Vector3.up); cam.fieldOfView = 40f; yield return null;
+        }
+        if (animal == null) Note("followanimal " + st.id + ": the animal was destroyed (despawn) during the step");
+        cam.fieldOfView = fov0; if (rig != null) rig.enabled = rigWas;
     }
     // FK17 SIDECAM (harness): the camera stands at pos[0] m to Joan's RIGHT (negative = left), pos[1] m above her root, pos[2] m ahead of her, looking at her root + pos[3] m (default 1.3), fov 40, for st.seconds. The camera rig is switched off and
     // switched back on afterwards; Joan's simulation is NOT touched (she can ride, gallop, fight while it films). Frames come from the camtrace recorder.

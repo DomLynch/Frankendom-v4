@@ -317,7 +317,7 @@ public class BowVisual : MonoBehaviour
     GameObject nocked;
     void Nock()   // the arrow on the string while the fighter draws (Windup); gone on the loose
     {
-        var N = BowCfg.Get().visual.nock; bool show = N != null && N.enabled && Drawing();
+        var N = BowCfg.Get().visual.nock; bool show = N != null && N.enabled && ((Drawing() && (archer == null || archer.ArrowOnString)) || BowCarry.ArrowOn(fighter));   // BOWCARRY v1: the arrow appears at the nock clip's event, and sits on the string in the nocked-ready loop
         if (show && nocked == null && inst != null) { nocked = BowArrowView.MakeNocked(inst.transform); nocked.transform.localPosition = new Vector3(N.px, N.py, N.pz); nocked.transform.localRotation = Quaternion.Euler(N.rxDeg, N.ryDeg, N.rzDeg); }
         if (nocked != null) nocked.SetActive(show);
     }

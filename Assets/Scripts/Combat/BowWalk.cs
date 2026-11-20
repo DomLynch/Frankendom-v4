@@ -67,7 +67,7 @@ public static class BowWalk
         r.Tick(df, fi, M, moving);
     }
 
-    static AvatarMask MaskFor(Animator an, BowCfg.Move M)
+    internal static AvatarMask MaskFor(Animator an, BowCfg.Move M)   // BOWCARRY v1: BowCarry builds its upper-body layer from the same mask
     {
         AvatarMask m; if (masks.TryGetValue(an, out m) && m != null) return m;
         var list = new List<string>(); var all = an.GetComponentsInChildren<Transform>(true);

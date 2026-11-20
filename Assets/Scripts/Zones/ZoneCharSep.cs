@@ -16,8 +16,14 @@ using UnityEngine.Rendering.HighDefinition;
 [Serializable] public class CharSepShadowSw { public bool enabled; public string name = "Sep_Shadow"; }
 [Serializable] public class CharSepData { public bool enabled, log = true; public float pollSeconds = 0.1f, smoothSeconds = 1.5f, rimSat = 0.62f; public CharSepShadowSw shadowLight = new CharSepShadowSw(); public CharSepRow[] rows; }
 
+// SHADOWFILL (kit fk_shadowfill): JSON-only config for the sun-opposed neutral floor light. Parsed from the SAME character_sep.json by a second JsonUtility pass; held ONLY in a static, never as a field of a MonoBehaviour (no serialized layout change).
+[Serializable] public class CharSepFloorSw { public bool enabled; public string name = "Sep_Floor", keyLight = "Key_ColdSun"; public int[] layerBits; public float minLux = 0f, maxLux = 6000f, smoothSeconds = 1.5f; }
+[Serializable] public class CharSepFloorRow { public string id = ""; public float ratio = 0f, pitchDeg = 28f; public float[] color; }
+[Serializable] public class CharSepFloorData { public CharSepFloorSw floor = new CharSepFloorSw(); public CharSepFloorRow[] floorRows; }
+
 public sealed class ZoneCharSep : MonoBehaviour
 {
+    static CharSepFloorData fl; static bool floorOff; static Light floorL, keyL; static float floorLux = -1f, nextKeyFind, nextFloorLog; static uint floorMask;
     class L { public Light l; public HDAdditionalLightData hd; public float baseInt; }
     static ZoneCharSep inst;
     CharSepData D; ZoneLookData Z; float scale = 1f; bool allowShadow = true;
@@ -34,6 +40,7 @@ public sealed class ZoneCharSep : MonoBehaviour
         {
             if (!a.StartsWith("-charsep:", StringComparison.OrdinalIgnoreCase)) continue; var v = a.Substring(9).Trim();
             if (v == "off" || v == "0") off = true; else if (v == "noshadow") noShadow = true;
+            else if (v == "nofloor") floorOff = true;
             else if (v.StartsWith("scale=")) float.TryParse(v.Substring(6), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out sc);
         }
         if (off) return;
@@ -41,6 +48,7 @@ public sealed class ZoneCharSep : MonoBehaviour
         CharSepData d; ZoneLookData z;
         try { d = JsonUtility.FromJson<CharSepData>(txt); z = JsonUtility.FromJson<ZoneLookData>(zt); } catch (Exception e) { Debug.LogWarning("[ZoneCharSep] json unreadable: " + e.Message); return; }
         if (d == null || z == null || !d.enabled || d.rows == null || z.rows == null || z.rows.Length == 0) return;
+        try { fl = JsonUtility.FromJson<CharSepFloorData>(txt); } catch (Exception e) { fl = null; Debug.LogWarning("[ZoneCharSep] floor json unreadable: " + e.Message); }
         var go = new GameObject("ZoneCharSep"); DontDestroyOnLoad(go); inst = go.AddComponent<ZoneCharSep>(); inst.D = d; inst.Z = z; inst.scale = sc; inst.allowShadow = !noShadow;
     }
 
@@ -86,11 +94,42 @@ public sealed class ZoneCharSep : MonoBehaviour
         else { curRim = Color.Lerp(curRim, tr, k); curEnemy = Color.Lerp(curEnemy, te, k); curFill = Color.Lerp(curFill, tf, k); curHero = Color.Lerp(curHero, th, k); mP = Mathf.Lerp(mP, tp, k); mE = Mathf.Lerp(mE, tE, k); mF = Mathf.Lerp(mF, tF, k); mH = Mathf.Lerp(mH, tH, k); }
         Apply(rimP, curRim, mP); Apply(rimE, curEnemy, mE); Apply(fillP, curFill, mF); Apply(hero, curHero, mH);
         if (D.shadowLight.enabled && allowShadow) ShadowSpot(p.transform, a.shadow, curRim); else if (shadowL != null) shadowL.enabled = false;
+        FloorLight(a.id, b.id, t);
         if (D.log && Time.unscaledTime >= nextLog)
         {
             nextLog = Time.unscaledTime + 10f;
             Debug.Log("[ZoneCharSep] z=" + z.ToString("F1") + " zone=" + Z.rows[i].id + " rim=" + curRim + " x" + mP.ToString("F2") + " enemy x" + mE.ToString("F2") + " fill x" + mF.ToString("F2") + " hero x" + mH.ToString("F2") + " shadow=" + (shadowL != null && shadowL.enabled));
         }
+    }
+
+    static CharSepFloorRow FRow(string id) { if (fl == null || fl.floorRows == null) return null; foreach (var r in fl.floorRows) if (r != null && r.id == id) return r; return null; }
+    static Color Neutral(float[] c) { return c != null && c.Length >= 3 ? new Color(c[0], c[1], c[2], 1f) : Color.white; }
+
+    // SHADOWFILL: ONE neutral, non-shadow directional on the CHARACTER light layers only, opposite the sun. Its heading is the key light's heading + 180 (world, not camera: it reads the same from every camera yaw
+    // because a character's shadow side is by definition the side facing away from the key). Strength = ratio x the live key lux (ZoneLook already scales that per zone), blended across zones like the rest of this class.
+    // No colour (default white), no camera attachment, no shadows, no fog contribution. enabled=false / -charsep:nofloor / no floorRows = nothing is created and an existing light is switched off.
+    void FloorLight(string idA, string idB, float t)
+    {
+        if (fl == null || fl.floor == null || !fl.floor.enabled || floorOff) { if (floorL != null) floorL.enabled = false; return; }
+        var f = fl.floor;
+        if ((keyL == null) && Time.unscaledTime >= nextKeyFind) { nextKeyFind = Time.unscaledTime + 5f; var kg = GameObject.Find(f.keyLight); if (kg != null) keyL = kg.GetComponent<Light>(); }
+        CharSepFloorRow ra = FRow(idA), rb = FRow(idB); if (ra == null) ra = rb; if (rb == null) rb = ra;
+        if (keyL == null || !keyL.enabled || ra == null) { if (floorL != null) floorL.enabled = false; return; }
+        if (floorL == null)
+        {
+            floorMask = 0u; if (f.layerBits != null) foreach (int lb in f.layerBits) if (lb >= 0 && lb <= 15) floorMask |= 1u << lb;
+            if (floorMask == 0u) { if (nextFloorLog < Time.unscaledTime) { nextFloorLog = Time.unscaledTime + 30f; Debug.LogWarning("[ZoneCharSep] floor off: layerBits empty"); } return; }
+            var g = new GameObject(f.name); g.transform.SetParent(transform, false); floorL = g.AddComponent<Light>(); floorL.type = LightType.Directional;
+            var fhd = g.AddComponent<HDAdditionalLightData>(); floorL.shadows = LightShadows.None; floorL.useColorTemperature = false; floorL.lightUnit = LightUnit.Lux; fhd.volumetricDimmer = 0f;
+            fhd.lightlayersMask = (UnityEngine.Rendering.HighDefinition.RenderingLayerMask)floorMask; floorLux = -1f;
+            Debug.Log("[ZoneCharSep] floor on: light " + f.name + " layers 0x" + floorMask.ToString("X") + " key " + keyL.name + " (heading + 180, no shadow, no camera follow)");
+        }
+        float ratio = Mathf.Lerp(ra.ratio, rb.ratio, t), pitch = Mathf.Lerp(ra.pitchDeg, rb.pitchDeg, t);
+        float want = Mathf.Clamp(keyL.intensity * ratio, f.minLux, f.maxLux);
+        floorLux = floorLux < 0f ? want : Mathf.Lerp(floorLux, want, 1f - Mathf.Exp(-Mathf.Max(0.0001f, Time.unscaledDeltaTime) / Mathf.Max(0.05f, f.smoothSeconds)));
+        floorL.color = Color.Lerp(Neutral(ra.color), Neutral(rb.color), t); floorL.intensity = floorLux;
+        floorL.transform.rotation = Quaternion.Euler(pitch, keyL.transform.eulerAngles.y + 180f, 0f); floorL.enabled = floorLux > 0.5f;
+        if (D.log && Time.unscaledTime >= nextFloorLog) { nextFloorLog = Time.unscaledTime + 10f; Debug.Log("[ZoneCharSep] floor lux=" + floorLux.ToString("F0") + " ratio=" + ratio.ToString("F2") + " keyLux=" + keyL.intensity.ToString("F0") + " pitch=" + pitch.ToString("F0") + " yaw=" + floorL.transform.eulerAngles.y.ToString("F0") + " on=" + floorL.enabled); }
     }
 
     // the one optional shadowed light: off the lane to the side and a little behind, aimed at the player-to-enemy midpoint, characters only (light layers copied from the rim lights)

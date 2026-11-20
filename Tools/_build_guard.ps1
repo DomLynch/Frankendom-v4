@@ -89,7 +89,9 @@ if (-not $lifted -and $mode -eq 'Bake' -and $env:FK_BAKE_TEST -ne '1' -and (Test
     $lock = Join-Path $p '_agents\pool\backup.lock'
     if (Test-Path $lock) { if (((Get-Date) - (Get-Item $lock).LastWriteTime).TotalMinutes -lt 30) { $why += "backup lock exists ($lock)" } }
     $free = [math]::Round((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1MB, 1)
-    if ($free -lt $MinFreeGB) { $why += "free RAM $free GB is under $MinFreeGB GB" }
+    # COO 20 Nov 13:3x (Dom: 'remove the blocks if they are restrictive or not common sense'): a compile-only build peaks about 3 GB, so for -Mode CodeOnly
+    # the RAM floor is a WARNING down to 8 GB free (the 4 GB own-pid stop still protects the machine). Bake/cold builds keep the refusal. Cause: ir refused at 15 GB free (floor 16) beside a QA player.
+    if ($free -lt $MinFreeGB) { if ($mode -eq 'CodeOnly' -and $free -ge 8) { Write-Host "WARN: free RAM $free GB is under $MinFreeGB GB (compile-only proceeds; floor is 8 GB)" } else { $why += "free RAM $free GB is under $MinFreeGB GB" } }
 # (cold detection is informational now: it raises the RAM floor to 16 GB, it no longer refuses; serialized-field refusal below stays)
 if ($script:SerWhy) { $why += $script:SerWhy }
 # COO 16:15 17 Nov: a full C: failed the texture bake at the file copy after 9 minutes. Refuse in second 1 when C: free is under the expected build size + 10 GB (bake / full build 25 GB, code-only 12 GB; FK_MINDISK_GB overrides).
