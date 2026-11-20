@@ -7335,6 +7335,966 @@
       "ground": "bottom",
       "lod": -1,
       "ring": 1
+    },
+    {
+      "id": "clu_z5_001",
+      "op": "add",
+      "src": "z5d_boulder_rock_boulder_B_39",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 1 big: clone of baked z5d_boulder_rock_boulder_B_39 (rock_boulder_B, baked x1.12) x1.170 = abs 1.31, 1.69 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        4.1,
+        -0.08,
+        184.3
+      ],
+      "rotEuler": [
+        0.7,
+        237.7,
+        -0.6
+      ],
+      "scale": 1.17,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_002",
+      "op": "add",
+      "src": "z6_rock_boulder_C_1",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 1 big: clone of baked z6_rock_boulder_C_1 (rock_boulder_C, baked x0.90) x0.957 = abs 0.86, 1.46 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        3.47,
+        -0.08,
+        186.47
+      ],
+      "rotEuler": [
+        4.6,
+        52.6,
+        4.0
+      ],
+      "scale": 0.957,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_003",
+      "op": "add",
+      "src": "z5d_boulder_rock_boulder_B_39",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 1 big: clone of baked z5d_boulder_rock_boulder_B_39 (rock_boulder_B, baked x1.12) x1.050 = abs 1.18, 1.52 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        8.81,
+        -0.08,
+        190.63
+      ],
+      "rotEuler": [
+        1.6,
+        117.4,
+        1.8
+      ],
+      "scale": 1.05,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_004",
+      "op": "add",
+      "src": "z6_rock_boulder_D_1",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 1 mid: clone of baked z6_rock_boulder_D_1 (rock_boulder_D, baked x1.20) x0.885 = abs 1.06, 1.14 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        5.76,
+        -0.06,
+        189.31
+      ],
+      "rotEuler": [
+        -2.3,
+        53.2,
+        1.0
+      ],
+      "scale": 0.885,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_005",
+      "op": "add",
+      "src": "z5d_boulder_rock_boulder_A_40",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 1 mid: clone of baked z5d_boulder_rock_boulder_A_40 (rock_boulder_A, baked x0.94) x0.804 = abs 0.76, 1.28 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        5.2,
+        -0.06,
+        182.81
+      ],
+      "rotEuler": [
+        3.8,
+        162.0,
+        1.7
+      ],
+      "scale": 0.804,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_006",
+      "op": "add",
+      "src": "z5d_boulder_rock_boulder_E_43",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 1 slab: clone of baked z5d_boulder_rock_boulder_E_43 (rock_boulder_E, baked x0.94) x1.123 = abs 1.06, 0.31 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        9.75,
+        -0.02,
+        189.07
+      ],
+      "rotEuler": [
+        -2.0,
+        89.2,
+        -1.4
+      ],
+      "scale": 1.123,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_007",
+      "op": "add",
+      "src": "z5d_boulder_rock_boulder_E_43",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 1 slab: clone of baked z5d_boulder_rock_boulder_E_43 (rock_boulder_E, baked x0.94) x1.145 = abs 1.08, 0.31 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        7.43,
+        -0.02,
+        184.78
+      ],
+      "rotEuler": [
+        -2.4,
+        343.6,
+        2.3
+      ],
+      "scale": 1.145,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_008",
+      "op": "add",
+      "src": "z5d_boulder_rock_boulder_D_48",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 2 big: clone of baked z5d_boulder_rock_boulder_D_48 (rock_boulder_D, baked x1.51) x1.007 = abs 1.52, 1.63 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -12.26,
+        -0.08,
+        180.95
+      ],
+      "rotEuler": [
+        -0.4,
+        11.9,
+        -2.7
+      ],
+      "scale": 1.007,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_009",
+      "op": "add",
+      "src": "z5d_boulder_rock_boulder_A_40",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 2 big: clone of baked z5d_boulder_rock_boulder_A_40 (rock_boulder_A, baked x0.94) x1.333 = abs 1.25, 2.13 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -4.3,
+        -0.08,
+        184.99
+      ],
+      "rotEuler": [
+        -0.7,
+        123.7,
+        4.3
+      ],
+      "scale": 1.333,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_010",
+      "op": "add",
+      "src": "z5d_boulder_rock_boulder_B_39",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 2 big: clone of baked z5d_boulder_rock_boulder_B_39 (rock_boulder_B, baked x1.12) x1.042 = abs 1.17, 1.51 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -11.5,
+        -0.08,
+        185.21
+      ],
+      "rotEuler": [
+        1.0,
+        114.5,
+        5.0
+      ],
+      "scale": 1.042,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_011",
+      "op": "add",
+      "src": "z6_rock_boulder_B_1",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 2 mid: clone of baked z6_rock_boulder_B_1 (rock_boulder_B, baked x0.80) x1.217 = abs 0.97, 1.26 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -6.56,
+        -0.06,
+        180.84
+      ],
+      "rotEuler": [
+        -0.9,
+        62.9,
+        -0.6
+      ],
+      "scale": 1.217,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_012",
+      "op": "add",
+      "src": "z6d_boulder_rock_boulder_E_43",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 2 slab: clone of baked z6d_boulder_rock_boulder_E_43 (rock_boulder_E, baked x1.42) x1.142 = abs 1.62, 0.47 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -9.85,
+        -0.02,
+        183.3
+      ],
+      "rotEuler": [
+        -0.3,
+        214.6,
+        -2.9
+      ],
+      "scale": 1.142,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_013",
+      "op": "add",
+      "src": "z6d_boulder_rock_boulder_E_43",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 2 slab: clone of baked z6d_boulder_rock_boulder_E_43 (rock_boulder_E, baked x1.42) x1.367 = abs 1.94, 0.56 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -9.08,
+        -0.02,
+        184.59
+      ],
+      "rotEuler": [
+        2.1,
+        309.5,
+        2.6
+      ],
+      "scale": 1.367,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_014",
+      "op": "add",
+      "src": "z5d_boulder_rock_boulder_D_48",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 3 big: clone of baked z5d_boulder_rock_boulder_D_48 (rock_boulder_D, baked x1.51) x0.806 = abs 1.22, 1.30 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -13.79,
+        -0.08,
+        227.93
+      ],
+      "rotEuler": [
+        -1.1,
+        289.2,
+        4.7
+      ],
+      "scale": 0.806,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_015",
+      "op": "add",
+      "src": "z5d_boulder_rock_boulder_A_40",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 3 big: clone of baked z5d_boulder_rock_boulder_A_40 (rock_boulder_A, baked x0.94) x1.211 = abs 1.14, 1.94 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -12.28,
+        -0.08,
+        225.51
+      ],
+      "rotEuler": [
+        -1.9,
+        73.1,
+        -1.9
+      ],
+      "scale": 1.211,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_016",
+      "op": "add",
+      "src": "z5d_boulder_rock_boulder_A_40",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 3 mid: clone of baked z5d_boulder_rock_boulder_A_40 (rock_boulder_A, baked x0.94) x0.806 = abs 0.76, 1.29 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -7.88,
+        -0.06,
+        224.17
+      ],
+      "rotEuler": [
+        -1.5,
+        201.7,
+        -3.5
+      ],
+      "scale": 0.806,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_017",
+      "op": "add",
+      "src": "z6_rock_boulder_B_1",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 3 mid: clone of baked z6_rock_boulder_B_1 (rock_boulder_B, baked x0.80) x1.173 = abs 0.94, 1.21 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -9.48,
+        -0.06,
+        226.29
+      ],
+      "rotEuler": [
+        -0.7,
+        208.3,
+        3.2
+      ],
+      "scale": 1.173,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z5_018",
+      "op": "add",
+      "src": "z6d_boulder_rock_boulder_E_43",
+      "zone": "z5_humbaba",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z5 group 3 slab: clone of baked z6d_boulder_rock_boulder_E_43 (rock_boulder_E, baked x1.42) x1.120 = abs 1.59, 0.46 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -12.07,
+        -0.02,
+        229.76
+      ],
+      "rotEuler": [
+        1.4,
+        3.0,
+        1.3
+      ],
+      "scale": 1.12,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_001",
+      "op": "add",
+      "src": "z7d_boulder_rock_boulder_D_17",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 1 big: clone of baked z7d_boulder_rock_boulder_D_17 (rock_boulder_D, baked x1.63) x1.317 = abs 2.15, 2.30 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -20.07,
+        -0.08,
+        334.62
+      ],
+      "rotEuler": [
+        0.4,
+        165.5,
+        -0.1
+      ],
+      "scale": 1.317,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_002",
+      "op": "add",
+      "src": "z7d_boulder_rock_boulder_D_17",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 1 big: clone of baked z7d_boulder_rock_boulder_D_17 (rock_boulder_D, baked x1.63) x1.355 = abs 2.21, 2.36 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -26.25,
+        -0.08,
+        339.65
+      ],
+      "rotEuler": [
+        -4.5,
+        224.2,
+        0.6
+      ],
+      "scale": 1.355,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_003",
+      "op": "add",
+      "src": "z7d_boulder_rock_boulder_D_17",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 1 big: clone of baked z7d_boulder_rock_boulder_D_17 (rock_boulder_D, baked x1.63) x1.055 = abs 1.72, 1.84 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -23.5,
+        -0.08,
+        339.56
+      ],
+      "rotEuler": [
+        3.7,
+        17.6,
+        -0.7
+      ],
+      "scale": 1.055,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_004",
+      "op": "add",
+      "src": "z7_rock_4",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 1 mid: clone of baked z7_rock_4 (rock_boulder_D, baked x0.79) x1.004 = abs 0.79, 0.85 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -14.43,
+        -0.06,
+        339.59
+      ],
+      "rotEuler": [
+        -0.1,
+        326.1,
+        -2.7
+      ],
+      "scale": 1.004,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_005",
+      "op": "add",
+      "src": "z7_rock_10",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 1 mid: clone of baked z7_rock_10 (rock_boulder_B, baked x1.10) x0.910 = abs 1.00, 1.29 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -21.85,
+        -0.06,
+        337.27
+      ],
+      "rotEuler": [
+        -4.7,
+        0.5,
+        -4.2
+      ],
+      "scale": 0.91,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_006",
+      "op": "add",
+      "src": "z7d_boulder_rock_boulder_E_20",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 1 slab: clone of baked z7d_boulder_rock_boulder_E_20 (rock_boulder_E, baked x1.35) x0.830 = abs 1.12, 0.32 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -18.54,
+        -0.02,
+        340.08
+      ],
+      "rotEuler": [
+        0.7,
+        79.0,
+        -1.5
+      ],
+      "scale": 0.83,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_007",
+      "op": "add",
+      "src": "z7d_boulder_rock_boulder_B_18",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 2 big: clone of baked z7d_boulder_rock_boulder_B_18 (rock_boulder_B, baked x1.33) x1.136 = abs 1.51, 1.95 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        13.02,
+        -0.08,
+        353.58
+      ],
+      "rotEuler": [
+        0.2,
+        64.4,
+        1.1
+      ],
+      "scale": 1.136,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_008",
+      "op": "add",
+      "src": "z7d_boulder_rock_boulder_B_18",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 2 big: clone of baked z7d_boulder_rock_boulder_B_18 (rock_boulder_B, baked x1.33) x1.233 = abs 1.64, 2.12 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        3.15,
+        -0.08,
+        355.88
+      ],
+      "rotEuler": [
+        -0.9,
+        289.0,
+        1.7
+      ],
+      "scale": 1.233,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_009",
+      "op": "add",
+      "src": "z7_rock_2",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 2 big: clone of baked z7_rock_2 (rock_boulder_C, baked x0.88) x1.059 = abs 0.93, 1.58 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        11.18,
+        -0.08,
+        351.79
+      ],
+      "rotEuler": [
+        -0.2,
+        194.4,
+        -3.3
+      ],
+      "scale": 1.059,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_010",
+      "op": "add",
+      "src": "z7_rock_2",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 2 mid: clone of baked z7_rock_2 (rock_boulder_C, baked x0.88) x0.819 = abs 0.72, 1.23 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        13.28,
+        -0.06,
+        349.05
+      ],
+      "rotEuler": [
+        -2.0,
+        162.3,
+        -0.6
+      ],
+      "scale": 0.819,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_011",
+      "op": "add",
+      "src": "z7d_boulder_rock_boulder_E_20",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 2 slab: clone of baked z7d_boulder_rock_boulder_E_20 (rock_boulder_E, baked x1.35) x1.286 = abs 1.74, 0.50 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        11.71,
+        -0.02,
+        347.44
+      ],
+      "rotEuler": [
+        -1.1,
+        229.6,
+        -1.3
+      ],
+      "scale": 1.286,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_012",
+      "op": "add",
+      "src": "z6d_boulder_rock_boulder_E_43",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 2 slab: clone of baked z6d_boulder_rock_boulder_E_43 (rock_boulder_E, baked x1.42) x1.036 = abs 1.47, 0.43 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        11.35,
+        -0.02,
+        346.12
+      ],
+      "rotEuler": [
+        -1.6,
+        62.4,
+        2.9
+      ],
+      "scale": 1.036,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_013",
+      "op": "add",
+      "src": "z7_rock_1",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 3 big: clone of baked z7_rock_1 (rock_boulder_A, baked x1.17) x1.017 = abs 1.19, 2.02 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        14.65,
+        -0.08,
+        321.28
+      ],
+      "rotEuler": [
+        1.5,
+        27.5,
+        -4.4
+      ],
+      "scale": 1.017,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_014",
+      "op": "add",
+      "src": "z7_rock_2",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 3 big: clone of baked z7_rock_2 (rock_boulder_C, baked x0.88) x0.901 = abs 0.79, 1.35 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        11.98,
+        -0.08,
+        321.34
+      ],
+      "rotEuler": [
+        -2.9,
+        109.9,
+        -0.8
+      ],
+      "scale": 0.901,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_015",
+      "op": "add",
+      "src": "z7_rock_10",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 3 mid: clone of baked z7_rock_10 (rock_boulder_B, baked x1.10) x0.801 = abs 0.88, 1.14 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        14.32,
+        -0.06,
+        325.97
+      ],
+      "rotEuler": [
+        4.5,
+        67.3,
+        2.9
+      ],
+      "scale": 0.801,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_016",
+      "op": "add",
+      "src": "z7_rock_4",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 3 mid: clone of baked z7_rock_4 (rock_boulder_D, baked x0.79) x1.105 = abs 0.87, 0.93 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        11.39,
+        -0.06,
+        333.89
+      ],
+      "rotEuler": [
+        -2.7,
+        358.5,
+        -4.6
+      ],
+      "scale": 1.105,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_017",
+      "op": "add",
+      "src": "z6d_boulder_rock_boulder_E_43",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 3 slab: clone of baked z6d_boulder_rock_boulder_E_43 (rock_boulder_E, baked x1.42) x1.080 = abs 1.53, 0.44 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        16.44,
+        -0.02,
+        322.91
+      ],
+      "rotEuler": [
+        1.0,
+        340.3,
+        -2.1
+      ],
+      "scale": 1.08,
+      "scaleYMul": 0
+    },
+    {
+      "id": "clu_z7_018",
+      "op": "add",
+      "src": "z7d_boulder_rock_boulder_E_20",
+      "zone": "z7_market2",
+      "group": "",
+      "ground": "snap",
+      "note": "CLUTTER57 z7 group 3 slab: clone of baked z7d_boulder_rock_boulder_E_20 (rock_boulder_E, baked x1.35) x1.057 = abs 1.43, 0.41 m high; seeded placement, projection-checked",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        17.61,
+        -0.02,
+        325.52
+      ],
+      "rotEuler": [
+        -0.5,
+        33.5,
+        -2.1
+      ],
+      "scale": 1.057,
+      "scaleYMul": 0
+    },
+    {
+      "id": "hubrim_v1_pillar",
+      "op": "add",
+      "src": "z3_standing_ruin_pillar_4_0",
+      "zone": "hub_camp",
+      "group": "",
+      "ground": "bottom",
+      "note": "RIM v5 20 Nov: real hub piece as a vertical on the hub ground edge (Strategy/COO), projection-checked at hub_back_yaw0",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -6.0,
+        -0.3,
+        132.0
+      ],
+      "rotEuler": [
+        0.0,
+        20.0,
+        0.0
+      ],
+      "scale": 1.7,
+      "scaleYMul": 0
+    },
+    {
+      "id": "hubrim_v2_arch",
+      "op": "add",
+      "src": "z3_arch_fragment_9b_0",
+      "zone": "hub_camp",
+      "group": "",
+      "ground": "bottom",
+      "note": "RIM v5 20 Nov: real hub piece as a vertical on the hub ground edge (Strategy/COO), projection-checked at hub_back_yaw0",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        10.5,
+        -0.3,
+        138.0
+      ],
+      "rotEuler": [
+        0.0,
+        200.0,
+        0.0
+      ],
+      "scale": 1.5,
+      "scaleYMul": 0
+    },
+    {
+      "id": "hubrim_v3_deadtree",
+      "op": "add",
+      "src": "z3_dead_tree_1a_0",
+      "zone": "hub_camp",
+      "group": "",
+      "ground": "bottom",
+      "note": "RIM v5 20 Nov: real hub piece as a vertical on the hub ground edge (Strategy/COO), projection-checked at hub_back_yaw0",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        -17.0,
+        -0.3,
+        150.0
+      ],
+      "rotEuler": [
+        0.0,
+        100.0,
+        0.0
+      ],
+      "scale": 2.0,
+      "scaleYMul": 0
+    },
+    {
+      "id": "hubrim_v4_rockarch",
+      "op": "add",
+      "src": "z3_rock_arch_8_0",
+      "zone": "hub_camp",
+      "group": "",
+      "ground": "bottom",
+      "note": "RIM v5 20 Nov: real hub piece as a vertical on the hub ground edge (Strategy/COO), projection-checked at hub_back_yaw0",
+      "ring": 1,
+      "lod": -1,
+      "enabled": true,
+      "pos": [
+        1.5,
+        -0.3,
+        127.0
+      ],
+      "rotEuler": [
+        0.0,
+        330.0,
+        0.0
+      ],
+      "scale": 1.0,
+      "scaleYMul": 0
     }
   ]
 }

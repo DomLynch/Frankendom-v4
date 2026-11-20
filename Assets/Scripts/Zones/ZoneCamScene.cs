@@ -41,7 +41,7 @@ public sealed class ZoneCamScene : MonoBehaviour
         {
             if (st == null) continue; if (Time.realtimeSinceStartup - tAll > S.globalTimeoutS) { Note("global timeout, stopping"); ok = false; break; }
             ZoneCamTrace.Step = st.id; Note("step " + st.id + " (" + st.kind + ")"); float t0 = Time.realtimeSinceStartup;
-            if (st.id.EndsWith("_away") || st.id.EndsWith("_boss")) AmbDump.Log(st.id);   // 20 Nov: log-only, what decides the shadow-side fill (ambient mode, probe L0, volume stack)
+            if (st.id.EndsWith("_away") || st.id.EndsWith("_boss") || st.id.StartsWith("hub_back")) { AmbDump.Log(st.id); AmbDump.SkyObjects(st.id); }   // 20 Nov: log-only, what decides the shadow-side fill (ambient mode, probe L0, volume stack)
             if (st.startZone.Length > 0) yield return StartCoroutine(Restart(S, new CtStep { id = st.id, zone = st.startZone, spot = st.startSpot }));   // CODE5 v1
             if (st.killAfter > 0f && st.boss.Length > 0) StartCoroutine(KillBoss(st));   // CODE5 v1
             if (st.kind == "fight" && st.item == "deathcam") StartCoroutine(DeathCamWatch(st));   // DEATHCAM (harness)
@@ -542,16 +542,60 @@ static class QuitWho
 // AmbDump (20 Nov, FK Lead, COO ask): log-only. At the *_away / *_boss steps of a harness run, print what decides the shadow-side fill: VisualEnvironment skyType and skyAmbientMode of the volume STACK, RenderSettings ambient mode / intensity / probe L0 RGB (the Static probe), the stack's ILC values, and every Volume (name, global, priority, weight, ILC diffuse and override). No serialized field, no boot hook.
 static class AmbDump
 {
+    // Floating chunks / sky ring (row 9, COO 21:2x): which OBJECTS sit in the upper part of the view? Lists active renderers whose viewport position is above the horizon band (y > 0.5) and farther than 60 m or higher than the camera + 15 m, with name, root, renderer type, shader, mesh vertex count, distance and viewport xy; plus every Light that has a flare and every LensFlareComponentSRP. Log-only.
+    public static void SkyObjects(string stepId)
+    {
+        try
+        {
+            var cam = Camera.main; if (cam == null) { Debug.Log("[SkyObj] " + stepId + " no main camera"); return; }
+            var cp = cam.transform.position; var list = new System.Collections.Generic.List<string>(); int n = 0;
+            foreach (var r in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None))
+            {
+                if (r == null || !r.enabled || !r.gameObject.activeInHierarchy) continue;
+                var c = r.bounds.center; var d = (c - cp).magnitude; var vp = cam.WorldToViewportPoint(c);
+                if (vp.z <= 0f || vp.x < -0.1f || vp.x > 1.1f || vp.y < 0.78f) continue;   // 21:4x: the first listing (vp.y >= 0.5) was only far boulders on the horizon band; floating chunks sit well above it
+                if (c.y < cp.y + 18f) continue;
+                n++; if (list.Count >= 28) continue;
+                string mesh = "-"; var mf = r.GetComponent<MeshFilter>(); if (mf != null && mf.sharedMesh != null) mesh = mf.sharedMesh.name + "/" + mf.sharedMesh.vertexCount;
+                string sh = r.sharedMaterial != null && r.sharedMaterial.shader != null ? r.sharedMaterial.shader.name : "-";
+                list.Add(r.name + " root=" + r.transform.root.name + " " + r.GetType().Name + " sh=" + sh + " mesh=" + mesh + " d=" + d.ToString("F0") + " vp=(" + vp.x.ToString("F2") + "," + vp.y.ToString("F2") + ") size=" + r.bounds.size.magnitude.ToString("F0"));
+            }
+            var flares = new System.Collections.Generic.List<string>();
+            foreach (var l in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None)) if (l != null && l.enabled && l.flare != null) flares.Add(l.name + "(" + l.type + ")");
+            foreach (var lf in UnityEngine.Object.FindObjectsByType<UnityEngine.Rendering.LensFlareComponentSRP>(FindObjectsSortMode.None)) if (lf != null) flares.Add("LensFlareSRP:" + lf.name);
+            Debug.Log("[SkyObj] " + stepId + " upper-view renderers=" + n + " listed=" + list.Count + " flares=" + string.Join(",", flares.ToArray()) + " :: " + string.Join(" ;; ", list.ToArray()));
+        }
+        catch (System.Exception e) { Debug.LogWarning("[SkyObj] failed: " + e.Message); }
+    }
     public static void Log(string stepId)
     {
         try
         {
             var sb = new System.Text.StringBuilder("[AmbDump] " + stepId + " zone=" + ZoneCamTrace.Zone());
-            var stack = UnityEngine.Rendering.VolumeManager.instance.stack;
+            var cam0 = Camera.main; UnityEngine.Rendering.VolumeStack stack = null;
+            try { if (cam0 != null) stack = UnityEngine.Rendering.HighDefinition.HDCamera.GetOrCreate(cam0).volumeStack; } catch { }
+            string stackSrc = stack != null ? "camera stack (HDCamera)" : "DEFAULT stack (not the camera's: values are defaults)";
+            if (stack == null) stack = UnityEngine.Rendering.VolumeManager.instance.stack;   // 21:4x: the first AmbDump read VolumeManager.instance.stack, which is the default stack (ILC 1.00 and GI enable=False are component defaults), not what the camera renders with
             var ve = stack.GetComponent<UnityEngine.Rendering.HighDefinition.VisualEnvironment>();
-            sb.Append(" | stack skyType=" + (ve != null ? ve.skyType.value.ToString() : "?") + " skyAmbientMode=" + (ve != null ? ve.skyAmbientMode.value.ToString() : "?"));
+            sb.Append(" | " + stackSrc + " skyType=" + (ve != null ? ve.skyType.value.ToString() : "?") + " skyAmbientMode=" + (ve != null ? ve.skyAmbientMode.value.ToString() : "?"));
             var ilcs = stack.GetComponent<UnityEngine.Rendering.HighDefinition.IndirectLightingController>();
             sb.Append(" | stack ILC diffuse=" + (ilcs != null ? ilcs.indirectDiffuseLightingMultiplier.value.ToString("F2") : "?") + " reflection=" + (ilcs != null ? ilcs.reflectionLightingMultiplier.value.ToString("F2") : "?"));
+            var gis = stack.GetComponent<UnityEngine.Rendering.HighDefinition.GlobalIllumination>();
+            sb.Append(" | stack GI " + (gis != null ? ("active=" + gis.active + " enable=" + gis.enable.value + " rayMiss=" + gis.rayMiss.value + " ambientProbeDimmer=" + gis.ambientProbeDimmer.value.ToString("F2") + " quality=" + gis.quality.value) : "?"));
+            // 21:5x (COO): every RuntimeQuality look key goes through the same profile path as ILC, which proved lost. Print the CAMERA values of the keys it writes, so intended (runtime_flags) vs rendered can be compared key by key.
+            var sr0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.ScreenSpaceReflection>();
+            var fg0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.Fog>();
+            var vc0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.VolumetricClouds>();
+            var hs0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.HDRISky>();
+            var sh0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.HDShadowSettings>();
+            var ao0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.ScreenSpaceAmbientOcclusion>();
+            sb.Append(" | KEYS gi.quality=" + (gis != null ? gis.quality.value.ToString() : "?") + " gi.fullRes=" + (gis != null ? gis.fullResolutionSS.value.ToString() : "?")
+                + " ssr.active=" + (sr0 != null ? sr0.active.ToString() : "?") + " ssr.quality=" + (sr0 != null ? sr0.quality.value.ToString() : "?")
+                + " fog.volumetric=" + (fg0 != null ? fg0.enableVolumetricFog.value.ToString() : "?") + " fog.quality=" + (fg0 != null ? fg0.quality.value.ToString() : "?")
+                + " clouds.active=" + (vc0 != null ? vc0.active.ToString() : "?")
+                + " hdri.exposure=" + (hs0 != null ? hs0.exposure.value.ToString("F1") : "?") + " hdri.rotation=" + (hs0 != null ? hs0.rotation.value.ToString("F0") : "?")
+                + " shadow.cascades=" + (sh0 != null ? sh0.cascadeShadowSplitCount.value.ToString() : "?") + " shadow.maxDist=" + (sh0 != null ? sh0.maxShadowDistance.value.ToString("F0") : "?")
+                + " ssao.active=" + (ao0 != null ? ao0.active.ToString() : "?") + " ssao.quality=" + (ao0 != null ? ao0.quality.value.ToString() : "?"));
             var ap = RenderSettings.ambientProbe;
             sb.Append(" | RenderSettings ambientMode=" + RenderSettings.ambientMode + " intensity=" + RenderSettings.ambientIntensity.ToString("F2") + " probe L0 rgb=(" + ap[0, 0].ToString("F3") + "," + ap[1, 0].ToString("F3") + "," + ap[2, 0].ToString("F3") + ") sky=" + (RenderSettings.ambientSkyColor.grayscale).ToString("F3"));
             var vols = UnityEngine.Object.FindObjectsByType<UnityEngine.Rendering.Volume>(FindObjectsSortMode.None);

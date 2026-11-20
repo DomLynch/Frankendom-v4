@@ -35,21 +35,6 @@
       "enabled": true
     },
     {
-      "id": "hubrim_col_a",
-      "zone": "hub_camp",
-      "glb": "fk_g3_toppled_column_scorched_LOD1_2k.glb",
-      "pos": [
-        -3.0,
-        -0.3,
-        122.0
-      ],
-      "yaw": 310.0,
-      "scale": 3.2,
-      "castShadows": false,
-      "collider": "none",
-      "enabled": true
-    },
-    {
       "id": "hubrim_rock_b",
       "zone": "hub_camp",
       "glb": "fk_g1_boulder_cluster_LOD1_2k.glb",
@@ -120,6 +105,36 @@
       ],
       "yaw": 290.0,
       "scale": 1.7,
+      "castShadows": false,
+      "collider": "none",
+      "enabled": true
+    },
+    {
+      "id": "hubrim_rock_e",
+      "zone": "hub_camp",
+      "glb": "fk_g1_boulder_cluster_LOD1_2k.glb",
+      "pos": [
+        2.7,
+        -0.3,
+        140.0
+      ],
+      "yaw": 40.0,
+      "scale": 1.1,
+      "castShadows": false,
+      "collider": "none",
+      "enabled": true
+    },
+    {
+      "id": "hubrim_rock_f",
+      "zone": "hub_camp",
+      "glb": "fk_g1_boulder_cluster_LOD1_2k.glb",
+      "pos": [
+        23.5,
+        -0.4,
+        150.0
+      ],
+      "yaw": 130.0,
+      "scale": 1.8,
       "castShadows": false,
       "collider": "none",
       "enabled": true
