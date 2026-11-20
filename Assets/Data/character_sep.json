@@ -30,7 +30,7 @@
     0.95,
     0.9
    ],
-   "fillMul": 1.0,
+   "fillMul": 2.5,
    "heroRimColor": [
     0.8,
     0.86,
@@ -67,7 +67,7 @@
     0.99,
     0.959
    ],
-   "fillMul": 0.5,
+   "fillMul": 2.0,
    "heroRimColor": [
     0.8,
     0.86,
@@ -104,7 +104,7 @@
     0.96,
     0.9
    ],
-   "fillMul": 0.5,
+   "fillMul": 3.0,
    "heroRimColor": [
     0.8,
     0.86,
@@ -141,7 +141,7 @@
     0.979,
     0.948
    ],
-   "fillMul": 0.5,
+   "fillMul": 4.0,
    "heroRimColor": [
     0.8,
     0.86,
@@ -178,7 +178,7 @@
     0.988,
     0.918
    ],
-   "fillMul": 0.5,
+   "fillMul": 4.0,
    "heroRimColor": [
     0.8,
     0.86,
@@ -215,7 +215,7 @@
     0.959,
     0.929
    ],
-   "fillMul": 0.5,
+   "fillMul": 5.0,
    "heroRimColor": [
     0.8,
     0.86,
@@ -252,7 +252,7 @@
     0.96,
     0.9
    ],
-   "fillMul": 0.5,
+   "fillMul": 3.0,
    "heroRimColor": [
     0.8,
     0.86,

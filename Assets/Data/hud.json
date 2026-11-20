@@ -33,8 +33,8 @@
     "deathblow": [0.84, 0.80, 0.74, 1.0],
     "parry": [0.80, 0.72, 0.50, 1.0],
     "guard": [0.66, 0.74, 0.88, 1.0],
-    "ready": [0.90, 0.74, 0.34, 1.0],
-    "cooling": [0.42, 0.40, 0.40, 1.0]
+    "ready": [0.47, 0.45, 0.41, 0.88],
+    "cooling": [0.30, 0.30, 0.31, 1.0]
   },
   "bars": {
     "_about": "Thin tapered bars (a long hexagon: pointed ends), drawn from signed-distance textures at texScale texels per px. frame = outline gap + line + end diamonds + fading lead-in lines (framePad, frameLine, capSize, capLead). ticks = fractions marked on the HP bars. lag = the pale damage trail (HUDFIX v92: holds lagHold s after the last hit, then eases shut: lagEase x the gap per s, never slower than lagMinRate bar fractions per s, forced shut lagMaxS s after the hold). highFrom = posture fraction where the bar starts turning to postureHigh.",
@@ -75,11 +75,11 @@
     "bottom": 72,
     "size": 56,
     "gap": 92,
-    "ringPx": 2.2,
-    "glyphScale": 0.62,
+    "ringPx": 1.2,
+    "glyphScale": 0.56,
     "ticksPerSecond": 60,
     "cooldownTicks": 540,
-    "readyFlashS": 0.55,
+    "readyFlashS": 0.18,
     "keySize": 18,
     "cdSize": 23,
     "keyDy": 8,
@@ -185,7 +185,7 @@
     "captionLift": 1.5, "captionW": 200, "captionH": 1.6, "diamondLine": 1.1, "diamondDx": 1, "diamondGap": 8, "hintGap": 16, "hintW": 160, "hintH": 1.6, "hintAlpha": 1.0, "hintDy": 0.2, "toastTracking": 1.5,
     "cornerFadeS": 1.5, "cornerDy": 1.5, "cornerW": 260, "cornerH": 1.6,
     "keysPanel": [0.02, 0.02, 0.025], "keysLinePx": 1, "keysTitleTracking": 3, "keysTitleDy": 0.6, "keysTitleLine": 1.7, "keysTitleSmall": 3, "keysRowInk": 1.0, "keysFooterLine": 1.8, "keysFooterBox": 1.6, "keysFooterLift": 2, "keysFooterAdvance": 1.7,
-    "iconBack": [0.025, 0.025, 0.03, 0.86], "pieShade": [0.0, 0.0, 0.0, 0.62], "iconInk": 0.95, "iconCoolAlpha": 0.75, "cdInk": 0.95, "flashBase": 1.1, "flashGrow": 0.35, "keyLabelPad": 46, "keyLabelBox": 1.6, "keyLabelInk": 1.0,
+    "iconBack": [0.045, 0.047, 0.052, 0.94], "pieShade": [0.0, 0.0, 0.0, 0.68], "iconInk": 0.62, "iconCoolAlpha": 0.50, "cdInk": 0.78, "flashBase": 1.05, "flashGrow": 0.12, "keyLabelPad": 46, "keyLabelBox": 1.6, "keyLabelInk": 0.72,
     "guardDotCentre": 1.25, "guardRingPx": 0.5,
     "spaceW": 0.55, "lineH": 1.45, "shadowDiv": 14, "runPad": 6, "capsCache": 400
   }
