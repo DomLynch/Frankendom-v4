@@ -123,6 +123,10 @@ public sealed class ZoneCharSep : MonoBehaviour
             var fhd = g.AddComponent<HDAdditionalLightData>(); floorL.shadows = LightShadows.None; floorL.useColorTemperature = false; floorL.lightUnit = LightUnit.Lux; fhd.volumetricDimmer = 0f;
             fhd.lightlayersMask = (UnityEngine.Rendering.HighDefinition.RenderingLayerMask)floorMask; floorLux = -1f;
             Debug.Log("[ZoneCharSep] floor on: light " + f.name + " layers 0x" + floorMask.ToString("X") + " key " + keyL.name + " (heading + 180, no shadow, no camera follow)");
+            // DIAG (log only): what the light really carries and what the player's renderers carry (0 = lit, else the AND is the proof)
+            var fp = GameLoop.Player; uint seen = 0u; int nr = 0; string firstR = "";
+            if (fp != null) foreach (var rd in fp.GetComponentsInChildren<Renderer>(true)) { seen |= rd.renderingLayerMask; nr++; if (firstR.Length == 0) firstR = rd.name + "=0x" + rd.renderingLayerMask.ToString("X"); }
+            Debug.Log("[ZoneCharSep] diag: light mask 0x" + ((uint)fhd.lightlayersMask).ToString("X") + " player renderers " + nr + " union mask 0x" + seen.ToString("X") + " first " + firstR + " lit=" + ((((uint)fhd.lightlayersMask) & seen) != 0u));
         }
         float ratio = Mathf.Lerp(ra.ratio, rb.ratio, t), pitch = Mathf.Lerp(ra.pitchDeg, rb.pitchDeg, t);
         float want = Mathf.Clamp(keyL.intensity * ratio, f.minLux, f.maxLux);

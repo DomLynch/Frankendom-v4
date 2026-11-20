@@ -170,7 +170,8 @@ public static class CharMatOverride
     {
         var P = cfg.props;
         if (r.baseColor != null && r.baseColor.Length > 2 && P.baseColor != null) foreach (var p in P.baseColor) if (!string.IsNullOrEmpty(p) && m.HasProperty(p)) m.SetColor(p, new Color(r.baseColor[0], r.baseColor[1], r.baseColor[2], 1f));
-        var t = Tex(r); if (t != null && P.baseMap != null) foreach (var p in P.baseMap) if (!string.IsNullOrEmpty(p) && m.HasProperty(p)) m.SetTexture(p, t);
+        var t = Tex(r); string boundProps = ""; if (t != null && P.baseMap != null) foreach (var p in P.baseMap) if (!string.IsNullOrEmpty(p) && m.HasProperty(p)) { m.SetTexture(p, t); boundProps += p + " "; }
+        if (t != null || (r.baseColor != null && r.baseColor.Length > 2)) Debug.Log("[CharMat] bound " + m.name + " match=" + r.match + " tex=" + (t != null ? t.name + " " + t.width + "x" + t.height : (string.IsNullOrEmpty(r.albedoBlob) && string.IsNullOrEmpty(r.albedoTexture) ? "none-in-row" : "FAILED-TO-LOAD")) + " setOn=[" + boundProps.Trim() + "] baseColor=" + (r.baseColor != null && r.baseColor.Length > 2 ? r.baseColor[0].ToString("F2") + "/" + r.baseColor[1].ToString("F2") + "/" + r.baseColor[2].ToString("F2") : "unchanged"));   // CHARMATLOG v1 (Lead 20 Nov, COO): the log says what was BOUND, not only that a row was read
         if (r.smoothness >= 0f) SetAll(m, P.smoothness, Mathf.Clamp01(r.smoothness));
         if (r.metallic >= 0f) SetAll(m, P.metallic, Mathf.Clamp01(r.metallic));
     }

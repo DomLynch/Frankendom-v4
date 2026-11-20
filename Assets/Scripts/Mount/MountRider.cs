@@ -11,7 +11,7 @@ using UnityEngine;
 [Serializable] public class MtHorse
 {
     public string id = "warhorse_brown", glb = "Mount/horse_lod.glb";
-    public float heightM = 1.75f, glbHeightM = 1.75f, seatRaiseM = 0.72f, seatBackM = 0.13f, radiusM = 0.55f, yawOffsetDeg = 0f;   // heightM = withers; seatRaiseM / seatBackM are for glbHeightM and scale with heightM
+    public float heightM = 1.75f, glbHeightM = 1.75f, camHeightM = 0f, seatRaiseM = 0.72f, seatBackM = 0.13f, radiusM = 0.55f, yawOffsetDeg = 0f;   // heightM = withers; seatRaiseM / seatBackM are for glbHeightM and scale with heightM
     public bool convertMaterials = true, shadows = false;
 }
 [Serializable] public class MtSpeed { public float walkMul = 1.6f, runMul = 2.2f; }
@@ -110,7 +110,7 @@ public sealed class MountRider : MonoBehaviour
     public static float CamHeightMul { get { return Mounted ? MountData.Get().camera.heightMul * CamRefScale() : 1f; } }
     public static float CamFreeScale { get { return Mounted ? CamRefScale() : 1f; } }   // CAMEL v1: the free camera's mount scale (mount.json camera.refHeightM; 1 = off)
     public static string CamInfo() { var i = Inst; var k = MountData.Get(); return "mount=" + MountData.ActiveItem() + " heightM=" + (i != null && i.H != null ? i.H.heightM.ToString("F3") : "?") + " refHeightM=" + k.camera.refHeightM.ToString("F3") + " scale=" + CamRefScale().ToString("F3") + " backMul=" + k.camera.backMul.ToString("F2") + " heightMul=" + k.camera.heightMul.ToString("F2") + " seatRaiseM=" + (i != null && i.H != null ? i.H.seatRaiseM.ToString("F3") : "?"); }
-    static float CamRefScale() { var r = MountData.Get().camera.refHeightM; var i = Inst; if (r <= 0f || i == null || i.H == null || i.H.heightM <= 0f) return 1f; return i.H.heightM / r; }   // CAMEL v1
+    static float CamRefScale() { var r = MountData.Get().camera.refHeightM; var i = Inst; if (r <= 0f || i == null || i.H == null || i.H.heightM <= 0f) return 1f; return (i.H.camHeightM > 0f ? i.H.camHeightM : i.H.heightM) / r; }   // CAMEL v1; CAMREF v1: camHeightM keeps Dom's ride camera where it was when the horse is fitted smaller
 
     MtVariant cur; MtHorse H { get { return cur != null ? cur.horse : K.horse; } } MtStamina St { get { return cur != null ? cur.stamina : K.stamina; } }   // hades-env variants v1: cur = the owned variant (null = plain)
     MountCfg K; DuelFighter df; Fighter fi; GameObject horse; Transform hBody; GLTFast.GltfImport imp; List<Material> mats;
