@@ -286,8 +286,8 @@
         1.39,
         1.13
       ],
-      "smoothMin": 0.2,
-      "smoothMax": 1.0,
+      "smoothMin": 0.1,
+      "smoothMax": 0.5,
       "normalScale": 0.9,
       "detailAlbedo": 2.0,
       "detailNormal": -1,
