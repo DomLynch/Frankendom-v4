@@ -434,15 +434,16 @@
       "detailSmooth": -1,
       "detailTilingMul": 0.55,
       "tilingMul": 1.45,
-      "baseColorMap": "ash_leaves_albedo_v2.png",
-      "normalMap": "ash_leaves_normal.png",
-      "maskMap": "ash_leaves_mask_v2.png",
+      "baseColorMap": "ash_leaves_albedo_v3.png",
+      "normalMap": "ash_leaves_normal_v3.png",
+      "maskMap": "ash_leaves_mask_v3.png",
       "_look": "pale ash and dead leaves under the red light",
       "targetRoot": "WorldTerrain",
       "zMin": 238,
       "zMax": 312,
       "unlessActive": [],
-      "surface": "ash"
+      "surface": "ash",
+      "_look_v3": "fk_z6layer2 20 Nov: second scale inside the 8 m tile field F (features 0.2-3 m): albedo +-10 percent, mask B detail gate 0.70+-0.25 so the 20-29 m macro shows through a ragged gate, mask A smoothness 0.20 F (light = rougher), normal xy x (1+0.30 F). Revert: baseColorMap ash_leaves_albedo_v2.png, maskMap ash_leaves_mask_v2.png, normalMap ash_leaves_normal.png"
     },
     {
       "id": "t_z7_market_worn_earth",
