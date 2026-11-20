@@ -585,7 +585,7 @@
     "rootScale": 1.0,
     "knockScale": 0.25,
     "angularScale": 1.0,
-    "maxSpeed": 3.0,
+    "maxSpeed": 2.4,
     "maxAngularSpeed": 25.0,
     "knockReplacesRoot": true,
     "chainVelocity": true,
