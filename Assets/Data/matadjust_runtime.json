@@ -238,6 +238,38 @@
       "emissiveScale": -1,
       "tiling": 0,
       "_fklook": true
+    },
+    {
+        "match":  "tripo_material_7597ba0f",
+        "color":  [
+                      0.3,
+                      0.46,
+                      0.5
+                  ],
+        "smoothnessMax":  0.28,
+        "smoothnessMin":  -1,
+        "metallicMax":  0.04,
+        "aoStrength":  0.8,
+        "normalScale":  -1,
+        "emissiveScale":  0,
+        "tiling":  0,
+        "_fkz6tree":  "charred antler tree + lamp posts: red albedo tinted toward dark grey-brown bark (about 0.4x luminance, red channel cut hardest)"
+    },
+    {
+        "match":  "tripo_material_0627510f",
+        "color":  [
+                      0.42,
+                      0.38,
+                      0.34
+                  ],
+        "smoothnessMax":  0.35,
+        "smoothnessMin":  -1,
+        "metallicMax":  0.3,
+        "aoStrength":  0.8,
+        "normalScale":  -1,
+        "emissiveScale":  0,
+        "tiling":  0,
+        "_fkz6tree":  "z6 hanging lanterns: baked orange glass albedo dimmed to about 0.35x, sooty metal"
     }
   ],
   "_rowsNote": "optional extra rows with the same fields as hdrp_fixes.json matAdjust (match, color, normalScale, tiling, metallicMax, smoothnessMax, smoothnessMin, aoStrength, emissiveScale); applied AFTER the source rows, so they win.",

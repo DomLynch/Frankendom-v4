@@ -324,7 +324,7 @@ public sealed partial class AmbientHorses
     // ------------------------------------------------------------------------------------------------ rigs + gait + feet
     void HbFindRigs(Horse h, HbHorse b, HbCfg C)
     {
-        if (h.body == null) return; float now = Time.unscaledTime; b.rigs.RemoveAll(r => r.body == null);
+        if (h.body == null) return; float now = Time.unscaledTime; if (b.rigs.RemoveAll(r => r.body == null) > 0) { b.rigCount = -1; b.rigScanAt = 0f; }   // FKHOUND v1: midFirst destroys the MidLod rig and FullLod has the SAME node count, so the count compare below never rescanned: the full mesh stayed unrigged (no legs, legacy bob only)
         if (now < b.rigScanAt) return; b.rigScanAt = now + (b.rigs.Count == 0 ? C.move.rigScanS : C.move.rigRescanS); int cnt = CountDesc(h.body); if (cnt == b.rigCount) return; b.rigCount = cnt;
         var have = new HashSet<Transform>(); foreach (var r in b.rigs) if (r.body != null) have.Add(r.body);
         foreach (var t in h.body.GetComponentsInChildren<Transform>(true))

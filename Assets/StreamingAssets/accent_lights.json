@@ -1,4 +1,4 @@
-﻿{
+{
     "_about":  "laneV11 v1 (STAGED, not shipped). Per-zone complementary light accents: ground light POOLS (spot cones straight down with a soft pool cookie) hung on EXISTING props, colour contrasting the zone grade (z2 teal -\u003e amber, z4 sepia -\u003e cold blue, z5 green -\u003e amber fire, z6 red -\u003e pale cold white). Read by NEW Scripts/Zones/AccentLights.cs (kit\\code, UNCOMPILED). Absent file or enabled=false = nothing. Args: -accent:0 (off, same exe) | -accent:1 (on) | -accent:2 (on + the one shadow candidate per zone, only if allowShadow). Units HDRP physical: candela at fixed EV 9.4, metres, degrees. ARITHMETIC, NOT SEEN: a 12000 cd spot 4 m up = 750 lux on the ground, about 0.1 of white on mid-grey stone (albedo 0.35). Rules kept: every row inside its zone z-band (\u003e=3 m from the edges), |x|\u003e=9 and \u003e=14 m from the boss stand (fight lane x about +-3.8 stays clear), no flicker (amplitude 0, the combat-flash / ground-flicker issues are open), shadows off (allowShadow false; max ONE shadowed light per zone, max ONE live), light layers exclude player bit 5 and enemy bit 6 (65439) so the fighters keep their own rim/fill rigs. maxLive caps simultaneous accent lights by distance.",
     "enabled":  true,
     "log":  true,
@@ -1859,7 +1859,7 @@
                                  293.0
                              ],
                      "kelvin":  2200,
-                     "candela":  16000,
+                     "candela":  8000,
                      "range":  9.0,
                      "volumetricDimmer":  0.0,
                      "activeRadiusM":  34.0,

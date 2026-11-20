@@ -142,7 +142,7 @@
         256.0
       ],
       "kelvin": 2200.0,
-      "candela": 17600.0,
+      "candela": 6200.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -165,7 +165,7 @@
         256.0
       ],
       "kelvin": 2200.0,
-      "candela": 17600.0,
+      "candela": 6200.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -188,7 +188,7 @@
         264.5
       ],
       "kelvin": 2200.0,
-      "candela": 17600.0,
+      "candela": 6200.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -211,7 +211,7 @@
         264.5
       ],
       "kelvin": 2200.0,
-      "candela": 17600.0,
+      "candela": 6200.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -234,7 +234,7 @@
         247.5
       ],
       "kelvin": 2200.0,
-      "candela": 17600.0,
+      "candela": 6200.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -257,7 +257,7 @@
         247.5
       ],
       "kelvin": 2200.0,
-      "candela": 17600.0,
+      "candela": 6200.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -280,7 +280,7 @@
         250.0
       ],
       "kelvin": 2200.0,
-      "candela": 17600.0,
+      "candela": 6200.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -303,7 +303,7 @@
         250.0
       ],
       "kelvin": 2200.0,
-      "candela": 17600.0,
+      "candela": 6200.0,
       "range": 14.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 40.0,
@@ -573,7 +573,7 @@
     },
     {
       "kelvin": 2600.0,
-      "candela": 16000.0,
+      "candela": 5600.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -596,7 +596,7 @@
     },
     {
       "kelvin": 2600.0,
-      "candela": 16000.0,
+      "candela": 5600.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -619,7 +619,7 @@
     },
     {
       "kelvin": 2600.0,
-      "candela": 16000.0,
+      "candela": 5600.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -642,7 +642,7 @@
     },
     {
       "kelvin": 2600.0,
-      "candela": 16000.0,
+      "candela": 5600.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -665,7 +665,7 @@
     },
     {
       "kelvin": 2600.0,
-      "candela": 16000.0,
+      "candela": 5600.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -688,7 +688,7 @@
     },
     {
       "kelvin": 2600.0,
-      "candela": 16000.0,
+      "candela": 5600.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -711,7 +711,7 @@
     },
     {
       "kelvin": 2600.0,
-      "candela": 16000.0,
+      "candela": 5600.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -734,7 +734,7 @@
     },
     {
       "kelvin": 2600.0,
-      "candela": 16000.0,
+      "candela": 5600.0,
       "range": 12.0,
       "volumetricDimmer": 0.0,
       "activeRadiusM": 30.0,
@@ -970,7 +970,7 @@
         301.78
       ],
       "kelvin": 2700.0,
-      "candela": 24000.0,
+      "candela": 12000.0,
       "range": 14.0,
       "volumetricDimmer": 0.5,
       "activeRadiusM": 70.0,
@@ -993,7 +993,7 @@
         293.61
       ],
       "kelvin": 2700.0,
-      "candela": 24000.0,
+      "candela": 12000.0,
       "range": 14.0,
       "volumetricDimmer": 0.5,
       "activeRadiusM": 70.0,
@@ -1016,7 +1016,7 @@
         270.12
       ],
       "kelvin": 2700.0,
-      "candela": 18000.0,
+      "candela": 9000.0,
       "range": 11.0,
       "volumetricDimmer": 0.5,
       "activeRadiusM": 45.0,
