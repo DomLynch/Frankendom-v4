@@ -1321,7 +1321,7 @@
                      "aimPitchDeg":  13.11,
                      "aimYawDeg":  157.17,
                      "kelvin":  14000,
-                     "candela":  6000,
+                     "candela":  0.0,
                      "range":  22.0,
                      "spotAngleDeg":  14.0,
                      "innerPct":  25.0,

@@ -181,6 +181,7 @@ public static class CharMatOverride
 public class CharMatOverrideDriver : MonoBehaviour
 {
     readonly HashSet<GameObject> done = new HashSet<GameObject>(); float next, nextSig, fastUntil; int sig; bool sigSet;
+    Transform dumpRoot; float nextDump; int dumpN; readonly HashSet<int> dumped = new HashSet<int>();   // MATDUMP v1 (log only)
     void OnEnable() { SceneManager.sceneLoaded += OnLoaded; }
     void OnDisable() { SceneManager.sceneLoaded -= OnLoaded; }
     void OnLoaded(Scene s, LoadSceneMode m) { var c = CharMatOverride.Current; fastUntil = Time.unscaledTime + (c != null ? c.spawnFastSeconds : 0f); next = 0f; }
@@ -200,6 +201,19 @@ public class CharMatOverrideDriver : MonoBehaviour
             string id = Roster.IdOf(f.transform);
             try { int n = CharMatOverride.Apply(f.transform.root, id); if (n > 0) Debug.Log("[CharMat] " + id + ": " + n + " material(s) overridden from character_materials.json"); }
             catch (Exception e) { Debug.LogWarning("[CharMat] " + id + " skipped: " + e.Message); }
+            if (string.Equals(id, "Joan", StringComparison.OrdinalIgnoreCase)) dumpRoot = f.transform.root;
+        }
+        // MATDUMP v1 (Lead 20 Nov): log-only. Joan's armour is runtime GLB gear that loads AFTER spawn, so every 6 s (max 40 times) list each material her renderers carry (once per material instance): name | shader | _BaseColor | _BaseColorMap name | renderer path. Names the real material to override.
+        if (dumpRoot != null && dumpN < 40 && Time.unscaledTime >= nextDump)
+        {
+            nextDump = Time.unscaledTime + 6f; dumpN++;
+            foreach (var rd in dumpRoot.GetComponentsInChildren<Renderer>(true))
+                foreach (var mt in rd.sharedMaterials)
+                {
+                    if (mt == null || !dumped.Add(mt.GetHashCode())) continue;
+                    string bc = mt.HasProperty("_BaseColor") ? mt.GetColor("_BaseColor").ToString("F2") : "-"; string bm = mt.HasProperty("_BaseColorMap") && mt.GetTexture("_BaseColorMap") != null ? mt.GetTexture("_BaseColorMap").name : "-";
+                    Debug.Log("[CharMat] dump Joan: mat='" + mt.name + "' shader=" + (mt.shader != null ? mt.shader.name : "?") + " _BaseColor=" + bc + " map=" + bm + " renderer=" + rd.name + " layerMask=0x" + rd.renderingLayerMask.ToString("X"));
+                }
         }
         CharMatOverride.EmptyTrash();
     }
