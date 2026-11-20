@@ -72,6 +72,7 @@ public class CharTwinGroup
 
     public float PollSeconds { get { return cfg != null ? cfg.pollSeconds : 1f; } }
     public CharTwin.Cfg Cfg { get { return cfg; } }
+    public Material TwinInstance(string path) { Material t; return path != null && twins.TryGetValue(path, out t) ? t : null; }   // BossSssTune: live twin instance or null
 
     // phase 1 of a poll: reload the json if it changed (a change restores everything first, then phase 2 re-swaps); true = phase 2 is wanted
     public bool Prepare()
@@ -192,6 +193,7 @@ public class CharTwinDriver : MonoBehaviour
                 float p = fast ? g.Cfg.spawnPollSeconds : g.Cfg.pollSeconds; if (p < step) step = p;
             }
         }
+        BossSssTune.Tick(Groups);   // data switch boss_sss_tune.json; no-op unless that file says enabled
         next = now + step;
     }
 }

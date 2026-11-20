@@ -142,6 +142,7 @@ public static class MatAdjustRuntime
     // one pass over the loaded materials. force = ignore the processed guard.
     internal static void Scan(bool force)
     {
+        DetailPackRuntime.Tick(force);   // fk_windcode: own json (detail_pack.json), own off switch (mode off = nothing), no-op in the Editor
         if (cfg == null || !cfg.enabled || all.Length == 0) return;
         var sw = Stopwatch.StartNew(); int matched = 0, baked = 0, changed = 0, props = 0;
         if (force || done.Count > 20000) done.Clear();

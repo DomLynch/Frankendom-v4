@@ -64,7 +64,7 @@ public sealed class ZoneMotes : MonoBehaviour
         float rate = r.count / Mathf.Max(MinLife, 0.5f * (r.lifeMin + r.lifeMax));   // steady state count = rate x mean lifetime
         var em = ps.emission; em.enabled = true; em.rateOverTime = rate; em.rateOverDistance = 0f;
         var sh = ps.shape; sh.enabled = true; sh.shapeType = ParticleSystemShapeType.Box; sh.scale = V(r.box, BoxDef); sh.position = new Vector3(0f, 0.5f * sh.scale.y + r.bottomM, 0f);
-        var vel = ps.velocityOverLifetime; vel.enabled = true; vel.space = ParticleSystemSimulationSpace.World; var dr = V(r.drift, Vector3.zero);
+        var vel = ps.velocityOverLifetime; vel.enabled = true; vel.space = ParticleSystemSimulationSpace.World; var dr = V(r.drift, Vector3.zero) + Wind.MoteDrift(r.id);
         vel.x = dr.x; vel.y = dr.y; vel.z = dr.z;
         var nz = ps.noise; nz.enabled = r.noiseStrength > 0f; nz.strength = r.noiseStrength; nz.frequency = r.noiseFrequency; nz.scrollSpeed = r.noiseScroll; nz.damping = true; nz.quality = ParticleSystemNoiseQuality.Low;
         var col = ps.colorOverLifetime; col.enabled = true;   // fade in and out so a mote never pops: alpha 0 -> 1 over the first fadeInFrac, 1 -> 0 over the last fadeOutFrac of the life

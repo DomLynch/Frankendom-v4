@@ -23,6 +23,7 @@ public class SecondaryMotion : MonoBehaviour
         public float stiffness = 60f;                   // spring rate toward the animated tip, 1/s^2
         public float damping = 6f;                      // velocity decay, 1/s
         public float gravity = 0f;                      // multiple of world.gravityMps2
+        public float windGain = 0f;                     // WIND v1: extra acceleration = Wind.Vec(bone position) x windGain (1/s), 0 = no wind (default). Needs wind.json enabled
         public float maxAngleDeg = 20f;                 // largest deviation of one bone from its animated direction
         public float rootInfluence = 1f;                // effect weight at the first bone of the chain (0 = animated pose only)
         public float tipInfluence = 1f;                 // effect weight at the last bone
@@ -193,9 +194,10 @@ public class SecondaryMotion : MonoBehaviour
             Vector3 animDir = anim / len; nd.len = len;
             if (!nd.init || (nd.s - target).sqrMagnitude > W.teleportM * W.teleportM || float.IsNaN(nd.s.x + nd.s.y + nd.s.z)) { nd.s = target; nd.v = Vector3.zero; nd.init = true; }
             float k = Mathf.Min(ch.stiffness, kCap);
+            Vector3 wind = ch.windGain > 0f ? Wind.Vec(root) * ch.windGain : Vector3.zero;   // WIND v1: zero unless the row has windGain and wind.json is enabled
             for (int s = 0; s < steps; s++)
             {
-                nd.v += ((target - nd.s) * k + g * ch.gravity) * h;
+                nd.v += ((target - nd.s) * k + g * ch.gravity + wind) * h;
                 nd.v *= Mathf.Exp(-ch.damping * h);
                 nd.s += nd.v * h;
             }

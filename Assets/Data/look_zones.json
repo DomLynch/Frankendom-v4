@@ -411,11 +411,11 @@
                                       0.9
                                   ],
                      "bounceColor":  [
-                                         1.0,
-                                         0.64,
-                                         0.3
+                                         0.74,
+                                         0.7,
+                                         0.66
                                      ],
-                     "bounceLux":  250.0,
+                     "bounceLux":  600.0,
                      "bouncePitchDeg":  -999.0,
                      "bounceYawDeg":  -999.0,
                      "moonRimColor":  [
