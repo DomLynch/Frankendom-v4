@@ -688,6 +688,7 @@ public static partial class MeshCut   // V1FIN v94: partial (MeshCutCrown.cs)
 
     static void Blood(CutResult res, Transform victim, Transform parentBone, Vector3 pos, Vector3 dir, CutUnit unit, FinisherFile cfg, bool hasPiece)
     {
+        if (FkDecap.BloodOff) return;   // DECAP v1: rule 18, no spray, ring, splash or cleave until decap.json blood.enabled (judged in motion)
         if (FinVis.On && string.IsNullOrEmpty(unit.cleave)) FinVisRing(victim, parentBone, pos, dir, unit, cfg);   // FINVIS v1: the cut-reveal ring round the stump (units with a cleave row get the arc line in FinisherCleave instead)
         if (V1Blood(res, victim, parentBone, pos, dir, unit, cfg, hasPiece)) { GoreFx.Splash(victim, unit.loc, unit.extraDecals, cfg.gore); FinisherCleave.Apply(victim, unit, pos, dir, Vector3.zero, res); return; }   // V1FIN v94: V1 finisher-blood.ts sources + phases
         res.blood.Add(new CutBloodEvent { pos = pos, dir = dir, kind = "jet", loc = unit.loc });
@@ -720,7 +721,4 @@ public static partial class MeshCut   // V1FIN v94: partial (MeshCutCrown.cs)
         var sc = go.GetComponent<Collider>(); if (sc != null) { var cols = victim.GetComponentsInChildren<Collider>(true); for (int i = 0; i < cols.Length; i++) SafeIgnore(cols[i], sc); }
         go.AddComponent<Rigidbody>().mass = unit.massKg;
         root.localScale = Vector3.zero;
-        res.pieces.Add(go); res.ok = true; res.note = "FALLBACK: meshes not readable, bone scaled to 0 + placeholder sphere (enable Read/Write on the model import)";
-    }
-}
-
+        res.pieces.Add(go); res.o
