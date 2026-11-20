@@ -162,7 +162,7 @@
       "size": 0.2
     },
     "heuristic": {
-      "enabled": 1,
+      "enabled": 0,
       "minSpeed": 0.6,
       "runSpeed": 3.5,
       "walkStride": 0.9,

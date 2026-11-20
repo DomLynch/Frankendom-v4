@@ -22,7 +22,7 @@
   "ground": {
     "_about": "BloodGround.MakeSplat: variants textures, each one main pool (mainR x texture size) + blobBase + rnd*blobRand mid blobs (midR) + pins pin drops (pinR) at dist x texture size from the centre, x stretch sx; reach = blob support radius. stretchY = the splat's length stretch on the floor, hitScatter / hitOffset = placement around the victim, dripMin = wound drip inner radius.",
     "variants": 3, "blobBase": 4, "blobRand": 4, "pins": 10,
-    "dist": [0.1, 0.5], "mainR": [0.12, 0.24], "midR": [0.04, 0.1], "pinR": [0.006, 0.03], "sx": [0.5, 1.8], "stretchY": [0.7, 1.6],
+    "dist": [0.1, 0.5], "mainR": [0.2, 0.3], "midR": [0.06, 0.14], "pinR": [0.006, 0.03], "sx": [0.6, 1.7], "stretchY": [0.7, 1.6],
     "reach": 2.0, "hitScatter": 0.4, "hitOffset": 0.6, "dripMin": 0.05
   },
   "edge": {

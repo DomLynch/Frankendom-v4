@@ -4,7 +4,7 @@
   "log": true,
   "gatePrefix": "prog_step_",
   "pollS": 1.0,
-  "toast": { "depth": -9000, "seconds": 3.8, "fadeInS": 0.25, "fadeOutS": 0.8, "lineH": 1.6, "bottom": 60, "size": 20, "color": [0.93, 0.88, 0.78], "text": "{0}  -  {1}" },
+  "toast": { "depth": -9000, "seconds": 3.0, "fadeInS": 0.25, "fadeOutS": 0.8, "lineH": 1.6, "bottom": 60, "size": 16, "color": [0.93, 0.88, 0.78], "text": "{0}", "align": "right", "padX": 28 },
   "steps": [
     { "boss": "Pitborn", "zone": "pit_yard", "spawn": "z1_pitborn", "title": "THE GATE WARDEN FALLS. TAKE HIS MAUL (E), THEN WEAR IT (TAB)", "hpMul": 1.07, "staminaMul": 1.06, "damageMul": 1.05, "perk": { "label": "Steady Guard: blocking costs less", "blockCostMul": 0.85 } },
     { "boss": "Sobek", "zone": "sobek_reach", "spawn": "z2_sobek", "title": "SOBEK FALLS", "hpMul": 1.07, "staminaMul": 1.06, "damageMul": 1.05, "perk": { "label": "Tireless Arm: swings cost less", "attackCostMul": 0.92 } },

@@ -107,8 +107,8 @@
   "toastFadeInS": 0.25,
   "toastFadeOutS": 0.5,
   "toastLineH": 1.6,
-  "toastSize": 24,
-  "toastBottom": 190.0,
+  "toastSize": 16,
+  "toastBottom": 90.0, "align": "right", "padX": 28,
   "color": [
     0.93,
     0.88,
