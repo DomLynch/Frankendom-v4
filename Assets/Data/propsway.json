@@ -1,0 +1,93 @@
+{
+  "note": "PROPSWAY v1 (fk_propsway, read by Scripts/PropSway.cs, hot reloaded by write time every ~5 s through MatAdjustRuntime.Scan). mode off (shipped) or no file = nothing moves and every prop is put back exactly. mode on = rows. Rigid sway of BAKED prop wrappers picked by GameObject name (ordinal, ignore case; exclude = skip words; zone = part of the scene root name; zMin/zMax = world z band). kind chain = swing about the top of the renderer bounds perpendicular to the wind, tip downwind, lagged; cloth = yaw twist about the pole axis; branch = lean about the base. maxDeg = peak angle, periodS = main period (second period 0.41x, 28 percent), lagS = first order lag, windGain 0 = amplitude ignores the Wind field, 1 = proportional to |Wind.Vec|/refSpeedMps (wind.json), phase and period +-periodJitter come from a hash of the name. Only items within rangeM of the camera, at most maxMovers, nearest first. Items in a static batch or under an Animator are skipped. Slow and small by design: nothing pulses or bounces. Judge from a motion strip, not a still.",
+  "mode": "on",
+  "rangeM": 40,
+  "selectSeconds": 0.5,
+  "rescanSeconds": 5,
+  "refSpeedMps": 1,
+  "dirDeg": 70,
+  "gustPeriodS": 9,
+  "logSampleS": 10,
+  "maxMovers": 64,
+  "maxCandidates": 1024,
+  "log": true,
+  "rows": [
+    {
+      "match": "chain",
+      "exclude": [
+        "gantry",
+        "coil",
+        "warden",
+        "caparison"
+      ],
+      "kind": "chain",
+      "maxDeg": 3,
+      "periodS": 4.2,
+      "lagS": 0.35,
+      "windGain": 0.6,
+      "phaseJitter": 1,
+      "periodJitter": 0.12,
+      "enabled": true,
+      "zMin": -100000,
+      "zMax": 100000
+    },
+    {
+      "match": "hanging_lamps",
+      "exclude": [],
+      "kind": "chain",
+      "maxDeg": 2.5,
+      "periodS": 5,
+      "lagS": 0.5,
+      "windGain": 0.6,
+      "phaseJitter": 1,
+      "periodJitter": 0.12,
+      "enabled": true,
+      "zMin": -100000,
+      "zMax": 100000
+    },
+    {
+      "match": "banner",
+      "exclude": [],
+      "kind": "cloth",
+      "maxDeg": 4.5,
+      "periodS": 5.5,
+      "lagS": 0.15,
+      "windGain": 0.6,
+      "phaseJitter": 1,
+      "periodJitter": 0.12,
+      "enabled": true,
+      "zMin": -100000,
+      "zMax": 100000
+    },
+    {
+      "match": "dead_tree",
+      "exclude": [
+        "sil"
+      ],
+      "kind": "branch",
+      "maxDeg": 0.35,
+      "periodS": 8,
+      "lagS": 0.6,
+      "windGain": 0.5,
+      "phaseJitter": 1,
+      "periodJitter": 0.12,
+      "enabled": true,
+      "zMin": -100000,
+      "zMax": 100000
+    },
+    {
+      "match": "pitdress_tree",
+      "exclude": [],
+      "kind": "branch",
+      "maxDeg": 0.35,
+      "periodS": 8,
+      "lagS": 0.6,
+      "windGain": 0.5,
+      "phaseJitter": 1,
+      "periodJitter": 0.12,
+      "enabled": true,
+      "zMin": -100000,
+      "zMax": 100000
+    }
+  ]
+}

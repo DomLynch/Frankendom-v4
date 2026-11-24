@@ -32,7 +32,7 @@ public sealed class ZoneCamScene : MonoBehaviour
         if (!ZoneCamTrace.Running) { Debug.LogWarning("[CamScene] needs -camtrace:<dir> next to -camscene"); Done("no -camtrace", false); yield break; }
         C = ZoneCamTrace.Cfg; var S = C.scene; if (!S.enabled) { Done("scene.enabled=false", false); yield break; }
         // 19 Nov: a QA player ended gracefully mid-step with no quit reason (fullroute 093842, exit 0). Name the next stop: who called Quit (managed stack; empty = external WM_CLOSE) and the CamScene step. Static lambdas, no serialized field, no new boot hook.
-        Application.wantsToQuit += () => { Debug.Log("[QuitReason] wantsToQuit step=" + ZoneCamTrace.Step + " t=" + Time.realtimeSinceStartup.ToString("F1") + " stack=" + (UnityEngine.StackTraceUtility.ExtractStackTrace() ?? "").Replace("\n", " | ")); return true; };
+        Application.wantsToQuit += () => { Debug.Log("[QuitReason] wantsToQuit step=" + ZoneCamTrace.Step + " t=" + Time.realtimeSinceStartup.ToString("F1") + " " + QuitWho.Info() + " stack=" +(UnityEngine.StackTraceUtility.ExtractStackTrace() ?? "").Replace("\n", " | ")); return true; };
         Application.quitting += () => Debug.Log("[QuitReason] quitting step=" + ZoneCamTrace.Step + " t=" + Time.realtimeSinceStartup.ToString("F1"));
         HookEvents(S);
         if (S.startZone.Length > 0) { yield return WaitReady(S); yield return StartCoroutine(Restart(S, new CtStep { id = "start", zone = S.startZone, spot = S.startSpot })); }   // CODE5 v1: begin at a zone spot
@@ -41,6 +41,7 @@ public sealed class ZoneCamScene : MonoBehaviour
         {
             if (st == null) continue; if (Time.realtimeSinceStartup - tAll > S.globalTimeoutS) { Note("global timeout, stopping"); ok = false; break; }
             ZoneCamTrace.Step = st.id; Note("step " + st.id + " (" + st.kind + ")"); float t0 = Time.realtimeSinceStartup;
+            if (st.id.EndsWith("_away") || st.id.EndsWith("_boss") || st.id.StartsWith("hub_back")) { AmbDump.Log(st.id); AmbDump.SkyObjects(st.id); }   // 20 Nov: log-only, what decides the shadow-side fill (ambient mode, probe L0, volume stack)
             if (st.startZone.Length > 0) yield return StartCoroutine(Restart(S, new CtStep { id = st.id, zone = st.startZone, spot = st.startSpot }));   // CODE5 v1
             if (st.killAfter > 0f && st.boss.Length > 0) StartCoroutine(KillBoss(st));   // CODE5 v1
             if (st.kind == "fight" && st.item == "deathcam") StartCoroutine(DeathCamWatch(st));   // DEATHCAM (harness)
@@ -53,6 +54,7 @@ public sealed class ZoneCamScene : MonoBehaviour
                 case "flee": it = Walk(S, st, true); break;
                 case "fight": it = Fight(S, st); break;
                 case "hold": it = Hold(S, st); break;
+                case "choreo": it = Choreo(S, st); break;   // row 30 (COO 22:3x): one scripted exchange from st.item, no assists written (hp floor and kills are separate)
                 case "forceDeath": it = ForceDeath(S, st); break;   // CODE5 v1
                 case "followanimal": it = FollowAnimal(S, st); break;   // HOUNDCAM (QA harness): camera parked beside a roaming animal found by name (st.item), pos = [side, up, back] m
                 case "sidecam": it = SideCam(S, st); break;   // FK17: free camera beside / behind Joan (data pos = [right m, up m, forward m, look height m]) for st.seconds, her sim keeps running
@@ -207,6 +209,7 @@ public sealed class ZoneCamScene : MonoBehaviour
         float t1 = Time.realtimeSinceStartup + Mathf.Max(0.5f, st.seconds);
         // SIDECAM v2 (harness): st.run = true makes her move straight ahead (the heading she has at the start, running) for the whole step, so a mounted gallop can be filmed; st.item = "static" parks the camera in the world at the start offset (she rides past it) instead of following her.
         Vector3 f0 = m.transform.forward; f0.y = 0f; f0.Normalize(); Vector3 r0 = m.transform.right; r0.y = 0f; r0.Normalize(); Vector3 p00 = m.transform.position; bool parked = st.item == "static"; Vector3 parkPos = p00 + r0 * sx + f0 * sz + Vector3.up * sy;
+        Note("sidecam heading " + st.id + ": joan forward " + f0.ToString("F2") + " pos " + p00.ToString("F1") + " cam " + parkPos.ToString("F1") + " offsets " + sx.ToString("F1") + "/" + sy.ToString("F1") + "/" + sz.ToString("F1"));   // 20 Nov: camtrace has no Joan heading column; front/back cams were mis-set twice
         if (st.run) { drive = true; wantDir = f0; wantRun = true; }
         while (Time.realtimeSinceStartup < t1)
         {
@@ -250,6 +253,29 @@ public sealed class ZoneCamScene : MonoBehaviour
     }
 
     IEnumerator Hold(CtScene S, CtStep st) { drive = true; wantDir = Vector3.zero; wantRun = false; yield return new WaitForSeconds(st.seconds); }
+
+    // row 30 choreographed exchange. st.item = "approach;guard:2.5;strike:thrust;wait:1.0;guard:1.5;strike:heavy_overhead;wait:1.5;strike:light;wait:1.2". approach = walk to approachGapM of the opponent (max 20 s); guard:S = hold the guard input S s; strike:<move> = PressDirected(move) ("light" = Press light) then 0.9 s; wait:S = stand. Logs each action with Joan's state and the foe hp; writes no health.
+    IEnumerator Choreo(CtScene S, CtStep st)
+    {
+        drive = true; var acts = (st.item ?? "").Split(';');
+        foreach (var raw in acts)
+        {
+            var a = raw.Trim(); if (a.Length == 0) continue; var m = Me(); if (m == null) { yield return null; continue; }
+            string cmd = a, arg = ""; int ci = a.IndexOf(':'); if (ci > 0) { cmd = a.Substring(0, ci); arg = a.Substring(ci + 1); }
+            var t = m.opponent; float num; float.TryParse(arg, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out num);
+            Note("choreo " + a + " t=" + Time.realtimeSinceStartup.ToString("F1") + " state=" + m.state + " myhp=" + m.health.ToString("F0") + " foehp=" + (t != null ? t.health.ToString("F0") : "-") + " foestate=" + (t != null ? t.state.ToString() : "-"));
+            if (cmd == "approach")
+            {
+                float t0 = Time.realtimeSinceStartup;
+                while (Time.realtimeSinceStartup - t0 < 20f) { m = Me(); t = m != null ? m.opponent : null; if (m == null || t == null) { yield return null; continue; } Vector3 to = t.transform.position - m.transform.position; to.y = 0f; if (to.magnitude <= S.approachGapM) break; wantRun = false; wantDir = to.normalized; yield return null; }
+                wantDir = Vector3.zero;
+            }
+            else if (cmd == "guard") { wantDir = Vector3.zero; wantRun = false; float t0 = Time.realtimeSinceStartup; while (Time.realtimeSinceStartup - t0 < num) { m = Me(); if (m != null) m.guardHeld = true; yield return null; } m = Me(); if (m != null) m.guardHeld = false; }
+            else if (cmd == "strike") { wantDir = Vector3.zero; if (arg == "light") m.Press("light"); else m.PressDirected(arg); yield return new WaitForSeconds(0.9f); }
+            else if (cmd == "wait") { wantDir = Vector3.zero; wantRun = false; yield return new WaitForSeconds(num); }
+        }
+        wantDir = Vector3.zero;
+    }
 
     IEnumerator Fight(CtScene S, CtStep st)
     {
@@ -389,7 +415,7 @@ public sealed class ZoneCamScene : MonoBehaviour
         else
         {
             float sx, sz; MarketWorld.StallXZ(q, out sx, out sz);
-            yield return StartCoroutine(Walk(S, new CtStep { id = st.id, pos = new[] { sx, sz }, run = st.run, timeoutS = st.timeoutS, arriveM = Mathf.Max(0.5f, q.radius * 0.6f) }, false));
+            yield return StartCoroutine(Walk(S, new CtStep { id = st.id, pos = new[] { sx, sz }, run = st.run, timeoutS = st.timeoutS, arriveM = Mathf.Max(0.5f, q.radius * 0.85f) }, false));   // 20 Nov: 0.6 never arrived at the Stable (the shed stops Joan 1.7 m out); the game's own reach test uses the full radius
             drive = true; wantDir = Vector3.zero; wantRun = false;
             var fStl = typeof(MarketUI).GetField("stl", PrivI); float t0 = Time.realtimeSinceStartup; bool reach = false;   // the game's own reach test (MarketUI.Update: in the camp area, within stall.radius, nothing else open) and the stall it picked
             while (!reach && Time.realtimeSinceStartup - t0 < 3f) { var cur = fStl != null ? fStl.GetValue(ui) as MarketCfg.StallC : null; reach = MarketUI.InReach && (cur == null || cur.id == q.id); if (!reach) yield return null; }
@@ -513,5 +539,115 @@ public sealed class ZoneCamScene : MonoBehaviour
             if (LootSave.Owns(id)) lastItem = id;
         }
         Note("pickup " + id + ": " + res + ", carried items " + LootSave.Owned.Count);
+    }
+}
+
+// QuitWho (20 Nov, FK Lead): who had the foreground when a quit was requested, and how long since the last real keyboard / mouse input (user32). Log-only helper for the [QuitReason] line; no serialized field, no boot hook.
+static class QuitWho
+{
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)] struct LASTINPUTINFO { public uint cbSize; public uint dwTime; }
+    [System.Runtime.InteropServices.DllImport("user32.dll")] static extern System.IntPtr GetForegroundWindow();
+    [System.Runtime.InteropServices.DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(System.IntPtr h, out uint pid);
+    [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Unicode)] static extern int GetWindowText(System.IntPtr h, System.Text.StringBuilder sb, int n);
+    [System.Runtime.InteropServices.DllImport("user32.dll")] static extern bool GetLastInputInfo(ref LASTINPUTINFO p);
+    public static string Info()
+    {
+        try
+        {
+            var h = GetForegroundWindow(); uint pid; GetWindowThreadProcessId(h, out pid); var sb = new System.Text.StringBuilder(160); GetWindowText(h, sb, 160);
+            string exe = "?"; try { exe = System.Diagnostics.Process.GetProcessById((int)pid).ProcessName; } catch { }
+            var li = new LASTINPUTINFO(); li.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(LASTINPUTINFO)); float idle = -1f; if (GetLastInputInfo(ref li)) idle = ((uint)System.Environment.TickCount - li.dwTime) / 1000f;
+            return "foreground=" + exe + ":" + sb.ToString().Replace("\n", " ") + " ownPid=" + System.Diagnostics.Process.GetCurrentProcess().Id + " fgPid=" + pid + " inputIdleS=" + idle.ToString("F1");
+        }
+        catch (System.Exception e) { return "foreground=err:" + e.Message; }
+    }
+}
+
+// AmbDump (20 Nov, FK Lead, COO ask): log-only. At the *_away / *_boss steps of a harness run, print what decides the shadow-side fill: VisualEnvironment skyType and skyAmbientMode of the volume STACK, RenderSettings ambient mode / intensity / probe L0 RGB (the Static probe), the stack's ILC values, and every Volume (name, global, priority, weight, ILC diffuse and override). No serialized field, no boot hook.
+static class AmbDump
+{
+    // Floating chunks / sky ring (row 9, COO 21:2x): which OBJECTS sit in the upper part of the view? Lists active renderers whose viewport position is above the horizon band (y > 0.5) and farther than 60 m or higher than the camera + 15 m, with name, root, renderer type, shader, mesh vertex count, distance and viewport xy; plus every Light that has a flare and every LensFlareComponentSRP. Log-only.
+    public static void SkyObjects(string stepId)
+    {
+        try
+        {
+            var cam = Camera.main; if (cam == null) { Debug.Log("[SkyObj] " + stepId + " no main camera"); return; }
+            var cp = cam.transform.position; var list = new System.Collections.Generic.List<string>(); int n = 0;
+            foreach (var r in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None))
+            {
+                if (r == null || !r.enabled || !r.gameObject.activeInHierarchy) continue;
+                var c = r.bounds.center; var d = (c - cp).magnitude; var vp = cam.WorldToViewportPoint(c);
+                if (vp.z <= 0f || vp.x < -0.1f || vp.x > 1.1f || vp.y < 0.78f) continue;   // 21:4x: the first listing (vp.y >= 0.5) was only far boulders on the horizon band; floating chunks sit well above it
+                if (c.y < cp.y + 18f) continue;
+                n++; if (list.Count >= 28) continue;
+                string mesh = "-"; var mf = r.GetComponent<MeshFilter>(); if (mf != null && mf.sharedMesh != null) mesh = mf.sharedMesh.name + "/" + mf.sharedMesh.vertexCount;
+                string sh = r.sharedMaterial != null && r.sharedMaterial.shader != null ? r.sharedMaterial.shader.name : "-";
+                list.Add(r.name + " root=" + r.transform.root.name + " " + r.GetType().Name + " sh=" + sh + " mesh=" + mesh + " d=" + d.ToString("F0") + " vp=(" + vp.x.ToString("F2") + "," + vp.y.ToString("F2") + ") size=" + r.bounds.size.magnitude.ToString("F0"));
+            }
+            var flares = new System.Collections.Generic.List<string>();
+            foreach (var l in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None)) if (l != null && l.enabled && l.flare != null) flares.Add(l.name + "(" + l.type + ")");
+            foreach (var lf in UnityEngine.Object.FindObjectsByType<UnityEngine.Rendering.LensFlareComponentSRP>(FindObjectsSortMode.None)) if (lf != null) flares.Add("LensFlareSRP:" + lf.name);
+            Debug.Log("[SkyObj] " + stepId + " upper-view renderers=" + n + " listed=" + list.Count + " flares=" + string.Join(",", flares.ToArray()) + " :: " + string.Join(" ;; ", list.ToArray()));
+        }
+        catch (System.Exception e) { Debug.LogWarning("[SkyObj] failed: " + e.Message); }
+    }
+    public static void Log(string stepId)
+    {
+        try
+        {
+            var sb = new System.Text.StringBuilder("[AmbDump] " + stepId + " zone=" + ZoneCamTrace.Zone());
+            var cam0 = Camera.main; UnityEngine.Rendering.VolumeStack stack = null;
+            try { if (cam0 != null) stack = UnityEngine.Rendering.HighDefinition.HDCamera.GetOrCreate(cam0).volumeStack; } catch { }
+            string stackSrc = stack != null ? "camera stack (HDCamera)" : "DEFAULT stack (not the camera's: values are defaults)";
+            if (stack == null) stack = UnityEngine.Rendering.VolumeManager.instance.stack;   // 21:4x: the first AmbDump read VolumeManager.instance.stack, which is the default stack (ILC 1.00 and GI enable=False are component defaults), not what the camera renders with
+            var ve = stack.GetComponent<UnityEngine.Rendering.HighDefinition.VisualEnvironment>();
+            sb.Append(" | " + stackSrc + " skyType=" + (ve != null ? ve.skyType.value.ToString() : "?") + " skyAmbientMode=" + (ve != null ? ve.skyAmbientMode.value.ToString() : "?"));
+            var ilcs = stack.GetComponent<UnityEngine.Rendering.HighDefinition.IndirectLightingController>();
+            sb.Append(" | stack ILC diffuse=" + (ilcs != null ? ilcs.indirectDiffuseLightingMultiplier.value.ToString("F2") : "?") + " reflection=" + (ilcs != null ? ilcs.reflectionLightingMultiplier.value.ToString("F2") : "?"));
+            var gis = stack.GetComponent<UnityEngine.Rendering.HighDefinition.GlobalIllumination>();
+            sb.Append(" | stack GI " + (gis != null ? ("active=" + gis.active + " enable=" + gis.enable.value + " rayMiss=" + gis.rayMiss.value + " ambientProbeDimmer=" + gis.ambientProbeDimmer.value.ToString("F2") + " quality=" + gis.quality.value) : "?"));
+            // 21:5x (COO): every RuntimeQuality look key goes through the same profile path as ILC, which proved lost. Print the CAMERA values of the keys it writes, so intended (runtime_flags) vs rendered can be compared key by key.
+            var sr0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.ScreenSpaceReflection>();
+            var fg0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.Fog>();
+            var vc0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.VolumetricClouds>();
+            var hs0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.HDRISky>();
+            var sh0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.HDShadowSettings>();
+            var ao0 = stack.GetComponent<UnityEngine.Rendering.HighDefinition.ScreenSpaceAmbientOcclusion>();
+            sb.Append(" | KEYS gi.quality=" + (gis != null ? gis.quality.value.ToString() : "?") + " gi.fullRes=" + (gis != null ? gis.fullResolutionSS.value.ToString() : "?")
+                + " ssr.active=" + (sr0 != null ? sr0.active.ToString() : "?") + " ssr.quality=" + (sr0 != null ? sr0.quality.value.ToString() : "?")
+                + " fog.volumetric=" + (fg0 != null ? fg0.enableVolumetricFog.value.ToString() : "?") + " fog.quality=" + (fg0 != null ? fg0.quality.value.ToString() : "?")
+                + " clouds.active=" + (vc0 != null ? vc0.active.ToString() : "?")
+                + " hdri.exposure=" + (hs0 != null ? hs0.exposure.value.ToString("F1") : "?") + " hdri.rotation=" + (hs0 != null ? hs0.rotation.value.ToString("F0") : "?")
+                + " shadow.cascades=" + (sh0 != null ? sh0.cascadeShadowSplitCount.value.ToString() : "?") + " shadow.maxDist=" + (sh0 != null ? sh0.maxShadowDistance.value.ToString("F0") : "?")
+                + " ssao.active=" + (ao0 != null ? ao0.active.ToString() : "?") + " ssao.quality=" + (ao0 != null ? ao0.quality.value.ToString() : "?"));
+            var ap = RenderSettings.ambientProbe;
+            sb.Append(" | RenderSettings ambientMode=" + RenderSettings.ambientMode + " intensity=" + RenderSettings.ambientIntensity.ToString("F2") + " probe L0 rgb=(" + ap[0, 0].ToString("F3") + "," + ap[1, 0].ToString("F3") + "," + ap[2, 0].ToString("F3") + ") sky=" + (RenderSettings.ambientSkyColor.grayscale).ToString("F3"));
+            try   // Strategy 22:25: what feeds indirect light. probe straight up/down, APV state, fog colour mode (log-only)
+            {
+                var dirs = new Vector3[] { Vector3.up, Vector3.down }; var cols = new Color[2]; ap.Evaluate(dirs, cols);
+                sb.Append(" | PROBE up=(" + cols[0].r.ToString("F3") + "," + cols[0].g.ToString("F3") + "," + cols[0].b.ToString("F3") + ") down=(" + cols[1].r.ToString("F3") + "," + cols[1].g.ToString("F3") + "," + cols[1].b.ToString("F3") + ")");
+                var pvs = UnityEngine.Object.FindObjectsByType<UnityEngine.Rendering.ProbeVolume>(FindObjectsSortMode.None);
+                var hdAsset = UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline as UnityEngine.Rendering.HighDefinition.HDRenderPipelineAsset;
+                var pru = UnityEngine.Rendering.ProbeReferenceVolume.instance;
+                sb.Append(" | APV supported=" + (hdAsset != null ? hdAsset.currentPlatformRenderPipelineSettings.lightProbeSystem.ToString() : "?") + " refVolInit=" + pru.isInitialized + " probeVolumeComponents=" + pvs.Length + " bakingSet=" + (pru.currentBakingSet != null ? pru.currentBakingSet.name : "none"));
+                UnityEngine.Rendering.HighDefinition.Fog fgx; var stk = UnityEngine.Rendering.HighDefinition.HDCamera.GetOrCreate(Camera.main).volumeStack;
+                fgx = stk != null ? stk.GetComponent<UnityEngine.Rendering.HighDefinition.Fog>() : null;
+                if (fgx != null) sb.Append(" | FOG colorMode=" + fgx.colorMode.value + " color=(" + fgx.color.value.r.ToString("F2") + "," + fgx.color.value.g.ToString("F2") + "," + fgx.color.value.b.ToString("F2") + ") tint=(" + fgx.tint.value.r.ToString("F2") + "," + fgx.tint.value.g.ToString("F2") + "," + fgx.tint.value.b.ToString("F2") + ") enabled=" + fgx.enabled.value);
+                var po = stk != null ? stk.GetComponent<UnityEngine.Rendering.ProbeVolumesOptions>() : null;
+                if (po != null) sb.Append(" | APVopt intensity=" + po.intensityMultiplier.value.ToString("F2"));
+                if (RuntimeQuality.AmbProbeInfo != null) sb.Append(" | AMBSW " + RuntimeQuality.AmbProbeInfo);
+            }
+            catch (System.Exception eP) { sb.Append(" | probeinfo failed: " + eP.Message); }
+            var vols = UnityEngine.Object.FindObjectsByType<UnityEngine.Rendering.Volume>(FindObjectsSortMode.None);
+            sb.Append(" | volumes " + vols.Length + ":");
+            foreach (var v in vols)
+            {
+                string ilcTxt = "-"; var p = v.sharedProfile; UnityEngine.Rendering.HighDefinition.IndirectLightingController c;
+                if (p != null && p.TryGet(out c)) ilcTxt = c.indirectDiffuseLightingMultiplier.value.ToString("F2") + (c.indirectDiffuseLightingMultiplier.overrideState ? "*" : "");
+                sb.Append(" [" + v.name + " g=" + v.isGlobal + " prio=" + v.priority + " w=" + v.weight.ToString("F2") + " ilc=" + ilcTxt + "]");
+            }
+            Debug.Log(sb.ToString());
+        }
+        catch (System.Exception e) { Debug.LogWarning("[AmbDump] failed: " + e.Message); }
     }
 }

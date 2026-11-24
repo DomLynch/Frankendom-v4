@@ -352,12 +352,12 @@
       "enabled": true,
       "mix": 1.0,
       "tint": [
-        0.5,
-        0.48,
-        0.46
+        0.425,
+        0.408,
+        0.391
       ],
-      "smoothMin": 0.0,
-      "smoothMax": 0.45,
+      "smoothMin": 0.12,
+      "smoothMax": 0.6,
       "normalScale": 0.6,
       "detailAlbedo": 0.8,
       "detailNormal": -1,
@@ -422,12 +422,12 @@
       "enabled": true,
       "mix": 1.0,
       "tint": [
-        0.4,
-        0.4,
-        0.4
+        0.34,
+        0.34,
+        0.34
       ],
-      "smoothMin": 0.04,
-      "smoothMax": 0.3,
+      "smoothMin": 0.15,
+      "smoothMax": 0.5,
       "normalScale": 0.9,
       "detailAlbedo": 1.5,
       "detailNormal": -1,

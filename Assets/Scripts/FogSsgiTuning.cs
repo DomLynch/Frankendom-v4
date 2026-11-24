@@ -80,6 +80,7 @@ public static class FogSsgiTuning
     {
         if (F.ssgiThickness >= 0f) gi.depthBufferThickness.Override(Mathf.Clamp(F.ssgiThickness, 0f, 0.5f));
         if (F.ssgiRayMiss >= 0) gi.rayMiss.Override((RayMarchingFallbackHierarchy)Mathf.Clamp(F.ssgiRayMiss, 0, 3));   // 0 none, 1 sky, 2 probes, 3 probes+sky (authored)
+        if (F.ssgiAmbient >= 0f) { gi.ambientProbeDimmer.Override(Mathf.Clamp01(F.ssgiAmbient)); Debug.Log("FOGSSGI gi ambientProbeDimmer overridden to " + Mathf.Clamp01(F.ssgiAmbient).ToString("F2")); }
         bool custom = F.ssgiSteps >= 0 || F.ssgiDenoise >= 0 || F.ssgiHalfDenoise >= 0 || F.ssgiSecondDenoise >= 0 || F.ssgiRadius >= 0f;
         if (F.ssgiThickness >= 0f || F.ssgiRayMiss >= 0 || custom) Debug.Log("FOGSSGI gi keys: steps=" + F.ssgiSteps + " denoise=" + F.ssgiDenoise + " halfDenoise=" + F.ssgiHalfDenoise + " second=" + F.ssgiSecondDenoise + " radius=" + F.ssgiRadius + " thickness=" + F.ssgiThickness + " rayMiss=" + F.ssgiRayMiss);
         if (!custom) return;

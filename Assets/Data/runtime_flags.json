@@ -38,6 +38,7 @@
     "ssgiHalfDenoise":  -1,
     "ssgiSecondDenoise":  -1,
     "ssgiRayMiss":  -1,
+    "ssgiAmbient":  -1,
     "fogScreenPct":  -1,
     "fogDepthExtent":  -1,
     "fogDepthRatio":  -1,

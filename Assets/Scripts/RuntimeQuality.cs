@@ -20,7 +20,7 @@ public static class RuntimeQuality
         // fogGridWidth > 0: fog froxel grid held at that many internal px at every output size (FPSA; 268 = the approved 1080p look). Skipped when fogManual / fogBudget / fogDepthRatio is set (those win). fogSlices: 170 when only the grid lock is on; in fogManual 1 the slice count.
         // fogManual 1 = Manual fog control; fogDenoise 0 none 1 reprojection 2 gaussian 3 both; ssgiRayMiss 0 none 1 sky 2 probes 3 both; fogBudget (existing key) is real again when set (FOGSSGI finding F0).
         public int fogGridWidth = 0, fogManual = -1, fogSlices = -1, fogDenoise = -1, fogDirOnly = -1, ssgiSteps = -1, ssgiDenoise = -1, ssgiHalfDenoise = -1, ssgiSecondDenoise = -1, ssgiRayMiss = -1;
-        public float fogScreenPct = -1f, fogDepthExtent = -1f, fogDepthRatio = -1f, fogUniformity = -1f, fogCutoff = -1f, fogAniso = -2f, ssgiRadius = -1f, ssgiThickness = -1f; }
+        public float fogScreenPct = -1f, fogDepthExtent = -1f, fogDepthRatio = -1f, fogUniformity = -1f, fogCutoff = -1f, fogAniso = -2f, ssgiRadius = -1f, ssgiThickness = -1f, ssgiAmbient = -1f; public int volAll = -1; public int apvOff = -1, ambStatic = -1; public float[] ambUp, ambDown; }   // apvOff 1: ProbeVolumesOptions.intensityMultiplier 0 on the runtime volume; ambStatic 1: VisualEnvironment skyAmbientMode Static there; ambUp/ambDown (rgb): RenderSettings.ambientProbe rebuilt from two colours every LateUpdate (Strategy 22:25, all off by default)   // volAll 1 (20 Nov, COO 21:5x): every volume key below also goes on the priority-1000 runtime volume (per-profile writes are lost on the camera stack)   // ssgiAmbient (20 Nov): GlobalIllumination.ambientProbeDimmer on ray misses (Global.asset value 0, override off); -1 = as authored
     [System.Serializable] public class MatOv { public string match; public float[] color; public float smoothness = -1f, metallic = -1f; }
     [System.Serializable] public class LightMul { public string name; public float mul = 1f; }
     static Flags F; static float scale = 100f;
@@ -114,10 +114,74 @@ public static class RuntimeQuality
     }
 
     // the part of Boot that depends on the flags (TIERS v96: split out of Boot so a tier switch can run it again; the body is unchanged except where marked)
+    // 20 Nov (COO 21:50, measured: r11b_ilcbind wrote indirectDiffuse 1.0 on HDRP_Global's profile and the CAMERA stack still read ILC 0.30, so edits to the existing volume's profile are lost). ONE runtime global Volume, priority 1000, weight 1, its own new VolumeProfile, holding the IndirectLightingController and the GlobalIllumination ambientProbeDimmer from the flags. Created only when a flag asks for it (indirectDiffuse / indirectSpecular / ssgiAmbient >= 0), so live does not change until a flag is set.
+    static Volume fkLightVol; public static string AmbProbeInfo;
+    public class FKAmbientProbe : MonoBehaviour   // runtime-added only (never in a scene): rewrites the ambient probe each frame after HDRP's own update
+    {
+        [System.NonSerialized] public Color up, down;
+        void LateUpdate() { var sh = new UnityEngine.Rendering.SphericalHarmonicsL2(); sh.Clear(); sh.AddDirectionalLight(Vector3.up, up, 1f); sh.AddDirectionalLight(Vector3.down, down, 1f); RenderSettings.ambientProbe = sh; }
+    }
+    static void EnsureLightingVolume()
+    {
+        if (fkLightVol == null)
+        {
+            var go = new GameObject("FKRuntimeLightingVolume"); Object.DontDestroyOnLoad(go);
+            fkLightVol = go.AddComponent<Volume>(); fkLightVol.isGlobal = true; fkLightVol.priority = 1000f; fkLightVol.weight = 1f; fkLightVol.sharedProfile = ScriptableObject.CreateInstance<VolumeProfile>();
+        }
+        var prof = fkLightVol.sharedProfile;
+        IndirectLightingController ilc; if (!prof.TryGet(out ilc)) ilc = prof.Add<IndirectLightingController>(false);
+        if (F.indirectDiffuse >= 0f) ilc.indirectDiffuseLightingMultiplier.Override(F.indirectDiffuse);
+        if (F.indirectSpecular >= 0f) ilc.reflectionLightingMultiplier.Override(F.indirectSpecular);
+        GlobalIllumination gil; if (!prof.TryGet(out gil)) gil = prof.Add<GlobalIllumination>(false);
+        if (F.ssgiAmbient >= 0f) gil.ambientProbeDimmer.Override(Mathf.Clamp01(F.ssgiAmbient));
+        if (F.hdriRotation > -900f || F.hdriExposure > -900f)   // same volume: the HDRI rotation / exposure flags (edits on the existing volumes' profiles are lost, row 9 probe r9_hubhdri90 was inconclusive for that reason)
+        {
+            HDRISky hsv; if (!prof.TryGet(out hsv)) hsv = prof.Add<HDRISky>(false);
+            if (F.hdriRotation > -900f) hsv.rotation.Override(F.hdriRotation);
+            if (F.hdriExposure > -900f) hsv.exposure.Override(F.hdriExposure);
+            Debug.Log("[RuntimeQuality] HDRI volume prio=1000 rotation=" + (F.hdriRotation > -900f ? F.hdriRotation.ToString("F0") : "-") + " exposure=" + (F.hdriExposure > -900f ? F.hdriExposure.ToString("F1") : "-"));
+        }
+        if (F.apvOff > 0) { UnityEngine.Rendering.ProbeVolumesOptions pvo; if (!prof.TryGet(out pvo)) pvo = prof.Add<UnityEngine.Rendering.ProbeVolumesOptions>(false); pvo.intensityMultiplier.Override(0f); }
+        if (F.ambStatic > 0) { VisualEnvironment ve; if (!prof.TryGet(out ve)) ve = prof.Add<VisualEnvironment>(false); ve.skyAmbientMode.Override(SkyAmbientMode.Static); }
+        if (F.ambUp != null && F.ambUp.Length >= 3 && F.ambDown != null && F.ambDown.Length >= 3)
+        {
+            var amb = fkLightVol.gameObject.GetComponent<FKAmbientProbe>(); if (amb == null) amb = fkLightVol.gameObject.AddComponent<FKAmbientProbe>();
+            amb.up = new Color(F.ambUp[0], F.ambUp[1], F.ambUp[2]); amb.down = new Color(F.ambDown[0], F.ambDown[1], F.ambDown[2]);
+            AmbProbeInfo = "probe written up=" + amb.up + " down=" + amb.down;
+        }
+        AmbProbeInfo = (AmbProbeInfo == null ? "" : AmbProbeInfo + " ") + "apvOff=" + F.apvOff + " ambStatic=" + F.ambStatic;
+        if (F.volAll > 0)   // all the other volume keys, same intended values as the per-profile loop in Apply, on the one volume the camera stack honours
+        {
+            gil.active = F.ssgi; gil.enable.Override(F.ssgi); gil.fullResolutionSS.Override(F.ssgiFullRes); if (F.ssgiQuality >= 0) gil.quality.Override(F.ssgiQuality);
+            ScreenSpaceReflection sr; if (!prof.TryGet(out sr)) sr = prof.Add<ScreenSpaceReflection>(false); sr.active = F.ssr; sr.enabled.Override(F.ssr); if (F.ssrQuality >= 0) sr.quality.Override(F.ssrQuality);
+            Fog fg; if (!prof.TryGet(out fg)) fg = prof.Add<Fog>(false); fg.enableVolumetricFog.Override(F.volumetricFog); if (F.fogQuality >= 0) fg.quality.Override(F.fogQuality);
+            if (F.fogBudget >= 0f) { fg.quality.Override(ScalableSettingLevelParameter.LevelCount); fg.volumetricFogBudget = F.fogBudget; }
+            VolumetricClouds vcl; if (!prof.TryGet(out vcl)) vcl = prof.Add<VolumetricClouds>(false); vcl.active = F.clouds; if (F.cloudMode >= 0) vcl.cloudSimpleMode.Override((VolumetricClouds.CloudSimpleMode)F.cloudMode);
+            ContactShadows cts; if (!prof.TryGet(out cts)) cts = prof.Add<ContactShadows>(false); cts.active = F.contactShadows; cts.enable.Override(F.contactShadows);
+            ScreenSpaceAmbientOcclusion sao; if (!prof.TryGet(out sao)) sao = prof.Add<ScreenSpaceAmbientOcclusion>(false); sao.active = F.ssao; if (F.ssaoQuality >= 0) sao.quality.Override(F.ssaoQuality);
+            HDShadowSettings shs; if (!prof.TryGet(out shs)) shs = prof.Add<HDShadowSettings>(false); if (F.cascades > 0) shs.cascadeShadowSplitCount.Override(F.cascades); if (F.shadowDistance > 0f) shs.maxShadowDistance.Override(F.shadowDistance);
+            if (F.bloomQuality >= 0) { Bloom bl; if (!prof.TryGet(out bl)) bl = prof.Add<Bloom>(false); bl.quality.Override(F.bloomQuality); }
+            if (F.motionBlur >= 0f) { MotionBlur mb; if (!prof.TryGet(out mb)) mb = prof.Add<MotionBlur>(false); mb.intensity.Override(F.motionBlur); }
+            FogSsgiTuning.ApplyVolume(prof, F);
+            Debug.Log("[RuntimeQuality] volAll prio=1000 written: ssgi=" + F.ssgi + " q=" + F.ssgiQuality + " ssr=" + F.ssr + " fog=" + F.volumetricFog + " fogQ=" + F.fogQuality + " clouds=" + F.clouds + " contact=" + F.contactShadows + " ssao=" + F.ssao + " cascades=" + F.cascades);
+        }
+        Debug.Log("[RuntimeQuality] ILC volume prio=1000 diffuse=" + (ilc.indirectDiffuseLightingMultiplier.overrideState ? ilc.indirectDiffuseLightingMultiplier.value.ToString("F2") : "-") + " reflection=" + (ilc.reflectionLightingMultiplier.overrideState ? ilc.reflectionLightingMultiplier.value.ToString("F2") : "-") + " dimmer=" + (gil.ambientProbeDimmer.overrideState ? gil.ambientProbeDimmer.value.ToString("F2") : "-"));
+    }
+
     static void Apply(string path, bool first)
     {
+        if (F.indirectDiffuse >= 0f || F.indirectSpecular >= 0f || F.ssgiAmbient >= 0f || F.hdriRotation > -900f || F.hdriExposure > -900f || F.volAll > 0 || F.apvOff > 0 || F.ambStatic > 0 || F.ambUp != null) { try { EnsureLightingVolume(); } catch (System.Exception eV) { Debug.LogWarning("[RuntimeQuality] lighting volume failed: " + eV.Message); } }
         float fogInternalW = 0f;   // FOGMERGE v1: only read when the grid lock is on
         if (F.fogGridWidth > 0) { var LR0 = LookData.Get().runtime; float sc0 = Mathf.Clamp(F.renderScale, LR0.renderScaleMin, LR0.renderScaleMax); fogInternalW = Screen.width * (sc0 < 99.5f ? sc0 : 100f) * 0.01f; }   // same clamp as the render scale below
+        if (F.indirectDiffuse >= 0f || F.indirectSpecular >= 0f)   // 20 Nov: name the volumes and the HDRP default profile once (amb1/amb2 null result)
+        {
+            try
+            {
+                var vols0 = Object.FindObjectsByType<Volume>(FindObjectsSortMode.None); var dp0 = VolumeManager.instance.globalDefaultProfile; IndirectLightingController dilc0 = null; bool has0 = dp0 != null && dp0.TryGet(out dilc0);
+                Debug.Log("[RuntimeQuality] ILC apply: volumes found " + vols0.Length + ", flag indirectDiffuse=" + F.indirectDiffuse + ", default profile=" + (dp0 != null ? dp0.name : "none") + " ILC " + (has0 ? ("diffuse=" + dilc0.indirectDiffuseLightingMultiplier.value + " override=" + dilc0.indirectDiffuseLightingMultiplier.overrideState) : "absent"));
+            }
+            catch (System.Exception e0) { Debug.LogWarning("[RuntimeQuality] ILC probe failed: " + e0.Message); }
+        }
         foreach (var v in Object.FindObjectsByType<Volume>(FindObjectsSortMode.None))
         {
             var p = QualityTiers.Fresh(v, first); if (p == null) continue;   // TIERS v96: was v.sharedProfile (edits went into the shared asset)
@@ -140,6 +204,7 @@ public static class RuntimeQuality
                 if (!p.TryGet(out IndirectLightingController ilc)) ilc = p.Add<IndirectLightingController>(true);
                 if (F.indirectDiffuse >= 0f) ilc.indirectDiffuseLightingMultiplier.Override(F.indirectDiffuse);
                 if (F.indirectSpecular >= 0f) ilc.reflectionLightingMultiplier.Override(F.indirectSpecular);
+                Debug.Log("[RuntimeQuality] ILC written vol=" + v.name + " global=" + v.isGlobal + " prio=" + v.priority + " weight=" + v.weight + " profile=" + (v.sharedProfile != null ? v.sharedProfile.name : "-") + " diffuse=" + ilc.indirectDiffuseLightingMultiplier.value + " override=" + ilc.indirectDiffuseLightingMultiplier.overrideState);   // 20 Nov: amb1/amb2 moved no frame; which volumes got it?
             }
             if (p.TryGet(out HDShadowSettings hs)) { if (F.cascades > 0) hs.cascadeShadowSplitCount.Override(F.cascades); if (F.shadowDistance > 0f) hs.maxShadowDistance.Override(F.shadowDistance); }
             // TIERS v96: tier-only keys (-1 = as authored)
